@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @id2281 @smoke @rc
+  @id2281 @regression @rc
   Scenario Outline: Send connection request from search by name in landscape
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -23,7 +23,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2280 @smoke @rc
+  @id2280 @regression @rc
   Scenario Outline: Send connection request from search by name in portrait
     Given There are 2 users where <Name> is me
     Given I rotate UI to portrait
@@ -46,7 +46,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2245 @smoke @rc
+  @id2245 @regression @rc
   Scenario Outline: Accept connection request in landscape mode
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
@@ -64,7 +64,7 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @id2259 @smoke @rc
+  @id2259 @regression @rc
   Scenario Outline: Accept connection request in portrait mode
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me

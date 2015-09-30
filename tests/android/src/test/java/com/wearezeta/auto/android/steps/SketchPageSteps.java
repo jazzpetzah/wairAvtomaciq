@@ -113,7 +113,7 @@ public class SketchPageSteps {
 				sketch, ImageUtil.RESIZE_TO_MAX_SCORE);
 		System.out.println("score=" + score);
 		Assert.assertTrue(
-				"Overlap between two images has not enough score. Expected >= 0.7, current = "
-						+ score, score >= 0.7d);
+				"Overlap between two images has not enough score. Expected >= 0.5, current = "
+						+ score, score >= 0.5d);
 	}
 }

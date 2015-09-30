@@ -14,7 +14,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class TabletConversationViewPage extends AndroidTabletPage {
-	public static final String idRootLocator = "fl__message_stream_land_container";
+	public static final String idRootLocator = "pfac__conversation__list_view_container";
 
 	public static final Function<String, String> xpathSystemMessageByContent = content -> String
 			.format("//*[@id='ltv__row_conversation__message' and contains(@value, '%s')]",

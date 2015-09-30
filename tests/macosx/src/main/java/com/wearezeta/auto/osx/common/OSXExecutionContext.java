@@ -4,15 +4,7 @@ import com.wearezeta.auto.common.Platform;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
-import org.apache.log4j.Logger;
-
-import com.wearezeta.auto.common.log.ZetaLogger;
-
 public class OSXExecutionContext {
-
-	private static final Logger LOG = ZetaLogger
-			.getLog(OSXExecutionContext.class.getName());
-
 	public static final Platform CURRENT_PLATFORM = Platform.Mac;
 	public static final Platform CURRENT_SECONDARY_PLATFORM = Platform.Web;
 

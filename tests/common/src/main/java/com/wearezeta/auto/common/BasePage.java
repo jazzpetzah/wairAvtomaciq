@@ -31,8 +31,14 @@ public abstract class BasePage {
 		return this.lazyDriver;
 	}
 
+	protected long getDriverInitializationTimeout() {
+		// Default value in milliseconds
+		// Override this in subclasses if necessary
+		return 1000 * 60 * 3;
+	}
+
 	protected RemoteWebDriver getDriver() throws Exception {
-		return this.getLazyDriver().get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+		return this.getLazyDriver().get(getDriverInitializationTimeout(),
 				TimeUnit.MILLISECONDS);
 	}
 

@@ -111,12 +111,10 @@ public class ContactListPage extends AndroidPage {
 			.format("//*[starts-with(@id, 'ttv__settings_box__item') and @value='%s']",
 					name.toUpperCase());
 
-	// private static final String xpathTopConversationsListLoadingIndicator =
-	// "//*[@id='lbv__conversation_list__loading_indicator']/*";
 	private static final String xpathSpinnerConversationsListLoadingIndicator = "//*[@id='liv__conversations__loading_indicator']/*";
 
 	private static final Function<String, String> xpathConversationListEntry = name -> String
-			.format("//b[TextView[@id='tv_conv_list_topic' and @value='%s']]//*[@id='civ__list_row']",
+			.format("//*[@id='tv_conv_list_topic' and @value='%s']/parent::*//*[@id='civ__list_row']",
 					name);
 
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
@@ -180,10 +178,6 @@ public class ContactListPage extends AndroidPage {
 
 	public void doLongSwipeUp() {
 		elementSwipeUp(contactListFrame, 2000);
-	}
-
-	public void waitForConversationListLoad() throws Exception {
-		verifyContactListIsFullyLoaded();
 	}
 
 	public AndroidPage tapOnContactByPosition(List<WebElement> contacts, int id)
@@ -307,17 +301,19 @@ public class ContactListPage extends AndroidPage {
 						CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
 
 		final By selfAvatarLocator = By.id(idSelfUserAvatar);
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				selfAvatarLocator, CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : "Self avatar is not visible on top of conversations list";
+		if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				selfAvatarLocator, CONTACT_LIST_LOAD_TIMEOUT_SECONDS)) {
+			log.warn("Self avatar is not detected on top of conversations list");
+		}
 
 		final By spinnerConvoListLoadingProgressLocator = By
 				.xpath(xpathSpinnerConversationsListLoadingIndicator);
 		if (!DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				spinnerConvoListLoadingProgressLocator,
-				CONTACT_LIST_LOAD_TIMEOUT_SECONDS)) {
+				CONTACT_LIST_LOAD_TIMEOUT_SECONDS / 2)) {
 			log.warn(String
 					.format("It seems that conversations list has not been loaded within %s seconds (the spinner is still visible)",
-							CONTACT_LIST_LOAD_TIMEOUT_SECONDS));
+							CONTACT_LIST_LOAD_TIMEOUT_SECONDS / 2));
 		}
 
 		assert this.waitUntilConversationsInfoIsLoaded() : String

@@ -1,6 +1,6 @@
 Feature: Conversation List
 
-  @id2246 @smoke @rc
+  @id2246 @regression @rc
   Scenario Outline: Mute and unmute conversation from conversation details in landscape mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -37,7 +37,7 @@ Feature: Conversation List
       | Name      | Contact   | ItemSilence | ItemNotify |
       | user1Name | user2Name | SILENCE     | NOTIFY     |
 
-  @id2260 @smoke @rc
+  @id2260 @regression @rc
   Scenario Outline: Mute and unmute conversation from conversation details in portrait mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -83,14 +83,14 @@ Feature: Conversation List
     Given I see the conversations list with conversations
     And I see the conversation <Contact1> in my conversations list
     When I swipe right the conversations list item <Contact1>
-    Then I see Conversation Actions popover
-    When I select <ItemSilence> menu item on Conversation Actions popover
-    Then I do not see Conversation Actions popover
+    Then I see Conversation Actions overlay
+    When I select <ItemSilence> menu item on Conversation Actions overlay
+    Then I do not see Conversation Actions overlay
     And I see the conversation <Contact1> in my conversations list is silenced
     When I swipe right the conversations list item <Contact1>
-    Then I see Conversation Actions popover
-    When I select <ItemNotify> menu item on Conversation Actions popover
-    Then I do not see Conversation Actions popover
+    Then I see Conversation Actions overlay
+    When I select <ItemNotify> menu item on Conversation Actions overlay
+    Then I do not see Conversation Actions overlay
     And I see the conversation <Contact1> in my conversations list is not silenced
 
     Examples: 
@@ -106,14 +106,14 @@ Feature: Conversation List
     Given I see the conversations list with conversations
     And I see the conversation <Contact1> in my conversations list
     When I swipe right the conversations list item <Contact1>
-    Then I see Conversation Actions popover
-    When I select <ItemSilence> menu item on Conversation Actions popover
-    Then I do not see Conversation Actions popover
+    Then I see Conversation Actions overlay
+    When I select <ItemSilence> menu item on Conversation Actions overlay
+    Then I do not see Conversation Actions overlay
     And I see the conversation <Contact1> in my conversations list is silenced
     When I swipe right the conversations list item <Contact1>
-    Then I see Conversation Actions popover
-    When I select <ItemNotify> menu item on Conversation Actions popover
-    Then I do not see Conversation Actions popover
+    Then I see Conversation Actions overlay
+    When I select <ItemNotify> menu item on Conversation Actions overlay
+    Then I do not see Conversation Actions overlay
     And I see the conversation <Contact1> in my conversations list is not silenced
 
     Examples: 

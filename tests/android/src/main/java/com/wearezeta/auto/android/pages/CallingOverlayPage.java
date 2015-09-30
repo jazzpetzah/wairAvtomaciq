@@ -59,7 +59,7 @@ public class CallingOverlayPage extends AndroidPage {
 	@FindBy(id = idCallingMicMute)
 	public WebElement muteMicButton;
 
-	private static final String xpathGroupCallParticipantChathead = "//*[@id='fl__calling__container']//c";
+	private static final String xpathGroupCallParticipantChathead = "//*[@id='rv__calling__container']/*";
 
 	private static final String xpathGroupCallIsFullAlertTitle = "//DialogTitle[@id='alertTitle' and @value='The call is full']";
 
@@ -126,7 +126,8 @@ public class CallingOverlayPage extends AndroidPage {
 	public boolean waitUntilNameAppearsOnCallingBarAvatar(String name)
 			throws Exception {
 		final By locator = By.xpath(xpathCallingBarAvatarByName.apply(name));
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+		// isDisplayed sometimes does not work properly here
+		return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
 	}
 
 	public DialogPage acceptCall() throws Exception {
@@ -230,9 +231,12 @@ public class CallingOverlayPage extends AndroidPage {
 	}
 
 	public int numberOfParticipantsInGroupCall() throws Exception {
-		By searchCriteria = By.xpath(xpathGroupCallParticipantChathead);
-		DriverUtils.waitUntilLocatorAppears(getDriver(), searchCriteria, 5);
-		return getDriver().findElements(searchCriteria).size();
+		final By searchCriteria = By.xpath(xpathGroupCallParticipantChathead);
+		if (DriverUtils.waitUntilLocatorAppears(getDriver(), searchCriteria, 5)) {
+			return getDriver().findElements(searchCriteria).size();
+		} else {
+			return 0;
+		}
 	}
 
 	public boolean isGroupCallFullAlertVisible() throws Exception {

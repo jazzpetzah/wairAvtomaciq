@@ -1,19 +1,28 @@
 package com.wearezeta.auto.android.steps;
 
+import java.util.List;
+
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriverException;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.AndroidLogListener;
 import com.wearezeta.auto.android.common.AndroidLogListener.ListenerType;
+import com.wearezeta.auto.android.common.reporter.AndroidBatteryPerfReportModel;
 import com.wearezeta.auto.android.common.reporter.AndroidPerfReportModel;
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.DialogPage;
+import com.wearezeta.auto.common.CommonCallingSteps2;
+import com.wearezeta.auto.common.calling2.v1.model.Flow;
+import com.wearezeta.auto.common.driver.PlatformDrivers;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.performance.PerformanceCommon;
 import com.wearezeta.auto.common.performance.PerformanceCommon.PerformanceLoop;
 import com.wearezeta.auto.common.performance.PerformanceHelpers;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -25,16 +34,21 @@ public class PerformanceSteps {
 	private final PerformanceCommon perfCommon = PerformanceCommon
 			.getInstance();
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	private final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2
+			.getInstance();
+
+	private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class
+			.getSimpleName());
 
 	private static final int DEFAULT_SWIPE_TIME = 500;
 	private static final int MAX_MSGS_IN_CONVO_WINDOW = 100;
 
 	private ContactListPage getContactListPage() throws Exception {
-		return (ContactListPage) pagesCollection.getPage(ContactListPage.class);
+		return pagesCollection.getPage(ContactListPage.class);
 	}
 
 	private DialogPage getDialogPage() throws Exception {
-		return (DialogPage) pagesCollection.getPage(DialogPage.class);
+		return pagesCollection.getPage(DialogPage.class);
 	}
 
 	/**
@@ -173,4 +187,104 @@ public class PerformanceSteps {
 		PerformanceHelpers.storeWidgetDataAsJSON(dataModel,
 				AndroidCommonUtils.getPerfReportPathFromConfig(getClass()));
 	}
+
+	private AndroidBatteryPerfReportModel batteryPerfReport = null;
+	private long flowRxBytes = 0;
+	private long flowTxBytes = 0;
+
+	/**
+	 * Initialize battery perf report by recording current device metrics for
+	 * the future comparison
+	 * 
+	 * @step. ^I initialize battery performance report$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I initialize battery performance report$")
+	public void IInitializeBatteryPerfReport() throws Exception {
+		batteryPerfReport = new AndroidBatteryPerfReportModel();
+		batteryPerfReport.setPreviousCapacityValue(AndroidCommonUtils
+				.getBatteryCapacity());
+		final String packageId = AndroidCommonUtils
+				.getAndroidPackageFromConfig(getClass());
+		batteryPerfReport.setPreviousRxBytes(AndroidCommonUtils
+				.getRxBytes(packageId));
+		batteryPerfReport.setPreviousTxBytes(AndroidCommonUtils
+				.getTxBytes(packageId));
+	}
+
+	private final static long CALL_STATUS_CHECKING_INTERVAL = 30000; // milliseconds
+
+	/**
+	 * Check whether a call is still in progress
+	 * 
+	 * @step. ^I verify the call from (.*) is in progress for (\\d+) minutes?$
+	 * 
+	 * @param caller
+	 *            caller name/alias
+	 * @param durationMinutes
+	 *            for how long we have to check that the call is in progress
+	 * @throws Exception
+	 */
+	@And("^I verify the call from (.*) is in progress for (\\d+) minutes?$")
+	public void IStartBatteryPerfTest(String caller, int durationMinutes)
+			throws Exception {
+		final long millisecondsStarted = System.currentTimeMillis();
+		while (System.currentTimeMillis() - millisecondsStarted <= durationMinutes * 1000 * 60) {
+			Thread.sleep(CALL_STATUS_CHECKING_INTERVAL);
+			PlatformDrivers.getInstance().pingDrivers();
+			final long secondsElapsed = (System.currentTimeMillis() - millisecondsStarted) / 1000;
+			final long secondsRemaining = durationMinutes * 60 - secondsElapsed;
+			final List<Flow> flows = commonCallingSteps.getFlows(caller);
+			if (flows.size() == 0) {
+				throw new IllegalStateException(
+						String.format(
+								"User '%s' has no active flows, "
+										+ "which means that the call was unexpectedly terminated after %d seconds",
+								caller, secondsElapsed));
+			}
+			for (Flow flow : flows) {
+				flowRxBytes = flow.getBytesIn();
+				Assert.assertTrue(
+						"Received bytes count should be greater than 0",
+						flowRxBytes > 0);
+				flowTxBytes = flow.getBytesOut();
+				Assert.assertTrue("Sent bytes count should be greater than 0",
+						flowTxBytes > 0);
+			}
+			log.info(String
+					.format("Successfully verified the ongoing call after %d seconds. %d seconds left till the end of the perf test...",
+							secondsElapsed, secondsRemaining));
+		}
+	}
+
+	/**
+	 * Generate battery performance report based on collected data
+	 * 
+	 * @step. ^I generate battery performance report for (\\d+) minutes?$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I generate battery performance report for (\\d+) minutes?$")
+	public void IGerenearetBatteryPerfReport(int durationMinutes)
+			throws Exception {
+		if (this.batteryPerfReport == null) {
+			throw new IllegalStateException(
+					"You have to initialize the report first");
+		}
+		batteryPerfReport.setCurrentCapacityValue(AndroidCommonUtils
+				.getBatteryCapacity());
+		final String packageId = AndroidCommonUtils
+				.getAndroidPackageFromConfig(getClass());
+		batteryPerfReport.setCurrentRxBytes(AndroidCommonUtils
+				.getRxBytes(packageId));
+		batteryPerfReport.setCurrentTxBytes(AndroidCommonUtils
+				.getTxBytes(packageId));
+		batteryPerfReport.setMinutesDuration(durationMinutes);
+		batteryPerfReport.setFlowRxBytes(flowRxBytes);
+		batteryPerfReport.setFlowTxBytes(flowTxBytes);
+		PerformanceHelpers.storeWidgetDataAsJSON(batteryPerfReport,
+				AndroidCommonUtils.getPerfReportPathFromConfig(getClass()));
+	}
+
 }

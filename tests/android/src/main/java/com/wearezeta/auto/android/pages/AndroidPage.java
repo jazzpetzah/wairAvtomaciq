@@ -62,6 +62,11 @@ public abstract class AndroidPage extends BasePage {
 	protected Future<ZetaAndroidDriver> getLazyDriver() {
 		return (Future<ZetaAndroidDriver>) super.getLazyDriver();
 	}
+	
+	@Override
+	protected long getDriverInitializationTimeout() {
+		return 1000 * 60 * 6;
+	}
 
 	public AndroidPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);

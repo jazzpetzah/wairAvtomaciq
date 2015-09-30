@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
-
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
@@ -96,7 +95,7 @@ public class LoginPageSteps {
 	private void phoneLoginSequence(final PhoneNumber number) throws Exception {
 		getLoginPage().clickPhoneLogin();
 
-		getRegistrationPage().inputPhoneNumber(
+		getRegistrationPage().selectCodeAndInputPhoneNumber(
 				number.toString().replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""),
 				PhoneNumber.WIRE_COUNTRY_PREFIX);
 		String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(number);
@@ -105,7 +104,7 @@ public class LoginPageSteps {
 
 		getLoginPage().waitForLoginToFinish();
 	}
-	
+
 	/**
 	 * Enter verification code for specified user
 	 * 
@@ -124,13 +123,56 @@ public class LoginPageSteps {
 	}
 
 	/**
-	 * Verify if PHONE SIGN IN button is visible
+	 * Inputs not valid verification code
 	 * 
-	 * @step. I see PHONE SIGN IN button
+	 * @step. ^I enter random verification code$
 	 * 
 	 * @throws Exception
 	 */
-	@When("I see PHONE SIGN IN button")
+	@When("^I enter random verification code$")
+	public void IEnterRandomVerificationCode() throws Exception {
+		getRegistrationPage().inputRandomActivationCode();
+	}
+
+	/**
+	 * Sends new verification code for specified user and enter previous one
+	 * 
+	 * @step. ^I enter verification code for user (.*)$
+	 * 
+	 * @param name
+	 *            name of user
+	 * @throws Exception
+	 */
+	@When("^I enter previous verification code for user (.*)$")
+	public void IEnterPreviousVerificationCodeForUser(String name)
+			throws Exception {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
+		String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(user
+				.getPhoneNumber());
+		getRegistrationPage().clickResendCodeButton();
+		getRegistrationPage().inputActivationCode(code);
+	}
+
+	/**
+	 * Click on RESEND button to send new verification code
+	 * 
+	 * @step. ^I tap RESEND code button$"
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap RESEND code button$")
+	public void ITapResendCodeButton() throws Exception {
+		getRegistrationPage().clickResendCodeButton();
+	}
+
+	/**
+	 * Verify if PHONE SIGN IN button is visible
+	 * 
+	 * @step. ^I see PHONE SIGN IN button$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see PHONE SIGN IN button$")
 	public void ISeePhoneSignInButton() throws Exception {
 		Assert.assertTrue("PHONE SIGN IN button is not visible", getLoginPage()
 				.isPhoneSignInButtonVisible());
@@ -151,16 +193,15 @@ public class LoginPageSteps {
 	/**
 	 * Verify country picker button presented
 	 * 
-	 * @step. I see country picker button on Sign in screen
+	 * @step. ^I see country picker button on Sign in screen$
 	 * 
 	 * @throws Exception
 	 */
-	@When("I see country picker button on Sign in screen")
+	@When("^I see country picker button on Sign in screen$")
 	public void ISeeCountryPickerButton() throws Exception {
 		Assert.assertTrue("Country picker button is not visible",
 				getLoginPage().isCountryPickerButttonVisible());
 	}
-	
 
 	/**
 	 * Verify verification code page shown
@@ -172,6 +213,18 @@ public class LoginPageSteps {
 	@When("^I see verification code page$")
 	public void ISeeVerificationCodePage() throws Exception {
 		Assert.assertTrue(getRegistrationPage().isVerificationCodePageVisible());
+	}
+
+	/**
+	 * Verify set email/password suggesstion page is shown
+	 * 
+	 * @step. ^I see set email/password suggesstion page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see set email/password suggesstion page$")
+	public void ISeeSetEmailPassSuggestionPage() throws Exception {
+		Assert.assertTrue(getLoginPage().isSetEmailPasswordSuggestionVisible());
 	}
 
 	/**
@@ -495,6 +548,32 @@ public class LoginPageSteps {
 	public void ISeeWrongCredentialsNotification() throws Exception {
 		Assert.assertTrue("I don't see wrong credentials notification",
 				getLoginPage().wrongCredentialsNotificationIsShown());
+	}
+
+	/**
+	 * Verifies whether the notification Resend avialble in 10 min is shown
+	 * 
+	 * @step. ^I see Resend will be possible after 10 min aleart$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see Resend will be possible after 10 min aleart$")
+	public void ISeeResendIn10minAlert() throws Exception {
+		Assert.assertTrue("I don't see Resend in 10 min alert", getLoginPage()
+				.isResendIn10minAlertVisible());
+	}
+
+	/**
+	 * Verifies whether the notification invalid phone number shown
+	 * 
+	 * @step. ^I see invalid phone number alert$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see invalid phone number alert$")
+	public void ISeeInvalidPhoneNumberAlert() throws Exception {
+		Assert.assertTrue("I don't see invalid phone number alert",
+				getLoginPage().isInvalidPhoneNumberAlertShown());
 	}
 
 	/**

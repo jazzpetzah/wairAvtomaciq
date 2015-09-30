@@ -1,6 +1,6 @@
 Feature: Settings
 
-  @id67 @smoke @rc
+  @id67 @regression @rc
   Scenario Outline: Open and Close settings page
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -33,7 +33,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @id92 @smoke @rc
+  @id92 @regression @rc
   Scenario Outline: Check About page in settings menu
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number

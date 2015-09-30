@@ -1,6 +1,6 @@
 Feature: Search
 
-  @smoke @id2147
+  @regression @id2147
   Scenario Outline: Verify search by email
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -15,7 +15,7 @@ Feature: Search
       | Name      | ContactEmail | ContactName |
       | user1Name | user2Email   | user2Name   |
 
-  @smoke @rc @id2148 @id2543
+  @regression @rc @id2148 @id2543
   Scenario Outline: Verify search by name
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -406,9 +406,7 @@ Feature: Search
     And I see top people list on People picker page
     And I tap on 1st top connection contact
     And I see action buttons appeared on People picker page
-    And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
-    And I tap on connected user <Contact> on People picker page
+    And I tap on 2nd top connection contact
     And I see Create Conversation button on People picker page
     And I press backspace button
     Then I see open conversation action button on People picker page
@@ -418,3 +416,43 @@ Feature: Search
     Examples: 
       | Name      | Contact   |
       | user1Name | user3Name |
+
+  @staging @id3281
+  Scenario Outline: Verify opening conversation with action button
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    And I tap on 1st top connection contact
+    And I see open conversation action button on People picker page
+    And I click open conversation action button on People picker page
+    Then I see dialog page
+
+    Examples: 
+      | Name      |
+      | user1Name |
+
+  @staging @id2121
+  Scenario Outline: Verify label hiding after dismissing all PYMK
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact1> is connected to <Contact2>,<Contact3>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if CONNECT label is not there
+    And I see CONNECT label
+    And I swipe to reveal hide button for suggested contact <Contact2>
+    And I tap hide for suggested contact <Contact2>
+    And I swipe to reveal hide button for suggested contact <Contact3>
+    And I tap hide for suggested contact <Contact3>
+    Then I dont see CONNECT label
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  |
+      | user1Name | user2Name | user3Name | user4Name |
