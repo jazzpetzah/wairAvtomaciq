@@ -1,4 +1,4 @@
-package com.wearezeta.auto.web.pages;
+package com.wearezeta.auto.osx.pages.webapp;
 
 import java.util.concurrent.Future;
 
@@ -11,11 +11,16 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.locators.WebAppLocators;
+import com.wearezeta.auto.web.pages.WebPage;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 public class PhoneNumberVerificationPage extends WebPage {
 
-	private static final Logger log = ZetaLogger
-			.getLog(PhoneNumberVerificationPage.class.getSimpleName());
+	private static final Logger LOG = ZetaLogger
+			.getLog(PhoneNumberVerificationPage.class.getName());
+
+	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
+			.getInstance();
 
 	@FindBy(css = "[data-uie-name='enter-phone-code']")
 	private WebElement phoneCodeField;
@@ -30,10 +35,10 @@ public class PhoneNumberVerificationPage extends WebPage {
 
 	public ContactListPage enterCode(String code) throws Exception {
 		DriverUtils.waitUntilElementClickable(getDriver(), phoneCodeField);
-		log.info("Enter code: " + code);
+		LOG.info("Enter code: " + code);
 		phoneCodeField.clear();
 		phoneCodeField.sendKeys(code);
-		return new ContactListPage(getLazyDriver());
+		return webappPagesCollection.getPage(ContactListPage.class);
 	}
 
 	public String getErrorMessage() throws Exception {
@@ -47,6 +52,6 @@ public class PhoneNumberVerificationPage extends WebPage {
 	public AddEmailAddressPage enterCodeForEmaillessUser(String code)
 			throws Exception {
 		enterCode(code);
-		return new AddEmailAddressPage(getLazyDriver());
+		return webappPagesCollection.getPage(AddEmailAddressPage.class);
 	}
 }

@@ -1,13 +1,20 @@
-package com.wearezeta.auto.osx.steps;
+package com.wearezeta.auto.osx.steps.osx;
 
-import com.wearezeta.auto.osx.pages.MainWirePage;
-import com.wearezeta.auto.osx.pages.OSXPagesCollection;
+import com.wearezeta.auto.osx.pages.osx.MainWirePage;
+import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
+
 import cucumber.api.java.en.When;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import org.junit.Assert;
+import org.openqa.selenium.Dimension;
 
 public class MainWirePageSteps {
 
-	private OSXPagesCollection osxPagesCollection = OSXPagesCollection
+	private final static int OSX_TITLEBAR_HEIGHT = 23;
+
+	private final OSXPagesCollection osxPagesCollection = OSXPagesCollection
 			.getInstance();
 
 	/**
@@ -43,7 +50,28 @@ public class MainWirePageSteps {
 	 */
 	@When("^I maximize the app$")
 	public void IMaximizeApp() throws Exception {
-		osxPagesCollection.getPage(MainWirePage.class).maximizeWindow();
+		int maxHeight;
+		MainWirePage page = osxPagesCollection.getPage(MainWirePage.class);
+
+		Dimension desktopSize = page.getDesktopSize();
+		// get Dock position & size
+		Dimension dockSize = page.getDockSize();
+		// calculate full screen height
+		if (dockSize.getHeight() > dockSize.getWidth()) {
+			// dock on the left size
+			maxHeight = desktopSize.getHeight() - OSX_TITLEBAR_HEIGHT;
+		} else {
+			// dock on the bottom
+			maxHeight = desktopSize.getHeight() - dockSize.getHeight()
+					- OSX_TITLEBAR_HEIGHT;
+		}
+
+		// check if full screen
+		if (page.getHeight() == maxHeight
+				&& page.getWidth() == MainWirePage.APP_MAX_WIDTH) {
+			page.clickMaximizeButton();
+		}
+		page.clickMaximizeButton();
 	}
 
 	/**
@@ -55,8 +83,26 @@ public class MainWirePageSteps {
 	 */
 	@When("^I verify app is in fullscreen$")
 	public void IVerifyAppFullscreen() throws Exception {
-		Assert.assertTrue(osxPagesCollection.getPage(MainWirePage.class)
-				.isFullscreen());
+		int maxHeight;
+
+		// get Desktop size
+		MainWirePage mainPage = osxPagesCollection.getPage(MainWirePage.class);
+		Dimension desktopSize = mainPage.getDesktopSize();
+		// get Dock position & size
+		Dimension dockSize = mainPage.getDockSize();
+		// calculate fullscreen height
+		if (dockSize.getHeight() > dockSize.getWidth()) {
+			// dock on the left size
+			maxHeight = desktopSize.getHeight() - OSX_TITLEBAR_HEIGHT;
+		} else {
+			// dock on the bottom
+			maxHeight = desktopSize.getHeight() - dockSize.getHeight()
+					- OSX_TITLEBAR_HEIGHT;
+		}
+		assertThat("Height", mainPage.getHeight(), equalTo(maxHeight));
+		// get maximum possible width
+		int maxWidth = MainWirePage.APP_MAX_WIDTH;
+		assertThat("Width", mainPage.getWidth(), equalTo(maxWidth));
 	}
 
 	/**

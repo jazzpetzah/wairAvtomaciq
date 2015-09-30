@@ -1,5 +1,6 @@
 package com.wearezeta.auto.common.driver;
 
+import com.wearezeta.auto.common.log.ZetaLogger;
 import java.net.URL;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import org.openqa.selenium.WebElement;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import java.util.stream.Collectors;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.Beta;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.OutputType;
@@ -20,8 +22,12 @@ import org.openqa.selenium.remote.RemoteWebElement;
 
 public class ZetaOSXDriver extends AppiumDriver implements ZetaDriver {
 
+	private static final Logger LOG = ZetaLogger.getLog(ZetaOSXDriver.class
+			.getName());
+
 	private static final String AX_POSITION = "AXPosition";
 	private static final String AX_SIZE = "AXSize";
+	private static final String APP_NAME = "Wire";
 	private final SessionHelper sessionHelper;
 
 	public ZetaOSXDriver(URL remoteAddress, Capabilities desiredCapabilities) {
@@ -198,10 +204,13 @@ public class ZetaOSXDriver extends AppiumDriver implements ZetaDriver {
 
 	protected class ZetaRemoteWebDriverOptions extends RemoteWebDriverOptions {
 
+		private static final String WINDOW_LOCATOR = "//AXApplication[@AXTitle='"
+				+ APP_NAME + "']//AXWindow";
+
 		@Beta
 		@Override
 		public WebDriver.Window window() {
-			final String xpathWindow = "//AXWindow[@AXRoleDescription='standard window']";
+			final String xpathWindow = WINDOW_LOCATOR;
 			final WebElement window = findElement(By.xpath(xpathWindow));
 			return new ZetaRemoteWindow(window);
 		}
