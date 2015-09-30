@@ -233,9 +233,8 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
-
-# @regression @rc @rc42  
-  @id1504 @staging
+  
+  @id1504 @regression @rc @rc42
   Scenario Outline: Verify you can play/pause media from the Media Bar (SoundCloud)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -259,8 +258,8 @@ Feature: Conversation View
     And I see PLAY button in Media
 
     Examples: 
-      | Name      | Contact1  | SoudCloudLink                                              |
-      | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
+      | Name      | Contact1  | SoudCloudLink                                               |
+      | user1Name | user2Name | https://soundcloud.com/pedro-noe/game-of-thrones-main-title |
 
   @id170 @regression @rc @rc42
   Scenario Outline: Verify you can send youtube link
