@@ -74,7 +74,7 @@ Feature: Conversation List
       | Name      | Contact   | ItemSilence | ItemNotify |
       | user1Name | user2Name | SILENCE     | NOTIFY     |
 
-  @id2888 @regression @rc
+  @id2888 @regression
   Scenario Outline: Mute and unmute conversation from conversations list in portrait mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -97,7 +97,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | ItemSilence | ItemNotify |
       | user1Name | user2Name | user3Name | SILENCE     | NOTIFY     |
 
-  @id3137 @regression @rc
+  @id3137 @regression
   Scenario Outline: Mute and unmute conversation from conversations list in landscape mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
