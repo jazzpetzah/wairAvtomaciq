@@ -3,7 +3,9 @@ package com.wearezeta.auto.android_tablet.pages;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.ScreenOrientation;
 
+import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
 import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -29,10 +31,9 @@ public class TabletEmailSignInPage extends AndroidTabletPage {
 		getEmailSignInPage().setPassword(password);
 	}
 
-	public TabletConversationsListPage tapSignInButton() throws Exception {
+	public void tapSignInButton() throws Exception {
 		final By loginButtonLocator = By.id(EmailSignInPage.idLoginButton);
 		getDriver().findElement(loginButtonLocator).click();
-		return new TabletConversationsListPage(getLazyDriver());
 	}
 
 	private static final int VISIBILITY_TIMEOUT_SECONDS = 60;
@@ -43,7 +44,18 @@ public class TabletEmailSignInPage extends AndroidTabletPage {
 					By.id(EmailSignInPage.idLoginInput),
 					VISIBILITY_TIMEOUT_SECONDS);
 		} finally {
-			ScreenOrientationHelper.getInstance().fixOrientation(getDriver());
+			if (ScreenOrientationHelper.getInstance().fixOrientation(
+					getDriver()) == ScreenOrientation.PORTRAIT) {
+				if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+						By.id(ContactListPage.idSelfUserAvatar), 3)) {
+					// The app will open full-color view instead of doing swipe
+					// w/o these two operators :-@
+					this.tapOnCenterOfScreen();
+					this.tapOnCenterOfScreen();
+					DriverUtils.swipeByCoordinates(getDriver(), 1000, 30, 50,
+							90, 50);
+				}
+			}
 		}
 	}
 
@@ -51,8 +63,7 @@ public class TabletEmailSignInPage extends AndroidTabletPage {
 		getEmailSignInPage().verifyErrorMessageText(expectedMsg);
 	}
 
-	public void acceptErrorMessage()  throws Exception  {
+	public void acceptErrorMessage() throws Exception {
 		getEmailSignInPage().acceptErrorMessage();
 	}
-
 }
