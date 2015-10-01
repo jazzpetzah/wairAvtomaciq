@@ -53,4 +53,16 @@ public class ContactContextMenuPageSteps {
 		osxPagesCollection.getPage(ContactContextMenuPage.class)
 				.clickNotify();
 	}
+
+	/**
+	 * Click the delete in context menu
+	 *
+	 * @step. ^I click delete in context menu$
+	 * @throws Exception
+	 */
+	@When("^I click delete in context menu$")
+	public void IClickDeleteButtonInContextMenu() throws Exception {
+		osxPagesCollection.getPage(ContactContextMenuPage.class)
+				.clickDelete();
+	}
 }
