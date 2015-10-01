@@ -76,8 +76,8 @@ public class PerformanceSteps {
 		perfCommon.sendMultipleMessagesIntoConversation(contact, msgsCount);
 	}
 
-	private void waitUntilConversationsListIsFullyLoaded() throws Exception {
-		final int maxTries = 10;
+	private void waitUntilConversationsListIsFullyLoaded(int retries) throws Exception {
+		final int maxTries = retries;
 		final long millisecondsDelay = 20000;
 		int ntry = 1;
 		int visibleContactsSize;
@@ -128,6 +128,11 @@ public class PerformanceSteps {
 		getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
 	}
 
+	@When("^I wait for contact list loaded$")
+	public void IWaitForContactListLoaded() throws Exception {
+		waitUntilConversationsListIsFullyLoaded(50);
+	}
+	
 	/**
 	 * Starts standard actions loop (read messages/send messages) to measure
 	 * application performance
@@ -151,7 +156,7 @@ public class PerformanceSteps {
 			DialogPageSteps steps = new DialogPageSteps();
 			steps.INavigateToConversationsView();
 		}
-		waitUntilConversationsListIsFullyLoaded();
+		waitUntilConversationsListIsFullyLoaded(10);
 		final String destConvoName = usrMgr.findUserByNameOrNameAlias(
 				fromContact).getName();
 		String firstConvoName = getContactListPage().getFirstDialogName();
