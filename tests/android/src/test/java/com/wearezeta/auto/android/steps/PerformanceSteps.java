@@ -136,7 +136,7 @@ public class PerformanceSteps {
 
 	private void visitConversationWhenAvailable(final String destConvoName)
 			throws Exception {
-		final int maxRetries = 15;
+		final int maxRetries = 30;
 		int ntry = 1;
 		do {
 			try {
