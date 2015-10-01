@@ -65,4 +65,16 @@ public class ContactContextMenuPageSteps {
 		osxPagesCollection.getPage(ContactContextMenuPage.class)
 				.clickDelete();
 	}
+
+	/**
+	 * Click the archive in context menu
+	 *
+	 * @step. ^I click archive in context menu$
+	 * @throws Exception
+	 */
+	@When("^I click archive in context menu$")
+	public void IClickArchiveButtonInContextMenu() throws Exception {
+		osxPagesCollection.getPage(ContactContextMenuPage.class)
+				.clickArchive();
+	}
 }

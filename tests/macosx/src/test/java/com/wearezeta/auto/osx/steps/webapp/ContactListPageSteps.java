@@ -713,11 +713,24 @@ public class ContactListPageSteps {
 	 * @throws Exception
 	 */
 	@When("^I type shortcut combination to mute or unmute a conversation$")
-	public void ITypeShortcutCombinationToMuteOrUnmute(String contact)
+	public void ITypeShortcutCombinationToMuteOrUnmute()
 			throws Exception {
-		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		webappPagesCollection.getPage(ContactListPage.class)
-				.pressShortCutToMuteOrUnmute(contact);
+				.pressShortCutToMute();
+	}
+
+	/**
+	 * Types shortcut combination to archive a conversation
+	 * 
+	 * @param contact
+	 * @step. ^I type shortcut combination to archive a conversation$
+	 * @throws Exception
+	 */
+	@When("^I type shortcut combination to archive a conversation$")
+	public void ITypeShortcutCombinationToArchive()
+			throws Exception {
+		webappPagesCollection.getPage(ContactListPage.class)
+				.pressShortCutToArchive();
 	}
 
 	/**
