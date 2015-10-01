@@ -105,8 +105,7 @@ public class CallingOverlayPage extends AndroidPage {
 
 	public boolean waitUntilNotVisible() throws Exception {
 		final By locator = By.id(idCallingOverlayContainer);
-		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator,
-				VISIBILITY_TIMEOUT_SECONDS);
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
 	}
 
 	public void muteConversation() throws Exception {
