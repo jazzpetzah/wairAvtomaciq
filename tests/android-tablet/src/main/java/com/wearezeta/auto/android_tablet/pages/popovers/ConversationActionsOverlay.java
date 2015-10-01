@@ -3,11 +3,13 @@ package com.wearezeta.auto.android_tablet.pages.popovers;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class ConversationActionsOverlay extends AbstractPopoverContainer {
-	public static final String idRootLocator = "fl__conversation_list__settings_box";
+	public static final String xpathRootLocator = "//*[@id='fl__conversation_list__settings_box']//*[@id='ll__settings_box__container']";
 
 	private ConversationActionsMenuPage conversationActionsMenuPage;
 
@@ -19,8 +21,31 @@ public class ConversationActionsOverlay extends AbstractPopoverContainer {
 	}
 
 	@Override
+	public boolean waitUntilVisible() throws Exception {
+		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getLocator())) {
+			final WebElement self = getDriver().findElement(getLocator());
+			final int windowHeight = getDriver().manage().window().getSize().height;
+			return self.getLocation().getX() >= 0
+					&& self.getLocation().getY() < windowHeight;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean waitUntilInvisible() throws Exception {
+		if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), getLocator(),
+				2)) {
+			final WebElement self = getDriver().findElement(getLocator());
+			final int windowHeight = getDriver().manage().window().getSize().height;
+			return self.getLocation().getX() < 0
+					|| self.getLocation().getY() >= windowHeight;
+		}
+		return true;
+	}
+
+	@Override
 	protected By getLocator() {
-		return By.id(idRootLocator);
+		return By.xpath(xpathRootLocator);
 	}
 
 	public void selectMenuItem(String itemName) throws Exception {

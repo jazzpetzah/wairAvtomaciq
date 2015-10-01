@@ -281,3 +281,99 @@ Feature: Sign In
     Examples: 
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
+
+  @staging @id3852
+  Scenario Outline: Verify adding email to the contact signed up with phone number [PORTRAIT]
+    Given There is 1 user where <Name> is me with phone number only
+    Given I see sign in screen
+    When I tap I HAVE AN ACCOUNT button
+    And I see PHONE SIGN IN button
+    And I tap on PHONE SIGN IN button
+    And I see country picker button on Sign in screen
+    And I enter phone number for user <Name>
+    And I see verification code page
+    And I enter verification code for user <Name>
+    And I see set email/password suggesstion page
+    And I have entered login <Email>
+    And I start activation email monitoring
+    And I have entered password <Password>
+    And I click DONE keyboard button
+    And I see email verification reminder
+    And I verify registration address
+    Then I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    Then I see email <Email> on Personal page
+
+    Examples: 
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
+
+  @staging @id3853
+  Scenario Outline: Verify adding email to the contact signed up with phone number [LANDSCAPE]
+    Given There is 1 user where <Name> is me with phone number only
+    Given I rotate UI to landscape
+    Given I see sign in screen
+    When I tap I HAVE AN ACCOUNT button
+    And I see PHONE SIGN IN button
+    And I tap on PHONE SIGN IN button
+    And I see country picker button on Sign in screen
+    And I enter phone number for user <Name>
+    And I see verification code page
+    And I enter verification code for user <Name>
+    And I see set email/password suggesstion page
+    And I have entered login <Email>
+    And I start activation email monitoring
+    And I have entered password <Password>
+    And I click DONE keyboard button
+    And I see email verification reminder
+    And I verify registration address
+    Then I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    Then I see email <Email> on Personal page
+
+    Examples: 
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
+      
+  @staging @id3864 @noAcceptAlert
+  Scenario Outline: Verify error message appears in case of registering already taken email [PORTRAIT]
+    Given There is 1 user where <Name> is me with phone number only
+    Given I see sign in screen
+    When I tap I HAVE AN ACCOUNT button
+    And I tap on PHONE SIGN IN button
+    Then I see country picker button on Sign in screen
+    When I enter phone number for user <Name>
+    Then I see verification code page
+    When I enter verification code for user <Name>
+    And I accept alert
+    And I see set email/password suggesstion page
+    When I have entered login <Email>
+    And I have entered password <Password>
+    When I click DONE keyboard button
+    Then I see invalid email alert
+
+    Examples: 
+      | Email                     | Password      | Name      |
+      | smoketester@wearezeta.com | user1Password | user1Name |
+      
+  @staging @id3865 @noAcceptAlert 
+  Scenario Outline: Verify error message appears in case of registering already taken email [LANDSCAPE]
+    Given There is 1 user where <Name> is me with phone number only
+    Given I rotate UI to landscape
+    Given I see sign in screen
+    When I tap I HAVE AN ACCOUNT button
+    And I tap on PHONE SIGN IN button
+    Then I see country picker button on Sign in screen
+    When I enter phone number for user <Name>
+    Then I see verification code page
+    When I enter verification code for user <Name>
+    And I accept alert
+    And I see set email/password suggesstion page
+    When I have entered login <Email>
+    And I have entered password <Password>
+    When I click DONE keyboard button
+    Then I see invalid email alert
+
+    Examples: 
+      | Email                     | Password      | Name      |
+      | smoketester@wearezeta.com | user1Password | user1Name |

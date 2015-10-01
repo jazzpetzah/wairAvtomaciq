@@ -12,6 +12,7 @@
     Then I see Conversation Actions overlay
     When I select <ArchiveItem> menu item on Conversation Actions overlay
     Then I do not see Conversation Actions overlay
+    And I swipe right to show the conversations list
     And I do not see conversation <Contact1> in my conversations list
     When I do long swipe up on conversations list
     Then I see the conversation <Contact1> in my conversations list

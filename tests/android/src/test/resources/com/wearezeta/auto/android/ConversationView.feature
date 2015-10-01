@@ -234,8 +234,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-# @regression @rc @rc42  
-  @id1504 @staging
+  @id1504 @regression @rc @rc42
   Scenario Outline: Verify you can play/pause media from the Media Bar (SoundCloud)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -247,16 +246,15 @@ Feature: Conversation View
     And I scroll to the bottom of conversation view
     And I tap on text input
     And I type the message "<SoudCloudLink>" and send it
-    And I swipe down on dialog page
     And Contact <Contact1> send message to user Myself
     And I scroll to the bottom of conversation view
     And I press PlayPause media item button
+    And I remember the state of PlayPause media item button
     And I swipe down on dialog page until Mediabar appears
     Then I see PAUSE on Mediabar
     And I press PlayPause on Mediabar button
-    And Contact <Contact1> send message to user Myself
-    And I scroll to the bottom of conversation view
-    And I see PLAY button in Media
+    When I scroll to the bottom of conversation view
+    Then I verify the state of PlayPause media item button is changed
 
     Examples: 
       | Name      | Contact1  | SoudCloudLink                                              |

@@ -7,12 +7,10 @@ import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.InvalidElementStateException;
-import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.PeoplePickerPage;
-import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -48,15 +46,7 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 	}
 
 	public void verifyConversationsListIsLoaded() throws Exception {
-		if (ScreenOrientationHelper.getInstance().fixOrientation(getDriver()) == ScreenOrientation.PORTRAIT) {
-			// FIXME: Workaround for android bug AN-2238
-			DriverUtils.swipeByCoordinates(getDriver(), 1000, 30, 50, 90, 50);
-		}
 		getContactListPage().verifyContactListIsFullyLoaded();
-		if (ScreenOrientationHelper.getInstance().fixOrientation(getDriver()) == ScreenOrientation.PORTRAIT) {
-			// FIXME: Workaround for android bug AN-2238
-			DriverUtils.swipeByCoordinates(getDriver(), 1000, 30, 50, 90, 50);
-		}
 	}
 
 	public TabletSelfProfilePage tapMyAvatar() throws Exception {

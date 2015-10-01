@@ -1,7 +1,6 @@
 package com.wearezeta.auto.web.pages;
 
 import com.wearezeta.auto.common.AbstractPagesCollection;
-import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.web.pages.external.GoogleLoginPage;
 import com.wearezeta.auto.web.pages.external.PasswordChangePage;
 import com.wearezeta.auto.web.pages.external.PasswordChangeRequestPage;
@@ -11,7 +10,7 @@ import com.wearezeta.auto.web.pages.external.YouAreInvitedPage;
 import com.wearezeta.auto.web.pages.popovers.AbstractPopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.BringYourFriendsPopoverPage;
 
-public class WebappPagesCollection extends AbstractPagesCollection {
+public class WebappPagesCollection extends AbstractPagesCollection<WebPage> {
 
 	public static BringYourFriendsPopoverPage bringYourFriendsPopover = null;
 
@@ -70,24 +69,4 @@ public class WebappPagesCollection extends AbstractPagesCollection {
 		return instance;
 	}
 
-	private WebappPagesCollection() {
-		super();
-	}
-
-	@Override
-	public WebPage getCommonPage() throws Exception {
-		return (WebPage) super.getCommonPage();
-	}
-
-	@Override
-	public void setFirstPage(BasePage page) {
-		if (!(page instanceof WebPage)) {
-			throw new IllegalStateException(
-					String.format(
-							"Only instances of '%s' are allowed. '%s' instance has been provided instead",
-							this.getClass().getSimpleName(), page.getClass()
-									.getSimpleName()));
-		}
-		super.setFirstPage((WebPage) page);
-	}
 }

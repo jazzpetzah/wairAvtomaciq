@@ -28,11 +28,6 @@ public class PhoneNumberVerificationPage extends WebPage {
 		super(lazyDriver);
 	}
 
-	public PhoneNumberVerificationPage(Future<ZetaWebAppDriver> lazyDriver,
-			String url) throws Exception {
-		super(lazyDriver, url);
-	}
-
 	public ContactListPage enterCode(String code) throws Exception {
 		DriverUtils.waitUntilElementClickable(getDriver(), phoneCodeField);
 		log.info("Enter code: " + code);

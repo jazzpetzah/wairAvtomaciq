@@ -317,11 +317,12 @@ public class ZetaFormatter implements Formatter, Reporter {
 				final Optional<String> rcNotificationsRecepients = CommonUtils
 						.getRCNotificationsRecepients(getClass());
 				if (rcNotificationsRecepients.isPresent()) {
-					NotificationSender
-							.getInstance()
-							.send(rcNotificationsRecepients.get(),
-									"ACHTUNG! An extra RC test case has been detected!",
-									warningMessage);
+					final String notificationHeader = String
+							.format("ACHTUNG! An extra RC test case has been executed in RC test cycle '%s', phase '%s'",
+									cycle.getName(), phase.getName());
+					NotificationSender.getInstance().send(
+							rcNotificationsRecepients.get(),
+							notificationHeader, warningMessage);
 				}
 			}
 		}
