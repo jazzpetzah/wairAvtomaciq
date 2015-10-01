@@ -6,14 +6,14 @@ Feature: Performance Tests
     Given User <Name> is Me
     Given Myself is connected to all other users
     Given I receive <MsgsCount> messages from contact <Sender>
-    Given I sign in using my email
+    Given I sign in using my email with <LoginTimeout> seconds timeout
     When I start test cycle for <Time> minutes with messages received from <Sender>
     Then I generate performance report for <UsersNumber> users
 
     Examples: 
-      | Name      | UsersNumber       | UserNamePrefix    | Time            | MsgsCount | Sender        |
-      | user1Name | ${perfUsersCount} | ${userNamePrefix} | ${perfDuration} | 101       | user2Name     |
-#      | user1Name | 11                | perf10user         | 2               | 101      | user2Name     |
+      | Name      | UsersNumber       | UserNamePrefix    | Time            | MsgsCount | Sender        | LoginTimeout |
+      | user1Name | ${perfUsersCount} | ${userNamePrefix} | ${perfDuration} | 101       | user2Name     | 300          |
+#      | user1Name | 11                | perf10user         | 2               | 101      | user2Name     | 300          |
 
   @battery_performance
   Scenario Outline: Battery usage while in a call

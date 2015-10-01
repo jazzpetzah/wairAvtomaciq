@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriverException;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
@@ -13,6 +14,8 @@ import com.wearezeta.auto.android.common.reporter.AndroidBatteryPerfReportModel;
 import com.wearezeta.auto.android.common.reporter.AndroidPerfReportModel;
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.DialogPage;
+import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
+import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
@@ -20,6 +23,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.performance.PerformanceCommon;
 import com.wearezeta.auto.common.performance.PerformanceCommon.PerformanceLoop;
 import com.wearezeta.auto.common.performance.PerformanceHelpers;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import cucumber.api.java.en.And;
@@ -51,6 +55,42 @@ public class PerformanceSteps {
 		return pagesCollection.getPage(DialogPage.class);
 	}
 
+	private EmailSignInPage getEmailSignInPage() throws Exception {
+		return pagesCollection.getPage(EmailSignInPage.class);
+	}
+
+	private WelcomePage getWelcomePage() throws Exception {
+		return pagesCollection.getPage(WelcomePage.class);
+	}
+
+	/**
+	 * Inputs the login details for the self user and then clicks the sign in
+	 * button.
+	 * 
+	 * @step. ^I sign in using my email with (\\d+) seconds? timeout$
+	 * 
+	 * @param timeoutSeconds
+	 *            sign in timeout
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I sign in using my email with (\\d+) seconds? timeout$")
+	public void ISignInUsingMyEmail(int timeoutSeconds) throws Exception {
+		final ClientUser self = usrMgr.getSelfUserOrThrowError();
+		assert getWelcomePage().waitForInitialScreen() : "The initial screen was not shown";
+		getWelcomePage().tapIHaveAnAccount();
+		try {
+			getEmailSignInPage().setLogin(self.getEmail());
+		} catch (NoSuchElementException e) {
+			// FIXME: try again because sometimes tapping "I have account"
+			// button fails without any reason
+			getWelcomePage().tapIHaveAnAccount();
+			getEmailSignInPage().setLogin(self.getEmail());
+		}
+		getEmailSignInPage().setPassword(self.getPassword());
+		getEmailSignInPage().logIn(timeoutSeconds);
+	}
+
 	/**
 	 * Send multiple messages from one of my contacts using the backend
 	 * 
@@ -76,8 +116,8 @@ public class PerformanceSteps {
 	}
 
 	private void waitUntilConversationsListIsFullyLoaded() throws Exception {
-		final int maxTries = 3;
-		final long millisecondsDelay = 20000;
+		final int maxTries = 5;
+		final long millisecondsDelay = 30000;
 		int ntry = 1;
 		do {
 			try {

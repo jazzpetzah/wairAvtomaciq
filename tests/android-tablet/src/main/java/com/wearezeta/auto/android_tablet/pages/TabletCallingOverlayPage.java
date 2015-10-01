@@ -18,14 +18,13 @@ public class TabletCallingOverlayPage extends AndroidTabletPage {
 	}
 
 	private CallingOverlayPage getCallingOverlayPage() throws Exception {
-		return (CallingOverlayPage) this
-				.getAndroidPageInstance(CallingOverlayPage.class);
+		return this.getAndroidPageInstance(CallingOverlayPage.class);
 	}
 
 	public boolean callingOverlayIsVisible() throws Exception {
 		return getCallingOverlayPage().waitUntilVisible();
 	}
-	
+
 	public boolean callingOverlayNotVisible() throws Exception {
 		return getCallingOverlayPage().waitUntilNotVisible();
 	}

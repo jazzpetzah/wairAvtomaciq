@@ -24,13 +24,11 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 	}
 
 	private ContactListPage getContactListPage() throws Exception {
-		return (ContactListPage) this
-				.getAndroidPageInstance(ContactListPage.class);
+		return this.getAndroidPageInstance(ContactListPage.class);
 	}
 
 	private PeoplePickerPage getPeoplePickerPage() throws Exception {
-		return (PeoplePickerPage) this
-				.getAndroidPageInstance(PeoplePickerPage.class);
+		return this.getAndroidPageInstance(PeoplePickerPage.class);
 	}
 
 	@Override
@@ -47,6 +45,12 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 
 	public void verifyConversationsListIsLoaded() throws Exception {
 		getContactListPage().verifyContactListIsFullyLoaded();
+		if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(ContactListPage.idSelfUserAvatar), 1)) {
+			this.tapOnCenterOfScreen();
+			this.tapOnCenterOfScreen();
+			DriverUtils.swipeByCoordinates(getDriver(), 1000, 30, 50, 90, 50);
+		}
 	}
 
 	public TabletSelfProfilePage tapMyAvatar() throws Exception {
