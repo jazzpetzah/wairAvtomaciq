@@ -73,6 +73,7 @@ Feature: Conversation List
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I see dialog page
+    And I scroll to the bottom of conversation view
     And I tap on text input
     And I type the message "<SoudCloudLink>" and send it
     And I scroll to the bottom of conversation view
