@@ -708,7 +708,6 @@ public class ContactListPageSteps {
 	/**
 	 * Types shortcut combination to mute or unmute a conversation
 	 * 
-	 * @param contact
 	 * @step. ^I type shortcut combination to mute or unmute a conversation$
 	 * @throws Exception
 	 */
@@ -722,7 +721,6 @@ public class ContactListPageSteps {
 	/**
 	 * Types shortcut combination to archive a conversation
 	 * 
-	 * @param contact
 	 * @step. ^I type shortcut combination to archive a conversation$
 	 * @throws Exception
 	 */
