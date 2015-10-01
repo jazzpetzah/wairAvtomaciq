@@ -19,8 +19,6 @@ public abstract class OSXPage extends BasePage {
 
 	private static final String MENU_ITEM_VERSION = "Version";
 	private static final String MENUBAR_ITEM_HELP = "Help";
-	private static final String MENU_ITEM_PING = "Ping";
-	private static final String MENUBAR_ITEM_CONVERSATION = "Conversation";
 
 	private String path = null;
 
@@ -39,32 +37,24 @@ public abstract class OSXPage extends BasePage {
 		this.path = path;
 	}
 
-	// TODO create constants
 	public void switchEnvironment(String environmentName) throws Exception {
 		// click version menu item twice to get dev and env menu items
 		for (int i = 0; i < 2; i++) {
-			clickMenuBarItem(MENUBAR_ITEM_HELP);
-			clickMenuItem(MENU_ITEM_VERSION);
+			clickMenuBarItem(MENUBAR_ITEM_HELP, MENU_ITEM_VERSION);
 		}
-		clickMenuBarItem(MENUBAR_ITEM_HELP);
-		clickMenuItem(environmentName);
+		clickMenuBarItem(MENUBAR_ITEM_HELP, environmentName);
 	}
 
-	public void clickPing() throws Exception {
-		clickMenuBarItem(MENUBAR_ITEM_CONVERSATION);
-		clickMenuItem(MENU_ITEM_PING);
-	}
-
-	public void clickMenuBarItem(String name) throws Exception {
-		By locator = By.xpath(OSXLocators.AppMenu.xpathMenuBarItem.apply(name));
+	public void clickMenuBarItem(String firstItem, String... items) throws Exception {
+		By locator = By.xpath(OSXLocators.AppMenu.xpathMenuBarItem
+				.apply(firstItem));
 		DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
 		getDriver().findElement(locator).click();
-	}
-
-	public void clickMenuItem(String name) throws Exception {
-		By locator = By.xpath(OSXLocators.AppMenu.xpathMenuItem.apply(name));
-		DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
-		getDriver().findElement(locator).click();
+		for (String item : items) {
+			By itemLocator = By.xpath(OSXLocators.AppMenu.xpathMenuItem.apply(item));
+			DriverUtils.waitUntilLocatorAppears(getDriver(), itemLocator);
+			getDriver().findElement(itemLocator).click();
+		}
 	}
 
 	public void navigateTo() throws Exception {

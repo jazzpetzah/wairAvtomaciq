@@ -657,20 +657,13 @@ public class CommonOSXSteps {
 	public void clickMenuBarItem(String menuBarItemName, String menuItemName)
 			throws Exception {
 		MainWirePage mainPage = osxPagesCollection.getPage(MainWirePage.class);
-		mainPage.clickMenuBarItem(menuBarItemName);
-		mainPage.clickMenuItem(menuItemName);
+		mainPage.clickMenuBarItem(menuBarItemName, menuItemName);
 	}
 
 	@When("^I click menu bar item with name \"(.*)\"$")
 	public void clickMenuBarItem(String menuBarItemName) throws Exception {
 		osxPagesCollection.getPage(MainWirePage.class).clickMenuBarItem(
 				menuBarItemName);
-	}
-
-	@When("^I click menu item with name \"(.*)\"$")
-	public void clickMenuItem(String menuItemName) throws Exception {
-		osxPagesCollection.getPage(MainWirePage.class).clickMenuItem(
-				menuItemName);
 	}
 
 	@When("^I kill the app$")

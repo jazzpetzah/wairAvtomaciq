@@ -12,6 +12,7 @@ public class ContactContextMenuPage extends OSXPage {
 	private static final int CONTEXT_SILENCE_INDEX = 2;
 	private static final int CONTEXT_DELETE_INDEX = 3;
 	private static final int CONTEXT_BLOCK_INDEX = 4;
+	private static final int CONTEXT_LEAVE_INDEX = 4;
 
 	// TODO hide behind driver impl
 	private final Robot robot = new Robot();
@@ -46,6 +47,10 @@ public class ContactContextMenuPage extends OSXPage {
 
 	public void clickBlock() throws Exception {
 		selectByIndex(CONTEXT_BLOCK_INDEX, 1000);
+	}
+
+	public void clickLeave() throws Exception {
+		selectByIndex(CONTEXT_LEAVE_INDEX, 1000);
 	}
 
 	private void selectByIndex(int index, long wait)
