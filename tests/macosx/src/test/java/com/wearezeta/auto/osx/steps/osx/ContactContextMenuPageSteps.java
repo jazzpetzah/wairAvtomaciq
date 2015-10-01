@@ -29,4 +29,28 @@ public class ContactContextMenuPageSteps {
 		osxPagesCollection.getPage(ContactContextMenuPage.class)
 				.clickBlock();
 	}
+
+	/**
+	 * Click the silence in context menu
+	 *
+	 * @step. ^I click silence in context menu$
+	 * @throws Exception
+	 */
+	@When("^I click silence in context menu$")
+	public void IClickSilenceButtonInContextMenu() throws Exception {
+		osxPagesCollection.getPage(ContactContextMenuPage.class)
+				.clickSilence();
+	}
+
+	/**
+	 * Click the notify in context menu
+	 *
+	 * @step. ^I click notify in context menu$
+	 * @throws Exception
+	 */
+	@When("^I click notify in context menu$")
+	public void IClickNotifyButtonInContextMenu() throws Exception {
+		osxPagesCollection.getPage(ContactContextMenuPage.class)
+				.clickNotify();
+	}
 }

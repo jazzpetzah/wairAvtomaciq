@@ -33,21 +33,25 @@ Feature: Conversation List
        | Login      | Password      | Name      | Contact   | Login2     | Password2     | Msg1    | Action |
        | user1Email | user1Password | user1Name | user2Name | user2Email | user2Password | message | LEFT   |
 
-  @smoke @id474 @id481
-  Scenario Outline: Mute and unmute conversation
+  @smoke @id3437
+  Scenario Outline: Mute and unmute 1:1 conversation with right click
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
+    And I see my avatar on top of Contact list
     When I open conversation with <Contact>
-    And I change mute state of conversation with <Contact>
+    And I open context menu of contact <Contact>
+    And I click silence in context menu
     And I open self profile
-    Then I see conversation <Contact> is muted
+    Then I see that conversation <Contact> is muted
     When I open conversation with <Contact>
-    And I change mute state of conversation with <Contact>
+    And I open context menu of contact <Contact>
+    And I click notify in context menu
     And I open self profile
-    Then I see conversation <Contact> is unmuted
+    Then I see that conversation <Contact> is not muted
 
     Examples: 
+    
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
