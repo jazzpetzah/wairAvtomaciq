@@ -270,7 +270,22 @@ public class ContactListPage extends WebPage {
 				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
 						By.xpath(WebAppLocators.ContactListPage.xpathMuteIconByContactName
-								.apply(conversationName)), 5);
+								.apply(conversationName)));
+	}
+
+	public boolean isConversationNotMuted(String conversationName)
+			throws Exception {
+		// moving focus from contact - to now show ... button
+		// do nothing (safari workaround)
+		if (WebAppExecutionContext.getBrowser()
+				.isSupportingNativeMouseActions()) {
+			DriverUtils.moveMouserOver(this.getDriver(), selfProfileAvatar);
+		}
+		return DriverUtils
+				.waitUntilLocatorDissapears(
+						this.getDriver(),
+						By.xpath(WebAppLocators.ContactListPage.xpathMuteIconByContactName
+								.apply(conversationName)));
 	}
 
 	public void clickOptionsButtonForContact(String conversationName)

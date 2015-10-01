@@ -41,6 +41,10 @@ public class ContactContextMenuPage extends OSXPage {
 		selectByIndex(CONTEXT_SILENCEI_INDEX, 1000);
 	}
 
+	public void clickNotify() throws Exception {
+		selectByIndex(CONTEXT_SILENCEI_INDEX, 1000);
+	}
+
 	public void clickDelete() throws Exception {
 		selectByIndex(CONTEXT_DELETE_INDEX, 1000);
 	}

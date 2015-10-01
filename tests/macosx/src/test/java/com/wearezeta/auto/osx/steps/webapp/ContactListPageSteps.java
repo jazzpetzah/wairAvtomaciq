@@ -398,8 +398,8 @@ public class ContactListPageSteps {
 	public void ISeeConversationIsNotMuted(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 
-		Assert.assertFalse(webappPagesCollection.getPage(ContactListPage.class)
-				.isConversationMuted(contact));
+		Assert.assertTrue(webappPagesCollection.getPage(ContactListPage.class)
+				.isConversationNotMuted(contact));
 	}
 
 	/**
