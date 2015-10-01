@@ -1,7 +1,7 @@
 Feature: Calling
 
   @id373 @calling_basic @rc
-  Scenario Outline: (BUG AN-2826) Verify calling from missed call indicator in conversation
+  Scenario Outline: Verify missed call indicator in conversations list and system message inside conversation
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
