@@ -116,12 +116,14 @@ public class PerformanceSteps {
 	}
 
 	private void waitUntilConversationsListIsFullyLoaded() throws Exception {
-		final int maxTries = 5;
-		final long millisecondsDelay = 30000;
+		final int maxTries = 3;
+		final long millisecondsDelay = 20000;
 		int ntry = 1;
 		do {
 			try {
 				getContactListPage().verifyContactListIsFullyLoaded();
+			} catch (AssertionError e) {
+				e.printStackTrace();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
