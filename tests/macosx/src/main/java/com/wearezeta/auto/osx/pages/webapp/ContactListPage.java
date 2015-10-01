@@ -29,8 +29,6 @@ import com.wearezeta.auto.web.pages.SelfProfilePage;
 import com.wearezeta.auto.web.pages.WebPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
-import cucumber.api.PendingException;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -40,7 +38,6 @@ import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -269,6 +266,13 @@ public class ContactListPage extends WebPage {
 		robot.keyPress(KeyEvent.VK_S);
 		robot.keyRelease(KeyEvent.VK_S);
 		robot.keyRelease(KeyEvent.VK_ALT);
+		robot.keyRelease(KeyEvent.VK_META);
+	}
+
+	public void pressShortCutToArchive() throws Exception {
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_D);
+		robot.keyRelease(KeyEvent.VK_D);
 		robot.keyRelease(KeyEvent.VK_META);
 	}
 
@@ -522,17 +526,6 @@ public class ContactListPage extends WebPage {
 
 	public String getMuteButtonToolTip() throws Exception {
 		return muteButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
-	}
-
-	public void pressShortCutToMuteOrUnmute(String conversationName)
-			throws Exception {
-		conversationName = fixDefaultGroupConvoName(conversationName, false);
-		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
-			conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "l"));
-		} else {
-			throw new PendingException(
-					"Webdriver does not support shortcuts for Mac browsers");
-		}
 	}
 
 	public boolean isLeaveWarningModalVisible() throws Exception {
