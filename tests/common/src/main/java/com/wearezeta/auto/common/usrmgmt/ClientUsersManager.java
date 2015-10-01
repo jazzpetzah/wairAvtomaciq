@@ -247,9 +247,10 @@ public class ClientUsersManager {
 	private final Random random = new Random();
 
 	// ! Mutates the users list
-    //TODO process spawning should probably occur here
+    //TODO process spawning should probably occur here - actually, I don't need to worry about user creation!!
 	private void generateUsers(List<ClientUser> usersToCreate,
 			final RegistrationStrategy strategy) throws Exception {
+
 		ExecutorService executor = Executors
 				.newFixedThreadPool(CommonUtils.MAX_PARALLEL_USER_CREATION_TASKS);
 

@@ -1,23 +1,5 @@
 package com.wearezeta.auto.common.backend;
 
-import java.awt.image.BufferedImage;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.UUID;
-import java.util.concurrent.Future;
-
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.email.ActivationMessage;
 import com.wearezeta.auto.common.email.MessagingUtils;
@@ -30,11 +12,17 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import com.wearezeta.auto.common.usrmgmt.RegistrationStrategy;
 import com.wearezeta.auto.common.usrmgmt.UserState;
-import com.wearezeta.auto.image_send.AssetData;
-import com.wearezeta.auto.image_send.ImageAssetData;
-import com.wearezeta.auto.image_send.ImageAssetProcessor;
-import com.wearezeta.auto.image_send.ImageAssetRequestBuilder;
-import com.wearezeta.auto.image_send.SelfImageProcessor;
+import com.wearezeta.auto.image_send.*;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.awt.image.BufferedImage;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.concurrent.Future;
 
 // Almost all methods of this class mutate ClientUser
 // argument by performing automatic login (set id and session token attributes)
@@ -707,9 +695,8 @@ public final class BackendAPIWrappers {
 
 	public static void sendConversationMessage(ClientUser userFrom,
 			String convId, String message) throws Exception {
-		tryLoginByUser(userFrom);
-		BackendREST.sendConversationMessage(generateAuthToken(userFrom),
-				convId, message);
+		RemoteProcessIPC.loginToRemoteProcess(userFrom);
+		RemoteProcessIPC.sendConversationMessage(userFrom, convId, message);
 	}
 
 	public static void sendConversationMessages(ClientUser userFrom,
