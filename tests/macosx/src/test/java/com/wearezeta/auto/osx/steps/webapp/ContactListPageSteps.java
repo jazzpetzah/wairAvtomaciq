@@ -332,6 +332,18 @@ public class ContactListPageSteps {
 	}
 
 	/**
+	 * Types shortcut combination to call
+	 *
+	 * @step. ^I type shortcut combination to ping$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to mute or unmute a conversation$")
+	public void ITypeShortcutCombinationToCall() throws Exception {
+		WebappPagesCollection.getInstance().getPage(ContactListPage.class)
+				.pressShortCutToMute();
+	}
+
+	/**
 	 * Silence the particular conversation from the list
 	 * 
 	 * @step. ^I set muted state for conversation (.*)
