@@ -61,11 +61,11 @@ public class CallingPageSteps {
 	public void WhenISeeCallingOverlayMiniBar(String shouldNotSee)
 			throws Exception {
 		if (shouldNotSee == null) {
-			Assert.assertTrue(getCallingOverlayPage()
-					.ongoingCallMinibarIsVisible());
+			Assert.assertTrue("Mini bar should be visible",
+					getCallingOverlayPage().ongoingCallMinibarIsVisible());
 		} else {
-			Assert.assertTrue(getCallingOverlayPage()
-					.ongoingCallMinibarIsInvisible());
+			Assert.assertTrue("Mini bar should be hidden",
+					getCallingOverlayPage().ongoingCallMinibarIsInvisible());
 		}
 	}
 
