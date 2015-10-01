@@ -71,11 +71,10 @@ public class PerformanceSteps {
 	 * 
 	 * @param timeoutSeconds
 	 *            sign in timeout
-	 * 
-	 * @throws Exception
+	 * @throws Throwable
 	 */
 	@Given("^I sign in using my email with (\\d+) seconds? timeout$")
-	public void ISignInUsingMyEmail(int timeoutSeconds) throws Exception {
+	public void ISignInUsingMyEmail(int timeoutSeconds) throws Throwable {
 		final ClientUser self = usrMgr.getSelfUserOrThrowError();
 		assert getWelcomePage().waitForInitialScreen() : "The initial screen was not shown";
 		getWelcomePage().tapIHaveAnAccount();
@@ -88,7 +87,26 @@ public class PerformanceSteps {
 			getEmailSignInPage().setLogin(self.getEmail());
 		}
 		getEmailSignInPage().setPassword(self.getPassword());
-		getEmailSignInPage().logIn(timeoutSeconds);
+		// FIXME: Workaround for 403 error from the backend
+		final int maxLoginRetries = 3;
+		int ntry = 1;
+		Throwable savedError = null;
+		do {
+			try {
+				getEmailSignInPage().logIn(timeoutSeconds);
+				return;
+			} catch (AssertionError e) {
+				e.printStackTrace();
+				try {
+					getEmailSignInPage().acceptErrorMessage();
+				} catch (WebDriverException e1) {
+					e1.printStackTrace();
+				}
+				savedError = e;
+				ntry++;
+			}
+		} while (ntry <= maxLoginRetries);
+		throw savedError;
 	}
 
 	/**
