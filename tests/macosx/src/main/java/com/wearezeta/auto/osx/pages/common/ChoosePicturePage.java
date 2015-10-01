@@ -14,7 +14,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import static com.wearezeta.auto.osx.common.OSXExecutionContext.USER_HOME;
 import com.wearezeta.auto.osx.locators.OSXLocators;
-import com.wearezeta.auto.osx.pages.OSXPage;
+import com.wearezeta.auto.osx.pages.osx.OSXPage;
 
 public class ChoosePicturePage extends OSXPage {
 

@@ -42,8 +42,7 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
 	}
 
 	private PeoplePickerPage getAndroidPeoplePickerPage() throws Exception {
-		return (PeoplePickerPage) this
-				.getAndroidPageInstance(PeoplePickerPage.class);
+		return this.getAndroidPageInstance(PeoplePickerPage.class);
 	}
 
 	public boolean waitUntilVisible() throws Exception {

@@ -12,7 +12,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -126,7 +125,7 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	public String getFirstVisibleConversationName() throws Exception {
-		final int maxTries = 5;
+		final int maxTries = 20;
 		final long millisecondsDelay = 20000;
 		int ntry = 1;
 		do {
@@ -293,7 +292,7 @@ public class ContactListPage extends AndroidPage {
 	private static final int CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS = CONTACT_LIST_LOAD_TIMEOUT_SECONDS * 2;
 
 	public void verifyContactListIsFullyLoaded() throws Exception {
-		CommonSteps.getInstance().WaitForTime(1);
+		Thread.sleep(1000);
 		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.id(EmailSignInPage.idLoginButton),
 				CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : String
@@ -302,7 +301,7 @@ public class ContactListPage extends AndroidPage {
 
 		final By selfAvatarLocator = By.id(idSelfUserAvatar);
 		if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				selfAvatarLocator, CONTACT_LIST_LOAD_TIMEOUT_SECONDS)) {
+				selfAvatarLocator, 5)) {
 			log.warn("Self avatar is not detected on top of conversations list");
 		}
 

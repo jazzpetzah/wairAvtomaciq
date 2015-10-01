@@ -25,7 +25,7 @@ public class TabletWelcomePage extends AndroidTabletPage {
 	}
 
 	private WelcomePage getWelcomePage() throws Exception {
-		return (WelcomePage) this.getAndroidPageInstance(WelcomePage.class);
+		return this.getAndroidPageInstance(WelcomePage.class);
 	}
 
 	public boolean waitForInitialScreen() throws Exception {

@@ -679,6 +679,7 @@ public final class IOSLocators {
 		public static final String xpathVerificationPage = "//UIAStaticText[contains(@name, 'Enter the verification code we sent to')]";
 		public static final String nameTermOfUsePage = "By continuing you agree to the Wire Terms of Use.";
 		public static final String nameResendCodeButton = "RESEND";
+		public static final String namePhoneNumberField = "PhoneNumberField";
 	}
 
 	public final class LoginPage {
@@ -710,6 +711,8 @@ public final class IOSLocators {
 
 	public final class PersonalInfoPage {
 		public static final String nameCloseButton = "CloseButton";
+		public static final String nameAddPhoneNumberButton = "ADD PHONE NUMBER";
+		public static final String xpathPhoneEmailField =  "//UIAStaticText[contains(@name, '%s')]";
 	}
 
 	public final class GiphyPreviewPage {
@@ -746,6 +749,7 @@ public final class IOSLocators {
 
 		public static final String nameResentIn10min = "We already sent you a code via SMS. Tap Resend after 10 minutes to get a new one.";
 		public static final String nameInvalidPhoneNumber = "Please enter a valid phone number";
+		public static final String nameInvalidEmail = "The email address you provided has already been registered. Please try again.";
 	}
 
 	// ///////////

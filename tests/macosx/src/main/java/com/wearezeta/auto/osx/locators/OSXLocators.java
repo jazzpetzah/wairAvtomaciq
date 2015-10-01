@@ -1,15 +1,17 @@
 package com.wearezeta.auto.osx.locators;
 
+import static com.wearezeta.auto.osx.locators.OSXLocators.MainWirePage.xpathWindow;
+import java.util.function.Function;
+
 public final class OSXLocators {
 
 	public static final class AppMenu {
 
-		public static final String wireMenu = "//AXMenuBarItem[@AXTitle='Wire']";
+		public static final Function<String, String> xpathMenuBarItem = (name) -> String
+				.format("//AXMenuBarItem[contains(@AXTitle, '%s')]", name);
 
-		public static final String editMenu = "//AXMenuBarItem[@AXTitle='Edit']";
-
-		public static final String developerMenu = "//AXMenuBarItem[@AXTitle='Developer']";
-		public static final String developerStagingMenuItem = "//AXMenuItem[@AXTitle='Staging']";
+		public static final Function<String, String> xpathMenuItem = (name) -> String
+				.format("//AXMenuItem[contains(@AXTitle, '%s')]", name);
 
 	}
 
@@ -38,6 +40,17 @@ public final class OSXLocators {
 		public static final String xpathMinimizeButton = "//AXButton[@AXRoleDescription='minimize button']";
 
 		public static final String xpathZoomButton = "//AXButton[@AXRoleDescription='zoom button']";
+	}
+
+	public static final class ContactListContextMenuPage {
+
+		public static final String xpathContextArchive = xpathWindow
+				+ "//AXMenuItem[@AXTitle='Archive']";
+		public static final String xpathContextSilence = xpathWindow
+				+ "//AXMenuItem[@AXTitle='Silence']";
+		public static final String xpathContextDelete = xpathWindow
+				+ "//AXMenuItem[@AXTitle='Delete']";
+		public static final String xpathContextBlock = "//AXApplication[@AXTitle='Wire']//AXMenuItem[@AXTitle='Block']";
 	}
 
 	public static final class ChoosePicturePage {

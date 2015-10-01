@@ -142,7 +142,7 @@ Feature: Conversation List
       | Name      | Contact   | SoundCloudLink                                             |
       | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
-  @id3140 @regression @rc
+  @id3140 @regression
   Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

@@ -18,20 +18,15 @@ public class TabletCallingOverlayPage extends AndroidTabletPage {
 	}
 
 	private CallingOverlayPage getCallingOverlayPage() throws Exception {
-		return (CallingOverlayPage) this
-				.getAndroidPageInstance(CallingOverlayPage.class);
+		return this.getAndroidPageInstance(CallingOverlayPage.class);
 	}
 
 	public boolean callingOverlayIsVisible() throws Exception {
-		return getCallingOverlayPage().callingOverlayIsVisible();
+		return getCallingOverlayPage().waitUntilVisible();
 	}
 
-	public boolean incomingCallerAvatarIsVisible() throws Exception {
-		return getCallingOverlayPage().incomingCallerAvatarIsVisible();
-	}
-
-	public boolean incomingCallerAvatarIsInvisible() throws Exception {
-		return getCallingOverlayPage().incomingCallerAvatarIsInvisible();
+	public boolean callingOverlayNotVisible() throws Exception {
+		return getCallingOverlayPage().waitUntilNotVisible();
 	}
 
 	public void tapAcceptButton() throws Exception {

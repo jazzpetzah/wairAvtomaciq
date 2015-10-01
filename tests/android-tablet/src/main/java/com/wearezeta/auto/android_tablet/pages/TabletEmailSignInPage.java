@@ -3,9 +3,7 @@ package com.wearezeta.auto.android_tablet.pages;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.ScreenOrientation;
 
-import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
 import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -19,8 +17,7 @@ public class TabletEmailSignInPage extends AndroidTabletPage {
 	}
 
 	private EmailSignInPage getEmailSignInPage() throws Exception {
-		return (EmailSignInPage) this
-				.getAndroidPageInstance(EmailSignInPage.class);
+		return this.getAndroidPageInstance(EmailSignInPage.class);
 	}
 
 	public void setLogin(String email) throws Exception {
@@ -44,18 +41,7 @@ public class TabletEmailSignInPage extends AndroidTabletPage {
 					By.id(EmailSignInPage.idLoginInput),
 					VISIBILITY_TIMEOUT_SECONDS);
 		} finally {
-			if (ScreenOrientationHelper.getInstance().fixOrientation(
-					getDriver()) == ScreenOrientation.PORTRAIT) {
-				if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-						By.id(ContactListPage.idSelfUserAvatar), 3)) {
-					// The app will open full-color view instead of doing swipe
-					// w/o these two operators :-@
-					this.tapOnCenterOfScreen();
-					this.tapOnCenterOfScreen();
-					DriverUtils.swipeByCoordinates(getDriver(), 1000, 30, 50,
-							90, 50);
-				}
-			}
+			ScreenOrientationHelper.getInstance().fixOrientation(getDriver());
 		}
 	}
 
