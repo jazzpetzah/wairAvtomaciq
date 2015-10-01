@@ -43,15 +43,45 @@ Feature: Conversation List
     When I open conversation with <Contact>
     And I open context menu of contact <Contact>
     And I click silence in context menu
-    And I open self profile
     Then I see that conversation <Contact> is muted
-    When I open conversation with <Contact>
-    And I open context menu of contact <Contact>
+    When I open context menu of contact <Contact>
     And I click notify in context menu
-    And I open self profile
     Then I see that conversation <Contact> is not muted
 
     Examples: 
-    
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @smoke @id3438
+  Scenario Outline: Mute and unmute 1:1 conversation with menu bar
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    When I open conversation with <Contact>
+    And I click menu bar item "Conversation" and menu item "Silence"
+    Then I see that conversation <Contact> is muted
+    When I click menu bar item "Conversation" and menu item "Notify"
+    Then I see that conversation <Contact> is not muted
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @smoke @id3877
+  Scenario Outline: Mute and unmute 1:1 conversation with keyboard shortcut
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    When I open conversation with <Contact>
+    And I type shortcut combination to mute or unmute a conversation
+    Then I see that conversation <Contact> is muted
+    When I type shortcut combination to mute or unmute a conversation
+    Then I see that conversation <Contact> is not muted
+
+    Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
