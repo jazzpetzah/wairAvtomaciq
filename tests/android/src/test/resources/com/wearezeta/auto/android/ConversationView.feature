@@ -68,6 +68,7 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
     And I see dialog page
+    And I scroll to the bottom of conversation view
     And I tap on text input
     And I type the message "<Message>" and send it
     Then I see my message "<Message>" in the dialog
