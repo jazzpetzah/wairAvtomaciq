@@ -27,6 +27,7 @@ public class ContactListPageSteps {
 	private static final Logger LOG = ZetaLogger
 			.getLog(ContactListPageSteps.class.getName());
 
+	@SuppressWarnings("unused")
 	private final OSXPagesCollection osxPagesCollection = OSXPagesCollection
 			.getInstance();
 	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection

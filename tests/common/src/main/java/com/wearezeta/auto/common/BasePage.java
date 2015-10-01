@@ -116,7 +116,7 @@ public abstract class BasePage {
 	public abstract BasePage swipeDown(int time) throws Exception;
 
 	protected static void clearPagesCollection(
-			Class<? extends AbstractPagesCollection> collection,
+			Class<? extends AbstractPagesCollection<? extends BasePage>> collection,
 			Class<? extends BasePage> baseClass)
 			throws IllegalArgumentException, IllegalAccessException {
 		for (Field f : collection.getFields()) {
