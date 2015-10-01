@@ -535,6 +535,13 @@ public class ContactListPage extends WebPage {
 		}
 	}
 
+	public void pressShortCutToSearch() throws Exception {
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_N);
+		robot.keyRelease(KeyEvent.VK_N);
+		robot.keyRelease(KeyEvent.VK_META);
+	}
+
 	public boolean isLeaveWarningModalVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.cssSelector(WebAppLocators.ContactListPage.cssLeaveModal));

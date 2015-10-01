@@ -718,19 +718,6 @@ public class ConversationPageSteps {
 	}
 
 	/**
-	 * Types shortcut combination to open search
-	 *
-	 * @step. ^I type shortcut combination to open search$
-	 * @throws Exception
-	 */
-	@Then("^I type shortcut combination to open search$")
-	public void ITypeShortcutCombinationToOpenSearch() throws Exception {
-		WebappPagesCollection.peoplePickerPage = WebappPagesCollection
-				.getInstance().getPage(ConversationPage.class)
-				.pressShortCutForSearch();
-	}
-
-	/**
 	 * Hovers ping button
 	 *
 	 * @step. ^I hover ping button$
