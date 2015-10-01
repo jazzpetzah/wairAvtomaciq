@@ -45,13 +45,16 @@ public abstract class OSXPage extends BasePage {
 		clickMenuBarItem(MENUBAR_ITEM_HELP, environmentName);
 	}
 
-	public void clickMenuBarItem(String firstItem, String... items) throws Exception {
-		By locator = By.xpath(OSXLocators.AppMenu.xpathMenuBarItem
-				.apply(firstItem));
+	public void clickMenuBarItem(String firstItem, String... items)
+			throws Exception {
+		String locatorString = OSXLocators.AppMenu.xpathMenuBarItem
+				.apply(firstItem);
+		By locator = By.xpath(locatorString);
 		DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
 		getDriver().findElement(locator).click();
 		for (String item : items) {
-			By itemLocator = By.xpath(OSXLocators.AppMenu.xpathMenuItem.apply(item));
+			By itemLocator = By.xpath(OSXLocators.AppMenu.xpathMenuItem.apply(
+					locatorString, item));
 			DriverUtils.waitUntilLocatorAppears(getDriver(), itemLocator);
 			getDriver().findElement(itemLocator).click();
 		}
