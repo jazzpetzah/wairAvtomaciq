@@ -145,7 +145,9 @@ public class PerformanceSteps {
 	public void WhenIStartTestCycleForNMinutes(int timeout, String fromContact)
 			throws Exception {
 		if (getDialogPage().waitForCursorInputVisible()) {
-			ImageUtil.storeImageToFile(getContactListPage().takeScreenshot().get(), "/Project/nav_view_" + (new Date().getTime()) + ".png");
+			long time = (new Date().getTime());
+			log.debug("stored screenshot with time " + time);
+			ImageUtil.storeImageToFile(getContactListPage().takeScreenshot().get(), "/Project/nav_view_" + time + ".png");
 			DialogPageSteps steps = new DialogPageSteps();
 			steps.INavigateToConversationsView();
 		}
