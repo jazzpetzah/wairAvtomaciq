@@ -1,6 +1,7 @@
 package com.wearezeta.auto.common.driver;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
+
 import java.net.URL;
 import java.util.List;
 
@@ -10,7 +11,9 @@ import org.openqa.selenium.WebElement;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
+
 import java.util.stream.Collectors;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Beta;
 import org.openqa.selenium.Dimension;
@@ -22,6 +25,7 @@ import org.openqa.selenium.remote.RemoteWebElement;
 
 public class ZetaOSXDriver extends AppiumDriver implements ZetaDriver {
 
+	@SuppressWarnings("unused")
 	private static final Logger LOG = ZetaLogger.getLog(ZetaOSXDriver.class
 			.getName());
 

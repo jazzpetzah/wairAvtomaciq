@@ -746,6 +746,7 @@ public final class IOSLocators {
 
 		public static final String nameResentIn10min = "We already sent you a code via SMS. Tap Resend after 10 minutes to get a new one.";
 		public static final String nameInvalidPhoneNumber = "Please enter a valid phone number";
+		public static final String nameInvalidEmail = "The email address you provided has already been registered. Please try again.";
 	}
 
 	// ///////////
