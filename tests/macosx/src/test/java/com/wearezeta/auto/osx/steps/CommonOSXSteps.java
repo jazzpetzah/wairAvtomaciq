@@ -145,6 +145,7 @@ public class CommonOSXSteps {
 		mainWirePage.focusApp();
 		Thread.sleep(3000);// wait for page to load TODO scan for spinner
 		mainWirePage.switchEnvironmentToStaging();
+		Thread.sleep(3000);
 		webappPagesCollection.setFirstPage(new RegistrationPage(webDriver));
 	}
 
@@ -634,6 +635,26 @@ public class CommonOSXSteps {
 				.isSupportingSyntheticDragAndDrop()) {
 			throw new PendingException();
 		}
+	}
+
+	@When("^I click menu bar item \"(.*)\" and menu item \"(.*)\"$")
+	public void clickMenuBarItem(String menuBarItemName, String menuItemName)
+			throws Exception {
+		MainWirePage mainPage = osxPagesCollection.getPage(MainWirePage.class);
+		mainPage.clickMenuBarItem(menuBarItemName);
+		mainPage.clickMenuItem(menuItemName);
+	}
+
+	@When("^I click menu bar item with name \"(.*)\"$")
+	public void clickMenuBarItem(String menuBarItemName) throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class).clickMenuBarItem(
+				menuBarItemName);
+	}
+
+	@When("^I click menu item with name \"(.*)\"$")
+	public void clickMenuItem(String menuItemName) throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class).clickMenuItem(
+				menuItemName);
 	}
 
 	@When("^I kill the app$")
