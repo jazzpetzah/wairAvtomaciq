@@ -3,7 +3,7 @@ package com.wearezeta.auto.common.usrmgmt;
 import com.wearezeta.auto.common.Platform;
 
 public enum RegistrationStrategy {
-	ByEmail, ByPhoneNumber, ByPhoneNumberOnly;
+	ByEmail, ByPhoneNumber, ByPhoneNumberOnly, ByEmailOnly;
 
 	public static RegistrationStrategy getRegistrationStrategyForPlatform(
 			Platform platform) {
