@@ -50,13 +50,13 @@ public abstract class OSXPage extends BasePage {
 		clickMenuItem("Ping");
 	}
 
-	private void clickMenuBarItem(String name) throws Exception {
+	public void clickMenuBarItem(String name) throws Exception {
 		By locator = By.xpath(OSXLocators.AppMenu.xpathMenuBarItem.apply(name));
 		DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
 		getDriver().findElement(locator).click();
 	}
 
-	private void clickMenuItem(String name) throws Exception {
+	public void clickMenuItem(String name) throws Exception {
 		By locator = By.xpath(OSXLocators.AppMenu.xpathMenuItem.apply(name));
 		DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
 		getDriver().findElement(locator).click();
