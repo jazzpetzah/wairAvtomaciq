@@ -3,11 +3,14 @@ package com.wearezeta.auto.osx.pages.osx;
 import java.io.IOException;
 
 import com.wearezeta.auto.common.BasePage;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
+import com.wearezeta.auto.osx.locators.OSXLocators;
 
 import java.util.Map;
 import java.util.concurrent.Future;
+import org.openqa.selenium.By;
 
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriverException;
@@ -29,6 +32,34 @@ public abstract class OSXPage extends BasePage {
 			throws Exception {
 		super(osxDriver);
 		this.path = path;
+	}
+
+	// TODO create constants
+	public void switchEnvironmentToStaging() throws Exception {
+		// click version menu item twice to get dev and env menu items
+		for (int i = 0; i < 2; i++) {
+			clickMenuBarItem("Help");
+			clickMenuItem("Version");
+		}
+		clickMenuBarItem("Help");
+		clickMenuItem("Staging");
+	}
+
+	public void clickPing() throws Exception {
+		clickMenuBarItem("Conversation");
+		clickMenuItem("Ping");
+	}
+
+	private void clickMenuBarItem(String name) throws Exception {
+		By locator = By.xpath(OSXLocators.AppMenu.xpathMenuBarItem.apply(name));
+		DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+		getDriver().findElement(locator).click();
+	}
+
+	private void clickMenuItem(String name) throws Exception {
+		By locator = By.xpath(OSXLocators.AppMenu.xpathMenuItem.apply(name));
+		DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+		getDriver().findElement(locator).click();
 	}
 
 	public void navigateTo() throws Exception {
@@ -108,7 +139,8 @@ public abstract class OSXPage extends BasePage {
 				+ "set dock_dimensions to size in list 1\n"
 				+ "set _width to item 1 of dock_dimensions\n"
 				+ "set _height to item 2 of dock_dimensions\n"
-				+ "set k to \"\" & _width & \"x\" & _height\n" + "return k\n"
+				+ "set k to \"\" & _width & \"x\" & _height\n"
+				+ "return k\n"
 				+ "end tell";
 		try {
 			object = getDriver().executeScript(script);

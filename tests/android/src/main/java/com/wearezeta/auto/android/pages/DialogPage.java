@@ -47,6 +47,8 @@ public class DialogPage extends AndroidPage {
 	public static final String xpathConfirmOKButton = "//*[@id='ttv__confirmation__confirm' and @value='OK']";
 
 	public static final String idDialogImages = "iv__row_conversation__message_image";
+	private static final String xpathLastPicture = String.format(
+			"(//*[@id='%s'])[last()]", idDialogImages);
 
 	public static final String idAddPicture = "cursor_menu_item_camera";
 
@@ -400,8 +402,10 @@ public class DialogPage extends AndroidPage {
 		tapByCoordinates(94, 96);
 	}
 
-	public void clickLastImageFromDialog() {
-		imageList.get(imageList.size() - 1).click();
+	public void clickLastImageFromDialog() throws Exception {
+		final By locator = By.xpath(xpathLastPicture);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : "No pictures are visible in the conversation view";
+		getDriver().findElement(locator).click();
 	}
 
 	public String getChangedGroupNameMessage() {

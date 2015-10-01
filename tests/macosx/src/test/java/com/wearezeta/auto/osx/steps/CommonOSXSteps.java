@@ -23,7 +23,6 @@ import static com.wearezeta.auto.osx.common.OSXExecutionContext.APPIUM_HUB_URL;
 import static com.wearezeta.auto.osx.common.OSXExecutionContext.WIRE_APP_PATH;
 
 import com.wearezeta.auto.osx.pages.osx.MainWirePage;
-import com.wearezeta.auto.osx.pages.osx.MenuBarPage;
 import com.wearezeta.auto.osx.pages.osx.OSXPage;
 import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
@@ -142,11 +141,10 @@ public class CommonOSXSteps {
 		osxPagesCollection.setFirstPage(new MainWirePage(osxDriver));
 		MainWirePage mainWirePage = osxPagesCollection
 				.getPage(MainWirePage.class);
-		MenuBarPage menuBarPage = osxPagesCollection.getPage(MenuBarPage.class);
 
 		mainWirePage.focusApp();
 		Thread.sleep(3000);// wait for page to load TODO scan for spinner
-		menuBarPage.switchEnvironment();
+		mainWirePage.switchEnvironmentToStaging();
 		webappPagesCollection.setFirstPage(new RegistrationPage(webDriver));
 	}
 

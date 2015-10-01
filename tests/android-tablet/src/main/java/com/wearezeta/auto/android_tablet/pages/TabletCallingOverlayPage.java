@@ -23,15 +23,11 @@ public class TabletCallingOverlayPage extends AndroidTabletPage {
 	}
 
 	public boolean callingOverlayIsVisible() throws Exception {
-		return getCallingOverlayPage().callingOverlayIsVisible();
+		return getCallingOverlayPage().waitUntilVisible();
 	}
-
-	public boolean incomingCallerAvatarIsVisible() throws Exception {
-		return getCallingOverlayPage().incomingCallerAvatarIsVisible();
-	}
-
-	public boolean incomingCallerAvatarIsInvisible() throws Exception {
-		return getCallingOverlayPage().incomingCallerAvatarIsInvisible();
+	
+	public boolean callingOverlayNotVisible() throws Exception {
+		return getCallingOverlayPage().waitUntilNotVisible();
 	}
 
 	public void tapAcceptButton() throws Exception {
