@@ -22,8 +22,7 @@ public class CallingPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private TabletCallingOverlayPage getCallingOverlayPage() throws Exception {
-		return (TabletCallingOverlayPage) pagesCollection
-				.getPage(TabletCallingOverlayPage.class);
+		return pagesCollection.getPage(TabletCallingOverlayPage.class);
 	}
 
 	/**
@@ -40,12 +39,11 @@ public class CallingPageSteps {
 	public void WhenISeeCallingOverlayBigBar(String shouldNotSee)
 			throws Exception {
 		if (shouldNotSee == null) {
-			Assert.assertTrue(getCallingOverlayPage().callingOverlayIsVisible());
-			Assert.assertTrue(getCallingOverlayPage()
-					.incomingCallerAvatarIsVisible());
+			Assert.assertTrue("Calling overlay should be visible",
+					getCallingOverlayPage().callingOverlayIsVisible());
 		} else {
-			Assert.assertTrue(getCallingOverlayPage()
-					.incomingCallerAvatarIsInvisible());
+			Assert.assertTrue("Calling overlay should be hidden",
+					getCallingOverlayPage().callingOverlayNotVisible());
 		}
 	}
 

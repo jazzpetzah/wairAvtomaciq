@@ -14,7 +14,7 @@ import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class CallingOverlayPage extends AndroidPage {
-	private static final String idCallingOverlayContainer = "coc__calling__overlay_container";
+	private static final String idCallingOverlayContainer = "rv__calling__container";
 	@FindBy(id = idCallingOverlayContainer)
 	private WebElement callingOverlayContainer;
 
@@ -41,11 +41,9 @@ public class CallingOverlayPage extends AndroidPage {
 			.format("//*[@id='%s' and contains(@value, '%s')]", idCallMessage,
 					name.toUpperCase());
 
-	private static final String idIncomingCallerAvatarsContainer = "rv__calling__container";
-
 	private static final Function<String, String> xpathCallingBarAvatarByName = name -> String
-			.format("//*[@id='%s']//*[@value='%s']",
-					idIncomingCallerAvatarsContainer, name.toUpperCase());
+			.format("//*[@id='%s']//*[@value='%s']", idCallingOverlayContainer,
+					name.toUpperCase());
 
 	private static final String idCallingDismiss = "cib__calling__dismiss";
 	@FindBy(id = idCallingDismiss)
@@ -147,11 +145,6 @@ public class CallingOverlayPage extends AndroidPage {
 		return new DialogPage(getLazyDriver());
 	}
 
-	public boolean incomingCallerAvatarIsVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idIncomingCallerAvatarsContainer));
-	}
-
 	public boolean callingMessageIsVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(idCallMessage));
@@ -180,11 +173,6 @@ public class CallingOverlayPage extends AndroidPage {
 	public boolean callingMicMuteIsNotVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.id(idCallingMicMute));
-	}
-
-	public boolean callingOverlayIsVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idCallingOverlayContainer));
 	}
 
 	public boolean waitUntilGroupCallJoinVisible() throws Exception {
@@ -221,12 +209,12 @@ public class CallingOverlayPage extends AndroidPage {
 	}
 
 	public boolean ongoingCallMicrobarIsVisible() throws Exception {
-		return callingOverlayIsVisible() && callingMicMuteIsNotVisible()
+		return waitUntilVisible() && callingMicMuteIsNotVisible()
 				&& callingDismissIsNotVisible();
 	}
 
 	public boolean ongoingCallMinibarIsVisible() throws Exception {
-		return callingOverlayIsVisible() && callingMicMuteIsVisible()
+		return waitUntilVisible() && callingMicMuteIsVisible()
 				&& callingDismissIsVisible();
 	}
 
@@ -277,11 +265,6 @@ public class CallingOverlayPage extends AndroidPage {
 	public DialogPage endCurrentCallCancel() throws Exception {
 		endCurrentCallCancelButton.click();
 		return new DialogPage(getLazyDriver());
-	}
-
-	public boolean incomingCallerAvatarIsInvisible() throws Exception {
-		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.id(idIncomingCallerAvatarsContainer));
 	}
 
 	public void tapMuteMicButton() {

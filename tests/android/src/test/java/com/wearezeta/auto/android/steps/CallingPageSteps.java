@@ -165,16 +165,14 @@ public class CallingPageSteps {
 	public void WhenISeeCallingOverlayBigBar(String shouldNotSee)
 			throws Exception {
 		if (shouldNotSee == null) {
-			Assert.assertTrue(getCallingOverlayPage().callingOverlayIsVisible());
-			Assert.assertTrue(getCallingOverlayPage()
-					.incomingCallerAvatarIsVisible());
+			Assert.assertTrue(getCallingOverlayPage().waitUntilVisible());
 			Assert.assertTrue(getCallingOverlayPage().callingDismissIsVisible());
 			Assert.assertTrue(getCallingOverlayPage().callingSpeakerIsVisible());
 			Assert.assertTrue(getCallingOverlayPage().callingMicMuteIsVisible());
 		} else {
 			Assert.assertTrue(
 					"Calling bar is still visible, but should be hidden",
-					getCallingOverlayPage().incomingCallerAvatarIsInvisible());
+					getCallingOverlayPage().waitUntilNotVisible());
 		}
 	}
 
