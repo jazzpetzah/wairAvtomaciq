@@ -40,8 +40,8 @@ Feature: Conversation List
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
-    And I swipe right on a <Contact1>
-    And I click archive button for conversation <Contact1>
+    And I swipe right on a <GroupChatName>
+    And I click archive button for conversation <GroupChatName>
     Then I dont see conversation <GroupChatName> in contact list
     And I open archived conversations on iPad
     Then I see user <GroupChatName> in contact list
@@ -58,8 +58,8 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
-    And I swipe right on a <Contact1>
-    And I click archive button for conversation <Contact1>
+    And I swipe right on a <GroupChatName>
+    And I click archive button for conversation <GroupChatName>
     Then I dont see conversation <GroupChatName> in contact list
     And I open archived conversations on iPad
     Then I see user <GroupChatName> in contact list
@@ -194,7 +194,6 @@ Feature: Conversation List
     And I remember the state of the first conversation cell
     When I tap on contact name <Contact>
     And I see dialog page
-    And I return to the chat list
     Then I see change of state for first conversation cell
 
     Examples: 
