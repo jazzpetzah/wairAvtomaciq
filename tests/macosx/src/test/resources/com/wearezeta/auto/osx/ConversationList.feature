@@ -16,6 +16,23 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
+  @smoke @id3425
+  Scenario Outline: Verify I can leave group conversation list with right click
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <ChatName>
+    And I open context menu of conversation <ChatName>
+    And I click leave in context menu
+    Then I see a leave warning modal
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Contact2  | ChatName  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat |
+
   @smoke @id3437
   Scenario Outline: Mute and unmute 1:1 conversation with right click
     Given There are 2 users where <Name> is me
