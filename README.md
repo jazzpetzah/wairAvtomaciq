@@ -19,16 +19,12 @@ run this command :  ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebr
 afterwards install node.js with command:
 brew install node
 
-##iOS specific Automation preperations
-Download Xcode and the needed Simulators.
-Simulator can be found in: Xcode -> Preferences -> Downloads
 
 ##Appium
 Download Appium from here:
 
 * [Appium](https://bitbucket.org/appium/appium.app/downloads/) 
-* UPDATE [Appium newst version](https://github.com/appium/appium/releases/tag/v1.3.7)
-Ask what is the version that is used right now, it can already be 1.4.8 ect...
+* UPDATE [Appium newst version](https://github.com/appium/appium/releases/tag/v1.3.3)
 
 When Appium is opened, configure it by clicking in the Apple symbole. If you want to run the test on the simulator add the AppPath to ZClient.app (this needs to be a simulator build).
 Set simulator device as iPhone 6
@@ -61,19 +57,7 @@ Now, to run your tests, do the following: run your Maven configuration and wait 
 "Listening for transport dt_socket at address: 5005"
 Then run your Remote Java Configuration.
 
-##First Run
-You need to compile the common project first, otherwise it will complain it can not find some Snapshot librarie. Therefor create a Common run/debug configuration like before the other maven run configurations.
 
-Possible build failure as well can be that it cant find OpenCV and Sikuli. It has to be renamed and moved. Execute following commands after an other:
-cd /Users/<PATH_TO_YOUR_M2_FOLDER>/.m2/repository/org/opencv/opencv-java/2.4.9/
-cp ~/zautomation/tests/common/lib/opencv-249.jar .
-mv opencv-249.jar opencv-java-2.4.9.jar
-
-
-cd /Users/<PATH_TO_YOUR_M2_FOLDER>/.m2/repository/org/sikuli/sikuli-java/1.0.1/
-cp ~/zautomation/tests/macosx/lib/sikuli-java.jar
-cp ~/zautomation/tests/macosx/lib/sikuli-java.jar .
-mv sikuli-java.jar sikuli-java-1.0.1.jar
 
 ##Test writing architecture
 ####Cucumber feature file

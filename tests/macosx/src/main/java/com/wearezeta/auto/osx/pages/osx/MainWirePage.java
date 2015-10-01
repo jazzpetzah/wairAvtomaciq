@@ -1,4 +1,4 @@
-package com.wearezeta.auto.osx.pages;
+package com.wearezeta.auto.osx.pages.osx;
 
 import java.util.concurrent.Future;
 
@@ -17,8 +17,7 @@ import org.openqa.selenium.Point;
 
 public class MainWirePage extends OSXPage {
 
-	private static final int APP_MAX_WIDTH = 1240;
-	private static final int APP_MAX_HEIGHT = 1027;
+	public static final int APP_MAX_WIDTH = 1240;
 	private static final int APP_MIN_WIDTH = 780;
 	private static final int APP_MIN_HEIGHT = 600;
 
@@ -57,24 +56,8 @@ public class MainWirePage extends OSXPage {
 		minimizeButton.click();
 	}
 
-	public void maximizeWindow() throws Exception {
-		// minimize to maximize afterwards
-		if (isFullscreen()) {
-			zoomButton.click();
-		}
-		zoomButton.click();
-	}
-
 	public void closeWindow() {
 		closeButton.click();
-	}
-
-	public boolean isFullscreen() throws Exception {
-		Dimension size = getDriver().manage().window().getSize();
-		// TODO adjust for retina and non-retina
-		boolean maxWidth = size.getWidth() == APP_MAX_WIDTH;
-		boolean maxHeight = size.getHeight() == APP_MAX_HEIGHT;
-		return maxWidth && maxHeight;
 	}
 
 	public boolean isMini() throws Exception {
@@ -180,5 +163,9 @@ public class MainWirePage extends OSXPage {
 		// we have to subtract 1 to get the handle
 		return new Point(windowPosition.getX() + windowDimensions.getWidth()
 				- 1, windowPosition.getY() + windowDimensions.getHeight() - 1);
+	}
+
+	public void clickMaximizeButton() {
+		zoomButton.click();
 	}
 }

@@ -1,4 +1,4 @@
-package com.wearezeta.auto.osx.steps;
+package com.wearezeta.auto.osx.steps.webapp;
 
 import java.util.concurrent.Future;
 
@@ -20,7 +20,7 @@ public class RegistrationPageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-	private WebappPagesCollection webappPagesCollection = WebappPagesCollection
+	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
 			.getInstance();
 
 	private ClientUser userToRegister = null;
@@ -205,6 +205,8 @@ public class RegistrationPageSteps {
 				.activateRegisteredUserByEmail(this.activationMessage);
 		userToRegister.setUserState(UserState.Created);
 	}
+
+	private static final int ACTIVATION_TIMEOUT = 15; // seconds
 
 	/**
 	 * Switch to Sign In page

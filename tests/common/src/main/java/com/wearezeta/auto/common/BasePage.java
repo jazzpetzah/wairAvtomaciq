@@ -25,7 +25,7 @@ import com.wearezeta.auto.common.locators.ZetaSearchContext;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public abstract class BasePage {
-	private Future<? extends RemoteWebDriver> lazyDriver;
+	private final Future<? extends RemoteWebDriver> lazyDriver;
 
 	protected Future<? extends RemoteWebDriver> getLazyDriver() {
 		return this.lazyDriver;
@@ -138,14 +138,16 @@ public abstract class BasePage {
 	 * Selenium driver inside pages so no one can potentially break abstraction
 	 * layers by using the driver directly from steps ;-)
 	 * 
+	 * @param <T>
+	 *            the concrete page implementation
 	 * @param newPageCls
 	 *            page class to be instantiated
 	 * @return newly created page object
 	 * @throws Exception
 	 */
-	public BasePage instantiatePage(Class<? extends BasePage> newPageCls)
+	public <T extends BasePage> T instantiatePage(Class<T> newPageCls)
 			throws Exception {
 		final Constructor<?> ctor = newPageCls.getConstructor(Future.class);
-		return (BasePage) ctor.newInstance(this.getLazyDriver());
+		return newPageCls.cast(ctor.newInstance(this.getLazyDriver()));
 	}
 }
