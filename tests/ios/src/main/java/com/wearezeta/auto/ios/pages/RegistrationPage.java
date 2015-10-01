@@ -118,7 +118,7 @@ public class RegistrationPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathCountry)
 	private WebElement selectCountry;
 	
-	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.nameCountryPicker)
+	@FindBy(how = How.NAME, using = IOSLocators.LoginPage.nameCountryPickerButton )
 	private WebElement countryPickerButton;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathCountryList)

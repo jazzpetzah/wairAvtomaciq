@@ -679,8 +679,6 @@ public final class IOSLocators {
 		public static final String xpathVerificationPage = "//UIAStaticText[contains(@name, 'Enter the verification code we sent to')]";
 		public static final String nameTermOfUsePage = "By continuing you agree to the Wire Terms of Use.";
 		public static final String nameResendCodeButton = "RESEND";
-		
-		public static final String nameCountryPicker = "CountryPickerButton";
 		public static final String namePhoneNumberField = "PhoneNumberField";
 	}
 
