@@ -5,30 +5,39 @@ import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
 import com.google.common.base.Function;
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
+
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.Browser;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
+
 import static com.wearezeta.auto.web.locators.WebAppLocators.Common.TITLE_ATTRIBUTE_LOCATOR;
+
 import com.wearezeta.auto.web.pages.PendingConnectionsPage;
 import com.wearezeta.auto.web.pages.PeoplePickerPage;
 import com.wearezeta.auto.web.pages.SelfProfilePage;
 import com.wearezeta.auto.web.pages.WebPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
+
 import cucumber.api.PendingException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -43,6 +52,9 @@ public class ContactListPage extends WebPage {
 
 	private static final Logger LOG = ZetaLogger.getLog(ContactListPage.class
 			.getSimpleName());
+
+	// TODO hide behind driver impl
+	private final Robot robot = new Robot();
 
 	private static final String DEFAULT_GROUP_CONVO_NAMES_SEPARATOR = ",";
 	private static final int OPEN_CONVO_LIST_ENTRY_TIMEOUT = 8; // seconds
@@ -249,6 +261,15 @@ public class ContactListPage extends WebPage {
 				.apply(conversationName);
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.xpath(locator));
+	}
+
+	public void pressShortCutToMute() throws Exception {
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_ALT);
+		robot.keyPress(KeyEvent.VK_S);
+		robot.keyRelease(KeyEvent.VK_S);
+		robot.keyRelease(KeyEvent.VK_ALT);
+		robot.keyRelease(KeyEvent.VK_META);
 	}
 
 	public void openArchive() throws Exception {
