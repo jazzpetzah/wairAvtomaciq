@@ -17,6 +17,9 @@ import org.openqa.selenium.WebDriverException;
 
 public abstract class OSXPage extends BasePage {
 
+	private static final String MENU_ITEM_VERSION = "Version";
+	private static final String MENUBAR_ITEM_HELP = "Help";
+
 	private String path = null;
 
 	@Override
@@ -34,13 +37,12 @@ public abstract class OSXPage extends BasePage {
 		this.path = path;
 	}
 
-	// TODO create constants
-	public void switchEnvironmentToStaging() throws Exception {
+	public void switchEnvironment(String environmentName) throws Exception {
 		// click version menu item twice to get dev and env menu items
 		for (int i = 0; i < 2; i++) {
-			clickMenuBarItem("Help", "Version");
+			clickMenuBarItem(MENUBAR_ITEM_HELP, MENU_ITEM_VERSION);
 		}
-		clickMenuBarItem("Help", "Staging");
+		clickMenuBarItem(MENUBAR_ITEM_HELP, environmentName);
 	}
 
 	public void clickMenuBarItem(String firstItem, String... items) throws Exception {
@@ -53,13 +55,6 @@ public abstract class OSXPage extends BasePage {
 			DriverUtils.waitUntilLocatorAppears(getDriver(), itemLocator);
 			getDriver().findElement(itemLocator).click();
 		}
-	}
-
-	public void clickMenuItem(String name) throws Exception {
-		System.out.println("Source: " + getDriver().getPageSource());
-		By locator = By.xpath(OSXLocators.AppMenu.xpathMenuItem.apply(name));
-		DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
-		getDriver().findElement(locator).click();
 	}
 
 	public void navigateTo() throws Exception {
