@@ -575,6 +575,19 @@ public class LoginPageSteps {
 		Assert.assertTrue("I don't see invalid phone number alert",
 				getLoginPage().isInvalidPhoneNumberAlertShown());
 	}
+	
+	/**
+	 * Verifies whether the notification invalid email shown
+	 * 
+	 * @step. ^I see invalid email alert$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see invalid email alert$")
+	public void ISeeInvalidEmailAlert() throws Exception {
+		Assert.assertTrue("I don't see invalid email alert",
+				getLoginPage().isInvalidEmailAlertShown());
+	}
 
 	/**
 	 * Clicks on the Forgot/Change password button on the Sign In screen
