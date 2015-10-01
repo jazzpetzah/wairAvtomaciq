@@ -37,20 +37,19 @@ public class ContactListPageSteps {
 	private static final int ARCHIVE_BTN_VISILITY_TIMEOUT = 5; // seconds
 
 	/**
-	 * Checks that contact list is loaded and waits for profile avatar to be
-	 * shown
+	 * Opens the right-click menu for a specific conversation
 	 *
 	 * @param name
 	 *            the conversation name to open the context menu for
 	 *
-	 * @step. ^I open context menu of contact (.*)$
+	 * @step. ^I open context menu of conversation (.*)$
 	 *
 	 * @throws java.lang.Exception
 	 * @throws AssertionError
 	 *             if contact list is not loaded or avatar does not appear at
 	 *             the top of Contact List
 	 */
-	@Given("^I open context menu of contact (.*)$")
+	@Given("^I open context menu of conversation (.*)$")
 	public void IOpenContextMenuOfContact(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		ContactListPage contactListPage = webappPagesCollection

@@ -8,11 +8,11 @@ Feature: Conversation List
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
-    And I open context menu of contact <Contact>
+    And I open context menu of conversation <Contact>
     And I click block in context menu
     Then I see a block warning modal
     And I click cancel button in the block warning
-    And I open context menu of contact <Contact>
+    And I open context menu of conversation <Contact>
     And I click block in context menu
     Then I see a block warning modal
     And I click block button in the block warning
@@ -41,10 +41,10 @@ Feature: Conversation List
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When I open conversation with <Contact>
-    And I open context menu of contact <Contact>
+    And I open context menu of conversation <Contact>
     And I click silence in context menu
     Then I see that conversation <Contact> is muted
-    When I open context menu of contact <Contact>
+    When I open context menu of conversation <Contact>
     And I click notify in context menu
     Then I see that conversation <Contact> is not muted
 
@@ -85,3 +85,59 @@ Feature: Conversation List
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+
+  @smoke @id3435
+  Scenario Outline: Mute and unmute group conversation with right click
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    When I open conversation with <ChatName>
+    And I open context menu of conversation <ChatName>
+    And I click silence in context menu
+    Then I see that conversation <ChatName> is muted
+    When I open context menu of conversation <ChatName>
+    And I click notify in context menu
+    Then I see that conversation <ChatName> is not muted
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Contact2  | ChatName  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat |
+
+  @smoke @id3436
+  Scenario Outline: Mute and unmute group conversation with menu bar
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    When I open conversation with <ChatName>
+    And I click menu bar item "Conversation" and menu item "Silence"
+    Then I see that conversation <ChatName> is muted
+    When I click menu bar item "Conversation" and menu item "Notify"
+    Then I see that conversation <ChatName> is not muted
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Contact2  | ChatName  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat |
+
+  @smoke @id3878
+  Scenario Outline: Mute and unmute group conversation with keyboard shortcut
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    When I open conversation with <ChatName>
+    And I type shortcut combination to mute or unmute a conversation
+    Then I see that conversation <ChatName> is muted
+    When I type shortcut combination to mute or unmute a conversation
+    Then I see that conversation <ChatName> is not muted
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Contact2  | ChatName  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat |
