@@ -133,7 +133,8 @@
             <artifactId>zmessaging-android</artifactId>
             <version>43-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${pom.basedir}/lib/temp/classes.jar</systemPath>
+            <!-- TODO fix this shit -->
+            <systemPath>/Users/deancook/Downloads/zmessaging-android-jar/classes.jar</systemPath>
         </dependency>
 
         <dependency>
