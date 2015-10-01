@@ -38,25 +38,25 @@ public abstract class OSXPage extends BasePage {
 	public void switchEnvironmentToStaging() throws Exception {
 		// click version menu item twice to get dev and env menu items
 		for (int i = 0; i < 2; i++) {
-			clickMenuBarItem("Help");
-			clickMenuItem("Version");
+			clickMenuBarItem("Help", "Version");
 		}
-		clickMenuBarItem("Help");
-		clickMenuItem("Staging");
+		clickMenuBarItem("Help", "Staging");
 	}
 
-	public void clickPing() throws Exception {
-		clickMenuBarItem("Conversation");
-		clickMenuItem("Ping");
-	}
-
-	public void clickMenuBarItem(String name) throws Exception {
-		By locator = By.xpath(OSXLocators.AppMenu.xpathMenuBarItem.apply(name));
+	public void clickMenuBarItem(String firstItem, String... items) throws Exception {
+		By locator = By.xpath(OSXLocators.AppMenu.xpathMenuBarItem
+				.apply(firstItem));
 		DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
 		getDriver().findElement(locator).click();
+		for (String item : items) {
+			By itemLocator = By.xpath(OSXLocators.AppMenu.xpathMenuItem.apply(item));
+			DriverUtils.waitUntilLocatorAppears(getDriver(), itemLocator);
+			getDriver().findElement(itemLocator).click();
+		}
 	}
 
 	public void clickMenuItem(String name) throws Exception {
+		System.out.println("Source: " + getDriver().getPageSource());
 		By locator = By.xpath(OSXLocators.AppMenu.xpathMenuItem.apply(name));
 		DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
 		getDriver().findElement(locator).click();
