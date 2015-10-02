@@ -18,7 +18,6 @@ import com.wearezeta.auto.web.pages.popovers.ConnectToPopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.PeoplePopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
-import cucumber.api.PendingException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -497,16 +496,6 @@ public class ConversationPage extends WebPage {
 
 	public String getMessageFromInputField() {
 		return conversationInput.getAttribute("value");
-	}
-
-	public PeoplePickerPage pressShortCutForSearch() throws Exception {
-		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
-			conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "n"));
-		} else {
-			throw new PendingException(
-					"Webdriver does not support shortcuts for Mac browsers");
-		}
-		return new PeoplePickerPage(getLazyDriver());
 	}
 
 	public void hoverPingButton() throws Exception {

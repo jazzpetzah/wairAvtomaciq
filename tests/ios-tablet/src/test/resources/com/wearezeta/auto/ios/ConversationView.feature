@@ -239,7 +239,6 @@ Feature: Conversation View
     And I return to the chat list
     When I tap on my name <Name>
 	And I close self profile
-    And I tap on contact name <Contact>
     And I tap on text input
     And I send the message
     Then I see message in the dialog
@@ -261,7 +260,6 @@ Feature: Conversation View
     And I type the message
 	When I tap on my name <Name>
 	And I close self profile
-    And I tap on contact name <Contact>
     And I send the message
     Then I see message in the dialog
 

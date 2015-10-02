@@ -117,8 +117,8 @@ public class RegistrationPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathCountry)
 	private WebElement selectCountry;
-	
-	@FindBy(how = How.NAME, using = IOSLocators.LoginPage.nameCountryPickerButton )
+
+	@FindBy(how = How.NAME, using = IOSLocators.LoginPage.nameCountryPickerButton)
 	private WebElement countryPickerButton;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathCountryList)
@@ -199,7 +199,8 @@ public class RegistrationPage extends IOSPage {
 		}
 	}
 
-	public void selectCodeAndInputPhoneNumber(String number, String code) throws Exception {
+	public void selectCodeAndInputPhoneNumber(String number, String code)
+			throws Exception {
 		selectCountryByCode(code);
 		inputPhoneNumber(number);
 	}
@@ -229,8 +230,7 @@ public class RegistrationPage extends IOSPage {
 	}
 
 	public void inputRandomActivationCode() throws Exception {
-		inputActivationCode(Integer.toString(CommonUtils
-				.generateRandomXdigits(6)));
+		inputActivationCode(CommonUtils.generateRandomXdigits(6));
 	}
 
 	public void clickResendCodeButton() {

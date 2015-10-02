@@ -31,6 +31,18 @@ public class ContactContextMenuPageSteps {
 	}
 
 	/**
+	 * Click the leave in context menu
+	 *
+	 * @step. ^I click leave in context menu$
+	 * @throws Exception
+	 */
+	@When("^I click leave in context menu$")
+	public void IClickLeaveButtonInContextMenu() throws Exception {
+		osxPagesCollection.getPage(ContactContextMenuPage.class)
+				.clickLeave();
+	}
+
+	/**
 	 * Click the silence in context menu
 	 *
 	 * @step. ^I click silence in context menu$
@@ -64,5 +76,17 @@ public class ContactContextMenuPageSteps {
 	public void IClickDeleteButtonInContextMenu() throws Exception {
 		osxPagesCollection.getPage(ContactContextMenuPage.class)
 				.clickDelete();
+	}
+
+	/**
+	 * Click the archive in context menu
+	 *
+	 * @step. ^I click archive in context menu$
+	 * @throws Exception
+	 */
+	@When("^I click archive in context menu$")
+	public void IClickArchiveButtonInContextMenu() throws Exception {
+		osxPagesCollection.getPage(ContactContextMenuPage.class)
+				.clickArchive();
 	}
 }

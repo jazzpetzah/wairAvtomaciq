@@ -71,11 +71,10 @@ public class PerformanceSteps {
 	 * 
 	 * @param timeoutSeconds
 	 *            sign in timeout
-	 * 
-	 * @throws Exception
+	 * @throws Throwable
 	 */
 	@Given("^I sign in using my email with (\\d+) seconds? timeout$")
-	public void ISignInUsingMyEmail(int timeoutSeconds) throws Exception {
+	public void ISignInUsingMyEmail(int timeoutSeconds) throws Throwable {
 		final ClientUser self = usrMgr.getSelfUserOrThrowError();
 		assert getWelcomePage().waitForInitialScreen() : "The initial screen was not shown";
 		getWelcomePage().tapIHaveAnAccount();
@@ -116,19 +115,21 @@ public class PerformanceSteps {
 	}
 
 	private void waitUntilConversationsListIsFullyLoaded() throws Exception {
-		final int maxTries = 5;
-		final long millisecondsDelay = 30000;
+		final int maxTries = 15;
+		final long millisecondsDelay = 20000;
 		int ntry = 1;
 		do {
 			try {
 				getContactListPage().verifyContactListIsFullyLoaded();
+				if (getContactListPage().isAnyConversationVisible()) {
+					return;
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			Thread.sleep(millisecondsDelay);
 			ntry++;
-		} while (!getContactListPage().isAnyConversationVisible()
-				&& ntry <= maxTries);
+		} while (ntry <= maxTries);
 		Assert.assertTrue(
 				"No conversations are visible in the conversations list, but some are expected",
 				getContactListPage().isAnyConversationVisible());
@@ -136,7 +137,7 @@ public class PerformanceSteps {
 
 	private void visitConversationWhenAvailable(final String destConvoName)
 			throws Exception {
-		final int maxRetries = 15;
+		final int maxRetries = 30;
 		int ntry = 1;
 		do {
 			try {
@@ -148,7 +149,7 @@ public class PerformanceSteps {
 					e.printStackTrace();
 				}
 			}
-			Thread.sleep(3000);
+			Thread.sleep(10000);
 			ntry++;
 		} while (!getDialogPage().isDialogVisible() && ntry <= maxRetries);
 		assert getDialogPage().isDialogVisible() : "The conversation has not been opened after "
@@ -178,6 +179,8 @@ public class PerformanceSteps {
 				fromContact).getName();
 		String firstConvoName = getContactListPage()
 				.getFirstVisibleConversationName();
+		final int maxRetries = 20;
+		final long millisecondsDelay = 10000;
 		int ntry = 1;
 		do {
 			// This contact, which received messages, should be the first
@@ -185,12 +188,12 @@ public class PerformanceSteps {
 			if (destConvoName.equals(firstConvoName)) {
 				break;
 			} else {
-				Thread.sleep(10000);
+				Thread.sleep(millisecondsDelay);
 			}
 			firstConvoName = getContactListPage()
 					.getFirstVisibleConversationName();
 			ntry++;
-		} while (ntry <= 3);
+		} while (ntry <= maxRetries);
 		assert destConvoName.equals(firstConvoName) : String
 				.format("The very first conversation name '%s' is not the same as expected one ('%s')",
 						firstConvoName, destConvoName);

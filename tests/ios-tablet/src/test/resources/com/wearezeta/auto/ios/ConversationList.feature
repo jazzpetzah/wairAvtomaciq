@@ -388,7 +388,7 @@ Feature: Conversation List
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
     And I see mute call, end call buttons
-    And I return to the chat list
+    And I swipe right on Dialog page
     Then I see mute call button in conversation list
     And I click mute call button in conversation list
     And I swipe left in current window
@@ -494,6 +494,35 @@ Feature: Conversation List
     And I see Delete button in action menu in Contact List
     And I see Block button in action menu in Contact List
     And I see Cancel button in action menu in Contact List
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @staging @id3900
+  Scenario Outline: Verify first conversation in the list is highlighted and opened [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Name> change accent color to BrightOrange
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    Then I see conversation <Contact> is selected in list
+    And I see dialog page with contact <Contact>
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @staging @id3901
+  Scenario Outline: Verify first conversation in the list is highlighted and opened [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Name> change accent color to BrightOrange
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    Then I see conversation <Contact> is selected in list
+    And I see dialog page with contact <Contact>
 
     Examples: 
       | Name      | Contact   |
