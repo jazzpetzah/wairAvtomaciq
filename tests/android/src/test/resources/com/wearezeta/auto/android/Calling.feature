@@ -575,6 +575,7 @@ Feature: Calling
     And I press Call button
     And I see call overlay
     When I lock the device
+    And I wait for 2 seconds
     And I unlock the device
     Then I see call overlay
 
