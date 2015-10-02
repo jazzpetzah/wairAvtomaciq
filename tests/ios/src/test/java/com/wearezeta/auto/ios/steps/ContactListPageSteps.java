@@ -63,6 +63,7 @@ public class ContactListPageSteps {
 	 */
 	@When("^I see my name (.*) first letter as label of Self Button$")
 	public void ISeeFirstLetterAsLabelSelfButton(String name) throws Exception {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		Assert.assertTrue(getContactListPage()
 				.isSelfButtonContainingFirstNameLetter(name));
 	}
