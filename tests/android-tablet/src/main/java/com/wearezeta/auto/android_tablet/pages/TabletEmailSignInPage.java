@@ -17,8 +17,7 @@ public class TabletEmailSignInPage extends AndroidTabletPage {
 	}
 
 	private EmailSignInPage getEmailSignInPage() throws Exception {
-		return (EmailSignInPage) this
-				.getAndroidPageInstance(EmailSignInPage.class);
+		return this.getAndroidPageInstance(EmailSignInPage.class);
 	}
 
 	public void setLogin(String email) throws Exception {
@@ -29,10 +28,9 @@ public class TabletEmailSignInPage extends AndroidTabletPage {
 		getEmailSignInPage().setPassword(password);
 	}
 
-	public TabletConversationsListPage tapSignInButton() throws Exception {
+	public void tapSignInButton() throws Exception {
 		final By loginButtonLocator = By.id(EmailSignInPage.idLoginButton);
 		getDriver().findElement(loginButtonLocator).click();
-		return new TabletConversationsListPage(getLazyDriver());
 	}
 
 	private static final int VISIBILITY_TIMEOUT_SECONDS = 60;
@@ -51,8 +49,7 @@ public class TabletEmailSignInPage extends AndroidTabletPage {
 		getEmailSignInPage().verifyErrorMessageText(expectedMsg);
 	}
 
-	public void acceptErrorMessage()  throws Exception  {
+	public void acceptErrorMessage() throws Exception {
 		getEmailSignInPage().acceptErrorMessage();
 	}
-
 }

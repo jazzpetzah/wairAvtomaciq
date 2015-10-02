@@ -1,15 +1,15 @@
-package com.wearezeta.auto.osx.steps;
+package com.wearezeta.auto.osx.steps.osx;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.osx.pages.OSXPagesCollection;
+import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
 import com.wearezeta.auto.osx.pages.common.NoInternetConnectionPage;
 
 import cucumber.api.java.en.Then;
 
 public class NoInternetConnectionPageSteps {
 
-	private OSXPagesCollection osxPagesCollection = OSXPagesCollection
+	private final OSXPagesCollection osxPagesCollection = OSXPagesCollection
 			.getInstance();
 
 	/**

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriverException;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
@@ -13,6 +14,8 @@ import com.wearezeta.auto.android.common.reporter.AndroidBatteryPerfReportModel;
 import com.wearezeta.auto.android.common.reporter.AndroidPerfReportModel;
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.DialogPage;
+import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
+import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
@@ -20,6 +23,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.performance.PerformanceCommon;
 import com.wearezeta.auto.common.performance.PerformanceCommon.PerformanceLoop;
 import com.wearezeta.auto.common.performance.PerformanceHelpers;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import cucumber.api.java.en.And;
@@ -49,6 +53,60 @@ public class PerformanceSteps {
 
 	private DialogPage getDialogPage() throws Exception {
 		return pagesCollection.getPage(DialogPage.class);
+	}
+
+	private EmailSignInPage getEmailSignInPage() throws Exception {
+		return pagesCollection.getPage(EmailSignInPage.class);
+	}
+
+	private WelcomePage getWelcomePage() throws Exception {
+		return pagesCollection.getPage(WelcomePage.class);
+	}
+
+	/**
+	 * Inputs the login details for the self user and then clicks the sign in
+	 * button.
+	 * 
+	 * @step. ^I sign in using my email with (\\d+) seconds? timeout$
+	 * 
+	 * @param timeoutSeconds
+	 *            sign in timeout
+	 * @throws Throwable
+	 */
+	@Given("^I sign in using my email with (\\d+) seconds? timeout$")
+	public void ISignInUsingMyEmail(int timeoutSeconds) throws Throwable {
+		final ClientUser self = usrMgr.getSelfUserOrThrowError();
+		assert getWelcomePage().waitForInitialScreen() : "The initial screen was not shown";
+		getWelcomePage().tapIHaveAnAccount();
+		try {
+			getEmailSignInPage().setLogin(self.getEmail());
+		} catch (NoSuchElementException e) {
+			// FIXME: try again because sometimes tapping "I have account"
+			// button fails without any reason
+			getWelcomePage().tapIHaveAnAccount();
+			getEmailSignInPage().setLogin(self.getEmail());
+		}
+		getEmailSignInPage().setPassword(self.getPassword());
+		// FIXME: Workaround for 403 error from the backend
+		final int maxLoginRetries = 3;
+		int ntry = 1;
+		Throwable savedError = null;
+		do {
+			try {
+				getEmailSignInPage().logIn(timeoutSeconds);
+				return;
+			} catch (AssertionError e) {
+				e.printStackTrace();
+				try {
+					getEmailSignInPage().acceptErrorMessage();
+				} catch (WebDriverException e1) {
+					e1.printStackTrace();
+				}
+				savedError = e;
+				ntry++;
+			}
+		} while (ntry <= maxLoginRetries);
+		throw savedError;
 	}
 
 	/**
@@ -82,6 +140,8 @@ public class PerformanceSteps {
 		do {
 			try {
 				getContactListPage().verifyContactListIsFullyLoaded();
+			} catch (AssertionError e) {
+				e.printStackTrace();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -96,7 +156,7 @@ public class PerformanceSteps {
 
 	private void visitConversationWhenAvailable(final String destConvoName)
 			throws Exception {
-		final int maxRetries = 15;
+		final int maxRetries = 30;
 		int ntry = 1;
 		do {
 			try {

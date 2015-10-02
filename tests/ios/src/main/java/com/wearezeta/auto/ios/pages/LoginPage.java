@@ -114,6 +114,12 @@ public class LoginPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.Alerts.nameInvalidPhoneNumber)
 	private WebElement invalidPhoneNumberAlert;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.Alerts.nameInvalidEmail)
+	private WebElement invalidEmailAlert;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.PeoplePickerPage.nameNotNowButton)
+	private WebElement notNowPhoneButton;
 
 	private String login;
 
@@ -377,5 +383,15 @@ public class LoginPage extends IOSPage {
 		DriverUtils.waitUntilAlertAppears(getDriver());
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				invalidPhoneNumberAlert);
+	}
+	
+	public boolean isInvalidEmailAlertShown() throws Exception {
+		DriverUtils.waitUntilAlertAppears(getDriver());
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				invalidEmailAlert);
+	}
+
+	public void clickPhoneNotNow() {
+		notNowPhoneButton.click();
 	}
 }

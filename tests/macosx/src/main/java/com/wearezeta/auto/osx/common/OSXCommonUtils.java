@@ -220,12 +220,10 @@ public class OSXCommonUtils extends CommonUtils {
 		final String[] commands = new String[] {
 				"/bin/sh",
 				"-c",
-				"kill "
-						+ String.format(
-								"$(ps aux | grep %s | awk '{print $2}')",
+				String.format(
+								"ps aux | grep %s | awk '{print $2}' | xargs kill",
 								WIRE_APP_PATH) };
 		LOG.debug("executing commands: " + Arrays.toString(commands));
 		executeOsXCommandWithOutput(commands);
-
 	}
 }

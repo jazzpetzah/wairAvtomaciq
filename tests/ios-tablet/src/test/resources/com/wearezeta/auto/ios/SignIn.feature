@@ -334,3 +334,46 @@ Feature: Sign In
     Examples: 
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
+      
+  @staging @id3864 @noAcceptAlert
+  Scenario Outline: Verify error message appears in case of registering already taken email [PORTRAIT]
+    Given There is 1 user where <Name> is me with phone number only
+    Given I see sign in screen
+    When I tap I HAVE AN ACCOUNT button
+    And I tap on PHONE SIGN IN button
+    Then I see country picker button on Sign in screen
+    When I enter phone number for user <Name>
+    Then I see verification code page
+    When I enter verification code for user <Name>
+    And I accept alert
+    And I see set email/password suggesstion page
+    When I have entered login <Email>
+    And I have entered password <Password>
+    When I click DONE keyboard button
+    Then I see invalid email alert
+
+    Examples: 
+      | Email                     | Password      | Name      |
+      | smoketester@wearezeta.com | user1Password | user1Name |
+      
+  @staging @id3865 @noAcceptAlert 
+  Scenario Outline: Verify error message appears in case of registering already taken email [LANDSCAPE]
+    Given There is 1 user where <Name> is me with phone number only
+    Given I rotate UI to landscape
+    Given I see sign in screen
+    When I tap I HAVE AN ACCOUNT button
+    And I tap on PHONE SIGN IN button
+    Then I see country picker button on Sign in screen
+    When I enter phone number for user <Name>
+    Then I see verification code page
+    When I enter verification code for user <Name>
+    And I accept alert
+    And I see set email/password suggesstion page
+    When I have entered login <Email>
+    And I have entered password <Password>
+    When I click DONE keyboard button
+    Then I see invalid email alert
+
+    Examples: 
+      | Email                     | Password      | Name      |
+      | smoketester@wearezeta.com | user1Password | user1Name |
