@@ -1,18 +1,24 @@
 package com.wearezeta.auto.osx.locators;
 
 import static com.wearezeta.auto.osx.locators.OSXLocators.MainWirePage.xpathWindow;
+import java.util.function.Function;
 
 public final class OSXLocators {
 
+	@FunctionalInterface
+	public interface MergeFunction<A, B, R> {
+		public R apply(A a, B b);
+	}
+
 	public static final class AppMenu {
 
-		public static final String wireMenu = "//AXMenuBarItem[@AXTitle='Wire']";
+		public static final Function<String, String> xpathMenuBarItem = (name) -> String
+				.format("//AXMenuBarItem[contains(@AXTitle, '%s')]", name);
 
-		public static final String editMenu = "//AXMenuBarItem[@AXTitle='Edit']";
-
-		public static final String helpMenu = "//AXMenuBarItem[@AXTitle='Help']";
-		public static final String stagingMenuItem = "//AXMenuItem[@AXTitle='Staging']";
-		public static final String versionMenuItem = "//AXMenuItem[contains(@AXTitle,'Version')]";
+		public static final MergeFunction<String, String, String> xpathMenuItem = (
+				xpathParentMenuBarItem, name) -> String.format(
+				"%s/AXMenu/AXMenuItem[contains(@AXTitle, '%s')]",
+				xpathParentMenuBarItem, name);
 
 	}
 

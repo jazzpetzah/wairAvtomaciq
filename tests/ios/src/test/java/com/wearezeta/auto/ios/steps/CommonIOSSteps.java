@@ -334,6 +334,28 @@ public class CommonIOSSteps {
 		commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(
 				CURRENT_PLATFORM, count, myNameAlias);
 	}
+	
+	/**
+	 * Creates specified number of users and sets user with specified name as
+	 * main user. The user is registered with a email only and has no
+	 * phone number attached
+	 *
+	 * @step. ^There (?:is|are) (\\d+) users? where (.*) is me with email
+	 *        only$
+	 *
+	 * @param count
+	 *            number of users to create
+	 * @param myNameAlias
+	 *            user name or name alias to use as main user
+	 *
+	 * @throws Exception
+	 */
+	@Given("^There (?:is|are) (\\d+) users? where (.*) is me with email only$")
+	public void ThereAreNUsersWhereXIsMeWithoutPhone(int count,
+			String myNameAlias) throws Exception {
+		commonSteps.ThereAreNUsersWhereXIsMeRegOnlyByMail(
+				CURRENT_PLATFORM, count, myNameAlias);
+	}
 
 	@When("^(.*) ignore all requests$")
 	public void IgnoreAllIncomingConnectRequest(String userToNameAlias)

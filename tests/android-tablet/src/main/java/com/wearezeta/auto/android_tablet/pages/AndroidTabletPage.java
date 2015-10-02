@@ -19,9 +19,9 @@ public abstract class AndroidTabletPage extends AndroidPage {
 		super(lazyDriver);
 	}
 
-	protected AndroidPage getAndroidPageInstance(
-			Class<? extends AndroidPage> pageClass) throws Exception {
-		return (AndroidPage) this.instantiatePage(pageClass);
+	protected <T extends AndroidPage> T getAndroidPageInstance(
+			Class<T> pageClass) throws Exception {
+		return this.instantiatePage(pageClass);
 	}
 
 	@Override

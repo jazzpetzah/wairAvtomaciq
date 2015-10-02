@@ -108,12 +108,18 @@ public class RegistrationPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathPhoneNumber)
 	private WebElement phoneNumber;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.namePhoneNumberField)
+	private WebElement phoneNumberField;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathActivationCode)
 	private WebElement activationCode;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathCountry)
 	private WebElement selectCountry;
+
+	@FindBy(how = How.NAME, using = IOSLocators.LoginPage.nameCountryPickerButton)
+	private WebElement countryPickerButton;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathCountryList)
 	private WebElement countryList;
@@ -169,7 +175,7 @@ public class RegistrationPage extends IOSPage {
 	}
 
 	private void selectCountryByCode(String code) throws Exception {
-		selectCountry.click();
+		countryPickerButton.click();
 		boolean result = false;
 		int count = 0;
 		while (!result && count < 10) {
@@ -193,7 +199,8 @@ public class RegistrationPage extends IOSPage {
 		}
 	}
 
-	public void selectCodeAndInputPhoneNumber(String number, String code) throws Exception {
+	public void selectCodeAndInputPhoneNumber(String number, String code)
+			throws Exception {
 		selectCountryByCode(code);
 		inputPhoneNumber(number);
 	}
@@ -201,10 +208,10 @@ public class RegistrationPage extends IOSPage {
 	public void inputPhoneNumber(String number) throws Exception {
 		getWait().until(ExpectedConditions.elementToBeClickable(phoneNumber));
 		try {
-			phoneNumber.sendKeys(number);
+			phoneNumberField.sendKeys(number);
 		} catch (WebDriverException ex) {
-			phoneNumber.clear();
-			phoneNumber.sendKeys(number);
+			phoneNumberField.clear();
+			phoneNumberField.sendKeys(number);
 		}
 		confirmInput.click();
 	}
@@ -223,8 +230,7 @@ public class RegistrationPage extends IOSPage {
 	}
 
 	public void inputRandomActivationCode() throws Exception {
-		inputActivationCode(Integer.toString(CommonUtils
-				.generateRandomXdigits(6)));
+		inputActivationCode(CommonUtils.generateRandomXdigits(6));
 	}
 
 	public void clickResendCodeButton() {

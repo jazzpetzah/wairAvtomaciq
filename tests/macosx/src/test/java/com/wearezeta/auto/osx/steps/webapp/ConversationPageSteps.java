@@ -18,8 +18,8 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.osx.pages.webapp.ConversationPage;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
-import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.And;
@@ -715,19 +715,6 @@ public class ConversationPageSteps {
 		assertThat("Cached message in input field", WebappPagesCollection
 				.getInstance().getPage(ConversationPage.class)
 				.getMessageFromInputField(), equalTo(message));
-	}
-
-	/**
-	 * Types shortcut combination to open search
-	 *
-	 * @step. ^I type shortcut combination to open search$
-	 * @throws Exception
-	 */
-	@Then("^I type shortcut combination to open search$")
-	public void ITypeShortcutCombinationToOpenSearch() throws Exception {
-		WebappPagesCollection.peoplePickerPage = WebappPagesCollection
-				.getInstance().getPage(ConversationPage.class)
-				.pressShortCutForSearch();
 	}
 
 	/**

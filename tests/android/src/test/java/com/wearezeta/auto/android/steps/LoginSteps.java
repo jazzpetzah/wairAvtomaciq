@@ -2,11 +2,8 @@ package com.wearezeta.auto.android.steps;
 
 import java.util.Random;
 
-import org.junit.Assert;
 import org.openqa.selenium.NoSuchElementException;
 
-import com.wearezeta.auto.android.pages.AndroidPage;
-import com.wearezeta.auto.android.pages.registration.AddPhoneNumberPage;
 import com.wearezeta.auto.android.pages.registration.AreaCodePage;
 import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
 import com.wearezeta.auto.android.pages.registration.PhoneNumberVerificationPage;
@@ -25,26 +22,22 @@ public class LoginSteps {
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
 			.getInstance();
 
+	private final static int DEFAULT_LOGIN_SCREEN_TIMEOUT_SECONDS = 60 * 2;
+
 	private EmailSignInPage getEmailSignInPage() throws Exception {
-		return (EmailSignInPage) pagesCollection.getPage(EmailSignInPage.class);
+		return pagesCollection.getPage(EmailSignInPage.class);
 	}
 
 	private WelcomePage getWelcomePage() throws Exception {
-		return (WelcomePage) pagesCollection.getPage(WelcomePage.class);
-	}
-
-	private AddPhoneNumberPage getAddPhoneNumberPage() throws Exception {
-		return (AddPhoneNumberPage) pagesCollection
-				.getPage(AddPhoneNumberPage.class);
+		return pagesCollection.getPage(WelcomePage.class);
 	}
 
 	private AreaCodePage getAreaCodePage() throws Exception {
-		return (AreaCodePage) pagesCollection.getPage(AreaCodePage.class);
+		return pagesCollection.getPage(AreaCodePage.class);
 	}
 
 	private PhoneNumberVerificationPage getVerificationPage() throws Exception {
-		return (PhoneNumberVerificationPage) pagesCollection
-				.getPage(PhoneNumberVerificationPage.class);
+		return pagesCollection.getPage(PhoneNumberVerificationPage.class);
 	}
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -71,11 +64,7 @@ public class LoginSteps {
 			getEmailSignInPage().setLogin(self.getEmail());
 		}
 		getEmailSignInPage().setPassword(self.getPassword());
-		final AndroidPage returnedPage = getEmailSignInPage().logIn();
-		// We want to skip the "AddPhoneNumber page if it is presented to us
-		if (returnedPage instanceof AddPhoneNumberPage) {
-			getAddPhoneNumberPage().notNowButtonClick();
-		}
+		getEmailSignInPage().logIn(DEFAULT_LOGIN_SCREEN_TIMEOUT_SECONDS);
 	}
 
 	/**
@@ -174,9 +163,7 @@ public class LoginSteps {
 	 */
 	@When("I press Log in button")
 	public void WhenIPressLogInButton() throws Exception {
-		getEmailSignInPage().logIn();
-		Assert.assertTrue("Login finished", getEmailSignInPage()
-				.waitForLoginScreenDisappear());
+		getEmailSignInPage().logIn(DEFAULT_LOGIN_SCREEN_TIMEOUT_SECONDS);
 	}
 
 	/**

@@ -27,6 +27,7 @@ public class ContactListPageSteps {
 	private static final Logger LOG = ZetaLogger
 			.getLog(ContactListPageSteps.class.getName());
 
+	@SuppressWarnings("unused")
 	private final OSXPagesCollection osxPagesCollection = OSXPagesCollection
 			.getInstance();
 	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
@@ -36,20 +37,19 @@ public class ContactListPageSteps {
 	private static final int ARCHIVE_BTN_VISILITY_TIMEOUT = 5; // seconds
 
 	/**
-	 * Checks that contact list is loaded and waits for profile avatar to be
-	 * shown
+	 * Opens the right-click menu for a specific conversation
 	 *
 	 * @param name
 	 *            the conversation name to open the context menu for
 	 *
-	 * @step. ^I open context menu of contact (.*)$
+	 * @step. ^I open context menu of conversation (.*)$
 	 *
 	 * @throws java.lang.Exception
 	 * @throws AssertionError
 	 *             if contact list is not loaded or avatar does not appear at
 	 *             the top of Contact List
 	 */
-	@Given("^I open context menu of contact (.*)$")
+	@Given("^I open context menu of conversation (.*)$")
 	public void IOpenContextMenuOfContact(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		ContactListPage contactListPage = webappPagesCollection
@@ -397,8 +397,8 @@ public class ContactListPageSteps {
 	public void ISeeConversationIsNotMuted(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 
-		Assert.assertFalse(webappPagesCollection.getPage(ContactListPage.class)
-				.isConversationMuted(contact));
+		Assert.assertTrue(webappPagesCollection.getPage(ContactListPage.class)
+				.isConversationNotMuted(contact));
 	}
 
 	/**
@@ -706,19 +706,41 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Types shortcut combination to mute or unmute the conversation
+	 * Types shortcut combination to mute or unmute a conversation
 	 * 
-	 * @param contact
-	 * @step. ^I type shortcut combination to mute the conversation (.*)$
+	 * @step. ^I type shortcut combination to mute or unmute a conversation$
 	 * @throws Exception
 	 */
-	@When("^I type shortcut combination to mute or unmute the conversation (.*)$")
-	public void ITypeShortcutCombinationToMuteOrUnmute(String contact)
+	@When("^I type shortcut combination to mute or unmute a conversation$")
+	public void ITypeShortcutCombinationToMuteOrUnmute()
 			throws Exception {
-		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		webappPagesCollection.getPage(ContactListPage.class)
-				.pressShortCutToMuteOrUnmute(contact);
+				.pressShortCutToMute();
+	}
 
+	/**
+	 * Types shortcut combination to archive a conversation
+	 * 
+	 * @step. ^I type shortcut combination to archive a conversation$
+	 * @throws Exception
+	 */
+	@When("^I type shortcut combination to archive a conversation$")
+	public void ITypeShortcutCombinationToArchive()
+			throws Exception {
+		webappPagesCollection.getPage(ContactListPage.class)
+				.pressShortCutToArchive();
+	}
+
+	/**
+	 * Types shortcut combination to open search
+	 *
+	 * @step. ^I type shortcut combination to open search$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to open search$")
+	public void ITypeShortcutCombinationToOpenSearch() throws Exception {
+		WebappPagesCollection.getInstance().getPage(ContactListPage.class)
+				.pressShortCutToSearch();
 	}
 
 	/**

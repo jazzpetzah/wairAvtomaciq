@@ -12,8 +12,7 @@ public class TabletGiphyPage extends AndroidTabletPage {
 	}
 
 	private GiphyPreviewPage getAndroidGiphyPage() throws Exception {
-		return (GiphyPreviewPage) this
-				.getAndroidPageInstance(GiphyPreviewPage.class);
+		return this.getAndroidPageInstance(GiphyPreviewPage.class);
 	}
 
 	public boolean waitUntilIsVisible() throws Exception {

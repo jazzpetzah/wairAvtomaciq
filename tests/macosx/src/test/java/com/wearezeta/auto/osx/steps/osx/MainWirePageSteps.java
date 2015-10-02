@@ -92,7 +92,7 @@ public class MainWirePageSteps {
 		Dimension dockSize = mainPage.getDockSize();
 		// calculate fullscreen height
 		if (dockSize.getHeight() > dockSize.getWidth()) {
-			// dock on the left size
+			// dock on the left side
 			maxHeight = desktopSize.getHeight() - OSX_TITLEBAR_HEIGHT;
 		} else {
 			// dock on the bottom

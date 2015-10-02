@@ -5,33 +5,39 @@ import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
 import com.google.common.base.Function;
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
+
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.Browser;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
+
 import static com.wearezeta.auto.web.locators.WebAppLocators.Common.TITLE_ATTRIBUTE_LOCATOR;
+
 import com.wearezeta.auto.web.pages.PendingConnectionsPage;
 import com.wearezeta.auto.web.pages.PeoplePickerPage;
 import com.wearezeta.auto.web.pages.SelfProfilePage;
 import com.wearezeta.auto.web.pages.WebPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
-import cucumber.api.PendingException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -43,6 +49,9 @@ public class ContactListPage extends WebPage {
 
 	private static final Logger LOG = ZetaLogger.getLog(ContactListPage.class
 			.getSimpleName());
+
+	// TODO hide behind driver impl
+	private final Robot robot = new Robot();
 
 	private static final String DEFAULT_GROUP_CONVO_NAMES_SEPARATOR = ",";
 	private static final int OPEN_CONVO_LIST_ENTRY_TIMEOUT = 8; // seconds
@@ -251,6 +260,22 @@ public class ContactListPage extends WebPage {
 				By.xpath(locator));
 	}
 
+	public void pressShortCutToMute() throws Exception {
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_ALT);
+		robot.keyPress(KeyEvent.VK_S);
+		robot.keyRelease(KeyEvent.VK_S);
+		robot.keyRelease(KeyEvent.VK_ALT);
+		robot.keyRelease(KeyEvent.VK_META);
+	}
+
+	public void pressShortCutToArchive() throws Exception {
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_D);
+		robot.keyRelease(KeyEvent.VK_D);
+		robot.keyRelease(KeyEvent.VK_META);
+	}
+
 	public void openArchive() throws Exception {
 		this.getWait().until(
 				ExpectedConditions
@@ -270,7 +295,22 @@ public class ContactListPage extends WebPage {
 				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
 						By.xpath(WebAppLocators.ContactListPage.xpathMuteIconByContactName
-								.apply(conversationName)), 5);
+								.apply(conversationName)));
+	}
+
+	public boolean isConversationNotMuted(String conversationName)
+			throws Exception {
+		// moving focus from contact - to now show ... button
+		// do nothing (safari workaround)
+		if (WebAppExecutionContext.getBrowser()
+				.isSupportingNativeMouseActions()) {
+			DriverUtils.moveMouserOver(this.getDriver(), selfProfileAvatar);
+		}
+		return DriverUtils
+				.waitUntilLocatorDissapears(
+						this.getDriver(),
+						By.xpath(WebAppLocators.ContactListPage.xpathMuteIconByContactName
+								.apply(conversationName)));
 	}
 
 	public void clickOptionsButtonForContact(String conversationName)
@@ -488,15 +528,11 @@ public class ContactListPage extends WebPage {
 		return muteButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
 	}
 
-	public void pressShortCutToMuteOrUnmute(String conversationName)
-			throws Exception {
-		conversationName = fixDefaultGroupConvoName(conversationName, false);
-		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
-			conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "l"));
-		} else {
-			throw new PendingException(
-					"Webdriver does not support shortcuts for Mac browsers");
-		}
+	public void pressShortCutToSearch() throws Exception {
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_N);
+		robot.keyRelease(KeyEvent.VK_N);
+		robot.keyRelease(KeyEvent.VK_META);
 	}
 
 	public boolean isLeaveWarningModalVisible() throws Exception {

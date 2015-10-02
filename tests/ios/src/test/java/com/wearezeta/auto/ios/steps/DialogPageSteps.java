@@ -811,6 +811,23 @@ public class DialogPageSteps {
 	}
 
 	/**
+	 * Verify if dialog page with pointed user is shown. It's ok to use only if
+	 * there is not or small amount of messages in dialog.
+	 * 
+	 * @step. ^I see dialog page with contact (.*)$
+	 * 
+	 * @param contact
+	 *            contact name
+	 * @throws Exception
+	 */
+	@When("^I see dialog page with contact (.*)$")
+	public void ISeeDialogPageWithContact(String contact) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		Assert.assertTrue("Dialog with user is not visible", getDialogPage()
+				.isConnectedToUserStartedConversationLabelVisible(contact));
+	}
+
+	/**
 	 * Verify is plus button is visible
 	 * 
 	 * @step. ^I see plus button next to text input$
@@ -1070,16 +1087,17 @@ public class DialogPageSteps {
 	public void ITapOnLinkWithAMessage() throws Throwable {
 		getDialogPage().tapOnLinkWithinAMessage();
 	}
-	
+
 	/**
 	 * Verify that input field contains expected text message
+	 * 
 	 * @step. ^I see the message in input field$
 	 * @throws Exception
 	 */
 	@When("^I see the message in input field$")
 	public void WhenISeeMessageInInputField() throws Exception {
 
-		Assert.assertTrue("Input field has incorrect message or empty", 
-					message.equals(getDialogPage().getStringFromInput()));
+		Assert.assertTrue("Input field has incorrect message or empty",
+				message.equals(getDialogPage().getStringFromInput()));
 	}
 }

@@ -135,7 +135,7 @@ Feature: Search
       | user1Name | user2Name | user3Name | PeoplePickerGroupChat2 |
 
   @id1395 @regression @rc @rc42
-  Scenario Outline: Verify starting 1:1 conversation with a person from Top People
+  Scenario Outline: (AN-2834) Verify starting 1:1 conversation with a person from Top People
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Contact <Contact1> send message to user <Name>

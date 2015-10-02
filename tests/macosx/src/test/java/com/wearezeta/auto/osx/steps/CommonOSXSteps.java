@@ -7,33 +7,39 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.ZetaFormatter;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.driver.ZetaOSXWebAppDriver;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.clearAppData;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.killAllApps;
+
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
+
 import static com.wearezeta.auto.osx.common.OSXExecutionContext.APPIUM_HUB_URL;
 import static com.wearezeta.auto.osx.common.OSXExecutionContext.WIRE_APP_PATH;
+
 import com.wearezeta.auto.osx.pages.osx.MainWirePage;
-import com.wearezeta.auto.osx.pages.osx.MenuBarPage;
 import com.wearezeta.auto.osx.pages.osx.OSXPage;
 import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
+import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.steps.CommonWebAppSteps;
+
 import static com.wearezeta.auto.web.steps.CommonWebAppSteps.log;
 import cucumber.api.PendingException;
-
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -43,6 +49,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import org.openqa.selenium.By;
+
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 
@@ -52,8 +60,14 @@ public class CommonOSXSteps {
 			.getName());
 
 	private static final String DEFAULT_USER_PICTURE = "/images/aqaPictureContact600_800.jpg";
+	private static final int WRAPPER_STARTUP_TIMEOUT_SECONDS = 30;
+	private static final String DEFAULT_ENVIRONMENT = "Staging";// TODO use
+																// execution
+																// context
+
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 
+	@SuppressWarnings("unused")
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private ChromeDriverService service;
@@ -122,25 +136,26 @@ public class CommonOSXSteps {
 	}
 
 	private void startApp() throws Exception {
-		final Future<ZetaOSXDriver> osxDriver = createOSXDriver();
-		final Future<ZetaWebAppDriver> webDriver = createWebDriver(osxDriver);
+		final Future<ZetaOSXDriver> osxDriverFuture = createOSXDriver();
+		final Future<ZetaWebAppDriver> webDriverFuture = createWebDriver(osxDriverFuture);
 
 		// get drivers instantly
-		final ZetaOSXDriver app = osxDriver.get();
-		webDriver.get();
-		app.navigate().to(WIRE_APP_PATH);
+		final ZetaOSXDriver osxDriver = osxDriverFuture.get();
+		final ZetaWebAppDriver webappDriver = webDriverFuture.get();
+		osxDriver.navigate().to(WIRE_APP_PATH);
 
-		ZetaFormatter.setLazyDriver(osxDriver);
+		ZetaFormatter.setLazyDriver(osxDriverFuture);
 
-		osxPagesCollection.setFirstPage(new MainWirePage(osxDriver));
+		osxPagesCollection.setFirstPage(new MainWirePage(osxDriverFuture));
 		MainWirePage mainWirePage = osxPagesCollection
 				.getPage(MainWirePage.class);
-		MenuBarPage menuBarPage = osxPagesCollection.getPage(MenuBarPage.class);
 
 		mainWirePage.focusApp();
-		Thread.sleep(3000);// wait for page to load TODO scan for spinner
-		menuBarPage.switchEnvironment();
-		webappPagesCollection.setFirstPage(new RegistrationPage(webDriver));
+		waitForStartupSpinnerDisappears(webappDriver);
+		mainWirePage.switchEnvironment(DEFAULT_ENVIRONMENT);
+		waitForStartupSpinnerDisappears(webappDriver);
+		webappPagesCollection
+				.setFirstPage(new RegistrationPage(webDriverFuture));
 	}
 
 	@Before("@performance")
@@ -151,6 +166,13 @@ public class CommonOSXSteps {
 	@Before("~@performance")
 	public void setUp() throws Exception {
 		commonBefore();
+	}
+
+	private void waitForStartupSpinnerDisappears(ZetaWebAppDriver webdriver)
+			throws Exception {
+		DriverUtils.waitUntilLocatorDissapears(webdriver,
+				By.className(WebAppLocators.LoginPage.classNameSpinner),
+				WRAPPER_STARTUP_TIMEOUT_SECONDS);
 	}
 
 	/**
@@ -629,6 +651,19 @@ public class CommonOSXSteps {
 				.isSupportingSyntheticDragAndDrop()) {
 			throw new PendingException();
 		}
+	}
+
+	@When("^I click menu bar item \"(.*)\" and menu item \"(.*)\"$")
+	public void clickMenuBarItem(String menuBarItemName, String menuItemName)
+			throws Exception {
+		MainWirePage mainPage = osxPagesCollection.getPage(MainWirePage.class);
+		mainPage.clickMenuBarItem(menuBarItemName, menuItemName);
+	}
+
+	@When("^I click menu bar item with name \"(.*)\"$")
+	public void clickMenuBarItem(String menuBarItemName) throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class).clickMenuBarItem(
+				menuBarItemName);
 	}
 
 	@When("^I kill the app$")

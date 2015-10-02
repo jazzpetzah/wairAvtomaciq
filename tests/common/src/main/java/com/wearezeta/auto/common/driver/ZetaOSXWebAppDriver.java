@@ -1,7 +1,9 @@
 package com.wearezeta.auto.common.driver;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
+
 import java.net.URL;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Beta;
 import org.openqa.selenium.Capabilities;
@@ -11,6 +13,7 @@ import org.openqa.selenium.WebDriver;
 
 public class ZetaOSXWebAppDriver extends ZetaWebAppDriver {
 
+	@SuppressWarnings("unused")
 	private static final Logger LOG = ZetaLogger.getLog(ZetaWebAppDriver.class
 			.getName());
 

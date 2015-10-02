@@ -17,7 +17,7 @@ import org.openqa.selenium.Point;
 
 public class MainWirePage extends OSXPage {
 
-	public static final int APP_MAX_WIDTH = 1240;
+	public static final int APP_MAX_WIDTH = 1103;
 	private static final int APP_MIN_WIDTH = 780;
 	private static final int APP_MIN_HEIGHT = 600;
 
@@ -137,8 +137,8 @@ public class MainWirePage extends OSXPage {
 				+ TITLEBAR_HANDLE_OFFSET, windowPosition.getY()
 				+ TITLEBAR_HEIGHT / 2);
 		final Point customPosition = new Point(SPACE_FOR_DOCK
-				+ TITLEBAR_HANDLE_OFFSET + x, TITLEBAR_HEIGHT + TITLEBAR_HEIGHT
-				/ 2 + y);
+				+ TITLEBAR_HANDLE_OFFSET + x, TITLEBAR_HEIGHT
+				+ (TITLEBAR_HEIGHT / 2) + y);
 
 		robot.mouseMove(titleBar.getX(), titleBar.getY());
 		robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);

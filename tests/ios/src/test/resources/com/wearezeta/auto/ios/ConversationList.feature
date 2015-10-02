@@ -268,11 +268,11 @@ Feature: Conversation List
     And I see Cancel button in action menu in Contact List
     And I press Cancel button in action menu in Contact List
     Then I see Contact list with my name <Name>
-    
+
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
-  
+
   @staging @id3312
   Scenario Outline: Verify silencing and notify from the action menu
     Given There are 2 users where <Name> is me
@@ -294,3 +294,18 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact   | Color  | NewName |
       | user1Name | user2Name | Violet | SILENCE |
+
+  @staging @id3899
+  Scenario Outline: Verify first conversation in the list is highlighted and opened
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Name> change accent color to BrightOrange
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    Then I see conversation <Contact> is selected in list
+    When I swipe left in current window
+    Then I see dialog page with contact <Contact>
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |

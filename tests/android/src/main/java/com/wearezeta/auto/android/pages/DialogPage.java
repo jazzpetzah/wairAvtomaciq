@@ -47,6 +47,8 @@ public class DialogPage extends AndroidPage {
 	public static final String xpathConfirmOKButton = "//*[@id='ttv__confirmation__confirm' and @value='OK']";
 
 	public static final String idDialogImages = "iv__row_conversation__message_image";
+	private static final String xpathLastPicture = String.format(
+			"(//*[@id='%s'])[last()]", idDialogImages);
 
 	public static final String idAddPicture = "cursor_menu_item_camera";
 
@@ -241,7 +243,13 @@ public class DialogPage extends AndroidPage {
 				By.id(idCursorArea));
 	}
 
-	public void tapOnCursorInput() {
+	public void tapOnCursorInput() throws Exception {
+		// FIXME: Scroll to the bottom if cursor input is not visible
+		if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idCursorBtnImg), 2)) {
+			tapOnCursorFrame();
+			this.hideKeyboard();
+		}
 		cursorArea.click();
 	}
 
@@ -265,7 +273,12 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void swipeOnCursorInput() throws Exception {
-		commonSteps.WaitForTime(1);
+		// FIXME: Scroll to the bottom if cursor input is not visible
+		if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idCursorBtnImg), 2)) {
+			tapOnCursorFrame();
+			this.hideKeyboard();
+		}
 		getWait().until(ExpectedConditions.elementToBeClickable(cursorArea));
 		final By cursorLocator = By.id(idCursorArea);
 		int ntry = 1;
@@ -276,7 +289,7 @@ public class DialogPage extends AndroidPage {
 					.findElement(cursorLocator).getLocation().getX();
 			if (currentCursorOffset > getDriver().manage().window().getSize()
 					.getWidth() / 2) {
-				commonSteps.WaitForTime(0.5);
+				Thread.sleep(500);
 				return;
 			}
 			log.debug(String.format(
@@ -400,8 +413,10 @@ public class DialogPage extends AndroidPage {
 		tapByCoordinates(94, 96);
 	}
 
-	public void clickLastImageFromDialog() {
-		imageList.get(imageList.size() - 1).click();
+	public void clickLastImageFromDialog() throws Exception {
+		final By locator = By.xpath(xpathLastPicture);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : "No pictures are visible in the conversation view";
+		getDriver().findElement(locator).click();
 	}
 
 	public String getChangedGroupNameMessage() {

@@ -18,7 +18,8 @@ import com.wearezeta.auto.web.pages.popovers.ConnectToPopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.PeoplePopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
-import cucumber.api.PendingException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -48,6 +49,9 @@ public class ConversationPage extends WebPage {
 	private static final String TOOLTIP_PEOPLE = "People";
 
 	private static final String CALLING_IN_LABEL = "IN ";
+
+	// TODO hide behind driver impl
+	private final Robot robot = new Robot();
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathLastImageEntry)
 	private WebElement lastImageEntry;
@@ -494,16 +498,6 @@ public class ConversationPage extends WebPage {
 		return conversationInput.getAttribute("value");
 	}
 
-	public PeoplePickerPage pressShortCutForSearch() throws Exception {
-		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
-			conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "n"));
-		} else {
-			throw new PendingException(
-					"Webdriver does not support shortcuts for Mac browsers");
-		}
-		return new PeoplePickerPage(getLazyDriver());
-	}
-
 	public void hoverPingButton() throws Exception {
 		if (WebAppExecutionContext.getBrowser()
 				.isSupportingNativeMouseActions()) {
@@ -521,12 +515,10 @@ public class ConversationPage extends WebPage {
 	}
 
 	public void pressShortCutForPing() throws Exception {
-		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
-			conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "g"));
-		} else {
-			throw new PendingException(
-					"Webdriver does not support shortcuts for Mac browsers");
-		}
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_K);
+		robot.keyRelease(KeyEvent.VK_K);
+		robot.keyRelease(KeyEvent.VK_META);
 	}
 
 	public String getPingButtonToolTip() {
@@ -551,12 +543,10 @@ public class ConversationPage extends WebPage {
 	}
 
 	public void pressShortCutForCall() throws Exception {
-		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
-			conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "t"));
-		} else {
-			throw new PendingException(
-					"Webdriver does not support shortcuts for Mac browsers");
-		}
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_T);
+		robot.keyRelease(KeyEvent.VK_T);
+		robot.keyRelease(KeyEvent.VK_META);
 	}
 
 	public ConnectToPopoverContainer clickUserAvatar() throws Exception {

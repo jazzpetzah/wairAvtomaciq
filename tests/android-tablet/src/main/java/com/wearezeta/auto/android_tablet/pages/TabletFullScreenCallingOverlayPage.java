@@ -14,8 +14,7 @@ public class TabletFullScreenCallingOverlayPage extends AndroidTabletPage {
 	}
 
 	private CallingLockscreenPage getCallingLockscreenPage() throws Exception {
-		return (CallingLockscreenPage) this
-				.getAndroidPageInstance(CallingLockscreenPage.class);
+		return this.getAndroidPageInstance(CallingLockscreenPage.class);
 	}
 
 	public boolean waitUntilVisible() throws Exception {

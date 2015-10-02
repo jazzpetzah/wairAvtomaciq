@@ -457,7 +457,7 @@ Feature: Calling
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    Then I see call overlay
+    Then I see join group call overlay
     When I answer the call from the overlay bar
     Then I do not see join group call overlay
     And I see calling overlay Big bar
@@ -518,7 +518,7 @@ Feature: Calling
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    And I see call overlay
+    And I see join group call overlay
     And I answer the call from the overlay bar
     And I do not see join group call overlay
     And I see calling overlay Big bar
@@ -575,6 +575,7 @@ Feature: Calling
     And I press Call button
     And I see call overlay
     When I lock the device
+    And I wait for 2 seconds
     And I unlock the device
     Then I see call overlay
 
