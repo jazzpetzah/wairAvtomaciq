@@ -137,10 +137,16 @@ public class ContactListPage extends AndroidPage {
 							.apply(i));
 					if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 							locator, 1)) {
-						final String name = getDriver().findElement(locator)
-								.getText();
+						final WebElement elem = getDriver()
+								.findElement(locator);
+						final String name = elem.getText();
 						if ((name instanceof String) && name.length() > 0) {
-							return name;
+							if (DriverUtils.waitUntilElementClickable(
+									getDriver(), elem)) {
+								return name;
+							} else {
+								break;
+							}
 						}
 					}
 				}
