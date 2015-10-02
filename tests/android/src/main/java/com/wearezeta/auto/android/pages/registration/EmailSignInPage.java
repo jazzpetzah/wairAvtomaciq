@@ -77,19 +77,21 @@ public class EmailSignInPage extends AndroidPage {
 	 * @throws Exception
 	 */
 	public void logIn(int timeoutSeconds) throws Exception {
-		confirmSignInButton.click();
 		// FIXME: Workaround for 403 error from the backend
+		confirmSignInButton.click();
 		final long millisecondsStarted = System.currentTimeMillis();
 		do {
 			if (DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-					By.id(EmailSignInPage.idLoginButton), 20)) {
-				return;
-			} else {
-				if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+					By.id(EmailSignInPage.idLoginButton), 5)) {
+				if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 						By.xpath(xpathAlertOKButton), 1)) {
-					acceptErrorMessage();
-					confirmSignInButton.click();
+					return;
 				}
+			}
+			if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+					By.xpath(xpathAlertOKButton), 1)) {
+				acceptErrorMessage();
+				confirmSignInButton.click();
 			}
 		} while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
 		throw new AssertionError(String.format(
