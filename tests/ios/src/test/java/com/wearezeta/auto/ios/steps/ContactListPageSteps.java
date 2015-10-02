@@ -53,6 +53,21 @@ public class ContactListPageSteps {
 	}
 
 	/**
+	 * Verify label in Self button
+	 * 
+	 * @step. ^I see my name (.*) first letter as label of Self Button$
+	 * 
+	 * @param name
+	 *            username
+	 * @throws Exception
+	 */
+	@When("^I see my name (.*) first letter as label of Self Button$")
+	public void ISeeFirstLetterAsLabelSelfButton(String name) throws Exception {
+		Assert.assertTrue(getContactListPage()
+				.isSelfButtonContainingFirstNameLetter(name));
+	}
+
+	/**
 	 * Click MAYBE LATER on settings warning screen
 	 * 
 	 * @step. ^I dismiss settings warning$
