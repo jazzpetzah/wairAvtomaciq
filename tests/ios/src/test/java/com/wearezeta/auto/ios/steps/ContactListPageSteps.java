@@ -775,6 +775,6 @@ public class ContactListPageSteps {
 				FindBy.NAME_ALIAS);
 		String convIsSelected = getContactListPage()
 				.getSelectedConversationCellValue(conversation);
-		Assert.assertEquals("1", convIsSelected);
+		Assert.assertEquals("Converstaion is not selected", "1", convIsSelected);
 	}
 }
