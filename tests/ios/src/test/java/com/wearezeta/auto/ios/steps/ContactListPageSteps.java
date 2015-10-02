@@ -27,14 +27,17 @@ public class ContactListPageSteps {
 	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
 			.getInstance();
 
+	@SuppressWarnings("unchecked")
 	private ContactListPage getContactListPage() throws Exception {
 		return (ContactListPage) pagesCollecton.getPage(ContactListPage.class);
 	}
 
+	@SuppressWarnings("unchecked")
 	private LoginPage getLoginPage() throws Exception {
 		return (LoginPage) pagesCollecton.getPage(LoginPage.class);
 	}
 
+	@SuppressWarnings("unchecked")
 	private PersonalInfoPage getPersonalInfoPage() throws Exception {
 		return (PersonalInfoPage) pagesCollecton
 				.getPage(PersonalInfoPage.class);
