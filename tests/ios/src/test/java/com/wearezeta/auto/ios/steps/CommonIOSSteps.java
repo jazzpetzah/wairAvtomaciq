@@ -72,9 +72,14 @@ public class CommonIOSSteps {
 		CommonIOSSteps.skipBeforeAfter = skipBeforeAfter;
 	}
 
-	@SuppressWarnings("unchecked")
 	public Future<ZetaIOSDriver> resetIOSDriver(boolean enableAutoAcceptAlerts)
 			throws Exception {
+		return resetIOSDriver(enableAutoAcceptAlerts, false);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Future<ZetaIOSDriver> resetIOSDriver(boolean enableAutoAcceptAlerts,
+			boolean overrideWaitForAppScript) throws Exception {
 		final DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
 		capabilities.setCapability("app", getPath());
@@ -90,6 +95,11 @@ public class CommonIOSSteps {
 								+ backendType);
 		if (enableAutoAcceptAlerts) {
 			capabilities.setCapability("autoAcceptAlerts", true);
+		}
+
+		if (overrideWaitForAppScript) {
+			capabilities.setCapability("waitForAppScript",
+					"$.delay(20000); true;");
 		}
 
 		setTestStartedDate(new Date());

@@ -121,6 +121,12 @@ public class PerformanceSteps {
 		do {
 			try {
 				getContactListPage().verifyContactListIsFullyLoaded();
+			} catch (Exception e) {
+				// FIXME: Sometimes '...' placeholder stays forever in the
+				// conversations list
+				getContactListPage().workaroundConvoListItemsLoad();
+			}
+			try {
 				if (getContactListPage().isAnyConversationVisible()) {
 					return;
 				}

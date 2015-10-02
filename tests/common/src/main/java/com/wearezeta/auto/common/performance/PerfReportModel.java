@@ -101,6 +101,21 @@ public abstract class PerfReportModel extends AbstractPerfReportModel {
 		this.setDeviceOSVersion(deviceInfo.getOperatingSystemBuild());
 	}
 
+	protected long readLastLogValue(final String patternStr, final String output) {
+		final Pattern pattern = Pattern.compile(patternStr);
+		final Matcher matcher = pattern.matcher(output);
+		long result = 0;
+		while (matcher.find()) {
+			try {
+				result = Long.parseLong(matcher.group(1));
+				log.debug("Found log entry with text: " + matcher.group());
+			} catch (NumberFormatException e) {
+				log.error(e);
+			}
+		}
+		return result;
+	}
+	
 	protected long readLogValue(final String patternStr, final String output) {
 		final Pattern pattern = Pattern.compile(patternStr);
 		final Matcher matcher = pattern.matcher(output);

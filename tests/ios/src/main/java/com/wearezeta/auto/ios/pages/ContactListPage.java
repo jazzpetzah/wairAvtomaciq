@@ -156,6 +156,16 @@ public class ContactListPage extends IOSPage {
 		return new PersonalInfoPage(this.getLazyDriver());
 	}
 
+	public String getSelfButtonLabel() {
+		String v = selfUserButton.getAttribute("label").toUpperCase();
+		return v;
+	}
+
+	public boolean isSelfButtonContainingFirstNameLetter(String name) {
+		String sub = name.substring(0, 1).toUpperCase();
+		return sub.equals(getSelfButtonLabel());
+	}
+
 	public IOSPage tapOnName(String name) throws Exception {
 		WebElement el = findNameInContactList(name);
 		if (el == null) {

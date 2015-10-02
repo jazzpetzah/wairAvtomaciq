@@ -197,6 +197,29 @@ public class ContactListPage extends AndroidPage {
 		return new DialogPage(this.getLazyDriver());
 	}
 
+	public void workaroundConvoListItemsLoad() throws Exception {
+		for (int i = 1; i <= contactListNames.size(); i++) {
+			final By locator = By.xpath(xpathContactByIndex.apply(i));
+			try {
+				if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+						locator, 1)) {
+					final WebElement elem = getDriver().findElement(locator);
+					if (DriverUtils.waitUntilElementClickable(getDriver(),
+							elem, 1)) {
+						elem.click();
+						// Wait for animation
+						Thread.sleep(1000);
+						DriverUtils
+								.swipeRightCoordinates(getDriver(), 1000, 50);
+						return;
+					}
+				}
+			} catch (WebDriverException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public List<WebElement> GetVisibleContacts() throws Exception {
 		return contactListNames;
 	}

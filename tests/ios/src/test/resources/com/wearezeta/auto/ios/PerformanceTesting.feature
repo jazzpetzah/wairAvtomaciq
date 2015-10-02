@@ -7,6 +7,12 @@ Feature: Performance Tests
     Given Myself is connected to all other users
     Given I receive <MsgsCount> messages from contact <Sender>
     Given I sign in using my email
+    Given I wait for contact list loaded
+    Given I dismiss all alerts
+    Given I dismiss settings warning
+    Given I restart application
+    Given There are <UsersNumber> shared users with name prefix <UserNamePrefix>
+    Given User <Name> is Me
     When I start test cycle for <Time> minutes with messages received from <Sender>
     Then I generate performance report for <UsersNumber> users
 

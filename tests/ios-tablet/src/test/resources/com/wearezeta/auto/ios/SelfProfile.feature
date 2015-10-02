@@ -9,7 +9,10 @@ Feature: Self Profile
     And I tap to edit my name
     And I change name <Name> to <NewUsername>
     Then I see my new name <NewUsername1>
+    When I close self profile
     Then I see Contact list with my name <NewUsername1>
+    And I see my name <NewUsername1> first letter as label of Self Button
+    When I tap on my name <Name>
     And I tap to edit my name
     And I change name <Name> to <NewUsername>
     Then I see my new name <NewUsername1>
@@ -28,8 +31,10 @@ Feature: Self Profile
     And I tap to edit my name
     And I change name <Name> to <NewUsername>
     Then I see my new name <NewUsername1>
-    When I rotate UI to landscape
+    When I close self profile
     Then I see Contact list with my name <NewUsername1>
+    And I see my name <NewUsername1> first letter as label of Self Button
+    When I tap on my name <Name>
     And I tap to edit my name
     And I change name <Name> to <NewUsername>
     Then I see my new name <NewUsername1>
