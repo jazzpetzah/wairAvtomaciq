@@ -87,26 +87,7 @@ public class PerformanceSteps {
 			getEmailSignInPage().setLogin(self.getEmail());
 		}
 		getEmailSignInPage().setPassword(self.getPassword());
-		// FIXME: Workaround for 403 error from the backend
-		final int maxLoginRetries = 3;
-		int ntry = 1;
-		Throwable savedError = null;
-		do {
-			try {
-				getEmailSignInPage().logIn(timeoutSeconds);
-				return;
-			} catch (AssertionError e) {
-				e.printStackTrace();
-				try {
-					getEmailSignInPage().acceptErrorMessage();
-				} catch (WebDriverException e1) {
-					e1.printStackTrace();
-				}
-				savedError = e;
-				ntry++;
-			}
-		} while (ntry <= maxLoginRetries);
-		throw savedError;
+		getEmailSignInPage().logIn(timeoutSeconds);
 	}
 
 	/**
@@ -134,21 +115,27 @@ public class PerformanceSteps {
 	}
 
 	private void waitUntilConversationsListIsFullyLoaded() throws Exception {
-		final int maxTries = 3;
+		final int maxTries = 15;
 		final long millisecondsDelay = 20000;
 		int ntry = 1;
 		do {
 			try {
 				getContactListPage().verifyContactListIsFullyLoaded();
-			} catch (AssertionError e) {
-				e.printStackTrace();
+			} catch (Exception e) {
+				// FIXME: Sometimes '...' placeholder stays forever in the
+				// conversations list
+				getContactListPage().workaroundConvoListItemsLoad();
+			}
+			try {
+				if (getContactListPage().isAnyConversationVisible()) {
+					return;
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			Thread.sleep(millisecondsDelay);
 			ntry++;
-		} while (!getContactListPage().isAnyConversationVisible()
-				&& ntry <= maxTries);
+		} while (ntry <= maxTries);
 		Assert.assertTrue(
 				"No conversations are visible in the conversations list, but some are expected",
 				getContactListPage().isAnyConversationVisible());
@@ -168,7 +155,7 @@ public class PerformanceSteps {
 					e.printStackTrace();
 				}
 			}
-			Thread.sleep(3000);
+			Thread.sleep(10000);
 			ntry++;
 		} while (!getDialogPage().isDialogVisible() && ntry <= maxRetries);
 		assert getDialogPage().isDialogVisible() : "The conversation has not been opened after "
@@ -198,6 +185,8 @@ public class PerformanceSteps {
 				fromContact).getName();
 		String firstConvoName = getContactListPage()
 				.getFirstVisibleConversationName();
+		final int maxRetries = 20;
+		final long millisecondsDelay = 10000;
 		int ntry = 1;
 		do {
 			// This contact, which received messages, should be the first
@@ -205,12 +194,12 @@ public class PerformanceSteps {
 			if (destConvoName.equals(firstConvoName)) {
 				break;
 			} else {
-				Thread.sleep(10000);
+				Thread.sleep(millisecondsDelay);
 			}
 			firstConvoName = getContactListPage()
 					.getFirstVisibleConversationName();
 			ntry++;
-		} while (ntry <= 3);
+		} while (ntry <= maxRetries);
 		assert destConvoName.equals(firstConvoName) : String
 				.format("The very first conversation name '%s' is not the same as expected one ('%s')",
 						firstConvoName, destConvoName);

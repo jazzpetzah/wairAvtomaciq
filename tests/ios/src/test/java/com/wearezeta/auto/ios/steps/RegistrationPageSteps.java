@@ -204,7 +204,20 @@ public class RegistrationPageSteps {
 	@When("^I enter random phone number$")
 	public void IEnterRandomePhoneNumber() throws Exception {
 		getRegistrationPage().inputPhoneNumber(
-				Integer.toString(CommonUtils.generateRandomXdigits(7)));
+				CommonUtils.generateRandomXdigits(7));
+	}
+
+	/**
+	 * Input in phone number field page an invalid phone number
+	 * 
+	 * @step. ^I enter invalid phone number$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I enter invalid phone number$")
+	public void IEnterInvalidPhoneNumber() throws Exception {
+		getRegistrationPage().inputPhoneNumber(
+				CommonUtils.generateRandomXdigits(11));
 	}
 
 	/**

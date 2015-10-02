@@ -996,6 +996,13 @@ public class DialogPage extends IOSPage {
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(), el);
 	}
 
+	public boolean isConnectedToUserStartedConversationLabelVisible(
+			String username) throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(String
+				.format(IOSLocators.DialogPage.xpathConnectedToUserLabel,
+						username.toUpperCase())), 5);
+	}
+
 	/**
 	 * Navigates back by swipe and initialize ContactListPage
 	 * 

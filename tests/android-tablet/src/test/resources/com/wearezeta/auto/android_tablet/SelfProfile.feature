@@ -111,7 +111,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @id2857 @staging
+  @id2857 @regression
   Scenario Outline: User can change accent color and it is saved after sign in sign out (portrait)
     Given There is 1 user where <Name> is me
     Given I rotate UI to portrait
@@ -132,7 +132,7 @@ Feature: Self Profile
       | Name      | AccentColor |
       | user1Name | Violet      |
 
-  @id3109 @staging
+  @id3109 @regression
   Scenario Outline: User can change accent color and it is saved after sign in sign out (landscape)
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape

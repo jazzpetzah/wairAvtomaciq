@@ -598,11 +598,11 @@ public class CommonUtils {
 		return getValueFromCommonConfig(c, "jenkinsJobUrl");
 	}
 
-	public static int generateRandomXdigits(double i) {
+	public static String generateRandomXdigits(int i) {
 		Random rand = new Random();
-		int random = (int) (Math.pow(10, i - 1)) * (rand.nextInt(8) + 1)
-				+ rand.nextInt((int) (Math.pow(10, i - 1)));
-		return random;
+		long random = (long) (Math.pow(10, i - 1)) * (rand.nextInt(8) + 1)
+				+ (long) rand.nextInt((int)(Math.pow(10, i - 1)));
+		return Long.toString(Math.abs(random));
 	}
 
 }

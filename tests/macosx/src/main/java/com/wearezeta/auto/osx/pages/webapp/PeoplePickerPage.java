@@ -13,6 +13,7 @@ import com.wearezeta.auto.web.pages.WebPage;
 
 public class PeoplePickerPage extends WebPage {
 
+	@SuppressWarnings("unused")
 	private static final Logger LOG = ZetaLogger.getLog(PeoplePickerPage.class
 			.getName());
 

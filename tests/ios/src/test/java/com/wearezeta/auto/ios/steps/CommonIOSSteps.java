@@ -668,6 +668,18 @@ public class CommonIOSSteps {
 	public void ISwipeLeftInCurrentWindow() throws Exception {
 		pagesCollecton.getCommonPage().swipeLeft(1000);
 	}
+	
+	/**
+	 * General swipe action
+	 * 
+	 * @step. ^I swipe right in current window$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I swipe right in current window$")
+	public void ISwipeRightInCurrentWindow() throws Exception {
+		pagesCollecton.getCommonPage().swipeRight(1000);
+	}
 
 	/**
 	 * Send message to a conversation

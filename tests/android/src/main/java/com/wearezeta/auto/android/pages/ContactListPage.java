@@ -137,10 +137,16 @@ public class ContactListPage extends AndroidPage {
 							.apply(i));
 					if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 							locator, 1)) {
-						final String name = getDriver().findElement(locator)
-								.getText();
+						final WebElement elem = getDriver()
+								.findElement(locator);
+						final String name = elem.getText();
 						if ((name instanceof String) && name.length() > 0) {
-							return name;
+							if (DriverUtils.waitUntilElementClickable(
+									getDriver(), elem)) {
+								return name;
+							} else {
+								break;
+							}
 						}
 					}
 				}
@@ -189,6 +195,29 @@ public class ContactListPage extends AndroidPage {
 			throw e;
 		}
 		return new DialogPage(this.getLazyDriver());
+	}
+
+	public void workaroundConvoListItemsLoad() throws Exception {
+		for (int i = 1; i <= contactListNames.size(); i++) {
+			final By locator = By.xpath(xpathContactByIndex.apply(i));
+			try {
+				if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+						locator, 1)) {
+					final WebElement elem = getDriver().findElement(locator);
+					if (DriverUtils.waitUntilElementClickable(getDriver(),
+							elem, 1)) {
+						elem.click();
+						// Wait for animation
+						Thread.sleep(1000);
+						DriverUtils
+								.swipeRightCoordinates(getDriver(), 1000, 50);
+						return;
+					}
+				}
+			} catch (WebDriverException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public List<WebElement> GetVisibleContacts() throws Exception {
@@ -293,11 +322,14 @@ public class ContactListPage extends AndroidPage {
 
 	public void verifyContactListIsFullyLoaded() throws Exception {
 		Thread.sleep(1000);
-		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
+		if (!DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.id(EmailSignInPage.idLoginButton),
-				CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : String
-				.format("It seems that conversations list has not been loaded within %s seconds (login button is still visible)",
-						CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
+				CONTACT_LIST_LOAD_TIMEOUT_SECONDS)) {
+			throw new IllegalStateException(
+					String.format(
+							"It seems that conversations list has not been loaded within %s seconds (login button is still visible)",
+							CONTACT_LIST_LOAD_TIMEOUT_SECONDS));
+		}
 
 		final By selfAvatarLocator = By.id(idSelfUserAvatar);
 		if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
@@ -315,9 +347,12 @@ public class ContactListPage extends AndroidPage {
 							CONTACT_LIST_LOAD_TIMEOUT_SECONDS / 2));
 		}
 
-		assert this.waitUntilConversationsInfoIsLoaded() : String
-				.format("Not all conversations list items were loaded within %s seconds",
-						CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS);
+		if (!this.waitUntilConversationsInfoIsLoaded()) {
+			throw new IllegalStateException(
+					String.format(
+							"Not all conversations list items were loaded within %s seconds",
+							CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS));
+		}
 	}
 
 	private boolean waitUntilConversationsInfoIsLoaded() throws Exception {
@@ -348,9 +383,12 @@ public class ContactListPage extends AndroidPage {
 		for (int i = contactListNames.size(); i >= 1; i--) {
 			final By locator = By.xpath(xpathContactByIndex.apply(i));
 			if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator)) {
-				assert waitUntilConversationsInfoIsLoaded() : String
-						.format("Not all conversations list items were loaded within %s seconds",
-								CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS);
+				if (!waitUntilConversationsInfoIsLoaded()) {
+					throw new IllegalStateException(
+							String.format(
+									"Not all conversations list items were loaded within %s seconds",
+									CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS));
+				}
 				return true;
 			}
 		}
