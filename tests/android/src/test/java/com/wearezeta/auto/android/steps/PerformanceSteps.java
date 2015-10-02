@@ -115,21 +115,21 @@ public class PerformanceSteps {
 	}
 
 	private void waitUntilConversationsListIsFullyLoaded() throws Exception {
-		final int maxTries = 3;
+		final int maxTries = 15;
 		final long millisecondsDelay = 20000;
 		int ntry = 1;
 		do {
 			try {
 				getContactListPage().verifyContactListIsFullyLoaded();
-			} catch (AssertionError e) {
-				e.printStackTrace();
+				if (getContactListPage().isAnyConversationVisible()) {
+					return;
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			Thread.sleep(millisecondsDelay);
 			ntry++;
-		} while (!getContactListPage().isAnyConversationVisible()
-				&& ntry <= maxTries);
+		} while (ntry <= maxTries);
 		Assert.assertTrue(
 				"No conversations are visible in the conversations list, but some are expected",
 				getContactListPage().isAnyConversationVisible());
