@@ -7,6 +7,7 @@ import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import cucumber.api.java.en.When;
 
 public class PeoplePickerPageSteps {
+	@SuppressWarnings("unused")
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
 			.getInstance();

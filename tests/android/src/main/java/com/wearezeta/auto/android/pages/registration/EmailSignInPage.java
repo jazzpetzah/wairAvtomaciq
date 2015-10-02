@@ -78,18 +78,28 @@ public class EmailSignInPage extends AndroidPage {
 	 */
 	public void logIn(int timeoutSeconds) throws Exception {
 		confirmSignInButton.click();
-		assert waitForLoginScreenDisappear(timeoutSeconds) : "Login screen is still visible";
+		// FIXME: Workaround for 403 error from the backend
+		final long millisecondsStarted = System.currentTimeMillis();
+		do {
+			if (DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+					By.id(EmailSignInPage.idLoginButton), 20)) {
+				return;
+			} else {
+				if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+						By.xpath(xpathAlertOKButton), 1)) {
+					acceptErrorMessage();
+					confirmSignInButton.click();
+				}
+			}
+		} while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
+		throw new AssertionError(String.format(
+				"Login screen is still visible after %s seconds timeout",
+				timeoutSeconds));
 	}
 
 	public boolean waitForAddPhoneNumberAppear() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.id(AddPhoneNumberPage.idNotNowButton), 2);
-	}
-
-	private boolean waitForLoginScreenDisappear(int timeoutSeconds)
-			throws Exception {
-		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.id(EmailSignInPage.idLoginButton), timeoutSeconds);
 	}
 
 	public void verifyErrorMessageText(String expectedMsg) throws Exception {

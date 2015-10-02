@@ -87,26 +87,7 @@ public class PerformanceSteps {
 			getEmailSignInPage().setLogin(self.getEmail());
 		}
 		getEmailSignInPage().setPassword(self.getPassword());
-		// FIXME: Workaround for 403 error from the backend
-		final int maxLoginRetries = 3;
-		int ntry = 1;
-		Throwable savedError = null;
-		do {
-			try {
-				getEmailSignInPage().logIn(timeoutSeconds);
-				return;
-			} catch (AssertionError e) {
-				e.printStackTrace();
-				try {
-					getEmailSignInPage().acceptErrorMessage();
-				} catch (WebDriverException e1) {
-					e1.printStackTrace();
-				}
-				savedError = e;
-				ntry++;
-			}
-		} while (ntry <= maxLoginRetries);
-		throw savedError;
+		getEmailSignInPage().logIn(timeoutSeconds);
 	}
 
 	/**
