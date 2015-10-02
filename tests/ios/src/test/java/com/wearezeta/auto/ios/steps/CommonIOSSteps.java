@@ -551,13 +551,6 @@ public class CommonIOSSteps {
 		commonSteps.ThereAreNSharedUsersWithNamePrefix(count, namePrefix);
 	}
 
-	@Given("^I restart application$")
-	public void IResetApplication() throws Exception {
-		tearDown();
-		commonBefore(resetIOSDriver(false, true));
-		Thread.sleep(60000);
-	}
-
 	@Given("^User (\\w+) is [Mm]e$")
 	public void UserXIsMe(String nameAlias) throws Exception {
 		commonSteps.UserXIsMe(nameAlias);

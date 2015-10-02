@@ -12,7 +12,6 @@ import com.wearezeta.auto.ios.reporter.IOSLogListener;
 import com.wearezeta.auto.ios.reporter.IOSPerfReportModel;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.performance.PerformanceCommon;
 import com.wearezeta.auto.common.performance.PerformanceCommon.PerformanceLoop;
@@ -76,14 +75,15 @@ public class PerformanceSteps {
 		perfCommon.sendMultipleMessagesIntoConversation(contact, msgsCount);
 	}
 
-	private void waitUntilConversationsListIsFullyLoaded(int retries) throws Exception {
+	private void waitUntilConversationsListIsFullyLoaded(int retries)
+			throws Exception {
 		final int maxTries = retries;
 		final long millisecondsDelay = 20000;
 		int ntry = 1;
 		int visibleContactsSize;
-		while ((visibleContactsSize = getContactListPage().GetVisibleContacts().size()) == 0 && ntry <= maxTries) {
+		while ((visibleContactsSize = getContactListPage().GetVisibleContacts()
+				.size()) == 0 && ntry <= maxTries) {
 			log.debug("Waiting for contact list. Iteration #" + ntry);
-			ImageUtil.storeImageToFile(getContactListPage().takeScreenshot().get(), "/Project/cl_look_"+ntry+".png");
 			Thread.sleep(millisecondsDelay);
 			ntry++;
 		}
@@ -128,11 +128,33 @@ public class PerformanceSteps {
 		getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
 	}
 
+	/**
+	 * Restarts application and starts new Appium session
+	 * 
+	 * @step. ^I restart application$
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I restart application$")
+	public void IResetApplication() throws Exception {
+		CommonIOSSteps commonSteps = new CommonIOSSteps();
+		commonSteps.tearDown();
+		commonSteps.commonBefore(commonSteps.resetIOSDriver(false, true));
+		Thread.sleep(60000);
+	}
+	
+	/**
+	 * Waits until spinner after sign in disappers before contact list is shown
+	 * 
+	 * @step. ^I wait for contact list loaded$
+	 * 
+	 * @throws Exception
+	 */
 	@When("^I wait for contact list loaded$")
 	public void IWaitForContactListLoaded() throws Exception {
 		waitUntilConversationsListIsFullyLoaded(50);
 	}
-	
+
 	/**
 	 * Starts standard actions loop (read messages/send messages) to measure
 	 * application performance
@@ -150,9 +172,6 @@ public class PerformanceSteps {
 	public void WhenIStartTestCycleForNMinutes(int timeout, String fromContact)
 			throws Exception {
 		if (getDialogPage().waitForCursorInputVisible()) {
-			long time = (new Date().getTime());
-			log.debug("stored screenshot with time " + time);
-			ImageUtil.storeImageToFile(getContactListPage().takeScreenshot().get(), "/Project/nav_view_" + time + ".png");
 			DialogPageSteps steps = new DialogPageSteps();
 			steps.INavigateToConversationsView();
 		}
