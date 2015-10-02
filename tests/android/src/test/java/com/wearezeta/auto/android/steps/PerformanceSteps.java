@@ -168,7 +168,7 @@ public class PerformanceSteps {
 					e.printStackTrace();
 				}
 			}
-			Thread.sleep(3000);
+			Thread.sleep(10000);
 			ntry++;
 		} while (!getDialogPage().isDialogVisible() && ntry <= maxRetries);
 		assert getDialogPage().isDialogVisible() : "The conversation has not been opened after "
