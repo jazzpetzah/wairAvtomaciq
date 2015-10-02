@@ -179,6 +179,8 @@ public class PerformanceSteps {
 				fromContact).getName();
 		String firstConvoName = getContactListPage()
 				.getFirstVisibleConversationName();
+		final int maxRetries = 20;
+		final long millisecondsDelay = 10000;
 		int ntry = 1;
 		do {
 			// This contact, which received messages, should be the first
@@ -186,12 +188,12 @@ public class PerformanceSteps {
 			if (destConvoName.equals(firstConvoName)) {
 				break;
 			} else {
-				Thread.sleep(10000);
+				Thread.sleep(millisecondsDelay);
 			}
 			firstConvoName = getContactListPage()
 					.getFirstVisibleConversationName();
 			ntry++;
-		} while (ntry <= 3);
+		} while (ntry <= maxRetries);
 		assert destConvoName.equals(firstConvoName) : String
 				.format("The very first conversation name '%s' is not the same as expected one ('%s')",
 						firstConvoName, destConvoName);
