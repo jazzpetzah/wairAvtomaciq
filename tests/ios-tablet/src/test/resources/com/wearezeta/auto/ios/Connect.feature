@@ -706,3 +706,42 @@ Feature: Connect
     Examples: 
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
+      
+  @staging @id3903
+  Scenario Outline: Verify inbox is highlighted and opened in the list [PORTRAIT]
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact3>
+    Given <Contact> sent connection request to Me
+    Given <Contact2> sent connection request to Me
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+	And I see Pending request link in contact list
+	And I click on Pending request link in contact list
+    Then I see Pending request page
+    When I swipe right in current window
+	And I see conversation 2 people waiting is selected in list
+	And I swipe left in current window
+	Then I see Pending request page
+
+    Examples: 
+      | Name      | Contact   | Contact2  | Contact3  |
+      | user1Name | user2Name | user3Name | user4Name |
+      
+  @staging @id3904
+  Scenario Outline: Verify inbox is highlighted and opened in the list [LANDSCAPE]
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact3>
+    Given <Contact> sent connection request to Me
+    Given <Contact2> sent connection request to Me
+    Given I rotate UI to landscape
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+	And I see Pending request link in contact list
+	And I click on Pending request link in contact list
+    Then I see Pending request page
+    When I swipe right in current window
+	And I see conversation 2 people waiting is selected in list
+
+    Examples: 
+      | Name      | Contact   | Contact2  | Contact3  |
+      | user1Name | user2Name | user3Name | user4Name |
