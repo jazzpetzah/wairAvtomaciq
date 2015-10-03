@@ -130,8 +130,12 @@ public class CommonOSXSteps {
 	}
 
 	private void commonBefore() throws Exception {
-		killAllApps();
-		clearAppData();
+		try {
+			killAllApps();
+			clearAppData();
+		} catch (Exception e) {
+			LOG.error(e);
+		}
 		startApp();
 	}
 
