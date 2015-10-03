@@ -144,7 +144,7 @@ public class CommonOSXSteps {
 		// get drivers instantly
 		final ZetaOSXDriver osxDriver = osxDriverFuture.get();
 		final ZetaWebAppDriver webappDriver = webDriverFuture.get();
-		osxDriver.navigate().to(WIRE_APP_PATH);
+		osxDriver.navigate().to(WIRE_APP_PATH);// open app
 
 		ZetaFormatter.setLazyDriver(osxDriverFuture);
 
@@ -152,6 +152,7 @@ public class CommonOSXSteps {
 		MainWirePage mainWirePage = osxPagesCollection
 				.getPage(MainWirePage.class);
 
+		osxDriver.navigate().to(WIRE_APP_PATH);// activate app
 		waitForAppStartup(osxDriver);
 		mainWirePage.focusApp();
 		waitForWebappLoaded(webappDriver);
