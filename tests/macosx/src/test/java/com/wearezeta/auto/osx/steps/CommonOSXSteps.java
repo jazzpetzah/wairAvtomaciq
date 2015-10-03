@@ -15,9 +15,6 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
-import static com.wearezeta.auto.osx.common.OSXCommonUtils.clearAppData;
-import static com.wearezeta.auto.osx.common.OSXCommonUtils.killAllApps;
-
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
 
 import static com.wearezeta.auto.osx.common.OSXExecutionContext.APPIUM_HUB_URL;
@@ -130,12 +127,12 @@ public class CommonOSXSteps {
 	}
 
 	private void commonBefore() throws Exception {
-		try {
-			killAllApps();
-			clearAppData();
-		} catch (Exception e) {
-			LOG.error(e);
-		}
+		// try {
+		// killAllApps();
+		// clearAppData();
+		// } catch (Exception e) {
+		// LOG.error(e);
+		// }
 		startApp();
 	}
 
