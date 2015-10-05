@@ -3,7 +3,7 @@ Feature: calling
   @smoke @id3918
   Scenario Outline: Verify successful 1:1 call
     Given My browser supports calling
-    Given There are 5 users where <Name> is me
+    Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given <Contact1> starts waiting instance using <WaitBackend>
     Given <Contact1> accept next incoming call automatically
