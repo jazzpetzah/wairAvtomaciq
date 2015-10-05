@@ -13,6 +13,7 @@ import org.openqa.selenium.WebElement;
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.PeoplePickerPage;
 import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
+import com.wearezeta.auto.android_tablet.pages.camera.SelfProfileCameraPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -54,13 +55,36 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 			if (ScreenOrientationHelper.getInstance().fixOrientation(
 					getDriver()) == ScreenOrientation.PORTRAIT) {
 				// FIXME: Workaround for self profile as start page issue
-				if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-						By.id(ContactListPage.idSelfUserAvatar), 1)) {
-					this.tapOnCenterOfScreen();
-					Thread.sleep(500);
-					this.tapOnCenterOfScreen();
-					DriverUtils.swipeByCoordinates(getDriver(), 1000, 30, 50,
-							90, 50);
+				int ntry = 1;
+				final int maxRetries = 3;
+				do {
+					if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+							By.id(ContactListPage.idSelfUserAvatar), 4)) {
+						DriverUtils.swipeByCoordinates(getDriver(), 1000, 30,
+								50, 90, 50);
+						// FIXME: Self profile switches to full colour instead
+						// of being swiped
+						if (DriverUtils
+								.waitUntilLocatorDissapears(
+										getDriver(),
+										By.id(SelfProfileCameraPage.idChangePictureButton),
+										1)) {
+							break;
+						} else {
+							this.tapOnCenterOfScreen();
+							DriverUtils.swipeByCoordinates(getDriver(), 1000,
+									30, 50, 90, 50);
+						}
+					} else {
+						break;
+					}
+					ntry++;
+				} while (ntry <= maxRetries);
+				if (ntry > maxRetries) {
+					throw new IllegalStateException(
+							String.format(
+									"Conversations list was not shown after %d retries",
+									maxRetries));
 				}
 			}
 		} else {
