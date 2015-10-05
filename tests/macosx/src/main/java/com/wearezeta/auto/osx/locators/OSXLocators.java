@@ -5,11 +5,6 @@ import java.util.function.Function;
 
 public final class OSXLocators {
 
-	@FunctionalInterface
-	public interface MergeFunction<A, B, R> {
-		public R apply(A a, B b);
-	}
-
 	public static final class AppMenu {
 
 		public static final Function<String, String> xpathMenuBarItem = (name) -> String
