@@ -1,5 +1,7 @@
 package com.wearezeta.auto.osx.pages.webapp;
 
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -22,6 +24,9 @@ public class SelfProfilePage extends WebPage {
 
 	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
 			.getInstance();
+
+	// TODO hide behind driver impl
+	private final Robot robot = new Robot();
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathGearButton)
 	private WebElement gearButton;
@@ -152,5 +157,17 @@ public class SelfProfilePage extends WebPage {
 						WebAppLocators.SelfProfilePage.xpathBackgroundAvatarAccentColor);
 		return AccentColor.getByRgba(backgroundAvatarAccentColor
 				.getCssValue("background-color"));
+	}
+
+	public boolean isSettingsPopoverVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.xpath(WebAppLocators.SettingsPage.xpathSettingsDialogRoot));
+	}
+
+	public void pressShortCutForPreferences() {
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_COMMA);
+		robot.keyRelease(KeyEvent.VK_COMMA);
+		robot.keyRelease(KeyEvent.VK_META);
 	}
 }
