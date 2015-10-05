@@ -79,7 +79,7 @@ Feature: Connect
     And I click on Pending request link in contact list
     And I see Pending request page
     And I click on Ignore button on Pending requests page <SentRequests> times
-    And I return to the chat list
+    #And I return to the chat list
     And I dont see Pending request link in contact list
     And I don't see conversation with not connected user <Contact1>
     And I wait until <Contact1> exists in backend search results
@@ -163,7 +163,7 @@ Feature: Connect
     Then I see User <Contact> Pinged message in the conversation
     And I see new photo in the dialog
     And I see message in the dialog
-    And I navigate back to conversations view
+    And I return to the chat list
     And I see People picker page
     And I click close button to dismiss people view
     And Contact <Contact> sends random message to user <Name>
