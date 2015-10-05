@@ -568,7 +568,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @staging @id3229
+  @regression @id3229
   Scenario Outline: Verify possibility of disconnecting from Search UI [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
@@ -591,7 +591,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @staging @id3304
+  @regression @id3304
   Scenario Outline: Verify possibility of disconnecting from Search UI [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
@@ -667,7 +667,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | IGNORECONNECT |
 
-  @staging @id3795
+  @regression @id3795
   Scenario Outline: Verify common connections are not tappable [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -686,7 +686,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @staging @id3796
+  @regression @id3796
   Scenario Outline: Verify common connections are not tappable [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -706,7 +706,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
       
-  @staging @id3903
+  @regression @id3903
   Scenario Outline: Verify inbox is highlighted and opened in the list [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact3>
@@ -726,7 +726,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
       
-  @staging @id3904
+  @regression @id3904
   Scenario Outline: Verify inbox is highlighted and opened in the list [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact3>

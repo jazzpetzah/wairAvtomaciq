@@ -19,7 +19,6 @@ import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.BuildVersionInfo;
 import com.wearezeta.auto.common.misc.ClientDeviceInfo;
-import static com.wearezeta.auto.osx.common.OSXExecutionContext.WIRE_APP_PATH;
 import com.wearezeta.auto.osx.util.NSPoint;
 import java.util.Arrays;
 import org.openqa.selenium.Dimension;
@@ -217,12 +216,8 @@ public class OSXCommonUtils extends CommonUtils {
 	}
 
 	public static void killAllApps() throws Exception {
-		final String[] commands = new String[] {
-				"/bin/sh",
-				"-c",
-				String.format(
-								"ps aux | grep %s | awk '{print $2}' | xargs kill",
-								WIRE_APP_PATH) };
+		final String[] commands = new String[] { "/bin/sh", "-c",
+				String.format("killall %s", "Electron") };
 		LOG.debug("executing commands: " + Arrays.toString(commands));
 		executeOsXCommandWithOutput(commands);
 	}

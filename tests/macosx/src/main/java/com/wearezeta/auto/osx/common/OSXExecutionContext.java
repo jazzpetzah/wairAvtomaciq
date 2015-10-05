@@ -12,7 +12,7 @@ public class OSXExecutionContext {
 			"com.wire.appium.hub.url", "http://localhost:4622/wd/hub");
 
 	public static final String WIRE_APP_PATH = System.getProperty(
-			"com.wire.app.path", "/Applications/WireInternal.app");
+			"com.wire.app.path", "/Applications/Wire.app");
 
 	public static final String CONFIG_DOMAIN = System.getProperty(
 			"wireConfigDomain", "com.wearezeta.zclient.mac.development");

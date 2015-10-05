@@ -1,7 +1,7 @@
 Feature: Self Profile
 
   #smoke
-  @staging @id344
+  @regression @id344
   Scenario Outline: Change your profile picture
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -90,7 +90,7 @@ Feature: Self Profile
       | Name      | Color1 | Color2          | Contact   |
       | user1Name | Violet | StrongLimeGreen | user2Name |
 
-  @staging @id3849 
+  @regression @id3849 
   Scenario Outline: Verify adding phone number to the contact signed up with email
     Given There is 1 users where <Name> is me with email only
     Given I sign in using my email
@@ -106,7 +106,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @staging @noAcceptAlert @id3854
+  @regression @noAcceptAlert @id3854
   Scenario Outline: Verify error message appears in case of entering a not valid phone number
     Given There is 1 users where <Name> is me with email only
     Given I sign in using my email

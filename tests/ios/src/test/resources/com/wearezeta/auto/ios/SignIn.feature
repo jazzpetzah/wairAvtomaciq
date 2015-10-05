@@ -29,6 +29,7 @@ Feature: Sign In
   #Examples:
   #| Login   | Password    | UserA   | UserB       |
   #| aqaUser | aqaPassword | aqaUser | aqaContact1 |
+  
   @regression @rc @id1398 @noAcceptAlert
   Scenario Outline: Notification if SignIn credentials are wrong
     Given I see sign in screen
@@ -63,7 +64,7 @@ Feature: Sign In
       | Login      | Password      | Name      | NewPassword  |
       | user1Email | user1Password | user1Name | aqa123456789 |
 
-  @staging @id2719
+  @regression @id2719
   Scenario Outline: Verify phone sign in when email is assigned
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -77,7 +78,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id2717
+  @regression @id2717
   Scenario Outline: Verify first time phone sign in when email is not assigned
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
@@ -112,7 +113,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id3838 @noAcceptAlert
+  @regression @id3838 @noAcceptAlert
   Scenario Outline: Verify impossibility to resend code within 10 min
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -138,7 +139,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id3851
+  @regression @id3851
   Scenario Outline: Verify first time phone sign in when email is not assigned
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
@@ -161,7 +162,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
       
-  @staging @id3863 @noAcceptAlert
+  @regression @id3863 @noAcceptAlert
   Scenario Outline: Verify error message appears in case of registering already taken email
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen

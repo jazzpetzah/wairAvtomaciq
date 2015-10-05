@@ -718,6 +718,30 @@ public class ConversationPageSteps {
 	}
 
 	/**
+	 * Verify that the input text field contains random message
+	 *
+	 */
+	@Then("^I verify that random message was typed$")
+	public void IVerifyThatRandomMessageWasTyped() throws Exception {
+		assertThat("Random message in input field", WebappPagesCollection
+				.getInstance().getPage(ConversationPage.class)
+				.getMessageFromInputField(), equalTo(randomMessage));
+	}
+
+	/**
+	 * Verify that the input text field contains message X
+	 *
+	 * @param message
+	 *            the message it should contain
+	 */
+	@Then("^I verify that message \"(.*)\" was typed$")
+	public void IVerifyThatMessageWasTyped(String message) throws Exception {
+		assertThat("Message in input field", WebappPagesCollection
+				.getInstance().getPage(ConversationPage.class)
+				.getMessageFromInputField(), equalTo(message));
+	}
+
+	/**
 	 * Hovers ping button
 	 *
 	 * @step. ^I hover ping button$
@@ -759,6 +783,30 @@ public class ConversationPageSteps {
 		assertThat("Ping button tooltip", WebappPagesCollection.getInstance()
 				.getPage(ConversationPage.class).getPingButtonToolTip(),
 				equalTo(tooltip));
+	}
+
+	/**
+	 * Types shortcut combination to undo
+	 *
+	 * @step. ^I type shortcut combination to undo$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to undo$")
+	public void ITypeShortcutCombinationToUndo() throws Exception {
+		WebappPagesCollection.getInstance().getPage(ConversationPage.class)
+				.pressShortCutForUndo();
+	}
+
+	/**
+	 * Types shortcut combination to redo
+	 *
+	 * @step. ^I type shortcut combination to redo$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to redo$")
+	public void ITypeShortcutCombinationToRedo() throws Exception {
+		WebappPagesCollection.getInstance().getPage(ConversationPage.class)
+				.pressShortCutForRedo();
 	}
 
 	/**
