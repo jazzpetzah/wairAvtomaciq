@@ -423,7 +423,7 @@ Feature: Conversation List
       | Name      | Contact   | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
-  @staging @id3828
+  @regression @id3828
   Scenario Outline: Verify action menu is opened on swipe right on the group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -442,7 +442,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3name | ActionMenuChat |
 
-  @staging @id3827
+  @regression @id3827
   Scenario Outline: Verify action menu is opened on swipe right on the group conversation [LANDSCAPE]
     Given I rotate UI to landscape
     Given There are 3 users where <Name> is me
@@ -462,7 +462,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3name | ActionMenuChat |
 
-  @staging @id3831
+  @regression @id3831
   Scenario Outline: Verify action menu is opened on swipe right on 1to1 conversation [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -480,7 +480,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3832
+  @regression @id3832
   Scenario Outline: Verify action menu is opened on swipe right on 1to1 conversation [LANDSCAPE]
     Given I rotate UI to landscape
     Given There are 2 users where <Name> is me
