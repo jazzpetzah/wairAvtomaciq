@@ -1,13 +1,20 @@
 package com.wearezeta.auto.osx.steps.webapp;
 
+import org.junit.Assert;
+
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.osx.pages.webapp.GroupPeoplePopoverPage;
 import com.wearezeta.auto.osx.pages.webapp.SingleUserPeoplePopoverPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
+import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
 
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PeopleViewSteps {
 
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
 			.getInstance();
 
@@ -33,6 +40,23 @@ public class PeopleViewSteps {
 	}
 
 	/**
+	 * Compares if name on Single User Profile popover is same as expected
+	 *
+	 * @throws java.lang.Exception
+	 * @step. ^I see username (.*) on Single User Profile popover$
+	 *
+	 * @param name
+	 *            user name string
+	 */
+	@When("^I see username (.*) on Single User Profile popover$")
+	public void IseeUserNameOnUserProfilePage(String name) throws Exception {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		Assert.assertEquals(name,
+				((SingleUserPopoverContainer) WebappPagesCollection.popoverPage)
+						.getUserName());
+	}
+
+	/**
 	 * Verify that Group Participants popover is shown or not
 	 *
 	 * @step. ^I( do not)? see Group Participants popover$
@@ -53,5 +77,47 @@ public class PeopleViewSteps {
 			webappPagesCollection.getPage(GroupPeoplePopoverPage.class)
 					.waitUntilNotVisibleOrThrowException();
 		}
+	}
+
+	/**
+	 * Verifies there is a question if you want to add people
+	 *
+	 * @step. ^I see Add People message on Group Participants popover$
+	 * @throws Exception
+	 *
+	 */
+	@When("^I see Add People message on Group Participants popover$")
+	public void ISeeAddPeopleMessage() throws Exception {
+		Assert.assertTrue(webappPagesCollection.getPage(GroupPeoplePopoverPage.class)
+				.isAddPeopleMessageShown());
+	}
+
+	/**
+	 * Verifies there is a button to add people
+	 *
+	 * @step. ^I see Add to conversation button on Single User popover$
+	 * @throws Exception
+	 *
+	 */
+	@When("^I see Add to conversation button on Single User popover$")
+	public void ISeeAddToConversationButton() throws Exception {
+		Assert.assertTrue(webappPagesCollection.getPage(GroupPeoplePopoverPage.class)
+				.isAddToConversationButtonShown());
+	}
+
+	/**
+	 * Verify conversation title on Group Participants popover
+	 *
+	 * @step. ^I see conversation title (.*) on Group Participants popover$
+	 *
+	 * @param title
+	 *            expected title string
+	 * @throws Exception 
+	 */
+	@Then("^I see conversation title (.*) on Group Participants popover$")
+	public void ISeeConversationTitle(String title) throws Exception {
+		Assert.assertEquals(title,
+				webappPagesCollection.getPage(GroupPeoplePopoverPage.class)
+						.getConversationTitle());
 	}
 }

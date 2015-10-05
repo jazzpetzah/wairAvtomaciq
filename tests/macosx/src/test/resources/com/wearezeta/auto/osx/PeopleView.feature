@@ -10,6 +10,7 @@ Feature: People View
     When I open conversation with <Contact>
     And I click menu bar item "Conversation" and menu item "People"
     Then I see Single User Profile popover
+    And I see username <Contact> on Single User Profile popover
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
@@ -26,6 +27,7 @@ Feature: People View
     And I open conversation with <ChatName>
     And I click menu bar item "Conversation" and menu item "People"
     Then I see Group Participants popover
+    Then I see conversation title <ChatName> on Group Participants popover
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName      |
@@ -41,6 +43,7 @@ Feature: People View
     When I open conversation with <Contact>
     And I click menu bar item "Conversation" and menu items "Add" and "People"
     Then I see Single User Profile popover
+    And I see Add to conversation button on Single User popover
 
     Examples: 
       | Login      | Password      | Name      | Contact   | Contact2  |
@@ -57,6 +60,7 @@ Feature: People View
     And I open conversation with <ChatName>
     And I click menu bar item "Conversation" and menu items "Add" and "People"
     Then I see Group Participants popover
+    And I see Add People message on Group Participants popover
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | ChatName      |
