@@ -197,6 +197,7 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 	public void swipeRightListItem(String name) throws Exception {
 		final By locator = By.xpath(ContactListPage.xpathContactByName
 				.apply(name));
-		this.elementSwipeRight(getDriver().findElement(locator), 1000);
+		DriverUtils.swipeElementPointToPoint(getDriver(), getDriver()
+				.findElement(locator), 500, 5, 50, 80, 50);
 	}
 }
