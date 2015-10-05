@@ -364,7 +364,7 @@ Feature: Calling
     And <Contact3> calls <GroupChatName> using <CallBackend>
     And <Contact4> calls <GroupChatName> using <CallBackend>
     And <Contact5> calls <GroupChatName> using <CallBackend>
-    Then I see call overlay
+    Then I see join group call overlay
     When I answer the call from the overlay bar
     Then I see group call is full alert
     And I close group call is full alert

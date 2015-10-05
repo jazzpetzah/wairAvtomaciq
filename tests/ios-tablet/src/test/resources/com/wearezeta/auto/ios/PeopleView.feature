@@ -514,7 +514,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | ParticipantsNumber |
       | user1Name | user2Name | user3Name | user4Name | AddContact    | 4                  |
 
-  @staging @id2333
+  @regression @id2333
   Scenario Outline: Verify you can block a person from profile view [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -575,7 +575,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | UnblockFromGroup |
 
-  @staging @id3835
+  @regression @id3835
   Scenario Outline: Verify you can unblock someone from a group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users

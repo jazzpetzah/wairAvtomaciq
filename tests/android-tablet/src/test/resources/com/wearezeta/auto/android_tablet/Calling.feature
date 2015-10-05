@@ -137,7 +137,7 @@ Feature: Calling
       | user1Name | user2Name | autocall    |
 
   @id2911 @calling_basic @rc
-  Scenario Outline: I can dismiss calling bar by swipe (landscape)
+  Scenario Outline: (AN-2568) I can dismiss calling bar by swipe (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I rotate UI to landscape

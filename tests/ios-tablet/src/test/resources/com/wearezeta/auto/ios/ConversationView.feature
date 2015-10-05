@@ -1081,7 +1081,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
       | user1Name | user2Name | user3Name | user4Name | ArchiveGroupChat |
 
-  @staging @id3306
+  @regression @id3306
   Scenario Outline: Verify player is displayed for vimeo links with video IDs [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -1096,7 +1096,7 @@ Feature: Conversation View
       | Name      | Contact1  | VimeoLink                   |
       | user1Name | user2Name | https://vimeo.com/129426512 |
 
-  @staging @id3307
+  @regression @id3307
   Scenario Outline: Verify player is displayed for vimeo links with video IDs [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -1112,7 +1112,7 @@ Feature: Conversation View
       | Name      | Contact1  | VimeoLink                   |
       | user1Name | user2Name | https://vimeo.com/129426512 |
 
-  @staging @id3308
+  @regression @id3308
   Scenario Outline: Verify player isn't displayed for vimeo links without video IDs [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -1127,7 +1127,7 @@ Feature: Conversation View
       | Name      | Contact   | VimeoLink                    |
       | user1Name | user2Name | https://vimeo.com/categories |
 
-  @staging @id3309
+  @regression @id3309
   Scenario Outline: Verify player isn't displayed for vimeo links without video IDs [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -1143,7 +1143,7 @@ Feature: Conversation View
       | Name      | Contact   | VimeoLink                    |
       | user1Name | user2Name | https://vimeo.com/categories |
 
-  @staging @id3792
+  @regression @id3792
   Scenario Outline: Verify sending link and text in one message and opening the link [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -1160,7 +1160,7 @@ Feature: Conversation View
       | Name      | Contact1  | MessageAndLink                  |
       | user1Name | user2Name | Check https://www.wire.com/ out |
 
-  @staging @id3793
+  @regression @id3793
   Scenario Outline: Verify sending link and text in one message and opening the link [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -1178,7 +1178,7 @@ Feature: Conversation View
       | Name      | Contact1  | MessageAndLink                  |
       | user1Name | user2Name | Check https://www.wire.com/ out |
 
-  @staging @id3790
+  @regression @id3790
   Scenario Outline: Verify sending link and opening it [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -1195,7 +1195,7 @@ Feature: Conversation View
       | Name      | Contact1  | Link                  |
       | user1Name | user2Name | https://www.wire.com/ |
 
-  @staging @id3791
+  @regression @id3791
   Scenario Outline: Verify sending link and opening it [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -1233,7 +1233,7 @@ Feature: Conversation View
       | Name      | Contact1   | Contact2  |
       | user1Name | user2Name  | user3Name |
 
-  @staging @id3800
+  @regression @id3800
   Scenario Outline: Verify input field and action buttons are not shown simultaniously [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>

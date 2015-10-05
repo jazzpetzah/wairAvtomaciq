@@ -369,7 +369,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @staging @id722
+  @regression @id722
   Scenario Outline: Verify you can unblock someone from a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users

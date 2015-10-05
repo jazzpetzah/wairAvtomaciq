@@ -1,7 +1,5 @@
 package com.wearezeta.auto.android_tablet.steps;
 
-import org.junit.Assert;
-
 import com.wearezeta.auto.android_tablet.pages.TabletEmailSignInPage;
 import com.wearezeta.auto.android_tablet.pages.TabletWelcomePage;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -40,9 +38,7 @@ public class EmailSignInPageSteps {
 		getEmailSignInPage().setLogin(selfUser.getEmail());
 		getEmailSignInPage().setPassword(selfUser.getPassword());
 		getEmailSignInPage().tapSignInButton();
-		Assert.assertTrue("Sign in page is still visible after timeout",
-				getEmailSignInPage().waitUntilNotVisible());
-
+		getEmailSignInPage().verifyNotVisible();
 	}
 
 	/**

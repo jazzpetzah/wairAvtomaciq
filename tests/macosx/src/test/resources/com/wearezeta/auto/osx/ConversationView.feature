@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @staging @id3897
+  @smoke @id3897
   Scenario Outline: Verify I can ping a conversation using the menu bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -18,7 +18,7 @@ Feature: Conversation View
       | user1Email | user1Password | user1Name | user2Name | pinged | pinged again |
 
 
-  @staging @id3781
+  @smoke @id3781
    Scenario Outline: Verify you ping in a conversation when you press ⌘ + K (Mac)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -35,7 +35,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | PING   | PING_AGAIN   |
       | user1Email | user1Password | user1Name | user2Name | pinged | pinged again |
 
-   @staging @id3782
+   @smoke @id3782
    Scenario Outline: Verify you start a call in a conversation when you press ⌘ T (Mac)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -50,7 +50,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id3898
+  @smoke @id3898
   Scenario Outline: Verify I can call a conversation using the menu bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -65,7 +65,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id3905
+  @smoke @id3905
   Scenario Outline: Verify I can ping a group conversation using the menu bar
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -84,7 +84,7 @@ Feature: Conversation View
       | user1Email | user1Password | user1Name | user2Name  | user3Name  | GroupChat | pinged | pinged again |
 
 
-  @staging @id3908
+  @smoke @id3908
   Scenario Outline: Verify you ping in a group conversation when you press ⌘ + K (Mac)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -102,8 +102,8 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1   | Contact2   | ChatName  | PING   | PING_AGAIN   |
       | user1Email | user1Password | user1Name | user2Name  | user3Name  | GroupChat | pinged | pinged again |
 
-   @staging @id3909
-   Scenario Outline: Verify you start a call in a group conversation when you press ⌘ T (Mac)
+  @smoke @id3909
+  Scenario Outline: Verify you start a call in a group conversation when you press ⌘ T (Mac)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
@@ -118,7 +118,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1   | Contact2   | ChatName  |
       | user1Email | user1Password | user1Name | user2Name  | user3Name  | GroupChat |
 
-  @staging @id3907
+  @smoke @id3907
   Scenario Outline: Verify I can call a group conversation using the menu bar
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -133,3 +133,41 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2   | ChatName  |
       | user1Email | user1Password | user1Name | user2Name  | user3Name  | GroupChat |
+
+  @smoke @id3919
+  Scenario Outline: Verify I can undo redo using menu bar
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Then I see my avatar on top of Contact list
+    When I open conversation with <Contact>
+    And I write random message
+    Then I verify that random message was typed
+    When I click menu bar item "Edit" and menu item "Undo"
+    Then I verify that message "" was typed
+    When I click menu bar item "Edit" and menu item "Redo"
+    Then I verify that random message was typed
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @smoke @id3920
+  Scenario Outline: Verify I can undo redo using when I press ⌘ Z and ⌘ ⇧ Z
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Then I see my avatar on top of Contact list
+    When I open conversation with <Contact>
+    And I write random message
+    Then I verify that random message was typed
+    When I type shortcut combination to undo
+    Then I verify that message "" was typed
+    When I type shortcut combination to redo
+    Then I verify that random message was typed
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |

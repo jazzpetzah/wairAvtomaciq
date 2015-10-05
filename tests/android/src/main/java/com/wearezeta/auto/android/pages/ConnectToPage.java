@@ -9,8 +9,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.wearezeta.auto.android.common.AndroidCommonUtils;
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -63,8 +61,6 @@ public class ConnectToPage extends AndroidPage {
 	@FindBy(xpath = xpathConfirmBtn)
 	private WebElement confirmBtn;
 
-	private final CommonSteps commonSteps = CommonSteps.getInstance();
-
 	public ConnectToPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
@@ -98,12 +94,6 @@ public class ConnectToPage extends AndroidPage {
 		confirmBtn.click();
 	}
 
-	public ContactListPage navigateBack() throws Exception {
-		AndroidCommonUtils.tapBackButton();
-		commonSteps.WaitForTime(0.5);
-		return new ContactListPage(this.getLazyDriver());
-	}
-
 	public boolean isConnectToHeaderVisible(String name) throws Exception {
 		final By locator = By.xpath(xpathConnectToHeaderByText.apply(name));
 		boolean result = DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
@@ -114,22 +104,27 @@ public class ConnectToPage extends AndroidPage {
 		return result;
 	}
 
-	public void scrollToInboxContact(String contactName, int maxScrolls)
+	public void scrollToInboxContact(String contactName, final int maxUsers)
 			throws Exception {
 		final By locator = By.xpath(xpathAcceptButtonByHeaderText
 				.apply(contactName));
 		int ntry = 1;
+		final int SCROLL_POS_START = 48;
+		final int SCROLL_POS_END = 70;
+		final int maxScrolls = maxUsers
+				* (100 / (SCROLL_POS_END - SCROLL_POS_START) + 1);
 		do {
 			if (DriverUtils
 					.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
 				return;
 			}
-			this.swipeUpCoordinates(1000, 50);
+			this.swipeByCoordinates(1000, 50, SCROLL_POS_END, 50,
+					SCROLL_POS_START);
 			ntry++;
 		} while (ntry <= maxScrolls);
 		throw new RuntimeException(
 				String.format(
-						"Failed to find user %s in the inbox after scrolling %s users!",
+						"Failed to find user %s in the inbox after scrolling %s times!",
 						contactName, maxScrolls));
 	}
 

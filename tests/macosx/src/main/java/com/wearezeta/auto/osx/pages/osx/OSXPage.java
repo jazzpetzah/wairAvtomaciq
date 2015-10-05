@@ -14,6 +14,7 @@ import org.openqa.selenium.By;
 
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
 
 public abstract class OSXPage extends BasePage {
 
@@ -42,6 +43,10 @@ public abstract class OSXPage extends BasePage {
 		for (int i = 0; i < 2; i++) {
 			clickMenuBarItem(MENUBAR_ITEM_HELP, MENU_ITEM_VERSION);
 		}
+
+		clickMenuBarItem(MENUBAR_ITEM_HELP, environmentName);
+		// FIXME: Have to click environment twice to actually trigger page load
+		// to reg page
 		clickMenuBarItem(MENUBAR_ITEM_HELP, environmentName);
 	}
 
@@ -51,12 +56,16 @@ public abstract class OSXPage extends BasePage {
 				.apply(firstItem);
 		By locator = By.xpath(locatorString);
 		DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
-		getDriver().findElement(locator).click();
+		WebElement menuElement = getDriver().findElement(locator);
+		DriverUtils.waitUntilElementClickable(getDriver(), menuElement);
+		menuElement.click();
 		for (String item : items) {
 			By itemLocator = By.xpath(OSXLocators.AppMenu.xpathMenuItem.apply(
 					locatorString, item));
 			DriverUtils.waitUntilLocatorAppears(getDriver(), itemLocator);
-			getDriver().findElement(itemLocator).click();
+			WebElement itemElement = getDriver().findElement(itemLocator);
+			DriverUtils.waitUntilElementClickable(getDriver(), itemElement);
+			itemElement.click();
 		}
 	}
 

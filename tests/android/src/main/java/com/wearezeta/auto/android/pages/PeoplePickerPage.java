@@ -175,12 +175,6 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	@Override
-	public AndroidPage swipeDown(int time) throws Exception {
-		elementSwipeDown(content, time);
-		return returnBySwipe(SwipeDirection.DOWN);
-	}
-
-	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
 		switch (direction) {
 		case DOWN: {
@@ -207,9 +201,8 @@ public class PeoplePickerPage extends AndroidPage {
 						contactName);
 	}
 
-	public ContactListPage navigateBack() throws Exception {
+	public void navigateBack() throws Exception {
 		pickerClearBtn.click();
-		return new ContactListPage(this.getLazyDriver());
 	}
 
 	public boolean isAddToConversationBtnVisible() throws Exception {

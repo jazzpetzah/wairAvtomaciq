@@ -14,7 +14,6 @@ import com.wearezeta.auto.common.driver.ZetaOSXWebAppDriver;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.clearAppData;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.killAllApps;
 
@@ -22,6 +21,7 @@ import com.wearezeta.auto.osx.common.OSXExecutionContext;
 
 import static com.wearezeta.auto.osx.common.OSXExecutionContext.APPIUM_HUB_URL;
 import static com.wearezeta.auto.osx.common.OSXExecutionContext.WIRE_APP_PATH;
+import com.wearezeta.auto.osx.locators.OSXLocators;
 
 import com.wearezeta.auto.osx.pages.osx.MainWirePage;
 import com.wearezeta.auto.osx.pages.osx.OSXPage;
@@ -130,8 +130,12 @@ public class CommonOSXSteps {
 	}
 
 	private void commonBefore() throws Exception {
-		killAllApps();
-		clearAppData();
+		try {
+			killAllApps();
+			clearAppData();
+		} catch (Exception e) {
+			LOG.error(e);
+		}
 		startApp();
 	}
 
@@ -142,7 +146,7 @@ public class CommonOSXSteps {
 		// get drivers instantly
 		final ZetaOSXDriver osxDriver = osxDriverFuture.get();
 		final ZetaWebAppDriver webappDriver = webDriverFuture.get();
-		osxDriver.navigate().to(WIRE_APP_PATH);
+		osxDriver.navigate().to(WIRE_APP_PATH);// open app
 
 		ZetaFormatter.setLazyDriver(osxDriverFuture);
 
@@ -150,10 +154,12 @@ public class CommonOSXSteps {
 		MainWirePage mainWirePage = osxPagesCollection
 				.getPage(MainWirePage.class);
 
+		osxDriver.navigate().to(WIRE_APP_PATH);// activate app
+		waitForAppStartup(osxDriver);
 		mainWirePage.focusApp();
-		waitForStartupSpinnerDisappears(webappDriver);
+		waitForWebappLoaded(webappDriver);
 		mainWirePage.switchEnvironment(DEFAULT_ENVIRONMENT);
-		waitForStartupSpinnerDisappears(webappDriver);
+		waitForWebappLoaded(webappDriver);
 		webappPagesCollection
 				.setFirstPage(new RegistrationPage(webDriverFuture));
 	}
@@ -168,11 +174,21 @@ public class CommonOSXSteps {
 		commonBefore();
 	}
 
-	private void waitForStartupSpinnerDisappears(ZetaWebAppDriver webdriver)
+	private void waitForAppStartup(ZetaOSXDriver osxdriver) throws Exception {
+		assert DriverUtils.waitUntilLocatorAppears(osxdriver,
+				By.xpath(OSXLocators.MainWirePage.xpathWindow),
+				WRAPPER_STARTUP_TIMEOUT_SECONDS) : "Application did not started properly";
+		LOG.debug("Application started");
+	}
+
+	private void waitForWebappLoaded(ZetaWebAppDriver webdriver)
 			throws Exception {
-		DriverUtils.waitUntilLocatorDissapears(webdriver,
-				By.className(WebAppLocators.LoginPage.classNameSpinner),
-				WRAPPER_STARTUP_TIMEOUT_SECONDS);
+		assert DriverUtils
+				.waitUntilLocatorAppears(
+						webdriver,
+						By.cssSelector(WebAppLocators.RegistrationPage.cssSwitchToSignInButton),
+						WRAPPER_STARTUP_TIMEOUT_SECONDS) : "Wrapper Webapp did not load properly";
+		LOG.debug("Wrapper Webapp loaded");
 	}
 
 	/**

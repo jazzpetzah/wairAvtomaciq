@@ -20,31 +20,32 @@ Feature: Sign In
     When I sign in using my phone number
     Then I see Contact list with no contacts
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
-      
-  #@id209 @regression
-  #Scenario Outline: I can change sign in user
-    #Given I have 2 users and 0 contacts for 0 users
-    #Given I Sign in using login <Login1> and password <Password>
-    #And I see Contact list with my name <Login1>
-    #When I tap on my name <Login1>
-    #And I tap options button
-    #And I tap sign out button
-    #And I see sign in and join buttons
-    #And I switch to email sign in screen
-    #And I have entered login <Login2>
-    #And I have entered password <Password>
-    #And I press Log in button
-    #Then Contact list appears with my name <Login2>
 
-    #Examples: 
-    #  | Login1  | Password    | Login2   |
-    #  | aqaUser | aqaPassword | yourUser |
+  @id209 @regression
+  Scenario Outline: I can change sign in user
+    Given There are 2 users where <Name> is me
+    Given I sign in using my email or phone number
+    Given I see Contact list with no contacts
+    When I tap on my avatar
+    Then I see personal info page
+    When I tap options button
+    And I tap sign out button
+    Then I see welcome screen
+    When User <Name2> is me
+    And I sign in using my email or phone number
+    Then I see Contact list with no contacts
+    When I tap on my avatar
+    Then I see personal info page
+
+    Examples:
+      | Name      | Name2     |
+      | user1Name | user2Name |
 
   @id1413 @regression @rc
-  Scenario Outline: User should be notified if the details he enetered on the sign in screen are incorrect
+  Scenario Outline: User should be notified if the details he entered on the sign in screen are incorrect
     Given I see welcome screen
     When I switch to email sign in screen
     And I have entered login <Login>
@@ -54,24 +55,4 @@ Feature: Sign In
 
     Examples: 
       | Login   | Password | ErrMessage                          |
-      | aaa 	| aaa 	   | Please enter a valid email address. |
-
-# Selendroid cannot interact with external apps
-  # @id2020 @regression
-  # Scenario Outline: Verify possibility of reseting password from sign in
-  #  Given There is 1 user where <Name> is me
-  #  Given I see welcome screen
-  #  When I switch to email sign in screen
-  #  And I press FORGOT PASSWORD button
-  #  And I request reset password for <Login>
-  #  And I get new <Name> password link
-  #  Then I reset password by URL to new <NewPassword>
-  #  And I switch to email sign in screen
-  #  And I have entered login <Login>
-  #  And I have entered password <NewPassword>
-  #  And I press Log in button
-  #  Then I see Contact list
-  #
-  #  Examples: 
-  #    | Login      | Password      | Name      | NewPassword |
-  #    | user1Email | user1Password | user1Name | qatest1234  |
+      | aaa     | aaa      | Please enter a valid email address. |

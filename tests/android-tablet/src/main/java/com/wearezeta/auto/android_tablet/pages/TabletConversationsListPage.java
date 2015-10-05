@@ -7,10 +7,12 @@ import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.InvalidElementStateException;
+import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.PeoplePickerPage;
+import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -43,14 +45,30 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 		}
 	}
 
+	private static final int SELF_AVATAR_LOAD_TIMEOUT = 120; // seconds
+
 	public void verifyConversationsListIsLoaded() throws Exception {
-		getContactListPage().verifyContactListIsFullyLoaded();
-		if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(ContactListPage.idSelfUserAvatar), 1)) {
-			this.tapOnCenterOfScreen();
-			this.tapOnCenterOfScreen();
-			DriverUtils.swipeByCoordinates(getDriver(), 1000, 30, 50, 90, 50);
+		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.id(ContactListPage.idSelfUserAvatar),
+				SELF_AVATAR_LOAD_TIMEOUT)) {
+			if (ScreenOrientationHelper.getInstance().fixOrientation(
+					getDriver()) == ScreenOrientation.PORTRAIT) {
+				// FIXME: Workaround for self profile as start page issue
+				if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+						By.id(ContactListPage.idSelfUserAvatar), 1)) {
+					this.tapOnCenterOfScreen();
+					Thread.sleep(500);
+					this.tapOnCenterOfScreen();
+					DriverUtils.swipeByCoordinates(getDriver(), 1000, 30, 50,
+							90, 50);
+				}
+			}
+		} else {
+			throw new IllegalStateException(String.format(
+					"Self avatar has not been loaded within %s seconds",
+					SELF_AVATAR_LOAD_TIMEOUT));
 		}
+		getContactListPage().verifyContactListIsFullyLoaded();
 	}
 
 	public TabletSelfProfilePage tapMyAvatar() throws Exception {
@@ -179,6 +197,7 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 	public void swipeRightListItem(String name) throws Exception {
 		final By locator = By.xpath(ContactListPage.xpathContactByName
 				.apply(name));
-		this.elementSwipeRight(getDriver().findElement(locator), 1000);
+		DriverUtils.swipeElementPointToPoint(getDriver(), getDriver()
+				.findElement(locator), 500, 5, 50, 80, 50);
 	}
 }

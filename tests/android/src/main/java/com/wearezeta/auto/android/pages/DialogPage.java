@@ -537,20 +537,13 @@ public class DialogPage extends AndroidPage {
 		return connectRequestChatUserName.getText().toLowerCase();
 	}
 
-	@Override
-	public ContactListPage navigateBack() throws Exception {
-		super.navigateBack();
-		return new ContactListPage(this.getLazyDriver());
-	}
-
 	/**
 	 * Navigates back by swipe and initialize ContactListPage
 	 * 
 	 * @throws Exception
 	 */
-	public ContactListPage navigateBack(int timeMilliseconds) throws Exception {
+	public void navigateBack(int timeMilliseconds) throws Exception {
 		swipeRightCoordinates(timeMilliseconds);
-		return new ContactListPage(this.getLazyDriver());
 	}
 
 	public boolean isHintVisible() throws Exception {
