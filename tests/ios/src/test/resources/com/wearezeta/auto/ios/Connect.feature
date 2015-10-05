@@ -373,7 +373,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | IGNORECONNECT |
 
-  @staging @id3794
+  @regression @id3794
   Scenario Outline: Verify common connections are not tappable
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -392,7 +392,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @staging @id1199
+  @regression @id1199
   Scenario Outline: Verify you can send text messages and images in 1to1 chat to the person who blocked you
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -439,7 +439,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
       
-  @staging @id3902
+  @regression @id3902
   Scenario Outline: Verify inbox is highlighted and opened in the list
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact3>

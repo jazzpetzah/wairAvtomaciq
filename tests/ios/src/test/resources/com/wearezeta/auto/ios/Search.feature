@@ -394,7 +394,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @staging @id3279
+  @regression @id3279
   Scenario Outline: Verify action buttons disappear by deleting token from a search field
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -417,7 +417,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user3Name |
 
-  @staging @id3281
+  @regression @id3281
   Scenario Outline: Verify opening conversation with action button
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -436,7 +436,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @staging @id2121
+  @regression @id2121
   Scenario Outline: Verify label hiding after dismissing all PYMK
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>
