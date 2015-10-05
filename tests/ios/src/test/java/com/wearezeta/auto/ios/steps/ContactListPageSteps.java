@@ -27,20 +27,16 @@ public class ContactListPageSteps {
 	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
 			.getInstance();
 
-	@SuppressWarnings("unchecked")
 	private ContactListPage getContactListPage() throws Exception {
-		return (ContactListPage) pagesCollecton.getPage(ContactListPage.class);
+		return pagesCollecton.getPage(ContactListPage.class);
 	}
 
-	@SuppressWarnings("unchecked")
 	private LoginPage getLoginPage() throws Exception {
-		return (LoginPage) pagesCollecton.getPage(LoginPage.class);
+		return pagesCollecton.getPage(LoginPage.class);
 	}
 
-	@SuppressWarnings("unchecked")
 	private PersonalInfoPage getPersonalInfoPage() throws Exception {
-		return (PersonalInfoPage) pagesCollecton
-				.getPage(PersonalInfoPage.class);
+		return pagesCollecton.getPage(PersonalInfoPage.class);
 	}
 
 	@Given("^I see Contact list with my name (.*)$")

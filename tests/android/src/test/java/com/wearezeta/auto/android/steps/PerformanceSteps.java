@@ -87,7 +87,7 @@ public class PerformanceSteps {
 			getEmailSignInPage().setLogin(self.getEmail());
 		}
 		getEmailSignInPage().setPassword(self.getPassword());
-		getEmailSignInPage().logIn(timeoutSeconds);
+		getEmailSignInPage().logIn(true, timeoutSeconds);
 	}
 
 	/**

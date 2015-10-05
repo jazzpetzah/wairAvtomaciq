@@ -64,7 +64,7 @@ public class LoginSteps {
 			getEmailSignInPage().setLogin(self.getEmail());
 		}
 		getEmailSignInPage().setPassword(self.getPassword());
-		getEmailSignInPage().logIn(DEFAULT_LOGIN_SCREEN_TIMEOUT_SECONDS);
+		getEmailSignInPage().logIn(true, DEFAULT_LOGIN_SCREEN_TIMEOUT_SECONDS);
 	}
 
 	/**
@@ -163,7 +163,7 @@ public class LoginSteps {
 	 */
 	@When("I press Log in button")
 	public void WhenIPressLogInButton() throws Exception {
-		getEmailSignInPage().logIn(DEFAULT_LOGIN_SCREEN_TIMEOUT_SECONDS);
+		getEmailSignInPage().logIn(false, DEFAULT_LOGIN_SCREEN_TIMEOUT_SECONDS);
 	}
 
 	/**
