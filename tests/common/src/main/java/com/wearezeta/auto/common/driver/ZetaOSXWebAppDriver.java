@@ -30,6 +30,10 @@ public class ZetaOSXWebAppDriver extends ZetaWebAppDriver {
 		return new ZetaRemoteWebDriverOptions();
 	}
 
+	public ZetaOSXDriver getOsxDriver() {
+		return osxDriver;
+	}
+
 	protected class ZetaRemoteWebDriverOptions extends RemoteWebDriverOptions {
 
 		@Beta

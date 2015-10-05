@@ -3,8 +3,10 @@ package com.wearezeta.auto.osx.pages.webapp;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaOSXWebAppDriver;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import static com.wearezeta.auto.osx.common.OSXConstants.Scripts.PASTE_SCRIPT;
 import com.wearezeta.auto.web.common.Browser;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
@@ -21,6 +23,8 @@ import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -534,6 +538,38 @@ public class ConversationPage extends WebPage {
 		robot.keyPress(KeyEvent.VK_Z);
 		robot.keyRelease(KeyEvent.VK_Z);
 		robot.keyRelease(KeyEvent.VK_SHIFT);
+		robot.keyRelease(KeyEvent.VK_META);
+	}
+
+	public void pressShortCutForSelectAll() throws Exception {
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_A);
+		robot.keyRelease(KeyEvent.VK_A);
+		robot.keyRelease(KeyEvent.VK_META);
+	}
+
+	public void pressShortCutForCut() throws Exception {
+		Thread.sleep(500);
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_X);
+		Thread.sleep(500);
+		robot.keyRelease(KeyEvent.VK_X);
+		robot.keyRelease(KeyEvent.VK_META);
+	}
+
+	public void pressShortCutForPaste() throws Exception {
+		String script = new String(Files.readAllBytes(Paths.get(getClass()
+				.getResource(PASTE_SCRIPT).toURI())));
+		((ZetaOSXWebAppDriver) getDriver()).getOsxDriver()
+				.executeScript(script);
+	}
+
+	public void pressShortCutForCopy() throws Exception {
+		Thread.sleep(500);
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_C);
+		Thread.sleep(500);
+		robot.keyRelease(KeyEvent.VK_C);
 		robot.keyRelease(KeyEvent.VK_META);
 	}
 
