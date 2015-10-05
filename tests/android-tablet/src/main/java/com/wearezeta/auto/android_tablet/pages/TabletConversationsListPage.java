@@ -7,10 +7,12 @@ import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.InvalidElementStateException;
+import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.PeoplePickerPage;
+import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -49,14 +51,17 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
 				By.id(ContactListPage.idSelfUserAvatar),
 				SELF_AVATAR_LOAD_TIMEOUT)) {
-			// FIXME: Workaround for self profile as start page issue
-			if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-					By.id(ContactListPage.idSelfUserAvatar), 1)) {
-				this.tapOnCenterOfScreen();
-				Thread.sleep(500);
-				this.tapOnCenterOfScreen();
-				DriverUtils.swipeByCoordinates(getDriver(), 1000, 30, 50, 90,
-						50);
+			if (ScreenOrientationHelper.getInstance().fixOrientation(
+					getDriver()) == ScreenOrientation.PORTRAIT) {
+				// FIXME: Workaround for self profile as start page issue
+				if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+						By.id(ContactListPage.idSelfUserAvatar), 1)) {
+					this.tapOnCenterOfScreen();
+					Thread.sleep(500);
+					this.tapOnCenterOfScreen();
+					DriverUtils.swipeByCoordinates(getDriver(), 1000, 30, 50,
+							90, 50);
+				}
 			}
 		} else {
 			throw new IllegalStateException(String.format(

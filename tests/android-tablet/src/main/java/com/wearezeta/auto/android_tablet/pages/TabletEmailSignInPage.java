@@ -5,7 +5,6 @@ import java.util.concurrent.Future;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
-import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
@@ -36,13 +35,10 @@ public class TabletEmailSignInPage extends AndroidTabletPage {
 	private static final int VISIBILITY_TIMEOUT_SECONDS = 60;
 
 	public boolean waitUntilNotVisible() throws Exception {
-		try {
-			return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-					By.id(EmailSignInPage.idLoginInput),
-					VISIBILITY_TIMEOUT_SECONDS);
-		} finally {
-			ScreenOrientationHelper.getInstance().fixOrientation(getDriver());
-		}
+		return DriverUtils
+				.waitUntilLocatorDissapears(getDriver(),
+						By.id(EmailSignInPage.idLoginInput),
+						VISIBILITY_TIMEOUT_SECONDS);
 	}
 
 	public void verifyErrorMessageText(String expectedMsg) throws Exception {
