@@ -43,6 +43,10 @@ public abstract class OSXPage extends BasePage {
 		for (int i = 0; i < 2; i++) {
 			clickMenuBarItem(MENUBAR_ITEM_HELP, MENU_ITEM_VERSION);
 		}
+
+		clickMenuBarItem(MENUBAR_ITEM_HELP, environmentName);
+		// FIXME: Have to click environment twice to actually trigger page load
+		// to reg page
 		clickMenuBarItem(MENUBAR_ITEM_HELP, environmentName);
 	}
 
