@@ -521,6 +521,22 @@ public class ConversationPage extends WebPage {
 		robot.keyRelease(KeyEvent.VK_META);
 	}
 
+	public void pressShortCutForUndo() throws Exception {
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_Z);
+		robot.keyRelease(KeyEvent.VK_Z);
+		robot.keyRelease(KeyEvent.VK_META);
+	}
+
+	public void pressShortCutForRedo() throws Exception {
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_SHIFT);
+		robot.keyPress(KeyEvent.VK_Z);
+		robot.keyRelease(KeyEvent.VK_Z);
+		robot.keyRelease(KeyEvent.VK_SHIFT);
+		robot.keyRelease(KeyEvent.VK_META);
+	}
+
 	public String getPingButtonToolTip() {
 		return pingButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
 	}
