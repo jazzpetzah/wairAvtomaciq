@@ -549,10 +549,8 @@ public class ConversationPage extends WebPage {
 	}
 
 	public void pressShortCutForCut() throws Exception {
-		Thread.sleep(500);
 		robot.keyPress(KeyEvent.VK_META);// command key
 		robot.keyPress(KeyEvent.VK_X);
-		Thread.sleep(500);
 		robot.keyRelease(KeyEvent.VK_X);
 		robot.keyRelease(KeyEvent.VK_META);
 	}
@@ -565,10 +563,8 @@ public class ConversationPage extends WebPage {
 	}
 
 	public void pressShortCutForCopy() throws Exception {
-		Thread.sleep(500);
 		robot.keyPress(KeyEvent.VK_META);// command key
 		robot.keyPress(KeyEvent.VK_C);
-		Thread.sleep(500);
 		robot.keyRelease(KeyEvent.VK_C);
 		robot.keyRelease(KeyEvent.VK_META);
 	}
