@@ -172,7 +172,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id3945 @torun
+  @smoke @id3945
   Scenario Outline: Verify I can select all, cut and paste using menu bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
