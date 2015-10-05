@@ -42,7 +42,6 @@ public class EmailSignInPageSteps {
 		getEmailSignInPage().tapSignInButton();
 		Assert.assertTrue("Sign in page is still visible after timeout",
 				getEmailSignInPage().waitUntilNotVisible());
-
 	}
 
 	/**

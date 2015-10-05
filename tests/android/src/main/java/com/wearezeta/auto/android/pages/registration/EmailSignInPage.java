@@ -85,7 +85,7 @@ public class EmailSignInPage extends AndroidPage {
 		final long millisecondsStarted = System.currentTimeMillis();
 		do {
 			if (DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-					By.id(EmailSignInPage.idLoginButton), 5)) {
+					By.id(idLoginButton), 5)) {
 				// FIXME: Workaround for 403 error from the backend
 				if (enableLoginWorkaround) {
 					if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
@@ -106,10 +106,6 @@ public class EmailSignInPage extends AndroidPage {
 		throw new AssertionError(String.format(
 				"Login screen is still visible after %s seconds timeout",
 				timeoutSeconds));
-	}
-
-	public void workaroundAlert() throws Exception {
-
 	}
 
 	public boolean waitForAddPhoneNumberAppear() throws Exception {
