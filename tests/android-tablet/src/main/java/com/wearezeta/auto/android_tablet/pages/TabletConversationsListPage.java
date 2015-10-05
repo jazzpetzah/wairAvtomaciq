@@ -13,7 +13,6 @@ import org.openqa.selenium.WebElement;
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.PeoplePickerPage;
 import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
-import com.wearezeta.auto.android_tablet.pages.camera.SelfProfileCameraPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -64,11 +63,9 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 								50, 90, 50);
 						// FIXME: Self profile switches to full colour instead
 						// of being swiped
-						if (DriverUtils
-								.waitUntilLocatorDissapears(
-										getDriver(),
-										By.id(SelfProfileCameraPage.idChangePictureButton),
-										1)) {
+						if (DriverUtils.waitUntilLocatorIsDisplayed(
+								getDriver(),
+								By.id(ContactListPage.idSelfUserAvatar), 1)) {
 							break;
 						} else {
 							this.tapOnCenterOfScreen();
