@@ -82,6 +82,11 @@ public class EmailSignInPage extends AndroidPage {
 	public void logIn(boolean enableLoginWorkaround, int timeoutSeconds)
 			throws Exception {
 		confirmSignInButton.click();
+		waitForLogInToComplete(enableLoginWorkaround, timeoutSeconds);
+	}
+
+	public void waitForLogInToComplete(boolean enableLoginWorkaround,
+			int timeoutSeconds) throws Exception {
 		final long millisecondsStarted = System.currentTimeMillis();
 		do {
 			if (DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
@@ -103,7 +108,7 @@ public class EmailSignInPage extends AndroidPage {
 				confirmSignInButton.click();
 			}
 		} while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
-		throw new AssertionError(String.format(
+		throw new IllegalStateException(String.format(
 				"Login screen is still visible after %s seconds timeout",
 				timeoutSeconds));
 	}
