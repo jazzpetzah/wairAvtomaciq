@@ -132,4 +132,42 @@ Feature: Conversation View
 
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2   | ChatName  |
-      | user1Email | user1Password | user1Name | user2Name  | user3Name  | GroupChat |
+         | user1Email | user1Password | user1Name | user2Name  | user3Name  | GroupChat |
+
+  @staging @id3919
+  Scenario Outline: Verify I can undo redo using menu bar
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <Contact>
+    And I write random message
+    And I verify that random message was typed
+    And I click menu bar item "Edit" and menu item "Undo"
+    And I verify that message "" was typed
+    And I click menu bar item "Edit" and menu item "Redo"
+    And I verify that random message was typed
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @staging @id3920
+  Scenario Outline: Verify I can undo redo using when I press ⌘ Z and ⌘ ⇧ Z
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <Contact>
+    And I write random message
+    And I verify that random message was typed
+    And I type shortcut combination to undo
+    And I verify that message "" was typed
+    And I type shortcut combination to redo
+    And I verify that random message was typed
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |

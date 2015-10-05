@@ -14,6 +14,8 @@ import com.wearezeta.auto.common.driver.ZetaOSXWebAppDriver;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import static com.wearezeta.auto.osx.common.OSXCommonUtils.clearAppData;
+import static com.wearezeta.auto.osx.common.OSXCommonUtils.killAllApps;
 
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
 
@@ -128,12 +130,12 @@ public class CommonOSXSteps {
 	}
 
 	private void commonBefore() throws Exception {
-		// try {
-		// killAllApps();
-		// clearAppData();
-		// } catch (Exception e) {
-		// LOG.error(e);
-		// }
+		try {
+			killAllApps();
+			clearAppData();
+		} catch (Exception e) {
+			LOG.error(e);
+		}
 		startApp();
 	}
 
@@ -173,17 +175,19 @@ public class CommonOSXSteps {
 	}
 
 	private void waitForAppStartup(ZetaOSXDriver osxdriver) throws Exception {
-		DriverUtils.waitUntilLocatorAppears(osxdriver,
+		assert DriverUtils.waitUntilLocatorAppears(osxdriver,
 				By.xpath(OSXLocators.MainWirePage.xpathWindow),
-				WRAPPER_STARTUP_TIMEOUT_SECONDS);
+				WRAPPER_STARTUP_TIMEOUT_SECONDS) : "Application did not started properly";
 		LOG.debug("Application started");
 	}
 
 	private void waitForWebappLoaded(ZetaWebAppDriver webdriver)
 			throws Exception {
-		DriverUtils.waitUntilLocatorDissapears(webdriver,
-				By.className(WebAppLocators.LoginPage.classNameSpinner),
-				WRAPPER_STARTUP_TIMEOUT_SECONDS);
+		assert DriverUtils
+				.waitUntilLocatorAppears(
+						webdriver,
+						By.cssSelector(WebAppLocators.RegistrationPage.cssSwitchToSignInButton),
+						WRAPPER_STARTUP_TIMEOUT_SECONDS) : "Wrapper Webapp did not load properly";
 		LOG.debug("Wrapper Webapp loaded");
 	}
 
