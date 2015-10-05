@@ -43,14 +43,27 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 		}
 	}
 
+	private static final int SELF_AVATAR_LOAD_TIMEOUT = 120; // seconds
+
 	public void verifyConversationsListIsLoaded() throws Exception {
-		getContactListPage().verifyContactListIsFullyLoaded();
-		if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(ContactListPage.idSelfUserAvatar), 1)) {
-			this.tapOnCenterOfScreen();
-			this.tapOnCenterOfScreen();
-			DriverUtils.swipeByCoordinates(getDriver(), 1000, 30, 50, 90, 50);
+		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.id(ContactListPage.idSelfUserAvatar),
+				SELF_AVATAR_LOAD_TIMEOUT)) {
+			// FIXME: Workaround for self profile as start page issue
+			if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+					By.id(ContactListPage.idSelfUserAvatar), 1)) {
+				this.tapOnCenterOfScreen();
+				Thread.sleep(500);
+				this.tapOnCenterOfScreen();
+				DriverUtils.swipeByCoordinates(getDriver(), 1000, 30, 50, 90,
+						50);
+			}
+		} else {
+			throw new IllegalStateException(String.format(
+					"Self avatar has not been loaded within %s seconds",
+					SELF_AVATAR_LOAD_TIMEOUT));
 		}
+		getContactListPage().verifyContactListIsFullyLoaded();
 	}
 
 	public TabletSelfProfilePage tapMyAvatar() throws Exception {
