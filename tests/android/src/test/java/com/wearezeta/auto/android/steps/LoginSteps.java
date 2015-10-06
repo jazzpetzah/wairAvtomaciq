@@ -2,10 +2,12 @@ package com.wearezeta.auto.android.steps;
 
 import java.util.Random;
 
+import org.junit.Assert;
 import org.openqa.selenium.NoSuchElementException;
 
 import com.wearezeta.auto.android.pages.registration.AreaCodePage;
 import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
+import com.wearezeta.auto.android.pages.registration.PhoneNumberSignInPage;
 import com.wearezeta.auto.android.pages.registration.PhoneNumberVerificationPage;
 import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
@@ -34,6 +36,10 @@ public class LoginSteps {
 
 	private AreaCodePage getAreaCodePage() throws Exception {
 		return pagesCollection.getPage(AreaCodePage.class);
+	}
+
+	private PhoneNumberSignInPage getPhoneNumberSignInPage() throws Exception {
+		return pagesCollection.getPage(PhoneNumberSignInPage.class);
 	}
 
 	private PhoneNumberVerificationPage getVerificationPage() throws Exception {
@@ -94,7 +100,11 @@ public class LoginSteps {
 				.getLoginCodeByPhoneNumber(self.getPhoneNumber());
 		getVerificationPage().inputVerificationCode(verificationCode);
 		getVerificationPage().clickConfirm();
-		assert getVerificationPage().waitUntilConfirmButtonDissapears() : "Phone number verification code input screen is still visible";
+		Assert.assertTrue(
+				"Phone number verification code input screen is still visible",
+				getVerificationPage().waitUntilConfirmButtonDissapears());
+		Assert.assertTrue("Invalid verification code!", getVerificationPage()
+				.isIncorrectCodeErrorNotAppears());
 	}
 
 	private static final int PHONE_NUMBER_LOGIN_THRESHOLD = 60;
@@ -110,9 +120,18 @@ public class LoginSteps {
 	 * @throws Exception
 	 */
 	@Given("^I sign in using my email or phone number$")
-	public void ISignInUsingMyEmailOrPhoneNumber() throws Exception {
+	public void ISignInUsingMyEmailOrPhoneNumber() throws Exception,
+			AssertionError {
 		if (random.nextInt(100) < PHONE_NUMBER_LOGIN_THRESHOLD) {
-			ISignInUsingMyPhoneNumber();
+			try {
+				ISignInUsingMyPhoneNumber();
+			} catch (AssertionError | Exception e) {
+				if (getVerificationPage().isIncorrectCodeErrorAppears())
+					getVerificationPage().clickOk();
+				getVerificationPage().clickEditPhoneButton();
+				getPhoneNumberSignInPage().clickRegisterButton();
+				ISignInUsingMyEmail();
+			}
 		} else {
 			ISignInUsingMyEmail();
 		}
