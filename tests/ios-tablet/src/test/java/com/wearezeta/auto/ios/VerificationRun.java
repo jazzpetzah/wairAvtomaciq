@@ -6,7 +6,9 @@ import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features="src/test/resources", format = {"html:target/report", "json:target/report.json", "com.wearezeta.auto.ios.tools.IOSZetaFormatter"}, tags  = { "@mute" } )
+@CucumberOptions(features = "src/test/resources", format = {
+		"html:target/report", "json:target/report.json",
+		"com.wearezeta.auto.ios.tools.IOSZetaFormatter" }, tags = { "@mute" })
 public class VerificationRun {
 
 }
