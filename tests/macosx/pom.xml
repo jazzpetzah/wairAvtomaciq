@@ -53,7 +53,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>4.11</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.hamcrest</groupId>
@@ -71,12 +71,12 @@
         <dependency>
             <groupId>info.cukes</groupId>
             <artifactId>cucumber-picocontainer</artifactId>
-            <version>1.2.4</version>
+            <version>1.1.8</version>
         </dependency>
         <dependency>
             <groupId>info.cukes</groupId>
             <artifactId>cucumber-junit</artifactId>
-            <version>1.2.4</version>
+            <version>1.1.8</version>
         </dependency>
 
         <dependency>
