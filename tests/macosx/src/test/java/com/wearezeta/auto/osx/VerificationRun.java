@@ -6,7 +6,7 @@ import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(plugin = { "html:target/report", "json:target/report.json",
+@CucumberOptions(format = { "html:target/report", "json:target/report.json",
 		"com.wearezeta.auto.common.ZetaFormatter" }, tags = { "@mute" })
 public class VerificationRun {
 

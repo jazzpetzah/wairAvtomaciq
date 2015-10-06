@@ -243,6 +243,11 @@ public class DialogPage extends AndroidPage {
 				By.id(idCursorArea));
 	}
 
+	public boolean waitForCursorInputNotVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.id(idCursorArea));
+	}
+
 	public void tapOnCursorInput() throws Exception {
 		// FIXME: Scroll to the bottom if cursor input is not visible
 		if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
@@ -537,20 +542,13 @@ public class DialogPage extends AndroidPage {
 		return connectRequestChatUserName.getText().toLowerCase();
 	}
 
-	@Override
-	public ContactListPage navigateBack() throws Exception {
-		super.navigateBack();
-		return new ContactListPage(this.getLazyDriver());
-	}
-
 	/**
 	 * Navigates back by swipe and initialize ContactListPage
 	 * 
 	 * @throws Exception
 	 */
-	public ContactListPage navigateBack(int timeMilliseconds) throws Exception {
+	public void navigateBack(int timeMilliseconds) throws Exception {
 		swipeRightCoordinates(timeMilliseconds);
-		return new ContactListPage(this.getLazyDriver());
 	}
 
 	public boolean isHintVisible() throws Exception {

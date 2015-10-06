@@ -6,7 +6,6 @@ import java.util.concurrent.Future;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -62,7 +61,7 @@ public abstract class AndroidPage extends BasePage {
 	protected Future<ZetaAndroidDriver> getLazyDriver() {
 		return (Future<ZetaAndroidDriver>) super.getLazyDriver();
 	}
-	
+
 	@Override
 	protected long getDriverInitializationTimeout() {
 		return 1000 * 60 * 6;
@@ -122,11 +121,16 @@ public abstract class AndroidPage extends BasePage {
 	 * 
 	 * @throws Exception
 	 */
-	public AndroidPage navigateBack() throws Exception {
+	public void navigateBack() throws Exception {
 		AndroidCommonUtils.tapBackButton();
-		commonSteps.WaitForTime(0.5);
+
+		// Wait for animation
+		Thread.sleep(1000);
 		// this.getDriver().navigate().back();
-		return null;
+	}
+
+	public void sendKeyEvent(int AndroidKeyEvent) throws Exception {
+		getDriver().sendKeyEvent(AndroidKeyEvent);
 	}
 
 	public void rotateLandscape() throws Exception {
@@ -165,44 +169,6 @@ public abstract class AndroidPage extends BasePage {
 		return returnBySwipe(SwipeDirection.UP);
 	}
 
-	public void elementSwipeRight(WebElement el, int durationMilliseconds) {
-		Point coords = el.getLocation();
-		Dimension elementSize = el.getSize();
-		try {
-			this.getDriver().swipe(coords.x + 30,
-					coords.y + elementSize.height / 2,
-					coords.x + elementSize.width - 90,
-					coords.y + elementSize.height / 2, durationMilliseconds);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-
-	public void elementSwipeUp(WebElement el, int durationMilliseconds) {
-		Point coords = el.getLocation();
-		Dimension elementSize = el.getSize();
-		try {
-			this.getDriver().swipe(coords.x + elementSize.width / 2,
-					coords.y + elementSize.height - 100,
-					coords.x + elementSize.width / 2, coords.y,
-					durationMilliseconds);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-
-	public void elementSwipeDown(WebElement el, int durationMilliseconds) {
-		Point coords = el.getLocation();
-		Dimension elementSize = el.getSize();
-		try {
-			this.getDriver().swipe(coords.x + elementSize.width / 2,
-					coords.y + 100, coords.x + elementSize.width / 2,
-					coords.y + elementSize.height - 300, durationMilliseconds);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-
 	public void dialogsPagesSwipeUp(int durationMilliseconds) throws Exception {
 		swipeByCoordinates(durationMilliseconds, 50, 80, 50, 30);
 	}
@@ -215,70 +181,6 @@ public abstract class AndroidPage extends BasePage {
 	@Override
 	public AndroidPage swipeDown(int durationMilliseconds) throws Exception {
 		DriverUtils.swipeDown(this.getDriver(), content, durationMilliseconds);
-		return returnBySwipe(SwipeDirection.DOWN);
-	}
-
-	public AndroidPage swipeRightCoordinates_old(int durationMilliseconds)
-			throws Exception {
-		DriverUtils.swipeRightCoordinates(this.getDriver(),
-				durationMilliseconds);
-		return returnBySwipe(SwipeDirection.RIGHT);
-	}
-
-	public AndroidPage swipeRightCoordinates_old(int durationMilliseconds,
-			int horizontalPercent) throws Exception {
-		DriverUtils.swipeRightCoordinates(this.getDriver(),
-				durationMilliseconds, horizontalPercent);
-		return returnBySwipe(SwipeDirection.RIGHT);
-	}
-
-	public AndroidPage swipeLeftCoordinates_old(int durationMilliseconds)
-			throws Exception {
-		DriverUtils
-				.swipeLeftCoordinates(this.getDriver(), durationMilliseconds);
-		return returnBySwipe(SwipeDirection.LEFT);
-	}
-
-	public AndroidPage swipeLeftCoordinates_old(int durationMilliseconds,
-			int horizontalPercent) throws Exception {
-		DriverUtils.swipeLeftCoordinates(this.getDriver(),
-				durationMilliseconds, horizontalPercent);
-		return returnBySwipe(SwipeDirection.LEFT);
-	}
-
-	public AndroidPage swipeUpCoordinates_old(int durationMilliseconds)
-			throws Exception {
-		DriverUtils.swipeUpCoordinates(this.getDriver(), durationMilliseconds);
-		return returnBySwipe(SwipeDirection.UP);
-	}
-
-	public AndroidPage swipeUpCoordinates_old(int durationMilliseconds,
-			int verticalPercent) throws Exception {
-		DriverUtils.swipeUpCoordinates(this.getDriver(), durationMilliseconds,
-				verticalPercent);
-		return returnBySwipe(SwipeDirection.UP);
-	}
-
-	public AndroidPage swipeByCoordinates_old(int durationMilliseconds,
-			int widthStartPercent, int hightStartPercent, int widthEndPercent,
-			int hightEndPercent) throws Exception {
-		DriverUtils.swipeByCoordinates(this.getDriver(), durationMilliseconds,
-				widthStartPercent, hightStartPercent, widthEndPercent,
-				hightEndPercent);
-		return returnBySwipe(SwipeDirection.DOWN);
-	}
-
-	public AndroidPage swipeDownCoordinates_old(int durationMilliseconds)
-			throws Exception {
-		DriverUtils
-				.swipeDownCoordinates(this.getDriver(), durationMilliseconds);
-		return returnBySwipe(SwipeDirection.DOWN);
-	}
-
-	public AndroidPage swipeDownCoordinates_old(int durationMilliseconds,
-			int verticalPercent) throws Exception {
-		DriverUtils.swipeDownCoordinates(this.getDriver(),
-				durationMilliseconds, verticalPercent);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
@@ -383,8 +285,6 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	public void tapOnCenterOfScreen() throws Exception {
-		int x = getDriver().manage().window().getSize().getWidth() / 2;
-		int y = getDriver().manage().window().getSize().getHeight() / 2;
-		AndroidCommonUtils.genericScreenTap(x, y);
+		tapByCoordinates(50, 50);
 	}
 }

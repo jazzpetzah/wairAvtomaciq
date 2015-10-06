@@ -462,7 +462,7 @@ Feature: Search
     And I see top people list on People picker page
     And I tap on 3 top connections but not <Contact>
     And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact>
+    And I fill in Search field user name <Contact>
     And I see user <Contact> found on People picker page
     And I tap on connected user <Contact> on People picker page
     And I click space keyboard button
@@ -486,7 +486,7 @@ Feature: Search
     And I see top people list on People picker page
     And I tap on 3 top connections but not <Contact>
     And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact>
+    And I fill in Search field user name <Contact>
     And I see user <Contact> found on People picker page
     And I tap on connected user <Contact> on People picker page
     And I click space keyboard button
@@ -496,7 +496,7 @@ Feature: Search
       | Name      | UserCount | Contact   | Number |
       | user1Name | 7         | user2Name | 4      |
 
-  @staging @id3289
+  @regression @id3289
   Scenario Outline: Verify starting a call with action button [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -517,7 +517,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3290
+  @regression @id3290
   Scenario Outline: Verify starting a call with action button [LANDSAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -539,7 +539,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3291
+  @regression @id3291
   Scenario Outline: Verify sharing a photo to a newly created group conversation with action button [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to all other users
@@ -564,7 +564,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @staging @id3292
+  @regression @id3292
   Scenario Outline: Verify sharing a photo to a newly created group conversation with action button [LANDSAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to all other users
@@ -589,7 +589,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @staging @id3295
+  @regression @id3295
   Scenario Outline: Verify action buttons appear after selecting person from Top People [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -606,7 +606,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3296
+  @regression @id3296
   Scenario Outline: Verify action buttons appear after selecting person from Top People [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -624,7 +624,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3297
+  @regression @id3297
   Scenario Outline: Verify action buttons appear after choosing user from search results [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -641,7 +641,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3298
+  @regression @id3298
   Scenario Outline: Verify action buttons appear after choosing user from search results [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -659,7 +659,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3299
+  @regression @id3299
   Scenario Outline: Verify button Open is changed on Create after checking second person [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -678,7 +678,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @staging @id3300
+  @regression @id3300
   Scenario Outline: Verify button Open is changed on Create after checking second person [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -698,7 +698,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @staging @id3301
+  @regression @id3301
   Scenario Outline: Verify action buttons disappear by unchecking the avatar [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -737,7 +737,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @staging @id3819
+  @regression @id3819
   Scenario Outline: Verify action buttons disappear by deleting token from a search field [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -760,7 +760,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @staging @id3820
+  @regression @id3820
   Scenario Outline: Verify action buttons disappear by deleting token from a search field [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -784,7 +784,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @staging @id3821
+  @regression @id3821
   Scenario Outline: Verify opening conversation with action button [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -803,7 +803,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @staging @id3822
+  @regression @id3822
   Scenario Outline: Verify opening conversation with action button [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -823,7 +823,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @staging @id2482
+  @regression @id2482
   Scenario Outline: Verify label hiding after dismissing all PYMK [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>

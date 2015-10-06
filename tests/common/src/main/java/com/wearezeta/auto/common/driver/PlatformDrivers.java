@@ -116,7 +116,7 @@ public final class PlatformDrivers {
 					.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
 							TimeUnit.MILLISECONDS).quit();
 			log.debug(String.format(
-					"Successfully quit driver instance for platfrom '%s'",
+					"Successfully quit driver instance for platform '%s'",
 					platform.name()));
 		} finally {
 			drivers.remove(platform);

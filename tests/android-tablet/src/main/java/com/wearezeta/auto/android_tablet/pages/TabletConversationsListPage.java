@@ -54,13 +54,34 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 			if (ScreenOrientationHelper.getInstance().fixOrientation(
 					getDriver()) == ScreenOrientation.PORTRAIT) {
 				// FIXME: Workaround for self profile as start page issue
-				if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-						By.id(ContactListPage.idSelfUserAvatar), 1)) {
-					this.tapOnCenterOfScreen();
-					Thread.sleep(500);
-					this.tapOnCenterOfScreen();
-					DriverUtils.swipeByCoordinates(getDriver(), 1000, 30, 50,
-							90, 50);
+				int ntry = 1;
+				final int maxRetries = 3;
+				do {
+					if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+							By.id(ContactListPage.idSelfUserAvatar), 4)) {
+						DriverUtils.swipeByCoordinates(getDriver(), 1000, 30,
+								50, 90, 50);
+						// FIXME: Self profile switches to full colour instead
+						// of being swiped
+						if (DriverUtils.waitUntilLocatorIsDisplayed(
+								getDriver(),
+								By.id(ContactListPage.idSelfUserAvatar), 1)) {
+							break;
+						} else {
+							this.tapOnCenterOfScreen();
+							DriverUtils.swipeByCoordinates(getDriver(), 1000,
+									30, 50, 90, 50);
+						}
+					} else {
+						break;
+					}
+					ntry++;
+				} while (ntry <= maxRetries);
+				if (ntry > maxRetries) {
+					throw new IllegalStateException(
+							String.format(
+									"Conversations list was not shown after %d retries",
+									maxRetries));
 				}
 			}
 		} else {
@@ -197,6 +218,7 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 	public void swipeRightListItem(String name) throws Exception {
 		final By locator = By.xpath(ContactListPage.xpathContactByName
 				.apply(name));
-		this.elementSwipeRight(getDriver().findElement(locator), 1000);
+		DriverUtils.swipeElementPointToPoint(getDriver(), getDriver()
+				.findElement(locator), 500, 5, 50, 80, 50);
 	}
 }

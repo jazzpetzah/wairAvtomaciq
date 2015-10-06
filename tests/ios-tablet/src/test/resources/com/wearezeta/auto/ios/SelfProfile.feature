@@ -259,7 +259,7 @@ Feature: Self Profile
       | Name      | NewName           | Color1 | Color2          | Contact   |
       | user1Name | AccentColorChange | Violet | StrongLimeGreen | user2Name |
 
-  @staging @id3850
+  @regression @id3850
   Scenario Outline: Verify adding phone number to the contact signed up with email [PORTRAIT]
     Given There is 1 users where <Name> is me with email only
     Given I Sign in on tablet using my email
@@ -275,7 +275,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @staging @id3848
+  @regression @id3848
   Scenario Outline: Verify adding phone number to the contact signed up with email [LANDSCAPE]
     Given There is 1 users where <Name> is me with email only
     Given I rotate UI to landscape
@@ -292,7 +292,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @staging @noAcceptAlert @id3855
+  @regression @noAcceptAlert @id3855
   Scenario Outline: Verify error message appears in case of entering a not valid phone number [PORTRAIT]
     Given There is 1 users where <Name> is me with email only
     Given I sign in using my email
@@ -310,7 +310,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @staging @noAcceptAlert @id3856
+  @regression @noAcceptAlert @id3856
   Scenario Outline: Verify error message appears in case of entering a not valid phone number [LANDSCAPE]
     Given There is 1 users where <Name> is me with email only
     Given I rotate UI to landscape

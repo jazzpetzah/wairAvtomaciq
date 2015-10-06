@@ -5,21 +5,13 @@ import java.util.function.Function;
 
 public final class OSXLocators {
 
-	@FunctionalInterface
-	public interface MergeFunction<A, B, R> {
-		public R apply(A a, B b);
-	}
-
 	public static final class AppMenu {
 
 		public static final Function<String, String> xpathMenuBarItem = (name) -> String
 				.format("//AXMenuBarItem[contains(@AXTitle, '%s')]", name);
 
-		public static final MergeFunction<String, String, String> xpathMenuItem = (
-				xpathParentMenuBarItem, name) -> String.format(
-				"%s/AXMenu/AXMenuItem[contains(@AXTitle, '%s')]",
-				xpathParentMenuBarItem, name);
-
+		public static final Function<String, String> xpathMenuItem = (name) -> String
+				.format("/AXMenu/AXMenuItem[contains(@AXTitle, '%s')]", name);
 	}
 
 	public static final class NoInternetConnectionPage {

@@ -319,6 +319,7 @@ Feature: Connect
     And I see that connection is pending
     And I click Block button
     And I confirm block on connect to page
+    Then I do not see dialog page
     Then I do not see contact list with name <Contact>
     And I wait until <Contact> exists in backend search results
     And I open Search by tap
