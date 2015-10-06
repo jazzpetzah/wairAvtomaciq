@@ -195,12 +195,12 @@ public class PeoplePickerPage extends IOSPage {
 		try {
 			sendTextToSeachInput(text);
 			clickSpaceKeyboardButton();
-			//peoplePickerSearch.sendKeys(text);
+			// peoplePickerSearch.sendKeys(text);
 		} catch (WebDriverException ex) {
 			peoplePickerSearch.clear();
 			sendTextToSeachInput(text);
 			clickSpaceKeyboardButton();
-			//peoplePickerSearch.sendKeys(text);
+			// peoplePickerSearch.sendKeys(text);
 		}
 	}
 
@@ -571,5 +571,10 @@ public class PeoplePickerPage extends IOSPage {
 	public void clickSendImageButton() throws Exception {
 		DriverUtils.waitUntilElementClickable(getDriver(), sendImageButton);
 		sendImageButton.click();
+	}
+
+	public void inputTextInSearch(String text) throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), peoplePickerSearch);
+		peoplePickerSearch.sendKeys(text);
 	}
 }
