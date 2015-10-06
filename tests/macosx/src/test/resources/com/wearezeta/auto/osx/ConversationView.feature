@@ -154,7 +154,7 @@ Feature: Conversation View
       | user1Email | user1Password | user1Name | user2Name |
 
   @smoke @id3920
-  Scenario Outline: Verify I can undo redo using when I press ⌘ Z and ⌘ ⇧ Z
+  Scenario Outline: Verify I can undo redo using shortcuts ⌘ Z and ⌘ ⇧ Z
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
@@ -167,6 +167,90 @@ Feature: Conversation View
     Then I verify that message "" was typed
     When I type shortcut combination to redo
     Then I verify that random message was typed
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @smoke @id3945
+  Scenario Outline: Verify I can select all, cut and paste using menu bar
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Then I see my avatar on top of Contact list
+    When I open conversation with <Contact>
+    And I write random message
+    Then I verify that random message was typed
+    When I click menu bar item "Edit" and menu item "Select All"
+    And I click menu bar item "Edit" and menu item "Cut"
+    Then I verify that message "" was typed
+# We can not paste something in automation due to security
+#     When I click menu bar item "Edit" and menu item "Paste"
+#     Then I verify that random message was typed
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @smoke @id3946
+  Scenario Outline: Verify I can select all, cut and paste using shortcuts ⌘ A, ⌘ X and ⌘ V
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Then I see my avatar on top of Contact list
+    When I open conversation with <Contact>
+    And I write random message
+    Then I verify that random message was typed
+    When I type shortcut combination to select all
+    And I type shortcut combination to cut
+    Then I verify that message "" was typed
+# We can not paste something in automation due to security
+#     When I type shortcut combination to paste
+#     Then I verify that random message was typed
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @smoke @id3947
+  Scenario Outline: Verify I can select all, copy and paste using menu bar
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Then I see my avatar on top of Contact list
+    When I open conversation with <Contact>
+    And I write random message
+    Then I verify that random message was typed
+    When I click menu bar item "Edit" and menu item "Select All"
+    And I click menu bar item "Edit" and menu item "Copy"
+    Then I verify that random message was typed
+# We can not paste something in automation due to security
+#     When I click menu bar item "Edit" and menu item "Paste"
+#     Then I verify that random message was typed
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @smoke @id3948
+  Scenario Outline: Verify I can select all, copy and paste using shortcuts ⌘ A, ⌘ C and ⌘ V
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Then I see my avatar on top of Contact list
+    When I open conversation with <Contact>
+    And I write random message
+    Then I verify that random message was typed
+    When I type shortcut combination to select all
+    And I type shortcut combination to copy
+    Then I verify that random message was typed
+# We can not paste something in automation due to security
+#     When I type shortcut combination to paste
+#     Then I verify that random message was typed
 
     Examples: 
       | Login      | Password      | Name      | Contact   |

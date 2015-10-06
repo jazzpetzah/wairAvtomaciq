@@ -675,6 +675,13 @@ public class CommonOSXSteps {
 		mainPage.clickMenuBarItem(menuBarItemName, menuItemName);
 	}
 
+	@When("^I click menu bar item \"(.*)\" and menu items \"(.*)\" and \"(.*)\"$")
+	public void clickMenuBarItem(String menuBarItemName, String menuItemName,
+			String menuItemName2) throws Exception {
+		MainWirePage mainPage = osxPagesCollection.getPage(MainWirePage.class);
+		mainPage.clickMenuBarItem(menuBarItemName, menuItemName, menuItemName2);
+	}
+
 	@When("^I click menu bar item with name \"(.*)\"$")
 	public void clickMenuBarItem(String menuBarItemName) throws Exception {
 		osxPagesCollection.getPage(MainWirePage.class).clickMenuBarItem(

@@ -191,12 +191,6 @@ public class PersonalInfoPage extends AndroidPage {
 		this.getDriver().navigate().back();
 	}
 
-	@Override
-	public ContactListPage navigateBack() throws Exception {
-		super.navigateBack();
-		return new ContactListPage(this.getLazyDriver());
-	}
-
 	public boolean waitUntilNameIsVisible(String expectedName) throws Exception {
 		final By locator = By.xpath(xpathNameFieldByValue.apply(expectedName));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);

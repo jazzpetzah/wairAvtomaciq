@@ -181,20 +181,9 @@ public class ContactListPage extends AndroidPage {
 										name))).click();
 	}
 
-	public void doLongSwipeUp() {
-		elementSwipeUp(contactListFrame, 2000);
-	}
-
-	public AndroidPage tapOnContactByPosition(List<WebElement> contacts, int id)
-			throws Exception {
-		try {
-			contacts.get(id).click();
-			log.debug("Trying to open contact #" + (id + 1));
-		} catch (Exception e) {
-			log.debug("Failed to find element in contact list.");
-			throw e;
-		}
-		return new DialogPage(this.getLazyDriver());
+	public void doLongSwipeUp() throws Exception {
+		DriverUtils.swipeElementPointToPoint(getDriver(), contactListFrame,
+				2000, 50, 90, 50, 10);
 	}
 
 	public void workaroundConvoListItemsLoad() throws Exception {
@@ -273,12 +262,6 @@ public class ContactListPage extends AndroidPage {
 
 	public void closeHint() {
 		closeHintBtn.click();
-	}
-
-	@Override
-	public AndroidPage swipeDown(int time) throws Exception {
-		elementSwipeDown(contactListFrame, time);
-		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
 	public PeoplePickerPage tapOnSearchBox() throws Exception {
@@ -429,19 +412,13 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	public void doShortSwipeDown() throws Exception {
-		final Point coords = contactListFrame.getLocation();
-		final Dimension elementSize = contactListFrame.getSize();
-		this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y,
-				coords.x + elementSize.width / 2,
-				coords.y + elementSize.height / 10, 500);
+		DriverUtils.swipeElementPointToPoint(getDriver(), contactListFrame,
+				500, 50, 5, 50, 10);
 	}
 
 	public void doLongSwipeDown() throws Exception {
-		final Point coords = contactListFrame.getLocation();
-		final Dimension elementSize = contactListFrame.getSize();
-		this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y,
-				coords.x + elementSize.width / 2,
-				coords.y + elementSize.height / 4 * 3, 2000);
+		DriverUtils.swipeElementPointToPoint(getDriver(), contactListFrame,
+				500, 50, 5, 50, 75);
 	}
 
 	public Optional<BufferedImage> getScreenshotOfPlayPauseButtonNextTo(

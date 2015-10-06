@@ -47,8 +47,8 @@ public class ConversationPageSteps {
 	private static final String SHORTCUT_CALL_MAC = "(⌘⌥T)";
 
 	@SuppressWarnings("unused")
-	private static final Logger log = ZetaLogger
-			.getLog(ConversationPageSteps.class.getSimpleName());
+	private static final Logger LOG = ZetaLogger
+			.getLog(ConversationPageSteps.class.getName());
 
 	private String randomMessage;
 
@@ -807,6 +807,54 @@ public class ConversationPageSteps {
 	public void ITypeShortcutCombinationToRedo() throws Exception {
 		WebappPagesCollection.getInstance().getPage(ConversationPage.class)
 				.pressShortCutForRedo();
+	}
+
+	/**
+	 * Types shortcut combination to select all
+	 *
+	 * @step. ^I type shortcut combination to select all$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to select all$")
+	public void ITypeShortcutCombinationToSelectAll() throws Exception {
+		WebappPagesCollection.getInstance().getPage(ConversationPage.class)
+				.pressShortCutForSelectAll();
+	}
+
+	/**
+	 * Types shortcut combination to cut
+	 *
+	 * @step. ^I type shortcut combination to cut$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to cut$")
+	public void ITypeShortcutCombinationToCut() throws Exception {
+		WebappPagesCollection.getInstance().getPage(ConversationPage.class)
+				.pressShortCutForCut();
+	}
+
+	/**
+	 * Types shortcut combination to paste
+	 *
+	 * @step. ^I type shortcut combination to paste$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to paste$")
+	public void ITypeShortcutCombinationToPaste() throws Exception {
+		WebappPagesCollection.getInstance().getPage(ConversationPage.class)
+				.pressShortCutForPaste();
+	}
+
+	/**
+	 * Types shortcut combination to copy
+	 *
+	 * @step. ^I type shortcut combination to copy$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to copy$")
+	public void ITypeShortcutCombinationToCopy() throws Exception {
+		WebappPagesCollection.getInstance().getPage(ConversationPage.class)
+				.pressShortCutForCopy();
 	}
 
 	/**

@@ -45,7 +45,7 @@ class ExecuteJob(CliHandlerBase):
         parser = self._get_parser()
         args = parser.parse_args()
         job_name = self._normalize_job_name(args.name)
-        MAX_TRY_COUNT = 5
+        MAX_TRY_COUNT = 3
         try_num = 0
         queue_item = None
         start_time = datetime.now()
@@ -55,27 +55,28 @@ class ExecuteJob(CliHandlerBase):
                 queue_item = job.invoke(securitytoken=args.token,
                            build_params=self._encoded_params_to_dict(args.params),
                            cause=args.cause)
-                break
             except Exception as e:
                 traceback.print_exc()
                 try_num += 1
                 if try_num >= MAX_TRY_COUNT:
                     raise e
                 sys.stderr.write('Sleeping a while before retry #{} of {}...\n'.format(try_num, MAX_TRY_COUNT))
-                time.sleep(random.randint(2, 10))
-        if args.block:
-            try_num = 0
-            while True:
+                time.sleep(random.randint(10, 20))
+            if args.block:
                 try:
                     queue_item.block_until_complete(delay=5)
                     break
-                except Exception as e:
+                except Exception:
                     traceback.print_exc()
+                    sys.stderr.write('The script has failed to block the queued item "{}". Trying to restart...'.format(
+                        queue_item
+                    ))
                     try_num += 1
-                    if try_num >= MAX_TRY_COUNT:
-                        raise e
-                    sys.stderr.write('Sleeping a while before retry #{} of {}...\n'.format(try_num, MAX_TRY_COUNT))
-                    time.sleep(random.randint(2, 10))
+                    try:
+                        queue_item.get_build().stop()
+                    except Exception:
+                       pass
+
             timedelta_str = self._timedelta_to_str(datetime.now() - start_time)
             return 'Jenkins job "{0}" is completed (duration: {1})'.format(args.name, timedelta_str)
         else:

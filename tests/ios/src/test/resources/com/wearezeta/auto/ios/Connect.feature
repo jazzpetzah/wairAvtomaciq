@@ -79,7 +79,7 @@ Feature: Connect
     And I click on Pending request link in contact list
     And I see Pending request page
     And I click on Ignore button on Pending requests page <SentRequests> times
-    And I return to the chat list
+    #And I return to the chat list
     And I dont see Pending request link in contact list
     And I don't see conversation with not connected user <Contact1>
     And I wait until <Contact1> exists in backend search results
@@ -163,7 +163,7 @@ Feature: Connect
     Then I see User <Contact> Pinged message in the conversation
     And I see new photo in the dialog
     And I see message in the dialog
-    And I navigate back to conversations view
+    And I return to the chat list
     And I see People picker page
     And I click close button to dismiss people view
     And Contact <Contact> sends random message to user <Name>
@@ -373,7 +373,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | IGNORECONNECT |
 
-  @staging @id3794
+  @regression @id3794
   Scenario Outline: Verify common connections are not tappable
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -392,7 +392,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @staging @id1199
+  @regression @id1199
   Scenario Outline: Verify you can send text messages and images in 1to1 chat to the person who blocked you
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -439,7 +439,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
       
-  @staging @id3902
+  @regression @id3902
   Scenario Outline: Verify inbox is highlighted and opened in the list
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact3>

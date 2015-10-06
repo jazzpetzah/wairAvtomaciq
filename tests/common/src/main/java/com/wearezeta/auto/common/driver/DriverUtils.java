@@ -252,18 +252,12 @@ public class DriverUtils {
 		final Point coords = element.getLocation();
 		final Dimension screenSize = driver.manage().window().getSize();
 		final Dimension elementSize = element.getSize();
-		final int xOffset = (int) Math.round(elementSize.width
-				* (elementPercentX / 100.0));
-		final int yOffset = (int) Math.round(elementSize.height
-				* (elementPercentY / 100.0));
+		final int xOffset = elementSize.width * elementPercentX / 100;
+		final int yOffset = elementSize.height * elementPercentY / 100;
 		int endX = coords.x + xOffset - screenSize.width * 2 / 3 < 0 ? 0
 				: coords.x + xOffset - screenSize.width * 2 / 3;
-		try {
-			driver.swipe(coords.x + xOffset, coords.y + yOffset, endX, coords.y
-					+ yOffset, time);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+		driver.swipe(coords.x + xOffset, coords.y + yOffset, endX, coords.y
+				+ yOffset, time);
 	}
 
 	public static final int SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL = 100;
@@ -278,16 +272,10 @@ public class DriverUtils {
 			int time, int percentX, int percentY) {
 		final Point coords = element.getLocation();
 		final Dimension elementSize = element.getSize();
-		final int xOffset = (int) Math.round(elementSize.width
-				* (percentX / 100.0));
-		final int yOffset = (int) Math.round(elementSize.height
-				* (percentY / 100.0));
-		try {
-			driver.swipe(coords.x, coords.y + yOffset, coords.x + xOffset,
-					coords.y + yOffset, time);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+		final int xOffset = elementSize.width * percentX / 100;
+		final int yOffset = elementSize.height * percentY / 100;
+		driver.swipe(coords.x, coords.y + yOffset, coords.x + xOffset, coords.y
+				+ yOffset, time);
 	}
 
 	public static void swipeRight(AppiumDriver driver, WebElement element,
@@ -295,20 +283,15 @@ public class DriverUtils {
 			int endPercentY) {
 		final Point coords = element.getLocation();
 		final Dimension elementSize = element.getSize();
-		final int xStartOffset = (int) Math.round(elementSize.width
-				* (startPercentX / 100.0));
-		final int yStartOffset = (int) Math.round(elementSize.height
-				* (startPercentY / 100.0));
-		final int xEndOffset = (int) Math.round(elementSize.width
-				* (endPercentX / 100.0));
-		final int yEndOffset = (int) Math.round(elementSize.height
-				* (endPercentY / 100.0));
-		try {
-			driver.swipe(coords.x + xStartOffset, coords.y + yStartOffset,
-					coords.x + xEndOffset, coords.y + yEndOffset, time);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+
+		final int xStartOffset = elementSize.width * startPercentX / 100;
+		final int yStartOffset = elementSize.height * startPercentY / 100;
+		final int xEndOffset = elementSize.width * endPercentX / 100;
+		final int yEndOffset = elementSize.height * endPercentY / 100;
+
+		driver.swipe(coords.x + xStartOffset, coords.y + yStartOffset, coords.x
+				+ xEndOffset, coords.y + yEndOffset, time);
+
 	}
 
 	public static void swipeRight(AppiumDriver driver, WebElement element,
@@ -321,19 +304,12 @@ public class DriverUtils {
 			int time, int percentX, int percentY) {
 		final Point coords = element.getLocation();
 		final Dimension elementSize = element.getSize();
-		final int xOffset = (int) Math.round(elementSize.width
-				* (percentX / 100.0));
-		final int yOffset = (int) Math.round(elementSize.height
-				* (percentY / 100.0));
-		try {
-			driver.swipe(coords.x + xOffset, coords.y + yOffset, coords.x
-					+ xOffset, coords.y, time);
-		} catch (Exception ex) {
-			log.debug(String.format("Failed to swipe up using params: "
-					+ "{startx: %s; starty: %s; endx: %s; endy: %s; time: %s}",
-					coords.x + xOffset, coords.y + yOffset, coords.x + xOffset,
-					coords.y, time));
-		}
+
+		final int xOffset = elementSize.width * percentX / 100;
+		final int yOffset = elementSize.height * percentY / 100;
+
+		driver.swipe(coords.x + xOffset, coords.y + yOffset,
+				coords.x + xOffset, coords.y, time);
 	}
 
 	public static final int SWIPE_Y_DEFAULT_PERCENTAGE_VERTICAL = 100;
@@ -347,16 +323,12 @@ public class DriverUtils {
 			int time, int percentX, int percentY) {
 		final Point coords = element.getLocation();
 		final Dimension elementSize = element.getSize();
-		final int xOffset = (int) Math.round(elementSize.width
-				* (percentX / 100.0));
-		final int yOffset = (int) Math.round(elementSize.height
-				* (percentY / 100.0));
-		try {
-			driver.swipe(coords.x + xOffset, coords.y, coords.x + xOffset,
-					coords.y + yOffset, time);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+
+		final int xOffset = elementSize.width * percentX / 100;
+		final int yOffset = elementSize.height * percentY / 100;
+
+		driver.swipe(coords.x + xOffset, coords.y, coords.x + xOffset, coords.y
+				+ yOffset, time);
 	}
 
 	public static void swipeDown(AppiumDriver driver, WebElement element,
@@ -372,10 +344,10 @@ public class DriverUtils {
 		final Point coords = element.getLocation();
 		final Dimension size = element.getSize();
 
-		int startX = coords.x + size.getWidth() * startPercentX / 100;
-		int startY = coords.y + size.getHeight() * startPercentY / 100;
-		int endX = coords.x + size.getWidth() * endPercentX / 100;
-		int endY = coords.y + size.getHeight() * endPercentY / 100;
+		final int startX = coords.x + size.getWidth() * startPercentX / 100;
+		final int startY = coords.y + size.getHeight() * startPercentY / 100;
+		final int endX = coords.x + size.getWidth() * endPercentX / 100;
+		final int endY = coords.y + size.getHeight() * endPercentY / 100;
 
 		driver.swipe(startX, startY, endX, endY, time);
 	}
@@ -383,21 +355,15 @@ public class DriverUtils {
 	public static void swipeByCoordinates(AppiumDriver driver, int time,
 			int startPercentX, int startPercentY, int endPercentX,
 			int endPercentY) throws Exception {
-		driver.context("NATIVE_APP");
 		final Dimension screenSize = driver.manage().window().getSize();
-		final int startX = (int) Math.round(screenSize.width
-				* (startPercentX / 100.0));
-		final int startY = (int) Math.round(screenSize.height
-				* (startPercentY / 100.0));
-		final int endX = (int) Math.round(screenSize.width
-				* (endPercentX / 100.0));
-		final int endY = (int) Math.round(screenSize.height
-				* (endPercentY / 100.0));
-		try {
-			driver.swipe(startX, startY, endX, endY, time);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+
+		final int startX = screenSize.width * startPercentX / 100;
+		final int startY = screenSize.height * startPercentY / 100;
+		final int endX = screenSize.width * endPercentX / 100;
+		final int endY = screenSize.height * endPercentY / 100;
+
+		driver.swipe(startX, startY, endX, endY, time);
+
 	}
 
 	public static final int DEFAULT_SWIPE_DURATION = 1000; // milliseconds
@@ -422,15 +388,9 @@ public class DriverUtils {
 	public static void genericTap(AppiumDriver driver, int time, int fingers,
 			int percentX, int percentY) {
 		final Dimension screenSize = driver.manage().window().getSize();
-		final int xCoords = (int) Math.round(screenSize.width
-				* (percentX / 100.0));
-		final int yCoords = (int) Math.round(screenSize.height
-				* (percentY / 100.0));
-		try {
-			driver.tap(fingers, xCoords, yCoords, time);
-		} catch (Exception ex) {
-			// ignore;
-		}
+		final int xCoords = screenSize.width * percentX / 100;
+		final int yCoords = screenSize.height * percentY / 100;
+		driver.tap(fingers, xCoords, yCoords, time);
 	}
 
 	public static final int SWIPE_X_DEFAULT_PERCENTAGE_START = 10;
@@ -755,20 +715,21 @@ public class DriverUtils {
 		log.info("Tap on " + dstX + ":" + dstY);
 		driver.tap(1, dstX, dstY, 1);
 	}
-	
-	public static void sendTextToInputByScript(RemoteWebDriver driver, String scriptLocator, String text) {
-			String script = String.format(scriptLocator
-					+ ".setValue(\"%s\")", text);
-			int maxRetrys = 3;
-			int retryCounter = 0;
-			while (retryCounter < maxRetrys) {
-				try {
-					driver.executeScript(script);
-					retryCounter = maxRetrys;
-				} catch (WebDriverException ex) {
-					log.debug("Appium execute script fail. " + ex.getMessage());
-					retryCounter++;
-				}
+
+	public static void sendTextToInputByScript(RemoteWebDriver driver,
+			String scriptLocator, String text) {
+		String script = String
+				.format(scriptLocator + ".setValue(\"%s\")", text);
+		int maxRetrys = 3;
+		int retryCounter = 0;
+		while (retryCounter < maxRetrys) {
+			try {
+				driver.executeScript(script);
+				retryCounter = maxRetrys;
+			} catch (WebDriverException ex) {
+				log.debug("Appium execute script fail. " + ex.getMessage());
+				retryCounter++;
 			}
+		}
 	}
 }
