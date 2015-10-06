@@ -50,39 +50,47 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 	public void verifyConversationsListIsLoaded() throws Exception {
 		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
 				By.id(ContactListPage.idSelfUserAvatar),
-				SELF_AVATAR_LOAD_TIMEOUT)) {
-			if (ScreenOrientationHelper.getInstance().fixOrientation(
-					getDriver()) == ScreenOrientation.PORTRAIT) {
-				// FIXME: Workaround for self profile as start page issue
-				int ntry = 1;
-				final int maxRetries = 3;
-				do {
-					if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-							By.id(ContactListPage.idSelfUserAvatar), 4)) {
+				SELF_AVATAR_LOAD_TIMEOUT)
+				&& ScreenOrientationHelper.getInstance().fixOrientation(
+						getDriver()) == ScreenOrientation.PORTRAIT) {
+			// FIXME: Workaround for self profile as start page issue
+			int ntry = 1;
+			final int maxRetries = 3;
+			final int leftBorderWidth = getDriver().manage().window().getSize().width / 4;
+			Optional<WebElement> selfProfileEl = Optional.empty();
+			if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+					By.id(TabletSelfProfilePage.idSelfProfileView), 1)) {
+				selfProfileEl = Optional.of(getDriver().findElement(
+						By.id(TabletSelfProfilePage.idSelfProfileView)));
+			}
+			do {
+				if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+						By.id(ContactListPage.idSelfUserAvatar), 4)
+						|| (selfProfileEl.isPresent() && selfProfileEl.get()
+								.getLocation().getX() < leftBorderWidth)) {
+					DriverUtils.swipeByCoordinates(getDriver(), 1000, 30, 50,
+							90, 50);
+					// FIXME: Self profile could switch to full colour instead
+					// of being swiped
+					if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+							By.id(ContactListPage.idSelfUserAvatar), 1)
+							&& (selfProfileEl.isPresent() && selfProfileEl
+									.get().getLocation().getX() > leftBorderWidth)) {
+						break;
+					} else {
+						this.tapOnCenterOfScreen();
 						DriverUtils.swipeByCoordinates(getDriver(), 1000, 30,
 								50, 90, 50);
-						// FIXME: Self profile switches to full colour instead
-						// of being swiped
-						if (DriverUtils.waitUntilLocatorIsDisplayed(
-								getDriver(),
-								By.id(ContactListPage.idSelfUserAvatar), 1)) {
-							break;
-						} else {
-							this.tapOnCenterOfScreen();
-							DriverUtils.swipeByCoordinates(getDriver(), 1000,
-									30, 50, 90, 50);
-						}
-					} else {
-						break;
 					}
-					ntry++;
-				} while (ntry <= maxRetries);
-				if (ntry > maxRetries) {
-					throw new IllegalStateException(
-							String.format(
-									"Conversations list was not shown after %d retries",
-									maxRetries));
+				} else {
+					break;
 				}
+				ntry++;
+			} while (ntry <= maxRetries);
+			if (ntry > maxRetries) {
+				throw new IllegalStateException(String.format(
+						"Conversations list was not shown after %d retries",
+						maxRetries));
 			}
 		} else {
 			throw new IllegalStateException(String.format(

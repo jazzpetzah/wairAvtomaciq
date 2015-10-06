@@ -8,8 +8,7 @@ import cucumber.api.junit.Cucumber;
 @RunWith(Cucumber.class)
 @CucumberOptions(format = { "html:target/report",
 		"json:target/smoke_report.json",
-		"com.wearezeta.auto.common.ZetaFormatter" }, tags = { "~@mute",
-		"@performance" })
+		"com.wearezeta.auto.common.ZetaFormatter" }, tags = { "@performance" })
 public class PerformanceRun {
 
 }
