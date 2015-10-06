@@ -477,7 +477,9 @@ public class ContactListPage extends IOSPage {
 					.getImagesPath() + "verifyUnsilenceTestIphone6.png");
 		} else if (deviceType.equals("iPad Air") && isSilenced) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "silenceiPadAir.png");
+					.getImagesPath()
+					+ "verifySilenceiPadAir_"
+					+ getOrientation().toString() + ".png");
 		} else if (deviceType.equals("iPad Air") && !isSilenced) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath()
