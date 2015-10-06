@@ -12,6 +12,7 @@ import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.PeoplePickerPage;
+import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -50,7 +51,8 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
 				By.id(ContactListPage.idSelfUserAvatar),
 				SELF_AVATAR_LOAD_TIMEOUT)
-				&& getDriver().getOrientation() == ScreenOrientation.PORTRAIT) {
+				&& ScreenOrientationHelper.getInstance().fixOrientation(
+						getDriver()) == ScreenOrientation.PORTRAIT) {
 			// FIXME: Workaround for self profile as start page issue
 			int ntry = 1;
 			final int maxRetries = 3;
