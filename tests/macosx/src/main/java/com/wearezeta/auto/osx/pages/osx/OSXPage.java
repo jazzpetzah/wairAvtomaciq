@@ -87,11 +87,6 @@ public abstract class OSXPage extends BasePage {
 		this.getDriver().navigate().to(OSXExecutionContext.WIRE_APP_PATH);
 	}
 
-	public static void clearPagesCollection() throws IllegalArgumentException,
-			IllegalAccessException {
-		clearPagesCollection(OSXPagesCollection.class, OSXPage.class);
-	}
-
 	// not used in OS X
 	@Override
 	public BasePage swipeLeft(int time) throws IOException {

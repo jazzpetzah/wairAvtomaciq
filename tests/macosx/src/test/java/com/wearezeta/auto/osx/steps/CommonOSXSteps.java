@@ -24,7 +24,6 @@ import static com.wearezeta.auto.osx.common.OSXExecutionContext.WIRE_APP_PATH;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 import com.wearezeta.auto.osx.pages.osx.MainWirePage;
-import com.wearezeta.auto.osx.pages.osx.OSXPage;
 import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
@@ -713,7 +712,7 @@ public class CommonOSXSteps {
 	}
 
 	private void clearDrivers() throws Exception {
-		OSXPage.clearPagesCollection();
+		OSXPagesCollection.getInstance().clearAllPages();
 		if (PlatformDrivers.getInstance().hasDriver(
 				OSXExecutionContext.CURRENT_PLATFORM)) {
 			PlatformDrivers.getInstance().quitDriver(
