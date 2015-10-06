@@ -328,3 +328,40 @@ Feature: Self Profile
     Examples: 
       | Name      |
       | user1Name |
+
+  @staging @noAcceptAlert @id3861
+  Scenario Outline: Verify error message appears in case of registering already taken phone number [PORTRAIT]
+    Given There is 1 users where <Name> is me with email only
+    Given I sign in using my email
+    And I accept alert
+    When I click Not Now to not add phone number
+    And I accept alert
+    And I see Contact list with my name <Name>
+    And I tap on my name <Name>
+    And I tap to add my phone number
+    And I see country picker button on Sign in screen
+    And I input phone number <Number> with code <Code>
+    Then I see registered phone number alert
+
+    Examples: 
+      | Name      | Number        | Code |
+      | user1Name | 8301652248706 | +0   |
+      
+  @staging @noAcceptAlert @id3862
+  Scenario Outline: Verify error message appears in case of registering already taken phone number [LANDSCAPE]
+    Given There is 1 users where <Name> is me with email only
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    And I accept alert
+    When I click Not Now to not add phone number
+    And I accept alert
+    And I see Contact list with my name <Name>
+    And I tap on my name <Name>
+    And I tap to add my phone number
+    And I see country picker button on Sign in screen
+    And I input phone number <Number> with code <Code>
+    Then I see registered phone number alert
+
+    Examples: 
+      | Name      | Number        | Code |  
+      | user1Name | 8301652248706 | +0   |

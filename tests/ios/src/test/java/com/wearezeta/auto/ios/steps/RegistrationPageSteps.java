@@ -208,6 +208,21 @@ public class RegistrationPageSteps {
 	}
 
 	/**
+	 * Input in phone number field page phone number with code
+	 * 
+	 * @step. ^I input phone number (.*) with code (.*)$
+	 * @param number
+	 * 		phone number
+	 * @param code
+	 * 		country code
+	 * @throws Exception
+	 */
+	@When("^I input phone number (.*) with code (.*)$")
+	public void IInputPhoneNumber(String number, String code) throws Exception {
+		getRegistrationPage().selectCodeAndInputPhoneNumber(number, code);
+	}
+	
+	/**
 	 * Input in phone number field page an invalid phone number
 	 * 
 	 * @step. ^I enter invalid phone number$
