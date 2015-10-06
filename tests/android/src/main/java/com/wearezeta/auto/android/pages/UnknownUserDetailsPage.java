@@ -1,6 +1,5 @@
 package com.wearezeta.auto.android.pages;
 
-import java.io.IOException;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -9,7 +8,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class UnknownUserDetailsPage extends AndroidPage {
@@ -31,12 +29,6 @@ public class UnknownUserDetailsPage extends AndroidPage {
 	public UnknownUserDetailsPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
-	}
-
-	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction)
-			throws IOException {
-		return null;
 	}
 
 	public boolean isConnectButtonVisible() throws Exception {

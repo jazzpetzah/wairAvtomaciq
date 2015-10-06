@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class CallingLockscreenPage extends AndroidPage {
@@ -27,11 +26,6 @@ public class CallingLockscreenPage extends AndroidPage {
 	public CallingLockscreenPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
-	}
-
-	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
-		return null;
 	}
 
 	public boolean isVisible() throws Exception {

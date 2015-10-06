@@ -10,7 +10,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class ConnectToPage extends AndroidPage {
@@ -63,11 +62,6 @@ public class ConnectToPage extends AndroidPage {
 
 	public ConnectToPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
-	}
-
-	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
-		return null;
 	}
 
 	public void clickBlockBtn() throws Exception {

@@ -50,7 +50,7 @@ Feature: Lock/Unlock
     And I unlock the device
     Then I see the Group popover
     And I tap Close button on Group popover
-    When I navigate back
+    When I swipe right to show the conversations list
     And I tap the conversation <Contact1>
     And I see the conversation view
     And I lock the device

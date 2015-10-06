@@ -16,12 +16,11 @@ public class PeoplePickerPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private PeoplePickerPage getPeoplePickerPage() throws Exception {
-		return (PeoplePickerPage) pagesCollection
-				.getPage(PeoplePickerPage.class);
+		return pagesCollection.getPage(PeoplePickerPage.class);
 	}
 
 	private ContactListPage getContactListPage() throws Exception {
-		return (ContactListPage) pagesCollection.getPage(ContactListPage.class);
+		return pagesCollection.getPage(ContactListPage.class);
 	}
 
 	/**

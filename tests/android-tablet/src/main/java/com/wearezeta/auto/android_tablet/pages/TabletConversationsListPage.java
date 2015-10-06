@@ -14,7 +14,6 @@ import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.PeoplePickerPage;
 import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class TabletConversationsListPage extends AndroidTabletPage {
@@ -33,39 +32,39 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 		return this.getAndroidPageInstance(PeoplePickerPage.class);
 	}
 
-	@Override
-	public AndroidTabletPage returnBySwipe(SwipeDirection direction)
-			throws Exception {
-		switch (direction) {
-		case DOWN: {
-			return new TabletPeoplePickerPage(this.getLazyDriver());
-		}
-		default:
-			return null;
-		}
-	}
-
 	private static final int SELF_AVATAR_LOAD_TIMEOUT = 120; // seconds
 
 	public void verifyConversationsListIsLoaded() throws Exception {
-		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.id(ContactListPage.idSelfUserAvatar),
-				SELF_AVATAR_LOAD_TIMEOUT)) {
-			if (ScreenOrientationHelper.getInstance().fixOrientation(
-					getDriver()) == ScreenOrientation.PORTRAIT) {
+		if (ScreenOrientationHelper.getInstance().fixOrientation(getDriver()) == ScreenOrientation.PORTRAIT) {
+			if (DriverUtils.waitUntilLocatorAppears(getDriver(),
+					By.id(ContactListPage.idSelfUserAvatar),
+					SELF_AVATAR_LOAD_TIMEOUT)) {
 				// FIXME: Workaround for self profile as start page issue
 				int ntry = 1;
 				final int maxRetries = 3;
+				final int leftBorderWidth = getDriver().manage().window()
+						.getSize().width / 4;
+				Optional<WebElement> selfProfileEl = Optional.empty();
+				if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+						By.id(TabletSelfProfilePage.idSelfProfileView), 1)) {
+					selfProfileEl = Optional.of(getDriver().findElement(
+							By.id(TabletSelfProfilePage.idSelfProfileView)));
+				}
 				do {
 					if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-							By.id(ContactListPage.idSelfUserAvatar), 4)) {
+							By.id(ContactListPage.idSelfUserAvatar), 4)
+							|| (selfProfileEl.isPresent() && selfProfileEl
+									.get().getLocation().getX() < leftBorderWidth)) {
 						DriverUtils.swipeByCoordinates(getDriver(), 1000, 30,
 								50, 90, 50);
-						// FIXME: Self profile switches to full colour instead
+						// FIXME: Self profile could switch to full colour
+						// instead
 						// of being swiped
 						if (DriverUtils.waitUntilLocatorIsDisplayed(
 								getDriver(),
-								By.id(ContactListPage.idSelfUserAvatar), 1)) {
+								By.id(ContactListPage.idSelfUserAvatar), 1)
+								&& (selfProfileEl.isPresent() && selfProfileEl
+										.get().getLocation().getX() > leftBorderWidth)) {
 							break;
 						} else {
 							this.tapOnCenterOfScreen();
@@ -83,11 +82,11 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 									"Conversations list was not shown after %d retries",
 									maxRetries));
 				}
+			} else {
+				throw new IllegalStateException(String.format(
+						"Self avatar has not been loaded within %s seconds",
+						SELF_AVATAR_LOAD_TIMEOUT));
 			}
-		} else {
-			throw new IllegalStateException(String.format(
-					"Self avatar has not been loaded within %s seconds",
-					SELF_AVATAR_LOAD_TIMEOUT));
 		}
 		getContactListPage().verifyContactListIsFullyLoaded();
 	}

@@ -12,7 +12,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class PeoplePickerPage extends AndroidPage {
@@ -174,17 +173,6 @@ public class PeoplePickerPage extends AndroidPage {
 		this.getDriver().findElement(locator).click();
 	}
 
-	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
-		switch (direction) {
-		case DOWN: {
-			return new ContactListPage(this.getLazyDriver());
-		}
-		default:
-			return null;
-		}
-	}
-
 	public boolean isPeoplePickerPageVisible() throws Exception {
 		try {
 			findVisiblePickerSearch();
@@ -330,5 +318,11 @@ public class PeoplePickerPage extends AndroidPage {
 			throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.id(idCreateOrOpenConversationButton));
+	}
+
+	public AndroidPage swipeDown(int durationMilliseconds) throws Exception {
+		DriverUtils.swipeByCoordinates(getDriver(), durationMilliseconds, 50,
+				20, 50, 90);
+		return new ContactListPage(getLazyDriver());
 	}
 }

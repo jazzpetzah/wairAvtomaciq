@@ -98,7 +98,6 @@ public abstract class IOSPage extends BasePage {
 	public abstract IOSPage returnBySwipe(SwipeDirection direction)
 			throws Exception;
 
-	@Override
 	public IOSPage swipeLeft(int time) throws Exception {
 		DriverUtils.swipeLeft(this.getDriver(), content, time);
 		return returnBySwipe(SwipeDirection.LEFT);
@@ -111,7 +110,6 @@ public abstract class IOSPage extends BasePage {
 		return returnBySwipe(SwipeDirection.LEFT);
 	}
 
-	@Override
 	public IOSPage swipeRight(int time) throws Exception {
 		DriverUtils.swipeRight(this.getDriver(), content, time);
 		return returnBySwipe(SwipeDirection.RIGHT);
@@ -124,7 +122,6 @@ public abstract class IOSPage extends BasePage {
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 
-	@Override
 	public IOSPage swipeUp(int time) throws Exception {
 		DriverUtils.swipeUp(this.getDriver(), content, time);
 		return returnBySwipe(SwipeDirection.UP);
@@ -151,7 +148,6 @@ public abstract class IOSPage extends BasePage {
 		return returnBySwipe(SwipeDirection.UP);
 	}
 
-	@Override
 	public IOSPage swipeDown(int time) throws Exception {
 		DriverUtils.swipeDown(this.getDriver(), content, time);
 		return returnBySwipe(SwipeDirection.DOWN);

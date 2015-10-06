@@ -1,6 +1,5 @@
 package com.wearezeta.auto.android.pages;
 
-import java.io.IOException;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
@@ -8,7 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class AboutPage extends AndroidPage {
@@ -21,12 +19,6 @@ public class AboutPage extends AndroidPage {
 
 	public AboutPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
-	}
-
-	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction)
-			throws IOException {
-		throw new RuntimeException("Swipe is not supported on About page");
 	}
 
 	public boolean isVisible() throws Exception {

@@ -13,7 +13,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.android.util.AccentColorUtil;
@@ -134,17 +133,6 @@ public class PersonalInfoPage extends AndroidPage {
 	public void tapSignOutBtn() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), signOutBtn);
 		signOutBtn.click();
-	}
-
-	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
-		switch (direction) {
-		case RIGHT: {
-			return new ContactListPage(this.getLazyDriver());
-		}
-		default:
-			return null;
-		}
 	}
 
 	public void tapOptionsButton() throws Exception {
