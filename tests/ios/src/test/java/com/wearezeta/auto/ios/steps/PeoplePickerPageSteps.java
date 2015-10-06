@@ -229,6 +229,16 @@ public class PeoplePickerPageSteps {
 		getPeoplePickerPage().tapOnPeoplePickerSearch();
 	}
 
+	@When("^I fill in Search field user name (.*)$")
+	public void WhenIFillInSearchFieldUserName(String contact) throws Exception {
+		try {
+			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		getPeoplePickerPage().inputTextInSearch(contact);
+	}
+
 	@When("^I input in People picker search field user name (.*)$")
 	public void WhenIInputInPeoplePickerSearchFieldUserName(String contact)
 			throws Exception {

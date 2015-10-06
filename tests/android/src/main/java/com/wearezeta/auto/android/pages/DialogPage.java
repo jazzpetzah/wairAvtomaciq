@@ -243,6 +243,11 @@ public class DialogPage extends AndroidPage {
 				By.id(idCursorArea));
 	}
 
+	public boolean waitForCursorInputNotVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.id(idCursorArea));
+	}
+
 	public void tapOnCursorInput() throws Exception {
 		// FIXME: Scroll to the bottom if cursor input is not visible
 		if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),

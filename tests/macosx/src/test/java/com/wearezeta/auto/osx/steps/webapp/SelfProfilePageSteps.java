@@ -6,7 +6,7 @@ import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.web.pages.SelfProfilePage;
+import com.wearezeta.auto.osx.pages.webapp.SelfProfilePage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.And;
@@ -17,6 +17,8 @@ import static org.hamcrest.CoreMatchers.*;
 public class SelfProfilePageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
+			.getInstance();
 
 	public SelfProfilePageSteps() {
 	}
@@ -173,7 +175,7 @@ public class SelfProfilePageSteps {
 				.clickCameraButton();
 	}
 
-	/*
+	/**
 	 * Verify my avatar background color is set to expected color
 	 * 
 	 * @step. ^I verify my avatar background color is set to (\\w+) color$
@@ -183,7 +185,6 @@ public class SelfProfilePageSteps {
 	 * 
 	 * @throws Exception
 	 */
-
 	@Then("^I verify my avatar background color is set to (\\w+) color$")
 	public void IVerifyMyAvatarColor(String colorName) throws Exception {
 		final AccentColor expectedColor = AccentColor.getByName(colorName);
@@ -193,4 +194,29 @@ public class SelfProfilePageSteps {
 				avatarColor == expectedColor);
 	}
 
+	/**
+	 * Verifies whether settings dialog is visible
+	 * 
+	 * @step. ^I see Settings dialog$
+	 * 
+	 * @throws AssertionError
+	 *             if settings dialog is not currently visible
+	 */
+	@Then("^I see Settings dialog$")
+	public void ISeeSetingsDialog() throws Exception {
+		Assert.assertTrue(webappPagesCollection.getPage(SelfProfilePage.class)
+				.isSettingsPopoverVisible());
+	}
+
+	/**
+	 * Types shortcut combination to open preferences
+	 *
+	 * @step. ^I type shortcut combination to open preferences$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to open preferences$")
+	public void ITypeShortcutCombinationToOpenPreference() throws Exception {
+		WebappPagesCollection.getInstance().getPage(SelfProfilePage.class)
+				.pressShortCutForPreferences();
+	}
 }

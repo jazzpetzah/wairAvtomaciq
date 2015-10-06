@@ -123,9 +123,14 @@ public abstract class AndroidPage extends BasePage {
 	 */
 	public void navigateBack() throws Exception {
 		AndroidCommonUtils.tapBackButton();
+
 		// Wait for animation
 		Thread.sleep(1000);
 		// this.getDriver().navigate().back();
+	}
+
+	public void sendKeyEvent(int AndroidKeyEvent) throws Exception {
+		getDriver().sendKeyEvent(AndroidKeyEvent);
 	}
 
 	public void rotateLandscape() throws Exception {

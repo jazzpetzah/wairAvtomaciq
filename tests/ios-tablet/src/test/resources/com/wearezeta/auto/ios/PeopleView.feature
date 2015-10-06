@@ -9,10 +9,12 @@ Feature: People View
     When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact1>
+    And I fill in Search field user name <Contact1>
+    And I see user <Contact1> found on People picker page
     And I tap on connected user <Contact1> on People picker page
     And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact2>
+    And I fill in Search field user name <Contact2>
+    And I see user <Contact2> found on People picker page
     And I tap on connected user <Contact2> on People picker page
     And I click on Go button
     Then I see group chat page with users <Contact1>,<Contact2>
@@ -31,10 +33,12 @@ Feature: People View
     When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact1>
+    And I fill in Search field user name <Contact1>
+    And I see user <Contact1> found on People picker page
     And I tap on connected user <Contact1> on People picker page
     And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact2>
+    And I fill in Search field user name <Contact2>
+    And I see user <Contact2> found on People picker page
     And I tap on connected user <Contact2> on People picker page
     And I click on Go button
     Then I see group chat page with users <Contact1>,<Contact2>

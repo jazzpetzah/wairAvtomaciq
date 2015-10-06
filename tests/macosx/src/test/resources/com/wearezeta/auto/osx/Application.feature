@@ -28,3 +28,17 @@ Feature: Application
     Examples: 
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
+
+  @smoke @id3730
+  Scenario Outline: Sign Out
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    When I click menu bar item "Wire" and menu item "Sign Out"
+    Then I see Sign In page
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |

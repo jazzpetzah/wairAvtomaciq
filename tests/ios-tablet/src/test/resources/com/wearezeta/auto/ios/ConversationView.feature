@@ -669,7 +669,6 @@ Feature: Conversation View
     And I see dialog page
     And I tap on text input
     And I tap on contact name <Contact>
-    And I click hide keyboard button
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears

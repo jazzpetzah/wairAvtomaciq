@@ -598,6 +598,19 @@ public class LoginPageSteps {
 	}
 	
 	/**
+	 * Verifies whether the notification registered phone number shown
+	 * 
+	 * @step. ^I see registered phone number alert$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see registered phone number alert$")
+	public void ISeeRegisteredNumberAlert() throws Exception {
+		Assert.assertTrue("I don't see registered phone number alert",
+				getLoginPage().isRegisteredNumberAlertShown());
+	}
+	
+	/**
 	 * Verifies whether the notification invalid email shown
 	 * 
 	 * @step. ^I see invalid email alert$
