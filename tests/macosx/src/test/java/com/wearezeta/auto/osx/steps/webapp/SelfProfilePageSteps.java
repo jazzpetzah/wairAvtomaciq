@@ -6,7 +6,6 @@ import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.osx.pages.webapp.ConversationPage;
 import com.wearezeta.auto.osx.pages.webapp.SelfProfilePage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
