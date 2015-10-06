@@ -14,7 +14,6 @@ import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.PeoplePickerPage;
 import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class TabletConversationsListPage extends AndroidTabletPage {
@@ -31,18 +30,6 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 
 	private PeoplePickerPage getPeoplePickerPage() throws Exception {
 		return this.getAndroidPageInstance(PeoplePickerPage.class);
-	}
-
-	@Override
-	public AndroidTabletPage returnBySwipe(SwipeDirection direction)
-			throws Exception {
-		switch (direction) {
-		case DOWN: {
-			return new TabletPeoplePickerPage(this.getLazyDriver());
-		}
-		default:
-			return null;
-		}
 	}
 
 	private static final int SELF_AVATAR_LOAD_TIMEOUT = 120; // seconds

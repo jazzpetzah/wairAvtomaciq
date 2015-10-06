@@ -15,7 +15,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
@@ -175,17 +174,6 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 			}
 		}
 		return true;
-	}
-
-	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
-		switch (direction) {
-		case DOWN: {
-			return new PeoplePickerPage(this.getLazyDriver());
-		}
-		default:
-			return null;
-		}
 	}
 
 	public void selectConvoSettingsMenuItem(String itemName) throws Exception {

@@ -20,7 +20,7 @@ public class ContactListPageSteps {
 			.getInstance();
 
 	private ContactListPage getContactListPage() throws Exception {
-		return (ContactListPage) pagesCollection.getPage(ContactListPage.class);
+		return pagesCollection.getPage(ContactListPage.class);
 	}
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -99,7 +99,7 @@ public class ContactListPageSteps {
 	 */
 	@When("^I swipe down contact list$")
 	public void ISwipeDownContactList() throws Exception {
-		getContactListPage().swipeDown(1000);
+		getContactListPage().doLongSwipeDown();
 	}
 
 	/**

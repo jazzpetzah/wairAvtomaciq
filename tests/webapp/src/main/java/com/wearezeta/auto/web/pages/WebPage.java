@@ -1,6 +1,5 @@
 package com.wearezeta.auto.web.pages;
 
-import java.io.IOException;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.Alert;
@@ -55,27 +54,6 @@ public class WebPage extends BasePage {
 	public static void clearPagesCollection() throws IllegalArgumentException,
 			IllegalAccessException {
 		clearPagesCollection(WebappPagesCollection.class, WebPage.class);
-	}
-
-	// not used in WebApp
-	@Override
-	public BasePage swipeLeft(int time) throws IOException {
-		return null;
-	}
-
-	@Override
-	public BasePage swipeRight(int time) throws IOException {
-		return null;
-	}
-
-	@Override
-	public BasePage swipeUp(int time) throws IOException {
-		return null;
-	}
-
-	@Override
-	public BasePage swipeDown(int time) throws IOException {
-		return null;
 	}
 
 	public void acceptAlert() throws Exception {

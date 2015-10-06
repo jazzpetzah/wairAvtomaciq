@@ -1,7 +1,5 @@
 package com.wearezeta.auto.osx.pages.osx;
 
-import java.io.IOException;
-
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
@@ -86,27 +84,6 @@ public abstract class OSXPage extends BasePage {
 
 	public void startApp() throws Exception {
 		this.getDriver().navigate().to(OSXExecutionContext.WIRE_APP_PATH);
-	}
-
-	// not used in OS X
-	@Override
-	public BasePage swipeLeft(int time) throws IOException {
-		return null;
-	}
-
-	@Override
-	public BasePage swipeRight(int time) throws IOException {
-		return null;
-	}
-
-	@Override
-	public BasePage swipeUp(int time) throws IOException {
-		return null;
-	}
-
-	@Override
-	public BasePage swipeDown(int time) throws IOException {
-		return null;
 	}
 
 	public Dimension getDesktopSize() throws Exception {

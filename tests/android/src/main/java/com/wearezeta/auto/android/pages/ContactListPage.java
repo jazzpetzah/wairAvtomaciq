@@ -15,7 +15,6 @@ import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
@@ -267,17 +266,6 @@ public class ContactListPage extends AndroidPage {
 	public PeoplePickerPage tapOnSearchBox() throws Exception {
 		searchBox.click();
 		return new PeoplePickerPage(this.getLazyDriver());
-	}
-
-	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
-		switch (direction) {
-		case DOWN: {
-			return new PeoplePickerPage(this.getLazyDriver());
-		}
-		default:
-			return null;
-		}
 	}
 
 	public boolean isContactExists(String name) throws Exception {

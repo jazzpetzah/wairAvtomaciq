@@ -26,7 +26,6 @@ import android.graphics.Point;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
@@ -426,32 +425,6 @@ public class DialogPage extends AndroidPage {
 
 	public String getChangedGroupNameMessage() {
 		return newConversationNameMessage.getText();
-	}
-
-	@Override
-	public AndroidPage swipeUp(int time) throws Exception {
-		dialogsPagesSwipeUp(time);
-		return returnBySwipe(SwipeDirection.UP);
-	}
-
-	@Override
-	public AndroidPage swipeDown(int time) throws Exception {
-		dialogsPagesSwipeDown(time);
-		return returnBySwipe(SwipeDirection.DOWN);
-	}
-
-	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
-		switch (direction) {
-		case UP: {
-			return new OtherUserPersonalInfoPage(this.getLazyDriver());
-		}
-		case RIGHT: {
-			return new ContactListPage(this.getLazyDriver());
-		}
-		default:
-			return null;
-		}
 	}
 
 	public boolean waitForMessage(String text) throws Exception {

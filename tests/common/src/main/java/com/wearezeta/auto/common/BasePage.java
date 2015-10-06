@@ -107,14 +107,6 @@ public abstract class BasePage {
 		}
 	}
 
-	public abstract BasePage swipeLeft(int time) throws Exception;;
-
-	public abstract BasePage swipeRight(int time) throws Exception;
-
-	public abstract BasePage swipeUp(int time) throws Exception;
-
-	public abstract BasePage swipeDown(int time) throws Exception;
-
 	protected static void clearPagesCollection(
 			Class<? extends AbstractPagesCollection<? extends BasePage>> collection,
 			Class<? extends BasePage> baseClass)

@@ -62,8 +62,9 @@ public class DialogPageSteps {
 					"The cursor is not visible in the conversation view",
 					getDialogPage().waitForCursorInputVisible());
 		} else {
-			Assert.assertTrue("The cursor in the conversation view is still visible", getDialogPage()
-					.waitForCursorInputNotVisible());
+			Assert.assertTrue(
+					"The cursor in the conversation view is still visible",
+					getDialogPage().waitForCursorInputNotVisible());
 		}
 	}
 
@@ -582,7 +583,8 @@ public class DialogPageSteps {
 	public void ISwipedownOnDialogPageUntilMediaBarAppears() throws Exception {
 		int swipeNum = 1;
 		while (swipeNum <= MAX_SWIPES) {
-			getDialogPage().swipeDown(SWIPE_DURATION_MILLISECONDS);
+			getDialogPage().swipeByCoordinates(SWIPE_DURATION_MILLISECONDS, 50,
+					20, 50, 90);
 			if (getDialogPage().waitUntilMediaBarVisible(2)) {
 				return;
 			}

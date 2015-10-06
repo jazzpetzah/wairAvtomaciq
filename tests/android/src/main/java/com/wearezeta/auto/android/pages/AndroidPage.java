@@ -18,7 +18,6 @@ import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
@@ -147,28 +146,6 @@ public abstract class AndroidPage extends BasePage {
 		return this.getDriver().getOrientation();
 	}
 
-	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
-		return null;
-	};
-
-	@Override
-	public AndroidPage swipeLeft(int durationMilliseconds) throws Exception {
-		DriverUtils.swipeLeft(this.getDriver(), content, durationMilliseconds);
-		return returnBySwipe(SwipeDirection.LEFT);
-	}
-
-	@Override
-	public AndroidPage swipeRight(int durationMilliseconds) throws Exception {
-		DriverUtils.swipeRight(this.getDriver(), content, durationMilliseconds);
-		return returnBySwipe(SwipeDirection.RIGHT);
-	}
-
-	@Override
-	public AndroidPage swipeUp(int durationMilliseconds) throws Exception {
-		DriverUtils.swipeUp(this.getDriver(), content, durationMilliseconds);
-		return returnBySwipe(SwipeDirection.UP);
-	}
-
 	public void dialogsPagesSwipeUp(int durationMilliseconds) throws Exception {
 		swipeByCoordinates(durationMilliseconds, 50, 80, 50, 30);
 	}
@@ -176,12 +153,6 @@ public abstract class AndroidPage extends BasePage {
 	public void dialogsPagesSwipeDown(int durationMilliseconds)
 			throws Exception {
 		swipeByCoordinates(durationMilliseconds, 50, 30, 50, 80);
-	}
-
-	@Override
-	public AndroidPage swipeDown(int durationMilliseconds) throws Exception {
-		DriverUtils.swipeDown(this.getDriver(), content, durationMilliseconds);
-		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
 	public void swipeByCoordinates(int durationMilliseconds,
