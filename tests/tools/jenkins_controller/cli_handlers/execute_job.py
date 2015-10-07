@@ -47,14 +47,11 @@ class ExecuteJob(CliHandlerBase):
         job_name = self._normalize_job_name(args.name)
         MAX_TRY_COUNT = 3
         try_num = 0
-        queue_item = None
         start_time = datetime.now()
+        job = None
         while True:
             try:
                 job = self._jenkins.get_job(job_name)
-                queue_item = job.invoke(securitytoken=args.token,
-                           build_params=self._encoded_params_to_dict(args.params),
-                           cause=args.cause)
             except Exception as e:
                 traceback.print_exc()
                 try_num += 1
@@ -62,23 +59,11 @@ class ExecuteJob(CliHandlerBase):
                     raise e
                 sys.stderr.write('Sleeping a while before retry #{} of {}...\n'.format(try_num, MAX_TRY_COUNT))
                 time.sleep(random.randint(20, 40))
-                continue
-            if args.block:
-                try:
-                    queue_item.block_until_complete(delay=5)
-                    break
-                except Exception:
-                    traceback.print_exc()
-                    sys.stderr.write('The script has failed to block the queued item "{}". Trying to restart...'.format(
-                        queue_item
-                    ))
-                    try_num += 1
-                    try:
-                        queue_item.get_build().stop()
-                        time.sleep(random.randint(20, 40))
-                    except Exception:
-                       pass
-
+        queue_item = job.invoke(securitytoken=args.token,
+                   build_params=self._encoded_params_to_dict(args.params),
+                   cause=args.cause)
+        if args.block:
+            queue_item.block_until_complete(delay=5)
             timedelta_str = self._timedelta_to_str(datetime.now() - start_time)
             return 'Jenkins job "{0}" is completed (duration: {1})'.format(args.name, timedelta_str)
         else:
