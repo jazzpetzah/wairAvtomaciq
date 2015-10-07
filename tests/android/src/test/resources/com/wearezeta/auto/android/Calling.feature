@@ -506,7 +506,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
   @id3181 @calling_advanced
-  Scenario Outline: (BUG AN-2578 and AN-2816) Verify receiving 1to1 call during group call and ignoring it
+  Scenario Outline: (AN-2578 AN-2816 AN-2864) Verify receiving 1to1 call during group call and ignoring it
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
