@@ -278,11 +278,9 @@ public class DialogPage extends AndroidPage {
 
 	public void swipeOnCursorInput() throws Exception {
 		// FIXME: Scroll to the bottom if cursor input is not visible
-		if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idCursorBtnImg), 2)) {
-			tapOnCursorFrame();
-			this.hideKeyboard();
-		}
+		tapOnCursorFrame();
+		this.hideKeyboard();
+
 		getWait().until(ExpectedConditions.elementToBeClickable(cursorArea));
 		final By cursorLocator = By.id(idCursorArea);
 		int ntry = 1;

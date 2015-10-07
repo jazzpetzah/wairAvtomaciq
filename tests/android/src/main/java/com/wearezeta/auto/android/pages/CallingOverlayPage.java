@@ -6,6 +6,7 @@ import java.util.function.Function;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -214,10 +215,19 @@ public class CallingOverlayPage extends AndroidPage {
 	public int numberOfParticipantsInGroupCall() throws Exception {
 		final By searchCriteria = By.xpath(xpathGroupCallParticipantChathead);
 		if (DriverUtils.waitUntilLocatorAppears(getDriver(), searchCriteria, 5)) {
-			return getDriver().findElements(searchCriteria).size();
-		} else {
-			return 0;
+			int ntry = 1;
+			final int maxRetries = 3;
+			do {
+				try {
+					return getDriver().findElements(searchCriteria).size();
+				} catch (WebDriverException e) {
+					e.printStackTrace();
+					Thread.sleep(1500);
+					ntry++;
+				}
+			} while (ntry <= maxRetries);
 		}
+		return 0;
 	}
 
 	public boolean isGroupCallFullAlertVisible() throws Exception {
