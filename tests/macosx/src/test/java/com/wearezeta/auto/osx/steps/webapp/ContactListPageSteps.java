@@ -777,7 +777,7 @@ public class ContactListPageSteps {
 	/**
 	 * Types shortcut combination for the previous conversation
 	 *
-	 * @step. ^I type shortcut combination for next conversation$
+	 * @step. ^I type shortcut combination for previous conversation$
 	 * @throws Exception
 	 */
 	@When("^I type shortcut combination for previous conversation$")
