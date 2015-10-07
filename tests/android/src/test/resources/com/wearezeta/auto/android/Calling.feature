@@ -132,7 +132,7 @@ Feature: Calling
       | user1Name | user2Name | autocall    | simple message in english | YOU PINGED |
 
   @id2210 @calling_basic @rc @rc42
-  Scenario Outline: (BUG AN-2833) Calling bar buttons are clickable and change their states
+  Scenario Outline: Calling bar buttons are clickable and change their states
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
