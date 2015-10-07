@@ -236,7 +236,7 @@ public class CallingPageSteps {
 			if (actualUsersCount == expectedUsersCount) {
 				return;
 			} else {
-				Thread.sleep(1500);
+				Thread.sleep(3000);
 				ntries++;
 			}
 		} while (ntries < 3);
