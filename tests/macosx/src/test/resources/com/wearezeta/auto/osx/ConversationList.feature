@@ -300,6 +300,7 @@ Feature: Conversation List
     Examples: 
       | Login      | Password      | Name      | Contact   | Contact2  | ChatName  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat |
+
   @smoke @id3917
   Scenario Outline: Verify I can start a conversation with menu bar
     Given There are 2 users where <Name> is me
@@ -327,3 +328,45 @@ Feature: Conversation List
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+
+  @smoke @id3916
+  Scenario Outline: Verify switching to next and previous conversation using shortcuts ⌥ ⌘ ↑ and ⌥ ⌘ ↓
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Then I see my avatar on top of Contact list
+    And I verify active conversation is at index 1
+    When I type shortcut combination for next conversation
+    And I verify active conversation is at index 1
+    When I type shortcut combination for previous conversation
+    Then I verify active conversation is at index 2
+    When I type shortcut combination for previous conversation
+    Then I verify active conversation is at index 3
+    When I type shortcut combination for previous conversation
+    Then I verify active conversation is at index 3
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1   | Contact2  | Contact3  | ChatName  |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name | user4Name | GroupChat |
+
+  @smoke @id3916
+  Scenario Outline: Verify switching to next and previous conversation using menu bar
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Then I see my avatar on top of Contact list
+    And I verify active conversation is at index 1
+    When I click menu bar item "Window" and menu item "Next Conversation"
+    And I verify active conversation is at index 1
+    When I click menu bar item "Window" and menu item "Previous Conversation"
+    Then I verify active conversation is at index 2
+    When I click menu bar item "Window" and menu item "Previous Conversation"
+    Then I verify active conversation is at index 3
+    When I click menu bar item "Window" and menu item "Previous Conversation"
+    Then I verify active conversation is at index 3
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1   | Contact2  | Contact3  | ChatName  |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name | user4Name | GroupChat |

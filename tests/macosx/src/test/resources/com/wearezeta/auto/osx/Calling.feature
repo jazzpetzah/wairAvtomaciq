@@ -1,4 +1,4 @@
-Feature: calling
+Feature: Calling
 
   @smoke @id3918
   Scenario Outline: Verify successful 1:1 call

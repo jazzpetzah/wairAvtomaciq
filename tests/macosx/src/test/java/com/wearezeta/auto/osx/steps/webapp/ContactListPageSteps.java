@@ -427,6 +427,27 @@ public class ContactListPageSteps {
 	}
 
 	/**
+	 * Verify whether the particular conversations list item has expected index
+	 *
+	 * @step. ^I verify active conversation is at index (\\d+)$
+	 *
+	 * @param expectedIndex
+	 *            the expected index (starts from 1)
+	 * @throws Exception
+	 */
+	@Then("^I verify active conversation is at index (\\d+)$")
+	public void IVerifyActiveConversationIsAtIndex(int expectedIndex)
+			throws Exception {
+		final int actualIndex = webappPagesCollection.getPage(
+				ContactListPage.class).getActiveConversationIndex();
+		Assert.assertTrue(
+				String.format(
+						"The index of active item in Conevrsations list does not equal to %s (current value is %s)",
+						expectedIndex, actualIndex),
+				actualIndex == expectedIndex);
+	}
+
+	/**
 	 * Verify whether Archive button at the bottom of the convo list is visible
 	 * or not
 	 * 
@@ -712,8 +733,7 @@ public class ContactListPageSteps {
 	 * @throws Exception
 	 */
 	@When("^I type shortcut combination to mute or unmute a conversation$")
-	public void ITypeShortcutCombinationToMuteOrUnmute()
-			throws Exception {
+	public void ITypeShortcutCombinationToMuteOrUnmute() throws Exception {
 		webappPagesCollection.getPage(ContactListPage.class)
 				.pressShortCutToMute();
 	}
@@ -725,8 +745,7 @@ public class ContactListPageSteps {
 	 * @throws Exception
 	 */
 	@When("^I type shortcut combination to archive a conversation$")
-	public void ITypeShortcutCombinationToArchive()
-			throws Exception {
+	public void ITypeShortcutCombinationToArchive() throws Exception {
 		webappPagesCollection.getPage(ContactListPage.class)
 				.pressShortCutToArchive();
 	}
@@ -741,6 +760,30 @@ public class ContactListPageSteps {
 	public void ITypeShortcutCombinationToOpenSearch() throws Exception {
 		WebappPagesCollection.getInstance().getPage(ContactListPage.class)
 				.pressShortCutToSearch();
+	}
+
+	/**
+	 * Types shortcut combination for the next conversation
+	 *
+	 * @step. ^I type shortcut combination for next conversation$
+	 * @throws Exception
+	 */
+	@When("^I type shortcut combination for next conversation$")
+	public void ITypeShortcutCombinationForNextConv() throws Exception {
+		webappPagesCollection.getPage(ContactListPage.class)
+				.pressShortCutForNextConv();
+	}
+
+	/**
+	 * Types shortcut combination for the previous conversation
+	 *
+	 * @step. ^I type shortcut combination for next conversation$
+	 * @throws Exception
+	 */
+	@When("^I type shortcut combination for previous conversation$")
+	public void ITypeShortcutCombinationForPrevConv() throws Exception {
+		webappPagesCollection.getPage(ContactListPage.class)
+				.pressShortCutForPrevConv();
 	}
 
 	/**
