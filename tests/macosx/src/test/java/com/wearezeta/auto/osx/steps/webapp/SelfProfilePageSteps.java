@@ -24,15 +24,29 @@ public class SelfProfilePageSteps {
 	}
 
 	/**
-	 * Clicks the gear button on Self Profile page
+	 * Checks the ... button on Self Profile page
 	 * 
-	 * @step. ^I click gear button on self profile page$
+	 * @step. ^I do not see the settings button on self profile page$
 	 * @throws Exception
 	 */
-	@And("^I click gear button on self profile page$")
+	@And("^I do not see the settings button on self profile page$")
 	public void IClickGearButton() throws Exception {
-		WebappPagesCollection.getInstance().getPage(SelfProfilePage.class)
-				.clickGearButton();
+		Assert.assertTrue("Setting button visible", WebappPagesCollection
+				.getInstance().getPage(SelfProfilePage.class)
+				.isSettingsButtonVisible());
+	}
+
+	/**
+	 * Checks if the camera button in self profile is clickable
+	 * 
+	 * @step. ^the camera button in self profile is clickable$
+	 * @throws Exception
+	 */
+	@And("^the camera button in self profile is clickable$")
+	public void IsCameraButtonClickable() throws Exception {
+		Assert.assertTrue("Camera button clickable", WebappPagesCollection
+				.getInstance().getPage(SelfProfilePage.class)
+				.isCameraButtonClickable());
 	}
 
 	/**
