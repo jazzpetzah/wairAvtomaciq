@@ -329,7 +329,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id3916
+  @smoke @id3951
   Scenario Outline: Verify switching to next and previous conversation using shortcuts ⌥ ⌘ ↑ and ⌥ ⌘ ↓
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -350,7 +350,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact1   | Contact2  | Contact3  | ChatName  |
       | user1Email | user1Password | user1Name | user2Name  | user3Name | user4Name | GroupChat |
 
-  @smoke @id3916
+  @smoke @id3952
   Scenario Outline: Verify switching to next and previous conversation using menu bar
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>

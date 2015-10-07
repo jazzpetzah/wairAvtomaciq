@@ -70,6 +70,9 @@ public class ContactListPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathContactListEntries)
 	private List<WebElement> contactListEntries;
 
+	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathActiveConversationEntry)
+	private WebElement activeConversationEntry;
+
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathArchivedContactListEntries)
 	private List<WebElement> archivedContactListEntries;
 
@@ -207,14 +210,11 @@ public class ContactListPage extends WebPage {
 	}
 
 	public String getActiveConversationName() throws Exception {
-		final String locator = WebAppLocators.ContactListPage.xpathActiveConversationEntry;
-		return getDriver().findElement(By.xpath(locator)).getText();
+		return activeConversationEntry.getText();
 	}
 
 	public int getActiveConversationIndex() throws Exception {
-		final String locator = WebAppLocators.ContactListPage.xpathActiveConversationEntry;
-		return getItemIndex(getDriver().findElement(By.xpath(locator))
-				.getText());
+		return getItemIndex(activeConversationEntry.getText());
 	}
 
 	public boolean isMissedCallVisibleForContact(String conversationName)
@@ -288,32 +288,20 @@ public class ContactListPage extends WebPage {
 	}
 
 	public void pressShortCutForNextConv() throws Exception {
-		Thread.sleep(100);
 		robot.keyPress(KeyEvent.VK_ALT);
-		Thread.sleep(100);
 		robot.keyPress(KeyEvent.VK_META);// command key
-		Thread.sleep(100);
 		robot.keyPress(KeyEvent.VK_UP);
-		Thread.sleep(100);
 		robot.keyRelease(KeyEvent.VK_UP);
-		Thread.sleep(100);
 		robot.keyRelease(KeyEvent.VK_META);
-		Thread.sleep(100);
 		robot.keyRelease(KeyEvent.VK_ALT);
 	}
 
 	public void pressShortCutForPrevConv() throws Exception {
-		Thread.sleep(100);
 		robot.keyPress(KeyEvent.VK_ALT);
-		Thread.sleep(100);
 		robot.keyPress(KeyEvent.VK_META);// command key
-		Thread.sleep(100);
 		robot.keyPress(KeyEvent.VK_DOWN);
-		Thread.sleep(100);
 		robot.keyRelease(KeyEvent.VK_DOWN);
-		Thread.sleep(100);
 		robot.keyRelease(KeyEvent.VK_META);
-		Thread.sleep(100);
 		robot.keyRelease(KeyEvent.VK_ALT);
 	}
 

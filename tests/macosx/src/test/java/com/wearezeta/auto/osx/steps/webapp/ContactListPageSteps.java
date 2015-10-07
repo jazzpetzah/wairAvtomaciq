@@ -442,7 +442,7 @@ public class ContactListPageSteps {
 				ContactListPage.class).getActiveConversationIndex();
 		Assert.assertTrue(
 				String.format(
-						"The index of active item in Conevrsations list does not equal to %s (current value is %s)",
+						"The index of active item in Conversations list does not equal to %s (current value is %s)",
 						expectedIndex, actualIndex),
 				actualIndex == expectedIndex);
 	}
