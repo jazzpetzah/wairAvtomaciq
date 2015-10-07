@@ -115,11 +115,14 @@ public class LoginPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.Alerts.nameInvalidPhoneNumber)
 	private WebElement invalidPhoneNumberAlert;
 	
-	@FindBy(how = How.NAME, using = IOSLocators.Alerts.nameRegisteredNumber)
-	private WebElement registeredNumberAlert; 
-	
 	@FindBy(how = How.NAME, using = IOSLocators.Alerts.nameInvalidEmail)
 	private WebElement invalidEmailAlert;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.Alerts.nameAlreadyRegisteredNumber)
+	private WebElement alreadyRegisteredNumberAlert; 
+	
+	@FindBy(how = How.NAME, using = IOSLocators.Alerts.nameAlreadyRegisteredEmail)
+	private WebElement alreadyRegisteredEmailAlert;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.PeoplePickerPage.nameNotNowButton)
 	private WebElement notNowPhoneButton;
@@ -388,17 +391,23 @@ public class LoginPage extends IOSPage {
 				invalidPhoneNumberAlert);
 	}
 	
-	public boolean isRegisteredNumberAlertShown() throws Exception {
-		DriverUtils.waitUntilAlertAppears(getDriver());
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				registeredNumberAlert);
-	}
-	
-	
 	public boolean isInvalidEmailAlertShown() throws Exception {
 		DriverUtils.waitUntilAlertAppears(getDriver());
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				invalidEmailAlert);
+	}
+	
+	public boolean isRegisteredNumberAlertShown() throws Exception {
+		DriverUtils.waitUntilAlertAppears(getDriver());
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				alreadyRegisteredNumberAlert);
+	}
+	
+	
+	public boolean isAlreadyRegisteredEmailAlertShown() throws Exception {
+		DriverUtils.waitUntilAlertAppears(getDriver());
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				alreadyRegisteredEmailAlert);
 	}
 
 	public void clickPhoneNotNow() {
