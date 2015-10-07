@@ -1221,11 +1221,14 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I see dialog page
     And I type the message
+    And I return to the chat list
     When I tap on contact name <Contact2>
     And I see dialog page
+    And I return to the chat list
     And I tap on contact name <Contact1>
 	And I see dialog page
 	Then I see Close input options button is not visible
+	And I see controller buttons can not be visible
 	And I see the message in input field
 
     Examples: 
@@ -1247,6 +1250,7 @@ Feature: Conversation View
     And I tap on contact name <Contact1>
 	And I see dialog page
 	Then I see Close input options button is not visible
+	And I see controller buttons can not be visible
 	And I see the message in input field
 
     Examples: 
