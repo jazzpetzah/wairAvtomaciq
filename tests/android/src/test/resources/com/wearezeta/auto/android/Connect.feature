@@ -361,9 +361,8 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
- # @id723 @regression
+# @id723 @regression
  @id723 @staging
- #need to update this test
   Scenario Outline: I want to unblock someone from their Profile view
     Given There are 4 users where <Name> is me
     # Having the extra user is a workaround for an app bug
