@@ -260,7 +260,6 @@ Feature: Calling
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    Then I see join group call overlay
     And I answer the call from the overlay bar
     Then I do not see join group call overlay
     And I see calling overlay Big bar
