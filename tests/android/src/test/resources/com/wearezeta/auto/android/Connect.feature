@@ -275,8 +275,9 @@ Feature: Connect
 
   @id676 @regression
   Scenario Outline: I want to block a person from 1:1 conversation
-    Given There are 2 users where <Name> is me
-    Given <Contact1> is connected to <Name>
+    Given There are 3 users where <Name> is me
+    # Having the extra user is a workaround for an app bug
+    Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
@@ -297,45 +298,47 @@ Feature: Connect
     Then User info should be shown with Unblock button
 
     Examples: 
-      | Name      | Contact1  |
-      | user1Name | user2Name |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @id680 @regression
   Scenario Outline: I want to see user has been blocked within the Start UI
-    Given There are 2 users where <Name> is me
+    Given There are 3 users where <Name> is me
+    # Having the extra user is a workaround for an app bug
+    Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    Given I see Contact list with no contacts
-    And I wait until <Contact> exists in backend search results
+    Given I see Contact list with contacts
+    And I wait until <Contact2> exists in backend search results
     When I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
-    And I enter "<Contact>" into Search input on People Picker page
-    And I tap on user name found on People picker page <Contact>
-    And I see connect to <Contact> dialog
+    And I enter "<Contact2>" into Search input on People Picker page
+    And I tap on user name found on People picker page <Contact2>
+    And I see connect to <Contact2> dialog
     And I click Connect button on connect to page
     And I press Clear button
-    And I see contact list with name <Contact>
-    When I tap on contact name <Contact>
+    And I see contact list with name <Contact2>
+    When I tap on contact name <Contact2>
     And I see that connection is pending
     And I click Block button
     And I confirm block on connect to page
     Then I do not see dialog page
-    Then I do not see contact list with name <Contact>
-    And I wait until <Contact> exists in backend search results
+    Then I do not see contact list with name <Contact2>
+    And I wait until <Contact2> exists in backend search results
     And I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
-    And I enter "<Contact>" into Search input on People Picker page
-    And I see user <Contact> found on People picker page
-    And I tap on user name found on People picker page <Contact>
+    And I enter "<Contact2>" into Search input on People Picker page
+    And I see user <Contact2> found on People picker page
+    And I tap on user name found on People picker page <Contact2>
     And User info should be shown with Unblock button
     When I click Unblock button
     And I navigate back from dialog page
-    Then I see contact list with name <Contact>
+    Then I see contact list with name <Contact2>
 
     Examples: 
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @id720 @regression
   Scenario Outline: I want to be seen in the search results of someone I blocked
@@ -358,13 +361,18 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id723 @regression
+ # @id723 @regression
+ @id723 @staging
+ #need to update this test
   Scenario Outline: I want to unblock someone from their Profile view
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
+    Given There are 4 users where <Name> is me
+    # Having the extra user is a workaround for an app bug
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given User <Name> blocks user <Contact1>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
+    When I tap on contact name <Contact3>
+    And I navigate back from dialog page
     And I wait until <Contact1> exists in backend search results
     And I open Search by tap
     And I see People picker page
@@ -379,8 +387,8 @@ Feature: Connect
     And I see contact list with name <Contact1>
 
     Examples:
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
+      | Name      | Contact1  | Contact2  | Contact3  |
+      | user1Name | user2Name | user3Name | user4Name |
 
   @id1405 @regression @rc
   Scenario Outline: Impossibility of starting 1:1 conversation with pending user (Search)
