@@ -341,7 +341,7 @@ Feature: Self Profile
     And I tap to add my phone number
     And I see country picker button on Sign in screen
     And I input phone number <Number> with code <Code>
-    Then I see registered phone number alert
+    Then I see already registered phone number alert
 
     Examples: 
       | Name      | Number        | Code |
@@ -360,7 +360,7 @@ Feature: Self Profile
     And I tap to add my phone number
     And I see country picker button on Sign in screen
     And I input phone number <Number> with code <Code>
-    Then I see registered phone number alert
+    Then I see already registered phone number alert
 
     Examples: 
       | Name      | Number        | Code |  
