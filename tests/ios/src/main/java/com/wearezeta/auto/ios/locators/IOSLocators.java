@@ -646,6 +646,8 @@ public final class IOSLocators {
 		public static final String xpathSimpleMessageLink = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/UIATextView[1]";
 		
 		public static final String xpathConnectedToUserLabel = "//UIAStaticText[contains(@name, 'CONNECTED TO %s')]";
+
+		public static final String xpathConversationWindow = "//UIATableView";
 	}
 
 	public final class DialogInfoPage {

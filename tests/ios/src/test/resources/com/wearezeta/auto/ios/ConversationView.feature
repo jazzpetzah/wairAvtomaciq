@@ -760,6 +760,7 @@ Feature: Conversation View
     And I tap on contact name <Contact1>
 	And I see dialog page
 	Then I see Close input options button is not visible
+	And I see controller buttons can not be visible
 	And I see the message in input field
 
     Examples: 
