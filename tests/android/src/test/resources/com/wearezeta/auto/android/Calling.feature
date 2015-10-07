@@ -167,18 +167,15 @@ Feature: Calling
     And I see dialog page
     Then I see calling overlay Big bar
     And I navigate back from dialog page
-    And I see Contact list
     And I open Search by tap
     And I see People picker page
     And I see calling overlay Micro bar
     And I press Clear button
-    Then I see Contact list
     And I tap on my avatar
     And I see personal info page
     And I see calling overlay Micro bar
     And I close Personal Info Page
     And I see calling overlay Micro bar
-    And I see Contact list
     And I tap on contact name <Contact2>
     And I see dialog page
     And I see calling overlay Mini bar
