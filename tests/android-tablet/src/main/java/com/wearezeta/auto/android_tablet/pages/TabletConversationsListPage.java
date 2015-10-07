@@ -218,6 +218,6 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 		final By locator = By.xpath(ContactListPage.xpathContactByName
 				.apply(name));
 		DriverUtils.swipeElementPointToPoint(getDriver(), getDriver()
-				.findElement(locator), 500, 5, 50, 80, 50);
+				.findElement(locator), 1000, 20, 50, 100, 50);
 	}
 }
