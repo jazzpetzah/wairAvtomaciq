@@ -117,9 +117,9 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
 	public boolean isUnblockBtnVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idSingleUserUnblock), 2)
+				By.id(idSingleUserUnblock), 5)
 				|| DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-						By.id(idConnectRequestUnblock), 2);
+						By.id(idConnectRequestUnblock), 5);
 	}
 
 	private static By[] getOneToOneOptionsMenuLocators() {
