@@ -61,7 +61,8 @@ class ExecuteJob(CliHandlerBase):
                 if try_num >= MAX_TRY_COUNT:
                     raise e
                 sys.stderr.write('Sleeping a while before retry #{} of {}...\n'.format(try_num, MAX_TRY_COUNT))
-                time.sleep(random.randint(10, 20))
+                time.sleep(random.randint(20, 40))
+                continue
             if args.block:
                 try:
                     queue_item.block_until_complete(delay=5)
@@ -74,6 +75,7 @@ class ExecuteJob(CliHandlerBase):
                     try_num += 1
                     try:
                         queue_item.get_build().stop()
+                        time.sleep(random.randint(20, 40))
                     except Exception:
                        pass
 
