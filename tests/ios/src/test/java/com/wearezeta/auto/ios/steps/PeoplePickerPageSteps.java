@@ -281,6 +281,29 @@ public class PeoplePickerPageSteps {
 				getPeoplePickerPage().waitUserPickerFindUser(contact));
 	}
 
+	/**
+	 * Verify user is not found on people picker
+	 * 
+	 * @step. ^I see that user (.*) is NOT found on People picker page$
+	 * 
+	 * @param contact
+	 *            user name
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see that user (.*) is NOT found on People picker page$")
+	public void WhenISeeUserNotFoundOnPeoplePickerPage(String contact)
+			throws Exception {
+		try {
+			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		Assert.assertFalse("User: " + contact
+				+ " is presented on People picker page", getPeoplePickerPage()
+				.waitUserPickerFindUser(contact));
+	}
+
 	@When("^I tap on NOT connected user name on People picker page (.*)$")
 	public void WhenITapOnUserNameFoundOnPeoplePickerPage(String contact)
 			throws Exception {
