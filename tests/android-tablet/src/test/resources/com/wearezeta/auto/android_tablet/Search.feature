@@ -238,3 +238,45 @@ Feature: Search
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | GroupChat     |
+
+  @id3883 @staging
+  Scenario Outline: Verify starting a call with action button (landscape)
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I wait until <Contact> exists in backend search results
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact>" into Search input on People Picker page
+    And I tap the found item <Contact> on People Picker page
+    When I tap Call button on People Picker page
+    Then I do not see People Picker page
+    And I see the conversation view
+    And I see calling overlay Big bar
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @id3892 @staging
+  Scenario Outline: Verify starting a call with action button (portrait)
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I wait until <Contact> exists in backend search results
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact>" into Search input on People Picker page
+    And I tap the found item <Contact> on People Picker page
+    When I tap Call button on People Picker page
+    Then I do not see People Picker page
+    And I see the conversation view
+    And I see calling overlay Big bar
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
