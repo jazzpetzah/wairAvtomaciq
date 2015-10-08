@@ -157,4 +157,8 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
 		getAndroidPeoplePickerPage().tapCameraButton();
 	}
 
+	public void tapCallButton() throws Exception {
+		getAndroidPeoplePickerPage().tapCallButton();
+	}
+
 }

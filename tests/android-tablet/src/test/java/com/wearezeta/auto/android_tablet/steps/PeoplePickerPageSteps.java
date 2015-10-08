@@ -454,4 +454,16 @@ public class PeoplePickerPageSteps {
 		getPeoplePickerPage().tapCameraButton();
 	}
 
+	/**
+	 * Tap the Call button in quick menu pane
+	 * 
+	 * @step. ^I tap Call button on [Pp]eople [Pp]icker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap Call button on [Pp]eople [Pp]icker page$")
+	public void ITapCallButton() throws Exception {
+		getPeoplePickerPage().tapCallButton();
+	}
+
 }
