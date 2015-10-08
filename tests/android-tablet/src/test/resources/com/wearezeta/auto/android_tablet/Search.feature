@@ -280,3 +280,63 @@ Feature: Search
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @id3887 @staging
+  Scenario Outline: Verify sharing a photo to a newly created group conversation with action button (landscape)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact1>" into Search input on People Picker page
+    And I tap the found item <Contact1> on People Picker page
+    And I enter "<Contact2>" into Search input on People Picker page
+    And I tap the found item <Contact2> on People Picker page
+    When I tap Camera button on People Picker page
+    And I tap Take Photo button in the conversation view
+    And I confirm the picture for the conversation view
+    Then I see a new picture in the conversation view
+    And I do not see People Picker page
+    And I see the conversation view
+    When I tap Show Tools button on conversation view page
+    And I tap Show Details button on conversation view page
+    And I see the Group popover
+    Then I see the participant avatar Myself on Group popover
+    And I see the participant avatar <Contact1> on Group popover
+    And I see the participant avatar <Contact2> on Group popover
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | GroupChat     |
+
+  @id3896 @staging
+  Scenario Outline: Verify sharing a photo to a newly created group conversation with action button (portrait)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact1>" into Search input on People Picker page
+    And I tap the found item <Contact1> on People Picker page
+    And I enter "<Contact2>" into Search input on People Picker page
+    And I tap the found item <Contact2> on People Picker page
+    When I tap Camera button on People Picker page
+    And I tap Take Photo button in the conversation view
+    And I confirm the picture for the conversation view
+    Then I see a new picture in the conversation view
+    And I do not see People Picker page
+    And I see the conversation view
+    When I tap Show Tools button on conversation view page
+    And I tap Show Details button on conversation view page
+    And I see the Group popover
+    Then I see the participant avatar Myself on Group popover
+    And I see the participant avatar <Contact1> on Group popover
+    And I see the participant avatar <Contact2> on Group popover
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | GroupChat     |
