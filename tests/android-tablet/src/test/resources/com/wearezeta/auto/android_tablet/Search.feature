@@ -144,3 +144,43 @@ Feature: Search
     Examples:
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
+
+  @id3882 @staging
+  Scenario Outline: Verify opening conversation with action button (landscape)
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I wait until <Contact> exists in backend search results
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact>" into Search input on People Picker page
+    And I tap the found item <Contact> on People Picker page
+    When I tap Open Conversation button on People Picker page
+    Then I do not see People Picker page
+    And I see the conversation view
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @id3891 @staging
+  Scenario Outline: Verify opening conversation with action button (portrait)
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I wait until <Contact> exists in backend search results
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact>" into Search input on People Picker page
+    And I tap the found item <Contact> on People Picker page
+    When I tap Open Conversation button on People Picker page
+    Then I do not see People Picker page
+    And I see the conversation view
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |

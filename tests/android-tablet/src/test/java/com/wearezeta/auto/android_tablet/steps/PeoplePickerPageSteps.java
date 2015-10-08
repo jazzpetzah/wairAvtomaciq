@@ -217,14 +217,14 @@ public class PeoplePickerPageSteps {
 	/**
 	 * Tap the Create/Open Conversation button
 	 * 
-	 * @step. ^I tap (Create|Open) Conversation button$
+	 * @step. ^I tap (Create|Open) Conversation button on [Pp]eople [Pp]icker page$
 	 * 
 	 * @param buttonType
 	 *            either Open or Create
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I tap (Create|Open) Conversation button$")
+	@When("^I tap (Create|Open) Conversation button on [Pp]eople [Pp]icker page$")
 	public void ITapConversationActionButton(String buttonType)
 			throws Exception {
 		switch (buttonType) {
@@ -428,13 +428,13 @@ public class PeoplePickerPageSteps {
 	/**
 	 * Verify whether Open Conversation button is visible
 	 * 
-	 * @step. ^I (do not )?see (?:the |\\s*)Open Conversation button$"
+	 * @step. ^I (do not )?see (?:the |\\s*)Open Conversation button on [Pp]eople [Pp]icker page$"
 	 * 
 	 * @param shouldBeVisible
 	 *            equals to null if the button should be visible
 	 * @throws Exception
 	 */
-	@Then("^I (do not )?see (?:the |\\s*)Open Conversation button$")
+	@Then("^I (do not )?see (?:the |\\s*)Open Conversation button on [Pp]eople [Pp]icker page$")
 	public void ISeeOpenConversationButton(String shouldBeVisible)
 			throws Exception {
 		if (shouldBeVisible == null) {
