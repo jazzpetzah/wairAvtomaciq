@@ -196,7 +196,7 @@ public class ImageUtil {
 
 	/**
 	 * Resizes image to the given ratio (use >1 to upscale, or <1 to downscale)
-	 * Upscale ratio is limited to 2 Upscale ratio is limited to 0.2
+	 * Upscale ratio is limited to 2; Downscale ratio is limited to 0.2;
 	 */
 	public static BufferedImage resizeImage(BufferedImage image,
 			float resizeRatio) throws IOException {
