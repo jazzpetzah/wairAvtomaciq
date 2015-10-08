@@ -97,7 +97,7 @@ public class DialogPage extends AndroidPage {
 
 	private static final String idCursorFrame = "cursor_layout";
 	@FindBy(id = idCursorFrame)
-	private WebElement cursorFrame;
+	public WebElement cursorFrame;
 
 	public static final Function<String, String> xpathPingMessageByText = text -> String
 			.format("//*[@id='ttv__row_conversation__ping_message' and @value='%s']",
