@@ -22,14 +22,12 @@ public class PeoplePickerPageSteps {
 			.getInstance();
 
 	private TabletPeoplePickerPage getPeoplePickerPage() throws Exception {
-		return (TabletPeoplePickerPage) pagesCollection
-				.getPage(TabletPeoplePickerPage.class);
+		return pagesCollection.getPage(TabletPeoplePickerPage.class);
 	}
 
 	private TabletConversationsListPage getConversationsListPage()
 			throws Exception {
-		return (TabletConversationsListPage) pagesCollection
-				.getPage(TabletConversationsListPage.class);
+		return pagesCollection.getPage(TabletConversationsListPage.class);
 	}
 
 	/**
@@ -212,29 +210,6 @@ public class PeoplePickerPageSteps {
 	public void ITapAvatarInTopPeople(String name) throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		getPeoplePickerPage().tapTopPeopleAvatar(name);
-	}
-
-	/**
-	 * Tap the Create/Open Conversation button
-	 * 
-	 * @step. ^I tap (Create|Open) Conversation button on [Pp]eople [Pp]icker page$
-	 * 
-	 * @param buttonType
-	 *            either Open or Create
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I tap (Create|Open) Conversation button on [Pp]eople [Pp]icker page$")
-	public void ITapConversationActionButton(String buttonType)
-			throws Exception {
-		switch (buttonType) {
-		case "Open":
-			getPeoplePickerPage().tapOpenConversationButton();
-			break;
-		case "Create":
-			getPeoplePickerPage().tapCreateConversationButton();
-			break;
-		}
 	}
 
 	private String firstPYMKItemName = null;
@@ -426,21 +401,35 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
+	 * Tap the Create/Open Conversation button
+	 * 
+	 * @step. ^I tap (?:Open|Create) Conversation button on [Pp]eople [Pp]icker
+	 *        page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap (?:Open|Create) Conversation button on [Pp]eople [Pp]icker page$")
+	public void ITapConversationActionButton() throws Exception {
+		getPeoplePickerPage().tapOpenOrCreateConversationButton();
+	}
+
+	/**
 	 * Verify whether Open Conversation button is visible
 	 * 
-	 * @step. ^I (do not )?see (?:the |\\s*)Open Conversation button on [Pp]eople [Pp]icker page$"
+	 * @step. ^I (do not )?see (?:the |\\s*)(?:Open|Create) Conversation
+	 *        button$"
 	 * 
 	 * @param shouldBeVisible
 	 *            equals to null if the button should be visible
 	 * @throws Exception
 	 */
-	@Then("^I (do not )?see (?:the |\\s*)Open Conversation button on [Pp]eople [Pp]icker page$")
+	@Then("^I (do not )?see (?:the |\\s*)(?:Open|Create) Conversation button$")
 	public void ISeeOpenConversationButton(String shouldBeVisible)
 			throws Exception {
 		if (shouldBeVisible == null) {
 			Assert.assertTrue("Open Conversation button is not visible",
 					getPeoplePickerPage()
-							.waitUntilOpenConversationButtonIsVisible());
+							.waitUntilOpenOrConversationButtonIsVisible());
 		} else {
 			Assert.assertTrue(
 					"Open Conversation button is still visible, but should be hidden",

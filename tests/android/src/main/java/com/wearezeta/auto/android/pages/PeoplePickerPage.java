@@ -107,7 +107,7 @@ public class PeoplePickerPage extends AndroidPage {
 		super(lazyDriver);
 	}
 
-	public WebElement findVisiblePickerSearch() throws Exception {
+	private WebElement findVisiblePickerSearch() throws Exception {
 		DriverUtils.waitUntilLocatorAppears(getDriver(), By.id(idPickerSearch));
 		List<WebElement> pickerSearches = getDriver().findElements(
 				By.id(idPickerSearch));
@@ -136,7 +136,6 @@ public class PeoplePickerPage extends AndroidPage {
 
 	public void typeTextInPeopleSearch(String text) throws Exception {
 		final WebElement pickerSearch = findVisiblePickerSearch();
-		pickerSearch.clear();
 		pickerSearch.sendKeys(text);
 	}
 
@@ -204,7 +203,7 @@ public class PeoplePickerPage extends AndroidPage {
 
 	public void tapCreateConversation() throws Exception {
 		// this.hideKeyboard();
-		assert waitUntilOpenConversationButtonIsVisible() : "Create/Open Conversation button is not visible in People Picker";
+		assert waitUntilOpenOrCreateConversationButtonIsVisible() : "Create/Open Conversation button is not visible in People Picker";
 		createOrOpenConversation.click();
 	}
 
@@ -309,12 +308,13 @@ public class PeoplePickerPage extends AndroidPage {
 		createOrOpenConversation.click();
 	}
 
-	public boolean waitUntilOpenConversationButtonIsVisible() throws Exception {
+	public boolean waitUntilOpenOrCreateConversationButtonIsVisible()
+			throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(idCreateOrOpenConversationButton));
 	}
 
-	public boolean waitUntilOpenConversationButtonIsInvisible()
+	public boolean waitUntilOpenOrCreateConversationButtonIsInvisible()
 			throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.id(idCreateOrOpenConversationButton));
