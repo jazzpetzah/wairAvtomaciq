@@ -141,9 +141,10 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
 		getAndroidPeoplePickerPage().tapOpenConversationButton();
 	}
 
-	public boolean waitUntilOpenOrConversationButtonIsVisible() throws Exception {
+	public boolean waitUntilOpenOrCreateConversationButtonIsVisible(String expectedCaption)
+			throws Exception {
 		return getAndroidPeoplePickerPage()
-				.waitUntilOpenOrCreateConversationButtonIsVisible();
+				.waitUntilOpenOrCreateConversationButtonIsVisible(expectedCaption);
 	}
 
 	public boolean waitUntilOpenConversationButtonIsInvisible()

@@ -87,6 +87,10 @@ public class PeoplePickerPage extends AndroidPage {
 	@FindBy(id = idCreateOrOpenConversationButton)
 	private WebElement createOrOpenConversation;
 
+	private static final Function<String, String> xpathCreateOrOpenConversationButtonByCaption = caption -> String
+			.format("//*[@id='%s' and @value='%s']",
+					idCreateOrOpenConversationButton, caption.toUpperCase());
+
 	private static final String idNoResultsFound = "ttv_pickuser__error_header";
 	@FindBy(id = idNoResultsFound)
 	private WebElement noResults;
@@ -312,6 +316,14 @@ public class PeoplePickerPage extends AndroidPage {
 			throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(idCreateOrOpenConversationButton));
+	}
+
+	public boolean waitUntilOpenOrCreateConversationButtonIsVisible(
+			String expectedCaption) throws Exception {
+		final By locator = By
+				.xpath(xpathCreateOrOpenConversationButtonByCaption
+						.apply(expectedCaption));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
 	public boolean waitUntilOpenOrCreateConversationButtonIsInvisible()

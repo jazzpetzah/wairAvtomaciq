@@ -416,20 +416,24 @@ public class PeoplePickerPageSteps {
 	/**
 	 * Verify whether Open Conversation button is visible
 	 * 
-	 * @step. ^I (do not )?see (?:the |\\s*)(?:Open|Create) Conversation
-	 *        button$"
+	 * @step. ^I (do not )?see (?:the |\\s*)(Open|Create) Conversation button on
+	 *        [Pp]eople [Pp]icker page$"
 	 * 
 	 * @param shouldBeVisible
 	 *            equals to null if the button should be visible
+	 * @param expectedCaption
+	 *            either 'Open' or 'Create'
 	 * @throws Exception
 	 */
-	@Then("^I (do not )?see (?:the |\\s*)(?:Open|Create) Conversation button$")
-	public void ISeeOpenConversationButton(String shouldBeVisible)
-			throws Exception {
+	@Then("^I (do not )?see (?:the |\\s*)(Open|Create) Conversation button on [Pp]eople [Pp]icker page$")
+	public void ISeeOpenConversationButton(String shouldBeVisible,
+			String expectedCaption) throws Exception {
 		if (shouldBeVisible == null) {
-			Assert.assertTrue("Open Conversation button is not visible",
+			Assert.assertTrue(
+					"Open Conversation button is not visible",
 					getPeoplePickerPage()
-							.waitUntilOpenOrConversationButtonIsVisible());
+							.waitUntilOpenOrCreateConversationButtonIsVisible(
+									expectedCaption));
 		} else {
 			Assert.assertTrue(
 					"Open Conversation button is still visible, but should be hidden",
