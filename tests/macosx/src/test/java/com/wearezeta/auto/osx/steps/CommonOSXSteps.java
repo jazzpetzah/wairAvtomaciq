@@ -48,6 +48,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import static junit.framework.Assert.assertEquals;
 import org.openqa.selenium.By;
 
 import org.openqa.selenium.chrome.ChromeDriverService;
@@ -698,6 +699,12 @@ public class CommonOSXSteps {
 		osxPagesCollection.getPage(MainWirePage.class).closeWindow();
 		clearDrivers();
 		startApp();
+	}
+
+	@Then("^I verify app has quit$")
+	public void IVerifyAppHasQuit() throws Exception {
+		int exitCode = killAllApps();
+		assertEquals(1, exitCode);
 	}
 
 	@After

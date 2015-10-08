@@ -42,3 +42,49 @@ Feature: Application
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+
+  @smoke @id3984
+  Scenario Outline: Verify I can open preferences using menu bar
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    When I click menu bar item "Wire" and menu item "Preferences"
+    Then I see preferences dialog
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @smoke @id3983
+  Scenario Outline: Verify I can open preferences using shartcut ⌘ ,
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    When I type shortcut combination for preferences
+    Then I see preferences dialog
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @smoke @id3981
+  Scenario Outline: Verify I can quit the app using menu bar
+    When I click menu bar item "Wire" and menu item "Quit Wire"
+    Then I verify app has quit
+
+    Examples: 
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
+
+  @smoke @id3982
+  Scenario Outline: Verify I can quit the app using shortcut ⌘ Q
+    When I type shortcut combination to quit the app
+    Then I verify app has quit
+
+    Examples: 
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |

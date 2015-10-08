@@ -30,6 +30,29 @@ public class MainWirePageSteps {
 	}
 
 	/**
+	 * Types shortcut combination to quit the app
+	 *
+	 * @step. ^I type shortcut combination to quit the app$
+	 * @throws Exception
+	 */
+	@When("^I type shortcut combination to quit the app$")
+	public void ITypeShortcutCombinationtoQuit() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class).pressShortCutForQuit();
+	}
+
+	/**
+	 * Types shortcut combination for preferences
+	 *
+	 * @step. ^I type shortcut combination for preferences$
+	 * @throws Exception
+	 */
+	@When("^I type shortcut combination for preferences$")
+	public void ITypeShortcutCombinationForPreferences() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutForPreferences();
+	}
+
+	/**
 	 * Minimizes the app
 	 *
 	 * @step. ^I minimize the app$
