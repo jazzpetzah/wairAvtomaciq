@@ -152,4 +152,8 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
 				.waitUntilOpenOrCreateConversationButtonIsInvisible();
 	}
 
+	public void tapCameraButton() throws Exception {
+		getAndroidPeoplePickerPage().tapCameraButton();
+	}
+
 }

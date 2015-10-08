@@ -238,3 +238,45 @@ Feature: Search
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | GroupChat     |
+
+  @id3884 @staging
+  Scenario Outline: Verify sending a photo with action button (landscape)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact>" into Search input on People Picker page
+    And I tap the found item <Contact> on People Picker page
+    When I tap Camera button on People Picker page
+    And I tap Take Photo button in the conversation view
+    And I confirm the picture for the conversation view
+    Then I see a new picture in the conversation view
+    And I do not see People Picker page
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @id3893 @staging
+  Scenario Outline: Verify sending a photo with action button (portrait)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact>" into Search input on People Picker page
+    And I tap the found item <Contact> on People Picker page
+    When I tap Camera button on People Picker page
+    And I tap Take Photo button in the conversation view
+    And I confirm the picture for the conversation view
+    Then I see a new picture in the conversation view
+    And I do not see People Picker page
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
