@@ -49,6 +49,8 @@ public class PeoplePickerPage extends AndroidPage {
 	private WebElement quickMenuCameraButton;
 
 	public static final String idQuickMenuCallButton = "gtv__conversation_quick_menu__call_button";
+	@FindBy(id = idQuickMenuCallButton)
+	private WebElement quickMenuCallButton;
 
 	private static final Function<String, String> xpathPeoplePickerGroupByName = name -> String
 			.format("//*[@id='ttv_pickuser_searchconversation_name' and @value='%s']",
@@ -342,6 +344,10 @@ public class PeoplePickerPage extends AndroidPage {
 		DriverUtils.swipeByCoordinates(getDriver(), durationMilliseconds, 50,
 				20, 50, 90);
 		return new ContactListPage(getLazyDriver());
+	}
+
+	public void tapCallButton() {
+		quickMenuCallButton.click();
 	}
 
 	public void tapCameraButton() {
