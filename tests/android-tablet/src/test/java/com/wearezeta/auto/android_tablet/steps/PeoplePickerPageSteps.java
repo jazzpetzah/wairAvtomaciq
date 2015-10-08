@@ -438,4 +438,16 @@ public class PeoplePickerPageSteps {
 		}
 	}
 
+	/**
+	 * Tap the Camera button on quick access menu
+	 * 
+	 * @step. ^I tap Camera button on [Pp]eople [Pp]icker page$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I tap Camera button on [Pp]eople [Pp]icker page$")
+	public void ITapSendPhotoButton() throws Exception {
+		getPeoplePickerPage().tapCameraButton();
+	}
+
 }
