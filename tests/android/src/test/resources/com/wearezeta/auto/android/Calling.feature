@@ -359,7 +359,6 @@ Feature: Calling
     And <Contact3> calls <GroupChatName> using <CallBackend>
     And <Contact4> calls <GroupChatName> using <CallBackend>
     And <Contact5> calls <GroupChatName> using <CallBackend>
-    Then I see join group call overlay
     When I answer the call from the overlay bar
     Then I see group call is full alert
     And I close group call is full alert
@@ -420,9 +419,7 @@ Feature: Calling
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    Then I see call overlay
     When I answer the call from the overlay bar
-    Then I do not see join group call overlay
     And I see calling overlay Big bar
     And I navigate back from dialog page
     And I tap on contact name <Contact3>
