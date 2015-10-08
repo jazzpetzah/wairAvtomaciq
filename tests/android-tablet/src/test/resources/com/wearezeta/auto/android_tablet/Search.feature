@@ -340,3 +340,51 @@ Feature: Search
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | GroupChat     |
+
+  @id3881 @staging
+  Scenario Outline: (AN-2884) Verify button Open is changed to Create after checking second person (landscape)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact1>" into Search input on People Picker page
+    When I tap the found item <Contact1> on People Picker page
+    Then I see Open Conversation button on People Picker page
+    When I enter "<Contact2>" into Search input on People Picker page
+    And I tap the found item <Contact2> on People Picker page
+    Then I see Create Conversation button on People Picker page
+    When I tap the found item <Contact2> on People Picker page
+    Then I see Open Conversation button on People Picker page
+    When I tap the found item <Contact1> on People Picker page
+    Then I do not see Open Conversation button on People Picker page
+
+    Examples:
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
+
+  @id3890 @staging
+  Scenario Outline: (AN-2884) Verify button Open is changed to Create after checking second person (portrait)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact1>" into Search input on People Picker page
+    When I tap the found item <Contact1> on People Picker page
+    Then I see Open Conversation button on People Picker page
+    When I enter "<Contact2>" into Search input on People Picker page
+    And I tap the found item <Contact2> on People Picker page
+    Then I see Create Conversation button on People Picker page
+    When I tap the found item <Contact2> on People Picker page
+    Then I see Open Conversation button on People Picker page
+    When I tap the found item <Contact1> on People Picker page
+    Then I do not see Open Conversation button on People Picker page
+
+    Examples:
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
