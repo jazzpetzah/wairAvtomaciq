@@ -156,14 +156,14 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	public void swipeByCoordinates(int durationMilliseconds,
-			int widthStartPercent, int hightStartPercent, int widthEndPercent,
-			int hightEndPercent) throws Exception {
+			int widthStartPercent, int heightStartPercent, int widthEndPercent,
+			int heightEndPercent) throws Exception {
 		final Dimension screenDimension = getDriver().manage().window()
 				.getSize();
 		this.getDriver().swipe(screenDimension.width * widthStartPercent / 100,
-				screenDimension.height * hightStartPercent / 100,
+				screenDimension.height * heightStartPercent / 100,
 				screenDimension.width * widthEndPercent / 100,
-				screenDimension.height * hightEndPercent / 100,
+				screenDimension.height * heightEndPercent / 100,
 				durationMilliseconds);
 	}
 
@@ -206,14 +206,14 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	/**
-	 * Swipe from y = 90% of hight to y = 10% of hight. x = width/2
+	 * Swipe from y = 90% of height to y = 10% of height. x = width/2
 	 */
 	public void swipeUpCoordinates(int durationMilliseconds) throws Exception {
 		swipeUpCoordinates(durationMilliseconds, SWIPE_DEFAULT_PERCENTAGE);
 	}
 
 	/**
-	 * Swipe from y = 90% of hight to y = 10% of hight. x = widthPercent
+	 * Swipe from y = 90% of height to y = 10% of height. x = widthPercent
 	 */
 	public void swipeUpCoordinates(int durationMilliseconds, int widthPercent)
 			throws Exception {
@@ -223,14 +223,14 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	/**
-	 * Swipe from y = 10% of hight to y = 90% of hight. x = width/2
+	 * Swipe from y = 10% of height to y = 90% of height. x = width/2
 	 */
 	public void swipeDownCoordinates(int durationMilliseconds) throws Exception {
 		swipeDownCoordinates(durationMilliseconds, SWIPE_DEFAULT_PERCENTAGE);
 	}
 
 	/**
-	 * Swipe from y = 10% of hight to y = 90% of hight. x = widthPercent
+	 * Swipe from y = 10% of height to y = 90% of height. x = widthPercent
 	 */
 	public void swipeDownCoordinates(int durationMilliseconds, int widthPercent)
 			throws Exception {
@@ -246,12 +246,12 @@ public abstract class AndroidPage extends BasePage {
 		buttonsList.get(index).click();
 	}
 
-	public void tapByCoordinates(int widthPercent, int hightPercent)
+	public void tapByCoordinates(int widthPercent, int heightPercent)
 			throws Exception {
 		int x = getDriver().manage().window().getSize().getWidth()
 				* widthPercent / 100;
 		int y = getDriver().manage().window().getSize().getHeight()
-				* hightPercent / 100;
+				* heightPercent / 100;
 		AndroidCommonUtils.genericScreenTap(x, y);
 	}
 
