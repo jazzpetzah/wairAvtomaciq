@@ -513,9 +513,7 @@ Feature: Calling
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    And I see join group call overlay
     And I answer the call from the overlay bar
-    And I do not see join group call overlay
     And I see calling overlay Big bar
     And <Contact3> calls <Name> using <CallBackend>
     And I see incoming calling message for contact <Contact3>
