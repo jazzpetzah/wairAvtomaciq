@@ -207,7 +207,7 @@ public class ContactListPageSteps {
 	@When("^I swipe right on a (.*)$")
 	public void ISwipeRightOnContact(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		getContactListPage().swipeRightConversationToRevealArchiveButton(
+		getContactListPage().swipeRightConversationToRevealActionButtons(
 				contact);
 	}
 

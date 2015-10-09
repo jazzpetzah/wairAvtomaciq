@@ -415,3 +415,26 @@ Feature: People View
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user3Name | OnlyConnected |
+
+  @staging @id3957
+  Scenario Outline: Verify that deleted conversation via participant view isn't going to archive
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
+    Given User <Name> sent message <Message> to conversation <GroupChatName>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I open group conversation details
+    And I press conversation menu button
+    And I click delete menu button
+    And I confirm delete conversation content
+    And I return to the chat list
+    And I dont see conversation <GroupChatName> in contact list
+    And I open archived conversations
+    Then I dont see conversation <GroupChatName> in contact list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Message | GroupChatName |
+      | user1Name | user2Name | user3Name | testing | ForDeletion   |
