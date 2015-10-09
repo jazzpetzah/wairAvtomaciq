@@ -63,6 +63,8 @@ public final class PopoverLocators {
 
 		public static final String xpathRootLocator = "//div[@id='participants-bubble']";
 
+		public static final String xpathUserName = "//*[@data-uie-name='status-user']";
+
 		public static final class SingleUserInfoPage {
 
 			public static final String xpathPageRootLocator = "//user-profile";
