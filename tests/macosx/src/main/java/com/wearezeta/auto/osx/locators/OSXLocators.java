@@ -32,13 +32,27 @@ public final class OSXLocators {
 
 	public static final class MainWirePage {
 
-		public static final String xpathWindow = "//AXApplication[@AXTitle='Wire']//AXWindow";
+		public static final String xpathWindow = "//AXApplication[@AXTitle='Wire']//AXWindow[not(@AXTitle='')]";
 
-		public static final String xpathCloseButton = "//AXButton[@AXRoleDescription='close button']";
+		public static final String xpathCloseButton = xpathWindow
+				+ "//AXButton[@AXRoleDescription='close button']";
 
-		public static final String xpathMinimizeButton = "//AXButton[@AXRoleDescription='minimize button']";
+		public static final String xpathMinimizeButton = xpathWindow
+				+ "//AXButton[@AXRoleDescription='minimize button']";
 
-		public static final String xpathZoomButton = "//AXButton[@AXRoleDescription='zoom button']";
+		public static final String xpathZoomButton = xpathWindow
+				+ "//AXButton[@AXRoleDescription='zoom button']";
+	}
+
+	public static final class AboutPage {
+
+		public static final String xpathWindow = "//AXApplication[@AXTitle='Wire']//AXWindow[@AXTitle='']";
+
+		public static final String xpathCloseButton = xpathWindow
+				+ "//AXButton[@AXRoleDescription='close button']";
+
+		public static final String xpathMinimizeButton = xpathWindow
+				+ "//AXButton[@AXRoleDescription='minimize button']";
 	}
 
 	public static final class ContactListContextMenuPage {
