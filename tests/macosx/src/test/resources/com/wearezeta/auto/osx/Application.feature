@@ -33,8 +33,8 @@ Feature: Application
   Scenario: I verify the installed app is not too big
     When I verify the app is not bigger than 121 MB
 
-  @smoke @id3807
-  Scenario: I verify I can open about window
+  @smoke @id3529
+  Scenario: Verify existing About page
     When I click menu bar item "Wire" and menu item "About Wire"
     Then I verify about window is visible
 
