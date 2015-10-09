@@ -14,13 +14,13 @@ import com.wearezeta.auto.osx.locators.OSXLocators;
 public class AboutPage extends OSXPage {
 
 	@FindBy(how = How.XPATH, using = OSXLocators.AboutPage.xpathWindow)
-	protected WebElement window;
+	private WebElement window;
 
 	@FindBy(how = How.XPATH, using = OSXLocators.AboutPage.xpathMinimizeButton)
-	protected WebElement minimizeButton;
+	private WebElement minimizeButton;
 
 	@FindBy(how = How.XPATH, using = OSXLocators.AboutPage.xpathCloseButton)
-	protected WebElement closeButton;
+	private WebElement closeButton;
 
 	public AboutPage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
 		super(lazyDriver);

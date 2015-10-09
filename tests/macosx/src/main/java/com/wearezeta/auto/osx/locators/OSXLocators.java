@@ -32,7 +32,7 @@ public final class OSXLocators {
 
 	public static final class MainWirePage {
 
-		public static final String xpathWindow = "//AXApplication[@AXTitle='Wire']//AXWindow[not(@AXTitle='')]";
+		public static final String xpathWindow = "//AXApplication[@AXTitle='Wire']//AXWindow[@AXTitle='Wire']";
 
 		public static final String xpathCloseButton = xpathWindow
 				+ "//AXButton[@AXRoleDescription='close button']";
