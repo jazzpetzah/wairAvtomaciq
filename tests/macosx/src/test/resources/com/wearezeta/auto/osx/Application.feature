@@ -33,6 +33,13 @@ Feature: Application
   Scenario: I verify the installed app is not too big
     When I verify the app is not bigger than 121 MB
 
+  @smoke @id3529
+  Scenario: Verify existing About page
+    When I click menu bar item "Wire" and menu item "About Wire"
+    Then I verify about window is visible
+    When I close the about window
+    Then I verify about window is not visible
+
   @smoke @id3730
   Scenario Outline: Sign Out
     Given There are 2 users where <Name> is me
