@@ -233,4 +233,11 @@ public class OSXCommonUtils extends CommonUtils {
 		LOG.debug("result: " + longResult);
 		return longResult;
 	}
+
+	public static long startAppium4Mac() throws Exception {
+		final String[] commands = new String[] { "/bin/sh", "-c",
+				String.format("open %s", OSXExecutionContext.APPIUM_MAC_PATH) };
+		LOG.debug("executing command: " + Arrays.toString(commands));
+		return executeOsXCommand(commands);
+	}
 }

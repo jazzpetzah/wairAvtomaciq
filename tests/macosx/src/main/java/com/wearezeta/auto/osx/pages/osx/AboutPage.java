@@ -31,6 +31,13 @@ public class AboutPage extends OSXPage {
 				By.xpath(OSXLocators.AboutPage.xpathWindow));
 	}
 
+	public boolean isNotVisible() throws Exception {
+		// TODO: should be waitUntilLocatorDissapears but that's broken with
+		// Appium4Mac
+		return !DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.xpath(OSXLocators.AboutPage.xpathWindow));
+	}
+
 	public void minimizeWindow() throws Exception {
 		minimizeButton.click();
 	}

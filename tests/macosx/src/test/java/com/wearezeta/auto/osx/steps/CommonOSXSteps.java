@@ -17,6 +17,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.clearAppData;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.getSizeOfAppInMB;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.killAllApps;
+import static com.wearezeta.auto.osx.common.OSXCommonUtils.startAppium4Mac;
 
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
 
@@ -134,6 +135,7 @@ public class CommonOSXSteps {
 
 	private void commonBefore() throws Exception {
 		try {
+			startAppium4Mac();
 			killAllApps();
 			clearAppData();
 		} catch (Exception e) {

@@ -37,6 +37,8 @@ Feature: Application
   Scenario: Verify existing About page
     When I click menu bar item "Wire" and menu item "About Wire"
     Then I verify about window is visible
+    When I close the about window
+    Then I verify about window is not visible
 
   @smoke @id3730
   Scenario Outline: Sign Out

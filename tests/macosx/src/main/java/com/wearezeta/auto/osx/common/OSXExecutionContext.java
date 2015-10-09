@@ -8,6 +8,9 @@ public class OSXExecutionContext {
 	public static final Platform CURRENT_PLATFORM = Platform.Mac;
 	public static final Platform CURRENT_SECONDARY_PLATFORM = Platform.Web;
 
+	public static final String APPIUM_MAC_PATH = System.getProperty(
+			"com.wire.appium.mac.path", "/Applications/AppiumForMac.app");
+
 	public static final String APPIUM_HUB_URL = System.getProperty(
 			"com.wire.appium.hub.url", "http://localhost:4622/wd/hub");
 

@@ -22,6 +22,7 @@
         <com.wire.app.path>/Applications/Wire.app</com.wire.app.path>
         <com.wire.electron.path.suffix>/Contents/MacOS/Electron</com.wire.electron.path.suffix>
         <com.wire.appium.hub.url>http://127.0.0.1:4622/wd/hub</com.wire.appium.hub.url>
+        <com.wire.appium.mac.path>/Users/jenkins/workspace/AppiumForMac/Applications/AppiumForMac.app</com.wire.appium.mac.path>
         <com.wire.chromedriver.path>/Applications/chromedriver</com.wire.chromedriver.path>
         <com.wire.driver.timeout.seconds>10</com.wire.driver.timeout.seconds>
         <com.wire.environment>Staging</com.wire.environment>
@@ -167,6 +168,7 @@
                         <com.wire.app.path>${com.wire.app.path}</com.wire.app.path>
                         <com.wire.electron.path.suffix>${com.wire.electron.path.suffix}</com.wire.electron.path.suffix>
                         <com.wire.appium.hub.url>${com.wire.appium.hub.url}</com.wire.appium.hub.url>
+                        <com.wire.appium.mac.path>${com.wire.appium.mac.path}</com.wire.appium.mac.path>
                         <com.wire.chromedriver.path>${com.wire.chromedriver.path}</com.wire.chromedriver.path>
                         <com.wire.driver.timeout.seconds>${com.wire.driver.timeout.seconds}</com.wire.driver.timeout.seconds>
                         <com.wire.environment>${com.wire.environment}</com.wire.environment>
