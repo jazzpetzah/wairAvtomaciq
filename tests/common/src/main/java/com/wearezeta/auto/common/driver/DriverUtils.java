@@ -615,7 +615,7 @@ public class DriverUtils {
 		try {
 			final byte[] scrImage = ((TakesScreenshot) driver)
 					.getScreenshotAs(OutputType.BYTES);
-			BufferedImage bImageFromConvert = ImageIO
+			final BufferedImage bImageFromConvert = ImageIO
 					.read(new ByteArrayInputStream(scrImage));
 			// Disable resize code since this affects webapp tests
 			// int height = bImageFromConvert.getHeight();
