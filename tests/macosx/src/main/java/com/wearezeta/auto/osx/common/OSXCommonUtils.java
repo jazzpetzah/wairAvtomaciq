@@ -221,4 +221,16 @@ public class OSXCommonUtils extends CommonUtils {
 		LOG.debug("executing commands: " + Arrays.toString(commands));
 		executeOsXCommandWithOutput(commands);
 	}
+
+	public static long getSizeOfAppInMB() throws Exception {
+		final String[] commands = new String[] { "/bin/sh", "-c",
+				String.format("du -sk %s", OSXExecutionContext.WIRE_APP_PATH) };
+		LOG.debug("executing command: " + Arrays.toString(commands));
+		String stringResult = executeOsXCommandWithOutput(commands);
+		stringResult = stringResult.replace(OSXExecutionContext.WIRE_APP_PATH,
+				"").trim();
+		long longResult = Long.parseLong(stringResult) / 1024;
+		LOG.debug("result: " + longResult);
+		return longResult;
+	}
 }

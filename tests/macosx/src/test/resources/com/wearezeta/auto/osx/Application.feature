@@ -27,6 +27,14 @@ Feature: Application
 
     Examples: 
       | Login      | Password      | Name      |
+         | user1Email | user1Password | user1Name |
+
+  @smoke @id3807
+  Scenario Outline: I verify the installed app is not too big
+    When I verify the app is not bigger than 121 MB
+
+    Examples: 
+      | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
   @smoke @id3730

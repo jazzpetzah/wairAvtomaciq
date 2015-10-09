@@ -15,6 +15,7 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.clearAppData;
+import static com.wearezeta.auto.osx.common.OSXCommonUtils.getSizeOfAppInMB;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.killAllApps;
 
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
@@ -48,6 +49,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.lessThan;
 import org.openqa.selenium.By;
 
 import org.openqa.selenium.chrome.ChromeDriverService;
@@ -698,6 +701,11 @@ public class CommonOSXSteps {
 		osxPagesCollection.getPage(MainWirePage.class).closeWindow();
 		clearDrivers();
 		startApp();
+	}
+
+	@Then("^I verify the app is not bigger than (\\d+) MB$")
+	public void IVerifyAppIsNotTooBig(long expectedSize) throws Exception {
+		assertThat(getSizeOfAppInMB(), lessThan(expectedSize));
 	}
 
 	@After
