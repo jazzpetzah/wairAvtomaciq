@@ -47,7 +47,7 @@ Feature: Application
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id3981 @torun
+  @smoke @id3981
   Scenario: Verify I can quit the app using menu bar
     When I click menu bar item "Wire" and menu item "Quit Wire"
     Then I verify app has quit
