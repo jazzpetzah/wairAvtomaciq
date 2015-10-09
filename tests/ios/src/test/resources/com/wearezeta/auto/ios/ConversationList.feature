@@ -32,7 +32,7 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
-      
+
   @staging @id1334
   Scenario Outline: Verify archiving silenced conversation     
     Given There are 2 users where <Name> is me
@@ -44,18 +44,18 @@ Feature: Conversation List
     When I swipe right on a <Contact>
     And I press Archive button in action menu in Contact List
     Then I dont see conversation <Contact> in contact list
-	And Contact <Contact> send number 1 of message to user <Name>
-	Then I dont see conversation <Contact> in contact list
-	And Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
-	Then I dont see conversation <Contact> in contact list
-	And I open archived conversations
-	And I tap on contact name <Contact>
-	And I see dialog page
-    
+    And Contact <Contact> send number 1 of message to user <Name>
+    And I dont see conversation <Contact> in contact list
+    And Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
+    Then I dont see conversation <Contact> in contact list
+    And I open archived conversations
+    And I tap on contact name <Contact>
+    And I see dialog page
+
     Examples: 
       | Name      | Contact   | Picture     | ConversationType | 
       | user1Name | user2Name | testing.jpg | single user      |
-      
+
   @regression @id2153
   Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages
     Given There are 3 users where <Name> is me
