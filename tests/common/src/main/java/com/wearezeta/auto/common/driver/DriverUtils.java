@@ -617,18 +617,20 @@ public class DriverUtils {
 					.getScreenshotAs(OutputType.BYTES);
 			BufferedImage bImageFromConvert = ImageIO
 					.read(new ByteArrayInputStream(scrImage));
-			int height = bImageFromConvert.getHeight();
-			int widht = bImageFromConvert.getWidth();
-			float resizeRatio = 0;
-			if (widht > MAX_SCREENSHOT_WIDTH || height > MAX_SCREENSHOT_HEIGHT) {
-				float resizeRatioW = (float) MAX_SCREENSHOT_WIDTH / widht;
-				float resizeRatioH = (float) MAX_SCREENSHOT_HEIGHT / height;
-				resizeRatio = (resizeRatioH > resizeRatioW) ? resizeRatioW
-						: resizeRatioH;
-			} else
-				resizeRatio = 1;
-			bImageFromConvert = ImageUtil.resizeImage(bImageFromConvert,
-					resizeRatio);
+			// Disable resize code since this affects webapp tests
+			// int height = bImageFromConvert.getHeight();
+			// int widht = bImageFromConvert.getWidth();
+			// float resizeRatio = 0;
+			// if (widht > MAX_SCREENSHOT_WIDTH || height >
+			// MAX_SCREENSHOT_HEIGHT) {
+			// float resizeRatioW = (float) MAX_SCREENSHOT_WIDTH / widht;
+			// float resizeRatioH = (float) MAX_SCREENSHOT_HEIGHT / height;
+			// resizeRatio = (resizeRatioH > resizeRatioW) ? resizeRatioW
+			// : resizeRatioH;
+			// } else
+			// resizeRatio = 1;
+			// bImageFromConvert = ImageUtil.resizeImage(bImageFromConvert,
+			// resizeRatio);
 			return Optional.ofNullable(bImageFromConvert);
 		} catch (WebDriverException | NoClassDefFoundError e) {
 			// e.printStackTrace();
