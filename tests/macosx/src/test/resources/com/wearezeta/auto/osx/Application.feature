@@ -29,6 +29,10 @@ Feature: Application
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
+  @smoke @id3807
+  Scenario: I verify the installed app is not too big
+    When I verify the app is not bigger than 121 MB
+
   @smoke @id3730
   Scenario Outline: Sign Out
     Given There are 2 users where <Name> is me
