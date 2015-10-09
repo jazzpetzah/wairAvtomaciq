@@ -6,6 +6,7 @@ import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.osx.pages.webapp.PreferencesPage;
 import com.wearezeta.auto.osx.pages.webapp.SelfProfilePage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
@@ -194,8 +195,9 @@ public class SelfProfilePageSteps {
 	 * 
 	 * @step. ^I verify my avatar background color is set to (\\w+) color$
 	 * 
-	 * @param colorName one of these colors: StrongBlue, StrongLimeGreen,
-	 * BrightYellow, VividRed, BrightOrange, SoftPink, Violet
+	 * @param colorName
+	 *            one of these colors: StrongBlue, StrongLimeGreen,
+	 *            BrightYellow, VividRed, BrightOrange, SoftPink, Violet
 	 * 
 	 * @throws Exception
 	 */
@@ -218,8 +220,8 @@ public class SelfProfilePageSteps {
 	 */
 	@Then("^I see Settings dialog$")
 	public void ISeeSetingsDialog() throws Exception {
-		Assert.assertTrue(webappPagesCollection.getPage(SelfProfilePage.class)
-				.isSettingsPopoverVisible());
+		Assert.assertTrue(webappPagesCollection.getPage(PreferencesPage.class)
+				.isVisible());
 	}
 
 	/**

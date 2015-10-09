@@ -51,6 +51,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.lessThan;
+import static org.junit.Assert.assertEquals;
 import org.openqa.selenium.By;
 
 import org.openqa.selenium.chrome.ChromeDriverService;
@@ -749,6 +750,19 @@ public class CommonOSXSteps {
 		osxPagesCollection.getPage(MainWirePage.class).closeWindow();
 		clearDrivers();
 		startApp();
+	}
+
+	/**
+	 * Verifies app is quit.
+	 *
+	 * @step ^I verify app has quit$
+	 *
+	 * @throws java.lang.Exception
+	 */
+	@Then("^I verify app has quit$")
+	public void IVerifyAppHasQuit() throws Exception {
+		int exitCode = killAllApps();
+		assertEquals(1, exitCode);
 	}
 
 	/**
