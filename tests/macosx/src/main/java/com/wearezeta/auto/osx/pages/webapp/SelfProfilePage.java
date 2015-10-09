@@ -163,11 +163,6 @@ public class SelfProfilePage extends WebPage {
 				.getCssValue("background-color"));
 	}
 
-	public boolean isSettingsPopoverVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.xpath(WebAppLocators.SettingsPage.xpathSettingsDialogRoot));
-	}
-
 	public void pressShortCutForPreferences() {
 		robot.keyPress(KeyEvent.VK_META);// command key
 		robot.keyPress(KeyEvent.VK_COMMA);
