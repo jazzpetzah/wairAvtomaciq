@@ -29,6 +29,10 @@ Feature: Application
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
+  @smoke @id3807
+  Scenario: I verify the installed app is not too big
+    When I verify the app is not bigger than 121 MB
+
   @smoke @id3730
   Scenario Outline: Sign Out
     Given There are 2 users where <Name> is me
@@ -43,7 +47,7 @@ Feature: Application
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id3981
+  @smoke @id3981 @torun
   Scenario: Verify I can quit the app using menu bar
     When I click menu bar item "Wire" and menu item "Quit Wire"
     Then I verify app has quit
