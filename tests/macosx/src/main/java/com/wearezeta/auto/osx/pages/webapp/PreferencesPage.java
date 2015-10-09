@@ -16,7 +16,8 @@ public class PreferencesPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.SettingsPage.xpathSettingsCloseButton)
 	private WebElement settingsCloseButton;
 
-	public PreferencesPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
+	public PreferencesPage(Future<ZetaWebAppDriver> lazyDriver)
+			throws Exception {
 		super(lazyDriver);
 	}
 

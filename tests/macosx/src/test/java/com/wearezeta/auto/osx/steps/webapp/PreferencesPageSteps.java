@@ -6,7 +6,6 @@ import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.SettingsPage;
 
 import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 
 public class PreferencesPageSteps {
 
@@ -22,17 +21,6 @@ public class PreferencesPageSteps {
 	public void ISeeSetingsDialog() throws Exception {
 		Assert.assertTrue(WebappPagesCollection.getInstance()
 				.getPage(SettingsPage.class).isVisible());
-	}
-
-	/**
-	 * Click close button on preferences dialog
-	 * 
-	 * @step. ^I click close [Pp]references dialog button$
-	 */
-	@When("^I click close [Pp]references dialog button$")
-	public void IClickCloseSettingsPageButton() throws Exception {
-		WebappPagesCollection.getInstance().getPage(SettingsPage.class)
-				.clickCloseButton();
 	}
 
 }

@@ -44,19 +44,11 @@ Feature: Application
       | user1Email | user1Password | user1Name | user2Name |
 
   @smoke @id3981
-  Scenario Outline: Verify I can quit the app using menu bar
+  Scenario: Verify I can quit the app using menu bar
     When I click menu bar item "Wire" and menu item "Quit Wire"
     Then I verify app has quit
 
-    Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
-
   @smoke @id3982
-  Scenario Outline: Verify I can quit the app using shortcut ⌘ Q
+  Scenario: Verify I can quit the app using shortcut ⌘ Q
     When I type shortcut combination to quit the app
     Then I verify app has quit
-
-    Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
