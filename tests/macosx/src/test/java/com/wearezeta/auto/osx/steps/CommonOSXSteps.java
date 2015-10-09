@@ -671,6 +671,16 @@ public class CommonOSXSteps {
 		}
 	}
 
+	/**
+	 * Will click a menu bar item and a menu item within the menu bar item.
+	 *
+	 * @step. ^I click menu bar item \"(.*)\" and menu item \"(.*)\"$
+	 *
+	 * @param menuBarItemName
+	 * @param menuItemName
+	 * @throws java.lang.Exception
+	 *
+	 */
 	@When("^I click menu bar item \"(.*)\" and menu item \"(.*)\"$")
 	public void clickMenuBarItem(String menuBarItemName, String menuItemName)
 			throws Exception {
@@ -678,6 +688,20 @@ public class CommonOSXSteps {
 		mainPage.clickMenuBarItem(menuBarItemName, menuItemName);
 	}
 
+	/**
+	 * Will click a menu bar item and a menu item within the menu bar item and
+	 * another menu item within the menu item.
+	 *
+	 *
+	 * @step ^I click menu bar item \"(.*)\" and menu items \"(.*)\" and
+	 *       \"(.*)\"$
+	 *
+	 * @param menuBarItemName
+	 * @param menuItemName
+	 * @param menuItemName2
+	 * @throws java.lang.Exception
+	 *
+	 */
 	@When("^I click menu bar item \"(.*)\" and menu items \"(.*)\" and \"(.*)\"$")
 	public void clickMenuBarItem(String menuBarItemName, String menuItemName,
 			String menuItemName2) throws Exception {
@@ -685,17 +709,41 @@ public class CommonOSXSteps {
 		mainPage.clickMenuBarItem(menuBarItemName, menuItemName, menuItemName2);
 	}
 
+	/**
+	 * Will click a menu bar item.
+	 *
+	 *
+	 * @step ^I click menu bar item with name \"(.*)\"$
+	 *
+	 * @param menuBarItemName
+	 * @throws java.lang.Exception
+	 *
+	 */
 	@When("^I click menu bar item with name \"(.*)\"$")
 	public void clickMenuBarItem(String menuBarItemName) throws Exception {
 		osxPagesCollection.getPage(MainWirePage.class).clickMenuBarItem(
 				menuBarItemName);
 	}
 
+	/**
+	 * Kills the app by cleaning all drivers.
+	 *
+	 * @step ^I kill the app$
+	 *
+	 * @throws java.lang.Exception
+	 */
 	@When("^I kill the app$")
 	public void KillApp() throws Exception {
 		clearDrivers();
 	}
 
+	/**
+	 * Kills the app by cleaning all drivers and restarts it
+	 *
+	 * @step ^I restart the app$
+	 *
+	 * @throws java.lang.Exception
+	 */
 	@When("^I restart the app$")
 	public void restartApp() throws Exception {
 		osxPagesCollection.getPage(MainWirePage.class).closeWindow();
@@ -703,6 +751,15 @@ public class CommonOSXSteps {
 		startApp();
 	}
 
+	/**
+	 * Verifies the size of the installed app.
+	 *
+	 * @step ^I verify the app is not bigger than (\\d+) MB$
+	 *
+	 * @param expectedSize
+	 * @throws java.lang.Exception
+	 *
+	 */
 	@Then("^I verify the app is not bigger than (\\d+) MB$")
 	public void IVerifyAppIsNotTooBig(long expectedSize) throws Exception {
 		assertThat(getSizeOfAppInMB(), lessThan(expectedSize));
