@@ -8,6 +8,8 @@ public class OSXExecutionContext {
 	public static final Platform CURRENT_PLATFORM = Platform.Mac;
 	public static final Platform CURRENT_SECONDARY_PLATFORM = Platform.Web;
 
+	public static final String EXTENDED_LOGGING_LEVEL = System.getProperty(
+			"extendedLoggingLevel", "SEVERE");
 	public static final String APPIUM_MAC_PATH = System.getProperty(
 			"com.wire.appium.mac.path", "/Applications/AppiumForMac.app");
 
