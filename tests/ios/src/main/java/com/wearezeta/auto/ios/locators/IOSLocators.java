@@ -100,7 +100,7 @@ public final class IOSLocators {
 
 	public static final String namePingButton = "ComposeControllerPingButton";
 
-	public static final String xpathCameraLibraryButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAButton[5]";
+	public static final String nameCameraLibraryButton = "cameraLibraryButton";
 
 	public static final String nameCameraRollCancel = "Cancel";
 

@@ -320,7 +320,7 @@ public class DialogPage extends IOSPage {
 		CameraRollPage page;
 		addPictureButton.click();
 		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(IOSLocators.xpathCameraLibraryButton));
+				By.name(IOSLocators.nameCameraLibraryButton));
 		page = new CameraRollPage(this.getLazyDriver());
 		return page;
 	}
