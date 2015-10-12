@@ -39,6 +39,7 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class DriverUtils {
@@ -614,22 +615,26 @@ public class DriverUtils {
 		try {
 			final byte[] scrImage = ((TakesScreenshot) driver)
 					.getScreenshotAs(OutputType.BYTES);
-			final BufferedImage bImageFromConvert = ImageIO
+			BufferedImage bImageFromConvert = ImageIO
 					.read(new ByteArrayInputStream(scrImage));
-			// Disable resize code since this affects webapp tests
-			// int height = bImageFromConvert.getHeight();
-			// int widht = bImageFromConvert.getWidth();
-			// float resizeRatio = 0;
-			// if (widht > MAX_SCREENSHOT_WIDTH || height >
-			// MAX_SCREENSHOT_HEIGHT) {
-			// float resizeRatioW = (float) MAX_SCREENSHOT_WIDTH / widht;
-			// float resizeRatioH = (float) MAX_SCREENSHOT_HEIGHT / height;
-			// resizeRatio = (resizeRatioH > resizeRatioW) ? resizeRatioW
-			// : resizeRatioH;
-			// } else
-			// resizeRatio = 1;
-			// bImageFromConvert = ImageUtil.resizeImage(bImageFromConvert,
-			// resizeRatio);
+			final String platform = CommonUtils
+					.getCurrentPlatform(DriverUtils.class);
+			// Disable resize code for webapp, since some tests will fail
+			if (!platform.equals("WebApp")) {
+				int height = bImageFromConvert.getHeight();
+				int widht = bImageFromConvert.getWidth();
+				float resizeRatio = 0;
+				if (widht > MAX_SCREENSHOT_WIDTH
+						|| height > MAX_SCREENSHOT_HEIGHT) {
+					float resizeRatioW = (float) MAX_SCREENSHOT_WIDTH / widht;
+					float resizeRatioH = (float) MAX_SCREENSHOT_HEIGHT / height;
+					resizeRatio = (resizeRatioH > resizeRatioW) ? resizeRatioW
+							: resizeRatioH;
+				} else
+					resizeRatio = 1;
+				bImageFromConvert = ImageUtil.resizeImage(bImageFromConvert,
+						resizeRatio);
+			}
 			return Optional.ofNullable(bImageFromConvert);
 		} catch (WebDriverException | NoClassDefFoundError e) {
 			// e.printStackTrace();
