@@ -148,6 +148,28 @@ public class ZetaFormatter implements Formatter, Reporter {
 		stepStartedTimestamp = new Date().getTime();
 	}
 
+	private static final int MAX_SCREENSHOT_WIDTH = 1600;
+	private static final int MAX_SCREENSHOT_HEIGHT = 900;
+
+	private static BufferedImage adjustScreenshotSize(
+			BufferedImage originalImage) {
+		int height = originalImage.getHeight();
+		int widht = originalImage.getWidth();
+		float resizeRatio = 1;
+		if (widht > MAX_SCREENSHOT_WIDTH || height > MAX_SCREENSHOT_HEIGHT) {
+			float resizeRatioW = (float) MAX_SCREENSHOT_WIDTH / widht;
+			float resizeRatioH = (float) MAX_SCREENSHOT_HEIGHT / height;
+			resizeRatio = (resizeRatioH > resizeRatioW) ? resizeRatioW
+					: resizeRatioH;
+		}
+		try {
+			return ImageUtil.resizeImage(originalImage, resizeRatio);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return originalImage;
+		}
+	}
+
 	private void takeStepScreenshot(final Result stepResult,
 			final String stepName) throws Exception {
 		final ZetaDriver driver = getDriver(
@@ -222,7 +244,7 @@ public class ZetaFormatter implements Formatter, Reporter {
 			if (!outputfile.getParentFile().exists()) {
 				outputfile.getParentFile().mkdirs();
 			}
-			ImageIO.write(screenshot, "png", outputfile);
+			ImageIO.write(adjustScreenshotSize(screenshot), "png", outputfile);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

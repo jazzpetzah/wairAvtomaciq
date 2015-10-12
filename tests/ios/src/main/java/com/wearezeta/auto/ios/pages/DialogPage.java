@@ -393,11 +393,6 @@ public class DialogPage extends IOSPage {
 		clickMediaBarPlayButton();
 	}
 
-	private boolean isMediaBarCloseButtonVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.name(IOSLocators.MediaBar.nameCloseButton), 3);
-	}
-
 	private void clickMediaBarCloseButton() throws Exception {
 		DriverUtils.waitUntilElementClickable(getDriver(),
 				mediabarStopCloseButton);
