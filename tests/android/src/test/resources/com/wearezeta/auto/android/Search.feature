@@ -51,8 +51,8 @@ Feature: Search
     Then I see user <Contact1> in People picker
 
     Examples: 
-      | Name      | Contact1   | Contact2   | Size |
-      | user1Name | user2Name  | user3Name  | 7    |
+      | Name      | Contact1  | Contact2  | Size |
+      | user1Name | user2Name | user3Name | 7    |
 
   @id225 @regression
   Scenario Outline: I can search group converation by partial name
@@ -130,7 +130,7 @@ Feature: Search
     And I tap on create conversation
     Then I see group chat page with users <Contact1>,<Contact2>
 
-    Examples:
+    Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName          |
       | user1Name | user2Name | user3Name | PeoplePickerGroupChat2 |
 
@@ -190,6 +190,24 @@ Feature: Search
     When I press Clear button
     And I open search by tap
     Then I do not see the previously remembered PYMK item
+
+    Examples: 
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
+
+  @torun  @id3867 @staging @rc
+  Scenario Outline: Verify action buttons appear after choosing user from search results
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    Given I wait until <Contact1> exists in backend search results
+    When I open search by tap
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I enter "<Contact1>" into Search input on People Picker page
+    And I tap on user name found on People picker page <Contact1>
+    Then I see action buttons appeared on People picker page
 
     Examples: 
       | Name      | Contact1  | Contact2  |
