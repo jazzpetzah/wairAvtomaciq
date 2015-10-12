@@ -341,8 +341,8 @@ Feature: Search
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | GroupChat     |
 
-  @id3881 @staging
-  Scenario Outline: (AN-2884) Verify button Open is changed to Create after checking second person (landscape)
+  @id3881 @regression
+  Scenario Outline: (AN-2894) Verify button Open is changed to Create after checking second person (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to landscape
@@ -365,8 +365,8 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id3890 @staging
-  Scenario Outline: (AN-2884) Verify button Open is changed to Create after checking second person (portrait)
+  @id3890 @regression
+  Scenario Outline: (AN-2894) Verify button Open is changed to Create after checking second person (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to portrait
