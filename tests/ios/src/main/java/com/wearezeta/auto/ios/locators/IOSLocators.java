@@ -698,8 +698,8 @@ public final class IOSLocators {
 		public static final String xpathSuggestedContactToSwipe = "//UIACollectionCell[descendant::UIAStaticText[@name='%s']]";
 		public static final String xpathHideButtonForContact = "//UIAButton[@name='HIDE'][ancestor::UIACollectionCell[descendant::UIAStaticText[@name='%s']]]";
 		public static final String nameOpenConversationButton = "OPEN";
-		public static final String xpathCallButton = "//UIAButton[@name='OPEN' or @name='CREATE']/following-sibling:: UIAButton[1]";
-		public static final String xpathSendImageButton = "//UIAButton[@name='OPEN' or @name='CREATE']/following-sibling:: UIAButton[2]";
+		public static final String nameCallButton = "actionBarCallButton";
+		public static final String nameSendImageButton = "actionBarCameraButton";
 
 		public static final String xpathFormatFoundContact = "//UIAStaticText[@name='%s' and @visible='true']";
 	}
@@ -730,7 +730,7 @@ public final class IOSLocators {
 
 		public static final String nameNoGifsText = "OOOPS, NO MORE GIFS";
 
-		public static final String xpathGiphyGrid = "//UIAButton[@name='rightButton']/following-sibling::UIACollectionView/UIACollectionCell/UIAImage";
+		public static final String nameGiphyGrid = "giphyCollectionView";
 
 	}
 
