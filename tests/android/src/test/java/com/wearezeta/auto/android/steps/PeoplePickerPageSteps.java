@@ -511,4 +511,57 @@ public class PeoplePickerPageSteps {
 		Assert.assertTrue("Top People list is not visible",
 				getPeoplePickerPage().isTopPeopleHeaderVisible());
 	}
+	
+	/**
+	 * Verify that Call action button is visible
+	 * 
+	 * @step. ^I see call action button on People picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see call action button on People picker page$")
+	public void ISeeCallActionButtonOnPeoplePickerPage() throws Exception {
+		Assert.assertTrue("Call action button is not visible",
+				getPeoplePickerPage().isCallButtonVisible());
+	}
+
+	/**
+	 * Verify that Send image action button is visible
+	 * 
+	 * @step. ^I see Send image action button on People picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see Send image action button on People picker page$")
+	public void ISeeSendImageActionButtonOnPeoplePickerPage() throws Exception {
+		Assert.assertTrue("Send image action button is not visible",
+				getPeoplePickerPage().isSendImageButtonVisible());
+	}
+
+	/**
+	 * Verify if Open conversation button is visible
+	 * 
+	 * @step. ^I see open conversation action button on People picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see open conversation action button on People picker page$")
+	public void ISeeOpenConversationActionButton() throws Exception {
+		Assert.assertTrue("Open conversation button is not visible",
+				getPeoplePickerPage().isOpenConversationButtonVisible());
+	}
+
+	/**
+	 * Verify if Open, Call and Send image action buttons are visible
+	 * 
+	 * @step. ^I see action buttons appeared on People picker page
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see action buttons appeared on People picker page$")
+	public void ISeeActionButttonsAppearedOnPeoplePickerPage() throws Exception {
+		ISeeOpenConversationActionButton();
+		ISeeCallActionButtonOnPeoplePickerPage();
+		ISeeSendImageActionButtonOnPeoplePickerPage();
+	}
 }
