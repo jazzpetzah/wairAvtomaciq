@@ -181,6 +181,7 @@ public class PeoplePickerPageSteps {
 		searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria,
 				FindBy.PHONENUMBER_ALIAS);
 		getPeoplePickerPage().typeTextInPeopleSearch(searchCriteria);
+		Thread.sleep(200);
 	}
 
 	/**
