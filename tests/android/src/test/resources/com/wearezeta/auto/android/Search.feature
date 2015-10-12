@@ -195,10 +195,10 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @torun  @id3867 @staging @rc
+  @id3867 @staging @rc
   Scenario Outline: Verify action buttons appear after choosing user from search results
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
@@ -210,5 +210,5 @@ Feature: Search
     Then I see action buttons appeared on People picker page
 
     Examples: 
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
+      | Name      | Contact1  |
+      | user1Name | user2Name |
