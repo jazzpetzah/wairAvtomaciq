@@ -730,7 +730,7 @@ public final class IOSLocators {
 
 		public static final String nameNoGifsText = "OOOPS, NO MORE GIFS";
 
-		public static final String xpathGiphyGrid = "//UIAButton[@name='rightButton']/following-sibling::UIACollectionView/UIACollectionCell/UIAImage";
+		public static final String nameGiphyGrid = "giphyCollectionView";
 
 	}
 
