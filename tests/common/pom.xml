@@ -29,7 +29,6 @@
     </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>nu.pattern</groupId>
             <artifactId>opencv</artifactId>
@@ -58,12 +57,24 @@
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>2.47.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>io.appium</groupId>
             <artifactId>java-client</artifactId>
             <version>3.2.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.ow2.asm</groupId>
+                    <artifactId>asm</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -109,32 +120,22 @@
         </dependency>
 
         <dependency>
-            <groupId>romanb</groupId>
-            <artifactId>cryptobox-jni-osx</artifactId>
-            <version>0.3.1</version>
-            <type>tar.gz</type>
+            <groupId>actors</groupId>
+            <artifactId>actors_2.11</artifactId>
+            <version>45-SNAPSHOT</version>
         </dependency>
+
 
         <dependency>
             <groupId>com.wearezeta</groupId>
             <artifactId>zmessaging-android</artifactId>
-            <version>43-SNAPSHOT</version>
+            <version>45-SNAPSHOT</version>
+            <!--<type>aar</type>-->
             <scope>system</scope>
             <!-- TODO fix this shit -->
             <systemPath>/Users/deancook/Downloads/zmessaging-android-jar/classes.jar</systemPath>
         </dependency>
 
-        <dependency>
-            <groupId>actors</groupId>
-            <artifactId>actors_2.11</artifactId>
-            <version>43-SNAPSHOT</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.wearezeta</groupId>
-                    <artifactId>zmessaging-android</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
     </dependencies>
 
     <build>
@@ -157,7 +158,17 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
         </plugins>
 
         <resources>
@@ -168,6 +179,12 @@
         </resources>
     </build>
     <repositories>
+        <repository>
+            <id>releases</id>
+            <name>Releases</name>
+            <url>http://192.168.10.18:8081/nexus/content/repositories/releases/</url>
+            <layout>default</layout>
+        </repository>
         <repository>
             <id>3rdparty</id>
             <name>3rd party</name>
