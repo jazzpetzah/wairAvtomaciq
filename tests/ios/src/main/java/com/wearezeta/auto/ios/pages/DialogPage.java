@@ -192,6 +192,8 @@ public class DialogPage extends IOSPage {
 	}
 
 	public ContactListPage returnToContactList() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(),
+				conversationBackButton);
 		conversationBackButton.click();
 		return new ContactListPage(getLazyDriver());
 	}

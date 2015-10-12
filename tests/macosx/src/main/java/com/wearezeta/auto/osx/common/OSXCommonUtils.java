@@ -184,7 +184,7 @@ public class OSXCommonUtils extends CommonUtils {
 		return getValueFromConfig(c, "wireConfigDomain");
 	}
 
-	public static void clearAppData() throws Exception {
+	public static int clearAppData() throws Exception {
 		final String[] commands = new String[] {
 				"/bin/sh",
 				"-c",
@@ -211,15 +211,15 @@ public class OSXCommonUtils extends CommonUtils {
 								" \"%s/Library/Application Support/Wire/Cookies-journal\"",
 								OSXExecutionContext.USER_HOME) };
 
-		LOG.debug("executing commands: " + Arrays.toString(commands));
-		executeOsXCommandWithOutput(commands);
+		LOG.debug("executing command: " + Arrays.toString(commands));
+		return executeOsXCommand(commands);
 	}
 
-	public static void killAllApps() throws Exception {
+	public static int killAllApps() throws Exception {
 		final String[] commands = new String[] { "/bin/sh", "-c",
 				String.format("killall %s", "Electron") };
-		LOG.debug("executing commands: " + Arrays.toString(commands));
-		executeOsXCommandWithOutput(commands);
+		LOG.debug("executing command: " + Arrays.toString(commands));
+		return executeOsXCommand(commands);
 	}
 
 	public static long getSizeOfAppInMB() throws Exception {
@@ -232,5 +232,12 @@ public class OSXCommonUtils extends CommonUtils {
 		long longResult = Long.parseLong(stringResult) / 1024;
 		LOG.debug("result: " + longResult);
 		return longResult;
+	}
+
+	public static long startAppium4Mac() throws Exception {
+		final String[] commands = new String[] { "/bin/sh", "-c",
+				String.format("open %s", OSXExecutionContext.APPIUM_MAC_PATH) };
+		LOG.debug("executing command: " + Arrays.toString(commands));
+		return executeOsXCommand(commands);
 	}
 }

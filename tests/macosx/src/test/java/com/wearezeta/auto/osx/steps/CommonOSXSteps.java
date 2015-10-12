@@ -17,6 +17,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.clearAppData;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.getSizeOfAppInMB;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.killAllApps;
+import static com.wearezeta.auto.osx.common.OSXCommonUtils.startAppium4Mac;
 
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
 
@@ -45,16 +46,25 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.logging.Level;
+import org.apache.commons.collections.IteratorUtils;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.lessThan;
+import static org.junit.Assert.assertEquals;
 import org.openqa.selenium.By;
 
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.LoggingPreferences;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class CommonOSXSteps {
 
@@ -91,6 +101,9 @@ public class CommonOSXSteps {
 		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 		capabilities.setCapability("platformName",
 				OSXExecutionContext.CURRENT_SECONDARY_PLATFORM.name());
+
+		setExtendedLoggingLevel(capabilities,
+				OSXExecutionContext.EXTENDED_LOGGING_LEVEL);
 
 		service = new ChromeDriverService.Builder()
 				.usingDriverExecutable(
@@ -131,8 +144,31 @@ public class CommonOSXSteps {
 		return lazyOSXDriver;
 	}
 
+	private static void setExtendedLoggingLevel(
+			DesiredCapabilities capabilities, String loggingLevelName) {
+		final LoggingPreferences logs = new LoggingPreferences();
+		// set it to SEVERE by default
+		Level level = Level.SEVERE;
+		try {
+			level = Level.parse(loggingLevelName);
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			// Just continue with the default logging level
+		}
+		logs.enable(LogType.BROWSER, level);
+		// logs.enable(LogType.CLIENT, Level.ALL);
+		// logs.enable(LogType.DRIVER, Level.ALL);
+		// logs.enable(LogType.PERFORMANCE, Level.ALL);
+		// logs.enable(LogType.PROFILER, Level.ALL);
+		// logs.enable(LogType.SERVER, Level.ALL);
+		capabilities.setCapability(CapabilityType.LOGGING_PREFS, logs);
+		log.debug("Browser logging level has been set to '" + level.getName()
+				+ "'");
+	}
+
 	private void commonBefore() throws Exception {
 		try {
+			startAppium4Mac();
 			killAllApps();
 			clearAppData();
 		} catch (Exception e) {
@@ -752,6 +788,19 @@ public class CommonOSXSteps {
 	}
 
 	/**
+	 * Verifies app is quit.
+	 *
+	 * @step ^I verify app has quit$
+	 *
+	 * @throws java.lang.Exception
+	 */
+	@Then("^I verify app has quit$")
+	public void IVerifyAppHasQuit() throws Exception {
+		int exitCode = killAllApps();
+		assertEquals(1, exitCode);
+	}
+
+	/**
 	 * Verifies the size of the installed app.
 	 *
 	 * @step ^I verify the app is not bigger than (\\d+) MB$
@@ -770,6 +819,9 @@ public class CommonOSXSteps {
 		try {
 			// async calls/waiting instances cleanup
 			CommonCallingSteps2.getInstance().cleanup();
+			writeBrowserLogsIntoMainLog(PlatformDrivers.getInstance()
+					.getDriver(OSXExecutionContext.CURRENT_SECONDARY_PLATFORM)
+					.get());
 		} catch (Exception e) {
 			// do not fail if smt fails here
 			e.printStackTrace();
@@ -798,6 +850,24 @@ public class CommonOSXSteps {
 		if (service != null && service.isRunning()) {
 			service.stop();
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<LogEntry> getBrowserLog(RemoteWebDriver driver) {
+		return IteratorUtils.toList((Iterator<LogEntry>) driver.manage().logs()
+				.get(LogType.BROWSER).iterator());
+	}
+
+	private void writeBrowserLogsIntoMainLog(RemoteWebDriver driver) {
+		List<LogEntry> logEntries = getBrowserLog(driver);
+		if (!logEntries.isEmpty()) {
+			log.debug("BROWSER CONSOLE LOGS:");
+			for (LogEntry logEntry : logEntries) {
+				log.debug(logEntry.getMessage());
+			}
+			log.debug("--- END OF LOG ---");
+		}
+
 	}
 
 }

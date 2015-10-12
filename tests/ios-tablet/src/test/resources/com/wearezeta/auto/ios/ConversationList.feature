@@ -527,3 +527,91 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @staging @id3955
+  Scenario Outline: Verify that deleted conversation isn't going to archive [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Contact1> sent message <Message> to conversation <Name>
+    Given User <Name> sent message <Message> to conversation <Contact1>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact1>
+    And I click delete menu button
+    And I confirm delete conversation content
+    And I dont see conversation <Contact1> in contact list
+    And I open archived conversations on iPad
+    Then I dont see conversation <Contact1> in contact list
+
+    Examples: 
+      | Name      | Contact1  | Message |
+      | user1Name | user2Name | testing |
+
+  @staging @id3956
+  Scenario Outline: Verify that deleted conversation isn't going to archive [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Contact1> sent message <Message> to conversation <Name>
+    Given User <Name> sent message <Message> to conversation <Contact1>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact1>
+    And I click delete menu button
+    And I confirm delete conversation content
+    And I dont see conversation <Contact1> in contact list
+    And I open archived conversations on iPad
+    Then I dont see conversation <Contact1> in contact list
+
+    Examples: 
+      | Name      | Contact1  | Message |
+      | user1Name | user2Name | testing |
+
+  @staging @id3961
+  Scenario Outline: Verify deleting 1-to-1 conversation from archive
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
+    Given User <Name> sent message <Message> to conversation <GroupChatName>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I swipe right on a <GroupChatName>
+    And I press Archive button in action menu in Contact List
+    And I dont see conversation <GroupChatName> in contact list
+    And I open archived conversations on iPad
+    And I swipe right on a <GroupChatName>
+    And I click delete menu button
+    And I confirm delete conversation content
+    Then I dont see conversation <GroupChatName> in contact list
+    And I open archived conversations on iPad
+    Then I dont see conversation <Contact1> in contact list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Message | GroupChatName |
+      | user1Name | user2Name | user3Name | testing | ForDeletion   |
+
+  @staging @id3962
+  Scenario Outline: Verify deleting 1-to-1 conversation from archive
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
+    Given User <Name> sent message <Message> to conversation <GroupChatName>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I swipe right on a <GroupChatName>
+    And I press Archive button in action menu in Contact List
+    And I dont see conversation <GroupChatName> in contact list
+    And I open archived conversations on iPad
+    And I swipe right on a <GroupChatName>
+    And I click delete menu button
+    And I confirm delete conversation content
+    Then I dont see conversation <GroupChatName> in contact list
+    And I open archived conversations on iPad
+    Then I dont see conversation <Contact1> in contact list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Message | GroupChatName |
+      | user1Name | user2Name | user3Name | testing | ForDeletion   |

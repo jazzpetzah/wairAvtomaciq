@@ -295,6 +295,16 @@ public class ContactListPage extends IOSPage {
 
 	}
 
+	public void swipeRightConversationToRevealActionButtons(String conversation)
+			throws Exception {
+		int count = 0;
+
+		do {
+			swipeRightOnContact(conversation);
+			count++;
+		} while ((count < 5) && !isCancelActionButtonVisible());
+	}
+
 	public IOSPage longSwipeRightOnContact(int time, String contact)
 			throws Exception {
 		DriverUtils.swipeRight(this.getDriver(),
@@ -520,6 +530,11 @@ public class ContactListPage extends IOSPage {
 			return false;
 		}
 		return true;
+	}
+
+	private boolean isCancelActionButtonVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				cancelActionMenuButton);
 	}
 
 	private boolean isArchiveConversationButtonVisible(String conversation)
