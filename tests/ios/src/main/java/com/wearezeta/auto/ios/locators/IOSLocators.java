@@ -397,12 +397,13 @@ public final class IOSLocators {
 	// Media Bar Locators
 	// /////////////////////
 
-	public static final String nameMediaBarPlayPauseButton = "mediabarPlayPauseButton";
-
-	public static final String nameMediaBarCloseButton = "mediabarCloseButton";
-
-	public static final String nameMediaBarTitle = "playingMediaTitle";
-
+	public static final class MediaBar {
+		public static final String namePlayButton = "mediaBarPlayButton";
+		public static final String namePauseButton = "mediaBarPauseButton";
+		public static final String nameCloseButton = "mediabarCloseButton";
+		public static final String nameTitle = "playingMediaTitle";
+	}
+	
 	public static final String nameMediaCellPlayButton = "mediaCellButton";
 
 	public static final String xpathMediaConversationCell = "//UIAWindow[@name='ZClientMainWindow']/UIATableView[last()]/UIATableCell[last()]/UIAButton[@name='soundcloud']/following-sibling::UIAButton";
@@ -410,12 +411,6 @@ public final class IOSLocators {
 	public static final String xpathYoutubeVimeoConversationCell = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/UIAButton[1]";
 
 	public static final String xpathConversationPage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]";
-
-	public static final String MEDIA_STATE_PLAYING = "playing";
-
-	public static final String MEDIA_STATE_PAUSED = "paused";
-
-	public static final String MEDIA_STATE_STOPPED = "ended";
 
 	public static final String nameSoundCloudPause = "Pause";
 

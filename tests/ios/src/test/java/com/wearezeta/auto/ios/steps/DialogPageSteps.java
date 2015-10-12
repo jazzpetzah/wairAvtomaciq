@@ -425,21 +425,21 @@ public class DialogPageSteps {
 
 	@Then("I see playing media is paused")
 	public void ThePlayingMediaIsPaused() throws Exception {
-		String pausedState = IOSLocators.MEDIA_STATE_PAUSED;
+		String pausedState = IOSConstants.MEDIA_STATE_PAUSED;
 		mediaState = getDialogPage().getMediaState();
 		Assert.assertEquals(pausedState, mediaState);
 	}
 
 	@Then("I see media is playing")
 	public void TheMediaIsPlaying() throws Exception {
-		String playingState = IOSLocators.MEDIA_STATE_PLAYING;
+		String playingState = IOSConstants.MEDIA_STATE_PLAYING;
 		mediaState = getDialogPage().getMediaState();
 		Assert.assertEquals(playingState, mediaState);
 	}
 
 	@Then("The media stops playing")
 	public void TheMediaStoppsPlaying() throws Exception {
-		String endedState = IOSLocators.MEDIA_STATE_STOPPED;
+		String endedState = IOSConstants.MEDIA_STATE_STOPPED;
 		mediaState = getDialogPage().getMediaState();
 		Assert.assertEquals(endedState, mediaState);
 	}
