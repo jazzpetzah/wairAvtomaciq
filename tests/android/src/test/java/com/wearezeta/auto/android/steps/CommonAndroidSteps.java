@@ -1,12 +1,24 @@
 package com.wearezeta.auto.android.steps;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.concurrent.Future;
-import java.util.logging.Level;
-
+import com.google.common.base.Throwables;
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.android.common.AndroidLogListener;
+import com.wearezeta.auto.android.common.AndroidLogListener.ListenerType;
+import com.wearezeta.auto.android.pages.AndroidPage;
+import com.wearezeta.auto.android.pages.registration.WelcomePage;
+import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.PlatformDrivers;
+import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import cucumber.api.PendingException;
+import cucumber.api.java.After;
+import cucumber.api.java.Before;
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -17,31 +29,13 @@ import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import com.google.common.base.Throwables;
-import com.wearezeta.auto.android.common.AndroidCommonUtils;
-import com.wearezeta.auto.android.common.AndroidLogListener;
-import com.wearezeta.auto.android.common.AndroidLogListener.ListenerType;
-import com.wearezeta.auto.android.pages.AndroidPage;
-import com.wearezeta.auto.android.pages.registration.WelcomePage;
-import com.wearezeta.auto.common.CommonCallingSteps2;
-import com.wearezeta.auto.common.CommonSteps;
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.ImageUtil;
-import com.wearezeta.auto.common.Platform;
-import com.wearezeta.auto.common.ZetaFormatter;
-import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.PlatformDrivers;
-import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-
-import cucumber.api.PendingException;
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.concurrent.Future;
+import java.util.logging.Level;
 
 public class CommonAndroidSteps {
 	static {
@@ -184,6 +178,18 @@ public class CommonAndroidSteps {
 		pagesCollection.setFirstPage(new WelcomePage(lazyDriver));
 		ZetaFormatter.setLazyDriver(lazyDriver);
 	}
+
+    @Before("@torun")
+    public void testHook() throws IOException {
+
+//        File testsFile = new File(System.getProperty("user.dir")).getParentFile();
+//        File lib = new File(testsFile.getAbsolutePath() + "/common/lib");
+//
+//        System.out.println("Lib: " + lib);
+//        System.out.println("Does it exist: " + lib.exists());
+//        System.exit(0);
+        System.out.println("Downloads: " + new File("~/Downloads"));
+    }
 
 	@Before("@performance")
 	public void setUpPerformance() throws Exception {
@@ -460,7 +466,9 @@ public class CommonAndroidSteps {
 	@Given("^(.*) is connected to (.*)$")
 	public void UserIsConnectedTo(String userFromNameAlias,
 			String usersToNameAliases) throws Exception {
-		commonSteps.UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
+        System.out.println("userFromAlias: " + userFromNameAlias);
+        System.out.println("usersToNameAliases: " + usersToNameAliases);
+        commonSteps.UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
 	}
 
 	/**
