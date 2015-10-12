@@ -430,3 +430,59 @@ Feature: Search
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @id3886 @staging
+  Scenario Outline: Verify starting a group conversation and a group call with action button (landscape)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact1>" into Search input on People Picker page
+    And I tap the found item <Contact1> on People Picker page
+    And I enter "<Contact2>" into Search input on People Picker page
+    And I tap the found item <Contact2> on People Picker page
+    When I tap Call button on People Picker page
+    Then I do not see People Picker page
+    And I see the conversation view
+    And I see calling overlay Big bar
+    When I tap Show Tools button on conversation view page
+    And I tap Show Details button on conversation view page
+    And I see the Group popover
+    Then I see the participant avatar Myself on Group popover
+    And I see the participant avatar <Contact1> on Group popover
+    And I see the participant avatar <Contact2> on Group popover
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | GroupChat     |
+
+  @id3895 @staging
+  Scenario Outline: Verify starting a group conversation and a group call with action button (portrait)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact1>" into Search input on People Picker page
+    And I tap the found item <Contact1> on People Picker page
+    And I enter "<Contact2>" into Search input on People Picker page
+    And I tap the found item <Contact2> on People Picker page
+    When I tap Call button on People Picker page
+    Then I do not see People Picker page
+    And I see the conversation view
+    And I see calling overlay Big bar
+    When I tap Show Tools button on conversation view page
+    And I tap Show Details button on conversation view page
+    And I see the Group popover
+    Then I see the participant avatar Myself on Group popover
+    And I see the participant avatar <Contact1> on Group popover
+    And I see the participant avatar <Contact2> on Group popover
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | GroupChat     |
