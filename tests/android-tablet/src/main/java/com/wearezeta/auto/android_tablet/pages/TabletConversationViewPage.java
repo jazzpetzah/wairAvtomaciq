@@ -18,7 +18,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
 	public static final Function<String, String> xpathSystemMessageByContent = content -> String
 			.format("//*[@id='ltv__row_conversation__message' and contains(@value, '%s')]",
-					content.toUpperCase());
+					content);
 
 	public static final Function<String, String> xpathChatHeaderMessageByContent = content -> String
 			.format("//*[@id='ttv__row_conversation__connect_request__chathead_footer__label' and contains(@value, '%s')]",
