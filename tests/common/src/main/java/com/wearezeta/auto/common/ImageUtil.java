@@ -194,6 +194,28 @@ public class ImageUtil {
 		ImageIO.write(im, "PNG", new File(filePath));
 	}
 
+	/**
+	 * Resizes image to the given ratio (use >1 to upscale, or <1 to downscale)
+	 * Upscale ratio is limited to 2; Downscale ratio is limited to 0.2;
+	 */
+	public static BufferedImage resizeImage(BufferedImage image,
+			float resizeRatio) throws IOException {
+		if (resizeRatio > 2)
+			resizeRatio = 2;
+		if (resizeRatio < 0.2f)
+			resizeRatio = 0.2f;
+		if (resizeRatio == 1)
+			return image;
+		int w = image.getWidth(), h = image.getHeight();
+		int scaledW = Math.round(w * resizeRatio);
+		int scaledH = Math.round(h * resizeRatio);
+		BufferedImage result = new BufferedImage(scaledW, scaledH,
+				BufferedImage.TYPE_INT_RGB);
+		Graphics2D g = result.createGraphics();
+		g.drawImage(image, 0, 0, scaledW, scaledH, null);
+		return result;
+	}
+
 	public static BufferedImage tilt(BufferedImage image, double angle) {
 		double sin = Math.abs(Math.sin(angle)), cos = Math.abs(Math.cos(angle));
 		int w = image.getWidth(), h = image.getHeight();

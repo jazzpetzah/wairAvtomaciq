@@ -6,6 +6,7 @@ import java.util.function.Function;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -13,9 +14,11 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class CallingOverlayPage extends AndroidPage {
-	private static final String idCallingOverlayContainer = "rv__calling__container";
-	@FindBy(id = idCallingOverlayContainer)
-	private WebElement callingOverlayContainer;
+	private static final String idCallingContainer = "rv__calling__container";
+	@FindBy(id = idCallingContainer)
+	private WebElement callingContainer;
+
+	private static final String idCallingOverlay = "fl__calling__overlay";
 
 	private static final String idGroupCallingJoinOverlayContainer = "ll__group_call__not_joined_container";
 	@FindBy(id = idGroupCallingJoinOverlayContainer)
@@ -41,7 +44,7 @@ public class CallingOverlayPage extends AndroidPage {
 					name.toUpperCase());
 
 	private static final Function<String, String> xpathCallingBarAvatarByName = name -> String
-			.format("//*[@id='%s']//*[@value='%s']", idCallingOverlayContainer,
+			.format("//*[@id='%s']//*[@value='%s']", idCallingContainer,
 					name.toUpperCase());
 
 	private static final String idCallingDismiss = "cib__calling__dismiss";
@@ -92,13 +95,13 @@ public class CallingOverlayPage extends AndroidPage {
 	private static final int VISIBILITY_TIMEOUT_SECONDS = 20;
 
 	public boolean waitUntilVisible() throws Exception {
-		final By locator = By.id(idCallingOverlayContainer);
+		final By locator = By.id(idCallingContainer);
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator,
 				VISIBILITY_TIMEOUT_SECONDS);
 	}
 
 	public boolean waitUntilNotVisible() throws Exception {
-		final By locator = By.id(idCallingOverlayContainer);
+		final By locator = By.id(idCallingContainer);
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
 	}
 
@@ -148,11 +151,6 @@ public class CallingOverlayPage extends AndroidPage {
 				By.id(idCallingDismiss));
 	}
 
-	public boolean callingDismissIsNotVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.id(idCallingDismiss));
-	}
-
 	public boolean callingSpeakerIsVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(idCallingSpeaker));
@@ -160,11 +158,6 @@ public class CallingOverlayPage extends AndroidPage {
 
 	public boolean callingMicMuteIsVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idCallingMicMute));
-	}
-
-	public boolean callingMicMuteIsNotVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.id(idCallingMicMute));
 	}
 
@@ -202,22 +195,35 @@ public class CallingOverlayPage extends AndroidPage {
 	}
 
 	public boolean ongoingCallMicrobarIsVisible() throws Exception {
-		return waitUntilVisible() && callingMicMuteIsNotVisible()
-				&& callingDismissIsNotVisible();
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idCallingOverlay))
+				&& DriverUtils.waitUntilLocatorDissapears(getDriver(),
+						By.xpath(xpathGroupCallParticipantChathead));
 	}
 
 	public boolean ongoingCallMinibarIsVisible() throws Exception {
-		return waitUntilVisible() && callingMicMuteIsVisible()
-				&& callingDismissIsVisible();
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idCallingOverlay))
+				&& DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+						By.xpath(xpathGroupCallParticipantChathead));
 	}
 
 	public int numberOfParticipantsInGroupCall() throws Exception {
 		final By searchCriteria = By.xpath(xpathGroupCallParticipantChathead);
 		if (DriverUtils.waitUntilLocatorAppears(getDriver(), searchCriteria, 5)) {
-			return getDriver().findElements(searchCriteria).size();
-		} else {
-			return 0;
+			int ntry = 1;
+			final int maxRetries = 3;
+			do {
+				try {
+					return getDriver().findElements(searchCriteria).size();
+				} catch (WebDriverException e) {
+					e.printStackTrace();
+					Thread.sleep(1500);
+					ntry++;
+				}
+			} while (ntry <= maxRetries);
 		}
+		return 0;
 	}
 
 	public boolean isGroupCallFullAlertVisible() throws Exception {
@@ -277,8 +283,8 @@ public class CallingOverlayPage extends AndroidPage {
 	}
 
 	public void dismissBySwipeUp() throws Exception {
-		final Point coords = callingOverlayContainer.getLocation();
-		final Dimension elementSize = callingOverlayContainer.getSize();
+		final Point coords = callingContainer.getLocation();
+		final Dimension elementSize = callingContainer.getSize();
 		// We cannot swipe in the middle because of
 		// https://wearezeta.atlassian.net/browse/AN-2568
 		this.getDriver().swipe(coords.x + elementSize.width / 4,

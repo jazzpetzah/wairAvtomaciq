@@ -7,7 +7,6 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.osx.pages.webapp.GroupPeoplePopoverPage;
 import com.wearezeta.auto.osx.pages.webapp.SingleUserPeoplePopoverPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
-import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -52,7 +51,8 @@ public class PeopleViewSteps {
 	public void IseeUserNameOnUserProfilePage(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		Assert.assertEquals(name,
-				((SingleUserPopoverContainer) WebappPagesCollection.popoverPage)
+				webappPagesCollection
+						.getPage(SingleUserPeoplePopoverPage.class)
 						.getUserName());
 	}
 

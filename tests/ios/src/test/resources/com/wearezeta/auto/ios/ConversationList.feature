@@ -33,6 +33,29 @@ Feature: Conversation List
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
+  @staging @id1334
+  Scenario Outline: Verify archiving silenced conversation     
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact>
+    And I press menu silence button
+    When I swipe right on a <Contact>
+    And I press Archive button in action menu in Contact List
+    Then I dont see conversation <Contact> in contact list
+    And Contact <Contact> send number 1 of message to user <Name>
+    And I dont see conversation <Contact> in contact list
+    And Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
+    Then I dont see conversation <Contact> in contact list
+    And I open archived conversations
+    And I tap on contact name <Contact>
+    And I see dialog page
+
+    Examples: 
+      | Name      | Contact   | Picture     | ConversationType | 
+      | user1Name | user2Name | testing.jpg | single user      |
+
   @regression @id2153
   Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages
     Given There are 3 users where <Name> is me
@@ -309,3 +332,46 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @staging @id3954
+  Scenario Outline: Verify that deleted conversation isn't going to archive
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Contact1> sent message <Message> to conversation <Name>
+    Given User <Name> sent message <Message> to conversation <Contact1>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact1>
+    And I click delete menu button
+    And I confirm delete conversation content
+    And I dont see conversation <Contact1> in contact list
+    And I open archived conversations
+    Then I dont see conversation <Contact1> in contact list
+
+    Examples: 
+      | Name      | Contact1  | Message |
+      | user1Name | user2Name | testing |
+
+  @staging @id3960
+  Scenario Outline: Verify deleting 1-to-1 conversation from archive
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
+    Given User <Name> sent message <Message> to conversation <GroupChatName>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <GroupChatName>
+    And I press Archive button in action menu in Contact List
+    And I dont see conversation <GroupChatName> in contact list
+    And I open archived conversations
+    And I swipe right on a <GroupChatName>
+    And I click delete menu button
+    And I confirm delete conversation content
+    Then I dont see conversation <GroupChatName> in contact list
+    And I open archived conversations
+    Then I dont see conversation <Contact1> in contact list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Message | GroupChatName |
+      | user1Name | user2Name | user3Name | testing | ForDeletion   |

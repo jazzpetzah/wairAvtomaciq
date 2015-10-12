@@ -281,6 +281,8 @@ public class PersonalInfoPage extends IOSPage {
 	}
 
 	public void changeName(String newName) throws Exception {
+		DriverUtils
+				.waitUntilElementClickable(getDriver(), profileNameEditField);
 		profileNameEditField.clear();
 		profileNameEditField.sendKeys(newName + "\n");
 	}

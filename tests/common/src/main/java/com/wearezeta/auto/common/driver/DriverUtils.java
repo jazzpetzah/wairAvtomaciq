@@ -606,6 +606,9 @@ public class DriverUtils {
 		PlatformDrivers.setDefaultImplicitWaitTimeout(driver);
 	}
 
+	public static final int MAX_SCREENSHOT_WIDTH = 1600;
+	public static final int MAX_SCREENSHOT_HEIGHT = 900;
+
 	public static Optional<BufferedImage> takeFullScreenShot(ZetaDriver driver)
 			throws Exception {
 		try {
@@ -613,6 +616,20 @@ public class DriverUtils {
 					.getScreenshotAs(OutputType.BYTES);
 			final BufferedImage bImageFromConvert = ImageIO
 					.read(new ByteArrayInputStream(scrImage));
+			// Disable resize code since this affects webapp tests
+			// int height = bImageFromConvert.getHeight();
+			// int widht = bImageFromConvert.getWidth();
+			// float resizeRatio = 0;
+			// if (widht > MAX_SCREENSHOT_WIDTH || height >
+			// MAX_SCREENSHOT_HEIGHT) {
+			// float resizeRatioW = (float) MAX_SCREENSHOT_WIDTH / widht;
+			// float resizeRatioH = (float) MAX_SCREENSHOT_HEIGHT / height;
+			// resizeRatio = (resizeRatioH > resizeRatioW) ? resizeRatioW
+			// : resizeRatioH;
+			// } else
+			// resizeRatio = 1;
+			// bImageFromConvert = ImageUtil.resizeImage(bImageFromConvert,
+			// resizeRatio);
 			return Optional.ofNullable(bImageFromConvert);
 		} catch (WebDriverException | NoClassDefFoundError e) {
 			// e.printStackTrace();

@@ -57,9 +57,13 @@ public class SelfProfilePage extends WebPage {
 		super(lazyDriver);
 	}
 
-	public void clickGearButton() throws Exception {
-		DriverUtils.waitUntilElementClickable(this.getDriver(), gearButton);
-		gearButton.click();
+	public boolean isSettingsButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.xpath(WebAppLocators.SelfProfilePage.xpathGearButton));
+	}
+
+	public boolean isCameraButtonClickable() throws Exception {
+		return DriverUtils.waitUntilElementClickable(getDriver(), cameraButton);
 	}
 
 	public void selectGearMenuItem(String name) throws Exception {
@@ -157,11 +161,6 @@ public class SelfProfilePage extends WebPage {
 						WebAppLocators.SelfProfilePage.xpathBackgroundAvatarAccentColor);
 		return AccentColor.getByRgba(backgroundAvatarAccentColor
 				.getCssValue("background-color"));
-	}
-
-	public boolean isSettingsPopoverVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.xpath(WebAppLocators.SettingsPage.xpathSettingsDialogRoot));
 	}
 
 	public void pressShortCutForPreferences() {

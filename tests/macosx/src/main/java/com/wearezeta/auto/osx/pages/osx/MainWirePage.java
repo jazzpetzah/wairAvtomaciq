@@ -12,6 +12,7 @@ import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import java.awt.Robot;
 import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 
@@ -58,6 +59,20 @@ public class MainWirePage extends OSXPage {
 
 	public void closeWindow() {
 		closeButton.click();
+	}
+
+	public void pressShortCutForQuit() throws Exception {
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_Q);
+		robot.keyRelease(KeyEvent.VK_Q);
+		robot.keyRelease(KeyEvent.VK_META);
+	}
+
+	public void pressShortCutForPreferences() throws Exception {
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_COMMA);
+		robot.keyRelease(KeyEvent.VK_COMMA);
+		robot.keyRelease(KeyEvent.VK_META);
 	}
 
 	public boolean isMini() throws Exception {

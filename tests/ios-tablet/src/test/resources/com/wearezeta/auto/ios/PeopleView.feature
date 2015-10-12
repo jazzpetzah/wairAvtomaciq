@@ -599,3 +599,102 @@ Feature: People View
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | UnblockFromGroup |
+
+  @staging @id2439
+  Scenario Outline: Verify displaying only connected users in the search in group chat [PORTRAIT]
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I open search by taping on it
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact3>
+    And I see user <Contact3> found on People picker page
+    And I click close button to dismiss people view
+    And I tap on group chat with name <GroupChatName>
+    And I open group conversation details
+    And I press Add button
+    And I see People picker page on iPad popover
+    And I wait until <Contact2> exists in backend search results
+    And I tap on Search input on People picker page
+    And I fill in Search field user name <Contact3>
+    Then I see that user <Contact3> is NOT found on People picker page
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
+      | user1Name | user2Name | user3Name | user3Name | OnlyConnected |
+
+  @staging @id3949
+  Scenario Outline: Verify displaying only connected users in the search in group chat [LANDSCAPE]
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I open search by taping on it
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact3>
+    And I see user <Contact3> found on People picker page
+    And I click close button to dismiss people view
+    And I tap on group chat with name <GroupChatName>
+    And I open group conversation details
+    And I press Add button
+    And I see People picker page on iPad popover
+    And I wait until <Contact2> exists in backend search results
+    And I tap on Search input on People picker page
+    And I fill in Search field user name <Contact3>
+    Then I see that user <Contact3> is NOT found on People picker page
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
+      | user1Name | user2Name | user3Name | user3Name | OnlyConnected |
+
+  @staging @id3957
+  Scenario Outline: Verify that deleted conversation via participant view isn't going to archive
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
+    Given User <Name> sent message <Message> to conversation <GroupChatName>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I open group conversation details
+    And I press conversation menu button
+    And I click delete menu button
+    And I confirm delete conversation content
+    And I return to the chat list
+    And I dont see conversation <GroupChatName> in contact list
+    And I open archived conversations on iPad
+    Then I dont see conversation <GroupChatName> in contact list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Message | GroupChatName |
+      | user1Name | user2Name | user3Name | testing | ForDeletion   |
+
+  @staging @id3957
+  Scenario Outline: Verify that deleted conversation via participant view isn't going to archive
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
+    Given User <Name> sent message <Message> to conversation <GroupChatName>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I open group conversation details
+    And I press conversation menu button
+    And I click delete menu button
+    And I confirm delete conversation content
+    And I dont see conversation <GroupChatName> in contact list
+    And I open archived conversations on iPad
+    Then I dont see conversation <GroupChatName> in contact list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Message | GroupChatName |
+      | user1Name | user2Name | user3Name | testing | ForDeletion   |

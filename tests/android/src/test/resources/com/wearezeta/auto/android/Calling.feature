@@ -132,7 +132,7 @@ Feature: Calling
       | user1Name | user2Name | autocall    | simple message in english | YOU PINGED |
 
   @id2210 @calling_basic @rc @rc42
-  Scenario Outline: (BUG AN-2833) Calling bar buttons are clickable and change their states
+  Scenario Outline: Calling bar buttons are clickable and change their states
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
@@ -167,18 +167,15 @@ Feature: Calling
     And I see dialog page
     Then I see calling overlay Big bar
     And I navigate back from dialog page
-    And I see Contact list
     And I open Search by tap
     And I see People picker page
     And I see calling overlay Micro bar
     And I press Clear button
-    Then I see Contact list
     And I tap on my avatar
     And I see personal info page
     And I see calling overlay Micro bar
     And I close Personal Info Page
     And I see calling overlay Micro bar
-    And I see Contact list
     And I tap on contact name <Contact2>
     And I see dialog page
     And I see calling overlay Mini bar
@@ -263,7 +260,6 @@ Feature: Calling
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    Then I see join group call overlay
     And I answer the call from the overlay bar
     Then I do not see join group call overlay
     And I see calling overlay Big bar
@@ -307,7 +303,6 @@ Feature: Calling
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    Then I see call overlay
     When I answer the call from the overlay bar
     Then I do not see join group call overlay
     And I see calling overlay Big bar
@@ -364,7 +359,6 @@ Feature: Calling
     And <Contact3> calls <GroupChatName> using <CallBackend>
     And <Contact4> calls <GroupChatName> using <CallBackend>
     And <Contact5> calls <GroupChatName> using <CallBackend>
-    Then I see join group call overlay
     When I answer the call from the overlay bar
     Then I see group call is full alert
     And I close group call is full alert
@@ -425,9 +419,7 @@ Feature: Calling
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    Then I see call overlay
     When I answer the call from the overlay bar
-    Then I do not see join group call overlay
     And I see calling overlay Big bar
     And I navigate back from dialog page
     And I tap on contact name <Contact3>
@@ -509,7 +501,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
   @id3181 @calling_advanced
-  Scenario Outline: (BUG AN-2578 and AN-2816) Verify receiving 1to1 call during group call and ignoring it
+  Scenario Outline: (AN-2578 AN-2816 AN-2864) Verify receiving 1to1 call during group call and ignoring it
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
@@ -518,9 +510,7 @@ Feature: Calling
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    And I see join group call overlay
     And I answer the call from the overlay bar
-    And I do not see join group call overlay
     And I see calling overlay Big bar
     And <Contact3> calls <Name> using <CallBackend>
     And I see incoming calling message for contact <Contact3>

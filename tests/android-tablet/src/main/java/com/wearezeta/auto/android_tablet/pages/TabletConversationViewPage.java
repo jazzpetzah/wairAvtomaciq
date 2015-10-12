@@ -132,7 +132,11 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
-	public void tapShowInstrumentsButton() throws InterruptedException {
+	public void tapShowInstrumentsButton() throws Exception {
+		// FIXME: Workaround for incorrectly positioned cursor
+		getDialogPage().cursorFrame.click();
+		this.hideKeyboard();
+
 		showToolsButton.click();
 	}
 

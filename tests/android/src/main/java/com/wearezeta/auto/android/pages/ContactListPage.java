@@ -182,7 +182,7 @@ public class ContactListPage extends AndroidPage {
 
 	public void doLongSwipeUp() throws Exception {
 		DriverUtils.swipeElementPointToPoint(getDriver(), contactListFrame,
-				2000, 50, 90, 50, 10);
+				4000, 50, 80, 50, 10);
 	}
 
 	public void workaroundConvoListItemsLoad() throws Exception {

@@ -983,6 +983,21 @@ public class DialogPageSteps {
 	}
 
 	/**
+	 * Verify that ping controller button's x coordinate is less then conversation window's x coordinate
+	 * 
+	 * @step. ^I see controller buttons can not be visible$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see controller buttons can not be visible$")
+	public void ISeeControllerButtonsNotVisible() throws Exception {
+		Assert.assertFalse(
+				"Controller buttons can be visible. Please check screenshots",
+				getDialogPage()
+						.isTherePossibilityControllerButtonsToBeDisplayed());
+	}
+
+	/**
 	 * Click on plus button next to text input
 	 * 
 	 * @step. ^I click plus button next to text input$

@@ -15,7 +15,10 @@ public class SingleUserPeoplePopoverPage extends WebPage {
 	
 	@FindBy(xpath = PopoverLocators.SingleUserPopover.xpathRootLocator)
 	private WebElement rootElement;
-	
+
+	@FindBy(xpath = PopoverLocators.SingleUserPopover.xpathUserName)
+	private WebElement userName;
+
 	public SingleUserPeoplePopoverPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -33,6 +36,10 @@ public class SingleUserPeoplePopoverPage extends WebPage {
 				By.xpath(PopoverLocators.SingleUserPopover.xpathRootLocator)) : "Popover "
 				+ PopoverLocators.SingleUserPopover.xpathRootLocator
 				+ " has not been shown";
+	}
+
+	public String getUserName() {
+		return userName.getText();
 	}
 
 }

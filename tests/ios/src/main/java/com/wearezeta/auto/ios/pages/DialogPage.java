@@ -49,6 +49,9 @@ public class DialogPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameMainWindow)
 	private WebElement dialogWindow;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.DialogPage.xpathConversationWindow)
+	private WebElement conversationWindow;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameConversationBackButton)
 	private WebElement conversationBackButton;
@@ -189,6 +192,8 @@ public class DialogPage extends IOSPage {
 	}
 
 	public ContactListPage returnToContactList() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(),
+				conversationBackButton);
 		conversationBackButton.click();
 		return new ContactListPage(getLazyDriver());
 	}
@@ -1074,6 +1079,12 @@ public class DialogPage extends IOSPage {
 				By.xpath(IOSLocators.DialogPage.xpathSimpleMessageLink));
 		DriverUtils.mobileTapByCoordinates(getDriver(), tapLink,
 				-(tapLink.getSize().width / 4), 0);
+	}
+	
+	public boolean isTherePossibilityControllerButtonsToBeDisplayed() {
+		int pingX = pingButton.getLocation().x;
+		int conversationX = conversationWindow.getLocation().x;
+		return pingX > conversationX;
 	}
 
 }

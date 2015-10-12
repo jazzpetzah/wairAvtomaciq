@@ -70,6 +70,9 @@ public class ContactListPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathContactListEntries)
 	private List<WebElement> contactListEntries;
 
+	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathActiveConversationEntry)
+	private WebElement activeConversationEntry;
+
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathArchivedContactListEntries)
 	private List<WebElement> archivedContactListEntries;
 
@@ -206,6 +209,14 @@ public class ContactListPage extends WebPage {
 		return getDriver().findElement(By.cssSelector(locator));
 	}
 
+	public String getActiveConversationName() throws Exception {
+		return activeConversationEntry.getText();
+	}
+
+	public int getActiveConversationIndex() throws Exception {
+		return getItemIndex(activeConversationEntry.getText());
+	}
+
 	public boolean isMissedCallVisibleForContact(String conversationName)
 			throws Exception {
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
@@ -274,6 +285,24 @@ public class ContactListPage extends WebPage {
 		robot.keyPress(KeyEvent.VK_D);
 		robot.keyRelease(KeyEvent.VK_D);
 		robot.keyRelease(KeyEvent.VK_META);
+	}
+
+	public void pressShortCutForNextConv() throws Exception {
+		robot.keyPress(KeyEvent.VK_ALT);
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_UP);
+		robot.keyRelease(KeyEvent.VK_UP);
+		robot.keyRelease(KeyEvent.VK_META);
+		robot.keyRelease(KeyEvent.VK_ALT);
+	}
+
+	public void pressShortCutForPrevConv() throws Exception {
+		robot.keyPress(KeyEvent.VK_ALT);
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_DOWN);
+		robot.keyRelease(KeyEvent.VK_DOWN);
+		robot.keyRelease(KeyEvent.VK_META);
+		robot.keyRelease(KeyEvent.VK_ALT);
 	}
 
 	public void openArchive() throws Exception {

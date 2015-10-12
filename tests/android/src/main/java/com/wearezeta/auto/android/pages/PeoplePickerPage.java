@@ -44,6 +44,14 @@ public class PeoplePickerPage extends AndroidPage {
 
 	public static final String idSendConnectionRequestButton = "zb__send_connect_request__connect_button";
 
+	public static final String idQuickMenuCameraButton = "gtv__conversation_quick_menu__camera_button";
+	@FindBy(id = idQuickMenuCameraButton)
+	private WebElement quickMenuCameraButton;
+
+	public static final String idQuickMenuCallButton = "gtv__conversation_quick_menu__call_button";
+	@FindBy(id = idQuickMenuCallButton)
+	private WebElement quickMenuCallButton;
+
 	private static final Function<String, String> xpathPeoplePickerGroupByName = name -> String
 			.format("//*[@id='ttv_pickuser_searchconversation_name' and @value='%s']",
 					name);
@@ -87,6 +95,10 @@ public class PeoplePickerPage extends AndroidPage {
 	@FindBy(id = idCreateOrOpenConversationButton)
 	private WebElement createOrOpenConversation;
 
+	private static final Function<String, String> xpathCreateOrOpenConversationButtonByCaption = caption -> String
+			.format("//*[@id='%s' and @value='%s']",
+					idCreateOrOpenConversationButton, caption.toUpperCase());
+
 	private static final String idNoResultsFound = "ttv_pickuser__error_header";
 	@FindBy(id = idNoResultsFound)
 	private WebElement noResults;
@@ -107,7 +119,7 @@ public class PeoplePickerPage extends AndroidPage {
 		super(lazyDriver);
 	}
 
-	public WebElement findVisiblePickerSearch() throws Exception {
+	private WebElement findVisiblePickerSearch() throws Exception {
 		DriverUtils.waitUntilLocatorAppears(getDriver(), By.id(idPickerSearch));
 		List<WebElement> pickerSearches = getDriver().findElements(
 				By.id(idPickerSearch));
@@ -136,7 +148,6 @@ public class PeoplePickerPage extends AndroidPage {
 
 	public void typeTextInPeopleSearch(String text) throws Exception {
 		final WebElement pickerSearch = findVisiblePickerSearch();
-		pickerSearch.clear();
 		pickerSearch.sendKeys(text);
 	}
 
@@ -204,7 +215,7 @@ public class PeoplePickerPage extends AndroidPage {
 
 	public void tapCreateConversation() throws Exception {
 		// this.hideKeyboard();
-		assert waitUntilOpenConversationButtonIsVisible() : "Create/Open Conversation button is not visible in People Picker";
+		assert waitUntilOpenOrCreateConversationButtonIsVisible() : "Create/Open Conversation button is not visible in People Picker";
 		createOrOpenConversation.click();
 	}
 
@@ -309,12 +320,21 @@ public class PeoplePickerPage extends AndroidPage {
 		createOrOpenConversation.click();
 	}
 
-	public boolean waitUntilOpenConversationButtonIsVisible() throws Exception {
+	public boolean waitUntilOpenOrCreateConversationButtonIsVisible()
+			throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(idCreateOrOpenConversationButton));
 	}
 
-	public boolean waitUntilOpenConversationButtonIsInvisible()
+	public boolean waitUntilOpenOrCreateConversationButtonIsVisible(
+			String expectedCaption) throws Exception {
+		final By locator = By
+				.xpath(xpathCreateOrOpenConversationButtonByCaption
+						.apply(expectedCaption));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public boolean waitUntilOpenOrCreateConversationButtonIsInvisible()
 			throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.id(idCreateOrOpenConversationButton));
@@ -324,5 +344,13 @@ public class PeoplePickerPage extends AndroidPage {
 		DriverUtils.swipeByCoordinates(getDriver(), durationMilliseconds, 50,
 				20, 50, 90);
 		return new ContactListPage(getLazyDriver());
+	}
+
+	public void tapCallButton() {
+		quickMenuCallButton.click();
+	}
+
+	public void tapCameraButton() {
+		quickMenuCameraButton.click();
 	}
 }

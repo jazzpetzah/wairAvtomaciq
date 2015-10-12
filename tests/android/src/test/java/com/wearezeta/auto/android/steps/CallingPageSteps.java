@@ -165,10 +165,14 @@ public class CallingPageSteps {
 	public void WhenISeeCallingOverlayBigBar(String shouldNotSee)
 			throws Exception {
 		if (shouldNotSee == null) {
-			Assert.assertTrue(getCallingOverlayPage().waitUntilVisible());
-			Assert.assertTrue(getCallingOverlayPage().callingDismissIsVisible());
-			Assert.assertTrue(getCallingOverlayPage().callingSpeakerIsVisible());
-			Assert.assertTrue(getCallingOverlayPage().callingMicMuteIsVisible());
+			Assert.assertTrue("Big calling bar is not visible",
+					getCallingOverlayPage().waitUntilVisible()
+							&& getCallingOverlayPage()
+									.callingDismissIsVisible()
+							&& getCallingOverlayPage()
+									.callingSpeakerIsVisible()
+							&& getCallingOverlayPage()
+									.callingMicMuteIsVisible());
 		} else {
 			Assert.assertTrue(
 					"Calling bar is still visible, but should be hidden",
@@ -185,8 +189,8 @@ public class CallingPageSteps {
 	 */
 	@When("^I see calling overlay Micro bar$")
 	public void WhenISeeCallingOverlayMicroBar() throws Exception {
-		Assert.assertTrue(getCallingOverlayPage()
-				.ongoingCallMicrobarIsVisible());
+		Assert.assertTrue("Calling Microbar is not visible",
+				getCallingOverlayPage().ongoingCallMicrobarIsVisible());
 	}
 
 	/**
@@ -198,11 +202,8 @@ public class CallingPageSteps {
 	 */
 	@When("^I see calling overlay Mini bar$")
 	public void WhenISeeCallingOverlayMiniBar() throws Exception {
-		Assert.assertTrue(getCallingOverlayPage().ongoingCallMinibarIsVisible());
-		Assert.assertTrue(getCallingOverlayPage().callingMessageIsVisible());
-		Assert.assertTrue(getCallingOverlayPage().callingDismissIsVisible());
-		Assert.assertFalse(getCallingOverlayPage().callingSpeakerIsVisible());
-		Assert.assertTrue(getCallingOverlayPage().callingMicMuteIsVisible());
+		Assert.assertTrue("Calling Minibar is not visible",
+				getCallingOverlayPage().ongoingCallMinibarIsVisible());
 	}
 
 	/**
@@ -235,7 +236,7 @@ public class CallingPageSteps {
 			if (actualUsersCount == expectedUsersCount) {
 				return;
 			} else {
-				Thread.sleep(1500);
+				Thread.sleep(3000);
 				ntries++;
 			}
 		} while (ntries < 3);

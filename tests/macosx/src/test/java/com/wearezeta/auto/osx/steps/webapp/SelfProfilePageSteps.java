@@ -6,6 +6,7 @@ import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.osx.pages.webapp.PreferencesPage;
 import com.wearezeta.auto.osx.pages.webapp.SelfProfilePage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
@@ -24,15 +25,29 @@ public class SelfProfilePageSteps {
 	}
 
 	/**
-	 * Clicks the gear button on Self Profile page
+	 * Checks the ... button on Self Profile page
 	 * 
-	 * @step. ^I click gear button on self profile page$
+	 * @step. ^I do not see the settings button on self profile page$
 	 * @throws Exception
 	 */
-	@And("^I click gear button on self profile page$")
+	@And("^I do not see the settings button on self profile page$")
 	public void IClickGearButton() throws Exception {
-		WebappPagesCollection.getInstance().getPage(SelfProfilePage.class)
-				.clickGearButton();
+		Assert.assertTrue("Setting button visible", WebappPagesCollection
+				.getInstance().getPage(SelfProfilePage.class)
+				.isSettingsButtonVisible());
+	}
+
+	/**
+	 * Checks if the camera button in self profile is clickable
+	 * 
+	 * @step. ^the camera button in self profile is clickable$
+	 * @throws Exception
+	 */
+	@And("^the camera button in self profile is clickable$")
+	public void IsCameraButtonClickable() throws Exception {
+		Assert.assertTrue("Camera button clickable", WebappPagesCollection
+				.getInstance().getPage(SelfProfilePage.class)
+				.isCameraButtonClickable());
 	}
 
 	/**
@@ -180,8 +195,9 @@ public class SelfProfilePageSteps {
 	 * 
 	 * @step. ^I verify my avatar background color is set to (\\w+) color$
 	 * 
-	 * @param colorName one of these colors: StrongBlue, StrongLimeGreen,
-	 * BrightYellow, VividRed, BrightOrange, SoftPink, Violet
+	 * @param colorName
+	 *            one of these colors: StrongBlue, StrongLimeGreen,
+	 *            BrightYellow, VividRed, BrightOrange, SoftPink, Violet
 	 * 
 	 * @throws Exception
 	 */
@@ -204,8 +220,8 @@ public class SelfProfilePageSteps {
 	 */
 	@Then("^I see Settings dialog$")
 	public void ISeeSetingsDialog() throws Exception {
-		Assert.assertTrue(webappPagesCollection.getPage(SelfProfilePage.class)
-				.isSettingsPopoverVisible());
+		Assert.assertTrue(webappPagesCollection.getPage(PreferencesPage.class)
+				.isVisible());
 	}
 
 	/**
