@@ -1,6 +1,8 @@
 package com.wearezeta.auto.android.steps;
 
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Assert;
 
@@ -349,28 +351,67 @@ public class ContactListPageSteps {
 		getContactListPage().selectConvoSettingsMenuItem(itemName);
 	}
 
+	private Map<String, BufferedImage> previousUnreadIndicatorState = new HashMap<>();
+
 	/**
-	 * Checks that correct indicator displayed if there is unread messages in
-	 * chat
+	 * Save the state of conversation idicator into the internal field for the
+	 * future comparison
 	 * 
-	 * @step. ^I see unread messages indicator is (large|small|not displayed)
-	 *        for contact (.*)$
+	 * @step. ^I remember unread messages indicator state for conversation (.*)
 	 * 
-	 * @param indicator
-	 *            state of indicator (large|small|not displayed)
-	 * @param contact
-	 *            contact name
+	 * @param name
+	 *            conversation name/alias
 	 * @throws Exception
 	 */
-	@And("^I see unread messages indicator is (large|small|not displayed) for contact (.*)$")
-	public void ISeeUnreadMessagesIndicatorForContact(String indicator,
-			String contact) throws Exception {
+	@When("^I remember unread messages indicator state for conversation (.*)")
+	public void IRememberUnreadIndicatorState(String name) throws Exception {
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		this.previousUnreadIndicatorState.put(name,
+				getContactListPage().getMessageIndicatorScreenshot(name)
+						.orElseThrow(IllegalStateException::new));
+	}
 
-		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		final double score = getContactListPage().getUnreadDotOverlapScore(
-				indicator, contact);
+	private static final double MAX_UNREAD_DOT_SIMILARITY_THRESHOLD = 0.97;
+
+	/**
+	 * Verify whether unread dot state is changed for the particular conversation 
+	 * in comparison to the previous state
+	 * 
+	 * @step. ^I see unread messages indicator state is changed for conversation (.*)"
+	 * 
+	 * @param name conversation name/alias
+	 * @throws Exception
+	 */
+	@Then("^I see unread messages indicator state is changed for conversation (.*)")
+	public void ISeeUnreadIndiciatorStateISChanged(String name)
+			throws Exception {
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		if (!this.previousUnreadIndicatorState.containsKey(name)) {
+			throw new IllegalStateException(
+					String.format(
+							"Please invoke the correspoding step to make a screenshot of previous state of '%s' conversation",
+							name));
+		}
+		final int maxTries = 3;
+		int ntry = 1;
+		double score = 1;
+		do {
+			final BufferedImage currentIndicatorState = getContactListPage()
+					.getMessageIndicatorScreenshot(name).orElseThrow(
+							IllegalStateException::new);
+			score = ImageUtil.getOverlapScore(
+					this.previousUnreadIndicatorState.get(name),
+					currentIndicatorState, ImageUtil.RESIZE_NORESIZE);
+			if (score < MAX_UNREAD_DOT_SIMILARITY_THRESHOLD) {
+				break;
+			}
+			Thread.sleep(500);
+			ntry++;
+		} while (ntry <= maxTries);
 		Assert.assertTrue(
-				"Overlap between two images has not enough score. Expected >= 0.7, current = "
-						+ score, score >= 0.7d);
+				String.format(
+						"The current and previous states of Unread Dot seems to be very similar (%.2f >= %.2f)",
+						score, MAX_UNREAD_DOT_SIMILARITY_THRESHOLD),
+				score < MAX_UNREAD_DOT_SIMILARITY_THRESHOLD);
 	}
 }

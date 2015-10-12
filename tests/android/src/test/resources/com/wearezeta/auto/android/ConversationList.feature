@@ -100,16 +100,18 @@ Feature: Conversation List
     And I tap on contact name <Contact1>
     And I see dialog page
     And I navigate back from dialog page
-    And I see unread messages indicator is not displayed for contact <Contact1>
+    And I remember unread messages indicator state for conversation <Contact1>
     When Contact <Contact1> sends 2 messages to user <Name>
-    Then I see unread messages indicator is small for contact <Contact1>
-    When Contact <Contact1> sends 8 messages to user <Name>
-    Then I see unread messages indicator is large for contact <Contact1>
-    When I tap on contact name <Contact1>
+    Then I see unread messages indicator state is changed for conversation <Contact1>
+    When I remember unread messages indicator state for conversation <Contact1>
+    And Contact <Contact1> sends 8 messages to user <Name>
+    Then I see unread messages indicator state is changed for conversation <Contact1>
+    When I remember unread messages indicator state for conversation <Contact1>
+    And I tap on contact name <Contact1>
     And I see dialog page
     And I scroll to the bottom of conversation view
     And I navigate back from dialog page
-    Then I see unread messages indicator is not displayed for contact <Contact1>
+    Then I see unread messages indicator state is changed for conversation <Contact1>
 
     Examples: 
       | Name      | Contact1  |
