@@ -31,6 +31,7 @@ import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
+import com.wearezeta.auto.ios.IOSConstants;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class DialogPage extends IOSPage {
@@ -49,7 +50,7 @@ public class DialogPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameMainWindow)
 	private WebElement dialogWindow;
-	
+
 	@FindBy(how = How.XPATH, using = IOSLocators.DialogPage.xpathConversationWindow)
 	private WebElement conversationWindow;
 
@@ -119,16 +120,19 @@ public class DialogPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathYoutubeVimeoConversationCell)
 	private WebElement youtubeCell;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameMediaBarPlayPauseButton)
-	private WebElement mediabarPlayPauseButton;
+	@FindBy(how = How.NAME, using = IOSLocators.MediaBar.namePlayButton)
+	private WebElement mediabarPlayButton;
+
+	@FindBy(how = How.NAME, using = IOSLocators.MediaBar.namePauseButton)
+	private WebElement mediabarPauseButton;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathConversationPage)
 	private WebElement conversationPage;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameMediaBarCloseButton)
+	@FindBy(how = How.NAME, using = IOSLocators.MediaBar.nameCloseButton)
 	private WebElement mediabarStopCloseButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameMediaBarTitle)
+	@FindBy(how = How.NAME, using = IOSLocators.MediaBar.nameTitle)
 	private WebElement mediabarBarTitle;
 
 	@FindBy(how = How.NAME, using = IOSLocators.namePingButton)
@@ -316,7 +320,7 @@ public class DialogPage extends IOSPage {
 		CameraRollPage page;
 		addPictureButton.click();
 		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(IOSLocators.xpathCameraLibraryButton));
+				By.name(IOSLocators.nameCameraLibraryButton));
 		page = new CameraRollPage(this.getLazyDriver());
 		return page;
 	}
@@ -361,34 +365,51 @@ public class DialogPage extends IOSPage {
 		return this;
 	}
 
+	private boolean isMediaBarPauesButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.name(IOSLocators.MediaBar.namePauseButton), 3);
+	}
+
+	private void clickMediaBarPauseButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), mediabarPauseButton);
+		mediabarPauseButton.click();
+	}
+
 	public void pauseMediaContent() throws Exception {
-		this.getDriver().tap(
-				1,
-				mediabarPlayPauseButton.getLocation().x,
-				mediabarPlayPauseButton.getLocation().y
-						+ mediabarPlayPauseButton.getSize().getHeight(), 1);
+		clickMediaBarPauseButton();
+	}
+
+	private boolean isMediaBarPlayButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.name(IOSLocators.MediaBar.namePlayButton), 3);
+	}
+
+	private void clickMediaBarPlayButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), mediabarPlayButton);
+		mediabarPlayButton.click();
 	}
 
 	public void playMediaContent() throws Exception {
-		this.getDriver().tap(
-				1,
-				mediabarPlayPauseButton.getLocation().x,
-				mediabarPlayPauseButton.getLocation().y
-						+ mediabarPlayPauseButton.getSize().getHeight(), 1);
+		clickMediaBarPlayButton();
+	}
+
+	private void clickMediaBarCloseButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(),
+				mediabarStopCloseButton);
+		mediabarStopCloseButton.click();
 	}
 
 	public void stopMediaContent() throws Exception {
-		this.getDriver().tap(
-				1,
-				mediabarStopCloseButton.getLocation().x,
-				mediabarStopCloseButton.getLocation().y
-						+ mediabarStopCloseButton.getSize().getHeight(), 1);
+		clickMediaBarCloseButton();
 	}
 
-	public String getMediaState() {
-
-		String mediaState = mediabarBarTitle.getAttribute("value");
-		return mediaState;
+	public String getMediaState() throws Exception {
+		if (isMediaBarPlayButtonVisible()) {
+			return IOSConstants.MEDIA_STATE_PAUSED;
+		} else if (isMediaBarPauesButtonVisible()) {
+			return IOSConstants.MEDIA_STATE_PLAYING;
+		}
+		return IOSConstants.MEDIA_STATE_STOPPED;
 	}
 
 	public void tapOnMediaBar() {
@@ -568,7 +589,7 @@ public class DialogPage extends IOSPage {
 
 	public boolean isMediaBarDisplayed() throws Exception {
 		boolean flag = DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				mediabarPlayPauseButton);
+				mediabarBarTitle);
 		return flag;
 	}
 
@@ -1080,7 +1101,7 @@ public class DialogPage extends IOSPage {
 		DriverUtils.mobileTapByCoordinates(getDriver(), tapLink,
 				-(tapLink.getSize().width / 4), 0);
 	}
-	
+
 	public boolean isTherePossibilityControllerButtonsToBeDisplayed() {
 		int pingX = pingButton.getLocation().x;
 		int conversationX = conversationWindow.getLocation().x;

@@ -96,9 +96,6 @@ Feature: Conversation View
     And I enter "<Contact2>" into the Search input on Single user popover
     And I tap the avatar of <Contact2> in search results on Single user popover
     And I tap the Add To Conversation button on Single user popover
-    # workaround for a bug
-    # Then I do not see the Single user popover
-    And I tap Close button on Group popover
     Then I see the conversation view
     And I see the system message contains "<Action>" text on conversation view page
     And I see the system message contains "<Contact1>" text on conversation view page
@@ -106,7 +103,7 @@ Feature: Conversation View
 
     Examples:
       | Name      | Contact1  | Contact2  | Action                     |
-      | user1Name | user2Name | user3Name | YOU STARTED A CONVERSATION |
+      | user1Name | user2Name | user3Name | You started a conversation |
 
   @id2241 @regression
   Scenario Outline: Add people to 1:1 chat in landscape mode
@@ -125,9 +122,6 @@ Feature: Conversation View
     And I enter "<Contact2>" into the Search input on Single user popover
     And I tap the avatar of <Contact2> in search results on Single user popover
     And I tap the Add To Conversation button on Single user popover
-    # workaround for a bug
-    # Then I do not see the Single user popover
-    And I tap Close button on Group popover
     Then I see the conversation view
     And I see the system message contains "<Action>" text on conversation view page
     And I see the system message contains "<Contact1>" text on conversation view page
@@ -135,7 +129,7 @@ Feature: Conversation View
 
     Examples:
       | Name      | Contact1  | Contact2  | Action                     |
-      | user1Name | user2Name | user3Name | YOU STARTED A CONVERSATION |
+      | user1Name | user2Name | user3Name | You started a conversation |
 
   @id2256 @regression
   Scenario Outline: Send message to group chat in portrait mode

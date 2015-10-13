@@ -115,7 +115,7 @@ public class PersonalInfoPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathAboutPageWireLogo)
 	private WebElement aboutPageWireLogo;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathAboutCloseButton)
+	@FindBy(how = How.NAME, using = IOSLocators.nameAboutCloseButton)
 	private WebElement aboutCloseButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.PersonalInfoPage.nameAddPhoneNumberButton)
@@ -162,8 +162,9 @@ public class PersonalInfoPage extends IOSPage {
 		return this;
 	}
 
-	public boolean isAboutPageVisible() {
-		return termsOfUseButton.isDisplayed();
+	public boolean isAboutPageVisible() throws Exception {
+		return DriverUtils.waitUntilElementClickable(getDriver(),
+				termsOfUseButton);
 	}
 
 	public void clickAboutCloseButton() {

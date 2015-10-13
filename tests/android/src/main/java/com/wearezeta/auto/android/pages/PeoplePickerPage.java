@@ -87,7 +87,7 @@ public class PeoplePickerPage extends AndroidPage {
 	@FindBy(id = idPickerGrid)
 	private WebElement pickerGrid;
 
-	private static final String idPickerBtnDone = "zb__pickuser__confirmation_button";
+	public static final String idPickerBtnDone = "zb__pickuser__confirmation_button";
 	@FindBy(id = idPickerBtnDone)
 	private WebElement addToConversationsButton;
 

@@ -100,7 +100,7 @@ public final class IOSLocators {
 
 	public static final String namePingButton = "ComposeControllerPingButton";
 
-	public static final String xpathCameraLibraryButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAButton[5]";
+	public static final String nameCameraLibraryButton = "cameraLibraryButton";
 
 	public static final String nameCameraRollCancel = "Cancel";
 
@@ -283,7 +283,7 @@ public final class IOSLocators {
 
 	public static final String xpathAboutPageWireLogo = "//UIAApplication/UIAWindow/UIAButton[@name='wire.com']/preceding-sibling::UIAImage[1]";
 
-	public static final String xpathAboutCloseButton = "//UIAButton[@name='wire.com']/preceding-sibling::UIAButton[1]";
+	public static final String nameAboutCloseButton = "aboutCloseButton";
 
 	public static final String nameWireWebsiteButton = "wire.com";
 
@@ -397,12 +397,13 @@ public final class IOSLocators {
 	// Media Bar Locators
 	// /////////////////////
 
-	public static final String nameMediaBarPlayPauseButton = "mediabarPlayPauseButton";
-
-	public static final String nameMediaBarCloseButton = "mediabarCloseButton";
-
-	public static final String nameMediaBarTitle = "playingMediaTitle";
-
+	public static final class MediaBar {
+		public static final String namePlayButton = "mediaBarPlayButton";
+		public static final String namePauseButton = "mediaBarPauseButton";
+		public static final String nameCloseButton = "mediabarCloseButton";
+		public static final String nameTitle = "playingMediaTitle";
+	}
+	
 	public static final String nameMediaCellPlayButton = "mediaCellButton";
 
 	public static final String xpathMediaConversationCell = "//UIAWindow[@name='ZClientMainWindow']/UIATableView[last()]/UIATableCell[last()]/UIAButton[@name='soundcloud']/following-sibling::UIAButton";
@@ -410,12 +411,6 @@ public final class IOSLocators {
 	public static final String xpathYoutubeVimeoConversationCell = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/UIAButton[1]";
 
 	public static final String xpathConversationPage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]";
-
-	public static final String MEDIA_STATE_PLAYING = "playing";
-
-	public static final String MEDIA_STATE_PAUSED = "paused";
-
-	public static final String MEDIA_STATE_STOPPED = "ended";
 
 	public static final String nameSoundCloudPause = "Pause";
 
@@ -703,8 +698,8 @@ public final class IOSLocators {
 		public static final String xpathSuggestedContactToSwipe = "//UIACollectionCell[descendant::UIAStaticText[@name='%s']]";
 		public static final String xpathHideButtonForContact = "//UIAButton[@name='HIDE'][ancestor::UIACollectionCell[descendant::UIAStaticText[@name='%s']]]";
 		public static final String nameOpenConversationButton = "OPEN";
-		public static final String xpathCallButton = "//UIAButton[@name='OPEN' or @name='CREATE']/following-sibling:: UIAButton[1]";
-		public static final String xpathSendImageButton = "//UIAButton[@name='OPEN' or @name='CREATE']/following-sibling:: UIAButton[2]";
+		public static final String nameCallButton = "actionBarCallButton";
+		public static final String nameSendImageButton = "actionBarCameraButton";
 
 		public static final String xpathFormatFoundContact = "//UIAStaticText[@name='%s' and @visible='true']";
 	}
@@ -735,7 +730,7 @@ public final class IOSLocators {
 
 		public static final String nameNoGifsText = "OOOPS, NO MORE GIFS";
 
-		public static final String xpathGiphyGrid = "//UIAButton[@name='rightButton']/following-sibling::UIACollectionView/UIACollectionCell/UIAImage";
+		public static final String nameGiphyGrid = "giphyCollectionView";
 
 	}
 

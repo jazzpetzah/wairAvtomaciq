@@ -430,14 +430,16 @@ public class PeoplePickerPageSteps {
 			String expectedCaption) throws Exception {
 		if (shouldBeVisible == null) {
 			Assert.assertTrue(
-					"Open Conversation button is not visible",
+					String.format("%s Conversation button is not visible",
+							expectedCaption),
 					getPeoplePickerPage()
 							.waitUntilOpenOrCreateConversationButtonIsVisible(
 									expectedCaption));
 		} else {
 			Assert.assertTrue(
-					"Open Conversation button is still visible, but should be hidden",
-					getPeoplePickerPage()
+					String.format(
+							"%s Conversation button is still visible, but should be hidden",
+							expectedCaption), getPeoplePickerPage()
 							.waitUntilOpenConversationButtonIsInvisible());
 		}
 	}
