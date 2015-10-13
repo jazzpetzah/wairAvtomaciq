@@ -431,7 +431,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id3886 @staging
+  @id3886 @regression
   Scenario Outline: Verify starting a group conversation and a group call with action button (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -459,7 +459,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | GroupChat     |
 
-  @id3895 @staging
+  @id3895 @regression
   Scenario Outline: Verify starting a group conversation and a group call with action button (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
