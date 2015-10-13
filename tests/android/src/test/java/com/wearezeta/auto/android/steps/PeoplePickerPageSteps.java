@@ -512,7 +512,7 @@ public class PeoplePickerPageSteps {
 		Assert.assertTrue("Top People list is not visible",
 				getPeoplePickerPage().isTopPeopleHeaderVisible());
 	}
-	
+
 	/**
 	 * Verify that Call action button is visible
 	 * 
@@ -549,7 +549,8 @@ public class PeoplePickerPageSteps {
 	@When("^I see open conversation action button on People picker page$")
 	public void ISeeOpenConversationActionButton() throws Exception {
 		Assert.assertTrue("Open conversation button is not visible",
-				getPeoplePickerPage().waitUntilOpenOrCreateConversationButtonIsVisible());
+				getPeoplePickerPage()
+						.waitUntilOpenOrCreateConversationButtonIsVisible());
 	}
 
 	/**
@@ -564,5 +565,17 @@ public class PeoplePickerPageSteps {
 		ISeeOpenConversationActionButton();
 		ISeeCallActionButtonOnPeoplePickerPage();
 		ISeeSendImageActionButtonOnPeoplePickerPage();
+	}
+
+	/**
+	 * Opens the conversation by clicking the conversation action button
+	 * 
+	 * @step. ^I click on open conversation action button on People picker page$
+	 * @throws Throwable
+	 */
+	@When("^I click on open conversation action button on People picker page$")
+	public void IClickOnOpenConversationActionButtonOnPeoplePickerPage()
+			throws Throwable {
+		getPeoplePickerPage().tapOpenConversationButton();
 	}
 }
