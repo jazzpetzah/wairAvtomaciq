@@ -31,7 +31,7 @@ public class RegistrationPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.RegistrationPage.cssPasswordFiled)
 	private WebElement passwordField;
 
-	@FindBy(how = How.ID, using = WebAppLocators.RegistrationPage.idCreateAccountButton)
+	@FindBy(how = How.CSS, using = WebAppLocators.RegistrationPage.cssCreateButton)
 	private WebElement createAccount;
 
 	@FindBy(how = How.CSS, using = WebAppLocators.RegistrationPage.cssVerificationEmail)
@@ -103,7 +103,7 @@ public class RegistrationPage extends WebPage {
 
 	public void submitRegistration() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
-				createAccount) : "'Create Account' button is not clickable after timeout";
+				createAccount) : "'Create' button is not clickable after timeout";
 		createAccount.click();
 	}
 

@@ -415,7 +415,7 @@ public final class WebAppLocators {
 		public static final String cssPasswordFiled = cssRootForm
 			+ " [data-uie-name=enter-password]";
 
-		public static final String idCreateAccountButton = "wire-create";
+		public static final String cssCreateButton = "[data-uie-name='do-register']";
 
 		public static final String cssVerificationEmail = ".form-posted-success span.wire-sent-email";
 
