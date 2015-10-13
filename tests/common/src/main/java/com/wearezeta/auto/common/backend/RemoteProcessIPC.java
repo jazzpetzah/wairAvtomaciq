@@ -29,26 +29,45 @@ public class RemoteProcessIPC {
 
     private static final FiniteDuration duration = new FiniteDuration(30000, TimeUnit.MILLISECONDS);
     private static final Timeout akkaTimeout = new Timeout(30000);
-    private static final Map<String, ActorRef> remotes = new HashMap<>();
+    private static final Map<String, ActorRef> unregisteredRemotes = new HashMap<>();
+    private static final Map<String, ActorRef> registeredRemotes = new HashMap<>();
+    private static final ActorRef coordinator = setUpCoordinator();
+
+    private static final String REMOTE_PROCESS_NAME = "Remote_process_";
 
     static {
         System.out.println("Setting up coordinator system");
         CoordinatorSystem.setUpCoordinatorSystem("actor_coordinator");
     }
 
-    public static void startProcesses(int numProcesses) {
+    public static void startProcesses(int numProcesses) throws Exception {
+        //TODO do this with futures, perhaps?
+        System.out.println("Generating " + numProcesses + " remotes");
+        for (int i = 0; i < numProcesses; i++) {
+            String processName = REMOTE_PROCESS_NAME + i;
+            ActorRef remote = registerProcess(coordinator, processName);
+            if (remote == null) {
+                throw new NullPointerException();
+            } else {
+                System.out.println(processName + " created successfully, adding to map");
+                unregisteredRemotes.put(processName, remote);
+            }
+        }
+    }
 
+    public static void killAllProcesses() {
+        //TODO could also do this with futures?
+        coordinator.tell(ActorMessage.TerminateRemotes$.MODULE$, null);
     }
 
     public static void loginToRemoteProcess(ClientUser user) throws Exception {
-        System.out.println("Logging into remote process with user : " + user.getName());
 
-        ActorRef coordinator = setUpCoordinator();
-        ActorRef remote = registerProcess(coordinator, user.getName());
-
-        if (remote == null) {
-            throw new NullPointerException();
+        if (unregisteredRemotes.size() == 0) {
+            throw new Exception("No remotes left!");
         }
+
+        String nextProcessKey = REMOTE_PROCESS_NAME + (unregisteredRemotes.size() - 1);
+        ActorRef remote = unregisteredRemotes.get(nextProcessKey);
 
         Future<Object> future = Patterns.ask(remote, new Login(user.getEmail(), user.getPassword()), duration.toMillis());
 
@@ -56,7 +75,8 @@ public class RemoteProcessIPC {
         System.out.println("Response type: " + resp.getClass());
         if (resp instanceof Successful$) {
             System.out.println("Login successful");
-            remotes.put(user.getName(), remote);
+            registeredRemotes.put(user.getName(), remote);
+            unregisteredRemotes.remove(nextProcessKey);
         } else {
             System.out.println("Login not successful, killing remote");
             remote.tell(ActorMessage.TerminateProcess$.MODULE$, null);
@@ -65,7 +85,7 @@ public class RemoteProcessIPC {
 
     public static void sendConversationMessage(ClientUser userFrom, String convId, String message) throws Exception {
         System.out.println("Sending message: " + message + " from user: " + userFrom + " to conversation: " + convId);
-        ActorRef remote = remotes.get(userFrom.getName());
+        ActorRef remote = registeredRemotes.get(userFrom.getName());
 
         Future<Object> future = Patterns.ask(remote, new ActorMessage.SendText(new RConvId(convId), message), duration.toMillis());
         Object resp = Await.result(future, duration);
@@ -82,7 +102,6 @@ public class RemoteProcessIPC {
 
     public static ActorRef registerProcess(ActorRef coordinator, String processName) throws Exception {
         String serialized = Serialization.serializedActorPath(coordinator);
-        Runtime rt = Runtime.getRuntime();
         String[] cmd = {"java", "-jar", "/Users/deancook/.m2/repository/com/wearezeta/zmessaging-actor/45-SNAPSHOT/zmessaging-actor-45-SNAPSHOT.jar", processName, serialized, "staging"};
 
         ProcessBuilder pb = new ProcessBuilder(cmd);

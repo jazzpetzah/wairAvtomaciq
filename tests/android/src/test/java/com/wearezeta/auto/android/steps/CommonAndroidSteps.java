@@ -7,6 +7,7 @@ import com.wearezeta.auto.android.common.AndroidLogListener.ListenerType;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.backend.RemoteProcessIPC;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -731,6 +732,7 @@ public class CommonAndroidSteps {
 		commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count,
 				myNameAlias);
 		GivenUserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
+        RemoteProcessIPC.startProcesses(count - 1);
 	}
 
 	/**
@@ -913,6 +915,7 @@ public class CommonAndroidSteps {
 				.getInstance(ListenerType.DEFAULT));
 
 		commonSteps.getUserManager().resetUsers();
+        RemoteProcessIPC.killAllProcesses();
 	}
 
 	/**
