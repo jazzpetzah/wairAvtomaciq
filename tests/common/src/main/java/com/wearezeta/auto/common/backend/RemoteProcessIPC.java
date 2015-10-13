@@ -1,19 +1,26 @@
 package com.wearezeta.auto.common.backend;
 
 import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
+import akka.actor.Props;
 import akka.pattern.Patterns;
+import akka.serialization.Serialization;
 import akka.util.Timeout;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import com.waz.model.RConvId;
 import com.waz.provision.ActorMessage;
 import com.waz.provision.ActorMessage.Login;
 import com.waz.provision.ActorMessage.Successful$;
+import com.waz.provision.ActorMessage.WaitUntilRegistered;
+import com.waz.provision.CoordinatorActor;
 import com.waz.provision.CoordinatorSystem;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import scala.concurrent.Await;
 import scala.concurrent.Future;
 import scala.concurrent.duration.FiniteDuration;
 
-import java.io.File;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -36,28 +43,17 @@ public class RemoteProcessIPC {
     public static void loginToRemoteProcess(ClientUser user) throws Exception {
         System.out.println("Logging into remote process with user : " + user.getName());
 
+        ActorRef coordinator = setUpCoordinator();
+        ActorRef remote = registerProcess(coordinator, user.getName());
 
-        File testsFile = new File(System.getProperty("user.dir")).getParentFile();
-        String hockeyLib = testsFile.getAbsolutePath() + "/common/lib/HockeySDK-3.6.0-rc.1.jar";
-        System.out.println("HockeyLib: " + hockeyLib);
+        if (remote == null) {
+            throw new NullPointerException();
+        }
 
-        String cp = System.getProperty("java.class.path") +
-                ":" + hockeyLib +
-                ":/Users/deancook/.m2/repository/com/ibm/icu/icu4j-shrunk/55.1/icu4j-shrunk-55.1.jar" +
-                ":/Users/deancook/Documents/Github/zautomation/tests/android/target/classes/com/*" +
-                ":/Users/deancook/Downloads/zmessaging-android-jar/cryptobox-jni-0.3.1.jar" +
-                ":/Users/deancook/.m2/repository/com/wearezeta/generic-message-proto/1.3/generic-message-proto-1.3.jar" +
-                ":/Users/deancook/.m2/repository/com/google/protobuf/protobuf-java/2.6.1/protobuf-java-2.6.1.jar";
-
-        String lp = System.getProperty("java.library.path") +
-                ":/Users/deancook/Downloads/zmessaging-android-jar/lib";
-
-
-
-        ActorRef remote = CoordinatorSystem.registerProcess(user.getName(), true, duration, "staging", cp, lp, akkaTimeout);
         Future<Object> future = Patterns.ask(remote, new Login(user.getEmail(), user.getPassword()), duration.toMillis());
 
         Object resp = Await.result(future, duration);
+        System.out.println("Response type: " + resp.getClass());
         if (resp instanceof Successful$) {
             System.out.println("Login successful");
             remotes.put(user.getName(), remote);
@@ -75,5 +71,37 @@ public class RemoteProcessIPC {
         Object resp = Await.result(future, duration);
 
         System.out.println(resp.getClass());
+    }
+
+    public static ActorRef setUpCoordinator() {
+        Config config = ConfigFactory.load("actor_coordinator");
+        ActorSystem system = ActorSystem.create("CoordinatorSystem", config);
+        ActorRef actorRef = system.actorOf(Props.create(CoordinatorActor.class), "coordinatorActor");
+        return actorRef;
+    }
+
+    public static ActorRef registerProcess(ActorRef coordinator, String processName) throws Exception {
+        String serialized = Serialization.serializedActorPath(coordinator);
+        Runtime rt = Runtime.getRuntime();
+        String[] cmd = {"java", "-jar", "/Users/deancook/.m2/repository/com/wearezeta/zmessaging-actor/45-SNAPSHOT/zmessaging-actor-45-SNAPSHOT.jar", processName, serialized, "staging"};
+
+        ProcessBuilder pb = new ProcessBuilder(cmd);
+
+        File outputFile = new File("target/logcat/" + processName);
+        outputFile.getParentFile().mkdirs();
+
+        pb.redirectErrorStream(true);
+        pb.redirectOutput(ProcessBuilder.Redirect.appendTo(outputFile));
+
+        pb.start();
+
+        Future<Object> future = Patterns.ask(coordinator, new WaitUntilRegistered(processName), duration.toMillis());
+
+        Object resp = Await.result(future, duration);
+        if (resp instanceof ActorRef) {
+            return (ActorRef) resp;
+        } else {
+            return null;
+        }
     }
 }
