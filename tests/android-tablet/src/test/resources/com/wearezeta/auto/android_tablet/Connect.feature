@@ -65,7 +65,7 @@ Feature: Connect
       | user1Name | user2Name | 1 person waiting |
 
   @id2259 @regression @rc
-  Scenario Outline: Accept connection request in portrait mode
+  Scenario Outline: (AN-2690) Accept connection request in portrait mode
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
     Given I rotate UI to portrait
@@ -85,7 +85,7 @@ Feature: Connect
       | user1Name | user2Name | 1 person waiting |
 
   @id2852 @regression
-  Scenario Outline: I want to send connection request by selecting unconnected user from a group conversation (portrait)
+  Scenario Outline: (AN-2389) I want to send connection request by selecting unconnected user from a group conversation (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given <Contact1> is connected to Myself,<Contact2>
@@ -113,7 +113,7 @@ Feature: Connect
       | user1Name | user2Name | user3Name | NonConnectedUserChat |
 
   @id3119 @regression
-  Scenario Outline: I want to send connection request by selecting unconnected user from a group conversation (landscape)
+  Scenario Outline: (AN-2389) I want to send connection request by selecting unconnected user from a group conversation (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given <Contact1> is connected to Myself,<Contact2>
@@ -349,7 +349,7 @@ Feature: Connect
       | user1Name | user2Name | user3Name | user4Name |
 
   @id2845 @regression
-  Scenario Outline: Ignore a connect request and reconnect later from search (portrait)
+  Scenario Outline: (AN-2735) Ignore a connect request and reconnect later from search (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
     Given I rotate UI to portrait
@@ -383,7 +383,7 @@ Feature: Connect
       | user1Name | user2Name | 1 person waiting |
 
   @id3127 @regression
-  Scenario Outline: Ignore a connect request and reconnect later from search (landscape)
+  Scenario Outline: (AN-2735) Ignore a connect request and reconnect later from search (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
     Given I rotate UI to landscape
