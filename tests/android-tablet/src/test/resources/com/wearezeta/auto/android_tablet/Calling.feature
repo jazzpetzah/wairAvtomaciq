@@ -280,3 +280,39 @@ Feature: Calling
     Examples: 
       | Name      | Contact1  | Contact2  | CallBackend | AcceptBtnName |
       | user1Name | user2Name | user3Name | autocall    | Accept        |
+
+  @id3801 @staging
+  Scenario Outline: Silence an incoming call (portrait)
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    And I see the conversation <Contact> in my conversations list
+    And I tap the conversation <Contact>
+    And <Contact> calls me using <CallBackend>
+    And I see calling overlay Big bar
+    When I tap <SilenceBtn> button on the calling overlay
+    Then I do not see calling overlay Big bar
+
+    Examples: 
+      | Name      | Contact   | CallBackend | SilenceBtn |
+      | user1Name | user2Name | autocall    | Ignore     |
+
+  @id3802 @staging
+  Scenario Outline: Silence an incoming call (landscape)
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    And I see the conversation <Contact> in my conversations list
+    And I tap the conversation <Contact>
+    And <Contact> calls me using <CallBackend>
+    And I see calling overlay Big bar
+    When I tap <SilenceBtn> button on the calling overlay
+    Then I do not see calling overlay Big bar
+
+    Examples: 
+      | Name      | Contact   | CallBackend | SilenceBtn |
+      | user1Name | user2Name | autocall    | Ignore     |

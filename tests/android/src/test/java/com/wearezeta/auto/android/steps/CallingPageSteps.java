@@ -35,7 +35,7 @@ public class CallingPageSteps {
 	 */
 	@When("I click the ignore call button")
 	public void IClickIgnoreCallButton() throws Exception {
-		getCallingOverlayPage().muteConversation();
+		getCallingOverlayPage().ignoreCall();
 	}
 
 	/**
