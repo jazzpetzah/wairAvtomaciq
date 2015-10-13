@@ -12,8 +12,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -401,12 +399,12 @@ public class ContactListPage extends AndroidPage {
 
 	public void doShortSwipeDown() throws Exception {
 		DriverUtils.swipeElementPointToPoint(getDriver(), contactListFrame,
-				500, 50, 5, 50, 10);
+				500, 15, 15, 15, 20);
 	}
 
 	public void doLongSwipeDown() throws Exception {
 		DriverUtils.swipeElementPointToPoint(getDriver(), contactListFrame,
-				500, 50, 5, 50, 75);
+				1000, 15, 15, 15, 180);
 	}
 
 	public Optional<BufferedImage> getScreenshotOfPlayPauseButtonNextTo(
@@ -428,33 +426,9 @@ public class ContactListPage extends AndroidPage {
 		this.getDriver().findElement(locator).click();
 	}
 
-	private final String UNREAD_DOT_SMALL_IMG = "android_unread_dot_small.png";
-	private final String UNREAD_DOT_LARGE_IMG = "android_unread_dot_large.png";
-	private final String UNREAD_DOT_NO_UNREAD_DOT_IMG = "android_no_unread_dot.png";
-
-	public double getUnreadDotOverlapScore(String expected, String contact)
+	public Optional<BufferedImage> getMessageIndicatorScreenshot(String name)
 			throws Exception {
-		final String EXPECTED_DOT_STATE_SMALL = "small";
-		final String EXPECTED_DOT_STATE_LARGE = "large";
-		final String EXPECTED_DOT_STATE_NOT_DISPLAYED = "not displayed";
-
-		final By locator = By.xpath(xpathConversationListEntry.apply(contact));
-		BufferedImage unreadDot = getElementScreenshot(
-				this.getDriver().findElement(locator)).orElseThrow(
-				IllegalStateException::new);
-		String path = null;
-		if (expected.equals(EXPECTED_DOT_STATE_SMALL)) {
-			path = CommonUtils.getDefaultImagesPath(ContactListPage.class)
-					+ UNREAD_DOT_SMALL_IMG;
-		} else if (expected.equals(EXPECTED_DOT_STATE_LARGE)) {
-			path = CommonUtils.getDefaultImagesPath(ContactListPage.class)
-					+ UNREAD_DOT_LARGE_IMG;
-		} else if (expected.equals(EXPECTED_DOT_STATE_NOT_DISPLAYED)) {
-			path = CommonUtils.getDefaultImagesPath(ContactListPage.class)
-					+ UNREAD_DOT_NO_UNREAD_DOT_IMG;
-		}
-		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
-		return ImageUtil.getOverlapScore(unreadDot, templateImage,
-				ImageUtil.RESIZE_TO_MAX_SCORE);
+		final By locator = By.xpath(xpathConversationListEntry.apply(name));
+		return this.getElementScreenshot(this.getDriver().findElement(locator));
 	}
 }

@@ -31,7 +31,7 @@ public class GiphyPreviewPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.GiphyPreviewPage.nameGiphySendButton)
 	private WebElement giphySendButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.GiphyPreviewPage.nameNoGifsText)
 	private WebElement noGifsText;
 
@@ -49,49 +49,50 @@ public class GiphyPreviewPage extends IOSPage {
 	public void tapSendGiphyButton() throws Exception {
 		giphySendButton.click();
 	}
-	
+
 	public boolean isGiphyRefreshButtonVisible() throws Exception {
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				giphyMoreButton);
 	}
-	
+
 	public boolean isGiphyLinkButtonVisible() throws Exception {
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				giphyLinkButton);
 	}
-	
+
 	public boolean isGiphyTitleButtonVisible() throws Exception {
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				giphyTitleButton);
 	}
-	
+
 	public boolean isGiphyImageVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(IOSLocators.GiphyPreviewPage.xpathGithyImage));
+		return DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.xpath(IOSLocators.GiphyPreviewPage.xpathGithyImage));
 	}
-	
+
 	public boolean isGiphyRejectButtonVisible() throws Exception {
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				giphyRejectButton);
 	}
-	
+
 	public boolean isGiphySendButtonVisible() throws Exception {
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				giphySendButton);
 	}
-	
+
 	public boolean isNoGifsTextVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				noGifsText);
+		return DriverUtils
+				.isElementPresentAndDisplayed(getDriver(), noGifsText);
 	}
-	
+
 	public void clickGiphyMoreButton() throws Exception {
 		DriverUtils.waitUntilElementClickable(getDriver(), giphyMoreButton);
 		giphyMoreButton.click();
 	}
-	
+
 	public boolean isGiphyGridShown() throws Exception {
-		int i = this.getDriver().findElements(By.xpath(IOSLocators.GiphyPreviewPage.xpathGiphyGrid)).size();
-		return i > 2;
+		return DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.name(IOSLocators.GiphyPreviewPage.nameGiphyGrid));
 	}
-	
+
 }

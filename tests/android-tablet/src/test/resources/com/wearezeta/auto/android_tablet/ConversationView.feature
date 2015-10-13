@@ -207,7 +207,7 @@ Feature: Conversation View
       | user1Name | user2Name | portrait    |
 
   @id2050 @regression
-  Scenario Outline: One-to-one pop-over hidden after rotations
+  Scenario Outline: (AN-2494) One-to-one pop-over hidden after rotations
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to portrait

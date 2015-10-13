@@ -105,7 +105,7 @@ public class CallingOverlayPage extends AndroidPage {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
 	}
 
-	public void muteConversation() throws Exception {
+	public void ignoreCall() throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(idIgnoreButton)) : "Ignore button is not visible";
 		ignoreButton.click();

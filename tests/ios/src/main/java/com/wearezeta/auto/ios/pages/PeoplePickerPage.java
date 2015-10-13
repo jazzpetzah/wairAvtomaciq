@@ -98,10 +98,10 @@ public class PeoplePickerPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.PeoplePickerPage.nameOpenConversationButton)
 	private WebElement openConversationButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.PeoplePickerPage.xpathCallButton)
+	@FindBy(how = How.NAME, using = IOSLocators.PeoplePickerPage.nameCallButton)
 	private WebElement callButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.PeoplePickerPage.xpathSendImageButton)
+	@FindBy(how = How.NAME, using = IOSLocators.PeoplePickerPage.nameSendImageButton)
 	private WebElement sendImageButton;
 
 	private int numberTopSelected = 0;

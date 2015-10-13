@@ -69,7 +69,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 	}
 
 	private DialogPage getDialogPage() throws Exception {
-		return (DialogPage) this.getAndroidPageInstance(DialogPage.class);
+		return this.getAndroidPageInstance(DialogPage.class);
 	}
 
 	public boolean waitUntilVisible() throws Exception {
@@ -95,7 +95,11 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
-	public void tapTextInput() {
+	public void tapTextInput() throws Exception {
+		// FIXME: Scroll to the bottom if cursor input is not visible
+		getDialogPage().tapOnCursorFrame();
+		this.hideKeyboard();
+
 		caret.click();
 	}
 

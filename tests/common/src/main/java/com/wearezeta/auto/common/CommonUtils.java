@@ -288,6 +288,37 @@ public class CommonUtils {
 		}
 	}
 
+	/**
+	 * Returns platform name of current execution: OSX, IOS, Android, WebApp
+	 */
+	public static String getCurrentPlatform(Class<?> c) throws Exception {
+		try {
+			getOsxAppiumUrlFromConfig(c);
+			return "OSX";
+		} catch (Exception e) {
+			// ignore silently
+		}
+		try {
+			getAndroidAppiumUrlFromConfig(c);
+			return "Android";
+		} catch (Exception e) {
+			// ignore silently
+		}
+		try {
+			getIosAppiumUrlFromConfig(c);
+			return "IOS";
+		} catch (Exception e) {
+			// ignore silently
+		}
+		try {
+			getWebAppAppiumUrlFromConfig(c);
+			return "WebApp";
+		} catch (Exception e) {
+			// ignore silently
+		}
+		return "UNKNOWN";
+	}
+
 	public static String getOsxAppiumUrlFromConfig(Class<?> c) throws Exception {
 		return getValueFromConfig(c, "osxAppiumUrl");
 	}
@@ -601,7 +632,7 @@ public class CommonUtils {
 	public static String generateRandomXdigits(int i) {
 		Random rand = new Random();
 		long random = (long) (Math.pow(10, i - 1)) * (rand.nextInt(8) + 1)
-				+ (long) rand.nextInt((int)(Math.pow(10, i - 1)));
+				+ (long) rand.nextInt((int) (Math.pow(10, i - 1)));
 		return Long.toString(Math.abs(random));
 	}
 
