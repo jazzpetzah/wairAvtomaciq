@@ -99,7 +99,7 @@ Feature: Registration
       | user1Email | user1Password | user1Name |
 
   @id2823 @regression
-  Scenario Outline: Verify Sign In progress behaviour while there are probelms with internet connectivity
+  Scenario Outline: (AN-2841) Verify Sign In progress behaviour while there are probelms with internet connectivity
     Given I see welcome screen
     Given I rotate UI to landscape
     When I switch to email sign in screen

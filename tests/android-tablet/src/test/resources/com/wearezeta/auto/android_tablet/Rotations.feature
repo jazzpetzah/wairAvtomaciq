@@ -26,7 +26,7 @@ Feature: Rotations
       | user1Name |
 
   @id2186 @regression
-  Scenario Outline: Search (people picker)
+  Scenario Outline: (AN-2900) Search (people picker)
     Given There is 1 user where <Name> is me
     Given I rotate UI to portrait
     Given I sign in using my email
@@ -63,7 +63,7 @@ Feature: Rotations
       | user1Name | user2Name | Msg1     |
 
   @id2186 @regression
-  Scenario Outline: Search (people picker)
+  Scenario Outline: (AN-2901) Search (people picker)
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to me
     Given <Contact2> is connected to <Contact1>
@@ -100,7 +100,6 @@ Feature: Rotations
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
     When I tap the new picture in the conversation view
-    And I tap in the center of the screen
     Then I see Close Picture Preview button in the conversation view
     When I rotate UI to landscape
     Then I see Close Picture Preview button in the conversation view

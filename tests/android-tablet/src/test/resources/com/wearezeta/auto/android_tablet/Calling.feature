@@ -119,7 +119,7 @@ Feature: Calling
       | autocall    | user1Name | user2Name | user3Name |
 
   @id3124 @calling_basic @rc
-  Scenario Outline: I can dismiss calling bar by swipe (portrait)
+  Scenario Outline: (AN-2568) I can dismiss calling bar by swipe (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I rotate UI to portrait
