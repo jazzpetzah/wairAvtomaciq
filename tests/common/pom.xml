@@ -120,20 +120,9 @@
         </dependency>
 
         <dependency>
-            <groupId>actors</groupId>
-            <artifactId>actors_2.11</artifactId>
-            <version>45-SNAPSHOT</version>
-        </dependency>
-
-
-        <dependency>
             <groupId>com.wearezeta</groupId>
-            <artifactId>zmessaging-android</artifactId>
+            <artifactId>zmessaging-actor</artifactId>
             <version>45-SNAPSHOT</version>
-            <!--<type>aar</type>-->
-            <scope>system</scope>
-            <!-- TODO fix this shit -->
-            <systemPath>/Users/deancook/Downloads/zmessaging-android-jar/classes.jar</systemPath>
         </dependency>
 
     </dependencies>
@@ -182,13 +171,7 @@
         <repository>
             <id>releases</id>
             <name>Releases</name>
-            <url>http://192.168.10.18:8081/nexus/content/repositories/releases/</url>
-            <layout>default</layout>
-        </repository>
-        <repository>
-            <id>3rdparty</id>
-            <name>3rd party</name>
-            <url>http://192.168.10.18:8081/nexus/content/repositories/thirdparty/</url>
+            <url>http://192.168.10.18:8081/nexus/content/repositories/snapshots/</url>
             <layout>default</layout>
         </repository>
     </repositories>
