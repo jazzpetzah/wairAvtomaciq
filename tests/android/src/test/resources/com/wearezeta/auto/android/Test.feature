@@ -8,7 +8,7 @@ Feature: Test
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I see dialog page
-    Given Contact <Contact> send message to user <Name>
+    Given Contact <Contact> send message <Message> to user <Name>
     And I see my message "<Message>" in the dialog
 
     Examples:
