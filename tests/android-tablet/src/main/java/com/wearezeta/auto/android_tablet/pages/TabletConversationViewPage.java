@@ -268,4 +268,13 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 	public void tapGiphyButton() throws Exception {
 		this.getDriver().findElement(By.id(giphyPreviewButtonId)).click();
 	}
+
+	public void tapSketchButton() throws Exception {
+		getDialogPage().tapSketchBtn();
+	}
+
+	public Optional<BufferedImage> getImageScreenshotInFullScreen()
+			throws Exception {
+		return getDialogPage().getLastImageInFullScreen();
+	}
 }
