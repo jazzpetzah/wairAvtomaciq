@@ -31,6 +31,7 @@
         <com.wire.chromedriver.path>/Applications/chromedriver</com.wire.chromedriver.path>
         <com.wire.driver.timeout.seconds>10</com.wire.driver.timeout.seconds>
         <com.wire.environment>Staging</com.wire.environment>
+        <com.wire.environment.url>https://wire-webapp-staging.zinfra.io/</com.wire.environment.url>
         <pictureResultsPath>target</pictureResultsPath>
     </properties>
 
