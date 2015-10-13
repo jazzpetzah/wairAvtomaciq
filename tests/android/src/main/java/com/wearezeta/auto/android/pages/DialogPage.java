@@ -19,7 +19,6 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import android.graphics.Point;
 
@@ -277,14 +276,13 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void swipeOnCursorInput() throws Exception {
-		// FIXME: Scroll to the bottom if cursor input is not visible
-		tapOnCursorFrame();
-		this.hideKeyboard();
-
-		getWait().until(ExpectedConditions.elementToBeClickable(cursorArea));
 		final By cursorLocator = By.id(idCursorArea);
 		int ntry = 1;
 		do {
+			// FIXME: Scroll to the bottom if cursor input is not visible
+			tapOnCursorFrame();
+			this.hideKeyboard();
+
 			DriverUtils.swipeRight(this.getDriver(), cursorArea,
 					DEFAULT_SWIPE_TIME);
 			final int currentCursorOffset = getDriver()
