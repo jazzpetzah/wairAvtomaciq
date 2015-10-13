@@ -30,7 +30,7 @@ public final class WebAppLocators {
 
 		public static final String xpathSignInButton = "//*[@data-uie-name='do-sign-in']";
 
-		public static final String cssPhoneSignInButton = "[data-uie-name='go-phone-sign-in']";
+		public static final String cssPhoneSignInButton = "[data-uie-name='go-sign-in-phone']";
 
 		public static final String xpathSwitchToRegisterButtons = "//*[@data-uie-name='go-register']";
 
