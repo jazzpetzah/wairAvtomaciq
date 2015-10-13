@@ -20,9 +20,9 @@ public final class WebAppLocators {
 
 		public static final String xpathLoginPage = "//*[@data-uie-name='go-wire-dot-com']";
 
-		public static final String xpathEmailInput = "//*[@data-uie-name='enter-email']";
+		public static final String cssEmailInput = "#form-account-login [data-uie-name='enter-email']";
 
-		public static final String xpathPasswordInput = "//*[@data-uie-name='enter-password']";
+		public static final String cssPasswordInput = "#form-account-login [data-uie-name='enter-password']";
 
 		public static final String classNameSpinner = "loading-spinner";
 
@@ -36,11 +36,11 @@ public final class WebAppLocators {
 
 		public static final String xpathChangePasswordButton = "//*[@data-uie-name='go-forgot-password']";
 
-		public static final String cssLoginErrorText = ".has-error [data-uie-name='status-error']";
+		public static final String cssLoginErrorText = "[data-uie-name='status-error'] .error";
 
-		public static final String cssRedDotOnEmailField = ".auth-page .has-error .form-control #wire-email";
+		public static final String cssRedDotOnEmailField = "#form-account-login .input-error[data-uie-name='enter-email']";
 
-		public static final String cssRedDotOnPasswordField = ".auth-page .has-error .form-control #wire-password";
+		public static final String cssRedDotOnPasswordField = "#form-account-login .input-error[data-uie-name='enter-password']";
 	}
 
 	public static final class ContactListPage {
@@ -403,8 +403,8 @@ public final class WebAppLocators {
 
 		public static final String cssSwitchToSignInButton = "[data-uie-name='go-sign-in']";
 
-		public static final String xpathRootForm = "//form[@id='form-create']";
-		public static final String cssRootForm = "#form-create";
+		public static final String xpathRootForm = "//form[@id='form-account-register']";
+		public static final String cssRootForm = "#form-account-register";
 
 		public static final String cssNameFiled = cssRootForm
 			+ " [data-uie-name=enter-name]";

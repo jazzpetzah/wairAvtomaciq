@@ -37,10 +37,10 @@ public class LoginPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathChangePasswordButton)
 	private WebElement changePasswordButton;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathEmailInput)
+	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssEmailInput)
 	private WebElement emailInput;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathPasswordInput)
+	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssPasswordInput)
 	private WebElement passwordInput;
 
 	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssLoginErrorText)

@@ -30,8 +30,8 @@ Feature: Sign In
 
     Examples: 
       | Email      | Password      | Error                                      |
-      | user1Email |               | WRONG EMAIL OR PASSWORD. PLEASE TRY AGAIN. |
-      | user1Email | wrongPassword | WRONG EMAIL OR PASSWORD. PLEASE TRY AGAIN. |
+      | user1Email |               | Wrong email or password. Please try again. |
+      | user1Email | wrongPassword | Wrong email or password. Please try again. |
 
   @smoke @id2714
   Scenario Outline: Verify you can sign in with a phone number with correct credentials
