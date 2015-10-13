@@ -97,6 +97,7 @@ public class CommonOSXSteps {
 		options.addArguments("use-fake-device-for-media-stream");
 		// allow skipping the security prompt for sharing the media device
 		options.addArguments("use-fake-ui-for-media-stream");
+		options.addArguments("env=" + OSXExecutionContext.ENV_URL);
 		options.setBinary(WIRE_APP_PATH + OSXExecutionContext.ELECTRON_SUFFIX);
 		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 		capabilities.setCapability("platformName",
@@ -195,8 +196,6 @@ public class CommonOSXSteps {
 		osxDriver.navigate().to(WIRE_APP_PATH);// activate app
 		waitForAppStartup(osxDriver);
 		mainWirePage.focusApp();
-		waitForWebappLoaded(webappDriver);
-		mainWirePage.switchEnvironment(DEFAULT_ENVIRONMENT);
 		waitForWebappLoaded(webappDriver);
 		webappPagesCollection
 				.setFirstPage(new RegistrationPage(webDriverFuture));
