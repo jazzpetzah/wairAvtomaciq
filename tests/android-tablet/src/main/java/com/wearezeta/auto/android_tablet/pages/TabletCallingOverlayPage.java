@@ -33,8 +33,12 @@ public class TabletCallingOverlayPage extends AndroidTabletPage {
 		getCallingOverlayPage().acceptCall();
 	}
 
-	public void tapMuteButton() throws Exception {
+	public void tapMuteMicButton() throws Exception {
 		getCallingOverlayPage().tapMuteMicButton();
+	}
+	
+	public void tapIgnoreButton() throws Exception {
+		getCallingOverlayPage().ignoreCall();
 	}
 
 	public void tapSpeakerButton() throws Exception {
