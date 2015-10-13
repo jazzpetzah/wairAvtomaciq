@@ -465,12 +465,14 @@ Feature: Connect
       | user1Name | user2Name | user3Name | user4Name | 2 people waiting | 1 person waiting |
 
   @id2869 @regression
-  Scenario Outline: I can see a new inbox for connection when receive new connection request (portrait)
+  Scenario Outline: (AN-2896) I can see a new inbox for connection when receive new connection request (portrait)
     Given There are 2 users where <Name> is me
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I see the Conversations list with no conversations
     When <Contact> sent connection request to me
+    # Workaround for a bug
+    And I swipe right to show the conversations list
     Then I see the conversation <WaitingMsg> in my conversations list
     When I tap the conversation <WaitingMsg>
     Then I see the Incoming connections page
@@ -499,7 +501,7 @@ Feature: Connect
       | user1Name | user2Name | user2Email   | 1 person waiting |
 
   @id2854 @regression
-  Scenario Outline: I want to see that the other person has accepted the connect request in the conversation view (portrait)
+  Scenario Outline: (AN-2897) I want to see that the other person has accepted the connect request in the conversation view (portrait)
     Given There are 2 users where <Name> is me
     Given Myself sent connection request to <Contact>
     Given I rotate UI to portrait
@@ -518,7 +520,7 @@ Feature: Connect
       | user1Name | user2Name | Connected to user2Name |
 
   @id3128 @regression
-  Scenario Outline: I want to see that the other person has accepted the connect request in the conversation view (landscape)
+  Scenario Outline: (AN-2897) I want to see that the other person has accepted the connect request in the conversation view (landscape)
     Given There are 2 users where <Name> is me
     Given Myself sent connection request to <Contact>
     Given I rotate UI to landscape
