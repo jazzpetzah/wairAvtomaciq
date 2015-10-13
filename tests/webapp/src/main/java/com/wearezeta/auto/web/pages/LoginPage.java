@@ -101,7 +101,7 @@ public class LoginPage extends WebPage {
 	}
 
 	public ContactListPage clickSignInButton() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
+		DriverUtils.waitUntilElementClickable(this.getDriver(),
 				signInButton);
 		signInButton.click();
 
