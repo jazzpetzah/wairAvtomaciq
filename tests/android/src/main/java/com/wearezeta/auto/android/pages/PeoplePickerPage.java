@@ -111,18 +111,6 @@ public class PeoplePickerPage extends AndroidPage {
 	private static final String idPickerRecomendedName = "ttv_pickuser__recommended_name";
 	@FindBy(id = idPickerRecomendedName)
 	private WebElement recommendedName;
-	
-	public static final String idSendImageActionButton = "gtv__conversation_quick_menu__camera_button";
-	@FindBy(id = idSendImageActionButton)
-	private WebElement sendImageActionButton;
-	
-	public static final String idCallActionButton = "gtv__conversation_quick_menu__call_button";
-	@FindBy(id = idCallActionButton)
-	private WebElement callActionButton;
-	
-	public static final String idOpenConversationActionButton = "gtv__conversation_quick_menu__call_button";
-	@FindBy(id = idOpenConversationActionButton)
-	private WebElement openConversationActionButton;
 
 	public PeoplePickerPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
@@ -359,19 +347,12 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public boolean isCallButtonVisible() throws Exception {
-		return DriverUtils
-				.isElementPresentAndDisplayed(getDriver(), callActionButton);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idQuickMenuCallButton));
 	}
 
 	public boolean isSendImageButtonVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				sendImageActionButton);
-	}
-
-	public boolean isOpenConversationButtonVisible() throws Exception {
-		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idOpenConversationActionButton));
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				openConversationActionButton);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idQuickMenuCameraButton));
 	}
 }

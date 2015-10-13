@@ -549,7 +549,7 @@ public class PeoplePickerPageSteps {
 	@When("^I see open conversation action button on People picker page$")
 	public void ISeeOpenConversationActionButton() throws Exception {
 		Assert.assertTrue("Open conversation button is not visible",
-				getPeoplePickerPage().isOpenConversationButtonVisible());
+				getPeoplePickerPage().waitUntilOpenOrCreateConversationButtonIsVisible());
 	}
 
 	/**
