@@ -29,6 +29,16 @@ Feature: Application
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
+  @smoke @id3995
+  Scenario Outline: Verify size of sign in screen window
+    When I ensure initial positioning
+    Then I verify app width is 1024 px and height is 768 px
+    And I resize the app to the max by hand
+    Then I verify app width is 1024 px and height is 768 px
+    When I ensure initial positioning
+    And I resize the app to the min by hand
+    Then I verify app width is 1024 px and height is 768 px
+
   @smoke @id3807
   Scenario: I verify the installed app is not too big
     When I verify the app is not bigger than 121 MB

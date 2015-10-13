@@ -129,7 +129,7 @@ public class MainWirePageSteps {
 	}
 
 	/**
-	 * Verifies wether the app is in minimum size or not
+	 * Verifies whether the app is in minimum size or not
 	 *
 	 * @step. ^I verify app is in minimum size$
 	 *
