@@ -578,4 +578,16 @@ public class PeoplePickerPageSteps {
 			throws Throwable {
 		getPeoplePickerPage().tapOpenConversationButton();
 	}
+
+	/**
+	 * Opens the picture gallery by clicking the send image action button
+	 * 
+	 * @step. ^I click Send image action button on People picker page$
+	 * @throws Throwable
+	 */
+	@When("^I click Send image action button on People picker page$")
+	public void IClickSendImageActionButtonOnPeoplePickerPage()
+			throws Throwable {
+		getPeoplePickerPage().tapCameraButton();
+	}
 }
