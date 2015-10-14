@@ -374,7 +374,7 @@ Feature: Conversation View
       | Name      | Contact   | YouTubeLink                                |
       | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
 
-  @regression @id1387
+  @obsolete @id1387
   Scenario Outline: Verify you can play/pause media from the Media Bar - YouTube
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
