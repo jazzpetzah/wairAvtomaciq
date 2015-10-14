@@ -281,7 +281,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend | AcceptBtnName |
       | user1Name | user2Name | user3Name | autocall    | Accept        |
 
-  @id3801 @staging
+  @id3801 @calling_basic @rc
   Scenario Outline: Silence an incoming call (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -299,7 +299,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | SilenceBtn |
       | user1Name | user2Name | autocall    | Ignore     |
 
-  @id3802 @staging
+  @id3802 @calling_basic @rc
   Scenario Outline: Silence an incoming call (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
