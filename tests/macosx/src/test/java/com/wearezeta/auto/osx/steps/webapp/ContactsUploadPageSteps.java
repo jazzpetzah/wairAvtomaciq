@@ -12,7 +12,6 @@ import org.apache.log4j.Logger;
 public class ContactsUploadPageSteps {
 	private static final int VISIBILITY_TIMEOUT = 15; // seconds
 
-	@SuppressWarnings("unused")
 	private static final Logger LOG = ZetaLogger
 			.getLog(ContactsUploadPageSteps.class.getName());
 
