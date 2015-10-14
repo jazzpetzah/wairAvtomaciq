@@ -399,12 +399,12 @@ public class ContactListPage extends AndroidPage {
 
 	public void doShortSwipeDown() throws Exception {
 		DriverUtils.swipeElementPointToPoint(getDriver(), contactListFrame,
-				500, 50, 5, 50, 10);
+				500, 15, 15, 15, 20);
 	}
 
 	public void doLongSwipeDown() throws Exception {
 		DriverUtils.swipeElementPointToPoint(getDriver(), contactListFrame,
-				500, 50, 5, 50, 75);
+				1000, 15, 15, 15, 180);
 	}
 
 	public Optional<BufferedImage> getScreenshotOfPlayPauseButtonNextTo(

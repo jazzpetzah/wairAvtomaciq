@@ -111,7 +111,7 @@ Feature: People View
 
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName       | Action      |
-      | user1Name | user2Name | user3Name | RemoveFromGroupChat | YOU REMOVED |
+      | user1Name | user2Name | user3Name | RemoveFromGroupChat | You removed |
 
   @id2244 @regression
   Scenario Outline: Remove from group chat in landscape mode
@@ -138,7 +138,7 @@ Feature: People View
 
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName       | Action      |
-      | user1Name | user2Name | user3Name | RemoveFromGroupChat | YOU REMOVED |
+      | user1Name | user2Name | user3Name | RemoveFromGroupChat | You removed |
 
   @id2282 @regression @rc
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People in portrait mode

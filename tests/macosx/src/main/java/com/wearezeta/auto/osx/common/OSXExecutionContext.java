@@ -10,6 +10,7 @@ public class OSXExecutionContext {
 
 	public static final String EXTENDED_LOGGING_LEVEL = System.getProperty(
 			"extendedLoggingLevel", "SEVERE");
+
 	public static final String APPIUM_MAC_PATH = System.getProperty(
 			"com.wire.appium.mac.path", "/Applications/AppiumForMac.app");
 
@@ -42,6 +43,10 @@ public class OSXExecutionContext {
 
 	public static final String ENV = System.getProperty("com.wire.environment",
 			"Staging");
+
+	public static final String ENV_URL = System.getProperty(
+			"com.wire.environment.url",
+			"https://wire-webapp-staging.zinfra.io/");
 
 	public static final String USER_HOME = System.getProperty("user.home");
 

@@ -17,7 +17,6 @@ import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
@@ -71,33 +70,6 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	final protected CommonSteps commonSteps = CommonSteps.getInstance();
-
-	public void selectFirstGalleryPhoto() throws Exception {
-		final Dimension screenDimension = AndroidCommonUtils.getScreenSize(this
-				.getDriver());
-		final int xDivider = 7;
-		final int yDivider = 8;
-		int y = screenDimension.height / 2;
-		do {
-			int x = screenDimension.width - screenDimension.width / xDivider;
-			do {
-				// Selendroid workaround
-				// Cannot handle external apps properly :-(
-				AndroidCommonUtils.genericScreenTap(x, y);
-				try {
-					if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-							By.xpath(DialogPage.xpathConfirmOKButton), 1)) {
-						return;
-					}
-				} catch (WebDriverException e) {
-					// ignore silently
-				}
-				x -= screenDimension.width / xDivider;
-			} while (x >= screenDimension.width / xDivider);
-			y -= screenDimension.height / yDivider;
-		} while (y >= screenDimension.height / yDivider);
-		throw new RuntimeException("Failed to tap the first gallery image!");
-	}
 
 	public void hideKeyboard() throws Exception {
 		try {

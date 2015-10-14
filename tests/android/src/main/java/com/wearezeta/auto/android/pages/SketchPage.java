@@ -99,7 +99,7 @@ public class SketchPage extends AndroidPage {
 		}
 	}
 
-	public void sendSketch() throws Exception {
+	public void tapSendButton() throws Exception {
 		DriverUtils.tapInTheCenterOfTheElement(getDriver(), sendButton);
 		DriverUtils.waitUntilLocatorDissapears(getDriver(), By.id(idSendButton), 5);
 		if (DriverUtils.isElementPresentAndDisplayed(getDriver(), sendButton)) {
@@ -113,7 +113,7 @@ public class SketchPage extends AndroidPage {
 		}
 	}
 
-	public Optional<BufferedImage> screenshotCanvas() throws Exception {
+	public Optional<BufferedImage> getCanvasScreenshot() throws Exception {
 		return this.getElementScreenshot(canvas);
 	}
 }

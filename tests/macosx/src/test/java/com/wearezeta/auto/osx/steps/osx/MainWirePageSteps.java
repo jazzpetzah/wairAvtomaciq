@@ -12,7 +12,7 @@ import org.openqa.selenium.Dimension;
 
 public class MainWirePageSteps {
 
-	private final static int OSX_TITLEBAR_HEIGHT = 23;
+	private final static int OSX_TITLEBAR_HEIGHT = 24;
 
 	private final OSXPagesCollection osxPagesCollection = OSXPagesCollection
 			.getInstance();
@@ -129,7 +129,7 @@ public class MainWirePageSteps {
 	}
 
 	/**
-	 * Verifies wether the app is in minimum size or not
+	 * Verifies whether the app is in minimum size or not
 	 *
 	 * @step. ^I verify app is in minimum size$
 	 *

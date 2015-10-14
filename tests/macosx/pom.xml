@@ -31,6 +31,7 @@
         <com.wire.chromedriver.path>/Applications/chromedriver</com.wire.chromedriver.path>
         <com.wire.driver.timeout.seconds>10</com.wire.driver.timeout.seconds>
         <com.wire.environment>Staging</com.wire.environment>
+        <com.wire.environment.url>https://wire-webapp-staging.zinfra.io/</com.wire.environment.url>
         <pictureResultsPath>target</pictureResultsPath>
     </properties>
 
@@ -161,6 +162,7 @@
                     <includes>
                         <include>**/${TestRun}.java</include>
                     </includes>
+                    <disableXmlReport>true</disableXmlReport>
                     <argLine>-Djava.library.path=../common/native_lib</argLine>
                     <systemPropertyVariables>
                         <java.awt.headless>false</java.awt.headless>

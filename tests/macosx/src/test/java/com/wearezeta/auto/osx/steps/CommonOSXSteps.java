@@ -14,6 +14,7 @@ import com.wearezeta.auto.common.driver.ZetaOSXWebAppDriver;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.clearAppData;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.getSizeOfAppInMB;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.killAllApps;
@@ -23,8 +24,8 @@ import com.wearezeta.auto.osx.common.OSXExecutionContext;
 
 import static com.wearezeta.auto.osx.common.OSXExecutionContext.APPIUM_HUB_URL;
 import static com.wearezeta.auto.osx.common.OSXExecutionContext.WIRE_APP_PATH;
-import com.wearezeta.auto.osx.locators.OSXLocators;
 
+import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.osx.MainWirePage;
 import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
@@ -53,12 +54,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
+
 import org.apache.commons.collections.IteratorUtils;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertEquals;
-import org.openqa.selenium.By;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.logging.LogEntry;
@@ -73,9 +76,9 @@ public class CommonOSXSteps {
 
 	private static final String DEFAULT_USER_PICTURE = "/images/aqaPictureContact600_800.jpg";
 	private static final int WRAPPER_STARTUP_TIMEOUT_SECONDS = 30;
-	private static final String DEFAULT_ENVIRONMENT = "Staging";// TODO use
-																// execution
-																// context
+	// TODO: use execution context
+	@SuppressWarnings("unused")
+	private static final String DEFAULT_ENVIRONMENT = "Staging";
 
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 
@@ -97,6 +100,7 @@ public class CommonOSXSteps {
 		options.addArguments("use-fake-device-for-media-stream");
 		// allow skipping the security prompt for sharing the media device
 		options.addArguments("use-fake-ui-for-media-stream");
+		options.addArguments("env=" + OSXExecutionContext.ENV_URL);
 		options.setBinary(WIRE_APP_PATH + OSXExecutionContext.ELECTRON_SUFFIX);
 		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 		capabilities.setCapability("platformName",
@@ -195,8 +199,6 @@ public class CommonOSXSteps {
 		osxDriver.navigate().to(WIRE_APP_PATH);// activate app
 		waitForAppStartup(osxDriver);
 		mainWirePage.focusApp();
-		waitForWebappLoaded(webappDriver);
-		mainWirePage.switchEnvironment(DEFAULT_ENVIRONMENT);
 		waitForWebappLoaded(webappDriver);
 		webappPagesCollection
 				.setFirstPage(new RegistrationPage(webDriverFuture));

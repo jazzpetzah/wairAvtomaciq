@@ -5,9 +5,7 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.ElementNotVisibleException;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -301,19 +299,13 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public void doShortSwipeDown() throws Exception {
-		final Point coords = content.getLocation();
-		final Dimension elementSize = content.getSize();
-		this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y,
-				coords.x + elementSize.width / 2,
-				coords.y + elementSize.height / 10, 500);
+		DriverUtils.swipeElementPointToPoint(getDriver(), content, 500, 15, 20,
+				15, 30);
 	}
 
 	public void doLongSwipeDown() throws Exception {
-		final Point coords = content.getLocation();
-		final Dimension elementSize = content.getSize();
-		this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y,
-				coords.x + elementSize.width / 2,
-				coords.y + elementSize.height / 4 * 3, 2000);
+		DriverUtils.swipeElementPointToPoint(getDriver(), content, 1000, 15,
+				15, 15, 180);
 	}
 
 	public void tapOpenConversationButton() {
@@ -352,5 +344,15 @@ public class PeoplePickerPage extends AndroidPage {
 
 	public void tapCameraButton() {
 		quickMenuCameraButton.click();
+	}
+
+	public boolean isCallButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idQuickMenuCallButton));
+	}
+
+	public boolean isSendImageButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idQuickMenuCameraButton));
 	}
 }

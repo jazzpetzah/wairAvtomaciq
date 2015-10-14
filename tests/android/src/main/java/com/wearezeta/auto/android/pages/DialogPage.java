@@ -19,7 +19,6 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import android.graphics.Point;
 
@@ -277,14 +276,13 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void swipeOnCursorInput() throws Exception {
-		// FIXME: Scroll to the bottom if cursor input is not visible
-		tapOnCursorFrame();
-		this.hideKeyboard();
-
-		getWait().until(ExpectedConditions.elementToBeClickable(cursorArea));
 		final By cursorLocator = By.id(idCursorArea);
 		int ntry = 1;
 		do {
+			// FIXME: Scroll to the bottom if cursor input is not visible
+			tapOnCursorFrame();
+			this.hideKeyboard();
+
 			DriverUtils.swipeRight(this.getDriver(), cursorArea,
 					DEFAULT_SWIPE_TIME);
 			final int currentCursorOffset = getDriver()
@@ -451,10 +449,11 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void confirm() throws Exception {
+		final By locator = By.xpath(xpathConfirmOKButton);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 		assert DriverUtils.waitUntilElementClickable(getDriver(), okButton);
 		okButton.click();
-		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.xpath(xpathConfirmOKButton));
+		assert DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
 	}
 
 	public void drawSketchOnImage() throws Exception {
@@ -802,19 +801,25 @@ public class DialogPage extends AndroidPage {
 	// NOTE: visible
 	public void tapDialogPageBottom() throws Exception {
 		this.hideKeyboard();
-		this.swipeByCoordinates(1000, 50, 80, 50, 60);
+
+		// Close cursor if it is currently opened
+		final By closeCursorBtn = By.id(DialogPage.idCursorCloseButton);
+		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				closeCursorBtn, 1)) {
+			getDriver().findElement(closeCursorBtn).click();
+		}
+
 		DriverUtils.waitUntilLocatorDissapears(getDriver(), By.id(idCursorBtn),
 				5);
 		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idCursorFrame));
+				By.id(idCursorFrame), 1);
 		tapOnCursorFrame();
 		this.hideKeyboard();
-		if (!DriverUtils
-				.isElementPresentAndDisplayed(getDriver(), cursorBtnImg)) {
+		if (!DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.id(idCursorBtnImg), 1)) {
 			tapOnCursorFrame();
 			this.hideKeyboard();
 		}
-		Thread.sleep(500); // fix for scrolling animation
 	}
 
 	public boolean waitUntilYoutubePlayButtonVisible() throws Exception {

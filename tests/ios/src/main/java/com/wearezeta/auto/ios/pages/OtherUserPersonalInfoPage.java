@@ -39,11 +39,14 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.DialogInfoPage.xpathArchiveButton)
 	private WebElement archiveButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.ContactListPage.xpathDeleteConversationButton)
+	@FindBy(how = How.XPATH, using = IOSLocators.ConversationActionMenu.xpathDeleteConversationButton)
 	private WebElement deleteButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.DialogInfoPage.xpathConfirmDeleteButton)
+	@FindBy(how = How.XPATH, using = IOSLocators.ConversationActionMenu.xpathConfirmDeleteButton)
 	private WebElement confirmDeleteButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.ConversationActionMenu.nameAlsoLeaveCheckerButton)
+	private WebElement alsoLeaveButton;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherPersonalInfoPageNameField)
 	private WebElement nameField;
@@ -102,6 +105,11 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 	public void clickConfirmDeleteButton() throws Exception {
 		DriverUtils.waitUntilElementClickable(getDriver(), confirmDeleteButton);
 		confirmDeleteButton.click();
+	}
+	
+	public void clickAlsoLeaveButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), alsoLeaveButton);
+		alsoLeaveButton.click();
 	}
 
 	public IOSPage leavePageToGroupInfoPage() throws Exception {

@@ -62,7 +62,7 @@ Feature: Conversation List
     When I open conversation with <Contact>
     And I click menu bar item "Conversation" and menu item "Silence"
     Then I see that conversation <Contact> is muted
-    When I click menu bar item "Conversation" and menu item "Notify"
+    When I click menu bar item "Conversation" and menu item "Silence"
     Then I see that conversation <Contact> is not muted
 
     Examples: 
@@ -117,7 +117,7 @@ Feature: Conversation List
     When I open conversation with <ChatName>
     And I click menu bar item "Conversation" and menu item "Silence"
     Then I see that conversation <ChatName> is muted
-    When I click menu bar item "Conversation" and menu item "Notify"
+    When I click menu bar item "Conversation" and menu item "Silence"
     Then I see that conversation <ChatName> is not muted
 
     Examples: 
@@ -370,3 +370,24 @@ Feature: Conversation List
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2  | Contact3  | ChatName  |
       | user1Email | user1Password | user1Name | user2Name  | user3Name | user4Name | GroupChat |
+
+
+  @smoke @id3502
+  Scenario Outline: Use Gmail contacts import on registration
+    Given There are 1 users where <Name> is me
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contacts Upload dialog
+    And I click button to import Gmail Contacts
+    And I see Google login popup
+    And I enter email "smoketester.wire@gmail.com" at google login
+    And I click next at google login if present
+    And I enter password "aqa123456" at google login
+    And I click sign in at google login
+    And I click approve at google login if present
+    Then I see more than 5 suggestions in people picker
+
+
+    Examples: 
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |

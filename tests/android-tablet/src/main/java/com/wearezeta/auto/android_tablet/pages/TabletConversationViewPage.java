@@ -69,7 +69,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 	}
 
 	private DialogPage getDialogPage() throws Exception {
-		return (DialogPage) this.getAndroidPageInstance(DialogPage.class);
+		return this.getAndroidPageInstance(DialogPage.class);
 	}
 
 	public boolean waitUntilVisible() throws Exception {
@@ -95,7 +95,10 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
-	public void tapTextInput() {
+	public void tapTextInput() throws Exception {
+		// FIXME: Scroll to the bottom if cursor input is not visible
+		this.scrollToTheBottom();
+
 		caret.click();
 	}
 
@@ -134,8 +137,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
 	public void tapShowInstrumentsButton() throws Exception {
 		// FIXME: Workaround for incorrectly positioned cursor
-		getDialogPage().cursorFrame.click();
-		this.hideKeyboard();
+		scrollToTheBottom();
 
 		showToolsButton.click();
 	}
@@ -174,13 +176,6 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 	}
 
 	public void scrollToTheBottom() throws Exception {
-		// Workaround for a bug when cursor tools are not closed automatically
-		// in landscape
-		final By closeCursorBtn = By.id(DialogPage.idCursorCloseButton);
-		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				closeCursorBtn, 1)) {
-			getDriver().findElement(closeCursorBtn).click();
-		}
 		getDialogPage().tapDialogPageBottom();
 	}
 
@@ -263,5 +258,14 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
 	public void tapGiphyButton() throws Exception {
 		this.getDriver().findElement(By.id(giphyPreviewButtonId)).click();
+	}
+
+	public void tapSketchButton() throws Exception {
+		getDialogPage().tapSketchBtn();
+	}
+
+	public Optional<BufferedImage> getImageScreenshotInFullScreen()
+			throws Exception {
+		return getDialogPage().getLastImageInFullScreen();
 	}
 }
