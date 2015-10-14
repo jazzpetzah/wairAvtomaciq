@@ -10,11 +10,13 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.pages.WebPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
+
 import java.util.LinkedList;
 import java.util.concurrent.Callable;
 
 public class GoogleLoginPage extends WebPage {
 
+	@SuppressWarnings("unused")
 	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
 			.getInstance();
 

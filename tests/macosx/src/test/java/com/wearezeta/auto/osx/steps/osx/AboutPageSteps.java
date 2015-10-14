@@ -3,8 +3,8 @@ package com.wearezeta.auto.osx.steps.osx;
 import com.wearezeta.auto.osx.pages.osx.AboutPage;
 import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
-import cucumber.api.java.en.Then;
 
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import static org.junit.Assert.assertTrue;
 
@@ -12,6 +12,7 @@ public class AboutPageSteps {
 
 	private final OSXPagesCollection osxPagesCollection = OSXPagesCollection
 			.getInstance();
+	@SuppressWarnings("unused")
 	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
 			.getInstance();
 
