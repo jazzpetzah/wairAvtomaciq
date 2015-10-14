@@ -377,9 +377,9 @@ Feature: Conversation View
     And I tap Show Tools button on conversation view page
     And I tap Sketch button on conversation view page
     And I draw a sketch with <NumColors> colors on Sketch page
-    And I tap Send button on Sketch page
+    When I tap Send button on Sketch page
     Then I see a new picture in the conversation view
-    When I tap the new picture in the conversation view
+    And I tap the new picture in the conversation view
 
     Examples:
       | Name      | Contact1  | NumColors |
