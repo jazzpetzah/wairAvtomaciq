@@ -590,4 +590,29 @@ public class PeoplePickerPageSteps {
 			throws Throwable {
 		getPeoplePickerPage().tapCameraButton();
 	}
+
+	/**
+	 * Starts a call by clicking the call action button
+	 * 
+	 * @step. ^I click Call action button on People picker page$
+	 * @throws Throwable
+	 */
+	@When("^I click Call action button on People picker page$")
+	public void IClickCallActionButtonOnPeoplePickerPage() throws Throwable {
+		getPeoplePickerPage().tapCallButton();
+	}
+
+
+	/**
+	 * Action buttons disappear when contact gets unchecked from search
+	 * 
+	 * @step. ^I see action buttons disappear from People Picker page$
+	 * @throws Exception
+	 */
+	@Then("^I see action buttons disappear from People Picker page$")
+	public void ISeeActionButtonsDisappearFromPeoplePickerPage()
+			throws Exception {
+		getPeoplePickerPage()
+				.waitUntilOpenOrCreateConversationButtonIsInvisible();
+	}
 }

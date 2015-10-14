@@ -30,6 +30,10 @@ public class IOSCommonUtils {
 			NSDictionary rootDict = (NSDictionary) PropertyListParser
 					.parse(file);
 			clientBuild = rootDict.objectForKey("CFBundleVersion").toString();
+			String trackInfo = rootDict.objectForKey("WireBundleId").toString();
+			trackInfo = trackInfo.substring(trackInfo.indexOf("-") + 1, trackInfo.length());
+			clientBuild = trackInfo + "-" + clientBuild;
+			log.info("Got build number: " + clientBuild);
 			NSDictionary zcBuildInfo = (NSDictionary) rootDict
 					.objectForKey("ZCBuildInfo");
 			NSDictionary zmessagingDict = (NSDictionary) zcBuildInfo
