@@ -607,11 +607,11 @@ public class PeoplePickerPageSteps {
 	 * Action buttons disappear when contact gets unchecked from search
 	 * 
 	 * @step. ^I see action buttons disappear from People Picker page$
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@Then("^I see action buttons disappear from People Picker page$")
 	public void ISeeActionButtonsDisappearFromPeoplePickerPage()
-			throws Throwable {
+			throws Exception {
 		getPeoplePickerPage()
 				.waitUntilOpenOrCreateConversationButtonIsInvisible();
 	}

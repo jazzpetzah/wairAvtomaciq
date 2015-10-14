@@ -289,7 +289,7 @@ Feature: Search
     And I wait until Top People list appears
     And I tap on <Contact1> in Top People
     Then I see action buttons appeared on People picker page
-    And I tap on <Contact1> in Top People
+    When I tap on <Contact1> in Top People
     Then I see action buttons disappear from People Picker page
 
     Examples: 
