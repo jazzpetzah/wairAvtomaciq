@@ -552,7 +552,7 @@ public class PeoplePickerPageSteps {
 				getPeoplePickerPage()
 						.waitUntilOpenOrCreateConversationButtonIsVisible());
 	}
-	
+
 	/**
 	 * Verify whether Open/Create Conversation button is visible
 	 * 
@@ -579,11 +579,11 @@ public class PeoplePickerPageSteps {
 			Assert.assertTrue(
 					String.format(
 							"%s Conversation button is still visible, but should be hidden",
-							expectedCaption), getPeoplePickerPage()
+							expectedCaption),
+					getPeoplePickerPage()
 							.waitUntilOpenOrCreateConversationButtonIsInvisible());
 		}
 	}
-
 
 	/**
 	 * Verify if Open, Call and Send image action buttons are visible
@@ -633,7 +633,6 @@ public class PeoplePickerPageSteps {
 	public void IClickCallActionButtonOnPeoplePickerPage() throws Throwable {
 		getPeoplePickerPage().tapCallButton();
 	}
-
 
 	/**
 	 * Action buttons disappear when contact gets unchecked from search
