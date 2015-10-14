@@ -255,3 +255,24 @@ Feature: Search
     Examples: 
       | Name      | Contact1  |
       | user1Name | user2Name |
+
+  @id3872 @staging
+  Scenario Outline: Verify starting a call with action button
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    Given I wait until <Contact1> exists in backend search results
+    When I open search by tap
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I enter "<Contact1>" into Search input on People Picker page
+    And I tap on user name found on People picker page <Contact1>
+    And I see call action button on People picker page
+    And I click Call action button on People picker page
+    Then I see call overlay
+    Then I see calling overlay Big bar
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
