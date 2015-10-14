@@ -590,4 +590,16 @@ public class PeoplePickerPageSteps {
 			throws Throwable {
 		getPeoplePickerPage().tapCameraButton();
 	}
+
+	/**
+	 * Starts a call by clicking the call action button
+	 * 
+	 * @step. ^I click Call action button on People picker page$
+	 * @throws Throwable
+	 */
+	@When("^I click Call action button on People picker page$")
+	public void IClickCallActionButtonOnPeoplePickerPage() throws Throwable {
+		getPeoplePickerPage().tapCallButton();
+	}
+
 }
