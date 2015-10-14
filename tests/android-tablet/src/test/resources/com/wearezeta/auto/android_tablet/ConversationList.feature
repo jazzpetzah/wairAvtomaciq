@@ -17,21 +17,18 @@ Feature: Conversation List
     When I select <ItemSilence> menu item on Single user popover
     And I tap Options button on Single user popover
     Then I see <ItemNotify> menu item on Single user popover
-    And I tap Show Details button on conversation view page
+    And I tap outside of Single user popover
     And I do not see the Single user popover
-    And I see the conversation <Contact> in my conversations list is silenced
-    And I tap the conversation <Contact>
-    And I see the conversation view
-    And I tap Show Tools button on conversation view page
+    Then I see the conversation <Contact> in my conversations list is silenced
     And I tap Show Details button on conversation view page
-    And I see the Single user popover
-    And I tap Options button on Single user popover
-    When I select <ItemNotify> menu item on Single user popover
+    Then I see the Single user popover
+    When I tap Options button on Single user popover
+    And I select <ItemNotify> menu item on Single user popover
     And I tap Options button on Single user popover
     Then I see <ItemSilence> menu item on Single user popover
-    And I tap Show Details button on conversation view page
-    And I do not see the Single user popover
-    And I see the conversation <Contact> in my conversations list is not silenced
+    When I tap outside of Single user popover
+    Then I do not see the Single user popover
+    Then I see the conversation <Contact> in my conversations list is not silenced
 
     Examples: 
       | Name      | Contact   | ItemSilence | ItemNotify |
@@ -54,21 +51,23 @@ Feature: Conversation List
     When I select <ItemSilence> menu item on Single user popover
     And I tap Options button on Single user popover
     Then I see <ItemNotify> menu item on Single user popover
-    And I tap Show Details button on conversation view page
+    And I tap outside of Single user popover
     And I do not see the Single user popover
-    And I see the conversation <Contact> in my conversations list is silenced
-    And I tap the conversation <Contact>
+    When I swipe right to show the conversations list
+    Then I see the conversation <Contact> in my conversations list is silenced
+    When I tap the conversation <Contact>
     And I see the conversation view
     And I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
-    And I see the Single user popover
-    And I tap Options button on Single user popover
-    When I select <ItemNotify> menu item on Single user popover
+    Then I see the Single user popover
+    When I tap Options button on Single user popover
+    And I select <ItemNotify> menu item on Single user popover
     And I tap Options button on Single user popover
     Then I see <ItemSilence> menu item on Single user popover
-    And I tap Show Details button on conversation view page
-    And I do not see the Single user popover
-    And I see the conversation <Contact> in my conversations list is not silenced
+    When I tap outside of Single user popover
+    Then I do not see the Single user popover
+    When I swipe right to show the conversations list
+    Then I see the conversation <Contact> in my conversations list is not silenced
 
     Examples: 
       | Name      | Contact   | ItemSilence | ItemNotify |
