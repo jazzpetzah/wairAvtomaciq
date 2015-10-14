@@ -171,10 +171,10 @@ public class PerformanceSteps {
 	@When("^I start test cycle for (\\d+) minutes? with messages received from (.*)")
 	public void WhenIStartTestCycleForNMinutes(int timeout, String fromContact)
 			throws Exception {
-		/*if (getDialogPage().waitForCursorInputVisible()) {
-			DialogPageSteps steps = new DialogPageSteps();
-			steps.INavigateToConversationsView();
-		}*/
+		if (getDialogPage().waitForCursorInputVisible()) {
+			GroupChatPageSteps steps = new GroupChatPageSteps();
+			steps.IReturnToChatList();
+		}
 		waitUntilConversationsListIsFullyLoaded(10);
 		final String destConvoName = usrMgr.findUserByNameOrNameAlias(
 				fromContact).getName();
