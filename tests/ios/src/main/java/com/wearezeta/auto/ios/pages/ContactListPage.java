@@ -168,10 +168,6 @@ public class ContactListPage extends IOSPage {
 
 	public IOSPage tapOnName(String name) throws Exception {
 		WebElement el = findNameInContactList(name);
-		if (el == null) {
-			this.minimizeApplication(3);
-			el = findNameInContactList(name);
-		}
 		boolean clickableGlitch = false;
 		try {
 			this.getWait().until(ExpectedConditions.elementToBeClickable(el));
