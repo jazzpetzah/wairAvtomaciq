@@ -552,6 +552,38 @@ public class PeoplePickerPageSteps {
 				getPeoplePickerPage()
 						.waitUntilOpenOrCreateConversationButtonIsVisible());
 	}
+	
+	/**
+	 * Verify whether Open/Create Conversation button is visible
+	 * 
+	 * @step. ^I (do not )?see (?:the |\\s*)(Open|Create) Conversation button on
+	 *        [Pp]eople [Pp]icker page$"
+	 * 
+	 * @param shouldBeVisible
+	 *            equals to null if the button should be visible
+	 * @param expectedCaption
+	 *            either 'Open' or 'Create'
+	 * @throws Exception
+	 */
+	@Then("^I (do not )?see (?:the |\\s*)(Open|Create) Conversation button on [Pp]eople [Pp]icker page$")
+	public void ISeeOpenConversationButton(String shouldBeVisible,
+			String expectedCaption) throws Exception {
+		if (shouldBeVisible == null) {
+			Assert.assertTrue(
+					String.format("%s Conversation button is not visible",
+							expectedCaption),
+					getPeoplePickerPage()
+							.waitUntilOpenOrCreateConversationButtonIsVisible(
+									expectedCaption));
+		} else {
+			Assert.assertTrue(
+					String.format(
+							"%s Conversation button is still visible, but should be hidden",
+							expectedCaption), getPeoplePickerPage()
+							.waitUntilOpenOrCreateConversationButtonIsInvisible());
+		}
+	}
+
 
 	/**
 	 * Verify if Open, Call and Send image action buttons are visible
