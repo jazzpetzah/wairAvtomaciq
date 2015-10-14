@@ -800,19 +800,25 @@ public class DialogPage extends AndroidPage {
 	// NOTE: visible
 	public void tapDialogPageBottom() throws Exception {
 		this.hideKeyboard();
-		this.swipeByCoordinates(1000, 50, 80, 50, 60);
+
+		// Close cursor if it is currently opened
+		final By closeCursorBtn = By.id(DialogPage.idCursorCloseButton);
+		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				closeCursorBtn, 1)) {
+			getDriver().findElement(closeCursorBtn).click();
+		}
+
 		DriverUtils.waitUntilLocatorDissapears(getDriver(), By.id(idCursorBtn),
 				5);
 		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idCursorFrame));
+				By.id(idCursorFrame), 1);
 		tapOnCursorFrame();
 		this.hideKeyboard();
-		if (!DriverUtils
-				.isElementPresentAndDisplayed(getDriver(), cursorBtnImg)) {
+		if (!DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.id(idCursorBtnImg), 1)) {
 			tapOnCursorFrame();
 			this.hideKeyboard();
 		}
-		Thread.sleep(500); // fix for scrolling animation
 	}
 
 	public boolean waitUntilYoutubePlayButtonVisible() throws Exception {
