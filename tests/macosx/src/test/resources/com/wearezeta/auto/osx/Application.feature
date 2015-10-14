@@ -30,7 +30,7 @@ Feature: Application
       | user1Email | user1Password | user1Name |
 
   @smoke @id3995
-  Scenario Outline: Verify size of sign in screen window
+  Scenario: Verify size of sign in screen window
     When I ensure initial positioning
     Then I verify app width is 1024 px and height is 768 px
     And I resize the app to the max by hand
