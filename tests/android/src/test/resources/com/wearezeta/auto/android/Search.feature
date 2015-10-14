@@ -248,7 +248,6 @@ Feature: Search
     And I see Send image action button on People picker page
     And I click Send image action button on People picker page
     And I press "Gallery" button
-    And I select picture for dialog
     And I press "Confirm" button
     Then I see new photo in the dialog
 
@@ -272,6 +271,25 @@ Feature: Search
     And I click Call action button on People picker page
     Then I see call overlay
     Then I see calling overlay Big bar
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
+
+  @id3868 @staging
+  Scenario Outline: Verify action buttons disappear by unchecking the avatar / deleting token from search field
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    Given I wait until <Contact1> exists in backend search results
+    When I open search by tap
+    And I see People picker page
+    And I wait until Top People list appears
+    And I tap on <Contact1> in Top People
+    Then I see action buttons appeared on People picker page
+    When I tap on <Contact1> in Top People
+    Then I see action buttons disappear from People Picker page
 
     Examples: 
       | Name      | Contact1  |

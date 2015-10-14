@@ -476,7 +476,6 @@ public class AndroidCommonUtils extends CommonUtils {
 		String output = getAdbOutput("shell pm list packages -3 "
 				+ androidPackage);
 		return output.contains(androidPackage);
-
 	}
 
 	private static final String ADB_KEYBOARD_PACKAGE = "com.android.adbkeyboard";
@@ -486,7 +485,17 @@ public class AndroidCommonUtils extends CommonUtils {
 
 	public static void installAdbKeyboard() throws Exception {
 		if (!isPackageInstalled(ADB_KEYBOARD_PACKAGE)) {
-			executeAdb(String.format("install %s/ADBKeyBoard.apk",
+			executeAdb(String.format("install %s/android/ADBKeyBoard.apk",
+					getAndroidToolsPathFromConfig(AndroidCommonUtils.class)));
+		}
+	}
+
+	private static final String TESTING_GALLERY_PACKAGE_ID = "com.wire.testinggallery";
+
+	public static void installTestingGalleryApp() throws Exception {
+		if (!isPackageInstalled(TESTING_GALLERY_PACKAGE_ID)) {
+			executeAdb(String.format(
+					"install %s/android/testing_gallery-debug.apk",
 					getAndroidToolsPathFromConfig(AndroidCommonUtils.class)));
 		}
 	}
@@ -624,5 +633,43 @@ public class AndroidCommonUtils extends CommonUtils {
 
 	public static long getTxBytes(String packageId) throws Exception {
 		return getNetworkStatValue(packageId, 9);
+	}
+
+	public static String getBundleIdFromAPK(String path) throws Exception {
+		assert new File(path).exists() : String.format(
+				"The file %s does not exist on local file system", path);
+		final String cmdLine = String.format("aapt dump badging \"%s\"", path);
+		final Process process = Runtime.getRuntime().exec(
+				new String[] { "/bin/bash", "-c", cmdLine });
+		if (process == null) {
+			throw new RuntimeException(String.format(
+					"Failed to execute command line '%s'", cmdLine));
+		}
+		String output = "";
+		BufferedReader in = null;
+		try {
+			in = new BufferedReader(new InputStreamReader(
+					process.getInputStream()));
+			final Pattern pattern = Pattern.compile("versionName='(.*)'");
+			Matcher matcher = null;
+			String s;
+			while ((s = in.readLine()) != null) {
+				output += s + '\n';
+				if (s.contains("r'versionName")) {
+					matcher = pattern.matcher(s);
+					if (matcher.find()) {
+						return matcher.group(1);
+					}
+				}
+			}
+			outputErrorStreamToLog(process.getErrorStream());
+		} finally {
+			if (in != null) {
+				in.close();
+			}
+		}
+		throw new AssertionError(String.format(
+				"Package id cannot be parsed from aapt output:\n%s",
+				output.trim()));
 	}
 }

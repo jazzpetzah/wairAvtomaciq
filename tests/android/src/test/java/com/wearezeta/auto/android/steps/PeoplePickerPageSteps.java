@@ -602,4 +602,17 @@ public class PeoplePickerPageSteps {
 		getPeoplePickerPage().tapCallButton();
 	}
 
+
+	/**
+	 * Action buttons disappear when contact gets unchecked from search
+	 * 
+	 * @step. ^I see action buttons disappear from People Picker page$
+	 * @throws Exception
+	 */
+	@Then("^I see action buttons disappear from People Picker page$")
+	public void ISeeActionButtonsDisappearFromPeoplePickerPage()
+			throws Exception {
+		getPeoplePickerPage()
+				.waitUntilOpenOrCreateConversationButtonIsInvisible();
+	}
 }

@@ -449,10 +449,11 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void confirm() throws Exception {
+		final By locator = By.xpath(xpathConfirmOKButton);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 		assert DriverUtils.waitUntilElementClickable(getDriver(), okButton);
 		okButton.click();
-		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.xpath(xpathConfirmOKButton));
+		assert DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
 	}
 
 	public void drawSketchOnImage() throws Exception {

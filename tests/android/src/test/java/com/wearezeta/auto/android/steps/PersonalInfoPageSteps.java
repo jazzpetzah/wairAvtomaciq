@@ -137,18 +137,6 @@ public class PersonalInfoPageSteps {
 	}
 
 	/**
-	 * Selects a picture from the gallery
-	 * 
-	 * @step. ^I select picture$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I select picture$")
-	public void WhenISelectPicture() throws Exception {
-		getPersonalInfoPage().selectFirstGalleryPhoto();
-	}
-
-	/**
 	 * Confirms the selected picture
 	 * 
 	 * @step. ^I press Confirm button$
