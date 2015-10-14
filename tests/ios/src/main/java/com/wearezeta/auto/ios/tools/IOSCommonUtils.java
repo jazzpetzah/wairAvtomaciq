@@ -31,8 +31,9 @@ public class IOSCommonUtils {
 					.parse(file);
 			clientBuild = rootDict.objectForKey("CFBundleVersion").toString();
 			String trackInfo = rootDict.objectForKey("WireBundleId").toString();
+			String majorVersion = rootDict.objectForKey("CFBundleShortVersionString").toString();
 			trackInfo = trackInfo.substring(trackInfo.indexOf("-") + 1, trackInfo.length());
-			clientBuild = trackInfo + "-" + clientBuild;
+			clientBuild = majorVersion + "." + clientBuild + "-" + trackInfo;
 			log.info("Got build number: " + clientBuild);
 			NSDictionary zcBuildInfo = (NSDictionary) rootDict
 					.objectForKey("ZCBuildInfo");
