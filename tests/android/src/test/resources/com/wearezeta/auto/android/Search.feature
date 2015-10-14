@@ -255,3 +255,22 @@ Feature: Search
     Examples: 
       | Name      | Contact1  |
       | user1Name | user2Name |
+
+  @id3868 @staging
+  Scenario Outline: Verify action buttons disappear by unchecking the avatar / deleting token from search field
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    Given I wait until <Contact1> exists in backend search results
+    When I open search by tap
+    And I see People picker page
+    And I wait until Top People list appears
+    And I tap on <Contact1> in Top People
+    Then I see action buttons appeared on People picker page
+    And I tap on <Contact1> in Top People
+    Then I see action buttons disappear from People Picker page
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
