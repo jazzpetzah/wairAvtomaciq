@@ -166,6 +166,18 @@ public class OtherUserPersonalInfoPageSteps {
 	public void IConfirmDelete() throws Exception {
 		getOtherUserPersonalInfoPage().clickConfirmDeleteButton();
 	}
+	
+	/**
+	 * Select Also Leave option on Delete conversation dialog
+	 * 
+	 * @step. ^I select Also Leave option on Delete conversation dialog$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I select Also Leave option on Delete conversation dialog$")
+	public void ISelectAlsoLeaveOptionOnDeleteDialog() throws Exception {
+		getOtherUserPersonalInfoPage().clickAlsoLeaveButton();
+	}
 
 	/**
 	 * Clicks on the Block button in the profile menu
