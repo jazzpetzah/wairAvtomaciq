@@ -628,4 +628,16 @@ public class ConversationViewPageSteps {
 	public void ITapGiphyButton() throws Exception {
 		getConversationViewPage().tapGiphyButton();
 	}
+	
+	/**
+	 * Tap Sketch button
+	 * 
+	 * @step. ^I tap Sketch button on [Cc]onversation view page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap Sketch button on [Cc]onversation view page$")
+	public void ITapSketchButton() throws Exception {
+		getConversationViewPage().tapSketchButton();
+	}
 }

@@ -90,10 +90,13 @@ public class CallingPageSteps {
 			getCallingOverlayPage().tapDismissButton();
 			break;
 		case MUTE:
-			getCallingOverlayPage().tapMuteButton();
+			getCallingOverlayPage().tapMuteMicButton();
 			break;
 		case SPEAKER:
 			getCallingOverlayPage().tapSpeakerButton();
+			break;
+		case IGNORE:
+			getCallingOverlayPage().tapIgnoreButton();
 			break;
 		default:
 			throw new IllegalStateException(String.format(
@@ -104,7 +107,7 @@ public class CallingPageSteps {
 	private Map<OverlayButton, BufferedImage> savedButtonStates = new HashMap<>();
 
 	private static enum OverlayButton {
-		ACCEPT, DISMISS, MUTE, SPEAKER;
+		ACCEPT, DISMISS, MUTE, SPEAKER, IGNORE;
 	}
 
 	private Optional<BufferedImage> getButtonStateScreenshot(OverlayButton btn)

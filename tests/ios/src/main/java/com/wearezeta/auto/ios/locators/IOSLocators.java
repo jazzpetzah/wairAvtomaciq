@@ -647,24 +647,24 @@ public final class IOSLocators {
 
 	public final class DialogInfoPage {
 		public static final String nameEllipsisMenuButton = "metaControllerRightButton";
-
 		public static final String xpathArchiveButton = "//UIAButton[@name='SILENCE']/preceding-sibling::UIAButton[@name='ARCHIVE']";
 
-		public static final String xpathConfirmDeleteButton = "//UIAButton[@name='CANCEL']/following-sibling::UIAButton[@name='DELETE']";
 	}
 
 	public final class ContactListPage {
 		public static final String nameOpenStartUI = "START A CONVERSATION";
 		public static final String nameSelfButton = "SelfButton";
 		public static final String xpathArchiveConversationButton = "//UIAButton[@name='ARCHIVE' and @visible='true']";
-		public static final String xpathDeleteConversationButton = "//UIAButton[@name='DELETE' and @visible='true']";
 		public static final String nameMuteCallButton = "MuteVoiceButton";
-
 		public static final String xpathFormatActionMenuConversationName = "//UIAStaticText[@name='ARCHIVE']/following-sibling::UIAStaticText[@name='%s']";
-
 		public static final String xpathFormatActionMenuXButton = "//UIAStaticText[@name='ARCHIVE']/following-sibling::UIAButton[@name='%s']";
-
 		public static final String xpathSpecificContactListCell = "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[@name='%s']";
+	}
+	
+	public final class ConversationActionMenu {
+		public static final String xpathDeleteConversationButton = "//UIAButton[@name='DELETE' and @visible='true']";
+		public static final String xpathConfirmDeleteButton = "//UIAButton[@name='CANCEL']/following-sibling::UIAButton[@name='DELETE']";
+		public static final String nameAlsoLeaveCheckerButton = "ALSO LEAVE THE CONVERSATION";
 	}
 
 	public final class RegistrationPage {

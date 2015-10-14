@@ -345,4 +345,14 @@ public class PeoplePickerPage extends AndroidPage {
 	public void tapCameraButton() {
 		quickMenuCameraButton.click();
 	}
+
+	public boolean isCallButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idQuickMenuCallButton));
+	}
+
+	public boolean isSendImageButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idQuickMenuCameraButton));
+	}
 }

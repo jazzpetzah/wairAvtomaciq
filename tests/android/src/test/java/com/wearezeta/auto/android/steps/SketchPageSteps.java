@@ -16,11 +16,11 @@ public class SketchPageSteps {
 			.getInstance();
 
 	private SketchPage getSketchPage() throws Exception {
-		return (SketchPage) pagesCollection.getPage(SketchPage.class);
+		return pagesCollection.getPage(SketchPage.class);
 	}
 
 	private DialogPage getDialogPage() throws Exception {
-		return (DialogPage) pagesCollection.getPage(DialogPage.class);
+		return pagesCollection.getPage(DialogPage.class);
 	}
 
 	/**
@@ -37,8 +37,7 @@ public class SketchPageSteps {
 		SketchPage page = getSketchPage();
 		for (int i = 0; i < numColors; i++) {
 			page.setColor(i);
-			int numLines = 3;
-			page.drawRandomLines(numLines);
+			page.drawRandomLines(1);
 		}
 	}
 
@@ -53,7 +52,7 @@ public class SketchPageSteps {
 	 */
 	@When("^I remember what my sketch looks like$")
 	public void WhenIRememberWhatMySketchLooksLike() throws Exception {
-		sketch = getSketchPage().screenshotCanvas().orElseThrow(
+		sketch = getSketchPage().getCanvasScreenshot().orElseThrow(
 				AssertionError::new);
 	}
 
@@ -66,7 +65,7 @@ public class SketchPageSteps {
 	 */
 	@When("^I send my sketch$")
 	public void WhenISendMySketch() throws Exception {
-		getSketchPage().sendSketch();
+		getSketchPage().tapSendButton();
 	}
 
 	/**

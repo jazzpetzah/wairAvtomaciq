@@ -458,7 +458,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id2405
+  @obsolete @id2405
   Scenario Outline: Play/pause Youtube media link from the media bar [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

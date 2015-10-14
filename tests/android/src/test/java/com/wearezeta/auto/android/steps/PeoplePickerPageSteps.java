@@ -181,6 +181,7 @@ public class PeoplePickerPageSteps {
 		searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria,
 				FindBy.PHONENUMBER_ALIAS);
 		getPeoplePickerPage().typeTextInPeopleSearch(searchCriteria);
+		Thread.sleep(200);
 	}
 
 	/**
@@ -511,4 +512,94 @@ public class PeoplePickerPageSteps {
 		Assert.assertTrue("Top People list is not visible",
 				getPeoplePickerPage().isTopPeopleHeaderVisible());
 	}
+
+	/**
+	 * Verify that Call action button is visible
+	 * 
+	 * @step. ^I see call action button on People picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see call action button on People picker page$")
+	public void ISeeCallActionButtonOnPeoplePickerPage() throws Exception {
+		Assert.assertTrue("Call action button is not visible",
+				getPeoplePickerPage().isCallButtonVisible());
+	}
+
+	/**
+	 * Verify that Send image action button is visible
+	 * 
+	 * @step. ^I see Send image action button on People picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see Send image action button on People picker page$")
+	public void ISeeSendImageActionButtonOnPeoplePickerPage() throws Exception {
+		Assert.assertTrue("Send image action button is not visible",
+				getPeoplePickerPage().isSendImageButtonVisible());
+	}
+
+	/**
+	 * Verify if Open conversation button is visible
+	 * 
+	 * @step. ^I see open conversation action button on People picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see open conversation action button on People picker page$")
+	public void ISeeOpenConversationActionButton() throws Exception {
+		Assert.assertTrue("Open conversation button is not visible",
+				getPeoplePickerPage()
+						.waitUntilOpenOrCreateConversationButtonIsVisible());
+	}
+
+	/**
+	 * Verify if Open, Call and Send image action buttons are visible
+	 * 
+	 * @step. ^I see action buttons appeared on People picker page
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see action buttons appeared on People picker page$")
+	public void ISeeActionButttonsAppearedOnPeoplePickerPage() throws Exception {
+		ISeeOpenConversationActionButton();
+		ISeeCallActionButtonOnPeoplePickerPage();
+		ISeeSendImageActionButtonOnPeoplePickerPage();
+	}
+
+	/**
+	 * Opens the conversation by clicking the conversation action button
+	 * 
+	 * @step. ^I click on open conversation action button on People picker page$
+	 * @throws Throwable
+	 */
+	@When("^I click on open conversation action button on People picker page$")
+	public void IClickOnOpenConversationActionButtonOnPeoplePickerPage()
+			throws Throwable {
+		getPeoplePickerPage().tapOpenConversationButton();
+	}
+
+	/**
+	 * Opens the picture gallery by clicking the send image action button
+	 * 
+	 * @step. ^I click Send image action button on People picker page$
+	 * @throws Throwable
+	 */
+	@When("^I click Send image action button on People picker page$")
+	public void IClickSendImageActionButtonOnPeoplePickerPage()
+			throws Throwable {
+		getPeoplePickerPage().tapCameraButton();
+	}
+
+	/**
+	 * Starts a call by clicking the call action button
+	 * 
+	 * @step. ^I click Call action button on People picker page$
+	 * @throws Throwable
+	 */
+	@When("^I click Call action button on People picker page$")
+	public void IClickCallActionButtonOnPeoplePickerPage() throws Throwable {
+		getPeoplePickerPage().tapCallButton();
+	}
+
 }
