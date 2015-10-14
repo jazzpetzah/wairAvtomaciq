@@ -289,7 +289,6 @@ Feature: Conversation View
     And I swipe left on text input in the conversation view
     When I tap Add Picture button in the conversation view
     And I tap Gallery button in the conversation view
-    And I select a picture from the Gallery
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
 
@@ -310,7 +309,6 @@ Feature: Conversation View
     And I swipe left on text input in the conversation view
     When I tap Add Picture button in the conversation view
     And I tap Gallery button in the conversation view
-    And I select a picture from the Gallery
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
 

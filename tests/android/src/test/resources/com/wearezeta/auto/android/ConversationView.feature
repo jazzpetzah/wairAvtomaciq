@@ -174,8 +174,6 @@ Feature: Conversation View
     And I press Add Picture button
     And I press "Gallery" button
     And I rotate UI to portrait
-    And I wait for 1 second
-    And I select picture for dialog
     And I press "Confirm" button
     Then I see new photo in the dialog
 
@@ -195,8 +193,6 @@ Feature: Conversation View
     And I press Add Picture button
     And I press "Gallery" button
     When I rotate UI to landscape
-    And I wait for 1 second
-    And I select picture for dialog
     And I press "Confirm" button
     Then I see new photo in the dialog
 
@@ -215,7 +211,6 @@ Feature: Conversation View
     And I swipe on text input
     And I press Add Picture button
     And I press "Gallery" button
-    And I select picture for dialog
     And I press "Confirm" button
     Then I see new photo in the dialog
     And I select last photo in dialog
@@ -308,8 +303,6 @@ Feature: Conversation View
     And I press Add Picture button
     And I press "Gallery" button
     And I rotate UI to portrait
-    And I wait for 1 second
-    And I select picture for dialog
     And I press "Sketch Image Paint" button
     And I draw a sketch on image with <NumColors> colors
     And I remember what my sketch looks like

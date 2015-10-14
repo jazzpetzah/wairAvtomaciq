@@ -248,7 +248,6 @@ Feature: Search
     And I see Send image action button on People picker page
     And I click Send image action button on People picker page
     And I press "Gallery" button
-    And I select picture for dialog
     And I press "Confirm" button
     Then I see new photo in the dialog
 

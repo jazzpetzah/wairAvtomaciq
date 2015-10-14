@@ -443,18 +443,6 @@ public class DialogPageSteps {
 	}
 
 	/**
-	 * Selects the first picture from the gallery to send in the dialog
-	 * 
-	 * @step. ^I select picture for dialog$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I select picture for dialog$")
-	public void WhenISelectPicture() throws Exception {
-		getDialogPage().selectFirstGalleryPhoto();
-	}
-
-	/**
 	 * Used to check that a ping has been sent Not very clear what this step
 	 * does
 	 * 

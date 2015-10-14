@@ -118,6 +118,7 @@ public class CommonAndroidSteps {
 			AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
 			AndroidCommonUtils.disableHints();
 			AndroidCommonUtils.disableHockeyUpdates();
+			AndroidCommonUtils.installTestingGalleryApp();
 			String backendJSON = AndroidCommonUtils
 					.createBackendJSON(CommonUtils.getBackendType(this
 							.getClass()));
