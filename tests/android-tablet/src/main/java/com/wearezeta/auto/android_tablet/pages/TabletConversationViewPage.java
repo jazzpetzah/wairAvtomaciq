@@ -97,8 +97,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
 	public void tapTextInput() throws Exception {
 		// FIXME: Scroll to the bottom if cursor input is not visible
-		getDialogPage().tapOnCursorFrame();
-		this.hideKeyboard();
+		this.scrollToTheBottom();
 
 		caret.click();
 	}
@@ -138,8 +137,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
 	public void tapShowInstrumentsButton() throws Exception {
 		// FIXME: Workaround for incorrectly positioned cursor
-		getDialogPage().cursorFrame.click();
-		this.hideKeyboard();
+		scrollToTheBottom();
 
 		showToolsButton.click();
 	}
@@ -178,13 +176,6 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 	}
 
 	public void scrollToTheBottom() throws Exception {
-		// Workaround for a bug when cursor tools are not closed automatically
-		// in landscape
-		final By closeCursorBtn = By.id(DialogPage.idCursorCloseButton);
-		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				closeCursorBtn, 1)) {
-			getDriver().findElement(closeCursorBtn).click();
-		}
 		getDialogPage().tapDialogPageBottom();
 	}
 
