@@ -1,16 +1,5 @@
 package com.wearezeta.auto.android.pages;
 
-import java.util.List;
-import java.util.concurrent.Future;
-
-import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.ScreenOrientation;
-import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-
 import android.view.KeyEvent;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.common.BasePage;
@@ -106,10 +95,6 @@ public abstract class AndroidPage extends BasePage {
 		// Wait for animation
 		Thread.sleep(1000);
 		// this.getDriver().navigate().back();
-	}
-
-	public void sendKeyEvent(int AndroidKeyEvent) throws Exception {
-		getDriver().sendKeyEvent(AndroidKeyEvent);
 	}
 
 	public void rotateLandscape() throws Exception {
