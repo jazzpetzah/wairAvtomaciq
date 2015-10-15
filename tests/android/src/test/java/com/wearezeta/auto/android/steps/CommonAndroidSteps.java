@@ -732,7 +732,7 @@ public class CommonAndroidSteps {
 		commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count,
 				myNameAlias);
 		GivenUserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
-        RemoteProcessIPC.startProcesses(count - 1);
+        RemoteProcessIPC.startDevices(count - 1);
 	}
 
 	/**
