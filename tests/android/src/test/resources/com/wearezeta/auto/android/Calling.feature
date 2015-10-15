@@ -327,12 +327,11 @@ Feature: Calling
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
+    And I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
     And <Contact3> calls <GroupChatName> using <CallBackend>
     And <Contact4> calls <GroupChatName> using <CallBackend>
-    Then I see call overlay
     When I answer the call from the overlay bar
     Then I do not see join group call overlay
     And I see calling overlay Big bar
