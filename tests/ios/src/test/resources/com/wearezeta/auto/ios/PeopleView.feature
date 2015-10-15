@@ -439,7 +439,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
-  @regression @id3972
+  @regression @rc @id3972
   Scenario Outline: Verify removing the content and leaving from the group conversation via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -465,3 +465,59 @@ Feature: People View
     Examples: 
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
+
+  @staging @rc @id3971
+  Scenario Outline: Verify removing the content from the group conversation via participant view
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Name> sent message <Message> to conversation <GroupChatName>
+    Given Contact <Name> sends image <Image> to group conversation <GroupChatName>
+    Given Contact <Name> ping conversation <GroupChatName>
+    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I open group conversation details
+    And I press conversation menu button
+    And I click delete menu button
+    And I confirm delete conversation content
+    And I return to the chat list
+    And I open search by taping on it
+    And I input conversation name <GroupChatName> in Search input
+    Then I see conversation <GroupChatName> is presented in Search results
+    When I tap on conversation <GroupChatName> in search result
+    Then I see group chat page with users <Contact1>,<Contact2>
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
+      | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
+
+  @staging @rc @id3973
+  Scenario Outline: Verify removing the content from 1-to-1 via participant view
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given User <Name> sent message <Message> to conversation <Contact1>
+    Given Contact <Contact1> sends image <Image> to single user conversation <Name>
+    Given Contact <Name> ping conversation <Contact1>
+    Given User <Contact1> sent message <Message> to conversation <Name>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I see only 5 messages
+    And I open conversation details
+    And I press conversation menu button
+    And I click delete menu button
+    And I confirm delete conversation content
+    And I return to the chat list
+    And I open search by taping on it
+    And I fill in Search field user name <Contact1>
+    And I see user <Contact1> found on People picker page
+    And I tap on connected user <Contact1> on People picker page
+    And I click open conversation button on People picker page
+    Then I see the only message in dialog is system message CONNECTED TO <Contact1>
+
+    Examples: 
+      | Name      | Contact1  | Message | GroupChatName | Image       |
+      | user1Name | user2Name | testing | ForDeletion   | testing.jpg |
