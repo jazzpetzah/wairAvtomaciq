@@ -416,7 +416,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user3Name | OnlyConnected |
 
-  @staging @id3957
+  @regression @id3957
   Scenario Outline: Verify that deleted conversation via participant view isn't going to archive
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -439,7 +439,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
-  @staging @id3972
+  @regression @id3972
   Scenario Outline: Verify removing the content and leaving from the group conversation via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
