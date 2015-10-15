@@ -28,7 +28,7 @@
 		<resourceFilePath>/Project/</resourceFilePath>
 		<resultsPath>/results/</resultsPath>
 		<backendType>staging</backendType>
-		<androidToolsPath>${project.basedir}/tools/android</androidToolsPath>
+		<androidToolsPath>${project.basedir}/../tools/android</androidToolsPath>
 		<rcNotificationsRecepients>vova@wire.com,nick@wire.com</rcNotificationsRecepients>
 	</properties>
 
