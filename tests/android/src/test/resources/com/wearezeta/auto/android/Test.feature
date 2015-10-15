@@ -12,6 +12,7 @@ Feature: Test
     Given Contact <Contact> send message <Message> to user <Name>
     Given Contact <Contact2> send message <Message> to user <Name>
     And I see my message "<Message>" in the dialog
+    Given Contact <Contact> sends image testing.jpg to single user conversation <Name>
 
     Examples:
       | Name      | Contact   | Contact2  | Message |
