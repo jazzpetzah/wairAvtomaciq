@@ -20,37 +20,41 @@ import scala.concurrent.Await;
 import scala.concurrent.Future;
 import scala.concurrent.duration.FiniteDuration;
 
-import java.io.*;
+import java.io.File;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class RemoteProcessIPC {
 
     private static final FiniteDuration duration = new FiniteDuration(30000, TimeUnit.MILLISECONDS);
     private static final Timeout akkaTimeout = new Timeout(30000);
-    private static final Map<String, ActorRef> unregisteredRemotes = new HashMap<>();
-    private static final Map<String, ActorRef> registeredRemotes = new HashMap<>();
+    private static final Map<String, ActorRef> unregisteredDevices = new HashMap<>();
+    private static final Map<String, ActorRef> registeredDevices = new HashMap<>();
     private static final ActorRef coordinator = setUpCoordinator();
 
-    private static final String REMOTE_PROCESS_NAME = "Remote_process_";
+    private static final String REMOTE_DEVICE_NAME = "Remote_device_";
 
     static {
         System.out.println("Setting up coordinator system");
         CoordinatorSystem.setUpCoordinatorSystem("actor_coordinator");
     }
 
-    public static void startProcesses(int numProcesses) throws Exception {
+    public static void startDevices(int numDevices) throws Exception {
+        ActorRef processActor = registerProcess(coordinator, "RemoteProcess_" + new Random().nextInt(100));
+
         //TODO do this with futures, perhaps?
-        System.out.println("Generating " + numProcesses + " remotes");
-        for (int i = 0; i < numProcesses; i++) {
-            String processName = REMOTE_PROCESS_NAME + i;
-            ActorRef remote = registerProcess(coordinator, processName);
-            if (remote == null) {
+        System.out.println("Generating " + numDevices + " remotes");
+        for (int i = 0; i < numDevices; i++) {
+            String deviceName = REMOTE_DEVICE_NAME + i;
+            ActorRef deviceActor = registerDevice(processActor, deviceName);
+            if (deviceActor == null) {
                 throw new NullPointerException();
             } else {
-                System.out.println(processName + " created successfully, adding to map");
-                unregisteredRemotes.put(processName, remote);
+                System.out.println(deviceName + " created successfully, adding to map");
+                unregisteredDevices.put(deviceName, deviceActor);
             }
         }
     }
@@ -62,30 +66,30 @@ public class RemoteProcessIPC {
 
     public static void loginToRemoteProcess(ClientUser user) throws Exception {
 
-        if (unregisteredRemotes.size() == 0) {
+        if (unregisteredDevices.size() == 0) {
             throw new Exception("No remotes left!");
         }
 
-        String nextProcessKey = REMOTE_PROCESS_NAME + (unregisteredRemotes.size() - 1);
-        ActorRef remote = unregisteredRemotes.get(nextProcessKey);
+        String nextProcessKey = REMOTE_DEVICE_NAME + (unregisteredDevices.size() - 1);
+        ActorRef deviceActor = unregisteredDevices.get(nextProcessKey);
 
-        Future<Object> future = Patterns.ask(remote, new Login(user.getEmail(), user.getPassword()), duration.toMillis());
+        Future<Object> future = Patterns.ask(deviceActor, new Login(user.getEmail(), user.getPassword()), duration.toMillis());
 
         Object resp = Await.result(future, duration);
         System.out.println("Response type: " + resp.getClass());
         if (resp instanceof Successful$) {
             System.out.println("Login successful");
-            registeredRemotes.put(user.getName(), remote);
-            unregisteredRemotes.remove(nextProcessKey);
+            registeredDevices.put(user.getName(), deviceActor);
+            unregisteredDevices.remove(nextProcessKey);
+            Thread.sleep(3000); //just to allow the actor time to sign in
         } else {
             System.out.println("Login not successful, killing remote");
-            remote.tell(ActorMessage.TerminateProcess$.MODULE$, null);
         }
     }
 
     public static void sendConversationMessage(ClientUser userFrom, String convId, String message) throws Exception {
         System.out.println("Sending message: " + message + " from user: " + userFrom + " to conversation: " + convId);
-        ActorRef remote = registeredRemotes.get(userFrom.getName());
+        ActorRef remote = registeredDevices.get(userFrom.getName());
 
         Future<Object> future = Patterns.ask(remote, new ActorMessage.SendText(new RConvId(convId), message), duration.toMillis());
         Object resp = Await.result(future, duration);
@@ -102,7 +106,9 @@ public class RemoteProcessIPC {
 
     public static ActorRef registerProcess(ActorRef coordinator, String processName) throws Exception {
         String serialized = Serialization.serializedActorPath(coordinator);
-        String[] cmd = {"java", "-jar", "/Users/deancook/.m2/repository/com/wearezeta/zmessaging-actor/45-SNAPSHOT/zmessaging-actor-45-SNAPSHOT.jar", processName, serialized, "staging"};
+
+        System.out.println("Actors path?: " + getActorsJarLocation());
+        String[] cmd = {"java", "-jar", getActorsJarLocation(), processName, serialized, "staging"};
 
         ProcessBuilder pb = new ProcessBuilder(cmd);
 
@@ -116,6 +122,21 @@ public class RemoteProcessIPC {
 
         Future<Object> future = Patterns.ask(coordinator, new WaitUntilRegistered(processName), duration.toMillis());
 
+        Object resp = Await.result(future, duration);
+        if (resp instanceof ActorRef) {
+            return (ActorRef) resp;
+        } else {
+            return null;
+        }
+    }
+
+    public static String getActorsJarLocation() throws URISyntaxException {
+        File file = new File(ActorMessage.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+        return file.toString();
+    }
+
+    public static ActorRef registerDevice(ActorRef processActor, String deviceName) throws Exception {
+        Future<Object> future = Patterns.ask(processActor, new ActorMessage.SpawnRemoteDevice(null, deviceName), duration.toMillis());
         Object resp = Await.result(future, duration);
         if (resp instanceof ActorRef) {
             return (ActorRef) resp;
