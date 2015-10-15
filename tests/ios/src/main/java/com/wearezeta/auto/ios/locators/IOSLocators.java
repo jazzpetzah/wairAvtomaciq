@@ -712,6 +712,7 @@ public final class IOSLocators {
 		public static final String nameCloseButton = "CloseButton";
 		public static final String nameAddPhoneNumberButton = "ADD PHONE NUMBER";
 		public static final String xpathPhoneEmailField =  "//UIAStaticText[contains(@name, '%s')]";
+		public static final String nameThemeSwitcherButton = "ThemeButton";
 	}
 
 	public final class GiphyPreviewPage {

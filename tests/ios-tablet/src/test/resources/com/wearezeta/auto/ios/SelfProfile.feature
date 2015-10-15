@@ -363,5 +363,30 @@ Feature: Self Profile
     Then I see already registered phone number alert
 
     Examples: 
-      | Name      | Number        | Code |  
+      | Name      | Number        | Code |
       | user1Name | 8301652248706 | +0   |
+
+  @staging @rc @id3986
+  Scenario Outline: Verify theme switcher is shown on the self profile [PORTRAIT]
+    Given There is 1 user where <Name> is me
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    Then I dont see theme switcher button on self profile page
+
+    Examples: 
+      | Name      |
+      | user1Name |
+
+  @staging @rc @id3989
+  Scenario Outline: Verify theme switcher is shown on the self profile [LANDSCAPE]
+    Given There is 1 user where <Name> is me
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    Then I dont see theme switcher button on self profile page
+
+    Examples: 
+      | Name      |
+      | user1Name |
