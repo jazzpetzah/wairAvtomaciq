@@ -16,6 +16,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.IOSConstants;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
@@ -983,7 +984,8 @@ public class DialogPageSteps {
 	}
 
 	/**
-	 * Verify that ping controller button's x coordinate is less then conversation window's x coordinate
+	 * Verify that ping controller button's x coordinate is less then
+	 * conversation window's x coordinate
 	 * 
 	 * @step. ^I see controller buttons can not be visible$
 	 * 
@@ -1063,8 +1065,8 @@ public class DialogPageSteps {
 	 */
 	@When("^I see only (.*) messages?$")
 	public void ISeeOnlyXAmountOfMessages(int msgCount) throws Exception {
-		Assert.assertTrue(msgCount == getDialogPage()
-				.getNumberOfMessageEntries());
+		Assert.assertTrue("Wrong amount of messages",
+				msgCount == getDialogPage().getNumberOfMessageEntries());
 	}
 
 	/**
@@ -1114,5 +1116,24 @@ public class DialogPageSteps {
 
 		Assert.assertTrue("Input field has incorrect message or empty",
 				message.equals(getDialogPage().getStringFromInput()));
+	}
+
+	/**
+	 * Verifies that 'Connected to username' message is the only message in
+	 * dialog
+	 * 
+	 * @step. ^I see the only message in dialog is system message CONNECTED TO
+	 *        (.*)$
+	 * 
+	 * @param username
+	 *            name of the contact
+	 * @throws Exception
+	 */
+	@When("^I see the only message in dialog is system message CONNECTED TO (.*)$")
+	public void ISeeLastMessageIsSystem(String username) throws Exception {
+		username = usrMgr.findUserByNameOrNameAlias(username).getName();
+		ISeeOnlyXAmountOfMessages(1);
+		Assert.assertTrue(getDialogPage()
+				.isConnectedToUserStartedConversationLabelVisible(username));
 	}
 }

@@ -483,20 +483,19 @@ public class AndroidCommonUtils extends CommonUtils {
 
 	private static String defaultImeId = "";
 
-	public static void installAdbKeyboard() throws Exception {
+	public static void installAdbKeyboard(Class<?> c) throws Exception {
 		if (!isPackageInstalled(ADB_KEYBOARD_PACKAGE)) {
-			executeAdb(String.format("install %s/android/ADBKeyBoard.apk",
-					getAndroidToolsPathFromConfig(AndroidCommonUtils.class)));
+			executeAdb(String.format("install %s/ADBKeyBoard.apk",
+					getAndroidToolsPathFromConfig(c)));
 		}
 	}
 
 	private static final String TESTING_GALLERY_PACKAGE_ID = "com.wire.testinggallery";
 
-	public static void installTestingGalleryApp() throws Exception {
+	public static void installTestingGalleryApp(Class<?> c) throws Exception {
 		if (!isPackageInstalled(TESTING_GALLERY_PACKAGE_ID)) {
-			executeAdb(String.format(
-					"install %s/android/testing_gallery-debug.apk",
-					getAndroidToolsPathFromConfig(AndroidCommonUtils.class)));
+			executeAdb(String.format("install %s/testing_gallery-debug.apk",
+					getAndroidToolsPathFromConfig(c)));
 		}
 	}
 

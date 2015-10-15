@@ -34,7 +34,7 @@ Feature: Giphy
       | Name      | Contact   | GiphyTag |
       | user1Name | user2Name | Happy    |
 
-  @staging @id2791
+  @regression @id2791
   Scenario Outline: Verify opening grid of gifs clicking on giphy icon
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

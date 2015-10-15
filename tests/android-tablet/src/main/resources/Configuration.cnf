@@ -15,5 +15,6 @@ androidVersion=${androidVersion}
 resourceFilePath=${resourceFilePath}
 resultsPath=${resultsPath}
 backendType=${backendType}
+androidToolsPath=${androidToolsPath}
 isTablet=true
 rcNotificationsRecepients=${rcNotificationsRecepients}

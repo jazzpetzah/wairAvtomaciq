@@ -767,7 +767,7 @@ Feature: Conversation View
       | Name      | Contact1   | Contact2  |
       | user1Name | user2Name  | user3Name |
 
-  @staging @id3963
+  @regression @id3963
   Scenario Outline: Verify posting in a 1-to-1 conversation without content
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
