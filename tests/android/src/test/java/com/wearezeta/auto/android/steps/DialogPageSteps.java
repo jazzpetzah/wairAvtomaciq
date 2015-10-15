@@ -437,7 +437,7 @@ public class DialogPageSteps {
 			getDialogPage().closeFullScreenImage();
 			break;
 		case "sketch image paint":
-			getDialogPage().drawSketchOnImage();
+			getDialogPage().tapSketchOnImageButton();
 			break;
 		}
 	}
