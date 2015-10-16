@@ -1,5 +1,7 @@
 package com.wearezeta.auto.common.backend;
 
+import com.wearezeta.auto.common.device.Device;
+import com.wearezeta.auto.common.device.DevicePool;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 
 import java.util.List;

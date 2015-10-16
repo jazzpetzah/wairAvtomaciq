@@ -1,4 +1,4 @@
-package com.wearezeta.auto.common.backend;
+package com.wearezeta.auto.common.device;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
