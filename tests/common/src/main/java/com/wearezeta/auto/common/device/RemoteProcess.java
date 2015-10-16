@@ -90,6 +90,4 @@ public class RemoteProcess extends RemoteEntity implements IRemoteProcess {
         }
         return file.toString();
     }
-
-
 }

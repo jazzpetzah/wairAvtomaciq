@@ -1,11 +1,10 @@
 package com.wearezeta.auto.common.device;
 
 import akka.actor.ActorRef;
-import akka.pattern.Patterns;
-import com.waz.provision.ActorMessage;
+import com.waz.provision.ActorMessage.Login;
 import com.waz.provision.ActorMessage.SpawnRemoteDevice;
+import com.waz.provision.ActorMessage.Successful$;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import scala.concurrent.Future;
 import scala.concurrent.duration.FiniteDuration;
 
 public class Device extends RemoteEntity implements IDevice {
@@ -15,6 +14,7 @@ public class Device extends RemoteEntity implements IDevice {
     public Device(String deviceName, IRemoteProcess process, FiniteDuration actorTimeout) {
         super(actorTimeout);
         name = deviceName;
+        //TODO check that this doesn't become a bottleneck with lots of Devices...
         if (!process.isConnected()) {
             throw new IllegalStateException("The process used to spawn this device has no established connection");
         }
@@ -44,20 +44,18 @@ public class Device extends RemoteEntity implements IDevice {
     }
 
     public void logInWithUser(ClientUser user) {
-        FiniteDuration duration = DevicePool.ACTOR_DURATION;
+        if (user == null) {
+            throw new NullPointerException("Client user cannot be null");
+        }
 
-        Future<Object> future = Patterns.ask(ref, new ActorMessage.Login(user.getEmail(), user.getPassword()), duration.toMillis());
+        Object resp = askActor(ref, new Login(user.getEmail(), user.getPassword()));
 
-//        Object resp = Await.result(future, duration);
-//        System.out.println("Response type: " + resp.getClass());
-//        if (resp instanceof ActorMessage.Successful$) {
-//            System.out.println("Login successful");
-//            registeredDevices.put(user.getName(), deviceActor);
-//            unregisteredDevices.remove(nextDeviceKey);
-//            Thread.sleep(3000); //just to allow the actor time to sign in
-//        } else {
-//            System.out.println("Login not successful, killing remote");
-//        }
-        loggedInUser = user;
+        if (resp instanceof Successful$) {
+            System.out.println("Login to: " + name + " successful");
+            loggedInUser = user;
+        } else {
+            //TODO some sort of error handling here.
+        }
+
     }
 }

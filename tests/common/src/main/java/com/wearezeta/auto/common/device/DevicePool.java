@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-public class DevicePool implements IDevicePool{
+public class DevicePool implements IDevicePool {
 
     //TODO make configurable
     public static final FiniteDuration ACTOR_DURATION = new FiniteDuration(30000, TimeUnit.MILLISECONDS);
@@ -25,6 +25,7 @@ public class DevicePool implements IDevicePool{
     private final String PROCESS_PREFIX = "Remote_process_";
     private final String DEVICE_PREFIX = "Remote_device_";
 
+    //TODO make configurable
     private final int NUM_PROCESSES = 1;
     //TODO have a MAX_DEVICES limit
     private final int NUM_DEVICES;
@@ -34,6 +35,10 @@ public class DevicePool implements IDevicePool{
     private List<Device> deviceCache;
 
     public DevicePool(int numDevices) {
+        if (numDevices < 1) {
+            throw new IllegalArgumentException("There should be at least one device created in the DevicePool");
+        }
+
         //TODO consider having a default number of remotes for every test?
         NUM_DEVICES = numDevices;
 
@@ -85,6 +90,9 @@ public class DevicePool implements IDevicePool{
     }
 
     public List<Device> getDevicesWithLoggedInUser(ClientUser user) {
+        if (deviceCache == null) {
+            throw new IllegalStateException("The device pool has been closed down and cannot be used any more.");
+        }
         return deviceCache.stream().filter(device -> device.isLoggedInUser(user)).collect(Collectors.toList());
     }
 
@@ -92,6 +100,9 @@ public class DevicePool implements IDevicePool{
      * @return all devices that do not have a logged in user
      */
     private List<Device> getFreeDevices() {
+        if (deviceCache == null) {
+            throw new IllegalStateException("The device pool has been closed down and cannot be used any more.");
+        }
         //Some fancy shit IntelliJ did for me :)
         return deviceCache.stream().filter(device -> !device.hasLoggedInUser()).collect(Collectors.toList());
     }

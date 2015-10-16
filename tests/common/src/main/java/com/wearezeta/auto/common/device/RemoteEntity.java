@@ -41,7 +41,8 @@ public abstract class RemoteEntity implements IRemoteEntity {
         return false;
     }
 
-    public Object askActor(ActorRef actorRef, ActorMessage message) {
+    protected Object askActor(ActorRef actorRef, ActorMessage message) {
+        System.out.println("Asking " + actorRef + " message: " + message + " from RemoteEntity: " + name);
         Future<Object> future = Patterns.ask(actorRef, message, actorTimeout.toMillis());
         Object resp = null;
 

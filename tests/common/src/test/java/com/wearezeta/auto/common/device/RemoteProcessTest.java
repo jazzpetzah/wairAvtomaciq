@@ -55,18 +55,8 @@ public class RemoteProcessTest {
 
     @Test
     public void testRemoteIsEstablishedWithValidCoordinator() {
-        ActorRef coordinatorRef = createCoordinatorActor();
+        ActorRef coordinatorRef = DeviceTestUtils.createCoordinatorActor();
         RemoteProcess process = new RemoteProcess("process", coordinatorRef, testDuration);
         assertTrue("Process is not connected", process.isConnected());
-    }
-
-    //TODO can I refactor this to use the method from DevicePool?
-    private ActorRef createCoordinatorActor() {
-        //TODO find out how to depend on resources from main
-        Config config = ConfigFactory.load("actor_coordinator");
-        ActorSystem system = ActorSystem.create("CoordinatorSystem", config);
-        ActorRef actorRef = system.actorOf(Props.create(CoordinatorActor.class), "coordinatorActor");
-
-        return actorRef;
     }
 }
