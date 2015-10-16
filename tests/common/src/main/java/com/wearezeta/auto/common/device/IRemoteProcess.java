@@ -1,14 +1,8 @@
 package com.wearezeta.auto.common.device;
 
-import akka.actor.ActorRef;
-
 /**
  *
  */
-public interface IRemoteProcess {
-    String name();
+public interface IRemoteProcess extends IRemoteEntity {
 
-    ActorRef ref();
-
-    boolean isConnected();
 }

@@ -3,15 +3,11 @@ package com.wearezeta.auto.common.device;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
-import akka.pattern.Patterns;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
-import com.waz.provision.ActorMessage;
 import com.waz.provision.ActorMessage.TerminateRemotes$;
 import com.waz.provision.CoordinatorActor;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import scala.concurrent.Await;
-import scala.concurrent.Future;
 import scala.concurrent.duration.FiniteDuration;
 
 import java.util.ArrayList;
@@ -21,6 +17,7 @@ import java.util.stream.Collectors;
 
 public class DevicePool implements IDevicePool{
 
+    //TODO make configurable
     public static final FiniteDuration ACTOR_DURATION = new FiniteDuration(30000, TimeUnit.MILLISECONDS);
 
     private ActorRef coordinatorActorRef;
@@ -40,7 +37,6 @@ public class DevicePool implements IDevicePool{
         //TODO consider having a default number of remotes for every test?
         NUM_DEVICES = numDevices;
 
-        //TODO think of a better way to keep track of all these devices...
         processCache = new ArrayList<>(NUM_PROCESSES);
         deviceCache = new ArrayList<>(NUM_DEVICES);
 
@@ -60,7 +56,7 @@ public class DevicePool implements IDevicePool{
     private void spawnProcesses() {
         for (int i = 0; i < NUM_PROCESSES; i++) {
             String processName = PROCESS_PREFIX + i;
-            processCache.add(new RemoteProcess(processName, coordinatorActorRef));
+            processCache.add(new RemoteProcess(processName, coordinatorActorRef, ACTOR_DURATION));
         }
     }
 
@@ -72,7 +68,7 @@ public class DevicePool implements IDevicePool{
             int processIndex = i % NUM_PROCESSES;
             RemoteProcess parentProcess = processCache.get(processIndex);
             String deviceName = DEVICE_PREFIX + i;
-            deviceCache.add(new Device(deviceName, parentProcess));
+            deviceCache.add(new Device(deviceName, parentProcess, ACTOR_DURATION));
         }
     }
 
@@ -105,19 +101,5 @@ public class DevicePool implements IDevicePool{
         deviceCache = null;
         processCache = null;
     }
-
-    //TODO think of a tidier way to refactor this out.
-    public static Object askActor(ActorRef actorRef, ActorMessage message) {
-        Future<Object> future = Patterns.ask(actorRef, message, ACTOR_DURATION.toMillis());
-        Object resp = null;
-
-        try {
-            resp = Await.result(future, ACTOR_DURATION);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return resp;
-    }
-
 
 }

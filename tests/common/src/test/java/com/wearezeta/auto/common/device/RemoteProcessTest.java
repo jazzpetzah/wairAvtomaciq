@@ -8,6 +8,9 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.waz.provision.CoordinatorActor;
 import org.junit.Test;
+import scala.concurrent.duration.FiniteDuration;
+
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertTrue;
 
@@ -15,10 +18,13 @@ import static org.junit.Assert.assertTrue;
  *
  */
 public class RemoteProcessTest {
+
+    private FiniteDuration testDuration = new FiniteDuration(5000, TimeUnit.MILLISECONDS);
+
     @Test(expected = IllegalStateException.class)
     public void cantCreateProcessWithNullCoordinator() {
         ActorRef nullRef = null;
-        new RemoteProcess("process", nullRef);
+        new RemoteProcess("process", nullRef, testDuration);
 
         ActorRef terminatedRef = new ActorRef() {
             @Override
@@ -32,7 +38,7 @@ public class RemoteProcessTest {
             }
         };
 
-        new RemoteProcess("process", terminatedRef);
+        new RemoteProcess("process", terminatedRef, testDuration);
 
     }
 
@@ -44,13 +50,13 @@ public class RemoteProcessTest {
         //kill the system
         system.shutdown();
         //use it to start a new process
-        new RemoteProcess("process", disconnectedRef);
+        new RemoteProcess("process", disconnectedRef, testDuration);
     }
 
     @Test
     public void testRemoteIsEstablishedWithValidCoordinator() {
         ActorRef coordinatorRef = createCoordinatorActor();
-        RemoteProcess process = new RemoteProcess("process", coordinatorRef);
+        RemoteProcess process = new RemoteProcess("process", coordinatorRef, testDuration);
         assertTrue("Process is not connected", process.isConnected());
     }
 

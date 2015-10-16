@@ -5,24 +5,22 @@ import akka.serialization.Serialization;
 import com.waz.provision.ActorMessage;
 import com.waz.provision.ActorMessage.Echo;
 import com.waz.provision.ActorMessage.WaitUntilRegistered;
+import scala.concurrent.duration.FiniteDuration;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-public class RemoteProcess implements IRemoteProcess {
+public class RemoteProcess extends RemoteEntity implements IRemoteProcess {
 
     private final ActorRef coordinatorActorRef;
-
-    private final String processName;
-
-    private ActorRef remoteActorRef;
 
     //TODO make configurable
     private String backend = "staging";
 
-    public RemoteProcess(String processName, ActorRef coordinatorActorRef) {
-        this.processName = processName;
+    public RemoteProcess(String processName, ActorRef coordinatorActorRef, FiniteDuration actorTimeout) {
+        super(actorTimeout);
+        name = processName;
         this.coordinatorActorRef = coordinatorActorRef;
         if (!coordinatorConnected()) {
             throw new IllegalStateException("There is no connection to the CoordinatorActor at path: "
@@ -38,27 +36,7 @@ public class RemoteProcess implements IRemoteProcess {
         if (coordinatorActorRef == null) {
             return false;
         }
-        Object resp = DevicePool.askActor(coordinatorActorRef, new Echo("test", "test"));
-        if (resp instanceof Echo && ((Echo) resp).msg().equals("test")) {
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public String name() {
-        return processName;
-    }
-
-    @Override
-    public ActorRef ref() {
-        //TODO perform quick actor check to see the process is still alive?
-        return remoteActorRef;
-    }
-
-    @Override
-    public boolean isConnected() {
-        Object resp = DevicePool.askActor(remoteActorRef, new Echo("test", "test"));
+        Object resp = askActor(coordinatorActorRef, new Echo("test", "test"));
         if (resp instanceof Echo && ((Echo) resp).msg().equals("test")) {
             return true;
         }
@@ -67,12 +45,12 @@ public class RemoteProcess implements IRemoteProcess {
 
     private void startProcess() {
         String serialized = Serialization.serializedActorPath(coordinatorActorRef);
-        String[] cmd = {"java", "-jar", getActorsJarLocation(), processName, serialized, backend};
+        String[] cmd = {"java", "-jar", getActorsJarLocation(), name, serialized, backend};
 
         ProcessBuilder pb = new ProcessBuilder(cmd);
 
         pb.redirectErrorStream(true);
-        File outputFile = createLogFile(processName);
+        File outputFile = createLogFile(name);
         pb.redirectOutput(ProcessBuilder.Redirect.appendTo(outputFile));
 
         try {
@@ -91,14 +69,14 @@ public class RemoteProcess implements IRemoteProcess {
     }
 
     private void establishConnection() {
-        Object resp = DevicePool.askActor(coordinatorActorRef, new WaitUntilRegistered(processName));
+        Object resp = askActor(coordinatorActorRef, new WaitUntilRegistered(name));
 
         if (resp instanceof ActorRef) {
-            remoteActorRef = (ActorRef) resp;
+            ref = (ActorRef) resp;
         } else {
             //TODO come up with a better exception?
             throw new IllegalStateException("The coordinator actor failed to establish a connection with the remote " +
-                    "process: " + processName + ". The response was: " + resp);
+                    "process: " + name + ". The response was: " + resp);
         }
     }
 
