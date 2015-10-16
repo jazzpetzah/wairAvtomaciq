@@ -121,6 +121,9 @@ public class PersonalInfoPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.PersonalInfoPage.nameAddPhoneNumberButton)
 	private WebElement addPhoneNumberButton;
 
+	@FindBy(how = How.NAME, using = IOSLocators.PersonalInfoPage.nameThemeSwitcherButton)
+	private WebElement themeSwitcherButton;
+
 	public PersonalInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
@@ -452,5 +455,16 @@ public class PersonalInfoPage extends IOSPage {
 				.xpath(String.format(
 						IOSLocators.PersonalInfoPage.xpathPhoneEmailField,
 						number)));
+	}
+
+	public boolean isThemeSwitcherButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.name(IOSLocators.PersonalInfoPage.nameThemeSwitcherButton),
+				5);
+	}
+
+	public void clickThemeSwitcherButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), themeSwitcherButton);
+		themeSwitcherButton.click();
 	}
 }
