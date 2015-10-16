@@ -68,7 +68,7 @@ public final class BackendAPIWrappers {
 
 	/**
 	 * Creates a new user by sending the corresponding request to the backend
-	 * 
+	 *
 	 * @param user
 	 *            ClientUser instance with initial user parameters
 	 *            (name/email/password)
@@ -88,7 +88,7 @@ public final class BackendAPIWrappers {
 			activationCode = getActivationCodeForRegisteredEmail(user
 					.getEmail());
 			activateRegisteredEmailByBackdoorCade(user.getEmail(),
-					activationCode, false);			
+					activationCode, false);
 			while (true) {
 				try {
 					attachUserPhoneNumber(user);
@@ -109,8 +109,8 @@ public final class BackendAPIWrappers {
 			activationCode = getActivationCodeForRegisteredEmail(user
 					.getEmail());
 			activateRegisteredEmailByBackdoorCade(user.getEmail(),
-					activationCode, false);	
-			break;	
+					activationCode, false);
+			break;
 		case ByPhoneNumber:
 		case ByPhoneNumberOnly:
 			while (true) {
@@ -153,7 +153,7 @@ public final class BackendAPIWrappers {
 		final String code = registrationInfo.getXZetaCode();
 		log.debug(String
 				.format("Received activation email message with key: %s, code: %s. Proceeding with activation...",
-						key, code));
+                        key, code));
 		BackendREST.activateNewUser(key, code);
 		log.debug(String.format("User '%s' is successfully activated",
 				registrationInfo.getDeliveredToEmail()));
@@ -202,8 +202,8 @@ public final class BackendAPIWrappers {
 					savedException = e;
 					log.debug(String
 							.format("The phone number '%s' seems to be not booked yet. Trying to get the activation code one more time (%d of %d)...",
-									phoneNumber.toString(), ntry,
-									MAX_ACTIVATION_CODE_GET_RETRIES));
+                                    phoneNumber.toString(), ntry,
+                                    MAX_ACTIVATION_CODE_GET_RETRIES));
 					Thread.sleep(2000 * ntry);
 				} else {
 					throw e;
@@ -227,8 +227,8 @@ public final class BackendAPIWrappers {
 			} catch (BackendRequestException e) {
 				log.error(String
 						.format("Failed to get login code for phone number '%s'. Retrying (%s of %s)...",
-								phoneNumber.toString(), ntry,
-								MAX_LOGIN_CODE_QUERIES));
+                                phoneNumber.toString(), ntry,
+                                MAX_LOGIN_CODE_QUERIES));
 				savedException = e;
 				Thread.sleep(2000 * ntry);
 			}
@@ -249,7 +249,7 @@ public final class BackendAPIWrappers {
 
 	/**
 	 * Change/set user password
-	 * 
+	 *
 	 * @param user
 	 * @param oldPassword
 	 *            set this to null if the user has no password set
@@ -352,6 +352,11 @@ public final class BackendAPIWrappers {
 				getConversationWithSingleUser(userFrom, userTo),
 				srcImageAsByteArray, getImageMimeType(path));
 	}
+
+    public static void sendOtrPictureToSingleUserConversation(ClientUser userFrom,
+            ClientUser userTo, String path) throws Exception {
+
+    }
 
 	private static String getImageMimeType(String path) {
 		if (path.toLowerCase().endsWith(".png")) {
@@ -516,7 +521,7 @@ public final class BackendAPIWrappers {
 		}
 		return conversationId;
 	}
-	
+
 	public static void generateNewLoginCode(ClientUser user) throws Exception {
 		BackendREST
 		.generateLoginCode(user.getPhoneNumber());
@@ -695,7 +700,7 @@ public final class BackendAPIWrappers {
 
 	public static void sendConversationMessage(ClientUser userFrom,
 			String convId, String message) throws Exception {
-		RemoteProcessIPC.loginToRemoteProcess(userFrom);
+		RemoteProcessIPC.loginToSingleRemoteProcess(userFrom);
 		RemoteProcessIPC.sendConversationMessage(userFrom, convId, message);
 	}
 
@@ -768,7 +773,7 @@ public final class BackendAPIWrappers {
 					if (e.getReturnCode() == SERVER_SIDE_ERROR) {
 						log.debug(String
 								.format("Server side request failed. Retrying (%d of %d)...",
-										tryNum + 1, MAX_BACKEND_RETRIES));
+                                        tryNum + 1, MAX_BACKEND_RETRIES));
 						e.printStackTrace();
 						tryNum++;
 						if (tryNum >= MAX_BACKEND_RETRIES) {
@@ -873,8 +878,8 @@ public final class BackendAPIWrappers {
 		tryLoginByUser(user);
 		BackendREST
 				.updateConvSelfInfo(generateAuthToken(user),
-						getConversationIdByName(user, groupConvName), null,
-						muted, null);
+                        getConversationIdByName(user, groupConvName), null,
+                        muted, null);
 	}
 
 	public static void archiveUserConv(ClientUser ownerUser,
