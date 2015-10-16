@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-public class DevicePool {
+public class DevicePool implements IDevicePool{
 
     public static final FiniteDuration ACTOR_DURATION = new FiniteDuration(30000, TimeUnit.MILLISECONDS);
 
@@ -110,12 +110,12 @@ public class DevicePool {
     public static Object askActor(ActorRef actorRef, ActorMessage message) {
         Future<Object> future = Patterns.ask(actorRef, message, ACTOR_DURATION.toMillis());
         Object resp = null;
+
         try {
             resp = Await.result(future, ACTOR_DURATION);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return resp;
     }
 

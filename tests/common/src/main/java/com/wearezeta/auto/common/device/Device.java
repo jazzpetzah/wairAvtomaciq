@@ -8,7 +8,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import scala.concurrent.Future;
 import scala.concurrent.duration.FiniteDuration;
 
-public class Device {
+public class Device implements IDevice {
 
     private String deviceName;
 
@@ -16,12 +16,16 @@ public class Device {
 
     private ClientUser loggedInUser = null;
 
-    public Device(String deviceName, RemoteProcess process) {
+    public Device(String deviceName, IRemoteProcess process) {
         this.deviceName = deviceName;
+        if (!process.isConnected()) {
+            throw new IllegalStateException("The process used to spawn this device has no established connection");
+        }
         spawnDevice(process);
     }
 
-    private void spawnDevice(RemoteProcess process) {
+    private void spawnDevice(IRemoteProcess process) {
+        //TODO check that process is established
         ActorRef processActorRef = process.ref();
         Object resp = DevicePool.askActor(processActorRef, new SpawnRemoteDevice(null, deviceName));
 
@@ -49,8 +53,6 @@ public class Device {
 
     public void logInWithUser(ClientUser user) {
         FiniteDuration duration = DevicePool.ACTOR_DURATION;
-        loggedInUser = user;
-        //TODO the actual login stuff
 
         Future<Object> future = Patterns.ask(deviceActorRef, new ActorMessage.Login(user.getEmail(), user.getPassword()), duration.toMillis());
 
@@ -64,5 +66,6 @@ public class Device {
 //        } else {
 //            System.out.println("Login not successful, killing remote");
 //        }
+        loggedInUser = user;
     }
 }
