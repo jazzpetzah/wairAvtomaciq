@@ -665,7 +665,7 @@ public class CommonAndroidSteps {
 	@When("^Contact (.*) send message (.*)to user (.*)$")
 	public void UserSendMessageToConversation(String msgFromUserNameAlias,
 			String msg, String dstUserNameAlias) throws Exception {
-		commonSteps.UserSentMessageToUser(
+		commonSteps.UserSentOtrMessageToUser(
 				msgFromUserNameAlias,
 				dstUserNameAlias,
 				(msg == null || msg.trim().length() == 0) ? CommonUtils
@@ -712,7 +712,7 @@ public class CommonAndroidSteps {
 	@Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
 			throws Throwable {
-		commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count,
+		commonSteps.ThereAreNUsersWhereXIsMeOtr(CURRENT_PLATFORM, count,
 				myNameAlias);
 		GivenUserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
         RemoteProcessIPC.startDevices(count - 1);
