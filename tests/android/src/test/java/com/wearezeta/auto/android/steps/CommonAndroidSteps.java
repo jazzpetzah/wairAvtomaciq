@@ -54,7 +54,7 @@ public class CommonAndroidSteps {
 			.getLog(CommonAndroidSteps.class.getSimpleName());
 
 	private static ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
-	private final CommonStepsOtr commonSteps = CommonStepsOtr.getInstance();
+	private final CommonSteps commonSteps = CommonSteps.getInstance();
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	public static final Platform CURRENT_PLATFORM = Platform.Android;
 

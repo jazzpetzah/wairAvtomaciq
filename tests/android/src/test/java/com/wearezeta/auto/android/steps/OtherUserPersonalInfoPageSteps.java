@@ -2,7 +2,7 @@ package com.wearezeta.auto.android.steps;
 
 import com.wearezeta.auto.android.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.android.pages.UnknownUserDetailsPage;
-import com.wearezeta.auto.common.CommonStepsOtr;
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -257,7 +257,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@Then("^I see the correct participant avatars for (.*)")
 	public void ISeeCorrectParticipantAvatars(String contacts) throws Exception {
-		for (String contactName : CommonStepsOtr.splitAliases(contacts)) {
+		for (String contactName : CommonSteps.splitAliases(contacts)) {
 			contactName = usrMgr.findUserByNameOrNameAlias(contactName)
 					.getName();
 			Assert.assertTrue(

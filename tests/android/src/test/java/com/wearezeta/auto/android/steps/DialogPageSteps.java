@@ -3,7 +3,7 @@ package com.wearezeta.auto.android.steps;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.CallingOverlayPage;
 import com.wearezeta.auto.android.pages.DialogPage;
-import com.wearezeta.auto.common.CommonStepsOtr;
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -638,7 +638,7 @@ public class DialogPageSteps {
 			throws Exception {
 		assert getDialogPage().isDialogVisible() : "Group chat view is not visible";
 		List<String> participantNames = new ArrayList<String>();
-		for (String nameAlias : CommonStepsOtr
+		for (String nameAlias : CommonSteps
 				.splitAliases(participantNameAliases)) {
 			participantNames.add(usrMgr.findUserByNameOrNameAlias(nameAlias)
 					.getName());

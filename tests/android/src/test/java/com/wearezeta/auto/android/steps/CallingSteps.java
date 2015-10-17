@@ -10,7 +10,7 @@ import static org.hamcrest.Matchers.*;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-import static com.wearezeta.auto.common.CommonStepsOtr.splitAliases;
+import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 
 public class CallingSteps {
 
