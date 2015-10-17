@@ -700,8 +700,9 @@ public final class BackendAPIWrappers {
 
 	public static void sendConversationMessage(ClientUser userFrom,
 			String convId, String message) throws Exception {
-		RemoteProcessIPC.loginToSingleRemoteProcess(userFrom);
-		RemoteProcessIPC.sendConversationMessage(userFrom, convId, message);
+        tryLoginByUser(userFrom);
+        BackendREST.sendConversationMessage(generateAuthToken(userFrom),
+                convId, message);
 	}
 
 	public static void sendConversationMessages(ClientUser userFrom,
