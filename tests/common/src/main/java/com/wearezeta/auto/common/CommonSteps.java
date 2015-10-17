@@ -120,12 +120,14 @@ public final class CommonSteps {
 		}
 	}
 
+    //TODO slowly move each project to use OTR
 	public void ThereAreNUsers(Platform currentPlatform, int count)
 			throws Exception {
 		usrMgr.createUsersOnBackend(count, RegistrationStrategy
 				.getRegistrationStrategyForPlatform(currentPlatform));
 	}
 
+    //TODO slowly move each project to use OTR
 	public void ThereAreNUsersWhereXIsMe(Platform currentPlatform, int count,
 			String myNameAlias) throws Exception {
 		usrMgr.createUsersOnBackend(count, RegistrationStrategy
@@ -140,13 +142,15 @@ public final class CommonSteps {
         usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(myNameAlias));
         RemoteProcessIPC.startDevices(count - 1);
     }
-	
+
+    //TODO slowly move each project to use OTR
 	public void ThereAreNUsersWhereXIsMeRegOnlyByMail(Platform currentPlatform, int count,
 			String myNameAlias) throws Exception {
 		usrMgr.createUsersOnBackend(count, RegistrationStrategy.ByEmailOnly);
 		usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(myNameAlias));
 	}
 
+    //TODO slowly move each project to use OTR
 	public void ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(
 			Platform currentPlatform, int count, String myNameAlias)
 			throws Exception {
@@ -327,6 +331,7 @@ public final class CommonSteps {
 		Thread.sleep(1000);
 	}
 
+    //TODO slowly move each project to use OTR
 	public void UserSentMessageToUser(String msgFromUserNameAlias,
 			String dstUserNameAlias, String message) throws Exception {
 		ClientUser msgFromUser = usrMgr
