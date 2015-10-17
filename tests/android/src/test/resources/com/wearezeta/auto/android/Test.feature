@@ -1,6 +1,6 @@
 Feature: Test
 
-  @id316 @regression @torun
+  @id316 @regression
   Scenario Outline: Receive Message from contact
     Given There are 3 users where <Name> is me
     Given <Contact> is connected to me
