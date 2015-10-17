@@ -697,23 +697,6 @@ public class CommonAndroidSteps {
 	}
 
 	/**
-	 * Verifies that there are N new users for a test, and makes them if they
-	 * don't exist. -unused
-	 * 
-	 * @step. ^There \\w+ (\\d+) user[s]*$
-	 * 
-	 * @param count
-	 *            the number of users to make
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@Given("^There \\w+ (\\d+) user[s]*$")
-	public void ThereAreNUsers(int count) throws Exception {
-		commonSteps.ThereAreNUsers(CURRENT_PLATFORM, count);
-	}
-
-	/**
 	 * Verifies that there are N new users for a test, makes them if they don't
 	 * exist, and sets one of those users to be the current user.
 	 * 
