@@ -3,7 +3,6 @@ package com.wearezeta.auto.android.pages;
 import android.view.KeyEvent;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.common.BasePage;
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -65,8 +64,6 @@ public abstract class AndroidPage extends BasePage {
 	public AndroidPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
-
-	final protected CommonSteps commonSteps = CommonSteps.getInstance();
 
 	public void hideKeyboard() throws Exception {
 		try {
