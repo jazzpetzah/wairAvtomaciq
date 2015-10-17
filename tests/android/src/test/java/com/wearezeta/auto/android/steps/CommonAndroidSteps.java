@@ -915,7 +915,6 @@ public class CommonAndroidSteps {
 				.getInstance(ListenerType.DEFAULT));
 
 		commonSteps.getUserManager().resetUsers();
-        RemoteProcessIPC.killAllProcesses();
 	}
 
 	/**

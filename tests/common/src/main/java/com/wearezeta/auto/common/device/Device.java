@@ -1,7 +1,9 @@
 package com.wearezeta.auto.common.device;
 
 import akka.actor.ActorRef;
+import com.waz.model.RConvId;
 import com.waz.provision.ActorMessage.Login;
+import com.waz.provision.ActorMessage.SendText;
 import com.waz.provision.ActorMessage.SpawnRemoteDevice;
 import com.waz.provision.ActorMessage.Successful$;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -58,4 +60,10 @@ public class Device extends RemoteEntity implements IDevice {
         }
 
     }
+
+    @Override
+    public void sendMessage(String convId, String message) {
+        tellActor(ref, new SendText(new RConvId(convId), message));
+    }
+
 }

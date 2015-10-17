@@ -13,4 +13,6 @@ public interface IDevice extends IRemoteEntity {
 
     void logInWithUser(ClientUser user);
 
+    void sendMessage(String convId, String message);
+
 }

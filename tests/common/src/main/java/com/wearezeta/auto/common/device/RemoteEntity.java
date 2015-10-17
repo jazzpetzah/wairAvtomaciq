@@ -54,4 +54,8 @@ public abstract class RemoteEntity implements IRemoteEntity {
         }
         return resp;
     }
+
+    protected void tellActor(ActorRef actorRef, ActorMessage message) {
+        actorRef.tell(message, null);
+    }
 }
