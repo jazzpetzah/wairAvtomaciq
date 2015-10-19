@@ -375,3 +375,27 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
+
+  @staging @id1481
+  Scenario Outline: Verify removing the content and leaving from the group conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Name> sent message <Message> to conversation <GroupChatName>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <GroupChatName>
+    And I click delete menu button
+    And I select Also Leave option on Delete conversation dialog
+    And I confirm delete conversation content
+    And I open search by taping on it
+    And I input conversation name <GroupChatName> in Search input
+    Then I see conversation <GroupChatName> is NOT presented in Search results
+    When I click close button to dismiss people view
+    And I dont see conversation <GroupChatName> in contact list
+    And I open archived conversations
+    Then I dont see conversation <GroupChatName> in contact list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Message | GroupChatName |
+      | user1Name | user2Name | user3Name | testing | ForDeletion   |
