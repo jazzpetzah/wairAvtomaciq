@@ -382,3 +382,26 @@ Feature: Conversation View
     Examples:
       | Name      | Contact1  | NumColors |
       | user1Name | user2Name | 6         |
+
+  @id3804 @staging
+  Scenario Outline: Send sketch on picture from gallery
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    And I see the conversation <Contact1> in my conversations list
+    And I tap the conversation <Contact1>
+    And I see the conversation view
+    And I tap Show Tools button on conversation view page
+    When I tap Add Picture button in the conversation view
+    And I tap Gallery button in the conversation view
+    And I tap Sketch button on the picture preview
+    And I draw a sketch with <NumColors> colors on Sketch page
+    And I tap Send button on Sketch page
+    Then I see a new picture in the conversation view
+    And I tap the new picture in the conversation view
+
+    Examples:
+      | Name      | Contact1  | NumColors |
+      | user1Name | user2Name | 6         |

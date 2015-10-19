@@ -456,9 +456,9 @@ public class DialogPage extends AndroidPage {
 		assert DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
 	}
 
-	public void drawSketchOnImage() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(),
-				sketchImagePaintButton);
+	public void tapSketchOnImageButton() throws Exception {
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idSketchImagePaintButton)) : "Draw sketch on image button is not visible";
 		sketchImagePaintButton.click();
 	}
 
