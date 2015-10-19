@@ -241,4 +241,18 @@ public abstract class AndroidPage extends BasePage {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), el) : "The chathead notification is not clickable";
 		el.click();
 	}
+
+	public boolean waitUntilChatheadNotificationVisible() throws Exception {
+		final By locator = By.id(idChatheadNotification);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public boolean waitUntilChatheadNotificationInvisible() throws Exception {
+		final By locator = By.id(idChatheadNotification);
+		if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, 5)) {
+			final WebElement el = this.getDriver().findElement(locator);
+			return el.getLocation().getX() < 0;
+		}
+		return true;
+	}
 }

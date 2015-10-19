@@ -306,13 +306,34 @@ public class SelfProfilePageSteps {
 	}
 
 	/**
+	 * Verify whether chathead notification is visible
+	 * 
+	 * @step. ^I (do not )?see chathead notification$
+	 * 
+	 * @param shouldNotSee
+	 *            equals to null if the notification should be visible
+	 * @throws Exception
+	 */
+	@Then("^I (do not )?see chathead notification$")
+	public void ISeeChatheadNotification(String shouldNotSee) throws Exception {
+		if (shouldNotSee == null) {
+			Assert.assertTrue("Chathead notification is not visible",
+					getSelfProfilePage().waitUntilChatheadNotificationVisible());
+		} else {
+			Assert.assertTrue("Chathead notification is still visible",
+					getSelfProfilePage()
+							.waitUntilChatheadNotificationInvisible());
+		}
+	}
+
+	/**
 	 * Tap chathead notification as soon as it appears on the screen
 	 * 
 	 * @step. ^I tap the chathead$
 	 * 
 	 * @throws Exception
 	 */
-	@And("^I tap the chathead$")
+	@And("^I tap the chathead notification$")
 	public void ITapChathead() throws Exception {
 		getSelfProfilePage().tapChatheadNotification();
 	}

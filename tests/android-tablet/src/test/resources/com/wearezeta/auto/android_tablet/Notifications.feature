@@ -10,9 +10,10 @@ Feature: Notifications
     And I see the conversation <Contact> in my conversations list
     When I tap my avatar on top of conversations list
     And Contact <Contact> sends message "<Message>" to user Myself
-    And I tap the chathead
+    And I tap the chathead notification
     Then I see the conversation view
     And I see the message "<Message>" in the conversation view
+    And I do not see chathead notification
 
     Examples:
       | Name      | Contact   | Message             |
