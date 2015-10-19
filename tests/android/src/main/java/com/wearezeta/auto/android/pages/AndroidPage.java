@@ -244,7 +244,11 @@ public abstract class AndroidPage extends BasePage {
 
 	public boolean waitUntilChatheadNotificationVisible() throws Exception {
 		final By locator = By.id(idChatheadNotification);
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator)) {
+			final WebElement el = this.getDriver().findElement(locator);
+			return el.getLocation().getX() >= 0;
+		}
+		return false;
 	}
 
 	public boolean waitUntilChatheadNotificationInvisible() throws Exception {
