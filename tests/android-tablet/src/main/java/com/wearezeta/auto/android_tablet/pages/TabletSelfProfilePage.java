@@ -91,7 +91,7 @@ public class TabletSelfProfilePage extends AndroidTabletPage {
 		final By locator = By.xpath(xpathOptionsMenuItemByName.apply(itemName));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
-	
+
 	public void tapSignOutBtn() throws Exception {
 		System.out.println(getDriver().getPageSource());
 		assert DriverUtils.waitUntilElementClickable(getDriver(), signOutBtn);

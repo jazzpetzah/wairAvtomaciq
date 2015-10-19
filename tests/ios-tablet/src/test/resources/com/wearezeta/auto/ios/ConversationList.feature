@@ -567,7 +567,7 @@ Feature: Conversation List
       | user1Name | user2Name | testing |
 
   @staging @id3961
-  Scenario Outline: Verify deleting 1-to-1 conversation from archive
+  Scenario Outline: Verify deleting 1-to-1 conversation from archive [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -591,7 +591,7 @@ Feature: Conversation List
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
   @staging @id3962
-  Scenario Outline: Verify deleting 1-to-1 conversation from archive
+  Scenario Outline: Verify deleting 1-to-1 conversation from archive [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -614,3 +614,60 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
+      
+  @staging @rc @id3969
+  Scenario Outline: Verify posting in a group conversation without content [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Name> sent message <Message> to conversation <GroupChatName>
+    Given Contact <Name> sends image <Image> to group conversation <GroupChatName>
+    Given Contact <Name> ping conversation <GroupChatName>
+    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I swipe right on a <GroupChatName>
+    And I click delete menu button
+    And I confirm delete conversation content
+    Then I dont see conversation <GroupChatName> in contact list
+    When I open search by taping on it
+    And I input conversation name <GroupChatName> in Search input
+    And I see conversation <GroupChatName> is presented in Search results
+    And I tap on conversation <GroupChatName> in search result
+    Then I see empty group chat page with users <Contact1>,<Contact2> with only system message
+    When I type the message and send it
+    Then I see message in the dialog
+    And I see only 2 messages
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
+      | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
+
+  @staging @rc @id3970
+  Scenario Outline: Verify posting in a group conversation without content [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Name> sent message <Message> to conversation <GroupChatName>
+    Given Contact <Name> sends image <Image> to group conversation <GroupChatName>
+    Given Contact <Name> ping conversation <GroupChatName>
+    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I swipe right on a <GroupChatName>
+    And I click delete menu button
+    And I confirm delete conversation content
+    Then I dont see conversation <GroupChatName> in contact list
+    When I open search by taping on it
+    And I input conversation name <GroupChatName> in Search input
+    And I see conversation <GroupChatName> is presented in Search results
+    And I tap on conversation <GroupChatName> in search result
+    Then I see empty group chat page with users <Contact1>,<Contact2> with only system message
+    When I type the message and send it
+    Then I see message in the dialog
+    And I see only 2 messages
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
+      | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |

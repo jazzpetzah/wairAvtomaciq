@@ -17,6 +17,7 @@ import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
@@ -41,6 +42,8 @@ public abstract class AndroidPage extends BasePage {
 	public static final String xpathDismissUpdateButton = "//*[@value='Dismiss']";
 
 	protected static final String classNameFrameLayout = "FrameLayout";
+
+	private static final String idChatheadNotification = "mncv__notifications__chathead";
 
 	protected static final Logger log = ZetaLogger.getLog(CommonUtils.class
 			.getSimpleName());
@@ -229,5 +232,13 @@ public abstract class AndroidPage extends BasePage {
 
 	public void tapOnCenterOfScreen() throws Exception {
 		tapByCoordinates(50, 50);
+	}
+
+	public void tapChatheadNotification() throws Exception {
+		final By locator = By.id(idChatheadNotification);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : "The chathead notification has not been displayed after the default timeout";
+		final WebElement el = this.getDriver().findElement(locator);
+		assert DriverUtils.waitUntilElementClickable(getDriver(), el) : "The chathead notification is not clickable";
+		el.click();
 	}
 }
