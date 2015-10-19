@@ -272,4 +272,17 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 	public void tapSketchButtonOnPicturePreview() throws Exception {
 		getDialogPage().tapSketchOnImageButton();
 	}
+
+	public BufferedImage getMediaButtonScreenshot() throws Exception {
+		return getDialogPage().getMediaControlButtonScreenshot();
+	}
+
+	public boolean scrollUpUntilMediaBarVisible(final int maxScrollRetries)
+			throws Exception {
+		return getDialogPage().scrollUpUntilMediaBarVisible(maxScrollRetries);
+	}
+
+	public void tapMediaBarControlButton() throws Exception {
+		getDialogPage().tapPlayPauseMediaBarBtn();
+	}
 }
