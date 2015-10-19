@@ -375,3 +375,31 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
+     
+  @staging @rc @id3968
+  Scenario Outline: Verify posting in a group conversation without content
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Name> sent message <Message> to conversation <GroupChatName>
+    Given Contact <Name> sends image <Image> to group conversation <GroupChatName>
+    Given Contact <Name> ping conversation <GroupChatName>
+    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <GroupChatName>
+    And I click delete menu button
+    And I confirm delete conversation content
+    Then I dont see conversation <GroupChatName> in contact list
+    When I open search by taping on it
+    And I input conversation name <GroupChatName> in Search input
+    And I see conversation <GroupChatName> is presented in Search results
+    And I tap on conversation <GroupChatName> in search result    
+    Then I see empty group chat page with users <Contact1>,<Contact2> with only system message
+    When I type the message and send it
+    Then I see message in the dialog
+    And I see only 2 messages
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
+      | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
