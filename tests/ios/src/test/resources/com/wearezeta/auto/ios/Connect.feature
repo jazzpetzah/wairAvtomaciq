@@ -463,13 +463,12 @@ Feature: Connect
   Scenario Outline: Verify displaying first and last names for the incoming connection request
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to Me
-    Given User <Contact> change name to <NewName>
+    Given User <Contact> changes name to <NewName>
     Given I sign in using my email or phone number
     When I see Contact list with my name <Name>
     And I see Pending request link in contact list
     And I click on Pending request link in contact list
     And I see Pending request page
-    And I wait for 2 seconds
     Then I see user <NewName> found on Pending request page
 
     Examples: 

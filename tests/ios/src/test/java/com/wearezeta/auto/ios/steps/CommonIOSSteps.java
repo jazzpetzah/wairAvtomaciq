@@ -511,7 +511,14 @@ public class CommonIOSSteps {
 						: name));
 	}
 
-	@When("^User (\\w+) change name to (.*)$")
+	/**
+	 * Change user name on the backend
+	 * @param userNameAlias
+	 * @param newName
+	 * @throws Exception
+	 * @step. ^User (\\w+) changes? name to (.*)$
+	 */
+	@When("^User (\\w+) changes? name to (.*)$")
 	public void IChangeUserName(String userNameAlias, String newName)
 			throws Exception {
 		commonSteps.IChangeUserName(userNameAlias, newName);

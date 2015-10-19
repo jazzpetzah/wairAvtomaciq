@@ -3,7 +3,6 @@ package com.wearezeta.auto.ios.steps;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.PendingRequestsPage;
 
 import cucumber.api.java.en.When;
@@ -108,12 +107,8 @@ public class PendingRequestsPageSteps {
 	@When("^I see user (.*) found on Pending request page$")
 	public void WhenISeeUserFoundOnPendingRequestPage(String contact)
 			throws Exception {
-		try {
-			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		} catch (NoSuchUserException e) {
-			Assert.assertEquals(contact,
-				getPendingRequestsPage().getRequesterName());
-		}
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		Assert.assertEquals(contact, getPendingRequestsPage().getRequesterName());
 	}
 
 }
