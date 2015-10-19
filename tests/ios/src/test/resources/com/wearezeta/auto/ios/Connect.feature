@@ -459,7 +459,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @staging @id1496
+  @staging @id3996
   Scenario Outline: Verify displaying first and last names for the incoming connection request
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to Me
