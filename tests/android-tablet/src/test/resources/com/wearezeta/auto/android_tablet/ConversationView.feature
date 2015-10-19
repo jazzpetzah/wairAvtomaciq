@@ -383,7 +383,7 @@ Feature: Conversation View
       | Name      | Contact1  | NumColors |
       | user1Name | user2Name | 6         |
 
-  @id3804 @staging @torun
+  @id3804 @staging
   Scenario Outline: Send sketch on picture from gallery
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
