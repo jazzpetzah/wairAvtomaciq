@@ -853,7 +853,7 @@ public class DialogPage extends AndroidPage {
 		mediaBarControl.click();
 	}
 
-	public boolean waitUntilMediaBarVisible(int timeoutSeconds)
+	private boolean waitUntilMediaBarVisible(int timeoutSeconds)
 			throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(idMediaBarControl), timeoutSeconds);
@@ -912,5 +912,18 @@ public class DialogPage extends AndroidPage {
 	public boolean waitForAPictureWithUnsentIndicator() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.xpath(xpathUnsentIndicatorForImage));
+	}
+
+	public boolean scrollUpUntilMediaBarVisible(final int maxScrollRetries)
+			throws Exception {
+		int swipeNum = 1;
+		while (swipeNum <= maxScrollRetries) {
+			swipeByCoordinates(500, 50, 20, 50, 90);
+			if (waitUntilMediaBarVisible(2)) {
+				return true;
+			}
+			swipeNum++;
+		}
+		return false;
 	}
 }
