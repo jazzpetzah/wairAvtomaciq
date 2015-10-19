@@ -111,6 +111,8 @@ public class PendingRequestsPageSteps {
 		try {
 			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		} catch (NoSuchUserException e) {
+			Assert.assertEquals(contact,
+				getPendingRequestsPage().getRequesterName());
 		}
 	}
 
