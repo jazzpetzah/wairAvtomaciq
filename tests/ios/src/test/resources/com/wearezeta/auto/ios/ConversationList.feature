@@ -376,7 +376,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
-  @torun @staging @id1481
+  @staging @id1481
   Scenario Outline: Verify removing the content and leaving from the group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
