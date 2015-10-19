@@ -304,4 +304,16 @@ public class SelfProfilePageSteps {
 				"Selected color (%s) is not as expected (%s)", selectedColor,
 				expectedColor), selectedColor == expectedColor);
 	}
+
+	/**
+	 * Tap chathead notification as soon as it appears on the screen
+	 * 
+	 * @step. ^I tap the chathead$
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I tap the chathead$")
+	public void ITapChathead() throws Exception {
+		getSelfProfilePage().tapChatheadNotification();
+	}
 }
