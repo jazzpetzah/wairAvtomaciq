@@ -268,4 +268,8 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 			throws Exception {
 		return getDialogPage().getLastImageInFullScreen();
 	}
+
+	public void tapSketchButtonOnPicturePreview() throws Exception {
+		getDialogPage().tapSketchOnImageButton();
+	}
 }
