@@ -213,7 +213,7 @@ Feature: Search
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @id3871 @staging
+  @id3871 @regression
   Scenario Outline: Verify opening conversation with action button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -233,7 +233,7 @@ Feature: Search
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @id3873 @staging
+  @id3873 @regression
   Scenario Outline: Verify sending a photo with action button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -255,7 +255,7 @@ Feature: Search
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @id3872 @staging
+  @id3872 @regression
   Scenario Outline: Verify starting a call with action button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -276,7 +276,7 @@ Feature: Search
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @id3868 @staging
+  @id3868 @regression
   Scenario Outline: Verify action buttons disappear by unchecking the avatar / deleting token from search field
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

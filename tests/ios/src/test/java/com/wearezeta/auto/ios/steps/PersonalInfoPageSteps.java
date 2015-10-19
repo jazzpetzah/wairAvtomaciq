@@ -615,4 +615,30 @@ public class PersonalInfoPageSteps {
 				getPersonalInfoPage().isPhoneNumberAttachedToProfile(number));
 	}
 
+	/**
+	 * Verifies that theme switcher button is shown on self profile page
+	 * 
+	 * @step. ^I see theme switcher button on self profile page$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see theme switcher button on self profile page$")
+	public void ISeeThemeSwitcherButton() throws Exception {
+		Assert.assertTrue("Theme switcher button is not visible",
+				getPersonalInfoPage().isThemeSwitcherButtonVisible());
+	}
+
+	/**
+	 * Verifies that theme switcher button is NOT shown on self profile page
+	 * 
+	 * @step. ^I dont see theme switcher button on self profile page$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I dont see theme switcher button on self profile page$")
+	public void IDontSeeThemeSwitcherButton() throws Exception {
+		Assert.assertFalse("Theme switcher button is visible",
+				getPersonalInfoPage().isThemeSwitcherButtonVisible());
+	}
+
 }

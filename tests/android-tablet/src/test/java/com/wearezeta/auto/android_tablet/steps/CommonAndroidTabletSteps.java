@@ -122,7 +122,7 @@ public class CommonAndroidTabletSteps {
 			AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
 			AndroidCommonUtils.disableHints();
 			AndroidCommonUtils.disableHockeyUpdates();
-			AndroidCommonUtils.installTestingGalleryApp();
+			AndroidCommonUtils.installTestingGalleryApp(this.getClass());
 			final String backendJSON = AndroidCommonUtils
 					.createBackendJSON(CommonUtils.getBackendType(this
 							.getClass()));

@@ -118,7 +118,7 @@ public class CommonAndroidSteps {
 			AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
 			AndroidCommonUtils.disableHints();
 			AndroidCommonUtils.disableHockeyUpdates();
-			AndroidCommonUtils.installTestingGalleryApp();
+			AndroidCommonUtils.installTestingGalleryApp(this.getClass());
 			String backendJSON = AndroidCommonUtils
 					.createBackendJSON(CommonUtils.getBackendType(this
 							.getClass()));
@@ -1021,7 +1021,7 @@ public class CommonAndroidSteps {
 	 */
 	@Given("^I set unicode input method$")
 	public void ISetUnicodeInputMethod() throws Exception {
-		AndroidCommonUtils.installAdbKeyboard();
+		AndroidCommonUtils.installAdbKeyboard(this.getClass());
 		AndroidCommonUtils.setAdbKeyboard();
 	}
 

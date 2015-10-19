@@ -33,7 +33,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @staging @id1334
+  @regression @id1334
   Scenario Outline: Verify archiving silenced conversation     
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -280,7 +280,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | Message | Image       |
       | user1Name | user2Name | user3Name | testing | testing.jpg |
 
-  @staging @id3319
+  @regression @id3319
   Scenario Outline: Verify closing the action menu by clicking on cancel on out of the menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -333,7 +333,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3954
+  @regression @id3954
   Scenario Outline: Verify that deleted conversation isn't going to archive
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

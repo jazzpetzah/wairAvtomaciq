@@ -28,7 +28,7 @@
 		<perfReportPath>${user.home}/Documents/performance.json</perfReportPath>
 		<androidVersion>44</androidVersion>
 		<backendType>staging</backendType>
-		<androidToolsPath></androidToolsPath>
+		<androidToolsPath>${project.basedir}/../tools/android</androidToolsPath>
 		<rcNotificationsRecepients>vova@wire.com,nick@wire.com</rcNotificationsRecepients>
 	</properties>
 

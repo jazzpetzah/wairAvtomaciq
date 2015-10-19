@@ -636,7 +636,7 @@ public final class IOSLocators {
 
 		public static final String nameSoundCloudButton = "soundcloud";
 
-		public static final String xpathMessageEntries = "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell";
+		public static final String xpathMessageEntries = "//UIAWindow[@name='ZClientMainWindow']/UIATableView/UIATableCell";
 
 		public static final String xpathSimpleMessageLink = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/UIATextView[1]";
 		
@@ -712,6 +712,7 @@ public final class IOSLocators {
 		public static final String nameCloseButton = "CloseButton";
 		public static final String nameAddPhoneNumberButton = "ADD PHONE NUMBER";
 		public static final String xpathPhoneEmailField =  "//UIAStaticText[contains(@name, '%s')]";
+		public static final String nameThemeSwitcherButton = "ThemeButton";
 	}
 
 	public final class GiphyPreviewPage {
