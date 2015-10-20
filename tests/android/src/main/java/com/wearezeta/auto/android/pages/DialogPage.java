@@ -456,9 +456,9 @@ public class DialogPage extends AndroidPage {
 		assert DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
 	}
 
-	public void drawSketchOnImage() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(),
-				sketchImagePaintButton);
+	public void tapSketchOnImageButton() throws Exception {
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idSketchImagePaintButton)) : "Draw sketch on image button is not visible";
 		sketchImagePaintButton.click();
 	}
 
@@ -534,6 +534,9 @@ public class DialogPage extends AndroidPage {
 	public void openGallery() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), galleryBtn);
 		galleryBtn.click();
+		//workaround until images not selected
+		this.wait(1000);
+		this.tapByCoordinates(30, 20);
 	}
 
 	public void closeFullScreenImage() throws Exception {
@@ -853,7 +856,7 @@ public class DialogPage extends AndroidPage {
 		mediaBarControl.click();
 	}
 
-	public boolean waitUntilMediaBarVisible(int timeoutSeconds)
+	private boolean waitUntilMediaBarVisible(int timeoutSeconds)
 			throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(idMediaBarControl), timeoutSeconds);
@@ -912,5 +915,18 @@ public class DialogPage extends AndroidPage {
 	public boolean waitForAPictureWithUnsentIndicator() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.xpath(xpathUnsentIndicatorForImage));
+	}
+
+	public boolean scrollUpUntilMediaBarVisible(final int maxScrollRetries)
+			throws Exception {
+		int swipeNum = 1;
+		while (swipeNum <= maxScrollRetries) {
+			swipeByCoordinates(500, 50, 20, 50, 90);
+			if (waitUntilMediaBarVisible(2)) {
+				return true;
+			}
+			swipeNum++;
+		}
+		return false;
 	}
 }

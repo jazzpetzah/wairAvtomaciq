@@ -252,23 +252,30 @@ Feature: Calling
 
   @id3172 @regression @rc @rc42
   Scenario Outline: I can join group call in foreground
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given There are 5 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Contact2> starts waiting instance using <CallBackend>
+    Given <Contact2> accepts next incoming call automatically
+    Given <Contact3> starts waiting instance using <CallBackend>
+    Given <Contact3> accepts next incoming call automatically
+    Given <Contact4> starts waiting instance using <CallBackend>
+    Given <Contact4> accepts next incoming call automatically
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
-    And <Contact1> calls <GroupChatName> using <CallBackend>
-    And <Contact2> calls <GroupChatName> using <CallBackend>
+    And I see dialog page
+    And <Contact1> calls <GroupChatName> using <CallBackend2>
     And I answer the call from the overlay bar
     Then I do not see join group call overlay
     And I see calling overlay Big bar
-    When <Contact1> stops all calls to <GroupChatName>
-    And <Contact2> stops all calls to <GroupChatName>
+    And I wait for 10 seconds
+    Then <Contact2>,<Contact3>,<Contact4> verify to have 4 flows
+    Then <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
 
     Examples: 
-      | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
-      | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
+      | CallBackend |CallBackend2| Name      | Contact1  | Contact2  | Contact3  |Contact4  | GroupChatName    |
+      | chrome      | autocall   | user1Name | user2Name | user3Name | user4Name |user5Name | ChatForGroupCall |
 
   @id3174 @calling_basic @rc
   Scenario Outline: I can join group call after I ignored it

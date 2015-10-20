@@ -276,6 +276,31 @@ Feature: Search
       | Name      | Contact1  |
       | user1Name | user2Name |
 
+  @id3876 @regression
+  Scenario Outline: Verify sharing a photo to a newly created group conversation with action button	
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    Given I wait until <Contact1> exists in backend search results
+    When I open search by tap
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I enter "<Contact1>" into Search input on People Picker page
+    And I tap on user name found on People picker page <Contact1>
+    And I tap on Search input on People picker page
+    And I enter "<Contact2>" into Search input on People Picker page
+    And I tap on user name found on People picker page <Contact2>
+    And I see Send image action button on People picker page
+    And I click Send image action button on People picker page
+    And I press "Gallery" button
+    And I press "Confirm" button
+    Then I see new photo in the dialog
+
+    Examples: 
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
+
   @id3868 @regression
   Scenario Outline: Verify action buttons disappear by unchecking the avatar / deleting token from search field
     Given There are 2 users where <Name> is me
@@ -294,3 +319,28 @@ Feature: Search
     Examples: 
       | Name      | Contact1  |
       | user1Name | user2Name |
+
+  @id3870 @staging
+  Scenario Outline: Verify button Open is changed to Create after checking second person
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    Given I wait until <Contact1> exists in backend search results
+    Given I wait until <Contact2> exists in backend search results
+    When I open search by tap
+    And I see People picker page
+    And I wait until Top People list appears
+    And I see TOP PEOPLE
+    And I tap on <Contact1> in Top People
+    And I see Open Conversation button on People picker page
+    And I tap on <Contact2> in Top People
+    And I see Create Conversation button on people picker page
+    And I tap on <Contact2> in Top People
+    And I see Open Conversation button on People picker page
+    And I tap on <Contact1> in Top People
+    Then I see action buttons disappear from People Picker page
+
+    Examples: 
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |

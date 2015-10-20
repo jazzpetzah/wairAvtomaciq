@@ -23,12 +23,11 @@ public class DialogPageSteps {
 			.getInstance();
 
 	private DialogPage getDialogPage() throws Exception {
-		return (DialogPage) pagesCollection.getPage(DialogPage.class);
+		return pagesCollection.getPage(DialogPage.class);
 	}
 
 	private CallingOverlayPage getCallingOverlayPage() throws Exception {
-		return (CallingOverlayPage) pagesCollection
-				.getPage(CallingOverlayPage.class);
+		return pagesCollection.getPage(CallingOverlayPage.class);
 	}
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -437,7 +436,7 @@ public class DialogPageSteps {
 			getDialogPage().closeFullScreenImage();
 			break;
 		case "sketch image paint":
-			getDialogPage().drawSketchOnImage();
+			getDialogPage().tapSketchOnImageButton();
 			break;
 		}
 	}
@@ -569,17 +568,8 @@ public class DialogPageSteps {
 	 */
 	@When("^I swipe down on dialog page until Mediabar appears$")
 	public void ISwipedownOnDialogPageUntilMediaBarAppears() throws Exception {
-		int swipeNum = 1;
-		while (swipeNum <= MAX_SWIPES) {
-			getDialogPage().swipeByCoordinates(SWIPE_DURATION_MILLISECONDS, 50,
-					20, 50, 90);
-			if (getDialogPage().waitUntilMediaBarVisible(2)) {
-				return;
-			}
-			swipeNum++;
-		}
-		assert getDialogPage().waitUntilMediaBarVisible(1) : "The Media bar is still not visible after "
-				+ MAX_SWIPES + " swipes";
+		Assert.assertTrue("Media Bar is not visible", getDialogPage()
+				.scrollUpUntilMediaBarVisible(MAX_SWIPES));
 	}
 
 	/**
