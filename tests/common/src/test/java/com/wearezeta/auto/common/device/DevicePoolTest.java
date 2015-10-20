@@ -53,4 +53,19 @@ public class DevicePoolTest {
         assertFalse("Device pool should have no more free devices", testPool.hasFreeDevices());
     }
 
+    @Test//(timeout = 9000)
+    public void checkLargeNumbersOfDevicesAreCreatedConcurrently() {
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        int numDevices = 10000;
+        DevicePool devicePool = new DevicePool(numDevices);
+        devicePool.init();
+        assertTrue("Not all devices were ready", devicePool.getFreeDevices().size() == numDevices);
+//        while (true) {
+//
+//        }
+    }
 }

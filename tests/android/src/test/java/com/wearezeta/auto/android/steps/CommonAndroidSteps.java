@@ -12,6 +12,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import cucumber.api.PendingException;
@@ -666,11 +667,24 @@ public class CommonAndroidSteps {
 	public void UserSendMessageToConversation(String msgFromUserNameAlias,
 			String msg, String dstUserNameAlias) throws Exception {
 		commonSteps.UserSentOtrMessageToUser(
-				msgFromUserNameAlias,
-				dstUserNameAlias,
-				(msg == null || msg.trim().length() == 0) ? CommonUtils
-						.generateRandomString(10) : msg.trim());
+                msgFromUserNameAlias,
+                dstUserNameAlias,
+                (msg == null || msg.trim().length() == 0) ? CommonUtils
+                        .generateRandomString(10) : msg.trim());
 	}
+
+    @When("^All contacts send me a message (.*)$")
+    public void AllContactsSendMeAMessage(String message) throws Exception {
+        for (ClientUser user: usrMgr.getCreatedUsers()) {
+            if (!user.getName().equals(usrMgr.getSelfUser().getName())) {
+                commonSteps.UserSentOtrMessageToUser(
+                        user.getName(),
+                        usrMgr.getSelfUser().getName(),
+                        message
+                );
+            }
+        }
+    }
 
 	/**
 	 * User A sends specified number of simple text messages to user B
@@ -712,7 +726,7 @@ public class CommonAndroidSteps {
 	@Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
 			throws Throwable {
-		commonSteps.ThereAreNUsersWhereXIsMeOtr(CURRENT_PLATFORM, count,
+        commonSteps.ThereAreNUsersWhereXIsMeOtr(CURRENT_PLATFORM, count,
 				myNameAlias);
 		GivenUserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
         RemoteProcessIPC.startDevices(count - 1);
@@ -898,6 +912,7 @@ public class CommonAndroidSteps {
 				.getInstance(ListenerType.DEFAULT));
 
 		commonSteps.getUserManager().resetUsers();
+        RemoteProcessIPC.killAllDevices();
 	}
 
 	/**
