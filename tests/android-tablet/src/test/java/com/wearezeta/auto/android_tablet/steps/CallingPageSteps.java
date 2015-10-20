@@ -68,6 +68,27 @@ public class CallingPageSteps {
 					getCallingOverlayPage().ongoingCallMinibarIsInvisible());
 		}
 	}
+	
+	/**
+	 * Checks to see if call overlay is present or not
+	 * 
+	 * @step. ^I( do not)? see call overlay$
+	 * @param shouldNotSee
+	 *            is set to null if " do not" part does not exist
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I( do not)? see generic calling overlay$")
+	public void WhenISeeGenericCallOverlay(String shouldNotSee) throws Exception {
+		if (shouldNotSee == null) {
+			Assert.assertTrue("Call overlay not visible",
+					getCallingOverlayPage().callingOverlayIsVisible());
+		} else {
+			Assert.assertTrue(
+					"Call overlay is visible, it should have been dismissed",
+					getCallingOverlayPage().callingOverlayNotVisible());
+		}
+	}
 
 	/**
 	 * Tap the corresponding button on call overlay
