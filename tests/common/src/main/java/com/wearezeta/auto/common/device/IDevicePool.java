@@ -9,6 +9,8 @@ import java.util.List;
  */
 public interface IDevicePool {
 
+    void init();
+
     Boolean hasFreeDevices();
 
     Device getNextFreeDevice();

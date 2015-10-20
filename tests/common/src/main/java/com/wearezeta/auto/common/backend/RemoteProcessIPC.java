@@ -36,4 +36,8 @@ public class RemoteProcessIPC {
         Device sendersDevice = devices.get(0);
         sendersDevice.sendMessage(convId, message);
     }
+
+    public static void killAllDevices() {
+        devicePool.killAllDevices();
+    }
 }

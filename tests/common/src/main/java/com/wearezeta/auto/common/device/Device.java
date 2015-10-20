@@ -24,12 +24,15 @@ public class Device extends RemoteEntity implements IDevice {
     }
 
     private void spawnDevice(IRemoteProcess process) {
+        System.out.println("spawnDevice(" + process.toString() + ")");
         //TODO check that process is established
         ActorRef processActorRef = process.ref();
         Object resp = askActor(processActorRef, new SpawnRemoteDevice(null, name));
 
         if (resp instanceof ActorRef) {
-            ref = (ActorRef) resp;
+            ActorRef deviceRef = (ActorRef) resp;
+            System.out.println("deviceRef: " + deviceRef);
+            ref = deviceRef;
         } else {
             //TODO come up with a better exception?
             throw new IllegalStateException("There was an error establishing a connection with a new device: " + name +
