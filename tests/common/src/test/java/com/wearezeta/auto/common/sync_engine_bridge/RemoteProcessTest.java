@@ -1,11 +1,15 @@
-package com.wearezeta.auto.common.device;
+package com.wearezeta.auto.common.sync_engine_bridge;
 
 import akka.actor.ActorPath;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
+
 import com.waz.provision.CoordinatorActor;
+import com.wearezeta.auto.common.sync_engine_bridge.RemoteProcess;
+
 import org.junit.Test;
+
 import scala.concurrent.duration.FiniteDuration;
 
 import java.util.concurrent.TimeUnit;

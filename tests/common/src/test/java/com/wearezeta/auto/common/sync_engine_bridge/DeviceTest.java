@@ -1,12 +1,18 @@
-package com.wearezeta.auto.common.device;
+package com.wearezeta.auto.common.sync_engine_bridge;
 
 import akka.actor.ActorRef;
+
 import com.waz.provision.ActorMessage.GetUser$;
 import com.waz.provision.ActorMessage.Successful;
 import com.waz.provision.ActorMessage.TerminateRemotes$;
+import com.wearezeta.auto.common.sync_engine_bridge.Device;
+import com.wearezeta.auto.common.sync_engine_bridge.IRemoteProcess;
+import com.wearezeta.auto.common.sync_engine_bridge.RemoteProcess;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.UserState;
+
 import org.junit.Test;
+
 import scala.concurrent.duration.FiniteDuration;
 
 import java.util.concurrent.TimeUnit;

@@ -3,11 +3,13 @@ package com.wearezeta.auto.common;
 import com.wearezeta.auto.common.backend.*;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.RegistrationStrategy;
+
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
@@ -120,14 +122,12 @@ public final class CommonSteps {
 		}
 	}
 
-    //TODO slowly move each project to use OTR
 	public void ThereAreNUsers(Platform currentPlatform, int count)
 			throws Exception {
 		usrMgr.createUsersOnBackend(count, RegistrationStrategy
 				.getRegistrationStrategyForPlatform(currentPlatform));
 	}
 
-    //TODO slowly move each project to use OTR
 	public void ThereAreNUsersWhereXIsMe(Platform currentPlatform, int count,
 			String myNameAlias) throws Exception {
 		usrMgr.createUsersOnBackend(count, RegistrationStrategy
@@ -135,22 +135,12 @@ public final class CommonSteps {
 		usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(myNameAlias));
 	}
 
-    public void ThereAreNUsersWhereXIsMeOtr(Platform currentPlatform, int count,
-    String myNameAlias) throws Exception {
-        usrMgr.createUsersOnBackend(count, RegistrationStrategy
-                .getRegistrationStrategyForPlatform(currentPlatform));
-        usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(myNameAlias));
-        RemoteProcessIPC.startDevices(count - 1);
-    }
-
-    //TODO slowly move each project to use OTR
-	public void ThereAreNUsersWhereXIsMeRegOnlyByMail(Platform currentPlatform, int count,
-			String myNameAlias) throws Exception {
+	public void ThereAreNUsersWhereXIsMeRegOnlyByMail(Platform currentPlatform,
+			int count, String myNameAlias) throws Exception {
 		usrMgr.createUsersOnBackend(count, RegistrationStrategy.ByEmailOnly);
 		usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(myNameAlias));
 	}
 
-    //TODO slowly move each project to use OTR
 	public void ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(
 			Platform currentPlatform, int count, String myNameAlias)
 			throws Exception {
@@ -331,7 +321,6 @@ public final class CommonSteps {
 		Thread.sleep(1000);
 	}
 
-    //TODO slowly move each project to use OTR
 	public void UserSentMessageToUser(String msgFromUserNameAlias,
 			String dstUserNameAlias, String message) throws Exception {
 		ClientUser msgFromUser = usrMgr
@@ -341,15 +330,15 @@ public final class CommonSteps {
 		BackendAPIWrappers.sendDialogMessage(msgFromUser, msgToUser, message);
 	}
 
-    public void UserSentOtrMessageToUser(String msgFromUserNameAlias,
-            String dstUserNameAlias, String message) throws Exception {
-        ClientUser msgFromUser = usrMgr
-                .findUserByNameOrNameAlias(msgFromUserNameAlias);
-        ClientUser msgToUser = usrMgr
-                .findUserByNameOrNameAlias(dstUserNameAlias);
-        RemoteProcessIPC.loginToSingleRemoteProcess(msgFromUser);
-        RemoteProcessIPC.sendConversationMessage(msgFromUser, msgToUser.getId(), message);
-    }
+	public void UserSentOtrMessageToUser(String msgFromUserNameAlias,
+			String dstUserNameAlias, String message) throws Exception {
+		ClientUser msgFromUser = usrMgr
+				.findUserByNameOrNameAlias(msgFromUserNameAlias);
+		ClientUser msgToUser = usrMgr
+				.findUserByNameOrNameAlias(dstUserNameAlias);
+		SEBridge.getInstance().sendConversationMessage(msgFromUser,
+				msgToUser.getId(), message);
+	}
 
 	public void UserHotPingedConversation(String hotPingFromUserNameAlias,
 			String dstConversationName) throws Exception {
@@ -372,18 +361,17 @@ public final class CommonSteps {
 				dstConversationName, message);
 	}
 
-    public void UserSentOtrMessageToConversation(String userFromNameAlias,
-            String dstConversationName, String message) throws Exception {
-        ClientUser userFrom = usrMgr
-                .findUserByNameOrNameAlias(userFromNameAlias);
-        dstConversationName = usrMgr.replaceAliasesOccurences(
-                dstConversationName, FindBy.NAME_ALIAS);
-
-        String dstConvId = BackendAPIWrappers.getConversationIdByName(userFrom, dstConversationName);
-
-        RemoteProcessIPC.loginToSingleRemoteProcess(userFrom);
-        RemoteProcessIPC.sendConversationMessage(userFrom, dstConvId, message);
-    }
+	public void UserSentOtrMessageToConversation(String userFromNameAlias,
+			String dstConversationName, String message) throws Exception {
+		ClientUser userFrom = usrMgr
+				.findUserByNameOrNameAlias(userFromNameAlias);
+		dstConversationName = usrMgr.replaceAliasesOccurences(
+				dstConversationName, FindBy.NAME_ALIAS);
+		String dstConvId = BackendAPIWrappers.getConversationIdByName(userFrom,
+				dstConversationName);
+		SEBridge.getInstance().sendConversationMessage(userFrom, dstConvId,
+				message);
+	}
 
 	public void UserSendsImageToConversation(String imageSenderUserNameAlias,
 			String imagePath, String dstConversationName, Boolean isGroup)

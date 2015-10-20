@@ -7,20 +7,22 @@ import com.wearezeta.auto.android.common.AndroidLogListener.ListenerType;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.*;
-import com.wearezeta.auto.common.backend.RemoteProcessIPC;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+
 import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -181,17 +183,18 @@ public class CommonAndroidSteps {
 		ZetaFormatter.setLazyDriver(lazyDriver);
 	}
 
-    @Before("@torun")
-    public void testHook() throws IOException {
+	@Before("@torun")
+	public void testHook() throws IOException {
 
-//        File testsFile = new File(System.getProperty("user.dir")).getParentFile();
-//        File lib = new File(testsFile.getAbsolutePath() + "/common/lib");
-//
-//        System.out.println("Lib: " + lib);
-//        System.out.println("Does it exist: " + lib.exists());
-//        System.exit(0);
-        System.out.println("Downloads: " + new File("~/Downloads"));
-    }
+		// File testsFile = new
+		// File(System.getProperty("user.dir")).getParentFile();
+		// File lib = new File(testsFile.getAbsolutePath() + "/common/lib");
+		//
+		// System.out.println("Lib: " + lib);
+		// System.out.println("Does it exist: " + lib.exists());
+		// System.exit(0);
+		System.out.println("Downloads: " + new File("~/Downloads"));
+	}
 
 	@Before("@performance")
 	public void setUpPerformance() throws Exception {
@@ -468,9 +471,9 @@ public class CommonAndroidSteps {
 	@Given("^(.*) is connected to (.*)$")
 	public void UserIsConnectedTo(String userFromNameAlias,
 			String usersToNameAliases) throws Exception {
-        System.out.println("userFromAlias: " + userFromNameAlias);
-        System.out.println("usersToNameAliases: " + usersToNameAliases);
-        commonSteps.UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
+		System.out.println("userFromAlias: " + userFromNameAlias);
+		System.out.println("usersToNameAliases: " + usersToNameAliases);
+		commonSteps.UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
 	}
 
 	/**
@@ -667,24 +670,21 @@ public class CommonAndroidSteps {
 	public void UserSendMessageToConversation(String msgFromUserNameAlias,
 			String msg, String dstUserNameAlias) throws Exception {
 		commonSteps.UserSentOtrMessageToUser(
-                msgFromUserNameAlias,
-                dstUserNameAlias,
-                (msg == null || msg.trim().length() == 0) ? CommonUtils
-                        .generateRandomString(10) : msg.trim());
+				msgFromUserNameAlias,
+				dstUserNameAlias,
+				(msg == null || msg.trim().length() == 0) ? CommonUtils
+						.generateRandomString(10) : msg.trim());
 	}
 
-    @When("^All contacts send me a message (.*)$")
-    public void AllContactsSendMeAMessage(String message) throws Exception {
-        for (ClientUser user: usrMgr.getCreatedUsers()) {
-            if (!user.getName().equals(usrMgr.getSelfUser().getName())) {
-                commonSteps.UserSentOtrMessageToUser(
-                        user.getName(),
-                        usrMgr.getSelfUser().getName(),
-                        message
-                );
-            }
-        }
-    }
+	@When("^All contacts send me a message (.*)$")
+	public void AllContactsSendMeAMessage(String message) throws Exception {
+		for (ClientUser user : usrMgr.getCreatedUsers()) {
+			if (!user.getName().equals(usrMgr.getSelfUser().getName())) {
+				commonSteps.UserSentOtrMessageToUser(user.getName(), usrMgr
+						.getSelfUser().getName(), message);
+			}
+		}
+	}
 
 	/**
 	 * User A sends specified number of simple text messages to user B
@@ -726,10 +726,9 @@ public class CommonAndroidSteps {
 	@Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
 			throws Throwable {
-        commonSteps.ThereAreNUsersWhereXIsMeOtr(CURRENT_PLATFORM, count,
+		commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count,
 				myNameAlias);
 		GivenUserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
-        RemoteProcessIPC.startDevices(count - 1);
 	}
 
 	/**
@@ -912,7 +911,7 @@ public class CommonAndroidSteps {
 				.getInstance(ListenerType.DEFAULT));
 
 		commonSteps.getUserManager().resetUsers();
-        RemoteProcessIPC.killAllDevices();
+		SEBridge.getInstance().reset();
 	}
 
 	/**

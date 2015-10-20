@@ -1,6 +1,6 @@
 Feature: Test
 
-  @id316 @regression @torun
+  @torun
   Scenario Outline: Receive Message from contact
     Given There are 11 users where <Name> is me
     Given Myself is connected to all other users

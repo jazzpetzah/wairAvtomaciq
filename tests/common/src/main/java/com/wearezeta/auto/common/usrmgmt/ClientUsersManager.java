@@ -5,6 +5,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.log.ZetaLogger;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
@@ -247,7 +248,8 @@ public class ClientUsersManager {
 	private final Random random = new Random();
 
 	// ! Mutates the users list
-    //TODO process spawning should probably occur here - actually, I don't need to worry about user creation!!
+	// TODO process spawning should probably occur here - actually, I don't need
+	// to worry about user creation!!
 	private void generateUsers(List<ClientUser> usersToCreate,
 			final RegistrationStrategy strategy) throws Exception {
 

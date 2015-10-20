@@ -1,4 +1,6 @@
-package com.wearezeta.auto.common.device;
+package com.wearezeta.auto.common.sync_engine_bridge;
+
+import com.wearezeta.auto.common.sync_engine_bridge.IRemoteProcess;
 
 import akka.actor.ActorPath;
 import akka.actor.ActorRef;
