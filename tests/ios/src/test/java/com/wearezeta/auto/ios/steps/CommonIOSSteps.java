@@ -514,7 +514,9 @@ public class CommonIOSSteps {
 	/**
 	 * Change user name on the backend
 	 * @param userNameAlias
+	 * 			user's name alias to change
 	 * @param newName
+	 * 			new given name
 	 * @throws Exception
 	 * @step. ^User (\\w+) changes? name to (.*)$
 	 */
