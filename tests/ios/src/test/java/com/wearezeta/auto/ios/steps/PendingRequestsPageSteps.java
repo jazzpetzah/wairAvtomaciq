@@ -97,5 +97,18 @@ public class PendingRequestsPageSteps {
 	public void IClickPersonInYOUBOTHKNOWSection() throws Throwable {
 		getPendingRequestsPage().clickYouBothKnowPeopleIcon();
 	}
+	
+	/**
+	 * Verify that name and surname exists on the page
+	 * 
+	 * @step. ^I see user (.*) found on Pending request page$
+	 * @throws Throwable
+	 */
+	@When("^I see user (.*) found on Pending request page$")
+	public void WhenISeeUserFoundOnPendingRequestPage(String contact)
+			throws Exception {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		Assert.assertEquals(contact, getPendingRequestsPage().getRequesterName());
+	}
 
 }
