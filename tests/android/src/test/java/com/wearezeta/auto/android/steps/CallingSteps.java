@@ -10,8 +10,6 @@ import static org.hamcrest.Matchers.*;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-import static com.wearezeta.auto.common.CommonSteps.splitAliases;
-
 public class CallingSteps {
 
 	private final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2

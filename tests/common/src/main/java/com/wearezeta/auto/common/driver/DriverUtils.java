@@ -204,13 +204,14 @@ public class DriverUtils {
 		}
 	}
 
-	public static boolean waitUntilAlertAppears(AppiumDriver driver)
-			throws Exception {
+	public static boolean waitUntilAlertAppears(
+			AppiumDriver<? extends WebElement> driver) throws Exception {
 		return waitUntilAlertAppears(driver, 20);
 	}
 
-	public static boolean waitUntilAlertAppears(AppiumDriver driver,
-			long timeout) throws Exception {
+	public static boolean waitUntilAlertAppears(
+			AppiumDriver<? extends WebElement> driver, long timeout)
+			throws Exception {
 		DriverUtils.turnOffImplicitWait(driver);
 		try {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
@@ -225,7 +226,8 @@ public class DriverUtils {
 		}
 	}
 
-	public static void scrollToElement(AppiumDriver driver, WebElement element) {
+	public static void scrollToElement(
+			AppiumDriver<? extends WebElement> driver, WebElement element) {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		HashMap<String, String> scrollToObject = new HashMap<String, String>();
 		scrollToObject.put("element", ((RemoteWebElement) element).getId());
@@ -247,8 +249,9 @@ public class DriverUtils {
 	 *            min value is 1. Starting point of swipe (in percents relative
 	 *            to the original control height)
 	 */
-	public static void swipeLeft(AppiumDriver driver, WebElement element,
-			int time, int elementPercentX, int elementPercentY) {
+	public static void swipeLeft(AppiumDriver<? extends WebElement> driver,
+			WebElement element, int time, int elementPercentX,
+			int elementPercentY) {
 		final Point coords = element.getLocation();
 		final Dimension screenSize = driver.manage().window().getSize();
 		final Dimension elementSize = element.getSize();
@@ -262,14 +265,14 @@ public class DriverUtils {
 
 	public static final int SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL = 100;
 
-	public static void swipeLeft(AppiumDriver driver, WebElement element,
-			int time) {
+	public static void swipeLeft(AppiumDriver<? extends WebElement> driver,
+			WebElement element, int time) {
 		swipeLeft(driver, element, time, SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL,
 				DEFAULT_PERCENTAGE);
 	}
 
-	public static void swipeRight(AppiumDriver driver, WebElement element,
-			int time, int percentX, int percentY) {
+	public static void swipeRight(AppiumDriver<? extends WebElement> driver,
+			WebElement element, int time, int percentX, int percentY) {
 		final Point coords = element.getLocation();
 		final Dimension elementSize = element.getSize();
 		final int xOffset = elementSize.width * percentX / 100;
@@ -278,9 +281,9 @@ public class DriverUtils {
 				+ yOffset, time);
 	}
 
-	public static void swipeRight(AppiumDriver driver, WebElement element,
-			int time, int startPercentX, int startPercentY, int endPercentX,
-			int endPercentY) {
+	public static void swipeRight(AppiumDriver<? extends WebElement> driver,
+			WebElement element, int time, int startPercentX, int startPercentY,
+			int endPercentX, int endPercentY) {
 		final Point coords = element.getLocation();
 		final Dimension elementSize = element.getSize();
 
@@ -294,14 +297,14 @@ public class DriverUtils {
 
 	}
 
-	public static void swipeRight(AppiumDriver driver, WebElement element,
-			int time) {
+	public static void swipeRight(AppiumDriver<? extends WebElement> driver,
+			WebElement element, int time) {
 		swipeRight(driver, element, time,
 				SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, DEFAULT_PERCENTAGE);
 	}
 
-	public static void swipeUp(AppiumDriver driver, WebElement element,
-			int time, int percentX, int percentY) {
+	public static void swipeUp(AppiumDriver<? extends WebElement> driver,
+			WebElement element, int time, int percentX, int percentY) {
 		final Point coords = element.getLocation();
 		final Dimension elementSize = element.getSize();
 
@@ -314,13 +317,14 @@ public class DriverUtils {
 
 	public static final int SWIPE_Y_DEFAULT_PERCENTAGE_VERTICAL = 100;
 
-	public static void swipeUp(AppiumDriver driver, WebElement element, int time) {
+	public static void swipeUp(AppiumDriver<? extends WebElement> driver,
+			WebElement element, int time) {
 		swipeUp(driver, element, time, DEFAULT_PERCENTAGE,
 				SWIPE_Y_DEFAULT_PERCENTAGE_VERTICAL);
 	}
 
-	public static void swipeDown(AppiumDriver driver, WebElement element,
-			int time, int percentX, int percentY) {
+	public static void swipeDown(AppiumDriver<? extends WebElement> driver,
+			WebElement element, int time, int percentX, int percentY) {
 		final Point coords = element.getLocation();
 		final Dimension elementSize = element.getSize();
 
@@ -331,15 +335,16 @@ public class DriverUtils {
 				+ yOffset, time);
 	}
 
-	public static void swipeDown(AppiumDriver driver, WebElement element,
-			int time) {
+	public static void swipeDown(AppiumDriver<? extends WebElement> driver,
+			WebElement element, int time) {
 		swipeDown(driver, element, time, DEFAULT_PERCENTAGE,
 				SWIPE_Y_DEFAULT_PERCENTAGE_VERTICAL);
 	}
 
-	public static void swipeElementPointToPoint(AppiumDriver driver,
-			WebElement element, int time, int startPercentX, int startPercentY,
-			int endPercentX, int endPercentY) {
+	public static void swipeElementPointToPoint(
+			AppiumDriver<? extends WebElement> driver, WebElement element,
+			int time, int startPercentX, int startPercentY, int endPercentX,
+			int endPercentY) {
 
 		final Point coords = element.getLocation();
 		final Dimension size = element.getSize();
@@ -352,7 +357,8 @@ public class DriverUtils {
 		driver.swipe(startX, startY, endX, endY, time);
 	}
 
-	public static void swipeByCoordinates(AppiumDriver driver, int time,
+	public static void swipeByCoordinates(
+			AppiumDriver<? extends WebElement> driver, int time,
 			int startPercentX, int startPercentY, int endPercentX,
 			int endPercentY) throws Exception {
 		final Dimension screenSize = driver.manage().window().getSize();
@@ -369,24 +375,24 @@ public class DriverUtils {
 	public static final int DEFAULT_SWIPE_DURATION = 1000; // milliseconds
 	public static final int DEFAULT_FINGERS = 1;
 
-	public static void genericTap(AppiumDriver driver) {
+	public static void genericTap(AppiumDriver<? extends WebElement> driver) {
 		genericTap(driver, DEFAULT_SWIPE_DURATION, DEFAULT_FINGERS,
 				DEFAULT_PERCENTAGE, DEFAULT_PERCENTAGE);
 	}
 
-	public static void genericTap(AppiumDriver driver, int percentX,
-			int percentY) {
+	public static void genericTap(AppiumDriver<? extends WebElement> driver,
+			int percentX, int percentY) {
 		genericTap(driver, DEFAULT_SWIPE_DURATION, DEFAULT_FINGERS, percentX,
 				percentY);
 	}
 
-	public static void genericTap(AppiumDriver driver, int time, int percentX,
-			int percentY) {
+	public static void genericTap(AppiumDriver<? extends WebElement> driver,
+			int time, int percentX, int percentY) {
 		genericTap(driver, time, DEFAULT_FINGERS, percentX, percentY);
 	}
 
-	public static void genericTap(AppiumDriver driver, int time, int fingers,
-			int percentX, int percentY) {
+	public static void genericTap(AppiumDriver<? extends WebElement> driver,
+			int time, int fingers, int percentX, int percentY) {
 		final Dimension screenSize = driver.manage().window().getSize();
 		final int xCoords = screenSize.width * percentX / 100;
 		final int yCoords = screenSize.height * percentY / 100;
@@ -398,69 +404,79 @@ public class DriverUtils {
 	public static final int SWIPE_Y_DEFAULT_PERCENTAGE_START = 10;
 	public static final int SWIPE_Y_DEFAULT_PERCENTAGE_END = 90;
 
-	public static void swipeRightCoordinates(AppiumDriver driver, int time)
+	public static void swipeRightCoordinates(
+			AppiumDriver<? extends WebElement> driver, int time)
 			throws Exception {
 		swipeByCoordinates(driver, time, SWIPE_X_DEFAULT_PERCENTAGE_START,
 				DEFAULT_PERCENTAGE, SWIPE_X_DEFAULT_PERCENTAGE_END,
 				DEFAULT_PERCENTAGE);
 	}
 
-	public static void swipeRightCoordinates(AppiumDriver driver, int time,
-			int percentY) throws Exception {
+	public static void swipeRightCoordinates(
+			AppiumDriver<? extends WebElement> driver, int time, int percentY)
+			throws Exception {
 		swipeByCoordinates(driver, time, SWIPE_X_DEFAULT_PERCENTAGE_START,
 				percentY, SWIPE_X_DEFAULT_PERCENTAGE_END, percentY);
 	}
 
-	public static void swipeLeftCoordinates(AppiumDriver driver, int time)
+	public static void swipeLeftCoordinates(
+			AppiumDriver<? extends WebElement> driver, int time)
 			throws Exception {
 		swipeByCoordinates(driver, time, SWIPE_X_DEFAULT_PERCENTAGE_END,
 				DEFAULT_PERCENTAGE, SWIPE_X_DEFAULT_PERCENTAGE_START,
 				DEFAULT_PERCENTAGE);
 	}
 
-	public static void swipeLeftCoordinates(AppiumDriver driver, int time,
-			int percentY) throws Exception {
+	public static void swipeLeftCoordinates(
+			AppiumDriver<? extends WebElement> driver, int time, int percentY)
+			throws Exception {
 		swipeByCoordinates(driver, time, SWIPE_X_DEFAULT_PERCENTAGE_END,
 				percentY, SWIPE_X_DEFAULT_PERCENTAGE_START, percentY);
 	}
 
-	public static void swipeUpCoordinates(AppiumDriver driver, int time)
+	public static void swipeUpCoordinates(
+			AppiumDriver<? extends WebElement> driver, int time)
 			throws Exception {
 		swipeByCoordinates(driver, time, DEFAULT_PERCENTAGE,
 				SWIPE_Y_DEFAULT_PERCENTAGE_END, DEFAULT_PERCENTAGE,
 				SWIPE_Y_DEFAULT_PERCENTAGE_START);
 	}
 
-	public static void swipeUpCoordinates(AppiumDriver driver, int time,
-			int percentX) throws Exception {
+	public static void swipeUpCoordinates(
+			AppiumDriver<? extends WebElement> driver, int time, int percentX)
+			throws Exception {
 		swipeByCoordinates(driver, time, percentX,
 				SWIPE_Y_DEFAULT_PERCENTAGE_END, percentX,
 				SWIPE_Y_DEFAULT_PERCENTAGE_START);
 	}
 
-	public static void swipeDownCoordinates(AppiumDriver driver, int time)
+	public static void swipeDownCoordinates(
+			AppiumDriver<? extends WebElement> driver, int time)
 			throws Exception {
 		swipeByCoordinates(driver, time, DEFAULT_PERCENTAGE,
 				SWIPE_Y_DEFAULT_PERCENTAGE_START, DEFAULT_PERCENTAGE,
 				SWIPE_Y_DEFAULT_PERCENTAGE_END);
 	}
 
-	public static void swipeDownCoordinates(AppiumDriver driver, int time,
-			int percentX) throws Exception {
+	public static void swipeDownCoordinates(
+			AppiumDriver<? extends WebElement> driver, int time, int percentX)
+			throws Exception {
 		swipeByCoordinates(driver, time, percentX,
 				SWIPE_Y_DEFAULT_PERCENTAGE_START, percentX,
 				SWIPE_Y_DEFAULT_PERCENTAGE_END);
 	}
 
-	public static void androidMultiTap(AppiumDriver driver, WebElement element,
+	public static void androidMultiTap(
+			AppiumDriver<? extends WebElement> driver, WebElement element,
 			int tapNumber, int millisecondsDuration) {
 		for (int i = 0; i < tapNumber; i++) {
 			driver.tap(1, element, millisecondsDuration);
 		}
 	}
 
-	public static void mobileTapByCoordinates(AppiumDriver driver,
-			WebElement element, int offsetX, int offsetY) {
+	public static void mobileTapByCoordinates(
+			AppiumDriver<? extends WebElement> driver, WebElement element,
+			int offsetX, int offsetY) {
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
 
@@ -473,12 +489,13 @@ public class DriverUtils {
 		js.executeScript("mobile: tap", tapObject);
 	}
 
-	public static void mobileTapByCoordinates(AppiumDriver driver,
-			WebElement element) {
+	public static void mobileTapByCoordinates(
+			AppiumDriver<? extends WebElement> driver, WebElement element) {
 		mobileTapByCoordinates(driver, element, 0, 0);
 	}
 
-	public static void androidLongClick(AppiumDriver driver, WebElement element) {
+	public static void androidLongClick(
+			AppiumDriver<? extends WebElement> driver, WebElement element) {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		HashMap<String, String> tapObject = new HashMap<String, String>();
 		tapObject.put("element", ((RemoteWebElement) element).getId());
@@ -536,8 +553,8 @@ public class DriverUtils {
 				"/usr/bin/open -a Terminal " + scriptPath + "Up.py");
 	}
 
-	public static void iOSMultiTap(AppiumDriver driver, WebElement element,
-			int tapNumber) throws InterruptedException {
+	public static void iOSMultiTap(AppiumDriver<? extends WebElement> driver,
+			WebElement element, int tapNumber) throws InterruptedException {
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
 
@@ -555,8 +572,8 @@ public class DriverUtils {
 		}
 	}
 
-	public static void iOS3FingerTap(AppiumDriver driver, WebElement element,
-			int fingerNumber) {
+	public static void iOS3FingerTap(AppiumDriver<? extends WebElement> driver,
+			WebElement element, int fingerNumber) {
 		driver.tap(fingerNumber, element, 1);
 	}
 
@@ -621,14 +638,16 @@ public class DriverUtils {
 		return Optional.empty();
 	}
 
-	public static void ToggleNetworkConnectionAndroid(AndroidDriver driver,
-			boolean airplane, boolean wifi, boolean data) {
+	public static void ToggleNetworkConnectionAndroid(
+			AndroidDriver<? extends WebElement> driver, boolean airplane,
+			boolean wifi, boolean data) {
 		NetworkConnectionSetting connection = new NetworkConnectionSetting(
 				airplane, wifi, data);
 		driver.setNetworkConnection(connection);
 	}
 
-	public static void iOSLongTap(AppiumDriver driver, WebElement element) {
+	public static void iOSLongTap(AppiumDriver<? extends WebElement> driver,
+			WebElement element) {
 		driver.tap(1, element, 1000);
 	}
 
@@ -647,8 +666,8 @@ public class DriverUtils {
 	 * visible through Appium, thats why it is tapped by its location
 	 * coordinates.
 	 */
-	public static void clickSilenceConversationButton(AppiumDriver driver,
-			WebElement element) {
+	public static void clickSilenceConversationButton(
+			AppiumDriver<? extends WebElement> driver, WebElement element) {
 		Point coords = element.getLocation();
 		driver.tap(1, coords.x - (coords.x / 2 - coords.x / 8), coords.y, 1);
 	}
@@ -658,18 +677,18 @@ public class DriverUtils {
 	 * visible through Appium, thats why it is tapped by its location
 	 * coordinates.
 	 */
-	public static void clickArchiveConversationButton(AppiumDriver driver,
-			WebElement element) {
+	public static void clickArchiveConversationButton(
+			AppiumDriver<? extends WebElement> driver, WebElement element) {
 		Point coords = element.getLocation();
 		driver.tap(1, coords.x - (coords.x / 2 + coords.x / 8), coords.y, 1);
 	}
 
-	public static void resetApp(AppiumDriver driver) {
+	public static void resetApp(AppiumDriver<? extends WebElement> driver) {
 		driver.resetApp();
 	}
 
-	public static void tapInTheCenterOfTheElement(AppiumDriver driver,
-			WebElement element) {
+	public static void tapInTheCenterOfTheElement(
+			AppiumDriver<? extends WebElement> driver, WebElement element) {
 		final Point coords = element.getLocation();
 		final Dimension size = element.getSize();
 		final int x = coords.x + size.getWidth() / 2;
@@ -678,8 +697,9 @@ public class DriverUtils {
 		driver.tap(1, x, y, 1);
 	}
 
-	public static void tapOnPercentOfElement(AppiumDriver driver,
-			WebElement element, int percentX, int percentY) {
+	public static void tapOnPercentOfElement(
+			AppiumDriver<? extends WebElement> driver, WebElement element,
+			int percentX, int percentY) {
 		final Point coords = element.getLocation();
 		final Dimension size = element.getSize();
 		final int x = coords.x + size.getWidth() * percentX / 100;
@@ -689,8 +709,9 @@ public class DriverUtils {
 
 	}
 
-	public static void tapOutsideOfTheElement(AppiumDriver driver,
-			WebElement element, int xOffset, int yOffset) {
+	public static void tapOutsideOfTheElement(
+			AppiumDriver<? extends WebElement> driver, WebElement element,
+			int xOffset, int yOffset) {
 		assert xOffset != 0 && yOffset != 0;
 		final Point coords = element.getLocation();
 		final Dimension size = element.getSize();
