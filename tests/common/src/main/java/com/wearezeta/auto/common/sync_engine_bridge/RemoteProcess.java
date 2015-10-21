@@ -2,9 +2,12 @@ package com.wearezeta.auto.common.sync_engine_bridge;
 
 import akka.actor.ActorRef;
 import akka.serialization.Serialization;
+
+import com.google.common.base.Throwables;
 import com.waz.provision.ActorMessage;
 import com.waz.provision.ActorMessage.Echo;
 import com.waz.provision.ActorMessage.WaitUntilRegistered;
+
 import scala.concurrent.duration.FiniteDuration;
 
 import java.io.File;
@@ -16,12 +19,12 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
 	private final ActorRef coordinatorActorRef;
 
 	// TODO make configurable
-	private String backend = "staging";
+	private static final String BACKEND = "staging";
 
 	public RemoteProcess(String processName, ActorRef coordinatorActorRef,
 			FiniteDuration actorTimeout) {
 		super(actorTimeout);
-		name = processName;
+		this.name = processName;
 		this.coordinatorActorRef = coordinatorActorRef;
 		if (!coordinatorConnected()) {
 			throw new IllegalStateException(
@@ -30,74 +33,82 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
 		}
 		// TODO remove into a init() method of some sort?
 		// TODO save the coordinatorRef?
-		startProcess();
-		establishConnection();
+		try {
+			startProcess();
+		} catch (Exception e) {
+			e.printStackTrace();
+			Throwables.propagate(e);
+		}
+		reconnect();
 	}
 
 	private boolean coordinatorConnected() {
 		if (coordinatorActorRef == null) {
 			return false;
 		}
-		Object resp = askActor(coordinatorActorRef, new Echo("test", "test"));
-		if (resp instanceof Echo && ((Echo) resp).msg().equals("test")) {
-			return true;
+		try {
+			final Object resp = askActor(coordinatorActorRef, new Echo("test",
+					"test"));
+			return ((resp instanceof Echo) && ((Echo) resp).msg()
+					.equals("test"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
 		}
-		return false;
 	}
 
-	private void startProcess() {
-		String serialized = Serialization
+	private void startProcess() throws Exception {
+		final String serialized = Serialization
 				.serializedActorPath(coordinatorActorRef);
-		String[] cmd = { "java", "-jar", getActorsJarLocation(), name,
-				serialized, backend };
+		final String[] cmd = { "java", "-jar", getActorsJarLocation(), name,
+				serialized, BACKEND };
+		final ProcessBuilder pb = new ProcessBuilder(cmd);
 
-		ProcessBuilder pb = new ProcessBuilder(cmd);
-
+		// ! Having a log file is mandatory
 		pb.redirectErrorStream(true);
-		File outputFile = createLogFile(name);
-		pb.redirectOutput(ProcessBuilder.Redirect.appendTo(outputFile));
+		pb.redirectOutput(ProcessBuilder.Redirect.appendTo(new File(
+				getLogPath())));
+		pb.start();
+	}
 
+	@Override
+	public void reconnect() {
 		try {
-			pb.start();
-		} catch (IOException e) {
-			System.err.println("Command used to execute remote process: "
-					+ String.join(" ", cmd));
-			System.err.println("Log file used for process: " + outputFile);
+			final Object resp = askActor(coordinatorActorRef,
+					new WaitUntilRegistered(name));
+			if (resp instanceof ActorRef) {
+				this.ref = (ActorRef) resp;
+				return;
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		throw new IllegalStateException(
+				String.format(
+						"The coordinator actor failed to establish a connection with the remote "
+								+ "process: %s. Please check the log file %s for more details.",
+						name(), getLogPath()));
 	}
 
-	private File createLogFile(String processName) {
-		File outputFile = new File("target/logcat/" + processName);
-		outputFile.getParentFile().mkdirs();
-		return outputFile;
-	}
-
-	private void establishConnection() {
-		Object resp = askActor(coordinatorActorRef, new WaitUntilRegistered(
-				name));
-
-		if (resp instanceof ActorRef) {
-			ref = (ActorRef) resp;
-		} else {
-			// TODO come up with a better exception?
-			throw new IllegalStateException(
-					"The coordinator actor failed to establish a connection with the remote "
-							+ "process: " + name + ". The response was: "
-							+ resp);
-		}
-	}
-
-	private String getActorsJarLocation() {
-		File file = null;
-		try {
-			// Any class from the zmessaging-actors jar will do. ActorMessage
-			// seemed like a good choice.
-			file = new File(ActorMessage.class.getProtectionDomain()
-					.getCodeSource().getLocation().toURI().getPath());
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
+	private String getActorsJarLocation() throws URISyntaxException {
+		final File file = new File(ActorMessage.class.getProtectionDomain()
+				.getCodeSource().getLocation().toURI().getPath());
 		return file.toString();
+	}
+
+	@Override
+	public String getLogPath() {
+		final File outputFile = new File(String.format("target/logcat/%s.log",
+				name()));
+		if (outputFile.getParentFile() == null) {
+			outputFile.getParentFile().mkdirs();
+		}
+		try {
+			return outputFile.getCanonicalPath();
+		} catch (IOException e) {
+			e.printStackTrace();
+			Throwables.propagate(e);
+			return null;
+		}
 	}
 }

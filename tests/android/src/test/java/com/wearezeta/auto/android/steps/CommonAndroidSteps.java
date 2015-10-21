@@ -34,7 +34,6 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -181,19 +180,6 @@ public class CommonAndroidSteps {
 				getUrl(), getPath(), this.getClass());
 		pagesCollection.setFirstPage(new WelcomePage(lazyDriver));
 		ZetaFormatter.setLazyDriver(lazyDriver);
-	}
-
-	@Before("@torun")
-	public void testHook() throws IOException {
-
-		// File testsFile = new
-		// File(System.getProperty("user.dir")).getParentFile();
-		// File lib = new File(testsFile.getAbsolutePath() + "/common/lib");
-		//
-		// System.out.println("Lib: " + lib);
-		// System.out.println("Does it exist: " + lib.exists());
-		// System.exit(0);
-		System.out.println("Downloads: " + new File("~/Downloads"));
 	}
 
 	@Before("@performance")
@@ -669,18 +655,28 @@ public class CommonAndroidSteps {
 	@When("^Contact (.*) send message (.*)to user (.*)$")
 	public void UserSendMessageToConversation(String msgFromUserNameAlias,
 			String msg, String dstUserNameAlias) throws Exception {
-		commonSteps.UserSentOtrMessageToUser(
+		commonSteps.UserSentMessageToUser(
 				msgFromUserNameAlias,
 				dstUserNameAlias,
 				(msg == null || msg.trim().length() == 0) ? CommonUtils
 						.generateRandomString(10) : msg.trim());
 	}
 
+	/**
+	 * Send messages from all registered user to myself (these users have to be
+	 * already connected to myself)
+	 * 
+	 * @step. ^All contacts send me a message (.*)$"
+	 * 
+	 * @param message
+	 *            A message to send
+	 * @throws Exception
+	 */
 	@When("^All contacts send me a message (.*)$")
 	public void AllContactsSendMeAMessage(String message) throws Exception {
 		for (ClientUser user : usrMgr.getCreatedUsers()) {
 			if (!user.getName().equals(usrMgr.getSelfUser().getName())) {
-				commonSteps.UserSentOtrMessageToUser(user.getName(), usrMgr
+				commonSteps.UserSentMessageToUser(user.getName(), usrMgr
 						.getSelfUser().getName(), message);
 			}
 		}

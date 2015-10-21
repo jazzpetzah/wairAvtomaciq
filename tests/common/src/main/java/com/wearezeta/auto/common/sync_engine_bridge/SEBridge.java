@@ -32,11 +32,15 @@ public class SEBridge {
 	}
 
 	private static void shutdown() {
-		if (devicePool != null && devicePool.isDone()) {
-			try {
-				devicePool.get().shutdown();
-			} catch (Exception e) {
-				e.printStackTrace();
+		if (devicePool != null) {
+			if (devicePool.isDone()) {
+				try {
+					devicePool.get().shutdown();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else {
+				devicePool.cancel(true);
 			}
 		}
 	}
@@ -53,12 +57,14 @@ public class SEBridge {
 
 	@SuppressWarnings("unchecked")
 	private void login(ClientUser user, IDevice dstDevice) {
-		if (!dstDevice.isLoggedInUser(user)) {
+		if (dstDevice.hasLoggedInUser() && !dstDevice.isLoggedInUser(user)) {
 			this.logout(user, dstDevice);
+		}
+		if (!dstDevice.isLoggedInUser(user)) {
 			dstDevice.logInWithUser(user);
 		}
-		if (!this.usersMapping.containsKey(user)) {
-			List<IDevice> mappedDevices = this.usersMapping.get(user);
+		if (this.usersMapping.containsKey(user)) {
+			final List<IDevice> mappedDevices = this.usersMapping.get(user);
 			mappedDevices.add(dstDevice);
 		} else {
 			this.usersMapping.put(user,
@@ -70,8 +76,10 @@ public class SEBridge {
 		if (dstDevice.hasLoggedInUser()) {
 			dstDevice.logout();
 		}
-		List<IDevice> mappedDevices = this.usersMapping.get(user);
-		mappedDevices.remove(dstDevice);
+		final List<IDevice> mappedDevices = this.usersMapping.get(user);
+		if (mappedDevices != null && mappedDevices.contains(dstDevice)) {
+			mappedDevices.remove(dstDevice);
+		}
 	}
 
 	public void sendConversationMessage(ClientUser userFrom, String convId,

@@ -17,9 +17,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
 class DevicePool {
-
-	// TODO make configurable
-	public static final FiniteDuration ACTOR_DURATION = new FiniteDuration(
+	private static final FiniteDuration ACTOR_DURATION = new FiniteDuration(
 			30000, TimeUnit.MILLISECONDS);
 
 	private ActorRef coordinatorActorRef;
@@ -35,18 +33,13 @@ class DevicePool {
 	private List<Device> devices = new CopyOnWriteArrayList<>();
 
 	public DevicePool() {
-		this.coordinatorActorRef = setUpCoordinatorActor();
-
-		this.hostProcess = new RemoteProcess(processName, coordinatorActorRef,
-				ACTOR_DURATION);
-	}
-
-	private ActorRef setUpCoordinatorActor() {
-		Config config = ConfigFactory.load("actor_coordinator");
-		ActorSystem system = ActorSystem.create("CoordinatorSystem", config);
-		ActorRef actorRef = system.actorOf(
+		final Config config = ConfigFactory.load("actor_coordinator");
+		final ActorSystem system = ActorSystem.create("CoordinatorSystem",
+				config);
+		this.coordinatorActorRef = system.actorOf(
 				Props.create(CoordinatorActor.class), "coordinatorActor");
-		return actorRef;
+		this.hostProcess = new RemoteProcess(this.processName,
+				this.coordinatorActorRef, ACTOR_DURATION);
 	}
 
 	private synchronized String getNewDeviceName() {
@@ -73,9 +66,12 @@ class DevicePool {
 	public synchronized void clear() {
 		this.devices.clear();
 	}
-	
+
 	public synchronized void shutdown() {
 		coordinatorActorRef.tell(TerminateRemotes$.MODULE$, null);
+		this.devices = null;
+		this.coordinatorActorRef = null;
+		this.hostProcess = null;
 	}
 
 }

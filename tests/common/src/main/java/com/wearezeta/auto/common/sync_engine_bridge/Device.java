@@ -2,6 +2,7 @@ package com.wearezeta.auto.common.sync_engine_bridge;
 
 import java.util.Optional;
 
+import jersey.repackaged.com.google.common.base.Throwables;
 import akka.actor.ActorRef;
 
 import com.waz.model.RConvId;
@@ -23,29 +24,28 @@ class Device extends RemoteEntity implements IDevice {
 		super(actorTimeout);
 		this.name = deviceName;
 		this.hostProcess = process;
-		// TODO check that this doesn't become a bottleneck with lots of
-		// Devices...
-		if (!process.isConnected()) {
-			throw new IllegalStateException(
-					"The process used to spawn this device has no established connection");
-		}
 		spawnDevice();
 	}
 
 	private void spawnDevice() {
-		// TODO check that process is established
-		ActorRef processActorRef = this.hostProcess.ref();
-		Object resp = askActor(processActorRef, new SpawnRemoteDevice(null,
-				name));
-		if (resp instanceof ActorRef) {
-			ActorRef deviceRef = (ActorRef) resp;
-			this.ref = deviceRef;
-		} else {
-			throw new IllegalStateException(
-					"There was an error establishing a connection with a new device: "
-							+ name + " on process: " + this.hostProcess.name()
-							+ ". The response was: " + resp);
+		final ActorRef processActorRef = this.hostProcess.ref();
+		try {
+			final Object resp = askActor(processActorRef,
+					new SpawnRemoteDevice(null, this.name));
+			if (resp instanceof ActorRef) {
+				ActorRef deviceRef = (ActorRef) resp;
+				this.ref = deviceRef;
+				return;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		throw new IllegalStateException(
+				String.format(
+						"There was an error establishing a connection with a new device: "
+								+ "%s on process: %s. Please check the log file %s for more details.",
+						this.name(), this.hostProcess.name(),
+						this.hostProcess.getLogPath()));
 	}
 
 	@Override
@@ -60,21 +60,30 @@ class Device extends RemoteEntity implements IDevice {
 
 	@Override
 	public void logInWithUser(ClientUser user) {
-		Object resp = askActor(ref,
-				new Login(user.getEmail(), user.getPassword()));
-		if (resp instanceof Successful$) {
-			System.out.println("Login to: " + name + " successful");
-			loggedInUser = Optional.of(user);
-		} else {
-			throw new RuntimeException(String.format(
-					"User '%s' has failed to log in into device '%s'",
-					user.getName(), this.name()));
+		try {
+			final Object resp = askActor(ref,
+					new Login(user.getEmail(), user.getPassword()));
+			if (resp instanceof Successful$) {
+				loggedInUser = Optional.of(user);
+				return;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		throw new RuntimeException(
+				String.format(
+						"User '%s' has failed to log in into device '%s'. Please check the log file %s for more details.",
+						user.getName(), this.name(),
+						this.hostProcess.getLogPath()));
 	}
 
 	@Override
 	public void sendMessage(String convId, String message) {
-		tellActor(ref, new SendText(new RConvId(convId), message));
+		try {
+			askActor(ref, new SendText(new RConvId(convId), message));
+		} catch (Exception e) {
+			Throwables.propagate(e);
+		}
 	}
 
 	@Override
