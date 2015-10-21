@@ -896,7 +896,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
 
-  @torun @staging @id4004
+  @staging @id4004
   Scenario Outline: Verify that left conversation is shown in the Archive [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
