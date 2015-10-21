@@ -394,13 +394,6 @@ public final class CommonSteps {
 		}
 	}
 	
-	public void IChangeUserAvatarPictureOtr(String userNameAlias,
-			String picturePath) throws Exception {
-		final ClientUser dstUser = usrMgr
-				.findUserByNameOrNameAlias(userNameAlias);
-		BackendAPIWrappers.updateUserPictureOtr(dstUser, picturePath);
-	}
-
 	public void IChangeUserName(String userNameAlias, String newName)
 			throws Exception {
 		BackendAPIWrappers.updateUserName(

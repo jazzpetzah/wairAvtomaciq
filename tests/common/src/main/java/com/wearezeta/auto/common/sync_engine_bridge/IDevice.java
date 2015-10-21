@@ -13,7 +13,5 @@ public interface IDevice extends IRemoteEntity {
 
 	void sendImage(String convId, String path) throws Exception;;
 
-	void updateProfileImage(String path) throws Exception;
-
 	void logout() throws Exception;
 }

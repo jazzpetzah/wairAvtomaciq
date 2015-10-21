@@ -114,12 +114,6 @@ public class SEBridge {
 		getCachedDevice(userFrom).sendImage(convId, path);
 	}
 
-	public void updateProfileImage(ClientUser usr, String path)
-			throws Exception {
-		verifyPathExists(path);
-		getCachedDevice(usr).updateProfileImage(path);
-	}
-
 	public void reset() throws Exception {
 		this.usersMapping.clear();
 		this.getDevicePool().clear();

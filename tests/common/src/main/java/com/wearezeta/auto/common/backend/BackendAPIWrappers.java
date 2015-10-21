@@ -807,11 +807,6 @@ public final class BackendAPIWrappers {
 				assetId);
 	}
 
-	public static void updateUserPictureOtr(ClientUser user, String picturePath)
-			throws Exception {
-		SEBridge.getInstance().updateProfileImage(user, picturePath);
-	}
-
 	public static void updateUserPicture(ClientUser user, String picturePath)
 			throws Exception {
 		tryLoginByUser(user);
