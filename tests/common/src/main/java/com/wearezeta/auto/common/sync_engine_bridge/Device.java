@@ -1,15 +1,12 @@
 package com.wearezeta.auto.common.sync_engine_bridge;
 
+import java.io.File;
 import java.util.Optional;
 
-import jersey.repackaged.com.google.common.base.Throwables;
 import akka.actor.ActorRef;
 
 import com.waz.model.RConvId;
-import com.waz.provision.ActorMessage.Login;
-import com.waz.provision.ActorMessage.SendText;
-import com.waz.provision.ActorMessage.SpawnRemoteDevice;
-import com.waz.provision.ActorMessage.Successful$;
+import com.waz.provision.ActorMessage;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 
 import scala.concurrent.duration.FiniteDuration;
@@ -24,14 +21,14 @@ class Device extends RemoteEntity implements IDevice {
 		super(actorTimeout);
 		this.name = deviceName;
 		this.hostProcess = process;
-		spawnDevice();
+		spawn();
 	}
 
-	private void spawnDevice() {
+	private void spawn() {
 		final ActorRef processActorRef = this.hostProcess.ref();
 		try {
 			final Object resp = askActor(processActorRef,
-					new SpawnRemoteDevice(null, this.name));
+					new ActorMessage.SpawnRemoteDevice(null, this.name));
 			if (resp instanceof ActorRef) {
 				ActorRef deviceRef = (ActorRef) resp;
 				this.ref = deviceRef;
@@ -59,35 +56,47 @@ class Device extends RemoteEntity implements IDevice {
 	}
 
 	@Override
-	public void logInWithUser(ClientUser user) {
-		try {
-			final Object resp = askActor(ref,
-					new Login(user.getEmail(), user.getPassword()));
-			if (resp instanceof Successful$) {
-				loggedInUser = Optional.of(user);
-				return;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+	public void logInWithUser(ClientUser user) throws Exception {
+		final Object resp = askActor(ref,
+				new ActorMessage.Login(user.getEmail(), user.getPassword()));
+		if (resp instanceof ActorMessage.Successful$) {
+			this.loggedInUser = Optional.of(user);
+		} else {
+			throw new RuntimeException(
+					String.format(
+							"User '%s' has failed to log in into device '%s'. Please check the log file %s for more details.",
+							user.getName(), this.name(),
+							this.hostProcess.getLogPath()));
 		}
-		throw new RuntimeException(
-				String.format(
-						"User '%s' has failed to log in into device '%s'. Please check the log file %s for more details.",
-						user.getName(), this.name(),
-						this.hostProcess.getLogPath()));
 	}
 
 	@Override
-	public void sendMessage(String convId, String message) {
-		try {
-			askActor(ref, new SendText(new RConvId(convId), message));
-		} catch (Exception e) {
-			Throwables.propagate(e);
-		}
+	public void sendMessage(String convId, String message) throws Exception {
+		askActor(this.ref, new ActorMessage.SendText(new RConvId(convId),
+				message));
 	}
 
 	@Override
 	public void logout() {
 		// TODO: Auto-generated method stub
+	}
+
+	@Override
+	public void sendImage(String convId, String path) throws Exception {
+		if (!new File(path).exists()) {
+			throw new IllegalArgumentException(String.format(
+					"The file %s is not accessible", path));
+		}
+		askActor(this.ref,
+				new ActorMessage.SendImage(new RConvId(convId), path));
+	}
+
+	@Override
+	public void updateProfileImage(String path) throws Exception {
+		if (!new File(path).exists()) {
+			throw new IllegalArgumentException(String.format(
+					"The file %s is not accessible", path));
+		}
+		askActor(this.ref, new ActorMessage.UpdateProfileImage(path));
 	}
 }

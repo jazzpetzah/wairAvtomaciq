@@ -56,7 +56,7 @@ public class SEBridge {
 	private Map<ClientUser, List<IDevice>> usersMapping = new ConcurrentHashMap<>();
 
 	@SuppressWarnings("unchecked")
-	private void login(ClientUser user, IDevice dstDevice) {
+	private void login(ClientUser user, IDevice dstDevice) throws Exception {
 		if (dstDevice.hasLoggedInUser() && !dstDevice.isLoggedInUser(user)) {
 			this.logout(user, dstDevice);
 		}
@@ -72,7 +72,7 @@ public class SEBridge {
 		}
 	}
 
-	private void logout(ClientUser user, IDevice dstDevice) {
+	private void logout(ClientUser user, IDevice dstDevice) throws Exception {
 		if (dstDevice.hasLoggedInUser()) {
 			dstDevice.logout();
 		}

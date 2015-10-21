@@ -5,6 +5,7 @@ import com.wearezeta.auto.common.email.ActivationMessage;
 import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.email.PasswordResetMessage;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
+import com.wearezeta.auto.common.image_send.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.onboarding.AddressBook;
 import com.wearezeta.auto.common.onboarding.Card;
@@ -12,7 +13,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import com.wearezeta.auto.common.usrmgmt.RegistrationStrategy;
 import com.wearezeta.auto.common.usrmgmt.UserState;
-import com.wearezeta.auto.image_send.*;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;

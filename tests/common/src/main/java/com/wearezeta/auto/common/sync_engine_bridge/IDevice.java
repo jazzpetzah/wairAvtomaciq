@@ -7,9 +7,13 @@ public interface IDevice extends IRemoteEntity {
 
 	boolean isLoggedInUser(ClientUser user);
 
-	void logInWithUser(ClientUser user);
+	void logInWithUser(ClientUser user) throws Exception;
 
-	void sendMessage(String convId, String message);
-	
-	void logout();
+	void sendMessage(String convId, String message) throws Exception;
+
+	void sendImage(String convId, String path) throws Exception;;
+
+	void updateProfileImage(String path) throws Exception;
+
+	void logout() throws Exception;
 }
