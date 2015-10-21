@@ -24,7 +24,7 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
 	public RemoteProcess(String processName, ActorRef coordinatorActorRef,
 			FiniteDuration actorTimeout) {
 		super(actorTimeout);
-		this.name = processName;
+		this.setName(processName);
 		this.coordinatorActorRef = coordinatorActorRef;
 		if (!coordinatorConnected()) {
 			throw new IllegalStateException(
@@ -60,8 +60,8 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
 	private void startProcess() throws Exception {
 		final String serialized = Serialization
 				.serializedActorPath(coordinatorActorRef);
-		final String[] cmd = { "java", "-jar", getActorsJarLocation(), name,
-				serialized, BACKEND };
+		final String[] cmd = { "java", "-jar", getActorsJarLocation(),
+				this.name(), serialized, BACKEND };
 		final ProcessBuilder pb = new ProcessBuilder(cmd);
 
 		// ! Having a log file is mandatory
@@ -75,9 +75,9 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
 	public void reconnect() {
 		try {
 			final Object resp = askActor(coordinatorActorRef,
-					new WaitUntilRegistered(name));
+					new WaitUntilRegistered(this.name()));
 			if (resp instanceof ActorRef) {
-				this.ref = (ActorRef) resp;
+				this.setRef((ActorRef) resp);
 				return;
 			}
 		} catch (Exception e) {

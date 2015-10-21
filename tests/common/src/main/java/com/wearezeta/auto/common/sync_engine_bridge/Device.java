@@ -18,7 +18,7 @@ class Device extends RemoteEntity implements IDevice {
 	public Device(String deviceName, IRemoteProcess process,
 			FiniteDuration actorTimeout) {
 		super(actorTimeout);
-		this.name = deviceName;
+		this.setName(deviceName);
 		this.hostProcess = process;
 		spawn();
 	}
@@ -27,10 +27,10 @@ class Device extends RemoteEntity implements IDevice {
 		final ActorRef processActorRef = this.hostProcess.ref();
 		try {
 			final Object resp = askActor(processActorRef,
-					new ActorMessage.SpawnRemoteDevice(null, this.name));
+					new ActorMessage.SpawnRemoteDevice(null, this.name()));
 			if (resp instanceof ActorRef) {
 				ActorRef deviceRef = (ActorRef) resp;
-				this.ref = deviceRef;
+				this.setRef(deviceRef);
 				return;
 			}
 		} catch (Exception e) {
@@ -56,7 +56,7 @@ class Device extends RemoteEntity implements IDevice {
 
 	@Override
 	public void logInWithUser(ClientUser user) throws Exception {
-		final Object resp = askActor(ref,
+		final Object resp = askActor(this.ref(),
 				new ActorMessage.Login(user.getEmail(), user.getPassword()));
 		if (resp instanceof ActorMessage.Successful$) {
 			this.loggedInUser = Optional.of(user);
@@ -71,7 +71,7 @@ class Device extends RemoteEntity implements IDevice {
 
 	@Override
 	public void sendMessage(String convId, String message) throws Exception {
-		askActor(this.ref, new ActorMessage.SendText(new RConvId(convId),
+		askActor(this.ref(), new ActorMessage.SendText(new RConvId(convId),
 				message));
 	}
 
@@ -80,14 +80,17 @@ class Device extends RemoteEntity implements IDevice {
 		// TODO: Auto-generated method stub
 	}
 
+	private static final long IMAGE_SENDING_TIMEOUT = 3 * 60 * 1000; // milliseconds
+
 	@Override
 	public void sendImage(String convId, String path) throws Exception {
-		askActor(this.ref,
-				new ActorMessage.SendImage(new RConvId(convId), path));
+		askActor(this.ref(), new ActorMessage.SendImage(new RConvId(convId),
+				path), IMAGE_SENDING_TIMEOUT);
 	}
 
 	@Override
 	public void updateProfileImage(String path) throws Exception {
-		askActor(this.ref, new ActorMessage.UpdateProfileImage(path));
+		askActor(this.ref(), new ActorMessage.UpdateProfileImage(path),
+				IMAGE_SENDING_TIMEOUT);
 	}
 }
