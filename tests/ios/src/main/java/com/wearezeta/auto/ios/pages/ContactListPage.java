@@ -30,7 +30,7 @@ public class ContactListPage extends IOSPage {
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.70;
 	private final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.80;
 	private final int CONV_SWIPE_TIME = 500;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.ContactListPage.nameSelfButton)
 	private WebElement selfUserButton;
 
@@ -308,9 +308,13 @@ public class ContactListPage extends IOSPage {
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 
-	private String getFirstConversationName() {
-		String text = firstChatInChatListTextField.getText();
-		return text;
+	public String getFirstConversationName() throws Exception {
+		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.xpath(IOSLocators.xpathFirstChatInChatListTextField), 5)) {
+			String text = firstChatInChatListTextField.getText();
+			return text;
+		} else
+			return null;
 	}
 
 	public boolean verifyChangedGroupNameInChatList() throws Exception {
@@ -442,7 +446,7 @@ public class ContactListPage extends IOSPage {
 	}
 
 	public boolean conversationWithUsersPresented(String name1, String name2,
-			String name3) {
+			String name3) throws Exception {
 		String firstChat = getFirstConversationName();
 		boolean chatExist = firstChat.contains(name1)
 				&& firstChat.contains(name2) && firstChat.contains(name3);
