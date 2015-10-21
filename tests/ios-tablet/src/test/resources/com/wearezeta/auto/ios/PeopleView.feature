@@ -864,3 +864,66 @@ Feature: People View
     Examples: 
       | Name      | Contact1  | Message | GroupChatName | Image       |
       | user1Name | user2Name | testing | ForDeletion   | testing.jpg |
+      
+  @staging @id4003
+  Scenario Outline: Verify that left conversation is shown in the Archive [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I type the message
+    And I send the message
+    And I see message in the dialog
+    And I swipe the text input cursor
+    And I press Add Picture button on iPad
+    And I press Camera Roll button on iPad
+    And I choose a picture from camera roll on iPad popover
+    And I press Confirm button on iPad popover
+    Then I see new photo in the dialog
+    And I open group conversation details
+    And I press leave converstation button
+    And I see leave conversation alert
+    Then I press leave
+    And I open archived conversations on iPad
+    And I see user <GroupChatName> in contact list
+    And I tap on group chat with name <GroupChatName>
+    Then I see only 4 messages
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | TESTCHAT      |
+
+  @torun @staging @id4004
+  Scenario Outline: Verify that left conversation is shown in the Archive [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I type the message
+    And I send the message
+    And I see message in the dialog
+    And I swipe the text input cursor
+    And I press Add Picture button on iPad
+    And I press Camera Roll button on iPad
+    And I choose a picture from camera roll on iPad popover
+    And I press Confirm button on iPad popover
+    Then I see new photo in the dialog
+    And I open group conversation details
+    And I press leave converstation button
+    And I see leave conversation alert
+    Then I press leave
+    And I open archived conversations on iPad
+    And I see user <GroupChatName> in contact list
+    And I tap on group chat with name <GroupChatName>
+    Then I see only 4 messages
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | TESTCHAT      |
