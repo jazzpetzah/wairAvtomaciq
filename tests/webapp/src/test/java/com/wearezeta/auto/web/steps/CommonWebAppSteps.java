@@ -857,7 +857,7 @@ public class CommonWebAppSteps {
             throw new Exception(
                 "Incorrect type of conversation specified (single user | group) expected.");
         }
-        commonSteps.UserSendsImageToConversation(imageSenderUserNameAlias,
+        commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,
             imagePath, dstConversationName, isGroup);
     }
 

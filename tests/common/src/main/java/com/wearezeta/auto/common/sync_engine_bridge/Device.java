@@ -1,6 +1,5 @@
 package com.wearezeta.auto.common.sync_engine_bridge;
 
-import java.io.File;
 import java.util.Optional;
 
 import akka.actor.ActorRef;
@@ -83,20 +82,12 @@ class Device extends RemoteEntity implements IDevice {
 
 	@Override
 	public void sendImage(String convId, String path) throws Exception {
-		if (!new File(path).exists()) {
-			throw new IllegalArgumentException(String.format(
-					"The file %s is not accessible", path));
-		}
 		askActor(this.ref,
 				new ActorMessage.SendImage(new RConvId(convId), path));
 	}
 
 	@Override
 	public void updateProfileImage(String path) throws Exception {
-		if (!new File(path).exists()) {
-			throw new IllegalArgumentException(String.format(
-					"The file %s is not accessible", path));
-		}
 		askActor(this.ref, new ActorMessage.UpdateProfileImage(path));
 	}
 }

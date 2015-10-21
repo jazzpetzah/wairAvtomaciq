@@ -4,6 +4,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -82,8 +83,7 @@ public class SEBridge {
 		}
 	}
 
-	public void sendConversationMessage(ClientUser userFrom, String convId,
-			String message) throws Exception {
+	private IDevice getCachedDevice(ClientUser userFrom) throws Exception {
 		IDevice dstDevice = null;
 		if (this.usersMapping.containsKey(userFrom)) {
 			// We don't care about multiple devices yet. Just take the first
@@ -93,7 +93,31 @@ public class SEBridge {
 			dstDevice = this.getDevicePool().addDevice();
 			this.login(userFrom, dstDevice);
 		}
-		dstDevice.sendMessage(convId, message);
+		return dstDevice;
+	}
+
+	private static void verifyPathExists(String path) {
+		if (!new File(path).exists()) {
+			throw new IllegalArgumentException(String.format(
+					"The file %s is not accessible", path));
+		}
+	}
+
+	public void sendConversationMessage(ClientUser userFrom, String convId,
+			String message) throws Exception {
+		getCachedDevice(userFrom).sendMessage(convId, message);
+	}
+
+	public void sendImage(ClientUser userFrom, String convId, String path)
+			throws Exception {
+		verifyPathExists(path);
+		getCachedDevice(userFrom).sendImage(convId, path);
+	}
+
+	public void updateProfileImage(ClientUser usr, String path)
+			throws Exception {
+		verifyPathExists(path);
+		getCachedDevice(usr).updateProfileImage(path);
 	}
 
 	public void reset() throws Exception {
