@@ -133,7 +133,8 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		Assert.assertTrue(getContactListPage().isChatInContactList(value));
+		Assert.assertEquals(value, getContactListPage()
+				.getFirstConversationName());
 	}
 
 	/**
