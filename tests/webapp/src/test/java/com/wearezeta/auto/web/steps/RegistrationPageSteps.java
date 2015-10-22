@@ -151,7 +151,7 @@ public class RegistrationPageSteps {
 	public void ISeeVerificationEmail(String email) throws NoSuchUserException {
 		email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
 		assertThat(WebappPagesCollection.registrationPage.getVerificationEmailAddress(),
-				equalTo(email));
+				containsString(email));
 	}
 
 	/**

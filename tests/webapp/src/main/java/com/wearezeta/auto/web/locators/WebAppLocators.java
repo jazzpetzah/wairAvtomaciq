@@ -417,7 +417,7 @@ public final class WebAppLocators {
 
 		public static final String cssCreateButton = "[data-uie-name='do-register']";
 
-		public static final String cssVerificationEmail = ".form-posted-success span.wire-sent-email";
+		public static final String cssVerificationEmail = "#wire-resend";
 
 		public static final String cssRedDotOnEmailField = ".auth-page .has-error .form-control #wire-create-email";
 	}
