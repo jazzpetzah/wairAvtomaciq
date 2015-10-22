@@ -75,6 +75,20 @@ public class LoginPageSteps {
 	}
 
 	/**
+	 * Presses Sign In button on the corresponding page
+	 *
+	 * @step. ^I press Sign In button$
+	 *
+	 * @throws Exception
+	 *             if Selenium fails to wait until sign in action completes
+	 */
+	@When("^Sign In button is disabled$")
+	public void SignInButtonIsDisabled() throws Exception {
+		Assert.assertTrue(WebappPagesCollection.loginPage
+				.isSignInButtonDisabled());
+	}
+
+	/**
 	 * Verifies whether an account is signed in properly
 	 *
 	 * @step. ^I am signed in properly$
@@ -129,12 +143,12 @@ public class LoginPageSteps {
 	/**
 	 * Types email string into the corresponding input field on sign in page
 	 * 
-	 * @step. ^I enter email (\\S+)$
+	 * @step. ^I enter email \"([^\"]*)\"$
 	 * 
 	 * @param email
 	 *            user email string
 	 */
-	@When("^I enter email (\\S+)$")
+	@When("^I enter email \"([^\"]*)\"$")
 	public void IEnterEmail(String email) {
 		try {
 			email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();

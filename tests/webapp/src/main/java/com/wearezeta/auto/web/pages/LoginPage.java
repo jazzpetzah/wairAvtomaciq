@@ -63,6 +63,12 @@ public class LoginPage extends WebPage {
 				By.xpath(WebAppLocators.LoginPage.xpathSignInButton));
 	}
 
+	public boolean isSignInButtonDisabled() throws Exception {
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.xpath(WebAppLocators.LoginPage.xpathSignInButton));
+		return !signInButton.isEnabled();
+	}
+
 	public void inputEmail(String email) {
 		emailInput.clear();
 		emailInput.sendKeys(email);

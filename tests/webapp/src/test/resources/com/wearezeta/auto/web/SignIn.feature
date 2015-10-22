@@ -5,7 +5,7 @@ Feature: Sign In
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
     Given I see Sign In page
-    When I enter email <Email>
+    When I enter email "<Email>"
     And I enter password "<Password>"
     And I press Sign In button
     Then I am signed in properly
@@ -21,7 +21,7 @@ Feature: Sign In
   Scenario Outline: Verify sign in error appearance in case of wrong credentials
     Given There is 1 user where user1Name is me
     Given I switch to sign in page
-    When I enter email <Email>
+    When I enter email "<Email>"
     And I enter password "<Password>"
     And I press Sign In button
     Then the sign in error message reads <Error>
@@ -30,8 +30,23 @@ Feature: Sign In
 
     Examples: 
       | Email      | Password      | Error                                      |
-      | user1Email |               | Wrong email or password. Please try again. |
       | user1Email | wrongPassword | Wrong email or password. Please try again. |
+
+  @smoke @id4041
+  Scenario Outline: Verify sign in button is disabled in case of empty credentials
+    Given There is 1 user where user1Name is me
+    When I switch to sign in page
+    Then Sign In button is disabled
+    When I enter email "<Email>"
+    And I enter password ""
+    Then Sign In button is disabled
+    When I enter email ""
+    And I enter password "<Password>"
+    Then Sign In button is disabled
+
+    Examples: 
+      | Email      | Password      |
+      | user1Email | user1Password |
 
   @smoke @id2714
   Scenario Outline: Verify you can sign in with a phone number with correct credentials
@@ -116,7 +131,7 @@ Feature: Sign In
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
     Given I see Sign In page
-    When I enter email <Email>
+    When I enter email "<Email>"
     And I enter password "<Password>"
     And I press Sign In button
     Then I am signed in properly
