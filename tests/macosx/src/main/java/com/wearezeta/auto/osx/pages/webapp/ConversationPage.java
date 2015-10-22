@@ -592,8 +592,8 @@ public class ConversationPage extends WebPage {
 
 	public void pressShortCutForCall() throws Exception {
 		robot.keyPress(KeyEvent.VK_META);// command key
-		robot.keyPress(KeyEvent.VK_T);
-		robot.keyRelease(KeyEvent.VK_T);
+		robot.keyPress(KeyEvent.VK_R);
+		robot.keyRelease(KeyEvent.VK_R);
 		robot.keyRelease(KeyEvent.VK_META);
 	}
 
