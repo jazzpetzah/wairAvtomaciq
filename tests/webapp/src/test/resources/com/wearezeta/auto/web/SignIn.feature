@@ -5,7 +5,7 @@ Feature: Sign In
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
     Given I see Sign In page
-    When I enter email <Email>
+    When I enter email "<Email>"
     And I enter password "<Password>"
     And I press Sign In button
     Then I am signed in properly
@@ -21,17 +21,32 @@ Feature: Sign In
   Scenario Outline: Verify sign in error appearance in case of wrong credentials
     Given There is 1 user where user1Name is me
     Given I switch to sign in page
-    When I enter email <Email>
+    When I enter email "<Email>"
     And I enter password "<Password>"
     And I press Sign In button
     Then the sign in error message reads <Error>
-    And a red dot is shown inside the email field on the sign in form
-    And a red dot is shown inside the password field on the sign in form
+    And the email field on the sign in form is marked as error
+    And the password field on the sign in form is marked as error
 
     Examples: 
       | Email      | Password      | Error                                      |
-      | user1Email |               | WRONG EMAIL OR PASSWORD. PLEASE TRY AGAIN. |
-      | user1Email | wrongPassword | WRONG EMAIL OR PASSWORD. PLEASE TRY AGAIN. |
+      | user1Email | wrongPassword | Wrong email or password. Please try again. |
+
+  @smoke @id4041
+  Scenario Outline: Verify sign in button is disabled in case of empty credentials
+    Given There is 1 user where user1Name is me
+    When I switch to sign in page
+    Then Sign In button is disabled
+    When I enter email "<Email>"
+    And I enter password ""
+    Then Sign In button is disabled
+    When I enter email ""
+    And I enter password "<Password>"
+    Then Sign In button is disabled
+
+    Examples: 
+      | Email      | Password      |
+      | user1Email | user1Password |
 
   @smoke @id2714
   Scenario Outline: Verify you can sign in with a phone number with correct credentials
@@ -116,7 +131,7 @@ Feature: Sign In
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
     Given I see Sign In page
-    When I enter email <Email>
+    When I enter email "<Email>"
     And I enter password "<Password>"
     And I press Sign In button
     Then I am signed in properly
