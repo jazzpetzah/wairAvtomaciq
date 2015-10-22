@@ -419,7 +419,9 @@ public final class WebAppLocators {
 
 		public static final String cssVerificationEmail = "#wire-resend";
 
-		public static final String cssRedDotOnEmailField = ".auth-page .has-error .form-control #wire-create-email";
+		public static final String cssPendingEmail = "#wire-pending-resend";
+
+		public static final String cssErrorMarkedEmailField = "#form-account-register .input-error[data-uie-name='enter-email']";
 	}
 
 	public static final class SelfPictureUploadPage {

@@ -170,11 +170,11 @@ public class RegistrationPageSteps {
 		if (not == null) {
 			assertThat("Red dot on email field",
 					webappPagesCollection.getPage(RegistrationPage.class)
-							.isRedDotOnEmailField());
+							.isEmailFieldMarkedAsError());
 		} else {
 			assertThat("Red dot on email field",
 					webappPagesCollection.getPage(RegistrationPage.class)
-							.isRedDotOnEmailField());
+							.isEmailFieldMarkedAsError());
 		}
 	}
 
