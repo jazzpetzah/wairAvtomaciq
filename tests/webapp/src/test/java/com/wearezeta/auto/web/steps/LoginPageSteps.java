@@ -116,28 +116,28 @@ public class LoginPageSteps {
 	}
 
 	/**
-	 * Checks if a red dot is shown inside the email field on the sign in form
+	 * Checks if a orange line is shown around the email field on the sign in form
 	 *
-	 * @step. ^a red dot is shown inside the email field on the sign in form$
+	 * @step. ^the email field on the sign in form is marked as error$
 	 * @throws Exception 
 	 */
-	@Then("^a red dot is shown inside the email field on the sign in form$")
+	@Then("^the email field on the sign in form is marked as error$")
 	public void ARedDotIsShownOnTheEmailField() throws Exception {
-		assertThat("Red dot on email field",
-				WebappPagesCollection.loginPage.isRedDotOnEmailField());
+		assertThat("Email field not marked",
+				WebappPagesCollection.loginPage.isEmailFieldMarkedAsError());
 	}
 
 	/**
-	 * Checks if a red dot is shown inside the password field on the sign in
+	 * Checks if a orange line is shown around the password field on the sign in
 	 * form
 	 *
-	 * @step. ^a red dot is shown inside the password field on the sign in form$
+	 * @step. ^the password field on the sign in form is marked as error$
 	 * @throws Exception 
 	 */
-	@Then("^a red dot is shown inside the password field on the sign in form$")
+	@Then("^the password field on the sign in form is marked as error$")
 	public void ARedDotIsShownOnThePasswordField() throws Exception {
-		assertThat("Red dot on password field",
-				WebappPagesCollection.loginPage.isRedDotOnPasswordField());
+		assertThat("Password field not marked",
+				WebappPagesCollection.loginPage.isPasswordFieldMarkedAsError());
 	}
 
 	/**

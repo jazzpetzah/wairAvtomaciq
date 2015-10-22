@@ -38,9 +38,9 @@ public final class WebAppLocators {
 
 		public static final String cssLoginErrorText = "[data-uie-name='status-error'] .error";
 
-		public static final String cssRedDotOnEmailField = "#form-account-login .input-error[data-uie-name='enter-email']";
+		public static final String errorMarkedEmailField = "#form-account-login .input-error[data-uie-name='enter-email']";
 
-		public static final String cssRedDotOnPasswordField = "#form-account-login .input-error[data-uie-name='enter-password']";
+		public static final String errorMarkedPasswordField = "#form-account-login .input-error[data-uie-name='enter-password']";
 	}
 
 	public static final class ContactListPage {
