@@ -151,3 +151,4 @@ Feature: Registration
       | @example.com | user1Password | user1Name |
       | example@     | user1Password | user1Name |
       | @            | user1Password | user1Name |
+      | @            | 12            | user1Name |

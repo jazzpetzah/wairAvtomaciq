@@ -53,7 +53,7 @@ public class RegistrationPage extends WebPage {
 	private WebElement redDotOnEmailField;
 
 	// TODO move to locators
-	@FindBy(css = "#form-account-register [data-uie-name='status-error'] .error")
+	@FindBy(css = WebAppLocators.RegistrationPage.cssErrorMessages)
 	private List<WebElement> errorMessages;
 
 	public RegistrationPage(Future<ZetaWebAppDriver> lazyDriver, String url)

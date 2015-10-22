@@ -184,7 +184,7 @@ public class RegistrationPageSteps {
 	public void ISeeErrorMessageOnVerificationPage(String message)
 			throws Throwable {
 		assertThat(WebappPagesCollection.registrationPage.getErrorMessages(),
-				contains(message));
+				hasItem(message));
 	}
 
 	/**
