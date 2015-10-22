@@ -791,3 +791,25 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact1  | Message |
       | user1Name | user2Name | testing |
+      
+  @torun @staging @id1158
+  Scenario Outline: Verify possibility to copy image in the conversation view
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
+    And I see dialog page
+    And I see new photo in the dialog
+    And I longpress on image in the conversation
+    And I tap on copy badge
+    And I tap and hold on message input
+    And I click on popup Paste item
+    And I see Full Screen Page opened
+    And I press Confirm button
+    Then I see new photo in the dialog
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |   Picture   | ConversationType |
+      | user1Email | user1Password | user1Name | user2Name | testing.jpg |    single user   |

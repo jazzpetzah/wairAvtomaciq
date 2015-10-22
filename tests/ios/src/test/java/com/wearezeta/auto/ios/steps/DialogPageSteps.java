@@ -1135,4 +1135,14 @@ public class DialogPageSteps {
 		Assert.assertTrue(getDialogPage()
 				.isConnectedToUserStartedConversationLabelVisible(username));
 	}
+	
+	/**
+	 * 
+	 * @step ^I longpress on image in the conversation$ 
+	 * @throws Exception
+	 */
+	@When("^I longpress on image in the conversation$")
+  	public void ILongPressOnImage() throws Exception {
+  		getDialogPage().tapHoldImage();
+  	}
 }
