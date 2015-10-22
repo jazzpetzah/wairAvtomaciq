@@ -229,7 +229,7 @@ public class OSXCommonUtils extends CommonUtils {
 								" \"%s/Library/Containers/com.wearezeta.zclient.mac/Data/Library/Application Support/Wire/WebRTCIdentityStore-journal\"",
 								OSXExecutionContext.USER_HOME)
 						+ String.format(
-								" \"%s/Library/Application Support/Wire/Cookies-journal\"",
+								" \"%s/Library/Containers/com.wearezeta.zclient.mac/Data/Library/Application Support/Wire/Cookies-journal\"",
 								OSXExecutionContext.USER_HOME)};
 
 		LOG.debug("executing command: " + Arrays.toString(commands));
