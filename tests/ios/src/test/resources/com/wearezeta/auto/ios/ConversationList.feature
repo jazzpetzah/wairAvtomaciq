@@ -33,7 +33,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @staging @id1334
+  @regression @id1334
   Scenario Outline: Verify archiving silenced conversation     
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -280,7 +280,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | Message | Image       |
       | user1Name | user2Name | user3Name | testing | testing.jpg |
 
-  @staging @id3319
+  @regression @id3319
   Scenario Outline: Verify closing the action menu by clicking on cancel on out of the menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -333,7 +333,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3954
+  @regression @id3954
   Scenario Outline: Verify that deleted conversation isn't going to archive
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -375,3 +375,55 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
+
+  @staging @id1481
+  Scenario Outline: Verify removing the content and leaving from the group conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Name> sent message <Message> to conversation <GroupChatName>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <GroupChatName>
+    And I click delete menu button
+    And I select Also Leave option on Delete conversation dialog
+    And I confirm delete conversation content
+    And I open search by taping on it
+    And I input conversation name <GroupChatName> in Search input
+    Then I see conversation <GroupChatName> is NOT presented in Search results
+    When I click close button to dismiss people view
+    And I dont see conversation <GroupChatName> in contact list
+    And I open archived conversations
+    Then I dont see conversation <GroupChatName> in contact list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Message | GroupChatName |
+      | user1Name | user2Name | user3Name | testing | ForDeletion   |
+     
+  @staging @rc @id3968
+  Scenario Outline: Verify posting in a group conversation without content
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Name> sent message <Message> to conversation <GroupChatName>
+    Given Contact <Name> sends image <Image> to group conversation <GroupChatName>
+    Given Contact <Name> ping conversation <GroupChatName>
+    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <GroupChatName>
+    And I click delete menu button
+    And I confirm delete conversation content
+    Then I dont see conversation <GroupChatName> in contact list
+    When I open search by taping on it
+    And I input conversation name <GroupChatName> in Search input
+    And I see conversation <GroupChatName> is presented in Search results
+    And I tap on conversation <GroupChatName> in search result    
+    Then I see empty group chat page with users <Contact1>,<Contact2> with only system message
+    When I type the message and send it
+    Then I see message in the dialog
+    And I see only 2 messages
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
+      | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |

@@ -449,15 +449,16 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void confirm() throws Exception {
+		final By locator = By.xpath(xpathConfirmOKButton);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 		assert DriverUtils.waitUntilElementClickable(getDriver(), okButton);
 		okButton.click();
-		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.xpath(xpathConfirmOKButton));
+		assert DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
 	}
 
-	public void drawSketchOnImage() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(),
-				sketchImagePaintButton);
+	public void tapSketchOnImageButton() throws Exception {
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idSketchImagePaintButton)) : "Draw sketch on image button is not visible";
 		sketchImagePaintButton.click();
 	}
 
@@ -533,6 +534,9 @@ public class DialogPage extends AndroidPage {
 	public void openGallery() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), galleryBtn);
 		galleryBtn.click();
+		//workaround until images not selected
+		this.wait(1000);
+		this.tapByCoordinates(30, 20);
 	}
 
 	public void closeFullScreenImage() throws Exception {
@@ -800,19 +804,25 @@ public class DialogPage extends AndroidPage {
 	// NOTE: visible
 	public void tapDialogPageBottom() throws Exception {
 		this.hideKeyboard();
-		this.swipeByCoordinates(1000, 50, 80, 50, 60);
+
+		// Close cursor if it is currently opened
+		final By closeCursorBtn = By.id(DialogPage.idCursorCloseButton);
+		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				closeCursorBtn, 1)) {
+			getDriver().findElement(closeCursorBtn).click();
+		}
+
 		DriverUtils.waitUntilLocatorDissapears(getDriver(), By.id(idCursorBtn),
 				5);
 		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idCursorFrame));
+				By.id(idCursorFrame), 1);
 		tapOnCursorFrame();
 		this.hideKeyboard();
-		if (!DriverUtils
-				.isElementPresentAndDisplayed(getDriver(), cursorBtnImg)) {
+		if (!DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.id(idCursorBtnImg), 1)) {
 			tapOnCursorFrame();
 			this.hideKeyboard();
 		}
-		Thread.sleep(500); // fix for scrolling animation
 	}
 
 	public boolean waitUntilYoutubePlayButtonVisible() throws Exception {
@@ -846,7 +856,7 @@ public class DialogPage extends AndroidPage {
 		mediaBarControl.click();
 	}
 
-	public boolean waitUntilMediaBarVisible(int timeoutSeconds)
+	private boolean waitUntilMediaBarVisible(int timeoutSeconds)
 			throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(idMediaBarControl), timeoutSeconds);
@@ -905,5 +915,18 @@ public class DialogPage extends AndroidPage {
 	public boolean waitForAPictureWithUnsentIndicator() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.xpath(xpathUnsentIndicatorForImage));
+	}
+
+	public boolean scrollUpUntilMediaBarVisible(final int maxScrollRetries)
+			throws Exception {
+		int swipeNum = 1;
+		while (swipeNum <= maxScrollRetries) {
+			swipeByCoordinates(500, 50, 20, 50, 90);
+			if (waitUntilMediaBarVisible(2)) {
+				return true;
+			}
+			swipeNum++;
+		}
+		return false;
 	}
 }

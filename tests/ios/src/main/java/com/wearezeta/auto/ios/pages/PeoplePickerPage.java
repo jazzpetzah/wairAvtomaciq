@@ -210,12 +210,10 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public boolean waitUserPickerFindUser(String user) throws Exception {
-//		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-//				By.name(user));
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(String.format(
 						IOSLocators.PeoplePickerPage.xpathFormatFoundContact,
-						user)));
+						user)), 5);
 	}
 
 	public ConnectToPage clickOnNotConnectedUser(String name) throws Exception {

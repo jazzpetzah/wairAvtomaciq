@@ -512,7 +512,7 @@ public class PeoplePickerPageSteps {
 		Assert.assertTrue("Top People list is not visible",
 				getPeoplePickerPage().isTopPeopleHeaderVisible());
 	}
-	
+
 	/**
 	 * Verify that Call action button is visible
 	 * 
@@ -549,7 +549,40 @@ public class PeoplePickerPageSteps {
 	@When("^I see open conversation action button on People picker page$")
 	public void ISeeOpenConversationActionButton() throws Exception {
 		Assert.assertTrue("Open conversation button is not visible",
-				getPeoplePickerPage().waitUntilOpenOrCreateConversationButtonIsVisible());
+				getPeoplePickerPage()
+						.waitUntilOpenOrCreateConversationButtonIsVisible());
+	}
+
+	/**
+	 * Verify whether Open/Create Conversation button is visible
+	 * 
+	 * @step. ^I (do not )?see (?:the |\\s*)(Open|Create) Conversation button on
+	 *        [Pp]eople [Pp]icker page$"
+	 * 
+	 * @param shouldBeVisible
+	 *            equals to null if the button should be visible
+	 * @param expectedCaption
+	 *            either 'Open' or 'Create'
+	 * @throws Exception
+	 */
+	@Then("^I (do not )?see (?:the |\\s*)(Open|Create) Conversation button on [Pp]eople [Pp]icker page$")
+	public void ISeeOpenConversationButton(String shouldBeVisible,
+			String expectedCaption) throws Exception {
+		if (shouldBeVisible == null) {
+			Assert.assertTrue(
+					String.format("%s Conversation button is not visible",
+							expectedCaption),
+					getPeoplePickerPage()
+							.waitUntilOpenOrCreateConversationButtonIsVisible(
+									expectedCaption));
+		} else {
+			Assert.assertTrue(
+					String.format(
+							"%s Conversation button is still visible, but should be hidden",
+							expectedCaption),
+					getPeoplePickerPage()
+							.waitUntilOpenOrCreateConversationButtonIsInvisible());
+		}
 	}
 
 	/**
@@ -564,5 +597,53 @@ public class PeoplePickerPageSteps {
 		ISeeOpenConversationActionButton();
 		ISeeCallActionButtonOnPeoplePickerPage();
 		ISeeSendImageActionButtonOnPeoplePickerPage();
+	}
+
+	/**
+	 * Opens the conversation by clicking the conversation action button
+	 * 
+	 * @step. ^I click on open conversation action button on People picker page$
+	 * @throws Throwable
+	 */
+	@When("^I click on open conversation action button on People picker page$")
+	public void IClickOnOpenConversationActionButtonOnPeoplePickerPage()
+			throws Throwable {
+		getPeoplePickerPage().tapOpenConversationButton();
+	}
+
+	/**
+	 * Opens the picture gallery by clicking the send image action button
+	 * 
+	 * @step. ^I click Send image action button on People picker page$
+	 * @throws Throwable
+	 */
+	@When("^I click Send image action button on People picker page$")
+	public void IClickSendImageActionButtonOnPeoplePickerPage()
+			throws Throwable {
+		getPeoplePickerPage().tapCameraButton();
+	}
+
+	/**
+	 * Starts a call by clicking the call action button
+	 * 
+	 * @step. ^I click Call action button on People picker page$
+	 * @throws Throwable
+	 */
+	@When("^I click Call action button on People picker page$")
+	public void IClickCallActionButtonOnPeoplePickerPage() throws Throwable {
+		getPeoplePickerPage().tapCallButton();
+	}
+
+	/**
+	 * Action buttons disappear when contact gets unchecked from search
+	 * 
+	 * @step. ^I see action buttons disappear from People Picker page$
+	 * @throws Exception
+	 */
+	@Then("^I see action buttons disappear from People Picker page$")
+	public void ISeeActionButtonsDisappearFromPeoplePickerPage()
+			throws Exception {
+		getPeoplePickerPage()
+				.waitUntilOpenOrCreateConversationButtonIsInvisible();
 	}
 }

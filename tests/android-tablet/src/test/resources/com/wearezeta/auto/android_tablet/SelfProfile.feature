@@ -43,12 +43,11 @@ Feature: Self Profile
     And I remember my current profile picture on Self Profile page
     And I tap Change Picture button on Self Profile page
     And I tap Gallery button on Self Profile page
-    And I select a picture from the Gallery
     And I confirm my picture on the Self Profile page
     And I tap in the center of Self Profile page
     Then I verify that my current profile picture is different from the previous one
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -63,12 +62,11 @@ Feature: Self Profile
     And I remember my current profile picture on Self Profile page
     And I tap Change Picture button on Self Profile page
     And I tap Gallery button on Self Profile page
-    And I select a picture from the Gallery
     And I confirm my picture on the Self Profile page
     And I tap in the center of Self Profile page
     Then I verify that my current profile picture is different from the previous one
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 

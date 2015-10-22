@@ -416,7 +416,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user3Name | OnlyConnected |
 
-  @staging @id3957
+  @regression @id3957
   Scenario Outline: Verify that deleted conversation via participant view isn't going to archive
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -438,3 +438,119 @@ Feature: People View
     Examples: 
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
+
+  @regression @rc @id3972
+  Scenario Outline: Verify removing the content and leaving from the group conversation via participant view
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Name> sent message <Message> to conversation <GroupChatName>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I open group conversation details
+    And I press conversation menu button
+    And I click delete menu button
+    And I select Also Leave option on Delete conversation dialog
+    And I confirm delete conversation content
+    And I return to the chat list
+    And I open search by taping on it
+    And I input conversation name <GroupChatName> in Search input
+    Then I see conversation <GroupChatName> is NOT presented in Search results
+    When I click close button to dismiss people view
+    And I dont see conversation <GroupChatName> in contact list
+    And I open archived conversations
+    Then I dont see conversation <GroupChatName> in contact list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Message | GroupChatName |
+      | user1Name | user2Name | user3Name | testing | ForDeletion   |
+
+  @staging @rc @id3971
+  Scenario Outline: Verify removing the content from the group conversation via participant view
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Name> sent message <Message> to conversation <GroupChatName>
+    Given Contact <Name> sends image <Image> to group conversation <GroupChatName>
+    Given Contact <Name> ping conversation <GroupChatName>
+    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I open group conversation details
+    And I press conversation menu button
+    And I click delete menu button
+    And I confirm delete conversation content
+    And I return to the chat list
+    And I open search by taping on it
+    And I input conversation name <GroupChatName> in Search input
+    Then I see conversation <GroupChatName> is presented in Search results
+    When I tap on conversation <GroupChatName> in search result
+    Then I see group chat page with users <Contact1>,<Contact2>
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
+      | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
+
+  @staging @rc @id3973
+  Scenario Outline: Verify removing the content from 1-to-1 via participant view
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given User <Name> sent message <Message> to conversation <Contact1>
+    Given Contact <Contact1> sends image <Image> to single user conversation <Name>
+    Given Contact <Name> ping conversation <Contact1>
+    Given User <Contact1> sent message <Message> to conversation <Name>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I see only 5 messages
+    And I open conversation details
+    And I press conversation menu button
+    And I click delete menu button
+    And I confirm delete conversation content
+    And I return to the chat list
+    And I open search by taping on it
+    And I fill in Search field user name <Contact1>
+    And I see user <Contact1> found on People picker page
+    And I tap on connected user <Contact1> on People picker page
+    And I click open conversation button on People picker page
+    Then I see the only message in dialog is system message CONNECTED TO <Contact1>
+
+    Examples: 
+      | Name      | Contact1  | Message | GroupChatName | Image       |
+      | user1Name | user2Name | testing | ForDeletion   | testing.jpg |
+      
+  @staging @id3320
+  Scenario Outline: Verify that left conversation is shown in the Archive
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I type the message
+    And I send the message
+    And I see message in the dialog
+    And I swipe the text input cursor
+    And I press Add Picture button
+    And I press Camera Roll button
+    And I choose a picture from camera roll
+    And I press Confirm button
+    And I see new photo in the dialog
+    And I open group conversation details
+    And I press leave converstation button
+    And I see leave conversation alert
+    Then I press leave
+    And I return to the chat list
+    And I open archived conversations
+    And I see user <GroupChatName> in contact list
+    And I tap on group chat with name <GroupChatName>
+    Then I see only 4 messages
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | TESTCHAT      |
+  

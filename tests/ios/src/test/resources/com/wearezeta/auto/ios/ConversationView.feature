@@ -374,7 +374,7 @@ Feature: Conversation View
       | Name      | Contact   | YouTubeLink                                |
       | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
 
-  @regression @id1387
+  @obsolete @id1387
   Scenario Outline: Verify you can play/pause media from the Media Bar - YouTube
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -767,7 +767,7 @@ Feature: Conversation View
       | Name      | Contact1   | Contact2  |
       | user1Name | user2Name  | user3Name |
 
-  @staging @id3963
+  @regression @id3963
   Scenario Outline: Verify posting in a 1-to-1 conversation without content
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

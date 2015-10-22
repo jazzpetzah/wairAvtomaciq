@@ -480,13 +480,14 @@ public class CommonUtils {
 	}
 
 	public static Optional<BufferedImage> getElementScreenshot(
-			WebElement element, AppiumDriver driver) throws Exception {
+			WebElement element, AppiumDriver<? extends WebElement> driver)
+			throws Exception {
 		return getElementScreenshot(element, driver, "iPhone 6");
 	}
 
 	public static Optional<BufferedImage> getElementScreenshot(
-			WebElement element, AppiumDriver driver, String deviceName)
-			throws Exception {
+			WebElement element, AppiumDriver<? extends WebElement> driver,
+			String deviceName) throws Exception {
 		int multiply = 3;
 		if (deviceName.equals("iPhone 6") || deviceName.equals("iPad Air")) {
 			multiply = 2;

@@ -35,7 +35,6 @@ import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -123,6 +122,7 @@ public class CommonAndroidTabletSteps {
 			AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
 			AndroidCommonUtils.disableHints();
 			AndroidCommonUtils.disableHockeyUpdates();
+			AndroidCommonUtils.installTestingGalleryApp(this.getClass());
 			final String backendJSON = AndroidCommonUtils
 					.createBackendJSON(CommonUtils.getBackendType(this
 							.getClass()));
@@ -604,6 +604,8 @@ public class CommonAndroidTabletSteps {
 				dstConversationName);
 	}
 
+	private static final int RANDOM_MSG_LENGTH = 10;
+
 	/**
 	 * User A sends a simple text message to user B
 	 * 
@@ -618,10 +620,36 @@ public class CommonAndroidTabletSteps {
 	 * 
 	 */
 	@When("^Contact (.*) sends? message to user (.*)$")
-	public void UserSendMessageToConversation(String msgFromUserNameAlias,
+	public void UserSendMessageToContact(String msgFromUserNameAlias,
 			String dstUserNameAlias) throws Exception {
 		commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
-				dstUserNameAlias, CommonUtils.generateRandomString(10));
+				dstUserNameAlias,
+				CommonUtils.generateRandomString(RANDOM_MSG_LENGTH));
+	}
+
+	/**
+	 * Send multiple random messages to a user
+	 * 
+	 * @step. ^Contact (.*) sends? message to user (.*)$
+	 * 
+	 * @param msgFromUserNameAlias
+	 *            the user who sends the message
+	 * @param count
+	 *            count of messages to send
+	 * @param dstUserNameAlias
+	 *            The user to receive the message
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^Contact (.*) sends? (\\d+) messages? to user (.*)$")
+	public void UserSendMultipleMessageToContact(String msgFromUserNameAlias,
+			int count, String dstUserNameAlias) throws Exception {
+		for (int i = 0; i < count; i++) {
+			commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
+					dstUserNameAlias,
+					CommonUtils.generateRandomString(RANDOM_MSG_LENGTH));
+		}
 	}
 
 	/**
@@ -805,18 +833,6 @@ public class CommonAndroidTabletSteps {
 	@Given("^I (enable|disable) Airplane mode on the device$")
 	public void IChangeAirplaceMode(String action) throws Exception {
 		AndroidCommonUtils.setAirplaneMode(action.equals("enable"));
-	}
-
-	/**
-	 * Select some random picture from the Gallery
-	 * 
-	 * @step. ^I select a picture from the Gallery$
-	 * 
-	 * @throws Exception
-	 */
-	@And("^I select a picture from the Gallery$")
-	public void ISelectGalleryPicture() throws Exception {
-		pagesCollection.getCommonPage().selectFirstGalleryPhoto();
 	}
 
 	/**

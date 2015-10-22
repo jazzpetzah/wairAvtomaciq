@@ -31,10 +31,9 @@ import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -668,9 +667,12 @@ public class ContactListPage extends WebPage {
 	private String fixDefaultGroupConvoName(String conversationName,
 			boolean includeArchived, boolean throwOnError) throws Exception {
 		if (conversationName.contains(DEFAULT_GROUP_CONVO_NAMES_SEPARATOR)) {
-			final Set<String> initialNamesSet = new HashSet<String>(
-					Arrays.asList(conversationName.split(","))).stream()
-					.map(x -> x.trim()).collect(Collectors.toSet());
+			final Set<String> rawInitialNamesSet = new LinkedHashSet<String>(
+					Arrays.asList(conversationName.split(",")));
+			Set<String> initialNamesSet = new LinkedHashSet<>();
+			for (String item : rawInitialNamesSet) {
+				initialNamesSet.add(item.trim());
+			}
 			List<WebElement> convoNamesToCheck = new ArrayList<WebElement>();
 			if (DriverUtils
 					.waitUntilLocatorIsDisplayed(
@@ -689,9 +691,12 @@ public class ContactListPage extends WebPage {
 			}
 			for (WebElement convoItem : convoNamesToCheck) {
 				final String convoName = convoItem.getText();
-				final Set<String> convoItemNamesSet = new HashSet<String>(
-						Arrays.asList(convoName.split(","))).stream()
-						.map(x -> x.trim()).collect(Collectors.toSet());
+				final Set<String> rawConvoItemNamesSet = new LinkedHashSet<String>(
+						Arrays.asList(convoName.split(",")));
+				Set<String> convoItemNamesSet = new LinkedHashSet<>();
+				for (String item : rawConvoItemNamesSet) {
+					convoItemNamesSet.add(item.trim());
+				}
 				if (convoItemNamesSet.equals(initialNamesSet)) {
 					return convoName;
 				}

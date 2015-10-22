@@ -45,6 +45,37 @@ Feature: Calling
       | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName | AcceptBtnName | DismissBtnName |
       | user1Name | user2Name | autocall    | Speaker        | Mute        | Accept        | Dismiss        |
 
+# @id4009 @regression @rc @rc42
+  @id4009 @staging
+  Scenario Outline: I can join group call in foreground (landscape)
+    Given There are 5 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Contact2> starts waiting instance using <CallBackend>
+    Given <Contact2> accepts next incoming call automatically
+    Given <Contact3> starts waiting instance using <CallBackend>
+    Given <Contact3> accepts next incoming call automatically
+    Given <Contact4> starts waiting instance using <CallBackend>
+    Given <Contact4> accepts next incoming call automatically
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    When I see the conversation <GroupChatName> in my conversations list
+    And I tap the conversation <GroupChatName>
+    And I see the conversation view
+    And <Contact1> calls <GroupChatName> using <CallBackend>
+    And I see generic calling overlay
+    And I tap <AcceptBtnName> button on the calling overlay
+    And I wait for 10 seconds
+    And I see calling overlay Big bar
+    #Next steps are for Juliane
+    #Then <Contact2>,<Contact3>,<Contact4> verify to have 4 flows
+    #Then <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
+
+    Examples: 
+      | CallBackend |CallBackend2| Name      | Contact1  | Contact2  | Contact3  |Contact4  | GroupChatName    | AcceptBtnName |
+      | chrome      | autocall   | user1Name | user2Name | user3Name | user4Name |user5Name | ChatForGroupCall | Accept        |
+
   @id3123 @calling_basic @rc
   Scenario Outline: Calling bar buttons are clickable and change its state (landscape)
     Given There are 2 users where <Name> is me
@@ -281,7 +312,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend | AcceptBtnName |
       | user1Name | user2Name | user3Name | autocall    | Accept        |
 
-  @id3801 @staging
+  @id3801 @calling_basic @rc
   Scenario Outline: Silence an incoming call (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -299,7 +330,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | SilenceBtn |
       | user1Name | user2Name | autocall    | Ignore     |
 
-  @id3802 @staging
+  @id3802 @calling_basic @rc
   Scenario Outline: Silence an incoming call (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

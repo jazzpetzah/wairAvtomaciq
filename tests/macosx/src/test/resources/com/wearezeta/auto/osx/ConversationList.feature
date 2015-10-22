@@ -62,7 +62,7 @@ Feature: Conversation List
     When I open conversation with <Contact>
     And I click menu bar item "Conversation" and menu item "Silence"
     Then I see that conversation <Contact> is muted
-    When I click menu bar item "Conversation" and menu item "Notify"
+    When I click menu bar item "Conversation" and menu item "Silence"
     Then I see that conversation <Contact> is not muted
 
     Examples: 
@@ -117,7 +117,7 @@ Feature: Conversation List
     When I open conversation with <ChatName>
     And I click menu bar item "Conversation" and menu item "Silence"
     Then I see that conversation <ChatName> is muted
-    When I click menu bar item "Conversation" and menu item "Notify"
+    When I click menu bar item "Conversation" and menu item "Silence"
     Then I see that conversation <ChatName> is not muted
 
     Examples: 

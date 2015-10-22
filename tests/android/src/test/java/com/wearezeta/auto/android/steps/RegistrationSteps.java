@@ -56,17 +56,6 @@ public class RegistrationSteps {
 	}
 
 	/**
-	 * Selects the first photo in the phone's stored photos
-	 * 
-	 * @step. ^I choose photo from album$
-	 * @throws Exception
-	 */
-	@When("^I choose photo from album$")
-	public void WhenIPressChoosePhoto() throws Exception {
-		getRegistrationPage().selectFirstGalleryPhoto();
-	}
-
-	/**
 	 * Presses the confirm button to confirm the selected picture
 	 * 
 	 * @step. ^I confirm selection$
