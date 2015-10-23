@@ -18,7 +18,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.Matchers.*;
 
 public class RegistrationPageSteps {
 
@@ -138,20 +138,37 @@ public class RegistrationPageSteps {
 	}
 
 	/**
-	 * Verifiy whether email address, which is visible on email confirmation
+	 * Verify whether email address, which is visible on email confirmation
 	 * page is the same as the expected one
 	 * 
 	 * @step. ^I see email (.*) on [Vv]erification page$
 	 * 
 	 * @param email
 	 *            expected email/alias
-	 * @throws NoSuchUserException
+	 * @throws Exception 
 	 */
 	@Then("^I see email (.*) on [Vv]erification page$")
-	public void ISeeVerificationEmail(String email) throws NoSuchUserException {
+	public void ISeeVerificationEmail(String email) throws Exception {
 		email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
 		assertThat(WebappPagesCollection.registrationPage.getVerificationEmailAddress(),
-				equalTo(email));
+				containsString(email));
+	}
+
+	/**
+	 * Verify whether email address, which is visible on email pending
+	 * page is the same as the expected one
+	 * 
+	 * @step. ^I see email (.*) on pending page$
+	 * 
+	 * @param email
+	 *            expected email/alias
+	 * @throws Exception 
+	 */
+	@Then("^I see email (.*) on pending page$")
+	public void ISeePendingEmail(String email) throws Exception {
+		email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
+		assertThat(WebappPagesCollection.registrationPage.getPendingEmailAddress(),
+				containsString(email));
 	}
 
 	/**
@@ -166,26 +183,28 @@ public class RegistrationPageSteps {
 	@Then("^I see error \"(.*)\" on [Vv]erification page$")
 	public void ISeeErrorMessageOnVerificationPage(String message)
 			throws Throwable {
-		assertThat(WebappPagesCollection.registrationPage.getErrorMessage(),
-				equalTo(message));
+		assertThat(WebappPagesCollection.registrationPage.getErrorMessages(),
+				hasItem(message));
 	}
 
 	/**
-	 * Checks if a red dot is shown inside the email field on the registration
-	 * form
+	 * Checks if a orange line is shown around the email field on the
+	 * registration form
 	 *
-	 * @step. ^I verify that a red dot is shown inside the email field on the registration
-	 *        form$
+	 * @step. ^I verify that the email field on the registration form is( not)?
+	 *        marked as error$
 	 * @throws Exception
 	 */
-	@Then("^I verify that a red dot is( not)? shown inside the email field on the registration form$")
+	@Then("^I verify that the email field on the registration form is( not)? marked as error$")
 	public void ARedDotIsShownOnTheEmailField(String not) throws Exception {
 		if (not == null) {
-			assertThat("Red dot on email field",
-					WebappPagesCollection.registrationPage.isRedDotOnEmailField());
+			assertThat("email field marked as error",
+					WebappPagesCollection.registrationPage
+							.isEmailFieldMarkedAsError());
 		} else {
-			assertThat("Red dot on email field",
-					!WebappPagesCollection.registrationPage.isRedDotOnEmailField());
+			assertThat("email field marked as valid",
+					WebappPagesCollection.registrationPage
+							.isEmailFieldMarkedAsValid());
 		}
 	}
 

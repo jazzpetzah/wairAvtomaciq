@@ -606,7 +606,7 @@ public class ContactListPage extends WebPage {
 			throws Exception {
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
 		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
-			conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "l"));
+			conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "s"));
 		} else {
 			throw new PendingException(
 					"Webdriver does not support shortcuts for Mac browsers");
