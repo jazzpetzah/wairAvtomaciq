@@ -297,7 +297,7 @@ Feature: Conversation View
       | user1Email | user1Password | user1Name | user2Name | pinged |
 
   @regression @id2994
-  Scenario Outline: Verify you start a call in a conversation when you press ⌥ ⌘ T (Mac) or alt + ctrl + T (Win)
+  Scenario Outline: Verify you start a call in a conversation when you press ⌥ ⌘ R (Mac) or alt + ctrl + R (Win)
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
