@@ -1,12 +1,15 @@
 package com.wearezeta.auto.android.pages;
 
 import android.view.KeyEvent;
+
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.common.BasePage;
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
@@ -49,6 +52,8 @@ public abstract class AndroidPage extends BasePage {
 	protected ZetaAndroidDriver getDriver() throws Exception {
 		return (ZetaAndroidDriver) super.getDriver();
 	}
+	
+	public final CommonSteps commonSteps = CommonSteps.getInstance();
 
 	@SuppressWarnings("unchecked")
 	@Override
