@@ -28,4 +28,4 @@ Feature: Welcome
 
     Examples: 
       | Email      | OldPassword   | Name      | NewPassword | LoginErr                                   |
-      | user1Email | user1Password | user1Name | aqa654321#  | WRONG EMAIL OR PASSWORD. PLEASE TRY AGAIN. |
+      | user1Email | user1Password | user1Name | aqa654321#  | Wrong email or password. Please try again. |
