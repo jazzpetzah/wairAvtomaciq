@@ -75,6 +75,20 @@ public class LoginPageSteps {
 	}
 
 	/**
+	 * Presses Sign In button on the corresponding page
+	 *
+	 * @step. ^I press Sign In button$
+	 *
+	 * @throws Exception
+	 *             if Selenium fails to wait until sign in action completes
+	 */
+	@When("^Sign In button is disabled$")
+	public void SignInButtonIsDisabled() throws Exception {
+		Assert.assertTrue(WebappPagesCollection.loginPage
+				.isSignInButtonDisabled());
+	}
+
+	/**
 	 * Verifies whether an account is signed in properly
 	 *
 	 * @step. ^I am signed in properly$
@@ -102,39 +116,39 @@ public class LoginPageSteps {
 	}
 
 	/**
-	 * Checks if a red dot is shown inside the email field on the sign in form
+	 * Checks if a orange line is shown around the email field on the sign in form
 	 *
-	 * @step. ^a red dot is shown inside the email field on the sign in form$
+	 * @step. ^the email field on the sign in form is marked as error$
 	 * @throws Exception 
 	 */
-	@Then("^a red dot is shown inside the email field on the sign in form$")
+	@Then("^the email field on the sign in form is marked as error$")
 	public void ARedDotIsShownOnTheEmailField() throws Exception {
-		assertThat("Red dot on email field",
-				WebappPagesCollection.loginPage.isRedDotOnEmailField());
+		assertThat("Email field not marked",
+				WebappPagesCollection.loginPage.isEmailFieldMarkedAsError());
 	}
 
 	/**
-	 * Checks if a red dot is shown inside the password field on the sign in
+	 * Checks if a orange line is shown around the password field on the sign in
 	 * form
 	 *
-	 * @step. ^a red dot is shown inside the password field on the sign in form$
+	 * @step. ^the password field on the sign in form is marked as error$
 	 * @throws Exception 
 	 */
-	@Then("^a red dot is shown inside the password field on the sign in form$")
+	@Then("^the password field on the sign in form is marked as error$")
 	public void ARedDotIsShownOnThePasswordField() throws Exception {
-		assertThat("Red dot on password field",
-				WebappPagesCollection.loginPage.isRedDotOnPasswordField());
+		assertThat("Password field not marked",
+				WebappPagesCollection.loginPage.isPasswordFieldMarkedAsError());
 	}
 
 	/**
 	 * Types email string into the corresponding input field on sign in page
 	 * 
-	 * @step. ^I enter email (\\S+)$
+	 * @step. ^I enter email \"([^\"]*)\"$
 	 * 
 	 * @param email
 	 *            user email string
 	 */
-	@When("^I enter email (\\S+)$")
+	@When("^I enter email \"([^\"]*)\"$")
 	public void IEnterEmail(String email) {
 		try {
 			email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();

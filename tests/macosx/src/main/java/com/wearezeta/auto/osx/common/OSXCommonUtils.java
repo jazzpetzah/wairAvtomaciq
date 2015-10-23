@@ -190,26 +190,12 @@ public class OSXCommonUtils extends CommonUtils {
 				"-c",
 				"rm -rf"
 						+ String.format(
-								" \"%s/Library/Application Support/Wire/Cache\"",
+								" \"%s/Library/Application Support/Wire/\"",
 								OSXExecutionContext.USER_HOME)
 						+ String.format(
-								" \"%s/Library/Application Support/Wire/Cookies\"",
+								" \"%s/Library/Containers/com.wearezeta.zclient.mac/Data/Library/Application Support/Wire/\"",
 								OSXExecutionContext.USER_HOME)
-						+ String.format(
-								" \"%s/Library/Application Support/Wire/GPUCache\"",
-								OSXExecutionContext.USER_HOME)
-						+ String.format(
-								" \"%s/Library/Application Support/Wire/Local Storage\"",
-								OSXExecutionContext.USER_HOME)
-						+ String.format(
-								" \"%s/Library/Application Support/Wire/WebRTCIdentityStore\"",
-								OSXExecutionContext.USER_HOME)
-						+ String.format(
-								" \"%s/Library/Application Support/Wire/WebRTCIdentityStore-journal\"",
-								OSXExecutionContext.USER_HOME)
-						+ String.format(
-								" \"%s/Library/Application Support/Wire/Cookies-journal\"",
-								OSXExecutionContext.USER_HOME) };
+								};
 
 		LOG.debug("executing command: " + Arrays.toString(commands));
 		return executeOsXCommand(commands);

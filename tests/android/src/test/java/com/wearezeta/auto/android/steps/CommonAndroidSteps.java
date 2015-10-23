@@ -1,11 +1,27 @@
 package com.wearezeta.auto.android.steps;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.concurrent.Future;
-import java.util.logging.Level;
+import com.google.common.base.Throwables;
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.android.common.AndroidLogListener;
+import com.wearezeta.auto.android.common.AndroidLogListener.ListenerType;
+import com.wearezeta.auto.android.pages.AndroidPage;
+import com.wearezeta.auto.android.pages.registration.WelcomePage;
+import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.PlatformDrivers;
+import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+
+import cucumber.api.PendingException;
+import cucumber.api.java.After;
+import cucumber.api.java.Before;
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -17,31 +33,12 @@ import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import com.google.common.base.Throwables;
-import com.wearezeta.auto.android.common.AndroidCommonUtils;
-import com.wearezeta.auto.android.common.AndroidLogListener;
-import com.wearezeta.auto.android.common.AndroidLogListener.ListenerType;
-import com.wearezeta.auto.android.pages.AndroidPage;
-import com.wearezeta.auto.android.pages.registration.WelcomePage;
-import com.wearezeta.auto.common.CommonCallingSteps2;
-import com.wearezeta.auto.common.CommonSteps;
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.ImageUtil;
-import com.wearezeta.auto.common.Platform;
-import com.wearezeta.auto.common.ZetaFormatter;
-import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.PlatformDrivers;
-import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-
-import cucumber.api.PendingException;
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.concurrent.Future;
+import java.util.logging.Level;
 
 public class CommonAndroidSteps {
 	static {
@@ -460,6 +457,8 @@ public class CommonAndroidSteps {
 	@Given("^(.*) is connected to (.*)$")
 	public void UserIsConnectedTo(String userFromNameAlias,
 			String usersToNameAliases) throws Exception {
+		System.out.println("userFromAlias: " + userFromNameAlias);
+		System.out.println("usersToNameAliases: " + usersToNameAliases);
 		commonSteps.UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
 	}
 
@@ -664,6 +663,26 @@ public class CommonAndroidSteps {
 	}
 
 	/**
+	 * Send messages from all registered user to myself (these users have to be
+	 * already connected to myself)
+	 * 
+	 * @step. ^All contacts send me a message (.*)$"
+	 * 
+	 * @param message
+	 *            A message to send
+	 * @throws Exception
+	 */
+	@When("^All contacts send me a message (.*)$")
+	public void AllContactsSendMeAMessage(String message) throws Exception {
+		for (ClientUser user : usrMgr.getCreatedUsers()) {
+			if (!user.getName().equals(usrMgr.getSelfUser().getName())) {
+				commonSteps.UserSentMessageToUser(user.getName(), usrMgr
+						.getSelfUser().getName(), message);
+			}
+		}
+	}
+
+	/**
 	 * User A sends specified number of simple text messages to user B
 	 * 
 	 * @step. ^Contact (.*) sends (\\d+) messages? to user (.*)$
@@ -685,23 +704,6 @@ public class CommonAndroidSteps {
 			UserSendMessageToConversation(msgFromUserNameAlias, null,
 					dstUserNameAlias);
 		}
-	}
-
-	/**
-	 * Verifies that there are N new users for a test, and makes them if they
-	 * don't exist. -unused
-	 * 
-	 * @step. ^There \\w+ (\\d+) user[s]*$
-	 * 
-	 * @param count
-	 *            the number of users to make
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@Given("^There \\w+ (\\d+) user[s]*$")
-	public void ThereAreNUsers(int count) throws Exception {
-		commonSteps.ThereAreNUsers(CURRENT_PLATFORM, count);
 	}
 
 	/**
@@ -905,6 +907,7 @@ public class CommonAndroidSteps {
 				.getInstance(ListenerType.DEFAULT));
 
 		commonSteps.getUserManager().resetUsers();
+		SEBridge.getInstance().reset();
 	}
 
 	/**

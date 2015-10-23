@@ -1,23 +1,5 @@
 package com.wearezeta.auto.common.backend;
 
-import java.awt.image.BufferedImage;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.UUID;
-import java.util.concurrent.Future;
-
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.email.ActivationMessage;
 import com.wearezeta.auto.common.email.MessagingUtils;
@@ -30,11 +12,17 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import com.wearezeta.auto.common.usrmgmt.RegistrationStrategy;
 import com.wearezeta.auto.common.usrmgmt.UserState;
-import com.wearezeta.auto.image_send.AssetData;
-import com.wearezeta.auto.image_send.ImageAssetData;
-import com.wearezeta.auto.image_send.ImageAssetProcessor;
-import com.wearezeta.auto.image_send.ImageAssetRequestBuilder;
-import com.wearezeta.auto.image_send.SelfImageProcessor;
+import com.wearezeta.auto.image_send.*;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.awt.image.BufferedImage;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.concurrent.Future;
 
 // Almost all methods of this class mutate ClientUser
 // argument by performing automatic login (set id and session token attributes)
@@ -80,7 +68,7 @@ public final class BackendAPIWrappers {
 
 	/**
 	 * Creates a new user by sending the corresponding request to the backend
-	 * 
+	 *
 	 * @param user
 	 *            ClientUser instance with initial user parameters
 	 *            (name/email/password)
@@ -100,7 +88,7 @@ public final class BackendAPIWrappers {
 			activationCode = getActivationCodeForRegisteredEmail(user
 					.getEmail());
 			activateRegisteredEmailByBackdoorCade(user.getEmail(),
-					activationCode, false);			
+					activationCode, false);
 			while (true) {
 				try {
 					attachUserPhoneNumber(user);
@@ -121,8 +109,8 @@ public final class BackendAPIWrappers {
 			activationCode = getActivationCodeForRegisteredEmail(user
 					.getEmail());
 			activateRegisteredEmailByBackdoorCade(user.getEmail(),
-					activationCode, false);	
-			break;	
+					activationCode, false);
+			break;
 		case ByPhoneNumber:
 		case ByPhoneNumberOnly:
 			while (true) {
@@ -165,7 +153,7 @@ public final class BackendAPIWrappers {
 		final String code = registrationInfo.getXZetaCode();
 		log.debug(String
 				.format("Received activation email message with key: %s, code: %s. Proceeding with activation...",
-						key, code));
+                        key, code));
 		BackendREST.activateNewUser(key, code);
 		log.debug(String.format("User '%s' is successfully activated",
 				registrationInfo.getDeliveredToEmail()));
@@ -214,8 +202,8 @@ public final class BackendAPIWrappers {
 					savedException = e;
 					log.debug(String
 							.format("The phone number '%s' seems to be not booked yet. Trying to get the activation code one more time (%d of %d)...",
-									phoneNumber.toString(), ntry,
-									MAX_ACTIVATION_CODE_GET_RETRIES));
+                                    phoneNumber.toString(), ntry,
+                                    MAX_ACTIVATION_CODE_GET_RETRIES));
 					Thread.sleep(2000 * ntry);
 				} else {
 					throw e;
@@ -239,8 +227,8 @@ public final class BackendAPIWrappers {
 			} catch (BackendRequestException e) {
 				log.error(String
 						.format("Failed to get login code for phone number '%s'. Retrying (%s of %s)...",
-								phoneNumber.toString(), ntry,
-								MAX_LOGIN_CODE_QUERIES));
+                                phoneNumber.toString(), ntry,
+                                MAX_LOGIN_CODE_QUERIES));
 				savedException = e;
 				Thread.sleep(2000 * ntry);
 			}
@@ -261,7 +249,7 @@ public final class BackendAPIWrappers {
 
 	/**
 	 * Change/set user password
-	 * 
+	 *
 	 * @param user
 	 * @param oldPassword
 	 *            set this to null if the user has no password set
@@ -364,6 +352,11 @@ public final class BackendAPIWrappers {
 				getConversationWithSingleUser(userFrom, userTo),
 				srcImageAsByteArray, getImageMimeType(path));
 	}
+
+    public static void sendOtrPictureToSingleUserConversation(ClientUser userFrom,
+            ClientUser userTo, String path) throws Exception {
+
+    }
 
 	private static String getImageMimeType(String path) {
 		if (path.toLowerCase().endsWith(".png")) {
@@ -528,7 +521,7 @@ public final class BackendAPIWrappers {
 		}
 		return conversationId;
 	}
-	
+
 	public static void generateNewLoginCode(ClientUser user) throws Exception {
 		BackendREST
 		.generateLoginCode(user.getPhoneNumber());
@@ -707,9 +700,9 @@ public final class BackendAPIWrappers {
 
 	public static void sendConversationMessage(ClientUser userFrom,
 			String convId, String message) throws Exception {
-		tryLoginByUser(userFrom);
-		BackendREST.sendConversationMessage(generateAuthToken(userFrom),
-				convId, message);
+        tryLoginByUser(userFrom);
+        BackendREST.sendConversationMessage(generateAuthToken(userFrom),
+                convId, message);
 	}
 
 	public static void sendConversationMessages(ClientUser userFrom,
@@ -781,7 +774,7 @@ public final class BackendAPIWrappers {
 					if (e.getReturnCode() == SERVER_SIDE_ERROR) {
 						log.debug(String
 								.format("Server side request failed. Retrying (%d of %d)...",
-										tryNum + 1, MAX_BACKEND_RETRIES));
+                                        tryNum + 1, MAX_BACKEND_RETRIES));
 						e.printStackTrace();
 						tryNum++;
 						if (tryNum >= MAX_BACKEND_RETRIES) {
@@ -886,8 +879,8 @@ public final class BackendAPIWrappers {
 		tryLoginByUser(user);
 		BackendREST
 				.updateConvSelfInfo(generateAuthToken(user),
-						getConversationIdByName(user, groupConvName), null,
-						muted, null);
+                        getConversationIdByName(user, groupConvName), null,
+                        muted, null);
 	}
 
 	public static void archiveUserConv(ClientUser ownerUser,

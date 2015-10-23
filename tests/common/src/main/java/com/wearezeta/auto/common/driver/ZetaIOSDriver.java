@@ -9,7 +9,7 @@ import org.openqa.selenium.WebElement;
 
 import io.appium.java_client.ios.IOSDriver;
 
-public class ZetaIOSDriver extends IOSDriver implements ZetaDriver {
+public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
 
 	private SessionHelper sessionHelper;
 
