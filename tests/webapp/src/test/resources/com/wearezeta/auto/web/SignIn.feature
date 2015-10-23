@@ -54,7 +54,7 @@ Feature: Sign In
     Given I switch to sign in page
     When I switch to phone number sign in page
     When I sign in using phone number of user <Name>
-    And I click on forward button on phone number sign in
+    And I click on sign in button on phone number sign in
     And I enter phone verification code for user <Name>
     Then I am signed in properly
     And I see Contacts Upload dialog
@@ -71,14 +71,14 @@ Feature: Sign In
     When I switch to phone number sign in page
     And I enter country code <CountryCode> on phone number sign in
     And I enter phone number <PhoneNumber> on phone number sign in
-    And I click on forward button on phone number sign in
+    And I click on sign in button on phone number sign in
     Then I see invalid phone number error message saying <Error>
 
     Examples: 
       | CountryCode | PhoneNumber | Error                |
-      | +49         | 9999999999  | INVALID PHONE NUMBER |
-      | +49         | qwerqwer    | INVALID PHONE NUMBER |
-      | +49         | !@$!@$      | INVALID PHONE NUMBER |
+      | +49         | 9999999999  | Unknown Phone Number |
+      | +49         | qwerqwer    | Unknown Phone Number |
+      | +49         | !@$!@$      | Unknown Phone Number |
 
   @regression @id2716
   Scenario Outline: Verify you see correct error message when sign in with a phone number with incorrect code
@@ -86,13 +86,13 @@ Feature: Sign In
     Given I switch to sign in page
     When I switch to phone number sign in page
     When I sign in using phone number of user <Name>
-    And I click on forward button on phone number sign in
+    And I click on sign in button on phone number sign in
     And I enter wrong phone verification code for user <Name>
     Then I see invalid phone code error message saying <Error>
 
     Examples: 
       | Name      | Error        |
-      | user1Name | INVALID CODE |
+      | user1Name | Invalid Code |
 
   @regression @id2707
   Scenario Outline: Verify you are asked to add an email address after sign in with a phone number
@@ -100,31 +100,31 @@ Feature: Sign In
     Given I switch to sign in page
     When I switch to phone number sign in page
     When I sign in using phone number of user <Name>
-    And I click on forward button on phone number sign in
+    And I click on sign in button on phone number sign in
     And I enter phone verification code for emailless user <Name>
     And I enter email address <EmailOfOtherUser> on add email address dialog
     And I enter password <PasswordOfOtherUser> on add email address dialog
     And I click add button on add email address dialog
     Then I see error message on add email address dialog saying <ErrorAlready>
-    And a red dot is shown inside the email field on add email address dialog
+    And the email field on add email address dialog is marked as error
     When I enter email address <InvalidEmail> on add email address dialog
     And I enter password <PasswordOfOtherUser> on add email address dialog
     And I click add button on add email address dialog
     Then I see error message on add email address dialog saying <ErrorInvalidEmail>
-    And a red dot is shown inside the email field on add email address dialog
+    And the email field on add email address dialog is marked as error
     When I enter email of user <Name> on add email address dialog
     And I enter password <InvalidPassword> on add email address dialog
     And I click add button on add email address dialog
     Then I see error message on add email address dialog saying <ErrorInvalidPassword>
-    And a red dot is shown inside the password field on add email address dialog
+    And the password field on add email address dialog is marked as error
     When I enter email of user <Name> on add email address dialog
     And I enter password <PasswordOfOtherUser> on add email address dialog
     And I click add button on add email address dialog
     Then I verify that an envelope icon is shown
 
     Examples: 
-      | Name      | EmailOfOtherUser      | PasswordOfOtherUser | ErrorAlready                | InvalidEmail | ErrorInvalidEmail                   | InvalidPassword | ErrorInvalidPassword                                |
-      | user1Name | qa1+qa1@wearezeta.com | aqa123456!          | EMAIL ADDRESS ALREADY TAKEN | @example.com | PLEASE ENTER A VALID EMAIL ADDRESS. | 123             | PLEASE CHOOSE A PASSWORD WITH AT LEAST 8 CHARACTERS |
+      | Name      | EmailOfOtherUser      | PasswordOfOtherUser | ErrorAlready                | InvalidEmail | ErrorInvalidEmail          | InvalidPassword | ErrorInvalidPassword                      |
+      | user1Name | qa1+qa1@wearezeta.com | aqa123456!          | Email address already taken | @example.com | Not a valid email address. | 123             | Your password needs at least 8 characters |
 
   @regression @id2227
   Scenario Outline: Show invitation button when Gmail import on registration has no suggestions

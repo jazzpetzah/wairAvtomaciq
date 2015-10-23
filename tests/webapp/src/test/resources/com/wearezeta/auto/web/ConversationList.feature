@@ -66,7 +66,7 @@ Feature: Conversation List
       | user1Email | user1Password | user1Name | StrongBlue | user2Name |
 
   @regression @id2998
-  Scenario Outline: Verify you silence the conversation when you press ⌥⇧⌘L (Mac) or alt + ctrl + L (Win)
+  Scenario Outline: Verify you silence the conversation when you press ⌥⇧⌘S (Mac) or alt + ctrl + S (Win)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page

@@ -43,8 +43,8 @@ public class ConversationPageSteps {
 	private static final String SHORTCUT_PING_WIN = "(Ctrl + Alt + G)";
 	private static final String SHORTCUT_PING_MAC = "(⌘⌥G)";
 	private static final String TOOLTIP_CALL = "Call";
-	private static final String SHORTCUT_CALL_WIN = "(Ctrl + Alt + T)";
-	private static final String SHORTCUT_CALL_MAC = "(⌘⌥T)";
+	private static final String SHORTCUT_CALL_WIN = "(Ctrl + Alt + R)";
+	private static final String SHORTCUT_CALL_MAC = "(⌘⌥R)";
 
 	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger
@@ -161,7 +161,8 @@ public class ConversationPageSteps {
 	public void WhenICloseGroupParticipantsPopover() throws Exception {
 		if (WebappPagesCollection.popoverPage != null) {
 
-			WebappPagesCollection.popoverPage.waitUntilVisibleOrThrowException();
+			WebappPagesCollection.popoverPage
+					.waitUntilVisibleOrThrowException();
 			WebappPagesCollection.conversationPage.clickPeopleButton(true);
 		}
 	}
@@ -177,7 +178,8 @@ public class ConversationPageSteps {
 	@When("^I close Single User Profile popover$")
 	public void WhenICloseSingleUserPopover() throws Exception {
 		if (WebappPagesCollection.popoverPage != null) {
-			WebappPagesCollection.popoverPage.waitUntilVisibleOrThrowException();
+			WebappPagesCollection.popoverPage
+					.waitUntilVisibleOrThrowException();
 			WebappPagesCollection.conversationPage.clickPeopleButton(false);
 		}
 	}
@@ -305,11 +307,12 @@ public class ConversationPageSteps {
 		parts.addAll(CommonSteps.splitAliases(contacts));
 		if (doNot == null) {
 			assertThat("Check action",
-					WebappPagesCollection.conversationPage.getLastActionMessage(),
-					containsString(message));
+					WebappPagesCollection.conversationPage
+							.getLastActionMessage(), containsString(message));
 		} else {
 			assertThat("Check action",
-					WebappPagesCollection.conversationPage.getLastActionMessage(),
+					WebappPagesCollection.conversationPage
+							.getLastActionMessage(),
 					not(containsString(message)));
 		}
 	}
@@ -462,7 +465,9 @@ public class ConversationPageSteps {
 	@Then("^I verify the second last text message equals to (.*)")
 	public void IVerifySecondLastTextMessage(String expectedMessage)
 			throws Exception {
-		assertThat(WebappPagesCollection.conversationPage.getSecondLastTextMessage(),
+		assertThat(
+				WebappPagesCollection.conversationPage
+						.getSecondLastTextMessage(),
 				equalTo(expectedMessage));
 	}
 
@@ -488,8 +493,8 @@ public class ConversationPageSteps {
 	 */
 	@When("^I see only one ping message$")
 	public void ISeeOnlyOnePingMessage() throws Exception {
-		Assert.assertEquals(WebappPagesCollection.conversationPage.numberOfPingMessagesVisible(),
-				1);
+		Assert.assertEquals(WebappPagesCollection.conversationPage
+				.numberOfPingMessagesVisible(), 1);
 	}
 
 	/**
@@ -762,8 +767,8 @@ public class ConversationPageSteps {
 	@Then("^I verify that message (.*) was cached$")
 	public void IVerifyThatMessageWasCached(String message) {
 		assertThat("Cached message in input field",
-				WebappPagesCollection.conversationPage.getMessageFromInputField(),
-				equalTo(message));
+				WebappPagesCollection.conversationPage
+						.getMessageFromInputField(), equalTo(message));
 	}
 
 	/**
