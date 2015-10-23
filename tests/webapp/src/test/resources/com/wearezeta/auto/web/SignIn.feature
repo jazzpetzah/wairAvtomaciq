@@ -54,7 +54,7 @@ Feature: Sign In
     Given I switch to sign in page
     When I switch to phone number sign in page
     When I sign in using phone number of user <Name>
-    And I click on forward button on phone number sign in
+    And I click on sign in button on phone number sign in
     And I enter phone verification code for user <Name>
     Then I am signed in properly
     And I see Contacts Upload dialog
@@ -71,14 +71,14 @@ Feature: Sign In
     When I switch to phone number sign in page
     And I enter country code <CountryCode> on phone number sign in
     And I enter phone number <PhoneNumber> on phone number sign in
-    And I click on forward button on phone number sign in
+    And I click on sign in button on phone number sign in
     Then I see invalid phone number error message saying <Error>
 
     Examples: 
       | CountryCode | PhoneNumber | Error                |
-      | +49         | 9999999999  | INVALID PHONE NUMBER |
-      | +49         | qwerqwer    | INVALID PHONE NUMBER |
-      | +49         | !@$!@$      | INVALID PHONE NUMBER |
+      | +49         | 9999999999  | Unknown Phone Number |
+      | +49         | qwerqwer    | Unknown Phone Number |
+      | +49         | !@$!@$      | Unknown Phone Number |
 
   @regression @id2716
   Scenario Outline: Verify you see correct error message when sign in with a phone number with incorrect code
@@ -86,7 +86,7 @@ Feature: Sign In
     Given I switch to sign in page
     When I switch to phone number sign in page
     When I sign in using phone number of user <Name>
-    And I click on forward button on phone number sign in
+    And I click on sign in button on phone number sign in
     And I enter wrong phone verification code for user <Name>
     Then I see invalid phone code error message saying <Error>
 
@@ -100,7 +100,7 @@ Feature: Sign In
     Given I switch to sign in page
     When I switch to phone number sign in page
     When I sign in using phone number of user <Name>
-    And I click on forward button on phone number sign in
+    And I click on sign in button on phone number sign in
     And I enter phone verification code for emailless user <Name>
     And I enter email address <EmailOfOtherUser> on add email address dialog
     And I enter password <PasswordOfOtherUser> on add email address dialog

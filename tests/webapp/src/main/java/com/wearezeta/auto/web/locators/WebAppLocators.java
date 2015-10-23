@@ -540,6 +540,6 @@ public final class WebAppLocators {
 
 	public static final class PhoneNumberLoginPage {
 
-		public static final String cssErrorMessage = "#form-login-phone [data-uie-name='status-error']";
+		public static final String cssErrorMessage = "#login-method-phone [data-uie-name='status-error']";
 	}
 }
