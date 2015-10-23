@@ -63,14 +63,13 @@ Feature: Calling
     When I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
-    And <Contact1> calls <GroupChatName> using <CallBackend>
+    And <Contact1> calls <GroupChatName> using <CallBackend2>
     And I see generic calling overlay
     And I tap <AcceptBtnName> button on the calling overlay
     And I wait for 10 seconds
     And I see calling overlay Big bar
-    #Next steps are for Juliane
-    #Then <Contact2>,<Contact3>,<Contact4> verify to have 4 flows
-    #Then <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
+    Then <Contact2>,<Contact3>,<Contact4> verify to have 4 flows
+    Then <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
 
     Examples: 
       | CallBackend |CallBackend2| Name      | Contact1  | Contact2  | Contact3  |Contact4  | GroupChatName    | AcceptBtnName |

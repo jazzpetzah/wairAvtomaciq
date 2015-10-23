@@ -18,7 +18,7 @@ public class PhoneNumberLoginPage extends WebPage {
 	@FindBy(css = "[data-uie-name='enter-phone']")
 	private WebElement phoneNumberField;
 
-	@FindBy(id = "wire-login-phone")
+	@FindBy(id = "wire-phone-login")
 	private WebElement forwardButton;
 
 	@FindBy(css = WebAppLocators.PhoneNumberLoginPage.cssErrorMessage)

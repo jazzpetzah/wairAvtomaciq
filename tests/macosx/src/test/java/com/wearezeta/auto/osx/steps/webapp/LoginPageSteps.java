@@ -116,7 +116,7 @@ public class LoginPageSteps {
 	public void ARedDotIsShownOnTheEmailField() throws Exception {
 		assertThat("Red dot on email field",
 				webappPagesCollection.getPage(LoginPage.class)
-						.isRedDotOnEmailField());
+						.isEmailFieldMarkedAsError());
 	}
 
 	/**
@@ -130,7 +130,7 @@ public class LoginPageSteps {
 	public void ARedDotIsShownOnThePasswordField() throws Exception {
 		assertThat("Red dot on password field",
 				webappPagesCollection.getPage(LoginPage.class)
-						.isRedDotOnPasswordField());
+						.isPasswordFieldMarkedAsError());
 	}
 
 	/**

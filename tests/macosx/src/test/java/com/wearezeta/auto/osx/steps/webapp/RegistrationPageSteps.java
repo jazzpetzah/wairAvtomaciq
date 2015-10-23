@@ -154,7 +154,7 @@ public class RegistrationPageSteps {
 	public void ISeeErrorMessageOnVerificationPage(String message)
 			throws Throwable {
 		assertThat(webappPagesCollection.getPage(RegistrationPage.class)
-				.getErrorMessage(), equalTo(message));
+				.getErrorMessages(), hasItem(message));
 	}
 
 	/**
@@ -170,11 +170,11 @@ public class RegistrationPageSteps {
 		if (not == null) {
 			assertThat("Red dot on email field",
 					webappPagesCollection.getPage(RegistrationPage.class)
-							.isRedDotOnEmailField());
+							.isEmailFieldMarkedAsError());
 		} else {
 			assertThat("Red dot on email field",
 					webappPagesCollection.getPage(RegistrationPage.class)
-							.isRedDotOnEmailField());
+							.isEmailFieldMarkedAsError());
 		}
 	}
 
