@@ -77,8 +77,8 @@ Feature: Sign In
     Examples: 
       | CountryCode | PhoneNumber | Error                |
       | +49         | 9999999999  | Unknown Phone Number |
-      | +49         | qwerqwer    | Unknown Phone Number |
-      | +49         | !@$!@$      | Unknown Phone Number |
+      | +49         | qwerqwer    | Invalid Phone Number |
+      | +49         | !@$!@$      | Invalid Phone Number |
 
   @regression @id2716
   Scenario Outline: Verify you see correct error message when sign in with a phone number with incorrect code
