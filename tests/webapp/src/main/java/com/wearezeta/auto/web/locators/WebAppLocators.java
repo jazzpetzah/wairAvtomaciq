@@ -401,7 +401,7 @@ public final class WebAppLocators {
 
 	public static final class RegistrationPage {
 
-		public static final String cssSwitchToSignInButton = "[data-uie-name='go-sign-in']";
+		public static final String cssSwitchToSignInButton = "[data-uie-name='go-sign-in']:not(.disabled)";
 
 		public static final String xpathRootForm = "//form[@id='form-create']";
 		public static final String cssRootForm = "#form-create";
