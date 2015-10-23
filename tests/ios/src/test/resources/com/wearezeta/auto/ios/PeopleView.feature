@@ -521,7 +521,7 @@ Feature: People View
     Examples: 
       | Name      | Contact1  | Message | GroupChatName | Image       |
       | user1Name | user2Name | testing | ForDeletion   | testing.jpg |
-      
+
   @staging @id3320
   Scenario Outline: Verify that left conversation is shown in the Archive
     Given There are 3 users where <Name> is me
@@ -553,4 +553,22 @@ Feature: People View
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
-  
+
+  @staging @id583
+  Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (People view)
+    Given There are 4 users where <Name> is me
+    Given <Contact1> is connected to <Contact3>,<Contact2>,<Name>
+    Given <Contact1> has group chat <GroupChatName> with <Contact3>,<Contact2>,<Name>
+    Given Myself sent connection request to <Contact3>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details
+    And I select contact <Contact3>
+    Then I see <Contact3> user pending profile page
+    Then I see remove from group conversation button
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
+      | user1Name | user2Name | user3Name | user4Name | TESTCHAT      |
