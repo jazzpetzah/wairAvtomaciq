@@ -92,7 +92,7 @@ Feature: Sign In
 
     Examples: 
       | Name      | Error        |
-      | user1Name | INVALID CODE |
+      | user1Name | Invalid Code |
 
   @regression @id2707
   Scenario Outline: Verify you are asked to add an email address after sign in with a phone number
@@ -106,25 +106,25 @@ Feature: Sign In
     And I enter password <PasswordOfOtherUser> on add email address dialog
     And I click add button on add email address dialog
     Then I see error message on add email address dialog saying <ErrorAlready>
-    And a red dot is shown inside the email field on add email address dialog
+    And the email field on add email address dialog is marked as error
     When I enter email address <InvalidEmail> on add email address dialog
     And I enter password <PasswordOfOtherUser> on add email address dialog
     And I click add button on add email address dialog
     Then I see error message on add email address dialog saying <ErrorInvalidEmail>
-    And a red dot is shown inside the email field on add email address dialog
+    And the email field on add email address dialog is marked as error
     When I enter email of user <Name> on add email address dialog
     And I enter password <InvalidPassword> on add email address dialog
     And I click add button on add email address dialog
     Then I see error message on add email address dialog saying <ErrorInvalidPassword>
-    And a red dot is shown inside the password field on add email address dialog
+    And the password field on add email address dialog is marked as error
     When I enter email of user <Name> on add email address dialog
     And I enter password <PasswordOfOtherUser> on add email address dialog
     And I click add button on add email address dialog
     Then I verify that an envelope icon is shown
 
     Examples: 
-      | Name      | EmailOfOtherUser      | PasswordOfOtherUser | ErrorAlready                | InvalidEmail | ErrorInvalidEmail                   | InvalidPassword | ErrorInvalidPassword                                |
-      | user1Name | qa1+qa1@wearezeta.com | aqa123456!          | EMAIL ADDRESS ALREADY TAKEN | @example.com | PLEASE ENTER A VALID EMAIL ADDRESS. | 123             | PLEASE CHOOSE A PASSWORD WITH AT LEAST 8 CHARACTERS |
+      | Name      | EmailOfOtherUser      | PasswordOfOtherUser | ErrorAlready                | InvalidEmail | ErrorInvalidEmail          | InvalidPassword | ErrorInvalidPassword                      |
+      | user1Name | qa1+qa1@wearezeta.com | aqa123456!          | Email address already taken | @example.com | Not a valid email address. | 123             | Your password needs at least 8 characters |
 
   @regression @id2227
   Scenario Outline: Show invitation button when Gmail import on registration has no suggestions
