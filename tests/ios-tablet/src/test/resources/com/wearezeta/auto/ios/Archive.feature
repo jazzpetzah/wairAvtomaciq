@@ -111,3 +111,40 @@ Feature: Archive
     Examples: 
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | autocall    |
+
+  @staging @rc @id2328
+  Scenario Outline: Verify restoring from archive after adding to conversation [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    And I swipe right on a <GroupChatName>
+    And I press Leave button in action menu in Contact List
+    And I press leave
+    Then I dont see conversation <GroupChatName> in contact list
+    When <Contact1> added me to group chat <GroupChatName>
+    Then I see first item in contact list named <GroupChatName>
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | LeaveArchive  |
+
+  @staging @rc @id3994
+  Scenario Outline: Verify restoring from archive after adding to conversation [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    And I swipe right on a <GroupChatName>
+    And I press Leave button in action menu in Contact List
+    And I press leave
+    Then I dont see conversation <GroupChatName> in contact list
+    When <Contact1> added me to group chat <GroupChatName>
+    Then I see first item in contact list named <GroupChatName>
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | LeaveArchive  |
