@@ -427,3 +427,25 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
       | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
+
+  @staging @id4005
+  Scenario Outline: Verify deleting the history from kicked out conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <Contact1> removed <Name> from group chat <GroupChatName>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <GroupChatName>
+    And I see Archive button in action menu in Contact List
+    And I see Delete button in action menu in Contact List
+    And I see Cancel button in action menu in Contact List
+    And I click delete menu button
+    And I confirm delete conversation content
+    Then I dont see conversation <GroupChatName> in contact list  
+    And I open archived conversations
+    Then I dont see conversation <GroupChatName> in contact list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | KICKCHAT      |  
