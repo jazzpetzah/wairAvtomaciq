@@ -164,7 +164,6 @@ Feature: Calling
     Then I lock screen for 5 seconds
     And I see mute call, end call and speakers buttons
     And I end started call
-    And <Contact> stops all waiting instances
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
