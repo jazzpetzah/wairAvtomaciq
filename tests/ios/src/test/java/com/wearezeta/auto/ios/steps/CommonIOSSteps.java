@@ -295,19 +295,17 @@ public class CommonIOSSteps {
 	 * 
 	 * @param chatOwnerNameAlias
 	 *            name of the user who is adding
-	 * 
 	 * @param userToAdd
 	 *            name of the user to be added
-	 * 
 	 * @param chatName
 	 *            name of the group conversation
 	 * @throws Exception
 	 */
 	@When("^(.*) added (.*) to group chat (.*)")
 	public void UserXaddUserBToGroupChat(String chatOwnerNameAlias,
-			String userToRemove, String chatName) throws Exception {
+			String userToAdd, String chatName) throws Exception {
 		commonSteps.UserXAddedContactsToGroupChat(chatOwnerNameAlias,
-				userToRemove, chatName);
+				userToAdd, chatName);
 	}
 
 	/**
