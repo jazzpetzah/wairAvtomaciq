@@ -17,7 +17,6 @@
 		<Url>http://127.0.0.1:4723/wd/hub</Url>
 		<appPath>/Project/ZClient_ios.app</appPath>
 		<isSimulator>true</isSimulator>
-		<generateUsers>true</generateUsers>
 		<driverTimeoutSeconds>30</driverTimeoutSeconds>
 		<pathToUserpic>img/userpicture_landscape.jpg</pathToUserpic>
 		<pathToAddressBook>AddressBook</pathToAddressBook>

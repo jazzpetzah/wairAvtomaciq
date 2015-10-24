@@ -53,7 +53,10 @@ public class CommonIOSSteps {
 	}
 
 	public static final Platform CURRENT_PLATFORM = Platform.iOS;
-	public static final String PLATFORM_VERSION = "8.3";
+
+	private static String getPlatformVersion() throws Exception {
+		return CommonUtils.getPlatformVersionFromConfig(CommonIOSSteps.class);
+	}
 
 	private static String getUrl() throws Exception {
 		return CommonUtils.getIosAppiumUrlFromConfig(CommonIOSSteps.class);
@@ -85,7 +88,7 @@ public class CommonIOSSteps {
 		capabilities.setCapability("app", getPath());
 		final String deviceName = CommonUtils.getDeviceName(this.getClass());
 		capabilities.setCapability("deviceName", deviceName);
-		capabilities.setCapability("platformVersion", PLATFORM_VERSION);
+		capabilities.setCapability("platformVersion", getPlatformVersion());
 		capabilities.setCapability("sendKeyStrategy", "grouped");
 		final String backendType = CommonUtils.getBackendType(this.getClass());
 		capabilities
@@ -699,7 +702,7 @@ public class CommonIOSSteps {
 	public void ISwipeLeftInCurrentWindow() throws Exception {
 		pagesCollecton.getCommonPage().swipeLeft(1000);
 	}
-	
+
 	/**
 	 * General swipe action
 	 * 
