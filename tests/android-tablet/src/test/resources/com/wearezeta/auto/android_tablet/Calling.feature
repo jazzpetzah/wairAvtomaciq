@@ -45,8 +45,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName | AcceptBtnName | DismissBtnName |
       | user1Name | user2Name | autocall    | Speaker        | Mute        | Accept        | Dismiss        |
 
-# @id4009 @regression @rc @rc42
-  @id4009 @staging
+  @id4009 @regression @rc
   Scenario Outline: I can join group call in foreground (landscape)
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
