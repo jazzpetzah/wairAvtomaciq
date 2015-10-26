@@ -99,6 +99,7 @@ Feature: Conversation List
     And I see Contact list with contacts
     And I tap on contact name <Contact1>
     And I see dialog page
+    And I scroll to the bottom of conversation view
     And I navigate back from dialog page
     And I remember unread messages indicator state for conversation <Contact1>
     When Contact <Contact1> sends 2 messages to user <Name>
