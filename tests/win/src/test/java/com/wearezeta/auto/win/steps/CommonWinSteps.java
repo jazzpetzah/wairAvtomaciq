@@ -142,7 +142,8 @@ public class CommonWinSteps {
         // we have to give the driver some app to start.
         // we don't want to give him the wire app because the webdriver 
         // should start the app to pass in some arguments.
-        capabilities.setCapability("app", "C:/windows/system32/calc.exe");//WinExecutionContext.WIRE_APP_PATH);
+        capabilities.setCapability("app", WIRE_APP_FOLDER + WIRE_APP_PATH);
+        capabilities.setCapability("debugConnectToRunningApp", "true");
         final ExecutorService pool = Executors.newFixedThreadPool(1);
 
         Callable<ZetaWinDriver> callableWinDriver = () -> new ZetaWinDriver(
@@ -220,28 +221,23 @@ public class CommonWinSteps {
                 By.xpath(WinLocators.MainWirePage.xpathWindow),
                 WRAPPER_STARTUP_TIMEOUT_SECONDS) : "Application did not started properly";
         WebElement window = winDriver.findElement(By.xpath(WinLocators.MainWirePage.xpathWindow));
-        appPid = window.getAttribute("ProcessId");
-        LOG.debug("Application attr ProcessId " + window.getAttribute("ProcessId"));
-        LOG.debug("Application attr ProgrammaticName " + window.getAttribute("ProgrammaticName"));
-        LOG.debug("Application attr ControlType " + window.getAttribute("ControlType"));
-        LOG.debug("Application attr LocalizedControlType " + window.getAttribute("LocalizedControlType"));
         LOG.debug("Application started");
     }
 
     private void waitForWebappLoaded(ZetaWebAppDriver webdriver)
             throws Exception {
         boolean started = DriverUtils
-                .waitUntilLocatorAppears(
+                .waitUntilLocatorAppears (
                         webdriver,
                         By.cssSelector(WebAppLocators.RegistrationPage.cssSwitchToSignInButton),
-                        5);
+                        10);
         
         if (started) {
             LOG.debug("Wrapper Webapp loaded");
         }else if (STARTUP_RETRIES > 0){
             STARTUP_RETRIES--;
-            LOG.warn("Wrapper Webapp did not load properly - retry");
-            killAllApps();
+            LOG.warn("Wrapper Webapp did not load properly - Retrying");
+            clearDrivers();
             startApp();
         }
         
@@ -806,9 +802,9 @@ public class CommonWinSteps {
         try {
             LOG.debug("Attempt for closing app");
 //            winPagesCollection.getPage(MainWirePage.class).closeWindow();
-//            PlatformDrivers.getInstance()
-//                    .getDriver(WinExecutionContext.CURRENT_SECONDARY_PLATFORM)
-//                    .get().close();
+            PlatformDrivers.getInstance()
+                    .getDriver(WinExecutionContext.CURRENT_SECONDARY_PLATFORM)
+                    .get().close();
         } catch (Exception e) {
             LOG.debug("Failed to close app");
         }
