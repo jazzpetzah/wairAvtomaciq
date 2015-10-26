@@ -28,8 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements ZetaDriver,
-		HasTouchScreen {
+public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements
+		ZetaDriver, HasTouchScreen {
 
 	private static final Logger log = ZetaLogger.getLog(ZetaAndroidDriver.class
 			.getSimpleName());
@@ -69,7 +69,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
 		this.touch = new RemoteTouchScreen(getExecuteMethod());
 		sessionHelper = new SessionHelper(this);
 		try {
-			androidOSVersion = getAndroidOSVersionString();
+			initOSVersionString();
 		} catch (Exception e) {
 			Throwables.propagate(e);
 		}
@@ -154,8 +154,13 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
 		}
 	}
 
-	private static String getAndroidOSVersionString() throws Exception {
-		return getAdbOutput("shell getprop ro.build.version.release").trim();
+	public String getOSVersionString() {
+		return this.androidOSVersion;
+	}
+
+	private void initOSVersionString() throws Exception {
+		this.androidOSVersion = getAdbOutput(
+				"shell getprop ro.build.version.release").trim();
 	}
 
 	@Override
