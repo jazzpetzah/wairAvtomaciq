@@ -726,7 +726,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
-  @staging @rc @id3978
+  @staging @id3978
   Scenario Outline: Verify removing the content and leaving from the group conversation via participant view [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -753,7 +753,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
-  @staging @rc @id3975
+  @staging @id3975
   Scenario Outline: Verify removing the content from the group conversation via participant view [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -780,7 +780,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
       | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
 
-  @staging @rc @id3976
+  @staging @id3976
   Scenario Outline: Verify removing the content from the group conversation via participant view [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -836,7 +836,7 @@ Feature: People View
       | Name      | Contact1  | Message | GroupChatName | Image       |
       | user1Name | user2Name | testing | ForDeletion   | testing.jpg |
 
-  @staging @rc @id3980
+  @staging @id3980
   Scenario Outline: Verify removing the content from 1-to-1 via participant view [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users

@@ -466,7 +466,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
-  @staging @rc @id3971
+  @staging @id3971
   Scenario Outline: Verify removing the content from the group conversation via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
