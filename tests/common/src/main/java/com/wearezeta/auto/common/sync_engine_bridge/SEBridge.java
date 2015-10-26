@@ -36,7 +36,7 @@ public class SEBridge {
 			if (devicePool.isDone()) {
 				try {
 					devicePool.get().shutdown();
-				} catch (Exception e) {
+				} catch (Throwable e) {
 					e.printStackTrace();
 				}
 			} else {
