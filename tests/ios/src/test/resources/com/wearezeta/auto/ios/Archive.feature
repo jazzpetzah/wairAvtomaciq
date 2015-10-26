@@ -55,7 +55,7 @@ Feature: Archive
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | autocall    |
 
-  @staging @rc @id1339
+  @staging @id1339
   Scenario Outline: Verify restoring from archive after adding to conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
