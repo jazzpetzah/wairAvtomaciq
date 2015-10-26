@@ -25,7 +25,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.RemoteWebElement;
 
-public class ZetaWinDriver extends AppiumDriver implements ZetaDriver {
+public class ZetaWinDriver extends AppiumDriver<WebElement> implements ZetaDriver {
 
     @SuppressWarnings("unused")
     private static final Logger LOG = ZetaLogger.getLog(ZetaWinDriver.class
@@ -54,8 +54,8 @@ public class ZetaWinDriver extends AppiumDriver implements ZetaDriver {
     }
 
     protected List<WebElement> wrappedFindElements(By by) {
-        return super.findElements(by).stream().map((e) -> {
-            return wrapElement(e);
+        return super.findElements(by).stream().map(e -> {
+            return this.wrapElement(e);
         }).collect(Collectors.toList());
     }
 
