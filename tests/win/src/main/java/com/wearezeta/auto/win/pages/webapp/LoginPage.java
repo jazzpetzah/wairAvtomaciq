@@ -12,18 +12,16 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.Browser;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.WebPage;
-import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.external.PasswordChangeRequestPage;
 
 public class LoginPage extends WebPage {
 	@SuppressWarnings("unused")
 	private static final Logger LOG = ZetaLogger.getLog(LoginPage.class
 			.getName());
-
-	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-			.getInstance();
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathCreateAccountButton)
 	private WebElement createAccountButton;
@@ -56,9 +54,20 @@ public class LoginPage extends WebPage {
 		super(lazyDriver);
 	}
 
+	public LoginPage(Future<ZetaWebAppDriver> lazyDriver, String url)
+			throws Exception {
+		super(lazyDriver, url);
+	}
+
 	public boolean isVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(WebAppLocators.LoginPage.xpathSignInButton));
+	}
+
+	public boolean isSignInButtonDisabled() throws Exception {
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.xpath(WebAppLocators.LoginPage.xpathSignInButton));
+		return !signInButton.isEnabled();
 	}
 
 	public void inputEmail(String email) {
@@ -66,18 +75,27 @@ public class LoginPage extends WebPage {
 		emailInput.sendKeys(email);
 	}
 
-	public void inputPassword(String password) {
+	public void inputPassword(String password) throws Exception {
+                passwordInput.click();
 		passwordInput.clear();
 		passwordInput.sendKeys(password);
 	}
 
 	private boolean waitForLoginButtonDisappearance() throws Exception {
+		// workarounds for IE driver bugs:
+		// 1. when findElements() returns one RemoteWebElement instead of list
+		// of elements and throws WebDriverException
+		// 2. NPE when findElements() call
 		boolean noSignIn = false;
 		try {
 			noSignIn = DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 					By.xpath(WebAppLocators.LoginPage.xpathSignInButton), 60);
 		} catch (WebDriverException e) {
-			throw e;
+			if (WebAppExecutionContext.getBrowser() == Browser.InternetExplorer) {
+				noSignIn = true;
+			} else {
+				throw e;
+			}
 		}
 		return noSignIn;
 	}
@@ -91,11 +109,11 @@ public class LoginPage extends WebPage {
 	}
 
 	public ContactListPage clickSignInButton() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
+		DriverUtils.waitUntilElementClickable(this.getDriver(),
 				signInButton);
 		signInButton.click();
 
-		return webappPagesCollection.getPage(ContactListPage.class);
+		return new ContactListPage(this.getLazyDriver());
 	}
 
 	public PasswordChangeRequestPage clickChangePasswordButton()
@@ -106,8 +124,8 @@ public class LoginPage extends WebPage {
 		// TODO: This is commented because the button always redirects to
 		// production site and we usually need staging one
 		// changePasswordButton.click();
-		final PasswordChangeRequestPage changePasswordPage = webappPagesCollection
-				.getPage(PasswordChangeRequestPage.class);
+		final PasswordChangeRequestPage changePasswordPage = new PasswordChangeRequestPage(
+				this.getLazyDriver());
 		changePasswordPage.navigateTo();
 		return changePasswordPage;
 	}
@@ -118,12 +136,12 @@ public class LoginPage extends WebPage {
 		return loginErrorText.getText();
 	}
 
-	public boolean isRedDotOnEmailField() throws Exception {
+	public boolean isEmailFieldMarkedAsError() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.cssSelector(WebAppLocators.LoginPage.errorMarkedEmailField));
 	}
 
-	public boolean isRedDotOnPasswordField() throws Exception {
+	public boolean isPasswordFieldMarkedAsError() throws Exception {
 		return DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						getDriver(),
@@ -133,6 +151,6 @@ public class LoginPage extends WebPage {
 	public PhoneNumberLoginPage switchToPhoneNumberLoginPage() throws Exception {
 		DriverUtils.waitUntilElementClickable(getDriver(), phoneSignInButton);
 		phoneSignInButton.click();
-		return webappPagesCollection.getPage(PhoneNumberLoginPage.class);
+		return new PhoneNumberLoginPage(this.getLazyDriver());
 	}
 }

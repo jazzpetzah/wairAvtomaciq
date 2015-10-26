@@ -29,7 +29,6 @@ import com.wearezeta.auto.win.pages.win.WinPagesCollection;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
-import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.steps.CommonWebAppSteps;
 
 import static com.wearezeta.auto.web.steps.CommonWebAppSteps.log;
@@ -66,6 +65,7 @@ import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import static com.wearezeta.auto.win.common.WinExecutionContext.WINIUM_URL;
 import static com.wearezeta.auto.win.common.WinExecutionContext.WIRE_APP_FOLDER;
+import com.wearezeta.auto.win.pages.webapp.RegistrationPage;
 import java.nio.file.Paths;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -94,6 +94,7 @@ public class CommonWinSteps {
             .getInstance();
     private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
             .getInstance();
+    private int STARTUP_RETRIES = 2;
 
     private Future<ZetaWebAppDriver> createWebDriver(
             Future<ZetaWinDriver> winDriver) throws IOException {
@@ -103,8 +104,9 @@ public class CommonWinSteps {
         options.addArguments("use-fake-device-for-media-stream");
         // allow skipping the security prompt for sharing the media device
         options.addArguments("use-fake-ui-for-media-stream");
+        options.addArguments("disable-web-security");
         options.addArguments("env=" + WinExecutionContext.ENV_URL);
-        options.setBinary(WIRE_APP_FOLDER+WIRE_APP_PATH);
+        options.setBinary(WIRE_APP_FOLDER + WIRE_APP_PATH);
         capabilities.setCapability(ChromeOptions.CAPABILITY, options);
         capabilities.setCapability("platformName",
                 WinExecutionContext.CURRENT_SECONDARY_PLATFORM.name());
@@ -228,12 +230,21 @@ public class CommonWinSteps {
 
     private void waitForWebappLoaded(ZetaWebAppDriver webdriver)
             throws Exception {
-        assert DriverUtils
+        boolean started = DriverUtils
                 .waitUntilLocatorAppears(
                         webdriver,
                         By.cssSelector(WebAppLocators.RegistrationPage.cssSwitchToSignInButton),
-                        WRAPPER_STARTUP_TIMEOUT_SECONDS) : "Wrapper Webapp did not load properly";
-        LOG.debug("Wrapper Webapp loaded");
+                        5);
+        
+        if (started) {
+            LOG.debug("Wrapper Webapp loaded");
+        }else if (STARTUP_RETRIES > 0){
+            STARTUP_RETRIES--;
+            LOG.warn("Wrapper Webapp did not load properly - retry");
+            killAllApps();
+            startApp();
+        }
+        
     }
 
     /**
@@ -256,15 +267,13 @@ public class CommonWinSteps {
                         + " does not support calling.");
             }
         } else // should not support calling
-        {
-            if (WebAppExecutionContext.getBrowser().isSupportingCalls()) {
+         if (WebAppExecutionContext.getBrowser().isSupportingCalls()) {
                 throw new PendingException(
                         "Browser "
                         + WebAppExecutionContext.getBrowser()
                         .toString()
                         + " does support calling but this test is just for browsers without support.");
             }
-        }
     }
 
     /**

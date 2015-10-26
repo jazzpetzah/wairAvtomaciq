@@ -8,7 +8,7 @@ import cucumber.api.junit.Cucumber;
 @RunWith(Cucumber.class)
 @CucumberOptions(format = { "html:target/report", "json:target/report.json",
 		"junit:target/surefire-reports/TEST-com.wearezeta.auto.macosx.DevRun.xml",
-		"com.wearezeta.auto.common.ZetaFormatter" }, tags = { "@torun" })
+		"com.wearezeta.auto.common.ZetaFormatter" }, tags = { "@smoke" })
 public class DevRun {
 
 }

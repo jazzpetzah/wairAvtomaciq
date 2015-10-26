@@ -23,7 +23,7 @@
         be used to enable logging of all messages. -->
         <extendedLoggingLevel>SEVERE</extendedLoggingLevel>
         <com.wire.app.folder>C:\\Users\\Michael\\AppData\\Local\\wire\\</com.wire.app.folder>
-        <com.wire.app.path>app-2.0.2449\\Wire.exe</com.wire.app.path>
+        <com.wire.app.path>app-2.0.2453\\Wire.exe</com.wire.app.path>
         <com.wire.winium.url>http://127.0.0.1:9999/</com.wire.winium.url>
         <com.wire.winium.path>TODO</com.wire.winium.path>
         <com.wire.chromedriver.path>C:\Users\Michael\Desktop\chromedriver.exe</com.wire.chromedriver.path>

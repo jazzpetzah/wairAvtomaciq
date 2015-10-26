@@ -9,8 +9,6 @@ import org.junit.Assert;
 
 public class MainWirePageSteps {
 
-    private final static int OSX_TITLEBAR_HEIGHT = 24;
-
     private final WinPagesCollection winPagesCollection = WinPagesCollection
             .getInstance();
 

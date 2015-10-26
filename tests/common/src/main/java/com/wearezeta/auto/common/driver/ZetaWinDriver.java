@@ -31,8 +31,6 @@ public class ZetaWinDriver extends AppiumDriver<WebElement> implements ZetaDrive
     private static final Logger LOG = ZetaLogger.getLog(ZetaWinDriver.class
             .getName());
 
-    private static final String AX_POSITION = "AXPosition";
-    private static final String AX_SIZE = "AXSize";
     private static final String APP_NAME = "Wire";
     private final SessionHelper sessionHelper;
 
@@ -183,7 +181,6 @@ public class ZetaWinDriver extends AppiumDriver<WebElement> implements ZetaDrive
         @Override
         public Dimension getSize() {
             String bounds = this.getAttribute("BoundingRectangle");
-            LOG.debug("BOUNDS: "+bounds);
             WinSize winSize = new WinSize(bounds);
             return new Dimension(winSize.getWidth(), winSize.getHeight());
         }
@@ -191,7 +188,6 @@ public class ZetaWinDriver extends AppiumDriver<WebElement> implements ZetaDrive
         @Override
         public Point getLocation() {
             String bounds = this.getAttribute("BoundingRectangle");
-            LOG.debug("BOUNDS: "+bounds);
             WinPoint winPoint = new WinPoint(bounds);
             return new Point(winPoint.getX(), winPoint.getY());
         }
