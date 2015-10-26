@@ -1,6 +1,6 @@
 Feature: Archive
 
-  @staging @rc @id1336
+  @staging @id1336
   Scenario Outline: Verify unarchive by receiving data
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -29,7 +29,7 @@ Feature: Archive
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | autocall    |
 
-  @staging @rc @id1337
+  @staging @id1337
   Scenario Outline: Verify unarchiving silenced conversation by ping and call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -55,7 +55,7 @@ Feature: Archive
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | autocall    |
 
-  @staging @rc @id1339
+  @staging @id1339
   Scenario Outline: Verify restoring from archive after adding to conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users

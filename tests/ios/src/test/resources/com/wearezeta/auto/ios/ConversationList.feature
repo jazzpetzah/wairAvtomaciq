@@ -400,7 +400,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
      
-  @staging @rc @id3968
+  @staging @id3968
   Scenario Outline: Verify posting in a group conversation without content
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
