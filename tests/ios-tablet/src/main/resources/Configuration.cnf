@@ -2,6 +2,7 @@
 #Configure before running tests
 iosAppiumUrl=${Url}
 iosApplicationPath=${appPath}
+platformVersion=${platformVersion}
 isSimulator=${isSimulator}
 swipeScriptPath=${Root}/${swipeScriptPath}
 pathToUserpic=${Root}/${pathToUserpic}
