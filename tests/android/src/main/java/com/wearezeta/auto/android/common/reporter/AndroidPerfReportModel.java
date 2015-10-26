@@ -1,7 +1,7 @@
 package com.wearezeta.auto.android.common.reporter;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 
@@ -52,9 +52,12 @@ public class AndroidPerfReportModel extends PerfReportModel {
 	@Override
 	protected List<Long> readLogValues(final String patternStr,
 			final String output) {
-		final List<Long> result = super.readLogValues(patternStr, output);
-		return result.stream().map(x -> nanosecondsToMilliseconds(x))
-				.collect(Collectors.toList());
+		final List<Long> rawLogValues = super.readLogValues(patternStr, output);
+		List<Long> result = new ArrayList<>();
+		for (long item: rawLogValues) {
+			result.add(nanosecondsToMilliseconds(item));
+		}
+		return result;
 	}
 
 	public void loadDataFromLogCat(final String output) {

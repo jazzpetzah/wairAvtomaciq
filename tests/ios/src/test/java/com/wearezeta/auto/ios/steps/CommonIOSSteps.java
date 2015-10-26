@@ -53,7 +53,10 @@ public class CommonIOSSteps {
 	}
 
 	public static final Platform CURRENT_PLATFORM = Platform.iOS;
-	public static final String PLATFORM_VERSION = "8.3";
+
+	private static String getPlatformVersion() throws Exception {
+		return CommonUtils.getPlatformVersionFromConfig(CommonIOSSteps.class);
+	}
 
 	private static String getUrl() throws Exception {
 		return CommonUtils.getIosAppiumUrlFromConfig(CommonIOSSteps.class);
@@ -85,7 +88,7 @@ public class CommonIOSSteps {
 		capabilities.setCapability("app", getPath());
 		final String deviceName = CommonUtils.getDeviceName(this.getClass());
 		capabilities.setCapability("deviceName", deviceName);
-		capabilities.setCapability("platformVersion", PLATFORM_VERSION);
+		capabilities.setCapability("platformVersion", getPlatformVersion());
 		capabilities.setCapability("sendKeyStrategy", "grouped");
 		final String backendType = CommonUtils.getBackendType(this.getClass());
 		capabilities
@@ -266,7 +269,7 @@ public class CommonIOSSteps {
 	/**
 	 * Removes user from group conversation
 	 * 
-	 * @step. ^User (.*) removed user (.*) from group chat (.*)
+	 * @step. ^(.*) removed (.*) from group chat (.*)$
 	 * 
 	 * @param chatOwnerNameAlias
 	 *            name of the user who deletes
@@ -278,11 +281,31 @@ public class CommonIOSSteps {
 	 *            name of the group conversation
 	 * @throws Exception
 	 */
-	@Given("^(.*) removed (.*) from group chat (.*)")
+	@Given("^(.*) removed (.*) from group chat (.*)$")
 	public void UserARemovedUserBFromGroupChat(String chatOwnerNameAlias,
 			String userToRemove, String chatName) throws Exception {
 		commonSteps.UserXRemoveContactFromGroupChat(chatOwnerNameAlias,
 				userToRemove, chatName);
+	}
+
+	/**
+	 * Adding user to group conversation
+	 * 
+	 * @step. ^(.*) added (.*) to group chat (.*)
+	 * 
+	 * @param chatOwnerNameAlias
+	 *            name of the user who is adding
+	 * @param userToAdd
+	 *            name of the user to be added
+	 * @param chatName
+	 *            name of the group conversation
+	 * @throws Exception
+	 */
+	@When("^(.*) added (.*) to group chat (.*)")
+	public void UserXaddUserBToGroupChat(String chatOwnerNameAlias,
+			String userToAdd, String chatName) throws Exception {
+		commonSteps.UserXAddedContactsToGroupChat(chatOwnerNameAlias,
+				userToAdd, chatName);
 	}
 
 	/**
@@ -344,14 +367,13 @@ public class CommonIOSSteps {
 		commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(
 				CURRENT_PLATFORM, count, myNameAlias);
 	}
-	
+
 	/**
 	 * Creates specified number of users and sets user with specified name as
-	 * main user. The user is registered with a email only and has no
-	 * phone number attached
+	 * main user. The user is registered with a email only and has no phone
+	 * number attached
 	 *
-	 * @step. ^There (?:is|are) (\\d+) users? where (.*) is me with email
-	 *        only$
+	 * @step. ^There (?:is|are) (\\d+) users? where (.*) is me with email only$
 	 *
 	 * @param count
 	 *            number of users to create
@@ -363,8 +385,8 @@ public class CommonIOSSteps {
 	@Given("^There (?:is|are) (\\d+) users? where (.*) is me with email only$")
 	public void ThereAreNUsersWhereXIsMeWithoutPhone(int count,
 			String myNameAlias) throws Exception {
-		commonSteps.ThereAreNUsersWhereXIsMeRegOnlyByMail(
-				CURRENT_PLATFORM, count, myNameAlias);
+		commonSteps.ThereAreNUsersWhereXIsMeRegOnlyByMail(CURRENT_PLATFORM,
+				count, myNameAlias);
 	}
 
 	@When("^(.*) ignore all requests$")
@@ -511,7 +533,17 @@ public class CommonIOSSteps {
 						: name));
 	}
 
-	@When("^User (\\w+) change name to (.*)$")
+	/**
+	 * Change user name on the backend
+	 * 
+	 * @param userNameAlias
+	 *            user's name alias to change
+	 * @param newName
+	 *            new given name
+	 * @throws Exception
+	 * @step. ^User (\\w+) changes? name to (.*)$
+	 */
+	@When("^User (\\w+) changes? name to (.*)$")
 	public void IChangeUserName(String userNameAlias, String newName)
 			throws Exception {
 		commonSteps.IChangeUserName(userNameAlias, newName);
@@ -668,7 +700,7 @@ public class CommonIOSSteps {
 	public void ISwipeLeftInCurrentWindow() throws Exception {
 		pagesCollecton.getCommonPage().swipeLeft(1000);
 	}
-	
+
 	/**
 	 * General swipe action
 	 * 

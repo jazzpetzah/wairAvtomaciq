@@ -1,16 +1,15 @@
 package com.wearezeta.auto.android.steps;
 
-import org.junit.Assert;
-
-import com.wearezeta.auto.android.pages.*;
+import com.wearezeta.auto.android.pages.OtherUserPersonalInfoPage;
+import com.wearezeta.auto.android.pages.UnknownUserDetailsPage;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.junit.Assert;
 
 public class OtherUserPersonalInfoPageSteps {
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection

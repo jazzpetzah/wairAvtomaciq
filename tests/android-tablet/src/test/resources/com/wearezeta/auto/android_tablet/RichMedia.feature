@@ -142,4 +142,30 @@ Feature: Rich Media
     Examples:
       | Name      | Contact   | Message |
       | user1Name | user2Name | H       |
- 
+
+  @id2880 @regression
+  Scenario Outline: Verify you can play/pause media from the Media Bar in conversation view (portrait only)
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    # This is to be able to scroll up until Media Bar appears
+    Given Contact <Contact> sends <MsgsInConvo> messages to user Myself
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    And I see the conversation <Contact> in my conversations list
+    And I tap the conversation <Contact>
+    And I see the conversation view
+    And I tap the text input in the conversation view
+    When I type the message "<SoundCloudLink>" in the conversation view
+    And I send the typed message in the conversation view
+    And I scroll to the bottom of the conversation view
+    And I tap Play button in the conversation view
+    And I remember the state of media button in the conversation view
+    And I scroll up until Media Bar is visible in the conversation view
+    When I tap Pause button on Media Bar in the conversation view
+    And I scroll to the bottom of the conversation view
+    Then I see the state of media button in the conversation view is changed
+
+    Examples:
+      | Name      | Contact   | SoundCloudLink                                             | MsgsInConvo |
+      | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll | 40          |

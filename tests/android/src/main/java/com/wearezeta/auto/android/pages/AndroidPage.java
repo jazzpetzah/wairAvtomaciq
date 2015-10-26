@@ -1,24 +1,21 @@
 package com.wearezeta.auto.android.pages;
 
-import java.util.List;
-import java.util.concurrent.Future;
-
-import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.ScreenOrientation;
-import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-
 import android.view.KeyEvent;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+
+import org.apache.log4j.Logger;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.FindBy;
+
+import java.util.List;
+import java.util.concurrent.Future;
 
 public abstract class AndroidPage extends BasePage {
 
@@ -42,6 +39,8 @@ public abstract class AndroidPage extends BasePage {
 
 	protected static final String classNameFrameLayout = "FrameLayout";
 
+	private static final String idChatheadNotification = "mncv__notifications__chathead";
+
 	protected static final Logger log = ZetaLogger.getLog(CommonUtils.class
 			.getSimpleName());
 
@@ -53,6 +52,8 @@ public abstract class AndroidPage extends BasePage {
 	protected ZetaAndroidDriver getDriver() throws Exception {
 		return (ZetaAndroidDriver) super.getDriver();
 	}
+	
+	public final CommonSteps commonSteps = CommonSteps.getInstance();
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -69,8 +70,6 @@ public abstract class AndroidPage extends BasePage {
 		super(lazyDriver);
 	}
 
-	final protected CommonSteps commonSteps = CommonSteps.getInstance();
-
 	public void hideKeyboard() throws Exception {
 		try {
 			this.getDriver().hideKeyboard();
@@ -80,11 +79,11 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	protected void pressEnter() throws Exception {
-		this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_ENTER);
+		this.getDriver().pressKeyCode(KeyEvent.KEYCODE_ENTER);
 	}
 
 	protected void pressEsc() throws Exception {
-		this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_ESCAPE);
+		this.getDriver().pressKeyCode(KeyEvent.KEYCODE_ESCAPE);
 	}
 
 	/**
@@ -98,10 +97,6 @@ public abstract class AndroidPage extends BasePage {
 		// Wait for animation
 		Thread.sleep(1000);
 		// this.getDriver().navigate().back();
-	}
-
-	public void sendKeyEvent(int AndroidKeyEvent) throws Exception {
-		getDriver().sendKeyEvent(AndroidKeyEvent);
 	}
 
 	public void rotateLandscape() throws Exception {
@@ -229,5 +224,31 @@ public abstract class AndroidPage extends BasePage {
 
 	public void tapOnCenterOfScreen() throws Exception {
 		tapByCoordinates(50, 50);
+	}
+
+	public void tapChatheadNotification() throws Exception {
+		final By locator = By.id(idChatheadNotification);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : "The chathead notification has not been displayed after the default timeout";
+		final WebElement el = this.getDriver().findElement(locator);
+		assert DriverUtils.waitUntilElementClickable(getDriver(), el) : "The chathead notification is not clickable";
+		el.click();
+	}
+
+	public boolean waitUntilChatheadNotificationVisible() throws Exception {
+		final By locator = By.id(idChatheadNotification);
+		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator)) {
+			final WebElement el = this.getDriver().findElement(locator);
+			return el.getLocation().getX() >= 0;
+		}
+		return false;
+	}
+
+	public boolean waitUntilChatheadNotificationInvisible() throws Exception {
+		final By locator = By.id(idChatheadNotification);
+		if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, 5)) {
+			final WebElement el = this.getDriver().findElement(locator);
+			return el.getLocation().getX() < 0;
+		}
+		return true;
 	}
 }

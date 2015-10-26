@@ -82,30 +82,28 @@ public class AddEmailAddressPageSteps {
 	}
 
 	/**
-	 * Checks if a red dot is shown inside the email field on add email address
+	 * Checks if a orange line is shown around the email field on add email address
 	 * dialog
 	 *
-	 * @step. ^a red dot is shown inside the email field on add email address
-	 *        dialog$
+	 * @step. ^the email field on add email address dialog is marked as error$
 	 * @throws Exception
 	 */
-	@Then("^a red dot is shown inside the email field on add email address dialog$")
-	public void ARedDotIsShownOnTheEmailField() throws Exception {
-		assertThat("Red dot on email field",
-				WebappPagesCollection.addEmailAddressPage.isRedDotOnEmailField());
+	@Then("^the email field on add email address dialog is marked as error$")
+	public void EmailFieldIsMarkedAsError() throws Exception {
+		assertThat("email field marked as error",
+				WebappPagesCollection.addEmailAddressPage.isEmailFieldMarkedAsError());
 	}
 
 	/**
-	 * Checks if a red dot is shown inside the password field on add email
+	 * Checks if a orange line is shown around the password field on add email
 	 * address dialog form
 	 *
-	 * @step. ^a red dot is shown inside the password field on add email address
-	 *        dialog$
+	 * @step. ^the password field on add email address dialog is marked as error$
 	 * @throws Exception
 	 */
-	@Then("^a red dot is shown inside the password field on add email address dialog$")
+	@Then("^the password field on add email address dialog is marked as error$")
 	public void ARedDotIsShownOnThePasswordField() throws Exception {
-		assertThat("Red dot on password field",
-				WebappPagesCollection.addEmailAddressPage.isRedDotOnPasswordField());
+		assertThat("password field marked as error",
+				WebappPagesCollection.addEmailAddressPage.isPasswordFieldMarkedAsError());
 	}
 }

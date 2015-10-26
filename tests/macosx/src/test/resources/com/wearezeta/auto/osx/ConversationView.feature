@@ -17,9 +17,8 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | PING   | PING_AGAIN   |
       | user1Email | user1Password | user1Name | user2Name | pinged | pinged again |
 
-
   @smoke @id3781
-   Scenario Outline: Verify you ping in a conversation when you press ⌘ + K (Mac)
+  Scenario Outline: Verify you ping in a conversation when you press ⌘ + K (Mac)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
@@ -35,8 +34,8 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | PING   | PING_AGAIN   |
       | user1Email | user1Password | user1Name | user2Name | pinged | pinged again |
 
-   @smoke @id3782
-   Scenario Outline: Verify you start a call in a conversation when you press ⌘ T (Mac)
+  @smoke @id3782
+  Scenario Outline: Verify you start a call in a conversation when you press ⌘ R (Mac)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
@@ -80,9 +79,8 @@ Feature: Conversation View
     Then I see ping message <PING_AGAIN>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1   | Contact2   | ChatName  | PING   | PING_AGAIN   |
-      | user1Email | user1Password | user1Name | user2Name  | user3Name  | GroupChat | pinged | pinged again |
-
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  | PING   | PING_AGAIN   |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat | pinged | pinged again |
 
   @smoke @id3908
   Scenario Outline: Verify you ping in a group conversation when you press ⌘ + K (Mac)
@@ -99,8 +97,8 @@ Feature: Conversation View
     Then I see ping message <PING_AGAIN>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1   | Contact2   | ChatName  | PING   | PING_AGAIN   |
-      | user1Email | user1Password | user1Name | user2Name  | user3Name  | GroupChat | pinged | pinged again |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  | PING   | PING_AGAIN   |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat | pinged | pinged again |
 
   @smoke @id3909
   Scenario Outline: Verify you start a call in a group conversation when you press ⌘ T (Mac)
@@ -115,8 +113,8 @@ Feature: Conversation View
     Then I see the calling bar
 
     Examples: 
-      | Login      | Password      | Name      | Contact1   | Contact2   | ChatName  |
-      | user1Email | user1Password | user1Name | user2Name  | user3Name  | GroupChat |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat |
 
   @smoke @id3907
   Scenario Outline: Verify I can call a group conversation using the menu bar
@@ -131,8 +129,8 @@ Feature: Conversation View
     Then I see the calling bar
 
     Examples: 
-      | Login      | Password      | Name      | Contact1   | Contact2   | ChatName  |
-      | user1Email | user1Password | user1Name | user2Name  | user3Name  | GroupChat |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat |
 
   @smoke @id3919
   Scenario Outline: Verify I can undo redo using menu bar
@@ -185,10 +183,10 @@ Feature: Conversation View
     When I click menu bar item "Edit" and menu item "Select All"
     And I click menu bar item "Edit" and menu item "Cut"
     Then I verify that message "" was typed
-# We can not paste something in automation due to security
-#     When I click menu bar item "Edit" and menu item "Paste"
-#     Then I verify that random message was typed
 
+    # We can not paste something in automation due to security
+    #     When I click menu bar item "Edit" and menu item "Paste"
+    #     Then I verify that random message was typed
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
@@ -206,10 +204,10 @@ Feature: Conversation View
     When I type shortcut combination to select all
     And I type shortcut combination to cut
     Then I verify that message "" was typed
-# We can not paste something in automation due to security
-#     When I type shortcut combination to paste
-#     Then I verify that random message was typed
 
+    # We can not paste something in automation due to security
+    #     When I type shortcut combination to paste
+    #     Then I verify that random message was typed
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
@@ -227,10 +225,10 @@ Feature: Conversation View
     When I click menu bar item "Edit" and menu item "Select All"
     And I click menu bar item "Edit" and menu item "Copy"
     Then I verify that random message was typed
-# We can not paste something in automation due to security
-#     When I click menu bar item "Edit" and menu item "Paste"
-#     Then I verify that random message was typed
 
+    # We can not paste something in automation due to security
+    #     When I click menu bar item "Edit" and menu item "Paste"
+    #     Then I verify that random message was typed
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
@@ -248,10 +246,10 @@ Feature: Conversation View
     When I type shortcut combination to select all
     And I type shortcut combination to copy
     Then I verify that random message was typed
-# We can not paste something in automation due to security
-#     When I type shortcut combination to paste
-#     Then I verify that random message was typed
 
+    # We can not paste something in automation due to security
+    #     When I type shortcut combination to paste
+    #     Then I verify that random message was typed
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |

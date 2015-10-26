@@ -78,7 +78,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id2717
+  @regression @rc @id2717
   Scenario Outline: Verify first time phone sign in when email is not assigned
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
@@ -181,7 +181,7 @@ Feature: Sign In
       | Email                     | Password      | Name      |
       | smoketester@wearezeta.com | user1Password | user1Name |
 
-  @staging @id3857 @noAcceptAlert
+  @regression @id3857 @noAcceptAlert
   Scenario Outline: Verify error message appears in case of registering already taken email
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen

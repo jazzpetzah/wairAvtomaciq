@@ -34,19 +34,19 @@ public class LoginPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathChangePasswordButton)
 	private WebElement changePasswordButton;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathEmailInput)
+	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssEmailInput)
 	private WebElement emailInput;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathPasswordInput)
+	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssPasswordInput)
 	private WebElement passwordInput;
 
 	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssLoginErrorText)
 	private WebElement loginErrorText;
 
-	@FindBy(css = WebAppLocators.LoginPage.cssRedDotOnEmailField)
+	@FindBy(css = WebAppLocators.LoginPage.errorMarkedEmailField)
 	private WebElement redDotOnEmailField;
 
-	@FindBy(css = WebAppLocators.LoginPage.cssRedDotOnPasswordField)
+	@FindBy(css = WebAppLocators.LoginPage.errorMarkedPasswordField)
 	private WebElement redDotOnPasswordField;
 
 	public LoginPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
@@ -61,6 +61,12 @@ public class LoginPage extends WebPage {
 	public boolean isVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(WebAppLocators.LoginPage.xpathSignInButton));
+	}
+
+	public boolean isSignInButtonDisabled() throws Exception {
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.xpath(WebAppLocators.LoginPage.xpathSignInButton));
+		return !signInButton.isEnabled();
 	}
 
 	public void inputEmail(String email) {
@@ -101,7 +107,7 @@ public class LoginPage extends WebPage {
 	}
 
 	public ContactListPage clickSignInButton() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
+		DriverUtils.waitUntilElementClickable(this.getDriver(),
 				signInButton);
 		signInButton.click();
 
@@ -128,16 +134,16 @@ public class LoginPage extends WebPage {
 		return loginErrorText.getText();
 	}
 
-	public boolean isRedDotOnEmailField() throws Exception {
+	public boolean isEmailFieldMarkedAsError() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.cssSelector(WebAppLocators.LoginPage.cssRedDotOnEmailField));
+				By.cssSelector(WebAppLocators.LoginPage.errorMarkedEmailField));
 	}
 
-	public boolean isRedDotOnPasswordField() throws Exception {
+	public boolean isPasswordFieldMarkedAsError() throws Exception {
 		return DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						getDriver(),
-						By.cssSelector(WebAppLocators.LoginPage.cssRedDotOnPasswordField));
+						By.cssSelector(WebAppLocators.LoginPage.errorMarkedPasswordField));
 	}
 
 	public PhoneNumberLoginPage switchToPhoneNumberLoginPage() throws Exception {

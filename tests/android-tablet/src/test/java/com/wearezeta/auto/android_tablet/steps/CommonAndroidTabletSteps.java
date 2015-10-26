@@ -122,7 +122,7 @@ public class CommonAndroidTabletSteps {
 			AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
 			AndroidCommonUtils.disableHints();
 			AndroidCommonUtils.disableHockeyUpdates();
-			AndroidCommonUtils.installTestingGalleryApp();
+			AndroidCommonUtils.installTestingGalleryApp(this.getClass());
 			final String backendJSON = AndroidCommonUtils
 					.createBackendJSON(CommonUtils.getBackendType(this
 							.getClass()));
@@ -604,6 +604,8 @@ public class CommonAndroidTabletSteps {
 				dstConversationName);
 	}
 
+	private static final int RANDOM_MSG_LENGTH = 10;
+
 	/**
 	 * User A sends a simple text message to user B
 	 * 
@@ -618,10 +620,36 @@ public class CommonAndroidTabletSteps {
 	 * 
 	 */
 	@When("^Contact (.*) sends? message to user (.*)$")
-	public void UserSendMessageToConversation(String msgFromUserNameAlias,
+	public void UserSendMessageToContact(String msgFromUserNameAlias,
 			String dstUserNameAlias) throws Exception {
 		commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
-				dstUserNameAlias, CommonUtils.generateRandomString(10));
+				dstUserNameAlias,
+				CommonUtils.generateRandomString(RANDOM_MSG_LENGTH));
+	}
+
+	/**
+	 * Send multiple random messages to a user
+	 * 
+	 * @step. ^Contact (.*) sends? message to user (.*)$
+	 * 
+	 * @param msgFromUserNameAlias
+	 *            the user who sends the message
+	 * @param count
+	 *            count of messages to send
+	 * @param dstUserNameAlias
+	 *            The user to receive the message
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^Contact (.*) sends? (\\d+) messages? to user (.*)$")
+	public void UserSendMultipleMessageToContact(String msgFromUserNameAlias,
+			int count, String dstUserNameAlias) throws Exception {
+		for (int i = 0; i < count; i++) {
+			commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
+					dstUserNameAlias,
+					CommonUtils.generateRandomString(RANDOM_MSG_LENGTH));
+		}
 	}
 
 	/**

@@ -1,5 +1,7 @@
 package com.wearezeta.auto.android_tablet.steps;
 
+import java.awt.image.BufferedImage;
+
 import org.junit.Assert;
 
 import com.wearezeta.auto.android_tablet.pages.TabletConversationViewPage;
@@ -628,7 +630,7 @@ public class ConversationViewPageSteps {
 	public void ITapGiphyButton() throws Exception {
 		getConversationViewPage().tapGiphyButton();
 	}
-	
+
 	/**
 	 * Tap Sketch button
 	 * 
@@ -639,5 +641,120 @@ public class ConversationViewPageSteps {
 	@When("^I tap Sketch button on [Cc]onversation view page$")
 	public void ITapSketchButton() throws Exception {
 		getConversationViewPage().tapSketchButton();
+	}
+
+	/**
+	 * Tap Draw Sketch button on picture confirmation page
+	 * 
+	 * @step. ^I tap Sketch button on the picture preview$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap Sketch button on the picture preview$")
+	public void ITapSketchButtonOnPicturePreview() throws Exception {
+		getConversationViewPage().tapSketchButtonOnPicturePreview();
+	}
+
+	private BufferedImage previousMediaButtonState = null;
+
+	/**
+	 * Store the screenshot of current media button state in the internal
+	 * variable for further comparison
+	 * 
+	 * @step. ^I remember the state of media button in (?:the
+	 *        |\\s*)[Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I remember the state of media button in (?:the |\\s*)[Cc]onversation view$")
+	public void IRememberMediaButtonState() throws Exception {
+		this.previousMediaButtonState = getConversationViewPage()
+				.getMediaButtonScreenshot();
+	}
+
+	private static final double MAX_SIMILARITY_VALUE = 0.97;
+
+	/**
+	 * Verify whether the current state of media control button is changed in
+	 * comparison to the previously screenshoted one
+	 * 
+	 * @step. ^I see the state of media button in (?:the |\\s*)[Cc]onversation
+	 *        view is changed$
+	 * 
+	 * @param shouldNotBeChanged
+	 *            equals to null if "not " part does not exist in step signature
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see the state of media button in (?:the |\\s*)[Cc]onversation view is (not )?changed$")
+	public void ISeeMediaButtonStateIsChanged(String shouldNotBeChanged)
+			throws Exception {
+		if (this.previousMediaButtonState == null) {
+			throw new IllegalStateException(
+					"Please take a screenshot of media button first");
+		}
+		final int maxRetries = 3;
+		int ntry = 1;
+		double score = 1;
+		do {
+			final BufferedImage currentMediaButtonState = getConversationViewPage()
+					.getMediaButtonScreenshot();
+			score = ImageUtil.getOverlapScore(this.previousMediaButtonState,
+					currentMediaButtonState,
+					ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
+			if (shouldNotBeChanged == null) {
+				if (score < MAX_SIMILARITY_VALUE) {
+					return;
+				}
+			} else {
+				if (score >= MAX_SIMILARITY_VALUE) {
+					return;
+				}
+			}
+			Thread.sleep(1000);
+			ntry++;
+		} while (ntry <= maxRetries);
+		if (shouldNotBeChanged == null) {
+			Assert.assertTrue(
+					String.format(
+							"The current and the previous button states seems to be identical (%.2f >= %.2f)",
+							score, MAX_SIMILARITY_VALUE),
+					score < MAX_SIMILARITY_VALUE);
+		} else {
+			Assert.assertTrue(
+					String.format(
+							"The current and the previous button states seems to be different (%.2f < %.2f)",
+							score, MAX_SIMILARITY_VALUE),
+					score >= MAX_SIMILARITY_VALUE);
+		}
+	}
+
+	/**
+	 * Tap Media Bar control button to start/pause media playback
+	 * 
+	 * @step. ^I tap (?:Pause|Play) button on Media Bar in (?:the
+	 *        |\\s*)[Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap (?:Pause|Play) button on Media Bar in (?:the |\\s*)[Cc]onversation view$")
+	public void ITapMediaBarControlButton() throws Exception {
+		getConversationViewPage().tapMediaBarControlButton();
+	}
+
+	private final static int MAX_SWIPES = 8;
+
+	/**
+	 * Scroll up until media bar is shown
+	 * 
+	 * @step. ^I scroll up until Media Bar is visible in (?:the
+	 *        |\\s*)[Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I scroll up until Media Bar is visible in (?:the |\\s*)[Cc]onversation view$")
+	public void IScrollUpUntilMediaBarVisible() throws Exception {
+		Assert.assertTrue("Media Bar is not visible", getConversationViewPage()
+				.scrollUpUntilMediaBarVisible(MAX_SWIPES));
 	}
 }

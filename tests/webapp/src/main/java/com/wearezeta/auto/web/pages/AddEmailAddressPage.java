@@ -55,21 +55,21 @@ public class AddEmailAddressPage extends WebPage {
 		DriverUtils
 				.waitUntilLocatorAppears(
 						getDriver(),
-						By.cssSelector(WebAppLocators.PhoneNumberVerificationPage.cssErrorMessage));
+						By.cssSelector(WebAppLocators.AddEmailAddressPage.cssErrorMessage));
 		return errorMessage.getText();
 	}
 
-	public boolean isRedDotOnEmailField() throws Exception {
+	public boolean isEmailFieldMarkedAsError() throws Exception {
 		return DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						getDriver(),
-						By.cssSelector(WebAppLocators.AddEmailAddressPage.cssRedDotOnEmailField));
+						By.cssSelector(WebAppLocators.AddEmailAddressPage.cssErrorMarkedEmailField));
 	}
 
-	public boolean isRedDotOnPasswordField() throws Exception {
+	public boolean isPasswordFieldMarkedAsError() throws Exception {
 		return DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						getDriver(),
-						By.cssSelector(WebAppLocators.AddEmailAddressPage.cssRedDotOnPasswordField));
+						By.cssSelector(WebAppLocators.AddEmailAddressPage.cssErrorMarkedPasswordField));
 	}
 }

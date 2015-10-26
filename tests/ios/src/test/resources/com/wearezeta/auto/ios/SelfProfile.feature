@@ -124,7 +124,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |      
 
-  @staging @noAcceptAlert @id3860
+  @regression @noAcceptAlert @id3860
   Scenario Outline: Verify error message appears in case of registering already taken phone number
     Given There is 1 users where <Name> is me with email only
     Given I sign in using my email
@@ -139,5 +139,17 @@ Feature: Self Profile
     Then I see already registered phone number alert
 
     Examples: 
-      | Name      | Number        | Code |  
+      | Name      | Number        | Code |
       | user1Name | 8301652248706 | +0   |
+
+  @staging @rc @id3990
+  Scenario Outline: Verify theme switcher is shown on the self profile
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    Then I see theme switcher button on self profile page
+
+    Examples: 
+      | Name      | 
+      | user1Name |

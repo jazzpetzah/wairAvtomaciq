@@ -67,16 +67,16 @@ public class PhoneNumberLoginPageSteps {
 	}
 
 	/**
-	 * Click the Forward button after entering the phone number
+	 * Click the sign in button after entering the phone number
 	 * 
-	 * @step. ^I click on forward button on phone number sign in$
+	 * @step. ^I click on sign in button on phone number sign in$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I click on forward button on phone number sign in$")
+	@When("^I click on sign in button on phone number sign in$")
 	public void IClickOnForwardButtonOnPhoneNumberSignIn() throws Exception {
 		WebappPagesCollection.phoneNumberVerificationPage = WebappPagesCollection.phoneNumberLoginPage
-				.clickForwardButton();
+				.clickSignInButton();
 	}
 
 	/**

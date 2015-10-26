@@ -40,12 +40,12 @@ Feature: Application
   @smoke @id3995
   Scenario: Verify size of sign in screen window
     When I ensure initial positioning
-    Then I verify app width is 460 px and height is 680 px
+    Then I verify app width is 400 px and height is 576 px
     And I resize the app to the max by hand
-    Then I verify app width is 460 px and height is 680 px
+    Then I verify app width is 400 px and height is 576 px
     When I ensure initial positioning
     And I resize the app to the min by hand
-    Then I verify app width is 460 px and height is 680 px
+    Then I verify app width is 400 px and height is 576 px
 
   @smoke @id3807
   Scenario: I verify the installed app is not too big
