@@ -1,6 +1,6 @@
 Feature: Conversation List
 
-  @regression @rc @id2378 @id2568
+  @regression @id2378 @id2568
   Scenario Outline: Verify archive a conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>

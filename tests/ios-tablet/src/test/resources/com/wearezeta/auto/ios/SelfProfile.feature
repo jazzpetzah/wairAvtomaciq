@@ -366,8 +366,8 @@ Feature: Self Profile
       | Name      | Number        | Code |
       | user1Name | 8301652248706 | +0   |
 
-  @staging @id3986
-  Scenario Outline: Verify theme switcher is shown on the self profile [PORTRAIT]
+  @staging @rc @id3986
+  Scenario Outline: Verify theme switcher is not shown on the self profile [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
@@ -379,7 +379,7 @@ Feature: Self Profile
       | user1Name |
 
   @staging @id3989
-  Scenario Outline: Verify theme switcher is shown on the self profile [LANDSCAPE]
+  Scenario Outline: Verify theme switcher is not shown on the self profile [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
