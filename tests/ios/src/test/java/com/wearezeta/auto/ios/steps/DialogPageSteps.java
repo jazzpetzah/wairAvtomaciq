@@ -1138,7 +1138,7 @@ public class DialogPageSteps {
 	
 	/**
 	 * 
-	 * @step ^I longpress on image in the conversation$ 
+	 * @step. ^I longpress on image in the conversation$ 
 	 * @throws Exception
 	 */
 	@When("^I longpress on image in the conversation$")
@@ -1148,7 +1148,7 @@ public class DialogPageSteps {
 	
 	/**
 	 * 
-	 * @step ^I tap on copy badge$
+	 * @step. ^I tap on copy badge$
 	 * @throws Exception
 	 */
 	@When ("^I tap on copy badge$")
