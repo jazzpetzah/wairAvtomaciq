@@ -870,7 +870,7 @@ public class CommonAndroidSteps {
 			throw new Exception(
 					"Incorrect type of conversation specified (single user | group) expected.");
 		}
-		commonSteps.UserSentImageToConversationOtr(imageSenderUserNameAlias,
+		commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,
 				imagePath, dstConversationName, isGroup);
 	}
 
