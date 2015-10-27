@@ -27,7 +27,7 @@ public class SettingsPageSteps {
 	@Then("^I see settings page$")
 	public void ISeeSettingsPage() throws Exception {
 		Assert.assertTrue("Settings page is not visible", getSettingsPage()
-				.isSettingsPageVisible());
+				.waitUntilVisible());
 	}
 
 	/**

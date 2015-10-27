@@ -7,7 +7,6 @@ import org.junit.Assert;
 import com.wearezeta.auto.android_tablet.pages.TabletSelfProfilePage;
 import com.wearezeta.auto.android_tablet.pages.camera.SelfProfileCameraPage;
 import com.wearezeta.auto.common.ImageUtil;
-import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import cucumber.api.java.en.And;
@@ -53,19 +52,6 @@ public class SelfProfilePageSteps {
 	@When("^I tap Options button on (?:the |\\s*)[Ss]elf [Pp]rofile page$")
 	public void ITapOptionsButton() throws Exception {
 		getSelfProfilePage().tapOptionsButton();
-	}
-
-	/**
-	 * Tap Sign Out button on Self Profile page
-	 * 
-	 * @step. ^I tap [Ss]ign [Oo]ut button on (?:the |\\s*)[Ss]elf [Pp]rofile
-	 *        page$"
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I tap [Ss]ign [Oo]ut button on (?:the |\\s*)[Ss]elf [Pp]rofile page$")
-	public void WhenITapSignOutButton() throws Exception {
-		getSelfProfilePage().tapSignOutBtn();
 	}
 
 	/**
@@ -251,58 +237,6 @@ public class SelfProfilePageSteps {
 						"The overlap value between the previous and the current profile picture is greater than expected (%.2f > %.02f)",
 						overlapScore, MAX_SCREENSHOTS_OVERLAP_SCORE),
 				overlapScore <= MAX_SCREENSHOTS_OVERLAP_SCORE);
-	}
-
-	/**
-	 * Selects specified accent color on accent color picker
-	 * 
-	 * @step. ^I change accent color to
-	 *        (StrongBlue|StrongLimeGreen|BrightYellow|
-	 *        VividRed|BrightOrange|SoftPink|Violet)$
-	 * 
-	 * @param colorName
-	 *            one of possible accent colors:
-	 *            StrongBlue|StrongLimeGreen|BrightYellow
-	 *            |VividRed|BrightOrange|SoftPink|Violet
-	 * @throws Exception
-	 */
-	@And("^I change accent color to (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet)$")
-	public void IChangeAccentColor(String colorName) throws Exception {
-		getSelfProfilePage().chooseColorOnColorPicker(
-				AccentColor.getByName(colorName));
-
-	}
-
-	/**
-	 * Finds selected color on accent color picker and checks that it is the
-	 * same as expected
-	 * 
-	 * @step. ^I see color
-	 *        (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange
-	 *        |SoftPink|Violet) selected on (?:the |\\s*)[Ss]elf [Pp]rofile
-	 *        page$
-	 * 
-	 * @param colorName
-	 *            one of possible accent colors:
-	 *            StrongBlue|StrongLimeGreen|BrightYellow
-	 *            |VividRed|BrightOrange|SoftPink|Violet
-	 * @throws Exception
-	 * 
-	 * @throws AssertionError
-	 *             if accent color is not equal to expected
-	 */
-	@And("^I see color (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet) selected on (?:the |\\s*)[Ss]elf [Pp]rofile page$")
-	public void ISeeColorXSelectOnAccentColorPicker(String colorName)
-			throws Exception {
-		AccentColor expectedColor = AccentColor.getByName(colorName);
-		AccentColor selectedColor = getSelfProfilePage()
-				.findSelectedAccentColor();
-		Assert.assertNotNull(
-				"Can't determine selected color from accent color picker.",
-				selectedColor);
-		Assert.assertTrue(String.format(
-				"Selected color (%s) is not as expected (%s)", selectedColor,
-				expectedColor), selectedColor == expectedColor);
 	}
 
 	/**
