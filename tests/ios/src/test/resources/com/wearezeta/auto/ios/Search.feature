@@ -456,3 +456,18 @@ Feature: Search
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
+
+  @staging @id2120
+  Scenario Outline: Verify impossibility of dismissing if search isn't empty
+    Given There are 2 users where <Name> is me
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I input in People picker search field user name <Contact>
+    And I see user <Contact> found on People picker page
+    And I swipe completely to dismiss suggested contact <Contact>
+    Then I see user <Contact> found on People picker page
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |

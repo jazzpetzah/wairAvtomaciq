@@ -32,7 +32,10 @@ Feature: Sign In
     When I tap on my avatar
     Then I see personal info page
     When I tap options button
-    And I tap sign out button
+    And I tap settings button
+    And I select "Account" settings menu item
+    And I select "Sign out" settings menu item
+    And I confirm sign out
     Then I see welcome screen
     When User <Name2> is me
     And I sign in using my email or phone number

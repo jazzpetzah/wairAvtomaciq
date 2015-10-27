@@ -532,12 +532,9 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void openGallery() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(), galleryBtn);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idGalleryBtn)) : "Gallery button is still not visible";
 		galleryBtn.click();
-		// workaround until images not selected
-		// getDriver().wait(1000);
-		commonSteps.WaitForTime(1);
-		this.tapByCoordinates(30, 20);
 	}
 
 	public void closeFullScreenImage() throws Exception {

@@ -860,7 +860,7 @@ public class CommonAndroidTabletSteps {
 			String dstConversationName) throws Exception {
 		String imagePath = CommonUtils.getImagesPath(this.getClass())
 				+ imageFileName;
-		commonSteps.UserSendsImageToConversation(imageSenderUserNameAlias,
+		commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,
 				imagePath, dstConversationName,
 				conversationType.equals("group"));
 	}

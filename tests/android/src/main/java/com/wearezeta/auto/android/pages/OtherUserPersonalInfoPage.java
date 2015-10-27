@@ -126,6 +126,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return new By[] {
 				By.xpath(xpathConvOptionsMenuItemByName.apply("BLOCK")),
 				By.xpath(xpathConvOptionsMenuItemByName.apply("SILENCE")),
+				By.xpath(xpathConvOptionsMenuItemByName.apply("DELETE")),
 				By.xpath(xpathConvOptionsMenuItemByName.apply("ARCHIVE")) };
 	}
 

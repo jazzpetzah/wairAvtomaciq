@@ -1,5 +1,7 @@
 package com.wearezeta.auto.common.sync_engine_bridge;
 
+import java.util.concurrent.TimeUnit;
+
 import akka.actor.ActorRef;
 import akka.pattern.Patterns;
 
@@ -13,9 +15,9 @@ abstract class RemoteEntity implements IRemoteEntity {
 
 	protected FiniteDuration actorTimeout;
 
-	protected String name;
+	private String name;
 
-	protected ActorRef ref;
+	private ActorRef ref;
 
 	public RemoteEntity(FiniteDuration actorTimeout) {
 		this.actorTimeout = actorTimeout;
@@ -26,9 +28,17 @@ abstract class RemoteEntity implements IRemoteEntity {
 		return name;
 	}
 
+	protected void setName(String name) {
+		this.name = name;
+	}
+
 	@Override
 	public ActorRef ref() {
 		return ref;
+	}
+
+	protected void setRef(ActorRef ref) {
+		this.ref = ref;
 	}
 
 	@Override
@@ -60,6 +70,15 @@ abstract class RemoteEntity implements IRemoteEntity {
 		Future<Object> future = Patterns.ask(actorRef, message,
 				actorTimeout.toMillis());
 		return Await.result(future, actorTimeout);
+	}
+
+	protected Object askActor(ActorRef actorRef, ActorMessage message,
+			long timeoutMilliseconds) throws Exception {
+		final FiniteDuration timeotObj = new FiniteDuration(
+				timeoutMilliseconds, TimeUnit.MILLISECONDS);
+		Future<Object> future = Patterns.ask(actorRef, message,
+				timeotObj.toMillis());
+		return Await.result(future, timeotObj);
 	}
 
 	/**

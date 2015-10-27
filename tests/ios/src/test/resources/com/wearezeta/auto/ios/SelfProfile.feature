@@ -142,7 +142,7 @@ Feature: Self Profile
       | Name      | Number        | Code |
       | user1Name | 8301652248706 | +0   |
 
-  @staging @rc @id3990
+  @staging @id3990
   Scenario Outline: Verify theme switcher is shown on the self profile
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
