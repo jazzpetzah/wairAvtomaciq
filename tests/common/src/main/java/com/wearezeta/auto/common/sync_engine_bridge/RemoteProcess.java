@@ -13,6 +13,8 @@ import scala.concurrent.duration.FiniteDuration;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 class RemoteProcess extends RemoteEntity implements IRemoteProcess {
 
@@ -100,7 +102,7 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
 	public String getLogPath() {
 		final File outputFile = new File(String.format("target/logcat/%s.log",
 				name()));
-		if (outputFile.getParentFile() == null) {
+		if (!Files.exists(Paths.get(outputFile.getParent()))) {
 			outputFile.getParentFile().mkdirs();
 		}
 		try {

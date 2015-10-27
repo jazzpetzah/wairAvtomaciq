@@ -320,6 +320,7 @@ Feature: Connect
     And I see contact list with name <Contact2>
     When I tap on contact name <Contact2>
     And I see that connection is pending
+    And I click ellipsis button
     And I click Block button
     And I confirm block on connect to page
     Then I do not see dialog page

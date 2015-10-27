@@ -320,7 +320,7 @@ Feature: Search
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @id3870 @staging
+  @id3870 @regression
   Scenario Outline: Verify button Open is changed to Create after checking second person
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

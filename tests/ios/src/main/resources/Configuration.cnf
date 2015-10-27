@@ -3,7 +3,7 @@
 iosAppiumUrl=${Url}
 iosApplicationPath=${appPath}
 isSimulator=${isSimulator}
-generateUsers=${generateUsers}
+platformVersion=${platformVersion}
 swipeScriptPath=${Root}/${swipeScriptPath}
 pathToUserpic=${Root}/${pathToUserpic}
 driverTimeoutSeconds=${driverTimeoutSeconds}

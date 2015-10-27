@@ -362,7 +362,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName | NewGroupChatName |
       | user1Name | user2Name | user3Name | GroupChat     | NewChatName      |
 
-  @id3803 @staging
+  @id3803 @regression @rc
   Scenario Outline: Send sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -383,7 +383,7 @@ Feature: Conversation View
       | Name      | Contact1  | NumColors |
       | user1Name | user2Name | 6         |
 
-  @id3804 @staging
+  @id3804 @regression @rc
   Scenario Outline: Send sketch on picture from gallery
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
