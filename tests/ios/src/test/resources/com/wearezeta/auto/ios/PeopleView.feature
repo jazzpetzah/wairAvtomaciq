@@ -527,32 +527,25 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Name> sent message <Message> to conversation <GroupChatName>
+    Given Contact <Contact1> sends image <Image> to group conversation <GroupChatName>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
-    And I type the message
-    And I send the message
-    And I see message in the dialog
-    And I swipe the text input cursor
-    And I press Add Picture button
-    And I press Camera Roll button
-    And I choose a picture from camera roll
-    And I press Confirm button
-    And I see new photo in the dialog
+    And I see only 3 messages
     And I open group conversation details
     And I press leave converstation button
     And I see leave conversation alert
     Then I press leave
-    And I return to the chat list
     And I open archived conversations
     And I see user <GroupChatName> in contact list
     And I tap on group chat with name <GroupChatName>
     Then I see only 4 messages
 
     Examples: 
-      | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Name | user2Name | user3Name | TESTCHAT      |
+      | Name      | Contact1  | Contact2  | GroupChatName | Message |   Image     |
+      | user1Name | user2Name | user3Name | TESTCHAT      | testing | testing.jpg | 
 
   @staging @id583
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (People view)
