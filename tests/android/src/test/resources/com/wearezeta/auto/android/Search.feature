@@ -213,7 +213,7 @@ Feature: Search
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @id3871 @regression
+  @id3871 @regression @rc
   Scenario Outline: Verify opening conversation with action button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
