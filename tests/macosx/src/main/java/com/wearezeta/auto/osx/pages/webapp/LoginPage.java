@@ -75,22 +75,15 @@ public class LoginPage extends WebPage {
 	}
 
 	public void inputEmail(String email) throws Exception {
-		removeReadonlyAttr(WebAppLocators.LoginPage.cssEmailInput);
+		emailInput.click();
 		emailInput.clear();
 		emailInput.sendKeys(email);
 	}
 
 	public void inputPassword(String password) throws Exception {
-		removeReadonlyAttr(WebAppLocators.LoginPage.cssPasswordInput);
+		passwordInput.click();
 		passwordInput.clear();
 		passwordInput.sendKeys(password);
-	}
-
-	private void removeReadonlyAttr(String cssLocator) throws Exception {
-		this.getDriver().executeScript(
-				String.format(
-						"$(document).find(\"%s\").removeAttr('readonly');",
-						cssLocator));
 	}
 
 	private boolean waitForLoginButtonDisappearance() throws Exception {
