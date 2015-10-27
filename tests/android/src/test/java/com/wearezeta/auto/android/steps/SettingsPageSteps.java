@@ -4,6 +4,7 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.SettingsPage;
 
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -42,4 +43,17 @@ public class SettingsPageSteps {
 	public void ISelectSettingsMenuItem(String name) throws Exception {
 		getSettingsPage().selectMenuItem(name);
 	}
+	
+	/**
+	 * Click the corresponding button on sign out alert to confirm it
+	 * 
+	 * @step. ^I confirm sign out$
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I confirm sign out$")
+	public void IConfirmSignOut() throws Exception {
+		getSettingsPage().confirmSignOut();
+	}
+	
 }
