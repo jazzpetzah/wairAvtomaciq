@@ -54,8 +54,12 @@ public class ConnectToPage extends AndroidPage {
 	@FindBy(id = PeoplePickerPage.idParticipantsClose)
 	private WebElement closeButton;
 
+	private static final Function<String, String> xpathConnectMenuItemByText = text -> String
+			.format("//*[@id='ttv__settings_box__item' and @value='%s']",
+					text.toUpperCase());
+
 	@FindBy(id = OtherUserPersonalInfoPage.idRightActionButton)
-	private WebElement blockButton;
+	private WebElement ellipsisButton;
 
 	@FindBy(xpath = xpathConfirmBtn)
 	private WebElement confirmBtn;
@@ -64,7 +68,17 @@ public class ConnectToPage extends AndroidPage {
 		super(lazyDriver);
 	}
 
+	public void clickEllipsisButton() {
+		ellipsisButton.click();
+	}
+
 	public void clickBlockBtn() throws Exception {
+		final By blockButtonLocator = By.xpath(xpathConnectMenuItemByText
+				.apply("Block"));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				blockButtonLocator);
+		final WebElement blockButton = getDriver().findElement(
+				blockButtonLocator);
 		DriverUtils.waitUntilElementClickable(getDriver(), blockButton);
 		blockButton.click();
 	}
