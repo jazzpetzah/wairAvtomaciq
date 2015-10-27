@@ -265,7 +265,7 @@ Feature: Connect
     And I see connect to <Contact2> dialog
     And I click left Connect button
     And I click Connect button on connect to page
-    And I return to group chat page
+    And I close participant page by UI button
     And I navigate back from dialog page
     And I see contact list with name <Contact2>
 
@@ -320,6 +320,7 @@ Feature: Connect
     And I see contact list with name <Contact2>
     When I tap on contact name <Contact2>
     And I see that connection is pending
+    And I click ellipsis button
     And I click Block button
     And I confirm block on connect to page
     Then I do not see dialog page

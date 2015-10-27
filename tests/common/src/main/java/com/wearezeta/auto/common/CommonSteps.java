@@ -188,35 +188,8 @@ public final class CommonSteps {
 		}
 	}
 
-	/**
-	 * Wait for time in seconds
-	 * 
-	 * @throws Exception
-	 */
 	public void WaitForTime(double seconds) throws Exception {
-		final Thread pingThread = new Thread() {
-			public void run() {
-				do {
-					try {
-						Thread.sleep(DRIVER_PING_INTERVAL_SECONDS * 1000);
-					} catch (InterruptedException e) {
-						return;
-					}
-					try {
-						PlatformDrivers.getInstance().pingDrivers();
-					} catch (Exception e) {
-						e.printStackTrace();
-						return;
-					}
-				} while (!isInterrupted());
-			}
-		};
-		pingThread.start();
-		try {
-			Thread.sleep((int) (seconds * 1000));
-		} finally {
-			pingThread.interrupt();
-		}
+		WaitForTime((int) seconds);
 	}
 
 	public void BlockContact(String blockAsUserNameAlias,
@@ -373,8 +346,8 @@ public final class CommonSteps {
 				message);
 	}
 
-	public void UserSendsImageToConversation(String imageSenderUserNameAlias,
-			String imagePath, String dstConversationName, Boolean isGroup)
+	public void UserSentImageToConversation(String imageSenderUserNameAlias,
+			String imagePath, String dstConversationName, boolean isGroup)
 			throws Exception {
 		ClientUser imageSender = usrMgr
 				.findUserByNameOrNameAlias(imageSenderUserNameAlias);
@@ -390,6 +363,24 @@ public final class CommonSteps {
 					dstConversationName, imagePath);
 		}
 	}
+	
+	public void UserSentImageToConversationOtr(String imageSenderUserNameAlias,
+			String imagePath, String dstConversationName, boolean isGroup)
+			throws Exception {
+		ClientUser imageSender = usrMgr
+				.findUserByNameOrNameAlias(imageSenderUserNameAlias);
+		if (!isGroup) {
+			ClientUser imageReceiver = usrMgr
+					.findUserByNameOrNameAlias(dstConversationName);
+			BackendAPIWrappers.sendPictureToSingleUserConversationOtr(imageSender,
+					imageReceiver, imagePath);
+		} else {
+			dstConversationName = usrMgr.replaceAliasesOccurences(
+					dstConversationName, FindBy.NAME_ALIAS);
+			BackendAPIWrappers.sendPictureToChatByNameOtr(imageSender,
+					dstConversationName, imagePath);
+		}
+	}
 
 	public void IChangeUserAvatarPicture(String userNameAlias,
 			String picturePath) throws Exception {
@@ -402,7 +393,7 @@ public final class CommonSteps {
 					"The picture '%s' is not accessible", picturePath));
 		}
 	}
-
+	
 	public void IChangeUserName(String userNameAlias, String newName)
 			throws Exception {
 		BackendAPIWrappers.updateUserName(

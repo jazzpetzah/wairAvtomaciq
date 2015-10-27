@@ -1,4 +1,4 @@
-package email_notifier;
+package com.wearezeta.auto.common.email_notifier;
 
 import java.util.Arrays;
 import java.util.List;

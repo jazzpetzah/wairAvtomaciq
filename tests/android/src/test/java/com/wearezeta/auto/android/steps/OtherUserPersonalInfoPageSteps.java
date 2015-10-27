@@ -305,18 +305,6 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	/**
-	 * Returns to the group chat dialog page
-	 * 
-	 * @step. ^I return to group chat page$
-	 * 
-	 * @throws Exception
-	 */
-	@Then("^I return to group chat page$")
-	public void ThenIReturnToGroupChatPage() throws Exception {
-		getOtherUserPersonalInfoPage().tapCloseButton();
-	}
-
-	/**
 	 * Renames a group conversation by first tapping on the participants header
 	 * and then sending the message to the text input field
 	 * 

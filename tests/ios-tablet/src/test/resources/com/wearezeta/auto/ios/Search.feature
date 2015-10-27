@@ -864,5 +864,36 @@ Feature: Search
     Then I dont see CONNECT label
 
     Examples: 
-      | Name      | Contact1  | Contact2  | Contact3   |
-      | user1Name | user2Name | user3Name | user4Name  |
+      | Name      | Contact1  | Contact2  | Contact3  |
+      | user1Name | user2Name | user3Name | user4Name |
+
+  @staging @id2481
+  Scenario Outline: Verify impossibility of dismissing if search isn't empty [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I input in People picker search field user name <Contact>
+    And I see user <Contact> found on People picker page
+    And I swipe completely to dismiss suggested contact <Contact>
+    Then I see user <Contact> found on People picker page
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @staging @id3823
+  Scenario Outline: Verify impossibility of dismissing if search isn't empty [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I input in People picker search field user name <Contact>
+    And I see user <Contact> found on People picker page
+    And I swipe completely to dismiss suggested contact <Contact>
+    Then I see user <Contact> found on People picker page
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
