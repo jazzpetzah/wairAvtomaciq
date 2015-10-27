@@ -265,7 +265,7 @@ Feature: Connect
     And I see connect to <Contact2> dialog
     And I click left Connect button
     And I click Connect button on connect to page
-    And I return to group chat page
+    And I close participant page by UI button
     And I navigate back from dialog page
     And I see contact list with name <Contact2>
 

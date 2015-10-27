@@ -212,8 +212,10 @@ public class DialogPage extends AndroidPage {
 	private WebElement cancelCallBtn;
 
 	private static final String idNewConversationNameMessage = "ttv__row_conversation__new_conversation_name";
-	@FindBy(id = idNewConversationNameMessage)
-	private WebElement newConversationNameMessage;
+
+	private static Function<String, String> xpathNewConversationNameByValue = value -> String
+			.format("//*[@id='%s' and @value='%s']",
+					idNewConversationNameMessage, value);
 
 	private static final String xpathLastConversationMessage = "(//*[@id='ltv__row_conversation__message'])[last()]";
 	@FindBy(xpath = xpathLastConversationMessage)
@@ -413,8 +415,11 @@ public class DialogPage extends AndroidPage {
 		getDriver().findElement(locator).click();
 	}
 
-	public String getChangedGroupNameMessage() {
-		return newConversationNameMessage.getText();
+	public boolean waitForConversationNameChangedMessage(String expectedName)
+			throws Exception {
+		final By locator = By.xpath(xpathNewConversationNameByValue
+				.apply(expectedName));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
 	public boolean waitForMessage(String text) throws Exception {
