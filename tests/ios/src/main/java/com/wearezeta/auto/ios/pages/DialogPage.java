@@ -1108,4 +1108,17 @@ public class DialogPage extends IOSPage {
 		return pingX > conversationX;
 	}
 
+	public void tapHoldImage() {
+		try {
+			this.getDriver()
+					.tap(1, 
+							this.getDriver()
+									.findElement(
+											By.xpath(IOSLocators.DialogPage.xpathImage)), 1000);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 }
