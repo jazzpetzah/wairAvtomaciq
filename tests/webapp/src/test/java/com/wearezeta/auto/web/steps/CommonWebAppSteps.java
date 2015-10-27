@@ -865,43 +865,39 @@ public class CommonWebAppSteps {
 		commonSteps.getUserManager().resetUsers();
 	}
 
-	/**
-	 * Sends an image from one user to a conversation
-	 *
-	 * @step. ^Contact (.*) sends image (.*) to (.*) conversation (.*)$
-	 *
-	 * @param imageSenderUserNameAlias
-	 *            the user to sending the image
-	 * @param imageFileName
-	 *            the file path name of the image to send. The path name is
-	 *            defined relative to the image file defined in
-	 *            Configuration.cnf.
-	 * @param conversationType
-	 *            "single user" or "group" conversation.
-	 * @param dstConversationName
-	 *            the name of the conversation to send the image to.
-	 *
-	 * @throws Exception
-	 *
-	 */
-	@When("^Contact (.*) sends image (.*) to (.*) conversation (.*)")
-	public void ContactSendImageToConversation(String imageSenderUserNameAlias,
-			String imageFileName, String conversationType,
-			String dstConversationName) throws Exception {
-		String imagePath = WebCommonUtils.getFullPicturePath(imageFileName);
-		Boolean isGroup = null;
-		if (conversationType.equals("single user")) {
-			isGroup = false;
-		} else if (conversationType.equals("group")) {
-			isGroup = true;
-		}
-		if (isGroup == null) {
-			throw new Exception(
-					"Incorrect type of conversation specified (single user | group) expected.");
-		}
-		commonSteps.UserSendsImageToConversation(imageSenderUserNameAlias,
-				imagePath, dstConversationName, isGroup);
-	}
+    /**
+     * Sends an image from one user to a conversation
+     *
+     * @step. ^Contact (.*) sends image (.*) to (.*) conversation (.*)$
+     *
+     * @param imageSenderUserNameAlias the user to sending the image
+     * @param imageFileName the file path name of the image to send. The path
+     * name is defined relative to the image file defined in Configuration.cnf.
+     * @param conversationType "single user" or "group" conversation.
+     * @param dstConversationName the name of the conversation to send the image
+     * to.
+     *
+     * @throws Exception
+     *
+     */
+    @When("^Contact (.*) sends image (.*) to (.*) conversation (.*)")
+    public void ContactSendImageToConversation(String imageSenderUserNameAlias,
+        String imageFileName, String conversationType,
+        String dstConversationName) throws Exception {
+        String imagePath = WebCommonUtils.getFullPicturePath(imageFileName);
+        Boolean isGroup = null;
+        if (conversationType.equals("single user")) {
+            isGroup = false;
+        } else if (conversationType.equals("group")) {
+            isGroup = true;
+        }
+        if (isGroup == null) {
+            throw new Exception(
+                "Incorrect type of conversation specified (single user | group) expected.");
+        }
+        commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,
+            imagePath, dstConversationName, isGroup);
+    }
 
 	/**
 	 * Unblocks user

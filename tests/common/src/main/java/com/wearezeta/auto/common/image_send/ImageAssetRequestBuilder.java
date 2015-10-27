@@ -1,4 +1,4 @@
-package com.wearezeta.auto.image_send;
+package com.wearezeta.auto.common.image_send;
 
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -9,7 +9,7 @@ import java.util.List;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 
-import com.wearezeta.auto.image_send.AssetData.MandatoryFieldNotSetException;
+import com.wearezeta.auto.common.image_send.AssetData.MandatoryFieldNotSetException;
 
 public class ImageAssetRequestBuilder extends AssetRequestBuilder {
 
