@@ -1145,4 +1145,14 @@ public class DialogPageSteps {
   	public void ILongPressOnImage() throws Exception {
   		getDialogPage().tapHoldImage();
   	}
+	
+	/**
+	 * 
+	 * @step ^I tap on copy badge$
+	 * @throws Exception
+	 */
+	@When ("^I tap on copy badge$")
+	public void ITapCopyBadge() throws Exception {
+		getDialogPage().clickPopupCopyButton();
+	}
 }

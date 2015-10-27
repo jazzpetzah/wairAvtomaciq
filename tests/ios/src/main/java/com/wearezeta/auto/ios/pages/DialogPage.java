@@ -1114,7 +1114,7 @@ public class DialogPage extends IOSPage {
 					.tap(1, 
 							this.getDriver()
 									.findElement(
-											By.name(IOSLocators.DialogPage.xpathImage)), 1000);
+											By.xpath(IOSLocators.DialogPage.xpathImage)), 1000);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

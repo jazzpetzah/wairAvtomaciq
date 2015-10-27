@@ -644,7 +644,7 @@ public final class IOSLocators {
 
 		public static final String xpathConversationWindow = "//UIATableView";
 
-		public static final String xpathImage = " //UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[2]";
+		public static final String xpathImage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[2]";
 	}
 
 	public final class DialogInfoPage {

@@ -792,7 +792,7 @@ Feature: Conversation View
       | Name      | Contact1  | Message |
       | user1Name | user2Name | testing |
       
-  @torun @staging @id1158
+  @staging @id1158
   Scenario Outline: Verify possibility to copy image in the conversation view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -806,7 +806,6 @@ Feature: Conversation View
     And I tap on copy badge
     And I tap and hold on message input
     And I click on popup Paste item
-    And I see Full Screen Page opened
     And I press Confirm button
     Then I see new photo in the dialog
 
