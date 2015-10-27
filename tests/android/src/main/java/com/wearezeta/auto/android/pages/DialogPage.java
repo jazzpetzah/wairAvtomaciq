@@ -276,6 +276,11 @@ public class DialogPage extends AndroidPage {
 	public void multiTapOnCursorInput() throws Exception {
 		DriverUtils.androidMultiTap(this.getDriver(), cursorArea, 2, 500);
 	}
+	
+	public void pressPlusButtonOnDialogPage() throws Exception{
+		assert DriverUtils.waitUntilElementClickable(getDriver(), cursorBtn);
+		cursorBtn.click();
+	}
 
 	public void swipeOnCursorInput() throws Exception {
 		final By cursorLocator = By.id(idCursorArea);
