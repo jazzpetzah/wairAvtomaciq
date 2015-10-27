@@ -88,11 +88,6 @@ public class PersonalInfoPage extends AndroidPage {
 	@FindBy(id = idPager)
 	private WebElement page;
 
-	private static final String xpathSignOutBtn = xpathParentSelfProfileOverlay
-			+ "//*[@id='ttv__profile__settings_box__signout']";
-	@FindBy(xpath = xpathSignOutBtn)
-	private WebElement signOutBtn;
-
 	private static final String idOpenFrom = "tiles";
 	@FindBy(id = idOpenFrom)
 	private List<WebElement> openFrom;
@@ -128,11 +123,6 @@ public class PersonalInfoPage extends AndroidPage {
 		this.hideKeyboard();
 		assert DriverUtils.waitUntilElementClickable(getDriver(), confirmBtn);
 		confirmBtn.click();
-	}
-
-	public void tapSignOutBtn() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(), signOutBtn);
-		signOutBtn.click();
 	}
 
 	public void tapOptionsButton() throws Exception {

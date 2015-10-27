@@ -21,7 +21,7 @@ public class SettingsPage extends AndroidPage {
 		super(lazyDriver);
 	}
 
-	public boolean isSettingsPageVisible() throws Exception {
+	public boolean waitUntilVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.xpath(xpathSettingsTitle));
 	}
