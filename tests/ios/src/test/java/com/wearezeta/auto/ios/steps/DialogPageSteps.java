@@ -1137,6 +1137,7 @@ public class DialogPageSteps {
 	}
 	
 	/**
+	 * Long press on the image displayed in the conversation
 	 * 
 	 * @step. ^I longpress on image in the conversation$ 
 	 * @throws Exception
@@ -1147,6 +1148,7 @@ public class DialogPageSteps {
   	}
 	
 	/**
+	 * Clicking on copy badge/icon/window in conversation
 	 * 
 	 * @step. ^I tap on copy badge$
 	 * @throws Exception
