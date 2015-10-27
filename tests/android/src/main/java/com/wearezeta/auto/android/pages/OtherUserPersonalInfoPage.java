@@ -249,8 +249,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	public void renameGroupChat(String chatName) throws Exception {
 		groupChatNameEditable.clear();
 		groupChatNameEditable.sendKeys(chatName);
-		this.pressEnter();
-		this.pressEsc();
+		this.pressKeyboardSendButton();
 	}
 
 	public void tapOnParticipant(String name) throws Exception {

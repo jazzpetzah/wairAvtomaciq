@@ -393,8 +393,6 @@ public class DialogPage extends AndroidPage {
 			pressKeyboardSendButton();
 			this.hideKeyboard();
 		} else {
-			// FIXME: Enter does not send text anymore, unicode tests affected
-			this.pressEnter();
 			this.hideKeyboard();
 		}
 	}
@@ -407,10 +405,6 @@ public class DialogPage extends AndroidPage {
 					.format("The message '%s' was autocorrected. This might cause unpredicted test results",
 							message));
 		}
-	}
-
-	public void pressKeyboardSendButton() throws Exception {
-		tapByCoordinates(94, 96);
 	}
 
 	public void clickLastImageFromDialog() throws Exception {
