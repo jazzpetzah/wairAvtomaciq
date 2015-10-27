@@ -617,6 +617,8 @@ Feature: People View
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press Add button
+    And I see share history warning
+    And I click on Continue button on share history warning
     And I see People picker page on iPad popover
     And I wait until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
