@@ -28,10 +28,10 @@ import static com.wearezeta.auto.osx.common.OSXExecutionContext.WIRE_APP_PATH;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.osx.MainWirePage;
 import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
+import com.wearezeta.auto.osx.pages.webapp.RegistrationPage;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
-import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.steps.CommonWebAppSteps;
 
 import static com.wearezeta.auto.web.steps.CommonWebAppSteps.log;
@@ -75,7 +75,8 @@ public class CommonOSXSteps {
 			.getName());
 
 	private static final String DEFAULT_USER_PICTURE = "/images/aqaPictureContact600_800.jpg";
-	private static final int WRAPPER_STARTUP_TIMEOUT_SECONDS = 30;
+	private static final int WRAPPER_STARTUP_TIMEOUT_SECONDS = 10;
+	private static final int STARTUP_RETRIES = 5;
 	// TODO: use execution context
 	@SuppressWarnings("unused")
 	private static final String DEFAULT_ENVIRONMENT = "Staging";
@@ -100,6 +101,7 @@ public class CommonOSXSteps {
 		options.addArguments("use-fake-device-for-media-stream");
 		// allow skipping the security prompt for sharing the media device
 		options.addArguments("use-fake-ui-for-media-stream");
+		options.addArguments("disable-web-security");
 		options.addArguments("env=" + OSXExecutionContext.ENV_URL);
 		options.setBinary(WIRE_APP_PATH + OSXExecutionContext.ELECTRON_SUFFIX);
 		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
@@ -181,7 +183,7 @@ public class CommonOSXSteps {
 		startApp();
 	}
 
-	private void startApp() throws Exception {
+	private void startApp(int retriesLeft) throws Exception {
 		final Future<ZetaOSXDriver> osxDriverFuture = createOSXDriver();
 		final Future<ZetaWebAppDriver> webDriverFuture = createWebDriver(osxDriverFuture);
 
@@ -199,9 +201,13 @@ public class CommonOSXSteps {
 		osxDriver.navigate().to(WIRE_APP_PATH);// activate app
 		waitForAppStartup(osxDriver);
 		mainWirePage.focusApp();
-		waitForWebappLoaded(webappDriver);
+		waitForWebappLoaded(webappDriver, retriesLeft);
 		webappPagesCollection
 				.setFirstPage(new RegistrationPage(webDriverFuture));
+	}
+
+	private void startApp() throws Exception {
+		startApp(STARTUP_RETRIES);
 	}
 
 	@Before("@performance")
@@ -221,14 +227,22 @@ public class CommonOSXSteps {
 		LOG.debug("Application started");
 	}
 
-	private void waitForWebappLoaded(ZetaWebAppDriver webdriver)
+	private void waitForWebappLoaded(ZetaWebAppDriver webdriver, int retriesLeft)
 			throws Exception {
-		assert DriverUtils
+		boolean started = DriverUtils
 				.waitUntilLocatorAppears(
 						webdriver,
 						By.cssSelector(WebAppLocators.RegistrationPage.cssSwitchToSignInButton),
-						WRAPPER_STARTUP_TIMEOUT_SECONDS) : "Wrapper Webapp did not load properly";
-		LOG.debug("Wrapper Webapp loaded");
+						WRAPPER_STARTUP_TIMEOUT_SECONDS);
+
+		if (started) {
+			LOG.debug("Wrapper Webapp loaded");
+		} else if (retriesLeft > 0) {
+			LOG.warn("Wrapper Webapp did not load properly - Retrying");
+			// clearDrivers();
+			// retriesLeft--;
+			// startApp(retriesLeft);
+		}
 	}
 
 	/**
