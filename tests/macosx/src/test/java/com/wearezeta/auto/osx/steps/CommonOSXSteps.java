@@ -77,9 +77,6 @@ public class CommonOSXSteps {
 	private static final String DEFAULT_USER_PICTURE = "/images/aqaPictureContact600_800.jpg";
 	private static final int WRAPPER_STARTUP_TIMEOUT_SECONDS = 10;
 	private static final int STARTUP_RETRIES = 5;
-	// TODO: use execution context
-	@SuppressWarnings("unused")
-	private static final String DEFAULT_ENVIRONMENT = "Staging";
 
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 
@@ -183,31 +180,41 @@ public class CommonOSXSteps {
 		startApp();
 	}
 
-	private void startApp(int retriesLeft) throws Exception {
-		final Future<ZetaOSXDriver> osxDriverFuture = createOSXDriver();
-		final Future<ZetaWebAppDriver> webDriverFuture = createWebDriver(osxDriverFuture);
+	private void startApp() throws Exception {
+		int retriesLeft = STARTUP_RETRIES;
+		boolean started;
+		Future<ZetaOSXDriver> osxDriverFuture;
+		Future<ZetaWebAppDriver> webDriverFuture;
+		do {
+			clearDrivers();
+			osxDriverFuture = createOSXDriver();
+			webDriverFuture = createWebDriver(osxDriverFuture);
 
-		// get drivers instantly
-		final ZetaOSXDriver osxDriver = osxDriverFuture.get();
-		final ZetaWebAppDriver webappDriver = webDriverFuture.get();
-		osxDriver.navigate().to(WIRE_APP_PATH);// open app
+			// get drivers instantly
+			final ZetaOSXDriver osxDriver = osxDriverFuture.get();
+			final ZetaWebAppDriver webappDriver = webDriverFuture.get();
+			LOG.debug("Opening app");
+			osxDriver.navigate().to(WIRE_APP_PATH);// open app
 
-		ZetaFormatter.setLazyDriver(osxDriverFuture);
+			ZetaFormatter.setLazyDriver(osxDriverFuture);
 
-		osxPagesCollection.setFirstPage(new MainWirePage(osxDriverFuture));
-		MainWirePage mainWirePage = osxPagesCollection
-				.getPage(MainWirePage.class);
+			osxPagesCollection.setFirstPage(new MainWirePage(osxDriverFuture));
+			MainWirePage mainWirePage = osxPagesCollection
+					.getPage(MainWirePage.class);
 
-		osxDriver.navigate().to(WIRE_APP_PATH);// activate app
-		waitForAppStartup(osxDriver);
-		mainWirePage.focusApp();
-		waitForWebappLoaded(webappDriver, retriesLeft);
+			LOG.debug("Activating app");
+			osxDriver.navigate().to(WIRE_APP_PATH);// activate app
+			waitForAppStartup(osxDriver);
+			mainWirePage.focusApp();
+
+			started = waitForWebappLoaded(webappDriver);
+			retriesLeft--;
+		} while (retriesLeft > 0 && started == false);
+		if (!started) {
+			throw new IllegalStateException("Could not start wrapper");
+		}
 		webappPagesCollection
 				.setFirstPage(new RegistrationPage(webDriverFuture));
-	}
-
-	private void startApp() throws Exception {
-		startApp(STARTUP_RETRIES);
 	}
 
 	@Before("@performance")
@@ -227,22 +234,19 @@ public class CommonOSXSteps {
 		LOG.debug("Application started");
 	}
 
-	private void waitForWebappLoaded(ZetaWebAppDriver webdriver, int retriesLeft)
+	private boolean waitForWebappLoaded(ZetaWebAppDriver webdriver)
 			throws Exception {
 		boolean started = DriverUtils
 				.waitUntilLocatorAppears(
 						webdriver,
 						By.cssSelector(WebAppLocators.RegistrationPage.cssSwitchToSignInButton),
 						WRAPPER_STARTUP_TIMEOUT_SECONDS);
-
 		if (started) {
 			LOG.debug("Wrapper Webapp loaded");
-		} else if (retriesLeft > 0) {
-			LOG.warn("Wrapper Webapp did not load properly - Retrying");
-			// clearDrivers();
-			// retriesLeft--;
-			// startApp(retriesLeft);
+		} else {
+			LOG.warn("Wrapper Webapp did not load properly");
 		}
+		return started;
 	}
 
 	/**
