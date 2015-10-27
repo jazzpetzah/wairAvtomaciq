@@ -71,6 +71,7 @@ public class LoginPage extends WebPage {
 	}
 
 	public void inputEmail(String email) {
+                emailInput.click();
 		emailInput.clear();
 		emailInput.sendKeys(email);
 	}

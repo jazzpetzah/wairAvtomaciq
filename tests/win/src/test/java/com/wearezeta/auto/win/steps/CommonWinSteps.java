@@ -77,11 +77,8 @@ public class CommonWinSteps {
             .getName());
 
     private static final String DEFAULT_USER_PICTURE = "/images/aqaPictureContact600_800.jpg";
-    private static final int WRAPPER_STARTUP_TIMEOUT_SECONDS = 30;
-    public static String appPid = null;
-    // TODO: use execution context
-    @SuppressWarnings("unused")
-    private static final String DEFAULT_ENVIRONMENT = "Staging";
+    private static final int WRAPPER_STARTUP_TIMEOUT_SECONDS = 10;
+    private static final int STARTUP_RETRIES = 5;
 
     private final CommonSteps commonSteps = CommonSteps.getInstance();
 
@@ -94,7 +91,7 @@ public class CommonWinSteps {
             .getInstance();
     private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
             .getInstance();
-    private int STARTUP_RETRIES = 2;
+    
 
     private Future<ZetaWebAppDriver> createWebDriver(
             Future<ZetaWinDriver> winDriver) throws IOException {
@@ -160,7 +157,7 @@ public class CommonWinSteps {
             DesiredCapabilities capabilities, String loggingLevelName) {
         final LoggingPreferences logs = new LoggingPreferences();
         // set it to SEVERE by default
-        Level level = Level.WARNING;
+        Level level = Level.SEVERE;
         try {
             level = Level.parse(loggingLevelName);
         } catch (IllegalArgumentException e) {
@@ -180,7 +177,6 @@ public class CommonWinSteps {
 
     private void commonBefore() throws Exception {
         try {
-//            startAppium4Mac();
             killAllApps();
             clearAppData();
         } catch (Exception e) {
@@ -189,7 +185,7 @@ public class CommonWinSteps {
         startApp();
     }
 
-    private void startApp() throws Exception {
+    private void startApp(int retriesLeft) throws Exception {
         final Future<ZetaWinDriver> winDriverFuture = createWinDriver();
         final Future<ZetaWebAppDriver> webDriverFuture = createWebDriver(winDriverFuture);
 
@@ -201,9 +197,12 @@ public class CommonWinSteps {
 
         winPagesCollection.setFirstPage(new MainWirePage(winDriverFuture));
         waitForAppStartup(winDriver);
-        waitForWebappLoaded(webappDriver);
+        waitForWebappLoaded(webappDriver, retriesLeft);
         webappPagesCollection
                 .setFirstPage(new RegistrationPage(webDriverFuture));
+    }
+    private void startApp() throws Exception {
+        startApp(STARTUP_RETRIES);
     }
 
     @Before("@performance")
@@ -224,21 +223,21 @@ public class CommonWinSteps {
         LOG.debug("Application started");
     }
 
-    private void waitForWebappLoaded(ZetaWebAppDriver webdriver)
+    private void waitForWebappLoaded(ZetaWebAppDriver webdriver, int retriesLeft)
             throws Exception {
         boolean started = DriverUtils
                 .waitUntilLocatorAppears (
                         webdriver,
                         By.cssSelector(WebAppLocators.RegistrationPage.cssSwitchToSignInButton),
-                        10);
+                        WRAPPER_STARTUP_TIMEOUT_SECONDS);
         
         if (started) {
             LOG.debug("Wrapper Webapp loaded");
-        }else if (STARTUP_RETRIES > 0){
-            STARTUP_RETRIES--;
+        }else if (retriesLeft > 0){
+            retriesLeft--;
             LOG.warn("Wrapper Webapp did not load properly - Retrying");
             clearDrivers();
-            startApp();
+            startApp(retriesLeft);
         }
         
     }
