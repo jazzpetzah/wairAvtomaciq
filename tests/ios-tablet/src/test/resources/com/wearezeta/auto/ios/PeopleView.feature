@@ -573,6 +573,7 @@ Feature: People View
     And I see <Contact1> user profile page
     And I unblock user
     Then I see dialog page
+    And I return to the chat list
     Then I see conversation <Contact1> is selected in list
 
     Examples: 
