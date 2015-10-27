@@ -532,7 +532,8 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void openGallery() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(), galleryBtn);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idGalleryBtn)) : "Gallery button is still not visible";
 		galleryBtn.click();
 	}
 

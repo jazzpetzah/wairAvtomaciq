@@ -1,6 +1,5 @@
 Feature: Test
 
-  @torun
   Scenario Outline: Receive Message from contact
     Given There are 2 users where <Name> is me
     Given Myself is connected to all other users
