@@ -79,7 +79,10 @@ Feature: Self Profile
     When I change accent color to <AccentColor>
     And I see color <AccentColor> selected on accent color picker
     And I tap options button
-    And I tap sign out button
+    And I tap settings button
+    And I select "Account" settings menu item
+    And I select "Sign out" settings menu item
+    And I confirm sign out
     And I see welcome screen
     And I sign in using my email
     And I see Contact list with no contacts

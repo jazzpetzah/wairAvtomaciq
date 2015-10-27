@@ -4,6 +4,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -56,7 +57,7 @@ public class SEBridge {
 	private Map<ClientUser, List<IDevice>> usersMapping = new ConcurrentHashMap<>();
 
 	@SuppressWarnings("unchecked")
-	private void login(ClientUser user, IDevice dstDevice) {
+	private void login(ClientUser user, IDevice dstDevice) throws Exception {
 		if (dstDevice.hasLoggedInUser() && !dstDevice.isLoggedInUser(user)) {
 			this.logout(user, dstDevice);
 		}
@@ -72,7 +73,7 @@ public class SEBridge {
 		}
 	}
 
-	private void logout(ClientUser user, IDevice dstDevice) {
+	private void logout(ClientUser user, IDevice dstDevice) throws Exception {
 		if (dstDevice.hasLoggedInUser()) {
 			dstDevice.logout();
 		}
@@ -82,8 +83,7 @@ public class SEBridge {
 		}
 	}
 
-	public void sendConversationMessage(ClientUser userFrom, String convId,
-			String message) throws Exception {
+	private IDevice getCachedDevice(ClientUser userFrom) throws Exception {
 		IDevice dstDevice = null;
 		if (this.usersMapping.containsKey(userFrom)) {
 			// We don't care about multiple devices yet. Just take the first
@@ -93,7 +93,25 @@ public class SEBridge {
 			dstDevice = this.getDevicePool().addDevice();
 			this.login(userFrom, dstDevice);
 		}
-		dstDevice.sendMessage(convId, message);
+		return dstDevice;
+	}
+
+	private static void verifyPathExists(String path) {
+		if (!new File(path).exists()) {
+			throw new IllegalArgumentException(String.format(
+					"The file %s is not accessible", path));
+		}
+	}
+
+	public void sendConversationMessage(ClientUser userFrom, String convId,
+			String message) throws Exception {
+		getCachedDevice(userFrom).sendMessage(convId, message);
+	}
+
+	public void sendImage(ClientUser userFrom, String convId, String path)
+			throws Exception {
+		verifyPathExists(path);
+		getCachedDevice(userFrom).sendImage(convId, path);
 	}
 
 	public void reset() throws Exception {

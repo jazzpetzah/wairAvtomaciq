@@ -39,7 +39,7 @@ public class ConnectToPageSteps {
 	}
 
 	private final static int MAX_USERS = 5;
-	
+
 	/**
 	 * Scroll to gived user in the inbox
 	 * 
@@ -164,7 +164,7 @@ public class ConnectToPageSteps {
 	public void ThenISeeCounterValue(int value) throws Throwable {
 		Assert.assertEquals(value, getConnectToPage().getCharCounterValue());
 	}
-	
+
 	/**
 	 * Taps the connect button to send a connection request
 	 * 
@@ -176,7 +176,7 @@ public class ConnectToPageSteps {
 	public void WhenIClickLeftConnectButton() throws Exception {
 		getConnectToPage().pressLeftConnectButton();
 	}
-	
+
 	/**
 	 * Taps the connect button to send a connection request
 	 * 
@@ -190,6 +190,18 @@ public class ConnectToPageSteps {
 	}
 
 	/**
+	 * Click ellipsis button to open additional menu items
+	 * 
+	 * @step. ^I click ellipsis button$"
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click ellipsis button$")
+	public void IClickEllipsisButton() throws Exception {
+		getConnectToPage().clickEllipsisButton();
+	}
+
+	/**
 	 * Blocks an incoming connection request
 	 * 
 	 * @step. ^I click Block button on connect to page$
@@ -200,7 +212,7 @@ public class ConnectToPageSteps {
 	public void IClickBlockButton() throws Exception {
 		getConnectToPage().clickBlockBtn();
 	}
-	
+
 	/**
 	 * Unblocks an incoming connection request
 	 * 

@@ -681,8 +681,12 @@ public class DialogPageSteps {
 	@Then("^I see a message informing me that I renamed the conversation to (.*)$")
 	public void ThenISeeMessageInformingGroupRename(String newConversationName)
 			throws Exception {
-		Assert.assertEquals(getDialogPage().getChangedGroupNameMessage(),
-				newConversationName);
+		Assert.assertTrue(
+				String.format(
+						"The new conversation name '%s' has not been shown in the conversation view",
+						newConversationName),
+				getDialogPage().waitForConversationNameChangedMessage(
+						newConversationName));
 	}
 
 	/**

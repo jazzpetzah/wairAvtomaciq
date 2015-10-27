@@ -1,4 +1,4 @@
-package com.wearezeta.auto.zephyr;
+package com.wearezeta.auto.common.zephyr;
 
 import java.util.Set;
 
