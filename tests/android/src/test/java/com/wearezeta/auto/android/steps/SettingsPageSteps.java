@@ -5,14 +5,15 @@ import org.junit.Assert;
 import com.wearezeta.auto.android.pages.SettingsPage;
 
 import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 
 public class SettingsPageSteps {
 
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
-		.getInstance();
+			.getInstance();
 
 	private SettingsPage getSettingsPage() throws Exception {
-		return (SettingsPage) pagesCollection.getPage(SettingsPage.class);
+		return pagesCollection.getPage(SettingsPage.class);
 	}
 
 	/**
@@ -23,32 +24,22 @@ public class SettingsPageSteps {
 	 * @throws Throwable
 	 */
 	@Then("^I see settings page$")
-	public void ISeeSettingsPage() throws Throwable {
+	public void ISeeSettingsPage() throws Exception {
 		Assert.assertTrue("Settings page is not visible", getSettingsPage()
-			.isSettingsPageVisible());
+				.isSettingsPageVisible());
 	}
 
 	/**
-	 * Check that change password item is present in settings menu
+	 * Tap the corresponding menu item
 	 * 
-	 * @step. ^I see change password item$
+	 * @step. ^I select \"(.*)\" settings menu item$
 	 * 
-	 * @throws Throwable
+	 * @param name
+	 *            the name of the corresponding menu item
+	 * @throws Exception
 	 */
-	@Then("^I see change password item$")
-	public void ISeeSettingsChangePassword() throws Throwable {
-		Assert.assertTrue(getSettingsPage().isChangePasswordVisible());
-	}
-
-	/**
-	 * Tap services button
-	 * 
-	 * @step. ^I tap services button$
-	 * 
-	 * @throws Throwable
-	 */
-	@Then("^I tap services button$")
-	public void IClickTheServicesButton() throws Throwable {
-		getSettingsPage().clickServicesButton();
+	@When("^I select \"(.*)\" settings menu item$")
+	public void ISelectSettingsMenuItem(String name) throws Exception {
+		getSettingsPage().selectMenuItem(name);
 	}
 }

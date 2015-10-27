@@ -8,7 +8,6 @@ Feature: Settings
     When I tap on my avatar
     And I tap options button
     And I tap settings button
-    And I wait for 2 seconds
     Then I see settings page
     When I press back button
     Then I see personal info page
