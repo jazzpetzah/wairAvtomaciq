@@ -70,11 +70,13 @@ public class LoginPage extends WebPage {
 	}
 
 	public void inputEmail(String email) {
+		emailInput.click();
 		emailInput.clear();
 		emailInput.sendKeys(email);
 	}
 
 	public void inputPassword(String password) {
+		passwordInput.click();
 		passwordInput.clear();
 		passwordInput.sendKeys(password);
 	}
@@ -107,8 +109,7 @@ public class LoginPage extends WebPage {
 	}
 
 	public ContactListPage clickSignInButton() throws Exception {
-		DriverUtils.waitUntilElementClickable(this.getDriver(),
-				signInButton);
+		DriverUtils.waitUntilElementClickable(this.getDriver(), signInButton);
 		signInButton.click();
 
 		return new ContactListPage(this.getLazyDriver());
