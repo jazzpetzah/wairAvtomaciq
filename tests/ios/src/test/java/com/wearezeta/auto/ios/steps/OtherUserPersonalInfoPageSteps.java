@@ -201,4 +201,29 @@ public class OtherUserPersonalInfoPageSteps {
 		getOtherUserPersonalInfoPage().clickBlockMenuButton();
 	}
 
+	/**
+	 * Click on cancel button
+	 * 
+	 * @step. I click Cancel button
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click Cancel button$")
+	public void IClickCancelButton() throws Exception {
+		getOtherUserPersonalInfoPage().clickCancelButton();
+	}
+
+	/**
+	 * Verify if conversation action menu is visible
+	 * 
+	 * @step. I see conversation action menu
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see conversation action menu$")
+	public void ISeeConversationActionMenu() throws Exception {
+		Assert.assertTrue("Conversation action menu is not visible",
+				getOtherUserPersonalInfoPage().isActionMenuVisible());
+	}
+
 }

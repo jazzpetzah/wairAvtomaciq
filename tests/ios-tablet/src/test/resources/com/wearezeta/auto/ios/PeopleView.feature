@@ -975,3 +975,40 @@ Feature: People View
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | TESTCHAT      |
+
+  @staging @id4022
+  Scenario Outline: Verify canceling blocking person from participant list [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I open conversation details
+    And I press conversation menu button
+    And I press menu Block button
+    And I click Cancel button
+    Then I see conversation action menu
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
+
+  @staging @id4023
+  Scenario Outline: Verify canceling blocking person from participant list [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I open conversation details
+    And I press conversation menu button
+    And I press menu Block button
+    And I click Cancel button
+    Then I see conversation action menu
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
