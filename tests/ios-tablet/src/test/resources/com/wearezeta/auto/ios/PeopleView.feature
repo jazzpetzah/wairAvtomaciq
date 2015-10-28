@@ -894,6 +894,7 @@ Feature: People View
     And I press leave converstation button
     And I see leave conversation alert
     Then I press leave
+    When I wait until popover is closed
     And I open archived conversations on iPad
     And I see user <GroupChatName> in contact list
     And I tap on group chat with name <GroupChatName>
@@ -926,6 +927,7 @@ Feature: People View
     And I press leave converstation button
     And I see leave conversation alert
     Then I press leave
+    When I wait until popover is closed
     And I open archived conversations on iPad
     And I see user <GroupChatName> in contact list
     And I tap on group chat with name <GroupChatName>
