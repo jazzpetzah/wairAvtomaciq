@@ -47,7 +47,7 @@ Feature: Application
     And I resize the app to the min by hand
     Then I verify app width is 460 px and height is 680 px
 
-  @smoke @id3807
+  @staging @id3807
   Scenario: I verify the installed app is not too big
     When I verify the app is not bigger than 400 MB
 
