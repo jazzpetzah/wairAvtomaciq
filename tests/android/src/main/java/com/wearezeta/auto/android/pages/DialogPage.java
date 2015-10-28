@@ -220,6 +220,10 @@ public class DialogPage extends AndroidPage {
 	private static final String xpathLastConversationMessage = "(//*[@id='ltv__row_conversation__message'])[last()]";
 	@FindBy(xpath = xpathLastConversationMessage)
 	private WebElement lastConversationMessage;
+	
+	private static final String xpathDialogContent = "//*[@id='pfac__conversation__list_view_container']/*/*/*";
+	@FindBy(xpath = xpathDialogContent)
+	private List<WebElement> dialogContentList;
 
 	private static final String idFullScreenImageImage = "tiv__single_image_message__animating_image";
 	@FindBy(id = idFullScreenImageImage)
@@ -930,5 +934,9 @@ public class DialogPage extends AndroidPage {
 			swipeNum++;
 		}
 		return false;
+	}
+
+	public int getCurrentNumberOfItemsInDialog() {
+		return dialogContentList.size();
 	}
 }
