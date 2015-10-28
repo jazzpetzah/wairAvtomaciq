@@ -929,4 +929,16 @@ public class DialogPageSteps {
 				"There is no unsent indicator next to a picture in the conversation view",
 				getDialogPage().waitForAPictureWithUnsentIndicator());
 	}
+
+	/**
+	 * Verifies that after deleting there is no content in the conversation view
+	 * 
+	 * @step. ^I see there is no content in the conversation$
+	 * @throws Throwable
+	 */
+	@Then("^I see there is no content in the conversation$")
+	public void ISeeThereIsNoContentInTheConversation() throws Throwable {
+		int actualValue = getDialogPage().getCurrentNumberOfItemsInDialog();
+		Assert.assertTrue(actualValue == 0);
+	}
 }
