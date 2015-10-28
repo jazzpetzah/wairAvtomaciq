@@ -78,6 +78,10 @@ public class ContactListPage extends AndroidPage {
 	public static final String idConfirmCancelButton = "cancel";
 	@FindBy(id = idConfirmCancelButton)
 	private List<WebElement> laterBtn;
+	
+	public static final String idConfirmDeleteAlertButton = "confirm";
+	@FindBy(id = idConfirmDeleteAlertButton)
+	private WebElement deleteConfirmAlertButton;
 
 	private static final String idConfirmCancelButtonPicker = "zb__confirm_dialog__cancel_button";
 	@FindBy(id = idConfirmCancelButtonPicker)
@@ -430,5 +434,9 @@ public class ContactListPage extends AndroidPage {
 			throws Exception {
 		final By locator = By.xpath(xpathConversationListEntry.apply(name));
 		return this.getElementScreenshot(this.getDriver().findElement(locator));
+	}
+
+	public void confirmDeleteConversationAlert() {
+		deleteConfirmAlertButton.click();
 	}
 }
