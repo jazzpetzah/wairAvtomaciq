@@ -535,7 +535,7 @@ public class ConversationPage extends WebPage {
 
 	public void pressShortCutForPing() throws Exception {
 		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
-			conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "g"));
+			conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "k"));
 		} else {
 			throw new PendingException(
 					"Webdriver does not support shortcuts for Mac browsers");

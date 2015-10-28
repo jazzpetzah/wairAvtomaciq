@@ -15,7 +15,7 @@ public class GiphyPageSteps {
 	@Then("^I see Giphy popup$")
 	public void ISeeGiphyPopup() throws Throwable {
 		Assert.assertTrue("Giphy link icon in Giphy popup not visible",
-				WebappPagesCollection.giphyPage.isGiphyLinkVisible());
+				WebappPagesCollection.giphyPage.isGiphyQueryVisible());
 	}
 
 	@Then("^I verify that the search of the Giphy popup contains (.*)$")
