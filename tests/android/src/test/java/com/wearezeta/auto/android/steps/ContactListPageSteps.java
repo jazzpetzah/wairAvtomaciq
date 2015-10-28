@@ -374,12 +374,14 @@ public class ContactListPageSteps {
 	private static final double MAX_UNREAD_DOT_SIMILARITY_THRESHOLD = 0.97;
 
 	/**
-	 * Verify whether unread dot state is changed for the particular conversation 
-	 * in comparison to the previous state
+	 * Verify whether unread dot state is changed for the particular
+	 * conversation in comparison to the previous state
 	 * 
-	 * @step. ^I see unread messages indicator state is changed for conversation (.*)"
+	 * @step. ^I see unread messages indicator state is changed for conversation
+	 *        (.*)"
 	 * 
-	 * @param name conversation name/alias
+	 * @param name
+	 *            conversation name/alias
 	 * @throws Exception
 	 */
 	@Then("^I see unread messages indicator state is changed for conversation (.*)")
@@ -413,5 +415,16 @@ public class ContactListPageSteps {
 						"The current and previous states of Unread Dot seems to be very similar (%.2f >= %.2f)",
 						score, MAX_UNREAD_DOT_SIMILARITY_THRESHOLD),
 				score < MAX_UNREAD_DOT_SIMILARITY_THRESHOLD);
+	}
+
+	/**
+	 * Presses Delete on the delete confirmation alert
+	 * 
+	 * @step. ^I press DELETE on the confirm alert$
+	 * @throws Throwable
+	 */
+	@When("^I press DELETE on the confirm alert$")
+	public void IPressDELETEOnTheConfirmAlert() throws Throwable {
+		getContactListPage().confirmDeleteConversationAlert();
 	}
 }
