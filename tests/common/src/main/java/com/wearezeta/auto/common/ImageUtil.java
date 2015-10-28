@@ -30,12 +30,12 @@ public class ImageUtil {
 
 	static {
             String arch = System.getProperty("sun.arch.data.model");
-            System.out.println("OPENCV LIBRARY: "+Core.NATIVE_LIBRARY_NAME);
+            String libPath = Core.NATIVE_LIBRARY_NAME;
             if ("32".equals(arch)) {
-                System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-            }else{
-		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+                libPath = libPath.replaceAll("opencv_java249.dll", "opencv_java249_x86.dll");
             }
+            System.out.println("Loading OpenCV Lib from "+libPath);
+            System.loadLibrary(libPath);
 	}
 
 	private static Mat convertImageToOpenCVMat(BufferedImage image) {
