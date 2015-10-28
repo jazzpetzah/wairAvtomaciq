@@ -46,6 +46,7 @@ import gherkin.formatter.model.Scenario;
 import gherkin.formatter.model.ScenarioOutline;
 import gherkin.formatter.model.Step;
 import gherkin.formatter.model.Tag;
+import java.nio.file.Paths;
 
 public class ZetaFormatter implements Formatter, Reporter {
 	private static String feature = "";
@@ -240,7 +241,7 @@ public class ZetaFormatter implements Formatter, Reporter {
 	private void storeScreenshot(final BufferedImage screenshot,
 			final String path) {
 		try {
-			final File outputfile = new File(path);
+			final File outputfile = Paths.get(path).toFile();
 			if (!outputfile.getParentFile().exists()) {
 				outputfile.getParentFile().mkdirs();
 			}
