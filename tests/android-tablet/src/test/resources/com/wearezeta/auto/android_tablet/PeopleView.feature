@@ -15,7 +15,7 @@ Feature: People View
     And I see the user name <Contact> on Single user popover
     And I see the user email <ContactEmail> on Single user popover
 
-    Examples: 
+    Examples:
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
@@ -34,7 +34,7 @@ Feature: People View
     And I see the user name <Contact> on Single user popover
     And I see the user email <ContactEmail> on Single user popover
 
-    Examples: 
+    Examples:
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
@@ -58,10 +58,10 @@ Feature: People View
     Then I do not see the Group popover
     And I do not see the conversation <GroupChatName> in my conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName  | ItemLeave |
       | user1Name | user2Name | user3Name | LeaveGroupChat | LEAVE     |
-  
+
   @id2243 @regression @rc
   Scenario Outline: Leave group conversation in landscape mode
     Given There are 3 users where <Name> is me
@@ -82,10 +82,10 @@ Feature: People View
     Then I do not see the Group popover
     And I do not see the conversation <GroupChatName> in my conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName  | ItemLeave |
       | user1Name | user2Name | user3Name | LeaveGroupChat | LEAVE     |
-      
+
   @id2258 @regression
   Scenario Outline: Remove from group chat in portrait mode
     Given There are 3 users where <Name> is me
@@ -109,7 +109,7 @@ Feature: People View
     Then I do not see the Group popover
     And I see the system message contains "<Action> <Contact2>" text on conversation view page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName       | Action      |
       | user1Name | user2Name | user3Name | RemoveFromGroupChat | You removed |
 
@@ -136,7 +136,7 @@ Feature: People View
     Then I do not see the Group popover
     And I see the system message contains "<Action> <Contact2>" text on conversation view page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName       | Action      |
       | user1Name | user2Name | user3Name | RemoveFromGroupChat | You removed |
 
@@ -155,7 +155,7 @@ Feature: People View
     Then I see the conversation view
     And I see the chat header message contains "<Contact1>" text on conversation view page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -176,7 +176,7 @@ Feature: People View
     And I see the conversation <Contact1> in my conversations list
     And I see the chat header message contains "<Contact1>" text on conversation view page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -250,8 +250,8 @@ Feature: People View
     And I see the user email <Contact1Email> on Group popover
 
     Examples:
-      | Name      | Contact1   | Contact1Email | Contact2  | GroupChatName |
-      | user1Name | user2Name  | user2Email    | user3Name | GroupChat     |
+      | Name      | Contact1  | Contact1Email | Contact2  | GroupChatName |
+      | user1Name | user2Name | user2Email    | user3Name | GroupChat     |
 
   @id3150 @regression
   Scenario Outline: I can access user details page from group details pop-over (portrait)
@@ -273,8 +273,8 @@ Feature: People View
     And I see the user email <Contact1Email> on Group popover
 
     Examples:
-      | Name      | Contact1   | Contact1Email | Contact2  | GroupChatName |
-      | user1Name | user2Name  | user2Email    | user3Name | GroupChat     |
+      | Name      | Contact1  | Contact1Email | Contact2  | GroupChatName |
+      | user1Name | user2Name | user2Email    | user3Name | GroupChat     |
 
   @id2856 @regression @rc
   Scenario Outline: I see conversation name, number of participants and their avatars in group pop-over (portrait)
@@ -295,8 +295,8 @@ Feature: People View
     And I see "<Subheader>" subheader on Group popover
 
     Examples:
-      | Name      | Contact1   | Contact1Email | Contact2  | GroupChatName | Subheader |
-      | user1Name | user2Name  | user2Email    | user3Name | GroupChat     | 3 PEOPLE  |
+      | Name      | Contact1  | Contact1Email | Contact2  | GroupChatName | Subheader |
+      | user1Name | user2Name | user2Email    | user3Name | GroupChat     | 3 PEOPLE  |
 
   @id3154 @regression @rc
   Scenario Outline: I see conversation name, number of participants and their avatars in group pop-over (landscape)
@@ -317,8 +317,8 @@ Feature: People View
     And I see "<Subheader>" subheader on Group popover
 
     Examples:
-      | Name      | Contact1   | Contact1Email | Contact2  | GroupChatName | Subheader |
-      | user1Name | user2Name  | user2Email    | user3Name | GroupChat     | 3 PEOPLE  |
+      | Name      | Contact1  | Contact1Email | Contact2  | GroupChatName | Subheader |
+      | user1Name | user2Name | user2Email    | user3Name | GroupChat     | 3 PEOPLE  |
 
   @id2895 @regression
   Scenario Outline: Check interaction with options menu (portrait)
@@ -346,8 +346,8 @@ Feature: People View
     And I see the Group popover
 
     Examples:
-      | Name      | Contact1   | Contact2  | GroupChatName | ItemLeave |
-      | user1Name | user2Name  | user3Name | GroupChat     | LEAVE     |
+      | Name      | Contact1  | Contact2  | GroupChatName | ItemLeave |
+      | user1Name | user2Name | user3Name | GroupChat     | LEAVE     |
 
   @id3148 @regression
   Scenario Outline: Check interaction with options menu (landscape)
@@ -375,8 +375,8 @@ Feature: People View
     And I see the Group popover
 
     Examples:
-      | Name      | Contact1   | Contact2  | GroupChatName | ItemLeave |
-      | user1Name | user2Name  | user3Name | GroupChat     | LEAVE     |
+      | Name      | Contact1  | Contact2  | GroupChatName | ItemLeave |
+      | user1Name | user2Name | user3Name | GroupChat     | LEAVE     |
 
   @id2883 @regression @rc
   Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
@@ -399,7 +399,7 @@ Feature: People View
     When I tap Open Conversation button on Group popover
     Then I see the Group popover
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName        |
       | user1Name | user2Name | user3Name | NonConnectedUserChat |
       

@@ -30,7 +30,7 @@ Feature: Conversation List
     Then I do not see the Single user popover
     Then I see the conversation <Contact> in my conversations list is not silenced
 
-    Examples: 
+    Examples:
       | Name      | Contact   | ItemSilence | ItemNotify |
       | user1Name | user2Name | SILENCE     | NOTIFY     |
 
@@ -69,7 +69,7 @@ Feature: Conversation List
     When I swipe right to show the conversations list
     Then I see the conversation <Contact> in my conversations list is not silenced
 
-    Examples: 
+    Examples:
       | Name      | Contact   | ItemSilence | ItemNotify |
       | user1Name | user2Name | SILENCE     | NOTIFY     |
 
@@ -92,7 +92,7 @@ Feature: Conversation List
     Then I do not see Conversation Actions overlay
     And I see the conversation <Contact1> in my conversations list is not silenced
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | ItemSilence | ItemNotify |
       | user1Name | user2Name | user3Name | SILENCE     | NOTIFY     |
 
@@ -115,7 +115,7 @@ Feature: Conversation List
     Then I do not see Conversation Actions overlay
     And I see the conversation <Contact1> in my conversations list is not silenced
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | ItemSilence | ItemNotify |
       | user1Name | user2Name | user3Name | SILENCE     | NOTIFY     |
 

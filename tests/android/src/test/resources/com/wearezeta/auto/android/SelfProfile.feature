@@ -14,7 +14,7 @@ Feature: Self Profile
     And I tap on personal info screen
     Then I verify that my current profile picture is different from the previous one
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -29,7 +29,7 @@ Feature: Self Profile
     And I tap conversation details button
     Then I see <Contact> user name and email
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -46,7 +46,7 @@ Feature: Self Profile
     And I change my name to <NewName>
     Then I see my new name <NewName>
 
-    Examples: 
+    Examples:
       | Name      | NewName     |
       | user1Name | NewTestName |
 
@@ -66,7 +66,7 @@ Feature: Self Profile
     And I tap on personal info screen
     Then I verify that my current profile picture is different from the previous one
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -89,6 +89,6 @@ Feature: Self Profile
     And I tap on my avatar
     Then I see color <AccentColor> selected on accent color picker
 
-    Examples: 
+    Examples:
       | Name      | AccentColor |
       | user1Name | Violet      |

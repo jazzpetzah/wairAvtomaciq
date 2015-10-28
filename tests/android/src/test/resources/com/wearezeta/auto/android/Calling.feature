@@ -14,7 +14,7 @@ Feature: Calling
     And I see dialog page
     Then I see dialog with missed call from <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
@@ -29,7 +29,7 @@ Feature: Calling
     And I click the ignore call button
     Then I do not see calling overlay Big bar
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
@@ -46,10 +46,10 @@ Feature: Calling
     Then I see call overlay
     Then I see calling overlay Big bar
 
-    Examples: 
+    Examples:
       | CallBackend | Name      | Contact   |
       | autocall    | user1Name | user2Name |
-      
+
   @id814 @calling_basic @rc
   Scenario Outline: I can accept incoming 1:1 call
     Given There are 3 users where <Name> is me
@@ -61,7 +61,7 @@ Feature: Calling
     And I see dialog page
     Then I see calling overlay Big bar
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | CallBackend |
       | user1Name | user2Name | user3Name | autocall    |
 
@@ -95,7 +95,7 @@ Feature: Calling
     And I answer the call from the lock screen
     Then I see started call message for contact <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
@@ -127,7 +127,7 @@ Feature: Calling
     And I type the message "<Message>" and send it
     Then I see my message "<Message>" in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend | Message                   | Msg        |
       | user1Name | user2Name | autocall    | simple message in english | YOU PINGED |
 
@@ -152,7 +152,7 @@ Feature: Calling
     Then I do not see call overlay
     And <Contact> stops all calls to me
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName |
       | user1Name | user2Name | autocall    | Speaker        | Mute        |
 
@@ -180,7 +180,7 @@ Feature: Calling
     And I see dialog page
     And I see calling overlay Mini bar
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | CallBackend |
       | user1Name | user2Name | user3Name | autocall    |
 
@@ -199,7 +199,7 @@ Feature: Calling
     Then I do not see call overlay
     And <Contact> stops all calls to me
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
@@ -224,7 +224,7 @@ Feature: Calling
     When I press Cancel call button
     Then I do not see call overlay
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName    | SpeakerBtnName | MuteBtnName |
       | user1Name | user2Name | user3Name | ChatForGroupCall | Speaker        | Mute        |
 
@@ -246,7 +246,7 @@ Feature: Calling
     When <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
 
-    Examples: 
+    Examples:
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
 
@@ -273,9 +273,9 @@ Feature: Calling
     Then <Contact2>,<Contact3>,<Contact4> verify to have 4 flows
     Then <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
 
-    Examples: 
-      | CallBackend |CallBackend2| Name      | Contact1  | Contact2  | Contact3  |Contact4  | GroupChatName    |
-      | chrome      | autocall   | user1Name | user2Name | user3Name | user4Name |user5Name | ChatForGroupCall |
+    Examples:
+      | CallBackend | CallBackend2 | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    |
+      | chrome      | autocall     | user1Name | user2Name | user3Name | user4Name | user5Name | ChatForGroupCall |
 
   @id3174 @calling_basic @rc
   Scenario Outline: I can join group call after I ignored it
@@ -296,7 +296,7 @@ Feature: Calling
     And <Contact1> stops all calls to <GroupChatName>
     Then I do not see join group call overlay
 
-    Examples: 
+    Examples:
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
 
@@ -323,7 +323,7 @@ Feature: Calling
     And <Contact2> stops all calls to <GroupChatName>
     Then I do not see join group call overlay
 
-    Examples: 
+    Examples:
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
 
@@ -348,7 +348,7 @@ Feature: Calling
     And <Contact3> stops all calls to <GroupChatName>
     And <Contact4> stops all calls to <GroupChatName>
 
-    Examples: 
+    Examples:
       | CallBackend | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    |
       | autocall    | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | MaxGroupCallChat |
 
@@ -378,7 +378,7 @@ Feature: Calling
     And <Contact4> stops all calls to <GroupChatName>
     And <Contact5> stops all calls to <GroupChatName>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName       | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | MaxGroupCallNegChat | autocall    |
 
@@ -410,7 +410,7 @@ Feature: Calling
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
@@ -440,7 +440,7 @@ Feature: Calling
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
@@ -470,7 +470,7 @@ Feature: Calling
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
@@ -500,7 +500,7 @@ Feature: Calling
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
@@ -531,7 +531,7 @@ Feature: Calling
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
@@ -553,7 +553,7 @@ Feature: Calling
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallChat | autocall    |
 
@@ -573,7 +573,7 @@ Feature: Calling
     And I unlock the device
     Then I see call overlay
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
@@ -592,7 +592,7 @@ Feature: Calling
     Then I see call overlay
     And <Contact> stops all calls to me
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
@@ -612,7 +612,7 @@ Feature: Calling
     Then I see incoming calling message for contact <Contact2>
     And <Contact1>,<Contact2> stop all calls to me
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | CallBackend |
       | user1Name | user2Name | user3Name | autocall    |
 
@@ -639,6 +639,6 @@ Feature: Calling
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallChat | autocall    |

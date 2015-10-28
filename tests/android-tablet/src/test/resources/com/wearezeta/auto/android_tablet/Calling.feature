@@ -16,7 +16,7 @@ Feature: Calling
     Then I do not see calling overlay Big bar
     And I see missed group call notification in the conversation view
 
-    Examples: 
+    Examples:
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
 
@@ -41,7 +41,7 @@ Feature: Calling
     When I tap <DismissBtnName> button on the calling overlay
     Then I do not see calling overlay Big bar
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName | AcceptBtnName | DismissBtnName |
       | user1Name | user2Name | autocall    | Speaker        | Mute        | Accept        | Dismiss        |
 
@@ -70,9 +70,9 @@ Feature: Calling
     Then <Contact2>,<Contact3>,<Contact4> verify to have 4 flows
     Then <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
 
-    Examples: 
-      | CallBackend |CallBackend2| Name      | Contact1  | Contact2  | Contact3  |Contact4  | GroupChatName    | AcceptBtnName |
-      | chrome      | autocall   | user1Name | user2Name | user3Name | user4Name |user5Name | ChatForGroupCall | Accept        |
+    Examples:
+      | CallBackend | CallBackend2 | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    | AcceptBtnName |
+      | chrome      | autocall     | user1Name | user2Name | user3Name | user4Name | user5Name | ChatForGroupCall | Accept        |
 
   @id3123 @calling_basic @rc
   Scenario Outline: Calling bar buttons are clickable and change its state (landscape)
@@ -95,7 +95,7 @@ Feature: Calling
     When I tap <DismissBtnName> button on the calling overlay
     Then I do not see calling overlay Big bar
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName | AcceptBtnName | DismissBtnName |
       | user1Name | user2Name | autocall    | Speaker        | Mute        | Accept        | Dismiss        |
 
@@ -161,7 +161,7 @@ Feature: Calling
     When I swipe up on the calling overlay
     Then I do not see calling overlay Big bar
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
@@ -179,7 +179,7 @@ Feature: Calling
     When I swipe up on the calling overlay
     Then I do not see calling overlay Big bar
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
@@ -211,7 +211,7 @@ Feature: Calling
     Then I see the ping message "<PingMessage>" in the conversation view
     And <Contact> stops all calls to me
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend | TextMessage  | PingMessage | AcceptBtnName |
       | user1Name | user2Name | autocall    | text message | YOU PINGED  | Accept        |
 
@@ -243,7 +243,7 @@ Feature: Calling
     Then I see the ping message "<PingMessage>" in the conversation view
     And <Contact> stops all calls to me
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend | TextMessage  | PingMessage | AcceptBtnName |
       | user1Name | user2Name | autocall    | text message | YOU PINGED  | Accept        |
 
@@ -288,7 +288,7 @@ Feature: Calling
       | user1Name | user2Name | autocall    |
 
   @id2841 @calling_advanced
-  Scenario Outline: Other wire user trying to call me while I'm already in wire call 
+  Scenario Outline: Other wire user trying to call me while I'm already in wire call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to landscape
@@ -306,7 +306,7 @@ Feature: Calling
     And I see the conversation <Contact1> in my conversations list
     And I see the conversation <Contact2> in my conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | CallBackend | AcceptBtnName |
       | user1Name | user2Name | user3Name | autocall    | Accept        |
 
@@ -324,7 +324,7 @@ Feature: Calling
     When I tap <SilenceBtn> button on the calling overlay
     Then I do not see calling overlay Big bar
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend | SilenceBtn |
       | user1Name | user2Name | autocall    | Ignore     |
 
@@ -342,6 +342,6 @@ Feature: Calling
     When I tap <SilenceBtn> button on the calling overlay
     Then I do not see calling overlay Big bar
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend | SilenceBtn |
       | user1Name | user2Name | autocall    | Ignore     |
