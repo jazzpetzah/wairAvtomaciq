@@ -656,7 +656,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user3Name | OnlyConnected |
 
-  @staging @id3957
+  @staging @id3958
   Scenario Outline: Verify that deleted conversation via participant view isn't going to archive [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -670,7 +670,7 @@ Feature: People View
     And I press conversation menu button
     And I click delete menu button
     And I confirm delete conversation content
-    And I return to the chat list
+    And I wait until popover is closed
     And I dont see conversation <GroupChatName> in contact list
     And I open archived conversations on iPad
     Then I dont see conversation <GroupChatName> in contact list
@@ -679,7 +679,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
-  @staging @id3957
+  @staging @id3959
   Scenario Outline: Verify that deleted conversation via participant view isn't going to archive [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -694,6 +694,7 @@ Feature: People View
     And I press conversation menu button
     And I click delete menu button
     And I confirm delete conversation content
+    And I wait until popover is closed
     And I dont see conversation <GroupChatName> in contact list
     And I open archived conversations on iPad
     Then I dont see conversation <GroupChatName> in contact list
@@ -716,7 +717,7 @@ Feature: People View
     And I click delete menu button
     And I select Also Leave option on Delete conversation dialog
     And I confirm delete conversation content
-    And I return to the chat list
+    And I wait until popover is closed
     And I open search by taping on it
     And I input conversation name <GroupChatName> in Search input
     Then I see conversation <GroupChatName> is NOT presented in Search results
@@ -744,6 +745,7 @@ Feature: People View
     And I click delete menu button
     And I select Also Leave option on Delete conversation dialog
     And I confirm delete conversation content
+    And I wait until popover is closed
     And I open search by taping on it
     And I input conversation name <GroupChatName> in Search input
     Then I see conversation <GroupChatName> is NOT presented in Search results
@@ -772,7 +774,7 @@ Feature: People View
     And I press conversation menu button
     And I click delete menu button
     And I confirm delete conversation content
-    And I return to the chat list
+    And I wait until popover is closed
     And I open search by taping on it
     And I input conversation name <GroupChatName> in Search input
     Then I see conversation <GroupChatName> is presented in Search results
@@ -800,6 +802,7 @@ Feature: People View
     And I press conversation menu button
     And I click delete menu button
     And I confirm delete conversation content
+    And I wait until popover is closed
     And I open search by taping on it
     And I input conversation name <GroupChatName> in Search input
     Then I see conversation <GroupChatName> is presented in Search results
@@ -827,7 +830,7 @@ Feature: People View
     And I press conversation menu button
     And I click delete menu button
     And I confirm delete conversation content
-    And I return to the chat list
+    And I wait until popover is closed
     And I open search by taping on it
     And I fill in Search field user name <Contact1>
     And I see user <Contact1> found on People picker page
@@ -857,6 +860,7 @@ Feature: People View
     And I press conversation menu button
     And I click delete menu button
     And I confirm delete conversation content
+    And I wait until popover is closed
     And I open search by taping on it
     And I fill in Search field user name <Contact1>
     And I see user <Contact1> found on People picker page
