@@ -22,7 +22,7 @@ public class SettingsPageSteps {
 	 * 
 	 * @step. ^I see settings page$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@Then("^I see settings page$")
 	public void ISeeSettingsPage() throws Exception {
