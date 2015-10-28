@@ -25,7 +25,7 @@ Feature: Sign In
       | user1Name |
 
   @id209 @regression
-  Scenario Outline: I can change sign in user
+  Scenario Outline: (AN-2950) I can change sign in user
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
     Given I see Contact list with no contacts
