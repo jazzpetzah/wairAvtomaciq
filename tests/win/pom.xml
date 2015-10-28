@@ -23,7 +23,7 @@
         be used to enable logging of all messages. -->
         <extendedLoggingLevel>SEVERE</extendedLoggingLevel>
         <com.wire.app.folder>/Users/Michael/AppData/Local/wire/</com.wire.app.folder>
-        <com.wire.app.path>app-2.0.2458/Wire.exe</com.wire.app.path>
+        <com.wire.app.path>app-2.0.2467/Wire.exe</com.wire.app.path>
         <com.wire.app.cache.folder>/Users/Michael/AppData/Roaming/Wire/</com.wire.app.cache.folder>
         <com.wire.winium.url>http://127.0.0.1:9999/</com.wire.winium.url>
         <com.wire.winium.path>TODO</com.wire.winium.path>
