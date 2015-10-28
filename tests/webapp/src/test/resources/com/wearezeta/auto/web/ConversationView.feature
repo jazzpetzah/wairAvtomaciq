@@ -280,7 +280,7 @@ Feature: Conversation View
       | user1Email | user1Password | user1Name | user2Name |
 
   @regression @id2993
-  Scenario Outline: Verify you ping in a conversation when you press alt + ctrl + G (Win)
+  Scenario Outline: Verify you ping in a conversation when you press alt + ctrl + K (Win)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
