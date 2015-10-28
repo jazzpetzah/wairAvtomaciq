@@ -136,8 +136,9 @@ public class AccentColorUtil {
 		return getAccentColorByColor(mainColor);
 	}
 
-	public static AccentColor findSelectedAccentColor(AppiumDriver driver,
-			WebElement colorPicker) throws Exception {
+	public static AccentColor findSelectedAccentColor(
+			AppiumDriver<? extends WebElement> driver, WebElement colorPicker)
+			throws Exception {
 		BufferedImage windowScreen = AndroidCommonUtils.getElementScreenshot(
 				colorPicker, driver, "Android Device").get();
 		return findSelectedAccentColor(windowScreen);

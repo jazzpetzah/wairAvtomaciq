@@ -1,6 +1,8 @@
 package com.wearezeta.auto.web.pages;
 
+import java.util.List;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -31,11 +33,14 @@ public class RegistrationPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.RegistrationPage.cssPasswordFiled)
 	private WebElement passwordField;
 
-	@FindBy(how = How.ID, using = WebAppLocators.RegistrationPage.idCreateAccountButton)
+	@FindBy(how = How.CSS, using = WebAppLocators.RegistrationPage.cssCreateButton)
 	private WebElement createAccount;
 
 	@FindBy(how = How.CSS, using = WebAppLocators.RegistrationPage.cssVerificationEmail)
 	private WebElement verificationEmail;
+
+	@FindBy(how = How.CSS, using = WebAppLocators.RegistrationPage.cssPendingEmail)
+	private WebElement pendingEmail;
 
 	@FindBy(css = WebAppLocators.RegistrationPage.cssSwitchToSignInButton)
 	private WebElement switchToSignInButton;
@@ -44,12 +49,12 @@ public class RegistrationPage extends WebPage {
 	@FindBy(css = ".icon-envelope")
 	private WebElement verificationEnvelope;
 
-	@FindBy(css = WebAppLocators.RegistrationPage.cssRedDotOnEmailField)
+	@FindBy(css = WebAppLocators.RegistrationPage.cssErrorMarkedEmailField)
 	private WebElement redDotOnEmailField;
 
 	// TODO move to locators
-	@FindBy(xpath = "//*[@data-uie-name='status-error']//div")
-	private WebElement errorMessage;
+	@FindBy(css = WebAppLocators.RegistrationPage.cssErrorMessages)
+	private List<WebElement> errorMessages;
 
 	public RegistrationPage(Future<ZetaWebAppDriver> lazyDriver, String url)
 			throws Exception {
@@ -76,34 +81,27 @@ public class RegistrationPage extends WebPage {
 				.getCurrentUrl());
 	}
 
-	private void removeReadonlyAttr(String cssLocator) throws Exception {
-		this.getDriver().executeScript(
-				String.format(
-						"$(document).find(\"%s\").removeAttr('readonly');",
-						cssLocator));
-	}
-
 	public void enterName(String name) throws Exception {
-		removeReadonlyAttr(WebAppLocators.RegistrationPage.cssNameFiled);
+		nameField.click();
 		nameField.clear();
 		nameField.sendKeys(name);
 	}
 
 	public void enterEmail(String email) throws Exception {
-		removeReadonlyAttr(WebAppLocators.RegistrationPage.cssEmailFiled);
+		emailField.click();
 		emailField.clear();
 		emailField.sendKeys(email);
 	}
 
 	public void enterPassword(String password) throws Exception {
-		removeReadonlyAttr(WebAppLocators.RegistrationPage.cssPasswordFiled);
+		passwordField.click();
 		passwordField.clear();
 		passwordField.sendKeys(password);
 	}
 
 	public void submitRegistration() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
-				createAccount) : "'Create Account' button is not clickable after timeout";
+				createAccount) : "'Create' button is not clickable after timeout";
 		createAccount.click();
 	}
 
@@ -112,19 +110,32 @@ public class RegistrationPage extends WebPage {
 				verificationEnvelope);
 	}
 
-	public String getVerificationEmailAddress() {
+	public String getVerificationEmailAddress() throws Exception {
 		return verificationEmail.getText();
 	}
 
-	public String getErrorMessage() {
-		return errorMessage.getText();
+	public String getPendingEmailAddress() throws Exception {
+		return pendingEmail.getText();
 	}
 
-	public boolean isRedDotOnEmailField() throws Exception {
+	public List<String> getErrorMessages() {
+		return errorMessages.stream()
+				.map(errorMessage -> errorMessage.getText())
+				.collect(Collectors.toList());
+	}
+
+	public boolean isEmailFieldMarkedAsError() throws Exception {
 		return DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						getDriver(),
-						By.cssSelector(WebAppLocators.RegistrationPage.cssRedDotOnEmailField));
+						By.cssSelector(WebAppLocators.RegistrationPage.cssErrorMarkedEmailField));
+	}
+
+	public boolean isEmailFieldMarkedAsValid() throws Exception {
+		return DriverUtils
+				.waitUntilLocatorDissapears(
+						getDriver(),
+						By.cssSelector(WebAppLocators.RegistrationPage.cssErrorMarkedEmailField));
 	}
 
 	public LoginPage openSignInPage() throws Exception {

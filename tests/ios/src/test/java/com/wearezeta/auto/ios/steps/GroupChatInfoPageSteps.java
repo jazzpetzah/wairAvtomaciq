@@ -139,12 +139,26 @@ public class GroupChatInfoPageSteps {
 		getGroupChatInfoPage().clickOnAddButton();
 	}
 
-	@When("I see Add people to group chat dialog")
+	/**
+	 * Verify that share history warning dialog is shown
+	 * 
+	 * @step. I see share history warning
+	 * 
+	 * @throws Exception
+	 */
+	@When("I see share history warning")
 	public void ISeeAddPeopleToGroupChatDialog() throws Exception {
 		Assert.assertTrue(getGroupChatInfoPage().isAddDialogHeaderVisible());
 	}
 
-	@When("I click on Continue button in Add people to group chat dialog")
+	/**
+	 * Click on continue button on share history warning dialog
+	 * 
+	 * @step. I click on Continue button on share history warning
+	 * 
+	 * @throws Throwable
+	 */
+	@When("I click on Continue button on share history warning")
 	public void IClickOnContinueButtonInAddPeopleToGroupChatDialog()
 			throws Throwable {
 		getGroupChatInfoPage().clickOnAddDialogContinueButton();

@@ -51,18 +51,6 @@ public class PersonalInfoPageSteps {
 	}
 
 	/**
-	 * Taps on the sign out button in the options menu
-	 * 
-	 * @step. ^I tap sign out button$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I tap sign out button$")
-	public void WhenITapSignOutButton() throws Exception {
-		getPersonalInfoPage().tapSignOutBtn();
-	}
-
-	/**
 	 * Taps on the settings button in the options menu
 	 * 
 	 * @step. ^I tap settings button$

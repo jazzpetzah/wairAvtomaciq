@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.pages;
 
+import java.util.List;
 import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
@@ -18,7 +19,7 @@ public class PhoneNumberVerificationPage extends WebPage {
 			.getLog(PhoneNumberVerificationPage.class.getSimpleName());
 
 	@FindBy(css = "[data-uie-name='enter-phone-code']")
-	private WebElement phoneCodeField;
+	private List<WebElement> phoneCodeFields;
 
 	@FindBy(css = WebAppLocators.PhoneNumberVerificationPage.cssErrorMessage)
 	private WebElement errorMessage;
@@ -29,10 +30,13 @@ public class PhoneNumberVerificationPage extends WebPage {
 	}
 
 	public ContactListPage enterCode(String code) throws Exception {
-		DriverUtils.waitUntilElementClickable(getDriver(), phoneCodeField);
 		log.info("Enter code: " + code);
-		phoneCodeField.clear();
-		phoneCodeField.sendKeys(code);
+		for (int i = 0; i < code.length(); i++) {
+			WebElement phoneCodeField = phoneCodeFields.get(i);
+			DriverUtils.waitUntilElementClickable(getDriver(), phoneCodeField);
+			phoneCodeField.clear();
+			phoneCodeField.sendKeys(String.valueOf(code.charAt(i)));
+		}
 		return new ContactListPage(getLazyDriver());
 	}
 

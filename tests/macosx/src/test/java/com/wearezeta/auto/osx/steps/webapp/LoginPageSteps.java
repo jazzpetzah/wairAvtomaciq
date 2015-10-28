@@ -6,7 +6,7 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.web.pages.LoginPage;
+import com.wearezeta.auto.osx.pages.webapp.LoginPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.Given;
@@ -116,7 +116,7 @@ public class LoginPageSteps {
 	public void ARedDotIsShownOnTheEmailField() throws Exception {
 		assertThat("Red dot on email field",
 				webappPagesCollection.getPage(LoginPage.class)
-						.isRedDotOnEmailField());
+						.isEmailFieldMarkedAsError());
 	}
 
 	/**
@@ -130,7 +130,7 @@ public class LoginPageSteps {
 	public void ARedDotIsShownOnThePasswordField() throws Exception {
 		assertThat("Red dot on password field",
 				webappPagesCollection.getPage(LoginPage.class)
-						.isRedDotOnPasswordField());
+						.isPasswordFieldMarkedAsError());
 	}
 
 	/**

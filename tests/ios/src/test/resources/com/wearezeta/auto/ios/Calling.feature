@@ -164,7 +164,6 @@ Feature: Calling
     Then I lock screen for 5 seconds
     And I see mute call, end call and speakers buttons
     And I end started call
-    And <Contact> stops all waiting instances
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
@@ -567,7 +566,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars | Timeout |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | FullGROUPCALL | chrome      | autocall     | 5               | 60      |
 
-  @calling_basic @id880
+  @calling_basic @rc @id880
   Scenario Outline: Verify putting client to the background during 1-to-1 call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

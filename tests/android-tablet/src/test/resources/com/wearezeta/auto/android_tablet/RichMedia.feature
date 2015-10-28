@@ -143,7 +143,7 @@ Feature: Rich Media
       | Name      | Contact   | Message |
       | user1Name | user2Name | H       |
 
-  @id2880 @staging
+  @id2880 @regression
   Scenario Outline: Verify you can play/pause media from the Media Bar in conversation view (portrait only)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

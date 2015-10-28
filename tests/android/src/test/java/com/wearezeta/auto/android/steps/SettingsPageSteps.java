@@ -4,15 +4,17 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.SettingsPage;
 
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 
 public class SettingsPageSteps {
 
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
-		.getInstance();
+			.getInstance();
 
 	private SettingsPage getSettingsPage() throws Exception {
-		return (SettingsPage) pagesCollection.getPage(SettingsPage.class);
+		return pagesCollection.getPage(SettingsPage.class);
 	}
 
 	/**
@@ -20,35 +22,38 @@ public class SettingsPageSteps {
 	 * 
 	 * @step. ^I see settings page$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@Then("^I see settings page$")
-	public void ISeeSettingsPage() throws Throwable {
+	public void ISeeSettingsPage() throws Exception {
 		Assert.assertTrue("Settings page is not visible", getSettingsPage()
-			.isSettingsPageVisible());
+				.waitUntilVisible());
 	}
 
 	/**
-	 * Check that change password item is present in settings menu
+	 * Tap the corresponding menu item
 	 * 
-	 * @step. ^I see change password item$
+	 * @step. ^I select \"(.*)\" settings menu item$
 	 * 
-	 * @throws Throwable
+	 * @param name
+	 *            the name of the corresponding menu item
+	 * @throws Exception
 	 */
-	@Then("^I see change password item$")
-	public void ISeeSettingsChangePassword() throws Throwable {
-		Assert.assertTrue(getSettingsPage().isChangePasswordVisible());
+	@When("^I select \"(.*)\" settings menu item$")
+	public void ISelectSettingsMenuItem(String name) throws Exception {
+		getSettingsPage().selectMenuItem(name);
 	}
-
+	
 	/**
-	 * Tap services button
+	 * Click the corresponding button on sign out alert to confirm it
 	 * 
-	 * @step. ^I tap services button$
+	 * @step. ^I confirm sign out$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
-	@Then("^I tap services button$")
-	public void IClickTheServicesButton() throws Throwable {
-		getSettingsPage().clickServicesButton();
+	@And("^I confirm sign out$")
+	public void IConfirmSignOut() throws Exception {
+		getSettingsPage().confirmSignOut();
 	}
+	
 }

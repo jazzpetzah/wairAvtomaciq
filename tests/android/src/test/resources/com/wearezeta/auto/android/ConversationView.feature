@@ -299,10 +299,10 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I see dialog page
+    And I rotate UI to portrait
     And I swipe on text input
     And I press Add Picture button
     And I press "Gallery" button
-    And I rotate UI to portrait
     And I press "Sketch Image Paint" button
     And I draw a sketch on image with <NumColors> colors
     And I remember what my sketch looks like

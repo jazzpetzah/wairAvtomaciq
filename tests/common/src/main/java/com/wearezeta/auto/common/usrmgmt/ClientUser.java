@@ -1,14 +1,15 @@
 package com.wearezeta.auto.common.usrmgmt;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import akka.actor.ActorRef;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.email.MessagingUtils;
 
+import java.util.*;
+
 public class ClientUser {
 	private String name = null;
+    private Map<String, ActorRef> loggedInDevices = new HashMap<>();
 
 	public ClientUser(String email, String password, PhoneNumber phoneNumber,
 			String name, UserState state) {
@@ -200,6 +201,23 @@ public class ClientUser {
 				.getDefaultPasswordFromConfig(ClientUser.class);
 		this.email = generateEmail(name);
 	}
+
+    /**
+     * Allowing the ability for ClientUsers to log into multiple devices
+     * @param deviceName
+     * @param deviceRef
+     */
+    public void logIntoDevice(String deviceName, ActorRef deviceRef) {
+        this.loggedInDevices.put(deviceName, deviceRef);
+    }
+
+    public ActorRef getLoggedInDeviceRef(String deviceName) {
+        return loggedInDevices.get(deviceName);
+    }
+
+    public boolean isLoggedIntoADevice() {
+        return loggedInDevices.size() > 0;
+    }
 
 	@Override
 	public String toString() {

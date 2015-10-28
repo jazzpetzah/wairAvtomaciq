@@ -212,8 +212,10 @@ public class DialogPage extends AndroidPage {
 	private WebElement cancelCallBtn;
 
 	private static final String idNewConversationNameMessage = "ttv__row_conversation__new_conversation_name";
-	@FindBy(id = idNewConversationNameMessage)
-	private WebElement newConversationNameMessage;
+
+	private static Function<String, String> xpathNewConversationNameByValue = value -> String
+			.format("//*[@id='%s' and @value='%s']",
+					idNewConversationNameMessage, value);
 
 	private static final String xpathLastConversationMessage = "(//*[@id='ltv__row_conversation__message'])[last()]";
 	@FindBy(xpath = xpathLastConversationMessage)
@@ -273,6 +275,11 @@ public class DialogPage extends AndroidPage {
 
 	public void multiTapOnCursorInput() throws Exception {
 		DriverUtils.androidMultiTap(this.getDriver(), cursorArea, 2, 500);
+	}
+	
+	public void pressPlusButtonOnDialogPage() throws Exception{
+		assert DriverUtils.waitUntilElementClickable(getDriver(), cursorBtn);
+		cursorBtn.click();
 	}
 
 	public void swipeOnCursorInput() throws Exception {
@@ -393,8 +400,6 @@ public class DialogPage extends AndroidPage {
 			pressKeyboardSendButton();
 			this.hideKeyboard();
 		} else {
-			// FIXME: Enter does not send text anymore, unicode tests affected
-			this.pressEnter();
 			this.hideKeyboard();
 		}
 	}
@@ -409,18 +414,17 @@ public class DialogPage extends AndroidPage {
 		}
 	}
 
-	public void pressKeyboardSendButton() throws Exception {
-		tapByCoordinates(94, 96);
-	}
-
 	public void clickLastImageFromDialog() throws Exception {
 		final By locator = By.xpath(xpathLastPicture);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : "No pictures are visible in the conversation view";
 		getDriver().findElement(locator).click();
 	}
 
-	public String getChangedGroupNameMessage() {
-		return newConversationNameMessage.getText();
+	public boolean waitForConversationNameChangedMessage(String expectedName)
+			throws Exception {
+		final By locator = By.xpath(xpathNewConversationNameByValue
+				.apply(expectedName));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
 	public boolean waitForMessage(String text) throws Exception {
@@ -532,11 +536,9 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void openGallery() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(), galleryBtn);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idGalleryBtn)) : "Gallery button is still not visible";
 		galleryBtn.click();
-		//workaround until images not selected
-		this.wait(1000);
-		this.tapByCoordinates(30, 20);
 	}
 
 	public void closeFullScreenImage() throws Exception {

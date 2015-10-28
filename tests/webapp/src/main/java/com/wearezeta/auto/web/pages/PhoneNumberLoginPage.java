@@ -18,8 +18,8 @@ public class PhoneNumberLoginPage extends WebPage {
 	@FindBy(css = "[data-uie-name='enter-phone']")
 	private WebElement phoneNumberField;
 
-	@FindBy(id = "wire-login-phone")
-	private WebElement forwardButton;
+	@FindBy(id = "wire-phone-login")
+	private WebElement signInButton;
 
 	@FindBy(css = WebAppLocators.PhoneNumberLoginPage.cssErrorMessage)
 	private WebElement errorMessage;
@@ -45,8 +45,8 @@ public class PhoneNumberLoginPage extends WebPage {
 		phoneNumberField.sendKeys(phoneNumber);
 	}
 
-	public PhoneNumberVerificationPage clickForwardButton() throws Exception {
-		forwardButton.click();
+	public PhoneNumberVerificationPage clickSignInButton() throws Exception {
+		signInButton.click();
 		return new PhoneNumberVerificationPage(getLazyDriver());
 	}
 

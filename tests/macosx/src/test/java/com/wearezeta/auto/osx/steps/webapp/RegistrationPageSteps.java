@@ -1,13 +1,27 @@
 package com.wearezeta.auto.osx.steps.webapp;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Future;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.UserState;
-import com.wearezeta.auto.web.pages.RegistrationPage;
+import com.wearezeta.auto.osx.pages.webapp.RegistrationPage;
+import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.Given;
@@ -22,6 +36,9 @@ public class RegistrationPageSteps {
 
 	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
 			.getInstance();
+
+	private static final Logger LOG = ZetaLogger
+			.getLog(RegistrationPageSteps.class.getName());
 
 	private ClientUser userToRegister = null;
 
@@ -138,7 +155,7 @@ public class RegistrationPageSteps {
 			Exception {
 		email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
 		assertThat(webappPagesCollection.getPage(RegistrationPage.class)
-				.getVerificationEmailAddress(), equalTo(email));
+				.getVerificationEmailAddress(), containsString(email));
 	}
 
 	/**
@@ -154,7 +171,7 @@ public class RegistrationPageSteps {
 	public void ISeeErrorMessageOnVerificationPage(String message)
 			throws Throwable {
 		assertThat(webappPagesCollection.getPage(RegistrationPage.class)
-				.getErrorMessage(), equalTo(message));
+				.getErrorMessages(), hasItem(message));
 	}
 
 	/**
@@ -170,11 +187,11 @@ public class RegistrationPageSteps {
 		if (not == null) {
 			assertThat("Red dot on email field",
 					webappPagesCollection.getPage(RegistrationPage.class)
-							.isRedDotOnEmailField());
+							.isEmailFieldMarkedAsError());
 		} else {
 			assertThat("Red dot on email field",
 					webappPagesCollection.getPage(RegistrationPage.class)
-							.isRedDotOnEmailField());
+							.isEmailFieldMarkedAsError());
 		}
 	}
 
@@ -218,4 +235,65 @@ public class RegistrationPageSteps {
 		webappPagesCollection.getPage(RegistrationPage.class)
 				.switchToLoginPage();
 	}
+
+
+	/**
+	 * Start monitoring thread for activation email. Please put this step BEFORE
+	 * you submit the registration form
+	 * 
+	 * @step. ^I start activation email monitoring$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I start activation email monitoring$")
+	public void IStartActivationEmailMonitoring() throws Exception {
+		Map<String, String> expectedHeaders = new HashMap<String, String>();
+		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
+		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
+				expectedHeaders, BackendAPIWrappers.ACTIVATION_TIMEOUT);
+	}
+
+	/**
+	 * Activates user using browser URL from activation email and sign him in to
+	 * the app if the activation was successful. Don't forget to call the 'I
+	 * start activation email monitoring' step before this one
+	 * 
+	 * @step. ^I activate user by URL$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I activate user by URL$")
+	public void WhenIActivateUserByUrl() throws Exception {
+		final String link = BackendAPIWrappers
+				.getUserActivationLink(this.activationMessage);
+		LOG.info("Get activation link from " + link);
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpGet httpGet = new HttpGet(link);
+		HttpEntity entity = httpclient.execute(httpGet).getEntity();
+		if (entity != null) {
+			String content = EntityUtils.toString(entity);
+			Pattern p = Pattern.compile("data-url=\"(.*?)\"");
+			Matcher m = p.matcher(content);
+			while(m.find()) {
+			   String activationLink = m.group(1);
+			   LOG.info("Activation link: " + activationLink);
+			   httpGet = new HttpGet(activationLink);
+			   httpclient.execute(httpGet);
+			}
+	    }
+
+		this.userToRegister.setUserState(UserState.Created);
+		// indexes in aliases start from 1
+		final int userIndex = usrMgr.appendCustomUser(userToRegister) + 1;
+		userToRegister.addEmailAlias(ClientUsersManager.EMAIL_ALIAS_TEMPLATE
+				.apply(userIndex));
+		userToRegister.addNameAlias(ClientUsersManager.NAME_ALIAS_TEMPLATE
+				.apply(userIndex));
+		userToRegister
+				.addPasswordAlias(ClientUsersManager.PASSWORD_ALIAS_TEMPLATE
+						.apply(userIndex));
+
+		webappPagesCollection.getPage(LoginPage.class).waitForLogin();
+	}
+
 }

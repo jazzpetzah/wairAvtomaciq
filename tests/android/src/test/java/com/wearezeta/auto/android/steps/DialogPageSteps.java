@@ -1,22 +1,22 @@
 package com.wearezeta.auto.android.steps;
 
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.Assert;
-
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
-import com.wearezeta.auto.android.pages.*;
+import com.wearezeta.auto.android.pages.CallingOverlayPage;
+import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
+import org.junit.Assert;
 
-import cucumber.api.java.en.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DialogPageSteps {
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
@@ -365,7 +365,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I tap conversation details button$")
 	public void WhenITapConversationDetailsBottom() throws Exception {
-		getDialogPage().swipeOnCursorInput();
+		getDialogPage().pressPlusButtonOnDialogPage();
 		getDialogPage().tapConversationDetailsButton();
 	}
 
@@ -681,8 +681,12 @@ public class DialogPageSteps {
 	@Then("^I see a message informing me that I renamed the conversation to (.*)$")
 	public void ThenISeeMessageInformingGroupRename(String newConversationName)
 			throws Exception {
-		Assert.assertEquals(getDialogPage().getChangedGroupNameMessage(),
-				newConversationName);
+		Assert.assertTrue(
+				String.format(
+						"The new conversation name '%s' has not been shown in the conversation view",
+						newConversationName),
+				getDialogPage().waitForConversationNameChangedMessage(
+						newConversationName));
 	}
 
 	/**

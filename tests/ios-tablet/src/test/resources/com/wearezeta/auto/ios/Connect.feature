@@ -629,7 +629,7 @@ Feature: Connect
     And I see dialog page
     And I open group conversation details
     And I select user on iPad group popover <Contact3>
-    And I see <Contact3> user pending profile popover on iPad
+    And I see incoming pending popover from user <Contact3> on iPad
     And I tap on start dialog button on other user profile page
     And I click on Ignore button on Pending requests page
     And I go back to group info page or popover
@@ -745,7 +745,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
       
-  @staging @id3997
+  @regression @id3997
   Scenario Outline: Verify displaying first and last names for the incoming connection request {PORTRAIT}
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to Me
@@ -761,7 +761,7 @@ Feature: Connect
       | Name      | Contact   | NewName  |
       | user1Name | user2Name | New Name | 
 
-  @staging @id3998
+  @regression @id3998
   Scenario Outline: Verify displaying first and last names for the incoming connection request [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to Me

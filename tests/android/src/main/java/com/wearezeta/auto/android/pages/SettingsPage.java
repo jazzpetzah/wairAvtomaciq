@@ -1,39 +1,46 @@
 package com.wearezeta.auto.android.pages;
 
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.common.driver.*;
 
 public class SettingsPage extends AndroidPage {
 
-	private static final String xpathServicesButton = "//*[@value='Services']";
-	@FindBy(xpath = xpathServicesButton)
-	private WebElement servicesButton;
+	private static final String xpathSettingsTitle = "//*[@id='action_bar_container' and .//*[@value='Settings']]";
 
-	private static final String xpathSettingPageTitle = "//*[@id='title' and @value='Settings']";
+	private static final Function<String, String> xpathSettingsMenuItemByText = text -> String
+			.format("//*[@id='title' and @value='%s']", text);
 
-	private static final String xpathSettingPageChangePassword = "//*[@id='title' and @value='Change Password']";
+	private static final Function<String, String> xpathConfirnBtnByName = name -> String
+			.format("//*[starts-with(@id, 'button') and @value='%s']", name);
 
 	public SettingsPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
 
-	public boolean isSettingsPageVisible() throws Exception {
+	public boolean waitUntilVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-			By.xpath(xpathSettingPageTitle), 5);
+				By.xpath(xpathSettingsTitle));
 	}
 
-	public boolean isChangePasswordVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-			By.xpath(xpathSettingPageChangePassword));
+	public void selectMenuItem(String name) throws Exception {
+		final By locator = By.xpath(xpathSettingsMenuItemByText.apply(name));
+		assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator, 2) : String
+				.format("Menu item '%s' is not present", name);
+		getDriver().findElement(locator).click();
 	}
 
-	public void clickServicesButton() throws Exception {
-		servicesButton.click();
-		DriverUtils.waitUntilLocatorDissapears(getDriver(), By.xpath(xpathServicesButton));
+	public boolean isMenuItemVisible(String name) throws Exception {
+		final By locator = By.xpath(xpathSettingsMenuItemByText.apply(name));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public void confirmSignOut() throws Exception {
+		final By locator = By.xpath(xpathConfirnBtnByName.apply("Sign out"));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : "Sign out confirmation is not visible";
+		getDriver().findElement(locator).click();
 	}
 }

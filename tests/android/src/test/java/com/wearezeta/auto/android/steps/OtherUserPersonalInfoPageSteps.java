@@ -1,16 +1,15 @@
 package com.wearezeta.auto.android.steps;
 
-import org.junit.Assert;
-
-import com.wearezeta.auto.android.pages.*;
+import com.wearezeta.auto.android.pages.OtherUserPersonalInfoPage;
+import com.wearezeta.auto.android.pages.UnknownUserDetailsPage;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.junit.Assert;
 
 public class OtherUserPersonalInfoPageSteps {
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
@@ -303,18 +302,6 @@ public class OtherUserPersonalInfoPageSteps {
 						"Chat participant '%s' should not be visible in participants list, but it is",
 						contact), getOtherUserPersonalInfoPage()
 						.isParticipantNotVisible(contact));
-	}
-
-	/**
-	 * Returns to the group chat dialog page
-	 * 
-	 * @step. ^I return to group chat page$
-	 * 
-	 * @throws Exception
-	 */
-	@Then("^I return to group chat page$")
-	public void ThenIReturnToGroupChatPage() throws Exception {
-		getOtherUserPersonalInfoPage().tapCloseButton();
 	}
 
 	/**

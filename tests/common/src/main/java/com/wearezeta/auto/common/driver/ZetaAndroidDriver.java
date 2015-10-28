@@ -1,32 +1,18 @@
 package com.wearezeta.auto.common.driver;
 
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-
-import javax.imageio.ImageIO;
-
+import com.google.common.base.Throwables;
+import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.ocr.OnScreenKeyboardScanner;
+import io.appium.java_client.android.AndroidDriver;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 import org.opencv.core.Rect;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.ScreenOrientation;
-import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.HasTouchScreen;
 import org.openqa.selenium.interactions.TouchScreen;
 import org.openqa.selenium.interactions.touch.TouchActions;
@@ -34,16 +20,16 @@ import org.openqa.selenium.remote.DriverCommand;
 import org.openqa.selenium.remote.RemoteTouchScreen;
 import org.openqa.selenium.remote.Response;
 
-import com.google.common.base.Throwables;
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.ImageUtil;
-import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.ocr.OnScreenKeyboardScanner;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.net.URL;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
 
-import io.appium.java_client.android.AndroidDriver;
-
-public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
-		HasTouchScreen {
+public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements
+		ZetaDriver, HasTouchScreen {
 
 	private static final Logger log = ZetaLogger.getLog(ZetaAndroidDriver.class
 			.getSimpleName());
@@ -83,7 +69,7 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 		this.touch = new RemoteTouchScreen(getExecuteMethod());
 		sessionHelper = new SessionHelper(this);
 		try {
-			androidOSVersion = getAndroidOSVersionString();
+			initOSVersionString();
 		} catch (Exception e) {
 			Throwables.propagate(e);
 		}
@@ -168,8 +154,13 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 		}
 	}
 
-	private static String getAndroidOSVersionString() throws Exception {
-		return getAdbOutput("shell getprop ro.build.version.release").trim();
+	public String getOSVersionString() {
+		return this.androidOSVersion;
+	}
+
+	private void initOSVersionString() throws Exception {
+		this.androidOSVersion = getAdbOutput(
+				"shell getprop ro.build.version.release").trim();
 	}
 
 	@Override

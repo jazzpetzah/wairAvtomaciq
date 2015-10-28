@@ -59,13 +59,13 @@ public class AddEmailAddressPage extends WebPage {
 		return DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						getDriver(),
-						By.cssSelector(WebAppLocators.AddEmailAddressPage.cssRedDotOnEmailField));
+						By.cssSelector(WebAppLocators.AddEmailAddressPage.cssErrorMarkedEmailField));
 	}
 
 	public boolean isRedDotOnPasswordField() throws Exception {
 		return DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						getDriver(),
-						By.cssSelector(WebAppLocators.AddEmailAddressPage.cssRedDotOnPasswordField));
+						By.cssSelector(WebAppLocators.AddEmailAddressPage.cssErrorMarkedPasswordField));
 	}
 }

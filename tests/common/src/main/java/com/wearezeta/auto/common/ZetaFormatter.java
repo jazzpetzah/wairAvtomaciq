@@ -24,17 +24,17 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaDriver;
+import com.wearezeta.auto.common.email_notifier.NotificationSender;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.rc.IRCTestcasesStorage;
 import com.wearezeta.auto.common.rc.RCTestcase;
 import com.wearezeta.auto.common.rc.TestcaseResultAnalyzer;
-import com.wearezeta.auto.zephyr.ExecutedZephyrTestcase;
-import com.wearezeta.auto.zephyr.ZephyrDB;
-import com.wearezeta.auto.zephyr.ZephyrExecutionStatus;
-import com.wearezeta.auto.zephyr.ZephyrTestCycle;
-import com.wearezeta.auto.zephyr.ZephyrTestPhase;
+import com.wearezeta.auto.common.zephyr.ExecutedZephyrTestcase;
+import com.wearezeta.auto.common.zephyr.ZephyrDB;
+import com.wearezeta.auto.common.zephyr.ZephyrExecutionStatus;
+import com.wearezeta.auto.common.zephyr.ZephyrTestCycle;
+import com.wearezeta.auto.common.zephyr.ZephyrTestPhase;
 
-import email_notifier.NotificationSender;
 import gherkin.formatter.Formatter;
 import gherkin.formatter.Reporter;
 import gherkin.formatter.model.Background;

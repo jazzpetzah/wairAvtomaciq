@@ -126,6 +126,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return new By[] {
 				By.xpath(xpathConvOptionsMenuItemByName.apply("BLOCK")),
 				By.xpath(xpathConvOptionsMenuItemByName.apply("SILENCE")),
+				By.xpath(xpathConvOptionsMenuItemByName.apply("DELETE")),
 				By.xpath(xpathConvOptionsMenuItemByName.apply("ARCHIVE")) };
 	}
 
@@ -248,8 +249,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	public void renameGroupChat(String chatName) throws Exception {
 		groupChatNameEditable.clear();
 		groupChatNameEditable.sendKeys(chatName);
-		this.pressEnter();
-		this.pressEsc();
+		this.pressKeyboardSendButton();
 	}
 
 	public void tapOnParticipant(String name) throws Exception {

@@ -1135,4 +1135,26 @@ public class DialogPageSteps {
 		Assert.assertTrue(getDialogPage()
 				.isConnectedToUserStartedConversationLabelVisible(username));
 	}
+	
+	/**
+	 * Long press on the image displayed in the conversation
+	 * 
+	 * @step. ^I longpress on image in the conversation$ 
+	 * @throws Exception
+	 */
+	@When("^I longpress on image in the conversation$")
+  	public void ILongPressOnImage() throws Exception {
+  		getDialogPage().tapHoldImage();
+  	}
+	
+	/**
+	 * Clicking on copy badge/icon/window in conversation
+	 * 
+	 * @step. ^I tap on copy badge$
+	 * @throws Exception
+	 */
+	@When ("^I tap on copy badge$")
+	public void ITapCopyBadge() throws Exception {
+		getDialogPage().clickPopupCopyButton();
+	}
 }
