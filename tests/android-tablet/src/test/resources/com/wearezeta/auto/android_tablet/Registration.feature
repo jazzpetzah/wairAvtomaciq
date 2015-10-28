@@ -69,7 +69,6 @@ Feature: Registration
     When I lock the device
     And I verify my registration via email
     And I unlock the device
-    And I restore the application
     Then I see the Take Registration Picture page
 
     Examples:
@@ -93,7 +92,6 @@ Feature: Registration
     When I lock the device
     And I verify my registration via email
     And I unlock the device
-    And I restore the application
     Then I see the Take Registration Picture page
 
     Examples:
