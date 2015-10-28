@@ -32,9 +32,9 @@ public class ImageUtil {
             String arch = System.getProperty("sun.arch.data.model");
             String libPath = Core.NATIVE_LIBRARY_NAME;
             if ("64".equals(arch)) {
-                libPath = libPath.replaceAll("opencv_java249", "opencv_java249_x64");
+                libPath = libPath.replaceAll("opencv_java249", "opencv_java249_x64.dll");
             }else {
-                libPath = libPath.replaceAll("opencv_java249", "opencv_java249_x86");
+                libPath = libPath.replaceAll("opencv_java249", "opencv_java249_x86.dll");
             }
             System.out.println("Loading OpenCV Lib from "+libPath);
             System.loadLibrary(libPath);
