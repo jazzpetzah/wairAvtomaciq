@@ -243,10 +243,26 @@ public class PeoplePickerPageSteps {
 			throws Exception {
 		try {
 			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
+		}
+		 catch (NoSuchUserException e) {
+			 //Ignore silently
 		}
 		getPeoplePickerPage().selectContact(contact);
+	}
+	
+	/**
+	 * Taps on a group found in the people picker page
+	 * 
+	 * @step. ^I tap on group found on People picker page (.*)$
+	 * 
+	 * @param contact
+	 * @throws Exception
+	 */
+	@When("^I tap on group found on People picker page (.*)$")
+	public void WhenITapOnGroupFoundOnPeoplePickerPage(String contact)
+			throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		getPeoplePickerPage().selectGroup(contact);
 	}
 
 	/**
