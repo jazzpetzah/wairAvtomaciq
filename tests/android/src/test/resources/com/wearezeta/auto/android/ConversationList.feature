@@ -19,7 +19,7 @@ Feature: Conversation List
     #And I navigate back from dialog page
     Then Contact <Contact1> is muted
 
-    Examples:
+    Examples: 
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -40,7 +40,7 @@ Feature: Conversation List
     And I see Contact list
     Then I see PlayPause media content button for conversation <Contact1>
 
-    Examples:
+    Examples: 
       | Name      | Contact1  | SoudCloudLink                                              |
       | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
@@ -61,7 +61,7 @@ Feature: Conversation List
     And I navigate back from dialog page
     Then Contact <Contact1> is not muted
 
-    Examples:
+    Examples: 
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -87,7 +87,7 @@ Feature: Conversation List
     And I tap PlayPause button next to the <Contact1> conversation
     Then I see the state of PlayPause button next to the <Contact1> conversation is changed
 
-    Examples:
+    Examples: 
       | Name      | Contact1  | Contact2  | SoudCloudLink                                              |
       | user1Name | user2Name | user3Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
@@ -114,7 +114,7 @@ Feature: Conversation List
     And I navigate back from dialog page
     Then I see unread messages indicator state is changed for conversation <Contact1>
 
-    Examples:
+    Examples: 
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -147,6 +147,33 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact1  | Message    | Image       | SpotifyLink                                           |
       | user1Name | user2Name | Tschuessii | testing.jpg | https://open.spotify.com/track/0p6GeAWS4VCZddxNbBtEss |
-      
-  @torun @id4043 @staging
+
+  @id4043 @staging
   Scenario Outline: Verify I can delete a group conversation from conversation list
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Contact <Contact1> sends image <Image> to group conversation <GroupChatName>
+    Given User <Contact1> sent message <SpotifyLink> to conversation <GroupChatName>
+    Given User <Contact1> sent message "<Message>" to conversation <GroupChatName>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I tap on contact name <GroupChatName>
+    And I see dialog page
+    And Last message is "<Message>"
+    And I navigate back from dialog page
+    And I swipe right on a <GroupChatName>
+    And I select DELETE from conversation settings menu
+    And I press DELETE on the confirm alert
+    Then I do not see contact list with name <GroupChatName>
+    And I open search by tap
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I enter "<GroupChatName>" into Search input on People Picker page
+    And I tap on group found on People picker page <GroupChatName>
+    And I see dialog page
+    Then I see there is no content in the conversation
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName | Message    | Image       | SpotifyLink                                           |
+      | user1Name | user2Name | user3Name | DELETE        | Tschuessii | testing.jpg | https://open.spotify.com/track/0p6GeAWS4VCZddxNbBtEss |
