@@ -21,6 +21,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import java.util.concurrent.TimeUnit;
 
 public class CommonUtils {
 	public static final String OS_NAME_WINDOWS = "Windows";
@@ -63,7 +64,6 @@ public class CommonUtils {
 		Process process = Runtime.getRuntime().exec(cmd);
 		log.debug("Process started for cmdline " + Arrays.toString(cmd));
 		outputErrorStreamToLog(process.getErrorStream());
-		log.debug("Process exited with code " + process.waitFor());
 		return process.waitFor();
 	}
 
