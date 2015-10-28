@@ -36,11 +36,13 @@ public class PhoneNumberLoginPage extends WebPage {
 
 	public void enterCountryCode(String countryCode) throws Exception {
 		DriverUtils.waitUntilElementClickable(getDriver(), countryCodeField);
+		countryCodeField.click();
 		countryCodeField.clear();
 		countryCodeField.sendKeys(countryCode);
 	}
 
 	public void enterPhoneNumber(String phoneNumber) {
+		phoneNumberField.click();
 		phoneNumberField.clear();
 		phoneNumberField.sendKeys(phoneNumber);
 	}

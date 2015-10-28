@@ -1,5 +1,5 @@
- Feature: Ping
- 
+Feature: Ping
+
   @id2253 @regression @rc
   Scenario Outline: Send ping and ping again to contact in portrait mode
     Given There are 2 users where <Name> is me
@@ -17,7 +17,7 @@
     And I tap Ping button twice in the conversation view
     Then I see the ping message "<Message2>" in the conversation view
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message1   | Message2         |
       | user1Name | user2Name | YOU PINGED | YOU PINGED AGAIN |
 
@@ -38,7 +38,7 @@
     And I tap Ping button twice in the conversation view
     Then I see the ping message "<Message2>" in the conversation view
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message1   | Message2         |
       | user1Name | user2Name | YOU PINGED | YOU PINGED AGAIN |
 
@@ -59,9 +59,9 @@
     Then I see the ping message "<HotPingMessage>" in the conversation view
     And I do not see the ping message "<PingMessage>" in the conversation view
 
-    Examples: 
-      | Name      | Contact1  | Contact2  | GroupChatName  | PingMessage       | HotPingMessage         |
-      | user1Name | user2Name | user3Name | PingChat       | user2Name PINGED  | user2Name PINGED AGAIN |
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | PingMessage      | HotPingMessage         |
+      | user1Name | user2Name | user3Name | PingChat      | user2Name PINGED | user2Name PINGED AGAIN |
 
   @id3262 @regression @rc
   Scenario Outline: Receive "Ping" and "Ping Again" in group conversation (landscape)
@@ -80,6 +80,6 @@
     Then I see the ping message "<HotPingMessage>" in the conversation view
     And I do not see the ping message "<PingMessage>" in the conversation view
 
-    Examples: 
-      | Name      | Contact1  | Contact2  | GroupChatName  | PingMessage       | HotPingMessage         |
-      | user1Name | user2Name | user3Name | PingChat       | user2Name PINGED  | user2Name PINGED AGAIN |
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | PingMessage      | HotPingMessage         |
+      | user1Name | user2Name | user3Name | PingChat      | user2Name PINGED | user2Name PINGED AGAIN |

@@ -50,6 +50,6 @@ Feature: Offline Mode
     Then I see a new picture in the conversation view
     And I see unsent indicator next to new picture in the conversation view
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message    |
       | user1Name | user2Name | My message |

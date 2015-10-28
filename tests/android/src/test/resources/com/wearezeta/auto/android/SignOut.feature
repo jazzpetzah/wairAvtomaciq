@@ -14,6 +14,6 @@ Feature: Sign Out
     And I confirm sign out
     Then I see welcome screen
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |

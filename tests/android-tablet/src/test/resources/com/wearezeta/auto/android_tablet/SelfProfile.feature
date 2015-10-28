@@ -12,7 +12,7 @@ Feature: Self Profile
     And I change my name to <NewName> on Self Profile page
     Then I see my name on Self Profile page
 
-    Examples: 
+    Examples:
       | Name      | NewName     |
       | user1Name | NewTestName |
 
@@ -27,7 +27,7 @@ Feature: Self Profile
     And I change my name to <NewName> on Self Profile page
     Then I see my name on Self Profile page
 
-    Examples: 
+    Examples:
       | Name      | NewName     |
       | user1Name | NewTestName |
 
@@ -86,7 +86,7 @@ Feature: Self Profile
     And I tap in the center of Self Profile page
     Then I verify that my current profile picture is different from the previous one
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -105,7 +105,7 @@ Feature: Self Profile
     And I tap in the center of Self Profile page
     Then I verify that my current profile picture is different from the previous one
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 

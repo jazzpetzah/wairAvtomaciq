@@ -10,6 +10,6 @@ Feature: Registration
     And I confirm selection
     And I see Contact list with no contacts
 
-    Examples: 
-      | AreaCode 	| Name      |
-      | QA-Shortcut	| user1Name |
+    Examples:
+      | AreaCode    | Name      |
+      | QA-Shortcut | user1Name |

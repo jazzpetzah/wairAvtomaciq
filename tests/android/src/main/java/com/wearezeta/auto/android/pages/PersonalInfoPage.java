@@ -11,11 +11,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.android.util.AccentColorUtil;
 
 public class PersonalInfoPage extends AndroidPage {
 
@@ -195,37 +193,5 @@ public class PersonalInfoPage extends AndroidPage {
 				selfProfileClose);
 		selfProfileClose.click();
 		return new ContactListPage(getLazyDriver());
-	}
-
-	public WebElement findCorrectColorPicker() throws Exception {
-		List<WebElement> colorPickers = getDriver().findElements(
-				By.id(idColorPicker));
-		WebElement colorPicker = colorPickers.get(0);
-		int x = colorPicker.getLocation().getX();
-		if (colorPickers.size() > 1) {
-			for (WebElement cp : colorPickers) {
-				if (cp.getLocation().getX() < x) {
-					colorPicker = cp;
-					x = cp.getLocation().getX();
-				}
-			}
-		}
-		return colorPicker;
-	}
-
-	public void chooseColorOnColorPicker(AccentColor color) throws Exception {
-		WebElement colorPicker = findCorrectColorPicker();
-		final int NUMBER_OF_COLORS = 7;
-		int id = color.getId() - 1;
-		int percentX = (100 / NUMBER_OF_COLORS) * id + (100 / NUMBER_OF_COLORS)
-				/ 2;
-		DriverUtils.tapOnPercentOfElement(getDriver(), colorPicker, percentX,
-				50);
-	}
-
-	public AccentColor findSelectedAccentColor() throws Exception {
-		WebElement colorPicker = findCorrectColorPicker();
-		return AccentColorUtil.findSelectedAccentColor(this.getDriver(),
-				colorPicker);
 	}
 }

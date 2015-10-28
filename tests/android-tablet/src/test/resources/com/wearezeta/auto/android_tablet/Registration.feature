@@ -8,7 +8,7 @@ Feature: Registration
     When I tap Register button
     And I see the Registration form
     And I enter the registration name "<Name>"
-    And I enter the registration email "<Email>"  
+    And I enter the registration email "<Email>"
     And I enter the registration password "<Password>"
     And I start listening for registration email
     And I submit the registration data
@@ -22,7 +22,7 @@ Feature: Registration
     And I see the conversations list with no conversations
     And I see my name on Self Profile page
 
-    Examples: 
+    Examples:
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
@@ -34,7 +34,7 @@ Feature: Registration
     When I tap Register button
     And I see the Registration form
     And I enter the registration name "<Name>"
-    And I enter the registration email "<Email>"  
+    And I enter the registration email "<Email>"
     And I enter the registration password "<Password>"
     And I start listening for registration email
     And I submit the registration data
@@ -48,7 +48,7 @@ Feature: Registration
     And I see the conversations list with no conversations
     And I see my name on Self Profile page
 
-    Examples: 
+    Examples:
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
@@ -60,7 +60,7 @@ Feature: Registration
     When I tap Register button
     And I see the Registration form
     And I enter the registration name "<Name>"
-    And I enter the registration email "<Email>"  
+    And I enter the registration email "<Email>"
     And I enter the registration password "<Password>"
     And I start listening for registration email
     And I submit the registration data
@@ -69,10 +69,9 @@ Feature: Registration
     When I lock the device
     And I verify my registration via email
     And I unlock the device
-    And I restore the application
     Then I see the Take Registration Picture page
 
-    Examples: 
+    Examples:
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
@@ -84,7 +83,7 @@ Feature: Registration
     When I tap Register button
     And I see the Registration form
     And I enter the registration name "<Name>"
-    And I enter the registration email "<Email>"  
+    And I enter the registration email "<Email>"
     And I enter the registration password "<Password>"
     And I start listening for registration email
     And I submit the registration data
@@ -93,10 +92,9 @@ Feature: Registration
     When I lock the device
     And I verify my registration via email
     And I unlock the device
-    And I restore the application
     Then I see the Take Registration Picture page
 
-    Examples: 
+    Examples:
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 

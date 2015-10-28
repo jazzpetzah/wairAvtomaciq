@@ -1,5 +1,5 @@
- Feature: Archive
- 
+Feature: Archive
+
   @id2885 @regression @rc
   Scenario Outline: Verify you can archive and unarchive conversation (portrait)
     Given There are 3 users where <Name> is me
@@ -24,7 +24,7 @@
     When I swipe right to show the conversations list
     Then I see the conversation <Contact1> in my conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | ArchiveItem | UnarchiveItem |
       | user1Name | user2Name | user3Name | ARCHIVE     | UNARCHIVE     |
 
@@ -50,6 +50,6 @@
     And I see the conversation view
     And I see the conversation <Contact1> in my conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | ArchiveItem | UnarchiveItem |
       | user1Name | user2Name | user3Name | ARCHIVE     | UNARCHIVE     |

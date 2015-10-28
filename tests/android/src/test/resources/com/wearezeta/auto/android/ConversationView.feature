@@ -12,7 +12,7 @@ Feature: Conversation View
     And I type the message "<Message>" and send it
     Then I see my message "<Message>" in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
@@ -30,7 +30,7 @@ Feature: Conversation View
     And I press "Confirm" button
     Then I see new photo in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -55,7 +55,7 @@ Feature: Conversation View
     And I navigate back from dialog page
     And I see <Contact1> and <Contact2> chat in contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -72,7 +72,7 @@ Feature: Conversation View
     And I type the message "<Message>" and send it
     Then I see my message "<Message>" in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName     | Message |
       | user1Name | user2Name | user3Name | SendMessGroupChat | Yo      |
 
@@ -88,7 +88,7 @@ Feature: Conversation View
     And I type the message "LONG_MESSAGE" and send it
     Then I see my message "LONG_MESSAGE" in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -104,7 +104,7 @@ Feature: Conversation View
     And I type the message "<Message>" and send it
     Then I see my message "<Message>" in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message  |
       | user1Name | user2Name | aaaaAAAA |
 
@@ -123,7 +123,7 @@ Feature: Conversation View
     And I send the message
     Then I see my message "<Message>" in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message                           |
       | user1Name | user2Name | ÄäÖöÜüß simple message in english |
 
@@ -139,7 +139,7 @@ Feature: Conversation View
     And I type the message "<Message>" and send it
     Then I see my message "<Message>" in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message  |
       | user1Name | user2Name | :) ;) :( |
 
@@ -158,7 +158,7 @@ Feature: Conversation View
     And I send the message
     Then I see my message "<Message>" in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message                     |
       | user1Name | user2Name | 畑 はたけ hatake field of crops |
 
@@ -177,7 +177,7 @@ Feature: Conversation View
     And I press "Confirm" button
     Then I see new photo in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -196,7 +196,7 @@ Feature: Conversation View
     And I press "Confirm" button
     Then I see new photo in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -225,7 +225,7 @@ Feature: Conversation View
     And I navigate back from dialog page
     And I see Contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -251,7 +251,7 @@ Feature: Conversation View
     When I scroll to the bottom of conversation view
     Then I verify the state of PlayPause media item button is changed
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | SoudCloudLink                                              |
       | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
@@ -267,7 +267,7 @@ Feature: Conversation View
     And I type the message "<YoutubeLink>" and send it
     Then I see Play button on Youtube container
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | YoutubeLink                                 |
       | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs |
 
@@ -287,7 +287,7 @@ Feature: Conversation View
     And I select last photo in dialog
     And I verify that my sketch in fullscreen is the same as what I drew
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | NumColors |
       | user1Name | user2Name | 6         |
 
@@ -310,7 +310,7 @@ Feature: Conversation View
     And I select last photo in dialog
     And I verify that my sketch in fullscreen is the same as what I drew
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | NumColors |
       | user1Name | user2Name | 6         |
 
@@ -332,7 +332,7 @@ Feature: Conversation View
     And I select last photo in dialog
     And I verify that my sketch in fullscreen is the same as what I drew
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | NumColors |
       | user1Name | user2Name | 6         |
 
@@ -353,7 +353,7 @@ Feature: Conversation View
     And I see new photo in the dialog
     And Last message is <Message> · via giphy.com
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
@@ -371,6 +371,6 @@ Feature: Conversation View
     When I select last photo in dialog
     Then I see the picture in the preview is animated
 
-    Examples: 
+    Examples:
       | Name      | Contact   | GifName      |
       | user1Name | user2Name | animated.gif |
