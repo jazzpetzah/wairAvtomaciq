@@ -29,7 +29,13 @@ public class ImageUtil {
 	public static final int RESIZE_TO_MAX_SCORE = 7;
 
 	static {
+            String arch = System.getProperty("sun.arch.data.model");
+            System.out.println("OPENCV LIBRARY: "+Core.NATIVE_LIBRARY_NAME);
+            if ("32".equals(arch)) {
+                System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+            }else{
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+            }
 	}
 
 	private static Mat convertImageToOpenCVMat(BufferedImage image) {
