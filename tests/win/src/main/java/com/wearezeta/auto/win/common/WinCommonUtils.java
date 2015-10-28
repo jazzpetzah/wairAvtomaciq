@@ -11,6 +11,7 @@ import com.wearezeta.auto.common.driver.NSPoint;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import static com.wearezeta.auto.win.common.WinExecutionContext.WIRE_APP_CACHE_FOLDER;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import org.openqa.selenium.Dimension;
@@ -66,7 +67,7 @@ public class WinCommonUtils extends CommonUtils {
 
 	public static int clearAppData() throws Exception {
             
-		final String[] commands = new String[] {"cmd", "/c" ,"DEL /F /S /Q /A \"C:\\Users\\Michael\\AppData\\Roaming\\Wire\\*\""};
+		final String[] commands = new String[] {"cmd", "/c" , String.format("DEL /F /S /Q /A \"%s*\"",WIRE_APP_CACHE_FOLDER)};
 
 		LOG.debug("executing command: " + Arrays.toString(commands));
 		return executeOsXCommand(commands);

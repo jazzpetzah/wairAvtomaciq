@@ -24,6 +24,7 @@
         <extendedLoggingLevel>SEVERE</extendedLoggingLevel>
         <com.wire.app.folder>/Users/Michael/AppData/Local/wire/</com.wire.app.folder>
         <com.wire.app.path>app-2.0.2458/Wire.exe</com.wire.app.path>
+        <com.wire.app.cache.folder>/Users/Michael/AppData/Roaming/Wire/</com.wire.app.cache.folder>
         <com.wire.winium.url>http://127.0.0.1:9999/</com.wire.winium.url>
         <com.wire.winium.path>TODO</com.wire.winium.path>
         <com.wire.chromedriver.path>/Users/Michael/Desktop/chromedriver.exe</com.wire.chromedriver.path>
@@ -173,6 +174,7 @@
                         <com.wire.browser.version>${com.wire.browser.version}</com.wire.browser.version>
                         <com.wire.app.folder>${com.wire.app.folder}</com.wire.app.folder>
                         <com.wire.app.path>${com.wire.app.path}</com.wire.app.path>
+                        <com.wire.app.cache.folder>${com.wire.app.cache.folder}</com.wire.app.cache.folder>
                         <com.wire.winium.url>${com.wire.appium.hub.url}</com.wire.winium.url>
                         <com.wire.winium.path>${com.wire.appium.mac.path}</com.wire.winium.path>
                         <com.wire.chromedriver.path>${com.wire.chromedriver.path}</com.wire.chromedriver.path>

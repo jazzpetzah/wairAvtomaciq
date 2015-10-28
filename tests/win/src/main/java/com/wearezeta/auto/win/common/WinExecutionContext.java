@@ -19,6 +19,9 @@ public class WinExecutionContext {
         
 	public static final String WIRE_APP_PATH = System.getProperty(
 			"com.wire.app.path", "app-2.0.2443\\Wire.exe");
+        
+        public static final String WIRE_APP_CACHE_FOLDER = System.getProperty(
+			"com.wire.app.cache.folder", "C:\\Users\\Michael\\AppData\\Roaming\\Wire\\");
 
 	public static final String OS_NAME = System.getProperty("com.wire.os.name",
 			"Win");
