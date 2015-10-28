@@ -11,6 +11,7 @@ import com.wearezeta.auto.common.driver.NSPoint;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -80,7 +81,7 @@ public class WinCommonUtils extends CommonUtils {
 
 	public static long getSizeOfAppInMB() throws Exception {
 		final String[] commands = new String[] { "cmd", "/c",
-				String.format("powershell -noprofile -command \"(Get-ChildItem %s -recurse | Measure-Object -property length -sum).sum / 1MB\"", WinExecutionContext.WIRE_APP_FOLDER) };
+				String.format("powershell -noprofile -command \"(Get-ChildItem %s -recurse | Measure-Object -property length -sum).sum / 1MB\"", Paths.get(WinExecutionContext.WIRE_APP_FOLDER)) };
 		String stringResult = executeOsXCommandWithOutput(commands);
                 LOG.debug("stringResult: " + stringResult);
 		stringResult = stringResult.trim().split("\\.")[0];
