@@ -535,6 +535,25 @@ public class CommonAndroidSteps {
         commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstUserNameAlias,
                 (msg == null || msg.trim().length() == 0) ? CommonUtils.generateRandomString(10) : msg.trim());
     }
+    
+    /**
+	 * Send message to a conversation
+	 * 
+	 * @step. ^User (.*) sent message (.*) to conversation (.*)$
+	 * @param userFromNameAlias
+	 *            user who want to mute conversation
+	 * @param message
+	 *            message to send
+	 * @param conversationName
+	 *            the name of existing conversation to send the message to
+	 * @throws Exception
+	 */
+	@When("^User (.*) sent message (.*) to conversation (.*)$")
+	public void UserSentMessageToConversation(String userFromNameAlias,
+			String message, String conversationName) throws Exception {
+		commonSteps.UserSentMessageToConversation(userFromNameAlias,
+				conversationName, message);
+	}
 
     /**
      * Send messages from all registered user to myself (these users have to be
