@@ -15,7 +15,7 @@ Feature: Conversation View
     And I send the typed message in the conversation view
     Then I see the message "<Message>" in the conversation view
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
@@ -34,7 +34,7 @@ Feature: Conversation View
     And I send the typed message in the conversation view
     Then I see the message "<Message>" in the conversation view
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
@@ -55,7 +55,7 @@ Feature: Conversation View
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -75,7 +75,7 @@ Feature: Conversation View
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -147,7 +147,7 @@ Feature: Conversation View
     And I send the typed message in the conversation view
     Then I see the message "<Message>" in the conversation view
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName     | Message |
       | user1Name | user2Name | user3Name | SendMessGroupChat | Yo      |
 
@@ -167,7 +167,7 @@ Feature: Conversation View
     And I send the typed message in the conversation view
     Then I see the message "<Message>" in the conversation view
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName     | Message |
       | user1Name | user2Name | user3Name | SendMessGroupChat | Yo      |
 
@@ -201,7 +201,7 @@ Feature: Conversation View
     When I navigate back
     Then I do not see the Single user popover
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Orientation |
       | user1Name | user2Name | landscape   |
       | user1Name | user2Name | portrait    |
@@ -230,7 +230,7 @@ Feature: Conversation View
     When I rotate UI to portrait
     Then I do not see the Single user popover
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -251,7 +251,7 @@ Feature: Conversation View
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ChatWithImg   |
 
@@ -272,7 +272,7 @@ Feature: Conversation View
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ChatWithImg   |
 
@@ -292,7 +292,7 @@ Feature: Conversation View
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -312,7 +312,7 @@ Feature: Conversation View
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 

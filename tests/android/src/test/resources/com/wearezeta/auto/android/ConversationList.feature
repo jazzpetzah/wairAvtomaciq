@@ -19,7 +19,7 @@ Feature: Conversation List
     #And I navigate back from dialog page
     Then Contact <Contact1> is muted
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -40,7 +40,7 @@ Feature: Conversation List
     And I see Contact list
     Then I see PlayPause media content button for conversation <Contact1>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | SoudCloudLink                                              |
       | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
@@ -61,7 +61,7 @@ Feature: Conversation List
     And I navigate back from dialog page
     Then Contact <Contact1> is not muted
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -87,7 +87,7 @@ Feature: Conversation List
     And I tap PlayPause button next to the <Contact1> conversation
     Then I see the state of PlayPause button next to the <Contact1> conversation is changed
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | SoudCloudLink                                              |
       | user1Name | user2Name | user3Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
@@ -114,6 +114,6 @@ Feature: Conversation List
     And I navigate back from dialog page
     Then I see unread messages indicator state is changed for conversation <Contact1>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |

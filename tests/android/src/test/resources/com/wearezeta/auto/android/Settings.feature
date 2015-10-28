@@ -12,7 +12,7 @@ Feature: Settings
     When I press back button
     Then I see personal info page
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -28,7 +28,7 @@ Feature: Settings
     And I tap about button
     Then I do not see About page
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -44,6 +44,6 @@ Feature: Settings
     When I tap on About page
     Then I see personal info page
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |

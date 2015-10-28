@@ -10,7 +10,7 @@ Feature: Sign In
     And I press Log in button
     Then I see Contact list with no contacts
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
@@ -56,6 +56,6 @@ Feature: Sign In
     And I press Log in button
     Then I see error message "<ErrMessage>"
 
-    Examples: 
-      | Login   | Password | ErrMessage                          |
-      | aaa     | aaa      | Please enter a valid email address. |
+    Examples:
+      | Login | Password | ErrMessage                          |
+      | aaa   | aaa      | Please enter a valid email address. |

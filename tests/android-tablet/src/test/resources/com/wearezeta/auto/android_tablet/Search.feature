@@ -27,7 +27,7 @@ Feature: Search
     When I do short swipe down on conversations list
     Then I do not see People Picker page
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -58,7 +58,7 @@ Feature: Search
     When I do short swipe down on conversations list
     Then I do not see People Picker page
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -75,7 +75,7 @@ Feature: Search
     When I swipe right to show the conversations list
     Then I see People Picker page
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -99,7 +99,7 @@ Feature: Search
     And I swipe right to show the conversations list
     Then I see the Conversations list with no conversations
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -119,7 +119,7 @@ Feature: Search
     And I ignore incoming connection request from <Contact> on Incoming connections page
     Then I see the Conversations list with no conversations
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 

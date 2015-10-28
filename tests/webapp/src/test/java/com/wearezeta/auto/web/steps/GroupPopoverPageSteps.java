@@ -28,8 +28,8 @@ public class GroupPopoverPageSteps {
 	private static final String TOOLTIP_REMOVE_FROM_CONVERSATION = "Remove from conversation";
 	private static final String TOOLTIP_LEAVE_CONVERSATION = "Leave conversation";
 	private static final String TOOLTIP_ADD_PEOPLE_TO_CONVERSATION = "Add people to conversation";
-	private static final String SHORTCUT_ADD_PEOPLE_TO_CONVERSATION_WIN = "(Ctrl + Alt + Shift + E)";
-	private static final String SHORTCUT_ADD_PEOPLE_TO_CONVERSATION_MAC = "(⌘⌥⇧E)";
+	private static final String SHORTCUT_ADD_PEOPLE_TO_CONVERSATION_WIN = "(Ctrl + Shift + K)";
+	private static final String SHORTCUT_ADD_PEOPLE_TO_CONVERSATION_MAC = "(⌘⌥⇧K)";
 	private static final String TOOLTIP_BACK = "Back";
 	private static final String TOOLTIP_OPEN_CONVERSATION = "Open conversation";
 	private static final String TOOLTIP_CHANGE_CONVERSATION_NAME = "Change conversation name";

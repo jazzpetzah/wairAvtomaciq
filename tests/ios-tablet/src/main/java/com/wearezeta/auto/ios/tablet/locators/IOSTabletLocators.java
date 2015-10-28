@@ -1,6 +1,8 @@
 package com.wearezeta.auto.ios.tablet.locators;
 
 public final class IOSTabletLocators {
+	
+	public static final String xpathPopover = "//UIAPopover[@visible='true']";
 
 	public static final class CameraRollTabletPopoverPage {
 

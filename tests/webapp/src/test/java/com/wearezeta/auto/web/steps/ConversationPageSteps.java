@@ -40,8 +40,8 @@ public class ConversationPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private static final String TOOLTIP_PING = "Ping";
-	private static final String SHORTCUT_PING_WIN = "(Ctrl + Alt + G)";
-	private static final String SHORTCUT_PING_MAC = "(⌘⌥G)";
+	private static final String SHORTCUT_PING_WIN = "(Ctrl + Alt + K)";
+	private static final String SHORTCUT_PING_MAC = "(⌘⌥K)";
 	private static final String TOOLTIP_CALL = "Call";
 	private static final String SHORTCUT_CALL_WIN = "(Ctrl + Alt + R)";
 	private static final String SHORTCUT_CALL_MAC = "(⌘⌥R)";

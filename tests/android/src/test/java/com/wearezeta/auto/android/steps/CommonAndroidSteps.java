@@ -42,18 +42,13 @@ import java.util.logging.Level;
 
 public class CommonAndroidSteps {
 	static {
-		System.setProperty("org.apache.commons.logging.Log",
-				"org.apache.commons.logging.impl.SimpleLog");
-		System.setProperty(
-				"org.apache.commons.logging.simplelog.log.org.apache.http",
-				"warn");
+		System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
+		System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http", "warn");
 	}
 
-	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
-			.getInstance();
+	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
 
-	private static final Logger log = ZetaLogger
-			.getLog(CommonAndroidSteps.class.getSimpleName());
+	private static final Logger log = ZetaLogger.getLog(CommonAndroidSteps.class.getSimpleName());
 
 	private static ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
@@ -65,18 +60,15 @@ public class CommonAndroidSteps {
 	private static final String DEFAULT_USER_AVATAR = "aqaPictureContact600_800.jpg";
 
 	private static String getUrl() throws Exception {
-		return CommonUtils
-				.getAndroidAppiumUrlFromConfig(CommonAndroidSteps.class);
+		return CommonUtils.getAndroidAppiumUrlFromConfig(CommonAndroidSteps.class);
 	}
 
 	private static String getPath() throws Exception {
-		return CommonUtils
-				.getAndroidApplicationPathFromConfig(CommonAndroidSteps.class);
+		return CommonUtils.getAndroidApplicationPathFromConfig(CommonAndroidSteps.class);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Future<ZetaAndroidDriver> resetAndroidDriver(String url,
-			String path, Class<?> cls) throws Exception {
+	public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path, Class<?> cls) throws Exception {
 		final DesiredCapabilities capabilities = new DesiredCapabilities();
 		LoggingPreferences object = new LoggingPreferences();
 		object.enable("logcat", Level.ALL);
@@ -85,28 +77,21 @@ public class CommonAndroidSteps {
 		// To init the first available device
 		capabilities.setCapability("deviceName", "null");
 		capabilities.setCapability("app", path);
-		capabilities.setCapability("appPackage",
-				CommonUtils.getAndroidPackageFromConfig(cls));
-		capabilities.setCapability("appActivity",
-				CommonUtils.getAndroidActivityFromConfig(cls));
-		capabilities.setCapability("appWaitActivity",
-				CommonUtils.getAndroidWaitActivitiesFromConfig(cls));
+		capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(cls));
+		capabilities.setCapability("appActivity", CommonUtils.getAndroidActivityFromConfig(cls));
+		capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidWaitActivitiesFromConfig(cls));
 		capabilities.setCapability("applicationName", "selendroid");
 		capabilities.setCapability("automationName", "selendroid");
 
 		try {
-			return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
-					.resetDriver(url, capabilities, 1,
-							this::onDriverInitFinished,
-							this::onDriverInitStarted);
+			return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance().resetDriver(url, capabilities, 1,
+					this::onDriverInitFinished, this::onDriverInitStarted);
 		} catch (SessionNotCreatedException e) {
 			// Unlock the screen and retry
 			AndroidCommonUtils.unlockScreen();
 			Thread.sleep(5000);
-			return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
-					.resetDriver(url, capabilities, 1,
-							this::onDriverInitFinished,
-							this::onDriverInitStarted);
+			return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance().resetDriver(url, capabilities, 1,
+					this::onDriverInitFinished, this::onDriverInitStarted);
 		}
 	}
 
@@ -116,9 +101,7 @@ public class CommonAndroidSteps {
 			AndroidCommonUtils.disableHints();
 			AndroidCommonUtils.disableHockeyUpdates();
 			AndroidCommonUtils.installTestingGalleryApp(this.getClass());
-			String backendJSON = AndroidCommonUtils
-					.createBackendJSON(CommonUtils.getBackendType(this
-							.getClass()));
+			String backendJSON = AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(this.getClass()));
 			AndroidCommonUtils.deployBackendFile(backendJSON);
 		} catch (Exception e) {
 			Throwables.propagate(e);
@@ -131,8 +114,7 @@ public class CommonAndroidSteps {
 	@SuppressWarnings("unused")
 	private void closeUpdateAlertIfAppears(RemoteWebDriver drv, By locator) {
 		try {
-			if (DriverUtils.waitUntilLocatorIsDisplayed(drv, locator,
-					UPDATE_ALERT_VISIBILITY_TIMEOUT)) {
+			if (DriverUtils.waitUntilLocatorIsDisplayed(drv, locator, UPDATE_ALERT_VISIBILITY_TIMEOUT)) {
 				drv.findElement(locator).click();
 			}
 		} catch (Exception e) {
@@ -163,9 +145,9 @@ public class CommonAndroidSteps {
 			}
 		} while (System.currentTimeMillis() - millisecondsStarted <= INTERFACE_INIT_TIMEOUT_MILLISECONDS);
 		if (System.currentTimeMillis() - millisecondsStarted > INTERFACE_INIT_TIMEOUT_MILLISECONDS) {
-			log.error(String
-					.format("UI views have not been initialized properly after %s seconds. Restarting Selendroid usually helps ;-)",
-							INTERFACE_INIT_TIMEOUT_MILLISECONDS));
+			log.error(String.format(
+					"UI views have not been initialized properly after %s seconds. Restarting Selendroid usually helps ;-)",
+					INTERFACE_INIT_TIMEOUT_MILLISECONDS));
 			throw savedException;
 		}
 		// Break the glass in case of fire!
@@ -176,8 +158,7 @@ public class CommonAndroidSteps {
 
 	private void initFirstPage() throws Exception {
 		AndroidLogListener.getInstance(ListenerType.DEFAULT).start();
-		final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(
-				getUrl(), getPath(), this.getClass());
+		final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), getPath(), this.getClass());
 		pagesCollection.setFirstPage(new WelcomePage(lazyDriver));
 		ZetaFormatter.setLazyDriver(lazyDriver);
 	}
@@ -219,6 +200,7 @@ public class CommonAndroidSteps {
 	 * Hides the system keyboard
 	 * 
 	 * @step. ^I hide keyboard$
+	 * 
 	 * @throws Exception
 	 * 
 	 */
@@ -229,14 +211,12 @@ public class CommonAndroidSteps {
 
 	@When("^I swipe right$")
 	public void ISwipeRight() throws Exception {
-		pagesCollection.getCommonPage().swipeRightCoordinates(
-				DEFAULT_SWIPE_TIME);
+		pagesCollection.getCommonPage().swipeRightCoordinates(DEFAULT_SWIPE_TIME);
 	}
 
 	@When("^I swipe left$")
 	public void ISwipeLeft() throws Exception {
-		pagesCollection.getCommonPage()
-				.swipeLeftCoordinates(DEFAULT_SWIPE_TIME);
+		pagesCollection.getCommonPage().swipeLeftCoordinates(DEFAULT_SWIPE_TIME);
 	}
 
 	@When("^I swipe up$")
@@ -246,13 +226,11 @@ public class CommonAndroidSteps {
 
 	@When("^I swipe down$")
 	public void ISwipeDown() throws Exception {
-		pagesCollection.getCommonPage()
-				.swipeDownCoordinates(DEFAULT_SWIPE_TIME);
+		pagesCollection.getCommonPage().swipeDownCoordinates(DEFAULT_SWIPE_TIME);
 	}
 
 	public void commonBefore() throws Exception {
-		ZetaFormatter.setBuildNumber(AndroidCommonUtils
-				.readClientVersionFromAdb());
+		ZetaFormatter.setBuildNumber(AndroidCommonUtils.readClientVersionFromAdb());
 	}
 
 	/**
@@ -292,18 +270,17 @@ public class CommonAndroidSteps {
 	 * Takes screenshot for comparison
 	 * 
 	 * @step. ^I take screenshot$
+	 * 
 	 * @throws Exception
 	 * 
 	 */
 	@When("^I take screenshot$")
 	public void WhenITake1stScreenshot() throws Exception {
-		final Optional<BufferedImage> screenshot = pagesCollection
-				.getCommonPage().takeScreenshot();
+		final Optional<BufferedImage> screenshot = pagesCollection.getCommonPage().takeScreenshot();
 		if (screenshot.isPresent()) {
 			images.add(screenshot.get());
 		} else {
-			throw new RuntimeException(
-					"Selenium has failed to take the screenshot from current page");
+			throw new RuntimeException("Selenium has failed to take the screenshot from current page");
 		}
 	}
 
@@ -337,13 +314,13 @@ public class CommonAndroidSteps {
 	 * Restores the application from a minimized state.
 	 * 
 	 * @step. ^I restore the application$
+	 * 
 	 * @throws Exception
 	 * 
 	 */
 	@When("^I restore the application$")
 	public void IRestoreApllication() throws Exception {
-		AndroidCommonUtils.switchToApplication(
-				CommonUtils.getAndroidPackageFromConfig(this.getClass()),
+		AndroidCommonUtils.switchToApplication(CommonUtils.getAndroidPackageFromConfig(this.getClass()),
 				CommonUtils.getAndroidActivityFromConfig(this.getClass()));
 	}
 
@@ -359,10 +336,8 @@ public class CommonAndroidSteps {
 	 * 
 	 */
 	@Given("^(.*) sent connection request to (.*)$")
-	public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
-			String usersToNameAliases) throws Throwable {
-		commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
-				usersToNameAliases);
+	public void GivenConnectionRequestIsSentTo(String userFromNameAlias, String usersToNameAliases) throws Throwable {
+		commonSteps.ConnectionRequestIsSentTo(userFromNameAlias, usersToNameAliases);
 	}
 
 	/**
@@ -381,10 +356,8 @@ public class CommonAndroidSteps {
 	 * 
 	 */
 	@Given("^(.*) has an avatar picture from file (.*)$")
-	public void GivenUserHasAnAvatarPicture(String name, String picture)
-			throws Throwable {
-		String picturePath = CommonUtils
-				.getImagesPath(CommonAndroidSteps.class) + "/" + picture;
+	public void GivenUserHasAnAvatarPicture(String name, String picture) throws Throwable {
+		String picturePath = CommonUtils.getImagesPath(CommonAndroidSteps.class) + "/" + picture;
 		try {
 			name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		} catch (NoSuchUserException e) {
@@ -407,8 +380,7 @@ public class CommonAndroidSteps {
 	 * 
 	 */
 	@Given("^(.*) has an accent color (.*)$")
-	public void GivenUserHasAnAccentColor(String name, String colorName)
-			throws Throwable {
+	public void GivenUserHasAnAccentColor(String name, String colorName) throws Throwable {
 		try {
 			name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		} catch (NoSuchUserException e) {
@@ -455,8 +427,7 @@ public class CommonAndroidSteps {
 	 * 
 	 */
 	@Given("^(.*) is connected to (.*)$")
-	public void UserIsConnectedTo(String userFromNameAlias,
-			String usersToNameAliases) throws Exception {
+	public void UserIsConnectedTo(String userFromNameAlias, String usersToNameAliases) throws Exception {
 		System.out.println("userFromAlias: " + userFromNameAlias);
 		System.out.println("usersToNameAliases: " + usersToNameAliases);
 		commonSteps.UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
@@ -478,8 +449,7 @@ public class CommonAndroidSteps {
 	 * 
 	 */
 	@Given("^(.*) is silenced to user (.*)$")
-	public void UserIsSilenced(String mutedUser, String otherUser)
-			throws Exception {
+	public void UserIsSilenced(String mutedUser, String otherUser) throws Exception {
 		mutedUser = usrMgr.findUserByNameOrNameAlias(mutedUser).getName();
 		otherUser = usrMgr.findUserByNameOrNameAlias(otherUser).getName();
 
@@ -501,8 +471,7 @@ public class CommonAndroidSteps {
 	 * 
 	 */
 	@Given("^(.*) is unarchived group chat (.*)$")
-	public void UserIsUnarchivedGroupChat(String currentUser, String groupChat)
-			throws Exception {
+	public void UserIsUnarchivedGroupChat(String currentUser, String groupChat) throws Exception {
 		currentUser = usrMgr.findUserByNameOrNameAlias(currentUser).getName();
 
 		commonSteps.UnarchiveConversationWithGroup(currentUser, groupChat);
@@ -525,11 +494,9 @@ public class CommonAndroidSteps {
 	 * 
 	 */
 	@Given("^(.*) has group chat (.*) with (.*)$")
-	public void UserHasGroupChatWithContacts(String chatOwnerNameAlias,
-			String chatName, String otherParticipantsNameAliases)
-			throws Exception {
-		commonSteps.UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName,
-				otherParticipantsNameAliases);
+	public void UserHasGroupChatWithContacts(String chatOwnerNameAlias, String chatName,
+			String otherParticipantsNameAliases) throws Exception {
+		commonSteps.UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName, otherParticipantsNameAliases);
 	}
 
 	/**
@@ -544,8 +511,7 @@ public class CommonAndroidSteps {
 	 * 
 	 */
 	@When("^(.*) ignore all requests$")
-	public void IgnoreAllIncomingConnectRequest(String userToNameAlias)
-			throws Exception {
+	public void IgnoreAllIncomingConnectRequest(String userToNameAlias) throws Exception {
 		commonSteps.IgnoreAllIncomingConnectRequest(userToNameAlias);
 	}
 
@@ -578,8 +544,7 @@ public class CommonAndroidSteps {
 	 * 
 	 */
 	@When("^User (.*) blocks user (.*)$")
-	public void BlockContact(String blockAsUserNameAlias,
-			String userToBlockNameAlias) throws Exception {
+	public void BlockContact(String blockAsUserNameAlias, String userToBlockNameAlias) throws Exception {
 		commonSteps.BlockContact(blockAsUserNameAlias, userToBlockNameAlias);
 	}
 
@@ -592,8 +557,7 @@ public class CommonAndroidSteps {
 	 * 
 	 */
 	@When("^(.*) accept all requests$")
-	public void AcceptAllIncomingConnectionRequests(String userToNameAlias)
-			throws Exception {
+	public void AcceptAllIncomingConnectionRequests(String userToNameAlias) throws Exception {
 		commonSteps.AcceptAllIncomingConnectionRequests(userToNameAlias);
 	}
 
@@ -611,10 +575,8 @@ public class CommonAndroidSteps {
 	 * 
 	 */
 	@When("^Contact (.*) ping conversation (.*)$")
-	public void UserPingedConversation(String pingFromUserNameAlias,
-			String dstConversationName) throws Exception {
-		commonSteps.UserPingedConversation(pingFromUserNameAlias,
-				dstConversationName);
+	public void UserPingedConversation(String pingFromUserNameAlias, String dstConversationName) throws Exception {
+		commonSteps.UserPingedConversation(pingFromUserNameAlias, dstConversationName);
 	}
 
 	/**
@@ -631,10 +593,9 @@ public class CommonAndroidSteps {
 	 * 
 	 */
 	@When("^Contact (.*) hotping conversation (.*)$")
-	public void UserHotPingedConversation(String hotPingFromUserNameAlias,
-			String dstConversationName) throws Exception {
-		commonSteps.UserHotPingedConversation(hotPingFromUserNameAlias,
-				dstConversationName);
+	public void UserHotPingedConversation(String hotPingFromUserNameAlias, String dstConversationName)
+			throws Exception {
+		commonSteps.UserHotPingedConversation(hotPingFromUserNameAlias, dstConversationName);
 	}
 
 	/**
@@ -653,13 +614,10 @@ public class CommonAndroidSteps {
 	 * 
 	 */
 	@When("^Contact (.*) send message (.*)to user (.*)$")
-	public void UserSendMessageToConversation(String msgFromUserNameAlias,
-			String msg, String dstUserNameAlias) throws Exception {
-		commonSteps.UserSentMessageToUser(
-				msgFromUserNameAlias,
-				dstUserNameAlias,
-				(msg == null || msg.trim().length() == 0) ? CommonUtils
-						.generateRandomString(10) : msg.trim());
+	public void UserSendMessageToConversation(String msgFromUserNameAlias, String msg, String dstUserNameAlias)
+			throws Exception {
+		commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstUserNameAlias,
+				(msg == null || msg.trim().length() == 0) ? CommonUtils.generateRandomString(10) : msg.trim());
 	}
 
 	/**
@@ -676,8 +634,7 @@ public class CommonAndroidSteps {
 	public void AllContactsSendMeAMessage(String message) throws Exception {
 		for (ClientUser user : usrMgr.getCreatedUsers()) {
 			if (!user.getName().equals(usrMgr.getSelfUser().getName())) {
-				commonSteps.UserSentMessageToUser(user.getName(), usrMgr
-						.getSelfUser().getName(), message);
+				commonSteps.UserSentMessageToUser(user.getName(), usrMgr.getSelfUser().getName(), message);
 			}
 		}
 	}
@@ -698,11 +655,10 @@ public class CommonAndroidSteps {
 	 * 
 	 */
 	@When("^Contact (.*) send[s]* (\\d+) messages? to user (.*)$")
-	public void UserSendXMessagesToConversation(String msgFromUserNameAlias,
-			int count, String dstUserNameAlias) throws Exception {
+	public void UserSendXMessagesToConversation(String msgFromUserNameAlias, int count, String dstUserNameAlias)
+			throws Exception {
 		for (int i = 0; i < count; i++) {
-			UserSendMessageToConversation(msgFromUserNameAlias, null,
-					dstUserNameAlias);
+			UserSendMessageToConversation(msgFromUserNameAlias, null, dstUserNameAlias);
 		}
 	}
 
@@ -720,10 +676,8 @@ public class CommonAndroidSteps {
 	 * 
 	 */
 	@Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
-	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
-			throws Throwable {
-		commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count,
-				myNameAlias);
+	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias) throws Throwable {
+		commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count, myNameAlias);
 		GivenUserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
 	}
 
@@ -742,8 +696,7 @@ public class CommonAndroidSteps {
 	 * 
 	 */
 	@Given("^There \\w+ (\\d+) shared user[s]* with name prefix ([\\w\\.]+)$")
-	public void ThereAreNSharedUsersWithNamePrefix(int count, String namePrefix)
-			throws Exception {
+	public void ThereAreNSharedUsersWithNamePrefix(int count, String namePrefix) throws Exception {
 		commonSteps.ThereAreNSharedUsersWithNamePrefix(count, namePrefix);
 	}
 
@@ -781,8 +734,7 @@ public class CommonAndroidSteps {
 	 * 
 	 */
 	@Given("^(\\w+) waits? until (.*) exists in backend search results$")
-	public void UserWaitsUntilContactExistsInHisSearchResults(
-			String searchByNameAlias, String query) throws Exception {
+	public void UserWaitsUntilContactExistsInHisSearchResults(String searchByNameAlias, String query) throws Exception {
 		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
 	}
 
@@ -802,10 +754,8 @@ public class CommonAndroidSteps {
 	 * 
 	 */
 	@Given("^(\\w+) waits? until (.*) is blocked in backend search results$")
-	public void UserWaitsUntilContactIsBlockedInSearchResults(
-			String searchByNameAlias, String query) throws Exception {
-		commonSteps.WaitUntilContactBlockStateInSearch(searchByNameAlias,
-				query, true);
+	public void UserWaitsUntilContactIsBlockedInSearchResults(String searchByNameAlias, String query) throws Exception {
+		commonSteps.WaitUntilContactBlockStateInSearch(searchByNameAlias, query, true);
 	}
 
 	/**
@@ -813,7 +763,7 @@ public class CommonAndroidSteps {
 	 * search results
 	 * 
 	 * @step. ^(\\w+) waits? until (.*) does not exist in backend search
-	 *        results$
+	 * results$
 	 * 
 	 * @param searchByNameAlias
 	 *            the user to search for in the query results.
@@ -828,11 +778,9 @@ public class CommonAndroidSteps {
 	 * 
 	 */
 	@Given("^(\\w+) waits? (\\d+) seconds? until (.*) does not exist in backend search results$")
-	public void UserWaitsUntilContactDoesNotExistsInHisSearchResults(
-			String searchByNameAlias, int timeoutSeconds, String query)
-			throws Exception {
-		commonSteps.WaitUntilContactIsNotFoundInSearch(searchByNameAlias,
-				query, timeoutSeconds);
+	public void UserWaitsUntilContactDoesNotExistsInHisSearchResults(String searchByNameAlias, int timeoutSeconds,
+			String query) throws Exception {
+		commonSteps.WaitUntilContactIsNotFoundInSearch(searchByNameAlias, query, timeoutSeconds);
 	}
 
 	/**
@@ -855,11 +803,9 @@ public class CommonAndroidSteps {
 	 * 
 	 */
 	@When("^Contact (.*) sends image (.*) to (.*) conversation (.*)")
-	public void ContactSendImageToConversation(String imageSenderUserNameAlias,
-			String imageFileName, String conversationType,
-			String dstConversationName) throws Exception {
-		String imagePath = CommonUtils.getImagesPath(CommonAndroidSteps.class)
-				+ imageFileName;
+	public void ContactSendImageToConversation(String imageSenderUserNameAlias, String imageFileName,
+			String conversationType, String dstConversationName) throws Exception {
+		String imagePath = CommonUtils.getImagesPath(CommonAndroidSteps.class) + imageFileName;
 		Boolean isGroup = null;
 		if (conversationType.equals("single user")) {
 			isGroup = false;
@@ -867,11 +813,9 @@ public class CommonAndroidSteps {
 			isGroup = true;
 		}
 		if (isGroup == null) {
-			throw new Exception(
-					"Incorrect type of conversation specified (single user | group) expected.");
+			throw new Exception("Incorrect type of conversation specified (single user | group) expected.");
 		}
-		commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,
-				imagePath, dstConversationName, isGroup);
+		commonSteps.UserSentImageToConversation(imageSenderUserNameAlias, imagePath, dstConversationName, isGroup);
 	}
 
 	@After
@@ -903,8 +847,7 @@ public class CommonAndroidSteps {
 		}
 
 		AndroidLogListener.forceStopAll();
-		AndroidLogListener.writeDeviceLogsToConsole(AndroidLogListener
-				.getInstance(ListenerType.DEFAULT));
+		AndroidLogListener.writeDeviceLogsToConsole(AndroidLogListener.getInstance(ListenerType.DEFAULT));
 
 		commonSteps.getUserManager().resetUsers();
 		SEBridge.getInstance().reset();
@@ -946,8 +889,7 @@ public class CommonAndroidSteps {
 	 * @throws Exception
 	 */
 	@Given("^(.*) (?:has|have) contacts? (.*) in (?:the |\\s*)address book$")
-	public void UserXHasContactsInAddressBook(String asUser, String emails)
-			throws Exception {
+	public void UserXHasContactsInAddressBook(String asUser, String emails) throws Exception {
 		commonSteps.UserXHasContactsInAddressBook(asUser, emails);
 	}
 
@@ -974,8 +916,8 @@ public class CommonAndroidSteps {
 	@Given("^My device runs Android (.*) or higher$")
 	public void MyDeviceRunsAndroid(String targetVersion) throws Exception {
 		if (AndroidCommonUtils.compareAndroidVersion(targetVersion) < 0) {
-			throw new PendingException("This test isn't suitable to run on "
-					+ "anything lower than Android " + targetVersion);
+			throw new PendingException(
+					"This test isn't suitable to run on " + "anything lower than Android " + targetVersion);
 		}
 	}
 

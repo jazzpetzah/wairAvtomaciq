@@ -17,7 +17,7 @@ Feature: People View
     And I tap on group chat contact <Contact1NewName>
     Then I see <Contact1> user name and email
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName   | Picture                      | Contact1NewName   |
       | user1Name | user2Name | user3Name | GroupInfoCheck2 | aqaPictureContact600_800.jpg | aqaPictureContact |
 
@@ -36,7 +36,7 @@ Feature: People View
     And I confirm leaving
     Then I see Contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3Name | LeaveGroupChat |
 
@@ -60,7 +60,7 @@ Feature: People View
     And I see dialog page
     Then I see message <Message> contact <Contact2> on group page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName       | Message     |
       | user1Name | user2Name | user3Name | RemoveFromGroupChat | You removed |
 
@@ -109,7 +109,7 @@ Feature: People View
     And I navigate back from dialog page
     And I see contact list with name <NewConversationName>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | OldGroupChatName | NewConversationName |
       | user1Name | user2Name | user3Name | oldGroupChat     | newGroupName        |
 
@@ -151,7 +151,7 @@ Feature: People View
     And I swipe up
     Then I do not see 1:1 options menu
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -173,7 +173,7 @@ Feature: People View
     When I click Pending button on pending user page
     Then I see Pending button on pending user page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | GroupChat     |
 
@@ -213,7 +213,7 @@ Feature: People View
     And I see that the conversation name is <GroupChatName>
     And I see the correct number of participants in the title <ParticipantNumber>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName  | ParticipantNumber |
       | user1Name | user2Name | user3Name | GroupInfoCheck | 3                 |
 
@@ -233,6 +233,6 @@ Feature: People View
     And I close participants page by UI button
     Then I see Connect to <Contact1> Dialog page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | GroupChat     |

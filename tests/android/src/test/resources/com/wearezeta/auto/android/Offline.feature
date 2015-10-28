@@ -20,7 +20,7 @@ Feature: Offline
     Then Last message is <Message2>
     And I see new picture in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message1 | Message2 | Picture     |
       | user1Name | user2Name | Msg1     | Msg2     | testing.jpg |
 
@@ -43,6 +43,6 @@ Feature: Offline
     And I press "Confirm" button
     Then I see unsent indicator next to new picture in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message    |
       | user1Name | user2Name | My message |
