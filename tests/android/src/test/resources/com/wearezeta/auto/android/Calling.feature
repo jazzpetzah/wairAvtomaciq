@@ -571,6 +571,7 @@ Feature: Calling
     When I lock the device
     And I wait for 2 seconds
     And I unlock the device
+    And I restore the application
     Then I see call overlay
 
     Examples: 
