@@ -329,7 +329,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @staging @noAcceptAlert @id3861
+  @regression @noAcceptAlert @id3861
   Scenario Outline: Verify error message appears in case of registering already taken phone number [PORTRAIT]
     Given There is 1 users where <Name> is me with email only
     Given I sign in using my email
@@ -347,7 +347,7 @@ Feature: Self Profile
       | Name      | Number        | Code |
       | user1Name | 8301652248706 | +0   |
       
-  @staging @noAcceptAlert @id3862
+  @regression @noAcceptAlert @id3862
   Scenario Outline: Verify error message appears in case of registering already taken phone number [LANDSCAPE]
     Given There is 1 users where <Name> is me with email only
     Given I rotate UI to landscape
@@ -366,7 +366,7 @@ Feature: Self Profile
       | Name      | Number        | Code |
       | user1Name | 8301652248706 | +0   |
 
-  @staging @rc @id3986
+  @regression @rc @id3986
   Scenario Outline: Verify theme switcher is not shown on the self profile [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -378,7 +378,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @staging @id3989
+  @regression @id3989
   Scenario Outline: Verify theme switcher is not shown on the self profile [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape

@@ -717,7 +717,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @staging @id3302
+  @regression @id3302
   Scenario Outline: Verify action buttons disappear by unchecking the avatar [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -844,7 +844,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @staging @id3824
+  @regression @id3824
   Scenario Outline: Verify label hiding after dismissing all PYMK [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -867,7 +867,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @staging @id2481
+  @regression @id2481
   Scenario Outline: Verify impossibility of dismissing if search isn't empty [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given I Sign in on tablet using my email
@@ -882,7 +882,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3823
+  @regression @id3823
   Scenario Outline: Verify impossibility of dismissing if search isn't empty [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape

@@ -937,7 +937,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
 
-  @staging @id3999
+  @regression @id3999
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (People view) [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given <Contact1> is connected to <Contact3>,<Contact2>,<Name>
@@ -956,7 +956,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | TESTCHAT      |
 
-  @staging @id4000
+  @regression @id4000
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (People view) [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given <Contact1> is connected to <Contact3>,<Contact2>,<Name>
@@ -976,7 +976,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | TESTCHAT      |
 
-  @staging @id4022
+  @regression @id4022
   Scenario Outline: Verify canceling blocking person from participant list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to all other users
@@ -994,7 +994,7 @@ Feature: People View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @staging @id4023
+  @regression @id4023
   Scenario Outline: Verify canceling blocking person from participant list [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to all other users

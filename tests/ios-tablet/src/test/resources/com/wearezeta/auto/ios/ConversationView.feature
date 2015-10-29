@@ -629,7 +629,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | SimpleGroup   |
 
-  @staging @id3196
+  @regression @id3196
   Scenario Outline: Play/pause SoundCloud media link from the media bar [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -656,7 +656,7 @@ Feature: Conversation View
       | Name      | Contact   | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
-  @staging @id3197
+  @regression @id3197
   Scenario Outline: Play/pause SoundCloud media link from the media bar [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -1257,7 +1257,7 @@ Feature: Conversation View
       | Name      | Contact1   | Contact2  |
       | user1Name | user2Name  | user3Name |
 
-  @staging @id2393
+  @regression @id2393
   Scenario Outline: Verify possibility to copy image in the conversation view [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -1278,7 +1278,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |   Picture   | ConversationType |
       | user1Email | user1Password | user1Name | user2Name | testing.jpg |    single user   |
 
-  @staging @id4008
+  @regression @id4008
   Scenario Outline: Verify possibility to copy image in the conversation view [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
