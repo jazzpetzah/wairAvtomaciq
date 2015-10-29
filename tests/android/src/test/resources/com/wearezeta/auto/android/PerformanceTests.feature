@@ -10,9 +10,9 @@ Feature: Performance Tests
     When I start test cycle for <Time> minutes with messages received from <Sender>
     Then I generate performance report for <UsersNumber> users
 
-    Examples: 
-      | Name      | UsersNumber       | UserNamePrefix    | Time            | MsgsCount | Sender        | LoginTimeout |
-      | user1Name | ${perfUsersCount} | ${userNamePrefix} | ${perfDuration} | 101       | user2Name     | 600          |
+    Examples:
+      | Name      | UsersNumber       | UserNamePrefix    | Time            | MsgsCount | Sender    | LoginTimeout |
+      | user1Name | ${perfUsersCount} | ${userNamePrefix} | ${perfDuration} | 101       | user2Name | 600          |
 #      | user1Name | 11                | perf10user         | 2               | 101      | user2Name     | 600          |
 
   @battery_performance

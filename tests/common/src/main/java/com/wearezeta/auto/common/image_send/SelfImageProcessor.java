@@ -1,4 +1,4 @@
-package com.wearezeta.auto.image_send;
+package com.wearezeta.auto.common.image_send;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;

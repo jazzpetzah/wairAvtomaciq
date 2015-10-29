@@ -44,7 +44,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.ConversationActionMenu.xpathConfirmDeleteButton)
 	private WebElement confirmDeleteButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.ConversationActionMenu.nameAlsoLeaveCheckerButton)
 	private WebElement alsoLeaveButton;
 
@@ -74,6 +74,12 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameBlockMenuButton)
 	private WebElement blockMenuButton;
+
+	@FindBy(how = How.NAME, using = IOSLocators.nameCancelButton)
+	private WebElement cancelButton;
+
+	@FindBy(how = How.XPATH, using = IOSLocators.ConversationActionMenu.xpathActionMenu)
+	private WebElement actionMenu;
 
 	public OtherUserPersonalInfoPage(Future<ZetaIOSDriver> lazyDriver)
 			throws Exception {
@@ -106,7 +112,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 		DriverUtils.waitUntilElementClickable(getDriver(), confirmDeleteButton);
 		confirmDeleteButton.click();
 	}
-	
+
 	public void clickAlsoLeaveButton() throws Exception {
 		DriverUtils.waitUntilElementClickable(getDriver(), alsoLeaveButton);
 		alsoLeaveButton.click();
@@ -208,6 +214,15 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
 	public void clickBlockMenuButton() {
 		blockMenuButton.click();
+	}
+
+	public void clickCancelButton() {
+		cancelButton.click();
+	}
+
+	public boolean isActionMenuVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.xpath(IOSLocators.ConversationActionMenu.xpathActionMenu));
 	}
 
 	@Override

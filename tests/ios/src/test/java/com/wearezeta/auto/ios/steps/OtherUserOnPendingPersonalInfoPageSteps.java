@@ -5,6 +5,7 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.OtherUserOnPendingProfilePage;
 
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class OtherUserOnPendingPersonalInfoPageSteps {
@@ -81,7 +82,7 @@ public class OtherUserOnPendingPersonalInfoPageSteps {
 	public void IConfirCancelReques() throws Exception {
 		getOtherUserOnPendingProfilePage().clickConfirmCancelRequestButton();
 	}
-	
+
 	/**
 	 * Presses back button to return to group info page or popover
 	 * 
@@ -92,6 +93,18 @@ public class OtherUserOnPendingPersonalInfoPageSteps {
 	public void IGoBackToGroupInfoPageOrPopover() throws Throwable {
 		getOtherUserOnPendingProfilePage()
 				.clickBackButtonToReturnToGroupPageOrPopover();
+	}
+
+	/**
+	 * Verifies that remove from group button is visible on pending user page
+	 * 
+	 * @step. ^I see remove from group conversation button$
+	 * @throws Throwable
+	 */
+	@Then("^I see remove from group conversation button$")
+	public void i_see_remove_from_group_conversation_button() throws Throwable {
+		getOtherUserOnPendingProfilePage()
+				.isRemoveFromGroupConversationVisible();
 	}
 
 }

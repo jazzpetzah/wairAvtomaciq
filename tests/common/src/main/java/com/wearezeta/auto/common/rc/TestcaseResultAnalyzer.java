@@ -6,7 +6,7 @@ import gherkin.formatter.model.Step;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.wearezeta.auto.zephyr.ZephyrExecutionStatus;
+import com.wearezeta.auto.common.zephyr.ZephyrExecutionStatus;
 
 public class TestcaseResultAnalyzer {
 	private static final String GIVEN_KEYWORD = "given";

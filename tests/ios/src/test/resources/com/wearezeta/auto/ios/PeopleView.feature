@@ -439,7 +439,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
-  @regression @rc @id3972
+  @regression @id3972
   Scenario Outline: Verify removing the content and leaving from the group conversation via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -466,7 +466,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
-  @staging @rc @id3971
+  @staging @id3971
   Scenario Outline: Verify removing the content from the group conversation via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -493,7 +493,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
       | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
 
-  @staging @rc @id3973
+  @staging @id3973
   Scenario Outline: Verify removing the content from 1-to-1 via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -521,7 +521,7 @@ Feature: People View
     Examples: 
       | Name      | Contact1  | Message | GroupChatName | Image       |
       | user1Name | user2Name | testing | ForDeletion   | testing.jpg |
-      
+
   @staging @id3320
   Scenario Outline: Verify that left conversation is shown in the Archive
     Given There are 3 users where <Name> is me
@@ -553,4 +553,40 @@ Feature: People View
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
-  
+
+  @staging @id583
+  Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (People view)
+    Given There are 4 users where <Name> is me
+    Given <Contact1> is connected to <Contact3>,<Contact2>,<Name>
+    Given <Contact1> has group chat <GroupChatName> with <Contact3>,<Contact2>,<Name>
+    Given Myself sent connection request to <Contact3>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details
+    And I select contact <Contact3>
+    Then I see <Contact3> user pending profile page
+    Then I see remove from group conversation button
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
+      | user1Name | user2Name | user3Name | user4Name | TESTCHAT      |
+
+  @staging @id4021
+  Scenario Outline: Verify canceling blocking person from participant list
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I open conversation details
+    And I press conversation menu button
+    And I press menu Block button
+    And I click Cancel button
+    Then I see conversation action menu
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |

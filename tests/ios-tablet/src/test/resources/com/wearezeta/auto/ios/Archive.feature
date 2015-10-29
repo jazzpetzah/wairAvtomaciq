@@ -1,6 +1,6 @@
 Feature: Archive
 
-  @staging @rc @id2325
+  @staging @id2325
   Scenario Outline: Verify unarchive by receiving data [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -29,7 +29,7 @@ Feature: Archive
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | autocall    |
 
-  @staging @rc @id3991
+  @staging @id3991
   Scenario Outline: Verify unarchive by receiving data [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -59,7 +59,7 @@ Feature: Archive
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | autocall    |
 
-  @staging @rc @id2326
+  @staging @id2326
   Scenario Outline: Verify unarchiving silenced conversation by ping and call [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -85,7 +85,7 @@ Feature: Archive
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | autocall    |
 
-  @staging @rc @id3992
+  @staging @id3992
   Scenario Outline: Verify unarchiving silenced conversation by ping and call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -111,3 +111,40 @@ Feature: Archive
     Examples: 
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | autocall    |
+
+  @staging @id2328
+  Scenario Outline: Verify restoring from archive after adding to conversation [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    And I swipe right on a <GroupChatName>
+    And I press Leave button in action menu in Contact List
+    And I press leave
+    Then I dont see conversation <GroupChatName> in contact list
+    When <Contact1> added me to group chat <GroupChatName>
+    Then I see first item in contact list named <GroupChatName>
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | LeaveArchive  |
+
+  @staging @id3994
+  Scenario Outline: Verify restoring from archive after adding to conversation [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    And I swipe right on a <GroupChatName>
+    And I press Leave button in action menu in Contact List
+    And I press leave
+    Then I dont see conversation <GroupChatName> in contact list
+    When <Contact1> added me to group chat <GroupChatName>
+    Then I see first item in contact list named <GroupChatName>
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | LeaveArchive  |

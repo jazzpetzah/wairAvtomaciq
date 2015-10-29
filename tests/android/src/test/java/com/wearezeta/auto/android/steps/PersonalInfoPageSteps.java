@@ -51,18 +51,6 @@ public class PersonalInfoPageSteps {
 	}
 
 	/**
-	 * Taps on the sign out button in the options menu
-	 * 
-	 * @step. ^I tap sign out button$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I tap sign out button$")
-	public void WhenITapSignOutButton() throws Exception {
-		getPersonalInfoPage().tapSignOutBtn();
-	}
-
-	/**
 	 * Taps on the settings button in the options menu
 	 * 
 	 * @step. ^I tap settings button$
@@ -300,56 +288,5 @@ public class PersonalInfoPageSteps {
 						"Profile picture has not been updated properly after %s seconds timeout (current overlap score value is %2.2f)",
 						PROFILE_IMAGE_CHANGE_TIMEOUT_SECONDS, score),
 				score <= MAX_OVERLAP_SCORE);
-	}
-
-	/**
-	 * Selects specified accent color on accent color picker
-	 * 
-	 * @step. ^I change accent color to
-	 *        (StrongBlue|StrongLimeGreen|BrightYellow|
-	 *        VividRed|BrightOrange|SoftPink|Violet)$
-	 * 
-	 * @param colorName
-	 *            one of possible accent colors:
-	 *            StrongBlue|StrongLimeGreen|BrightYellow
-	 *            |VividRed|BrightOrange|SoftPink|Violet
-	 * @throws Exception
-	 */
-	@And("^I change accent color to (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet)$")
-	public void IChangeAccentColor(String colorName) throws Exception {
-		getPersonalInfoPage().chooseColorOnColorPicker(
-				AccentColor.getByName(colorName));
-
-	}
-
-	/**
-	 * Finds selected color on accent color picker and checks that it is the
-	 * same as expected
-	 * 
-	 * @step. ^I see color
-	 *        (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange
-	 *        |SoftPink|Violet) selected on accent color picker$
-	 * 
-	 * @param colorName
-	 *            one of possible accent colors:
-	 *            StrongBlue|StrongLimeGreen|BrightYellow
-	 *            |VividRed|BrightOrange|SoftPink|Violet
-	 * @throws Exception
-	 * 
-	 * @throws AssertionError
-	 *             if accent color is not equal to expected
-	 */
-	@And("^I see color (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet) selected on accent color picker$")
-	public void ISeeColorXSelectOnAccentColorPicker(String colorName)
-			throws Exception {
-		AccentColor expectedColor = AccentColor.getByName(colorName);
-		AccentColor selectedColor = getPersonalInfoPage()
-				.findSelectedAccentColor();
-		Assert.assertNotNull(
-				"Can't determine selected color from accent color picker.",
-				selectedColor);
-		Assert.assertTrue(String.format(
-				"Selected color (%s) is not as expected (%s)", selectedColor,
-				expectedColor), selectedColor == expectedColor);
 	}
 }

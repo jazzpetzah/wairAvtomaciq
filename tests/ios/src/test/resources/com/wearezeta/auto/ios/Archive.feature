@@ -1,6 +1,6 @@
 Feature: Archive
 
-  @staging @rc @id1336
+  @staging @id1336
   Scenario Outline: Verify unarchive by receiving data
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -29,7 +29,7 @@ Feature: Archive
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | autocall    |
 
-  @staging @rc @id1337
+  @staging @id1337
   Scenario Outline: Verify unarchiving silenced conversation by ping and call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -54,3 +54,21 @@ Feature: Archive
     Examples: 
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | autocall    |
+
+  @staging @id1339
+  Scenario Outline: Verify restoring from archive after adding to conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    When I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    And I swipe right on a <GroupChatName>
+    And I press Leave button in action menu in Contact List
+    And I press leave
+    Then I dont see conversation <GroupChatName> in contact list
+    When <Contact1> added me to group chat <GroupChatName>
+    Then I see first item in contact list named <GroupChatName>
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | LeaveArchive  |

@@ -526,20 +526,20 @@ public final class WebAppLocators {
 
 	public static final class PhoneNumberVerificationPage {
 
-		public static final String cssErrorMessage = "#form-login-phone-code [data-uie-name='status-error']";
+		public static final String cssErrorMessage = "#form-verify-code [data-uie-name='status-error']";
 	}
 
 	public static final class AddEmailAddressPage {
 
-		public static final String cssErrorMessage = "#form-login-phone-mail [data-uie-name='status-error']";
+		public static final String cssErrorMessage = "#form-verify-email [data-uie-name='status-error']";
 
-		public static final String cssRedDotOnEmailField = ".auth-page .has-error .form-control #wire-mail-email";
+		public static final String cssErrorMarkedEmailField = "#form-verify-email .input-error[data-uie-name='enter-email']";
 
-		public static final String cssRedDotOnPasswordField = ".auth-page .has-error .form-control #wire-mail-password";
+		public static final String cssErrorMarkedPasswordField = "#form-verify-email .input-error[data-uie-name='enter-password']";
 	}
 
 	public static final class PhoneNumberLoginPage {
 
-		public static final String cssErrorMessage = "#form-login-phone [data-uie-name='status-error']";
+		public static final String cssErrorMessage = "#login-method-phone [data-uie-name='status-error']";
 	}
 }

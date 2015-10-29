@@ -1,6 +1,6 @@
 Feature: Notifications
 
-  @id2900 @staging
+  @id2900 @regression @rc
   Scenario Outline: I can open conversation with message from notification
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

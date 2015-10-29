@@ -1,6 +1,8 @@
 package com.wearezeta.auto.ios.tablet.locators;
 
 public final class IOSTabletLocators {
+	
+	public static final String xpathPopover = "//UIAPopover[@visible='true']";
 
 	public static final class CameraRollTabletPopoverPage {
 
@@ -11,7 +13,7 @@ public final class IOSTabletLocators {
 
 	public static final class TabletPendingUserPopoverPage {
 		public static final String xpathUserName = "//UIAPopover/UIAStaticText[contains(@name, '%s')]";
-		public static final String xpathConnectButton = "//UIAPopover/UIAButton[@name='CONNECT']";
+		public static final String xpathConnectButton = "//UIAPopover/UIAStaticText[@name='CONNECT']";
 	}
 
 	public static final class TabletPeoplePickerPage {

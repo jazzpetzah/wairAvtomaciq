@@ -396,11 +396,6 @@ public class CommonUtils {
 		return getValueFromConfig(c, "iosImagesPath");
 	}
 
-	public static String getGenerateUsersFlagFromConfig(Class<?> c)
-			throws Exception {
-		return getValueFromConfig(c, "generateUsers");
-	}
-
 	public static String getAndroidPackageFromConfig(Class<?> c) {
 		try {
 			return getValueFromConfig(c, "package");
@@ -635,6 +630,11 @@ public class CommonUtils {
 		long random = (long) (Math.pow(10, i - 1)) * (rand.nextInt(8) + 1)
 				+ (long) rand.nextInt((int) (Math.pow(10, i - 1)));
 		return Long.toString(Math.abs(random));
+	}
+
+	public static String getPlatformVersionFromConfig(Class<?> cls)
+			throws Exception {
+		return getValueFromConfig(cls, "platformVersion");
 	}
 
 }

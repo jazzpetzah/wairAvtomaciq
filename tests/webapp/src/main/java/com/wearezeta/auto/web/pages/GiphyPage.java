@@ -30,18 +30,18 @@ public class GiphyPage extends WebPage {
 	@FindBy(css = gifContainerLocator)
 	private WebElement gifContainer;
 
-	final static String giphyLinkLocator = "#giphy-icon";
+	final static String giphyQueryLocator = "[data-uie-name='giphy-query']";
 
-	@FindBy(css = giphyLinkLocator)
+	@FindBy(css = giphyQueryLocator)
 	private WebElement giphyLink;
 
 	public GiphyPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
 
-	public boolean isGiphyLinkVisible() throws Exception {
+	public boolean isGiphyQueryVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.cssSelector(giphyLinkLocator));
+				By.cssSelector(giphyQueryLocator));
 	}
 
 	public String getSearchTerm() {

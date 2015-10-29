@@ -32,6 +32,9 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameExitOtherUserPersonalInfoPageButton)
 	private WebElement backButtonToGroupPopover;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameRemoveFromConversation)
+	private WebElement removePendingPersonFromChat;
 
 	public OtherUserOnPendingProfilePage(Future<ZetaIOSDriver> lazyDriver)
 			throws Exception {
@@ -84,7 +87,13 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 		return null;
 	}
 
-	public void clickBackButtonToReturnToGroupPageOrPopover() {
-		backButtonToGroupPopover.click();		
+	public void clickBackButtonToReturnToGroupPageOrPopover() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(),
+				backButtonToGroupPopover);
+		backButtonToGroupPopover.click();
+	}
+
+	public boolean isRemoveFromGroupConversationVisible() {
+		return removePendingPersonFromChat.isDisplayed();
 	}
 }

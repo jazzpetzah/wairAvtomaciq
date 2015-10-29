@@ -19,7 +19,7 @@ Feature: Conversation List
     #And I navigate back from dialog page
     Then Contact <Contact1> is muted
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -40,7 +40,7 @@ Feature: Conversation List
     And I see Contact list
     Then I see PlayPause media content button for conversation <Contact1>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | SoudCloudLink                                              |
       | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
@@ -61,7 +61,7 @@ Feature: Conversation List
     And I navigate back from dialog page
     Then Contact <Contact1> is not muted
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -87,7 +87,7 @@ Feature: Conversation List
     And I tap PlayPause button next to the <Contact1> conversation
     Then I see the state of PlayPause button next to the <Contact1> conversation is changed
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | SoudCloudLink                                              |
       | user1Name | user2Name | user3Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
@@ -99,6 +99,7 @@ Feature: Conversation List
     And I see Contact list with contacts
     And I tap on contact name <Contact1>
     And I see dialog page
+    And I scroll to the bottom of conversation view
     And I navigate back from dialog page
     And I remember unread messages indicator state for conversation <Contact1>
     When Contact <Contact1> sends 2 messages to user <Name>
@@ -113,6 +114,36 @@ Feature: Conversation List
     And I navigate back from dialog page
     Then I see unread messages indicator state is changed for conversation <Contact1>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
+
+  @id4042 @staging
+  Scenario Outline: Verify I can delete a 1:1 conversation from conversation list
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given All contacts send me a message <SpotifyLink>
+    Given Contact <Contact1> sends image <Image> to single user conversation <Name>
+    Given All contacts send me a message "<Message>"
+    Given I sign in using my email or phone number
+    And I see Contact list with contacts
+    And I tap on contact name <Contact1>
+    And I see dialog page
+    And Last message is "<Message>"
+    And I navigate back from dialog page
+    And I swipe right on a <Contact1>
+    And I select DELETE from conversation settings menu
+    And I press DELETE on the confirm alert
+    Then I see Contact list with no contacts
+    And I open search by tap
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I enter "<Contact1>" into Search input on People Picker page
+    And I tap on user name found on People picker page <Contact1>
+    And I click on open conversation action button on People picker page
+    And I see dialog page
+    Then I see there is no content in the conversation
+
+    Examples: 
+      | Name      | Contact1  | Message    | Image       | SpotifyLink                                           |
+      | user1Name | user2Name | Tschuessii | testing.jpg | https://open.spotify.com/track/0p6GeAWS4VCZddxNbBtEss |

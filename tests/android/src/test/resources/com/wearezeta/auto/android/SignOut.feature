@@ -8,9 +8,12 @@ Feature: Sign Out
     Given I see Contact list with contacts
     When I tap on my avatar
     And I tap options button
-    And I tap sign out button
+    And I tap settings button
+    And I select "Account" settings menu item
+    And I select "Sign out" settings menu item
+    And I confirm sign out
     Then I see welcome screen
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |

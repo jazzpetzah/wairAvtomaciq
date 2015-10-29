@@ -19,7 +19,7 @@ Feature: Connect
     And I close People Picker
     Then I see the conversation <Contact> in my conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -42,7 +42,7 @@ Feature: Connect
     And I close People Picker
     Then I see the conversation <Contact> in my conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -60,7 +60,7 @@ Feature: Connect
     Then I see the conversation <Contact> in my conversations list
     And I do not see the conversation <WaitingMess> in my conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
@@ -80,7 +80,7 @@ Feature: Connect
     And I see the conversation <Contact> in my conversations list
     And I do not see the conversation <WaitingMess> in my conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
@@ -108,7 +108,7 @@ Feature: Connect
     Then I do not see the Group popover
     And I see the conversation <Contact2> in my conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName        |
       | user1Name | user2Name | user3Name | NonConnectedUserChat |
 
@@ -136,7 +136,7 @@ Feature: Connect
     Then I do not see the Group popover
     And I see the conversation <Contact2> in my conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName        |
       | user1Name | user2Name | user3Name | NonConnectedUserChat |
 
@@ -159,7 +159,7 @@ Feature: Connect
     And I close People Picker
     Then I see the conversation <Contact> in my conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
@@ -182,7 +182,7 @@ Feature: Connect
     And I close People Picker
     Then I see the conversation <Contact> in my conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
@@ -207,7 +207,7 @@ Feature: Connect
     And I hide keyboard
     Then I do not see the previously remembered PYMK item on People Picker page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -232,7 +232,7 @@ Feature: Connect
     And I hide keyboard
     Then I do not see the previously remembered PYMK item on People Picker page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -258,7 +258,7 @@ Feature: Connect
     And I close People Picker
     Then I see conversations list with the previously remembered PYMK item
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -284,7 +284,7 @@ Feature: Connect
     And I close People Picker
     Then I see conversations list with the previously remembered PYMK item
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -314,7 +314,7 @@ Feature: Connect
     When I close People Picker
     Then I do not see conversations list with the previously remembered PYMK item
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
@@ -344,7 +344,7 @@ Feature: Connect
     When I close People Picker
     Then I do not see conversations list with the previously remembered PYMK item
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
@@ -378,7 +378,7 @@ Feature: Connect
     And I close People Picker
     Then I see the conversation <Contact> in my conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
@@ -408,12 +408,12 @@ Feature: Connect
     And I close People Picker
     Then I see the conversation <Contact> in my conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
   @id2844 @regression
-  Scenario Outline: Inbox count increasing/decreasing correctly (portrait)
+  Scenario Outline: (AN-2954) Inbox count increasing/decreasing correctly (portrait)
     Given There are 4 users where <Name> is me
     Given <Contact2> sent connection request to me
     Given <Contact1> sent connection request to me
@@ -424,17 +424,17 @@ Feature: Connect
     When I tap the conversation <WaitingMess2>
     And I see the Incoming connections page
     And I ignore incoming connection request from <Contact2> on Incoming connections page
-    And I navigate back
+    And I see the Incoming connections page
+    And I swipe right to show the conversations list
     Then I see the conversation <WaitingMess1> in my conversations list
     When I tap the conversation <WaitingMess1>
     And I see the Incoming connections page
     And I ignore incoming connection request from <Contact1> on Incoming connections page
-    And I navigate back
     Then I see the Conversations list with no conversations
     When <Contact3> sent connection request to me
     Then I see the conversation <WaitingMess1> in my conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | WaitingMess2     | WaitingMess1     |
       | user1Name | user2Name | user3Name | user4Name | 2 people waiting | 1 person waiting |
 
@@ -460,7 +460,7 @@ Feature: Connect
     When <Contact3> sent connection request to me
     Then I see the conversation <WaitingMess1> in my conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | WaitingMess2     | WaitingMess1     |
       | user1Name | user2Name | user3Name | user4Name | 2 people waiting | 1 person waiting |
 
@@ -479,7 +479,7 @@ Feature: Connect
     And I see email <ContactEmail> on Incoming connections page
     And I see name <Contact> on Incoming connections page
 
-    Examples: 
+    Examples:
       | Name      | Contact   | ContactEmail | WaitingMsg       |
       | user1Name | user2Name | user2Email   | 1 person waiting |
 
@@ -496,7 +496,7 @@ Feature: Connect
     And I see email <ContactEmail> on Incoming connections page
     And I see name <Contact> on Incoming connections page
 
-    Examples: 
+    Examples:
       | Name      | Contact   | ContactEmail | WaitingMsg       |
       | user1Name | user2Name | user2Email   | 1 person waiting |
 
@@ -515,7 +515,7 @@ Feature: Connect
     Then I see the conversation view
     And I see the system connection message contains "<SysMessage>" text on Conversation view page
 
-    Examples: 
+    Examples:
       | Name      | Contact   | SysMessage             |
       | user1Name | user2Name | Connected to user2Name |
 
@@ -534,7 +534,7 @@ Feature: Connect
     Then I see the conversation view
     And I see the system connection message contains "<SysMessage>" text on Conversation view page
 
-    Examples: 
+    Examples:
       | Name      | Contact   | SysMessage             |
       | user1Name | user2Name | Connected to user2Name |
 

@@ -1,4 +1,4 @@
-package com.wearezeta.auto.web.pages;
+package com.wearezeta.auto.osx.pages.webapp;
 
 import java.util.List;
 import java.util.concurrent.Future;
@@ -15,10 +15,15 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.locators.WebAppLocators;
+import com.wearezeta.auto.web.pages.WebPage;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 public class RegistrationPage extends WebPage {
 
 	private static final int TIMEOUT_FOR_FIRST_LOAD_OF_PAGE = 25;
+
+	private final static WebappPagesCollection webappPagesCollection = WebappPagesCollection
+			.getInstance();
 
 	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(RegistrationPage.class
@@ -52,14 +57,8 @@ public class RegistrationPage extends WebPage {
 	@FindBy(css = WebAppLocators.RegistrationPage.cssErrorMarkedEmailField)
 	private WebElement redDotOnEmailField;
 
-	// TODO move to locators
 	@FindBy(css = WebAppLocators.RegistrationPage.cssErrorMessages)
 	private List<WebElement> errorMessages;
-
-	public RegistrationPage(Future<ZetaWebAppDriver> lazyDriver, String url)
-			throws Exception {
-		super(lazyDriver, url);
-	}
 
 	public RegistrationPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
@@ -77,8 +76,7 @@ public class RegistrationPage extends WebPage {
 				.waitUntilElementClickable(getDriver(), switchToSignInButton);
 		switchToSignInButton.click();
 
-		return new LoginPage(this.getLazyDriver(), this.getDriver()
-				.getCurrentUrl());
+		return webappPagesCollection.getPage(LoginPage.class);
 	}
 
 	public void enterName(String name) throws Exception {

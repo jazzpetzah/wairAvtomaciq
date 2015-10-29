@@ -63,6 +63,6 @@ Feature: Lock/Unlock
     And I unlock the device
     Then I see the Single user popover
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName     | Message1to1 | MessageGroup | ItemName |
       | user1Name | user2Name | user3Name | SendMessGroupChat | Msg1to1     | MsgGroup     | ABOUT    |

@@ -15,7 +15,7 @@ Feature: Search
     And I enter "<Contact1>" into Search input on People Picker page
     Then I see user <Contact1> in People picker
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -32,7 +32,7 @@ Feature: Search
     And I enter "<GroupChatName>" into Search input on People Picker page
     Then I see group <GroupChatName> in People picker
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName          |
       | user1Name | user3Name | user2Name | PeoplePicker GroupChat |
 
@@ -50,7 +50,7 @@ Feature: Search
     And I input in search field part <Size> of user name to connect to <Contact1>
     Then I see user <Contact1> in People picker
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Size |
       | user1Name | user2Name | user3Name | 7    |
 
@@ -67,7 +67,7 @@ Feature: Search
     And I input in search field part <Size> of user name to connect to <GroupChatName>
     Then I see group <GroupChatName> in People picker
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName           | Size |
       | user1Name | user3Name | user2Name | PeoplePicker GroupChat1 | 5    |
 
@@ -81,7 +81,7 @@ Feature: Search
     And I press Clear button
     Then I see Contact list
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -108,7 +108,7 @@ Feature: Search
     Then I see Contact list with contacts
     And I do not see TOP PEOPLE
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -130,7 +130,7 @@ Feature: Search
     And I tap on create conversation
     Then I see group chat page with users <Contact1>,<Contact2>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName          |
       | user1Name | user2Name | user3Name | PeoplePickerGroupChat2 |
 
@@ -148,7 +148,7 @@ Feature: Search
     And I tap on create conversation
     Then I see dialog page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -170,7 +170,7 @@ Feature: Search
     And I open search by tap
     Then I do not see the previously remembered PYMK item
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -191,7 +191,7 @@ Feature: Search
     And I open search by tap
     Then I do not see the previously remembered PYMK item
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -209,11 +209,11 @@ Feature: Search
     And I tap on user name found on People picker page <Contact1>
     Then I see action buttons appeared on People picker page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @id3871 @regression
+  @id3871 @regression @rc
   Scenario Outline: Verify opening conversation with action button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -229,7 +229,7 @@ Feature: Search
     And I click on open conversation action button on People picker page
     Then I see dialog page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -251,7 +251,7 @@ Feature: Search
     And I press "Confirm" button
     Then I see new photo in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -272,12 +272,12 @@ Feature: Search
     Then I see call overlay
     Then I see calling overlay Big bar
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
   @id3876 @regression
-  Scenario Outline: Verify sharing a photo to a newly created group conversation with action button	
+  Scenario Outline: Verify sharing a photo to a newly created group conversation with action button
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
@@ -297,7 +297,7 @@ Feature: Search
     And I press "Confirm" button
     Then I see new photo in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -316,11 +316,11 @@ Feature: Search
     When I tap on <Contact1> in Top People
     Then I see action buttons disappear from People Picker page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @id3870 @staging
+  @id3870 @regression
   Scenario Outline: Verify button Open is changed to Create after checking second person
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -341,6 +341,55 @@ Feature: Search
     And I tap on <Contact1> in Top People
     Then I see action buttons disappear from People Picker page
 
-    Examples: 
+    Examples:
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
+
+  @id3874 @staging
+  Scenario Outline: Verify starting a new group conversation with action button
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    Given I wait until <Contact1> exists in backend search results
+    When I open search by tap
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I enter "<Contact1>" into Search input on People Picker page
+    And I tap on user name found on People picker page <Contact1>
+    And I tap on Search input on People picker page
+    And I enter "<Contact2>" into Search input on People Picker page
+    And I tap on user name found on People picker page <Contact2>
+    And I see Create Conversation button on people picker page
+    And I tap Create Conversation button on People picker page
+    Then I see dialog page
+
+    Examples:
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
+
+  @id3875 @staging
+  Scenario Outline: Verify starting a group conversation and a group call with action button
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    Given I wait until <Contact1> exists in backend search results
+    When I open search by tap
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I enter "<Contact1>" into Search input on People Picker page
+    And I tap on user name found on People picker page <Contact1>
+    And I tap on Search input on People picker page
+    And I enter "<Contact2>" into Search input on People Picker page
+    And I tap on user name found on People picker page <Contact2>
+    And I see call action button on People picker page
+    And I click Call action button on People picker page
+    Then I see call overlay
+    Then I see calling overlay Big bar
+    When I tap conversation details button
+    Then I see the correct number of participants in the title 3
+
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |

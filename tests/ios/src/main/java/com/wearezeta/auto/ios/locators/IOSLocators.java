@@ -643,6 +643,8 @@ public final class IOSLocators {
 		public static final String xpathConnectedToUserLabel = "//UIAStaticText[contains(@name, 'CONNECTED TO %s')]";
 
 		public static final String xpathConversationWindow = "//UIATableView";
+
+		public static final String xpathImage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[2]";
 	}
 
 	public final class DialogInfoPage {
@@ -662,6 +664,7 @@ public final class IOSLocators {
 	}
 	
 	public final class ConversationActionMenu {
+		public static final String xpathActionMenu = "//UIAStaticText[following-sibling::UIAButton[@name='CANCEL'] and @visible='true']";
 		public static final String xpathDeleteConversationButton = "//UIAButton[@name='DELETE' and @visible='true']";
 		public static final String xpathConfirmDeleteButton = "//UIAButton[@name='CANCEL']/following-sibling::UIAButton[@name='DELETE']";
 		public static final String nameAlsoLeaveCheckerButton = "ALSO LEAVE THE CONVERSATION";

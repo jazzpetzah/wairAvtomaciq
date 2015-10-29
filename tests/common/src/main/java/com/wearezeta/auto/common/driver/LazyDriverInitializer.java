@@ -51,7 +51,7 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
 		int ntry = 1;
 		do {
 			log.debug(String.format(
-					"Creating driver instance for platform '%s...",
+					"Creating driver instance for platform '%s'...",
 					this.platform.name()));
 			RemoteWebDriver platformDriver = null;
 			try {

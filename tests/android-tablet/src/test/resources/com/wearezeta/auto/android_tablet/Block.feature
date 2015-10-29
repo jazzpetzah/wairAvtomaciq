@@ -31,7 +31,7 @@ Feature: Block
     And I tap Options button on Single user popover
     Then I see BLOCK menu item on Single user popover
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message       |
       | user1Name | user2Name | Hellow friend |
 
@@ -66,7 +66,7 @@ Feature: Block
     And I tap Options button on Single user popover
     Then I see BLOCK menu item on Single user popover
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message       |
       | user1Name | user2Name | Hellow friend |
 
@@ -92,7 +92,7 @@ Feature: Block
     And I do not see Blocked Connection popover
     Then I verify <Contact> avatar on People Picker page is not the same as the previous one
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -118,7 +118,7 @@ Feature: Block
     And I do not see Blocked Connection popover
     Then I verify <Contact> avatar on People Picker page is not the same as the previous one
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 

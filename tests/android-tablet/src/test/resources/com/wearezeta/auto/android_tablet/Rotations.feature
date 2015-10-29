@@ -58,9 +58,9 @@ Feature: Rotations
     When I rotate UI to portrait
     Then I see the message "<Message>" in the conversation view
 
-    Examples: 
-      | Name      | Contact   | Message  |
-      | user1Name | user2Name | Msg1     |
+    Examples:
+      | Name      | Contact   | Message |
+      | user1Name | user2Name | Msg1    |
 
   @id2186 @regression
   Scenario Outline: (AN-2901) Search (people picker)
@@ -107,6 +107,6 @@ Feature: Rotations
     Then I do not see Close Picture Preview button in the conversation view
     And I see a new picture in the conversation view
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |

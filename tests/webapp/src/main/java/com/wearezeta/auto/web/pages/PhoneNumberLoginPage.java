@@ -19,7 +19,7 @@ public class PhoneNumberLoginPage extends WebPage {
 	private WebElement phoneNumberField;
 
 	@FindBy(id = "wire-phone-login")
-	private WebElement forwardButton;
+	private WebElement signInButton;
 
 	@FindBy(css = WebAppLocators.PhoneNumberLoginPage.cssErrorMessage)
 	private WebElement errorMessage;
@@ -36,17 +36,19 @@ public class PhoneNumberLoginPage extends WebPage {
 
 	public void enterCountryCode(String countryCode) throws Exception {
 		DriverUtils.waitUntilElementClickable(getDriver(), countryCodeField);
+		countryCodeField.click();
 		countryCodeField.clear();
 		countryCodeField.sendKeys(countryCode);
 	}
 
 	public void enterPhoneNumber(String phoneNumber) {
+		phoneNumberField.click();
 		phoneNumberField.clear();
 		phoneNumberField.sendKeys(phoneNumber);
 	}
 
-	public PhoneNumberVerificationPage clickForwardButton() throws Exception {
-		forwardButton.click();
+	public PhoneNumberVerificationPage clickSignInButton() throws Exception {
+		signInButton.click();
 		return new PhoneNumberVerificationPage(getLazyDriver());
 	}
 

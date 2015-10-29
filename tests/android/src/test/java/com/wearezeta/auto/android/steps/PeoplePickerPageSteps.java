@@ -612,6 +612,19 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
+	 * Tap the Create/Open Conversation button
+	 * 
+	 * @step. ^I tap (?:Open|Create) Conversation button on [Pp]eople [Pp]icker
+	 *        page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap (?:Open|Create) Conversation button on [Pp]eople [Pp]icker page$")
+	public void ITapConversationActionButton() throws Exception {
+		getPeoplePickerPage().tapOpenConversationButton();
+	}
+
+	/**
 	 * Opens the picture gallery by clicking the send image action button
 	 * 
 	 * @step. ^I click Send image action button on People picker page$
