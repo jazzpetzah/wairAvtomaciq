@@ -410,7 +410,7 @@ public class PeoplePickerPageSteps {
 		}
 		Assert.assertTrue(String.format(
 				"User '%s' is not visible in People Picker", contact),
-				getPeoplePickerPage().userIsVisible(contact));
+				getPeoplePickerPage().isUserVisible(contact));
 	}
 
 	/**
@@ -447,7 +447,7 @@ public class PeoplePickerPageSteps {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		Assert.assertTrue(String.format(
 				"Group '%s' is not visible in conversations list", name),
-				getPeoplePickerPage().groupIsVisible(name));
+				getPeoplePickerPage().isGroupVisible(name));
 	}
 
 	/**

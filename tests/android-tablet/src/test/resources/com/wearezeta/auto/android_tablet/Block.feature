@@ -84,7 +84,7 @@ Feature: Block
     When I tap Search input
     And I see People Picker page
     When I enter "<Contact>" into Search input on People Picker page
-    Then I see <Contact> avatar on People Picker page
+    Then I see "<Contact>" avatar on People Picker page
     And I remember <Contact> avatar on People Picker page
     When I tap the found item <Contact> on People Picker page
     And I see Blocked Connection popover
@@ -110,7 +110,7 @@ Feature: Block
     When I tap Search input
     And I see People Picker page
     When I enter "<Contact>" into Search input on People Picker page
-    Then I see <Contact> avatar on People Picker page
+    Then I see "<Contact>" avatar on People Picker page
     And I remember <Contact> avatar on People Picker page
     When I tap the found item <Contact> on People Picker page
     And I see Blocked Connection popover
@@ -137,7 +137,7 @@ Feature: Block
     When I tap Search input
     And I see People Picker page
     And I enter "<Contact>" into Search input on People Picker page
-    Then I see <Contact> avatar on People Picker page
+    Then I see "<Contact>" avatar on People Picker page
     When I tap the found item <Contact> on People Picker page
     And I see Blocked Connection popover
     And I tap Unblock button on Blocked Connection popover
