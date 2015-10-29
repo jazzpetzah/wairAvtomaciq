@@ -354,21 +354,20 @@ Feature: Conversation List
 
   @staging @id3960
   Scenario Outline: Verify deleting 1-to-1 conversation from archive
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to all other users
-    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
-    Given User <Name> sent message <Message> to conversation <GroupChatName>
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Contact1> sent message <Message> to conversation <Name>
+    Given User <Name> sent message <Message> to conversation <Contact1>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
-    When I swipe right on a <GroupChatName>
+    When I swipe right on a <Contact1>
     And I press Archive button in action menu in Contact List
-    And I dont see conversation <GroupChatName> in contact list
+    And I dont see conversation <Contact1> in contact list
     And I open archived conversations
-    And I swipe right on a <GroupChatName>
+    And I swipe right on a <Contact1>
     And I click delete menu button
     And I confirm delete conversation content
-    Then I dont see conversation <GroupChatName> in contact list
+    Then I dont see conversation <Contact1> in contact list
     And I open archived conversations
     Then I dont see conversation <Contact1> in contact list
 
