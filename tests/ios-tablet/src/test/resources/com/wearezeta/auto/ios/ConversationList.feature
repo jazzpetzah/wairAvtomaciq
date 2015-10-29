@@ -527,7 +527,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3955
+  @regression @id3955
   Scenario Outline: Verify that deleted conversation isn't going to archive [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -546,7 +546,7 @@ Feature: Conversation List
       | Name      | Contact1  | Message |
       | user1Name | user2Name | testing |
 
-  @staging @id3956
+  @regression @id3956
   Scenario Outline: Verify that deleted conversation isn't going to archive [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

@@ -1,6 +1,6 @@
 Feature: Archive
 
-  @staging @id2325
+  @regression @id2325
   Scenario Outline: Verify unarchive by receiving data [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -29,7 +29,7 @@ Feature: Archive
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | autocall    |
 
-  @staging @id3991
+  @regression @id3991
   Scenario Outline: Verify unarchive by receiving data [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
