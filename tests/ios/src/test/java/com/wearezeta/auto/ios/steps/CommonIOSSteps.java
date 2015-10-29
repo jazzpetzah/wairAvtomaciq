@@ -53,7 +53,7 @@ public class CommonIOSSteps {
 	}
 
 	public static final Platform CURRENT_PLATFORM = Platform.iOS;
-	public static final String PLATFORM_VERSION = "8.3";
+	public static final String PLATFORM_VERSION = "9.0";
 
 	private static String getUrl() throws Exception {
 		return CommonUtils.getIosAppiumUrlFromConfig(CommonIOSSteps.class);
@@ -371,6 +371,20 @@ public class CommonIOSSteps {
 	public void IgnoreAllIncomingConnectRequest(String userToNameAlias)
 			throws Exception {
 		commonSteps.IgnoreAllIncomingConnectRequest(userToNameAlias);
+	}
+	
+	/**
+	 * 
+	 * Cancel all connection requests in pending status
+	 * @step. ^(.*) cancel all connection requests$
+	 * @param userToNameAlias
+	 * 		user name who will cancel requests
+	 * @throws Exception
+	 */
+	@When("^(.*) cancel all connection requests$")
+	public void CancelAllIncomingConnectRequest(String userToNameAlias)
+			throws Exception {
+		commonSteps.CancelAllConnectRequests(userToNameAlias);
 	}
 
 	@When("^I wait for (\\d+) seconds?$")

@@ -154,6 +154,12 @@ public final class CommonSteps {
 		ClientUser userTo = usrMgr.findUserByNameOrNameAlias(userToNameAlias);
 		BackendAPIWrappers.ignoreAllConnections(userTo);
 	}
+	
+	public void CancelAllConnectRequests(String userToNameAlias)
+			throws Exception {
+		ClientUser userTo = usrMgr.findUserByNameOrNameAlias(userToNameAlias);
+		BackendAPIWrappers.cancelAllConnections(userTo);
+	}
 
 	private static final int DRIVER_PING_INTERVAL_SECONDS = 60;
 

@@ -2,7 +2,7 @@ package com.wearezeta.auto.common.backend;
 
 public enum ConnectionStatus {
 	Accepted("accepted"), Blocked("blocked"), Pending("pending"), Ignored(
-			"ignored"), Sent("sent");
+			"ignored"), Sent("sent"), Canceled("cancelled");
 
 	private final String name;
 
