@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.steps;
 
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.GroupChatInfoPage;
@@ -37,6 +38,29 @@ public class GroupChatInfoPageSteps {
 	@When("I change group conversation name to (.*)")
 	public void IChangeConversationNameTo(String name) throws Exception {
 		getGroupChatInfoPage().changeConversationName(name);
+	}
+	
+	/**
+	 * Try to input empty conversation name
+	 * @step. ^I try to change group conversation name to empty$
+	 * @throws Exception
+	 */
+	@When("^I try to change group conversation name to empty$")
+	public void IChangeConversationNameToEmpty() throws Exception {
+		getGroupChatInfoPage().changeConversationName("");
+	}
+	
+	/**
+	 * Try to input conversations name with given length
+	 * @step. ^I try to change group conversation name to random with length (.*)$"
+	 * @param length
+	 * 		length of the conversation's name
+	 * @throws Exception
+	 */
+	@When("^I try to change group conversation name to random with length (.*)$")
+	public void IChangeConversationNameToRandom(int length) throws Exception {
+		
+		getGroupChatInfoPage().changeConversationName(CommonUtils.generateRandomString(length));
 	}
 
 	@Then("^I see that the conversation name is correct with (.*) and (.*)$")
