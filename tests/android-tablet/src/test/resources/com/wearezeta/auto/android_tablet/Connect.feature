@@ -413,7 +413,7 @@ Feature: Connect
       | user1Name | user2Name | 1 person waiting |
 
   @id2844 @regression
-  Scenario Outline: Inbox count increasing/decreasing correctly (portrait)
+  Scenario Outline: (AN-2954) Inbox count increasing/decreasing correctly (portrait)
     Given There are 4 users where <Name> is me
     Given <Contact2> sent connection request to me
     Given <Contact1> sent connection request to me
@@ -424,12 +424,12 @@ Feature: Connect
     When I tap the conversation <WaitingMess2>
     And I see the Incoming connections page
     And I ignore incoming connection request from <Contact2> on Incoming connections page
-    And I navigate back
+    And I see the Incoming connections page
+    And I swipe right to show the conversations list
     Then I see the conversation <WaitingMess1> in my conversations list
     When I tap the conversation <WaitingMess1>
     And I see the Incoming connections page
     And I ignore incoming connection request from <Contact1> on Incoming connections page
-    And I navigate back
     Then I see the Conversations list with no conversations
     When <Contact3> sent connection request to me
     Then I see the conversation <WaitingMess1> in my conversations list
