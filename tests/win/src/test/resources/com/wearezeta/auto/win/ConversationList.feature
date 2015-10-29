@@ -372,7 +372,7 @@ Feature: Conversation List
       | user1Email | user1Password | user1Name | user2Name  | user3Name | user4Name | GroupChat |
 
 
-  @smoke @id3502
+  @staging @id3502
   Scenario Outline: Use Gmail contacts import on registration
     Given There are 1 users where <Name> is me
     Given I switch to Sign In page
