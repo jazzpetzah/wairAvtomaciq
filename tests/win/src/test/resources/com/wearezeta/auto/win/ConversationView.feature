@@ -19,7 +19,7 @@ Feature: Conversation View
 
 
   @smoke @id3781
-   Scenario Outline: Verify you ping in a conversation when you press â + K (Mac)
+   Scenario Outline: Verify you ping in a conversation when you press Win + K (Mac)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
