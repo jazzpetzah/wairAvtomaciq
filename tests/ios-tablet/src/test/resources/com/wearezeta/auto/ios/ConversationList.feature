@@ -586,8 +586,8 @@ Feature: Conversation List
     Then I dont see conversation <Contact1> in contact list
 
     Examples: 
-      | Name      | Contact1  | Contact2  | Message | GroupChatName |
-      | user1Name | user2Name | user3Name | testing | ForDeletion   |
+      | Name      | Contact1  |
+      | user1Name | user2Name |
 
   @staging @id3962
   Scenario Outline: Verify deleting 1-to-1 conversation from archive [LANDSCAPE]

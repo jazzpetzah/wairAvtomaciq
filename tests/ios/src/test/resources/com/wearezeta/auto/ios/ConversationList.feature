@@ -372,8 +372,8 @@ Feature: Conversation List
     Then I dont see conversation <Contact1> in contact list
 
     Examples: 
-      | Name      | Contact1  | Contact2  | Message | GroupChatName |
-      | user1Name | user2Name | user3Name | testing | ForDeletion   |
+      | Name      | Contact1  |
+      | user1Name | user2Name |
 
   @staging @id1481
   Scenario Outline: Verify removing the content and leaving from the group conversation
