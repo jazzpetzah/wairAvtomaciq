@@ -282,10 +282,8 @@ Feature: Conversation View
     And I swipe on text input
     And I press Sketch button
     And I draw a sketch with <NumColors> colors
-    When I remember what my sketch looks like
     And I send my sketch
     And I select last photo in dialog
-    And I verify that my sketch in fullscreen is the same as what I drew
 
     Examples:
       | Name      | Contact1  | NumColors |
@@ -305,10 +303,8 @@ Feature: Conversation View
     And I press "Gallery" button
     And I press "Sketch Image Paint" button
     And I draw a sketch on image with <NumColors> colors
-    And I remember what my sketch looks like
     Then I send my sketch
     And I select last photo in dialog
-    And I verify that my sketch in fullscreen is the same as what I drew
 
     Examples:
       | Name      | Contact1  | NumColors |
@@ -327,10 +323,8 @@ Feature: Conversation View
     And I press "Take Photo" button
     And I press "Sketch Image Paint" button
     And I draw a sketch on image with <NumColors> colors
-    Then I remember what my sketch looks like
     And I send my sketch
     And I select last photo in dialog
-    And I verify that my sketch in fullscreen is the same as what I drew
 
     Examples:
       | Name      | Contact1  | NumColors |
