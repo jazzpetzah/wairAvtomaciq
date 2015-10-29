@@ -118,7 +118,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @id4042 @staging
+  @id4042 @regression
   Scenario Outline: Verify I can delete a 1:1 conversation from conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -129,6 +129,7 @@ Feature: Conversation List
     And I see Contact list with contacts
     And I tap on contact name <Contact1>
     And I see dialog page
+    And I scroll to the bottom of conversation view
     And Last message is "<Message>"
     And I navigate back from dialog page
     And I swipe right on a <Contact1>
