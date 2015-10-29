@@ -19,7 +19,7 @@ Feature: Conversation View
 
 
   @smoke @id3781
-   Scenario Outline: Verify you ping in a conversation when you press Win + K (Mac)
+   Scenario Outline: Verify you ping in a conversation when you press Ctrl + K
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
@@ -36,7 +36,7 @@ Feature: Conversation View
       | user1Email | user1Password | user1Name | user2Name | pinged | pinged again |
 
    @smoke @id3782
-   Scenario Outline: Verify you start a call in a conversation when you press â T (Mac)
+   Scenario Outline: Verify you start a call in a conversation when you press Ctrl + T
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
@@ -85,7 +85,7 @@ Feature: Conversation View
 
 
   @smoke @id3908
-  Scenario Outline: Verify you ping in a group conversation when you press â + K (Mac)
+  Scenario Outline: Verify you ping in a group conversation when you press Ctrl + K
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
@@ -103,7 +103,7 @@ Feature: Conversation View
       | user1Email | user1Password | user1Name | user2Name  | user3Name  | GroupChat | pinged | pinged again |
 
   @smoke @id3909
-  Scenario Outline: Verify you start a call in a group conversation when you press â T (Mac)
+  Scenario Outline: Verify you start a call in a group conversation when you press Ctrl + T
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
@@ -154,7 +154,7 @@ Feature: Conversation View
       | user1Email | user1Password | user1Name | user2Name |
 
   @smoke @id3920
-  Scenario Outline: Verify I can undo redo using shortcuts â Z and â â§ Z
+  Scenario Outline: Verify I can undo redo using shortcuts Ctrl Z and Ctrl Shift Z
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
@@ -194,7 +194,7 @@ Feature: Conversation View
       | user1Email | user1Password | user1Name | user2Name |
 
   @smoke @id3946
-  Scenario Outline: Verify I can select all, cut and paste using shortcuts â A, â X and â V
+  Scenario Outline: Verify I can select all, cut and paste using shortcuts Ctrl A, Ctrl X and Ctrl V
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
@@ -236,7 +236,7 @@ Feature: Conversation View
       | user1Email | user1Password | user1Name | user2Name |
 
   @smoke @id3948
-  Scenario Outline: Verify I can select all, copy and paste using shortcuts â A, â C and â V
+  Scenario Outline: Verify I can select all, copy and paste using shortcuts Ctrl A, Ctrl C and Ctrl V
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page

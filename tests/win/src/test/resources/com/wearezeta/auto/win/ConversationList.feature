@@ -316,7 +316,7 @@ Feature: Conversation List
       | user1Email | user1Password | user1Name | user2Name |
 
    @smoke @id3780
-   Scenario Outline: Verify Start (Search) is opened when you press â N (Mac)
+   Scenario Outline: Verify Start (Search) is opened when you press Ctrl N
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
@@ -330,7 +330,7 @@ Feature: Conversation List
       | user1Email | user1Password | user1Name | user2Name |
 
   @smoke @id3951
-  Scenario Outline: Verify switching to next and previous conversation using shortcuts â¥ â â and â¥ â â
+  Scenario Outline: Verify switching to next and previous conversation using shortcuts Ctrl Alt Up and Ctrl Alt Down
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given I switch to Sign In page
