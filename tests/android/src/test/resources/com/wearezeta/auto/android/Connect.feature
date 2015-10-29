@@ -302,7 +302,7 @@ Feature: Connect
       | user1Name | user2Name | user3Name |
 
   @id680 @regression
-  Scenario Outline: I want to see user has been blocked within the Start UI
+  Scenario Outline: (AN-2959) I want to see user has been blocked within the Start UI
     Given There are 3 users where <Name> is me
     # Having the extra user is a workaround for an app bug
     Given Myself is connected to <Contact1>
