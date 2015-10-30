@@ -368,7 +368,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id3875 @staging
+  @id3875 @regression
   Scenario Outline: Verify starting a group conversation and a group call with action button
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

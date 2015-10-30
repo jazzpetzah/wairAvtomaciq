@@ -632,10 +632,9 @@ Feature: Calling
     And I tap conversation details button
     And I press options menu button
     And I press Leave conversation menu button
-    And I confirm leaving
-    And I see Contact list
-    When I swipe up contact list
-    Then I do not see contact list with name <GroupChatName>
+    When I confirm leaving
+    Then I see Contact list
+    And I do not see contact list with name <GroupChatName>
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
 
