@@ -321,7 +321,7 @@ Feature: Search
       | user1Name | user2Name |
 
   @id3870 @regression
-  Scenario Outline: Verify button Open is changed to Create after checking second person
+  Scenario Outline: (BUG AN-2894) Verify button Open is changed to Create after checking second person
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
