@@ -696,3 +696,144 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact1  |
       | user1Name | user2Name |
+
+  @staging @id2324
+  Scenario Outline: Verify archiving silenced conversation [PORTAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact>
+    And I press menu silence button
+    When I swipe right on a <Contact>
+    And I click archive button for conversation <Contact>
+    Then I dont see conversation <Contact> in contact list
+    And Contact <Contact> send number 1 of message to user <Name>
+    And I dont see conversation <Contact> in contact list
+    And Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
+    Then I dont see conversation <Contact> in contact list
+    And I open archived conversations on iPad
+    And I tap on contact name <Contact>
+    And I see dialog page
+
+    Examples: 
+      | Name      | Contact   | Picture     | ConversationType |
+      | user1Name | user2Name | testing.jpg | single user      |
+
+  @staging @id3985
+  Scenario Outline: Verify archiving silenced conversation [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact>
+    And I press menu silence button
+    When I swipe right on a <Contact>
+    And I click archive button for conversation <Contact>
+    Then I dont see conversation <Contact> in contact list
+    And Contact <Contact> send number 1 of message to user <Name>
+    And I dont see conversation <Contact> in contact list
+    And Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
+    Then I dont see conversation <Contact> in contact list
+    And I open archived conversations on iPad
+    And I tap on contact name <Contact>
+    And I see dialog page
+
+    Examples: 
+      | Name      | Contact   | Picture     | ConversationType |
+      | user1Name | user2Name | testing.jpg | single user      |
+
+  @staging @id3966
+  Scenario Outline: Verify removing the content and leaving from the group conversation [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Name> sent message <Message> to conversation <GroupChatName>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <GroupChatName>
+    And I click delete menu button
+    And I select Also Leave option on Delete conversation dialog
+    And I confirm delete conversation content
+    And I open search by taping on it
+    And I input conversation name <GroupChatName> in Search input
+    Then I see conversation <GroupChatName> is NOT presented in Search results
+    When I click close button to dismiss people view
+    And I dont see conversation <GroupChatName> in contact list
+    And I open archived conversations on iPad
+    Then I dont see conversation <GroupChatName> in contact list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Message | GroupChatName |
+      | user1Name | user2Name | user3Name | testing | ForDeletion   |
+
+  @staging @id3967
+  Scenario Outline: Verify removing the content and leaving from the group conversation [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Name> sent message <Message> to conversation <GroupChatName>
+    Given I rotate UI to landscape
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <GroupChatName>
+    And I click delete menu button
+    And I select Also Leave option on Delete conversation dialog
+    And I confirm delete conversation content
+    And I open search by taping on it
+    And I input conversation name <GroupChatName> in Search input
+    Then I see conversation <GroupChatName> is NOT presented in Search results
+    When I click close button to dismiss people view
+    And I dont see conversation <GroupChatName> in contact list
+    And I open archived conversations on iPad
+    Then I dont see conversation <GroupChatName> in contact list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Message | GroupChatName |
+      | user1Name | user2Name | user3Name | testing | ForDeletion   |
+
+  @staging @id4006
+  Scenario Outline: Verify deleting the history from kicked out conversation [POTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <Contact1> removed <Name> from group chat <GroupChatName>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <GroupChatName>
+    And I see Archive button in action menu in Contact List
+    And I see Delete button in action menu in Contact List
+    And I see Cancel button in action menu in Contact List
+    And I click delete menu button
+    And I confirm delete conversation content
+    Then I dont see conversation <GroupChatName> in contact list
+    And I open archived conversations on iPad
+    Then I dont see conversation <GroupChatName> in contact list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | KICKCHAT      |
+
+  @staging @id4007
+  Scenario Outline: Verify deleting the history from kicked out conversation [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <Contact1> removed <Name> from group chat <GroupChatName>
+    Given I rotate UI to landscape
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <GroupChatName>
+    And I see Archive button in action menu in Contact List
+    And I see Delete button in action menu in Contact List
+    And I see Cancel button in action menu in Contact List
+    And I click delete menu button
+    And I confirm delete conversation content
+    Then I dont see conversation <GroupChatName> in contact list
+    And I open archived conversations on iPad
+    Then I dont see conversation <GroupChatName> in contact list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | KICKCHAT      |
