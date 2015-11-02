@@ -148,7 +148,7 @@ Feature: Conversation List
       | Name      | Contact1  | Message    | Image       | SpotifyLink                                           |
       | user1Name | user2Name | Tschuessii | testing.jpg | https://open.spotify.com/track/0p6GeAWS4VCZddxNbBtEss |
 
-  @id4043 @staging
+  @torun @id4043 @staging
   Scenario Outline: Verify I can delete a group conversation from conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
