@@ -2,8 +2,11 @@ package com.wearezeta.auto.android.steps;
 
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
-import com.wearezeta.auto.android.common.AndroidLogListener;
-import com.wearezeta.auto.android.common.AndroidLogListener.ListenerType;
+import com.wearezeta.auto.android.common.logging.AndroidLogListener;
+import com.wearezeta.auto.android.common.logging.AndroidLogListener.ListenerType;
+import com.wearezeta.auto.android.common.logging.LoggingProfile;
+import com.wearezeta.auto.android.common.logging.RegressionFailedLoggingProfile;
+import com.wearezeta.auto.android.common.logging.RegressionPassedLoggingProfile;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.*;
@@ -23,6 +26,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
+import gherkin.formatter.model.Result;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -36,6 +40,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
@@ -735,7 +740,12 @@ public class CommonAndroidSteps {
         }
 
         AndroidLogListener.forceStopAll();
-        AndroidLogListener.writeDeviceLogsToConsole(AndroidLogListener.getInstance(ListenerType.DEFAULT));
+        LoggingProfile loggingProfile = new RegressionPassedLoggingProfile();
+        if (!ZetaFormatter.getRecentTestResult().equals(Result.PASSED.toString())) {
+            loggingProfile = new RegressionFailedLoggingProfile();
+        }
+        AndroidLogListener.writeDeviceLogsToConsole(AndroidLogListener.getInstance(ListenerType.DEFAULT),
+                loggingProfile);
 
         commonSteps.getUserManager().resetUsers();
         SEBridge.getInstance().reset();

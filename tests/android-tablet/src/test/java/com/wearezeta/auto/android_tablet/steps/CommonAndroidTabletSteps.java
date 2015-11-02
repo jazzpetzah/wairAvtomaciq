@@ -3,6 +3,10 @@ package com.wearezeta.auto.android_tablet.steps;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 
+import com.wearezeta.auto.android.common.logging.LoggingProfile;
+import com.wearezeta.auto.android.common.logging.RegressionFailedLoggingProfile;
+import com.wearezeta.auto.android.common.logging.RegressionPassedLoggingProfile;
+import gherkin.formatter.model.Result;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -16,8 +20,8 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
-import com.wearezeta.auto.android.common.AndroidLogListener;
-import com.wearezeta.auto.android.common.AndroidLogListener.ListenerType;
+import com.wearezeta.auto.android.common.logging.AndroidLogListener;
+import com.wearezeta.auto.android.common.logging.AndroidLogListener.ListenerType;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.android_tablet.pages.TabletWelcomePage;
@@ -235,8 +239,12 @@ public class CommonAndroidTabletSteps {
         }
 
         AndroidLogListener.forceStopAll();
+        LoggingProfile loggingProfile = new RegressionPassedLoggingProfile();
+        if (!ZetaFormatter.getRecentTestResult().equals(Result.PASSED.toString())) {
+            loggingProfile = new RegressionFailedLoggingProfile();
+        }
         AndroidLogListener.writeDeviceLogsToConsole(AndroidLogListener
-                .getInstance(ListenerType.DEFAULT));
+                .getInstance(ListenerType.DEFAULT), loggingProfile);
 
         commonSteps.getUserManager().resetUsers();
     }
