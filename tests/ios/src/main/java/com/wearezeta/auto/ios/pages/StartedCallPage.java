@@ -70,18 +70,21 @@ public class StartedCallPage extends CallPage {
 	}
 
 	public boolean isEndCallVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(getDriver(),
+		DriverUtils.waitUntilLocatorAppears(getDriver(),
 				By.name(IOSLocators.StartedCallPage.nameEndCallButton));
+		return endCallButton.isDisplayed();
 	}
 
 	public boolean isSpeakersVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(getDriver(),
+		DriverUtils.waitUntilLocatorAppears(getDriver(),
 				By.name(IOSLocators.StartedCallPage.nameSpeakersButton));
+		return speakersButton.isDisplayed();
 	}
 
 	public boolean isMuteCallVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(getDriver(),
+		DriverUtils.waitUntilLocatorAppears(getDriver(),
 				By.name(IOSLocators.StartedCallPage.nameMuteCallButton));
+		return muteCallButton.isDisplayed();
 	}
 
 	public void clickEndCallButton() {

@@ -176,8 +176,6 @@ public class CommonAndroidSteps {
 
     @Before("~@performance")
     public void setUp() throws Exception {
-        AndroidCommonUtils.storeDefaultImeId();
-
         commonBefore();
         initFirstPage();
     }
@@ -713,7 +711,6 @@ public class CommonAndroidSteps {
     public void tearDown() throws Exception {
         try {
             AndroidCommonUtils.setAirplaneMode(false);
-            AndroidCommonUtils.resetDefaultIME();
         } catch (Exception e) {
             // do not fail if smt fails here
             e.printStackTrace();
@@ -823,31 +820,8 @@ public class CommonAndroidSteps {
      * @step. ^I (enable|disable) Airplane mode on the device$
      */
     @Given("^I (enable|disable) Airplane mode on the device$")
-    public void IChangeAirplaceMode(String action) throws Exception {
+    public void IChangeAirplaneMode(String action) throws Exception {
         AndroidCommonUtils.setAirplaneMode(action.equals("enable"));
-    }
-
-    /**
-     * Sets default IME, stored previously before any IME changes
-     *
-     * @throws Exception
-     * @step. ^I set default input method$
-     */
-    @Given("^I set default input method$")
-    public void ISetDefaultInputMethod() throws Exception {
-        AndroidCommonUtils.resetDefaultIME();
-    }
-
-    /**
-     * Sets IME used to input unicode data (ADBKeyBoard.apk)
-     *
-     * @throws Exception
-     * @step. ^I set unicode input method$
-     */
-    @Given("^I set unicode input method$")
-    public void ISetUnicodeInputMethod() throws Exception {
-        AndroidCommonUtils.installAdbKeyboard(this.getClass());
-        AndroidCommonUtils.setAdbKeyboard();
     }
 
 }

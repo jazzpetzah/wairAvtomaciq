@@ -69,6 +69,7 @@ public class IncomingCallPage extends CallPage {
 	}
 
 	public StartedCallPage acceptIncomingCallClick() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), acceptCallButton);
 		acceptCallButton.click();
 		return new StartedCallPage(getLazyDriver());
 	}

@@ -527,7 +527,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3955
+  @regression @id3955
   Scenario Outline: Verify that deleted conversation isn't going to archive [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -546,7 +546,7 @@ Feature: Conversation List
       | Name      | Contact1  | Message |
       | user1Name | user2Name | testing |
 
-  @staging @id3956
+  @regression @id3956
   Scenario Outline: Verify that deleted conversation isn't going to archive [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -568,53 +568,47 @@ Feature: Conversation List
 
   @staging @id3961
   Scenario Outline: Verify deleting 1-to-1 conversation from archive [PORTRAIT]
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to all other users
-    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
-    Given User <Name> sent message <Message> to conversation <GroupChatName>
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
-    When I swipe right on a <GroupChatName>
+    When I swipe right on a <Contact1>
     And I press Archive button in action menu in Contact List
-    And I dont see conversation <GroupChatName> in contact list
+    And I dont see conversation <Contact1> in contact list
     And I open archived conversations on iPad
-    And I swipe right on a <GroupChatName>
+    And I swipe right on a <Contact1>
     And I click delete menu button
     And I confirm delete conversation content
-    Then I dont see conversation <GroupChatName> in contact list
+    Then I dont see conversation <Contact1> in contact list
     And I open archived conversations on iPad
     Then I dont see conversation <Contact1> in contact list
 
     Examples: 
-      | Name      | Contact1  | Contact2  | Message | GroupChatName |
-      | user1Name | user2Name | user3Name | testing | ForDeletion   |
+      | Name      | Contact1  |
+      | user1Name | user2Name |
 
   @staging @id3962
   Scenario Outline: Verify deleting 1-to-1 conversation from archive [LANDSCAPE]
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to all other users
-    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
-    Given User <Name> sent message <Message> to conversation <GroupChatName>
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
-    When I swipe right on a <GroupChatName>
+    When I swipe right on a <Contact1>
     And I press Archive button in action menu in Contact List
-    And I dont see conversation <GroupChatName> in contact list
+    And I dont see conversation <Contact1> in contact list
     And I open archived conversations on iPad
-    And I swipe right on a <GroupChatName>
+    And I swipe right on a <Contact1>
     And I click delete menu button
     And I confirm delete conversation content
-    Then I dont see conversation <GroupChatName> in contact list
+    Then I dont see conversation <Contact1> in contact list
     And I open archived conversations on iPad
     Then I dont see conversation <Contact1> in contact list
 
     Examples: 
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
-      
+
   @staging @id3969
   Scenario Outline: Verify posting in a group conversation without content [PORTRAIT]
     Given There are 3 users where <Name> is me
@@ -643,7 +637,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
       | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
 
-  @staging @id3970
+  @regression @id3970
   Scenario Outline: Verify posting in a group conversation without content [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -671,3 +665,34 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
       | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
+
+  @staging @id4018
+  Scenario Outline: Verify canceling blocking person [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact1>
+    And I press menu Block button
+    And I click Cancel button
+    Then I see conversation action menu
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
+
+  @staging @id4019
+  Scenario Outline: Verify canceling blocking person [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact1>
+    And I press menu Block button
+    And I click Cancel button
+    Then I see conversation action menu
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |

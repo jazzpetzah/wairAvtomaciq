@@ -1,7 +1,7 @@
 Feature: Ping
 
   @id2253 @regression @rc
-  Scenario Outline: Send ping and ping again to contact in portrait mode
+  Scenario Outline: (AN-2955) Send ping and ping again to contact in portrait mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to portrait
@@ -22,7 +22,7 @@ Feature: Ping
       | user1Name | user2Name | YOU PINGED | YOU PINGED AGAIN |
 
   @id2239 @regression @rc
-  Scenario Outline: Send ping and ping again to contact in landscape mode
+  Scenario Outline: (AN-2955) Send ping and ping again to contact in landscape mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape

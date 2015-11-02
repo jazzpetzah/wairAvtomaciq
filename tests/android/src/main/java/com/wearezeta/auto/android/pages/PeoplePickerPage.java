@@ -66,10 +66,6 @@ public class PeoplePickerPage extends AndroidPage {
 
 	private static final String idTopPeopleRoot = "rv_top_users";
 
-	private static final String idPeoplePickerSerchConversations = "ttv_pickuser_searchconversation_name";
-	@FindBy(id = idPeoplePickerSerchConversations)
-	private List<WebElement> pickerSearchConversations;
-
 	@FindBy(id = idPeoplePickerClearbtn)
 	private WebElement pickerClearBtn;
 
@@ -223,12 +219,12 @@ public class PeoplePickerPage extends AndroidPage {
 		pickerClearBtn.click();
 	}
 
-	public boolean userIsVisible(String contact) throws Exception {
+	public boolean isUserVisible(String contact) throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.xpath(xpathPeoplePickerContactByName.apply(contact)));
 	}
 
-	public boolean groupIsVisible(String contact) throws Exception {
+	public boolean isGroupVisible(String contact) throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.xpath(xpathPeoplePickerGroupByName.apply(contact)));
 	}

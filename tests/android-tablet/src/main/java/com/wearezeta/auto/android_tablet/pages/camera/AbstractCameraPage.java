@@ -55,7 +55,7 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
 	public void confirmPictureSelection() throws Exception {
 		// Workaround for unexpected orientation change issue
 		if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(DialogPage.xpathConfirmOKButton), 3)) {
+				By.xpath(DialogPage.xpathConfirmOKButton))) {
 			if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 					getLensButtonLocator(), 2)) {
 				tapLensButton();

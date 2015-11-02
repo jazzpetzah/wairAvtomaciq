@@ -119,7 +119,7 @@ Feature: Connect
       | user1Name | user2Name | user3Name | user4Name | user5Name | 4 people waiting | 3 people waiting |
 
   @id540 @regression
-  Scenario Outline: I can ignore a connect request and reconnect later
+  Scenario Outline: (AN-2958) I can ignore a connect request and reconnect later
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
     Given I sign in using my email or phone number
@@ -302,7 +302,7 @@ Feature: Connect
       | user1Name | user2Name | user3Name |
 
   @id680 @regression
-  Scenario Outline: I want to see user has been blocked within the Start UI
+  Scenario Outline: (AN-2959) I want to see user has been blocked within the Start UI
     Given There are 3 users where <Name> is me
     # Having the extra user is a workaround for an app bug
     Given Myself is connected to <Contact1>

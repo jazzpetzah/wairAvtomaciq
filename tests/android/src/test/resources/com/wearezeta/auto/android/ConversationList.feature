@@ -74,21 +74,21 @@ Feature: Conversation List
     When I tap on contact name <Contact1>
     And I see dialog page
     And I tap on text input
-    And I type the message "<SoudCloudLink>" and send it
+    And I type the message "<SoundCloudLink>" and send it
     And I scroll to the bottom of conversation view
     And I press PlayPause media item button
     And I navigate back from dialog page
     Then I see PlayPause media content button for conversation <Contact1>
     When I tap on contact name <Contact2>
     And I see dialog page
-    And I navigate back from dialog page
+    And I press back button
     Then I see PlayPause media content button for conversation <Contact1>
     When I remember the state of PlayPause button next to the <Contact1> conversation
     And I tap PlayPause button next to the <Contact1> conversation
     Then I see the state of PlayPause button next to the <Contact1> conversation is changed
 
-    Examples: 
-      | Name      | Contact1  | Contact2  | SoudCloudLink                                              |
+    Examples:
+      | Name      | Contact1  | Contact2  | SoundCloudLink                                             |
       | user1Name | user2Name | user3Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
   @id1513 @regression @rc
@@ -118,7 +118,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @id4042 @staging
+  @id4042 @regression
   Scenario Outline: Verify I can delete a 1:1 conversation from conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -129,6 +129,7 @@ Feature: Conversation List
     And I see Contact list with contacts
     And I tap on contact name <Contact1>
     And I see dialog page
+    And I scroll to the bottom of conversation view
     And Last message is "<Message>"
     And I navigate back from dialog page
     And I swipe right on a <Contact1>
@@ -144,7 +145,7 @@ Feature: Conversation List
     And I see dialog page
     Then I see there is no content in the conversation
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Message    | Image       | SpotifyLink                                           |
       | user1Name | user2Name | Tschuessii | testing.jpg | https://open.spotify.com/track/0p6GeAWS4VCZddxNbBtEss |
 

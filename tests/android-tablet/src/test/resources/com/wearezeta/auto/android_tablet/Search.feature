@@ -209,8 +209,8 @@ Feature: Search
     And I see the participant avatar <Contact2> on Group popover
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Name | user2Name | user3Name | GroupChat     |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @id3894 @regression
   Scenario Outline: Verify starting a new group conversation with action button (portrait)
@@ -236,8 +236,8 @@ Feature: Search
     And I see the participant avatar <Contact2> on Group popover
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Name | user2Name | user3Name | GroupChat     |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @id3884 @regression
   Scenario Outline: Verify sending a photo with action button (landscape)
@@ -308,8 +308,8 @@ Feature: Search
     And I see the participant avatar <Contact2> on Group popover
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Name | user2Name | user3Name | GroupChat     |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @id3896 @regression
   Scenario Outline: Verify sharing a photo to a newly created group conversation with action button (portrait)
@@ -338,8 +338,8 @@ Feature: Search
     And I see the participant avatar <Contact2> on Group popover
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Name | user2Name | user3Name | GroupChat     |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @id3881 @regression
   Scenario Outline: (AN-2894) Verify button Open is changed to Create after checking second person (landscape)
@@ -484,5 +484,5 @@ Feature: Search
     And I see the participant avatar <Contact2> on Group popover
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Name | user2Name | user3Name | GroupChat     |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
