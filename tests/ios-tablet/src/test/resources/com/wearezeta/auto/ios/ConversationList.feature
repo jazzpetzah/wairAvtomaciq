@@ -713,8 +713,9 @@ Feature: Conversation List
     And Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
     Then I dont see conversation <Contact> in contact list
     And I open archived conversations on iPad
+    Then I see user <Contact> in contact list
     And I tap on contact name <Contact>
-    And I see dialog page
+    And I see new photo in the dialog
 
     Examples: 
       | Name      | Contact   | Picture     | ConversationType |
@@ -737,8 +738,9 @@ Feature: Conversation List
     And Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
     Then I dont see conversation <Contact> in contact list
     And I open archived conversations on iPad
+    Then I see user <Contact> in contact list
     And I tap on contact name <Contact>
-    And I see dialog page
+    And I see new photo in the dialog
 
     Examples: 
       | Name      | Contact   | Picture     | ConversationType |
