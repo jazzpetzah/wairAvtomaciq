@@ -143,7 +143,7 @@ Feature: Conversation List
     And I tap on user name found on People picker page <Contact1>
     And I click on open conversation action button on People picker page
     And I see dialog page
-    Then I see there is no content in the conversation
+    Then I see Connect to <Contact1> Dialog page
 
     Examples:
       | Name      | Contact1  | Message    | Image       | SpotifyLink                                           |
@@ -161,6 +161,7 @@ Feature: Conversation List
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
     And I see dialog page
+    And I scroll to the bottom of conversation view
     And Last message is "<Message>"
     And I navigate back from dialog page
     And I swipe right on a <GroupChatName>
@@ -173,7 +174,7 @@ Feature: Conversation List
     And I enter "<GroupChatName>" into Search input on People Picker page
     And I tap on group found on People picker page <GroupChatName>
     And I see dialog page
-    Then I see there is no content in the conversation
+    Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName | Message    | Image       | SpotifyLink                                           |
