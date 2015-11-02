@@ -722,7 +722,7 @@ public class CommonAndroidSteps {
 
         AndroidLogListener.forceStopAll();
         LoggingProfile loggingProfile = new RegressionPassedLoggingProfile();
-        if (!ZetaFormatter.getRecentTestResult().equals(Result.PASSED)) {
+        if (!ZetaFormatter.getRecentTestResult().equals(Result.PASSED.toString())) {
             loggingProfile = new RegressionFailedLoggingProfile();
         }
         AndroidLogListener.writeDeviceLogsToConsole(AndroidLogListener.getInstance(ListenerType.DEFAULT),
