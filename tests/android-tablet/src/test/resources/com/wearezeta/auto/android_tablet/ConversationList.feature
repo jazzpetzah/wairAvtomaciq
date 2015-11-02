@@ -162,7 +162,7 @@ Feature: Conversation List
       | Name      | Contact   | SoundCloudLink                                             |
       | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
-  @id4046 @staging
+  @id4046 @regression @rc
   Scenario Outline: Verify I can delete a 1:1 conversation from conversation list (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -193,7 +193,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | DeleteItem | Msg1       | Msg2       |
       | user1Name | user2Name | user3Name | DELETE     | YoMessage1 | YoMessage2 |
 
-  @id4045 @staging
+  @id4045 @regression
   Scenario Outline: Verify I can delete a group conversation from conversation list (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -225,7 +225,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | Msg1       | Msg2       | DeleteItem |
       | user1Name | user2Name | user3Name | GroupChat     | YoMessage1 | YoMessage2 | DELETE     |
 
-  @id4044 @staging
+  @id4044 @regression
   Scenario Outline: Verify I can delete a group conversation from conversation list (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
