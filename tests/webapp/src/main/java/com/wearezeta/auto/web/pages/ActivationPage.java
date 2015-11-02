@@ -2,14 +2,18 @@ package com.wearezeta.auto.web.pages;
 
 import java.util.concurrent.Future;
 
-import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
-import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class ActivationPage extends WebPage {
+
+	@FindBy(css = WebAppLocators.ActivationPage.cssBtnOpenWebApp)
+	private WebElement btnOpenWebapp;
+
 	public ActivationPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
 		this(lazyDriver, null);
 	}
@@ -24,28 +28,13 @@ public class ActivationPage extends WebPage {
 		super.setUrl(url);
 	}
 
-	private ContactListPage openWebApp(int timeoutSeconds) throws Exception {
-		final By openWebAppBtnLocator = By
-				.xpath(WebAppLocators.ActivationPage.xpathBtnOpenWebApp);
-		if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				openWebAppBtnLocator, timeoutSeconds)) {
-			getDriver().findElement(openWebAppBtnLocator).click();
+	public ContactListPage openWebApp(int timeoutSeconds) throws Exception {
+		if (DriverUtils.waitUntilElementClickable(getDriver(), btnOpenWebapp)) {
+			btnOpenWebapp.click();
 		} else {
 			throw new RuntimeException(
 					"It seems there was some failure while verifying registered account");
 		}
 		return new ContactListPage(getLazyDriver());
-	}
-
-	public ContactListPage verifyActivation(int timeoutSeconds)
-			throws Exception {
-		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
-			assert DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-					By.xpath(WebAppLocators.ActivationPage.xpathBtnOpenWebApp),
-					timeoutSeconds) : "Activation page is visible instead of the web app";
-			return new ContactListPage(getLazyDriver());
-		} else {
-			return openWebApp(timeoutSeconds);
-		}
 	}
 }

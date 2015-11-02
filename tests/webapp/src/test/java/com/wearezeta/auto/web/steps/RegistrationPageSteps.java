@@ -252,10 +252,11 @@ public class RegistrationPageSteps {
 				.getUserActivationLink(this.activationMessage);
 		ActivationPage activationPage = (ActivationPage) WebappPagesCollection.registrationPage
 				.instantiatePage(ActivationPage.class);
+		activationPage.openNewTab();
 		activationPage.setUrl(link);
 		activationPage.navigateTo();
 		WebappPagesCollection.contactListPage = activationPage
-				.verifyActivation(ACTIVATION_TIMEOUT);
+				.openWebApp(ACTIVATION_TIMEOUT);
 
 		this.userToRegister.setUserState(UserState.Created);
 		// indexes in aliases start from 1
