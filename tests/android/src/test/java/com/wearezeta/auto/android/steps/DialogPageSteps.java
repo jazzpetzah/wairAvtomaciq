@@ -104,18 +104,6 @@ public class DialogPageSteps {
     }
 
     /**
-     * Types Unicode message using adb
-     *
-     * @param msg message to type
-     * @throws Exception
-     * @step. ^I type unicode message \"(.*)\"$
-     */
-    @When("^I type unicode message \"(.*)\"$")
-    public void ITypeUnicodeMessage(String msg) throws Exception {
-        AndroidCommonUtils.typeMessageUsingAdb(msg);
-    }
-
-    /**
      * Sends the message by pressing the keyboard send button
      *
      * @throws Exception
