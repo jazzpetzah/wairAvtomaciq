@@ -131,8 +131,8 @@ Feature: Search
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName          |
-      | user1Name | user2Name | user3Name | PeoplePickerGroupChat2 |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @id1395 @regression @rc @rc42
   Scenario Outline: (AN-2834) Verify starting 1:1 conversation with a person from Top People
