@@ -350,7 +350,7 @@ Feature: Sign In
     When I have entered login <Email>
     And I have entered password <Password>
     When I click DONE keyboard button
-    Then I see invalid email alert
+    Then I see already registered email alert
 
     Examples: 
       | Email                     | Password      | Name      |
