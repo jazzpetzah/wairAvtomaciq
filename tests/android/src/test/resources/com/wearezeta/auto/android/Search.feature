@@ -363,6 +363,7 @@ Feature: Search
     And I see Create Conversation button on people picker page
     And I tap Create Conversation button on People picker page
     Then I see dialog page
+    Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:
       | Name      | Contact1  | Contact2  |
