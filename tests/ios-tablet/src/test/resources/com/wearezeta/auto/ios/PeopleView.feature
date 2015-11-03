@@ -888,10 +888,10 @@ Feature: People View
     And I see only 3 messages
     And I open group conversation details
     And I press leave converstation button
-    And I see leave conversation alert\
-    And I press leave\
+    And I see leave conversation alert
+    And I press leave
     Then I press leave
-    When I wait until popover is closed\
+    When I wait until popover is closed
     And I open archived conversations on iPad
     And I see user <GroupChatName> in contact list
     And I tap on group chat with name <GroupChatName>
