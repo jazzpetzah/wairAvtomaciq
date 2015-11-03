@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
+import com.wearezeta.auto.web.pages.ProfilePicturePage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.And;
@@ -7,6 +8,9 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ProfilePicturePageSteps {
+
+	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
+			.getInstance();
 
 	/**
 	 * Emulates drop of existing picture into profile picture dialog
@@ -19,7 +23,8 @@ public class ProfilePicturePageSteps {
 	 */
 	@When("^I drop (.*) to profile picture dialog$")
 	public void IDropPicture(String pictureName) throws Exception {
-		WebappPagesCollection.profilePicturePage.dropPicture(pictureName);
+		webappPagesCollection.getPage(ProfilePicturePage.class).dropPicture(
+				pictureName);
 	}
 
 	/**
@@ -30,7 +35,8 @@ public class ProfilePicturePageSteps {
 	 */
 	@And("^I confirm picture selection on profile picture dialog$")
 	public void IConfirmImageSelection() throws Exception {
-		WebappPagesCollection.profilePicturePage.clickConfirmImageButton();
+		webappPagesCollection.getPage(ProfilePicturePage.class)
+				.clickConfirmImageButton();
 	}
 
 	private static final int VISIBILITY_TIMEOUT = 3; // seconds
@@ -49,10 +55,10 @@ public class ProfilePicturePageSteps {
 	public void ISeeProfilePictureDialog(String shouldNotBeVisible)
 			throws Exception {
 		if (shouldNotBeVisible == null) {
-			WebappPagesCollection.profilePicturePage
+			webappPagesCollection.getPage(ProfilePicturePage.class)
 					.waitUntilVisible(VISIBILITY_TIMEOUT);
 		} else {
-			WebappPagesCollection.profilePicturePage
+			webappPagesCollection.getPage(ProfilePicturePage.class)
 					.waitUntilNotVisible(VISIBILITY_TIMEOUT);
 		}
 	}

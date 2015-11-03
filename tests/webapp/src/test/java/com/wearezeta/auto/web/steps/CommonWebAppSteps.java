@@ -198,8 +198,8 @@ public class CommonWebAppSteps {
 		webdrivers.put(uniqueName, lazyWebDriver);
 		lazyWebDriver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
 				TimeUnit.MILLISECONDS).get(url);
-		WebappPagesCollection.registrationPage = new RegistrationPage(
-				lazyWebDriver, url);
+		WebappPagesCollection.getInstance().setFirstPage(
+				new RegistrationPage(lazyWebDriver, url));
 		ZetaFormatter.setLazyDriver(lazyWebDriver);
 	}
 
@@ -790,7 +790,8 @@ public class CommonWebAppSteps {
 	 */
 	@Then("^I refresh page$")
 	public void IRefreshPage() throws Exception {
-		WebappPagesCollection.registrationPage.refreshPage();
+		WebappPagesCollection.getInstance().getPage(RegistrationPage.class)
+				.refreshPage();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -936,7 +937,7 @@ public class CommonWebAppSteps {
 	 */
 	@Given("^I open Sign In page$")
 	public void IOpenSignInPage() throws Exception {
-		WebappPagesCollection.loginPage = WebappPagesCollection.registrationPage
+		WebappPagesCollection.getInstance().getPage(RegistrationPage.class)
 				.openSignInPage();
 	}
 
