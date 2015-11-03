@@ -872,7 +872,7 @@ Feature: People View
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given User <Name> sent message <Message> to conversation <GroupChatName>
     Given Contact <Contact1> sends image <Image> to group conversation <GroupChatName>
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
@@ -880,7 +880,7 @@ Feature: People View
     And I open group conversation details
     And I press leave converstation button
     And I see leave conversation alert
-    Then I press leave
+    And I press leave
     And I open archived conversations on iPad
     And I see user <GroupChatName> in contact list
     And I tap on group chat with name <GroupChatName>
@@ -890,7 +890,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | Message |    Image    |
       | user1Name | user2Name | user3Name | TESTCHAT      |  hello  | testing.jpg |
 
-  @torun @staging @id4004
+  @staging @id4004
   Scenario Outline: Verify that left conversation is shown in the Archive [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -898,7 +898,7 @@ Feature: People View
     Given User <Name> sent message <Message> to conversation <GroupChatName>
     Given Contact <Contact1> sends image <Image> to group conversation <GroupChatName>
     Given I rotate UI to landscape
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
