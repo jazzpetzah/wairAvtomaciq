@@ -16,9 +16,8 @@ Feature: Registration
     Examples: 
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
-      
-      
-  @staging @id304 
+
+  @staging @id304
   Scenario Outline: Attempt to register an email with spaces
     Given I see sign in screen
     When I press Join button
@@ -34,7 +33,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id304 
+  @staging @id304
   Scenario Outline: Attempt to register an email with incorrect format
     Given I see sign in screen
     When I press Join button
@@ -50,7 +49,7 @@ Feature: Registration
       | Name      |
       | user1Name |
 
-  @staging @id284 
+  @staging @id284
   Scenario Outline: Conserve user input throughout registration
     Given I see sign in screen
     When I press Join button
@@ -68,7 +67,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id282 
+  @staging @id282
   Scenario Outline: Can return to email page to change email if input incorrectly
     Given I see sign in screen
     When I press Join button
@@ -90,7 +89,7 @@ Feature: Registration
       | Correct    | Password      | Name      | Incorrect           |
       | user1Email | user1Password | user1Name | error@wearezeta.com |
 
-  @staging @id528 @id529 @id530 
+  @staging @id528 @id529 @id530
   Scenario Outline: Register new user using username with maximum characters allowed
     Given I see sign in screen
     When I press Join button
@@ -116,7 +115,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id285 
+  @staging @id285
   Scenario Outline: Take or select a photo label not visible when picture is selected
     Given I see sign in screen
     When I press Join button
@@ -130,7 +129,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id273 @id301 
+  @staging @id273 @id301
   Scenario Outline: Next Button should not be visible on first registration step visit
     Given I see sign in screen
     When I press Join button
@@ -171,7 +170,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id305 
+  @staging @id305
   Scenario Outline: Minimum 8 chars password requirement validation
     Given I see sign in screen
     When I press Join button
@@ -188,7 +187,7 @@ Feature: Registration
       | Email      | Password | Name      |
       | user1Email | 1234567  | user1Name |
 
-  @staging @id298 
+  @staging @id298
   Scenario Outline: Can re-send verification email from verification screen
     Given I see sign in screen
     When I press Join button
@@ -211,7 +210,7 @@ Feature: Registration
       | Email      | Password      | Name      | EmailCount |
       | user1Email | user1Password | user1Name | 20         |
 
-  @staging @id302 
+  @staging @id302
   Scenario Outline: Verify back button during registration process
     Given I see sign in screen
     When I press Join button
@@ -233,7 +232,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id798 
+  @staging @id798
   Scenario Outline: Email verification reminder is displayed when attempt is made to sign in with unverified email
     Given I see sign in screen
     When I press Join button
@@ -252,7 +251,19 @@ Feature: Registration
     And I have entered password <Password>
     And I attempt to press Login button
     Then I see email verification reminder
-    
-     Examples: 
+
+    Examples: 
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
+
+  @staging @id2468
+  Scenario Outline: Verify impossibility to register with a phone already asigned to the email
+    Given There is 1 user where <Name> is me
+    Given I see sign in screen
+    When I input phone number of already registered user <Name>
+    And I enter verification code for user <Name>
+    Then I see Contact list with my name <Name>
+
+    Examples: 
+      | Name      |
+      | user1Name |
