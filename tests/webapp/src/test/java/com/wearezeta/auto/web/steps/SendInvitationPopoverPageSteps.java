@@ -2,12 +2,15 @@ package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.external.YouAreInvitedPage;
+import com.wearezeta.auto.web.pages.popovers.BringYourFriendsPopoverPage;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class SendInvitationPopoverPageSteps {
 
+	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
+			.getInstance();
 	private String invitationLink = null;
 
 	/**
@@ -23,9 +26,11 @@ public class SendInvitationPopoverPageSteps {
 	public void ISeeSendInvitationPopover(String shouldNotBeVisible)
 			throws Exception {
 		if (shouldNotBeVisible == null) {
-			WebappPagesCollection.bringYourFriendsPopover.isVisible();
+			webappPagesCollection.getPage(BringYourFriendsPopoverPage.class)
+					.isVisible();
 		} else {
-			WebappPagesCollection.bringYourFriendsPopover.isNotVisible();
+			webappPagesCollection.getPage(BringYourFriendsPopoverPage.class)
+					.isNotVisible();
 		}
 	}
 
@@ -38,7 +43,8 @@ public class SendInvitationPopoverPageSteps {
 	 */
 	@Then("^I click Invite button on Bring Your Friends popover$")
 	public void IClickInviteButton() throws Exception {
-		WebappPagesCollection.bringYourFriendsPopover.clickInviteButton();
+		webappPagesCollection.getPage(BringYourFriendsPopoverPage.class)
+				.clickInviteButton();
 	}
 
 	/**
@@ -49,8 +55,9 @@ public class SendInvitationPopoverPageSteps {
 	 * 
 	 */
 	@When("^I remember invitation link on Bring Your Friends popover$")
-	public void IRemeberInvitationLink() {
-		invitationLink = WebappPagesCollection.bringYourFriendsPopover.parseInvitationLink();
+	public void IRemeberInvitationLink() throws Exception {
+		invitationLink = webappPagesCollection.getPage(
+				BringYourFriendsPopoverPage.class).parseInvitationLink();
 	}
 
 	/**
@@ -67,9 +74,9 @@ public class SendInvitationPopoverPageSteps {
 					"Invitation link has not been remembered before!");
 		}
 
-		WebappPagesCollection.youAreInvitedPage = (YouAreInvitedPage) WebappPagesCollection.loginPage
-				.instantiatePage(YouAreInvitedPage.class);
-		WebappPagesCollection.youAreInvitedPage.setUrl(invitationLink);
-		WebappPagesCollection.youAreInvitedPage.navigateTo();
+		YouAreInvitedPage youAreInvitedPage = webappPagesCollection
+				.getPage(YouAreInvitedPage.class);
+		youAreInvitedPage.setUrl(invitationLink);
+		youAreInvitedPage.navigateTo();
 	}
 }
