@@ -10,7 +10,7 @@ public abstract class RegressionLoggingProfile extends LoggingProfile {
     public Optional<List<String>> getExcludePatterns() {
         return Optional.of(Arrays.asList("/SELENDROID",
                 "/ResourceType", "/AlarmManager",
-                "/WifiStateMachine"));
+                "/WifiStateMachine", "/SFPerfTracer"));
     }
 
     @Override
