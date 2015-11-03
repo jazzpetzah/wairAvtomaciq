@@ -46,10 +46,7 @@ public final class AndroidLogListener {
     }
 
     public boolean isRunning() {
-        if (listener == null) {
-            return false;
-        }
-        return listener.isRunning();
+        return listener != null && listener.isRunning();
     }
 
     private AsyncProcess listener;
@@ -97,6 +94,15 @@ public final class AndroidLogListener {
         return this.listener.getStderr();
     }
 
+    private static boolean isLineSatisfyingePatterns(List<String> patterns, final String line) {
+        for (String patt : patterns) {
+            if (line.contains((patt))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void writeDeviceLogsToConsole(
             final AndroidLogListener listener, final LoggingProfile loggingProfile) throws Exception {
         final String stderr = listener.getStdErr();
@@ -109,38 +115,19 @@ public final class AndroidLogListener {
         final StringBuilder stdout = new StringBuilder();
         for (String line : listener.getStdOut().trim().split("\n")) {
             final String lineWithTerminator = line + "\n";
-            final Optional<List<String>> stdoutIncludePatterns = loggingProfile.getIncludePatterns();
-            final Optional<List<String>> stdoutExcludePatterns = loggingProfile.getExcludePatterns();
-            if (stdoutIncludePatterns.isPresent()) {
-                boolean isLineAccepted = false;
-                for (String incPatt : stdoutIncludePatterns.get()) {
-                    if (line.contains(incPatt)) {
-                        if (stdoutExcludePatterns.isPresent()) {
-                            for (String excPatt : stdoutExcludePatterns.get()) {
-                                if (!line.contains(excPatt)) {
-                                    stdout.insert(0, lineWithTerminator);
-                                    isLineAccepted = true;
-                                    break;
-                                }
-                            }
-                        } else {
-                            isLineAccepted = true;
-                        }
-                    }
-                    if (isLineAccepted) {
-                        break;
+            final Optional<List<String>> includePatterns = loggingProfile.getIncludePatterns();
+            final Optional<List<String>> excludePatterns = loggingProfile.getExcludePatterns();
+            if (includePatterns.isPresent()) {
+                if (isLineSatisfyingePatterns(includePatterns.get(), line)) {
+                    if (!(excludePatterns.isPresent() &&
+                            isLineSatisfyingePatterns(excludePatterns.get(), line))) {
+                        stdout.append(lineWithTerminator);
                     }
                 }
             } else {
-                if (stdoutExcludePatterns.isPresent()) {
-                    for (String excPatt : stdoutExcludePatterns.get()) {
-                        if (!line.contains(excPatt)) {
-                            stdout.insert(0, lineWithTerminator);
-                            break;
-                        }
-                    }
-                } else {
-                    stdout.insert(0, lineWithTerminator);
+                if (!(excludePatterns.isPresent() &&
+                        isLineSatisfyingePatterns(excludePatterns.get(), line))) {
+                    stdout.append(lineWithTerminator);
                 }
             }
         }
