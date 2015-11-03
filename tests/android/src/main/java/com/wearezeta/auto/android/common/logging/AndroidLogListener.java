@@ -108,6 +108,7 @@ public final class AndroidLogListener {
 
         final StringBuilder stdout = new StringBuilder();
         for (String line : listener.getStdOut().trim().split("\n")) {
+            final String lineWithTerminator = line + "\n";
             final Optional<List<String>> stdoutIncludePatterns = loggingProfile.getIncludePatterns();
             final Optional<List<String>> stdoutExcludePatterns = loggingProfile.getExcludePatterns();
             if (stdoutIncludePatterns.isPresent()) {
@@ -117,7 +118,7 @@ public final class AndroidLogListener {
                         if (stdoutExcludePatterns.isPresent()) {
                             for (String excPatt : stdoutExcludePatterns.get()) {
                                 if (!line.contains(excPatt)) {
-                                    stdout.append(line + "\n");
+                                    stdout.insert(0, lineWithTerminator);
                                     isLineAccepted = true;
                                     break;
                                 }
@@ -134,19 +135,20 @@ public final class AndroidLogListener {
                 if (stdoutExcludePatterns.isPresent()) {
                     for (String excPatt : stdoutExcludePatterns.get()) {
                         if (!line.contains(excPatt)) {
-                            stdout.append(line + "\n");
+                            stdout.insert(0, lineWithTerminator);
                             break;
                         }
                     }
                 } else {
-                    stdout.append(line + "\n");
+                    stdout.insert(0, lineWithTerminator);
                 }
             }
         }
         if (stdout.toString().length() > 0) {
             log.debug("=== CAPTURED STDOUT LOGS ===\n");
             System.out.println(stdout.toString().trim());
-            log.debug("=== END OF CAPTURED STDOUT LOGS ===\n\n\n");
+            log.debug("=== END OF CAPTURED STDOUT LOGS ===" +
+                    "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         }
     }
 
