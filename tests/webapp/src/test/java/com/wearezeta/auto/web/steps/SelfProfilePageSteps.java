@@ -6,6 +6,7 @@ import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.web.pages.SelfProfilePage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.And;
@@ -16,6 +17,8 @@ import static org.hamcrest.CoreMatchers.*;
 public class SelfProfilePageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
+			.getInstance();
 
 	public SelfProfilePageSteps() {
 	}
@@ -28,7 +31,7 @@ public class SelfProfilePageSteps {
 	 */
 	@And("^I click gear button on self profile page$")
 	public void IClickGearButton() throws Exception {
-		WebappPagesCollection.selfProfilePage.clickGearButton();
+		webappPagesCollection.getPage(SelfProfilePage.class).clickGearButton();
 	}
 
 	/**
@@ -42,7 +45,8 @@ public class SelfProfilePageSteps {
 	 */
 	@And("^I select (.*) menu item on self profile page$")
 	public void ISelectGearMenuItem(String name) throws Exception {
-		WebappPagesCollection.selfProfilePage.selectGearMenuItem(name);
+		webappPagesCollection.getPage(SelfProfilePage.class)
+				.selectGearMenuItem(name);
 	}
 
 	/**
@@ -57,8 +61,8 @@ public class SelfProfilePageSteps {
 	@And("^I see user name on self profile page (.*)$")
 	public void ISeeUserNameOnSelfProfilePage(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		boolean nameCorrect = WebappPagesCollection.selfProfilePage
-				.checkNameInSelfProfile(name);
+		boolean nameCorrect = webappPagesCollection.getPage(
+				SelfProfilePage.class).checkNameInSelfProfile(name);
 		Assert.assertTrue(nameCorrect);
 	}
 
@@ -76,8 +80,8 @@ public class SelfProfilePageSteps {
 			throws Exception {
 		phoneNumber = usrMgr.replaceAliasesOccurences(phoneNumber,
 				FindBy.PHONENUMBER_ALIAS);
-		assertThat(WebappPagesCollection.selfProfilePage.getUserPhoneNumber(),
-				equalTo(phoneNumber));
+		assertThat(webappPagesCollection.getPage(SelfProfilePage.class)
+				.getUserPhoneNumber(), equalTo(phoneNumber));
 	}
 
 	/**
@@ -92,14 +96,15 @@ public class SelfProfilePageSteps {
 	 */
 	@And("^I see user email on self profile page (.*)$")
 	public void ISeeUserEmailOnSelfProfilePage(String email)
-			throws NoSuchUserException {
+			throws NoSuchUserException, Exception {
 		try {
 			email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
 		} catch (NoSuchUserException e) {
 
 		}
 
-		String actualEmail = WebappPagesCollection.selfProfilePage.getUserMail();
+		String actualEmail = webappPagesCollection.getPage(
+				SelfProfilePage.class).getUserMail();
 		Assert.assertEquals(email, actualEmail);
 	}
 
@@ -112,8 +117,8 @@ public class SelfProfilePageSteps {
 	 *            new username string
 	 */
 	@And("^I change username to (.*)")
-	public void IChangeUserNameTo(String name) {
-		WebappPagesCollection.selfProfilePage.setUserName(name);
+	public void IChangeUserNameTo(String name) throws Exception {
+		webappPagesCollection.getPage(SelfProfilePage.class).setUserName(name);
 		usrMgr.getSelfUser().setName(name);
 	}
 
@@ -130,7 +135,8 @@ public class SelfProfilePageSteps {
 	 */
 	@Then("^I set my accent color to (\\w+)$")
 	public void ISetMyAccentColorTo(String colorName) throws Exception {
-		WebappPagesCollection.selfProfilePage.selectAccentColor(colorName);
+		webappPagesCollection.getPage(SelfProfilePage.class).selectAccentColor(
+				colorName);
 	}
 
 	/*
@@ -144,10 +150,10 @@ public class SelfProfilePageSteps {
 	 * @throws Exception
 	 */
 	@Then("^I verify my accent color in color picker is set to (\\w+) color$")
-	public void IVerifyMyAccentColor(String colorName) {
+	public void IVerifyMyAccentColor(String colorName) throws Exception {
 		final int expectedColorId = AccentColor.getByName(colorName).getId();
-		final int actualColorId = WebappPagesCollection.selfProfilePage
-				.getCurrentAccentColorId();
+		final int actualColorId = webappPagesCollection.getPage(
+				SelfProfilePage.class).getCurrentAccentColorId();
 		Assert.assertTrue("my actual accent color is not set",
 				actualColorId == expectedColorId);
 	}
@@ -161,14 +167,14 @@ public class SelfProfilePageSteps {
 	 */
 	@And("^I click camera button$")
 	public void IClickCameraButton() throws Exception {
-		WebappPagesCollection.profilePicturePage = WebappPagesCollection.selfProfilePage
+		webappPagesCollection.getPage(SelfProfilePage.class)
 				.clickCameraButton();
 	}
 
 	/*
-	 * Verify  my avatar background color is set to expected color
+	 * Verify my avatar background color is set to expected color
 	 * 
-	 * @step. ^I verify  my avatar background color is set to (\\w+) color$
+	 * @step. ^I verify my avatar background color is set to (\\w+) color$
 	 * 
 	 * @param colorName one of these colors: StrongBlue, StrongLimeGreen,
 	 * BrightYellow, VividRed, BrightOrange, SoftPink, Violet
@@ -179,8 +185,8 @@ public class SelfProfilePageSteps {
 	@Then("^I verify my avatar background color is set to (\\w+) color$")
 	public void IVerifyMyAvatarColor(String colorName) throws Exception {
 		final AccentColor expectedColor = AccentColor.getByName(colorName);
-		final AccentColor avatarColor = WebappPagesCollection.selfProfilePage
-				.getCurrentAvatarAccentColor();
+		final AccentColor avatarColor = webappPagesCollection.getPage(
+				SelfProfilePage.class).getCurrentAvatarAccentColor();
 		Assert.assertTrue("my avatar background accent color is not set",
 				avatarColor == expectedColor);
 	}

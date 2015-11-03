@@ -31,6 +31,8 @@ public class PeoplePickerPage extends WebPage {
 
 	private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class
 			.getSimpleName());
+	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
+			.getInstance();
 
 	@FindBy(how = How.CSS, using = WebAppLocators.PeoplePickerPage.cssNameSearchInput)
 	private WebElement searchInput;
@@ -81,9 +83,7 @@ public class PeoplePickerPage extends WebPage {
 	public AbstractPopoverContainer clickNotConnectedUserName(String name)
 			throws Exception {
 		clickNotConnectedUser(name);
-		WebappPagesCollection.popoverPage = new ConnectToPopoverContainer(
-				this.getLazyDriver());
-		return (ConnectToPopoverContainer) WebappPagesCollection.popoverPage;
+		return webappPagesCollection.getPage(ConnectToPopoverContainer.class);
 	}
 
 	public boolean isUserFound(String name) throws Exception {
@@ -229,9 +229,7 @@ public class PeoplePickerPage extends WebPage {
 	public ConnectToPopoverContainer clickPendingUserName(String name)
 			throws Exception {
 		clickPendingUser(name);
-		WebappPagesCollection.popoverPage = new ConnectToPopoverContainer(
-				this.getLazyDriver());
-		return (ConnectToPopoverContainer) WebappPagesCollection.popoverPage;
+		return webappPagesCollection.getPage(ConnectToPopoverContainer.class);
 	}
 
 	private void clickPendingUser(String name) throws Exception {
