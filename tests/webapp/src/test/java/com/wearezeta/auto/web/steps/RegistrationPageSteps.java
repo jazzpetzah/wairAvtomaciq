@@ -3,14 +3,24 @@ package com.wearezeta.auto.web.steps;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.UserState;
-import com.wearezeta.auto.web.pages.ActivationPage;
+import com.wearezeta.auto.web.pages.ContactListPage;
 import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
@@ -30,6 +40,9 @@ public class RegistrationPageSteps {
 
 	public static final int maxCheckCnt = 2;
 
+	private static final Logger LOG = ZetaLogger
+			.getLog(RegistrationPageSteps.class.getName());
+
 	/**
 	 * Enter user name into registration form
 	 * 
@@ -41,7 +54,8 @@ public class RegistrationPageSteps {
 	 */
 	@When("^I enter user name (.*) on Registration page$")
 	public void IEnterName(String name) throws Exception {
-		WebappPagesCollection.registrationPage.waitForRegistrationPageToFullyLoad();
+		WebappPagesCollection.registrationPage
+				.waitForRegistrationPageToFullyLoad();
 		try {
 			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
 		} catch (NoSuchUserException e) {
@@ -82,8 +96,8 @@ public class RegistrationPageSteps {
 		if (flag) {
 			WebappPagesCollection.registrationPage.enterEmail(email);
 		} else {
-			WebappPagesCollection.registrationPage.enterEmail(this.userToRegister
-					.getEmail());
+			WebappPagesCollection.registrationPage
+					.enterEmail(this.userToRegister.getEmail());
 		}
 	}
 
@@ -105,8 +119,8 @@ public class RegistrationPageSteps {
 			this.userToRegister.setPassword(password);
 			this.userToRegister.addPasswordAlias(password);
 		}
-		WebappPagesCollection.registrationPage.enterPassword(this.userToRegister
-				.getPassword());
+		WebappPagesCollection.registrationPage
+				.enterPassword(this.userToRegister.getPassword());
 	}
 
 	/**
@@ -138,36 +152,39 @@ public class RegistrationPageSteps {
 	}
 
 	/**
-	 * Verify whether email address, which is visible on email confirmation
-	 * page is the same as the expected one
+	 * Verify whether email address, which is visible on email confirmation page
+	 * is the same as the expected one
 	 * 
 	 * @step. ^I see email (.*) on [Vv]erification page$
 	 * 
 	 * @param email
 	 *            expected email/alias
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Then("^I see email (.*) on [Vv]erification page$")
 	public void ISeeVerificationEmail(String email) throws Exception {
 		email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
-		assertThat(WebappPagesCollection.registrationPage.getVerificationEmailAddress(),
+		assertThat(
+				WebappPagesCollection.registrationPage
+						.getVerificationEmailAddress(),
 				containsString(email));
 	}
 
 	/**
-	 * Verify whether email address, which is visible on email pending
-	 * page is the same as the expected one
+	 * Verify whether email address, which is visible on email pending page is
+	 * the same as the expected one
 	 * 
 	 * @step. ^I see email (.*) on pending page$
 	 * 
 	 * @param email
 	 *            expected email/alias
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Then("^I see email (.*) on pending page$")
 	public void ISeePendingEmail(String email) throws Exception {
 		email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
-		assertThat(WebappPagesCollection.registrationPage.getPendingEmailAddress(),
+		assertThat(
+				WebappPagesCollection.registrationPage.getPendingEmailAddress(),
 				containsString(email));
 	}
 
@@ -212,7 +229,7 @@ public class RegistrationPageSteps {
 	 * Checks if an icon is shown
 	 * 
 	 * @step. ^I verify that an envelope icon is shown$
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Then("^I verify that an envelope icon is shown$")
 	public void IVerifyThatAnEnvelopeIconIsShown() throws Exception {
@@ -235,8 +252,6 @@ public class RegistrationPageSteps {
 		userToRegister.setUserState(UserState.Created);
 	}
 
-	private static final int ACTIVATION_TIMEOUT = 15; // seconds
-
 	/**
 	 * Activates user using browser URL from activation email and sign him in to
 	 * the app if the activation was successful. Don't forget to call the 'I
@@ -250,13 +265,21 @@ public class RegistrationPageSteps {
 	public void WhenIActivateUserByUrl() throws Exception {
 		final String link = BackendAPIWrappers
 				.getUserActivationLink(this.activationMessage);
-		ActivationPage activationPage = (ActivationPage) WebappPagesCollection.registrationPage
-				.instantiatePage(ActivationPage.class);
-		activationPage.openNewTab();
-		activationPage.setUrl(link);
-		activationPage.navigateTo();
-		WebappPagesCollection.contactListPage = activationPage
-				.openWebApp(ACTIVATION_TIMEOUT);
+		LOG.info("Get activation link from " + link);
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpGet httpGet = new HttpGet(link);
+		HttpEntity entity = httpclient.execute(httpGet).getEntity();
+		if (entity != null) {
+			String content = EntityUtils.toString(entity);
+			Pattern p = Pattern.compile("data-url=\"(.*?)\"");
+			Matcher m = p.matcher(content);
+			while(m.find()) {
+			   String activationLink = m.group(1);
+			   LOG.info("Activation link: " + activationLink);
+			   httpGet = new HttpGet(activationLink);
+			   httpclient.execute(httpGet);
+			}
+	    }
 
 		this.userToRegister.setUserState(UserState.Created);
 		// indexes in aliases start from 1
@@ -269,10 +292,10 @@ public class RegistrationPageSteps {
 				.addPasswordAlias(ClientUsersManager.PASSWORD_ALIAS_TEMPLATE
 						.apply(userIndex));
 
-		if (WebappPagesCollection.loginPage == null) {
-			WebappPagesCollection.loginPage = (LoginPage) activationPage
-					.instantiatePage(LoginPage.class);
-		}
+		WebappPagesCollection.loginPage = WebappPagesCollection.registrationPage
+				.instantiatePage(LoginPage.class);
+		WebappPagesCollection.contactListPage = WebappPagesCollection.registrationPage
+				.instantiatePage(ContactListPage.class);
 		WebappPagesCollection.loginPage.waitForLogin();
 	}
 
