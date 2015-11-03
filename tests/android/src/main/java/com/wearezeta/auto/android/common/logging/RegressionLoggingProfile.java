@@ -8,7 +8,8 @@ import java.util.Optional;
 public abstract class RegressionLoggingProfile extends LoggingProfile {
     @Override
     public Optional<List<String>> getExcludePatterns() {
-        return Optional.of(Arrays.asList(new String[]{"/SELENDROID"}));
+        return Optional.of(Arrays.asList("/SELENDROID",
+                "W/ResourceType", "V/AlarmManager"));
     }
 
     @Override

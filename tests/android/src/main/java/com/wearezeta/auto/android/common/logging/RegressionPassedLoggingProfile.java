@@ -8,6 +8,6 @@ import java.util.Optional;
 public class RegressionPassedLoggingProfile extends RegressionLoggingProfile {
     @Override
     public Optional<List<String>> getIncludePatterns() {
-        return Optional.of(Arrays.asList(new String[]{" E/"}));
+        return Optional.of(Arrays.asList(" E/"));
     }
 }
