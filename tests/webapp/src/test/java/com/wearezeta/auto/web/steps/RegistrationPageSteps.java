@@ -3,14 +3,24 @@ package com.wearezeta.auto.web.steps;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.UserState;
-import com.wearezeta.auto.web.pages.ActivationPage;
+import com.wearezeta.auto.web.pages.ContactListPage;
 import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
@@ -32,6 +42,9 @@ public class RegistrationPageSteps {
 	private Future<String> activationMessage;
 
 	public static final int maxCheckCnt = 2;
+
+	private static final Logger LOG = ZetaLogger
+			.getLog(RegistrationPageSteps.class.getName());
 
 	/**
 	 * Enter user name into registration form
@@ -242,8 +255,6 @@ public class RegistrationPageSteps {
 		userToRegister.setUserState(UserState.Created);
 	}
 
-	private static final int ACTIVATION_TIMEOUT = 15; // seconds
-
 	/**
 	 * Activates user using browser URL from activation email and sign him in to
 	 * the app if the activation was successful. Don't forget to call the 'I
@@ -257,12 +268,21 @@ public class RegistrationPageSteps {
 	public void WhenIActivateUserByUrl() throws Exception {
 		final String link = BackendAPIWrappers
 				.getUserActivationLink(this.activationMessage);
-		ActivationPage activationPage = webappPagesCollection.getPage(
-				ActivationPage.class).instantiatePage(ActivationPage.class);
-		activationPage.openNewTab();
-		activationPage.setUrl(link);
-		activationPage.navigateTo();
-		activationPage.openWebApp(ACTIVATION_TIMEOUT);
+		LOG.info("Get activation link from " + link);
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpGet httpGet = new HttpGet(link);
+		HttpEntity entity = httpclient.execute(httpGet).getEntity();
+		if (entity != null) {
+			String content = EntityUtils.toString(entity);
+			Pattern p = Pattern.compile("data-url=\"(.*?)\"");
+			Matcher m = p.matcher(content);
+			while(m.find()) {
+			   String activationLink = m.group(1);
+			   LOG.info("Activation link: " + activationLink);
+			   httpGet = new HttpGet(activationLink);
+			   httpclient.execute(httpGet);
+			}
+	    }
 
 		this.userToRegister.setUserState(UserState.Created);
 		// indexes in aliases start from 1

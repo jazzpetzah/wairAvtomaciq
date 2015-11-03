@@ -147,7 +147,8 @@ public final class AndroidLogListener {
         if (stdout.toString().length() > 0) {
             log.debug("=== CAPTURED STDOUT LOGS ===\n");
             System.out.println(stdout.toString().trim());
-            log.debug("=== END OF CAPTURED STDOUT LOGS ===\n\n\n");
+            log.debug("=== END OF CAPTURED STDOUT LOGS ===" +
+                    "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         }
     }
 
