@@ -7,6 +7,8 @@ import cucumber.api.java.en.And;
 
 public class SelfPictureUploadPageSteps {
 	private static final int VISIBILITY_TIMEOUT = 10; // seconds
+	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
+			.getInstance();
 
 	/**
 	 * Verify that Self Picture Upload dialog is visible or not
@@ -19,15 +21,11 @@ public class SelfPictureUploadPageSteps {
 	@And("^I( do not)? see Self Picture Upload dialog$")
 	public void ISeeSelfPictureUpload(String shouldNotBeVisible)
 			throws Exception {
-		if (WebappPagesCollection.selfPictureUploadPage == null) {
-			WebappPagesCollection.selfPictureUploadPage = (SelfPictureUploadPage) WebappPagesCollection.registrationPage
-					.instantiatePage(SelfPictureUploadPage.class);
-		}
 		if (shouldNotBeVisible == null) {
-			WebappPagesCollection.selfPictureUploadPage
+			webappPagesCollection.getPage(SelfPictureUploadPage.class)
 					.waitUntilButtonsAreClickable(VISIBILITY_TIMEOUT);
 		} else {
-			WebappPagesCollection.selfPictureUploadPage
+			webappPagesCollection.getPage(SelfPictureUploadPage.class)
 					.waitUntilNotVisible(VISIBILITY_TIMEOUT);
 		}
 	}
@@ -46,7 +44,8 @@ public class SelfPictureUploadPageSteps {
 	 */
 	@And("^I choose (.*) as my self picture on Self Picture Upload dialog$")
 	public void IUploadMyPicture(String pictureName) throws Exception {
-		WebappPagesCollection.selfPictureUploadPage.uploadPicture(pictureName);
+		webappPagesCollection.getPage(SelfPictureUploadPage.class)
+				.uploadPicture(pictureName);
 	}
 
 	/**
@@ -58,7 +57,7 @@ public class SelfPictureUploadPageSteps {
 	 */
 	@And("^I confirm picture selection on Self Picture Upload dialog$")
 	public void IConfirmPictureSelection() throws Exception {
-		WebappPagesCollection.contactsUploadPage = WebappPagesCollection.selfPictureUploadPage
+		webappPagesCollection.getPage(SelfPictureUploadPage.class)
 				.confirmPictureSelection();
 	}
 
@@ -66,12 +65,13 @@ public class SelfPictureUploadPageSteps {
 	 * Force Carousel mode on Self Picture Upload dialog
 	 * 
 	 * @step. ^I force carousel mode on Self Picture Upload dialog$
-	 * @throws Exception 
+	 * @throws Exception
 	 * 
 	 */
 	@And("^I force carousel mode on Self Picture Upload dialog$")
 	public void IForceCarouselMode() throws Exception {
-		WebappPagesCollection.selfPictureUploadPage.forceCarouselMode();
+		webappPagesCollection.getPage(SelfPictureUploadPage.class)
+				.forceCarouselMode();
 	}
 
 	/**
@@ -84,6 +84,7 @@ public class SelfPictureUploadPageSteps {
 	 */
 	@And("^I select random picture from carousel on Self Picture Upload dialog$")
 	public void ISelectRandomPictureFromCariouusel() throws Exception {
-		WebappPagesCollection.selfPictureUploadPage.selectRandomPictureFromCarousel();
+		webappPagesCollection.getPage(SelfPictureUploadPage.class)
+				.selectRandomPictureFromCarousel();
 	}
 }

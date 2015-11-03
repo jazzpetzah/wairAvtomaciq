@@ -83,13 +83,17 @@ public class SketchPage extends AndroidPage {
 	public void drawLinesOnCanvas(int percentStartX, int percentStartY,
 			int percentEndX, int percentEndY) throws Exception {
 		int swipeDuration = 300;
+		if (getDriver().getOSVersionString().compareTo("4.3") < 0) {
+			swipeDuration = 1500;
+		}
 		DriverUtils.swipeElementPointToPoint(this.getDriver(), canvas,
 				swipeDuration, percentStartX, percentStartY, percentEndX,
 				percentEndY);
 	}
 
+	private static final Random random = new Random();
+
 	public void drawRandomLines(int numLines) throws Exception {
-		Random random = new Random();
 		for (int i = 0; i < numLines; i++) {
 			int startX = random.nextInt(100);
 			int startY = random.nextInt(100);
@@ -101,7 +105,8 @@ public class SketchPage extends AndroidPage {
 
 	public void tapSendButton() throws Exception {
 		DriverUtils.tapInTheCenterOfTheElement(getDriver(), sendButton);
-		DriverUtils.waitUntilLocatorDissapears(getDriver(), By.id(idSendButton), 5);
+		DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.id(idSendButton), 5);
 		if (DriverUtils.isElementPresentAndDisplayed(getDriver(), sendButton)) {
 			try {
 				getDriver().tap(1, sendButton.getLocation().getX(),

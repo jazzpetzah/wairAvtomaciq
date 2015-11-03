@@ -629,7 +629,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | SimpleGroup   |
 
-  @staging @id3196
+  @regression @id3196
   Scenario Outline: Play/pause SoundCloud media link from the media bar [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -656,7 +656,7 @@ Feature: Conversation View
       | Name      | Contact   | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
-  @staging @id3197
+  @regression @id3197
   Scenario Outline: Play/pause SoundCloud media link from the media bar [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -1257,3 +1257,47 @@ Feature: Conversation View
       | Name      | Contact1   | Contact2  |
       | user1Name | user2Name  | user3Name |
 
+  @regression @id2393
+  Scenario Outline: Verify possibility to copy image in the conversation view [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
+    And I see dialog page
+    And I see new photo in the dialog
+    And I longpress on image in the conversation
+    And I tap on copy badge
+    And I tap and hold on message input
+    And I click on popup Paste item
+    And I press Confirm button
+    Then I see new photo in the dialog
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |   Picture   | ConversationType |
+      | user1Email | user1Password | user1Name | user2Name | testing.jpg |    single user   |
+
+  @regression @id4008
+  Scenario Outline: Verify possibility to copy image in the conversation view [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
+    Given I rotate UI to landscape
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
+    And I see dialog page
+    And I see new photo in the dialog
+    And I longpress on image in the conversation
+    And I tap on copy badge
+    And I tap on text input
+    And I tap and hold on message input
+    And I click on popup Paste item
+    And I press Confirm button
+    Then I see new photo in the dialog
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |   Picture   | ConversationType |
+      | user1Email | user1Password | user1Name | user2Name | testing.jpg |    single user   |
+      

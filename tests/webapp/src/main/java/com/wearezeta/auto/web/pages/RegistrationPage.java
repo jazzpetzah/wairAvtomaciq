@@ -81,27 +81,20 @@ public class RegistrationPage extends WebPage {
 				.getCurrentUrl());
 	}
 
-	private void removeReadonlyAttr(String cssLocator) throws Exception {
-		this.getDriver().executeScript(
-				String.format(
-						"$(document).find(\"%s\").removeAttr('readonly');",
-						cssLocator));
-	}
-
 	public void enterName(String name) throws Exception {
-		removeReadonlyAttr(WebAppLocators.RegistrationPage.cssNameFiled);
+		nameField.click();
 		nameField.clear();
 		nameField.sendKeys(name);
 	}
 
 	public void enterEmail(String email) throws Exception {
-		removeReadonlyAttr(WebAppLocators.RegistrationPage.cssEmailFiled);
+		emailField.click();
 		emailField.clear();
 		emailField.sendKeys(email);
 	}
 
 	public void enterPassword(String password) throws Exception {
-		removeReadonlyAttr(WebAppLocators.RegistrationPage.cssPasswordFiled);
+		passwordField.click();
 		passwordField.clear();
 		passwordField.sendKeys(password);
 	}

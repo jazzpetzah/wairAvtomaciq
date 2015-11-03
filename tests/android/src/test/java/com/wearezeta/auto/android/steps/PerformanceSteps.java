@@ -8,8 +8,8 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriverException;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
-import com.wearezeta.auto.android.common.AndroidLogListener;
-import com.wearezeta.auto.android.common.AndroidLogListener.ListenerType;
+import com.wearezeta.auto.android.common.logging.AndroidLogListener;
+import com.wearezeta.auto.android.common.logging.AndroidLogListener.ListenerType;
 import com.wearezeta.auto.android.common.reporter.AndroidBatteryPerfReportModel;
 import com.wearezeta.auto.android.common.reporter.AndroidPerfReportModel;
 import com.wearezeta.auto.android.pages.ContactListPage;

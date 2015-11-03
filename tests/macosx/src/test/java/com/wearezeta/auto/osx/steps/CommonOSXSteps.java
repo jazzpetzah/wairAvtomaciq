@@ -28,10 +28,10 @@ import static com.wearezeta.auto.osx.common.OSXExecutionContext.WIRE_APP_PATH;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.osx.MainWirePage;
 import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
+import com.wearezeta.auto.osx.pages.webapp.RegistrationPage;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
-import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.steps.CommonWebAppSteps;
 
 import static com.wearezeta.auto.web.steps.CommonWebAppSteps.log;
@@ -47,8 +47,10 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -75,10 +77,8 @@ public class CommonOSXSteps {
 			.getName());
 
 	private static final String DEFAULT_USER_PICTURE = "/images/aqaPictureContact600_800.jpg";
-	private static final int WRAPPER_STARTUP_TIMEOUT_SECONDS = 30;
-	// TODO: use execution context
-	@SuppressWarnings("unused")
-	private static final String DEFAULT_ENVIRONMENT = "Staging";
+	private static final int WRAPPER_STARTUP_TIMEOUT_SECONDS = 10;
+	private static final int STARTUP_RETRIES = 5;
 
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 
@@ -100,8 +100,15 @@ public class CommonOSXSteps {
 		options.addArguments("use-fake-device-for-media-stream");
 		// allow skipping the security prompt for sharing the media device
 		options.addArguments("use-fake-ui-for-media-stream");
+		options.addArguments("disable-web-security");
 		options.addArguments("env=" + OSXExecutionContext.ENV_URL);
 		options.setBinary(WIRE_APP_PATH + OSXExecutionContext.ELECTRON_SUFFIX);
+
+		// allow skipping the security prompt for notifications in chrome 46++
+		Map<String, Object> prefs = new HashMap<>();
+		prefs.put("profile.managed_default_content_settings.notifications", 1);
+		options.setExperimentalOption("prefs", prefs);
+
 		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 		capabilities.setCapability("platformName",
 				OSXExecutionContext.CURRENT_SECONDARY_PLATFORM.name());
@@ -182,24 +189,38 @@ public class CommonOSXSteps {
 	}
 
 	private void startApp() throws Exception {
-		final Future<ZetaOSXDriver> osxDriverFuture = createOSXDriver();
-		final Future<ZetaWebAppDriver> webDriverFuture = createWebDriver(osxDriverFuture);
+		int retriesLeft = STARTUP_RETRIES;
+		boolean started;
+		Future<ZetaOSXDriver> osxDriverFuture;
+		Future<ZetaWebAppDriver> webDriverFuture;
+		do {
+			clearDrivers();
+			osxDriverFuture = createOSXDriver();
+			webDriverFuture = createWebDriver(osxDriverFuture);
 
-		// get drivers instantly
-		final ZetaOSXDriver osxDriver = osxDriverFuture.get();
-		final ZetaWebAppDriver webappDriver = webDriverFuture.get();
-		osxDriver.navigate().to(WIRE_APP_PATH);// open app
+			// get drivers instantly
+			final ZetaOSXDriver osxDriver = osxDriverFuture.get();
+			final ZetaWebAppDriver webappDriver = webDriverFuture.get();
+			LOG.debug("Opening app");
+			osxDriver.navigate().to(WIRE_APP_PATH);// open app
 
-		ZetaFormatter.setLazyDriver(osxDriverFuture);
+			ZetaFormatter.setLazyDriver(osxDriverFuture);
 
-		osxPagesCollection.setFirstPage(new MainWirePage(osxDriverFuture));
-		MainWirePage mainWirePage = osxPagesCollection
-				.getPage(MainWirePage.class);
+			osxPagesCollection.setFirstPage(new MainWirePage(osxDriverFuture));
+			MainWirePage mainWirePage = osxPagesCollection
+					.getPage(MainWirePage.class);
 
-		osxDriver.navigate().to(WIRE_APP_PATH);// activate app
-		waitForAppStartup(osxDriver);
-		mainWirePage.focusApp();
-		waitForWebappLoaded(webappDriver);
+			LOG.debug("Activating app");
+			osxDriver.navigate().to(WIRE_APP_PATH);// activate app
+			waitForAppStartup(osxDriver);
+			mainWirePage.focusApp();
+
+			started = waitForWebappLoaded(webappDriver);
+			retriesLeft--;
+		} while (retriesLeft > 0 && started == false);
+		if (!started) {
+			throw new IllegalStateException("Could not start wrapper");
+		}
 		webappPagesCollection
 				.setFirstPage(new RegistrationPage(webDriverFuture));
 	}
@@ -221,14 +242,19 @@ public class CommonOSXSteps {
 		LOG.debug("Application started");
 	}
 
-	private void waitForWebappLoaded(ZetaWebAppDriver webdriver)
+	private boolean waitForWebappLoaded(ZetaWebAppDriver webdriver)
 			throws Exception {
-		assert DriverUtils
+		boolean started = DriverUtils
 				.waitUntilLocatorAppears(
 						webdriver,
 						By.cssSelector(WebAppLocators.RegistrationPage.cssSwitchToSignInButton),
-						WRAPPER_STARTUP_TIMEOUT_SECONDS) : "Wrapper Webapp did not load properly";
-		LOG.debug("Wrapper Webapp loaded");
+						WRAPPER_STARTUP_TIMEOUT_SECONDS);
+		if (started) {
+			LOG.debug("Wrapper Webapp loaded");
+		} else {
+			LOG.warn("Wrapper Webapp did not load properly");
+		}
+		return started;
 	}
 
 	/**

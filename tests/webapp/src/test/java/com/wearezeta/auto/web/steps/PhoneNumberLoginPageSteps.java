@@ -9,6 +9,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
+import com.wearezeta.auto.web.pages.PhoneNumberLoginPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.Then;
@@ -21,6 +22,8 @@ public class PhoneNumberLoginPageSteps {
 			.getLog(PhoneNumberLoginPageSteps.class.getSimpleName());
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
+			.getInstance();
 
 	/**
 	 * Input fake phone number for given user
@@ -34,9 +37,10 @@ public class PhoneNumberLoginPageSteps {
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
 		String number = user.getPhoneNumber().toString();
 		number = number.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, "");
-		WebappPagesCollection.phoneNumberLoginPage
+		webappPagesCollection.getPage(PhoneNumberLoginPage.class)
 				.enterCountryCode(PhoneNumber.WIRE_COUNTRY_PREFIX);
-		WebappPagesCollection.phoneNumberLoginPage.enterPhoneNumber(number);
+		webappPagesCollection.getPage(PhoneNumberLoginPage.class)
+				.enterPhoneNumber(number);
 	}
 
 	/**
@@ -48,8 +52,9 @@ public class PhoneNumberLoginPageSteps {
 	 *            phone number without country code
 	 */
 	@When("^I enter phone number (.*) on phone number sign in$")
-	public void IEnterPhoneNumber(String number) {
-		WebappPagesCollection.phoneNumberLoginPage.enterPhoneNumber(number);
+	public void IEnterPhoneNumber(String number) throws Exception {
+		webappPagesCollection.getPage(PhoneNumberLoginPage.class)
+				.enterPhoneNumber(number);
 	}
 
 	/**
@@ -59,11 +64,12 @@ public class PhoneNumberLoginPageSteps {
 	 * 
 	 * @param code
 	 *            country code (for e.g. +49)
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@When("^I enter country code (.*) on phone number sign in$")
 	public void ISelectCountryCode(String code) throws Exception {
-		WebappPagesCollection.phoneNumberLoginPage.enterCountryCode(code);
+		webappPagesCollection.getPage(PhoneNumberLoginPage.class)
+				.enterCountryCode(code);
 	}
 
 	/**
@@ -75,7 +81,7 @@ public class PhoneNumberLoginPageSteps {
 	 */
 	@When("^I click on sign in button on phone number sign in$")
 	public void IClickOnForwardButtonOnPhoneNumberSignIn() throws Exception {
-		WebappPagesCollection.phoneNumberVerificationPage = WebappPagesCollection.phoneNumberLoginPage
+		webappPagesCollection.getPage(PhoneNumberLoginPage.class)
 				.clickSignInButton();
 	}
 
@@ -91,7 +97,7 @@ public class PhoneNumberLoginPageSteps {
 	public void ISeeInvalidPhoneNumberErrorMessageSayingX(String message)
 			throws Exception {
 		assertThat("invalid phone number error",
-				WebappPagesCollection.phoneNumberLoginPage.getErrorMessage(),
-				equalTo(message));
+				webappPagesCollection.getPage(PhoneNumberLoginPage.class)
+						.getErrorMessage(), equalTo(message));
 	}
 }

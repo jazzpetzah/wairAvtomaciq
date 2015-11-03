@@ -22,6 +22,8 @@ public class PhoneNumberVerificationPageSteps {
 			.getLog(PhoneNumberVerificationPage.class.getSimpleName());
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
+			.getInstance();
 
 	/**
 	 * Fills out correct country code and phone number for a user
@@ -38,12 +40,13 @@ public class PhoneNumberVerificationPageSteps {
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
 		String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(user
 				.getPhoneNumber());
-		WebappPagesCollection.contactListPage = WebappPagesCollection.phoneNumberVerificationPage
+		webappPagesCollection.getPage(PhoneNumberVerificationPage.class)
 				.enterCode(code);
 	}
 
 	/**
-	 * Fills out correct country code and phone number for a user that has no email
+	 * Fills out correct country code and phone number for a user that has no
+	 * email
 	 * 
 	 * @step. ^I enter phone verification code for emailless user (.*)$
 	 * 
@@ -57,7 +60,7 @@ public class PhoneNumberVerificationPageSteps {
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
 		String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(user
 				.getPhoneNumber());
-		WebappPagesCollection.addEmailAddressPage = WebappPagesCollection.phoneNumberVerificationPage
+		webappPagesCollection.getPage(PhoneNumberVerificationPage.class)
 				.enterCodeForEmaillessUser(code);
 	}
 
@@ -82,7 +85,7 @@ public class PhoneNumberVerificationPageSteps {
 		} else {
 			wrongcode = "0" + code.substring(1);
 		}
-		WebappPagesCollection.contactListPage = WebappPagesCollection.phoneNumberVerificationPage
+		webappPagesCollection.getPage(PhoneNumberVerificationPage.class)
 				.enterCode(wrongcode);
 	}
 
@@ -98,7 +101,8 @@ public class PhoneNumberVerificationPageSteps {
 	@Then("^I see invalid phone code error message saying (.*)")
 	public void TheSignInErrorMessageReads(String message) throws Exception {
 		assertThat("invalid phone code error",
-				WebappPagesCollection.phoneNumberVerificationPage.getErrorMessage(),
-				equalTo(message));
+				webappPagesCollection
+						.getPage(PhoneNumberVerificationPage.class)
+						.getErrorMessage(), equalTo(message));
 	}
 }

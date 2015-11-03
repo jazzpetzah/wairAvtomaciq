@@ -137,8 +137,8 @@ public class LoginPage extends IOSPage {
 		super(lazyDriver);
 	}
 
-	public Boolean isVisible() {
-		return viewPager != null;
+	public Boolean isVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(), viewPager);
 	}
 
 	public void signIn() throws IOException {

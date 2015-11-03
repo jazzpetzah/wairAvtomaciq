@@ -478,18 +478,6 @@ public class AndroidCommonUtils extends CommonUtils {
 		return output.contains(androidPackage);
 	}
 
-	private static final String ADB_KEYBOARD_PACKAGE = "com.android.adbkeyboard";
-	private static final String ADB_KEYBOARD_IME_ID = "com.android.adbkeyboard/.AdbIME";
-
-	private static String defaultImeId = "";
-
-	public static void installAdbKeyboard(Class<?> c) throws Exception {
-		if (!isPackageInstalled(ADB_KEYBOARD_PACKAGE)) {
-			executeAdb(String.format("install %s/ADBKeyBoard.apk",
-					getAndroidToolsPathFromConfig(c)));
-		}
-	}
-
 	private static final String TESTING_GALLERY_PACKAGE_ID = "com.wire.testinggallery";
 
 	public static void installTestingGalleryApp(Class<?> c) throws Exception {
@@ -497,29 +485,6 @@ public class AndroidCommonUtils extends CommonUtils {
 			executeAdb(String.format("install %s/testing_gallery-debug.apk",
 					getAndroidToolsPathFromConfig(c)));
 		}
-	}
-
-	public static void storeDefaultImeId() throws Exception {
-		defaultImeId = getAdbOutput(
-				"shell settings get secure default_input_method").trim();
-	}
-
-	public static void resetDefaultIME() throws Exception {
-		setIME(defaultImeId);
-	}
-
-	public static void setAdbKeyboard() throws Exception {
-		storeDefaultImeId();
-		setIME(ADB_KEYBOARD_IME_ID);
-	}
-
-	private static void setIME(String imeId) throws Exception {
-		executeAdb("shell ime set " + imeId);
-	}
-
-	public static void typeMessageUsingAdb(String message) throws Exception {
-		executeAdb(String.format(
-				"shell am broadcast -a ADB_INPUT_TEXT --es msg '%s'", message));
 	}
 
 	public static boolean isAppInForeground(String packageId) throws Exception {

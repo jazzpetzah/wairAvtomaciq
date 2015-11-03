@@ -24,7 +24,7 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
 		super(lazyDriver);
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.80;
 
 	private final String AQA_PICTURE_CONTACT = "AQAPICTURECONTACT";
@@ -32,59 +32,73 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameConversationMenu)
 	private WebElement conversationMenuButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSTabletLocators.TabletGroupConversationDetailPopoverPage.nameRenameButtonEllipsisMenue)
 	private WebElement renameEllipsesButton;
-	
+
 	@FindBy(how = How.XPATH, using = IOSTabletLocators.TabletGroupConversationDetailPopoverPage.xpathPopoverAvatarCollectionView)
 	private WebElement avatarPopoverCollectionView;
-	
+
 	@FindBy(how = How.XPATH, using = IOSTabletLocators.TabletGroupConversationDetailPopoverPage.xpathSilenceButtonEllipsisMenu)
 	private WebElement silenceEllipsisButton;
-	
+
 	@FindBy(how = How.XPATH, using = IOSTabletLocators.TabletGroupConversationDetailPopoverPage.xpathNotifyButtonEllipsisMenu)
 	private WebElement notifyEllipsisButton;
-	
+
 	public void openConversationMenuOnPopover() throws Exception {
 		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.name(IOSLocators.nameConversationMenu));
 		conversationMenuButton.click();
 	}
-	
-	public TabletOtherUserInfoPage selectUserByNameOniPadPopover(String name) throws Exception{
+
+	public boolean waitConversationInfoPopoverToClose() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				By.xpath(IOSTabletLocators.xpathPopover), 10);
+	}
+
+	public TabletOtherUserInfoPage selectUserByNameOniPadPopover(String name)
+			throws Exception {
 		DriverUtils.mobileTapByCoordinates(this.getDriver(), getDriver()
 				.findElementByName(name.toUpperCase()));
 
 		return new TabletOtherUserInfoPage(this.getLazyDriver());
 	}
-	
-	public boolean waitForContactToDisappearOniPadPopover(String name) throws Exception{
+
+	public boolean waitForContactToDisappearOniPadPopover(String name)
+			throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.name(name));
 	}
-	
-	public void pressRenameEllipsesButton(){
+
+	public void pressRenameEllipsesButton() {
 		renameEllipsesButton.click();
 	}
-	
-	public void exitGroupChatPopover() throws Exception{
-		DriverUtils.mobileTapByCoordinates(getDriver(), conversationMenuButton, 50, 50);
+
+	public void exitGroupChatPopover() throws Exception {
+		DriverUtils.mobileTapByCoordinates(getDriver(), conversationMenuButton,
+				50, 50);
 	}
-	
-	public int numberOfPeopleInGroupConversationOniPad() throws Exception{
+
+	public int numberOfPeopleInGroupConversationOniPad() throws Exception {
 		int result = -1;
-		List<WebElement> elements = getDriver().findElements(By.xpath(IOSTabletLocators.TabletGroupConversationDetailPopoverPage.xpathGroupConvTotalNumber));
+		List<WebElement> elements = getDriver()
+				.findElements(
+						By.xpath(IOSTabletLocators.TabletGroupConversationDetailPopoverPage.xpathGroupConvTotalNumber));
 		for (WebElement element : elements) {
 			String value = element.getText();
-			if (value.contains(IOSTabletLocators.TabletGroupConversationDetailPopoverPage.namePeopleCountWord)) {
-				result = Integer.parseInt(value.substring(0,
-						value.indexOf((IOSTabletLocators.TabletGroupConversationDetailPopoverPage.namePeopleCountWord))));
+			if (value
+					.contains(IOSTabletLocators.TabletGroupConversationDetailPopoverPage.namePeopleCountWord)) {
+				result = Integer
+						.parseInt(value.substring(
+								0,
+								value.indexOf((IOSTabletLocators.TabletGroupConversationDetailPopoverPage.namePeopleCountWord))));
 			}
 		}
 		return result;
 	}
-	
-	public boolean areParticipantAvatarCorrectOniPadPopover(String contact) throws IllegalStateException, Throwable{
+
+	public boolean areParticipantAvatarCorrectOniPadPopover(String contact)
+			throws IllegalStateException, Throwable {
 		String name = "", picture = "";
 		if (contact.toLowerCase().contains(AQA_PICTURE_CONTACT.toLowerCase())) {
 			name = AQA_PICTURE_CONTACT;
@@ -122,17 +136,17 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
 		}
 		return flag;
 	}
-	
+
 	public List<WebElement> getCurrentParticipantsOnPopover() {
 		return avatarPopoverCollectionView.findElements(By
 				.className("UIACollectionCell"));
 	}
 
-	public void pressSilenceEllipsisButton(){
+	public void pressSilenceEllipsisButton() {
 		silenceEllipsisButton.click();
 	}
-	
-	public void pressNotifyEllipsisButton(){
+
+	public void pressNotifyEllipsisButton() {
 		notifyEllipsisButton.click();
 	}
 

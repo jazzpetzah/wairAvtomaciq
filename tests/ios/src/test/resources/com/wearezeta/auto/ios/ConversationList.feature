@@ -34,7 +34,7 @@ Feature: Conversation List
       | user1Name | user2Name | user3Name |
 
   @regression @id1334
-  Scenario Outline: Verify archiving silenced conversation     
+  Scenario Outline: Verify archiving silenced conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -53,7 +53,7 @@ Feature: Conversation List
     And I see dialog page
 
     Examples: 
-      | Name      | Contact   | Picture     | ConversationType | 
+      | Name      | Contact   | Picture     | ConversationType |
       | user1Name | user2Name | testing.jpg | single user      |
 
   @regression @id2153
@@ -354,27 +354,24 @@ Feature: Conversation List
 
   @staging @id3960
   Scenario Outline: Verify deleting 1-to-1 conversation from archive
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to all other users
-    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
-    Given User <Name> sent message <Message> to conversation <GroupChatName>
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
-    When I swipe right on a <GroupChatName>
+    When I swipe right on a <Contact1>
     And I press Archive button in action menu in Contact List
-    And I dont see conversation <GroupChatName> in contact list
+    And I dont see conversation <Contact1> in contact list
     And I open archived conversations
-    And I swipe right on a <GroupChatName>
+    And I swipe right on a <Contact1>
     And I click delete menu button
     And I confirm delete conversation content
-    Then I dont see conversation <GroupChatName> in contact list
+    Then I dont see conversation <Contact1> in contact list
     And I open archived conversations
     Then I dont see conversation <Contact1> in contact list
 
     Examples: 
-      | Name      | Contact1  | Contact2  | Message | GroupChatName |
-      | user1Name | user2Name | user3Name | testing | ForDeletion   |
+      | Name      | Contact1  |
+      | user1Name | user2Name |
 
   @staging @id1481
   Scenario Outline: Verify removing the content and leaving from the group conversation
@@ -399,7 +396,7 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
-     
+
   @staging @id3968
   Scenario Outline: Verify posting in a group conversation without content
     Given There are 3 users where <Name> is me
@@ -418,7 +415,7 @@ Feature: Conversation List
     When I open search by taping on it
     And I input conversation name <GroupChatName> in Search input
     And I see conversation <GroupChatName> is presented in Search results
-    And I tap on conversation <GroupChatName> in search result    
+    And I tap on conversation <GroupChatName> in search result
     Then I see empty group chat page with users <Contact1>,<Contact2> with only system message
     When I type the message and send it
     Then I see message in the dialog
@@ -442,10 +439,25 @@ Feature: Conversation List
     And I see Cancel button in action menu in Contact List
     And I click delete menu button
     And I confirm delete conversation content
-    Then I dont see conversation <GroupChatName> in contact list  
+    Then I dont see conversation <GroupChatName> in contact list
     And I open archived conversations
     Then I dont see conversation <GroupChatName> in contact list
 
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Name | user2Name | user3Name | KICKCHAT      |  
+      | user1Name | user2Name | user3Name | KICKCHAT      |
+
+  @staging @id4017
+  Scenario Outline: Verify canceling blocking person
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact1>
+    And I press menu Block button
+    And I click Cancel button
+    Then I see conversation action menu
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |

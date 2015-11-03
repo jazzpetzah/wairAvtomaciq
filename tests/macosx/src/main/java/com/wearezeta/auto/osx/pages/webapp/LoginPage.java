@@ -12,6 +12,8 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.Browser;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.WebPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
@@ -56,28 +58,49 @@ public class LoginPage extends WebPage {
 		super(lazyDriver);
 	}
 
+	public LoginPage(Future<ZetaWebAppDriver> lazyDriver, String url)
+			throws Exception {
+		super(lazyDriver, url);
+	}
+
 	public boolean isVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(WebAppLocators.LoginPage.xpathSignInButton));
 	}
 
-	public void inputEmail(String email) {
+	public boolean isSignInButtonDisabled() throws Exception {
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.xpath(WebAppLocators.LoginPage.xpathSignInButton));
+		return !signInButton.isEnabled();
+	}
+
+	public void inputEmail(String email) throws Exception {
+		emailInput.click();
 		emailInput.clear();
 		emailInput.sendKeys(email);
 	}
 
-	public void inputPassword(String password) {
+	public void inputPassword(String password) throws Exception {
+		passwordInput.click();
 		passwordInput.clear();
 		passwordInput.sendKeys(password);
 	}
 
 	private boolean waitForLoginButtonDisappearance() throws Exception {
+		// workarounds for IE driver bugs:
+		// 1. when findElements() returns one RemoteWebElement instead of list
+		// of elements and throws WebDriverException
+		// 2. NPE when findElements() call
 		boolean noSignIn = false;
 		try {
 			noSignIn = DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 					By.xpath(WebAppLocators.LoginPage.xpathSignInButton), 60);
 		} catch (WebDriverException e) {
-			throw e;
+			if (WebAppExecutionContext.getBrowser() == Browser.InternetExplorer) {
+				noSignIn = true;
+			} else {
+				throw e;
+			}
 		}
 		return noSignIn;
 	}
@@ -91,8 +114,7 @@ public class LoginPage extends WebPage {
 	}
 
 	public ContactListPage clickSignInButton() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
-				signInButton);
+		DriverUtils.waitUntilElementClickable(this.getDriver(), signInButton);
 		signInButton.click();
 
 		return webappPagesCollection.getPage(ContactListPage.class);
@@ -118,12 +140,12 @@ public class LoginPage extends WebPage {
 		return loginErrorText.getText();
 	}
 
-	public boolean isRedDotOnEmailField() throws Exception {
+	public boolean isEmailFieldMarkedAsError() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.cssSelector(WebAppLocators.LoginPage.errorMarkedEmailField));
 	}
 
-	public boolean isRedDotOnPasswordField() throws Exception {
+	public boolean isPasswordFieldMarkedAsError() throws Exception {
 		return DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						getDriver(),

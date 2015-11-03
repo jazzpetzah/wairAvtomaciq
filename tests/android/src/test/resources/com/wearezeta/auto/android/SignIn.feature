@@ -10,7 +10,7 @@ Feature: Sign In
     And I press Log in button
     Then I see Contact list with no contacts
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
@@ -25,14 +25,17 @@ Feature: Sign In
       | user1Name |
 
   @id209 @regression
-  Scenario Outline: I can change sign in user
+  Scenario Outline: (AN-2949 AN-2950) I can change sign in user
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
     Given I see Contact list with no contacts
     When I tap on my avatar
     Then I see personal info page
     When I tap options button
-    And I tap sign out button
+    And I tap settings button
+    And I select "Account" settings menu item
+    And I select "Sign out" settings menu item
+    And I confirm sign out
     Then I see welcome screen
     When User <Name2> is me
     And I sign in using my email or phone number
@@ -53,6 +56,6 @@ Feature: Sign In
     And I press Log in button
     Then I see error message "<ErrMessage>"
 
-    Examples: 
-      | Login   | Password | ErrMessage                          |
-      | aaa     | aaa      | Please enter a valid email address. |
+    Examples:
+      | Login | Password | ErrMessage                          |
+      | aaa   | aaa      | Please enter a valid email address. |

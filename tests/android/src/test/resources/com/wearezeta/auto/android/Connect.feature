@@ -17,7 +17,7 @@ Feature: Connect
     And I navigate back to Conversations List
     Then I see contact list with name <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message       |
       | user1Name | user2Name | Hellow friend |
 
@@ -32,7 +32,7 @@ Feature: Connect
     And I Connect with contact by pressing button
     Then I see contact list with name <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
@@ -49,7 +49,7 @@ Feature: Connect
     Then I see Contact list
     Then I do not see contact list with name <WaitingMess>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
@@ -86,7 +86,7 @@ Feature: Connect
     And I press Ignore connect button
     And I do not see contact list with name <WaitingMess1>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | WaitingMess1     | Contact2  | WaitingMess2     | Contact3  | Contact4  | WaitingMess3     |
       | user1Name | user2Name | 1 person waiting | user3Name | 2 people waiting | user4Name | user5Name | 3 people waiting |
 
@@ -114,12 +114,12 @@ Feature: Connect
     Then I navigate back from dialog page
     And I see contact list with name <WaitingMess2>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | WaitingMess1     | WaitingMess2     |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 4 people waiting | 3 people waiting |
 
   @id540 @regression
-  Scenario Outline: I can ignore a connect request and reconnect later
+  Scenario Outline: (AN-2958) I can ignore a connect request and reconnect later
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
     Given I sign in using my email or phone number
@@ -139,7 +139,7 @@ Feature: Connect
     And I wait for 5 seconds
     Then I see Connect to <Contact> Dialog page
 
-    Examples: 
+    Examples:
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
@@ -160,7 +160,7 @@ Feature: Connect
     And I Connect with contact by pressing button
     Then I see contact list with name <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
@@ -182,7 +182,7 @@ Feature: Connect
     Then I tap on contact name <Contact>
     And I see that connection is pending
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message |
       | user1Name | user2Name | Test    |
 
@@ -202,7 +202,7 @@ Feature: Connect
     And I see Accept and Ignore buttons
     And I press Ignore connect button
 
-    Examples: 
+    Examples:
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
@@ -227,7 +227,7 @@ Feature: Connect
     And I tap on contact name <Contact>
     And I see Connect to <Contact> Dialog page
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -246,7 +246,7 @@ Feature: Connect
     Then I close Connect To dialog
     And I see People picker page
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -265,11 +265,11 @@ Feature: Connect
     And I see connect to <Contact2> dialog
     And I click left Connect button
     And I click Connect button on connect to page
-    And I return to group chat page
+    And I close participant page by UI button
     And I navigate back from dialog page
     And I see contact list with name <Contact2>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | ChatName         |
       | user1Name | user2Name | user3Name | ContactGroupChat |
 
@@ -297,12 +297,12 @@ Feature: Connect
     And I tap on user name found on People picker page <Contact1>
     Then User info should be shown with Unblock button
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
   @id680 @regression
-  Scenario Outline: I want to see user has been blocked within the Start UI
+  Scenario Outline: (AN-2959) I want to see user has been blocked within the Start UI
     Given There are 3 users where <Name> is me
     # Having the extra user is a workaround for an app bug
     Given Myself is connected to <Contact1>
@@ -320,6 +320,7 @@ Feature: Connect
     And I see contact list with name <Contact2>
     When I tap on contact name <Contact2>
     And I see that connection is pending
+    And I click ellipsis button
     And I click Block button
     And I confirm block on connect to page
     Then I do not see dialog page
@@ -336,7 +337,7 @@ Feature: Connect
     And I navigate back from dialog page
     Then I see contact list with name <Contact2>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -357,14 +358,14 @@ Feature: Connect
     And I enter "<Contact1>" into Search input on People Picker page
     Then I see user <Contact1> found on People picker page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-@id723 @regression
+  @id723 @regression
   Scenario Outline: (BUG AN-2721) I want to unblock someone from their Profile view
     Given There are 4 users where <Name> is me
-    # Having the extra user is a workaround for an app bug
+      # Having the extra user is a workaround for an app bug
     Given Myself is connected to <Contact1>,<Contact2>
     Given User <Name> blocks user <Contact1>
     Given I sign in using my email or phone number
@@ -406,7 +407,7 @@ Feature: Connect
     And I tap on user name found on People picker page <Contact>
     Then I see that connection is pending
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -426,7 +427,7 @@ Feature: Connect
     And Contact <Contact> ping conversation <Name>
     Then Last message is <Message>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message          | Picture     |
       | user1Name | user2Name | Hello my friend! | testing.jpg |
 
@@ -448,7 +449,7 @@ Feature: Connect
     When I open Search by tap
     Then I do not see the previously remembered PYMK item
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -471,7 +472,7 @@ Feature: Connect
     When I open Search by tap
     Then I do not see the previously remembered PYMK item
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -486,6 +487,6 @@ Feature: Connect
 
     # disabled step which checks missing contact with phone only
     #    And I see recommended user <Contact2> in People Picker
-    Examples: 
+    Examples:
       | Name      | Contact1 | Contact2 |
       | user1Name | vb003    | Dorothy  |

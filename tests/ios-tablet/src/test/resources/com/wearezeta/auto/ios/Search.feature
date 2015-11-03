@@ -308,6 +308,7 @@ Feature: Search
     And I see People picker page
     And I re-enter the people picker if CONNECT label is not there
     And I see CONNECT label
+    And I click hide keyboard button
     And I swipe completely to dismiss suggested contact <Friend1>
     Then I do not see suggested contact <Friend1>
 
@@ -329,6 +330,7 @@ Feature: Search
     And I see People picker page
     And I re-enter the people picker if CONNECT label is not there
     And I see CONNECT label
+    And I click hide keyboard button
     And I swipe completely to dismiss suggested contact <Friend1>
     Then I do not see suggested contact <Friend1>
 
@@ -717,7 +719,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @staging @id3302
+  @regression @id3302
   Scenario Outline: Verify action buttons disappear by unchecking the avatar [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -844,7 +846,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @staging @id3824
+  @regression @id3824
   Scenario Outline: Verify label hiding after dismissing all PYMK [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -864,5 +866,36 @@ Feature: Search
     Then I dont see CONNECT label
 
     Examples: 
-      | Name      | Contact1  | Contact2  | Contact3   |
-      | user1Name | user2Name | user3Name | user4Name  |
+      | Name      | Contact1  | Contact2  | Contact3  |
+      | user1Name | user2Name | user3Name | user4Name |
+
+  @regression @id2481
+  Scenario Outline: Verify impossibility of dismissing if search isn't empty [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I input in People picker search field user name <Contact>
+    And I see user <Contact> found on People picker page
+    And I swipe completely to dismiss suggested contact <Contact>
+    Then I see user <Contact> found on People picker page
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @regression @id3823
+  Scenario Outline: Verify impossibility of dismissing if search isn't empty [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I input in People picker search field user name <Contact>
+    And I see user <Contact> found on People picker page
+    And I swipe completely to dismiss suggested contact <Contact>
+    Then I see user <Contact> found on People picker page
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |

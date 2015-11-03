@@ -21,11 +21,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.image_send.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.onboarding.AddressBook;
 import com.wearezeta.auto.common.rest.CommonRESTHandlers;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
-import com.wearezeta.auto.image_send.*;
 
 import java.awt.image.BufferedImage;
 import java.security.KeyManagementException;

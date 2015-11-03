@@ -70,7 +70,7 @@ Feature: Giphy
       | Name      | Contact   | GiphyTag |
       | user1Name | user2Name | Happy    |
 
-  @staging @id3293
+  @regression @id3293
   Scenario Outline: Verify opening grid of gifs clicking on giphy icon
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -87,7 +87,7 @@ Feature: Giphy
       | Name      | Contact   | GiphyTag |
       | user1Name | user2Name | Hello    |
 
-  @staging @id3294
+  @regression @id3294
   Scenario Outline: Verify opening grid of gifs clicking on giphy icon
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
