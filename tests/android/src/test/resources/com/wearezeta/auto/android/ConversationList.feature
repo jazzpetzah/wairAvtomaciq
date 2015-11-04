@@ -21,27 +21,6 @@ Feature: Conversation List
       | Name      | Contact1  | SoudCloudLink                                              |
       | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
-  @id1514 @regression
-  Scenario Outline: Verify unsilence the conversation
-    Given There are 2 users where <Name> is me
-    Given <Contact1> is connected to me
-    Given <Contact1> is silenced to user <Name>
-    Given I sign in using my email or phone number
-    Given I see Contact list with contacts
-    Given Contact <Contact1> is muted
-    When I tap on contact name <Contact1>
-    And I see dialog page
-    And I tap conversation details button
-    And I press options menu button
-    And I press NOTIFY conversation menu button
-    And I press back button
-    And I navigate back from dialog page
-    Then Contact <Contact1> is not muted
-
-    Examples: 
-      | Name      | Contact1  |
-      | user1Name | user2Name |
-
   @id1505 @regression
   Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation (SoundCloud)
     Given There are 3 users where <Name> is me
