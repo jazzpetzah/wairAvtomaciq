@@ -179,3 +179,25 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName | Message    | Image       | SpotifyLink                                           |
       | user1Name | user2Name | user3Name | DELETE        | Tschuessii | testing.jpg | https://open.spotify.com/track/0p6GeAWS4VCZddxNbBtEss |
+      
+  @torun @id4053 @staging
+  Scenario Outline: Verify I can delete and leave a group conversation from conversation list
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    And I swipe right on a <GroupChatName>
+    And I select DELETE from conversation settings menu
+    And I click the Leave check box
+    And I press DELETE on the confirm alert
+    Then I do not see contact list with name <GroupChatName>
+    And I open search by tap
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I enter "<GroupChatName>" into Search input on People Picker page
+    
+    
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | DELETELeave   |
