@@ -465,6 +465,22 @@ public class PeoplePickerPageSteps {
 				"Group '%s' is not visible in conversations list", name),
 				getPeoplePickerPage().isGroupVisible(name));
 	}
+	
+	/**
+	 * Looks for a group chat in the people picker search view and it does not show up
+	 * 
+	 * @step. ^I do not see group (.*) in [Pp]eople [Pp]icker$
+	 * 
+	 * @param name
+	 * @throws Exception
+	 */
+	@Then("^I do not see group (.*) in [Pp]eople [Pp]icker$")
+	public void ThenIDoNotSeeGroupInPeoplePicker(String name) throws Exception {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		Assert.assertFalse(String.format(
+				"Group '%s' is not visible in conversations list", name),
+				getPeoplePickerPage().isGroupVisible(name));
+	}
 
 	/**
 	 * Check to see that the top people section is visible or not

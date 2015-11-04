@@ -427,4 +427,15 @@ public class ContactListPageSteps {
 	public void IPressDELETEOnTheConfirmAlert() throws Throwable {
 		getContactListPage().confirmDeleteConversationAlert();
 	}
+
+	/**
+	 * Presses the leave as well during delete checkbox
+	 * 
+	 * @step. ^I click the Leave check box$
+	 * @throws Throwable
+	 */
+	@When("^I click the Leave check box$")
+	public void i_click_the_Leave_check_box() throws Throwable {
+		getContactListPage().checkLeaveWhileDeleteCheckbox();
+	}
 }

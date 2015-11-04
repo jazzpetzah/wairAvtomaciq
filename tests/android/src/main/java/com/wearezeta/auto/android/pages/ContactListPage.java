@@ -106,6 +106,10 @@ public class ContactListPage extends AndroidPage {
     private static final String idSearchButton = "gtv_pickuser__searchbutton";
     @FindBy(id = idSearchButton)
     private WebElement searchButton;
+    
+    private static final String idLeaveCheckbox = "gtv__checkbox_icon";
+    @FindBy(id = idLeaveCheckbox)
+    private WebElement leaveWhileDeleteCheckbox;
 
     private static final Function<String, String> xpathConvoSettingsMenuItemByName = name -> String
             .format("//*[starts-with(@id, 'ttv__settings_box__item') and @value='%s']",
@@ -439,4 +443,8 @@ public class ContactListPage extends AndroidPage {
     public void confirmDeleteConversationAlert() {
         deleteConfirmAlertButton.click();
     }
+
+	public void checkLeaveWhileDeleteCheckbox() {
+		leaveWhileDeleteCheckbox.click();
+	}
 }
