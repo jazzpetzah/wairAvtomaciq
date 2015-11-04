@@ -401,7 +401,7 @@ public class DialogPageSteps {
     public void ThenISeePingMessageInTheDialog(String message) throws Exception {
         message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format(
-                        "Ping message '%s' is not visible after the timeout", message),
+                "Ping message '%s' is not visible after the timeout", message),
                 getDialogPage().waitForPingMessageWithText(message));
     }
 
@@ -531,8 +531,8 @@ public class DialogPageSteps {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         final String actualLabel = getDialogPage().getConnectRequestChatLabel();
         Assert.assertTrue(String.format(
-                        "The actual label '%s' does not contain '%s' part",
-                        actualLabel, contact),
+                "The actual label '%s' does not contain '%s' part",
+                actualLabel, contact),
                 actualLabel.toLowerCase().contains(contact.toLowerCase()));
     }
 
@@ -863,16 +863,17 @@ public class DialogPageSteps {
         previousConvoViewScreenshot = getDialogPage().getConvoViewScreenshot();
     }
 
-    private final static double MAX_CONVO_VIEW_SIMILIARITY = 0.97;
+    private final static double MAX_CONVO_VIEW_SIMILARIITY = 0.97;
 
     /**
      * Verify that conversation view is different from what was remembered before
      *
+     * @param shouldNotBeChanged equals to null is the view should be changed
      * @throws Exception
-     * @step. ^I see the conversation view is changed$
+     * @step. ^I see the conversation view is (not )?changed$
      */
-    @Then("^I see the conversation view is changed$")
-    public void ISeeTheConvoViewISChanged() throws Exception {
+    @Then("^I see the conversation view is (not )?changed$")
+    public void ISeeTheConvoViewISChanged(String shouldNotBeChanged) throws Exception {
         if (previousConvoViewScreenshot == null) {
             throw new IllegalStateException(
                     "Please remember the previous state of conversation view first");
@@ -880,9 +881,16 @@ public class DialogPageSteps {
         final BufferedImage currentConvoViewScreenshot = getDialogPage().getConvoViewScreenshot();
         final double similarity = ImageUtil.getOverlapScore(previousConvoViewScreenshot,
                 currentConvoViewScreenshot, ImageUtil.RESIZE_TO_MAX_SCORE);
-        Assert.assertTrue(String.format(
-                        "Current state of conversation view is similar to what what remembered before (%.2f >= %.2f)",
-                        similarity, MAX_CONVO_VIEW_SIMILIARITY),
-                similarity < MAX_CONVO_VIEW_SIMILIARITY);
+        if (shouldNotBeChanged == null) {
+            Assert.assertTrue(String.format(
+                    "Current state of conversation view is similar to what what was remembered before (%.2f >= %.2f)",
+                    similarity, MAX_CONVO_VIEW_SIMILARIITY),
+                    similarity < MAX_CONVO_VIEW_SIMILARIITY);
+        } else {
+            Assert.assertTrue(String.format(
+                    "Current state of conversation view is different to what what was remembered before (%.2f < %.2f)",
+                    similarity, MAX_CONVO_VIEW_SIMILARIITY),
+                    similarity >= MAX_CONVO_VIEW_SIMILARIITY);
+        }
     }
 }
