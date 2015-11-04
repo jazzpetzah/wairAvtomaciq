@@ -14,6 +14,10 @@ public class SettingsPage extends AndroidPage {
     private static final Function<String, String> xpathSettingsMenuItemByText = text -> String
             .format("//*[@id='title' and @value='%s']", text);
 
+    private static final String xpathThemeMenuItemSummary = String.format(
+            "%s/parent::*//*[@id='summary']", xpathSettingsMenuItemByText.apply("Theme")
+    );
+
     private static final Function<String, String> xpathConfirmBtnByName = name -> String
             .format("//*[starts-with(@id, 'button') and @value='%s']", name);
 
@@ -54,5 +58,11 @@ public class SettingsPage extends AndroidPage {
         final By locator = By.xpath(xpathConfirmBtnByName.apply("Sign out"));
         assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : "Sign out confirmation is not visible";
         getDriver().findElement(locator).click();
+    }
+
+    public String getThemeSettingValue() throws Exception {
+        assert isMenuItemVisible("Theme") : String.format("'Theme' menu item is not visible");
+        final By locator = By.xpath(xpathThemeMenuItemSummary);
+        return getDriver().findElement(locator).getText();
     }
 }
