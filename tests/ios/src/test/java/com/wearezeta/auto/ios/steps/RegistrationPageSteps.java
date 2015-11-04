@@ -254,6 +254,19 @@ public class RegistrationPageSteps {
 	}
 
 	/**
+	 * Input in phone number field page a random X digits
+	 * 
+	 * @step. ^I enter (.*) digits phone number
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I enter (.*) digits phone number$")
+	public void IEnterXDigitesPhoneNumber(int x) throws Exception {
+		getRegistrationPage().inputPhoneNumber(
+				CommonUtils.generateRandomXdigits(x));
+	}
+
+	/**
 	 * Click on I AGREE button to accept terms of service
 	 * 
 	 * @throws Exception

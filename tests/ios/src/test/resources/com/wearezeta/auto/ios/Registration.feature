@@ -267,3 +267,13 @@ Feature: Registration
     Examples: 
       | Name      |
       | user1Name |
+
+  @staging @noAcceptAlert @id1517
+  Scenario Outline: Verify that it's impossible to proceed registration with more than 16 characters in Phone
+    Given I see sign in screen
+    When I enter 16 digits phone number
+    Then I see invalid phone number alert
+
+    Examples: 
+      | Name      |
+      | user1Name |
