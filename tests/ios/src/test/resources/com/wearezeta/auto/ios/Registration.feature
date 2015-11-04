@@ -257,7 +257,7 @@ Feature: Registration
       | user1Email | user1Password | user1Name |
 
   @staging @id2468
-  Scenario Outline: Verify impossibility to register with a phone already asigned to the email
+  Scenario Outline: Verify user is logged in when trying to register with a phone already asigned to the email
     Given There is 1 user where <Name> is me
     Given I see sign in screen
     When I input phone number of already registered user <Name>
