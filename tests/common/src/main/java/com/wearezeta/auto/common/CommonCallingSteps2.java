@@ -244,7 +244,7 @@ public final class CommonCallingSteps2 {
 					+ Arrays.toString(callees.toArray()));
 			callees = createInstances(callees, instanceType);
 			creationRetries--;
-		} while (!callees.isEmpty() || creationRetries > 0);
+		} while (!callees.isEmpty() && creationRetries > 0);
 	}
 
 	private List<String> createInstances(List<String> calleeNames,
