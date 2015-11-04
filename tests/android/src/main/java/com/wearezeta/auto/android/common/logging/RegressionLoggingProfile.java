@@ -11,7 +11,8 @@ public abstract class RegressionLoggingProfile extends LoggingProfile {
         return Optional.of(Arrays.asList("/SELENDROID",
                 "/ResourceType", "/AlarmManager",
                 "/WifiStateMachine", "/SFPerfTracer",
-                "/LockPatternUtilsCache"));
+                "/LockPatternUtilsCache", "/StatusBar",
+                "/wifi", "/Wifi"));
     }
 
     @Override
