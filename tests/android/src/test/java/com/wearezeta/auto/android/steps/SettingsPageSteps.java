@@ -82,4 +82,18 @@ public class SettingsPageSteps {
                 previousThemeSettingValue, currentThemeSettingValue);
     }
 
+    /**
+     * Select previously unselected theme in Theme option. The chooser itself should be already visible
+     *
+     * @step. ^I select (White|Dark) theme$
+     *
+     * @param themeName wither White or Dark
+     *
+     * @throws Exception
+     */
+    @And("^I select (White|Dark) theme$")
+    public void ISelectUnselectedTheme(String themeName) throws Exception {
+        getSettingsPage().selectTheme(themeName);
+    }
+
 }
