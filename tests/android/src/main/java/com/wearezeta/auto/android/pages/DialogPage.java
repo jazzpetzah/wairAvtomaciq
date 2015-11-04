@@ -218,7 +218,11 @@ public class DialogPage extends AndroidPage {
     @FindBy(xpath = xpathLastConversationMessage)
     private WebElement lastConversationMessage;
 
-    private static final String xpathDialogContent = "//*[@id='pfac__conversation__list_view_container']/*/*/*";
+    private static final String idDialogRoot = "pfac__conversation__list_view_container";
+    @FindBy(id = idDialogRoot)
+    private WebElement dialogRoot;
+
+    private static final String xpathDialogContent = "//*[@id='" + idDialogRoot + "']/*/*/*";
     @FindBy(xpath = xpathDialogContent)
     private List<WebElement> dialogContentList;
 
@@ -725,5 +729,9 @@ public class DialogPage extends AndroidPage {
 
     public int getCurrentNumberOfItemsInDialog() {
         return dialogContentList.size();
+    }
+
+    public BufferedImage getConvoViewScreenshot() throws Exception {
+        return this.getElementScreenshot(dialogRoot).orElseThrow(IllegalStateException::new);
     }
 }
