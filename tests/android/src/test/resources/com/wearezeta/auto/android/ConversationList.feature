@@ -64,7 +64,7 @@ Feature: Conversation List
     And I tap PlayPause button next to the <Contact1> conversation
     Then I see the state of PlayPause button next to the <Contact1> conversation is changed
 
-    Examples:
+    Examples: 
       | Name      | Contact1  | Contact2  | SoundCloudLink                                             |
       | user1Name | user2Name | user3Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
@@ -122,7 +122,7 @@ Feature: Conversation List
     And I see dialog page
     Then I see Connect to <Contact1> Dialog page
 
-    Examples:
+    Examples: 
       | Name      | Contact1  | Message    | Image       | SpotifyLink                                           |
       | user1Name | user2Name | Tschuessii | testing.jpg | https://open.spotify.com/track/0p6GeAWS4VCZddxNbBtEss |
 
@@ -156,7 +156,7 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName | Message    | Image       | SpotifyLink                                           |
       | user1Name | user2Name | user3Name | DELETE        | Tschuessii | testing.jpg | https://open.spotify.com/track/0p6GeAWS4VCZddxNbBtEss |
-      
+
   @torun @id4053 @staging
   Scenario Outline: Verify I can delete and leave a group conversation from conversation list
     Given There are 3 users where <Name> is me
@@ -173,8 +173,13 @@ Feature: Conversation List
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<GroupChatName>" into Search input on People Picker page
-    
-    
+    Then I do not see group <GroupChatName> in People picker
+    And I navigate back to Conversations List
+    And User <Contact1> sent message <Message> to conversation <GroupChatName>
+    Then I do not see contact list with name <GroupChatName>
+    And I swipe up contact list
+    Then I do not see contact list with name <GroupChatName>
+
     Examples: 
-      | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Name | user2Name | user3Name | DELETELeave   |
+      | Name      | Contact1  | Contact2  | GroupChatName | Message |
+      | user1Name | user2Name | user3Name | DELETELeave   | tututu  |
