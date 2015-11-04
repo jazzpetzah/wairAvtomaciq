@@ -51,8 +51,6 @@ public abstract class AndroidPage extends BasePage {
 		return (ZetaAndroidDriver) super.getDriver();
 	}
 
-	public final CommonSteps commonSteps = CommonSteps.getInstance();
-
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Future<ZetaAndroidDriver> getLazyDriver() {
@@ -87,10 +85,8 @@ public abstract class AndroidPage extends BasePage {
 	 */
 	public void navigateBack() throws Exception {
 		AndroidCommonUtils.tapBackButton();
-
 		// Wait for animation
 		Thread.sleep(1000);
-		// this.getDriver().navigate().back();
 	}
 
 	public void rotateLandscape() throws Exception {
@@ -101,10 +97,6 @@ public abstract class AndroidPage extends BasePage {
 	public void rotatePortrait() throws Exception {
 		// AndroidCommonUtils.rotatePortrait();
 		this.getDriver().rotate(ScreenOrientation.PORTRAIT);
-	}
-
-	public ScreenOrientation getOrientation() throws Exception {
-		return this.getDriver().getOrientation();
 	}
 
 	public void dialogsPagesSwipeUp(int durationMilliseconds) throws Exception {
@@ -198,13 +190,6 @@ public abstract class AndroidPage extends BasePage {
 		swipeByCoordinates(durationMilliseconds, widthPercent,
 				SWIPE_DEFAULT_PERCENTAGE_START, widthPercent,
 				SWIPE_DEFAULT_PERCENTAGE_END);
-	}
-
-	public void tapButtonByClassNameAndIndex(WebElement element,
-			String className, int index) {
-		List<WebElement> buttonsList = element.findElements(By
-				.className(className));
-		buttonsList.get(index).click();
 	}
 
 	public void tapByCoordinates(int widthPercent, int heightPercent)
