@@ -195,6 +195,24 @@ public class RegistrationPageSteps {
 	}
 
 	/**
+	 * Input phone number of allready registered user
+	 * 
+	 * @step. ^I input phone number of already registered user (.*)$
+	 * 
+	 * @param name
+	 *            username
+	 * @throws Exception
+	 */
+	@When("^I input phone number of already registered user (.*)$")
+	public void IInputPhoneNumberOfRegisteredUser(String name) throws Exception {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
+		String number = user.getPhoneNumber().toString();
+		number = number.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, "");
+		getRegistrationPage().selectCodeAndInputPhoneNumber(number,
+				PhoneNumber.WIRE_COUNTRY_PREFIX);
+	}
+
+	/**
 	 * Input in sign in by phone number page a random phone number
 	 * 
 	 * @step. ^I enter random phone number$
@@ -212,16 +230,16 @@ public class RegistrationPageSteps {
 	 * 
 	 * @step. ^I input phone number (.*) with code (.*)$
 	 * @param number
-	 * 		phone number
+	 *            phone number
 	 * @param code
-	 * 		country code
+	 *            country code
 	 * @throws Exception
 	 */
 	@When("^I input phone number (.*) with code (.*)$")
 	public void IInputPhoneNumber(String number, String code) throws Exception {
 		getRegistrationPage().selectCodeAndInputPhoneNumber(number, code);
 	}
-	
+
 	/**
 	 * Input in phone number field page an invalid phone number
 	 * 

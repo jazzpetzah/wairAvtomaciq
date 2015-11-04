@@ -1,28 +1,5 @@
 Feature: Conversation List
 
-  @id324 @regression @rc
-  Scenario Outline: Mute conversation
-    Given There are 2 users where <Name> is me
-    Given <Contact1> is connected to <Name>
-    Given I sign in using my email or phone number
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact1>
-    And I see dialog page
-    And I tap conversation details button
-    And I press options menu button
-    And I press SILENCE conversation menu button
-    #And I return to group chat page
-    #Some elements seem to be missing (e.g. "X" button) so
-    #Instead of searching for elements, it works perfectly fine (and faster) just to press back 3 times
-    And I press back button
-    And I press back button
-    #And I navigate back from dialog page
-    Then Contact <Contact1> is muted
-
-    Examples: 
-      | Name      | Contact1  |
-      | user1Name | user2Name |
-
   @id1510 @regression @rc
   Scenario Outline: Verify conversation list play/pause controls can change playing media state (SoundCloud)
     Given There are 2 users where <Name> is me
@@ -119,7 +96,7 @@ Feature: Conversation List
       | user1Name | user2Name |
 
   @id4042 @regression
-  Scenario Outline: Verify I can delete a 1:1 conversation from conversation list
+  Scenario Outline: (AN-2969) Verify I can delete a 1:1 conversation from conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given All contacts send me a message <SpotifyLink>

@@ -3,6 +3,7 @@ package com.wearezeta.auto.android.steps;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -181,7 +182,7 @@ public class PeoplePickerPageSteps {
 		searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria,
 				FindBy.PHONENUMBER_ALIAS);
 		getPeoplePickerPage().typeTextInPeopleSearch(searchCriteria);
-		Thread.sleep(200);
+		CommonSteps.getInstance().WaitForTime(2);
 	}
 
 	/**
@@ -243,13 +244,12 @@ public class PeoplePickerPageSteps {
 			throws Exception {
 		try {
 			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		}
-		 catch (NoSuchUserException e) {
-			 //Ignore silently
+		} catch (NoSuchUserException e) {
+			// Ignore silently
 		}
 		getPeoplePickerPage().selectContact(contact);
 	}
-	
+
 	/**
 	 * Taps on a group found in the people picker page
 	 * 

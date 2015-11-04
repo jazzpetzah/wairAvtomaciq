@@ -2,6 +2,7 @@ package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.web.pages.AddEmailAddressPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.Then;
@@ -12,6 +13,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class AddEmailAddressPageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
+			.getInstance();
 
 	/**
 	 * Enter email address of user via user alias
@@ -25,7 +28,8 @@ public class AddEmailAddressPageSteps {
 	public void IEnterEmailOfUserOnAddEmailAddressDialog(String name)
 			throws Throwable {
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
-		WebappPagesCollection.addEmailAddressPage.setEmail(user.getEmail());
+		webappPagesCollection.getPage(AddEmailAddressPage.class).setEmail(
+				user.getEmail());
 	}
 
 	/**
@@ -39,7 +43,8 @@ public class AddEmailAddressPageSteps {
 	@When("^I enter email address (.*) on add email address dialog$")
 	public void IEnterEmailOnAddEmailAddressDialog(String email)
 			throws Throwable {
-		WebappPagesCollection.addEmailAddressPage.setEmail(email);
+		webappPagesCollection.getPage(AddEmailAddressPage.class)
+				.setEmail(email);
 	}
 
 	/**
@@ -48,11 +53,13 @@ public class AddEmailAddressPageSteps {
 	 * @step. ^I enter password (.*) on add email address dialog$
 	 * @param password
 	 *            password to be entered
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@When("^I enter password (.*) on add email address dialog$")
-	public void IEnterPasswordOnAddEmailAddressDialog(String password) throws Exception {
-		WebappPagesCollection.addEmailAddressPage.setPassword(password);
+	public void IEnterPasswordOnAddEmailAddressDialog(String password)
+			throws Exception {
+		webappPagesCollection.getPage(AddEmailAddressPage.class).setPassword(
+				password);
 	}
 
 	/**
@@ -61,8 +68,9 @@ public class AddEmailAddressPageSteps {
 	 * @step. ^I click add button on add email address dialog$
 	 */
 	@When("^I click add button on add email address dialog$")
-	public void IClickAddButtonOnAddEmailAddressDialog() {
-		WebappPagesCollection.addEmailAddressPage.clickAddButton();
+	public void IClickAddButtonOnAddEmailAddressDialog() throws Exception {
+		webappPagesCollection.getPage(AddEmailAddressPage.class)
+				.clickAddButton();
 	}
 
 	/**
@@ -77,33 +85,35 @@ public class AddEmailAddressPageSteps {
 	public void ISeeErrorMessageOnAddEmailAddressDialog(String message)
 			throws Exception {
 		assertThat("invalid email error",
-				WebappPagesCollection.addEmailAddressPage.getErrorMessage(),
-				equalTo(message));
+				webappPagesCollection.getPage(AddEmailAddressPage.class)
+						.getErrorMessage(), equalTo(message));
 	}
 
 	/**
-	 * Checks if a orange line is shown around the email field on add email address
-	 * dialog
+	 * Checks if a orange line is shown around the email field on add email
+	 * address dialog
 	 *
 	 * @step. ^the email field on add email address dialog is marked as error$
 	 * @throws Exception
 	 */
 	@Then("^the email field on add email address dialog is marked as error$")
 	public void EmailFieldIsMarkedAsError() throws Exception {
-		assertThat("email field marked as error",
-				WebappPagesCollection.addEmailAddressPage.isEmailFieldMarkedAsError());
+		assertThat("email field marked as error", webappPagesCollection
+				.getPage(AddEmailAddressPage.class).isEmailFieldMarkedAsError());
 	}
 
 	/**
 	 * Checks if a orange line is shown around the password field on add email
 	 * address dialog form
 	 *
-	 * @step. ^the password field on add email address dialog is marked as error$
+	 * @step. ^the password field on add email address dialog is marked as
+	 *        error$
 	 * @throws Exception
 	 */
 	@Then("^the password field on add email address dialog is marked as error$")
 	public void ARedDotIsShownOnThePasswordField() throws Exception {
-		assertThat("password field marked as error",
-				WebappPagesCollection.addEmailAddressPage.isPasswordFieldMarkedAsError());
+		assertThat("password field marked as error", webappPagesCollection
+				.getPage(AddEmailAddressPage.class)
+				.isPasswordFieldMarkedAsError());
 	}
 }

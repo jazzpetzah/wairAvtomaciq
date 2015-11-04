@@ -11,6 +11,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
+import com.wearezeta.auto.web.pages.ContactListPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.Given;
@@ -26,6 +27,8 @@ public class ContactListPageSteps {
 			.getLog(ContactListPageSteps.class.getSimpleName());
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
+			.getInstance();
 	private static final String TOOLTIP_SILENCE = "Silence";
 	private static final String SHORTCUT_SILENCE_WIN = "(Ctrl + Alt + S)";
 	private static final String SHORTCUT_SILENCE_MAC = "(⌘⌥S)";
@@ -42,10 +45,10 @@ public class ContactListPageSteps {
 	 */
 	@Given("^I see my avatar on top of Contact list$")
 	public void ISeeMyNameOnTopOfContactList() throws Exception {
-		Assert.assertTrue("No contact list loaded.",
-				WebappPagesCollection.contactListPage
-						.waitForContactListVisible());
-		WebappPagesCollection.contactListPage.waitForSelfProfileAvatar();
+		Assert.assertTrue("No contact list loaded.", webappPagesCollection
+				.getPage(ContactListPage.class).waitForContactListVisible());
+		webappPagesCollection.getPage(ContactListPage.class)
+				.waitForSelfProfileAvatar();
 	}
 
 	/**
@@ -63,11 +66,10 @@ public class ContactListPageSteps {
 	public void GivenISeeContactListWithName(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		log.debug("Looking for contact with name " + name);
-		Assert.assertTrue("No contact list loaded.",
-				WebappPagesCollection.contactListPage
-						.waitForContactListVisible());
+		Assert.assertTrue("No contact list loaded.", webappPagesCollection
+				.getPage(ContactListPage.class).waitForContactListVisible());
 		for (int i = 0; i < 5; i++) {
-			if (WebappPagesCollection.contactListPage
+			if (webappPagesCollection.getPage(ContactListPage.class)
 					.isConvoListEntryWithNameExist(name)) {
 				return;
 			}
@@ -92,12 +94,13 @@ public class ContactListPageSteps {
 	public void GivenISeeArchiveListWithName(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		log.debug("Looking for contact with name " + name);
+		ContactListPage contactListPage = webappPagesCollection
+				.getPage(ContactListPage.class);
 		Assert.assertTrue("No contact list loaded.",
-				WebappPagesCollection.contactListPage
-						.waitForContactListVisible());
+				contactListPage.waitForContactListVisible());
+
 		for (int i = 0; i < 5; i++) {
-			if (WebappPagesCollection.contactListPage
-					.isArchiveListEntryWithNameExist(name)) {
+			if (contactListPage.isArchiveListEntryWithNameExist(name)) {
 				return;
 			}
 			Thread.sleep(1000);
@@ -119,8 +122,8 @@ public class ContactListPageSteps {
 	@Given("^I open conversation with (.*)")
 	public void GivenIOpenConversationWith(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		WebappPagesCollection.conversationPage = WebappPagesCollection.contactListPage
-				.openConversation(contact);
+		webappPagesCollection.getPage(ContactListPage.class).openConversation(
+				contact);
 	}
 
 	/**
@@ -137,8 +140,9 @@ public class ContactListPageSteps {
 		convoName = usrMgr.replaceAliasesOccurences(convoName,
 				FindBy.NAME_ALIAS);
 		Assert.assertTrue(String.format("Conversation '%s' should be selected",
-				convoName), WebappPagesCollection.contactListPage
-				.isConversationSelected(convoName));
+				convoName),
+				webappPagesCollection.getPage(ContactListPage.class)
+						.isConversationSelected(convoName));
 	}
 
 	/**
@@ -154,7 +158,7 @@ public class ContactListPageSteps {
 	@Given("^I unarchive conversation (.*)")
 	public void GivenIUnarchiveConversation(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		WebappPagesCollection.conversationPage = WebappPagesCollection.contactListPage
+		webappPagesCollection.getPage(ContactListPage.class)
 				.unarchiveConversation(name);
 	}
 
@@ -167,8 +171,7 @@ public class ContactListPageSteps {
 	 */
 	@When("^I open self profile$")
 	public void IOpenSelfProfile() throws Exception {
-		WebappPagesCollection.selfProfilePage = WebappPagesCollection.contactListPage
-				.openSelfProfile();
+		webappPagesCollection.getPage(ContactListPage.class).openSelfProfile();
 	}
 
 	/**
@@ -184,9 +187,10 @@ public class ContactListPageSteps {
 	@When("^I archive conversation (.*)$")
 	public void IClickArchiveButton(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		WebappPagesCollection.contactListPage
-				.clickOptionsButtonForContact(contact);
-		WebappPagesCollection.contactListPage.clickArchiveConversation();
+		ContactListPage contactListPage = webappPagesCollection
+				.getPage(ContactListPage.class);
+		contactListPage.clickOptionsButtonForContact(contact);
+		contactListPage.clickArchiveConversation();
 	}
 
 	/**
@@ -198,7 +202,7 @@ public class ContactListPageSteps {
 	 */
 	@When("^I open archive$")
 	public void IOpenArchive() throws Exception {
-		WebappPagesCollection.contactListPage.openArchive();
+		webappPagesCollection.getPage(ContactListPage.class).openArchive();
 	}
 
 	/**
@@ -216,7 +220,7 @@ public class ContactListPageSteps {
 	@Given("^I do not see Contact list with name (.*)$")
 	public void IDoNotSeeContactListWithName(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		Assert.assertTrue(WebappPagesCollection.contactListPage
+		Assert.assertTrue(webappPagesCollection.getPage(ContactListPage.class)
 				.isConvoListEntryNotVisible(name));
 	}
 
@@ -252,20 +256,18 @@ public class ContactListPageSteps {
 		if (doNot == null) {
 			if (amount == 1) {
 				assertThat(
-						WebappPagesCollection.contactListPage
+						webappPagesCollection.getPage(ContactListPage.class)
 								.getIncomingPendingItemText(),
 						equalTo(WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING));
 			} else {
-				assertThat(
-						WebappPagesCollection.contactListPage
-								.getIncomingPendingItemText(),
-						equalTo(amount
-								+ WebAppLocators.Common.CONTACT_LIST_X_PEOPLE_WAITING));
+				assertThat(webappPagesCollection.getPage(ContactListPage.class)
+						.getIncomingPendingItemText(), equalTo(amount
+						+ WebAppLocators.Common.CONTACT_LIST_X_PEOPLE_WAITING));
 			}
 		} else {
 			String itemText = "";
 			try {
-				itemText = WebappPagesCollection.contactListPage
+				itemText = webappPagesCollection.getPage(ContactListPage.class)
 						.getIncomingPendingItemText();
 			} catch (AssertionError e) {
 				log.debug(e.getMessage());
@@ -283,7 +285,7 @@ public class ContactListPageSteps {
 	 */
 	@Given("^I open the list of incoming connection requests$")
 	public void IOpenIncomingConnectionRequestsList() throws Exception {
-		WebappPagesCollection.pendingConnectionsPage = WebappPagesCollection.contactListPage
+		webappPagesCollection.getPage(ContactListPage.class)
 				.openConnectionRequestsList();
 	}
 
@@ -296,8 +298,7 @@ public class ContactListPageSteps {
 	 */
 	@When("^I open People Picker from Contact List$")
 	public void IOpenPeoplePicker() throws Exception {
-		WebappPagesCollection.peoplePickerPage = WebappPagesCollection.contactListPage
-				.openPeoplePicker();
+		webappPagesCollection.getPage(ContactListPage.class).openPeoplePicker();
 	}
 
 	/**
@@ -312,9 +313,10 @@ public class ContactListPageSteps {
 	@When("^I set muted state for conversation (.*)")
 	public void ISetMutedStateFor(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		WebappPagesCollection.contactListPage
-				.clickOptionsButtonForContact(contact);
-		WebappPagesCollection.contactListPage.clickMuteConversation();
+		ContactListPage contactListPage = webappPagesCollection
+				.getPage(ContactListPage.class);
+		contactListPage.clickOptionsButtonForContact(contact);
+		contactListPage.clickMuteConversation();
 	}
 
 	/**
@@ -330,9 +332,10 @@ public class ContactListPageSteps {
 	@When("^I set unmuted state for conversation (.*)")
 	public void ISetUnmutedStateFor(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		WebappPagesCollection.contactListPage
-				.clickOptionsButtonForContact(contact);
-		WebappPagesCollection.contactListPage.clickUnmuteConversation();
+		ContactListPage contactListPage = webappPagesCollection
+				.getPage(ContactListPage.class);
+		contactListPage.clickOptionsButtonForContact(contact);
+		contactListPage.clickUnmuteConversation();
 	}
 
 	/**
@@ -347,7 +350,7 @@ public class ContactListPageSteps {
 	public void ISeeConversationIsMuted(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 
-		Assert.assertTrue(WebappPagesCollection.contactListPage
+		Assert.assertTrue(webappPagesCollection.getPage(ContactListPage.class)
 				.isConversationMuted(contact));
 	}
 
@@ -363,7 +366,7 @@ public class ContactListPageSteps {
 	public void ISeeConversationIsNotMuted(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 
-		Assert.assertFalse(WebappPagesCollection.contactListPage
+		Assert.assertFalse(webappPagesCollection.getPage(ContactListPage.class)
 				.isConversationMuted(contact));
 	}
 
@@ -383,8 +386,8 @@ public class ContactListPageSteps {
 			throws Exception {
 		convoNameAlias = usrMgr.replaceAliasesOccurences(convoNameAlias,
 				FindBy.NAME_ALIAS);
-		final int actualIndex = WebappPagesCollection.contactListPage
-				.getItemIndex(convoNameAlias);
+		final int actualIndex = webappPagesCollection.getPage(
+				ContactListPage.class).getItemIndex(convoNameAlias);
 		Assert.assertTrue(
 				String.format(
 						"The index of '%s' item in Conevrsations list does not equal to %s (current value is %s)",
@@ -408,11 +411,13 @@ public class ContactListPageSteps {
 	public void IVerifyArchiveButtonVisibility(String shouldNotBeVisible)
 			throws Exception {
 		if (shouldNotBeVisible == null) {
-			WebappPagesCollection.contactListPage
-					.waitUntilArhiveButtonIsVisible(ARCHIVE_BTN_VISILITY_TIMEOUT);
+			webappPagesCollection.getPage(ContactListPage.class)
+					.waitUntilArhiveButtonIsVisible(
+							ARCHIVE_BTN_VISILITY_TIMEOUT);
 		} else {
-			WebappPagesCollection.contactListPage
-					.waitUntilArhiveButtonIsNotVisible(ARCHIVE_BTN_VISILITY_TIMEOUT);
+			webappPagesCollection.getPage(ContactListPage.class)
+					.waitUntilArhiveButtonIsNotVisible(
+							ARCHIVE_BTN_VISILITY_TIMEOUT);
 		}
 	}
 
@@ -438,14 +443,14 @@ public class ContactListPageSteps {
 					String.format(
 							"The call notification in conversation '%s' should be visible",
 							conversationName),
-					WebappPagesCollection.contactListPage
+					webappPagesCollection.getPage(ContactListPage.class)
 							.isMissedCallVisibleForContact(conversationName));
 		} else {
 			assertTrue(
 					String.format(
 							"The call notification in conversation '%s' should NOT be visible",
 							conversationName),
-					WebappPagesCollection.contactListPage
+					webappPagesCollection.getPage(ContactListPage.class)
 							.isMissedCallInvisibleForContact(conversationName));
 		}
 	}
@@ -474,15 +479,19 @@ public class ContactListPageSteps {
 					String.format(
 							"The joined group call notification in conversation '%s' should be visible",
 							conversationName),
-					WebappPagesCollection.contactListPage
-							.isJoinedGroupCallNotificationVisibleForConversation(conversationName));
+					webappPagesCollection
+							.getPage(ContactListPage.class)
+							.isJoinedGroupCallNotificationVisibleForConversation(
+									conversationName));
 		} else {
 			assertTrue(
 					String.format(
 							"The joined group call notification in conversation '%s' should NOT be visible",
 							conversationName),
-					WebappPagesCollection.contactListPage
-							.isJoinedGroupCallNotificationInvisibleForConversation(conversationName));
+					webappPagesCollection
+							.getPage(ContactListPage.class)
+							.isJoinedGroupCallNotificationInvisibleForConversation(
+									conversationName));
 		}
 	}
 
@@ -510,15 +519,19 @@ public class ContactListPageSteps {
 					String.format(
 							"The unjoined group call notification in conversation '%s' should be visible",
 							conversationName),
-					WebappPagesCollection.contactListPage
-							.isUnjoinedGroupCallNotificationVisibleForConversation(conversationName));
+					webappPagesCollection
+							.getPage(ContactListPage.class)
+							.isUnjoinedGroupCallNotificationVisibleForConversation(
+									conversationName));
 		} else {
 			assertTrue(
 					String.format(
 							"The unjoined group call notification in conversation '%s' should NOT be visible",
 							conversationName),
-					WebappPagesCollection.contactListPage
-							.isUnjoinedGroupCallNotificationInvisibleForConversation(conversationName));
+					webappPagesCollection
+							.getPage(ContactListPage.class)
+							.isUnjoinedGroupCallNotificationInvisibleForConversation(
+									conversationName));
 		}
 	}
 
@@ -540,8 +553,9 @@ public class ContactListPageSteps {
 		conversationName = usrMgr.replaceAliasesOccurences(conversationName,
 				FindBy.NAME_ALIAS);
 		final AccentColor expectedColor = AccentColor.getByName(colorName);
-		final AccentColor pingIconColor = WebappPagesCollection.contactListPage
-				.getCurrentPingIconAccentColor(conversationName);
+		final AccentColor pingIconColor = webappPagesCollection.getPage(
+				ContactListPage.class).getCurrentPingIconAccentColor(
+				conversationName);
 		Assert.assertEquals(expectedColor, pingIconColor);
 	}
 
@@ -563,8 +577,9 @@ public class ContactListPageSteps {
 		conversationName = usrMgr.replaceAliasesOccurences(conversationName,
 				FindBy.NAME_ALIAS);
 		final AccentColor expectedColor = AccentColor.getByName(colorName);
-		final AccentColor unreadDotColor = WebappPagesCollection.contactListPage
-				.getCurrentUnreadDotAccentColor(conversationName);
+		final AccentColor unreadDotColor = webappPagesCollection.getPage(
+				ContactListPage.class).getCurrentUnreadDotAccentColor(
+				conversationName);
 		Assert.assertEquals(expectedColor, unreadDotColor);
 	}
 
@@ -580,7 +595,7 @@ public class ContactListPageSteps {
 		conversationName = usrMgr.replaceAliasesOccurences(conversationName,
 				FindBy.NAME_ALIAS);
 		Assert.assertTrue("No ping visible.",
-				WebappPagesCollection.contactListPage
+				webappPagesCollection.getPage(ContactListPage.class)
 						.isPingIconVisibleForConversation(conversationName));
 	}
 
@@ -604,11 +619,12 @@ public class ContactListPageSteps {
 			oneSelectedTopPeople = usrMgr.replaceAliasesOccurences(
 					oneSelectedTopPeople, FindBy.NAME_ALIAS);
 			log.debug("Looking for contact with name " + selectedTopPeople);
+			ContactListPage contactListPage = webappPagesCollection
+					.getPage(ContactListPage.class);
 			Assert.assertTrue("No contact list loaded.",
-					WebappPagesCollection.contactListPage
-							.waitForContactListVisible());
+					contactListPage.waitForContactListVisible());
 			for (int i = 0; i < 5; i++) {
-				if (WebappPagesCollection.contactListPage
+				if (contactListPage
 						.isConvoListEntryWithNameExist(oneSelectedTopPeople)) {
 					return;
 				}
@@ -634,7 +650,7 @@ public class ContactListPageSteps {
 	@When("^I click on options button for conversation (.*)$")
 	public void IClickOnOptionsButton(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		WebappPagesCollection.contactListPage
+		webappPagesCollection.getPage(ContactListPage.class)
 				.clickOptionsButtonForContact(contact);
 	}
 
@@ -654,8 +670,8 @@ public class ContactListPageSteps {
 			tooltip = tooltip + SHORTCUT_SILENCE_MAC;
 		}
 		assertThat("Silence button tooltip",
-				WebappPagesCollection.contactListPage.getMuteButtonToolTip(),
-				equalTo(tooltip));
+				webappPagesCollection.getPage(ContactListPage.class)
+						.getMuteButtonToolTip(), equalTo(tooltip));
 	}
 
 	/**
@@ -669,7 +685,7 @@ public class ContactListPageSteps {
 	public void ITypeShortcutCombinationToMuteOrUnmute(String contact)
 			throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		WebappPagesCollection.contactListPage
+		webappPagesCollection.getPage(ContactListPage.class)
 				.pressShortCutToMuteOrUnmute(contact);
 
 	}
@@ -682,7 +698,8 @@ public class ContactListPageSteps {
 	 */
 	@When("^I click the option to leave in the options popover$")
 	public void IClickLeaveButton() throws Exception {
-		WebappPagesCollection.contactListPage.clickLeaveConversation();
+		webappPagesCollection.getPage(ContactListPage.class)
+				.clickLeaveConversation();
 	}
 
 	/**
@@ -693,7 +710,8 @@ public class ContactListPageSteps {
 	 */
 	@When("^I click the option to block in the options popover$")
 	public void IClickBlockButton() throws Exception {
-		WebappPagesCollection.contactListPage.clickBlockConversation();
+		webappPagesCollection.getPage(ContactListPage.class)
+				.clickBlockConversation();
 	}
 
 	/**
@@ -704,7 +722,7 @@ public class ContactListPageSteps {
 	 */
 	@Then("^I see a leave warning modal$")
 	public void ISeeALeaveWarning() throws Exception {
-		Assert.assertTrue(WebappPagesCollection.contactListPage
+		Assert.assertTrue(webappPagesCollection.getPage(ContactListPage.class)
 				.isLeaveWarningModalVisible());
 	}
 
@@ -716,7 +734,8 @@ public class ContactListPageSteps {
 	 */
 	@Then("^I click cancel button in the leave warning$")
 	public void IClickCancelButtonOnLeaveWarning() throws Throwable {
-		WebappPagesCollection.contactListPage.clickCancelOnLeaveWarning();
+		webappPagesCollection.getPage(ContactListPage.class)
+				.clickCancelOnLeaveWarning();
 	}
 
 	/**
@@ -727,7 +746,7 @@ public class ContactListPageSteps {
 	 */
 	@Then("^I see a block warning modal$")
 	public void ISeeABlockWarning() throws Exception {
-		Assert.assertTrue(WebappPagesCollection.contactListPage
+		Assert.assertTrue(webappPagesCollection.getPage(ContactListPage.class)
 				.isBlockWarningModalVisible());
 	}
 
@@ -739,7 +758,8 @@ public class ContactListPageSteps {
 	 */
 	@Then("^I click cancel button in the block warning$")
 	public void IClickCancelButtonOnBlockWarning() throws Throwable {
-		WebappPagesCollection.contactListPage.clickCancelOnBlockWarning();
+		webappPagesCollection.getPage(ContactListPage.class)
+				.clickCancelOnBlockWarning();
 	}
 
 	/**
@@ -750,7 +770,8 @@ public class ContactListPageSteps {
 	 */
 	@Then("^I click block button in the block warning$")
 	public void IClickBlockButtonOnBlockWarning() throws Throwable {
-		WebappPagesCollection.contactListPage.clickBlockOnBlockWarning();
+		webappPagesCollection.getPage(ContactListPage.class)
+				.clickBlockOnBlockWarning();
 	}
 
 	/**
@@ -763,7 +784,7 @@ public class ContactListPageSteps {
 	@When("^I see conversation (.*) is on the top$")
 	public void ISeeConversationWithNameOnTop(String conv) throws Exception {
 		conv = usrMgr.replaceAliasesOccurences(conv, FindBy.NAME_ALIAS);
-		int itemIndex = WebappPagesCollection.contactListPage
+		int itemIndex = webappPagesCollection.getPage(ContactListPage.class)
 				.getItemIndex(conv);
 		assertThat("Conversation is not on the top", itemIndex, equalTo(1));
 
@@ -777,7 +798,8 @@ public class ContactListPageSteps {
 	 */
 	@When("^I click delete in the options popover$")
 	public void IClickDeleteButton() throws Exception {
-		WebappPagesCollection.contactListPage.clickDeleteConversation();
+		webappPagesCollection.getPage(ContactListPage.class)
+				.clickDeleteConversation();
 	}
 
 	/**
@@ -788,7 +810,7 @@ public class ContactListPageSteps {
 	 */
 	@Then("^I see a delete warning modal for group conversations$")
 	public void ISeeDeleteWarningForGroup() throws Exception {
-		Assert.assertTrue(WebappPagesCollection.contactListPage
+		Assert.assertTrue(webappPagesCollection.getPage(ContactListPage.class)
 				.isDeleteWarningModalForGroupVisible());
 	}
 
@@ -800,7 +822,8 @@ public class ContactListPageSteps {
 	 */
 	@Then("^I click delete button in the delete warning for group conversations$")
 	public void IClickDeleteButtonOnDeleteWarning() throws Throwable {
-		WebappPagesCollection.contactListPage.clickDeleteOnDeleteWarning();
+		webappPagesCollection.getPage(ContactListPage.class)
+				.clickDeleteOnDeleteWarning();
 	}
 
 	/**
@@ -811,7 +834,8 @@ public class ContactListPageSteps {
 	 */
 	@Then("^I click leave button in the leave warning$")
 	public void IClickLeaveButtonOnLeaveWarning() throws Throwable {
-		WebappPagesCollection.contactListPage.clickLeaveOnLeaveWarning();
+		webappPagesCollection.getPage(ContactListPage.class)
+				.clickLeaveOnLeaveWarning();
 	}
 
 	/**
@@ -823,7 +847,7 @@ public class ContactListPageSteps {
 	 */
 	@Then("^I click Leave checkbox on a delete warning modal for group conversations$")
 	public void IClickLeaveCheckboxOnDeleteWarning() throws Throwable {
-		WebappPagesCollection.contactListPage
+		webappPagesCollection.getPage(ContactListPage.class)
 				.clickLeaveCheckboxOnDeleteWarning();
 	}
 
@@ -835,7 +859,8 @@ public class ContactListPageSteps {
 	 */
 	@Then("^I click cancel button in the delete warning for group conversations$")
 	public void IClickCancelButtonOnDeleteWarning() throws Throwable {
-		WebappPagesCollection.contactListPage.clickCancelOnDeleteWarning();
+		webappPagesCollection.getPage(ContactListPage.class)
+				.clickCancelOnDeleteWarning();
 	}
 
 	/**
@@ -846,7 +871,7 @@ public class ContactListPageSteps {
 	 */
 	@Then("^I see a delete warning modal for 1:1 conversations$")
 	public void ISeeDeleteWarningForSingle() throws Exception {
-		Assert.assertTrue(WebappPagesCollection.contactListPage
+		Assert.assertTrue(webappPagesCollection.getPage(ContactListPage.class)
 				.isDeleteWarningModalSingleVisible());
 	}
 
@@ -858,7 +883,7 @@ public class ContactListPageSteps {
 	 */
 	@Then("^I click delete button in the delete warning for 1:1 conversations$")
 	public void IClickDeleteButtonOnDeleteWarningForSingle() throws Throwable {
-		WebappPagesCollection.contactListPage
+		webappPagesCollection.getPage(ContactListPage.class)
 				.clickDeleteOnDeleteWarningSingle();
 	}
 
@@ -870,7 +895,7 @@ public class ContactListPageSteps {
 	 */
 	@Then("^I click cancel button in the delete warning for 1:1 conversations$")
 	public void IClickCancelButtonOnDeleteWarningForSingle() throws Throwable {
-		WebappPagesCollection.contactListPage
+		webappPagesCollection.getPage(ContactListPage.class)
 				.clickCancelOnDeleteWarningSingle();
 	}
 }

@@ -1300,4 +1300,58 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact   |   Picture   | ConversationType |
       | user1Email | user1Password | user1Name | user2Name | testing.jpg |    single user   |
+
+  @staging @id3964
+  Scenario Outline: Verify posting in a 1-to-1 conversation without content [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Name> sent message <Message> to conversation <Contact1>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact1>
+    And I click delete menu button
+    And I confirm delete conversation content
+    Then I dont see conversation <GroupChatName> in contact list
+    And I open search by taping on it
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I search for user name <Contact1> and tap on it on People picker page
+    And I click open conversation button on People picker page
+    Then I see dialog page
+    Then I see the only message in dialog is system message CONNECTED TO <Contact1>
+    And I type the message
+    And I send the message
+    And I see message in the dialog
+
+    Examples: 
+      | Name      | Contact1  | Message |
+      | user1Name | user2Name | testing |
+
+  @staging @id3965
+  Scenario Outline: Verify posting in a 1-to-1 conversation without content [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Name> sent message <Message> to conversation <Contact1>
+    Given I rotate UI to landscape
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact1>
+    And I click delete menu button
+    And I confirm delete conversation content
+    Then I dont see conversation <GroupChatName> in contact list
+    And I open search by taping on it
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I search for user name <Contact1> and tap on it on People picker page
+    And I click open conversation button on People picker page
+    Then I see dialog page
+    Then I see the only message in dialog is system message CONNECTED TO <Contact1>
+    And I type the message
+    And I send the message
+    And I see message in the dialog
+
+    Examples: 
+      | Name      | Contact1  | Message |
+      | user1Name | user2Name | testing |
+
       
