@@ -17,6 +17,7 @@ import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.external.PasswordChangePage;
 import com.wearezeta.auto.web.pages.external.PasswordChangeRequestPage;
+import com.wearezeta.auto.web.pages.external.PasswordChangeRequestSuccessfullPage;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -32,6 +33,8 @@ public class PasswordChangeRequestSteps {
 			.getLog(PasswordChangeRequestSteps.class.getSimpleName());
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
+			.getInstance();
 
 	private Future<String> passwordChangeMessage = null;
 
@@ -44,13 +47,8 @@ public class PasswordChangeRequestSteps {
 	 */
 	@Then("^I see Password Change Request page$")
 	public void ISeePasswordChangeRequestPage() throws Exception {
-		if (WebappPagesCollection.passwordChangeRequestPage == null) {
-			WebappPagesCollection.passwordChangeRequestPage = (PasswordChangeRequestPage) WebappPagesCollection.loginPage
-					.instantiatePage(PasswordChangeRequestPage.class);
-		}
-		Assert.assertTrue("Email field not visible",
-				WebappPagesCollection.passwordChangeRequestPage.isEmailFieldVisible());
-		;
+		Assert.assertTrue("Email field not visible", webappPagesCollection
+				.getPage(PasswordChangeRequestPage.class).isEmailFieldVisible());
 	}
 
 	/**
@@ -63,10 +61,11 @@ public class PasswordChangeRequestSteps {
 	 *            email address to type or alias
 	 */
 	@When("^I enter email (\\S+) on Password Change Request page$")
-	public void IEnterEmail(String emailOrAlias) {
+	public void IEnterEmail(String emailOrAlias) throws Exception {
 		emailOrAlias = usrMgr.replaceAliasesOccurences(emailOrAlias,
 				FindBy.EMAIL_ALIAS);
-		WebappPagesCollection.passwordChangeRequestPage.setEmail(emailOrAlias);
+		webappPagesCollection.getPage(PasswordChangeRequestPage.class)
+				.setEmail(emailOrAlias);
 	}
 
 	private static final int PASSWORD_MSG_TIMWOUT_SECONDS = 60;
@@ -107,7 +106,7 @@ public class PasswordChangeRequestSteps {
 	 */
 	@And("^I click Change Password button on Password Change Request page$")
 	public void IClickChangePasswordButton() throws Exception {
-		WebappPagesCollection.passwordChangeRequestSuccessfullPage = WebappPagesCollection.passwordChangeRequestPage
+		webappPagesCollection.getPage(PasswordChangeRequestPage.class)
 				.clickChangePasswordButton();
 	}
 
@@ -120,9 +119,10 @@ public class PasswordChangeRequestSteps {
 	 */
 	@Then("^I see Password Change Request Succeeded page$")
 	public void ISeeRequestSucceededPage() throws Exception {
-		assertThat(WebappPagesCollection.passwordChangeRequestSuccessfullPage
-						.isConfirmationTextVisible(),
-				is(true));
+		assertThat(
+				webappPagesCollection.getPage(
+						PasswordChangeRequestSuccessfullPage.class)
+						.isConfirmationTextVisible(), is(true));
 	}
 
 	/**
@@ -142,11 +142,9 @@ public class PasswordChangeRequestSteps {
 		}
 		final PasswordResetMessage wrappedMsg = new PasswordResetMessage(
 				this.passwordChangeMessage.get());
-		WebappPagesCollection.passwordChangePage = (PasswordChangePage) WebappPagesCollection.loginPage
-				.instantiatePage(PasswordChangePage.class);
-		WebappPagesCollection.passwordChangePage.setUrl(wrappedMsg
-				.extractPasswordResetLink());
-		WebappPagesCollection.passwordChangePage.navigateTo();
+		webappPagesCollection.getPage(PasswordChangePage.class).setUrl(
+				wrappedMsg.extractPasswordResetLink());
+		webappPagesCollection.getPage(PasswordChangePage.class).navigateTo();
 	}
 
 }

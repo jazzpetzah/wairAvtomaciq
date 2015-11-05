@@ -6,6 +6,7 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.Given;
@@ -20,6 +21,8 @@ public class LoginPageSteps {
 			.getSimpleName());
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
+			.getInstance();
 
 	/**
 	 * Enters user email and password into corresponding fields on sign in
@@ -70,8 +73,7 @@ public class LoginPageSteps {
 	 */
 	@When("^I press Sign In button$")
 	public void IPressSignInButton() throws Exception {
-		WebappPagesCollection.contactListPage = WebappPagesCollection.loginPage
-				.clickSignInButton();
+		webappPagesCollection.getPage(LoginPage.class).clickSignInButton();
 	}
 
 	/**
@@ -84,7 +86,7 @@ public class LoginPageSteps {
 	 */
 	@When("^Sign In button is disabled$")
 	public void SignInButtonIsDisabled() throws Exception {
-		Assert.assertTrue(WebappPagesCollection.loginPage
+		Assert.assertTrue(webappPagesCollection.getPage(LoginPage.class)
 				.isSignInButtonDisabled());
 	}
 
@@ -97,8 +99,9 @@ public class LoginPageSteps {
 	 */
 	@Then("^I am signed in properly$")
 	public void IAmSignedInProperly() throws Exception {
-		Assert.assertTrue("Sign In button/login progress spinner are still visible",
-				WebappPagesCollection.loginPage.waitForLogin());
+		Assert.assertTrue(
+				"Sign In button/login progress spinner are still visible",
+				webappPagesCollection.getPage(LoginPage.class).waitForLogin());
 	}
 
 	/**
@@ -112,19 +115,22 @@ public class LoginPageSteps {
 	@Then("^the sign in error message reads (.*)")
 	public void TheSignInErrorMessageReads(String message) throws Exception {
 		assertThat("sign in error message",
-				WebappPagesCollection.loginPage.getErrorMessage(), equalTo(message));
+				webappPagesCollection.getPage(LoginPage.class)
+						.getErrorMessage(), equalTo(message));
 	}
 
 	/**
-	 * Checks if a orange line is shown around the email field on the sign in form
+	 * Checks if a orange line is shown around the email field on the sign in
+	 * form
 	 *
 	 * @step. ^the email field on the sign in form is marked as error$
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Then("^the email field on the sign in form is marked as error$")
 	public void ARedDotIsShownOnTheEmailField() throws Exception {
 		assertThat("Email field not marked",
-				WebappPagesCollection.loginPage.isEmailFieldMarkedAsError());
+				webappPagesCollection.getPage(LoginPage.class)
+						.isEmailFieldMarkedAsError());
 	}
 
 	/**
@@ -132,12 +138,13 @@ public class LoginPageSteps {
 	 * form
 	 *
 	 * @step. ^the password field on the sign in form is marked as error$
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Then("^the password field on the sign in form is marked as error$")
 	public void ARedDotIsShownOnThePasswordField() throws Exception {
 		assertThat("Password field not marked",
-				WebappPagesCollection.loginPage.isPasswordFieldMarkedAsError());
+				webappPagesCollection.getPage(LoginPage.class)
+						.isPasswordFieldMarkedAsError());
 	}
 
 	/**
@@ -149,13 +156,13 @@ public class LoginPageSteps {
 	 *            user email string
 	 */
 	@When("^I enter email \"([^\"]*)\"$")
-	public void IEnterEmail(String email) {
+	public void IEnterEmail(String email) throws Exception {
 		try {
 			email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		WebappPagesCollection.loginPage.inputEmail(email);
+		webappPagesCollection.getPage(LoginPage.class).inputEmail(email);
 	}
 
 	/**
@@ -167,13 +174,13 @@ public class LoginPageSteps {
 	 *            password string
 	 */
 	@When("^I enter password \"([^\"]*)\"$")
-	public void IEnterPassword(String password) {
+	public void IEnterPassword(String password) throws Exception {
 		try {
 			password = usrMgr.findUserByPasswordAlias(password).getPassword();
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		WebappPagesCollection.loginPage.inputPassword(password);
+		webappPagesCollection.getPage(LoginPage.class).inputPassword(password);
 	}
 
 	/**
@@ -187,7 +194,8 @@ public class LoginPageSteps {
 	 */
 	@Given("^I see Sign In page$")
 	public void ISeeSignInPage() throws Exception {
-		Assert.assertTrue(WebappPagesCollection.loginPage.isVisible());
+		Assert.assertTrue(webappPagesCollection.getPage(LoginPage.class)
+				.isVisible());
 	}
 
 	/**
@@ -199,7 +207,7 @@ public class LoginPageSteps {
 	 */
 	@When("^I click Change Password button$")
 	public void IClickChangePassword() throws Exception {
-		WebappPagesCollection.passwordChangeRequestPage = WebappPagesCollection.loginPage
+		webappPagesCollection.getPage(LoginPage.class)
 				.clickChangePasswordButton();
 	}
 
@@ -214,8 +222,8 @@ public class LoginPageSteps {
 	 */
 	@Then("^I see login error \"(.*)\"$")
 	public void ISeeLoginError(String expectedError) throws Exception {
-		final String loginErrorText = WebappPagesCollection.loginPage
-				.getErrorMessage();
+		final String loginErrorText = webappPagesCollection.getPage(
+				LoginPage.class).getErrorMessage();
 		Assert.assertTrue(
 				String.format(
 						"The actual login error '%s' is not equal to the expected one: '%s'",
@@ -225,7 +233,7 @@ public class LoginPageSteps {
 
 	@When("^I switch to phone number sign in page$")
 	public void i_switch_to_phone_number_sign_in_page() throws Throwable {
-		WebappPagesCollection.phoneNumberLoginPage = WebappPagesCollection.loginPage
+		webappPagesCollection.getPage(LoginPage.class)
 				.switchToPhoneNumberLoginPage();
 	}
 }

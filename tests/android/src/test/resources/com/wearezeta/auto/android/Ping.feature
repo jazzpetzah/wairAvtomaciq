@@ -12,7 +12,7 @@ Feature: Ping
     And I press Ping button
     Then I see Ping message <Msg> in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Msg        |
       | user1Name | user2Name | YOU PINGED |
 
@@ -32,9 +32,9 @@ Feature: Ping
     And I press Ping button
     Then I see Ping message <Msg2> in the dialog
 
-    Examples: 
-      | Name      | Contact1  | Contact2  | GroupChatName     | Msg1        | Msg2             |
-      | user1Name | user3Name | user2Name | SendPingGroupChat | YOU PINGED  | YOU PINGED AGAIN |
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName     | Msg1       | Msg2             |
+      | user1Name | user3Name | user2Name | SendPingGroupChat | YOU PINGED | YOU PINGED AGAIN |
 
   @id1374 @regression @rc
   Scenario Outline: Verify you can receive Ping & Hot Ping in a group conversation
@@ -50,6 +50,6 @@ Feature: Ping
     And Contact <Contact1> hotping conversation <GroupChatName>
     Then I see Ping message <Action2> in the dialog
 
-    Examples: 
-      | Name      | Contact1  | Contact2  | GroupChatName        | Action1           | Action2                |
-      | user1Name | user3Name | user2Name | ReceivePingGroupChat | user3Name PINGED  | user3Name PINGED AGAIN |
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName        | Action1          | Action2                |
+      | user1Name | user3Name | user2Name | ReceivePingGroupChat | user3Name PINGED | user3Name PINGED AGAIN |

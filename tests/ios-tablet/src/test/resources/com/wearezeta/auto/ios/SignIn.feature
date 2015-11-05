@@ -350,7 +350,7 @@ Feature: Sign In
     When I have entered login <Email>
     And I have entered password <Password>
     When I click DONE keyboard button
-    Then I see invalid email alert
+    Then I see already registered email alert
 
     Examples: 
       | Email                     | Password      | Name      |
@@ -378,7 +378,7 @@ Feature: Sign In
       | Email                     | Password      | Name      |
       | smoketester@wearezeta.com | user1Password | user1Name |
 
-  @staging @id3858 @noAcceptAlert
+  @regression @id3858 @noAcceptAlert
   Scenario Outline: Verify error message appears in case of registering already taken email [PORTRAIT]
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
@@ -399,7 +399,7 @@ Feature: Sign In
       | Email        | Password      | Name      |
       | invalidemail | user1Password | user1Name |
 
-  @staging @id3859 @noAcceptAlert
+  @regression @id3859 @noAcceptAlert
   Scenario Outline: Verify error message appears in case of registering already taken email [LANDSCAPE]
     Given There is 1 user where <Name> is me with phone number only
     Given I rotate UI to landscape

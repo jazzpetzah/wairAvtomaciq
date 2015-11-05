@@ -14,108 +14,118 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 public class SEBridge {
-	private static final Future<DevicePool> devicePool;
-	private static final ExecutorService pool = Executors.newFixedThreadPool(1);
-	static {
-		devicePool = pool.submit(() -> new DevicePool());
-	}
-	private static SEBridge instance = null;
-	private static final int POOL_CREATION_TIMEOUT = 60; // seconds
+    private static final Future<DevicePool> devicePool;
+    private static final ExecutorService pool = Executors.newFixedThreadPool(1);
 
-	public static synchronized SEBridge getInstance() {
-		if (instance == null) {
-			instance = new SEBridge();
-		}
-		return instance;
-	}
+    static {
+        devicePool = pool.submit(() -> new DevicePool());
+    }
 
-	private SEBridge() {
-	}
+    private static SEBridge instance = null;
+    private static final int POOL_CREATION_TIMEOUT = 60; // seconds
 
-	private static void shutdown() {
-		if (devicePool != null) {
-			if (devicePool.isDone()) {
-				try {
-					devicePool.get().shutdown();
-				} catch (Throwable e) {
-					e.printStackTrace();
-				}
-			} else {
-				devicePool.cancel(true);
-			}
-		}
-	}
+    public static synchronized SEBridge getInstance() {
+        if (instance == null) {
+            instance = new SEBridge();
+        }
+        return instance;
+    }
 
-	static {
-		Runtime.getRuntime().addShutdownHook(new Thread(() -> shutdown()));
-	}
+    private SEBridge() {
+    }
 
-	private DevicePool getDevicePool() throws Exception {
-		return devicePool.get(POOL_CREATION_TIMEOUT, TimeUnit.SECONDS);
-	}
+    private synchronized static void shutdown() {
+        if (!wasPoolAccessed) {
+            return;
+        }
+        if (devicePool != null) {
+            if (devicePool.isDone()) {
+                try {
+                    devicePool.get().shutdown();
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+            } else {
+                devicePool.cancel(true);
+            }
+        }
+    }
 
-	private Map<ClientUser, List<IDevice>> usersMapping = new ConcurrentHashMap<>();
+    static {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> shutdown()));
+    }
 
-	@SuppressWarnings("unchecked")
-	private void login(ClientUser user, IDevice dstDevice) throws Exception {
-		if (dstDevice.hasLoggedInUser() && !dstDevice.isLoggedInUser(user)) {
-			this.logout(user, dstDevice);
-		}
-		if (!dstDevice.isLoggedInUser(user)) {
-			dstDevice.logInWithUser(user);
-		}
-		if (this.usersMapping.containsKey(user)) {
-			final List<IDevice> mappedDevices = this.usersMapping.get(user);
-			mappedDevices.add(dstDevice);
-		} else {
-			this.usersMapping.put(user,
-					Arrays.asList(new IDevice[] { dstDevice }));
-		}
-	}
+    private static boolean wasPoolAccessed = false;
 
-	private void logout(ClientUser user, IDevice dstDevice) throws Exception {
-		if (dstDevice.hasLoggedInUser()) {
-			dstDevice.logout();
-		}
-		final List<IDevice> mappedDevices = this.usersMapping.get(user);
-		if (mappedDevices != null && mappedDevices.contains(dstDevice)) {
-			mappedDevices.remove(dstDevice);
-		}
-	}
+    private DevicePool getDevicePool() throws Exception {
+        wasPoolAccessed = true;
+        return devicePool.get(POOL_CREATION_TIMEOUT, TimeUnit.SECONDS);
+    }
 
-	private IDevice getCachedDevice(ClientUser userFrom) throws Exception {
-		IDevice dstDevice = null;
-		if (this.usersMapping.containsKey(userFrom)) {
-			// We don't care about multiple devices yet. Just take the first
-			// available one
-			dstDevice = this.usersMapping.get(userFrom).get(0);
-		} else {
-			dstDevice = this.getDevicePool().addDevice();
-			this.login(userFrom, dstDevice);
-		}
-		return dstDevice;
-	}
+    private Map<ClientUser, List<IDevice>> usersMapping = new ConcurrentHashMap<>();
 
-	private static void verifyPathExists(String path) {
-		if (!new File(path).exists()) {
-			throw new IllegalArgumentException(String.format(
-					"The file %s is not accessible", path));
-		}
-	}
+    @SuppressWarnings("unchecked")
+    private void login(ClientUser user, IDevice dstDevice) throws Exception {
+        if (dstDevice.hasLoggedInUser() && !dstDevice.isLoggedInUser(user)) {
+            this.logout(user, dstDevice);
+        }
+        if (!dstDevice.isLoggedInUser(user)) {
+            dstDevice.logInWithUser(user);
+        }
+        if (this.usersMapping.containsKey(user)) {
+            final List<IDevice> mappedDevices = this.usersMapping.get(user);
+            mappedDevices.add(dstDevice);
+        } else {
+            this.usersMapping.put(user,
+                    Arrays.asList(new IDevice[]{dstDevice}));
+        }
+    }
 
-	public void sendConversationMessage(ClientUser userFrom, String convId,
-			String message) throws Exception {
-		getCachedDevice(userFrom).sendMessage(convId, message);
-	}
+    private void logout(ClientUser user, IDevice dstDevice) throws Exception {
+        if (dstDevice.hasLoggedInUser()) {
+            dstDevice.logout();
+        }
+        final List<IDevice> mappedDevices = this.usersMapping.get(user);
+        if (mappedDevices != null && mappedDevices.contains(dstDevice)) {
+            mappedDevices.remove(dstDevice);
+        }
+    }
 
-	public void sendImage(ClientUser userFrom, String convId, String path)
-			throws Exception {
-		verifyPathExists(path);
-		getCachedDevice(userFrom).sendImage(convId, path);
-	}
+    private IDevice getCachedDevice(ClientUser userFrom) throws Exception {
+        IDevice dstDevice;
+        if (this.usersMapping.containsKey(userFrom)) {
+            // We don't care about multiple devices yet. Just take the first
+            // available one
+            dstDevice = this.usersMapping.get(userFrom).get(0);
+        } else {
+            dstDevice = this.getDevicePool().addDevice();
+            this.login(userFrom, dstDevice);
+        }
+        return dstDevice;
+    }
 
-	public void reset() throws Exception {
-		this.usersMapping.clear();
-		this.getDevicePool().clear();
-	}
+    private static void verifyPathExists(String path) {
+        if (!new File(path).exists()) {
+            throw new IllegalArgumentException(String.format(
+                    "The file %s is not accessible", path));
+        }
+    }
+
+    public void sendConversationMessage(ClientUser userFrom, String convId,
+                                        String message) throws Exception {
+        getCachedDevice(userFrom).sendMessage(convId, message);
+    }
+
+    public void sendImage(ClientUser userFrom, String convId, String path)
+            throws Exception {
+        verifyPathExists(path);
+        getCachedDevice(userFrom).sendImage(convId, path);
+    }
+
+    public synchronized void reset() throws Exception {
+        if (!this.usersMapping.isEmpty()) {
+            this.usersMapping.clear();
+            this.getDevicePool().clear();
+        }
+    }
 }

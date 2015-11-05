@@ -47,8 +47,10 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -101,6 +103,12 @@ public class CommonOSXSteps {
 		options.addArguments("disable-web-security");
 		options.addArguments("env=" + OSXExecutionContext.ENV_URL);
 		options.setBinary(WIRE_APP_PATH + OSXExecutionContext.ELECTRON_SUFFIX);
+
+		// allow skipping the security prompt for notifications in chrome 46++
+		Map<String, Object> prefs = new HashMap<>();
+		prefs.put("profile.managed_default_content_settings.notifications", 1);
+		options.setExperimentalOption("prefs", prefs);
+
 		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 		capabilities.setCapability("platformName",
 				OSXExecutionContext.CURRENT_SECONDARY_PLATFORM.name());

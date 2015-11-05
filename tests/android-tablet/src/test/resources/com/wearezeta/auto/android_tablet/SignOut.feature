@@ -10,10 +10,13 @@ Feature: Sign Out
     And I tap my avatar on top of conversations list
     And I see my name on Self Profile page
     And I tap Options button on Self Profile page
-    And I select "SIGN OUT" menu item on Self Profile page
+    And I select "SETTINGS" menu item on Self Profile page
+    And I select "Account" menu item on Settings page
+    And I select "Sign out" menu item on Settings page
+    And I confirm signout on Settings page
     Then I see welcome screen
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -26,9 +29,12 @@ Feature: Sign Out
     Given I see the Conversations list with no conversations
     And I see my name on Self Profile page
     And I tap Options button on Self Profile page
-    And I select "SIGN OUT" menu item on Self Profile page
+    And I select "SETTINGS" menu item on Self Profile page
+    And I select "Account" menu item on Settings page
+    And I select "Sign out" menu item on Settings page
+    And I confirm signout on Settings page
     Then I see welcome screen
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |

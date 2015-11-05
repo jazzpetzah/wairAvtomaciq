@@ -41,7 +41,7 @@ Feature: People View
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When I open conversation with <Contact>
-    And I click menu bar item "Conversation" and menu items "Add" and "People"
+    And I click menu bar item "Conversation" and menu item "Add People…"
     Then I see Single User Profile popover
     And I see Add to conversation button on Single User popover
 
@@ -58,7 +58,7 @@ Feature: People View
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
-    And I click menu bar item "Conversation" and menu items "Add" and "People"
+    And I click menu bar item "Conversation" and menu item "Add People…"
     Then I see Group Participants popover
     And I see Add People message on Group Participants popover
 

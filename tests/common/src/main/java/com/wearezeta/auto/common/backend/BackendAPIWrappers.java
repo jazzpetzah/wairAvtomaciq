@@ -648,6 +648,17 @@ public final class BackendAPIWrappers {
 			}
 		}
 	}
+	
+	public static void cancelAllConnections(ClientUser user) throws Exception {
+		final JSONArray connections = getAllConnections(user);
+		for (int i = 0; i < connections.length(); i++) {
+			String to = connections.getJSONObject(i).getString("to");
+			String status = connections.getJSONObject(i).getString("status");
+			if (status.equals(ConnectionStatus.Pending.toString())) {
+				changeConnectRequestStatus(user, to, ConnectionStatus.Canceled);
+			}
+		}
+	}
 
 	public static void ignoreAllConnections(ClientUser user) throws Exception {
 		final JSONArray connections = getAllConnections(user);

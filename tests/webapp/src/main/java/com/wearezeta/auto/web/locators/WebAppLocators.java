@@ -7,8 +7,7 @@ public final class WebAppLocators {
 	public static final class ActivationPage {
 
 		public static final String xpathSuccessfullResult = "//div[@id='200']//p[contains(@class, 'title') and contains(.,'Account created')]";
-		public static final String xpathBtnOpenWebApp = "//div[contains(@class, 'success') and not(contains(@class, 'hide'))]"
-			+ "//*[contains(@class, 'btn-open-web') and contains(@class,'btn-success')]";
+		public static final String cssBtnOpenWebApp = ".success:not(.hide) .btn-open-web";
 	}
 
 	public static final class AboutPage {
@@ -309,7 +308,7 @@ public final class WebAppLocators {
 		public static final String cssFullscreenImage = ".detail-view-image";
 
 		public static final Function<String, String> cssUserAvatarById = id -> String
-			.format("[user-id='%s']", id);
+			.format("[user-id='%s'] .user-avatar-border", id);
 	}
 
 	public static final class ConnectToPage {

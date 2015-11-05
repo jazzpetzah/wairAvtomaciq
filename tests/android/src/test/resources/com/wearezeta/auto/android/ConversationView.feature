@@ -1,5 +1,49 @@
 Feature: Conversation View
 
+  @id324 @regression @rc
+  Scenario Outline: Mute conversation from conversation view
+    Given There are 2 users where <Name> is me
+    Given <Contact1> is connected to <Name>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I tap conversation details button
+    And I press options menu button
+    And I press SILENCE conversation menu button
+    #And I return to group chat page
+    #Some elements seem to be missing (e.g. "X" button) so
+    #Instead of searching for elements, it works perfectly fine (and faster) just to press back 3 times
+    And I press back button
+    And I press back button
+    #And I navigate back from dialog page
+    Then Contact <Contact1> is muted
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
+
+  @id1514 @regression
+  Scenario Outline: Verify unsilence the conversation from conversation view
+    Given There are 2 users where <Name> is me
+    Given <Contact1> is connected to me
+    Given <Contact1> is silenced to user <Name>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    Given Contact <Contact1> is muted
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I tap conversation details button
+    And I press options menu button
+    And I press NOTIFY conversation menu button
+    And I press back button
+    And I navigate back from dialog page
+    Then Contact <Contact1> is not muted
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
+
   @id316 @regression
   Scenario Outline: Send Message to contact
     Given There are 2 users where <Name> is me
@@ -12,7 +56,7 @@ Feature: Conversation View
     And I type the message "<Message>" and send it
     Then I see my message "<Message>" in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
@@ -30,7 +74,7 @@ Feature: Conversation View
     And I press "Confirm" button
     Then I see new photo in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -55,7 +99,7 @@ Feature: Conversation View
     And I navigate back from dialog page
     And I see <Contact1> and <Contact2> chat in contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -72,7 +116,7 @@ Feature: Conversation View
     And I type the message "<Message>" and send it
     Then I see my message "<Message>" in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName     | Message |
       | user1Name | user2Name | user3Name | SendMessGroupChat | Yo      |
 
@@ -88,7 +132,7 @@ Feature: Conversation View
     And I type the message "LONG_MESSAGE" and send it
     Then I see my message "LONG_MESSAGE" in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -104,28 +148,9 @@ Feature: Conversation View
     And I type the message "<Message>" and send it
     Then I see my message "<Message>" in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message  |
       | user1Name | user2Name | aaaaAAAA |
-
-  @id146 @regression
-  Scenario Outline: Send special chars message to contact
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I set unicode input method
-    And I tap on text input
-    And I type unicode message "<Message>"
-    And I set default input method
-    And I send the message
-    Then I see my message "<Message>" in the dialog
-
-    Examples: 
-      | Name      | Contact   | Message                           |
-      | user1Name | user2Name | ÄäÖöÜüß simple message in english |
 
   @id149 @regression
   Scenario Outline: Send emoji message to contact
@@ -139,28 +164,9 @@ Feature: Conversation View
     And I type the message "<Message>" and send it
     Then I see my message "<Message>" in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message  |
       | user1Name | user2Name | :) ;) :( |
-
-  @id147 @regression
-  Scenario Outline: Send double byte chars
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I set unicode input method
-    And I tap on text input
-    And I type unicode message "<Message>"
-    And I set default input method
-    And I send the message
-    Then I see my message "<Message>" in the dialog
-
-    Examples: 
-      | Name      | Contact   | Message                     |
-      | user1Name | user2Name | 畑 はたけ hatake field of crops |
 
   @id163 @regression
   Scenario Outline: Send existing image from gallery (portrait) in 1:1 chat
@@ -177,7 +183,7 @@ Feature: Conversation View
     And I press "Confirm" button
     Then I see new photo in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -196,7 +202,7 @@ Feature: Conversation View
     And I press "Confirm" button
     Then I see new photo in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -225,7 +231,7 @@ Feature: Conversation View
     And I navigate back from dialog page
     And I see Contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -251,7 +257,7 @@ Feature: Conversation View
     When I scroll to the bottom of conversation view
     Then I verify the state of PlayPause media item button is changed
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | SoudCloudLink                                              |
       | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
@@ -267,7 +273,7 @@ Feature: Conversation View
     And I type the message "<YoutubeLink>" and send it
     Then I see Play button on Youtube container
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | YoutubeLink                                 |
       | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs |
 
@@ -282,12 +288,10 @@ Feature: Conversation View
     And I swipe on text input
     And I press Sketch button
     And I draw a sketch with <NumColors> colors
-    When I remember what my sketch looks like
     And I send my sketch
     And I select last photo in dialog
-    And I verify that my sketch in fullscreen is the same as what I drew
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | NumColors |
       | user1Name | user2Name | 6         |
 
@@ -305,12 +309,10 @@ Feature: Conversation View
     And I press "Gallery" button
     And I press "Sketch Image Paint" button
     And I draw a sketch on image with <NumColors> colors
-    And I remember what my sketch looks like
     Then I send my sketch
     And I select last photo in dialog
-    And I verify that my sketch in fullscreen is the same as what I drew
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | NumColors |
       | user1Name | user2Name | 6         |
 
@@ -327,12 +329,10 @@ Feature: Conversation View
     And I press "Take Photo" button
     And I press "Sketch Image Paint" button
     And I draw a sketch on image with <NumColors> colors
-    Then I remember what my sketch looks like
     And I send my sketch
     And I select last photo in dialog
-    And I verify that my sketch in fullscreen is the same as what I drew
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | NumColors |
       | user1Name | user2Name | 6         |
 
@@ -353,7 +353,7 @@ Feature: Conversation View
     And I see new photo in the dialog
     And Last message is <Message> · via giphy.com
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
@@ -371,6 +371,6 @@ Feature: Conversation View
     When I select last photo in dialog
     Then I see the picture in the preview is animated
 
-    Examples: 
+    Examples:
       | Name      | Contact   | GifName      |
       | user1Name | user2Name | animated.gif |

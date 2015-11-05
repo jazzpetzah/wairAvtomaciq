@@ -629,10 +629,9 @@ Feature: Connect
     And I see dialog page
     And I open group conversation details
     And I select user on iPad group popover <Contact3>
-    And I see <Contact3> user pending profile popover on iPad
+    And I see incoming pending popover from user <Contact3> on iPad
     And I tap on start dialog button on other user profile page
     And I click on Ignore button on Pending requests page
-    And I go back to group info page or popover
     And I exit the group info iPad popover
     And I return to the chat list
     Then I dont see Pending request link in contact list
@@ -656,10 +655,9 @@ Feature: Connect
     And I see dialog page
     And I open group conversation details
     And I select user on iPad group popover <Contact3>
-    And I see <Contact3> user pending profile popover on iPad
+    And I see incoming pending popover from user <Contact3> on iPad
     And I tap on start dialog button on other user profile page
     And I click on Ignore button on Pending requests page
-    And I go back to group info page or popover
     And I exit the group info iPad popover
     Then I dont see Pending request link in contact list
 

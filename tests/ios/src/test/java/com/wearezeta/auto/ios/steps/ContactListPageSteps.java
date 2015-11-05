@@ -311,7 +311,8 @@ public class ContactListPageSteps {
 
 	@When("I dont see Pending request link in contact list")
 	public void IDontSeePendingRequestLinkInContacts() throws Exception {
-		Assert.assertFalse(getContactListPage().isPendingRequestInContactList());
+		Assert.assertFalse("Pending request link is shown in contact list",
+				getContactListPage().isPendingRequestInContactList());
 	}
 
 	@When("I see conversation with not connected user (.*)")

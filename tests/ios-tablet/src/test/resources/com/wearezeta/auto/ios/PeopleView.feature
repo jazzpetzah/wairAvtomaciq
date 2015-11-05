@@ -488,6 +488,7 @@ Feature: People View
     And I see dialog page
     And I open group conversation details
     And I press Add button
+    And I see share history warning
     And I see People picker page on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
     And I click on Add to Conversation button on iPad popover
@@ -509,6 +510,7 @@ Feature: People View
     And I see dialog page
     And I open group conversation details
     And I press Add button
+    And I see share history warning
     And I see People picker page on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
     And I click on Add to Conversation button on iPad popover
@@ -573,6 +575,7 @@ Feature: People View
     And I see <Contact1> user profile page
     And I unblock user
     Then I see dialog page
+    And I return to the chat list
     Then I see conversation <Contact1> is selected in list
 
     Examples: 
@@ -616,6 +619,8 @@ Feature: People View
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press Add button
+    And I see share history warning
+    And I click on Continue button on share history warning
     And I see People picker page on iPad popover
     And I wait until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
@@ -653,7 +658,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user3Name | OnlyConnected |
 
-  @staging @id3957
+  @staging @id3958
   Scenario Outline: Verify that deleted conversation via participant view isn't going to archive [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -667,7 +672,7 @@ Feature: People View
     And I press conversation menu button
     And I click delete menu button
     And I confirm delete conversation content
-    And I return to the chat list
+    And I wait until popover is closed
     And I dont see conversation <GroupChatName> in contact list
     And I open archived conversations on iPad
     Then I dont see conversation <GroupChatName> in contact list
@@ -676,7 +681,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
-  @staging @id3957
+  @staging @id3959
   Scenario Outline: Verify that deleted conversation via participant view isn't going to archive [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -691,6 +696,7 @@ Feature: People View
     And I press conversation menu button
     And I click delete menu button
     And I confirm delete conversation content
+    And I wait until popover is closed
     And I dont see conversation <GroupChatName> in contact list
     And I open archived conversations on iPad
     Then I dont see conversation <GroupChatName> in contact list
@@ -713,7 +719,7 @@ Feature: People View
     And I click delete menu button
     And I select Also Leave option on Delete conversation dialog
     And I confirm delete conversation content
-    And I return to the chat list
+    And I wait until popover is closed
     And I open search by taping on it
     And I input conversation name <GroupChatName> in Search input
     Then I see conversation <GroupChatName> is NOT presented in Search results
@@ -741,6 +747,7 @@ Feature: People View
     And I click delete menu button
     And I select Also Leave option on Delete conversation dialog
     And I confirm delete conversation content
+    And I wait until popover is closed
     And I open search by taping on it
     And I input conversation name <GroupChatName> in Search input
     Then I see conversation <GroupChatName> is NOT presented in Search results
@@ -769,7 +776,7 @@ Feature: People View
     And I press conversation menu button
     And I click delete menu button
     And I confirm delete conversation content
-    And I return to the chat list
+    And I wait until popover is closed
     And I open search by taping on it
     And I input conversation name <GroupChatName> in Search input
     Then I see conversation <GroupChatName> is presented in Search results
@@ -797,6 +804,7 @@ Feature: People View
     And I press conversation menu button
     And I click delete menu button
     And I confirm delete conversation content
+    And I wait until popover is closed
     And I open search by taping on it
     And I input conversation name <GroupChatName> in Search input
     Then I see conversation <GroupChatName> is presented in Search results
@@ -824,7 +832,7 @@ Feature: People View
     And I press conversation menu button
     And I click delete menu button
     And I confirm delete conversation content
-    And I return to the chat list
+    And I wait until popover is closed
     And I open search by taping on it
     And I fill in Search field user name <Contact1>
     And I see user <Contact1> found on People picker page
@@ -854,6 +862,7 @@ Feature: People View
     And I press conversation menu button
     And I click delete menu button
     And I confirm delete conversation content
+    And I wait until popover is closed
     And I open search by taping on it
     And I fill in Search field user name <Contact1>
     And I see user <Contact1> found on People picker page
@@ -870,65 +879,56 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I sign in using my email or phone number
+    Given User <Name> sent message <Message> to conversation <GroupChatName>
+    Given Contact <Contact1> sends image <Image> to group conversation <GroupChatName>
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
-    And I type the message
-    And I send the message
-    And I see message in the dialog
-    And I swipe the text input cursor
-    And I press Add Picture button on iPad
-    And I press Camera Roll button on iPad
-    And I choose a picture from camera roll on iPad popover
-    And I press Confirm button on iPad popover
-    Then I see new photo in the dialog
+    And I see only 3 messages
     And I open group conversation details
     And I press leave converstation button
     And I see leave conversation alert
+    And I press leave
     Then I press leave
+    When I wait until popover is closed
     And I open archived conversations on iPad
     And I see user <GroupChatName> in contact list
     And I tap on group chat with name <GroupChatName>
     Then I see only 4 messages
 
     Examples: 
-      | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Name | user2Name | user3Name | TESTCHAT      |
+      | Name      | Contact1  | Contact2  | GroupChatName | Message |    Image    |
+      | user1Name | user2Name | user3Name | TESTCHAT      |  hello  | testing.jpg |
 
   @staging @id4004
   Scenario Outline: Verify that left conversation is shown in the Archive [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Name> sent message <Message> to conversation <GroupChatName>
+    Given Contact <Contact1> sends image <Image> to group conversation <GroupChatName>
     Given I rotate UI to landscape
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
-    And I type the message
-    And I send the message
-    And I see message in the dialog
-    And I swipe the text input cursor
-    And I press Add Picture button on iPad
-    And I press Camera Roll button on iPad
-    And I choose a picture from camera roll on iPad popover
-    And I press Confirm button on iPad popover
-    Then I see new photo in the dialog
+    And I see only 3 messages
     And I open group conversation details
     And I press leave converstation button
     And I see leave conversation alert
     Then I press leave
+    When I wait until popover is closed
     And I open archived conversations on iPad
     And I see user <GroupChatName> in contact list
     And I tap on group chat with name <GroupChatName>
     Then I see only 4 messages
 
     Examples: 
-      | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Name | user2Name | user3Name | TESTCHAT      |
+      | Name      | Contact1  | Contact2  | GroupChatName | Message      |    Image    |
+      | user1Name | user2Name | user3Name | TESTCHAT      | hello, iPad! | testing.jpg |
 
-  @staging @id3999
+  @regression @id3999
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (People view) [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given <Contact1> is connected to <Contact3>,<Contact2>,<Name>
@@ -947,7 +947,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | TESTCHAT      |
 
-  @staging @id4000
+  @regression @id4000
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (People view) [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given <Contact1> is connected to <Contact3>,<Contact2>,<Name>
@@ -966,3 +966,40 @@ Feature: People View
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | TESTCHAT      |
+
+  @regression @id4022
+  Scenario Outline: Verify canceling blocking person from participant list [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I open conversation details
+    And I press conversation menu button
+    And I press menu Block button
+    And I click Cancel button
+    Then I see conversation action menu
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
+
+  @regression @id4023
+  Scenario Outline: Verify canceling blocking person from participant list [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I open conversation details
+    And I press conversation menu button
+    And I press menu Block button
+    And I click Cancel button
+    Then I see conversation action menu
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |

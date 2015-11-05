@@ -53,7 +53,7 @@ Feature: Connect
     Given <UnknownContact4> sent connection request to me
     Given <UnknownContact5> sent connection request to me
     # We need to wait for the backend
-    Given I wait for 15 seconds
+    Given I wait for 20 seconds
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Then I see connection request from 5 user

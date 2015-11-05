@@ -3,6 +3,7 @@ package com.wearezeta.auto.android.steps;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -181,7 +182,7 @@ public class PeoplePickerPageSteps {
 		searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria,
 				FindBy.PHONENUMBER_ALIAS);
 		getPeoplePickerPage().typeTextInPeopleSearch(searchCriteria);
-		Thread.sleep(200);
+		CommonSteps.getInstance().WaitForTime(2);
 	}
 
 	/**
@@ -247,6 +248,21 @@ public class PeoplePickerPageSteps {
 			// Ignore silently
 		}
 		getPeoplePickerPage().selectContact(contact);
+	}
+
+	/**
+	 * Taps on a group found in the people picker page
+	 * 
+	 * @step. ^I tap on group found on People picker page (.*)$
+	 * 
+	 * @param contact
+	 * @throws Exception
+	 */
+	@When("^I tap on group found on People picker page (.*)$")
+	public void WhenITapOnGroupFoundOnPeoplePickerPage(String contact)
+			throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		getPeoplePickerPage().selectGroup(contact);
 	}
 
 	/**
@@ -410,7 +426,7 @@ public class PeoplePickerPageSteps {
 		}
 		Assert.assertTrue(String.format(
 				"User '%s' is not visible in People Picker", contact),
-				getPeoplePickerPage().userIsVisible(contact));
+				getPeoplePickerPage().isUserVisible(contact));
 	}
 
 	/**
@@ -447,7 +463,23 @@ public class PeoplePickerPageSteps {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		Assert.assertTrue(String.format(
 				"Group '%s' is not visible in conversations list", name),
-				getPeoplePickerPage().groupIsVisible(name));
+				getPeoplePickerPage().isGroupVisible(name));
+	}
+	
+	/**
+	 * Looks for a group chat in the people picker search view and it does not show up
+	 * 
+	 * @step. ^I do not see group (.*) in [Pp]eople [Pp]icker$
+	 * 
+	 * @param name
+	 * @throws Exception
+	 */
+	@Then("^I do not see group (.*) in [Pp]eople [Pp]icker$")
+	public void ThenIDoNotSeeGroupInPeoplePicker(String name) throws Exception {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		Assert.assertFalse(String.format(
+				"Group '%s' is not visible in conversations list", name),
+				getPeoplePickerPage().isGroupVisible(name));
 	}
 
 	/**
@@ -608,6 +640,19 @@ public class PeoplePickerPageSteps {
 	@When("^I click on open conversation action button on People picker page$")
 	public void IClickOnOpenConversationActionButtonOnPeoplePickerPage()
 			throws Throwable {
+		getPeoplePickerPage().tapOpenConversationButton();
+	}
+
+	/**
+	 * Tap the Create/Open Conversation button
+	 * 
+	 * @step. ^I tap (?:Open|Create) Conversation button on [Pp]eople [Pp]icker
+	 *        page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap (?:Open|Create) Conversation button on [Pp]eople [Pp]icker page$")
+	public void ITapConversationActionButton() throws Exception {
 		getPeoplePickerPage().tapOpenConversationButton();
 	}
 
