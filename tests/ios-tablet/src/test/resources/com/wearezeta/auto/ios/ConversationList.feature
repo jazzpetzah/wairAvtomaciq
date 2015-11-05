@@ -352,27 +352,6 @@ Feature: Conversation List
       | Name      | Contact   | Contact1  | Color           |
       | user1Name | user2Name | user3Name | StrongLimeGreen |
 
-  @obsolete @id2465
-  Scenario Outline: Verify Play/pause Youtube media from conversation list [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I type and send long message and media link <YouTubeLink>
-    And I click play video button
-    And I return to the chat list
-    Then I see play/pause button next to username <Contact> in contact list
-    And I tap on play/pause button in contact list
-    And I see Play media button next to user <Contact>
-    And I tap on play/pause button in contact list
-    And I see Pause media button next to user <Contact>
-
-    Examples: 
-      | Name      | Contact   | YouTubeLink                                |
-      | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
-
   @regression @rc @id2566
   Scenario Outline: Verify muting ongoing call [PORTRAIT]
     Given There are 2 users where <Name> is me
