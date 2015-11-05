@@ -72,13 +72,12 @@ public class SelfPictureUploadPage extends WebPage {
 		}
 	}
 
-	public ContactsUploadPage confirmPictureSelection() throws Exception {
+	public void confirmPictureSelection() throws Exception {
 		assert DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
 						By.xpath(WebAppLocators.SelfPictureUploadPage.xpathConfirmPictureSelectionButton));
 		pictureSelectionConfirmButton.click();
-		return new ContactsUploadPage(this.getLazyDriver());
 	}
 
 	public void forceCarouselMode() throws Exception {

@@ -22,6 +22,9 @@ public class LoginPage extends WebPage {
 	private static final Logger LOG = ZetaLogger.getLog(LoginPage.class
 			.getName());
 
+	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
+			.getInstance();
+
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathCreateAccountButton)
 	private WebElement createAccountButton;
 
@@ -108,25 +111,20 @@ public class LoginPage extends WebPage {
 		return noSignIn && noSignInSpinner;
 	}
 
-	public ContactListPage clickSignInButton() throws Exception {
+	public void clickSignInButton() throws Exception {
 		DriverUtils.waitUntilElementClickable(this.getDriver(), signInButton);
 		signInButton.click();
-
-		return new ContactListPage(this.getLazyDriver());
 	}
 
-	public PasswordChangeRequestPage clickChangePasswordButton()
-			throws Exception {
+	public void clickChangePasswordButton() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				changePasswordButton);
 
 		// TODO: This is commented because the button always redirects to
 		// production site and we usually need staging one
 		// changePasswordButton.click();
-		final PasswordChangeRequestPage changePasswordPage = new PasswordChangeRequestPage(
-				this.getLazyDriver());
-		changePasswordPage.navigateTo();
-		return changePasswordPage;
+		webappPagesCollection.getPage(PasswordChangeRequestPage.class)
+				.navigateTo();
 	}
 
 	public String getErrorMessage() throws InterruptedException, Exception {
@@ -147,9 +145,8 @@ public class LoginPage extends WebPage {
 						By.cssSelector(WebAppLocators.LoginPage.errorMarkedPasswordField));
 	}
 
-	public PhoneNumberLoginPage switchToPhoneNumberLoginPage() throws Exception {
+	public void switchToPhoneNumberLoginPage() throws Exception {
 		DriverUtils.waitUntilElementClickable(getDriver(), phoneSignInButton);
 		phoneSignInButton.click();
-		return new PhoneNumberLoginPage(this.getLazyDriver());
 	}
 }

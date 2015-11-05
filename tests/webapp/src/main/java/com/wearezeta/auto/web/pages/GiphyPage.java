@@ -58,9 +58,8 @@ public class GiphyPage extends WebPage {
 				By.cssSelector(moreButtonLocator));
 	}
 
-	public ConversationPage clickSendButton() throws Exception {
+	public void clickSendButton() throws Exception {
 		sendButton.click();
-		return new ConversationPage(getLazyDriver());
 	}
 
 }

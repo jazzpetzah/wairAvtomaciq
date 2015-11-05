@@ -23,9 +23,6 @@ import com.wearezeta.auto.web.common.Browser;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
-import com.wearezeta.auto.web.pages.popovers.AbstractPopoverContainer;
-import com.wearezeta.auto.web.pages.popovers.ConnectToPopoverContainer;
-import com.wearezeta.auto.web.pages.popovers.BringYourFriendsPopoverPage;
 
 public class PeoplePickerPage extends WebPage {
 
@@ -72,18 +69,12 @@ public class PeoplePickerPage extends WebPage {
 		openOrCreateConversationButton.click();
 	}
 
-	private void clickNotConnectedUser(String name) throws Exception {
+	public void clickNotConnectedUserName(String name) throws Exception {
 		String foundUserXpath = WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 				.apply(name);
 		WebElement foundUserElement = getDriver().findElement(
 				By.xpath(foundUserXpath));
 		foundUserElement.click();
-	}
-
-	public AbstractPopoverContainer clickNotConnectedUserName(String name)
-			throws Exception {
-		clickNotConnectedUser(name);
-		return webappPagesCollection.getPage(ConnectToPopoverContainer.class);
 	}
 
 	public boolean isUserFound(String name) throws Exception {
@@ -100,9 +91,8 @@ public class PeoplePickerPage extends WebPage {
 				By.xpath(foundUserXpath));
 	}
 
-	public ContactListPage closeSearch() throws Exception {
+	public void closeSearch() throws Exception {
 		closeSearchButton.click();
-		return new ContactListPage(getLazyDriver());
 	}
 
 	public boolean isParticipantVisible(String name) throws Exception {
@@ -168,20 +158,15 @@ public class PeoplePickerPage extends WebPage {
 				+ BUTTON_VISIBILITY_TIMEOUT_SECONDS + " seconds timeout";
 	}
 
-	public BringYourFriendsPopoverPage clickBringYourFriendsButton()
-			throws Exception {
+	public void clickBringYourFriendsButton() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				bringYourFriendsButton);
 		bringYourFriendsButton.click();
-
-		return new BringYourFriendsPopoverPage(this.getLazyDriver());
 	}
 
-	public ContactListPage clickCallButton() throws Exception {
+	public void clickCallButton() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), callButton);
 		callButton.click();
-
-		return new ContactListPage(this.getLazyDriver());
 	}
 
 	public int getNumberOfSuggestions() {
@@ -226,10 +211,8 @@ public class PeoplePickerPage extends WebPage {
 		DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
 	}
 
-	public ConnectToPopoverContainer clickPendingUserName(String name)
-			throws Exception {
+	public void clickPendingUserName(String name) throws Exception {
 		clickPendingUser(name);
-		return webappPagesCollection.getPage(ConnectToPopoverContainer.class);
 	}
 
 	private void clickPendingUser(String name) throws Exception {

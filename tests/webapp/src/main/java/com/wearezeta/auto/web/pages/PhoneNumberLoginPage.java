@@ -47,14 +47,15 @@ public class PhoneNumberLoginPage extends WebPage {
 		phoneNumberField.sendKeys(phoneNumber);
 	}
 
-	public PhoneNumberVerificationPage clickSignInButton() throws Exception {
+	public void clickSignInButton() throws Exception {
 		signInButton.click();
-		return new PhoneNumberVerificationPage(getLazyDriver());
 	}
 
 	public String getErrorMessage() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.cssSelector(WebAppLocators.PhoneNumberLoginPage.cssErrorMessage));
+		DriverUtils
+				.waitUntilLocatorAppears(
+						getDriver(),
+						By.cssSelector(WebAppLocators.PhoneNumberLoginPage.cssErrorMessage));
 		return errorMessage.getText();
 	}
 }
