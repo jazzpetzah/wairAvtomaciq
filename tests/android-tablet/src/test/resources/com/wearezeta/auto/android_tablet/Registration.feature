@@ -76,7 +76,7 @@ Feature: Registration
       | user1Email | user1Password | user1Name |
 
   @id3105 @regression
-  Scenario Outline: Verify automatic email verification is performed (landscape)
+  Scenario Outline: (AN-2965) Verify automatic email verification is performed (landscape)
     Given I see welcome screen
     Given I rotate UI to landscape
     Given I see welcome screen
