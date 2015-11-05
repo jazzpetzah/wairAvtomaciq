@@ -2,24 +2,6 @@ package com.wearezeta.auto.win.common;
 
 public class WinConstants {
 
-	public static final class Apps {
-
-		public static final String WIRE = "Wire";
-
-		public static final String DOCK = "Dock";
-
-		public static final String FINDER = "Finder";
-	}
-
-	public static final class Attributes {
-
-		public static final String AXVALUE = "AXValue";
-
-		public static final String AXSIZE = "AXSize";
-
-		public static final String AXPOSITION = "AXPosition";
-	}
-
 	public static final class Scripts {
 
 		private static final String SCRIPTS_FOLDER = "/scripts/";
@@ -53,10 +35,6 @@ public class WinConstants {
 		public static final int SIZE_MULTIPLIER_RETINA = 2;
 
 		public static final int SIZE_MULTIPLIER_NO_RETINA = 1;
-
-		public static final String AX_BOOLEAN_FALSE = "0";
-
-		public static final String AX_BOOLEAN_TRUE = "1";
 
 	}
 }

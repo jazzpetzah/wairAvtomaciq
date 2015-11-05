@@ -19,12 +19,8 @@ import org.openqa.selenium.Point;
 
 public class WinCommonUtils extends CommonUtils {
 
-	private static final int PREFS_DAEMON_RESTART_TIMEOUT = 1000;
-
 	private static final Logger LOG = ZetaLogger.getLog(WinCommonUtils.class
 			.getName());
-
-	
 
 	public static NSPoint calculateScreenResolution(ZetaOSXDriver driver)
 			throws Exception {
@@ -65,26 +61,35 @@ public class WinCommonUtils extends CommonUtils {
 				* multiply, elSize.width * multiply, elSize.height * multiply);
 	}
 
-	public static int clearAppData() throws Exception {
-            
-		final String[] commands = new String[] {"cmd", "/c" , String.format("DEL /F /S /Q /A \"%s*\"",WIRE_APP_CACHE_FOLDER)};
+	public static boolean clearAppData() throws Exception {
+
+		final String[] commands = new String[] { "cmd", "/c",
+				String.format("DEL /F /S /Q /A \"%s*\"", WIRE_APP_CACHE_FOLDER) };
 
 		LOG.debug("executing command: " + Arrays.toString(commands));
-		return executeOsXCommand(commands);
+		return executeOsCommandWithTimeout(commands, 30);
 	}
 
 	public static int killAllApps() throws Exception {
-		final String[] commands = new String[] { "cmd", "/c",
-				String.format("taskkill /F /im %s", "Wire.exe") };
+		final String[] commands = new String[] {
+				"cmd",
+				"/c",
+				String.format(
+						"taskkill /F /im %s & taskkill /F /im %s & taskkill /F /im %s",
+						"Wire.exe", "Update.exe", "chromedriver.exe") };
 		LOG.debug("executing command: " + Arrays.toString(commands));
 		return executeOsXCommand(commands);
 	}
 
 	public static long getSizeOfAppInMB() throws Exception {
-		final String[] commands = new String[] { "cmd", "/c",
-				String.format("powershell -noprofile -command \"(Get-ChildItem %s -recurse | Measure-Object -property length -sum).sum / 1MB\"", Paths.get(WinExecutionContext.WIRE_APP_FOLDER)) };
+		final String[] commands = new String[] {
+				"cmd",
+				"/c",
+				String.format(
+						"powershell -noprofile -command \"(Get-ChildItem %s -recurse | Measure-Object -property length -sum).sum / 1MB\"",
+						Paths.get(WinExecutionContext.WIRE_APP_FOLDER)) };
 		String stringResult = executeOsXCommandWithOutput(commands);
-                LOG.debug("stringResult: " + stringResult);
+		LOG.debug("stringResult: " + stringResult);
 		stringResult = stringResult.trim().split("\\.")[0];
 		long longResult = Long.parseLong(stringResult);
 		LOG.debug("result: " + longResult);
