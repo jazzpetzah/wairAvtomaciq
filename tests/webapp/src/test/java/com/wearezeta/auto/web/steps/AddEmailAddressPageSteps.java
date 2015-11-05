@@ -74,6 +74,29 @@ public class AddEmailAddressPageSteps {
 	}
 
 	/**
+	 * Click Skip for now button
+	 * 
+	 * @step. ^I see Skip for now button on add email address dialog$
+	 */
+	@When("^I see Skip for now button on add email address dialog$")
+	public void ISeeSkipForNowButtonOnAddEmailAddressDialog() throws Exception {
+		webappPagesCollection.getPage(AddEmailAddressPage.class)
+				.isSkipButtonVisible();
+	}
+
+	/**
+	 * Click Skip for now button
+	 * 
+	 * @step. ^I click Skip for now button on add email address dialog$
+	 */
+	@When("^I click Skip for now button on add email address dialog$")
+	public void IClickSkipForNowButtonOnAddEmailAddressDialog()
+			throws Exception {
+		webappPagesCollection.getPage(AddEmailAddressPage.class)
+				.clickSkipForNowButton();
+	}
+
+	/**
 	 * Check error message on add email address dialog
 	 * 
 	 * @step. ^I see error message on add email address dialog saying (.*)$
