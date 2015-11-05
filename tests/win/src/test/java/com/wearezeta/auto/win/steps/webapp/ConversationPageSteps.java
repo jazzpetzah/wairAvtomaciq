@@ -694,8 +694,8 @@ public class ConversationPageSteps {
 
 	@When("^I click GIF button$")
 	public void IClickGIFButton() throws Throwable {
-		WebappPagesCollection.giphyPage = WebappPagesCollection.getInstance()
-				.getPage(ConversationPage.class).clickGIFButton();
+		WebappPagesCollection.getInstance().getPage(ConversationPage.class)
+				.clickGIFButton();
 	}
 
 	@Then("^I see sent gif in the conversation view$")
