@@ -13,8 +13,7 @@ Feature: Conversation List
     # Workaround for bug with autoscroll
     And I scroll to the bottom of conversation view
     And I press PlayPause media item button
-    And I navigate back from dialog page
-    And I see Contact list
+    And I press back button
     Then I see PlayPause media content button for conversation <Contact1>
 
     Examples: 
