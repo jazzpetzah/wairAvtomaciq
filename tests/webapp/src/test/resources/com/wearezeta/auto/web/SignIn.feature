@@ -149,7 +149,7 @@ Feature: Sign In
       | Email      | Password      | Name      | Gmail                       | GmailPassword |
       | user1Email | user1Password | user1Name | smoketester.wire2@gmail.com | aqa123456     |
 
-  @regression @id4070
+  @regression @id4070 @torun
   Scenario Outline: Verify Skip for now button is shown when youre adding an email address after sign in with a phone number
     Given There is 1 user where <Name> is me with phone number only
     Given I switch to sign in page
@@ -161,12 +161,6 @@ Feature: Sign In
     When I click Skip for now button on add email address dialog
     Then I am signed in properly
     And I see Self Picture Upload dialog
-    And I force carousel mode on Self Picture Upload dialog
-    And I select random picture from carousel on Self Picture Upload dialog
-    And I confirm picture selection on Self Picture Upload dialog
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
-    Then I see my avatar on top of Contact list
 
     Examples: 
       | Name      |

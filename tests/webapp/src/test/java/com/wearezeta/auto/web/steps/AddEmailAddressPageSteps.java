@@ -74,7 +74,7 @@ public class AddEmailAddressPageSteps {
 	}
 
 	/**
-	 * Click Skip for now button
+	 * See Skip for now button
 	 * 
 	 * @step. ^I see Skip for now button on add email address dialog$
 	 */
