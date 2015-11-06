@@ -612,5 +612,18 @@ public class RegistrationPageSteps {
 	public void ISeeEmailVerificationReminder() throws Exception {
 		Assert.assertTrue(getRegistrationPage().isEmailVerifPromptVisible());
 	}
+	
+	/**
+	 * Verifies whether the notification invalid code is shown
+	 * 
+	 * @step. ^I see invalid code alert$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see invalid code alert$")
+	public void ISeeInvalidEmailAlert() throws Exception {
+		Assert.assertTrue("I don't see invalid code alert",
+				getRegistrationPage().isInvalidCodeAlertShown());
+	}
 
 }

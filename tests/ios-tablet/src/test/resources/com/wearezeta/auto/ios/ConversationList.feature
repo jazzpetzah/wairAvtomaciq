@@ -352,27 +352,6 @@ Feature: Conversation List
       | Name      | Contact   | Contact1  | Color           |
       | user1Name | user2Name | user3Name | StrongLimeGreen |
 
-  @obsolete @id2465
-  Scenario Outline: Verify Play/pause Youtube media from conversation list [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I type and send long message and media link <YouTubeLink>
-    And I click play video button
-    And I return to the chat list
-    Then I see play/pause button next to username <Contact> in contact list
-    And I tap on play/pause button in contact list
-    And I see Play media button next to user <Contact>
-    And I tap on play/pause button in contact list
-    And I see Pause media button next to user <Contact>
-
-    Examples: 
-      | Name      | Contact   | YouTubeLink                                |
-      | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
-
   @regression @rc @id2566
   Scenario Outline: Verify muting ongoing call [PORTRAIT]
     Given There are 2 users where <Name> is me
@@ -498,7 +477,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3900
+  @regression @id3900
   Scenario Outline: Verify first conversation in the list is highlighted and opened [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -666,7 +645,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
       | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
 
-  @staging @id4018
+  @regression @id4018
   Scenario Outline: Verify canceling blocking person [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -681,7 +660,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @staging @id4019
+  @regression @id4019
   Scenario Outline: Verify canceling blocking person [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -697,7 +676,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @staging @id2324
+  @regression @id2324
   Scenario Outline: Verify archiving silenced conversation [PORTAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -721,7 +700,7 @@ Feature: Conversation List
       | Name      | Contact   | Picture     | ConversationType |
       | user1Name | user2Name | testing.jpg | single user      |
 
-  @staging @id3985
+  @regression @id3985
   Scenario Outline: Verify archiving silenced conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -746,7 +725,7 @@ Feature: Conversation List
       | Name      | Contact   | Picture     | ConversationType |
       | user1Name | user2Name | testing.jpg | single user      |
 
-  @staging @id3966
+  @regression @id3966
   Scenario Outline: Verify removing the content and leaving from the group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -770,7 +749,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
-  @staging @id3967
+  @regression @id3967
   Scenario Outline: Verify removing the content and leaving from the group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -795,7 +774,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
-  @staging @id4006
+  @regression @id4006
   Scenario Outline: Verify deleting the history from kicked out conversation [POTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -817,7 +796,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | KICKCHAT      |
 
-  @staging @id4007
+  @regression @id4007
   Scenario Outline: Verify deleting the history from kicked out conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
