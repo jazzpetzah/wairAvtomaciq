@@ -29,15 +29,21 @@ public class ImageUtil {
 	public static final int RESIZE_TO_MAX_SCORE = 7;
 
 	static {
-            String arch = System.getProperty("sun.arch.data.model");
-            String libPath = Core.NATIVE_LIBRARY_NAME;
-            if ("64".equals(arch)) {
-                libPath = libPath.replaceAll("opencv_java249", "opencv_java249_x64");
-            }else {
-                libPath = libPath.replaceAll("opencv_java249", "opencv_java249_x86");
-            }
-            System.out.println("Loading OpenCV Lib from "+libPath);
-            System.loadLibrary(libPath);
+		String arch = System.getProperty("sun.arch.data.model");
+		String libPath = Core.NATIVE_LIBRARY_NAME;
+		String os = System.getProperty("os.name");
+		// Check if OS is windows
+		if (os.toLowerCase().contains("win")) {
+			if ("64".equals(arch)) {
+				libPath = libPath.replaceAll("opencv_java249",
+						"opencv_java249_x64");
+			} else {
+				libPath = libPath.replaceAll("opencv_java249",
+						"opencv_java249_x86");
+			}
+		}
+		System.out.println("Loading OpenCV Lib from " + libPath);
+		System.loadLibrary(libPath);
 	}
 
 	private static Mat convertImageToOpenCVMat(BufferedImage image) {
