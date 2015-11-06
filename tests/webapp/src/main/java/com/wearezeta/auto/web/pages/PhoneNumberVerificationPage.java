@@ -29,7 +29,7 @@ public class PhoneNumberVerificationPage extends WebPage {
 		super(lazyDriver);
 	}
 
-	public ContactListPage enterCode(String code) throws Exception {
+	public void enterCode(String code) throws Exception {
 		log.info("Enter code: " + code);
 		for (int i = 0; i < code.length(); i++) {
 			WebElement phoneCodeField = phoneCodeFields.get(i);
@@ -37,7 +37,6 @@ public class PhoneNumberVerificationPage extends WebPage {
 			phoneCodeField.clear();
 			phoneCodeField.sendKeys(String.valueOf(code.charAt(i)));
 		}
-		return new ContactListPage(getLazyDriver());
 	}
 
 	public String getErrorMessage() throws Exception {
@@ -48,9 +47,7 @@ public class PhoneNumberVerificationPage extends WebPage {
 		return errorMessage.getText();
 	}
 
-	public AddEmailAddressPage enterCodeForEmaillessUser(String code)
-			throws Exception {
+	public void enterCodeForEmaillessUser(String code) throws Exception {
 		enterCode(code);
-		return new AddEmailAddressPage(getLazyDriver());
 	}
 }

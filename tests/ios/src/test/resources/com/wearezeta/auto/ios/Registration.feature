@@ -277,3 +277,14 @@ Feature: Registration
     Examples: 
       | Name      |
       | user1Name |
+
+  @staging @noAcceptAlert @id2742
+  Scenario Outline: Verify notification appearance in case of incorrect code
+    Given I see sign in screen
+    When I enter phone number for user <Name>
+    And I input random activation code
+    Then I see invalid code alert
+
+    Examples: 
+      | Name      |
+      | user1Name |

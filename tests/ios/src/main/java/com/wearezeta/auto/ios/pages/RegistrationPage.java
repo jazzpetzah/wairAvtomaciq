@@ -141,6 +141,9 @@ public class RegistrationPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.nameResendCodeButton)
 	private WebElement resendCodeButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.Alerts.nameInvalidCode)
+	private WebElement invalidCodeAlert;
 
 	private String name;
 	private String email;
@@ -569,6 +572,12 @@ public class RegistrationPage extends IOSPage {
 
 	public void reSendActivationCode() throws Exception {
 		DriverUtils.waitUntilElementClickable(getDriver(), reSendButton);
+	}
+	
+	public boolean isInvalidCodeAlertShown() throws Exception {
+		DriverUtils.waitUntilAlertAppears(getDriver());
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				invalidCodeAlert);
 	}
 
 }

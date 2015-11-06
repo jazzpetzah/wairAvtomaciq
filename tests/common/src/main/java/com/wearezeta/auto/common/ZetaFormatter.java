@@ -46,6 +46,7 @@ import gherkin.formatter.model.Scenario;
 import gherkin.formatter.model.ScenarioOutline;
 import gherkin.formatter.model.Step;
 import gherkin.formatter.model.Tag;
+import java.nio.file.Paths;
 
 public class ZetaFormatter implements Formatter, Reporter {
     private static String feature = "";

@@ -152,7 +152,7 @@ public class ConversationPageSteps {
 	@When("^I click People button in one to one conversation$")
 	public void WhenIClickPeopleButtonIn1to1() throws Exception {
 		webappPagesCollection.getPage(ConversationPage.class)
-				.clickPeopleButton(false);
+				.clickPeopleButton();
 	}
 
 	/**
@@ -171,7 +171,7 @@ public class ConversationPageSteps {
 
 			peoplePopoverPage.waitUntilVisibleOrThrowException();
 			webappPagesCollection.getPage(ConversationPage.class)
-					.clickPeopleButton(true);
+					.clickPeopleButton();
 		}
 	}
 
@@ -191,7 +191,7 @@ public class ConversationPageSteps {
 
 			peoplePopoverPage.waitUntilVisibleOrThrowException();
 			webappPagesCollection.getPage(ConversationPage.class)
-					.clickPeopleButton(false);
+					.clickPeopleButton();
 		}
 	}
 
@@ -205,7 +205,7 @@ public class ConversationPageSteps {
 	@When("^I click People button in group conversation$")
 	public void WhenIClickPeopleButtonInGroup() throws Exception {
 		webappPagesCollection.getPage(ConversationPage.class)
-				.clickPeopleButton(true);
+				.clickPeopleButton();
 	}
 
 	/**

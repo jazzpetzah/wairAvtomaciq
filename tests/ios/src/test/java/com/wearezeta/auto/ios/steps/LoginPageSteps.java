@@ -154,6 +154,18 @@ public class LoginPageSteps {
 	public void IEnterRandomVerificationCode() throws Exception {
 		getRegistrationPage().inputRandomActivationCode();
 	}
+	
+	/**
+	 * Inputs random activation code
+	 * 
+	 * @step. ^I input random activation code$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I input random activation code$")
+	public void IEnterRandomActivationCode() throws Exception {
+		getRegistrationPage().inputRandomActivationCode();
+	}
 
 	/**
 	 * Sends new verification code for specified user and enter previous one

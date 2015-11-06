@@ -1,0 +1,198 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.wearezeta.auto</groupId>
+    <artifactId>auto-win</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>auto-win</name>
+    <url>http://maven.apache.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <skipTests>false</skipTests>
+        <TestRun>DevRun</TestRun>
+        <defaultEmail>smoketester@wire.com</defaultEmail>
+        <!--<backendType>staging</backendType>-->
+        <!-- The levels in descending order are: SEVERE (highest value), WARNING, 
+        INFO, CONFIG, FINE, FINER, FINEST (lowest value). In addition there is a 
+        level OFF that can be used to turn off logging, and a level ALL that can 
+        be used to enable logging of all messages. -->
+        <extendedLoggingLevel>SEVERE</extendedLoggingLevel>
+        <com.wire.app.folder>/Users/Michael/AppData/Local/wire/</com.wire.app.folder>
+        <com.wire.app.path>app-2.0.2467/Wire.exe</com.wire.app.path>
+        <com.wire.app.cache.folder>/Users/Michael/AppData/Roaming/Wire/</com.wire.app.cache.folder>
+        <com.wire.winium.url>http://127.0.0.1:9999/</com.wire.winium.url>
+        <com.wire.winium.path>TODO</com.wire.winium.path>
+        <com.wire.chromedriver.path>/Users/Michael/Desktop/chromedriver.exe</com.wire.chromedriver.path>
+        <com.wire.driver.timeout.seconds>10</com.wire.driver.timeout.seconds>
+        <com.wire.environment>Staging</com.wire.environment>
+        <com.wire.environment.url>https://wire-webapp-staging.zinfra.io/</com.wire.environment.url>
+        <!--<com.wire.environment.url>https://wire-webapp-edge.zinfra.io/?env=staging</com.wire.environment.url>-->
+        <pictureResultsPath>target</pictureResultsPath>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.wearezeta.auto</groupId>
+            <artifactId>auto-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.wearezeta.auto</groupId>
+            <artifactId>auto-webapp</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.wearezeta.auto</groupId>
+            <artifactId>auto-webapp</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>test-jar</type>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hamcrest</groupId>
+                    <artifactId>hamcrest-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20140107</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
+            <version>1.3</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.9.1</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/test/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.17</version>
+                <configuration>
+                    <skipTests>${skipTests}</skipTests>
+                    <includes>
+                        <include>**/${TestRun}.java</include>
+                    </includes>
+                    <disableXmlReport>true</disableXmlReport>
+                    <argLine>-Djava.library.path=../common/native_lib</argLine>
+                    <systemPropertyVariables>
+                        <java.awt.headless>false</java.awt.headless>
+                        <org.apache.commons.logging.Log>org.apache.commons.logging.impl.SimpleLog</org.apache.commons.logging.Log>
+                        <org.apache.commons.logging.simplelog.log.org.apache.http>warn</org.apache.commons.logging.simplelog.log.org.apache.http>
+                        <com.wire.os.name>${com.wire.os.name}</com.wire.os.name>
+                        <com.wire.os.version>${com.wire.os.version}</com.wire.os.version>
+                        <com.wire.browser.name>${com.wire.browser.name}</com.wire.browser.name>
+                        <com.wire.browser.version>${com.wire.browser.version}</com.wire.browser.version>
+                        <com.wire.app.folder>${com.wire.app.folder}</com.wire.app.folder>
+                        <com.wire.app.path>${com.wire.app.path}</com.wire.app.path>
+                        <com.wire.app.cache.folder>${com.wire.app.cache.folder}</com.wire.app.cache.folder>
+                        <com.wire.winium.url>${com.wire.appium.hub.url}</com.wire.winium.url>
+                        <com.wire.winium.path>${com.wire.appium.mac.path}</com.wire.winium.path>
+                        <com.wire.chromedriver.path>${com.wire.chromedriver.path}</com.wire.chromedriver.path>
+                        <com.wire.driver.timeout.seconds>${com.wire.driver.timeout.seconds}</com.wire.driver.timeout.seconds>
+                        <com.wire.environment>${com.wire.environment}</com.wire.environment>
+                        <com.wire.environment.url>${com.wire.environment.url}</com.wire.environment.url>
+                        <extendedLoggingLevel>${extendedLoggingLevel}</extendedLoggingLevel>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <!-- specify UTF-8, ISO-8859-1 or any other file encoding -->
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.1</version>
+                <configuration>
+                    <show>public</show>
+                    <sourceFileIncludes>
+                        <!-- This will work only since v 2.11+ (http://jira.codehaus.org/browse/MJAVADOC-365) -->
+                        <include>**/*Steps.java</include>
+                    </sourceFileIncludes>
+                    <tags>
+                        <tag>
+                            <name>step.</name>
+                            <placement>m</placement>
+                            <head>Step Declaration:</head>
+                        </tag>
+                    </tags>
+                </configuration>
+            </plugin>
+        </plugins>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+    </build>
+</project>

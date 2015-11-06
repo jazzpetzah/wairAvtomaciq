@@ -33,13 +33,10 @@ public class PasswordChangeRequestPage extends WebPage {
 		emailField.sendKeys(email);
 	}
 
-	public PasswordChangeRequestSuccessfullPage clickChangePasswordButton()
-			throws Exception {
+	public void clickChangePasswordButton() throws Exception {
 		DriverUtils
 				.waitUntilElementClickable(getDriver(), changePasswordButton);
 		changePasswordButton.click();
-
-		return new PasswordChangeRequestSuccessfullPage(this.getLazyDriver());
 	}
 
 	public boolean isEmailFieldVisible() throws Exception {

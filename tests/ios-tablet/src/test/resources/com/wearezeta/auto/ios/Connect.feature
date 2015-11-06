@@ -306,8 +306,8 @@ Feature: Connect
     And I see new photo in the dialog
     And I see message in the dialog
     And I return to the chat list
-    And I see People picker page
-    And I click close button to dismiss people view
+    #And I see People picker page
+    #And I click close button to dismiss people view
     And Contact <Contact> sends random message to user <Name>
     When I tap on contact name <Contact>
     Then I see message in the dialog
@@ -339,7 +339,7 @@ Feature: Connect
     And I wait for 5 seconds
     And I see new photo in the dialog
     And I see message in the dialog
-    And I click close button to dismiss people view
+    #And I click close button to dismiss people view
     And Contact <Contact> sends random message to user <Name>
     When I tap on contact name <Contact>
     Then I see message in the dialog

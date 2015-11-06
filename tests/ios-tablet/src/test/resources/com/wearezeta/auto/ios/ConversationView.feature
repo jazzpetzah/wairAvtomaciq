@@ -1212,7 +1212,7 @@ Feature: Conversation View
       | Name      | Contact1  | Link                  |
       | user1Name | user2Name | https://www.wire.com/ |
       
-  @staging @id3799
+  @regression @id3799
   Scenario Outline: Verify input field and action buttons are not shown simultaniously [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
@@ -1301,7 +1301,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |   Picture   | ConversationType |
       | user1Email | user1Password | user1Name | user2Name | testing.jpg |    single user   |
 
-  @staging @id3964
+  @regression @id3964
   Scenario Outline: Verify posting in a 1-to-1 conversation without content [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -1327,7 +1327,7 @@ Feature: Conversation View
       | Name      | Contact1  | Message |
       | user1Name | user2Name | testing |
 
-  @staging @id3965
+  @regression @id3965
   Scenario Outline: Verify posting in a 1-to-1 conversation without content [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

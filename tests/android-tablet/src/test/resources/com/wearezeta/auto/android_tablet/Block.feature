@@ -1,7 +1,7 @@
 Feature: Block
 
   @id3120 @regression
-  Scenario Outline: I want to unblock someone from pop-over opened from search (landscape)
+  Scenario Outline: (AN-2798) I want to unblock someone from pop-over opened from search (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given User Myself blocks user <Contact>
@@ -36,7 +36,7 @@ Feature: Block
       | user1Name | user2Name | Hellow friend |
 
   @id2861 @regression
-  Scenario Outline: I want to unblock someone from pop-over opened from search (portrait)
+  Scenario Outline: (AN-2798) I want to unblock someone from pop-over opened from search (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given User Myself blocks user <Contact>

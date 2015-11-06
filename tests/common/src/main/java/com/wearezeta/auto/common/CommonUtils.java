@@ -21,6 +21,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import java.util.concurrent.TimeUnit;
 
 public class CommonUtils {
 	public static final int MAX_PARALLEL_USER_CREATION_TASKS = 25;
@@ -45,34 +46,39 @@ public class CommonUtils {
 	public static boolean trueInPercents(int percent) {
 		Random rand = new Random();
 		int nextInt = rand.nextInt(100);
-		if (nextInt < percent)
-			return true;
-		else
-			return false;
+		return nextInt < percent;
 	}
 
 	public static int executeOsXCommand(String[] cmd) throws Exception {
 		Process process = Runtime.getRuntime().exec(cmd);
 		log.debug("Process started for cmdline " + Arrays.toString(cmd));
 		outputErrorStreamToLog(process.getErrorStream());
-		log.debug("Process exited with code " + process.waitFor());
 		return process.waitFor();
+	}
+
+	public static boolean executeOsCommandWithTimeout(String[] cmd,
+			long timeoutSeconds) throws Exception {
+		Process process = Runtime.getRuntime().exec(cmd);
+		log.debug("Process started for cmdline " + Arrays.toString(cmd));
+		outputErrorStreamToLog(process.getErrorStream());
+		return process.waitFor(timeoutSeconds, TimeUnit.SECONDS);
 	}
 
 	public static String executeOsXCommandWithOutput(String[] cmd)
 			throws Exception {
 		Process process = Runtime.getRuntime().exec(cmd);
 		log.debug("Process started for cmdline " + Arrays.toString(cmd));
-		InputStream stream = process.getInputStream();
-		BufferedReader br = new BufferedReader(new InputStreamReader(
-				process.getInputStream()));
-		StringBuilder sb = new StringBuilder("\n");
-		String s;
-		while ((s = br.readLine()) != null) {
-			sb.append("\t" + s + "\n");
+		String output;
+		try (InputStream stream = process.getInputStream()) {
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+					process.getInputStream()));
+			StringBuilder sb = new StringBuilder("\n");
+			String s;
+			while ((s = br.readLine()) != null) {
+				sb.append("\t").append(s).append("\n");
+			}
+			output = sb.toString();
 		}
-		String output = sb.toString();
-		stream.close();
 		outputErrorStreamToLog(process.getErrorStream());
 		log.debug("Process exited with code " + process.waitFor());
 		return output;

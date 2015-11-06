@@ -14,6 +14,9 @@ public class SettingsPage extends AndroidPage {
     private static final Function<String, String> xpathSettingsMenuItemByText = text -> String
             .format("//*[@id='title' and @value='%s']", text);
 
+    private static final Function<String, String> xpathThemeItemByName = name -> String
+            .format("//*[@value='%s']", name);
+
     private static final String xpathThemeMenuItemSummary = String.format(
             "%s/parent::*//*[@id='summary']", xpathSettingsMenuItemByText.apply("Theme")
     );
@@ -64,5 +67,10 @@ public class SettingsPage extends AndroidPage {
         assert isMenuItemVisible("Theme") : String.format("'Theme' menu item is not visible");
         final By locator = By.xpath(xpathThemeMenuItemSummary);
         return getDriver().findElement(locator).getText();
+    }
+
+    public void selectTheme(String themeName) throws Exception {
+        final By locator = By.xpath(xpathThemeItemByName.apply(themeName));
+        getDriver().findElement(locator).click();
     }
 }

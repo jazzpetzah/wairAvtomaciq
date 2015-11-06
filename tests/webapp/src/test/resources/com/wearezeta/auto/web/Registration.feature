@@ -116,7 +116,7 @@ Feature: Registration
     When I see Contacts Upload dialog
     And I click button to import Gmail Contacts
     And I see Google login popup
-    And I sign up at Google with email smoketester.wire@gmail.com and password aqa123456
+    And I sign up at Google with email smoketester.wire@gmail.com and password aqa123456!
     Then I see more than 5 suggestions in people picker
 
   @regression @id2051

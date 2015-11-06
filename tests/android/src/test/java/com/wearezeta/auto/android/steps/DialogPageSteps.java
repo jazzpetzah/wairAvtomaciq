@@ -8,6 +8,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
@@ -400,7 +401,7 @@ public class DialogPageSteps {
     public void ThenISeePingMessageInTheDialog(String message) throws Exception {
         message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format(
-                        "Ping message '%s' is not visible after the timeout", message),
+                "Ping message '%s' is not visible after the timeout", message),
                 getDialogPage().waitForPingMessageWithText(message));
     }
 
@@ -530,8 +531,8 @@ public class DialogPageSteps {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         final String actualLabel = getDialogPage().getConnectRequestChatLabel();
         Assert.assertTrue(String.format(
-                        "The actual label '%s' does not contain '%s' part",
-                        actualLabel, contact),
+                "The actual label '%s' does not contain '%s' part",
+                actualLabel, contact),
                 actualLabel.toLowerCase().contains(contact.toLowerCase()));
     }
 
@@ -847,5 +848,49 @@ public class DialogPageSteps {
     public void ISeeThereIsNoContentInTheConversation() throws Exception {
         int actualValue = getDialogPage().getCurrentNumberOfItemsInDialog();
         Assert.assertEquals("It looks like the conversation has some content", actualValue, 0);
+    }
+
+    private BufferedImage previousConvoViewScreenshot = null;
+
+    /**
+     * Store the screenshot of current convo view into internal variable
+     *
+     * @throws Exception
+     * @step. ^I remember the conversation view$
+     */
+    @And("^I remember the conversation view$")
+    public void IRememberConvoViewState() throws Exception {
+        previousConvoViewScreenshot = getDialogPage().getConvoViewScreenshot();
+    }
+
+    private final static double MAX_CONVO_VIEW_SIMILARIITY = 0.97;
+
+    /**
+     * Verify that conversation view is different from what was remembered before
+     *
+     * @param shouldNotBeChanged equals to null is the view should be changed
+     * @throws Exception
+     * @step. ^I see the conversation view is (not )?changed$
+     */
+    @Then("^I see the conversation view is (not )?changed$")
+    public void ISeeTheConvoViewISChanged(String shouldNotBeChanged) throws Exception {
+        if (previousConvoViewScreenshot == null) {
+            throw new IllegalStateException(
+                    "Please remember the previous state of conversation view first");
+        }
+        final BufferedImage currentConvoViewScreenshot = getDialogPage().getConvoViewScreenshot();
+        final double similarity = ImageUtil.getOverlapScore(previousConvoViewScreenshot,
+                currentConvoViewScreenshot, ImageUtil.RESIZE_TO_MAX_SCORE);
+        if (shouldNotBeChanged == null) {
+            Assert.assertTrue(String.format(
+                    "Current state of conversation view is similar to what what was remembered before (%.2f >= %.2f)",
+                    similarity, MAX_CONVO_VIEW_SIMILARIITY),
+                    similarity < MAX_CONVO_VIEW_SIMILARIITY);
+        } else {
+            Assert.assertTrue(String.format(
+                    "Current state of conversation view is different to what what was remembered before (%.2f < %.2f)",
+                    similarity, MAX_CONVO_VIEW_SIMILARIITY),
+                    similarity >= MAX_CONVO_VIEW_SIMILARIITY);
+        }
     }
 }

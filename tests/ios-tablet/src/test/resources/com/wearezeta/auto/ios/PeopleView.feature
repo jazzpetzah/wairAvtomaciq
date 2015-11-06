@@ -540,7 +540,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @staging @id3834
+  @regression @id3834
   Scenario Outline: Verify you can block a person from profile view [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -658,7 +658,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user3Name | OnlyConnected |
 
-  @staging @id3958
+  @regression @id3958
   Scenario Outline: Verify that deleted conversation via participant view isn't going to archive [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -681,7 +681,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
-  @staging @id3959
+  @regression @id3959
   Scenario Outline: Verify that deleted conversation via participant view isn't going to archive [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -705,7 +705,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
-  @staging @id3977
+  @regression @id3977
   Scenario Outline: Verify removing the content and leaving from the group conversation via participant view [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -732,7 +732,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
-  @staging @id3978
+  @regression @id3978
   Scenario Outline: Verify removing the content and leaving from the group conversation via participant view [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -760,7 +760,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
-  @staging @id3975
+  @regression @id3975
   Scenario Outline: Verify removing the content from the group conversation via participant view [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -815,7 +815,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
       | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
 
-  @staging @id3979
+  @regression @id3979
   Scenario Outline: Verify removing the content from 1-to-1 via participant view [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -844,7 +844,7 @@ Feature: People View
       | Name      | Contact1  | Message | GroupChatName | Image       |
       | user1Name | user2Name | testing | ForDeletion   | testing.jpg |
 
-  @staging @id3980
+  @regression @id3980
   Scenario Outline: Verify removing the content from 1-to-1 via participant view [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -890,8 +890,7 @@ Feature: People View
     And I press leave converstation button
     And I see leave conversation alert
     And I press leave
-    Then I press leave
-    When I wait until popover is closed
+    And I wait until popover is closed
     And I open archived conversations on iPad
     And I see user <GroupChatName> in contact list
     And I tap on group chat with name <GroupChatName>
@@ -901,7 +900,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | Message |    Image    |
       | user1Name | user2Name | user3Name | TESTCHAT      |  hello  | testing.jpg |
 
-  @staging @id4004
+  @regression @id4004
   Scenario Outline: Verify that left conversation is shown in the Archive [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -917,8 +916,8 @@ Feature: People View
     And I open group conversation details
     And I press leave converstation button
     And I see leave conversation alert
-    Then I press leave
-    When I wait until popover is closed
+    And I press leave
+    And I wait until popover is closed
     And I open archived conversations on iPad
     And I see user <GroupChatName> in contact list
     And I tap on group chat with name <GroupChatName>
