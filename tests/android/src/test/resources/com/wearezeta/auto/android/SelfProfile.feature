@@ -93,3 +93,34 @@ Feature: Self Profile
     Examples:
       | Name      |
       | user1Name |
+
+  @id4069 @staging
+  Scenario Outline: Verify I can switch dark/white theme from self profile
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to Myself
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact>
+    And I see dialog page
+    Then I remember the conversation view
+    When I navigate back from dialog page
+    And I tap on my avatar
+    And I see personal info page
+    And I tap Light Bulb button
+    And I close Personal Info Page
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I scroll to the bottom of conversation view
+    Then I see the conversation view is changed
+    When I navigate back from dialog page
+    And I tap on my avatar
+    And I see personal info page
+    And I tap Light Bulb button
+    And I close Personal Info Page
+    When I tap on contact name <Contact>
+    And I see dialog page
+    Then I see the conversation view is not changed
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
