@@ -403,8 +403,7 @@ public class ContactListPage extends WebPage {
 
 	private static final int OPEN_CONVO_LIST_ENTRY_TIMEOUT = 8; // seconds
 
-	public ConversationPage openConversation(String conversationName)
-			throws Exception {
+	public void openConversation(String conversationName) throws Exception {
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
 		final By entryLocator = By
 				.cssSelector(WebAppLocators.ContactListPage.cssContactListEntryByName
@@ -417,10 +416,9 @@ public class ContactListPage extends WebPage {
 		selectEntryWithRetry(entryLocator,
 				WebAppLocators.ContactListPage.cssContactListEntryByName
 						.apply(conversationName));
-		return new ConversationPage(this.getLazyDriver());
 	}
 
-	public PendingConnectionsPage openConnectionRequestsList() throws Exception {
+	public void openConnectionRequestsList() throws Exception {
 		final By entryLocator = By
 				.cssSelector(WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
@@ -428,16 +426,14 @@ public class ContactListPage extends WebPage {
 				+ OPEN_CONVO_LIST_ENTRY_TIMEOUT + " second(s) timeout";
 		selectEntryWithRetry(entryLocator,
 				WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
-		return new PendingConnectionsPage(this.getLazyDriver());
 	}
 
-	public SelfProfilePage openSelfProfile() throws Exception {
+	public void openSelfProfile() throws Exception {
 		waitForSelfProfileAvatar();
 		selfProfileAvatar.click();
-		return new SelfProfilePage(this.getLazyDriver());
 	}
 
-	public PeoplePickerPage openPeoplePicker() throws Exception {
+	public void openPeoplePicker() throws Exception {
 		DriverUtils
 				.waitUntilLocatorAppears(
 						this.getDriver(),
@@ -447,7 +443,6 @@ public class ContactListPage extends WebPage {
 		} else {
 			openPeoplePickerButton.click();
 		}
-		return new PeoplePickerPage(this.getLazyDriver());
 	}
 
 	public void clickUnmuteConversation() throws Exception {
@@ -465,8 +460,7 @@ public class ContactListPage extends WebPage {
 		blockButton.click();
 	}
 
-	public ConversationPage unarchiveConversation(String conversationName)
-			throws Exception {
+	public void unarchiveConversation(String conversationName) throws Exception {
 		conversationName = fixDefaultGroupConvoName(conversationName, true);
 		final By archivedEntryLocator = By
 				.xpath(WebAppLocators.ContactListPage.xpathArchivedContactListEntryByName
@@ -485,8 +479,6 @@ public class ContactListPage extends WebPage {
 		final WebElement unarchivedEntry = this.getDriver().findElement(
 				unarchivedEntryLocator);
 		waitUtilEntryIsSelected(unarchivedEntry);
-
-		return new ConversationPage(this.getLazyDriver());
 	}
 
 	public String getIncomingPendingItemText() throws Exception {

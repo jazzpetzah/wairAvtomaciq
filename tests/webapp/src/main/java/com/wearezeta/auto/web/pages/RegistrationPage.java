@@ -52,7 +52,6 @@ public class RegistrationPage extends WebPage {
 	@FindBy(css = WebAppLocators.RegistrationPage.cssErrorMarkedEmailField)
 	private WebElement redDotOnEmailField;
 
-	// TODO move to locators
 	@FindBy(css = WebAppLocators.RegistrationPage.cssErrorMessages)
 	private List<WebElement> errorMessages;
 
@@ -71,14 +70,11 @@ public class RegistrationPage extends WebPage {
 				emailField, TIMEOUT_FOR_FIRST_LOAD_OF_PAGE);
 	}
 
-	public LoginPage switchToLoginPage() throws Exception {
+	public void switchToLoginPage() throws Exception {
 		waitForRegistrationPageToFullyLoad();
 		DriverUtils
 				.waitUntilElementClickable(getDriver(), switchToSignInButton);
 		switchToSignInButton.click();
-
-		return new LoginPage(this.getLazyDriver(), this.getDriver()
-				.getCurrentUrl());
 	}
 
 	public void enterName(String name) throws Exception {
@@ -138,12 +134,11 @@ public class RegistrationPage extends WebPage {
 						By.cssSelector(WebAppLocators.RegistrationPage.cssErrorMarkedEmailField));
 	}
 
-	public LoginPage openSignInPage() throws Exception {
+	public void openSignInPage() throws Exception {
 		getDriver()
 				.get(CommonUtils
 						.getWebAppApplicationPathFromConfig(RegistrationPage.class)
 						+ "auth/#login");
-		return new LoginPage(getLazyDriver());
 	}
 
 	public void refreshPage() throws Exception {

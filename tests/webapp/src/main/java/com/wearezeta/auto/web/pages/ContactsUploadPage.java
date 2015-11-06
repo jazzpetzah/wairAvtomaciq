@@ -16,7 +16,6 @@ import org.openqa.selenium.support.ui.Wait;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.WebAppLocators;
-import com.wearezeta.auto.web.pages.external.GoogleLoginPage;
 
 public class ContactsUploadPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactsUploadPage.xpathCloseButton)
@@ -46,16 +45,15 @@ public class ContactsUploadPage extends WebPage {
 		closeButton.click();
 	}
 
-	public PeoplePickerPage clickShowSearchButton() throws Exception {
+	public void clickShowSearchButton() throws Exception {
 		xpathShowSearchButton.click();
-		return new PeoplePickerPage(getLazyDriver());
 	}
 
 	public void clickShareContactsButton() {
 		shareContactsButton.click();
 	}
 
-	public GoogleLoginPage switchToGooglePopup() throws Exception {
+	public void switchToGooglePopup() throws Exception {
 		WebDriver driver = this.getDriver();
 		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(
 				DriverUtils.getDefaultLookupTimeoutSeconds(), TimeUnit.SECONDS)
@@ -70,6 +68,5 @@ public class ContactsUploadPage extends WebPage {
 		Set<String> handles = driver.getWindowHandles();
 		handles.remove(driver.getWindowHandle());
 		driver.switchTo().window(handles.iterator().next());
-		return new GoogleLoginPage(this.getLazyDriver());
 	}
 }
