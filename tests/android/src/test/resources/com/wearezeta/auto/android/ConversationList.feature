@@ -17,7 +17,7 @@ Feature: Conversation List
     And I see Contact list
     Then I see PlayPause media content button for conversation <Contact1>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | SoudCloudLink                                              |
       | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
@@ -70,7 +70,7 @@ Feature: Conversation List
     And I navigate back from dialog page
     Then I see unread messages indicator state is changed for conversation <Contact1>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -132,7 +132,7 @@ Feature: Conversation List
     And I see dialog page
     Then I see group chat page with users <Contact1>,<Contact2>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Message    | Image       | SpotifyLink                                           |
       | user1Name | user2Name | user3Name | DELETE        | Tschuessii | testing.jpg | https://open.spotify.com/track/0p6GeAWS4VCZddxNbBtEss |
 
@@ -159,13 +159,13 @@ Feature: Conversation List
     And I swipe up contact list
     Then I do not see contact list with name <GroupChatName>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Message |
       | user1Name | user2Name | user3Name | DELETELeave   | tututu  |
-   
-  @torun @id4056 @staging  
+
+  @id4056 @staging
   Scenario Outline: Verify I see picture, ping and call after I delete a group conversation from conversation list
-  	Given There are 3 users where <Name> is me
+    Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
@@ -174,8 +174,27 @@ Feature: Conversation List
     And I select DELETE from conversation settings menu
     And I press DELETE on the confirm alert
     Then I do not see contact list with name <GroupChatName>
-    
+    And I open search by tap
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I enter "<GroupChatName>" into Search input on People Picker page
+    Then I see group <GroupChatName> in People picker
+    And I navigate back to Conversations List
+    When Contact <Contact1> sends image <Image> to group conversation <GroupChatName>
+    Then I see contact list with name <GroupChatName>
+    When I swipe right on a <GroupChatName>
+    And I select DELETE from conversation settings menu
+    And I press DELETE on the confirm alert
+    Then I do not see contact list with name <GroupChatName>
+    When Contact <Contact1> ping conversation <GroupChatName>
+    Then I see contact list with name <GroupChatName>
+    When I swipe right on a <GroupChatName>
+    And I select DELETE from conversation settings menu
+    And I press DELETE on the confirm alert
+    Then I do not see contact list with name <GroupChatName>
+    When <Contact1> calls <GroupChatName> using <CallBackend>
+    Then I see contact list with name <GroupChatName>
+
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | Image       | 
-      | user1Name | user2Name | user3Name | DELETE        | testing.jpg |
-  
+      | Name      | Contact1  | Contact2  | GroupChatName | Image       | CallBackend |
+      | user1Name | user2Name | user3Name | DELETE        | testing.jpg | autocall    |
