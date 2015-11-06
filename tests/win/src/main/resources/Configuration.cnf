@@ -1,0 +1,11 @@
+#Configuration file for OS X tests
+#Configure before running tests
+osxAppiumUrl=${Url}
+osxApplicationPath=${appPath}
+driverTimeoutSeconds=${com.wire.driver.timeout.seconds}
+pictureResultsPath=${pictureResultsPath}
+osxClientInfoPlist=${osxClientInfoPlist}
+defaultEmail=${defaultEmail}
+defaultImagesPath=${Root}/${defaultImagesPath}
+wireConfigDomain=${wireConfigDomain}
+backendType=${com.wire.environment}

@@ -1,0 +1,6 @@
+tell application "Wire.app" to activate
+tell application "System Events"
+	tell process "Wire"
+		keystroke "v" using {command down}
+	end tell
+end tell
