@@ -149,7 +149,7 @@ Feature: Sign In
       | Email      | Password      | Name      | Gmail                       | GmailPassword |
       | user1Email | user1Password | user1Name | smoketester.wire2@gmail.com | aqa123456     |
 
-  @regression @id4070 @torun
+  @regression @id4070
   Scenario Outline: Verify Skip for now button is shown when youre adding an email address after sign in with a phone number
     Given There is 1 user where <Name> is me with phone number only
     Given I switch to sign in page
