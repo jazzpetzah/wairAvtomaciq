@@ -394,3 +394,22 @@ Feature: Search
     Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
+
+  @id4059 @staging
+  Scenario Outline: Verify - swipe right on search results do nothing
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    Given I wait until <Contact> exists in backend search results
+    And I open search by tap
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I enter "<Contact>" into Search input on People Picker page
+    When I see user <Contact> in People Picker
+    And I swipe right on contact avatar <Contact> in People Picker
+    Then I see user <Contact> in People Picker
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
