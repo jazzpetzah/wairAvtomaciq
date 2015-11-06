@@ -21,6 +21,9 @@ public class AddEmailAddressPage extends WebPage {
 	@FindBy(id = "wire-mail-add")
 	private WebElement addButton;
 
+	@FindBy(css = WebAppLocators.AddEmailAddressPage.cssSkipForNowButton)
+	private WebElement skipForNowButton;
+
 	@FindBy(css = WebAppLocators.AddEmailAddressPage.cssErrorMessage)
 	private WebElement errorMessage;
 
@@ -43,12 +46,20 @@ public class AddEmailAddressPage extends WebPage {
 
 	public void setPassword(String password) throws Exception {
 		passwordField.click();
-	    passwordField.clear();
+		passwordField.clear();
 		passwordField.sendKeys(password);
 	}
 
 	public void clickAddButton() {
 		addButton.click();
+	}
+
+	public boolean isSkipButtonVisible() throws Exception {
+		return skipForNowButton.isDisplayed();
+	}
+
+	public void clickSkipForNowButton() {
+		skipForNowButton.click();
 	}
 
 	public String getErrorMessage() throws Exception {

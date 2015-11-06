@@ -30,9 +30,8 @@ public class ConnectToPopoverContainer extends AbstractPopoverContainer {
 		this.connectToPopoverPage.clickConnectButton();
 	}
 
-	public CancelRequestConfirmationPopoverPage clickCancelRequestButton() {
+	public void clickCancelRequestButton() {
 		this.pendingOutgoingConnectionPopoverPage.clickCancelRequestButton();
-		return this.cancelRequestConfirmationPopoverPage;
 	}
 
 	public void clickNoButton() {

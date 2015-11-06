@@ -12,11 +12,6 @@ import com.wearezeta.auto.web.locators.WebAppLocators;
 
 import static com.wearezeta.auto.web.locators.WebAppLocators.Common.TITLE_ATTRIBUTE_LOCATOR;
 
-import com.wearezeta.auto.web.pages.popovers.ConnectToPopoverContainer;
-import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
-import com.wearezeta.auto.web.pages.popovers.PeoplePopoverContainer;
-import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
-
 import cucumber.api.PendingException;
 
 import java.awt.image.BufferedImage;
@@ -196,21 +191,14 @@ public class ConversationPage extends WebPage {
 				locator, 5);
 	}
 
-	public PeoplePopoverContainer clickPeopleButton(boolean isGroup)
-			throws Exception {
+	public void clickPeopleButton() throws Exception {
 		DriverUtils.waitUntilElementClickable(this.getDriver(),
 				showParticipants);
 		showParticipants.click();
-		if (isGroup) {
-			return new GroupPopoverContainer(this.getLazyDriver());
-		} else {
-			return new SingleUserPopoverContainer(this.getLazyDriver());
-		}
 	}
 
-	public PeoplePickerPage clickShowParticipantsButton() throws Exception {
+	public void clickShowParticipantsButton() throws Exception {
 		showParticipants.click();
-		return new PeoplePickerPage(this.getLazyDriver());
 	}
 
 	public boolean isPeopleButtonToolTipCorrect() {
@@ -484,9 +472,8 @@ public class ConversationPage extends WebPage {
 		}
 	}
 
-	public GiphyPage clickGIFButton() throws Exception {
+	public void clickGIFButton() throws Exception {
 		gifButton.click();
-		return new GiphyPage(getLazyDriver());
 	}
 
 	public boolean isGifVisible() throws Exception {
@@ -507,14 +494,13 @@ public class ConversationPage extends WebPage {
 		return conversationInput.getAttribute("value");
 	}
 
-	public PeoplePickerPage pressShortCutForSearch() throws Exception {
+	public void pressShortCutForSearch() throws Exception {
 		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
 			conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "n"));
 		} else {
 			throw new PendingException(
 					"Webdriver does not support shortcuts for Mac browsers");
 		}
-		return new PeoplePickerPage(getLazyDriver());
 	}
 
 	public void hoverPingButton() throws Exception {
@@ -572,20 +558,17 @@ public class ConversationPage extends WebPage {
 		}
 	}
 
-	public ConnectToPopoverContainer clickUserAvatar() throws Exception {
+	public void clickUserAvatar() throws Exception {
 		DriverUtils.waitUntilElementClickable(this.getDriver(), userAvatar);
 		userAvatar.click();
-		return new ConnectToPopoverContainer(this.getLazyDriver());
 	}
 
-	public ConnectToPopoverContainer clickUserAvatar(String userId)
-			throws Exception {
+	public void clickUserAvatar(String userId) throws Exception {
 		String css = WebAppLocators.ConversationPage.cssUserAvatarById
 				.apply(userId);
 		final WebElement avatar = getDriver().findElement(By.cssSelector(css));
 		DriverUtils.waitUntilElementClickable(this.getDriver(), avatar);
 		avatar.click();
-		return new ConnectToPopoverContainer(this.getLazyDriver());
 	}
 
 	public boolean isActionMessageNotSent(final Set<String> parts)

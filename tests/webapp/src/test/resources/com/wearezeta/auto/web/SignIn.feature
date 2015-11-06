@@ -148,3 +148,20 @@ Feature: Sign In
     Examples: 
       | Email      | Password      | Name      | Gmail                       | GmailPassword |
       | user1Email | user1Password | user1Name | smoketester.wire2@gmail.com | aqa123456     |
+
+  @regression @id4070 @torun
+  Scenario Outline: Verify Skip for now button is shown when youre adding an email address after sign in with a phone number
+    Given There is 1 user where <Name> is me with phone number only
+    Given I switch to sign in page
+    When I switch to phone number sign in page
+    When I sign in using phone number of user <Name>
+    And I click on sign in button on phone number sign in
+    And I enter phone verification code for emailless user <Name>
+    Then I see Skip for now button on add email address dialog
+    When I click Skip for now button on add email address dialog
+    Then I am signed in properly
+    And I see Self Picture Upload dialog
+
+    Examples: 
+      | Name      |
+      | user1Name |

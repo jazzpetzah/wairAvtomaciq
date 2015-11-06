@@ -37,10 +37,10 @@ public class SelfProfilePage extends WebPage {
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathAccentColorPickerChildren)
 	private List<WebElement> colorsInColorPicker;
-	
+
 	@FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathBackgroundAvatarAccentColor)
 	private WebElement backgroundAvatarAccentColor;
-	
+
 	public SelfProfilePage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -133,10 +133,9 @@ public class SelfProfilePage extends WebPage {
 				"No accent color is selected in color picker");
 	}
 
-	public ProfilePicturePage clickCameraButton() throws Exception {
+	public void clickCameraButton() throws Exception {
 		DriverUtils.waitUntilElementClickable(this.getDriver(), cameraButton);
 		cameraButton.click();
-		return new ProfilePicturePage(getLazyDriver());
 	}
 
 	public AccentColor getCurrentAvatarAccentColor() throws Exception {
@@ -144,6 +143,7 @@ public class SelfProfilePage extends WebPage {
 				.getDriver()
 				.findElementByXPath(
 						WebAppLocators.SelfProfilePage.xpathBackgroundAvatarAccentColor);
-		return AccentColor.getByRgba(backgroundAvatarAccentColor.getCssValue("background-color"));
+		return AccentColor.getByRgba(backgroundAvatarAccentColor
+				.getCssValue("background-color"));
 	}
 }
