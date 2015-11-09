@@ -191,3 +191,36 @@ Feature: Conversation List
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Image       | CallBackend |
       | user1Name | user2Name | user3Name | DELETE        | testing.jpg | autocall    |
+
+  @id4078 @staging
+  Scenario Outline: I can mute group conversation from the conversation list
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    And I swipe right on a <GroupChatName>
+    And I select SILENCE from conversation settings menu
+    Then Contact <GroupChatName> is muted
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | MUTE          |
+
+  @id4079 @staging
+  Scenario Outline: I can unmute group conversation from the conversation list
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <GroupChatName> is silenced to user <Name>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    And Contact <GroupChatName> is muted
+    And I swipe right on a <GroupChatName>
+    And I select NOTIFY from conversation settings menu
+    Then Contact <GroupChatName> is not muted
+
+    Examples:
+      | Name      | Contact1  |Contact2   | GroupChatName |
+      | user1Name | user2Name | user3Name | UNMUTE        |
+
