@@ -818,3 +818,46 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | KICKCHAT      |
+
+  @staging @id4015
+  Scenario Outline: Verify blocking person from action menu [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact>
+    And I press menu Block button
+    And I confirm blocking alert
+    Then I dont see conversation <Contact> in contact list
+    And I open archived conversations on iPad
+    And I dont see conversation <Contact> in contact list
+    And I open search by taping on it
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact>
+    Then I see user <Contact> found on People picker page
+    
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @staging @id4016
+  Scenario Outline: Verify blocking person from action menu [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact>
+    And I press menu Block button
+    And I confirm blocking alert
+    Then I dont see conversation <Contact> in contact list
+    And I open archived conversations on iPad
+    And I dont see conversation <Contact> in contact list
+    And I open search by taping on it
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact>
+    Then I see user <Contact> found on People picker page
+    
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
