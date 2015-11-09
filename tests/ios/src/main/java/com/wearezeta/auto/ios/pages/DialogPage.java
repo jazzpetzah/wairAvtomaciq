@@ -658,6 +658,7 @@ public class DialogPage extends IOSPage {
 	}
 
 	private static final int IMAGE_IN_CONVERSATION_HEIGHT = 510;
+	private static final int IMAGE_IN_IPAD_CONVERSATION_HEIGHT = 1020;
 
 	public BufferedImage takeImageScreenshot() throws Throwable {
 		
@@ -666,11 +667,17 @@ public class DialogPage extends IOSPage {
 		image = getElementScreenshot(imageCell).orElseThrow(
 				IllegalStateException::new);
 		
-		if (image.getHeight() > IMAGE_IN_CONVERSATION_HEIGHT) {
+		if (image.getHeight() < IMAGE_IN_IPAD_CONVERSATION_HEIGHT) {
 			
 			image = image.getSubimage(0, image.getHeight()
 					- IMAGE_IN_CONVERSATION_HEIGHT, image.getWidth(),
 					IMAGE_IN_CONVERSATION_HEIGHT);
+		
+		} else {
+			
+			image = image.getSubimage(0, image.getHeight()
+					- IMAGE_IN_IPAD_CONVERSATION_HEIGHT, image.getWidth(), 
+					IMAGE_IN_IPAD_CONVERSATION_HEIGHT);
 		}
 		
 		return image;
