@@ -191,7 +191,7 @@ Feature: Search
     # Wait a bit until top people were calculated by backend
     And I wait for 10 seconds
     And I open People Picker from Contact List
-    And I wait till Top People list appears
+    And I wait till Top People list contains 2 people
     When I select <Contact1>,<Contact2> from Top People
     And I choose to create conversation from People Picker
     Then I see Contact list with name <Contact1>,<Contact2>
@@ -235,10 +235,8 @@ Feature: Search
     Given I Sign in using login <Login> and password <Password>
     When I see my avatar on top of Contact list
     # Wait a bit until top people were calculated by backend
-    And I wait for 20 seconds
     And I open People Picker from Contact List
-    And I wait till Top People list appears
-    Then I see 8 people in Top people list
+    And I wait till Top People list contains 8 people
     And I see More button
     When I click on More button
     Then I see 10 people in Top people list
