@@ -52,10 +52,6 @@ public class DriverUtils {
 				.getDriverTimeoutFromConfig(DriverUtils.class));
 	}
 
-	public static boolean isNullOrEmpty(String s) {
-		return s == null || s.length() == 0;
-	}
-
 	/**
 	 * https://code.google.com/p/selenium/issues/detail?id=1880
 	 * 
@@ -494,14 +490,6 @@ public class DriverUtils {
 		mobileTapByCoordinates(driver, element, 0, 0);
 	}
 
-	public static void androidLongClick(
-			AppiumDriver<? extends WebElement> driver, WebElement element) {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		HashMap<String, String> tapObject = new HashMap<String, String>();
-		tapObject.put("element", ((RemoteWebElement) element).getId());
-		js.executeScript("mobile: longClick", tapObject);
-	}
-
 	public static void iOSSimulatorSwipeDown(String scriptPath)
 			throws Exception {
 		// CommonUtils.executeOsXCommand(new String[]{"/bin/bash", "-c",
@@ -610,12 +598,6 @@ public class DriverUtils {
 
 	public static void turnOffImplicitWait(RemoteWebDriver driver) {
 		driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
-	}
-
-	public static void setImplicitWaitValue(ZetaOSXDriver driver,
-			int secondsTimeout) {
-		driver.manage().timeouts()
-				.implicitlyWait(secondsTimeout, TimeUnit.SECONDS);
 	}
 
 	public static void restoreImplicitWait(RemoteWebDriver driver)

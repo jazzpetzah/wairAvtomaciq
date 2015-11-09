@@ -691,4 +691,18 @@ public class PeoplePickerPageSteps {
 		getPeoplePickerPage()
 				.waitUntilOpenOrCreateConversationButtonIsInvisible();
 	}
+
+	/**
+	 * Swipe right on caontact avatar found on People Picker page
+	 *
+	 * @step. ^I swipe right on contact avatar (.*) in [Pp]eople [Pp]icker$
+	 *
+	 * @param name contact name/alias
+	 * @throws Exception
+     */
+	@When("^I swipe right on contact avatar (.*) in [Pp]eople [Pp]icker$")
+	public void ISwipeRightOnContact(String name) throws Exception {
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		getPeoplePickerPage().swipeRightOnContactAvatar(name);
+	}
 }
