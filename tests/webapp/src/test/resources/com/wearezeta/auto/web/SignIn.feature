@@ -147,7 +147,7 @@ Feature: Sign In
 
     Examples: 
       | Email      | Password      | Name      | Gmail                       | GmailPassword |
-      | user1Email | user1Password | user1Name | smoketester.wire2@gmail.com | aqa123456     |
+      | user1Email | user1Password | user1Name | smoketester.wire2@gmail.com | aqa123456!    |
 
   @regression @id4070
   Scenario Outline: Verify Skip for now button is shown when youre adding an email address after sign in with a phone number
