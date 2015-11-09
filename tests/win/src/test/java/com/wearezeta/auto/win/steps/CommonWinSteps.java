@@ -100,6 +100,7 @@ public class CommonWinSteps {
 		options.addArguments("use-fake-ui-for-media-stream");
 		options.addArguments("disable-web-security");
 		options.addArguments("env=" + WinExecutionContext.ENV_URL);
+		options.addArguments("enable-logging");
 		options.setBinary(WIRE_APP_FOLDER + WIRE_APP_PATH);
 		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 		capabilities.setCapability("platformName",
