@@ -461,3 +461,24 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact1  |
       | user1Name | user2Name |
+
+  @staging @id3317
+  Scenario Outline: Verify blocking person from action menu
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact>
+    And I press menu Block button
+    And I confirm blocking alert
+    Then I dont see conversation <Contact> in contact list
+    And I open archived conversations
+    And I dont see conversation <Contact> in contact list
+    And I open search by taping on it
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact>
+    Then I see user <Contact> found on People picker page
+    
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
