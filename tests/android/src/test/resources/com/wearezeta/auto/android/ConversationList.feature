@@ -191,3 +191,19 @@ Feature: Conversation List
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Image       | CallBackend |
       | user1Name | user2Name | user3Name | DELETE        | testing.jpg | autocall    |
+
+  @id4073 @staging
+  Scenario Outline: I can unmute 1:1 conversation from the conversation list
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact1> is silenced to user <Name>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    And Contact <Contact1> is muted
+    And I swipe right on a <Contact1>
+    And I select NOTIFY from conversation settings menu
+    Then Contact <Contact1> is not muted
+
+    Examples:
+      | Name      | Contact1  |
+      | user1Name | user2Name |
