@@ -70,7 +70,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @id4066 @staging
+  @id4066 @regression
   Scenario Outline: Verify theme switch in self profile change its state and synced with settings menu
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -94,7 +94,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @id4069 @staging
+  @id4069 @regression
   Scenario Outline: Verify I can switch dark/white theme from self profile
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself

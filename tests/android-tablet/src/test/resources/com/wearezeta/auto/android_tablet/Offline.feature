@@ -18,6 +18,8 @@ Feature: Offline Mode
     When Contact <Contact> sends message "<Message2>" to user Myself
     Then I do not see the message "<Message2>" in the conversation view
     When I disable Airplane mode on the device
+    # To let the content load properly after offline mode
+    And I wait for 15 seconds
     And I scroll to the bottom of the conversation view
     Then I see the message "<Message2>" in the conversation view
     And I see a new picture in the conversation view

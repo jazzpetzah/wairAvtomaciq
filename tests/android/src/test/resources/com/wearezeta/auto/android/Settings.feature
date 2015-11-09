@@ -48,7 +48,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @id4062 @staging
+  @id4062 @regression
   Scenario Outline: Verify I can switch dark/white theme from settings
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself

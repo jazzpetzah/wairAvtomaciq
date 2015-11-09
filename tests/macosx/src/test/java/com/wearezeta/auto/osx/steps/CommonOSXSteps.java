@@ -102,6 +102,7 @@ public class CommonOSXSteps {
 		options.addArguments("use-fake-ui-for-media-stream");
 		options.addArguments("disable-web-security");
 		options.addArguments("env=" + OSXExecutionContext.ENV_URL);
+		options.addArguments("enable-logging");
 		options.setBinary(WIRE_APP_PATH + OSXExecutionContext.ELECTRON_SUFFIX);
 
 		// allow skipping the security prompt for notifications in chrome 46++

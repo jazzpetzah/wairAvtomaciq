@@ -1,7 +1,7 @@
 Feature: Archive
 
   @id2885 @regression @rc
-  Scenario Outline: Verify you can archive and unarchive conversation (portrait)
+  Scenario Outline: (AN-2983) Verify you can archive and unarchive conversation (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to portrait
