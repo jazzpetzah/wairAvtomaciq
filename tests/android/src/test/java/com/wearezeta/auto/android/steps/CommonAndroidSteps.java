@@ -417,6 +417,22 @@ public class CommonAndroidSteps {
     }
 
     /**
+     * Silences a given group for a user via the backend
+     *
+     * @param mutedGroup the group to silence
+     * @param otherUser  user its silenced from
+     * @throws Throwable
+     * @step. ^Group (.*) gets silenced for user (.*)$
+     */
+    @Given("^Group (.*) gets silenced for user (.*)$")
+    public void GroupGetsSilenced(String mutedGroup, String otherUser) throws Throwable {
+        mutedGroup = usrMgr.replaceAliasesOccurences(mutedGroup, ClientUsersManager.FindBy.NAME_ALIAS);
+        otherUser = usrMgr.findUserByNameOrNameAlias(otherUser).getName();
+
+        commonSteps.MuteConversationWithGroup(otherUser, mutedGroup);
+    }
+
+    /**
      * Unarchives a given group chat from the perspective of the another user
      * through the backend
      *
