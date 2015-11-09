@@ -212,7 +212,7 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given <GroupChatName> is silenced to user <Name>
+    Given Group <GroupChatName> gets silenced for user <Name>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
     And Contact <GroupChatName> is muted
