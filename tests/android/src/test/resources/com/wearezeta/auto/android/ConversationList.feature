@@ -162,7 +162,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | Message |
       | user1Name | user2Name | user3Name | DELETELeave   | tututu  |
 
-  @id4056 @staging
+  @torun @id4056 @staging
   Scenario Outline: Verify I see picture, ping and call after I delete a group conversation from conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -173,12 +173,6 @@ Feature: Conversation List
     And I select DELETE from conversation settings menu
     And I press DELETE on the confirm alert
     Then I do not see contact list with name <GroupChatName>
-    And I open search by tap
-    And I see People picker page
-    And I tap on Search input on People picker page
-    And I enter "<GroupChatName>" into Search input on People Picker page
-    Then I see group <GroupChatName> in People picker
-    And I navigate back to Conversations List
     When Contact <Contact1> sends image <Image> to group conversation <GroupChatName>
     Then I see contact list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
