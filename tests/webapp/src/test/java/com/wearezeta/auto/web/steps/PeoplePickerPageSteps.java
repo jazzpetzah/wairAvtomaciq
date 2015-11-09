@@ -244,11 +244,26 @@ public class PeoplePickerPageSteps {
 	 * Closes and opens People Picker until Top People list is visible on People
 	 * Picker page
 	 * 
+	 * @step. ^I wait till Top People list contains (\\d+) (people|person)$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I wait till Top People list contains (\\d+) (people|person)$")
+	public void IwaitTillTopPeopleListWithXPeopleAppears(int count,
+			String people) throws Exception {
+		assertThat("people suggestions",
+				webappPagesCollection.getPage(PeoplePickerPage.class)
+						.waitUntilNumberOfTopPeople(count));
+	}
+
+	/**
+	 * Closes and opens People Picker until Top People list is visible on People
+	 * Picker page
+	 * 
 	 * @step. ^I wait till Top People list appears$
 	 * 
 	 * @throws Exception
 	 */
-
 	@When("^I wait till Top People list appears$")
 	public void IwaitTillTopPeopleListAppears() throws Exception {
 		if (!webappPagesCollection.getPage(PeoplePickerPage.class)
