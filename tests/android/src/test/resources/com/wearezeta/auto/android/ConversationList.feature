@@ -162,7 +162,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | Message |
       | user1Name | user2Name | user3Name | DELETELeave   | tututu  |
 
-  @torun @id4056 @staging
+  @id4056 @staging
   Scenario Outline: Verify I see picture, ping and call after I delete a group conversation from conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
