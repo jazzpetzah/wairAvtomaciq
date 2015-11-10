@@ -162,7 +162,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | Message |
       | user1Name | user2Name | user3Name | DELETELeave   | tututu  |
 
-  @id4056 @staging
+  @id4056 @regression
   Scenario Outline: Verify I see picture, ping and call after I delete a group conversation from conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -192,7 +192,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | Image       | CallBackend |
       | user1Name | user2Name | user3Name | DELETE        | testing.jpg | autocall    |
 
-  @id4072 @staging
+  @id4072 @regression
   Scenario Outline: I can mute 1:1 conversation from the conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -206,7 +206,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @id4073 @staging
+  @id4073 @regression
   Scenario Outline: I can unmute 1:1 conversation from the conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -222,7 +222,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @id4078 @staging
+  @id4078 @regression
   Scenario Outline: I can mute group conversation from the conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -237,7 +237,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | MUTE          |
 
-  @id4079 @staging
+  @id4079 @regression
   Scenario Outline: I can unmute group conversation from the conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
