@@ -657,18 +657,31 @@ public class DialogPage extends IOSPage {
 		return page;
 	}
 
-	private static final int IMAGE_CONTROL_IN_CONVERSATION_HEIGHT = 472;
-	private static final int IMAGE_IN_CONVERSATION_HEIGHT = 427;
+	private static final int IMAGE_IN_CONVERSATION_HEIGHT = 510;
+	private static final int IMAGE_IN_IPAD_CONVERSATION_HEIGHT = 1020;
 
 	public BufferedImage takeImageScreenshot() throws Throwable {
+		
 		BufferedImage image;
+		
 		image = getElementScreenshot(imageCell).orElseThrow(
 				IllegalStateException::new);
-		if (image.getHeight() > IMAGE_IN_CONVERSATION_HEIGHT) {
+		
+		String deviceType = CommonUtils.getDeviceName(this.getClass());
+		
+		if (deviceType.equals("iPhone 6")) {
+			
 			image = image.getSubimage(0, image.getHeight()
-					- IMAGE_CONTROL_IN_CONVERSATION_HEIGHT, image.getWidth(),
+					- IMAGE_IN_CONVERSATION_HEIGHT, image.getWidth(),
 					IMAGE_IN_CONVERSATION_HEIGHT);
+		
+		} else {
+			
+			image = image.getSubimage(0, image.getHeight()
+					- IMAGE_IN_IPAD_CONVERSATION_HEIGHT, image.getWidth(), 
+					IMAGE_IN_IPAD_CONVERSATION_HEIGHT);
 		}
+		
 		return image;
 	}
 
