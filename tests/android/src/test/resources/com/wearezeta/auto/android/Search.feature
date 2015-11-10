@@ -234,7 +234,7 @@ Feature: Search
       | user1Name | user2Name |
 
   @id3873 @regression
-  Scenario Outline: Verify sending a photo with action button
+  Scenario Outline: (AN-2894) Verify sending a photo with action button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
