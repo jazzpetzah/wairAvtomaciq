@@ -667,7 +667,9 @@ public class DialogPage extends IOSPage {
 		image = getElementScreenshot(imageCell).orElseThrow(
 				IllegalStateException::new);
 		
-		if (image.getHeight() < IMAGE_IN_IPAD_CONVERSATION_HEIGHT) {
+		String deviceType = CommonUtils.getDeviceName(this.getClass());
+		
+		if (deviceType.equals("iPhone 6")) {
 			
 			image = image.getSubimage(0, image.getHeight()
 					- IMAGE_IN_CONVERSATION_HEIGHT, image.getWidth(),
