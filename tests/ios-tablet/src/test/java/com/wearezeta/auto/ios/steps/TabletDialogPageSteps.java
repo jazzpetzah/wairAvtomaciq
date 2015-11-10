@@ -1,12 +1,5 @@
 package com.wearezeta.auto.ios.steps;
 
-import java.awt.image.BufferedImage;
-
-import org.junit.Assert;
-
-import com.wearezeta.auto.common.ImageUtil;
-import com.wearezeta.auto.ios.IOSConstants;
-import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.TabletDialogPage;
 
 import cucumber.api.java.en.When;
@@ -62,15 +55,6 @@ public class TabletDialogPageSteps {
 	@When("I verify image in iPad dialog is same as template (.*)")
 	public void IVerifyImageInIpadDialogSameAsTemplate(String filename)
 			throws Throwable {
-		BufferedImage templateImage = getTabletDialogPage().takeImageScreenshot();
-		BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage
-				.getImagesPath() + filename);
-		double score = ImageUtil.getOverlapScore(referenceImage, templateImage,
-				ImageUtil.RESIZE_TEMPLATE_TO_RESOLUTION);
-		System.out.println("SCORE: " + score);
-		Assert.assertTrue(
-				"Overlap between two images has no enough score. Expected >= "
-						+ IOSConstants.MIN_IMG_SCORE + ", current = " + score,
-				score >= IOSConstants.MIN_IMG_SCORE);
+		getTabletDialogPage().isImageShown(filename);
 	}
 }
