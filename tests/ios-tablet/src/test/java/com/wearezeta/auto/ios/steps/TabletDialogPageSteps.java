@@ -1,5 +1,8 @@
 package com.wearezeta.auto.ios.steps;
 
+import org.junit.Assert;
+
+import com.wearezeta.auto.ios.IOSConstants;
 import com.wearezeta.auto.ios.pages.TabletDialogPage;
 
 import cucumber.api.java.en.When;
@@ -44,5 +47,24 @@ public class TabletDialogPageSteps {
 	@When("^I open group conversation details on iPad$")
 	public void IOpenGroupConversationDetailsOniPad() throws Throwable {
 		getTabletDialogPage().pressGroupConversationDetailiPadButton();
+	}
+	
+	/**
+	 * Compare image on the screen and on the disk
+	 * @step. "I verify image in iPad dialog is same as template (.*)"
+	 * @param filename
+	 * @throws Throwable
+	 */
+	@When("I verify image in iPad dialog is same as template (.*)")
+	public void IVerifyImageInIpadDialogSameAsTemplate(String filename)
+			throws Throwable {
+		getTabletDialogPage().isImageShown(filename);
+		
+		double score = getTabletDialogPage().isImageShown(filename); 
+				
+		Assert.assertTrue(
+				"Overlap between two images has no enough score. Expected >= "
+						+ IOSConstants.MIN_IMG_SCORE + ", current = " + score,
+				score >= IOSConstants.MIN_IMG_SCORE);
 	}
 }
