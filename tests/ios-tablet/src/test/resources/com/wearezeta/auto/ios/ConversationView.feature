@@ -1355,7 +1355,7 @@ Feature: Conversation View
       | user1Name | user2Name | testing |
 
   @staging @id2409
-  Scenario Outline: Verify downloading images in fullscreen
+  Scenario Outline: Verify downloading images in fullscreen [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
@@ -1376,7 +1376,7 @@ Feature: Conversation View
      | user1Email | user1Password | user1Name | user2Name | testing.jpg |    single user   |
     
   @staging @id4084
-  Scenario Outline: Verify downloading images in fullscreen
+  Scenario Outline: Verify downloading images in fullscreen [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
