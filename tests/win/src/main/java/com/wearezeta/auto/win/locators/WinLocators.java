@@ -8,13 +8,11 @@ public final class WinLocators {
 	public static final class AppMenu {
 
 		public static final Function<String, String> xpathMenuBarItem = (name) -> String
-				.format(xpathWindow
-						+ "//*[@ControlType='ControlType.MenuItem' and contains(@Name, '%s')]",
+				.format("/*[@ClassName='Chrome_WidgetWin_1' and @ControlType='ControlType.Window' and contains(@Name,'Wire')]/*[@ControlType='ControlType.Custom']/*[@ControlType='ControlType.Custom']/*[@ControlType='ControlType.Custom']/*[@ControlType='ControlType.Custom']/*[@ControlType='ControlType.MenuItem' and contains(@Name, '%s')]",
 						name);
 
 		public static final Function<String, String> xpathMenuItem = (name) -> String
-				.format(xpathWindow
-						+ "//*[@ControlType='ControlType.MenuItem' and contains(@Name, '%s')]",
+				.format(xpathWindow+"/*[@ControlType='ControlType.Window']/*[@ControlType='ControlType.MenuBar']/*[@ControlType='ControlType.Custom']/*[@ControlType='ControlType.Menu']/*[@ControlType='ControlType.MenuItem' and contains(@Name, '%s')]",
 						name);
 	}
 

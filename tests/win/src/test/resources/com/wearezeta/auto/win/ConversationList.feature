@@ -52,7 +52,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id3438
+  @smoke @id3438 @torun
   Scenario Outline: Mute and unmute 1:1 conversation with menu bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
