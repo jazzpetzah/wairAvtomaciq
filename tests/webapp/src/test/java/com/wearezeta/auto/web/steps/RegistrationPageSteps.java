@@ -20,7 +20,6 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.UserState;
-import com.wearezeta.auto.web.pages.ContactListPage;
 import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
@@ -276,13 +275,13 @@ public class RegistrationPageSteps {
 			String content = EntityUtils.toString(entity);
 			Pattern p = Pattern.compile("data-url=\"(.*?)\"");
 			Matcher m = p.matcher(content);
-			while(m.find()) {
-			   String activationLink = m.group(1);
-			   LOG.info("Activation link: " + activationLink);
-			   httpGet = new HttpGet(activationLink);
-			   httpclient.execute(httpGet);
+			while (m.find()) {
+				String activationLink = m.group(1);
+				LOG.info("Activation link: " + activationLink);
+				httpGet = new HttpGet(activationLink);
+				httpclient.execute(httpGet);
 			}
-	    }
+		}
 
 		this.userToRegister.setUserState(UserState.Created);
 		// indexes in aliases start from 1
