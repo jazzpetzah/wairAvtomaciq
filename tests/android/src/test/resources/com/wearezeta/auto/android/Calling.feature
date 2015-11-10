@@ -445,7 +445,7 @@ Feature: Calling
       | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
   @id3180 @calling_advanced
-  Scenario Outline: (BUG AN-2816) Verify receiving 1to1 call during group call and accepting it
+  Scenario Outline: Verify receiving 1to1 call during group call and accepting it
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
