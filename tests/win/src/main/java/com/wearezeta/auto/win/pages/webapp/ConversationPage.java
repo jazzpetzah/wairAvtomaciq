@@ -385,7 +385,7 @@ public class ConversationPage extends WebPage {
 
 	public void clickAcceptCallButton() throws Exception {
 		final By locator = By
-				.xpath(WebAppLocators.ConversationPage.xpathAcceptCallButton);
+				.cssSelector(WebAppLocators.ConversationPage.cssAcceptCallButton);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator, MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Accept call button has not been shown after "
 				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
@@ -394,7 +394,7 @@ public class ConversationPage extends WebPage {
 
 	public void clickEndCallButton() throws Exception {
 		final By locator = By
-				.xpath(WebAppLocators.ConversationPage.xpathEndCallButton);
+				.cssSelector(WebAppLocators.ConversationPage.cssEndCallButton);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator, MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "End call button has not been shown after "
 				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
@@ -403,7 +403,7 @@ public class ConversationPage extends WebPage {
 
 	public void clickSilenceCallButton() throws Exception {
 		final By locator = By
-				.xpath(WebAppLocators.ConversationPage.xpathSilenceIncomingCallButton);
+				.cssSelector(WebAppLocators.ConversationPage.cssSilenceIncomingCallButton);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator, MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Silence call button has not been shown after "
 				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
