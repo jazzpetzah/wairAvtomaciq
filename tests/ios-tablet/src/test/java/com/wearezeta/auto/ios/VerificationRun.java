@@ -8,7 +8,8 @@ import cucumber.api.junit.Cucumber;
 @RunWith(Cucumber.class)
 @CucumberOptions(features = "src/test/resources", format = {
 		"html:target/report", "json:target/report.json",
-		"com.wearezeta.auto.ios.tools.IOSZetaFormatter" }, tags = { "@mute" })
+		"com.wearezeta.auto.ios.tools.IOSZetaFormatter" }, tags = { "@mute",
+		"~@obsolete" })
 public class VerificationRun {
 
 }
