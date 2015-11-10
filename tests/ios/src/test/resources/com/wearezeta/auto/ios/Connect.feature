@@ -276,7 +276,7 @@ Feature: Connect
       | Name      | Contact1 | Contact2 |
       | user1Name | vb003    | Dorothy  |
 
-  @regression @rc @id3223
+  @regression @rc @id3227
   Scenario Outline: Verify possibility of disconnecting from conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
