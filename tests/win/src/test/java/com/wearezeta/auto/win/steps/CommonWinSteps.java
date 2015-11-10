@@ -758,6 +758,23 @@ public class CommonWinSteps {
 	}
 
 	/**
+	 * Shows all elements for a specific locator. This step is meant for
+	 * debugging purposes.
+	 *
+	 *
+	 * @step ^Show elements for windows xpath \"(.*)\"$
+	 *
+	 * @param locator
+	 * @throws java.lang.Exception
+	 *
+	 */
+	@When("^Show elements for windows xpath \"(.*)\"$")
+	public void showLocator(String locator) throws Exception {
+		MainWirePage mainPage = winPagesCollection.getPage(MainWirePage.class);
+		mainPage.showElementsForXpathLocator(locator);
+	}
+
+	/**
 	 * Will click a menu bar item.
 	 *
 	 *
