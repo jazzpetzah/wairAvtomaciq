@@ -2,21 +2,22 @@ package com.wearezeta.auto.win.pages.win;
 
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.driver.ZetaWinDriver;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.win.common.WinExecutionContext;
 import com.wearezeta.auto.win.locators.WinLocators;
 
-import java.util.Map;
+import java.util.List;
 import java.util.concurrent.Future;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 public abstract class WinPage extends BasePage {
+
+	public static final Logger LOG = ZetaLogger.getLog(WinPage.class.getName());
 
 	private static final String MENU_ITEM_VERSION = "Version";
 	private static final String MENUBAR_ITEM_HELP = "Help";
@@ -60,11 +61,20 @@ public abstract class WinPage extends BasePage {
 		DriverUtils.waitUntilElementClickable(getDriver(), menuElement);
 		menuElement.click();
 		for (String item : items) {
-			By itemLocator = By.xpath(WinLocators.AppMenu.xpathMenuItem.apply(item));
+			By itemLocator = By.xpath(WinLocators.AppMenu.xpathMenuItem
+					.apply(item));
 			DriverUtils.waitUntilLocatorAppears(getDriver(), itemLocator);
 			WebElement itemElement = getDriver().findElement(itemLocator);
 			DriverUtils.waitUntilElementClickable(getDriver(), itemElement);
 			itemElement.click();
+		}
+	}
+
+	public void showElementsForXpathLocator(String locator) throws Exception {
+		By xpathLocator = By.xpath(locator);
+		List<WebElement> elements = getDriver().findElements(xpathLocator);
+		for (WebElement element : elements) {
+			LOG.debug(element.getAttribute("@Name"));
 		}
 	}
 
@@ -85,7 +95,6 @@ public abstract class WinPage extends BasePage {
 	public void startApp() throws Exception {
 		this.getDriver().navigate().to(WinExecutionContext.WIRE_APP_PATH);
 	}
-
 
 	public Dimension getDesktopSize() throws Exception {
 		throw new RuntimeException("Not implemented yet");
