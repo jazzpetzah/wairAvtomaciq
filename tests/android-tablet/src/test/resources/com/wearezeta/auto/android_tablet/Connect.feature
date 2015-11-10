@@ -65,7 +65,7 @@ Feature: Connect
       | user1Name | user2Name | 1 person waiting |
 
   @id2259 @regression @rc
-  Scenario Outline: (AN-2690) Accept connection request in portrait mode
+  Scenario Outline: Accept connection request in portrait mode
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
     Given I rotate UI to portrait
