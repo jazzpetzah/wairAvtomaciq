@@ -100,6 +100,14 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
         return this.getAndroidPeoplePickerPage().isGroupVisible(name);
     }
 
+    public boolean waitUntilAvatarIsInvisible(String name) throws Exception {
+        return this.getAndroidPeoplePickerPage().isUserInvisible(name);
+    }
+
+    public boolean waitUntilGroupAvatarIsInvisible(String name) throws Exception {
+        return this.getAndroidPeoplePickerPage().isGroupInvisible(name);
+    }
+
     public String getFirstPYMKItemName() throws Exception {
         return getAndroidPeoplePickerPage().getPYMKItemName(1);
     }
