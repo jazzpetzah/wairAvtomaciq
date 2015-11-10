@@ -1,5 +1,8 @@
 package com.wearezeta.auto.ios.steps;
 
+import org.junit.Assert;
+
+import com.wearezeta.auto.ios.IOSConstants;
 import com.wearezeta.auto.ios.pages.TabletDialogPage;
 
 import cucumber.api.java.en.When;
@@ -56,5 +59,12 @@ public class TabletDialogPageSteps {
 	public void IVerifyImageInIpadDialogSameAsTemplate(String filename)
 			throws Throwable {
 		getTabletDialogPage().isImageShown(filename);
+		
+		double score = getTabletDialogPage().isImageShown(filename); 
+				
+		Assert.assertTrue(
+				"Overlap between two images has no enough score. Expected >= "
+						+ IOSConstants.MIN_IMG_SCORE + ", current = " + score,
+				score >= IOSConstants.MIN_IMG_SCORE);
 	}
 }

@@ -3,7 +3,6 @@ package com.wearezeta.auto.ios.pages;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -12,7 +11,6 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.ios.IOSConstants;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class TabletDialogPage extends DialogPage {
@@ -27,7 +25,7 @@ public class TabletDialogPage extends DialogPage {
 		super(lazyDriver);
 	}
 	
-	public void isImageShown(String filename) throws Throwable{
+	public double isImageShown(String filename) throws Throwable{
 		
 		BufferedImage templateImage = takeImageScreenshot();
 		BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage
@@ -38,10 +36,8 @@ public class TabletDialogPage extends DialogPage {
 		
 		System.out.println("SCORE: " + score);
 		
-		Assert.assertTrue(
-				"Overlap between two images has no enough score. Expected >= "
-						+ IOSConstants.MIN_IMG_SCORE + ", current = " + score,
-				score >= IOSConstants.MIN_IMG_SCORE);
+		return score;
+		
 	}
 	
 	public CameraRollTabletPopoverPage pressAddPictureiPadButton() throws Exception {
