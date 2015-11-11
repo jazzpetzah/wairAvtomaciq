@@ -190,38 +190,31 @@ public class CommonOSXSteps {
 	}
 
 	private void startApp() throws Exception {
-		int retriesLeft = STARTUP_RETRIES;
-		boolean started;
 		Future<ZetaOSXDriver> osxDriverFuture;
 		Future<ZetaWebAppDriver> webDriverFuture;
-		do {
-			clearDrivers();
-			osxDriverFuture = createOSXDriver();
-			webDriverFuture = createWebDriver(osxDriverFuture);
 
-			// get drivers instantly
-			final ZetaOSXDriver osxDriver = osxDriverFuture.get();
-			final ZetaWebAppDriver webappDriver = webDriverFuture.get();
-			LOG.debug("Opening app");
-			osxDriver.navigate().to(WIRE_APP_PATH);// open app
+		clearDrivers();
+		osxDriverFuture = createOSXDriver();
+		webDriverFuture = createWebDriver(osxDriverFuture);
 
-			ZetaFormatter.setLazyDriver(osxDriverFuture);
+		// get drivers instantly
+		final ZetaOSXDriver osxDriver = osxDriverFuture.get();
+		final ZetaWebAppDriver webappDriver = webDriverFuture.get();
+		LOG.debug("Opening app");
+		osxDriver.navigate().to(WIRE_APP_PATH);// open app
 
-			osxPagesCollection.setFirstPage(new MainWirePage(osxDriverFuture));
-			MainWirePage mainWirePage = osxPagesCollection
-					.getPage(MainWirePage.class);
+		ZetaFormatter.setLazyDriver(osxDriverFuture);
 
-			LOG.debug("Activating app");
-			osxDriver.navigate().to(WIRE_APP_PATH);// activate app
-			waitForAppStartup(osxDriver);
-			mainWirePage.focusApp();
+		osxPagesCollection.setFirstPage(new MainWirePage(osxDriverFuture));
+		MainWirePage mainWirePage = osxPagesCollection
+				.getPage(MainWirePage.class);
 
-			started = waitForWebappLoaded(webappDriver);
-			retriesLeft--;
-		} while (retriesLeft > 0 && started == false);
-		if (!started) {
-			throw new IllegalStateException("Could not start wrapper");
-		}
+		LOG.debug("Activating app");
+		osxDriver.navigate().to(WIRE_APP_PATH);// activate app
+		waitForAppStartup(osxDriver);
+		mainWirePage.focusApp();
+
+		waitForWebappLoaded(webappDriver);
 		webappPagesCollection
 				.setFirstPage(new RegistrationPage(webDriverFuture));
 	}
@@ -248,7 +241,9 @@ public class CommonOSXSteps {
 		boolean started = DriverUtils
 				.waitUntilLocatorAppears(
 						webdriver,
-						By.cssSelector(WebAppLocators.RegistrationPage.cssSwitchToSignInButton),
+						By.cssSelector(WebAppLocators.RegistrationPage.cssSwitchToSignInButton
+								+ ","
+								+ WebAppLocators.ContactListPage.cssSelfProfileAvatar),
 						WRAPPER_STARTUP_TIMEOUT_SECONDS);
 		if (started) {
 			LOG.debug("Wrapper Webapp loaded");
@@ -812,6 +807,7 @@ public class CommonOSXSteps {
 	@When("^I restart the app$")
 	public void restartApp() throws Exception {
 		osxPagesCollection.getPage(MainWirePage.class).pressShortCutForQuit();
+		Thread.sleep(2000);
 		clearDrivers();
 		startApp();
 	}
