@@ -504,6 +504,44 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | SilenceItem |
       | user1Name | user2Name | user3Name | SILENCE       | SILENCE     |
 
+  @id4074 @staging
+  Scenario Outline: I can unmute group conversation from the conversation list (portrait)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Group <GroupChatName> gets silenced for user <Name>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    And I see the conversations list with conversations
+    And I see the conversation <GroupChatName> in my conversations list is silenced
+    When I swipe right the conversations list item <GroupChatName>
+    Then I see Conversation Actions overlay
+    When I select <NotifyItem> menu item on Conversation Actions overlay
+    Then I see the conversation <GroupChatName> in my conversations list is not silenced
+
+    Examples:
+      | Name      | Contact1  | Contact2  | NotifyItem | GroupChatName |
+      | user1Name | user2Name | user3Name | NOTIFY     | NOTIFY        |
+
+  @id4075 @staging
+  Scenario Outline: I can unmute group conversation from the conversation list (landscape)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Group <GroupChatName> gets silenced for user <Name>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    And I see the conversations list with conversations
+    And I see the conversation <GroupChatName> in my conversations list is silenced
+    When I swipe right the conversations list item <GroupChatName>
+    Then I see Conversation Actions overlay
+    When I select <NotifyItem> menu item on Conversation Actions overlay
+    Then I see the conversation <GroupChatName> in my conversations list is not silenced
+
+    Examples:
+      | Name      | Contact1  | Contact2  | NotifyItem | GroupChatName |
+      | user1Name | user2Name | user3Name | NOTIFY     | NOTIFY        |
+
 
 
 
