@@ -287,14 +287,11 @@ public final class WebAppLocators {
 
 		public static final String xpathJoinCallBar = "//div[contains(@class, 'join-menu') and contains(@class, 'on')]/*[contains(@class, 'join-menu-button')]";
 
-		public static String xpathAcceptCallButton = xpathCallingBarRoot
-				+ "//*[contains(@class, 'icon-check')]";
+		public static String cssAcceptCallButton = "[data-uie-name='do-call-controls-call-accept']";
 
-		public static String xpathEndCallButton = xpathCallingBarRoot
-				+ "//*[contains(@class, 'icon-close')]";
+		public static String cssEndCallButton = "[data-uie-name='do-call-controls-call-cancel']";
 
-		public static String xpathSilenceIncomingCallButton = xpathCallingBarRoot
-				+ "//*[contains(@class, 'icon-minus')]";
+		public static String cssSilenceIncomingCallButton = "[data-uie-name='do-call-controls-call-ignore']";
 
 		public static final String cssLabelOnOutgoingCall = "#call-controls .cc-label-message";
 
