@@ -434,6 +434,42 @@ Feature: Conversation List
       | Name      | Contact1  | SilenceItem |
       | user1Name | user2Name | SILENCE     |
 
+  @id4080 @staging
+  Scenario Outline: I can unmute 1:1 conversation from the conversation list (portrait)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact1> is silenced to user <Name>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    And I see the conversations list with conversations
+    And I see the conversation <Contact1> in my conversations list is silenced
+    When I swipe right the conversations list item <Contact1>
+    Then I see Conversation Actions overlay
+    When I select <NotifyItem> menu item on Conversation Actions overlay
+    Then I see the conversation <Contact1> in my conversations list is not silenced
+
+    Examples:
+      | Name      | Contact1  | NotifyItem |
+      | user1Name | user2Name | NOTIFY     |
+
+  @id4081 @staging
+  Scenario Outline: I can unmute 1:1 conversation from the conversation list (landscape)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact1> is silenced to user <Name>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    And I see the conversations list with conversations
+    And I see the conversation <Contact1> in my conversations list is silenced
+    When I swipe right the conversations list item <Contact1>
+    Then I see Conversation Actions overlay
+    When I select <NotifyItem> menu item on Conversation Actions overlay
+    Then I see the conversation <Contact1> in my conversations list is not silenced
+
+    Examples:
+      | Name      | Contact1  | NotifyItem |
+      | user1Name | user2Name | NOTIFY     |
+
 
 
 
