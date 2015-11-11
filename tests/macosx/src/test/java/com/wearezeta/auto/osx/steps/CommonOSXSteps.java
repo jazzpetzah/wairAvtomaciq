@@ -811,7 +811,7 @@ public class CommonOSXSteps {
 	 */
 	@When("^I restart the app$")
 	public void restartApp() throws Exception {
-		osxPagesCollection.getPage(MainWirePage.class).closeWindow();
+		osxPagesCollection.getPage(MainWirePage.class).pressShortCutForQuit();
 		clearDrivers();
 		startApp();
 	}
