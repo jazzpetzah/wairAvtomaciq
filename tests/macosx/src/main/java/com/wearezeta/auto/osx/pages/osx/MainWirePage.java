@@ -19,8 +19,6 @@ import org.openqa.selenium.Point;
 public class MainWirePage extends OSXPage {
 
 	public static final int APP_MAX_WIDTH = 1103;
-	private static final int APP_MIN_WIDTH = 780;
-	private static final int APP_MIN_HEIGHT = 600;
 
 	private static final int TITLEBAR_HEIGHT = 22;
 	private static final int SPACE_FOR_DOCK = 50;
@@ -75,14 +73,6 @@ public class MainWirePage extends OSXPage {
 		robot.keyRelease(KeyEvent.VK_META);
 	}
 
-	public boolean isMini() throws Exception {
-		Dimension size = getDriver().manage().window().getSize();
-		// TODO adjust for retina and non-retina
-		boolean minWidth = size.getWidth() == APP_MIN_WIDTH;
-		boolean minHeight = size.getHeight() == APP_MIN_HEIGHT;
-		return minWidth && minHeight;
-	}
-
 	public int getX() {
 		return window.getLocation().getX() - SPACE_FOR_DOCK;
 	}
@@ -105,18 +95,6 @@ public class MainWirePage extends OSXPage {
 
 	public boolean isY(int y) {
 		return y == window.getLocation().getY() - TITLEBAR_HEIGHT;
-	}
-
-	public boolean isApproximatelyWidth(int width) throws Exception {
-		int plusMinus = 5;
-		return getWidth() > (width - plusMinus)
-				&& getWidth() < (width + plusMinus);
-	}
-
-	public boolean isApproximatelyHeight(int height) throws Exception {
-		int plusMinus = 5;
-		return getHeight() > (height - plusMinus)
-				&& getHeight() < (height + plusMinus);
 	}
 
 	public void resizeByHand(int width, int height) throws Exception {

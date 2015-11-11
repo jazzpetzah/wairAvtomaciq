@@ -135,19 +135,6 @@ public class MainWirePageSteps {
 	}
 
 	/**
-	 * Verifies whether the app is in minimum size or not
-	 *
-	 * @step. ^I verify app is in minimum size$
-	 *
-	 * @throws Exception
-	 */
-	@When("^I verify app is in minimum size$")
-	public void IVerifyAppMini() throws Exception {
-		Assert.assertTrue(osxPagesCollection.getPage(MainWirePage.class)
-				.isMini());
-	}
-
-	/**
 	 * Resizes the app to the max by hand
 	 *
 	 * @step. ^I resize the app to the max by hand$
@@ -261,10 +248,9 @@ public class MainWirePageSteps {
 	 */
 	@When("^I verify app width is (\\d+) px and height is (\\d+) px$")
 	public void IVerifySizeOf(int width, int height) throws Exception {
-		MainWirePage mainWirePage = osxPagesCollection
-				.getPage(MainWirePage.class);
-		Assert.assertTrue(mainWirePage.isApproximatelyHeight(height));
-		Assert.assertTrue(mainWirePage.isApproximatelyWidth(width));
+		MainWirePage mainPage = osxPagesCollection.getPage(MainWirePage.class);
+		assertThat("Width", mainPage.getWidth(), equalTo(width));
+		assertThat("Height", mainPage.getHeight(), equalTo(height));
 	}
 
 }
