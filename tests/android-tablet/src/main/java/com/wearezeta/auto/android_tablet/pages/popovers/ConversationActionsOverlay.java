@@ -56,4 +56,8 @@ public class ConversationActionsOverlay extends AbstractPopoverContainer {
     public void confirmDeleteConversationAlert() throws Exception {
         this.getAndroidPageInstance(ContactListPage.class).confirmDeleteConversationAlert();
     }
+
+    public void clickLeaveCheckBox() throws Exception {
+        this.getAndroidPageInstance(ContactListPage.class).checkLeaveWhileDeleteCheckbox();
+    }
 }

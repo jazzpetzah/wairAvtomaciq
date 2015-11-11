@@ -58,4 +58,15 @@ public class ConversationActionsOverlaySteps {
     public void IConfirmConversationDeletion() throws Exception {
         getConversationActionsOverlay().confirmDeleteConversationAlert();
     }
+
+    /**
+     * Selects the leave check box during deletion
+     *
+     * @throws Throwable
+     * @step. ^I tap Leave Conversation check box on Conversation Actions overlay$
+     */
+    @When("^I tap Leave Conversation check box on Conversation Actions overlay$")
+    public void IClickTheLeaveCheckBoxDuringDelete() throws Throwable {
+        getConversationActionsOverlay().clickLeaveCheckBox();
+    }
 }

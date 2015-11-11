@@ -74,7 +74,7 @@ public abstract class WinPage extends BasePage {
 		By xpathLocator = By.xpath(locator);
 		List<WebElement> elements = getDriver().findElements(xpathLocator);
 		for (WebElement element : elements) {
-			LOG.debug(element.getAttribute("@Name"));
+			LOG.debug(element.getAttribute("Name")+element.getAttribute("ControlType"));
 		}
 	}
 

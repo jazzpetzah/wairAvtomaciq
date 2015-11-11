@@ -90,23 +90,37 @@ public class PeoplePickerPageSteps {
     /**
      * Check whether the particular user avatar is visible
      *
+     * @param shouldNotSee equals to null if "do not " part does not exist in the step
+     *                     description
      * @param name    user name/alias
      * @param isGroup is not null if group avatar should be verified instead of single user avatar
      * @throws Exception
      * @step. ^I see "(.*)" (group )?avatar on [Pp]eople [Pp]icker page$
      */
-    @When("^I see \"(.*)\" (group )?avatar on [Pp]eople [Pp]icker page$")
-    public void ISeeContactAvatar(String name, String isGroup) throws Exception {
-        if (isGroup == null) {
-            name = usrMgr.findUserByNameOrNameAlias(name).getName();
-            Assert.assertTrue(String.format(
-                            "The avatar for contact '%s' is not visible", name),
-                    getPeoplePickerPage().waitUntilAvatarIsVisible(name));
+    @When("^I (do not )?see \"(.*)\" (group )?avatar on [Pp]eople [Pp]icker page$")
+    public void ISeeContactAvatar(String shouldNotSee,String name, String isGroup) throws Exception {
+        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        if (shouldNotSee == null) {
+            if (isGroup == null) {
+                Assert.assertTrue(String.format(
+                        "The avatar for contact '%s' is not visible", name),
+                        getPeoplePickerPage().waitUntilAvatarIsVisible(name));
+            } else {
+                Assert.assertTrue(String.format(
+                        "The group avatar '%s' is not visible", name),
+                        getPeoplePickerPage().waitUntilGroupAvatarIsVisible(name));
+            }
         } else {
-            name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-            Assert.assertTrue(String.format(
-                            "The group avatar '%s' is not visible", name),
-                    getPeoplePickerPage().waitUntilGroupAvatarIsVisible(name));
+            if (isGroup == null) {
+                Assert.assertTrue(String.format(
+                        "The avatar for contact '%s' is visible", name),
+                        getPeoplePickerPage().waitUntilAvatarIsInvisible(name));
+            } else {
+                Assert.assertTrue(String.format(
+                        "The group avatar '%s' is visible", name),
+                        getPeoplePickerPage().waitUntilGroupAvatarIsInvisible(name));
+            }
+
         }
     }
 

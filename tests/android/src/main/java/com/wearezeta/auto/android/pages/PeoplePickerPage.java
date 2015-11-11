@@ -229,6 +229,16 @@ public class PeoplePickerPage extends AndroidPage {
                 By.xpath(xpathPeoplePickerGroupByName.apply(contact)));
     }
 
+    public boolean isUserInvisible(String contact) throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+                By.xpath(xpathPeoplePickerContactByName.apply(contact)));
+    }
+
+    public boolean isGroupInvisible(String contact) throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+                By.xpath(xpathPeoplePickerGroupByName.apply(contact)));
+    }
+
     // !!! Indexing starts from 1
 
     public String getPYMKItemName(int index) throws Exception {
