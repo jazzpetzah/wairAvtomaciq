@@ -402,3 +402,38 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | Image       | CallBackend | DeleteItem |
       | user1Name | user2Name | user3Name | DELETE        | testing.jpg | autocall    | DELETE     |
 
+  @id4082 @staging
+  Scenario Outline: I can mute 1:1 conversation from the conversation list (portrait)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    And I see the conversations list with conversations
+    When I swipe right the conversations list item <Contact1>
+    Then I see Conversation Actions overlay
+    When I select <SilenceItem> menu item on Conversation Actions overlay
+    Then I see the conversation <Contact1> in my conversations list is silenced
+
+    Examples:
+      | Name      | Contact1  | SilenceItem |
+      | user1Name | user2Name | SILENCE     |
+
+  @id4083 @staging
+  Scenario Outline: I can mute 1:1 conversation from the conversation list (landscape)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    And I see the conversations list with conversations
+    When I swipe right the conversations list item <Contact1>
+    Then I see Conversation Actions overlay
+    When I select <SilenceItem> menu item on Conversation Actions overlay
+    Then I see the conversation <Contact1> in my conversations list is silenced
+
+    Examples:
+      | Name      | Contact1  | SilenceItem |
+      | user1Name | user2Name | SILENCE     |
+
+
+
+
