@@ -470,6 +470,40 @@ Feature: Conversation List
       | Name      | Contact1  | NotifyItem |
       | user1Name | user2Name | NOTIFY     |
 
+  @id4076 @staging
+  Scenario Outline: I can mute group conversation from the conversation list (portrait)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    And I see the conversations list with conversations
+    When I swipe right the conversations list item <GroupChatName>
+    Then I see Conversation Actions overlay
+    When I select <SilenceItem> menu item on Conversation Actions overlay
+    Then I see the conversation <GroupChatName> in my conversations list is silenced
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | SilenceItem |
+      | user1Name | user2Name | user3Name | SILENCE       | SILENCE     |
+
+  @id4077 @staging
+  Scenario Outline: I can mute group conversation from the conversation list (landscape)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    And I see the conversations list with conversations
+    When I swipe right the conversations list item <GroupChatName>
+    Then I see Conversation Actions overlay
+    When I select <SilenceItem> menu item on Conversation Actions overlay
+    Then I see the conversation <GroupChatName> in my conversations list is silenced
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | SilenceItem |
+      | user1Name | user2Name | user3Name | SILENCE       | SILENCE     |
+
 
 
 
