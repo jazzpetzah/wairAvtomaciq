@@ -6,78 +6,83 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 
 import java.util.LinkedList;
 import java.util.concurrent.Callable;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 public class GoogleLoginPage extends
-		com.wearezeta.auto.web.pages.external.GoogleLoginPage {
+        com.wearezeta.auto.web.pages.external.GoogleLoginPage {
 
-	public GoogleLoginPage(Future<ZetaWebAppDriver> lazyDriver)
-			throws Exception {
-		super(lazyDriver);
-	}
+    @FindBy(id = "signIn")
+    private WebElement signInButton;
 
-	@Override
-	public void setEmail(String email) throws Exception {
-		executeOnLatestWindow(() -> {
-			super.setEmail(email);
-			return true;
-		});
-	}
+    public GoogleLoginPage(Future<ZetaWebAppDriver> lazyDriver)
+            throws Exception {
+        super(lazyDriver);
+    }
 
-	@Override
-	public void setPassword(String password) throws Exception {
-		executeOnLatestWindow(() -> {
-			super.setPassword(password);
-			return true;
-		});
-	}
+    @Override
+    public void setEmail(String email) throws Exception {
+        executeOnLatestWindow(() -> {
+            super.setEmail(email);
+            return true;
+        });
+    }
 
-	@Override
-	public boolean hasNextButton() throws Exception {
-		return executeOnLatestWindow(() -> {
-			return super.hasNextButton();
-		});
-	}
+    @Override
+    public void setPassword(String password) throws Exception {
+        executeOnLatestWindow(() -> {
+            super.setPassword(password);
+            return true;
+        });
+    }
 
-	@Override
-	public void clickNext() throws Exception {
-		executeOnLatestWindow(() -> {
-			super.clickNext();
-			return true;
-		});
-	}
+    @Override
+    public boolean hasNextButton() throws Exception {
+        return executeOnLatestWindow(() -> {
+            return super.hasNextButton();
+        });
+    }
 
-	@Override
-	public boolean hasApproveButton() throws Exception {
-		return executeOnLatestWindow(() -> {
-			return super.hasApproveButton();
-		});
-	}
+    @Override
+    public void clickNext() throws Exception {
+        executeOnLatestWindow(() -> {
+            super.clickNext();
+            return true;
+        });
+    }
 
-	@Override
-	public void clickApprove() throws Exception {
-		executeOnLatestWindow(() -> {
-			super.clickApprove();
-			return true;
-		});
-	}
+    @Override
+    public boolean hasApproveButton() throws Exception {
+        return executeOnLatestWindow(() -> {
+            return super.hasApproveButton();
+        });
+    }
 
-	@Override
-	public void clickSignIn() throws Exception {
-		executeOnLatestWindow(() -> {
-			super.clickSignIn();
-			return true;
-		});
-	}
+    @Override
+    public void clickApprove() throws Exception {
+        executeOnLatestWindow(() -> {
+            super.clickApprove();
+            return true;
+        });
+    }
 
-	private <T> T executeOnLatestWindow(Callable<T> function) throws Exception {
-		LinkedList<String> windowHandles = new LinkedList<>(getDriver()
-				.getWindowHandles());
-		// switch to latest window
-		getDriver().switchTo().window(windowHandles.getLast());
-		T result = function.call();
-		// switch to oldest window
-		getDriver().switchTo().window(windowHandles.getFirst());
-		return result;
-	}
+    @Override
+    public void clickSignIn() throws Exception {
+        executeOnLatestWindow(() -> {
+            signInButton.click();
+            return true;
+        });
+    }
+
+    private <T> T executeOnLatestWindow(Callable<T> function) throws Exception {
+        LinkedList<String> windowHandles = new LinkedList<>(getDriver()
+                .getWindowHandles());
+        // switch to latest window
+        getDriver().switchTo().window(windowHandles.getLast());
+        T result = function.call();
+        // switch to oldest window
+        getDriver().switchTo().window(windowHandles.getFirst());
+        return result;
+    }
 
 }
