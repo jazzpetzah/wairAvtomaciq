@@ -67,11 +67,7 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	public void hideKeyboard() throws Exception {
-		try {
-			this.getDriver().hideKeyboard();
-		} catch (WebDriverException e) {
-			log.debug("The keyboard seems to be already hidden.");
-		}
+		this.getDriver().hideKeyboard();
 	}
 
 	public void pressKeyboardSendButton() throws Exception {

@@ -1,6 +1,5 @@
 package com.wearezeta.auto.android.steps;
 
-import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.CallingOverlayPage;
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.common.CommonSteps;
@@ -123,7 +122,7 @@ public class DialogPageSteps {
      */
     @When("^I swipe on text input$")
     public void WhenISwipeOnTextInput() throws Exception {
-        getDialogPage().swipeOnCursorInput();
+        getDialogPage().swipeRightOnCursorInput();
     }
 
     /**
@@ -310,7 +309,7 @@ public class DialogPageSteps {
      */
     @When("^I scroll to the bottom of conversation view$")
     public void IScrollToTheBottom() throws Exception {
-        getDialogPage().tapDialogPageBottom();
+        getDialogPage().scrollToTheBottom();
     }
 
     /**

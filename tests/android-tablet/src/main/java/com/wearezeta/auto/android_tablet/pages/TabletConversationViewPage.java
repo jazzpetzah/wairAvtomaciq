@@ -118,7 +118,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 	}
 
 	public void swipeLeftOnTextInput() throws Exception {
-		getDialogPage().swipeOnCursorInput();
+		getDialogPage().swipeLeftOnCursorInput();
 	}
 
 	public void tapPingButton() throws Exception {
@@ -176,7 +176,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 	}
 
 	public void scrollToTheBottom() throws Exception {
-		getDialogPage().tapDialogPageBottom();
+		getDialogPage().scrollToTheBottom();
 	}
 
 	public Optional<BufferedImage> getRecentPictureScreenshot()

@@ -20,7 +20,7 @@ public class TabletGiphyPage extends AndroidTabletPage {
 	}
 
 	public void tapSendButton() throws Exception {
-		getAndroidGiphyPage().clickeSendButton();
+		getAndroidGiphyPage().clickSendButton();
 	}
 
 }

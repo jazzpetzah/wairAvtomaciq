@@ -24,10 +24,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	private static final Logger log = ZetaLogger
 			.getLog(OtherUserPersonalInfoPage.class.getSimpleName());
 
-	public static final String REMOVE_FROM_CONVERSATION_BUTTON = "Remove";
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.75;
-	public static final String LEAVE_CONVERSATION_BUTTON = "Leave conversation";
-	public static final String LEAVE_BUTTON = "LEAVE";
 
 	public static final String idConnectRequestUnblock = "zb__connect_request__unblock_button";
 	public static final String idSingleUserUnblock = "zb__single_user_participants__unblock_button";
@@ -230,11 +227,6 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		double score = ImageUtil.getOverlapScore(realImage, bgImage);
 		System.out.println(score);
 		return (score >= MIN_ACCEPTABLE_IMAGE_VALUE);
-	}
-
-	public boolean isParticipantExists(String name) throws Exception {
-		final By locator = By.xpath(xpathParticipantAvatarByName.apply(name));
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
 	public boolean isParticipantNotVisible(String name) throws Exception {
