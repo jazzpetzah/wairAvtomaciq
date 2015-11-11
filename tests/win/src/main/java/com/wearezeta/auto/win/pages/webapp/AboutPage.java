@@ -13,7 +13,6 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.WebPage;
-import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import java.util.LinkedList;
 import java.util.concurrent.Callable;
@@ -22,10 +21,6 @@ public class AboutPage extends WebPage {
 	@SuppressWarnings("unused")
 	private static final Logger LOG = ZetaLogger.getLog(AboutPage.class
 			.getName());
-
-	@SuppressWarnings("unused")
-	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-			.getInstance();
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.AboutPage.xpathVersion)
 	private WebElement version;

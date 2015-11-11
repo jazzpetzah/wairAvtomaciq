@@ -27,6 +27,9 @@ public class GoogleLoginPage extends WebPage {
 	@FindBy(id = "signIn")
 	private WebElement signInButton;
 
+	@FindBy(id = "submit_approve_access")
+	private WebElement approveAccessButton;
+
 	public GoogleLoginPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -49,8 +52,18 @@ public class GoogleLoginPage extends WebPage {
 		return this.getDriver().findElements(By.id("next")).size() > 0;
 	}
 
-	public void clickNext() {
+	public void clickNext() throws Exception {
 		nextButton.click();
+	}
+
+	public boolean hasApproveButton() throws Exception {
+		return getDriver().findElements(By.id("submit_approve_access")).size() > 0;
+	}
+
+	public void clickApprove() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				approveAccessButton) : "Can not click Approve button";
+		approveAccessButton.click();
 	}
 
 	public void clickSignIn() throws Exception {

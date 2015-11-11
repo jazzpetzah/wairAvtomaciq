@@ -14,12 +14,6 @@ import com.wearezeta.auto.web.pages.WebPage;
 
 public class GroupPeoplePopoverPage extends WebPage {
 
-	@FindBy(xpath = PopoverLocators.GroupPopover.xpathRootLocator)
-	private WebElement rootElement;
-
-	@FindBy(css = PopoverLocators.Shared.cssCreateGroupConversationButton)
-	private WebElement createGroupConversationButton;
-
 	@FindBy(how = How.XPATH, using = PopoverLocators.GroupPopover.ParticipantsListPage.xpathConversationTitle)
 	private WebElement conversationTitle;
 

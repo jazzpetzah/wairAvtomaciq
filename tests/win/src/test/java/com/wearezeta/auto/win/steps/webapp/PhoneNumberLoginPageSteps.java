@@ -9,7 +9,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
-import com.wearezeta.auto.win.pages.webapp.PhoneNumberLoginPage;
+import com.wearezeta.auto.web.pages.PhoneNumberLoginPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.Then;
@@ -85,7 +85,7 @@ public class PhoneNumberLoginPageSteps {
 	@When("^I click on forward button on phone number sign in$")
 	public void IClickOnForwardButtonOnPhoneNumberSignIn() throws Exception {
 		webappPagesCollection.getPage(PhoneNumberLoginPage.class)
-				.clickForwardButton();
+				.clickSignInButton();
 	}
 
 	/**

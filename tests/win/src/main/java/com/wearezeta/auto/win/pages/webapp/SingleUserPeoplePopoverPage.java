@@ -12,9 +12,6 @@ import com.wearezeta.auto.web.locators.PopoverLocators;
 import com.wearezeta.auto.web.pages.WebPage;
 
 public class SingleUserPeoplePopoverPage extends WebPage {
-	
-	@FindBy(xpath = PopoverLocators.SingleUserPopover.xpathRootLocator)
-	private WebElement rootElement;
 
 	@FindBy(xpath = PopoverLocators.SingleUserPopover.xpathUserName)
 	private WebElement userName;

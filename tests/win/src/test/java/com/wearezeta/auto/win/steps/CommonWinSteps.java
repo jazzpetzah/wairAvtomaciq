@@ -63,7 +63,7 @@ import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import static com.wearezeta.auto.win.common.WinExecutionContext.WINIUM_URL;
 import static com.wearezeta.auto.win.common.WinExecutionContext.WIRE_APP_FOLDER;
-import com.wearezeta.auto.win.pages.webapp.RegistrationPage;
+import com.wearezeta.auto.web.pages.RegistrationPage;
 import java.nio.file.Paths;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;

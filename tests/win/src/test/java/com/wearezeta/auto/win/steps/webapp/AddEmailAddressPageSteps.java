@@ -2,7 +2,7 @@ package com.wearezeta.auto.win.steps.webapp;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.win.pages.webapp.AddEmailAddressPage;
+import com.wearezeta.auto.web.pages.AddEmailAddressPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.Then;
@@ -99,9 +99,9 @@ public class AddEmailAddressPageSteps {
 	 */
 	@Then("^a red dot is shown inside the email field on add email address dialog$")
 	public void ARedDotIsShownOnTheEmailField() throws Exception {
-		assertThat("Red dot on email field",
+		assertThat("Error on email field",
 				webappPagesCollection.getPage(AddEmailAddressPage.class)
-						.isRedDotOnEmailField());
+						.isEmailFieldMarkedAsError());
 	}
 
 	/**
@@ -114,8 +114,8 @@ public class AddEmailAddressPageSteps {
 	 */
 	@Then("^a red dot is shown inside the password field on add email address dialog$")
 	public void ARedDotIsShownOnThePasswordField() throws Exception {
-		assertThat("Red dot on password field",
+		assertThat("Error on password field",
 				webappPagesCollection.getPage(AddEmailAddressPage.class)
-						.isRedDotOnPasswordField());
+						.isPasswordFieldMarkedAsError());
 	}
 }

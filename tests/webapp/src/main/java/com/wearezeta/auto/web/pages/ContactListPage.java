@@ -128,7 +128,7 @@ public class ContactListPage extends WebPage {
 	 *         comma character(s)
 	 * @throws Exception
 	 */
-	private String fixDefaultGroupConvoName(String conversationName,
+	protected String fixDefaultGroupConvoName(String conversationName,
 			boolean includeArchived, boolean throwOnError) throws Exception {
 		if (conversationName.contains(DEFAULT_GROUP_CONVO_NAMES_SEPARATOR)) {
 			final Set<String> initialNamesSet = new HashSet<String>(
