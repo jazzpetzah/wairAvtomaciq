@@ -40,12 +40,12 @@ Feature: Application
   @smoke @id3995
   Scenario: Verify size of sign in screen window
     When I ensure initial positioning
-    Then I verify app width is 460 px and height is 680 px
+    Then I verify app width is 403 px and height is 618 px
     And I resize the app to the max by hand
-    Then I verify app width is 460 px and height is 680 px
+    Then I verify app width is 403 px and height is 618 px
     When I ensure initial positioning
     And I resize the app to the min by hand
-    Then I verify app width is 460 px and height is 680 px
+    Then I verify app width is 403 px and height is 618 px
 
   @staging @id3807
   Scenario: I verify the installed app is not too big
@@ -89,6 +89,7 @@ Feature: Application
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When I click menu bar item "Wire" and menu item "Quit Wire"
+    And I wait for 5 seconds
     Then I verify app has quit
 
     Examples: 
@@ -98,4 +99,5 @@ Feature: Application
   @smoke @id3982
   Scenario: Verify I can quit the app using shortcut Alt + F4
     When I type shortcut combination to quit the app
+    And I wait for 5 seconds
     Then I verify app has quit

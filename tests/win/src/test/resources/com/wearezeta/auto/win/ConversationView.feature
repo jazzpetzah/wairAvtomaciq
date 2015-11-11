@@ -27,8 +27,10 @@ Feature: Conversation View
     Then I see my avatar on top of Contact list
     When I open conversation with <Contact>
     And I type shortcut combination to ping
+    And I wait for 1 seconds
     Then I see ping message <PING>
     When I type shortcut combination to ping
+    And I wait for 1 seconds
     Then I see ping message <PING_AGAIN>
 
     Examples: 
@@ -44,6 +46,7 @@ Feature: Conversation View
     Then I see my avatar on top of Contact list
     When I open conversation with <Contact>
     And I type shortcut combination to start a call
+    And I wait for 1 seconds
     Then I see the calling bar
 
     Examples: 
@@ -112,6 +115,7 @@ Feature: Conversation View
     Then I see my avatar on top of Contact list
     When I open conversation with <ChatName>
     And I type shortcut combination to start a call
+    And I wait for 1 seconds
     Then I see the calling bar
 
     Examples: 
@@ -164,8 +168,10 @@ Feature: Conversation View
     And I write random message
     Then I verify that random message was typed
     When I type shortcut combination to undo
+    And I wait for 1 seconds
     Then I verify that message "" was typed
     When I type shortcut combination to redo
+    And I wait for 1 seconds
     Then I verify that random message was typed
 
     Examples: 
@@ -204,7 +210,9 @@ Feature: Conversation View
     And I write random message
     Then I verify that random message was typed
     When I type shortcut combination to select all
+    And I wait for 1 seconds
     And I type shortcut combination to cut
+    And I wait for 1 seconds
     Then I verify that message "" was typed
 # We can not paste something in automation due to security
 #     When I type shortcut combination to paste
@@ -246,7 +254,9 @@ Feature: Conversation View
     And I write random message
     Then I verify that random message was typed
     When I type shortcut combination to select all
+    And I wait for 1 seconds
     And I type shortcut combination to copy
+    And I wait for 1 seconds
     Then I verify that random message was typed
 # We can not paste something in automation due to security
 #     When I type shortcut combination to paste

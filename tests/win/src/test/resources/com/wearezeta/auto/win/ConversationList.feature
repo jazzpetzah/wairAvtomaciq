@@ -78,8 +78,10 @@ Feature: Conversation List
     And I see my avatar on top of Contact list
     When I open conversation with <Contact>
     And I type shortcut combination to mute or unmute a conversation
+    And I wait for 2 seconds
     Then I see that conversation <Contact> is muted
     When I type shortcut combination to mute or unmute a conversation
+    And I wait for 2 seconds
     Then I see that conversation <Contact> is not muted
 
     Examples: 
@@ -134,8 +136,10 @@ Feature: Conversation List
     And I see my avatar on top of Contact list
     When I open conversation with <ChatName>
     And I type shortcut combination to mute or unmute a conversation
+    And I wait for 2 seconds
     Then I see that conversation <ChatName> is muted
     When I type shortcut combination to mute or unmute a conversation
+    And I wait for 2 seconds
     Then I see that conversation <ChatName> is not muted
 
     Examples: 
@@ -246,6 +250,7 @@ Feature: Conversation List
     And I see my avatar on top of Contact list
     When I open conversation with <Contact>
     And I type shortcut combination to archive a conversation
+    And I wait for 2 seconds
     Then I do not see Contact list with name <Contact>
 
     Examples: 
@@ -295,6 +300,7 @@ Feature: Conversation List
     And I see my avatar on top of Contact list
     When I open conversation with <ChatName>
     And I type shortcut combination to archive a conversation
+    And I wait for 2 seconds
     Then I do not see Contact list with name <ChatName>
 
     Examples: 
@@ -338,12 +344,16 @@ Feature: Conversation List
     Then I see my avatar on top of Contact list
     And I verify active conversation is at index 1
     When I type shortcut combination for next conversation
+    And I wait for 1 seconds
     And I verify active conversation is at index 1
     When I type shortcut combination for previous conversation
+    And I wait for 1 seconds
     Then I verify active conversation is at index 2
     When I type shortcut combination for previous conversation
+    And I wait for 1 seconds
     Then I verify active conversation is at index 3
     When I type shortcut combination for previous conversation
+    And I wait for 1 seconds
     Then I verify active conversation is at index 3
 
     Examples: 
