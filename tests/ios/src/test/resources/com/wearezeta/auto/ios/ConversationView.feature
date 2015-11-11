@@ -833,3 +833,22 @@ Feature: Conversation View
     Examples:
      | Login      | Password      | Name      | Contact   |   Picture   | ConversationType |
      | user1Email | user1Password | user1Name | user2Name | testing.jpg |    single user   |
+     
+  @staging @id715
+  Scenario Outline: Verify you still receive messages from blocked person in a group chat
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>, <Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>, <Contact2>
+    Given User <Name> blocks user <Contact1>
+    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
+    Given Contact <Contact1> sends image <Picture> to <ConversationType> conversation <GroupChatName>
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I tap on group chat with name <GroupChatName>
+    Then I see only 3 messages
+    
+    Examples:
+      |   Login    |   Password    |   Name    | Contact1   | Contact2  | GroupChatName |        Message         |   Picture   | ConversationType |
+      | user1Email | user1Password | user1Name | user2Name | user3Name  |   Caramba!    | He-hey, do you see it? | testing.jpg |      group       |
+      
+      
