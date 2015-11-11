@@ -126,17 +126,6 @@ public class DialogPageSteps {
     }
 
     /**
-     * Swipes the text input area to hide the different input options
-     *
-     * @throws Exception
-     * @step. ^I swipe left on text input$
-     */
-    @When("^I swipe left on text input$")
-    public void WhenISwipeLeftOnTextInput() throws Exception {
-        getDialogPage().swipeLeftOnCursorInput();
-    }
-
-    /**
      * Presses the image input button to open the camera or gallery
      *
      * @throws Exception

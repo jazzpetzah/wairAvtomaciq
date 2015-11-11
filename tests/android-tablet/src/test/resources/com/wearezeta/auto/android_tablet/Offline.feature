@@ -45,7 +45,7 @@ Feature: Offline Mode
     Then I see the message "<Message>" in the conversation view
     And I see unsent indicator next to the message "<Message>" in the conversation view
     When I hide keyboard
-    And I swipe left on text input in the conversation view
+    And I swipe right on text input in the conversation view
     And I tap Add Picture button in the conversation view
     And I tap Take Photo button in the conversation view
     And I confirm the picture for the conversation view

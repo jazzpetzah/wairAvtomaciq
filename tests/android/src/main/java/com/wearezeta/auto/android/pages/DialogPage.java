@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.concurrent.Future;
-import java.util.concurrent.ThreadFactory;
 import java.util.function.Function;
 
 import org.apache.log4j.Logger;
@@ -280,30 +279,6 @@ public class DialogPage extends AndroidPage {
         throw new RuntimeException(
                 String.format(
                         "Failed to swipe the text cursor on input field after %s retries!",
-                        MAX_SWIPE_RETRIES));
-    }
-
-    public void swipeLeftOnCursorInput() throws Exception {
-        final By fakeCursorLocator = By.id(idCursorArea);
-        int ntry = 1;
-        do {
-            DriverUtils.swipeLeft(this.getDriver(), cursorArea,
-                    DEFAULT_SWIPE_TIME);
-            final int currentCursorOffset = getDriver()
-                    .findElement(fakeCursorLocator).getLocation().getX();
-            if (currentCursorOffset < getDriver().manage().window().getSize()
-                    .getWidth() / 2) {
-                return;
-            }
-            log.debug(String
-                    .format("Failed to swipe left the text cursor. Retrying (%s of %s)...",
-                            ntry, MAX_SWIPE_RETRIES));
-            ntry++;
-            Thread.sleep(1000);
-        } while (ntry <= MAX_SWIPE_RETRIES);
-        throw new RuntimeException(
-                String.format(
-                        "Failed to swipe left the text cursor on input field after %s retries!",
                         MAX_SWIPE_RETRIES));
     }
 

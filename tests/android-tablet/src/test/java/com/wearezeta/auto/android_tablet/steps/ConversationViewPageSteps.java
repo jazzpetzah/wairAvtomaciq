@@ -274,12 +274,12 @@ public class ConversationViewPageSteps {
 	/**
 	 * Swipe on the text input field to show the available instruments
 	 * 
-	 * @step. ^I swipe left on text input in (?:the |\\s*)[Cc]onversation view$
+	 * @step. ^I swipe right on text input in (?:the |\\s*)[Cc]onversation view$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I swipe left on text input in (?:the |\\s*)[Cc]onversation view$")
-	public void ISwipeLeftOnTextInput() throws Exception {
+	@When("^I swipe right on text input in (?:the |\\s*)[Cc]onversation view$")
+	public void ISwipeOnTextInput() throws Exception {
 		getConversationViewPage().swipeOnTextInput();
 	}
 
