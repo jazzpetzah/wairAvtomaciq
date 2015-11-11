@@ -254,3 +254,19 @@ Feature: Conversation List
       | Name      | Contact1  |Contact2   | GroupChatName |
       | user1Name | user2Name | user3Name | UNMUTE        |
 
+  @id4088 @staging @torun
+  Scenario Outline: Verify options menu for outgoing connection request
+    Given There are 2 users where <Name> is me
+    Given <Name> sent connection request to <Contact1>
+    Given I sign in using my email or phone number
+    And I see Contact list with contacts
+    When I swipe right on a <Contact1>
+    Then I see ARCHIVE button in conversation settings menu at position 1
+    Then I see BLOCK button in conversation settings menu at position 2
+    Then I see CANCEL button in conversation settings menu at position 3
+
+
+    Examples:
+      | Name      | Contact1  |
+      | user1Name | user2Name |
+
