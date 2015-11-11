@@ -106,7 +106,7 @@ public class ContactListPage extends AndroidPage {
     private static final String idSearchButton = "gtv_pickuser__searchbutton";
     @FindBy(id = idSearchButton)
     private WebElement searchButton;
-    
+
     private static final String idLeaveCheckbox = "gtv__checkbox_icon";
     @FindBy(id = idLeaveCheckbox)
     private WebElement leaveWhileDeleteCheckbox;
@@ -444,7 +444,17 @@ public class ContactListPage extends AndroidPage {
         deleteConfirmAlertButton.click();
     }
 
-	public void checkLeaveWhileDeleteCheckbox() {
-		leaveWhileDeleteCheckbox.click();
-	}
+    public void checkLeaveWhileDeleteCheckbox() {
+        leaveWhileDeleteCheckbox.click();
+    }
+
+    public boolean isConvSettingsMenuItemVisible(String name) throws Exception {
+        final By locator = By.xpath(xpathConvoSettingsMenuItemByName
+                .apply(name));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean isMenuItemAtCorrectIndex(String name, int position) {
+        
+    }
 }
