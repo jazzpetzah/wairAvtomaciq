@@ -270,7 +270,7 @@ Feature: Conversation List
     When I swipe right the conversations list item <GroupChatName>
     Then I see Conversation Actions overlay
     When I select <DeleteItem> menu item on Conversation Actions overlay
-    And I click the Leave check box during delete
+    And I tap Leave Conversation check box on Conversation Actions overlay
     And I confirm conversation deletion on Conversation Actions overlay
     Then I do not see Conversation Actions overlay
     And I do not see conversation <GroupChatName> in my conversations list
@@ -300,7 +300,7 @@ Feature: Conversation List
     When I swipe right the conversations list item <GroupChatName>
     Then I see Conversation Actions overlay
     When I select <DeleteItem> menu item on Conversation Actions overlay
-    And I click the Leave check box during delete
+    And I tap Leave Conversation check box on Conversation Actions overlay
     And I confirm conversation deletion on Conversation Actions overlay
     And I swipe right to show the conversations list
     Then I do not see Conversation Actions overlay

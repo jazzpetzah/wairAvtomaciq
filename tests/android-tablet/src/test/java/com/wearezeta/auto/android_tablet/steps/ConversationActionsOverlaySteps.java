@@ -63,9 +63,9 @@ public class ConversationActionsOverlaySteps {
      * Selects the leave check box during deletion
      *
      * @throws Throwable
-     * @step. ^I click the Leave check box during delete$
+     * @step. ^I tap Leave Conversation check box on Conversation Actions overlay$
      */
-    @When("^I click the Leave check box during delete$")
+    @When("^I tap Leave Conversation check box on Conversation Actions overlay$")
     public void IClickTheLeaveCheckBoxDuringDelete() throws Throwable {
         getConversationActionsOverlay().clickLeaveCheckBox();
     }
