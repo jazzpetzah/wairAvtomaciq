@@ -280,7 +280,7 @@ public class ConversationViewPageSteps {
 	 */
 	@When("^I swipe left on text input in (?:the |\\s*)[Cc]onversation view$")
 	public void ISwipeLeftOnTextInput() throws Exception {
-		getConversationViewPage().swipeLeftOnTextInput();
+		getConversationViewPage().swipeOnTextInput();
 	}
 
 	/**

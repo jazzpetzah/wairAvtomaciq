@@ -117,8 +117,8 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
-	public void swipeLeftOnTextInput() throws Exception {
-		getDialogPage().swipeLeftOnCursorInput();
+	public void swipeOnTextInput() throws Exception {
+		getDialogPage().swipeRightOnCursorInput();
 	}
 
 	public void tapPingButton() throws Exception {
