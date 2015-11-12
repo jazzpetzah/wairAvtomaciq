@@ -111,8 +111,9 @@ public class CommonOSXSteps {
 		capabilities.setCapability("platformName",
 				OSXExecutionContext.CURRENT_SECONDARY_PLATFORM.name());
 		LoggingPreferences logPreferences = new LoggingPreferences();
-		logPreferences.enable(LogType.BROWSER, Level.ALL);
-		logPreferences.enable(LogType.PERFORMANCE, Level.ALL);
+		logPreferences.enable(LogType.BROWSER, Level.INFO);
+		logPreferences.enable(LogType.PERFORMANCE, Level.INFO);
+		log.info("Loglevel for browser: " + logPreferences.getLevel(LogType.BROWSER));
 		capabilities
 				.setCapability(CapabilityType.LOGGING_PREFS, logPreferences);
 
