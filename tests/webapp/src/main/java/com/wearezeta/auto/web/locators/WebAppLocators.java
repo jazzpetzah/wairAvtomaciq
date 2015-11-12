@@ -279,8 +279,11 @@ public final class WebAppLocators {
 		public static String xpathCallingBarRoot = "//*[contains(@class, 'call-menu') and contains(@class, 'on')]";
 
 		public static final Function<String, String> xpathCallingBarRootByName = text -> String
-				.format(xpathCallingBarRoot + "//span[contains(text(),'%s')]",
-						text);
+				.format(xpathCallingBarRoot
+						+ "//span[contains(text(),'%s')]|"
+						+ xpathCallingBarRoot
+						+ "//*[contains(@class, 'cc-avatar-label') and text()='%s']",
+						text, text);
 
 		public static final String xpathJoinCallBar = "//div[contains(@class, 'join-menu') and contains(@class, 'on')]/*[contains(@class, 'join-menu-button')]";
 
