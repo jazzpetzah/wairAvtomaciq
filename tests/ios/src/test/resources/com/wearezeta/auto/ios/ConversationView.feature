@@ -851,7 +851,7 @@ Feature: Conversation View
       |   Login    |   Password    |   Name    | Contact1   | Contact2  | GroupChatName |        Message         |   Picture   | ConversationType |
       | user1Email | user1Password | user1Name | user2Name | user3Name  |   Caramba!    | He-hey, do you see it? | testing.jpg |      group       |
       
-  @torun @staging @id1245
+  @staging @id1245
   Scenario Outline: Verify cursor swiping is disabled when you scroll back into a conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
