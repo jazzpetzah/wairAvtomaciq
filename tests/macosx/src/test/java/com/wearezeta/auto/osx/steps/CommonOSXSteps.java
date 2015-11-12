@@ -110,12 +110,6 @@ public class CommonOSXSteps {
 		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 		capabilities.setCapability("platformName",
 				OSXExecutionContext.CURRENT_SECONDARY_PLATFORM.name());
-		LoggingPreferences logPreferences = new LoggingPreferences();
-		logPreferences.enable(LogType.BROWSER, Level.INFO);
-		logPreferences.enable(LogType.PERFORMANCE, Level.INFO);
-		log.info("Loglevel for browser: " + logPreferences.getLevel(LogType.BROWSER));
-		capabilities
-				.setCapability(CapabilityType.LOGGING_PREFS, logPreferences);
 
 		setExtendedLoggingLevel(capabilities,
 				OSXExecutionContext.EXTENDED_LOGGING_LEVEL);
@@ -163,7 +157,7 @@ public class CommonOSXSteps {
 			DesiredCapabilities capabilities, String loggingLevelName) {
 		final LoggingPreferences logs = new LoggingPreferences();
 		// set it to SEVERE by default
-		Level level = Level.SEVERE;
+		Level level = Level.ALL;
 		try {
 			level = Level.parse(loggingLevelName);
 		} catch (IllegalArgumentException e) {
@@ -173,7 +167,7 @@ public class CommonOSXSteps {
 		logs.enable(LogType.BROWSER, level);
 		// logs.enable(LogType.CLIENT, Level.ALL);
 		// logs.enable(LogType.DRIVER, Level.ALL);
-		// logs.enable(LogType.PERFORMANCE, Level.ALL);
+		logs.enable(LogType.PERFORMANCE, Level.ALL);
 		// logs.enable(LogType.PROFILER, Level.ALL);
 		// logs.enable(LogType.SERVER, Level.ALL);
 		capabilities.setCapability(CapabilityType.LOGGING_PREFS, logs);
