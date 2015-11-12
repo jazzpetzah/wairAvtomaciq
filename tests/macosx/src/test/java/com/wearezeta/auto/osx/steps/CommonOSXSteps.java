@@ -113,6 +113,10 @@ public class CommonOSXSteps {
 		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 		capabilities.setCapability("platformName",
 				OSXExecutionContext.CURRENT_SECONDARY_PLATFORM.name());
+		LoggingPreferences logPreferences = new LoggingPreferences();
+		logPreferences.enable(LogType.BROWSER, Level.ALL);
+		capabilities
+				.setCapability(CapabilityType.LOGGING_PREFS, logPreferences);
 
 		setExtendedLoggingLevel(capabilities,
 				OSXExecutionContext.EXTENDED_LOGGING_LEVEL);
@@ -877,10 +881,8 @@ public class CommonOSXSteps {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	private List<LogEntry> getBrowserLog(RemoteWebDriver driver) {
-		return IteratorUtils.toList((Iterator<LogEntry>) driver.manage().logs()
-				.get(LogType.BROWSER).iterator());
+		return driver.manage().logs().get(LogType.BROWSER).getAll();
 	}
 
 	private void writeBrowserLogsIntoMainLog(RemoteWebDriver driver) {
@@ -888,7 +890,8 @@ public class CommonOSXSteps {
 		if (!logEntries.isEmpty()) {
 			log.debug("BROWSER CONSOLE LOGS:");
 			for (LogEntry logEntry : logEntries) {
-				log.debug(logEntry.getMessage());
+				log.debug(logEntry.getTimestamp() + ": [" + logEntry.getLevel()
+						+ "] " + logEntry.getMessage());
 			}
 			log.debug("--- END OF LOG ---");
 		}
