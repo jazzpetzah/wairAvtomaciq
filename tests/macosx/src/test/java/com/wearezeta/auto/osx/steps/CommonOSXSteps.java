@@ -167,7 +167,7 @@ public class CommonOSXSteps {
 		logs.enable(LogType.BROWSER, level);
 		// logs.enable(LogType.CLIENT, Level.ALL);
 		// logs.enable(LogType.DRIVER, Level.ALL);
-		logs.enable(LogType.PERFORMANCE, Level.ALL);
+		// logs.enable(LogType.PERFORMANCE, Level.ALL);
 		// logs.enable(LogType.PROFILER, Level.ALL);
 		// logs.enable(LogType.SERVER, Level.ALL);
 		capabilities.setCapability(CapabilityType.LOGGING_PREFS, logs);
