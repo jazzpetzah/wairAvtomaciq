@@ -63,7 +63,6 @@ Feature: Calling
     And I tap the conversation <GroupChatName>
     And I see the conversation view
     And <Contact1> calls <GroupChatName> using <CallBackend2>
-    And I see generic calling overlay
     And I tap <AcceptBtnName> button on the calling overlay
     And I wait for 10 seconds
     And I see calling overlay Big bar
