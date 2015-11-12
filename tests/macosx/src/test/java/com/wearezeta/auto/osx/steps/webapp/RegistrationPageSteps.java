@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -278,7 +279,8 @@ public class RegistrationPageSteps {
 			   String activationLink = m.group(1);
 			   LOG.info("Activation link: " + activationLink);
 			   httpGet = new HttpGet(activationLink);
-			   httpclient.execute(httpGet);
+			   CloseableHttpResponse response = httpclient.execute(httpGet);
+			   LOG.info("Status: " + response.getStatusLine());
 			}
 	    }
 
