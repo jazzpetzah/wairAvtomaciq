@@ -207,7 +207,7 @@ Feature: Connect
       | user1Name | user2Name | 1 person waiting |
 
   @id553 @regression @rc
-  Scenario Outline: I want to see that the other person has accepted the connect request in the conversation view
+  Scenario Outline: (BUG AN-3004) I want to see that the other person has accepted the connect request in the conversation view
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
     Given I see Contact list with no contacts
