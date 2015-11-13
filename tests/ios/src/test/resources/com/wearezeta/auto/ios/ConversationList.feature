@@ -478,7 +478,25 @@ Feature: Conversation List
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
-    
+
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @staging @id1075
+  Scenario Outline: Verify messages are marked as read with disappearing unread dot
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Name> change accent color to <Color>
+    Given Contact <Contact> send number <Number> of message to user <Name>
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I see 1 unread message indicator in list for contact <Contact>
+    And I tap on contact name <Contact>
+    And I see dialog page
+    And I return to the chat list
+    Then I dont see unread message indicator in list for contact <Contact>
+
+    Examples: 
+      | Name      | Contact   | Color           | Number |
+      | user1Name | user2Name | StrongLimeGreen | 1      |

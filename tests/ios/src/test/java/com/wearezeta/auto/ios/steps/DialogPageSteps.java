@@ -1157,4 +1157,29 @@ public class DialogPageSteps {
 	public void ITapCopyBadge() throws Exception {
 		getDialogPage().clickPopupCopyButton();
 	}
+	
+	/**
+	 * Verify plus icon is replaced with user avatar icon
+	 * 
+	 * @step. ^I see plus icon is changed to user avatar icon$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see plus icon is changed to user avatar icon$")
+	public void ISeePluseIconChangedToUserAvatar() throws Exception {
+		Assert.assertFalse("Plus icon is still visible", getDialogPage().isPlusButtonVisible());
+		Assert.assertTrue("User avatar is not visible", getDialogPage().isUserAvatarNextToInputVisible());
+	}
+	
+	/**
+	 * Clear conversation text input
+	 * 
+	 * @step. I clear conversation text input$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I clear conversation text input$")
+	public void IClearConversationTextInput() throws Exception {
+		getDialogPage().clearTextInput();
+	}
 }

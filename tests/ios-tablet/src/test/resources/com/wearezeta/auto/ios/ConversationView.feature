@@ -1248,14 +1248,14 @@ Feature: Conversation View
     When I tap on contact name <Contact2>
     And I see dialog page
     And I tap on contact name <Contact1>
-	And I see dialog page
-	Then I see Close input options button is not visible
-	And I see controller buttons can not be visible
-	And I see the message in input field
+    And I see dialog page
+    Then I see Close input options button is not visible
+    And I see controller buttons can not be visible
+    And I see the message in input field
 
     Examples: 
-      | Name      | Contact1   | Contact2  |
-      | user1Name | user2Name  | user3Name |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @regression @id2393
   Scenario Outline: Verify possibility to copy image in the conversation view [PORTRAIT]
@@ -1275,8 +1275,8 @@ Feature: Conversation View
     Then I see new photo in the dialog
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |   Picture   | ConversationType |
-      | user1Email | user1Password | user1Name | user2Name | testing.jpg |    single user   |
+      | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
+      | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
 
   @regression @id4008
   Scenario Outline: Verify possibility to copy image in the conversation view [LANDSCAPE]
@@ -1298,8 +1298,8 @@ Feature: Conversation View
     Then I see new photo in the dialog
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |   Picture   | ConversationType |
-      | user1Email | user1Password | user1Name | user2Name | testing.jpg |    single user   |
+      | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
+      | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
 
   @regression @id3964
   Scenario Outline: Verify posting in a 1-to-1 conversation without content [PORTRAIT]
@@ -1370,11 +1370,11 @@ Feature: Conversation View
     And I tap download button on fullscreen page
     And I tap close fullscreen page button
     Then I verify image in iPad dialog is same as template <Picture>
-    
-    Examples:
-     | Login      | Password      | Name      | Contact   |   Picture   | ConversationType |
-     | user1Email | user1Password | user1Name | user2Name | testing.jpg |    single user   |
-    
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
+      | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
+
   @staging @id4084
   Scenario Outline: Verify downloading images in fullscreen [LANDSCAPE]
     Given There are 2 users where <Name> is me
@@ -1392,11 +1392,11 @@ Feature: Conversation View
     And I tap download button on fullscreen page
     And I tap close fullscreen page button
     Then I verify image in iPad dialog is same as template <Picture>
-    
-    Examples:
-     | Login      | Password      | Name      | Contact   |   Picture   | ConversationType |
-     | user1Email | user1Password | user1Name | user2Name | testing.jpg |    single user   |
-    
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
+      | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
+
   @staging @id2334
   Scenario Outline: Verify you still receive messages from blocked person in a group chat [PORTRAIT]
     Given There are 3 users where <Name> is me
@@ -1409,11 +1409,11 @@ Feature: Conversation View
     When I see Contact list with my name <Name>
     And I tap on group chat with name <GroupChatName>
     Then I see only 3 messages
-    
-    Examples:
-      |   Login    |   Password    |   Name    | Contact1   | Contact2  | GroupChatName |        Message         |   Picture   | ConversationType |
-      | user1Email | user1Password | user1Name | user2Name | user3Name  |   Caramba!    | He-hey, do you see it? | testing.jpg |      group       |
-      
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message                | Picture     | ConversationType |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | Caramba!      | He-hey, do you see it? | testing.jpg | group            |
+
   @staging @id4085
   Scenario Outline: Verify you still receive messages from blocked person in a group chat [LANDSCAPE]
     Given There are 3 users where <Name> is me
@@ -1422,15 +1422,16 @@ Feature: Conversation View
     Given User <Name> blocks user <Contact1>
     Given User <Contact1> sent message <Message> to conversation <GroupChatName>
     Given Contact <Contact1> sends image <Picture> to <ConversationType> conversation <GroupChatName>
+    Given I rotate UI to landscape
     Given I sign in using my email or phone number
     When I see Contact list with my name <Name>
     And I tap on group chat with name <GroupChatName>
     Then I see only 3 messages
-    
-    Examples:
-      |   Login    |   Password    |   Name    | Contact1   | Contact2  | GroupChatName |        Message         |   Picture   | ConversationType |
-      | user1Email | user1Password | user1Name | user2Name | user3Name  |   Caramba!    | He-hey, do you see it? | testing.jpg |      group       |
-      
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message                | Picture     | ConversationType |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | Caramba!      | He-hey, do you see it? | testing.jpg | group            |
+
   @staging @id2381
   Scenario Outline: Verify cursor swiping is disabled when you scroll back into a conversation [PORTRAIT]
     Given There are 2 users where <Name> is me
@@ -1443,28 +1444,64 @@ Feature: Conversation View
     And I tap on text input
     And I scroll to the beginning of the conversation
     And I swipe the text input cursor
-    Then I see controller buttons can not be visible 
-    
-    Examples:
-    |    Login   |   Password    |   Name    |  Contact  |   Picture   | ConversationType |
-    | user1Email | user1Password | user1Name | user2Name | testing.jpg |    single user   |
-      
+    Then I see controller buttons can not be visible
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
+      | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
+
   @staging @id4086
   Scenario Outline: Verify cursor swiping is disabled when you scroll back into a conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
     Given User <Name> sent long message to conversation <Contact>
+    Given I rotate UI to landscape
     Given I sign in using my email or phone number
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact>
     And I tap on text input
     And I scroll to the beginning of the conversation
     And I swipe the text input cursor
-    Then I see controller buttons can not be visible 
-    
-    Examples:
-    |    Login   |   Password    |   Name    |  Contact  |   Picture   | ConversationType |
-    | user1Email | user1Password | user1Name | user2Name | testing.jpg |    single user   |
-      
-      
+    Then I see controller buttons can not be visible
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
+      | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
+
+  @staging @id2383
+  Scenario Outline: Verify people icon is changed on avatar with opening keyboard and back [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I see plus button next to text input
+    And I type the message
+    And I see plus icon is changed to user avatar icon
+    And I clear conversation text input
+    Then I see plus button next to text input
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @staging @id4087
+  Scenario Outline: Verify people icon is changed on avatar with opening keyboard and back [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I see plus button next to text input
+    And I type the message
+    And I see plus icon is changed to user avatar icon
+    And I clear conversation text input
+    Then I see plus button next to text input
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |

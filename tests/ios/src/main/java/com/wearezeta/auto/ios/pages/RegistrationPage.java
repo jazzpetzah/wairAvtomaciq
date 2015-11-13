@@ -55,6 +55,9 @@ public class RegistrationPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathYourName)
 	private WebElement yourName;
 
+	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathYourFilledName)
+	private WebElement yourFilledName;
+	
 	@FindBy(how = How.NAME, using = IOSLocators.nameYourEmail)
 	private WebElement yourEmail;
 
@@ -108,7 +111,7 @@ public class RegistrationPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathPhoneNumber)
 	private WebElement phoneNumber;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.namePhoneNumberField)
 	private WebElement phoneNumberField;
 
@@ -141,7 +144,7 @@ public class RegistrationPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.nameResendCodeButton)
 	private WebElement resendCodeButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.Alerts.nameInvalidCode)
 	private WebElement invalidCodeAlert;
 
@@ -236,7 +239,8 @@ public class RegistrationPage extends IOSPage {
 		inputActivationCode(CommonUtils.generateRandomXdigits(6));
 	}
 
-	public void clickResendCodeButton() {
+	public void clickResendCodeButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), resendCodeButton);
 		resendCodeButton.click();
 	}
 
@@ -463,7 +467,11 @@ public class RegistrationPage extends IOSPage {
 	}
 
 	public String getUsernameFieldValue() {
-		return yourName.getText();
+		return yourFilledName.getText();
+	}
+
+	public boolean userNameContainSpaces() {
+		return getUsernameFieldValue().contains(" ");
 	}
 
 	public String getEmailFieldValue() {
@@ -573,7 +581,7 @@ public class RegistrationPage extends IOSPage {
 	public void reSendActivationCode() throws Exception {
 		DriverUtils.waitUntilElementClickable(getDriver(), reSendButton);
 	}
-	
+
 	public boolean isInvalidCodeAlertShown() throws Exception {
 		DriverUtils.waitUntilAlertAppears(getDriver());
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),

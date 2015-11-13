@@ -645,6 +645,8 @@ public final class IOSLocators {
 		public static final String xpathConversationWindow = "//UIATableView";
 
 		public static final String xpathImage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[2]";
+		
+		public static final String xpathUserAvatarNextToInput = "//UIAImage[following-sibling::UIATextView[@name='ConversationTextInputField'] and @visible='true']";
 	}
 
 	public final class DialogInfoPage {
@@ -682,6 +684,7 @@ public final class IOSLocators {
 		public static final String nameTermOfUsePage = "By continuing you agree to the Wire Terms of Use.";
 		public static final String nameResendCodeButton = "RESEND";
 		public static final String namePhoneNumberField = "PhoneNumberField";
+		public static final String xpathYourFilledName = "//UIATextField[preceding-sibling::UIAStaticText[@value='What should we call you?' or @value='Create an account']]";
 	}
 
 	public final class LoginPage {

@@ -331,6 +331,46 @@ public class RegistrationPageSteps {
 		getRegistrationPage().inputName();
 	}
 
+	/**
+	 * Fill in name field username with leading and trailing spaces
+	 * 
+	 * @step. ^I fill in name (.*) with leading and trailing spaces and hit
+	 *        Enter$
+	 * 
+	 * @param name
+	 *            username
+	 * @throws Exception
+	 */
+	@When("^I fill in name (.*) with leading and trailing spaces and hit Enter$")
+	public void IInputNameWithSpacesAndHitEnter(String name) throws Exception {
+		getRegistrationPage().setName("  " + name + "  ");
+		getRegistrationPage().inputName();
+	}
+
+	/**
+	 * Fill in name field username with leading and trailing spaces on iPad
+	 * 
+	 * @step. ^I fill in name (.*) with leading and trailing spaces on iPad
+	 * 
+	 * @param name
+	 *            username
+	 * @throws Exception
+	 */
+	@When("^I fill in name (.*) with leading and trailing spaces on iPad$")
+	public void IInputNameWithSpacesOnIpad(String name) throws Exception {
+		try {
+			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
+		} catch (NoSuchUserException e) {
+			if (this.userToRegister == null) {
+				this.userToRegister = new ClientUser();
+			}
+			this.userToRegister.setName(name);
+			this.userToRegister.clearNameAliases();
+			this.userToRegister.addNameAlias(name);
+		}
+		getRegistrationPage().setName("  " + userToRegister.getName() + "  ");
+	}
+
 	@Then("^I verify that my username is at most (\\d+) characters long$")
 	public void IVerifyUsernameLength(int charactersLimit) throws Exception {
 		String realUserName = getRegistrationPage().getUsernameFieldValue();
@@ -358,6 +398,29 @@ public class RegistrationPageSteps {
 		} else {
 			getRegistrationPage().setEmail(
 					this.userToRegister.getEmail() + "\n");
+		}
+	}
+
+	/**
+	 * Step that should be used for iOS registration tests before starting
+	 * monitoring email
+	 * 
+	 * @step. ^My user email is (.*)$
+	 * 
+	 * @param email
+	 *            user email
+	 * @throws Exception
+	 */
+	@When("^My user email is (.*)$")
+	public void UserToRegisterEmailSettinTo(String email) throws Exception {
+		try {
+			String realEmail = usrMgr.findUserByEmailOrEmailAlias(email)
+					.getEmail();
+			this.userToRegister.setEmail(realEmail);
+		} catch (NoSuchUserException e) {
+			if (this.userToRegister == null) {
+				this.userToRegister = new ClientUser();
+			}
 		}
 	}
 
@@ -612,7 +675,7 @@ public class RegistrationPageSteps {
 	public void ISeeEmailVerificationReminder() throws Exception {
 		Assert.assertTrue(getRegistrationPage().isEmailVerifPromptVisible());
 	}
-	
+
 	/**
 	 * Verifies whether the notification invalid code is shown
 	 * 
@@ -624,6 +687,19 @@ public class RegistrationPageSteps {
 	public void ISeeInvalidEmailAlert() throws Exception {
 		Assert.assertTrue("I don't see invalid code alert",
 				getRegistrationPage().isInvalidCodeAlertShown());
+	}
+
+	/**
+	 * Verifies that spaces in name field are trimmed
+	 * 
+	 * @step. ^I verify name input do not contains spaces$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I verify name input do not contains spaces$")
+	public void IVerifyNameDoNotContainSpaces() throws Exception {
+		Assert.assertFalse("Username field contains spaces",
+				getRegistrationPage().userNameContainSpaces());
 	}
 
 }
