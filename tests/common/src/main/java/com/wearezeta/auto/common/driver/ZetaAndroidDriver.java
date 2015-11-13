@@ -1,10 +1,12 @@
 package com.wearezeta.auto.common.driver;
 
 import com.google.common.base.Throwables;
+import com.google.common.collect.ImmutableMap;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.ocr.OnScreenKeyboardScanner;
+import io.appium.java_client.MobileCommand;
 import io.appium.java_client.android.AndroidDriver;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
@@ -16,7 +18,6 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.HasTouchScreen;
 import org.openqa.selenium.interactions.TouchScreen;
 import org.openqa.selenium.interactions.touch.TouchActions;
-import org.openqa.selenium.remote.DriverCommand;
 import org.openqa.selenium.remote.RemoteTouchScreen;
 import org.openqa.selenium.remote.Response;
 
@@ -45,7 +46,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements
 
         final int code;
 
-        private SurfaceOrientation(int code) {
+        SurfaceOrientation(int code) {
             this.code = code;
         }
 
@@ -284,6 +285,13 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements
         try {
             return super.execute(driverCommand, parameters);
         } catch (WebDriverException e) {
+            if (driverCommand.equals(MobileCommand.HIDE_KEYBOARD)) {
+                log.debug("The keyboard seems to be already hidden.");
+                final Response response = new Response();
+                response.setSessionId(this.getSessionId().toString());
+                response.setStatus(HttpStatus.SC_OK);
+                return response;
+            }
             if (e.getMessage().contains(SERVER_SIDE_ERROR_SIGNATURE)) {
                 final long millisecondsStarted = System.currentTimeMillis();
                 while (System.currentTimeMillis() - millisecondsStarted <= DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS) {
@@ -308,6 +316,11 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements
                             driverCommand));
             throw e;
         }
+    }
+
+    @Override
+    protected Response execute(String command) {
+        return this.execute(command, ImmutableMap.<String, Object>of());
     }
 
     private static String getAdbOutput(String cmdLine) throws Exception {
@@ -352,7 +365,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements
      */
     @Override
     public ScreenOrientation getOrientation() {
-        SurfaceOrientation value = SurfaceOrientation.ROTATION_0;
+        SurfaceOrientation value;
         try {
             value = getSurfaceOrientation();
         } catch (Exception e) {

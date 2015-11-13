@@ -6,6 +6,7 @@ import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
 import cucumber.api.java.en.When;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 import org.junit.Assert;
 import org.openqa.selenium.Dimension;
@@ -13,6 +14,7 @@ import org.openqa.selenium.Dimension;
 public class MainWirePageSteps {
 
 	private final static int OSX_TITLEBAR_HEIGHT = 24;
+	private final static int DEVIATION_ALLOWANCE_IN_PX = 5;
 
 	private final OSXPagesCollection osxPagesCollection = OSXPagesCollection
 			.getInstance();
@@ -122,23 +124,14 @@ public class MainWirePageSteps {
 			maxHeight = desktopSize.getHeight() - dockSize.getHeight()
 					- OSX_TITLEBAR_HEIGHT;
 		}
-		assertThat("Height", mainPage.getHeight(), equalTo(maxHeight));
+		// check if height in allowance
+		assertThat("Height", mainPage.getHeight(), greaterThan(maxHeight
+				- DEVIATION_ALLOWANCE_IN_PX));
+		assertThat("Height", mainPage.getHeight(), lessThan(maxHeight
+				+ DEVIATION_ALLOWANCE_IN_PX));
 		// get maximum possible width
 		int maxWidth = MainWirePage.APP_MAX_WIDTH;
 		assertThat("Width", mainPage.getWidth(), equalTo(maxWidth));
-	}
-
-	/**
-	 * Verifies whether the app is in minimum size or not
-	 *
-	 * @step. ^I verify app is in minimum size$
-	 *
-	 * @throws Exception
-	 */
-	@When("^I verify app is in minimum size$")
-	public void IVerifyAppMini() throws Exception {
-		Assert.assertTrue(osxPagesCollection.getPage(MainWirePage.class)
-				.isMini());
 	}
 
 	/**
@@ -255,10 +248,9 @@ public class MainWirePageSteps {
 	 */
 	@When("^I verify app width is (\\d+) px and height is (\\d+) px$")
 	public void IVerifySizeOf(int width, int height) throws Exception {
-		MainWirePage mainWirePage = osxPagesCollection
-				.getPage(MainWirePage.class);
-		Assert.assertTrue(mainWirePage.isApproximatelyHeight(height));
-		Assert.assertTrue(mainWirePage.isApproximatelyWidth(width));
+		MainWirePage mainPage = osxPagesCollection.getPage(MainWirePage.class);
+		assertThat("Width", mainPage.getWidth(), equalTo(width));
+		assertThat("Height", mainPage.getHeight(), equalTo(height));
 	}
 
 }

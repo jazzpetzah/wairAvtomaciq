@@ -258,7 +258,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | Msg1       | Msg2       | DeleteItem |
       | user1Name | user2Name | user3Name | GroupChat     | YoMessage1 | YoMessage2 | DELETE     |
 
-  @id4054 @staging
+  @id4054 @regression
   Scenario Outline: Verify I can delete and leave a group conversation from conversation list (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -288,7 +288,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | Message | DeleteItem |
       | user1Name | user2Name | user3Name | DELETELeave   | huhuhu  | DELETE     |
 
-  @id4055 @staging
+  @id4055 @regression
   Scenario Outline: Verify I can delete and leave a group conversation from conversation list (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -319,7 +319,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | Message | DeleteItem |
       | user1Name | user2Name | user3Name | DELETELeave   | huhuhu  | DELETE     |
 
-  @id4057 @staging
+  @id4057 @regression
   Scenario Outline: Verify I see picture, ping and call after I delete a group conversation from conversation list (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -361,7 +361,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | Image       | CallBackend | DeleteItem |
       | user1Name | user2Name | user3Name | DELETE        | testing.jpg | autocall    | DELETE     |
 
-  @id4058 @staging
+  @id4058 @regression
   Scenario Outline: Verify I see picture, ping and call after I delete a group conversation from conversation list (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -401,4 +401,147 @@ Feature: Conversation List
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Image       | CallBackend | DeleteItem |
       | user1Name | user2Name | user3Name | DELETE        | testing.jpg | autocall    | DELETE     |
+
+  @id4082 @regression
+  Scenario Outline: I can mute 1:1 conversation from the conversation list (portrait)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    And I see the conversations list with conversations
+    When I swipe right the conversations list item <Contact1>
+    Then I see Conversation Actions overlay
+    When I select <SilenceItem> menu item on Conversation Actions overlay
+    Then I see the conversation <Contact1> in my conversations list is silenced
+
+    Examples:
+      | Name      | Contact1  | SilenceItem |
+      | user1Name | user2Name | SILENCE     |
+
+  @id4083 @regression
+  Scenario Outline: I can mute 1:1 conversation from the conversation list (landscape)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    And I see the conversations list with conversations
+    When I swipe right the conversations list item <Contact1>
+    Then I see Conversation Actions overlay
+    When I select <SilenceItem> menu item on Conversation Actions overlay
+    Then I see the conversation <Contact1> in my conversations list is silenced
+
+    Examples:
+      | Name      | Contact1  | SilenceItem |
+      | user1Name | user2Name | SILENCE     |
+
+  @id4080 @regression
+  Scenario Outline: I can unmute 1:1 conversation from the conversation list (portrait)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact1> is silenced to user <Name>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    And I see the conversations list with conversations
+    And I see the conversation <Contact1> in my conversations list is silenced
+    When I swipe right the conversations list item <Contact1>
+    Then I see Conversation Actions overlay
+    When I select <NotifyItem> menu item on Conversation Actions overlay
+    Then I see the conversation <Contact1> in my conversations list is not silenced
+
+    Examples:
+      | Name      | Contact1  | NotifyItem |
+      | user1Name | user2Name | NOTIFY     |
+
+  @id4081 @regression
+  Scenario Outline: I can unmute 1:1 conversation from the conversation list (landscape)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact1> is silenced to user <Name>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    And I see the conversations list with conversations
+    And I see the conversation <Contact1> in my conversations list is silenced
+    When I swipe right the conversations list item <Contact1>
+    Then I see Conversation Actions overlay
+    When I select <NotifyItem> menu item on Conversation Actions overlay
+    Then I see the conversation <Contact1> in my conversations list is not silenced
+
+    Examples:
+      | Name      | Contact1  | NotifyItem |
+      | user1Name | user2Name | NOTIFY     |
+
+  @id4076 @regression
+  Scenario Outline: I can mute group conversation from the conversation list (portrait)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    And I see the conversations list with conversations
+    When I swipe right the conversations list item <GroupChatName>
+    Then I see Conversation Actions overlay
+    When I select <SilenceItem> menu item on Conversation Actions overlay
+    Then I see the conversation <GroupChatName> in my conversations list is silenced
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | SilenceItem |
+      | user1Name | user2Name | user3Name | SILENCE       | SILENCE     |
+
+  @id4077 @regression
+  Scenario Outline: I can mute group conversation from the conversation list (landscape)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    And I see the conversations list with conversations
+    When I swipe right the conversations list item <GroupChatName>
+    Then I see Conversation Actions overlay
+    When I select <SilenceItem> menu item on Conversation Actions overlay
+    Then I see the conversation <GroupChatName> in my conversations list is silenced
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | SilenceItem |
+      | user1Name | user2Name | user3Name | SILENCE       | SILENCE     |
+
+  @id4074 @regression
+  Scenario Outline: I can unmute group conversation from the conversation list (portrait)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Group <GroupChatName> gets silenced for user <Name>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    And I see the conversations list with conversations
+    And I see the conversation <GroupChatName> in my conversations list is silenced
+    When I swipe right the conversations list item <GroupChatName>
+    Then I see Conversation Actions overlay
+    When I select <NotifyItem> menu item on Conversation Actions overlay
+    Then I see the conversation <GroupChatName> in my conversations list is not silenced
+
+    Examples:
+      | Name      | Contact1  | Contact2  | NotifyItem | GroupChatName |
+      | user1Name | user2Name | user3Name | NOTIFY     | NOTIFY        |
+
+  @id4075 @regression
+  Scenario Outline: I can unmute group conversation from the conversation list (landscape)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Group <GroupChatName> gets silenced for user <Name>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    And I see the conversations list with conversations
+    And I see the conversation <GroupChatName> in my conversations list is silenced
+    When I swipe right the conversations list item <GroupChatName>
+    Then I see Conversation Actions overlay
+    When I select <NotifyItem> menu item on Conversation Actions overlay
+    Then I see the conversation <GroupChatName> in my conversations list is not silenced
+
+    Examples:
+      | Name      | Contact1  | Contact2  | NotifyItem | GroupChatName |
+      | user1Name | user2Name | user3Name | NOTIFY     | NOTIFY        |
+
+
+
 

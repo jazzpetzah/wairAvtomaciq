@@ -49,7 +49,7 @@ Feature: Conversation View
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And I see the conversation view
-    And I swipe left on text input in the conversation view
+    And I swipe right on text input in the conversation view
     When I tap Add Picture button in the conversation view
     And I tap Take Photo button in the conversation view
     And I confirm the picture for the conversation view
@@ -69,7 +69,7 @@ Feature: Conversation View
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And I see the conversation view
-    And I swipe left on text input in the conversation view
+    And I swipe right on text input in the conversation view
     When I tap Add Picture button in the conversation view
     And I tap Take Photo button in the conversation view
     And I confirm the picture for the conversation view
@@ -245,7 +245,7 @@ Feature: Conversation View
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
-    And I swipe left on text input in the conversation view
+    And I swipe right on text input in the conversation view
     When I tap Add Picture button in the conversation view
     And I tap Take Photo button in the conversation view
     And I confirm the picture for the conversation view
@@ -266,7 +266,7 @@ Feature: Conversation View
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
-    And I swipe left on text input in the conversation view
+    And I swipe right on text input in the conversation view
     When I tap Add Picture button in the conversation view
     And I tap Take Photo button in the conversation view
     And I confirm the picture for the conversation view
@@ -286,7 +286,7 @@ Feature: Conversation View
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And I see the conversation view
-    And I swipe left on text input in the conversation view
+    And I swipe right on text input in the conversation view
     When I tap Add Picture button in the conversation view
     And I tap Gallery button in the conversation view
     And I confirm the picture for the conversation view
@@ -306,7 +306,7 @@ Feature: Conversation View
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And I see the conversation view
-    And I swipe left on text input in the conversation view
+    And I swipe right on text input in the conversation view
     When I tap Add Picture button in the conversation view
     And I tap Gallery button in the conversation view
     And I confirm the picture for the conversation view

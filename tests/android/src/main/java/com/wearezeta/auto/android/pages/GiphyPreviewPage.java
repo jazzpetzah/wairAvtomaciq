@@ -77,7 +77,7 @@ public class GiphyPreviewPage extends AndroidPage {
 
 	private static final int GIPHY_LOAD_TIMEOUT_SECONDS = 60;
 
-	public void clickeSendButton() throws Exception {
+	public void clickSendButton() throws Exception {
 		assert DriverUtils.waitUntilLocatorAppears(getDriver(),
 				giphyLoadingProgressLocator, GIPHY_LOCATOR_TIMEOUT_SECONDS);
 		if (!DriverUtils.waitUntilLocatorDissapears(getDriver(),

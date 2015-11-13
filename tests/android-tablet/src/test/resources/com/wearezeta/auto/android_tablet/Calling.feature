@@ -63,7 +63,6 @@ Feature: Calling
     And I tap the conversation <GroupChatName>
     And I see the conversation view
     And <Contact1> calls <GroupChatName> using <CallBackend2>
-    And I see generic calling overlay
     And I tap <AcceptBtnName> button on the calling overlay
     And I wait for 10 seconds
     And I see calling overlay Big bar
@@ -200,13 +199,13 @@ Feature: Calling
     And I send the typed message in the conversation view
     Then I see the message "<TextMessage>" in the conversation view
     And I hide keyboard
-    When I swipe left on text input in the conversation view
+    When I swipe right on text input in the conversation view
     And I tap Add Picture button in the conversation view
     And I tap Take Photo button in the conversation view
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
     When I scroll to the bottom of the conversation view
-    And I swipe left on text input in the conversation view
+    And I swipe right on text input in the conversation view
     And I tap Ping button in the conversation view
     Then I see the ping message "<PingMessage>" in the conversation view
     And <Contact> stops all calls to me
@@ -232,13 +231,13 @@ Feature: Calling
     And I send the typed message in the conversation view
     Then I see the message "<TextMessage>" in the conversation view
     And I hide keyboard
-    When I swipe left on text input in the conversation view
+    When I swipe right on text input in the conversation view
     And I tap Add Picture button in the conversation view
     And I tap Take Photo button in the conversation view
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
     When I scroll to the bottom of the conversation view
-    And I swipe left on text input in the conversation view
+    And I swipe right on text input in the conversation view
     And I tap Ping button in the conversation view
     Then I see the ping message "<PingMessage>" in the conversation view
     And <Contact> stops all calls to me

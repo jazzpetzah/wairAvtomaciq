@@ -160,7 +160,7 @@ public class PerformanceSteps {
 		} while (!getDialogPage().isDialogVisible() && ntry <= maxRetries);
 		assert getDialogPage().isDialogVisible() : "The conversation has not been opened after "
 				+ maxRetries + " retries";
-		getDialogPage().tapDialogPageBottom();
+		getDialogPage().scrollToTheBottom();
 		getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
 	}
 

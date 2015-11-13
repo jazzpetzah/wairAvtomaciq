@@ -1,33 +1,22 @@
 package com.wearezeta.auto.android.pages;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
-import android.graphics.Point;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.misc.MessageEntry;
 
 public class DialogPage extends AndroidPage {
 
@@ -254,36 +243,24 @@ public class DialogPage extends AndroidPage {
     public void tapOnCursorInput() throws Exception {
         // FIXME: Scroll to the bottom if cursor input is not visible
         if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idCursorBtnImg), 2)) {
-            tapOnCursorFrame();
-            this.hideKeyboard();
+                By.id(idCursorBtnImg), 1)) {
+            cursorFrame.click();
         }
         cursorArea.click();
     }
 
-    public void tapOnCursorFrame() {
-        cursorFrame.click();
-    }
-
-    public void tapOnTextInputIfVisible() throws Exception {
-        if (waitForCursorInputVisible()) {
-            cursorArea.click();
-        }
-    }
-
-    public void pressPlusButtonOnDialogPage() throws Exception {
+     public void pressPlusButtonOnDialogPage() throws Exception {
         assert DriverUtils.waitUntilElementClickable(getDriver(), cursorBtn);
         cursorBtn.click();
     }
 
-    public void swipeOnCursorInput() throws Exception {
+    public void swipeRightOnCursorInput() throws Exception {
+        // FIXME: Workaround for a bug in the app
+        scrollToTheBottom();
+
         final By cursorLocator = By.id(idCursorArea);
         int ntry = 1;
         do {
-            // FIXME: Scroll to the bottom if cursor input is not visible
-            tapOnCursorFrame();
-            this.hideKeyboard();
-
             DriverUtils.swipeRight(this.getDriver(), cursorArea,
                     DEFAULT_SWIPE_TIME);
             final int currentCursorOffset = getDriver()
@@ -297,14 +274,31 @@ public class DialogPage extends AndroidPage {
                     "Failed to swipe the text cursor. Retrying (%s of %s)...",
                     ntry, MAX_SWIPE_RETRIES));
             ntry++;
-            tapOnTextInputIfVisible();
-            this.hideKeyboard();
             Thread.sleep(1000);
         } while (ntry <= MAX_SWIPE_RETRIES);
         throw new RuntimeException(
                 String.format(
                         "Failed to swipe the text cursor on input field after %s retries!",
                         MAX_SWIPE_RETRIES));
+    }
+
+    // NOTE: This method is required to scroll conversation to the end.
+    // NOTE: Click happens on the text input area if participants button is not
+    // NOTE: visible
+    public void scrollToTheBottom() throws Exception {
+        // Close cursor if it is currently opened
+        final By closeCursorBtn = By.id(DialogPage.idCursorCloseButton);
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(),
+                closeCursorBtn, 1)) {
+            getDriver().findElement(closeCursorBtn).click();
+            // Wait for animation
+            Thread.sleep(500);
+        } else {
+            this.hideKeyboard();
+        }
+
+        cursorFrame.click();
+        this.hideKeyboard();
     }
 
     public void tapAddPictureBtn() throws Exception {
@@ -387,15 +381,8 @@ public class DialogPage extends AndroidPage {
                             "The string '%s' was autocorrected. Please disable autocorrection on the device and restart the test.",
                             message));
         }
-        if (DriverUtils.waitUntilLocatorAppears(getDriver(), selfAvatarLocator)
-                && (selfAvatar.getLocation().y * 100
-                / getDriver().manage().window().getSize().getHeight() < 90)) {
-            log.info("Press keyboard send button by coordinates");
-            pressKeyboardSendButton();
-            this.hideKeyboard();
-        } else {
-            this.hideKeyboard();
-        }
+        pressKeyboardSendButton();
+        this.hideKeyboard();
     }
 
     public void typeMessage(String message) throws Exception {
@@ -422,7 +409,7 @@ public class DialogPage extends AndroidPage {
     }
 
     public boolean waitForMessage(String text) throws Exception {
-        tapDialogPageBottom();
+        scrollToTheBottom();
         final By locator = By.xpath(xpathConversationMessageByText.apply(text));
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
@@ -596,32 +583,6 @@ public class DialogPage extends AndroidPage {
                 + MAX_CLICK_RETRIES + " retries";
     }
 
-    // NOTE: This method is required to scroll conversation to the end.
-    // NOTE: Click happens on the text input area if participants button is not
-    // NOTE: visible
-    public void tapDialogPageBottom() throws Exception {
-        this.hideKeyboard();
-
-        // Close cursor if it is currently opened
-        final By closeCursorBtn = By.id(DialogPage.idCursorCloseButton);
-        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                closeCursorBtn, 1)) {
-            getDriver().findElement(closeCursorBtn).click();
-        }
-
-        DriverUtils.waitUntilLocatorDissapears(getDriver(), By.id(idCursorBtn),
-                5);
-        DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idCursorFrame), 1);
-        tapOnCursorFrame();
-        this.hideKeyboard();
-        if (!DriverUtils.waitUntilLocatorAppears(getDriver(),
-                By.id(idCursorBtnImg), 1)) {
-            tapOnCursorFrame();
-            this.hideKeyboard();
-        }
-    }
-
     public boolean waitUntilYoutubePlayButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                 By.id(idYoutubePlayButton));
@@ -670,29 +631,7 @@ public class DialogPage extends AndroidPage {
         return lastConversationMessage.getText();
     }
 
-    public void swipeLeftOnCursorInput() throws Exception {
-        final By fakeCursorLocator = By.id(idCursorArea);
-        int ntry = 1;
-        do {
-            DriverUtils.swipeLeft(this.getDriver(), cursorArea,
-                    DEFAULT_SWIPE_TIME);
-            final int currentCursorOffset = getDriver()
-                    .findElement(fakeCursorLocator).getLocation().getX();
-            if (currentCursorOffset < getDriver().manage().window().getSize()
-                    .getWidth() / 2) {
-                return;
-            }
-            log.debug(String
-                    .format("Failed to swipe left the text cursor. Retrying (%s of %s)...",
-                            ntry, MAX_SWIPE_RETRIES));
-            ntry++;
-            Thread.sleep(1000);
-        } while (ntry <= MAX_SWIPE_RETRIES);
-        throw new RuntimeException(
-                String.format(
-                        "Failed to swipe left the text cursor on input field after %s retries!",
-                        MAX_SWIPE_RETRIES));
-    }
+
 
     public Optional<BufferedImage> getRecentPictureScreenshot()
             throws Exception {

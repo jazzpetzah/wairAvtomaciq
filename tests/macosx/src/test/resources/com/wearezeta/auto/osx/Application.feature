@@ -14,10 +14,10 @@ Feature: Application
     Then I verify app is in fullscreen
     When I ensure initial positioning
     And I resize the app to the min by hand
-    Then I verify app is in minimum size
+    Then I verify app width is 760 px and height is 680 px
     When I restart the app
     And I see my avatar on top of Contact list
-    Then I verify app is in minimum size
+    Then I verify app width is 760 px and height is 680 px
     When I ensure initial positioning
     And I maximize the app
     Then I verify app is in fullscreen

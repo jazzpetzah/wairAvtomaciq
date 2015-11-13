@@ -48,7 +48,6 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -56,8 +55,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
-
-import org.apache.commons.collections.IteratorUtils;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.lessThan;
@@ -160,7 +157,7 @@ public class CommonOSXSteps {
 			DesiredCapabilities capabilities, String loggingLevelName) {
 		final LoggingPreferences logs = new LoggingPreferences();
 		// set it to SEVERE by default
-		Level level = Level.SEVERE;
+		Level level = Level.ALL;
 		try {
 			level = Level.parse(loggingLevelName);
 		} catch (IllegalArgumentException e) {
@@ -190,38 +187,31 @@ public class CommonOSXSteps {
 	}
 
 	private void startApp() throws Exception {
-		int retriesLeft = STARTUP_RETRIES;
-		boolean started;
 		Future<ZetaOSXDriver> osxDriverFuture;
 		Future<ZetaWebAppDriver> webDriverFuture;
-		do {
-			clearDrivers();
-			osxDriverFuture = createOSXDriver();
-			webDriverFuture = createWebDriver(osxDriverFuture);
 
-			// get drivers instantly
-			final ZetaOSXDriver osxDriver = osxDriverFuture.get();
-			final ZetaWebAppDriver webappDriver = webDriverFuture.get();
-			LOG.debug("Opening app");
-			osxDriver.navigate().to(WIRE_APP_PATH);// open app
+		clearDrivers();
+		osxDriverFuture = createOSXDriver();
+		webDriverFuture = createWebDriver(osxDriverFuture);
 
-			ZetaFormatter.setLazyDriver(osxDriverFuture);
+		// get drivers instantly
+		final ZetaOSXDriver osxDriver = osxDriverFuture.get();
+		final ZetaWebAppDriver webappDriver = webDriverFuture.get();
+		LOG.debug("Opening app");
+		osxDriver.navigate().to(WIRE_APP_PATH);// open app
 
-			osxPagesCollection.setFirstPage(new MainWirePage(osxDriverFuture));
-			MainWirePage mainWirePage = osxPagesCollection
-					.getPage(MainWirePage.class);
+		ZetaFormatter.setLazyDriver(osxDriverFuture);
 
-			LOG.debug("Activating app");
-			osxDriver.navigate().to(WIRE_APP_PATH);// activate app
-			waitForAppStartup(osxDriver);
-			mainWirePage.focusApp();
+		osxPagesCollection.setFirstPage(new MainWirePage(osxDriverFuture));
+		MainWirePage mainWirePage = osxPagesCollection
+				.getPage(MainWirePage.class);
 
-			started = waitForWebappLoaded(webappDriver);
-			retriesLeft--;
-		} while (retriesLeft > 0 && started == false);
-		if (!started) {
-			throw new IllegalStateException("Could not start wrapper");
-		}
+		LOG.debug("Activating app");
+		osxDriver.navigate().to(WIRE_APP_PATH);// activate app
+		waitForAppStartup(osxDriver);
+		mainWirePage.focusApp();
+
+		waitForWebappLoaded(webappDriver);
 		webappPagesCollection
 				.setFirstPage(new RegistrationPage(webDriverFuture));
 	}
@@ -248,7 +238,9 @@ public class CommonOSXSteps {
 		boolean started = DriverUtils
 				.waitUntilLocatorAppears(
 						webdriver,
-						By.cssSelector(WebAppLocators.RegistrationPage.cssSwitchToSignInButton),
+						By.cssSelector(WebAppLocators.RegistrationPage.cssSwitchToSignInButton
+								+ ","
+								+ WebAppLocators.ContactListPage.cssSelfProfileAvatar),
 						WRAPPER_STARTUP_TIMEOUT_SECONDS);
 		if (started) {
 			LOG.debug("Wrapper Webapp loaded");
@@ -811,7 +803,8 @@ public class CommonOSXSteps {
 	 */
 	@When("^I restart the app$")
 	public void restartApp() throws Exception {
-		osxPagesCollection.getPage(MainWirePage.class).closeWindow();
+		osxPagesCollection.getPage(MainWirePage.class).pressShortCutForQuit();
+		Thread.sleep(2000);
 		clearDrivers();
 		startApp();
 	}
@@ -881,10 +874,8 @@ public class CommonOSXSteps {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	private List<LogEntry> getBrowserLog(RemoteWebDriver driver) {
-		return IteratorUtils.toList((Iterator<LogEntry>) driver.manage().logs()
-				.get(LogType.BROWSER).iterator());
+		return driver.manage().logs().get(LogType.BROWSER).getAll();
 	}
 
 	private void writeBrowserLogsIntoMainLog(RemoteWebDriver driver) {
@@ -892,7 +883,8 @@ public class CommonOSXSteps {
 		if (!logEntries.isEmpty()) {
 			log.debug("BROWSER CONSOLE LOGS:");
 			for (LogEntry logEntry : logEntries) {
-				log.debug(logEntry.getMessage());
+				log.debug(logEntry.getTimestamp() + ": [" + logEntry.getLevel()
+						+ "] " + logEntry.getMessage());
 			}
 			log.debug("--- END OF LOG ---");
 		}
