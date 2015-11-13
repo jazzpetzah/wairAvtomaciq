@@ -71,7 +71,7 @@ public class ContactListPage extends AndroidPage {
     @FindBy(id = PeoplePickerPage.idPickerSearch)
     private WebElement searchBox;
 
-    public static final String idSelfUserAvatar = "gtv__searchbox__self_user_avatar";
+    public static final String idSelfUserAvatar = "civ__searchbox__self_user_avatar";
     @FindBy(id = idSelfUserAvatar)
     protected WebElement selfUserAvatar;
 

@@ -710,7 +710,7 @@ Feature: Connect
     Given Myself is connected to <Contact3>
     Given <Contact> sent connection request to Me
     Given <Contact2> sent connection request to Me
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
 	And I see Pending request link in contact list
 	And I click on Pending request link in contact list
@@ -731,7 +731,7 @@ Feature: Connect
     Given <Contact> sent connection request to Me
     Given <Contact2> sent connection request to Me
     Given I rotate UI to landscape
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
 	And I see Pending request link in contact list
 	And I click on Pending request link in contact list
@@ -748,7 +748,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to Me
     Given User <Contact> changes name to <NewName>
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I see Pending request link in contact list
     And I click on Pending request link in contact list
@@ -765,7 +765,7 @@ Feature: Connect
     Given <Contact> sent connection request to Me
     Given User <Contact> changes name to <NewName>
     Given I rotate UI to landscape
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I see Pending request link in contact list
     And I click on Pending request link in contact list

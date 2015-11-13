@@ -475,18 +475,3 @@ Feature: Connect
     Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
-
-  @regression @id2661 @deployAddressBook
-  Scenario Outline: Verify you can see People you may know on Wire after uploading your address book
-    Given There is 1 user where <Name> is me
-    Given I add predefined users to address book
-    Given I sign in using my email or phone number
-    And I see Contact list with no contacts
-    When I open Search by tap
-    Then I see recommended user <Contact1> in People Picker
-
-    # disabled step which checks missing contact with phone only
-    #    And I see recommended user <Contact2> in People Picker
-    Examples:
-      | Name      | Contact1 | Contact2 |
-      | user1Name | vb003    | Dorothy  |
