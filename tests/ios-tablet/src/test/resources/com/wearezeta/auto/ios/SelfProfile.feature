@@ -295,7 +295,7 @@ Feature: Self Profile
   @regression @noAcceptAlert @id3855
   Scenario Outline: Verify error message appears in case of entering a not valid phone number [PORTRAIT]
     Given There is 1 users where <Name> is me with email only
-    Given I sign in using my email
+    Given I Sign in on tablet using my email
     And I accept alert
     When I click Not Now to not add phone number
     And I accept alert
@@ -314,7 +314,7 @@ Feature: Self Profile
   Scenario Outline: Verify error message appears in case of entering a not valid phone number [LANDSCAPE]
     Given There is 1 users where <Name> is me with email only
     Given I rotate UI to landscape
-    Given I sign in using my email
+    Given I Sign in on tablet using my email
     And I accept alert
     When I click Not Now to not add phone number
     And I accept alert
@@ -332,7 +332,7 @@ Feature: Self Profile
   @regression @noAcceptAlert @id3861
   Scenario Outline: Verify error message appears in case of registering already taken phone number [PORTRAIT]
     Given There is 1 users where <Name> is me with email only
-    Given I sign in using my email
+    Given I Sign in on tablet using my email
     And I accept alert
     When I click Not Now to not add phone number
     And I accept alert
@@ -351,7 +351,7 @@ Feature: Self Profile
   Scenario Outline: Verify error message appears in case of registering already taken phone number [LANDSCAPE]
     Given There is 1 users where <Name> is me with email only
     Given I rotate UI to landscape
-    Given I sign in using my email
+    Given I Sign in on tablet using my email
     And I accept alert
     When I click Not Now to not add phone number
     And I accept alert
