@@ -6,6 +6,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.CommonSteps;
+import static com.wearezeta.auto.common.CommonUtils.executeOsXCommand;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
@@ -815,7 +816,9 @@ public class CommonWinSteps {
 	 */
 	@Then("^I verify app has quit$")
 	public void IVerifyAppHasQuit() throws Exception {
-		int exitCode = killAllApps();
+		final String[] commands = new String[] { "cmd", "/c",
+				String.format("taskkill /im %s", "Wire.exe") };
+		int exitCode = executeOsXCommand(commands);
 		// 128 is the error code of the taskkill command for 'no such process'
 		assertEquals(128, exitCode);
 	}
