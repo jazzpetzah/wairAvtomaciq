@@ -199,8 +199,6 @@ public class CommonWinSteps {
 		ZetaFormatter.setLazyDriver(winDriverFuture);
 
 		winPagesCollection.setFirstPage(new MainWirePage(winDriverFuture));
-		winDriver.manage().timeouts().pageLoadTimeout(4, TimeUnit.MINUTES);
-		winDriver.manage().timeouts().setScriptTimeout(4, TimeUnit.MINUTES);
 		waitForAppStartup(winDriver);
 		winDriver.manage().timeouts().pageLoadTimeout(4, TimeUnit.MINUTES);
 		winDriver.manage().timeouts().setScriptTimeout(4, TimeUnit.MINUTES);
