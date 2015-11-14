@@ -195,13 +195,13 @@ public class CommonWinSteps {
 		// "Timed out receiving message from renderer" on endless spinner
 		webappDriver.manage().timeouts().pageLoadTimeout(3, TimeUnit.MINUTES);
 		webappDriver.manage().timeouts().setScriptTimeout(3, TimeUnit.MINUTES);
-		winDriver.manage().timeouts().pageLoadTimeout(4, TimeUnit.MINUTES);
-		winDriver.manage().timeouts().setScriptTimeout(4, TimeUnit.MINUTES);
 
 		ZetaFormatter.setLazyDriver(winDriverFuture);
 
 		winPagesCollection.setFirstPage(new MainWirePage(winDriverFuture));
 		waitForAppStartup(winDriver);
+		winDriver.manage().timeouts().pageLoadTimeout(4, TimeUnit.MINUTES);
+		winDriver.manage().timeouts().setScriptTimeout(4, TimeUnit.MINUTES);
 		waitForWebappLoaded(webappDriver);
 		webappPagesCollection
 				.setFirstPage(new RegistrationPage(webDriverFuture));
