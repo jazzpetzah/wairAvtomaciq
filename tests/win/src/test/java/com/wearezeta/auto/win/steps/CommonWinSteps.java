@@ -232,6 +232,7 @@ public class CommonWinSteps {
 						webdriver,
 						By.cssSelector(WebAppLocators.RegistrationPage.cssSwitchToSignInButton),
 						WRAPPER_STARTUP_TIMEOUT_SECONDS);
+		LOG.debug("Webapp started");
 
 	}
 
