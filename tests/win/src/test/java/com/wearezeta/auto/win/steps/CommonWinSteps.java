@@ -65,6 +65,7 @@ import static com.wearezeta.auto.win.common.WinExecutionContext.WINIUM_URL;
 import static com.wearezeta.auto.win.common.WinExecutionContext.WIRE_APP_FOLDER;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import java.nio.file.Paths;
+import java.util.concurrent.TimeUnit;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import org.openqa.selenium.WebElement;
@@ -191,6 +192,10 @@ public class CommonWinSteps {
 		// get drivers instantly
 		final ZetaWinDriver winDriver = winDriverFuture.get();
 		final ZetaWebAppDriver webappDriver = webDriverFuture.get();
+
+		// reducing the timeout to fail fast with
+		// "Timed out receiving message from renderer" on endless spinner
+		webappDriver.manage().timeouts().pageLoadTimeout(3, TimeUnit.MINUTES);
 
 		ZetaFormatter.setLazyDriver(winDriverFuture);
 
