@@ -200,8 +200,6 @@ public class CommonWinSteps {
 
 		winPagesCollection.setFirstPage(new MainWirePage(winDriverFuture));
 		waitForAppStartup(winDriver);
-		winDriver.manage().timeouts().pageLoadTimeout(4, TimeUnit.MINUTES);
-		winDriver.manage().timeouts().setScriptTimeout(4, TimeUnit.MINUTES);
 		waitForWebappLoaded(webappDriver);
 		webappPagesCollection
 				.setFirstPage(new RegistrationPage(webDriverFuture));
