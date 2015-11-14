@@ -68,7 +68,6 @@ import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
-import org.openqa.selenium.WebElement;
 
 public class CommonWinSteps {
 
@@ -77,7 +76,6 @@ public class CommonWinSteps {
 
 	private static final String DEFAULT_USER_PICTURE = "/images/aqaPictureContact600_800.jpg";
 	private static final int WRAPPER_STARTUP_TIMEOUT_SECONDS = 10;
-	private static final int STARTUP_RETRIES = 5;
 
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 
@@ -185,7 +183,7 @@ public class CommonWinSteps {
 		startApp();
 	}
 
-	private void startApp(int retriesLeft) throws Exception {
+	private void startApp() throws Exception {
 		final Future<ZetaWinDriver> winDriverFuture = createWinDriver();
 		final Future<ZetaWebAppDriver> webDriverFuture = createWebDriver(winDriverFuture);
 
@@ -197,18 +195,16 @@ public class CommonWinSteps {
 		// "Timed out receiving message from renderer" on endless spinner
 		webappDriver.manage().timeouts().pageLoadTimeout(3, TimeUnit.MINUTES);
 		webappDriver.manage().timeouts().setScriptTimeout(3, TimeUnit.MINUTES);
+		winDriver.manage().timeouts().pageLoadTimeout(4, TimeUnit.MINUTES);
+		winDriver.manage().timeouts().setScriptTimeout(4, TimeUnit.MINUTES);
 
 		ZetaFormatter.setLazyDriver(winDriverFuture);
 
 		winPagesCollection.setFirstPage(new MainWirePage(winDriverFuture));
 		waitForAppStartup(winDriver);
-		waitForWebappLoaded(webappDriver, retriesLeft);
+		waitForWebappLoaded(webappDriver);
 		webappPagesCollection
 				.setFirstPage(new RegistrationPage(webDriverFuture));
-	}
-
-	private void startApp() throws Exception {
-		startApp(STARTUP_RETRIES);
 	}
 
 	@Before("@performance")
@@ -225,27 +221,16 @@ public class CommonWinSteps {
 		assert DriverUtils.waitUntilLocatorAppears(winDriver,
 				By.xpath(WinLocators.MainWirePage.xpathWindow),
 				WRAPPER_STARTUP_TIMEOUT_SECONDS) : "Application did not started properly";
-		WebElement window = winDriver.findElement(By
-				.xpath(WinLocators.MainWirePage.xpathWindow));
 		LOG.debug("Application started");
 	}
 
-	private void waitForWebappLoaded(ZetaWebAppDriver webdriver, int retriesLeft)
+	private void waitForWebappLoaded(ZetaWebAppDriver webdriver)
 			throws Exception {
-		boolean started = DriverUtils
+		assert DriverUtils
 				.waitUntilLocatorAppears(
 						webdriver,
 						By.cssSelector(WebAppLocators.RegistrationPage.cssSwitchToSignInButton),
 						WRAPPER_STARTUP_TIMEOUT_SECONDS);
-
-		if (started) {
-			LOG.debug("Wrapper Webapp loaded");
-		} else if (retriesLeft > 0) {
-			retriesLeft--;
-			LOG.warn("Wrapper Webapp did not load properly - Retrying");
-			clearDrivers();
-			startApp(retriesLeft);
-		}
 
 	}
 
@@ -862,27 +847,17 @@ public class CommonWinSteps {
 			// do not fail if smt fails here
 			e.printStackTrace();
 		}
-
 		commonSteps.getUserManager().resetUsers();
-		try {
-			LOG.debug("Attempt for closing app");
-			// winPagesCollection.getPage(MainWirePage.class).closeWindow();
-			// PlatformDrivers.getInstance()
-			// .getDriver(WinExecutionContext.CURRENT_SECONDARY_PLATFORM)
-			// .get().close();
-		} catch (Exception e) {
-			LOG.debug("Failed to close app");
-		}
 		clearDrivers();
 	}
 
 	private void clearDrivers() throws Exception {
 		WinPagesCollection.getInstance().clearAllPages();
-		// if
-		// (PlatformDrivers.getInstance().hasDriver(WinExecutionContext.CURRENT_PLATFORM))
-		// {
-		// PlatformDrivers.getInstance().quitDriver(WinExecutionContext.CURRENT_PLATFORM);
-		// }
+		if (PlatformDrivers.getInstance().hasDriver(
+				WinExecutionContext.CURRENT_PLATFORM)) {
+			PlatformDrivers.getInstance().quitDriver(
+					WinExecutionContext.CURRENT_PLATFORM);
+		}
 		if (PlatformDrivers.getInstance().hasDriver(
 				WinExecutionContext.CURRENT_SECONDARY_PLATFORM)) {
 			PlatformDrivers.getInstance().quitDriver(
