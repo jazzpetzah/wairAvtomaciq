@@ -406,7 +406,7 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I swipe right on a <GroupChatName>
     Then I see conversation <GroupChatName> name in action menu in Contact List
@@ -426,7 +426,7 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I sign in using my email
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I swipe right on a <GroupChatName>
     Then I see conversation <GroupChatName> name in action menu in Contact List
@@ -444,7 +444,7 @@ Feature: Conversation List
   Scenario Outline: Verify action menu is opened on swipe right on 1to1 conversation [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I swipe right on a <Contact>
     Then I see conversation <Contact> name in action menu in Contact List
@@ -463,7 +463,7 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I sign in using my email
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I swipe right on a <Contact>
     Then I see conversation <Contact> name in action menu in Contact List
@@ -680,7 +680,7 @@ Feature: Conversation List
   Scenario Outline: Verify archiving silenced conversation [PORTAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I swipe right on a <Contact>
     And I press menu silence button
@@ -705,7 +705,7 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I swipe right on a <Contact>
     And I press menu silence button
@@ -731,7 +731,7 @@ Feature: Conversation List
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given User <Name> sent message <Message> to conversation <GroupChatName>
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I swipe right on a <GroupChatName>
     And I click delete menu button
@@ -756,7 +756,7 @@ Feature: Conversation List
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given User <Name> sent message <Message> to conversation <GroupChatName>
     Given I rotate UI to landscape
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I swipe right on a <GroupChatName>
     And I click delete menu button
@@ -780,7 +780,7 @@ Feature: Conversation List
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given <Contact1> removed <Name> from group chat <GroupChatName>
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I swipe right on a <GroupChatName>
     And I see Archive button in action menu in Contact List
@@ -803,7 +803,7 @@ Feature: Conversation List
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given <Contact1> removed <Name> from group chat <GroupChatName>
     Given I rotate UI to landscape
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I swipe right on a <GroupChatName>
     And I see Archive button in action menu in Contact List
@@ -823,7 +823,7 @@ Feature: Conversation List
   Scenario Outline: Verify blocking person from action menu [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I swipe right on a <Contact>
     And I press menu Block button
@@ -845,7 +845,7 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I swipe right on a <Contact>
     And I press menu Block button

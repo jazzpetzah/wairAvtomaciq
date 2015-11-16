@@ -487,7 +487,7 @@ Feature: Calling
     And I press call button
     And I see mute call, end call buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I return to the chat list
+    And I swipe right on Dialog page
     Then I see mute call button in conversation list
     And I rotate UI to landscape
     Then I dont see mute call button in conversation list on iPad
@@ -505,10 +505,10 @@ Feature: Calling
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
-    Then I see mute call, end call and speakers buttons
+    Then I see mute call, end call buttons
     And I see started call message for contact <Contact>
     When I close the app for 5 seconds
-    Then I see mute call, end call and speakers buttons
+    Then I see mute call, end call buttons
     And I see started call message for contact <Contact>
     And <Contact> verifies that call status to me is changed to active in 2 seconds
 
@@ -526,10 +526,10 @@ Feature: Calling
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
-    Then I see mute call, end call and speakers buttons
+    Then I see mute call, end call buttons
     And I see started call message for contact <Contact>
     When I close the app for 5 seconds
-    Then I see mute call, end call and speakers buttons
+    Then I see mute call, end call buttons
     And I see started call message for contact <Contact>
     And <Contact> verifies that call status to me is changed to active in 2 seconds
 

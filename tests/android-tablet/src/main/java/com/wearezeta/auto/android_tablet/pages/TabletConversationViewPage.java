@@ -117,8 +117,8 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
-	public void swipeLeftOnTextInput() throws Exception {
-		getDialogPage().swipeOnCursorInput();
+	public void swipeOnTextInput() throws Exception {
+		getDialogPage().swipeRightOnCursorInput();
 	}
 
 	public void tapPingButton() throws Exception {
@@ -176,7 +176,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 	}
 
 	public void scrollToTheBottom() throws Exception {
-		getDialogPage().tapDialogPageBottom();
+		getDialogPage().scrollToTheBottom();
 	}
 
 	public Optional<BufferedImage> getRecentPictureScreenshot()

@@ -165,6 +165,9 @@ public class DialogPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameSoundCloudButton)
 	private WebElement soundCloudButton;
 
+	@FindBy(how = How.XPATH, using = IOSLocators.DialogPage.xpathUserAvatarNextToInput)
+	private WebElement userAvatarNextToInput;
+
 	private String connectMessage = "Hi %s, let’s connect on wire. %s";
 	private String connectingLabel = "CONNECTING TO %s.";
 
@@ -263,9 +266,13 @@ public class DialogPage extends IOSPage {
 		try {
 			conversationInput.sendKeys(message);
 		} catch (WebDriverException ex) {
-			conversationInput.clear();
+			clearTextInput();
 			conversationInput.sendKeys(message);
 		}
+	}
+	
+	public void clearTextInput() {
+		conversationInput.clear();
 	}
 
 	public String getStringFromInput() throws Exception {
@@ -661,27 +668,27 @@ public class DialogPage extends IOSPage {
 	private static final int IMAGE_IN_IPAD_CONVERSATION_HEIGHT = 1020;
 
 	public BufferedImage takeImageScreenshot() throws Throwable {
-		
+
 		BufferedImage image;
-		
+
 		image = getElementScreenshot(imageCell).orElseThrow(
 				IllegalStateException::new);
-		
+
 		String deviceType = CommonUtils.getDeviceName(this.getClass());
-		
+
 		if (deviceType.equals("iPhone 6")) {
-			
+
 			image = image.getSubimage(0, image.getHeight()
 					- IMAGE_IN_CONVERSATION_HEIGHT, image.getWidth(),
 					IMAGE_IN_CONVERSATION_HEIGHT);
-		
+
 		} else {
-			
+
 			image = image.getSubimage(0, image.getHeight()
-					- IMAGE_IN_IPAD_CONVERSATION_HEIGHT, image.getWidth(), 
+					- IMAGE_IN_IPAD_CONVERSATION_HEIGHT, image.getWidth(),
 					IMAGE_IN_IPAD_CONVERSATION_HEIGHT);
 		}
-		
+
 		return image;
 	}
 
@@ -1123,15 +1130,19 @@ public class DialogPage extends IOSPage {
 
 	public void tapHoldImage() {
 		try {
-			this.getDriver()
-					.tap(1, 
-							this.getDriver()
-									.findElement(
-											By.xpath(IOSLocators.DialogPage.xpathImage)), 1000);
+			this.getDriver().tap(
+					1,
+					this.getDriver().findElement(
+							By.xpath(IOSLocators.DialogPage.xpathImage)), 1000);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public boolean isUserAvatarNextToInputVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				userAvatarNextToInput);
 	}
 
 }

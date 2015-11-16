@@ -47,6 +47,6 @@ public class GiphySteps {
 	 */
 	@When("^I click on the giphy send button$")
 	public void IClickOnTheGiphySendButton() throws Exception {
-		getGiphyPreviewPage().clickeSendButton();
+		getGiphyPreviewPage().clickSendButton();
 	}
 }

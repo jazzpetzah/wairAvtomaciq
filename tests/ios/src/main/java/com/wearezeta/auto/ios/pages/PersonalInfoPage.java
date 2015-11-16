@@ -144,6 +144,11 @@ public class PersonalInfoPage extends IOSPage {
 		String name = profileNameEditField.getText();
 		return name;
 	}
+	
+	public boolean isUserNameContainingSpaces() {
+		String name = profileNameEditField.getAttribute("value");
+		return name.contains(" ");
+	}
 
 	public String getUserEmailVaue() {
 		String email = emailField.getText();

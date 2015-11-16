@@ -141,11 +141,6 @@ public class CallingOverlayPage extends AndroidPage {
 		return new DialogPage(getLazyDriver());
 	}
 
-	public boolean callingMessageIsVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idCallMessage));
-	}
-
 	public boolean callingDismissIsVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(idCallingDismiss));

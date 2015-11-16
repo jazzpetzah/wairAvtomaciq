@@ -271,12 +271,12 @@ Feature: Registration
   @staging @noAcceptAlert @id1517
   Scenario Outline: Verify that it's impossible to proceed registration with more than 16 characters in Phone
     Given I see sign in screen
-    When I enter 16 digits phone number
+    When I enter X digits phone number
     Then I see invalid phone number alert
 
     Examples: 
-      | Name      |
-      | user1Name |
+      | Name      | X  |
+      | user1Name | 16 |
 
   @staging @noAcceptAlert @id2742
   Scenario Outline: Verify notification appearance in case of incorrect code
@@ -284,6 +284,37 @@ Feature: Registration
     When I enter phone number for user <Name>
     And I input random activation code
     Then I see invalid code alert
+
+    Examples: 
+      | Name      |
+      | user1Name |
+
+  @staging @id295
+  Scenario Outline: Verify cutting spaces from the beginning and ending the name
+    Given I see sign in screen
+    When I enter phone number for user <Name>
+    And I enter activation code
+    And I accept terms of service
+    And I fill in name <Name> with leading and trailing spaces and hit Enter
+    And I press Picture button
+    And I choose a picture from camera roll
+    And I See selected picture
+    And I confirm selection
+    Then I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    Then I see user name doesnt contains spaces
+
+    Examples: 
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
+
+  @staging @id2467
+  Scenario Outline: Verify user is logged in when trying to register with already registered phone
+    Given There is 1 user where <Name> is me with phone number only
+    Given I see sign in screen
+    When I input phone number of already registered user <Name>
+    And I enter verification code for user <Name>
+    Then I see Contact list with my name <Name>
 
     Examples: 
       | Name      |

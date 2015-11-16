@@ -72,7 +72,7 @@ public class ContactListPage extends AndroidPage {
     @FindBy(id = PeoplePickerPage.idPickerSearch)
     private WebElement searchBox;
 
-    public static final String idSelfUserAvatar = "gtv__searchbox__self_user_avatar";
+    public static final String idSelfUserAvatar = "civ__searchbox__self_user_avatar";
     @FindBy(id = idSelfUserAvatar)
     protected WebElement selfUserAvatar;
 
@@ -218,10 +218,6 @@ public class ContactListPage extends AndroidPage {
         }
     }
 
-    public List<WebElement> GetVisibleContacts() throws Exception {
-        return contactListNames;
-    }
-
     public Optional<WebElement> findInContactList(String name,
                                                   int maxSwypesInList) throws Exception {
         final By nameLocator = By.xpath(xpathContactByName.apply(name));
@@ -246,12 +242,6 @@ public class ContactListPage extends AndroidPage {
                 20, 50, 90, 50);
     }
 
-    public void swipeOnArchiveUnarchive(String contact) throws Exception {
-        WebElement el = getDriver().findElementByXPath(
-                xpathContactByName.apply(contact));
-        DriverUtils.swipeRight(this.getDriver(), el, 1000);
-    }
-
     public boolean isContactMuted(String name) throws Exception {
         final By locator = By.xpath(xpathMutedIconByConvoName.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
@@ -262,15 +252,6 @@ public class ContactListPage extends AndroidPage {
         final By locator = By.xpath(xpathMutedIconByConvoName.apply(name));
         return DriverUtils
                 .waitUntilLocatorDissapears(this.getDriver(), locator);
-    }
-
-    public boolean isHintVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idSearchHintClose));
-    }
-
-    public void closeHint() {
-        closeHintBtn.click();
     }
 
     public PeoplePickerPage tapOnSearchBox() throws Exception {
@@ -340,11 +321,6 @@ public class ContactListPage extends AndroidPage {
         final By loadingItemLocator = By.xpath(xpathLoadingContactListItem);
         return DriverUtils.waitUntilLocatorDissapears(getDriver(),
                 loadingItemLocator, CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS);
-    }
-
-    public boolean isVisibleMissedCallIcon() throws Exception {
-        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-                missedCallIcon);
     }
 
     public PersonalInfoPage tapOnMyAvatar() throws Exception {

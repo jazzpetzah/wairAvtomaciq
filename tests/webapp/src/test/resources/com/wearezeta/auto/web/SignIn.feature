@@ -32,7 +32,7 @@ Feature: Sign In
       | Email      | Password      | Error                                      |
       | user1Email | wrongPassword | Wrong email or password. Please try again. |
 
-  @smoke @id4041
+  @smoke @id4014
   Scenario Outline: Verify sign in button is disabled in case of empty credentials
     Given There is 1 user where user1Name is me
     When I switch to sign in page

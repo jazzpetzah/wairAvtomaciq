@@ -489,6 +489,7 @@ Feature: People View
     And I open group conversation details
     And I press Add button
     And I see share history warning
+    And I click on Continue button on share history warning
     And I see People picker page on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
     And I click on Add to Conversation button on iPad popover
@@ -511,6 +512,7 @@ Feature: People View
     And I open group conversation details
     And I press Add button
     And I see share history warning
+    And I click on Continue button on share history warning
     And I see People picker page on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
     And I click on Add to Conversation button on iPad popover

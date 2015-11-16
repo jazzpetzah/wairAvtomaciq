@@ -10,10 +10,10 @@ Feature: Ping
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And I see the conversation view
-    And I swipe left on text input in the conversation view
+    And I swipe right on text input in the conversation view
     When I tap Ping button in the conversation view
     Then I see the ping message "<Message1>" in the conversation view
-    When I swipe left on text input in the conversation view
+    When I swipe right on text input in the conversation view
     And I tap Ping button twice in the conversation view
     Then I see the ping message "<Message2>" in the conversation view
 
@@ -31,10 +31,10 @@ Feature: Ping
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And I see the conversation view
-    And I swipe left on text input in the conversation view
+    And I swipe right on text input in the conversation view
     When I tap Ping button in the conversation view
     Then I see the ping message "<Message1>" in the conversation view
-    When I swipe left on text input in the conversation view
+    When I swipe right on text input in the conversation view
     And I tap Ping button twice in the conversation view
     Then I see the ping message "<Message2>" in the conversation view
 
