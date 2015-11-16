@@ -254,7 +254,7 @@ Feature: Conversation List
       | Name      | Contact1  |Contact2   | GroupChatName |
       | user1Name | user2Name | user3Name | UNMUTE        |
 
-  @id4088 @staging @torun
+  @id4088 @staging
   Scenario Outline: Verify options menu for outgoing connection request
     Given There are 2 users where <Name> is me
     Given <Name> sent connection request to <Contact1>
