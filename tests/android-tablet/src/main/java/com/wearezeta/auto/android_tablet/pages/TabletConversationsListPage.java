@@ -32,13 +32,13 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 		return this.getAndroidPageInstance(PeoplePickerPage.class);
 	}
 
-	private static final int SELF_AVATAR_LOAD_TIMEOUT = 120; // seconds
+	private static final int LOAD_TIMEOUT = 15; // seconds
 
 	public void verifyConversationsListIsLoaded() throws Exception {
 		if (ScreenOrientationHelper.getInstance().fixOrientation(getDriver()) == ScreenOrientation.PORTRAIT) {
 			if (DriverUtils.waitUntilLocatorAppears(getDriver(),
-					By.id(ContactListPage.idSelfUserAvatar),
-					SELF_AVATAR_LOAD_TIMEOUT)) {
+					By.id(TabletSelfProfilePage.idSelfProfileView),
+					LOAD_TIMEOUT)) {
 				// FIXME: Workaround for self profile as start page issue
 				int ntry = 1;
 				final int maxRetries = 3;
@@ -51,8 +51,8 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 							By.id(TabletSelfProfilePage.idSelfProfileView)));
 				}
 				do {
-					if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-							By.id(ContactListPage.idSelfUserAvatar), 4)
+					if (DriverUtils.waitUntilLocatorDissapears(getDriver(),
+							By.id(ContactListPage.idSelfUserAvatar), 2)
 							|| (selfProfileEl.isPresent() && selfProfileEl
 									.get().getLocation().getX() < leftBorderWidth)) {
 						DriverUtils.swipeByCoordinates(getDriver(), 1000, 30,
@@ -84,8 +84,8 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 				}
 			} else {
 				throw new IllegalStateException(String.format(
-						"Self avatar has not been loaded within %s seconds",
-						SELF_AVATAR_LOAD_TIMEOUT));
+						"The initial view has not been loaded within %s seconds",
+						LOAD_TIMEOUT));
 			}
 		}
 		getContactListPage().verifyContactListIsFullyLoaded();
