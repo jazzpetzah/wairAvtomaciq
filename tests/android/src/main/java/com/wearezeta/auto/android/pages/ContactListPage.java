@@ -437,11 +437,6 @@ public class ContactListPage extends AndroidPage {
     public boolean isMenuItemAtCorrectIndex(String name, int position) throws Exception {
         final By locator = By.xpath(xpathContactsListOptionsMenuItemByIdx.apply(position));
         String itemName = this.getDriver().findElement(locator).getText();
-        if (itemName.equals(name)) {
-            return true;
-        } else {
-            return false;
-        }
-
+        return itemName.equals(name);
     }
 }

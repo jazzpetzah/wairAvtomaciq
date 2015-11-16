@@ -423,7 +423,7 @@ public class ContactListPageSteps {
      * @step. ^I see (.*) button in conversation settings menu$
      */
     @Then("^I see (.*) button in conversation settings menu at position (\\d+)$")
-    public void ISeeButtonInConversationSettingsMenuAtPosition(String name, int position) throws Throwable {
+    public void ISeeButtonInConversationSettingsMenuAtPosition(String name, int position) throws Exception {
         Assert.assertTrue("The converastion settings menu item is not visible",
                 getContactListPage().isConvSettingsMenuItemVisible(name));
         Assert.assertTrue("Menu item is not at correct index position",

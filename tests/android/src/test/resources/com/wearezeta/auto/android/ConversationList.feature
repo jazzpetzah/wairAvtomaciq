@@ -265,7 +265,6 @@ Feature: Conversation List
     Then I see BLOCK button in conversation settings menu at position 2
     Then I see CANCEL button in conversation settings menu at position 3
 
-
     Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
