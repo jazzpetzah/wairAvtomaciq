@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import junit.framework.Assert;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
@@ -120,6 +121,9 @@ public class ContactListPage extends AndroidPage {
     private static final Function<String, String> xpathConversationListEntry = name -> String
             .format("//*[@id='tv_conv_list_topic' and @value='%s']/parent::*//*[@id='civ__list_row']",
                     name);
+
+    private static final Function<Integer, String> xpathContactsListOptionsMenuItemByIdx = idx -> String
+            .format("(//*[@id='ttv__settings_box__item'])[%d]", idx);
 
     private static final Logger log = ZetaLogger.getLog(ContactListPage.class
             .getSimpleName());
@@ -454,7 +458,14 @@ public class ContactListPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean isMenuItemAtCorrectIndex(String name, int position) {
-        
+    public boolean isMenuItemAtCorrectIndex(String name, int position) throws Exception {
+        final By locator = By.xpath(xpathContactsListOptionsMenuItemByIdx.apply(position));
+        String itemName = this.getDriver().findElement(locator).getText();
+        if (itemName.equals(name)) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 }
