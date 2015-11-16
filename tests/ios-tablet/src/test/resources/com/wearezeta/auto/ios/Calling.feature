@@ -487,7 +487,7 @@ Feature: Calling
     And I press call button
     And I see mute call, end call buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I return to the chat list
+    And I swipe right on Dialog page
     Then I see mute call button in conversation list
     And I rotate UI to landscape
     Then I dont see mute call button in conversation list on iPad
