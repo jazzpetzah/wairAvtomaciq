@@ -155,7 +155,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @regression @rc @id2602
+  @staging @rc @id2602
   Scenario Outline: Verify switching on/off chatheads [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given User <Contact2> change avatar picture to <Picture>
