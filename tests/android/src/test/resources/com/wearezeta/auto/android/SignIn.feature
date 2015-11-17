@@ -57,5 +57,5 @@ Feature: Sign In
     Then I see error message "<ErrMessage>"
 
     Examples:
-      | Login | Password | ErrMessage                          |
-      | aaa   | aaa      | Please enter a valid email address. |
+      | Login | Password  | ErrMessage                          |
+      | aaa   | aaabbbccc | Please enter a valid email address. |

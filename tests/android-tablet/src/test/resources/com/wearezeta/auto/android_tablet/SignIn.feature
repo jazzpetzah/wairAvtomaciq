@@ -43,8 +43,8 @@ Feature: Sign In
     Then I see error message "<ErrMessage>"
 
     Examples:
-      | Login | Password | ErrMessage                          |
-      | aaa   | aaa      | Please enter a valid email address. |
+      | Login | Password  | ErrMessage                          |
+      | aaa   | aaabbbccc | Please enter a valid email address. |
 
   @id2285 @regression @rc
   Scenario Outline: Negative case for sign in landscape mode
@@ -57,8 +57,8 @@ Feature: Sign In
     Then I see error message "<ErrMessage>"
 
     Examples:
-      | Login | Password | ErrMessage                          |
-      | aaa   | aaa      | Please enter a valid email address. |
+      | Login | Password  | ErrMessage                          |
+      | aaa   | aaabbbccc | Please enter a valid email address. |
 
   @id2906 @regression @rc
   Scenario Outline: Verify reset password button works from sign-in page
