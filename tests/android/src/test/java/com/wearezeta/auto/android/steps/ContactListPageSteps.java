@@ -360,7 +360,7 @@ public class ContactListPageSteps {
      * (.*)"
      */
     @Then("^I see unread messages indicator state is changed for conversation (.*)")
-    public void ISeeUnreadIndiciatorStateISChanged(String name)
+    public void ISeeUnreadIndicatorStateIsChanged(String name)
             throws Exception {
         name = usrMgr.findUserByNameOrNameAlias(name).getName();
         if (!this.previousUnreadIndicatorState.containsKey(name)) {
@@ -395,22 +395,22 @@ public class ContactListPageSteps {
     /**
      * Presses Delete on the delete confirmation alert
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I press DELETE on the confirm alert$
      */
     @When("^I press DELETE on the confirm alert$")
-    public void IPressDELETEOnTheConfirmAlert() throws Throwable {
+    public void IPressDELETEOnTheConfirmAlert() throws Exception {
         getContactListPage().confirmDeleteConversationAlert();
     }
 
     /**
      * Presses the leave as well during delete checkbox
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I click the Leave check box$
      */
     @When("^I click the Leave check box$")
-    public void i_click_the_Leave_check_box() throws Throwable {
+    public void IClickLeave() throws Exception {
         getContactListPage().checkLeaveWhileDeleteCheckbox();
     }
 
@@ -419,7 +419,7 @@ public class ContactListPageSteps {
      *
      * @param position index position of the menu item
      * @param name     name of item to check in the menu (ARCHIVE, BLOCK, CANCEL,...)
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I see (.*) button in conversation settings menu$
      */
     @Then("^I see (.*) button in conversation settings menu at position (\\d+)$")
@@ -427,7 +427,7 @@ public class ContactListPageSteps {
         Assert.assertTrue("The converastion settings menu item is not visible",
                 getContactListPage().isConvSettingsMenuItemVisible(name));
         Assert.assertTrue("Menu item is not at correct index position",
-                getContactListPage().isMenuItemAtCorrectIndex(name,position));
+                getContactListPage().isMenuItemAtCorrectIndex(name, position));
     }
 
 }
