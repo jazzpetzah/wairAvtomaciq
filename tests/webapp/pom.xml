@@ -30,7 +30,7 @@
 			level OFF that can be used to turn off logging, and a level ALL that can 
 			be used to enable logging of all messages. -->
 		<extendedLoggingLevel>SEVERE</extendedLoggingLevel>
-		<rcNotificationsRecepients>sven.jost@wire.com,nick@wire.com</rcNotificationsRecepients>
+        <rcNotificationsRecepients>michael@wire.com,sven.jost@wire.com,nick@wire.com</rcNotificationsRecepients>
 
 		<!-- new -->
 		<com.wire.os.name>Windows</com.wire.os.name>

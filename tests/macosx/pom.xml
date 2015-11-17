@@ -32,7 +32,8 @@
 		<com.wire.driver.timeout.seconds>10</com.wire.driver.timeout.seconds>
 		<com.wire.environment>Staging</com.wire.environment>
 		<com.wire.environment.url>https://wire-webapp-staging.zinfra.io/</com.wire.environment.url>
-		<pictureResultsPath>target</pictureResultsPath>
+        <pictureResultsPath>target</pictureResultsPath>
+        <rcNotificationsRecepients>michael@wire.com,sven.jost@wire.com,nick@wire.com</rcNotificationsRecepients>
 	</properties>
 
 	<dependencies>
