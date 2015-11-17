@@ -15,19 +15,26 @@ import com.wearezeta.auto.web.pages.WebPage;
 
 public class GoogleLoginPage extends WebPage {
 
-	@FindBy(id = "Email")
+	// TODO move to Locators
+	private static final String EMAIL_ID = "Email";
+	private static final String PASSWORD_ID = "Password";
+	private static final String NEXT_BUTTON_ID = "next";
+	private static final String SIGN_IN_BUTTON_ID = "signIn";
+	private static final String SUBMIT_APPROVE_ACCESS_BUTTON_ID = "submit_approve_access";
+
+	@FindBy(id = EMAIL_ID)
 	private WebElement emailField;
 
-	@FindBy(id = "Passwd")
+	@FindBy(id = PASSWORD_ID)
 	private WebElement passwordField;
 
-	@FindBy(id = "next")
+	@FindBy(id = NEXT_BUTTON_ID)
 	private WebElement nextButton;
 
-	@FindBy(id = "signIn")
+	@FindBy(id = SIGN_IN_BUTTON_ID)
 	private WebElement signInButton;
 
-	@FindBy(id = "submit_approve_access")
+	@FindBy(id = SUBMIT_APPROVE_ACCESS_BUTTON_ID)
 	private WebElement approveAccessButton;
 
 	public GoogleLoginPage(Future<ZetaWebAppDriver> lazyDriver)
@@ -36,20 +43,20 @@ public class GoogleLoginPage extends WebPage {
 	}
 
 	public void setEmail(String email) throws Exception {
-		DriverUtils.waitUntilLocatorAppears(getDriver(), By.id("Email"));
+		DriverUtils.waitUntilLocatorAppears(getDriver(), By.id(EMAIL_ID));
 		emailField.clear();
 		emailField.sendKeys(email);
 	}
 
 	public void setPassword(String password) throws Exception {
 		// this wait is needed when the NEXT button thing happens
-		DriverUtils.waitUntilLocatorAppears(getDriver(), By.id("Password"));
+		DriverUtils.waitUntilLocatorAppears(getDriver(), By.id(PASSWORD_ID));
 		passwordField.clear();
 		passwordField.sendKeys(password);
 	}
 
 	public boolean hasNextButton() throws Exception {
-		return this.getDriver().findElements(By.id("next")).size() > 0;
+		return this.getDriver().findElements(By.id(NEXT_BUTTON_ID)).size() > 0;
 	}
 
 	public void clickNext() throws Exception {
@@ -57,7 +64,8 @@ public class GoogleLoginPage extends WebPage {
 	}
 
 	public boolean hasApproveButton() throws Exception {
-		return getDriver().findElements(By.id("submit_approve_access")).size() > 0;
+		return getDriver().findElements(By.id(SUBMIT_APPROVE_ACCESS_BUTTON_ID))
+				.size() > 0;
 	}
 
 	public void clickApprove() throws Exception {
