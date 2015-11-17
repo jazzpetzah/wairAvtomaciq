@@ -75,7 +75,7 @@ public class WinCommonUtils extends CommonUtils {
 				"cmd",
 				"/c",
 				String.format(
-						"taskkill /im %s & taskkill /F /im %s & taskkill /F /im %s",
+						"taskkill /F /im %s & taskkill /F /im %s & taskkill /F /im %s",
 						"Wire.exe", "Update.exe", "chromedriver.exe") };
 		LOG.debug("executing command: " + Arrays.toString(commands));
 		return executeOsXCommand(commands);

@@ -8,7 +8,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.UserState;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
-import com.wearezeta.auto.win.pages.webapp.RegistrationPage;
+import com.wearezeta.auto.web.pages.RegistrationPage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;

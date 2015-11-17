@@ -1,6 +1,6 @@
 Feature: Application
 
-  @smoke @id3805
+  @staging @id3805
   Scenario Outline: Save size and position of window and check for maximum/minimum size
     Given There are 1 users where <Name> is me
     Given I switch to Sign In page

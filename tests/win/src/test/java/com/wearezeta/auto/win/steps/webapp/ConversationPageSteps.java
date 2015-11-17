@@ -149,7 +149,7 @@ public class ConversationPageSteps {
 	@When("^I click People button in group conversation$")
 	public void WhenIClickPeopleButtonInGroup() throws Exception {
 		WebappPagesCollection.getInstance().getPage(ConversationPage.class)
-				.clickPeopleButton(true);
+				.clickPeopleButton();
 	}
 
 	/**
