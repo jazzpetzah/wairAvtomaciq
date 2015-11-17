@@ -90,7 +90,7 @@ public final class WebAppLocators {
 				.format("%s div[data-uie-name='item-conversation-archived'][data-uie-value='%s']",
 						cssParentContactListItem, name);
 
-		public static final String cssSelfProfileAvatar = "[data-uie-name='go-self-profile']";
+		public static final String cssSelfProfileAvatar = "[data-uie-name='go-self-profile']:first-child";
 
 		public static final String xpathOngoingCallListItem = "//div[@data-uie-name='item-call']";
 
