@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.steps;
 
+import com.wearezeta.auto.common.ImageUtil;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.SettingsPage;
@@ -7,6 +8,8 @@ import com.wearezeta.auto.android.pages.SettingsPage;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+
+import java.awt.image.BufferedImage;
 
 public class SettingsPageSteps {
 
@@ -52,7 +55,7 @@ public class SettingsPageSteps {
         getSettingsPage().confirmSignOut();
     }
 
-    private String previousThemeSettingValue = null;
+    private BufferedImage previousThemeSwitcherState = null;
 
     /**
      * Store the current value of Theme setting into variable
@@ -62,7 +65,8 @@ public class SettingsPageSteps {
      */
     @And("^I remember the value of \"Theme\" setting$")
     public void IRememberValueOfThemeSetting() throws Exception {
-        previousThemeSettingValue = getSettingsPage().getThemeSettingValue();
+        previousThemeSwitcherState = getSettingsPage().getThemeSwitcherState().orElseThrow(
+                IllegalStateException::new);
     }
 
     /**
@@ -73,27 +77,28 @@ public class SettingsPageSteps {
      */
     @Then("^I verify the value of \"Theme\" setting is changed$")
     public void IVerifyValueOfThemeSettingIsChanged() throws Exception {
-        if (previousThemeSettingValue == null) {
-            throw new IllegalStateException("Please remember the previous value of Theme setting firts");
+        if (previousThemeSwitcherState == null) {
+            throw new IllegalStateException("Please remember the previous value of Theme setting first");
         }
-        final String currentThemeSettingValue = getSettingsPage().getThemeSettingValue();
-        Assert.assertNotEquals(String.format("The current Theme setting value '%s' has not been changed since last snapshot",
-                        currentThemeSettingValue),
-                previousThemeSettingValue, currentThemeSettingValue);
+        final BufferedImage currentThemeSwitcherState = getSettingsPage().getThemeSwitcherState().orElseThrow(
+                IllegalStateException::new);
+        final double similarity = ImageUtil.getOverlapScore(currentThemeSwitcherState, previousThemeSwitcherState,
+                ImageUtil.RESIZE_TO_MAX_SCORE);
+        Assert.assertTrue(String.format(
+                "The current Theme setting value has not been changed since the last snapshot was taken (%.2f >= %.2f)",
+                similarity, 0.97),
+                similarity < 0.97);
     }
 
     /**
-     * Select previously unselected theme in Theme option. The chooser itself should be already visible
-     *
-     * @step. ^I select (White|Dark) theme$
-     *
-     * @param themeName wither White or Dark
+     * Switch current theme. The chooser itself should be already visible
      *
      * @throws Exception
+     * @step. ^I switch color theme in settings$
      */
-    @And("^I select (White|Dark) theme$")
-    public void ISelectUnselectedTheme(String themeName) throws Exception {
-        getSettingsPage().selectTheme(themeName);
+    @And("^I switch color theme in settings$")
+    public void ISelectUnselectedTheme() throws Exception {
+        getSettingsPage().switchTheme();
     }
 
 }

@@ -1,5 +1,7 @@
 package com.wearezeta.auto.android.pages;
 
+import java.awt.image.BufferedImage;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -13,6 +15,12 @@ public class SettingsPage extends AndroidPage {
 
     private static final Function<String, String> xpathSettingsMenuItemByText = text -> String
             .format("//*[@id='title' and @value='%s']", text);
+
+    private static final Function<String, String> xpathSettingsMenuItemByPartOfText = text -> String
+            .format("//*[@id='title' and contains(@value, '%s')]", text);
+
+    private static final String xpathThemeSwitch = String
+            .format("%s/parent::*/parent::*//*[@id='switchWidget']", xpathSettingsMenuItemByPartOfText.apply("Theme"));
 
     private static final Function<String, String> xpathThemeItemByName = name -> String
             .format("//*[@value='%s']", name);
@@ -63,14 +71,14 @@ public class SettingsPage extends AndroidPage {
         getDriver().findElement(locator).click();
     }
 
-    public String getThemeSettingValue() throws Exception {
-        assert isMenuItemVisible("Theme") : String.format("'Theme' menu item is not visible");
-        final By locator = By.xpath(xpathThemeMenuItemSummary);
-        return getDriver().findElement(locator).getText();
+    public Optional<BufferedImage> getThemeSwitcherState() throws Exception {
+        final By itemLocator = By.xpath(xpathSettingsMenuItemByPartOfText.apply(" Theme"));
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), itemLocator) : "Theme menu item is not visible";
+        return this.getElementScreenshot(getDriver().findElement(By.xpath(xpathThemeSwitch)));
     }
 
-    public void selectTheme(String themeName) throws Exception {
-        final By locator = By.xpath(xpathThemeItemByName.apply(themeName));
-        getDriver().findElement(locator).click();
+    public void switchTheme() throws Exception {
+        final By switchLocator = By.xpath(xpathThemeSwitch);
+        getDriver().findElement(switchLocator).click();
     }
 }
