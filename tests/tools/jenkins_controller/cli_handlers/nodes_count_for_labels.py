@@ -86,6 +86,7 @@ class NodesCountForLabels(CliHandlerBase):
                 verifier.join(timeout=VERIFICATION_JOB_TIMEOUT)
                 if verifier.is_alive():
                     sys.stderr.write('Verifier process for the node "{}" timed out')
+                    verifier.terminate()
         ready_nodes = []
         while not ready_nodes_queue.empty():
             ready_nodes.append(ready_nodes_queue.get_nowait().name)
