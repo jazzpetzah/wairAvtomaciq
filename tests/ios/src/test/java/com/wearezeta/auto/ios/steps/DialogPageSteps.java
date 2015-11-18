@@ -531,14 +531,14 @@ public class DialogPageSteps {
 	@When("I input message with trailing emtpy spaces")
 	public void IInputMessageWithTrailingEmptySpace() throws Throwable {
 		message = automationMessage + "." + onlySpacesMessage;
-		getDialogPage().sendStringToInput(message);
+		getDialogPage().sendMessageUsingScript(message);
 	}
 
 	@When("I input message with lower case and upper case")
 	public void IInputMessageWithLowerAndUpperCase() throws Throwable {
 		message = CommonUtils.generateRandomString(7).toLowerCase()
 				+ CommonUtils.generateRandomString(7).toUpperCase();
-		getDialogPage().sendStringToInput(message);
+		getDialogPage().sendMessageUsingScript(message);
 	}
 
 	@When("I input more than 200 chars message and send it")
