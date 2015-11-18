@@ -17,7 +17,7 @@ public class GoogleLoginPage extends WebPage {
 
 	// TODO move to Locators
 	private static final String EMAIL_ID = "Email";
-	private static final String PASSWORD_ID = "Password";
+	private static final String PASSWORD_ID = "Passwd";
 	private static final String NEXT_BUTTON_ID = "next";
 	private static final String SIGN_IN_BUTTON_ID = "signIn";
 	private static final String SUBMIT_APPROVE_ACCESS_BUTTON_ID = "submit_approve_access";
