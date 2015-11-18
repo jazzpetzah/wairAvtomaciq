@@ -128,7 +128,7 @@ public final class IOSLocators {
 
 	public static final String nameCreateConversationButton = "CREATE";
 
-	public static final String nameKeyboardGoButton = "Go";
+	public static final String nameKeyboardGoButton = "Return";
 
 	public static final String classUIATextView = "UIATextView";
 
