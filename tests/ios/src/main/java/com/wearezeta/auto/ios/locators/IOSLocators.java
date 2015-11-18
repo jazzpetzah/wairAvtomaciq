@@ -128,7 +128,7 @@ public final class IOSLocators {
 
 	public static final String nameCreateConversationButton = "CREATE";
 
-	public static final String nameKeyboardGoButton = "Go";
+	public static final String nameKeyboardGoButton = "Return";
 
 	public static final String classUIATextView = "UIATextView";
 
@@ -651,7 +651,7 @@ public final class IOSLocators {
 
 	public final class DialogInfoPage {
 		public static final String nameEllipsisMenuButton = "metaControllerRightButton";
-		public static final String xpathArchiveButton = "//UIAButton[@name='SILENCE']/preceding-sibling::UIAButton[@name='ARCHIVE']";
+		public static final String xpathArchiveButton = "//UIAButton[@name='ARCHIVE']";
 
 	}
 

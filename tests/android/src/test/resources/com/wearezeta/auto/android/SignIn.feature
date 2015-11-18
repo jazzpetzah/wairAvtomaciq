@@ -59,3 +59,23 @@ Feature: Sign In
     Examples:
       | Login | Password  | ErrMessage                          |
       | aaa   | aaabbbccc | Please enter a valid email address. |
+
+  @id52 @staging
+  Scenario Outline: (CM-623) Verify Sign In progress behaviour while there are problems with internet connectivity
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to Myself
+    Given I see welcome screen
+    Given I switch to email sign in screen
+    When I enable Airplane mode on the device
+    And I have entered login <Email>
+    And I have entered password <Password>
+    And I press Log in button
+    Then I see error message "<ErrMessage>"
+    When I accept the error message
+    And I disable Airplane mode on the device
+    And I press Log in button
+    Then I see Contact list with contacts
+
+    Examples:
+      | Name      | Email      | Password      | Contact   | ErrMessage                          |
+      | user1Name | user1Email | user1Password | user2Name | Please enter a valid email address. |

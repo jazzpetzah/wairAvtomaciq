@@ -41,7 +41,7 @@ Feature: People View
       | user1Name | user2Name | user3Name | LeaveGroupChat |
 
   @id322 @regression @rc @rc42
-  Scenario Outline: Remove from group chat
+  Scenario Outline: (CM-691) Remove from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
