@@ -222,6 +222,10 @@ public class DialogPage extends AndroidPage {
     public static Function<String, String> xpathInputFieldByValue = value -> String
             .format("//*[@value='%s']", value);
 
+    private static final String idSwitchCameraButton = "gtv__camera__top_control__back_camera";
+    @FindBy(id = idSwitchCameraButton)
+    private WebElement switchCameraButton;
+
     private static final int DEFAULT_SWIPE_TIME = 500;
     private static final int MAX_SWIPE_RETRIES = 5;
     private static final int MAX_CLICK_RETRIES = 5;
@@ -249,7 +253,7 @@ public class DialogPage extends AndroidPage {
         cursorArea.click();
     }
 
-     public void pressPlusButtonOnDialogPage() throws Exception {
+    public void pressPlusButtonOnDialogPage() throws Exception {
         assert DriverUtils.waitUntilElementClickable(getDriver(), cursorBtn);
         cursorBtn.click();
     }
@@ -632,7 +636,6 @@ public class DialogPage extends AndroidPage {
     }
 
 
-
     public Optional<BufferedImage> getRecentPictureScreenshot()
             throws Exception {
         return this.getElementScreenshot(image);
@@ -672,5 +675,13 @@ public class DialogPage extends AndroidPage {
 
     public BufferedImage getConvoViewScreenshot() throws Exception {
         return this.getElementScreenshot(dialogRoot).orElseThrow(IllegalStateException::new);
+    }
+
+    public boolean isSwitchCameraButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idSwitchCameraButton));
+    }
+
+    public void tapSwitchCameraButton() {
+        switchCameraButton.click();
     }
 }

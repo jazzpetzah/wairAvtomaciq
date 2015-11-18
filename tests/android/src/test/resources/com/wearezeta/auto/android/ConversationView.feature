@@ -374,3 +374,22 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   | GifName      |
       | user1Name | user2Name | animated.gif |
+
+  @id3159 @staging
+  Scenario Outline: Send image with non default camera (portrait) in group chat
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I swipe on text input
+    And I press Add Picture button
+    And I press "Switch Camera" button
+    And I press "Take Photo" button
+    And I press "Confirm" button
+    Then I see new photo in the dialog
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |

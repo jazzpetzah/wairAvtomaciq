@@ -257,15 +257,15 @@ Feature: Conversation List
   @id4088 @regression
   Scenario Outline: Verify options menu for outgoing connection request
     Given There are 2 users where <Name> is me
-    Given <Contact1> is connected to Myself
+    Given Myself sent connection request to <Contact>
     Given I sign in using my email or phone number
     And I see Contact list with contacts
-    When I swipe right on a <Contact1>
+    When I swipe right on a <Contact>
     Then I see ARCHIVE button in conversation settings menu at position 1
     Then I see BLOCK button in conversation settings menu at position 2
     Then I see CANCEL button in conversation settings menu at position 3
 
     Examples:
-      | Name      | Contact1  |
+      | Name      | Contact   |
       | user1Name | user2Name |
 
