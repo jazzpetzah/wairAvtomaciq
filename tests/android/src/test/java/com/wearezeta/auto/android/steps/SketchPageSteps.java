@@ -1,6 +1,5 @@
 package com.wearezeta.auto.android.steps;
 
-import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.android.pages.SketchPage;
 
 import cucumber.api.java.en.When;
@@ -12,10 +11,6 @@ public class SketchPageSteps {
 
 	private SketchPage getSketchPage() throws Exception {
 		return pagesCollection.getPage(SketchPage.class);
-	}
-
-	private DialogPage getDialogPage() throws Exception {
-		return pagesCollection.getPage(DialogPage.class);
 	}
 
 	/**
