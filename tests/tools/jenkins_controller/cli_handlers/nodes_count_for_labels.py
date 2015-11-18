@@ -85,7 +85,10 @@ class NodesCountForLabels(CliHandlerBase):
             for verifier in verifiers_chunk:
                 verifier.join(timeout=VERIFICATION_JOB_TIMEOUT)
                 if verifier.is_alive():
-                    sys.stderr.write('Verifier process for the node "{}" timed out')
+                    sys.stderr.write('Verifier process for the node "{}" timed out'.format(verifier.node_name))
+                    verifier.terminate()
+                else:
+                    sys.stderr.write('Finished verification for the node "{}"'.format(verifier.node_name))
         ready_nodes = []
         while not ready_nodes_queue.empty():
             ready_nodes.append(ready_nodes_queue.get_nowait().name)
@@ -103,6 +106,10 @@ class BaseNodeVerifier(Process):
         self._ready_nodes_queue = ready_nodes_queue
         self._broken_nodes_queue = broken_nodes_queue
         self._verification_kwargs = kwargs
+
+    @property
+    def node_name(self):
+        return self._node.name
 
     def _send_email_notification(self, subject, body):
         if 'notification_receivers' not in self._verification_kwargs or \
