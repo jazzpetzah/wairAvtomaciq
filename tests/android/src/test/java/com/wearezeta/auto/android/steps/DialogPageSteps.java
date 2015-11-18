@@ -371,9 +371,16 @@ public class DialogPageSteps {
             case "image close":
                 getDialogPage().closeFullScreenImage();
                 break;
+            case "switch camera":
+                if (getDialogPage().isSwitchCameraButtonVisible()) {
+                    getDialogPage().tapSwitchCameraButton();
+                }
+                break;
             case "sketch image paint":
                 getDialogPage().tapSketchOnImageButton();
                 break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name: '%s'", buttonName));
         }
     }
 
