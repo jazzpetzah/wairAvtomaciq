@@ -278,7 +278,7 @@ Feature: Conversation View
       | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs |
 
   @id3242 @regression @rc @rc42
-  Scenario Outline: I can send a sketch
+  Scenario Outline: (CM-717) I can send a sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -296,7 +296,7 @@ Feature: Conversation View
       | user1Name | user2Name | 6         |
 
   @id3243 @regression @rc @rc42
-  Scenario Outline: I can send sketch on image from gallery
+  Scenario Outline: (CM-717) I can send sketch on image from gallery
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
