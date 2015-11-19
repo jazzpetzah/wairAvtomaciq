@@ -267,7 +267,7 @@ public abstract class IOSPage extends BasePage {
 
 	public void cmdVscript(String[] scriptString) throws ScriptException {
 		// final String[] scriptArr = new String[] {
-		// "property thisapp: \"iOS Simulator\"",
+		// "property thisapp: \"Simulator\"",
 		// "tell application \"System Events\"", " tell process thisapp",
 		// " click menu item \"Paste\" of menu \"Edit\" of menu bar 1",
 		// " end tell", "end tell" };

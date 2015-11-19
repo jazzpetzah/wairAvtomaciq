@@ -445,6 +445,18 @@ public class PeoplePickerPageSteps {
 	public void WhenIClickClearButton() throws Exception {
 		getPeoplePickerPage().dismissPeoplePicker();
 	}
+	
+	/**
+	 * Click on close button to dismiss Invite list
+	 * 
+	 * @step. ^I click close Invite list button$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click close Invite list button$")
+	public void WhenIClickCloseInviteListButton() throws Exception {
+		getPeoplePickerPage().closeInviteList();
+	}
 
 	/**
 	 * Select pointed amount of contacts from top people in a row starting from
@@ -654,6 +666,19 @@ public class PeoplePickerPageSteps {
 	@When("^I press the send an invite button$")
 	public void IPressTheSendAnInviteButton() throws Exception {
 		getPeoplePickerPage().tapSendInviteButton();
+	}
+	
+	/**
+	 * Presses the Invite others button in the people picker. To invite people
+	 * via mail.
+	 * 
+	 * @step. ^I press invite others button$
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I press invite others button$")
+	public void IPressInviteOthersButton() throws Exception {
+		getPeoplePickerPage().tapInviteOthersButton();
 	}
 
 	/**
