@@ -141,7 +141,6 @@ Feature: Calling
     And I see mute call, end call and speakers buttons
     And I end started call
     And I dont see calling page
-    And <Contact> stops all waiting instances
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
@@ -212,8 +211,6 @@ Feature: Calling
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then I close the app for 5 seconds
     And I see mute call, end call and speakers buttons
-    And I end started call
-    And <Contact> stops all waiting instances
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
