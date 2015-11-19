@@ -1,7 +1,7 @@
 Feature: Search
 
   @id2249 @regression
-  Scenario Outline: Open/Close Search by different actions in landscape mode
+  Scenario Outline: (AN-3065) Open/Close Search by different actions in landscape mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I rotate UI to landscape
