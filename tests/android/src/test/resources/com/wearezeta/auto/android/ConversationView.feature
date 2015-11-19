@@ -375,7 +375,7 @@ Feature: Conversation View
       | Name      | Contact   | GifName      |
       | user1Name | user2Name | animated.gif |
 
-  @id3159 @staging
+  @id3159 @regression @rc
   Scenario Outline: Send image with non default camera (portrait) in group chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

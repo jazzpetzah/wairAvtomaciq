@@ -1,6 +1,6 @@
 Feature: Rich Media
 
-  @id3241 @staging
+  @id3241 @regression @rc
   Scenario Outline: I can send GIF image from giphy grid
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
