@@ -20,8 +20,6 @@
 		<activity>com.waz.zclient.LaunchActivity</activity>
 		<waitActivities>com.waz.zclient.LaunchActivity,com.waz.zclient.AppEntryActivity</waitActivities>
 		<driverTimeoutSeconds>7</driverTimeoutSeconds>
-		<androidClientInfoPath>/Project/builds_info/classes.dex</androidClientInfoPath>
-		<androidAppiumLogPath>/Project/appium_android.log</androidAppiumLogPath>
 		<defaultEmail>smoketester@wire.com</defaultEmail>
 		<androidAddressBookMailAccount>smoketester@wearezeta.com</androidAddressBookMailAccount>
 		<pictureResultsPath>${user.home}/Downloads/</pictureResultsPath>

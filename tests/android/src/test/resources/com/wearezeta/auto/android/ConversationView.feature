@@ -278,7 +278,7 @@ Feature: Conversation View
       | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs |
 
   @id3242 @regression @rc @rc42
-  Scenario Outline: I can send a sketch
+  Scenario Outline: (CM-717) I can send a sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -293,10 +293,10 @@ Feature: Conversation View
 
     Examples:
       | Name      | Contact1  | NumColors |
-      | user1Name | user2Name | 6         |
+      | user1Name | user2Name | 2         |
 
   @id3243 @regression @rc @rc42
-  Scenario Outline: I can send sketch on image from gallery
+  Scenario Outline: (CM-717) I can send sketch on image from gallery
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -314,7 +314,7 @@ Feature: Conversation View
 
     Examples:
       | Name      | Contact1  | NumColors |
-      | user1Name | user2Name | 6         |
+      | user1Name | user2Name | 2         |
 
   @id3244 @regression
   Scenario Outline: I can send sketch on photo
@@ -375,7 +375,7 @@ Feature: Conversation View
       | Name      | Contact   | GifName      |
       | user1Name | user2Name | animated.gif |
 
-  @id3159 @staging
+  @id159 @regression @rc
   Scenario Outline: Send image with non default camera (portrait) in group chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

@@ -103,6 +103,12 @@ public class PeoplePickerPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.PeoplePickerPage.nameSendImageButton)
 	private WebElement sendImageButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.PeoplePickerPage.nameInviteOthersButton)
+	private WebElement inviteOthersButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathContactViewCloseButton)
+	private WebElement closeInviteButton;
 
 	private int numberTopSelected = 0;
 
@@ -578,5 +584,15 @@ public class PeoplePickerPage extends IOSPage {
 	public void inputTextInSearch(String text) throws Exception {
 		DriverUtils.waitUntilElementClickable(getDriver(), peoplePickerSearch);
 		peoplePickerSearch.sendKeys(text);
+	}
+
+	public void tapInviteOthersButton() {
+		inviteOthersButton.click();
+		
+	}
+
+	public void closeInviteList() {
+		closeInviteButton.click();
+		
 	}
 }

@@ -66,10 +66,6 @@ public class AndroidCommonUtils extends CommonUtils {
 		executeAdb(String.format("shell input tap %d %d", x, y));
 	}
 
-	public static void openBroswerApplication() throws Exception {
-		executeAdb("shell am start -a android.intent.action.VIEW -d http://www.google.com");
-	}
-
 	public static void copyFileFromAndroid(String filePathOnSystem,
 			String filePathOnDevice) throws Exception {
 		executeAdb(String.format("pull %s %s", filePathOnDevice,
@@ -112,33 +108,6 @@ public class AndroidCommonUtils extends CommonUtils {
 		return result.trim();
 	}
 
-	private static String getZMessagingBuildFromClassesDex() throws IOException {
-		String zmessagingBuild = "no info";
-		BufferedReader bufferedReader = null;
-		try {
-			File file = new File(
-					getAndroidClientInfoPathFromConfig(AndroidCommonUtils.class));
-			bufferedReader = new BufferedReader(new FileReader(file));
-			String s;
-			Pattern pattern = Pattern.compile("zMessaging ([0-9\\.]*)");
-			Matcher matcher = null;
-			while ((s = bufferedReader.readLine()) != null) {
-				matcher = pattern.matcher(s);
-				if (matcher.find()) {
-					zmessagingBuild = matcher.group(1);
-					break;
-				}
-			}
-		} catch (Exception ex) {
-			log.error("Failed to read Android client properties.\n"
-					+ ex.getMessage());
-		} finally {
-			if (bufferedReader != null)
-				bufferedReader.close();
-		}
-		return zmessagingBuild;
-	}
-
 	private static String getPropertyFromAdb(String propertyName)
 			throws Exception {
 		return getAdbOutput(String.format("shell getprop %s", propertyName));
@@ -153,13 +122,6 @@ public class AndroidCommonUtils extends CommonUtils {
 		} else {
 			return output;
 		}
-	}
-
-	public static BuildVersionInfo readClientVersion() throws Exception {
-		String clientBuild = readClientVersionFromAdb();
-		String zmessagingBuild = getZMessagingBuildFromClassesDex();
-
-		return new BuildVersionInfo(clientBuild, zmessagingBuild);
 	}
 
 	private static String capitalizeManufacturerName(String name) {
@@ -204,16 +166,6 @@ public class AndroidCommonUtils extends CommonUtils {
 	public static String getPerfReportPathFromConfig(Class<?> c)
 			throws Exception {
 		return CommonUtils.getValueFromConfig(c, "perfReportPath");
-	}
-
-	public static String getAndroidClientInfoPathFromConfig(Class<?> c)
-			throws Exception {
-		return CommonUtils.getValueFromConfig(c, "androidClientInfoPath");
-	}
-
-	public static String getAndroidAppiumLogPathFromConfig(Class<?> c)
-			throws Exception {
-		return CommonUtils.getValueFromConfig(c, "androidAppiumLogPath");
 	}
 
 	public static String getAndroidToolsPathFromConfig(Class<?> c)

@@ -43,7 +43,7 @@ public class DialogPage extends IOSPage {
 	private static final long PING_ANIMATION_TIME = 3000;
 
 	final String[] scriptArr = new String[] {
-			"property thisapp: \"iOS Simulator\"",
+			"property thisapp: \"Simulator\"",
 			"tell application \"System Events\"", " tell process thisapp",
 			" click menu item \"Paste\" of menu \"Edit\" of menu bar 1",
 			" end tell", "end tell" };

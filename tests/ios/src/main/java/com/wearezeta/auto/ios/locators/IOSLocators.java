@@ -81,6 +81,8 @@ public final class IOSLocators {
 	public static final String xpathPickerSearch = "//UIAWindow[@name='ZClientMainWindow']/UIATextView[4]";
 
 	public static final String xpathPickerClearButton = "//*[@name='PeoplePickerClearButton' and @visible='true']";
+	
+	public static final String xpathContactViewCloseButton = "//*[@name='ContactsViewCloseButton' and @visible='true']";
 
 	public static final String nameSendConnectButton = "SEND";
 
@@ -495,7 +497,7 @@ public final class IOSLocators {
 	public static final String nameContinueUploadButton = "SHARE CONTACTS";
 	public static final String namePeopleYouMayKnowLabel = "CONNECT";
 	public static final String nameHideSuggestedContactButton = "HIDE";
-	public static final String nameSendAnInviteButton = "Send an invitation";
+	public static final String nameSendAnInviteButton = "INVITE MORE PEOPLE";
 	public static final String xpathInviteCopyButton = "//UIACollectionCell[@name='Copy']";
 	public static final String nameSuggestedContactType = "UIACollectionCell";
 	public static final String nameHideSuggestedContactButtonType = "UIAButton";
@@ -708,6 +710,7 @@ public final class IOSLocators {
 		public static final String nameSendImageButton = "actionBarCameraButton";
 
 		public static final String xpathFormatFoundContact = "//UIAStaticText[@name='%s' and @visible='true']";
+		public static final String nameInviteOthersButton = "INVITE OTHERS";
 	}
 
 	public final class CommonIOSLocators {

@@ -60,7 +60,7 @@ Feature: Sign In
       | Login | Password  | ErrMessage                          |
       | aaa   | aaabbbccc | Please enter a valid email address. |
 
-  @id52 @staging
+  @id52 @regression @rc
   Scenario Outline: (CM-623) Verify Sign In progress behaviour while there are problems with internet connectivity
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
