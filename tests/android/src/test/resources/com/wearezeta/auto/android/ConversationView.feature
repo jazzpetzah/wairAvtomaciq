@@ -293,7 +293,7 @@ Feature: Conversation View
 
     Examples:
       | Name      | Contact1  | NumColors |
-      | user1Name | user2Name | 6         |
+      | user1Name | user2Name | 2         |
 
   @id3243 @regression @rc @rc42
   Scenario Outline: (CM-717) I can send sketch on image from gallery
@@ -314,7 +314,7 @@ Feature: Conversation View
 
     Examples:
       | Name      | Contact1  | NumColors |
-      | user1Name | user2Name | 6         |
+      | user1Name | user2Name | 2         |
 
   @id3244 @regression
   Scenario Outline: I can send sketch on photo
