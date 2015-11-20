@@ -775,5 +775,10 @@ public final class IOSLocators {
 	// Accent Color Picker
 	// ////////////////
 	public static final String nameAccentColorPicker = "AccentColorPickerView";
+	
+	public  final class ContactsUIPage {
+		public static final String xpathSearchInput = "//UIATextView[UIAStaticText[@name='SEARCH BY NAME']]";
+		public static final String xpathContactOnContactsUIList = "//UIATableCell[@name='%s'][preceding::UIAButton[@name='ContactsViewCloseButton']]";
+	}
 
 }
