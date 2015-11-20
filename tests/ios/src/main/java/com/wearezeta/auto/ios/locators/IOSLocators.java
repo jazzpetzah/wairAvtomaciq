@@ -78,7 +78,7 @@ public final class IOSLocators {
 
 	public static final String xpathLastVideoFormat = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[%s]/UIAWebView[1]";
 
-	public static final String xpathPickerSearch = "//UIAWindow[@name='ZClientMainWindow']/UIATextView[4]";
+	public static final String xpathPickerSearch = "//UIATextView[@name='textViewSearch' and @visible='true']";
 
 	public static final String xpathPickerClearButton = "//*[@name='PeoplePickerClearButton' and @visible='true']";
 	
