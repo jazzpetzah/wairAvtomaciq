@@ -32,8 +32,10 @@ public class ContactsUiPageSteps {
 	 */
 	@When("^I see ContactsUI page$")
 	public void ISeeContactsUIPage() throws Exception {
-		Assert.assertTrue("ContactsUI page is not shown", getContactsUiPage()
-				.isSearchInputVisible());
+		Assert.assertTrue("Search on ContactsUI page is not shown",
+				getContactsUiPage().isSearchInputVisible());
+		Assert.assertTrue("Invite on ContactsUI page is not shown",
+				getContactsUiPage().isInviteOthersButtonVisible());
 	}
 
 	/**
@@ -97,5 +99,37 @@ public class ContactsUiPageSteps {
 		Assert.assertFalse("User " + contact
 				+ " is presented in ContactsUI user list", getContactsUiPage()
 				.isContactPresentedInContactsList(contact));
+	}
+
+	/**
+	 * Presses the Invite others button in the people picker. To invite people
+	 * via mail.
+	 * 
+	 * @step. ^I press invite others button$
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I press invite others button$")
+	public void IPressInviteOthersButton() throws Exception {
+		getContactsUiPage().tapInviteOthersButton();
+	}
+
+	/**
+	 * Click on Open button on ContactsUI next to user name
+	 * 
+	 * @step. ^I click on Open button next to user name (.*) on ContactsUI$
+	 * 
+	 * @param contact
+	 *            user name
+	 * @throws Exception
+	 */
+	@When("^I click on Open button next to user name (.*) on ContactsUI$")
+	public void IClickOpenButtonNextToUser(String contact) throws Exception {
+		try {
+			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		getContactsUiPage().clickOpenButtonNextToUser(contact);
 	}
 }

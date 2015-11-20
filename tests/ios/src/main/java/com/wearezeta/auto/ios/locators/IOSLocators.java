@@ -708,9 +708,7 @@ public final class IOSLocators {
 		public static final String nameOpenConversationButton = "OPEN";
 		public static final String nameCallButton = "actionBarCallButton";
 		public static final String nameSendImageButton = "actionBarCameraButton";
-
 		public static final String xpathFormatFoundContact = "//UIAStaticText[@name='%s' and @visible='true']";
-		public static final String nameInviteOthersButton = "INVITE OTHERS";
 	}
 
 	public final class CommonIOSLocators {
@@ -779,6 +777,8 @@ public final class IOSLocators {
 	public  final class ContactsUIPage {
 		public static final String xpathSearchInput = "//UIATextView[UIAStaticText[@name='SEARCH BY NAME']]";
 		public static final String xpathContactOnContactsUIList = "//UIATableCell[@name='%s'][preceding::UIAButton[@name='ContactsViewCloseButton']]";
+		public static final String nameInviteOthersButton = "INVITE OTHERS";
+		public static final String xpathOpenButtonNextToUser = "//UIATableCell[@name='%s'][preceding::UIAButton[@name='ContactsViewCloseButton']]/UIAButton[@name='OPEN']";
 	}
 
 }

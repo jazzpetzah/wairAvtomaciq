@@ -17,3 +17,19 @@ Feature: ContactsUI
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @staging @id4121
+  Scenario Outline: Verify opening existing conversation from Contacts UI
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I press the send an invite button
+    And I see contact <Contact> in ContactsUI page list
+    And I click on Open button next to user name <Contact> on ContactsUI
+    Then I see dialog page with contact <Contact>
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |

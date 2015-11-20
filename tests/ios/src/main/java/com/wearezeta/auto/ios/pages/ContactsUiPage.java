@@ -17,6 +17,9 @@ public class ContactsUiPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.ContactsUIPage.xpathSearchInput)
 	private WebElement searchInput;
 
+	@FindBy(how = How.NAME, using = IOSLocators.ContactsUIPage.nameInviteOthersButton)
+	private WebElement inviteOthersButton;
+
 	public ContactsUiPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 		// TODO Auto-generated constructor stub
@@ -54,4 +57,21 @@ public class ContactsUiPage extends IOSPage {
 		return flag;
 	}
 
+	public void tapInviteOthersButton() {
+		inviteOthersButton.click();
+	}
+
+	public boolean isInviteOthersButtonVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				inviteOthersButton);
+	}
+
+	public void clickOpenButtonNextToUser(String contact) throws Exception {
+		WebElement openButton = getDriver()
+				.findElement(
+						By.xpath(String
+								.format(IOSLocators.ContactsUIPage.xpathOpenButtonNextToUser, contact)));
+		openButton.click();
+
+	}
 }
