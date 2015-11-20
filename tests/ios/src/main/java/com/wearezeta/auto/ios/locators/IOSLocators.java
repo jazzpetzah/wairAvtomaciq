@@ -526,7 +526,7 @@ public final class IOSLocators {
 	public static final class KeyboardButtons {
 		public static final String nameHideKeyboardButton = "Hide keyboard";
 		public static final String nameSpaceButton = "space";
-		public static final String nameDoneButton = "done";
+		public static final String nameDoneButton = "Done";
 	}
 
 	// //////////////
