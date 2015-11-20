@@ -617,7 +617,7 @@ Feature: Calling
       | user1Name | user2Name | user3Name | autocall    |
 
   @id3184 @regression
-  Scenario Outline: (AN-2998) Verify leaving group conversation during the call
+  Scenario Outline: Verify leaving group conversation during the call
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>

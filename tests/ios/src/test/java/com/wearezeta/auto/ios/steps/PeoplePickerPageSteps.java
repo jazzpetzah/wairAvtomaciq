@@ -667,19 +667,6 @@ public class PeoplePickerPageSteps {
 	public void IPressTheSendAnInviteButton() throws Exception {
 		getPeoplePickerPage().tapSendInviteButton();
 	}
-	
-	/**
-	 * Presses the Invite others button in the people picker. To invite people
-	 * via mail.
-	 * 
-	 * @step. ^I press invite others button$
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I press invite others button$")
-	public void IPressInviteOthersButton() throws Exception {
-		getPeoplePickerPage().tapInviteOthersButton();
-	}
 
 	/**
 	 * Presses the Copy button on the Send Invitation pop up
