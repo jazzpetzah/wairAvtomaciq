@@ -22,13 +22,6 @@ public class SettingsPage extends AndroidPage {
     private static final String xpathThemeSwitch = String
             .format("%s/parent::*/parent::*//*[@id='switchWidget']", xpathSettingsMenuItemByPartOfText.apply("Theme"));
 
-    private static final Function<String, String> xpathThemeItemByName = name -> String
-            .format("//*[@value='%s']", name);
-
-    private static final String xpathThemeMenuItemSummary = String.format(
-            "%s/parent::*//*[@id='summary']", xpathSettingsMenuItemByText.apply("Theme")
-    );
-
     private static final Function<String, String> xpathConfirmBtnByName = name -> String
             .format("//*[starts-with(@id, 'button') and @value='%s']", name);
 
@@ -36,7 +29,7 @@ public class SettingsPage extends AndroidPage {
         super(lazyDriver);
     }
 
-    private boolean scrollUntilMenuItemVisible(By locator, int maxScrolls) throws Exception {
+    private boolean scrollUntilMenuElementVisible(By locator, int maxScrolls) throws Exception {
         int nScrolls = 0;
         while (nScrolls < maxScrolls) {
             if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
@@ -55,30 +48,33 @@ public class SettingsPage extends AndroidPage {
 
     public void selectMenuItem(String name) throws Exception {
         final By locator = By.xpath(xpathSettingsMenuItemByText.apply(name));
-        assert scrollUntilMenuItemVisible(locator, 5) : String
+        assert scrollUntilMenuElementVisible(locator, 5) : String
                 .format("Menu item '%s' is not present", name);
         getDriver().findElement(locator).click();
     }
 
     public boolean isMenuItemVisible(String name) throws Exception {
         final By locator = By.xpath(xpathSettingsMenuItemByText.apply(name));
-        return scrollUntilMenuItemVisible(locator, 5);
+        return scrollUntilMenuElementVisible(locator, 5);
     }
 
     public void confirmSignOut() throws Exception {
         final By locator = By.xpath(xpathConfirmBtnByName.apply("Sign out"));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : "Sign out confirmation is not visible";
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) :
+                "Sign out confirmation is not visible";
         getDriver().findElement(locator).click();
     }
 
     public Optional<BufferedImage> getThemeSwitcherState() throws Exception {
         final By itemLocator = By.xpath(xpathSettingsMenuItemByPartOfText.apply(" Theme"));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), itemLocator) : "Theme menu item is not visible";
+        assert scrollUntilMenuElementVisible(itemLocator, 5) : "Theme menu item is not visible";
         return this.getElementScreenshot(getDriver().findElement(By.xpath(xpathThemeSwitch)));
     }
 
     public void switchTheme() throws Exception {
         final By switchLocator = By.xpath(xpathThemeSwitch);
+        assert scrollUntilMenuElementVisible(By.xpath(xpathSettingsMenuItemByPartOfText.apply(" Theme")), 5)
+                : "Theme menu item is not visible";
         getDriver().findElement(switchLocator).click();
     }
 }

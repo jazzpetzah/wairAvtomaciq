@@ -63,8 +63,7 @@ Feature: Settings
     And I tap options button
     And I tap settings button
     And I select "Account" settings menu item
-    And I select "Theme" settings menu item
-    And I select <DarkThemeName> theme
+    And I switch color theme in settings
     And I press back button
     And I press back button
     And I see personal info page
@@ -79,8 +78,7 @@ Feature: Settings
     And I tap options button
     And I tap settings button
     And I select "Account" settings menu item
-    And I select "Theme" settings menu item
-    And I select <BrightThemeName> theme
+    And I switch color theme in settings
     And I press back button
     And I press back button
     And I see personal info page
@@ -90,5 +88,5 @@ Feature: Settings
     Then I see the conversation view is not changed
 
     Examples:
-      | Name      | Contact   | DarkThemeName | BrightThemeName |
-      | user1Name | user2Name | Dark          | White           |
+      | Name      | Contact   |
+      | user1Name | user2Name |
