@@ -2,6 +2,7 @@ package com.wearezeta.auto.common.backend;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.email.ActivationMessage;
+import com.wearezeta.auto.common.email.InvitationMessage;
 import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.email.PasswordResetMessage;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
@@ -30,6 +31,7 @@ import java.util.concurrent.Future;
 // argument by performing automatic login (set id and session token attributes)
 public final class BackendAPIWrappers {
 	public static final int ACTIVATION_TIMEOUT = 120; // seconds
+	private static final int INVITATION_RECEIVING_TIMEOUT = 60; // seconds
 
 	private static final int REQUEST_TOO_FREQUENT_ERROR = 429;
 	private static final int LOGIN_CODE_HAS_NOT_BEEN_USED_ERROR = 403;
@@ -993,6 +995,21 @@ public final class BackendAPIWrappers {
 		tryLoginByUser(ownerUser);
 		BackendREST.sendPersonalInvitation(generateAuthToken(ownerUser),
 				toEmail, toName, message);
+	}
+
+	public static InvitationMessage getInvitationMessage(String email)
+			throws Exception {
+		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
+		Map<String, String> expectedHeaders = new HashMap<>();
+		expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, email);
+		try {
+			final String msg = mbox.getMessage(expectedHeaders,
+					INVITATION_RECEIVING_TIMEOUT, 0).get();
+			return new InvitationMessage(msg);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }

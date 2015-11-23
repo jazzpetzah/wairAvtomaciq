@@ -38,12 +38,10 @@ import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
-import com.wearezeta.auto.common.email.InvitationMessage;
-import com.wearezeta.auto.common.email.MessagingUtils;
-import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.common.Browser;
@@ -65,6 +63,7 @@ import cucumber.api.java.en.When;
 public class CommonWebAppSteps {
 
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	public static final Logger log = ZetaLogger.getLog(CommonWebAppSteps.class
 			.getSimpleName());
@@ -689,7 +688,7 @@ public class CommonWebAppSteps {
 		final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
 		assertTrue(String.format(
 				"Invitation email for %s has not been received", email),
-				isInvitationMessageReceivedBy(email));
+				BackendAPIWrappers.getInvitationMessage(email).isValid());
 	}
 
 	/**
@@ -706,44 +705,12 @@ public class CommonWebAppSteps {
 	public void INavigateToPersonalInvitationRegistrationPage(String alias)
 			throws Exception {
 		final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
-		String url = extractRegistrationUrlFromInvitationMail(email);
+		String url = BackendAPIWrappers.getInvitationMessage(email)
+				.extractInvitationLink();
 		RegistrationPage registrationPage = WebappPagesCollection.getInstance()
 				.getPage(RegistrationPage.class);
 		registrationPage.setUrl(url);
 		registrationPage.navigateTo();
-	}
-
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	private static final int RECEIVING_TIMEOUT = 60; // seconds
-
-	private boolean isInvitationMessageReceivedBy(String email)
-			throws Exception {
-		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
-		Map<String, String> expectedHeaders = new HashMap<>();
-		expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, email);
-		try {
-			final String msg = mbox.getMessage(expectedHeaders,
-					RECEIVING_TIMEOUT, 0).get();
-			return new InvitationMessage(msg).isValid();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
-
-	private String extractRegistrationUrlFromInvitationMail(String email)
-			throws Exception {
-		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
-		Map<String, String> expectedHeaders = new HashMap<>();
-		expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, email);
-		try {
-			final String msg = mbox.getMessage(expectedHeaders,
-					RECEIVING_TIMEOUT, 0).get();
-			return new InvitationMessage(msg).extractInvitationLink();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
 	}
 
 	/**

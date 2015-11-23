@@ -40,6 +40,12 @@ Feature: Registration
     And I submit registration form
     And User <Contact> is Me without avatar
     And I see Self Picture Upload dialog
+    And I force carousel mode on Self Picture Upload dialog
+    And I select random picture from carousel on Self Picture Upload dialog
+    And I confirm picture selection on Self Picture Upload dialog
+    And I see Contacts Upload dialog
+    And I close Contacts Upload dialog
+    And I see Contact list with name <Name>
 
     Examples: 
       | Login      | Password      | Name      | ContactMail | Contact    | Message |
