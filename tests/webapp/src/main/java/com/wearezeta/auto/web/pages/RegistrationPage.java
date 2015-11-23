@@ -83,10 +83,20 @@ public class RegistrationPage extends WebPage {
 		nameField.sendKeys(name);
 	}
 
+	public String getEnteredName() throws Exception {
+		return getDriver().executeScript(
+				"return $('#wire-register-name').val()").toString();
+	}
+
 	public void enterEmail(String email) throws Exception {
 		emailField.click();
 		emailField.clear();
 		emailField.sendKeys(email);
+	}
+
+	public String getEnteredEmail() throws Exception {
+		return getDriver().executeScript(
+				"return $('#wire-register-email').val()").toString();
 	}
 
 	public void enterPassword(String password) throws Exception {
@@ -144,4 +154,10 @@ public class RegistrationPage extends WebPage {
 	public void refreshPage() throws Exception {
 		getDriver().get(getDriver().getCurrentUrl());
 	}
+
+	@Override
+	public void setUrl(String url) {
+		super.setUrl(url);
+	}
+
 }
