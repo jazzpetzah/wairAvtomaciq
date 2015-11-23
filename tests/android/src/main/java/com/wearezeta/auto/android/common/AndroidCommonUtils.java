@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Dimension;
@@ -490,25 +491,46 @@ public class AndroidCommonUtils extends CommonUtils {
                 output.trim()));
     }
 
-    /**
-     * This method will hide the current activity
-     *
-     * @throws Exception
-     */
     public static void clearAllContacts() throws Exception {
         executeAdb("shell content delete "
                 + "--uri content://com.android.contacts/raw_contacts");
     }
 
     /**
-     * This method will hide the current activity
+     * This method will hide the current activity. Do not forget to restore it if needed
      *
      * @throws Exception
      */
-    public static void insertContact(String name, String email, String phoneNumber) throws Exception {
+    public static void insertContact(String name, String email, PhoneNumber phoneNumber) throws Exception {
         executeAdb(
                 String.format("shell am start -a android.intent.action.INSERT -t vnd.android.cursor.dir/contact -e name '%s' -e email %s -e phone %s",
-                name, email, phoneNumber));
+                name, email, phoneNumber.toString()));
+        // To save changes
+        tapHomeButton();
+    }
+
+    /**
+     * This method will hide the current activity. Do not forget to restore it if needed
+     *
+     * @throws Exception
+     */
+    public static void insertContact(String name, String email) throws Exception {
+        executeAdb(
+                String.format("shell am start -a android.intent.action.INSERT -t vnd.android.cursor.dir/contact -e name '%s' -e email %s",
+                        name, email));
+        // To save changes
+        tapHomeButton();
+    }
+
+    /**
+     * This method will hide the current activity. Do not forget to restore it if needed
+     *
+     * @throws Exception
+     */
+    public static void insertContact(String name, PhoneNumber phoneNumber) throws Exception {
+        executeAdb(
+                String.format("shell am start -a android.intent.action.INSERT -t vnd.android.cursor.dir/contact -e name '%s' -e phone %s",
+                        name, phoneNumber.toString()));
         // To save changes
         tapHomeButton();
     }

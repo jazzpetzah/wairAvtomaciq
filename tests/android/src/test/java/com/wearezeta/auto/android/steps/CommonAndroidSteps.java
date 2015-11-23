@@ -19,6 +19,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
+import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -837,8 +838,7 @@ public class CommonAndroidSteps {
     public void IImportUserIntoAddressBook(String alias) throws Exception {
         final String name = usrMgr.findUserByNameOrNameAlias(alias).getName();
         final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
-        final String phoneNumber = usrMgr.findUserByNameOrNameAlias(alias).getPhoneNumber().toString();
-        AndroidCommonUtils.insertContact(name, email, phoneNumber);
+        AndroidCommonUtils.insertContact(name, email);
         AndroidCommonUtils.switchToApplication(
                 CommonUtils.getAndroidPackageFromConfig(this.getClass()),
                 CommonUtils.getAndroidActivityFromConfig(this.getClass()));
