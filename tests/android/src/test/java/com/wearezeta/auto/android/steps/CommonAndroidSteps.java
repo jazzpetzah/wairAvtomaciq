@@ -838,7 +838,8 @@ public class CommonAndroidSteps {
     public void IImportUserIntoAddressBook(String alias) throws Exception {
         final String name = usrMgr.findUserByNameOrNameAlias(alias).getName();
         final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
-        AndroidCommonUtils.insertContact(name, email);
+        final PhoneNumber phoneNumber = usrMgr.findUserByNameOrNameAlias(alias).getPhoneNumber();
+        AndroidCommonUtils.insertContact(name, email, phoneNumber);
         AndroidCommonUtils.switchToApplication(
                 CommonUtils.getAndroidPackageFromConfig(this.getClass()),
                 CommonUtils.getAndroidActivityFromConfig(this.getClass()));
