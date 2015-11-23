@@ -269,3 +269,16 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
+  @id4089 @staging
+  Scenario Outline: Verify there is no options menu for incoming connection requests
+    Given There are 2 users where <Name> is me
+    Given <Contact> sent connection request to <Name>
+    Given I sign in using my email or phone number
+    And I see contact list with name <WaitingMess1>
+    When I swipe right on a <WaitingMess1>
+    Then I see contact list with name <WaitingMess1>
+
+    Examples:
+      | Name      | Contact   | WaitingMess1     |
+      | user1Name | user2Name | 1 person waiting |
+
