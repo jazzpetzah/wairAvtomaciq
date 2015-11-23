@@ -1,17 +1,27 @@
 package com.wearezeta.auto.common.email;
 
+import javax.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.mail.Message;
-import javax.mail.MessagingException;
 
 public class ActivationMessage extends WireMessage {
 
 	public ActivationMessage(String msg) throws Exception {
 		super(msg);
 	}
+
+    private static final String ZETA_KEY_HEADER_NAME = "X-Zeta-Key";
+
+    public String getXZetaKey() throws MessagingException {
+        return this.getHeaderValue(ZETA_KEY_HEADER_NAME);
+    }
+
+    private static final String ZETA_CODE_HEADER_NAME = "X-Zeta-Code";
+
+    public String getXZetaCode() throws MessagingException {
+        return this.getHeaderValue(ZETA_CODE_HEADER_NAME);
+    }
 
 	public String extractActivationLink() throws Exception {
 		ArrayList<String> links = new ArrayList<String>();
@@ -26,13 +36,9 @@ public class ActivationMessage extends WireMessage {
 	}
 
 	private static final String MESSAGE_PURPOSE = "Activation";
-	
-	public static boolean isActivationMessage(Message msg) {
-		try {
-			return (msg.getHeader(ZETA_CODE_HEADER_NAME) != null && msg
-					.getHeader(ZETA_CODE_HEADER_NAME).equals(MESSAGE_PURPOSE));
-		} catch (MessagingException e) {
-			return false;
-		}
+
+	@Override
+	protected String getExpectedPurposeValue() {
+		return MESSAGE_PURPOSE;
 	}
 }

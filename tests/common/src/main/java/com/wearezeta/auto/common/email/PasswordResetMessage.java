@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-
 public class PasswordResetMessage extends WireMessage {
 
 	public PasswordResetMessage(String msg) throws Exception {
@@ -25,14 +22,10 @@ public class PasswordResetMessage extends WireMessage {
 		return links.get(0);
 	}
 
-	public static final String MESSAGE_PURPOSE = "PasswordReset";
-	
-	public static boolean isPasswordResetMessage(Message msg) {
-		try {
-			return (msg.getHeader(ZETA_PURPOSE_HEADER_NAME) != null && msg
-					.getHeader(ZETA_PURPOSE_HEADER_NAME).equals(MESSAGE_PURPOSE));
-		} catch (MessagingException e) {
-			return false;
-		}
+	private static final String MESSAGE_PURPOSE = "PasswordReset";
+
+	@Override
+	protected String getExpectedPurposeValue() {
+		return MESSAGE_PURPOSE;
 	}
 }

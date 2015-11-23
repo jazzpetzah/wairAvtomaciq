@@ -6,7 +6,6 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-import junit.framework.Assert;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
@@ -124,6 +123,10 @@ public class ContactListPage extends AndroidPage {
 
     private static final Function<Integer, String> xpathContactsListOptionsMenuItemByIdx = idx -> String
             .format("(//*[@id='ttv__settings_box__item'])[%d]", idx);
+
+    private static final String idInviteButton = "zb__conversationlist__show_contacts";
+    @FindBy(id = idInviteButton)
+    private WebElement inviteButton;
 
     private static final Logger log = ZetaLogger.getLog(ContactListPage.class
             .getSimpleName());
@@ -438,5 +441,9 @@ public class ContactListPage extends AndroidPage {
         final By locator = By.xpath(xpathContactsListOptionsMenuItemByIdx.apply(position));
         String itemName = this.getDriver().findElement(locator).getText();
         return itemName.equals(name);
+    }
+
+    public void tapInviteButton() {
+        inviteButton.click();
     }
 }
