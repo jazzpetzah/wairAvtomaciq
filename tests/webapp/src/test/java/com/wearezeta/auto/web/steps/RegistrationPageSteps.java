@@ -29,6 +29,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import org.junit.Assert;
 
 public class RegistrationPageSteps {
 
@@ -105,6 +106,44 @@ public class RegistrationPageSteps {
 	}
 
 	/**
+	 * Verifies autofilled email of user
+	 *
+	 * @step. ^(.*) verifies email is correct on Registration page$
+	 *
+	 * @param usernameAlias
+	 *            user name/alias
+	 * @throws Exception
+	 */
+	@When("^(.*) verifies email is correct on Registration page$")
+	public void IVerifyEmail(String usernameAlias) throws Exception {
+		String realEmail = usrMgr.findUserByNameOrNameAlias(usernameAlias)
+				.getEmail();
+		Assert.assertEquals("Entered email is wrong", realEmail,
+				webappPagesCollection.getPage(RegistrationPage.class)
+						.getEnteredEmail());
+
+	}
+
+	/**
+	 * Verifies autofilled username of user
+	 *
+	 * @step. ^(.*) verifies username is correct on Registration page$
+	 *
+	 * @param usernameAlias
+	 *            user name/alias
+	 * @throws Exception
+	 */
+	@When("^(.*) verifies username is correct on Registration page$")
+	public void IVerifyUsername(String usernameAlias) throws Exception {
+		String realUsername = usrMgr.findUserByNameOrNameAlias(usernameAlias)
+				.getName();
+		Assert.assertEquals("Entered username is wrong", realUsername,
+				webappPagesCollection.getPage(RegistrationPage.class)
+						.getEnteredName());
+
+	}
+
+	/**
 	 * Enter user password into registration form
 	 * 
 	 * @step. ^I enter user password \"(.*)\" on Registration page$
@@ -115,9 +154,13 @@ public class RegistrationPageSteps {
 	 */
 	@When("^I enter user password \"(.*)\" on Registration page$")
 	public void IEnterPassword(String password) throws Exception {
+
 		try {
-			this.userToRegister.setPassword(usrMgr.findUserByPasswordAlias(
-					password).getPassword());
+			ClientUser user = usrMgr.findUserByPasswordAlias(password);
+			if (this.userToRegister == null) {
+				this.userToRegister = user;
+			}
+			this.userToRegister.setPassword(user.getPassword());
 		} catch (NoSuchUserException e) {
 			this.userToRegister.setPassword(password);
 			this.userToRegister.addPasswordAlias(password);

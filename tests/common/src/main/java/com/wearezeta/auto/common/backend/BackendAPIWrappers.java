@@ -613,8 +613,8 @@ public final class BackendAPIWrappers {
 	public static void sendConnectRequest(ClientUser user, ClientUser contact,
 			String connectName, String message) throws Exception {
 		tryLoginByUser(contact);
-		BackendREST.sendConnectRequest(receiveAuthToken(user),
-				contact.getId(), connectName, message);
+		BackendREST.sendConnectRequest(receiveAuthToken(user), contact.getId(),
+				connectName, message);
 	}
 
 	private static JSONArray getAllConnections(ClientUser user)
@@ -648,7 +648,7 @@ public final class BackendAPIWrappers {
 			}
 		}
 	}
-	
+
 	public static void cancelAllConnections(ClientUser user) throws Exception {
 		final JSONArray connections = getAllConnections(user);
 		for (int i = 0; i < connections.length(); i++) {
@@ -711,8 +711,8 @@ public final class BackendAPIWrappers {
 
 	public static void sendConversationMessage(ClientUser userFrom,
 			String convId, String message) throws Exception {
-		BackendREST.sendConversationMessage(receiveAuthToken(userFrom),
-				convId, message);
+		BackendREST.sendConversationMessage(receiveAuthToken(userFrom), convId,
+				message);
 	}
 
 	public static void sendConversationMessages(ClientUser userFrom,
@@ -847,15 +847,14 @@ public final class BackendAPIWrappers {
 
 	public static void updateUserName(ClientUser user, String newName)
 			throws Exception {
-		BackendREST
-				.updateSelfInfo(receiveAuthToken(user), null, null, newName);
+		BackendREST.updateSelfInfo(receiveAuthToken(user), null, null, newName);
 		user.setName(newName);
 	}
 
 	public static void updateUserAccentColor(ClientUser user, AccentColor color)
 			throws Exception {
-		BackendREST.updateSelfInfo(receiveAuthToken(user), color.getId(),
-				null, null);
+		BackendREST.updateSelfInfo(receiveAuthToken(user), color.getId(), null,
+				null);
 		user.setAccentColor(color);
 	}
 
@@ -988,4 +987,12 @@ public final class BackendAPIWrappers {
 						"%s contact(s) '%s' are still found after %s second(s) timeout",
 						currentCount, query, timeoutSeconds));
 	}
+
+	public static void sendPersonalInvitation(ClientUser ownerUser,
+			String toEmail, String toName, String message) throws Exception {
+		tryLoginByUser(ownerUser);
+		BackendREST.sendPersonalInvitation(generateAuthToken(ownerUser),
+				toEmail, toName, message);
+	}
+
 }

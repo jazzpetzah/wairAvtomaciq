@@ -666,6 +666,21 @@ final class BackendREST {
 		return new JSONObject(output);
 	}
 
+	public static JSONObject sendPersonalInvitation(AuthToken token,
+			String toEmail, String toName, String message) throws Exception {
+		Builder webResource = buildDefaultRequestWithAuth(
+				String.format("invitations"), MediaType.APPLICATION_JSON, token);
+		JSONObject requestBody = new JSONObject();
+		requestBody.put("email", toEmail);
+		requestBody.put("invitee_name", toName);
+		requestBody.put("message", message);
+		// We don't allow status code 200 since this would mean the user to
+		// invite already exists
+		final String output = restHandlers.httpPost(webResource,
+				requestBody.toString(), new int[] { HttpStatus.SC_CREATED });
+		return new JSONObject(output);
+	}
+
 	public static void setDefaultBackendURL(String url) {
 		backendUrl = url;
 	}

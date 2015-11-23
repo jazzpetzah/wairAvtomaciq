@@ -28,6 +28,23 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
+  @regression @id9999
+  Scenario Outline: Verify I can accept personal invitation
+    Given There is 1 user where <Name> is me
+    When me sends personal invitation to mail <ContactMail> with message <Message>
+    Then I verify user <Contact> has received an email invitation
+    When <Contact> navigates to personal invitation registration page
+    Then <Contact> verifies email is correct on Registration page
+    And <Contact> verifies username is correct on Registration page
+    And I enter user password "<Password>" on Registration page
+    And I submit registration form
+    And User <Contact> is Me without avatar
+    And I see Self Picture Upload dialog
+
+    Examples: 
+      | Login      | Password      | Name      | ContactMail | Contact    | Message |
+      | user1Email | user1Password | user1Name | user2Email  | user2Name  | Hello   |
+
   @smoke @id2064
   Scenario Outline: Photo selection dialogue - choose picture from library
     Given There is 1 user where <Name> is me without avatar picture

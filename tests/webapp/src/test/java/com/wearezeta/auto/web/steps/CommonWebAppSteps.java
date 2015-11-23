@@ -41,7 +41,11 @@ import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
+import com.wearezeta.auto.common.email.InvitationMessage;
+import com.wearezeta.auto.common.email.MessagingUtils;
+import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.common.Browser;
 import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
@@ -646,6 +650,100 @@ public class CommonWebAppSteps {
 			String message, String conversationName) throws Exception {
 		commonSteps.UserSentMessageToConversation(userFromNameAlias,
 				conversationName, message);
+	}
+
+	/**
+	 * Send personal invitation over the backend
+	 *
+	 *
+	 * @step. ^(.*) send personal invitation to mail (.*) with name (.*) and
+	 *        message (.*)$
+	 *
+	 * @param userToNameAlias
+	 *            the name/alias of conversations list owner
+	 * @param toMail
+	 *            the email to send the invitation to
+	 * @param message
+	 *            the message for the invitee
+	 * @throws Exception
+	 */
+	@When("^(.*) sends personal invitation to mail (.*) with message (.*)$")
+	public void UserXSendsPersonalInvitation(String userToNameAlias,
+			String toMail, String message) throws Exception {
+		commonSteps.UserXSendsPersonalInvitationWithMessageToUserWithMail(
+				userToNameAlias, toMail, message);
+	}
+
+	/**
+	 * Verify that invitation email exists in user's mailbox
+	 *
+	 * @step. ^I verify user (.*) has received (?:an |\s*)email invitation$
+	 *
+	 * @param alias
+	 *            user name/alias
+	 * @throws Exception
+	 * 
+	 */
+	@Then("^I verify user (.*) has received (?:an |\\s*)email invitation$")
+	public void IVerifyUserReceiverInvitation(String alias) throws Exception {
+		final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
+		assertTrue(String.format(
+				"Invitation email for %s has not been received", email),
+				isInvitationMessageReceivedBy(email));
+	}
+
+	/**
+	 * Navigates to the prefilled personal invitation registration page
+	 *
+	 * @step. ^(.*) navigates to personal invitation registration page$
+	 *
+	 * @param alias
+	 *            user name/alias
+	 * @throws Exception
+	 *
+	 */
+	@Then("^(.*) navigates to personal invitation registration page$")
+	public void INavigateToPersonalInvitationRegistrationPage(String alias)
+			throws Exception {
+		final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
+		String url = extractRegistrationUrlFromInvitationMail(email);
+		RegistrationPage registrationPage = WebappPagesCollection.getInstance()
+				.getPage(RegistrationPage.class);
+		registrationPage.setUrl(url);
+		registrationPage.navigateTo();
+	}
+
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	private static final int RECEIVING_TIMEOUT = 60; // seconds
+
+	private boolean isInvitationMessageReceivedBy(String email)
+			throws Exception {
+		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
+		Map<String, String> expectedHeaders = new HashMap<>();
+		expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, email);
+		try {
+			final String msg = mbox.getMessage(expectedHeaders,
+					RECEIVING_TIMEOUT, 0).get();
+			return new InvitationMessage(msg).isValid();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	private String extractRegistrationUrlFromInvitationMail(String email)
+			throws Exception {
+		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
+		Map<String, String> expectedHeaders = new HashMap<>();
+		expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, email);
+		try {
+			final String msg = mbox.getMessage(expectedHeaders,
+					RECEIVING_TIMEOUT, 0).get();
+			return new InvitationMessage(msg).extractInvitationLink();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	/**

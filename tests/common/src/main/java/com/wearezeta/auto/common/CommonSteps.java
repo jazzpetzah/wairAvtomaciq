@@ -154,7 +154,7 @@ public final class CommonSteps {
 		ClientUser userTo = usrMgr.findUserByNameOrNameAlias(userToNameAlias);
 		BackendAPIWrappers.ignoreAllConnections(userTo);
 	}
-	
+
 	public void CancelAllConnectRequests(String userToNameAlias)
 			throws Exception {
 		ClientUser userTo = usrMgr.findUserByNameOrNameAlias(userToNameAlias);
@@ -369,7 +369,7 @@ public final class CommonSteps {
 					dstConversationName, imagePath);
 		}
 	}
-	
+
 	public void UserSentImageToConversationOtr(String imageSenderUserNameAlias,
 			String imagePath, String dstConversationName, boolean isGroup)
 			throws Exception {
@@ -378,8 +378,8 @@ public final class CommonSteps {
 		if (!isGroup) {
 			ClientUser imageReceiver = usrMgr
 					.findUserByNameOrNameAlias(dstConversationName);
-			BackendAPIWrappers.sendPictureToSingleUserConversationOtr(imageSender,
-					imageReceiver, imagePath);
+			BackendAPIWrappers.sendPictureToSingleUserConversationOtr(
+					imageSender, imageReceiver, imagePath);
 		} else {
 			dstConversationName = usrMgr.replaceAliasesOccurences(
 					dstConversationName, FindBy.NAME_ALIAS);
@@ -399,7 +399,7 @@ public final class CommonSteps {
 					"The picture '%s' is not accessible", picturePath));
 		}
 	}
-	
+
 	public void IChangeUserName(String userNameAlias, String newName)
 			throws Exception {
 		BackendAPIWrappers.updateUserName(
@@ -565,5 +565,13 @@ public final class CommonSteps {
 			emailsToAdd.add(email);
 		}
 		BackendAPIWrappers.uploadAddressBookWithContacts(userAs, emailsToAdd);
+	}
+
+	public void UserXSendsPersonalInvitationWithMessageToUserWithMail(
+			String sender, String toMail, String message) throws Exception {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(sender);
+		ClientUser invitee = usrMgr.findUserByEmailOrEmailAlias(toMail);
+		BackendAPIWrappers.sendPersonalInvitation(user, invitee.getEmail(),
+				invitee.getName(), message);
 	}
 }
