@@ -19,6 +19,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
+import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -40,7 +41,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
@@ -554,25 +554,22 @@ public class CommonAndroidSteps {
         commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstUserNameAlias,
                 (msg == null || msg.trim().length() == 0) ? CommonUtils.generateRandomString(10) : msg.trim());
     }
-    
+
     /**
-	 * Send message to a conversation
-	 * 
-	 * @step. ^User (.*) sent message (.*) to conversation (.*)$
-	 * @param userFromNameAlias
-	 *            user who want to mute conversation
-	 * @param message
-	 *            message to send
-	 * @param conversationName
-	 *            the name of existing conversation to send the message to
-	 * @throws Exception
-	 */
-	@When("^User (.*) sent message (.*) to conversation (.*)$")
-	public void UserSentMessageToConversation(String userFromNameAlias,
-			String message, String conversationName) throws Exception {
-		commonSteps.UserSentMessageToConversation(userFromNameAlias,
-				conversationName, message);
-	}
+     * Send message to a conversation
+     *
+     * @param userFromNameAlias user who want to mute conversation
+     * @param message           message to send
+     * @param conversationName  the name of existing conversation to send the message to
+     * @throws Exception
+     * @step. ^User (.*) sent message (.*) to conversation (.*)$
+     */
+    @When("^User (.*) sent message (.*) to conversation (.*)$")
+    public void UserSentMessageToConversation(String userFromNameAlias,
+                                              String message, String conversationName) throws Exception {
+        commonSteps.UserSentMessageToConversation(userFromNameAlias,
+                conversationName, message);
+    }
 
     /**
      * Send messages from all registered user to myself (these users have to be
@@ -790,30 +787,6 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * Add email(s) into address book of a user and upload address book
-     *
-     * @param asUser name of the user where the address book is uploaded
-     * @param emails list of email addresses seperated by comma
-     * @throws Exception
-     * @step. ^(.*) (?:has|have) contacts? (.*) in (?:the |\\s*)address book$
-     */
-    @Given("^(.*) (?:has|have) contacts? (.*) in (?:the |\\s*)address book$")
-    public void UserXHasContactsInAddressBook(String asUser, String emails) throws Exception {
-        commonSteps.UserXHasContactsInAddressBook(asUser, emails);
-    }
-
-    /**
-     * Adds 1 user with email and 1 with phone number in Android address book
-     *
-     * @throws Exception
-     * @step. ^I add predefined users to address book$
-     */
-    @Given("^I add predefined users to address book$")
-    public void IAddPredefinedUsersToAddressBook() throws Exception {
-        AndroidCommonUtils.addPreDefinedUsersToAddressBook();
-    }
-
-    /**
      * Checks to see that a device runs the target version, and if not, throws a
      * pending exception to skip this test without failing
      *
@@ -828,16 +801,6 @@ public class CommonAndroidSteps {
         }
     }
 
-    @Before("@deployAddressBook")
-    public void CleanAddressBook() throws Exception {
-        AndroidCommonUtils.cleanAddressBook();
-    }
-
-    @After("@deployAddressBook")
-    public void DeleteDeployedContacts() throws Exception {
-        AndroidCommonUtils.removeTestContactsFromAddressBook();
-    }
-
     /**
      * Enable/disable airplane mode
      *
@@ -848,6 +811,38 @@ public class CommonAndroidSteps {
     @Given("^I (enable|disable) Airplane mode on the device$")
     public void IChangeAirplaneMode(String action) throws Exception {
         AndroidCommonUtils.setAirplaneMode(action.equals("enable"));
+    }
+
+    /**
+     * Delete all existing contacts from Address Book.
+     * !Be careful to when executing this test on non-testing devices!
+     *
+     * @wtep. ^I delete all contacts from Address Book$
+     *
+     * @throws Exception
+     */
+    @Given("^I delete all contacts from Address Book$")
+    public void IDeleteAllContacts() throws Exception {
+        AndroidCommonUtils.clearAllContacts();
+    }
+
+    /**
+     * Add a new contact into address book
+     *
+     * @step. ^I add (.*) into Address Book$
+     *
+     * @param alias user alias
+     * @throws Exception
+     */
+    @Given("^I add (.*) into Address Book$")
+    public void IImportUserIntoAddressBook(String alias) throws Exception {
+        final String name = usrMgr.findUserByNameOrNameAlias(alias).getName();
+        final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
+        final PhoneNumber phoneNumber = usrMgr.findUserByNameOrNameAlias(alias).getPhoneNumber();
+        AndroidCommonUtils.insertContact(name, email, phoneNumber);
+        AndroidCommonUtils.switchToApplication(
+                CommonUtils.getAndroidPackageFromConfig(this.getClass()),
+                CommonUtils.getAndroidActivityFromConfig(this.getClass()));
     }
 
 }

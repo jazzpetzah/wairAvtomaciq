@@ -430,4 +430,15 @@ public class ContactListPageSteps {
                 getContactListPage().isMenuItemAtCorrectIndex(name, position));
     }
 
+    /**
+     * Tap the Invite Other People button at the bottom of conversations list
+     *
+     * @throws Exception
+     * @step. ^I tap Invite button at the bottom of conversations list$
+     */
+    @When("^I tap Invite button at the bottom of conversations list$")
+    public void ITapInviteButton() throws Exception {
+        getContactListPage().tapInviteButton();
+    }
+
 }
