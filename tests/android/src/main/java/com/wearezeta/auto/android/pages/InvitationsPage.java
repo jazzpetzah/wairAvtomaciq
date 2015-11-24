@@ -3,6 +3,7 @@ package com.wearezeta.auto.android.pages;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -14,6 +15,10 @@ import java.util.function.Function;
 
 public class InvitationsPage extends AndroidPage {
 
+	private static final String idInviteMorePeopleBtn = "zb__conversationlist__show_contacts";
+	@FindBy(id = idInviteMorePeopleBtn)
+	private WebElement inviteMorePeopleBtn;
+	
 	private static final Function<String, String> xpathUserToInviteByName = name
 		-> String.format("//*[@id='ttv__contactlist__user__name' and @value='%s']", name);
 
@@ -68,5 +73,17 @@ public class InvitationsPage extends AndroidPage {
 
 	public boolean isInvitationMessageReceivedBy(String email) throws Exception {
 		return BackendAPIWrappers.getInvitationMessage(email).isValid();
+	}
+	
+	public boolean waitForInviteMorePeopleButtonVisible() throws Exception {
+		DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.id(idInviteMorePeopleBtn));
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				inviteMorePeopleBtn);
+	}
+
+	public boolean waitForInviteMorePeopleButtonNotVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.id(idInviteMorePeopleBtn));
 	}
 }
