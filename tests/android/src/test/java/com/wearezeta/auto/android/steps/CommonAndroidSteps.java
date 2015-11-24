@@ -840,9 +840,6 @@ public class CommonAndroidSteps {
         final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
         final PhoneNumber phoneNumber = usrMgr.findUserByNameOrNameAlias(alias).getPhoneNumber();
         AndroidCommonUtils.insertContact(name, email, phoneNumber);
-        AndroidCommonUtils.switchToApplication(
-                CommonUtils.getAndroidPackageFromConfig(this.getClass()),
-                CommonUtils.getAndroidActivityFromConfig(this.getClass()));
     }
 
 }
