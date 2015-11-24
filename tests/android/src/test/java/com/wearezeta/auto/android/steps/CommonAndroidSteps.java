@@ -817,7 +817,7 @@ public class CommonAndroidSteps {
      * Delete all existing contacts from Address Book.
      * !Be careful to when executing this test on non-testing devices!
      *
-     * @wtep. ^I delete all contacts from Address Book$
+     * @step. ^I delete all contacts from Address Book$
      *
      * @throws Exception
      */
