@@ -62,7 +62,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id2531 @noAcceptAlert
+  @staging @id2531 @noAcceptAlert @obsolete
   Scenario Outline: Verify denying address book uploading [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -82,7 +82,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @staging @id2928 @noAcceptAlert
+  @staging @id2928 @noAcceptAlert @obsolete
   Scenario Outline: Verify denying address book uploading [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
