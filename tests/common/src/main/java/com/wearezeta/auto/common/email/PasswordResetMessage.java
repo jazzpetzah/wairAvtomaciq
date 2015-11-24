@@ -22,7 +22,7 @@ public class PasswordResetMessage extends WireMessage {
 		return links.get(0);
 	}
 
-	private static final String MESSAGE_PURPOSE = "PasswordReset";
+	public static final String MESSAGE_PURPOSE = "PasswordReset";
 
 	@Override
 	protected String getExpectedPurposeValue() {
