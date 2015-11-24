@@ -251,7 +251,7 @@ Feature: Conversation List
     Then Contact <GroupChatName> is not muted
 
     Examples:
-      | Name      | Contact1  |Contact2   | GroupChatName |
+      | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | UNMUTE        |
 
   @id4088 @regression
@@ -282,7 +282,7 @@ Feature: Conversation List
       | Name      | Contact   | WaitingMess1     |
       | user1Name | user2Name | 1 person waiting |
 
-  @torun @id4090 @staging
+  @id4090 @staging
   Scenario Outline: Verify that options menu from list is the same as opened from the other user profile
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
