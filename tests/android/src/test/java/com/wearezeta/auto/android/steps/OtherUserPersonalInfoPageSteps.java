@@ -207,6 +207,22 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	/**
+	 * Verifys the user profile menu item and its correct position
+	 *
+	 * @param itemName menu item name
+	 * @param position index position of item in menu
+	 * @throws Throwable
+	 * @step. ^I see (.*) button in user profile menu at position (\\d+)$
+	 */
+	@Then("^I see (.*) button in user profile menu at position (\\d+)$")
+	public void ISeeButtonInUserProfileMenuAtPosition(String itemName, int position) throws Throwable {
+		Assert.assertTrue("The user profile menu item is not visible",
+				getOtherUserPersonalInfoPage().isUserProfileMenuItemVisible(itemName));
+		Assert.assertTrue("Menu item is not at correct index position",
+				getOtherUserPersonalInfoPage().isUserProfileMenuItemAtCorrectIndex(itemName, position));
+	}
+
+	/**
 	 * Confirms the current user's decision to leave a conversation -outofplace
 	 * 
 	 * @step. ^I confirm leaving$
