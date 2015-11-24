@@ -73,6 +73,9 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 			.format("//*[@id='fl__participant__settings_box']//*[starts-with(@id, 'ttv__settings_box__item') and @value='%s']",
 					name.toUpperCase());
 
+	private static final Function<Integer, String> xpathConvOptionsMenuItemByIndex = idx -> String
+			.format("(//*[@id='ttv__settings_box__item'])[%d]", idx);
+
 	@FindBy(id = PeoplePickerPage.idParticipantsClose)
 	private WebElement closeButton;
 
@@ -286,6 +289,18 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
 	public boolean isParticipantAvatarVisible(String name) throws Exception {
 		final By locator = By.xpath(xpathParticipantAvatarByName.apply(name));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public boolean isUserProfileMenuItemAtCorrectIndex(String itemName, int position) throws Exception {
+		final By locator = By.xpath(xpathConvOptionsMenuItemByIndex.apply(position));
+		String name = this.getDriver().findElement(locator).getText();
+		return name.equals(itemName);
+	}
+
+	public boolean isUserProfileMenuItemVisible(String itemName) throws Exception {
+		final By locator = By.xpath(xpathConvOptionsMenuItemByName
+				.apply(itemName));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 }
