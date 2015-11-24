@@ -185,7 +185,7 @@ Feature: Calling
       | user1Name | user2Name | user3Name | autocall    |
 
   @id2211 @calling_basic
-  Scenario Outline: I can dismiss calling bar by swipe
+  Scenario Outline: (AN-2568) I can dismiss calling bar by swipe
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
