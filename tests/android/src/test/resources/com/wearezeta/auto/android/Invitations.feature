@@ -16,7 +16,7 @@ Feature: Invitations
     Then I verify the state of <Contact> avatar in the invites list is changed
     And I verify user <Contact> has received an email invitation
 
-    Examples:
+    Examples: 
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
@@ -27,15 +27,32 @@ Feature: Invitations
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
     And I wait until <Contact6> exists in backend search results
-    Then I see invite more people button
+    Then I see invite more people button in contacts list
     Given <Contact6> sent connection request to <Name>
     When <Name> accept all requests
-    Then I do not see invite more people button
+    Then I do not see invite more people button in contacts list
     When I swipe right on a <Contact1>
     And I select DELETE from conversation settings menu
     And I press DELETE on the confirm alert
-    Then I see invite more people button
+    Then I see invite more people button in contacts list
 
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name |
+
+  @id4157 @regression
+  Scenario Outline: Invite people button replaced with actions buttons when connected users selected in search
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I open search by tap
+    Then I see invite more people button in search
+    When I enter "<Contact1>" into Search input on People Picker page
+    And I tap on user name found on People picker page <Contact1>
+    Then I see action buttons appeared on People picker page
+    And I do not see invite more people button in search
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |

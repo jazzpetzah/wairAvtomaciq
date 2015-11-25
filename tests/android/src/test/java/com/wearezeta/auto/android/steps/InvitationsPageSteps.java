@@ -12,8 +12,7 @@ import org.junit.Assert;
 import java.awt.image.BufferedImage;
 
 public class InvitationsPageSteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
-            .getInstance();
+    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
 
     private InvitationsPage getInvitationsPage() throws Exception {
         return pagesCollection.getPage(InvitationsPage.class);
@@ -26,13 +25,13 @@ public class InvitationsPageSteps {
      *
      * @param alias user alias
      * @throws Exception
-     * @step. ^^I see (.*) in the invites list$
+     * @step. ^I see (.*) in the invites list$
      */
     @Then("^I see (.*) in the invites list$")
     public void ISeeUser(String alias) throws Exception {
         final String name = usrMgr.findUserByNameOrNameAlias(alias).getName();
-        Assert.assertTrue(String.format("User '%s' is not visible on invites page", name), getInvitationsPage()
-                .waitUntilUserNameIsVisible(name));
+        Assert.assertTrue(String.format("User '%s' is not visible on invites page", name),
+                getInvitationsPage().waitUntilUserNameIsVisible(name));
     }
 
     private BufferedImage previousAvatarState = null;
@@ -47,7 +46,8 @@ public class InvitationsPageSteps {
     @When("^I remember the state of (.*) avatar in the invites list$")
     public void IRememberTheStateOfAvatar(String alias) throws Exception {
         final String name = usrMgr.findUserByNameOrNameAlias(alias).getName();
-        this.previousAvatarState = getInvitationsPage().getAvatarScreenshot(name).orElseThrow(IllegalStateException::new);
+        this.previousAvatarState = getInvitationsPage().getAvatarScreenshot(name)
+                .orElseThrow(IllegalStateException::new);
     }
 
     /**
@@ -100,11 +100,13 @@ public class InvitationsPageSteps {
             throw new IllegalStateException("Please take a screenshot of previous avatar state first");
         }
         final String name = usrMgr.findUserByNameOrNameAlias(alias).getName();
-        final BufferedImage currentAvatarState = getInvitationsPage().getAvatarScreenshot(name).orElseThrow(IllegalStateException::new);
+        final BufferedImage currentAvatarState = getInvitationsPage().getAvatarScreenshot(name)
+                .orElseThrow(IllegalStateException::new);
         final double minSimilarity = 0.97;
-        final double similarity = ImageUtil.getOverlapScore(currentAvatarState, previousAvatarState, ImageUtil.RESIZE_TO_MAX_SCORE);
-        Assert.assertTrue(String.format("User avatar for '%s' seems to be the same (%.2f >= %.2f)", name, similarity, minSimilarity),
-                similarity < minSimilarity);
+        final double similarity = ImageUtil.getOverlapScore(currentAvatarState, previousAvatarState,
+                ImageUtil.RESIZE_TO_MAX_SCORE);
+        Assert.assertTrue(String.format("User avatar for '%s' seems to be the same (%.2f >= %.2f)", name,
+                similarity, minSimilarity), similarity < minSimilarity);
     }
 
     /**
@@ -122,22 +124,38 @@ public class InvitationsPageSteps {
     }
 
     /**
-	 * Waits for the invite button to appear or disappear in the conversations
-	 * list
-	 *
-	 * @throws Exception
-	 * @step. ^I( do not)? see invite more people button$
-	 */
-	@When("^I( do not)? see invite more people button$")
-	public void WhenISeeInvitePeopleButton(String shouldNotSee)
-			throws Exception {
-		if (shouldNotSee == null) {
-			Assert.assertTrue(
-					"The invite more people button is not visible in the conversations list",
-					getInvitationsPage().waitForInviteMorePeopleButtonVisible());
-		} else {
-			Assert.assertTrue("The invite more people button is still visible",
-					getInvitationsPage().waitForInviteMorePeopleButtonNotVisible());
-		}
-	}
+     * Waits for the invite button to appear or disappear in the conversations list
+     *
+     * @throws Exception
+     * @step. ^I( do not)? see invite more people button (in contacts list)?$
+     */
+    @When("^I( do not)? see invite more people button (in contacts list)?$")
+    public void WhenISeeInvitePeopleContactsButton(String shouldNotSee, String inContacts) throws Exception {
+        if (shouldNotSee == null && inContacts != null)
+            Assert.assertTrue("The invite more people button is not visible in contacts list",
+                    getInvitationsPage().waitForInviteMorePeopleContactsButtonVisible());
+        else if (inContacts != null)
+            Assert.assertTrue("The invite more people button is still visible in contacts list",
+                    getInvitationsPage().waitForInviteMorePeopleContactsButtonNotVisible());
+        else
+            Assert.assertTrue("Received unrecognized parameters", false);
+    }
+
+    /**
+     * Waits for the invite button to appear or disappear in the search
+     *
+     * @throws Exception
+     * @step. ^I( do not)? see invite more people button (in search)?
+     */
+    @When("^I( do not)? see invite more people button (in search)?$")
+    public void WhenISeeInvitePeopleSearchButton(String shouldNotSee, String inSearch) throws Exception {
+        if (shouldNotSee == null && inSearch != null)
+            Assert.assertTrue("The invite more people button is not visible in search",
+                    getInvitationsPage().waitForInviteMorePeopleSearchButtonVisible());
+        else if (inSearch != null)
+            Assert.assertTrue("The invite more people button is still visible in search",
+                    getInvitationsPage().waitForInviteMorePeopleSearchButtonNotVisible());
+        else
+            Assert.assertTrue("Received unrecognized parameters", false);
+    }
 }
