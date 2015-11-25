@@ -85,7 +85,7 @@ Feature: Archive
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | autocall    |
 
-  @staging @id3992 ZIOS-3884
+  @staging @id3992 @ZIOS-3884
   Scenario Outline: Verify unarchiving silenced conversation by ping and call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
