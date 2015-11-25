@@ -164,8 +164,8 @@ Feature: Connect
     And I see new photo in the dialog
     And I see message in the dialog
     And I return to the chat list
-    And I see People picker page
-    And I click close button to dismiss people view
+    #And I see People picker page
+    #And I click close button to dismiss people view
     And Contact <Contact> sends random message to user <Name>
     When I tap on contact name <Contact>
     Then I see message in the dialog
@@ -235,7 +235,7 @@ Feature: Connect
     Given User <Name> change accent color to <Color>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
-    When I swipe down contact list
+    When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     Given I wait until <ContactEmail> exists in backend search results
