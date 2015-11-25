@@ -6,9 +6,14 @@ import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -493,70 +498,91 @@ public class AndroidCommonUtils extends CommonUtils {
                 + "--uri content://com.android.contacts/raw_contacts");
     }
 
-    private static int insertContactAndGetId() throws Exception {
-        executeAdb(String.format("shell content insert "
-                + "--uri content://com.android.contacts/raw_contacts "
-                + "--bind account_type:s:vnd.sec.contact.phone "
-                + "--bind account_name:s:vnd.sec.contact.phone"));
-        String idsList = getAdbOutput("shell content query "
-                + "--uri content://com.android.contacts/raw_contacts "
-                + "--projection _id");
-        Pattern pattern = Pattern.compile("_id=(\\d+)");
-        Matcher matcher = pattern.matcher(idsList);
-        int value = 0;
-        while (matcher.find()) {
-            try {
-                value = Integer.parseInt(matcher.group(1));
-            } catch (NumberFormatException e) {
-                // Ignore silently
+    /**
+     * We try to insert contacts in different groups to make them detectable by Wire.
+     * Anyway, the created contact will not be visible in Wire invitations list if
+     * current Google account on device under test is not set to MessagingUtils.getAccountName()
+     *
+     * @return
+     * @throws Exception
+     */
+    private static List<Integer> insertContactAndGetIds() throws Exception {
+        final List<Integer> result = new ArrayList<>();
+        final Map<String, String> accountTypes = new HashMap<>();
+        accountTypes.put("vnd.sec.contact.phone", "vnd.sec.contact.phone");
+        accountTypes.put("com.google", MessagingUtils.getAccountName());
+        for (Map.Entry<String, String> accountInfo : accountTypes.entrySet()) {
+            executeAdb(String.format("shell content insert "
+                    + "--uri content://com.android.contacts/raw_contacts "
+                    + "--bind account_type:s:%s "
+                    + "--bind account_name:s:%s", accountInfo.getKey(), accountInfo.getValue()));
+            String idsList = getAdbOutput("shell content query "
+                    + "--uri content://com.android.contacts/raw_contacts "
+                    + "--projection _id");
+            Pattern pattern = Pattern.compile("_id=(\\d+)");
+            Matcher matcher = pattern.matcher(idsList);
+            int value = 0;
+            while (matcher.find()) {
+                try {
+                    value = Integer.parseInt(matcher.group(1));
+                } catch (NumberFormatException e) {
+                    // Ignore silently
+                }
             }
+            result.add(value);
         }
-        return value;
+        return result;
     }
 
-    private static void bindContactNameById(int id, String name) throws Exception {
-        executeAdb(String.format("shell content insert "
-                + "--uri content://com.android.contacts/data "
-                + "--bind raw_contact_id:i:%s "
-                + "--bind mimetype:s:vnd.android.cursor.item/name "
-                + "--bind data1:s:'%s'", id, name));
+    private static void bindContactNameById(List<Integer> ids, String name) throws Exception {
+        for (int id : ids) {
+            executeAdb(String.format("shell content insert "
+                    + "--uri content://com.android.contacts/data "
+                    + "--bind raw_contact_id:i:%s "
+                    + "--bind mimetype:s:vnd.android.cursor.item/name "
+                    + "--bind data1:s:'%s'", id, name));
+        }
     }
 
-    private static void bindContactEmailById(int id, String email) throws Exception {
-        executeAdb(String.format("shell content insert "
-                + "--uri content://com.android.contacts/data "
-                + "--bind raw_contact_id:i:%s "
-                + "--bind mimetype:s:vnd.android.cursor.item/email_v2 "
-                + "--bind data1:s:'%s'", id, email));
+    private static void bindContactEmailById(List<Integer> ids, String email) throws Exception {
+        for (int id : ids) {
+            executeAdb(String.format("shell content insert "
+                    + "--uri content://com.android.contacts/data "
+                    + "--bind raw_contact_id:i:%s "
+                    + "--bind mimetype:s:vnd.android.cursor.item/email_v2 "
+                    + "--bind data1:s:'%s'", id, email));
+        }
     }
 
-    private static void bindContactPhoneNumberById(int id, PhoneNumber phoneNumber) throws Exception {
-        executeAdb(String.format("shell content insert "
-                + "--uri content://com.android.contacts/data "
-                + "--bind raw_contact_id:i:%s "
-                + "--bind mimetype:s:vnd.android.cursor.item/phone_v2 "
-                + "--bind data1:s:%s", id, phoneNumber.toString()));
+    private static void bindContactPhoneNumberById(List<Integer> ids, PhoneNumber phoneNumber) throws Exception {
+        for (int id : ids) {
+            executeAdb(String.format("shell content insert "
+                    + "--uri content://com.android.contacts/data "
+                    + "--bind raw_contact_id:i:%s "
+                    + "--bind mimetype:s:vnd.android.cursor.item/phone_v2 "
+                    + "--bind data1:s:%s", id, phoneNumber.toString()));
+        }
     }
 
     public static void insertContact(String name, String email,
                                      PhoneNumber phoneNumber) throws Exception {
-        final int id = insertContactAndGetId();
-        bindContactNameById(id, name);
-        bindContactEmailById(id, email);
-        bindContactPhoneNumberById(id, phoneNumber);
+        final List<Integer> ids = insertContactAndGetIds();
+        bindContactNameById(ids, name);
+        bindContactEmailById(ids, email);
+        bindContactPhoneNumberById(ids, phoneNumber);
     }
 
     public static void insertContact(String name, String email)
             throws Exception {
-        final int id = insertContactAndGetId();
-        bindContactNameById(id, name);
-        bindContactEmailById(id, email);
+        final List<Integer> ids = insertContactAndGetIds();
+        bindContactNameById(ids, name);
+        bindContactEmailById(ids, email);
     }
 
     public static void insertContact(String name, PhoneNumber phoneNumber)
             throws Exception {
-        final int id = insertContactAndGetId();
-        bindContactNameById(id, name);
-        bindContactPhoneNumberById(id, phoneNumber);
+        final List<Integer> ids = insertContactAndGetIds();
+        bindContactNameById(ids, name);
+        bindContactPhoneNumberById(ids, phoneNumber);
     }
 }
