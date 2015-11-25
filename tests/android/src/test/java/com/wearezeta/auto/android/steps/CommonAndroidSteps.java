@@ -239,8 +239,8 @@ public class CommonAndroidSteps {
      * @step. ^I minimize the application$
      */
     @When("^I minimize the application$")
-    public void IMimizeApllication() throws Exception {
-        AndroidCommonUtils.switchToHomeScreen();
+    public void IMinimizeApplication() throws Exception {
+        AndroidCommonUtils.tapHomeButton();
     }
 
     /**
@@ -817,9 +817,8 @@ public class CommonAndroidSteps {
      * Delete all existing contacts from Address Book.
      * !Be careful to when executing this test on non-testing devices!
      *
-     * @step. ^I delete all contacts from Address Book$
-     *
      * @throws Exception
+     * @step. ^I delete all contacts from Address Book$
      */
     @Given("^I delete all contacts from Address Book$")
     public void IDeleteAllContacts() throws Exception {
@@ -829,10 +828,9 @@ public class CommonAndroidSteps {
     /**
      * Add a new contact into address book
      *
-     * @step. ^I add (.*) into Address Book$
-     *
      * @param alias user alias
      * @throws Exception
+     * @step. ^I add (.*) into Address Book$
      */
     @Given("^I add (.*) into Address Book$")
     public void IImportUserIntoAddressBook(String alias) throws Exception {

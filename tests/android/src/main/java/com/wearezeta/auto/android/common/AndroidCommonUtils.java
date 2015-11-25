@@ -198,16 +198,6 @@ public class AndroidCommonUtils extends CommonUtils {
     }
 
     /**
-     * http://android.stackexchange.com/questions/30157/how-to-return-to-the-
-     * home-screen-with-a-terminal-command
-     *
-     * @throws Exception
-     */
-    public static void switchToHomeScreen() throws Exception {
-        executeAdb("shell am start -a android.intent.action.MAIN -c android.intent.category.HOME");
-    }
-
-    /**
      * http://stackoverflow.com/questions/4567904/how-to-start-an-application-
      * using-android-adb-tools
      *
