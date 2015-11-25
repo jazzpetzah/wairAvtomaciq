@@ -235,48 +235,6 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id1504 @regression @rc @rc42
-  Scenario Outline: Verify you can play/pause media from the Media Bar (SoundCloud)
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given I sign in using my email or phone number
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact1>
-    And I see dialog page
-    And Contact <Contact1> send 18 messages to user Myself
-    And I scroll to the bottom of conversation view
-    And I tap on text input
-    And I type the message "<SoudCloudLink>" and send it
-    And Contact <Contact1> send message to user Myself
-    And I scroll to the bottom of conversation view
-    And I press PlayPause media item button
-    And I remember the state of PlayPause media item button
-    And I swipe down on dialog page until Mediabar appears
-    Then I see PAUSE on Mediabar
-    And I press PlayPause on Mediabar button
-    When I scroll to the bottom of conversation view
-    Then I verify the state of PlayPause media item button is changed
-
-    Examples:
-      | Name      | Contact1  | SoudCloudLink                                              |
-      | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
-
-  @id170 @regression @rc @rc42
-  Scenario Outline: Verify you can send youtube link
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given I sign in using my email or phone number
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact1>
-    And I see dialog page
-    And I tap on text input
-    And I type the message "<YoutubeLink>" and send it
-    Then I see Play button on Youtube container
-
-    Examples:
-      | Name      | Contact1  | YoutubeLink                                 |
-      | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs |
-
   @id3242 @regression @rc @rc42
   Scenario Outline: (CM-717) I can send a sketch
     Given There are 2 users where <Name> is me
