@@ -214,7 +214,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 * @throws Throwable
 	 * @step. ^I see (.*) button in user profile menu at position (\\d+)$
 	 */
-	@Then("^I see (.*) button in user profile menu at position (\\d+)$")
+	@Then("^I see (.*) button in option menu at position (\\d+)$")
 	public void ISeeButtonInUserProfileMenuAtPosition(String itemName, int position) throws Throwable {
 		Assert.assertTrue("The user profile menu item is not visible",
 				getOtherUserPersonalInfoPage().isUserProfileMenuItemVisible(itemName));
