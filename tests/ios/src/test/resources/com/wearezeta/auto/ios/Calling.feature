@@ -182,14 +182,17 @@ Feature: Calling
     And I see mute call, end call and speakers buttons
     And I wait for 5 seconds
     And <Contact2> calls me using <CallBackend2>
-    And I dont see incoming calling message from contact <Contact2>
+    And I see incoming calling message for contact <Contact2>
+    And I ignore incoming call
     And <Contact1> accepts next incoming call automatically
     And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see mute call, end call and speakers buttons
+    And I see mute call, end call buttons
+    And <Contact2> stops all calls to me
     And I end started call
-    Then I see missed call from contact <Contact2>
-    And I swipe right on Dialog page
+    And I return to the chat list
     And I see missed call indicator in list for contact <Contact2>
+    And I tap on contact name <Contact2>
+    Then I see missed call from contact <Contact2>
 
     Examples: 
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
