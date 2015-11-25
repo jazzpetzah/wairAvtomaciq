@@ -9,7 +9,7 @@ the percentage of the screen relative to the upper left corner.
 
 Usage: %s <windowName> <startX> <startY> <endX> <endY> 
 
-Example: %s "iOS Simulator" 0.5 0.5 0.5 0.8 
+Example: %s "Simulator" 0.5 0.5 0.5 0.8 
 (drags from middle of the window down to approx. 80 percent of the window)
 ''' % (sys.argv[0], sys.argv[0], sys.argv[0])
 
@@ -114,7 +114,7 @@ def main():
      #  print usageExit
      #  sys.exit(1)
     
-    #swipeInWindow("iOS Simulator", float(sys.argv[1]), float(sys.argv[2]), float(sys.argv[3]), float(sys.argv[4]))
+    #swipeInWindow("Simulator", float(sys.argv[1]), float(sys.argv[2]), float(sys.argv[3]), float(sys.argv[4]))
     #print "Done"
 
 if __name__ == "__main__":

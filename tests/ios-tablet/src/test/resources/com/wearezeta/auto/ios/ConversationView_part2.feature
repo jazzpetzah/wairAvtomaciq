@@ -489,7 +489,7 @@ Feature: Conversation View
   Scenario Outline: Verify input field and action buttons are not shown simultaniously [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -513,7 +513,7 @@ Feature: Conversation View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
     Given I rotate UI to landscape
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -535,7 +535,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact>
     And I see dialog page
@@ -557,7 +557,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
     Given I rotate UI to landscape
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact>
     And I see dialog page
@@ -579,7 +579,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given User <Name> sent message <Message> to conversation <Contact1>
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I swipe right on a <Contact1>
     And I click delete menu button
@@ -606,7 +606,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>
     Given User <Name> sent message <Message> to conversation <Contact1>
     Given I rotate UI to landscape
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I swipe right on a <Contact1>
     And I click delete menu button
@@ -681,7 +681,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
       | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
 
-  @staging @id2334
+  @regression @id2334
   Scenario Outline: Verify you still receive messages from blocked person in a group chat [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
@@ -689,7 +689,7 @@ Feature: Conversation View
     Given User <Name> blocks user <Contact1>
     Given User <Contact1> sent message <Message> to conversation <GroupChatName>
     Given Contact <Contact1> sends image <Picture> to <ConversationType> conversation <GroupChatName>
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I tap on group chat with name <GroupChatName>
     Then I see only 3 messages
@@ -698,7 +698,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message                | Picture     | ConversationType |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Caramba!      | He-hey, do you see it? | testing.jpg | group            |
 
-  @staging @id4085
+  @regression @id4085
   Scenario Outline: Verify you still receive messages from blocked person in a group chat [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
@@ -707,7 +707,7 @@ Feature: Conversation View
     Given User <Contact1> sent message <Message> to conversation <GroupChatName>
     Given Contact <Contact1> sends image <Picture> to <ConversationType> conversation <GroupChatName>
     Given I rotate UI to landscape
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I tap on group chat with name <GroupChatName>
     Then I see only 3 messages
@@ -722,7 +722,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
     Given User <Name> sent long message to conversation <Contact>
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact>
     And I tap on text input
@@ -741,7 +741,7 @@ Feature: Conversation View
     Given Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
     Given User <Name> sent long message to conversation <Contact>
     Given I rotate UI to landscape
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact>
     And I tap on text input

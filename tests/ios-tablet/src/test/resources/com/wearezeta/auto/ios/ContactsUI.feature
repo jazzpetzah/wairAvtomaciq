@@ -1,6 +1,6 @@
 Feature: ContactsUI
 
-  @staging @id4131
+  @regression @id4131
   Scenario Outline: Verify blocked users are not displayed in the Contacts UI [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -18,7 +18,7 @@ Feature: ContactsUI
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id4132
+  @regression @id4132
   Scenario Outline: Verify blocked users are not displayed in the Contacts UI [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -37,7 +37,7 @@ Feature: ContactsUI
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id4122
+  @regression @id4122
   Scenario Outline: Verify opening existing conversation from Contacts UI [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to all other users
@@ -53,7 +53,7 @@ Feature: ContactsUI
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id4123
+  @regression @id4123
   Scenario Outline: Verify opening existing conversation from Contacts UI [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to all other users
