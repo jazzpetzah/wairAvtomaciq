@@ -205,7 +205,7 @@ Feature: Conversation List
     Then Contact <GroupChatName> is not muted
 
     Examples:
-      | Name      | Contact1  |Contact2   | GroupChatName |
+      | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | UNMUTE        |
 
   @id4088 @regression
@@ -236,3 +236,29 @@ Feature: Conversation List
       | Name      | Contact   | WaitingMess1     |
       | user1Name | user2Name | 1 person waiting |
 
+  @id4090 @staging
+  Scenario Outline: Verify that options menu from list is the same as opened from the other user profile
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    And I see Contact list with contacts
+    When I swipe right on a <Contact1>
+    Then I see SILENCE button in conversation settings menu at position 1
+    Then I see ARCHIVE button in conversation settings menu at position 2
+    Then I see DELETE button in conversation settings menu at position 3
+    Then I see BLOCK button in conversation settings menu at position 4
+    Then I see CANCEL button in conversation settings menu at position 5
+    And I select CANCEL from conversation settings menu
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I tap conversation details button
+    When I press options menu button
+    Then I see SILENCE button in user profile menu at position 1
+    Then I see ARCHIVE button in user profile menu at position 2
+    Then I see DELETE button in user profile menu at position 3
+    Then I see BLOCK button in user profile menu at position 4
+    Then I see CANCEL button in user profile menu at position 5
+
+    Examples:
+      | Name      | Contact1  |
+      | user1Name | user2Name |
