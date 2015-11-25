@@ -253,12 +253,41 @@ Feature: Conversation List
     And I see dialog page
     And I tap conversation details button
     When I press options menu button
-    Then I see SILENCE button in user profile menu at position 1
-    Then I see ARCHIVE button in user profile menu at position 2
-    Then I see DELETE button in user profile menu at position 3
-    Then I see BLOCK button in user profile menu at position 4
-    Then I see CANCEL button in user profile menu at position 5
+    Then I see SILENCE button in option menu at position 1
+    Then I see ARCHIVE button in option menu at position 2
+    Then I see DELETE button in option menu at position 3
+    Then I see BLOCK button in option menu at position 4
+    Then I see CANCEL button in option menu at position 5
 
     Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
+
+  @id4091 @staging
+  Scenario Outline: Verify that options menu from list is the same as opened from the participants view
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    And I swipe right on a <GroupChatName>
+    Then I see SILENCE button in conversation settings menu at position 1
+    Then I see ARCHIVE button in conversation settings menu at position 2
+    Then I see DELETE button in conversation settings menu at position 3
+    Then I see LEAVE button in conversation settings menu at position 4
+    Then I see CANCEL button in conversation settings menu at position 5
+    And I select CANCEL from conversation settings menu
+    When I tap on contact name <GroupChatName>
+    And I see dialog page
+    And I tap conversation details button
+    When I press options menu button
+    Then I see SILENCE button in option menu at position 1
+    Then I see RENAME button in option menu at position 2
+    Then I see ARCHIVE button in option menu at position 3
+    Then I see DELETE button in option menu at position 4
+    Then I see LEAVE button in option menu at position 5
+    Then I see CANCEL button in option menu at position 6
+
+    Examples:
+      | Name      | Contact1  | Contact2 | GroupChatName |
+      | user1Name | user2Name | user3Name| MenuItems     |
