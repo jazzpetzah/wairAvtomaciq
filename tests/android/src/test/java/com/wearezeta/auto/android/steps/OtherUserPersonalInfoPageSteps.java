@@ -218,8 +218,8 @@ public class OtherUserPersonalInfoPageSteps {
 	public void ISeeButtonInUserProfileMenuAtPosition(String itemName, int position) throws Throwable {
 		Assert.assertTrue("The user profile menu item is not visible",
 				getOtherUserPersonalInfoPage().isUserProfileMenuItemVisible(itemName));
-		Assert.assertTrue("Menu item is not at correct index position",
-				getOtherUserPersonalInfoPage().isUserProfileMenuItemAtCorrectIndex(itemName, position));
+		Assert.assertEquals("Menu item is not at correct index", itemName,
+				getOtherUserPersonalInfoPage().getUserProfileMenuItemNameAtIndex(position));
 	}
 
 	/**

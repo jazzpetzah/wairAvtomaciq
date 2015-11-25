@@ -292,10 +292,9 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
-	public boolean isUserProfileMenuItemAtCorrectIndex(String itemName, int position) throws Exception {
+	public String getUserProfileMenuItemNameAtIndex(int position) throws Exception {
 		final By locator = By.xpath(xpathConvOptionsMenuItemByIndex.apply(position));
-		String name = this.getDriver().findElement(locator).getText();
-		return name.equals(itemName);
+		return this.getDriver().findElement(locator).getText();
 	}
 
 	public boolean isUserProfileMenuItemVisible(String itemName) throws Exception {
