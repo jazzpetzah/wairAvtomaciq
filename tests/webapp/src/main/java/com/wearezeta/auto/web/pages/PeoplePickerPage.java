@@ -293,7 +293,8 @@ public class PeoplePickerPage extends WebPage {
 	}
 
 	public void clickMoreButton() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(), moreButton);
+		assert DriverUtils.waitUntilElementClickable(getDriver(), moreButton,
+				12);
 		moreButton.click();
 	}
 
