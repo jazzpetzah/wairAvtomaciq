@@ -489,7 +489,7 @@ Feature: Conversation View
   Scenario Outline: Verify input field and action buttons are not shown simultaniously [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -513,7 +513,7 @@ Feature: Conversation View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
     Given I rotate UI to landscape
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -535,7 +535,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact>
     And I see dialog page
@@ -557,7 +557,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
     Given I rotate UI to landscape
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact>
     And I see dialog page
@@ -579,7 +579,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given User <Name> sent message <Message> to conversation <Contact1>
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I swipe right on a <Contact1>
     And I click delete menu button
@@ -606,7 +606,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>
     Given User <Name> sent message <Message> to conversation <Contact1>
     Given I rotate UI to landscape
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I swipe right on a <Contact1>
     And I click delete menu button
@@ -627,7 +627,7 @@ Feature: Conversation View
       | Name      | Contact1  | Message |
       | user1Name | user2Name | testing |
 
-  @staging @id2409
+  @regression @id2409
   Scenario Outline: Verify downloading images in fullscreen [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -642,13 +642,18 @@ Feature: Conversation View
     And I see download button shown on fullscreen page
     And I tap download button on fullscreen page
     And I tap close fullscreen page button
-    Then I verify image in iPad dialog is same as template <Picture>
+    And I swipe the text input cursor
+    And I press Add Picture button
+    And I press Camera Roll button
+    And I choose last picture from camera roll
+    And I press Confirm button
+    Then I verify image in dialog is same as template <Picture>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
       | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
 
-  @staging @id4084
+  @regression @id4084
   Scenario Outline: Verify downloading images in fullscreen [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -664,13 +669,19 @@ Feature: Conversation View
     And I see download button shown on fullscreen page
     And I tap download button on fullscreen page
     And I tap close fullscreen page button
-    Then I verify image in iPad dialog is same as template <Picture>
+    And I swipe the text input cursor
+    And I press Add Picture button
+    And I press Camera Roll button
+    And I choose last picture from camera roll
+    And I press Confirm button
+    And I scroll to the end of the conversation
+    Then I verify image in dialog is same as template <Picture>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
       | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
 
-  @staging @id2334
+  @regression @id2334
   Scenario Outline: Verify you still receive messages from blocked person in a group chat [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
@@ -678,7 +689,7 @@ Feature: Conversation View
     Given User <Name> blocks user <Contact1>
     Given User <Contact1> sent message <Message> to conversation <GroupChatName>
     Given Contact <Contact1> sends image <Picture> to <ConversationType> conversation <GroupChatName>
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I tap on group chat with name <GroupChatName>
     Then I see only 3 messages
@@ -687,7 +698,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message                | Picture     | ConversationType |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Caramba!      | He-hey, do you see it? | testing.jpg | group            |
 
-  @staging @id4085
+  @regression @id4085
   Scenario Outline: Verify you still receive messages from blocked person in a group chat [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
@@ -696,7 +707,7 @@ Feature: Conversation View
     Given User <Contact1> sent message <Message> to conversation <GroupChatName>
     Given Contact <Contact1> sends image <Picture> to <ConversationType> conversation <GroupChatName>
     Given I rotate UI to landscape
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I tap on group chat with name <GroupChatName>
     Then I see only 3 messages
@@ -711,7 +722,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
     Given User <Name> sent long message to conversation <Contact>
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact>
     And I tap on text input
@@ -730,7 +741,7 @@ Feature: Conversation View
     Given Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
     Given User <Name> sent long message to conversation <Contact>
     Given I rotate UI to landscape
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact>
     And I tap on text input
@@ -742,7 +753,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
       | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
 
-  @staging @id2383
+  @regression @id2383
   Scenario Outline: Verify people icon is changed on avatar with opening keyboard and back [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -751,7 +762,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I see plus button next to text input
-    And I type the message
+    And I fill in message using script
     And I see plus icon is changed to user avatar icon
     And I clear conversation text input
     Then I see plus button next to text input
@@ -760,7 +771,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id4087
+  @regression @id4087
   Scenario Outline: Verify people icon is changed on avatar with opening keyboard and back [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -770,7 +781,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I see plus button next to text input
-    And I type the message
+    And I fill in message using script
     And I see plus icon is changed to user avatar icon
     And I clear conversation text input
     Then I see plus button next to text input
