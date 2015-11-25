@@ -211,7 +211,8 @@ public class DialogPage extends AndroidPage {
     @FindBy(id = idDialogRoot)
     private WebElement dialogRoot;
 
-    private static final String xpathDialogContent = "//*[@id='" + idDialogRoot + "']/*/*/*";
+    private static final String xpathDialogContent = "//*[@id='" + idDialogRoot
+            + "']/*/*/*";
     @FindBy(xpath = xpathDialogContent)
     private List<WebElement> dialogContentList;
 
@@ -298,11 +299,16 @@ public class DialogPage extends AndroidPage {
             // Wait for animation
             Thread.sleep(500);
         } else {
-            this.hideKeyboard();
+            try {
+                this.hideKeyboard();
+            } catch (Exception e) {
+            }
         }
-
         cursorFrame.click();
-        this.hideKeyboard();
+        try {
+            this.hideKeyboard();
+        } catch (Exception e) {
+        }
     }
 
     public void tapAddPictureBtn() throws Exception {
@@ -350,13 +356,13 @@ public class DialogPage extends AndroidPage {
     private WebElement getButtonElementByName(String name) {
         final String uppercaseName = name.toUpperCase();
         switch (uppercaseName) {
-            case "MUTE":
-                return muteBtn;
-            case "SPEAKER":
-                return speakerBtn;
-            default:
-                throw new NoSuchElementException(String.format(
-                        "Button '%s' is unknown", name));
+        case "MUTE":
+            return muteBtn;
+        case "SPEAKER":
+            return speakerBtn;
+        default:
+            throw new NoSuchElementException(String.format(
+                    "Button '%s' is unknown", name));
         }
     }
 
@@ -635,7 +641,6 @@ public class DialogPage extends AndroidPage {
         return lastConversationMessage.getText();
     }
 
-
     public Optional<BufferedImage> getRecentPictureScreenshot()
             throws Exception {
         return this.getElementScreenshot(image);
@@ -674,11 +679,13 @@ public class DialogPage extends AndroidPage {
     }
 
     public BufferedImage getConvoViewScreenshot() throws Exception {
-        return this.getElementScreenshot(dialogRoot).orElseThrow(IllegalStateException::new);
+        return this.getElementScreenshot(dialogRoot).orElseThrow(
+                IllegalStateException::new);
     }
 
     public boolean isSwitchCameraButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idSwitchCameraButton));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.id(idSwitchCameraButton));
     }
 
     public void tapSwitchCameraButton() {
