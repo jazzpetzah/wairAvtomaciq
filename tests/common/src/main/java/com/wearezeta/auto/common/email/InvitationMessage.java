@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PasswordResetMessage extends WireMessage {
+public class InvitationMessage extends WireMessage {
 
-	public PasswordResetMessage(String msg) throws Exception {
+	public InvitationMessage(String msg) throws Exception {
 		super(msg);
 	}
 
-	public String extractPasswordResetLink() throws Exception {
+	public String extractInvitationLink() throws Exception {
 		ArrayList<String> links = new ArrayList<String>();
 
-		String regex = "<a href=\"([^\"]*)\"[^>]*>CHANGE PASSWORD</a>";
+		String regex = "<a href=\"([^\"]*)\"[^>]*>ACCEPT</a>";
 		Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
 		Matcher urlMatcher = p.matcher(this.getContent());
 		while (urlMatcher.find()) {
@@ -22,10 +22,10 @@ public class PasswordResetMessage extends WireMessage {
 		return links.get(0);
 	}
 
-	public static final String MESSAGE_PURPOSE = "PasswordReset";
-
 	@Override
 	protected String getExpectedPurposeValue() {
 		return MESSAGE_PURPOSE;
 	}
+
+	public static final String MESSAGE_PURPOSE = "Invitation";
 }

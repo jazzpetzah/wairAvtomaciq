@@ -27,7 +27,7 @@ public class PendingRequestsPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathPendingRequestMessage)
 	private WebElement pendingMessage;
-	
+
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathYouBothKnowPeopleIcon)
 	private WebElement youBothKnowPeopleIcon;
 
@@ -38,11 +38,9 @@ public class PendingRequestsPage extends IOSPage {
 		super(lazyDriver);
 	}
 
-	public ContactListPage clickIgnoreButton() throws Exception {
-		ContactListPage page = null;
+	public void clickIgnoreButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), ignoreRequestButton);
 		ignoreRequestButton.click();
-		page = new ContactListPage(this.getLazyDriver());
-		return page;
 	}
 
 	public ContactListPage clickIgnoreButtonMultiple(int clicks)
@@ -51,9 +49,10 @@ public class PendingRequestsPage extends IOSPage {
 		for (int i = 0; i < clicks; i++) {
 			DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 					By.name(IOSLocators.namePendingRequestIgnoreButton));
-			DriverUtils.waitUntilElementClickable(getDriver(), ignoreRequestButton);
+			DriverUtils.waitUntilElementClickable(getDriver(),
+					ignoreRequestButton);
 			ignoreRequestButton.click();
-			
+
 		}
 		page = new ContactListPage(this.getLazyDriver());
 		return page;

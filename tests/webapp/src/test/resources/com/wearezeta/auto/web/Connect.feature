@@ -372,6 +372,7 @@ Feature: Connect
     Given User <Contact> has contact <Me> in address book
     Given I switch to Sign In page
     Given I Sign in using login <MyEmail> and password <MyPassword>
+    And I close Contacts Upload dialog
     And I see my avatar on top of Contact list
     When I open conversation with <Contact>
     Then I see CONNECTED TO action for <Contact> in conversation

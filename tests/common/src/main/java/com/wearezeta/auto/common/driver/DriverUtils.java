@@ -1,8 +1,6 @@
 package com.wearezeta.auto.common.driver;
 
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.NetworkConnectionSetting;
-import io.appium.java_client.android.AndroidDriver;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;

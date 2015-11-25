@@ -462,7 +462,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id2768 @deployAddressBook @noAcceptAlert
+  @staging @id2768 @deployAddressBook @noAcceptAlert @obsolete
   Scenario Outline: Verify you can see People you may know on Wire after uploading your address book
     Given There are 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -619,7 +619,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @staging @id2332
+  @staging @id2332 @ZIOS-4985
   Scenario Outline: Verify ignoring a connection request from another person (People view) [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -644,7 +644,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | IGNORECONNECT |
 
-  @staging @id3305
+  @staging @id3305 @ZIOS-4985
   Scenario Outline: Verify ignoring a connection request from another person (People view) [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>

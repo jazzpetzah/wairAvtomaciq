@@ -30,7 +30,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id299 @noAcceptAlert
+  @regression @id299 @noAcceptAlert @obsolete
   Scenario Outline: Verify denying address book uploading
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -52,7 +52,7 @@ Feature: Search
       | user1Name |
 
   #regression
-  @staging @id311 @deployAddressBook @noAcceptAlert
+  @staging @id311 @deployAddressBook @noAcceptAlert @obsolete
   Scenario Outline: Verify uploading address book to the server
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

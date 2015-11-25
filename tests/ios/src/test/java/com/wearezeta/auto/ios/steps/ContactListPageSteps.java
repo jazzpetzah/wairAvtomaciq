@@ -133,7 +133,7 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		Assert.assertEquals(value, getContactListPage()
+		Assert.assertEquals("User name doesn't appeared in contact list.", value, getContactListPage()
 				.getFirstConversationName());
 	}
 

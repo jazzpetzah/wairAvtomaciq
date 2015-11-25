@@ -2,7 +2,7 @@ package com.wearezeta.auto.common.email;
 
 import javax.mail.MessagingException;
 
-public class WireMessage extends BackendMessage {
+public abstract class WireMessage extends BackendMessage {
 
 	public WireMessage(String msg) throws Exception {
 		super(msg);
@@ -14,16 +14,14 @@ public class WireMessage extends BackendMessage {
 		return this.getHeaderValue(ZETA_PURPOSE_HEADER_NAME);
 	}
 
-	protected static final String ZETA_KEY_HEADER_NAME = "X-Zeta-Key";
+    protected abstract String getExpectedPurposeValue();
 
-	public String getXZetaKey() throws MessagingException {
-		return this.getHeaderValue(ZETA_KEY_HEADER_NAME);
-	}
-
-	protected static final String ZETA_CODE_HEADER_NAME = "X-Zeta-Code";
-
-	public String getXZetaCode() throws MessagingException {
-		return this.getHeaderValue(ZETA_CODE_HEADER_NAME);
-	}
-
+    public boolean isValid() {
+        try {
+            return getXZetaPurpose().equals(getExpectedPurposeValue());
+        }catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

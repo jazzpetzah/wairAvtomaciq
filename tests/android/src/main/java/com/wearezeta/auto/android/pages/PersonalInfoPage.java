@@ -9,7 +9,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -93,8 +92,6 @@ public class PersonalInfoPage extends AndroidPage {
     private static final String idLightBulbButton = "gtv__profile__theme_button";
     @FindBy(id = idLightBulbButton)
     private WebElement lightBulbButton;
-
-    private static final String idColorPicker = "cpcl__color_picker_layout";
 
     public PersonalInfoPage(Future<ZetaAndroidDriver> lazyDriver)
             throws Exception {

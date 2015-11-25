@@ -2,6 +2,7 @@ package com.wearezeta.auto.common.backend;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.email.ActivationMessage;
+import com.wearezeta.auto.common.email.InvitationMessage;
 import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.email.PasswordResetMessage;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
@@ -30,6 +31,7 @@ import java.util.concurrent.Future;
 // argument by performing automatic login (set id and session token attributes)
 public final class BackendAPIWrappers {
 	public static final int ACTIVATION_TIMEOUT = 120; // seconds
+	private static final int INVITATION_RECEIVING_TIMEOUT = 60; // seconds
 
 	private static final int REQUEST_TOO_FREQUENT_ERROR = 429;
 	private static final int LOGIN_CODE_HAS_NOT_BEEN_USED_ERROR = 403;
@@ -613,8 +615,8 @@ public final class BackendAPIWrappers {
 	public static void sendConnectRequest(ClientUser user, ClientUser contact,
 			String connectName, String message) throws Exception {
 		tryLoginByUser(contact);
-		BackendREST.sendConnectRequest(receiveAuthToken(user),
-				contact.getId(), connectName, message);
+		BackendREST.sendConnectRequest(receiveAuthToken(user), contact.getId(),
+				connectName, message);
 	}
 
 	private static JSONArray getAllConnections(ClientUser user)
@@ -648,7 +650,7 @@ public final class BackendAPIWrappers {
 			}
 		}
 	}
-	
+
 	public static void cancelAllConnections(ClientUser user) throws Exception {
 		final JSONArray connections = getAllConnections(user);
 		for (int i = 0; i < connections.length(); i++) {
@@ -711,8 +713,8 @@ public final class BackendAPIWrappers {
 
 	public static void sendConversationMessage(ClientUser userFrom,
 			String convId, String message) throws Exception {
-		BackendREST.sendConversationMessage(receiveAuthToken(userFrom),
-				convId, message);
+		BackendREST.sendConversationMessage(receiveAuthToken(userFrom), convId,
+				message);
 	}
 
 	public static void sendConversationMessages(ClientUser userFrom,
@@ -847,15 +849,14 @@ public final class BackendAPIWrappers {
 
 	public static void updateUserName(ClientUser user, String newName)
 			throws Exception {
-		BackendREST
-				.updateSelfInfo(receiveAuthToken(user), null, null, newName);
+		BackendREST.updateSelfInfo(receiveAuthToken(user), null, null, newName);
 		user.setName(newName);
 	}
 
 	public static void updateUserAccentColor(ClientUser user, AccentColor color)
 			throws Exception {
-		BackendREST.updateSelfInfo(receiveAuthToken(user), color.getId(),
-				null, null);
+		BackendREST.updateSelfInfo(receiveAuthToken(user), color.getId(), null,
+				null);
 		user.setAccentColor(color);
 	}
 
@@ -988,4 +989,27 @@ public final class BackendAPIWrappers {
 						"%s contact(s) '%s' are still found after %s second(s) timeout",
 						currentCount, query, timeoutSeconds));
 	}
+
+	public static void sendPersonalInvitation(ClientUser ownerUser,
+			String toEmail, String toName, String message) throws Exception {
+		tryLoginByUser(ownerUser);
+		BackendREST.sendPersonalInvitation(generateAuthToken(ownerUser),
+				toEmail, toName, message);
+	}
+
+	public static InvitationMessage getInvitationMessage(String email)
+			throws Exception {
+		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
+		Map<String, String> expectedHeaders = new HashMap<>();
+		expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, email);
+		try {
+			final String msg = mbox.getMessage(expectedHeaders,
+					INVITATION_RECEIVING_TIMEOUT, 0).get();
+			return new InvitationMessage(msg);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 }
