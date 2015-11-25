@@ -106,11 +106,7 @@ public final class IOSLocators {
 
 	public static final String nameCameraRollCancel = "Cancel";
 
-	public static final String xpathCameraLibraryFirstFolder = "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIATableView/UIATableCell[@name='Moments']";
-
 	public static final String xpathLibraryFirstPicture = "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell[1]";
-
-	public static final String nameConfirmPictureButton = "OK";
 
 	public static final String xpathMyUserInContactList = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[1]/UIAStaticText[1]";
 
@@ -241,7 +237,7 @@ public final class IOSLocators {
 	// public static final String nameOtherPersonalInfoPageEmailField =
 	// "ProfileOtherEmailField";
 
-	public static final String xpathOtherPersonalInfoPageNameField = "//UIAWindow[@name='ZClientMainWindow']/UIAStaticText[4]";
+	public static final String xpathOtherPersonalInfoPageNameField = "//UIAWindow[@name='ZClientMainWindow']/UIAStaticText[3]";
 
 	public static final String xpathOtherPersonalInfoPageEmailField = "//UIAWindow[@name='ZClientMainWindow']/UIATextView[contains(@name, 'WIRE.COM')]";
 
@@ -779,6 +775,12 @@ public final class IOSLocators {
 		public static final String xpathContactOnContactsUIList = "//UIATableCell[@name='%s'][preceding::UIAButton[@name='ContactsViewCloseButton']]";
 		public static final String nameInviteOthersButton = "INVITE OTHERS";
 		public static final String xpathOpenButtonNextToUser = "//UIATableCell[@name='%s'][preceding::UIAButton[@name='ContactsViewCloseButton']]/UIAButton[@name='OPEN']";
+	}
+	
+	public final class CameraRollPage {
+		public static final String xpathLibraryLastPicture = "//UIACollectionView/UIACollectionCell[last()]";
+		public static final String xpathConfirmPictureButton = "//UIAButton[@name='OK' and @visible='true']";
+		public static final String xpathCameraLibraryFirstFolder = "//UIATableCell[@name='Moments']";
 	}
 
 }

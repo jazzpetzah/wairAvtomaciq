@@ -627,7 +627,7 @@ Feature: Conversation View
       | Name      | Contact1  | Message |
       | user1Name | user2Name | testing |
 
-  @staging @id2409
+  @regression @id2409
   Scenario Outline: Verify downloading images in fullscreen [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -642,13 +642,18 @@ Feature: Conversation View
     And I see download button shown on fullscreen page
     And I tap download button on fullscreen page
     And I tap close fullscreen page button
-    Then I verify image in iPad dialog is same as template <Picture>
+    And I swipe the text input cursor
+    And I press Add Picture button
+    And I press Camera Roll button
+    And I choose last picture from camera roll
+    And I press Confirm button
+    Then I verify image in dialog is same as template <Picture>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
       | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
 
-  @staging @id4084
+  @regression @id4084
   Scenario Outline: Verify downloading images in fullscreen [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -664,7 +669,13 @@ Feature: Conversation View
     And I see download button shown on fullscreen page
     And I tap download button on fullscreen page
     And I tap close fullscreen page button
-    Then I verify image in iPad dialog is same as template <Picture>
+    And I swipe the text input cursor
+    And I press Add Picture button
+    And I press Camera Roll button
+    And I choose last picture from camera roll
+    And I press Confirm button
+    And I scroll to the end of the conversation
+    Then I verify image in dialog is same as template <Picture>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
@@ -742,7 +753,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
       | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
 
-  @staging @id2383
+  @regression @id2383
   Scenario Outline: Verify people icon is changed on avatar with opening keyboard and back [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -760,7 +771,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id4087
+  @regression @id4087
   Scenario Outline: Verify people icon is changed on avatar with opening keyboard and back [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

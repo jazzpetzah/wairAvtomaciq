@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.ios.locators.IOSLocators;
@@ -35,7 +36,7 @@ public class ImageFullScreenPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameFullScreenTimeStamp)
 	private WebElement fullScreenTimeStamp;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameFullScreenSketchButton)
 	private WebElement fullScreenSketchButton;
 
@@ -48,11 +49,10 @@ public class ImageFullScreenPage extends IOSPage {
 		return imageFullScreen.isDisplayed();
 	}
 
-	public DialogPage clickCloseButton() throws Exception {
-		DialogPage page = null;
+	public void clickCloseButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(),
+				fullScreenCloseButton);
 		fullScreenCloseButton.click();
-		page = new DialogPage(this.getLazyDriver());
-		return page;
 	}
 
 	public boolean isDownloadButtonVisible() {

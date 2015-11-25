@@ -691,6 +691,21 @@ public class DialogPage extends IOSPage {
 
 		return image;
 	}
+	
+	public double isLastImageSameAsTemplate(String filename) throws Throwable{
+		
+		BufferedImage templateImage = takeImageScreenshot();
+		BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage
+				.getImagesPath() + filename);
+		
+		double score = ImageUtil.getOverlapScore(referenceImage, templateImage,
+				ImageUtil.RESIZE_TEMPLATE_TO_RESOLUTION);
+		
+		log.debug("SCORE: " + score);
+		
+		return score;
+		
+	}
 
 	public DialogPage scrollToImage() throws Throwable {
 		WebElement el = this.getDriver().findElement(

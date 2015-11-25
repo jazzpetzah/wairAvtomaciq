@@ -828,6 +828,11 @@ Feature: Conversation View
     And I see download button shown on fullscreen page
     And I tap download button on fullscreen page
     And I tap close fullscreen page button
+    And I swipe the text input cursor
+    And I press Add Picture button
+    And I press Camera Roll button
+    And I choose last picture from camera roll
+    And I press Confirm button
     Then I verify image in dialog is same as template <Picture>
 
     Examples: 
