@@ -1,51 +1,5 @@
 Feature: Conversation List
 
-  @id1510 @regression @rc
-  Scenario Outline: Verify conversation list play/pause controls can change playing media state (SoundCloud)
-    Given There are 2 users where <Name> is me
-    Given <Name> is connected to <Contact1>
-    Given I sign in using my email or phone number
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact1>
-    And I see dialog page
-    And I tap on text input
-    And I type the message "<SoudCloudLink>" and send it
-    # Workaround for bug with autoscroll
-    And I scroll to the bottom of conversation view
-    And I press PlayPause media item button
-    And I press back button
-    Then I see PlayPause media content button for conversation <Contact1>
-
-    Examples:
-      | Name      | Contact1  | SoudCloudLink                                              |
-      | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
-
-  @id1505 @regression
-  Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation (SoundCloud)
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given I sign in using my email or phone number
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact1>
-    And I see dialog page
-    And I tap on text input
-    And I type the message "<SoundCloudLink>" and send it
-    And I scroll to the bottom of conversation view
-    And I press PlayPause media item button
-    And I navigate back from dialog page
-    Then I see PlayPause media content button for conversation <Contact1>
-    When I tap on contact name <Contact2>
-    And I see dialog page
-    And I press back button
-    Then I see PlayPause media content button for conversation <Contact1>
-    When I remember the state of PlayPause button next to the <Contact1> conversation
-    And I tap PlayPause button next to the <Contact1> conversation
-    Then I see the state of PlayPause button next to the <Contact1> conversation is changed
-
-    Examples:
-      | Name      | Contact1  | Contact2  | SoundCloudLink                                             |
-      | user1Name | user2Name | user3Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
-
   @id1513 @regression @rc
   Scenario Outline: Verify messages are marked as read as you look at them so that you can know when there is unread content in a conversation
     Given There are 2 users where <Name> is me
@@ -251,7 +205,7 @@ Feature: Conversation List
     Then Contact <GroupChatName> is not muted
 
     Examples:
-      | Name      | Contact1  |Contact2   | GroupChatName |
+      | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | UNMUTE        |
 
   @id4088 @regression
@@ -282,3 +236,29 @@ Feature: Conversation List
       | Name      | Contact   | WaitingMess1     |
       | user1Name | user2Name | 1 person waiting |
 
+  @id4090 @staging
+  Scenario Outline: Verify that options menu from list is the same as opened from the other user profile
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    And I see Contact list with contacts
+    When I swipe right on a <Contact1>
+    Then I see SILENCE button in conversation settings menu at position 1
+    Then I see ARCHIVE button in conversation settings menu at position 2
+    Then I see DELETE button in conversation settings menu at position 3
+    Then I see BLOCK button in conversation settings menu at position 4
+    Then I see CANCEL button in conversation settings menu at position 5
+    And I select CANCEL from conversation settings menu
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I tap conversation details button
+    When I press options menu button
+    Then I see SILENCE button in user profile menu at position 1
+    Then I see ARCHIVE button in user profile menu at position 2
+    Then I see DELETE button in user profile menu at position 3
+    Then I see BLOCK button in user profile menu at position 4
+    Then I see CANCEL button in user profile menu at position 5
+
+    Examples:
+      | Name      | Contact1  |
+      | user1Name | user2Name |

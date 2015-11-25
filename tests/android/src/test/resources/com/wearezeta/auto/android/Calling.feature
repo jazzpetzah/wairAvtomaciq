@@ -185,7 +185,7 @@ Feature: Calling
       | user1Name | user2Name | user3Name | autocall    |
 
   @id2211 @calling_basic
-  Scenario Outline: I can dismiss calling bar by swipe
+  Scenario Outline: (AN-2568) I can dismiss calling bar by swipe
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
@@ -301,7 +301,7 @@ Feature: Calling
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
 
   @id3168 @calling_basic @rc
-  Scenario Outline: (BUG AN-2825) I can join group call after I leave it
+  Scenario Outline: I can join group call after I leave it
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>

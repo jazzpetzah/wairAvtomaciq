@@ -28,7 +28,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id9999
+  @regression @id4164
   Scenario Outline: Verify I can accept personal invitation
     Given There is 1 user where <Name> is me
     When me sends personal invitation to mail <ContactMail> with message <Message>

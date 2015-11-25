@@ -67,6 +67,7 @@ Feature: Archive
     And I press leave
     Then I dont see conversation <GroupChatName> in contact list
     When <Contact1> added me to group chat <GroupChatName>
+    And User <Contact1> sent message <GroupChatName> to conversation <GroupChatName>
     Then I see first item in contact list named <GroupChatName>
 
     Examples: 

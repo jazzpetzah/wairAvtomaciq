@@ -258,7 +258,7 @@ Feature: Connect
       | user1Name | user2Name       | user2Email   | T           | BrightOrange |
 
   #regression
-  @staging @id2768 @deployAddressBook @noAcceptAlert
+  @staging @id2768 @deployAddressBook @noAcceptAlert @obsolete
   Scenario Outline: Verify you can see People you may know on Wire after uploading your address book
     Given There are 1 user where <Name> is me
     Given I sign in using my email or phone number

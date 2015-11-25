@@ -817,7 +817,7 @@ public class CommonAndroidSteps {
      * Delete all existing contacts from Address Book.
      * !Be careful to when executing this test on non-testing devices!
      *
-     * @wtep. ^I delete all contacts from Address Book$
+     * @step. ^I delete all contacts from Address Book$
      *
      * @throws Exception
      */
@@ -840,9 +840,6 @@ public class CommonAndroidSteps {
         final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
         final PhoneNumber phoneNumber = usrMgr.findUserByNameOrNameAlias(alias).getPhoneNumber();
         AndroidCommonUtils.insertContact(name, email, phoneNumber);
-        AndroidCommonUtils.switchToApplication(
-                CommonUtils.getAndroidPackageFromConfig(this.getClass()),
-                CommonUtils.getAndroidActivityFromConfig(this.getClass()));
     }
 
 }

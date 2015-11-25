@@ -3,12 +3,9 @@ package com.wearezeta.auto.android.common;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,7 +18,6 @@ import org.openqa.selenium.ScreenOrientation;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.misc.BuildVersionInfo;
 import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 
 public class AndroidCommonUtils extends CommonUtils {
@@ -36,6 +32,7 @@ public class AndroidCommonUtils extends CommonUtils {
     private static final String BACKEND_FILE_LOCATION = "/mnt/sdcard/customBackend.json";
 
     public static final String ADB_PREFIX = "";
+
     // public static final String ADB_PREFIX =
     // "/Applications/android-sdk/platform-tools/";
 
@@ -496,42 +493,70 @@ public class AndroidCommonUtils extends CommonUtils {
                 + "--uri content://com.android.contacts/raw_contacts");
     }
 
-    /**
-     * This method will hide the current activity. Do not forget to restore it if needed
-     *
-     * @throws Exception
-     */
-    public static void insertContact(String name, String email, PhoneNumber phoneNumber) throws Exception {
-        executeAdb(
-                String.format("shell am start -a android.intent.action.INSERT -t vnd.android.cursor.dir/contact -e name '%s' -e email %s -e phone %s",
-                name, email, phoneNumber.toString()));
-        // To save changes
-        tapHomeButton();
+    private static int insertContactAndGetId() throws Exception {
+        executeAdb(String.format("shell content insert "
+                + "--uri content://com.android.contacts/raw_contacts "
+                + "--bind account_type:s:vnd.sec.contact.phone "
+                + "--bind account_name:s:vnd.sec.contact.phone"));
+        String idsList = getAdbOutput("shell content query "
+                + "--uri content://com.android.contacts/raw_contacts "
+                + "--projection _id");
+        Pattern pattern = Pattern.compile("_id=(\\d+)");
+        Matcher matcher = pattern.matcher(idsList);
+        int value = 0;
+        while (matcher.find()) {
+            try {
+                value = Integer.parseInt(matcher.group(1));
+            } catch (NumberFormatException e) {
+                // Ignore silently
+            }
+        }
+        return value;
     }
 
-    /**
-     * This method will hide the current activity. Do not forget to restore it if needed
-     *
-     * @throws Exception
-     */
-    public static void insertContact(String name, String email) throws Exception {
-        executeAdb(
-                String.format("shell am start -a android.intent.action.INSERT -t vnd.android.cursor.dir/contact -e name '%s' -e email %s",
-                        name, email));
-        // To save changes
-        tapHomeButton();
+    private static void bindContactNameById(int id, String name) throws Exception {
+        executeAdb(String.format("shell content insert "
+                + "--uri content://com.android.contacts/data "
+                + "--bind raw_contact_id:i:%s "
+                + "--bind mimetype:s:vnd.android.cursor.item/name "
+                + "--bind data1:s:'%s'", id, name));
     }
 
-    /**
-     * This method will hide the current activity. Do not forget to restore it if needed
-     *
-     * @throws Exception
-     */
-    public static void insertContact(String name, PhoneNumber phoneNumber) throws Exception {
-        executeAdb(
-                String.format("shell am start -a android.intent.action.INSERT -t vnd.android.cursor.dir/contact -e name '%s' -e phone %s",
-                        name, phoneNumber.toString()));
-        // To save changes
-        tapHomeButton();
+    private static void bindContactEmailById(int id, String email) throws Exception {
+        executeAdb(String.format("shell content insert "
+                + "--uri content://com.android.contacts/data "
+                + "--bind raw_contact_id:i:%s "
+                + "--bind mimetype:s:vnd.android.cursor.item/email_v2 "
+                + "--bind data1:s:'%s'", id, email));
+    }
+
+    private static void bindContactPhoneNumberById(int id, PhoneNumber phoneNumber) throws Exception {
+        executeAdb(String.format("shell content insert "
+                + "--uri content://com.android.contacts/data "
+                + "--bind raw_contact_id:i:%s "
+                + "--bind mimetype:s:vnd.android.cursor.item/phone_v2 "
+                + "--bind data1:s:%s", id, phoneNumber.toString()));
+    }
+
+    public static void insertContact(String name, String email,
+                                     PhoneNumber phoneNumber) throws Exception {
+        final int id = insertContactAndGetId();
+        bindContactNameById(id, name);
+        bindContactEmailById(id, email);
+        bindContactPhoneNumberById(id, phoneNumber);
+    }
+
+    public static void insertContact(String name, String email)
+            throws Exception {
+        final int id = insertContactAndGetId();
+        bindContactNameById(id, name);
+        bindContactEmailById(id, email);
+    }
+
+    public static void insertContact(String name, PhoneNumber phoneNumber)
+            throws Exception {
+        final int id = insertContactAndGetId();
+        bindContactNameById(id, name);
+        bindContactPhoneNumberById(id, phoneNumber);
     }
 }

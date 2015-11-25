@@ -6,7 +6,6 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.PersonalInfoPage;
 import com.wearezeta.auto.common.ImageUtil;
-import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 

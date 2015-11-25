@@ -373,6 +373,8 @@ Feature: Connect
     Given I switch to Sign In page
     Given I Sign in using login <MyEmail> and password <MyPassword>
     And I see my avatar on top of Contact list
+    And I see Contacts Upload dialog
+    And I close Contacts Upload dialog
     When I open conversation with <Contact>
     Then I see CONNECTED TO action for <Contact> in conversation
     Then I see START A CONVERSATION action for <Contact> in conversation

@@ -3,8 +3,10 @@ package com.wearezeta.auto.android.steps;
 import com.wearezeta.auto.android.pages.InvitationsPage;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+
 import org.junit.Assert;
 
 import java.awt.image.BufferedImage;
@@ -119,4 +121,23 @@ public class InvitationsPageSteps {
                 getInvitationsPage().isInvitationMessageReceivedBy(email));
     }
 
+    /**
+	 * Waits for the invite button to appear or disappear in the conversations
+	 * list
+	 *
+	 * @throws Exception
+	 * @step. ^I( do not)? see invite more people button$
+	 */
+	@When("^I( do not)? see invite more people button$")
+	public void WhenISeeInvitePeopleButton(String shouldNotSee)
+			throws Exception {
+		if (shouldNotSee == null) {
+			Assert.assertTrue(
+					"The invite more people button is not visible in the conversations list",
+					getInvitationsPage().waitForInviteMorePeopleButtonVisible());
+		} else {
+			Assert.assertTrue("The invite more people button is still visible",
+					getInvitationsPage().waitForInviteMorePeopleButtonNotVisible());
+		}
+	}
 }
