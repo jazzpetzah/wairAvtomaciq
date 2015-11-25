@@ -190,10 +190,9 @@ public class CallingOverlayPage extends AndroidPage {
 	}
 
 	public boolean ongoingCallMicrobarIsVisible() throws Exception {
+		// FIXME: Find a better way to detect microbar visibility
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idCallingOverlay))
-				&& DriverUtils.waitUntilLocatorDissapears(getDriver(),
-						By.xpath(xpathGroupCallParticipantChathead));
+				By.id(idCallingOverlay));
 	}
 
 	public boolean ongoingCallMinibarIsVisible() throws Exception {
