@@ -2,6 +2,7 @@ package com.wearezeta.auto.android.steps;
 
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
@@ -16,14 +17,14 @@ public class RegistrationSteps {
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
 			.getInstance();
 
-	private RegistrationPage getRegistrationPage() throws Exception {
-		return (RegistrationPage) pagesCollection
-				.getPage(RegistrationPage.class);
+    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
+    private RegistrationPage getRegistrationPage() throws Exception {
+		return pagesCollection.getPage(RegistrationPage.class);
 	}
 
 	private ProfilePicturePage getProfilePicturePage() throws Exception {
-		return (ProfilePicturePage) pagesCollection
-				.getPage(ProfilePicturePage.class);
+		return pagesCollection.getPage(ProfilePicturePage.class);
 	}
 
 	private ClientUser userToRegister = null;
@@ -110,4 +111,29 @@ public class RegistrationSteps {
 		getRegistrationPage().continueRegistration();
 	}
 
+    /**
+     * Type a password into the corresponding field on the registration by email invite page
+     *
+     * @step. ^I input password "(.*)"$
+     *
+     * @param pwd password or alias
+     * @throws Exception
+     */
+	@When("^I input password \"(.*)\"$")
+	public void IInputPassword(String pwd) throws Exception {
+        final String password = usrMgr.replaceAliasesOccurences(pwd, ClientUsersManager.FindBy.PASSWORD_ALIAS);
+        getRegistrationPage().enterPassword(password);
+	}
+
+    /**
+     * Tap the corresponding button which confirms the typed password on register by email invitation page
+     *
+     * @step. ^I confirm password$
+     *
+     * @throws Exception
+     */
+    @And("^I confirm password$")
+    public void IConfirmPassword() throws Exception {
+        getRegistrationPage().tapContinueButton();
+    }
 }
