@@ -847,9 +847,13 @@ public class DialogPage extends IOSPage {
 	}
 
 	public void sendMessageUsingScript(String message) throws Exception {
+		fillInMessageUsingScript(message);
+		clickKeyboardReturnButton();
+	}
+	
+	public void fillInMessageUsingScript(String message) throws Exception {
 		DriverUtils.sendTextToInputByScript(getDriver(),
 				IOSLocators.scriptCursorInputPath, message);
-		clickKeyboardReturnButton();
 	}
 
 	public void waitLoremIpsumText() throws Exception {

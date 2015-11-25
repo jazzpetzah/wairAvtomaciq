@@ -96,6 +96,18 @@ public class DialogPageSteps {
 		getDialogPage().sendStringToInput(message);
 	}
 
+	/**
+	 * Fill in message in text input using script
+	 * 
+	 * @step. ^I fill in message using script$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I fill in message using script$")
+	public void IFillInMessageUsingScript() throws Exception {
+		getDialogPage().fillInMessageUsingScript(automationMessage);
+	}
+
 	@When("I input message from keyboard (.*)")
 	public void IInputMessageFromKeyboard(String message) throws Throwable {
 		getDialogPage().inputStringFromKeyboard(message);

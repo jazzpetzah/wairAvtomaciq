@@ -883,7 +883,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I see plus button next to text input
-    And I type the message
+    And I fill in message using script
     And I see plus icon is changed to user avatar icon
     And I clear conversation text input
     Then I see plus button next to text input

@@ -15,9 +15,13 @@ import java.util.function.Function;
 
 public class InvitationsPage extends AndroidPage {
 
-	private static final String idInviteMorePeopleBtn = "zb__conversationlist__show_contacts";
-	@FindBy(id = idInviteMorePeopleBtn)
-	private WebElement inviteMorePeopleBtn;
+	private static final String idInviteMorePeopleContactsBtn = "zb__conversationlist__show_contacts";
+	@FindBy(id = idInviteMorePeopleContactsBtn)
+	private By inviteContactsBtnLocator = By.id(idInviteMorePeopleContactsBtn);
+	
+	private static final String idInviteMorePeopleSearchBtn = "zb__conversationlist__show_contacts";
+	@FindBy(id = idInviteMorePeopleSearchBtn)
+	private By inviteSearchBtnLocator = By.id(idInviteMorePeopleSearchBtn);
 	
 	private static final Function<String, String> xpathUserToInviteByName = name
 		-> String.format("//*[@id='ttv__contactlist__user__name' and @value='%s']", name);
@@ -75,15 +79,21 @@ public class InvitationsPage extends AndroidPage {
 		return BackendAPIWrappers.getInvitationMessage(email).isValid();
 	}
 	
-	public boolean waitForInviteMorePeopleButtonVisible() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.id(idInviteMorePeopleBtn));
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				inviteMorePeopleBtn);
+	public boolean waitForInviteMorePeopleContactsButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), inviteContactsBtnLocator);
 	}
 
-	public boolean waitForInviteMorePeopleButtonNotVisible() throws Exception {
+	public boolean waitForInviteMorePeopleContactsButtonNotVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.id(idInviteMorePeopleBtn));
+				inviteContactsBtnLocator);
+	}
+	
+	public boolean waitForInviteMorePeopleSearchButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), inviteSearchBtnLocator);
+	}
+
+	public boolean waitForInviteMorePeopleSearchButtonNotVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				inviteSearchBtnLocator);
 	}
 }
