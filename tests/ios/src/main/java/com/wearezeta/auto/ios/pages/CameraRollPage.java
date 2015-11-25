@@ -20,18 +20,20 @@ public class CameraRollPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameCameraRollCancel)
 	private WebElement cameraRollCancel;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathCameraLibraryFirstFolder)
+	@FindBy(how = How.XPATH, using = IOSLocators.CameraRollPage.xpathCameraLibraryFirstFolder)
 	private WebElement cameraLibraryFirstFolder;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathLibraryFirstPicture)
 	private WebElement libraryFirstPicture;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameConfirmPictureButton)
+	@FindBy(how = How.XPATH, using = IOSLocators.CameraRollPage.xpathLibraryLastPicture)
+	private WebElement libraryLastPicture;
+
+	@FindBy(how = How.XPATH, using = IOSLocators.CameraRollPage.xpathConfirmPictureButton)
 	private WebElement confirmPictureButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameCameraRollSketchButton)
 	private WebElement cameraRollSketchButton;
-	
 
 	public CameraRollPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
@@ -54,8 +56,8 @@ public class CameraRollPage extends IOSPage {
 	}
 
 	public void clickFirstLibraryFolder() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(IOSLocators.xpathCameraLibraryFirstFolder));
+		DriverUtils.waitUntilElementClickable(getDriver(),
+				cameraLibraryFirstFolder);
 		cameraLibraryFirstFolder.click();
 	}
 
@@ -65,9 +67,15 @@ public class CameraRollPage extends IOSPage {
 		libraryFirstPicture.click();
 	}
 
-	public void pressConfirmButton() throws Exception {
+	public void clickLastImage() throws Exception {
 		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.name(IOSLocators.nameConfirmPictureButton));
+				By.xpath(IOSLocators.CameraRollPage.xpathLibraryLastPicture));
+		libraryLastPicture.click();
+	}
+
+	public void pressConfirmButton() throws Exception {
+		DriverUtils
+				.waitUntilElementClickable(getDriver(), confirmPictureButton);
 		confirmPictureButton.click();
 	}
 

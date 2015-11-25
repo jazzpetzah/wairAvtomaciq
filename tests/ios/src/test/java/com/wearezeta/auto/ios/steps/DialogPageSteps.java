@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.steps;
 
-import java.awt.image.BufferedImage;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 
@@ -9,7 +8,6 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -20,7 +18,6 @@ import com.wearezeta.auto.ios.IOSConstants;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.pages.GroupChatPage;
-import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 import cucumber.api.java.en.Then;
@@ -569,15 +566,19 @@ public class DialogPageSteps {
 		getDialogPage().sendMessageUsingScript(message);
 	}
 
-	@When("I verify image in dialog is same as template (.*)")
+	/**
+	 * Verify last image in dialog is same as template
+	 * 
+	 * @step. ^I verify image in dialog is same as template (.*)$
+	 * 
+	 * @param filename
+	 *            template file name
+	 * @throws Throwable
+	 */
+	@When("^I verify image in dialog is same as template (.*)$")
 	public void IVerifyImageInDialogSameAsTemplate(String filename)
 			throws Throwable {
-		BufferedImage templateImage = getDialogPage().takeImageScreenshot();
-		BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage
-				.getImagesPath() + filename);
-		double score = ImageUtil.getOverlapScore(referenceImage, templateImage,
-				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
-		System.out.println("SCORE: " + score);
+		double score = getDialogPage().isLastImageSameAsTemplate(filename);
 		Assert.assertTrue(
 				"Overlap between two images has no enough score. Expected >= "
 						+ IOSConstants.MIN_IMG_SCORE + ", current = " + score,
@@ -1135,29 +1136,29 @@ public class DialogPageSteps {
 		Assert.assertTrue(getDialogPage()
 				.isConnectedToUserStartedConversationLabelVisible(username));
 	}
-	
+
 	/**
 	 * Long press on the image displayed in the conversation
 	 * 
-	 * @step. ^I longpress on image in the conversation$ 
+	 * @step. ^I longpress on image in the conversation$
 	 * @throws Exception
 	 */
 	@When("^I longpress on image in the conversation$")
-  	public void ILongPressOnImage() throws Exception {
-  		getDialogPage().tapHoldImage();
-  	}
-	
+	public void ILongPressOnImage() throws Exception {
+		getDialogPage().tapHoldImage();
+	}
+
 	/**
 	 * Clicking on copy badge/icon/window in conversation
 	 * 
 	 * @step. ^I tap on copy badge$
 	 * @throws Exception
 	 */
-	@When ("^I tap on copy badge$")
+	@When("^I tap on copy badge$")
 	public void ITapCopyBadge() throws Exception {
 		getDialogPage().clickPopupCopyButton();
 	}
-	
+
 	/**
 	 * Verify plus icon is replaced with user avatar icon
 	 * 
@@ -1167,10 +1168,12 @@ public class DialogPageSteps {
 	 */
 	@When("^I see plus icon is changed to user avatar icon$")
 	public void ISeePluseIconChangedToUserAvatar() throws Exception {
-		Assert.assertFalse("Plus icon is still visible", getDialogPage().isPlusButtonVisible());
-		Assert.assertTrue("User avatar is not visible", getDialogPage().isUserAvatarNextToInputVisible());
+		Assert.assertFalse("Plus icon is still visible", getDialogPage()
+				.isPlusButtonVisible());
+		Assert.assertTrue("User avatar is not visible", getDialogPage()
+				.isUserAvatarNextToInputVisible());
 	}
-	
+
 	/**
 	 * Clear conversation text input
 	 * 
