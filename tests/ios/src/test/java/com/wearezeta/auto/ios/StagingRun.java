@@ -7,7 +7,8 @@ import cucumber.api.junit.Cucumber;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(format = { "html:target/report", "json:target/report.json",
-		"com.wearezeta.auto.ios.tools.IOSZetaFormatter" }, tags = { "@staging" })
+		"com.wearezeta.auto.ios.tools.IOSZetaFormatter" }, tags = { "@staging",
+		"~@obsolete" })
 public class StagingRun {
 
 }
