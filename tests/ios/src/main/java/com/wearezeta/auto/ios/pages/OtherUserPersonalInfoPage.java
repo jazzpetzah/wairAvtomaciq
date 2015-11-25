@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.util.List;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
@@ -49,7 +50,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 	private WebElement alsoLeaveButton;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherPersonalInfoPageNameField)
-	private WebElement nameField;
+	private List<WebElement> nameField;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherPersonalInfoPageEmailField)
 	private WebElement emailField;
@@ -168,7 +169,15 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 	}
 
 	public String getNameFieldValue() {
-		return nameField.getAttribute("value");
+		if (nameField.size() == 1)
+			return nameField.get(0).getText();
+		else
+			for (WebElement el: nameField) {
+				if (!el.getText().trim().equals("")) {
+					return el.getText();
+				}
+			}
+		return "";
 	}
 
 	public String getEmailFieldValue() throws Exception {

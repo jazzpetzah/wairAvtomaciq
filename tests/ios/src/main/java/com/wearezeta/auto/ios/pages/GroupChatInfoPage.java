@@ -179,6 +179,7 @@ public class GroupChatInfoPage extends IOSPage {
 				Assert.assertFalse("User's email is displayed",
 						participantEmailTextFieldValue.equalsIgnoreCase(email));
 			}
+			break;
 		}
 		new OtherUserPersonalInfoPage(this.getLazyDriver())
 				.leavePageToGroupInfoPage();
