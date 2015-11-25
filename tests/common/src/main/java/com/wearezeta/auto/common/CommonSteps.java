@@ -457,6 +457,13 @@ public final class CommonSteps {
 				true, BACKEND_USER_SYNC_TIMEOUT);
 	}
 
+	public void WaitUntilTopPeopleContactsIsFoundInSearch(
+			String searchByNameAlias, int size) throws Exception {
+		BackendAPIWrappers.waitUntilTopPeopleContactsFound(
+				usrMgr.findUserByNameOrNameAlias(searchByNameAlias), size,
+				size, true, BACKEND_USER_SYNC_TIMEOUT);
+	}
+
 	public void WaitUntilContactBlockStateInSearch(String searchByNameAlias,
 			String contactAlias, boolean expectedState) throws Exception {
 		String query = usrMgr.replaceAliasesOccurences(contactAlias,

@@ -189,7 +189,7 @@ Feature: Search
     Given I Sign in using login <Login> and password <Password>
     When I see my avatar on top of Contact list
     And I open People Picker from Contact List
-    And I wait till Top People list contains 3 people
+    And I wait until 3 Top People users exist in backend search results
     When I select <Contact1>,<Contact2> from Top People
     And I choose to create conversation from People Picker
     Then I see Contact list with name <Contact1>,<Contact2>
@@ -232,10 +232,9 @@ Feature: Search
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I see my avatar on top of Contact list
-    # Wait a bit until top people were calculated by backend
+    And I wait until 10 Top People users exist in backend search results
     And I open People Picker from Contact List
-    And I wait till Top People list contains 8 people
-    And I see More button
+    Then I see More button
     When I click on More button
     Then I see 10 people in Top people list
 

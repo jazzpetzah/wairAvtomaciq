@@ -301,27 +301,4 @@ public class PeoplePickerPage extends WebPage {
 		return topPeople.size();
 	}
 
-	public boolean waitUntilNumberOfTopPeople(int count) throws Exception {
-		Wait<WebDriver> wait = new FluentWait<WebDriver>(getDriver())
-				.withTimeout(TIMEOUT_WAITING_FOR_TOP_PEOPLE, TimeUnit.SECONDS)
-				.pollingEvery(1, TimeUnit.SECONDS)
-				.ignoring(NoSuchElementException.class)
-				.ignoring(StaleElementReferenceException.class)
-				.ignoring(InvalidElementStateException.class);
-		return wait.until(drv -> {
-			if (getNumberOfTopPeople() == count) {
-				return true;
-			} else {
-				try {
-					closeSearch();
-					webappPagesCollection.getPage(ContactListPage.class)
-							.openPeoplePicker();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				return false;
-			}
-		});
-	}
-
 }
