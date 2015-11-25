@@ -38,7 +38,7 @@ public class GoogleLoginPage extends WebPage {
 	private WebElement approveAccessButton;
 
 	public GoogleLoginPage(Future<ZetaWebAppDriver> lazyDriver)
-			throws Exception {
+		throws Exception {
 		super(lazyDriver);
 	}
 
@@ -51,6 +51,7 @@ public class GoogleLoginPage extends WebPage {
 	public void setPassword(String password) throws Exception {
 		// this wait is needed when the NEXT button thing happens
 		DriverUtils.waitUntilLocatorAppears(getDriver(), By.id(PASSWORD_ID));
+		DriverUtils.waitUntilElementClickable(getDriver(), emailField);
 		passwordField.clear();
 		passwordField.sendKeys(password);
 	}
@@ -65,12 +66,12 @@ public class GoogleLoginPage extends WebPage {
 
 	public boolean hasApproveButton() throws Exception {
 		return getDriver().findElements(By.id(SUBMIT_APPROVE_ACCESS_BUTTON_ID))
-				.size() > 0;
+			.size() > 0;
 	}
 
 	public void clickApprove() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
-				approveAccessButton) : "Can not click Approve button";
+			approveAccessButton) : "Can not click Approve button";
 		approveAccessButton.click();
 	}
 
@@ -86,7 +87,7 @@ public class GoogleLoginPage extends WebPage {
 		});
 		// switch back to main window
 		this.getDriver().switchTo()
-				.window(this.getDriver().getWindowHandles().iterator().next());
+			.window(this.getDriver().getWindowHandles().iterator().next());
 	}
 
 }
