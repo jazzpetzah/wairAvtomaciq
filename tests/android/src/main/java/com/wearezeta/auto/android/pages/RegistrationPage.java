@@ -12,85 +12,68 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class RegistrationPage extends AndroidPage {
 
-    private static final String xpathParentSignUpContainer = "//*[@id='fl__sign_up__main_container']";
+	private static final String xpathParentSignUpContainer = "//*[@id='fl__sign_up__main_container']";
 
-    private static final String idSignUpGalleryIcon = "gtv__sign_up__gallery_icon";
-    @FindBy(id = idSignUpGalleryIcon)
-    protected WebElement signUpGalleryIcon;
+	private static final String idSignUpGalleryIcon = "gtv__sign_up__gallery_icon";
+	@FindBy(id = idSignUpGalleryIcon)
+	protected WebElement signUpGalleryIcon;
 
-    private static final String xpathNameField = "("
-            + xpathParentSignUpContainer
-            + "//*[@id='tet__profile__guided'])[1]";
-    @FindBy(xpath = xpathNameField)
-    protected WebElement nameField;
+	private static final String xpathNameField = "("
+			+ xpathParentSignUpContainer
+			+ "//*[@id='tet__profile__guided'])[1]";
+	@FindBy(xpath = xpathNameField)
+	protected WebElement nameField;
 
-    private static final String idCreateUserBtn = "zb__sign_up__create_account";
-    @FindBy(id = idCreateUserBtn)
-    private WebElement createUserBtn;
+	private static final String idCreateUserBtn = "zb__sign_up__create_account";
+	@FindBy(id = idCreateUserBtn)
+	private WebElement createUserBtn;
 
-    private static final String idVerifyEmailBtn = "ttv__sign_up__resend";
-    @FindBy(id = idVerifyEmailBtn)
-    private WebElement verifyEmailBtn;
+	private static final String idVerifyEmailBtn = "ttv__sign_up__resend";
+	@FindBy(id = idVerifyEmailBtn)
+	private WebElement verifyEmailBtn;
 
-    private static final String idNextArrow = "gtv__sign_up__next";
-    @FindBy(id = idNextArrow)
-    protected WebElement nextArrow;
+	private static final String idNextArrow = "gtv__sign_up__next";
+	@FindBy(id = idNextArrow)
+	protected WebElement nextArrow;
 
-    @FindBy(id = ContactListPage.idConfirmCancelButton)
-    private WebElement laterBtn;
+	@FindBy(id = ContactListPage.idConfirmCancelButton)
+	private WebElement laterBtn;
 
-    @FindBy(id = PeoplePickerPage.idPickerSearch)
-    private WebElement pickerSearch;
+	@FindBy(id = PeoplePickerPage.idPickerSearch)
+	private WebElement pickerSearch;
 
-    private static final String idInvitationPasswordInput = "tet__email_invite__password";
-    @FindBy(id = idInvitationPasswordInput)
-    private WebElement invitationPassword;
+	public RegistrationPage(Future<ZetaAndroidDriver> lazyDriver)
+			throws Exception {
+		super(lazyDriver);
+	}
 
-    private static final String idInvitationContinueButton = "zb__email_invite__register";
-    @FindBy(id = idInvitationContinueButton)
-    private WebElement invitationContinueButton;
+	public void selectPicture() {
+		signUpGalleryIcon.click();
+	}
 
-    public RegistrationPage(Future<ZetaAndroidDriver> lazyDriver)
-            throws Exception {
-        super(lazyDriver);
-    }
+	public void setName(String name) throws Exception {
+		assert DriverUtils.isElementPresentAndDisplayed(getDriver(), nameField);
+		nameField.sendKeys(name);
+		this.getWait()
+				.until(ExpectedConditions.elementToBeClickable(nextArrow));
+		nextArrow.click();
+	}
 
-    public void selectPicture() {
-        signUpGalleryIcon.click();
-    }
+	public void createAccount() throws Exception {
+		assert DriverUtils
+				.waitUntilElementClickable(getDriver(), createUserBtn);
+		createUserBtn.click();
+	}
 
-    public void setName(String name) throws Exception {
-        assert DriverUtils.isElementPresentAndDisplayed(getDriver(), nameField);
-        nameField.sendKeys(name);
-        this.getWait()
-                .until(ExpectedConditions.elementToBeClickable(nextArrow));
-        nextArrow.click();
-    }
+	public boolean isConfirmationVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idVerifyEmailBtn));
+	}
 
-    public void createAccount() throws Exception {
-        assert DriverUtils
-                .waitUntilElementClickable(getDriver(), createUserBtn);
-        createUserBtn.click();
-    }
+	public PeoplePickerPage continueRegistration() throws Exception {
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(PeoplePickerPage.idPickerSearch));
+		return new PeoplePickerPage(this.getLazyDriver());
+	}
 
-    public boolean isConfirmationVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idVerifyEmailBtn));
-    }
-
-    public PeoplePickerPage continueRegistration() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(PeoplePickerPage.idPickerSearch));
-        return new PeoplePickerPage(this.getLazyDriver());
-    }
-
-    public void enterPassword(String password) throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idInvitationContinueButton)) :
-                "Invitation password input is not visible";
-        invitationPassword.sendKeys(password);
-    }
-
-    public void tapContinueButton() {
-        invitationContinueButton.click();
-    }
 }
