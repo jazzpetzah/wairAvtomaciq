@@ -1,6 +1,6 @@
 Feature: Invitations
 
-  @id4161 @staging
+  @id4161 @regression @rc
   Scenario Outline: Invitations (Conversations List): I can send an email notification from conversations list
     Given I delete all contacts from Address Book
     Given There is 1 user where <Name> is me
@@ -19,6 +19,30 @@ Feature: Invitations
     Examples: 
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
+
+  @id4162 @staging
+  Scenario Outline: Invitations (Registration): I can receive and accept an email notification
+    Given There is 1 user where <Name> is me
+    Given Myself sends personal invitation to mail <ContactEmail> with message <Message>
+    Given I verify user <Contact> has received an email invitation
+    Given I see welcome screen
+    When I hide keyboard
+    And I press back button
+    And I broadcast the invitation for <ContactEmail>
+    And I restore the application
+    And I input password "<ContactPassword>"
+    And I confirm password
+    And I press Camera button twice
+    And I confirm selection
+    And I add <Contact> to the list of test case users
+    And User <Contact> is me without picture
+    Then I see Contact list with contacts
+    When I tap on contact name <Name>
+    Then I see dialog page
+
+    Examples:
+      | Name      | Contact   | ContactEmail | ContactPassword | Message |
+      | user1Name | user2Name | user2Email   | user2Password   | Hello   |
 
   @id4158 @regression
   Scenario Outline: Invite people button present in the list if user has up to 5 contacts
