@@ -7,7 +7,6 @@ from pprint import pformat
 import random
 import re
 import smtplib
-import socket
 import sys
 import time
 import traceback
