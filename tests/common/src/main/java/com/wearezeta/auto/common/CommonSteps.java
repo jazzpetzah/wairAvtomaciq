@@ -4,11 +4,8 @@ import com.wearezeta.auto.common.backend.*;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.*;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.common.usrmgmt.RegistrationStrategy;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -165,7 +162,7 @@ public final class CommonSteps {
 
 	/**
 	 * Wait for time in seconds
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public void WaitForTime(int seconds) throws Exception {
@@ -431,7 +428,7 @@ public final class CommonSteps {
 	}
 
 	public void WaitUntilSuggestionFound(String userAsNameAlias)
-			throws NoSuchUserException, Exception {
+			throws Exception {
 		BackendAPIWrappers.waitUntilSuggestionFound(
 				usrMgr.findUserByNameOrNameAlias(userAsNameAlias),
 				BACKEND_SUGGESTIONS_SYNC_TIMEOUT);
@@ -455,6 +452,13 @@ public final class CommonSteps {
 		BackendAPIWrappers.waitUntilContactsFound(
 				usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query, 1,
 				true, BACKEND_USER_SYNC_TIMEOUT);
+	}
+
+	public void WaitUntilTopPeopleContactsIsFoundInSearch(
+			String searchByNameAlias, int size) throws Exception {
+		BackendAPIWrappers.waitUntilTopPeopleContactsFound(
+				usrMgr.findUserByNameOrNameAlias(searchByNameAlias), size,
+				size, true, BACKEND_USER_SYNC_TIMEOUT);
 	}
 
 	public void WaitUntilContactBlockStateInSearch(String searchByNameAlias,
@@ -573,5 +577,12 @@ public final class CommonSteps {
 		ClientUser invitee = usrMgr.findUserByEmailOrEmailAlias(toMail);
 		BackendAPIWrappers.sendPersonalInvitation(user, invitee.getEmail(),
 				invitee.getName(), message);
+	}
+
+	public void IAddUserToTheListOfTestCaseUsers(String nameAlias)
+			throws Exception {
+		ClientUser userToAdd = usrMgr.findUserByNameOrNameAlias(nameAlias);
+		userToAdd.setUserState(UserState.Created);
+		usrMgr.appendCustomUser(userToAdd);
 	}
 }
