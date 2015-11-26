@@ -300,7 +300,7 @@ public class CommonAndroidTabletSteps {
     public void IMinimizeRestoreApllication(String action) throws Exception {
         switch (action) {
             case "minimize":
-                AndroidCommonUtils.switchToHomeScreen();
+                AndroidCommonUtils.tapHomeButton();
                 break;
             case "restore":
                 AndroidCommonUtils.switchToApplication(
