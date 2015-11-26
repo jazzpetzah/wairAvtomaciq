@@ -291,14 +291,17 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * Compare that 1st and 2nd screenshots are not equal
+     * Compare that 1st and 2nd screenshots are equal/not equal
      *
-     * @step. ^I compare 1st and 2nd screenshots and they are different$
+     * @step. ^I compare 1st and 2nd screenshots and they are( not)?different$
      */
-    @Then("^I compare 1st and 2nd screenshots and they are different$")
-    public void ThenICompare1st2ndScreenshotsAndTheyAreDifferent() {
+    @Then("^I compare 1st and 2nd screenshots and they are( not)? different$")
+    public void ThenICompare1st2ndScreenshotsAndTheyAreDifferent(String shouldBeEqual) {
         double score = ImageUtil.getOverlapScore(images.get(0), images.get(1));
-        Assert.assertTrue(score < 0.75d);
+        if (shouldBeEqual == null)
+            Assert.assertTrue(score < 0.75d);
+        else
+            Assert.assertTrue(score > 0.75d);
         images.clear();
     }
 
@@ -333,11 +336,11 @@ public class CommonAndroidSteps {
      * @param picture the file name of the picture to check against. The file name
      *                is relative to the pictures directory as defined in the
      *                Configurations.cnf file
-     * @throws Exception
+     * @throws Throwable
      * @step. ^(.*) has an avatar picture from file (.*)$
      */
     @Given("^(.*) has an avatar picture from file (.*)$")
-    public void GivenUserHasAnAvatarPicture(String name, String picture) throws Exception {
+    public void GivenUserHasAnAvatarPicture(String name, String picture) throws Throwable {
         String picturePath = CommonUtils.getImagesPath(CommonAndroidSteps.class) + "/" + picture;
         try {
             name = usrMgr.findUserByNameOrNameAlias(name).getName();
@@ -611,11 +614,11 @@ public class CommonAndroidSteps {
      *
      * @param count       the number of users to make
      * @param myNameAlias the name of the user to set as the current user
-     * @throws Exception
+     * @throws Throwable
      * @step. ^There \\w+ (\\d+) user[s]* where (.*) is me$
      */
     @Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
-    public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias) throws Exception {
+    public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias) throws Throwable {
         commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count, myNameAlias);
         GivenUserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
     }
@@ -636,29 +639,16 @@ public class CommonAndroidSteps {
 
     /**
      * Sets the current user to one of the pre-defined users based on the name
-     * of that user and assigns the default picture to it.
+     * of that user.
      *
      * @param nameAlias the user to set as current user.
      * @throws Exception
      * @step. ^User (\\w+) is [Mm]e$
      */
     @Given("^User (\\w+) is [Mm]e$")
-    public void UserXIsMe(String nameAlias) throws Exception {
+    public void UserXIsMe(String nameAlias) throws Throwable {
         commonSteps.UserXIsMe(nameAlias);
         GivenUserHasAnAvatarPicture(nameAlias, DEFAULT_USER_AVATAR);
-    }
-
-    /**
-     * Sets the current user to one of the pre-defined users based on the name
-     * of that user.
-     *
-     * @param nameAlias the user to set as current user.
-     * @throws Exception
-     * @step. ^User (\w+) is [Mm]e without picture$
-     */
-    @Given("^User (\\w+) is [Mm]e without picture$")
-    public void UserXIsMeWoPicture(String nameAlias) throws Exception {
-        commonSteps.UserXIsMe(nameAlias);
     }
 
     /**
@@ -853,32 +843,4 @@ public class CommonAndroidSteps {
         AndroidCommonUtils.insertContact(name, email, phoneNumber);
     }
 
-    /**
-     * Send personal invitation over the backend
-     *
-     * @param userToNameAlias the name/alias of conversations list owner
-     * @param toMail          the email to send the invitation to
-     * @param message         the message for the invitee
-     * @throws Exception
-     * @step. ^(.*) send personal invitation to mail (.*) with message (.*)
-     */
-    @When("^(.*) sends personal invitation to mail (.*) with message (.*)")
-    public void UserXSendsPersonalInvitation(String userToNameAlias,
-                                             String toMail, String message) throws Exception {
-        commonSteps.UserXSendsPersonalInvitationWithMessageToUserWithMail(
-                userToNameAlias, toMail, message);
-    }
-
-    /**
-     * Add a custom user to the internal test case users list. The user should be already created on the backend.
-     * This might be useful if the user is not created by the test case
-     *
-     * @param nameAlias user name/alias
-     * @throws Exception
-     * @step. ^I add (.*) to the list of test case users$"
-     */
-    @Given("^I add (.*) to the list of test case users$")
-    public void IAddUserToTheList(String nameAlias) throws Exception {
-        commonSteps.IAddUserToTheListOfTestCaseUsers(nameAlias);
-    }
 }

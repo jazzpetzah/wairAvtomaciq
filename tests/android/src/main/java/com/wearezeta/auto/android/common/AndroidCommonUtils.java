@@ -163,6 +163,12 @@ public class AndroidCommonUtils extends CommonUtils {
         return CommonUtils.getValueFromConfig(c, "androidToolsPath");
     }
 
+    public static String getAndroidAddressBookMailAccountFromConfig(Class<?> c)
+            throws Exception {
+        return CommonUtils.getValueFromConfig(c,
+                "androidAddressBookMailAccount");
+    }
+
     public static void deployBackendFile(String fileName) throws Exception {
         executeAdb(String.format("push %s %s", fileName, BACKEND_FILE_LOCATION));
     }
@@ -568,11 +574,5 @@ public class AndroidCommonUtils extends CommonUtils {
         final List<Integer> ids = insertContactAndGetIds();
         bindContactNameById(ids, name);
         bindContactPhoneNumberById(ids, phoneNumber);
-    }
-
-    public static void broadcastInvitationCode(String code) throws Exception {
-        executeAdb(String.format("shell am broadcast -a com.android.vending.INSTALL_REFERRER " +
-                "-n \"%s/com.waz.zclient.broadcast.ReferralBroadcastReceiver\" "+
-                "--es referrer \"invite-%s\"", getAndroidPackageFromConfig(AndroidCommonUtils.class), code));
     }
 }

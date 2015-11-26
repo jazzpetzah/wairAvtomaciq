@@ -14,6 +14,7 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 public class InvitationsPage extends AndroidPage {
+
 	private static final String idInviteMorePeopleContactsBtn = "zb__conversationlist__show_contacts";
 	@FindBy(id = idInviteMorePeopleContactsBtn)
 	private By inviteContactsBtnLocator = By.id(idInviteMorePeopleContactsBtn);
@@ -22,6 +23,14 @@ public class InvitationsPage extends AndroidPage {
 	@FindBy(id = idInviteMorePeopleSearchBtn)
 	private By inviteSearchBtnLocator = By.id(idInviteMorePeopleSearchBtn);
 	
+	private static final String idInviteSearchField = "puet_contactlist__searchbox";
+    @FindBy(id = idInviteSearchField)
+    private WebElement inviteSearchField;
+
+    private static final String idInvitePageCloseBtn = "gtv_contactlist__clearbutton";
+    @FindBy(id = idInvitePageCloseBtn)
+    private WebElement invitePageCloseBtn;
+    
 	private static final Function<String, String> xpathUserToInviteByName = name
 		-> String.format("//*[@id='ttv__contactlist__user__name' and @value='%s']", name);
 
@@ -40,6 +49,11 @@ public class InvitationsPage extends AndroidPage {
 	@FindBy(xpath = xpathAlertOK)
 	private WebElement alertOKButton;
 
+	@Override
+    protected ZetaAndroidDriver getDriver() throws Exception {
+        return (ZetaAndroidDriver) super.getDriver();
+    }
+	
 	public InvitationsPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
@@ -74,11 +88,6 @@ public class InvitationsPage extends AndroidPage {
 		alertOKButton.click();
 	}
 
-    public String getRecentInvitationCode(String email) throws Exception {
-        final String link = BackendAPIWrappers.getInvitationMessage(email).extractInvitationLink();
-        return link.substring(link.indexOf("/i/") + 3, link.length());
-    }
-
 	public boolean isInvitationMessageReceivedBy(String email) throws Exception {
 		return BackendAPIWrappers.getInvitationMessage(email).isValid();
 	}
@@ -100,4 +109,12 @@ public class InvitationsPage extends AndroidPage {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				inviteSearchBtnLocator);
 	}
+	
+	public void tapOnInviteSearchField() throws Exception {
+        inviteSearchField.click();
+    }
+
+    public void tapOnInvitePageCloseBtn() throws Exception {
+        invitePageCloseBtn.click();
+    }
 }

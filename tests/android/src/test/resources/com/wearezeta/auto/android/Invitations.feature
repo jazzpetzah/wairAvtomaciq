@@ -1,7 +1,7 @@
 Feature: Invitations
 
-  @id4161 @regression @rc
-  Scenario Outline: (AN-3090) Invitations (Conversations List): I can send an email notification from conversations list
+  @id4161 @staging
+  Scenario Outline: Invitations (Conversations List): I can send an email notification from conversations list
     Given I delete all contacts from Address Book
     Given There is 1 user where <Name> is me
     Given I add <Contact> into Address Book
@@ -16,33 +16,9 @@ Feature: Invitations
     Then I verify the state of <Contact> avatar in the invites list is changed
     And I verify user <Contact> has received an email invitation
 
-    Examples:
+    Examples: 
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
-
-  @id4162 @staging
-  Scenario Outline: Invitations (Registration): I can receive and accept an email notification
-    Given There is 1 user where <Name> is me
-    Given Myself sends personal invitation to mail <ContactEmail> with message <Message>
-    Given I verify user <Contact> has received an email invitation
-    Given I see welcome screen
-    When I hide keyboard
-    And I press back button
-    And I broadcast the invitation for <ContactEmail>
-    And I restore the application
-    And I input password "<ContactPassword>"
-    And I confirm password
-    And I press Camera button twice
-    And I confirm selection
-    And I add <Contact> to the list of test case users
-    And User <Contact> is me without picture
-    Then I see Contact list with contacts
-    When I tap on contact name <Name>
-    Then I see dialog page
-
-    Examples:
-      | Name      | Contact   | ContactEmail | ContactPassword | Message |
-      | user1Name | user2Name | user2Email   | user2Password   | Hello   |
 
   @id4158 @regression
   Scenario Outline: Invite people button present in the list if user has up to 5 contacts
@@ -60,7 +36,7 @@ Feature: Invitations
     And I press DELETE on the confirm alert
     Then I see invite more people button in contacts list
 
-    Examples:
+    Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name |
 
@@ -77,6 +53,23 @@ Feature: Invitations
     Then I see action buttons appeared on People picker page
     And I do not see invite more people button in search
 
-    Examples:
+    Examples: 
       | Name      | Contact1  |
       | user1Name | user2Name |
+      
+  @id4159 @staging
+  Scenario Outline: Verify that keyboard is closed when I close invites page
+    Given There are 1 user where <Name> is me
+    Given I sign in using my email or phone number
+    Given I see Contact list with no contacts
+    When I take screenshot
+    And I tap Invite button at the bottom of conversations list
+    And I tap search in invites page
+    And I tap invites page close button
+    Then I see Contact list with no contacts
+    When I take screenshot
+    Then I compare 1st and 2nd screenshots and they are not different
+
+    Examples: 
+      | Name      |
+      | user1Name |
