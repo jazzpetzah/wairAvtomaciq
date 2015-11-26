@@ -621,6 +621,18 @@ final class BackendREST {
 		return new JSONObject(output);
 	}
 
+	public static JSONObject searchForTopPeopleContacts(AuthToken token,
+			int size) throws Exception {
+		// Changed this to make it look the same as in webapp
+		// size [1..100]
+		Builder webResource = buildDefaultRequestWithAuth(
+				String.format("search/top?size=%d", size),
+				MediaType.APPLICATION_JSON, token);
+		final String output = restHandlers.httpGet(webResource,
+				new int[] { HttpStatus.SC_OK });
+		return new JSONObject(output);
+	}
+
 	public static JSONObject addContactsToGroupConvo(AuthToken token,
 			List<String> contactsIds, String conversationId) throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth(
