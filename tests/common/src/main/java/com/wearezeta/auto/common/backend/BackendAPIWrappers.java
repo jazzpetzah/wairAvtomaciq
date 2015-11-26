@@ -748,10 +748,9 @@ public final class BackendAPIWrappers {
 			}
 			Thread.sleep(1000);
 		}
-		throw new NoContactsFoundException(
-				String.format(
-						"%s contact(s) '%s' were not found within %s second(s) timeout",
-						timeout));
+		throw new NoContactsFoundException(String.format(
+				"%s suggestions were not found within %s second(s) timeout",
+				userFrom.getName(), timeout));
 	}
 
 	public static String sendConversationPing(ClientUser userFrom, String convId)
