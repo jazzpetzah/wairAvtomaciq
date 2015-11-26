@@ -167,9 +167,11 @@ public class CommonWebAppSteps {
 
 			@Override
 			public ZetaWebAppDriver call() throws Exception {
+				Thread.sleep(5000);
 				final ZetaWebAppDriver lazyWebDriver = new ZetaWebAppDriver(
 						new URL("http://" + hubHost + ":" + hubPort + "/wd/hub"),
 						capabilities);
+				Thread.sleep(5000);
 				// setup of the browser
 				lazyWebDriver.setFileDetector(new LocalFileDetector());
 				if (WebAppExecutionContext.getBrowser().equals(Browser.Safari)) {
