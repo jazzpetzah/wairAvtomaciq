@@ -1,7 +1,7 @@
 Feature: Invitations
 
-  @id4161 @staging
-  Scenario Outline: Invitations (Conversations List): I can send an email notification from conversations list
+  @id4161 @regression @rc
+  Scenario Outline: (AN-3090) Invitations (Conversations List): I can send an email notification from conversations list
     Given I delete all contacts from Address Book
     Given There is 1 user where <Name> is me
     Given I add <Contact> into Address Book
