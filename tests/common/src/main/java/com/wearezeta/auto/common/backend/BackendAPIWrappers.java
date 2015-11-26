@@ -748,10 +748,9 @@ public final class BackendAPIWrappers {
 			}
 			Thread.sleep(1000);
 		}
-		throw new NoContactsFoundException(
-				String.format(
-						"%s contact(s) '%s' were not found within %s second(s) timeout",
-						timeout));
+		throw new NoContactsFoundException(String.format(
+				"%s suggestions were not found within %s second(s) timeout",
+				userFrom.getName(), timeout));
 	}
 
 	public static String sendConversationPing(ClientUser userFrom, String convId)
@@ -944,6 +943,33 @@ public final class BackendAPIWrappers {
 				String.format(
 						"%s contact(s) '%s' were not found within %s second(s) timeout",
 						expectedCount, query, timeoutSeconds));
+	}
+
+	public static void waitUntilTopPeopleContactsFound(ClientUser searchByUser,
+			int size, int expectedCount, boolean orMore, int timeoutSeconds)
+			throws Exception {
+		final long startTimestamp = System.currentTimeMillis();
+		int currentCount = -1;
+		while (System.currentTimeMillis() - startTimestamp <= timeoutSeconds * 1000) {
+			final JSONObject searchResult = BackendREST
+					.searchForTopPeopleContacts(receiveAuthToken(searchByUser),
+							size);
+			if (searchResult.has("documents")
+					&& (searchResult.get("documents") instanceof JSONArray)) {
+				currentCount = searchResult.getJSONArray("documents").length();
+			} else {
+				currentCount = 0;
+			}
+			if (currentCount == expectedCount
+					|| (orMore && currentCount >= expectedCount)) {
+				return;
+			}
+			Thread.sleep(1000);
+		}
+		throw new NoContactsFoundException(
+				String.format(
+						"%s contact(s) '%s' were not found within %s second(s) timeout",
+						expectedCount, size, timeoutSeconds));
 	}
 
 	public static void waitUntilContactBlockState(ClientUser searchByUser,
