@@ -1,6 +1,5 @@
 package com.wearezeta.auto.android.steps;
 
-import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.InvitationsPage;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -161,17 +160,24 @@ public class InvitationsPageSteps {
     }
 
     /**
-     * Broadcast the link parsed from the recent invitation email for receiver
+     * Tap on search field in invites page
      *
-     * @param receiver email/alias
      * @throws Exception
-     * @step. ^I broadcast the invitation for (.*)
+     * @step. ^I tap search in invites page?
      */
-    @When("^I broadcast the invitation for (.*)")
-    public void IBroadcastInvitation(String receiver) throws Exception {
-        final String email = usrMgr.replaceAliasesOccurences(receiver,
-                ClientUsersManager.FindBy.EMAIL_ALIAS);
-        final String code = getInvitationsPage().getRecentInvitationCode(email);
-        AndroidCommonUtils.broadcastInvitationCode(code);
+    @When("^I tap search in invites page$")
+    public void WhenITapSearchFieldInInvitePage() throws Exception {
+        getInvitationsPage().tapOnInviteSearchField();
+    }
+
+    /**
+     * Tap on close button in invites search field
+     *
+     * @throws Exception
+     * @step. ^I tap invites page close button?
+     */
+    @When("I tap invites page close button$")
+    public void WhenITapCloseBtnInInvitePage() throws Exception {
+        getInvitationsPage().tapOnInvitePageCloseBtn();
     }
 }

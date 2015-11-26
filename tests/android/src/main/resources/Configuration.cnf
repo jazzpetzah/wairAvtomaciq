@@ -8,6 +8,7 @@ resultImage=${resultImage}
 defaultImagesPath=${project.build.directory}/../../tools/img/
 pictureResultsPath=${pictureResultsPath}
 defaultEmail=${defaultEmail}
+androidAddressBookMailAccount=${androidAddressBookMailAccount}
 androidVersion=${androidVersion}
 perfReportPath=${perfReportPath}
 backendType=${backendType}
