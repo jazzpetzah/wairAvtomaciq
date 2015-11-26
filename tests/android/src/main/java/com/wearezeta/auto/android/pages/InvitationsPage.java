@@ -14,7 +14,6 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 public class InvitationsPage extends AndroidPage {
-
 	private static final String idInviteMorePeopleContactsBtn = "zb__conversationlist__show_contacts";
 	@FindBy(id = idInviteMorePeopleContactsBtn)
 	private By inviteContactsBtnLocator = By.id(idInviteMorePeopleContactsBtn);
@@ -74,6 +73,11 @@ public class InvitationsPage extends AndroidPage {
 	public void confirmInvitationAlert() {
 		alertOKButton.click();
 	}
+
+    public String getRecentInvitationCode(String email) throws Exception {
+        final String link = BackendAPIWrappers.getInvitationMessage(email).extractInvitationLink();
+        return link.substring(link.indexOf("/i/") + 3, link.length());
+    }
 
 	public boolean isInvitationMessageReceivedBy(String email) throws Exception {
 		return BackendAPIWrappers.getInvitationMessage(email).isValid();

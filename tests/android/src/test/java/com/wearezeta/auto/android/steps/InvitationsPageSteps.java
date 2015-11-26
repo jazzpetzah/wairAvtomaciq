@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.steps;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.InvitationsPage;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -157,5 +158,20 @@ public class InvitationsPageSteps {
                     getInvitationsPage().waitForInviteMorePeopleSearchButtonNotVisible());
         else
             Assert.assertTrue("Received unrecognized parameters", false);
+    }
+
+    /**
+     * Broadcast the link parsed from the recent invitation email for receiver
+     *
+     * @param receiver email/alias
+     * @throws Exception
+     * @step. ^I broadcast the invitation for (.*)
+     */
+    @When("^I broadcast the invitation for (.*)")
+    public void IBroadcastInvitation(String receiver) throws Exception {
+        final String email = usrMgr.replaceAliasesOccurences(receiver,
+                ClientUsersManager.FindBy.EMAIL_ALIAS);
+        final String code = getInvitationsPage().getRecentInvitationCode(email);
+        AndroidCommonUtils.broadcastInvitationCode(code);
     }
 }
