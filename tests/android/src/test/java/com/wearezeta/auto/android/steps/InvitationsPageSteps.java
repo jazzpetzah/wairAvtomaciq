@@ -163,14 +163,14 @@ public class InvitationsPageSteps {
     /**
      * Broadcast the link parsed from the recent invitation email for receiver
      *
-     * @step. ^I broadcast the invitation for (.*)
-     *
      * @param receiver email/alias
      * @throws Exception
+     * @step. ^I broadcast the invitation for (.*)
      */
     @When("^I broadcast the invitation for (.*)")
     public void IBroadcastInvitation(String receiver) throws Exception {
-        final String email = usrMgr.replaceAliasesOccurences(receiver, ClientUsersManager.FindBy.EMAIL_ALIAS);
+        final String email = usrMgr.replaceAliasesOccurences(receiver,
+                ClientUsersManager.FindBy.EMAIL_ALIAS);
         final String code = getInvitationsPage().getRecentInvitationCode(email);
         AndroidCommonUtils.broadcastInvitationCode(code);
     }
