@@ -189,6 +189,8 @@ public class CommonWebAppSteps {
 					}
 				}
 				if (WebAppExecutionContext.getBrowser().equals(Browser.Safari)) {
+					WebCommonUtils.closeAllAdditionalTabsInSafari(lazyWebDriver
+							.getNodeIp());
 					WebCommonUtils.clearHistoryInSafari(lazyWebDriver
 							.getNodeIp());
 				}

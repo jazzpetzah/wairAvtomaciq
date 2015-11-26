@@ -1,6 +1,5 @@
 package com.wearezeta.auto.web.common;
 
-
 public class WebAppConstants {
 
 	public static final String TMP_ROOT = "/tmp";
@@ -17,6 +16,8 @@ public class WebAppConstants {
 		public static final String SAFARI_OPEN_TAB_SCRIPT = "safari_open_tab.txt";
 
 		public static final String SAFARI_CLEAR_HISTORY_SCRIPT = "safari_clear_history.txt";
+
+		public static final String SAFARI_CLOSE_ALL_ADDITIONAL_TABS_SCRIPT = "safari_close_all_additional_tabs.txt";
 
 		public static final String RESOURCES_SCRIPTS_ROOT = "scripts";
 	}
