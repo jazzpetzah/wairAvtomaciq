@@ -454,12 +454,12 @@ public class DialogPage extends AndroidPage {
 
     public void takePhoto() throws Exception {
         assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.xpath(xpathDialogTakePhotoButton));
+                By.xpath(xpathDialogTakePhotoButton)) : "Take Photo button is not visible";
         assert DriverUtils.waitUntilElementClickable(getDriver(),
-                takePhotoButton);
+                takePhotoButton) : "Take Photo button is not clickable";
         takePhotoButton.click();
         assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
-                By.xpath(xpathDialogTakePhotoButton));
+                By.xpath(xpathDialogTakePhotoButton)) : "Take Photo button is still visible after being clicked";
     }
 
     public String getConnectRequestChatLabel() throws Exception {
