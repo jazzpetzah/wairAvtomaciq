@@ -9,251 +9,190 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.android.util.AccentColorUtil;
 
 public class PersonalInfoPage extends AndroidPage {
 
-	public static final String xpathParentSelfProfileOverlay = "//*[@id='fl__conversation_list__profile_overlay']";
+    public static final String xpathParentSelfProfileOverlay = "//*[@id='fl__conversation_list__profile_overlay']";
 
-	@SuppressWarnings("unused")
-	private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class
-			.getSimpleName());
+    @SuppressWarnings("unused")
+    private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class
+            .getSimpleName());
 
-	private static final String idBackgroundOverlay = "v_background_dark_overlay";
-	@FindBy(id = idBackgroundOverlay)
-	private WebElement backgroundOverlay;
+    private static final String idBackgroundOverlay = "v_background_dark_overlay";
+    @FindBy(id = idBackgroundOverlay)
+    private WebElement backgroundOverlay;
 
-	private static final String idTakePhotoButton = "gtv__camera_control__take_a_picture";
-	@FindBy(id = idTakePhotoButton)
-	private WebElement takePhotoBtn;
+    private static final String idTakePhotoButton = "gtv__camera_control__take_a_picture";
+    @FindBy(id = idTakePhotoButton)
+    private WebElement takePhotoBtn;
 
-	private static final String xpathSettingsBox = xpathParentSelfProfileOverlay
-			+ "//*[@id='ll__settings_box_container']";
-	@FindBy(xpath = xpathSettingsBox)
-	private WebElement settingBox;
+    private static final String xpathSettingsBox = xpathParentSelfProfileOverlay
+            + "//*[@id='ll__settings_box_container']";
+    @FindBy(xpath = xpathSettingsBox)
+    private WebElement settingBox;
 
-	@SuppressWarnings("unused")
-	private static final Function<String, String> xpathEmailFieldByValue = value -> String
-			.format(xpathParentSelfProfileOverlay
-					+ "//*[@id='ttv__profile__email' and @value='%s']", value);
+    @SuppressWarnings("unused")
+    private static final Function<String, String> xpathEmailFieldByValue = value -> String
+            .format(xpathParentSelfProfileOverlay
+                    + "//*[@id='ttv__profile__email' and @value='%s']", value);
 
-	private static final Function<String, String> xpathNameFieldByValue = value -> String
-			.format(xpathParentSelfProfileOverlay
-					+ "//*[@id='ttv__profile__name' and @value='%s']", value);
+    private static final Function<String, String> xpathNameFieldByValue = value -> String
+            .format(xpathParentSelfProfileOverlay
+                    + "//*[@id='ttv__profile__name' and @value='%s']", value);
 
-	private static final String xpathSettingsBtn = xpathParentSelfProfileOverlay
-			+ "//*[@id='ttv__profile__settings_box__settings']";
-	@FindBy(xpath = xpathSettingsBtn)
-	private WebElement settingsButton;
+    private static final String xpathSettingsBtn = xpathParentSelfProfileOverlay
+            + "//*[@id='ttv__profile__settings_box__settings']";
+    @FindBy(xpath = xpathSettingsBtn)
+    private WebElement settingsButton;
 
-	private static final Function<String, String> xpathEditFieldByValue = value -> String
-			.format(xpathParentSelfProfileOverlay
-					+ "//*[@id='tet__profile__guided' and @value='%s']", value);
-	private static final String xpathNameEdit = xpathParentSelfProfileOverlay
-			+ "//*[@id='tet__profile__guided']";
-	@FindBy(xpath = xpathNameEdit)
-	private WebElement nameEdit;
+    private static final Function<String, String> xpathEditFieldByValue = value -> String
+            .format(xpathParentSelfProfileOverlay
+                    + "//*[@id='tet__profile__guided' and @value='%s']", value);
+    private static final String xpathNameEdit = xpathParentSelfProfileOverlay
+            + "//*[@id='tet__profile__guided']";
+    @FindBy(xpath = xpathNameEdit)
+    private WebElement nameEdit;
 
-	private static final String idChangePhotoBtn = "gtv__camera_control__change_image_source";
-	@FindBy(id = idChangePhotoBtn)
-	private WebElement changePhotoBtn;
+    private static final String idChangePhotoBtn = "gtv__camera_control__change_image_source";
+    @FindBy(id = idChangePhotoBtn)
+    private WebElement changePhotoBtn;
 
-	@FindBy(id = idGalleryBtn)
-	private WebElement galleryBtn;
+    @FindBy(id = idGalleryBtn)
+    private WebElement galleryBtn;
 
-	@FindBy(xpath = DialogPage.xpathConfirmOKButton)
-	private WebElement confirmBtn;
+    @FindBy(xpath = DialogPage.xpathConfirmOKButton)
+    private WebElement confirmBtn;
 
-	private static final String xpathProfileOptionsButton = xpathParentSelfProfileOverlay
-			+ "//*[@id='gtv__profile__settings_button']";
-	@FindBy(xpath = xpathProfileOptionsButton)
-	private WebElement optionsButton;
+    private static final String xpathProfileOptionsButton = xpathParentSelfProfileOverlay
+            + "//*[@id='gtv__profile__settings_button']";
+    @FindBy(xpath = xpathProfileOptionsButton)
+    private WebElement optionsButton;
 
-	private static final String xpathAboutButton = xpathParentSelfProfileOverlay
-			+ "//*[@id='ttv__profile__settings_box__about']";
-	@FindBy(xpath = xpathAboutButton)
-	private WebElement aboutButton;
+    private static final String xpathAboutButton = xpathParentSelfProfileOverlay
+            + "//*[@id='ttv__profile__settings_box__about']";
+    @FindBy(xpath = xpathAboutButton)
+    private WebElement aboutButton;
 
-	private static final String xpathSelfProfileClose = xpathParentSelfProfileOverlay
-			+ "//*[@id='gtv__profile__close_button']";
-	@FindBy(xpath = xpathSelfProfileClose)
-	private WebElement selfProfileClose;
+    private static final String xpathSelfProfileClose = xpathParentSelfProfileOverlay
+            + "//*[@id='gtv__profile__close_button']";
+    @FindBy(xpath = xpathSelfProfileClose)
+    private WebElement selfProfileClose;
 
-	@FindBy(id = idPager)
-	private WebElement page;
+    @FindBy(id = idPager)
+    private WebElement page;
 
-	private static final String xpathSignOutBtn = xpathParentSelfProfileOverlay
-			+ "//*[@id='ttv__profile__settings_box__signout']";
-	@FindBy(xpath = xpathSignOutBtn)
-	private WebElement signOutBtn;
+    private static final String idOpenFrom = "tiles";
+    @FindBy(id = idOpenFrom)
+    private List<WebElement> openFrom;
 
-	private static final String idOpenFrom = "tiles";
-	@FindBy(id = idOpenFrom)
-	private List<WebElement> openFrom;
+    private static final String idLightBulbButton = "gtv__profile__theme_button";
+    @FindBy(id = idLightBulbButton)
+    private WebElement lightBulbButton;
 
-	private static final String idColorPicker = "cpcl__color_picker_layout";
+    public PersonalInfoPage(Future<ZetaAndroidDriver> lazyDriver)
+            throws Exception {
+        super(lazyDriver);
+    }
 
-	public PersonalInfoPage(Future<ZetaAndroidDriver> lazyDriver)
-			throws Exception {
-		super(lazyDriver);
-	}
+    public void tapOnPage() throws Exception {
+        DriverUtils.androidMultiTap(this.getDriver(), page, 1, 500);
+    }
 
-	public void tapOnPage() throws Exception {
-		DriverUtils.androidMultiTap(this.getDriver(), page, 1, 500);
-	}
+    public void tapChangePhotoButton() throws Exception {
+        assert DriverUtils.waitUntilElementClickable(getDriver(),
+                changePhotoBtn);
+        changePhotoBtn.click();
+    }
 
-	public void tapChangePhotoButton() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(),
-				changePhotoBtn);
-		changePhotoBtn.click();
-	}
+    public void tapTakePhotoButton() throws Exception {
+        assert DriverUtils.waitUntilElementClickable(getDriver(), takePhotoBtn);
+        takePhotoBtn.click();
+    }
 
-	public void tapTakePhotoButton() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(), takePhotoBtn);
-		takePhotoBtn.click();
-	}
+    public void tapGalleryButton() throws Exception {
+        assert DriverUtils.waitUntilElementClickable(getDriver(), galleryBtn);
+        galleryBtn.click();
+    }
 
-	public void tapGalleryButton() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(), galleryBtn);
-		galleryBtn.click();
-	}
+    public void tapConfirmButton() throws Exception {
+        this.hideKeyboard();
+        assert DriverUtils.waitUntilElementClickable(getDriver(), confirmBtn);
+        confirmBtn.click();
+    }
 
-	public void tapConfirmButton() throws Exception {
-		this.hideKeyboard();
-		assert DriverUtils.waitUntilElementClickable(getDriver(), confirmBtn);
-		confirmBtn.click();
-	}
+    public void tapOptionsButton() throws Exception {
+        assert DriverUtils
+                .waitUntilElementClickable(getDriver(), optionsButton);
+        try {
+            optionsButton.click();
+        } catch (ElementNotVisibleException e) {
+            // pass silently, this throws exception due to some internal
+            // Selendroid (or AUT %) ) issue
+        }
+    }
 
-	public void tapSignOutBtn() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(), signOutBtn);
-		signOutBtn.click();
-	}
+    public SettingsPage tapSettingsButton() throws Exception {
+        assert DriverUtils.waitUntilElementClickable(getDriver(),
+                settingsButton);
+        settingsButton.click();
+        return new SettingsPage(this.getLazyDriver());
+    }
 
-	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
-		switch (direction) {
-		case RIGHT: {
-			return new ContactListPage(this.getLazyDriver());
-		}
-		default:
-			return null;
-		}
-	}
+    public void tapOnMyName(String name) throws Exception {
+        final By nameFieldlocator = By.xpath(xpathNameFieldByValue.apply(name));
+        getDriver().findElement(nameFieldlocator).click();
+    }
 
-	public void tapOptionsButton() throws Exception {
-		assert DriverUtils
-				.waitUntilElementClickable(getDriver(), optionsButton);
-		try {
-			optionsButton.click();
-		} catch (ElementNotVisibleException e) {
-			// pass silently, this throws exception due to some internal
-			// Selendroid (or AUT %) ) issue
-		}
-	}
+    public boolean waitUntilNameEditIsVisible(String name) throws Exception {
+        final By locator = By.xpath(xpathEditFieldByValue.apply(name));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+                locator);
+    }
 
-	public SettingsPage tapSettingsButton() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(),
-				settingsButton);
-		settingsButton.click();
-		return new SettingsPage(this.getLazyDriver());
-	}
+    public void clearSelfName() throws Exception {
+        nameEdit.clear();
+    }
 
-	public void waitForConfirmBtn() throws Exception {
-		this.getWait().until(ExpectedConditions.visibilityOf(confirmBtn));
-	}
+    public void changeSelfNameTo(String newName) throws Exception {
+        nameEdit.sendKeys(newName);
+        // Sometimes a phone might fail to apple the new name without this sleep
+        Thread.sleep(500);
+        this.getDriver().navigate().back();
+    }
 
-	public void tapOnMyName(String name) throws Exception {
-		final By nameFieldlocator = By.xpath(xpathNameFieldByValue.apply(name));
-		getDriver().findElement(nameFieldlocator).click();
-	}
+    public boolean waitUntilNameIsVisible(String expectedName) throws Exception {
+        final By locator = By.xpath(xpathNameFieldByValue.apply(expectedName));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
+    }
 
-	public boolean waitUntilNameEditIsVisible(String name) throws Exception {
-		final By locator = By.xpath(xpathEditFieldByValue.apply(name));
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				locator);
-	}
+    public AboutPage tapAboutButton() throws Exception {
+        assert DriverUtils.waitUntilElementClickable(getDriver(), aboutButton);
+        aboutButton.click();
+        return new AboutPage(this.getLazyDriver());
+    }
 
-	public void clearSelfName() throws Exception {
-		nameEdit.clear();
-	}
+    public boolean isSettingsVisible() throws Exception {
+        return DriverUtils
+                .isElementPresentAndDisplayed(getDriver(), settingBox);
+    }
 
-	public void changeSelfNameTo(String newName) throws Exception {
-		nameEdit.sendKeys(newName);
-		// Sometimes a phone might fail to apple the new name without this sleep
-		Thread.sleep(500);
-		this.getDriver().navigate().back();
-	}
+    public boolean waitForSettingsDissapear() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+                By.xpath(xpathProfileOptionsButton));
+    }
 
-	@Override
-	public ContactListPage navigateBack() throws Exception {
-		super.navigateBack();
-		return new ContactListPage(this.getLazyDriver());
-	}
+    public ContactListPage pressCloseButton() throws Exception {
+        assert DriverUtils.waitUntilElementClickable(getDriver(),
+                selfProfileClose);
+        selfProfileClose.click();
+        return new ContactListPage(getLazyDriver());
+    }
 
-	public boolean waitUntilNameIsVisible(String expectedName) throws Exception {
-		final By locator = By.xpath(xpathNameFieldByValue.apply(expectedName));
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
-	}
-
-	public AboutPage tapAboutButton() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(), aboutButton);
-		aboutButton.click();
-		return new AboutPage(this.getLazyDriver());
-	}
-
-	public boolean isSettingsVisible() throws Exception {
-		return DriverUtils
-				.isElementPresentAndDisplayed(getDriver(), settingBox);
-	}
-
-	public boolean waitForSettingsDissapear() throws Exception {
-		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.xpath(xpathProfileOptionsButton));
-	}
-
-	public ContactListPage pressCloseButton() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(),
-				selfProfileClose);
-		selfProfileClose.click();
-		return new ContactListPage(getLazyDriver());
-	}
-
-	public WebElement findCorrectColorPicker() throws Exception {
-		List<WebElement> colorPickers = getDriver().findElements(
-				By.id(idColorPicker));
-		WebElement colorPicker = colorPickers.get(0);
-		int x = colorPicker.getLocation().getX();
-		if (colorPickers.size() > 1) {
-			for (WebElement cp : colorPickers) {
-				if (cp.getLocation().getX() < x) {
-					colorPicker = cp;
-					x = cp.getLocation().getX();
-				}
-			}
-		}
-		return colorPicker;
-	}
-
-	public void chooseColorOnColorPicker(AccentColor color) throws Exception {
-		WebElement colorPicker = findCorrectColorPicker();
-		final int NUMBER_OF_COLORS = 7;
-		int id = color.getId() - 1;
-		int percentX = (100 / NUMBER_OF_COLORS) * id + (100 / NUMBER_OF_COLORS)
-				/ 2;
-		DriverUtils.tapOnPercentOfElement(getDriver(), colorPicker, percentX,
-				50);
-	}
-
-	public AccentColor findSelectedAccentColor() throws Exception {
-		WebElement colorPicker = findCorrectColorPicker();
-		return AccentColorUtil.findSelectedAccentColor(this.getDriver(),
-				colorPicker);
-	}
+    public void tapLightBulbButton() {
+        lightBulbButton.click();
+    }
 }

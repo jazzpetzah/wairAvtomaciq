@@ -1,90 +1,80 @@
 package com.wearezeta.auto.android.pages;
 
+import java.awt.image.BufferedImage;
+import java.util.Optional;
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
-import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.common.driver.*;
 
 public class SettingsPage extends AndroidPage {
 
-	private static final String xpathServicesButton = "//*[@value='Services']";
-	@FindBy(xpath = xpathServicesButton)
-	private WebElement servicesButton;
+    private static final String xpathSettingsTitle = "//*[@id='action_bar_container' and .//*[@value='Settings']]";
 
-	private static final String xpathConnectToSpotifyButton = "//*[@value='Connect with Spotify']";
-	@FindBy(xpath = xpathConnectToSpotifyButton)
-	private WebElement connectToSpotifyButton;
+    private static final Function<String, String> xpathSettingsMenuItemByText = text -> String
+            .format("//*[@id='title' and @value='%s']", text);
 
-	private static final String xpathDisconnectFromSpotifyButton = "//*[@value='Disconnect with Spotify']";
+    private static final Function<String, String> xpathSettingsMenuItemByPartOfText = text -> String
+            .format("//*[@id='title' and contains(@value, '%s')]", text);
 
-	private static final String idSpotifyWebView = "com_spotify_sdk_login_webview";
-	@FindBy(id = idSpotifyWebView)
-	private WebElement spotifyWebView;
+    private static final String xpathThemeSwitch = String
+            .format("%s/parent::*/parent::*//*[@id='switchWidget']", xpathSettingsMenuItemByPartOfText.apply("Theme"));
 
-	// Elements in the web view need to be clicked by percentage
-	private static final int percentageToSpotifyLoginButton = 38;
-	private static final int percentageToSpotifyUsernameField = 37;
-	private static final int percentageToSpotifyPasswordField = 84;
-	private static final int percentageToSpotifyConfirmLogin = 65;
+    private static final Function<String, String> xpathConfirmBtnByName = name -> String
+            .format("//*[starts-with(@id, 'button') and @value='%s']", name);
 
-	private static final String xpathSettingPageTitle = "//*[@id='title' and @value='Settings']";
+    public SettingsPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
+        super(lazyDriver);
+    }
 
-	private static final String xpathSettingPageChangePassword = "//*[@id='title' and @value='Change Password']";
+    private boolean scrollUntilMenuElementVisible(By locator, int maxScrolls) throws Exception {
+        int nScrolls = 0;
+        while (nScrolls < maxScrolls) {
+            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
+                return true;
+            }
+            this.swipeUpCoordinates(500, 50);
+            nScrolls++;
+        }
+        return false;
+    }
 
-	public SettingsPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
-		super(lazyDriver);
-	}
+    public boolean waitUntilVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(xpathSettingsTitle));
+    }
 
-	public boolean isSettingsPageVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-			By.xpath(xpathSettingPageTitle));
-	}
+    public void selectMenuItem(String name) throws Exception {
+        final By locator = By.xpath(xpathSettingsMenuItemByText.apply(name));
+        assert scrollUntilMenuElementVisible(locator, 5) : String
+                .format("Menu item '%s' is not present", name);
+        getDriver().findElement(locator).click();
+    }
 
-	public boolean isChangePasswordVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-			By.xpath(xpathSettingPageChangePassword));
-	}
+    public boolean isMenuItemVisible(String name) throws Exception {
+        final By locator = By.xpath(xpathSettingsMenuItemByText.apply(name));
+        return scrollUntilMenuElementVisible(locator, 5);
+    }
 
-	public void clickServicesButton() throws Exception {
-		servicesButton.click();
-	}
+    public void confirmSignOut() throws Exception {
+        final By locator = By.xpath(xpathConfirmBtnByName.apply("Sign out"));
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) :
+                "Sign out confirmation is not visible";
+        getDriver().findElement(locator).click();
+    }
 
-	public void clickConnectWithSpotifyButton() throws Exception {
-		connectToSpotifyButton.click();
-	}
+    public Optional<BufferedImage> getThemeSwitcherState() throws Exception {
+        final By itemLocator = By.xpath(xpathSettingsMenuItemByPartOfText.apply(" Theme"));
+        assert scrollUntilMenuElementVisible(itemLocator, 5) : "Theme menu item is not visible";
+        return this.getElementScreenshot(getDriver().findElement(By.xpath(xpathThemeSwitch)));
+    }
 
-	public void openSpotifyLoginFields() throws Exception {
-		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-			By.id(idSpotifyWebView));
-		DriverUtils.tapOnPercentOfElement(getDriver(), spotifyWebView, 50,
-			percentageToSpotifyLoginButton);
-	}
-
-	public void enterSpotifyUsername(String username) throws Exception {
-		DriverUtils.tapOnPercentOfElement(getDriver(), spotifyWebView, 50,
-			percentageToSpotifyUsernameField);
-		AndroidCommonUtils.type(username);
-	}
-
-	public void enterSpotifyPassword(String password) throws Exception {
-		DriverUtils.tapOnPercentOfElement(getDriver(), spotifyWebView, 50,
-			percentageToSpotifyPasswordField);
-		AndroidCommonUtils.type(password);
-	}
-
-	public void navigateBackToSettingsScreen() throws Exception {
-		// hides keyboard
-		AndroidCommonUtils.tapBackButton();
-		DriverUtils.tapOnPercentOfElement(getDriver(), spotifyWebView, 50,
-			percentageToSpotifyConfirmLogin);
-	}
-
-	public boolean doesSpotifyOptionSayDisconnect() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-			By.xpath(xpathDisconnectFromSpotifyButton));
-	}
+    public void switchTheme() throws Exception {
+        final By switchLocator = By.xpath(xpathThemeSwitch);
+        assert scrollUntilMenuElementVisible(By.xpath(xpathSettingsMenuItemByPartOfText.apply(" Theme")), 5)
+                : "Theme menu item is not visible";
+        getDriver().findElement(switchLocator).click();
+    }
 }

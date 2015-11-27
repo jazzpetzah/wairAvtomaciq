@@ -12,8 +12,9 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
+import static com.wearezeta.auto.osx.common.OSXExecutionContext.USER_HOME;
 import com.wearezeta.auto.osx.locators.OSXLocators;
-import com.wearezeta.auto.osx.pages.OSXPage;
+import com.wearezeta.auto.osx.pages.osx.OSXPage;
 
 public class ChoosePicturePage extends OSXPage {
 
@@ -38,8 +39,9 @@ public class ChoosePicturePage extends OSXPage {
 
 	public Boolean isVisible() {
 		boolean isVisible = (cancelButton != null);
-		if (isVisible)
+		if (isVisible) {
 			log.debug("Choose picture page opened");
+		}
 		return isVisible;
 	}
 
@@ -86,7 +88,7 @@ public class ChoosePicturePage extends OSXPage {
 
 	public void openImage(String filename) throws Exception {
 		if (selectColumnView()) {
-			goToSelectedFavoritesFolder(OSXLocators.IMAGES_SOURCE_DIRECTORY);
+			goToSelectedFavoritesFolder(USER_HOME);
 			searchForImage(filename);
 		} else {
 			String openImageScript = "tell application \"System Events\" to tell application process \"Wire\"\n"
@@ -100,7 +102,7 @@ public class ChoosePicturePage extends OSXPage {
 					+ "key code 36\n"
 					+ "end tell";
 			this.getDriver().executeScript(openImageScript);
-			this.getDriver().navigate().to(OSXExecutionContext.wirePath);
+			this.getDriver().navigate().to(OSXExecutionContext.WIRE_APP_PATH);
 		}
 	}
 }

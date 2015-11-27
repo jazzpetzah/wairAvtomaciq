@@ -1,15 +1,15 @@
 package com.wearezeta.auto.android.steps;
 
-import org.junit.Assert;
-
-import com.wearezeta.auto.android.pages.*;
+import com.wearezeta.auto.android.pages.OtherUserPersonalInfoPage;
+import com.wearezeta.auto.android.pages.UnknownUserDetailsPage;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.junit.Assert;
 
 public class OtherUserPersonalInfoPageSteps {
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
@@ -106,17 +106,6 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	/**
-	 * Blocks a user from the user profile page
-	 * 
-	 * @step. ^I Press Block button$
-	 * @throws Exception
-	 */
-	@When("^I Press Block button$")
-	public void IPressBlockButton() throws Exception {
-		getOtherUserPersonalInfoPage().clickBlockBtn();
-	}
-
-	/**
 	 * Checks to see that we can see a given user's profile -duplicate of
 	 * WhenISeeOherUserProfilePage(String)
 	 * 
@@ -137,29 +126,19 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	/**
+	 * -- returns fake false result
+	 * 
 	 * Checks to see that a user has been blocked by looking at the "is blocked"
 	 * button on their profile page
 	 * 
-	 * @step. ^User info should be shown with Block button$
+	 * @step. ^User info should be shown with Unblock button$
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^User info should be shown with Block button$")
+	@Then("^User info should be shown with Unblock button$")
 	public void UserShouldBeShownWithUnBlockButton() throws Exception {
 		Assert.assertTrue("Unblock button is not visible",
 				getOtherUserPersonalInfoPage().isUnblockBtnVisible());
-	}
-
-	/**
-	 * Clicks the unblock button in the other user's profile page
-	 * 
-	 * @step. ^I click Unblock button$
-	 * 
-	 * @throws Exception
-	 */
-	@Then("^I click Unblock button$")
-	public void IClickUnblockButton() throws Exception {
-		getOtherUserPersonalInfoPage().clickUnblockBtn();
 	}
 
 	/**
@@ -214,43 +193,33 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	/**
-	 * Presses the leave conversation button in the conversation settings page
-	 * -outofplace
+	 * Tap the corresponding item in conversation options menu
 	 * 
-	 * @step. ^I press Leave conversation button$
+	 * @step. ^I press (.*) conversation menu button$
 	 * 
+	 * @param itemName
+	 *            menu item name
 	 * @throws Exception
 	 */
-	@When("^I press Leave conversation button$")
-	public void WhenIPressLeaveConversationButton() throws Exception {
-		getOtherUserPersonalInfoPage().pressLeaveButton();
+	@And("^I press (.*) conversation menu button$")
+	public void IPressConvOptionsMenuItem(String itemName) throws Exception {
+		getOtherUserPersonalInfoPage().selectConvoSettingsMenuItem(itemName);
 	}
 
 	/**
-	 * Presses the "silence conversation" button in the conversation settings
-	 * page
-	 * 
-	 * @step. ^I press Silence conversation button$
-	 * 
-	 * @throws Exception
+	 * Verifys the user profile menu item and its correct position
+	 *
+	 * @param itemName menu item name
+	 * @param position index position of item in menu
+	 * @throws Throwable
+	 * @step. ^I see (.*) button in user profile menu at position (\\d+)$
 	 */
-	@When("^I press Silence conversation button$")
-	public void WhenIPressSilenceConversationButton() throws Exception {
-		getOtherUserPersonalInfoPage().pressSilenceButton();
-	}
-
-	/**
-	 * Presses the "notify conversation" button in the conversation settings
-	 * page (Note, this performs the same action as the press silence button)
-	 * 
-	 * @step. ^I press Notify conversation button$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I press Notify conversation button$")
-	public void WhenIPressNotifyConversationButton() throws Exception {
-		// FIXME: Notify and Silence menu items should have different locators
-		WhenIPressSilenceConversationButton();
+	@Then("^I see (.*) button in user profile menu at position (\\d+)$")
+	public void ISeeButtonInUserProfileMenuAtPosition(String itemName, int position) throws Throwable {
+		Assert.assertTrue("The user profile menu item is not visible",
+				getOtherUserPersonalInfoPage().isUserProfileMenuItemVisible(itemName));
+		Assert.assertEquals("Menu item is not at correct index", itemName,
+				getOtherUserPersonalInfoPage().getUserProfileMenuItemNameAtIndex(position));
 	}
 
 	/**
@@ -327,8 +296,8 @@ public class OtherUserPersonalInfoPageSteps {
 	@Then("^I see the correct number of participants in the title (.*)$")
 	public void IVerifyParticipantNumber(String realNumberOfParticipants)
 			throws Exception {
-		Assert.assertEquals(getOtherUserPersonalInfoPage().getSubHeader()
-				.toLowerCase(), realNumberOfParticipants + " people");
+		Assert.assertEquals(realNumberOfParticipants + " people",
+				getOtherUserPersonalInfoPage().getSubHeader().toLowerCase());
 	}
 
 	/**
@@ -344,20 +313,11 @@ public class OtherUserPersonalInfoPageSteps {
 	public void ThenIDoNotSeeOnGroupChatInfoPage(String contact)
 			throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertFalse(getOtherUserPersonalInfoPage().isParticipantExists(
-				contact));
-	}
-
-	/**
-	 * Returns to the group chat dialog page
-	 * 
-	 * @step. ^I return to group chat page$
-	 * 
-	 * @throws Exception
-	 */
-	@Then("^I return to group chat page$")
-	public void ThenIReturnToGroupChatPage() throws Exception {
-		getOtherUserPersonalInfoPage().tapCloseButton();
+		Assert.assertTrue(
+				String.format(
+						"Chat participant '%s' should not be visible in participants list, but it is",
+						contact), getOtherUserPersonalInfoPage()
+						.isParticipantNotVisible(contact));
 	}
 
 	/**

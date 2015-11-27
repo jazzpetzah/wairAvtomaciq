@@ -14,8 +14,7 @@ public class PendingRequestsPageSteps {
 			.getInstance();
 
 	private PendingRequestsPage getPendingRequestsPage() throws Exception {
-		return (PendingRequestsPage) pagesCollecton
-				.getPage(PendingRequestsPage.class);
+		return pagesCollecton.getPage(PendingRequestsPage.class);
 	}
 
 	@When("^I click on Ignore button on Pending requests page$")
@@ -61,7 +60,55 @@ public class PendingRequestsPageSteps {
 	public void ISeeHelloConnectMessageFrom(String user) throws Exception {
 		user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		Assert.assertEquals(user, getPendingRequestsPage().getRequesterName());
-		Assert.assertTrue(getPendingRequestsPage().isAutoMessageCorrect());
+		// Assert.assertTrue(getPendingRequestsPage().isAutoMessageCorrect());
+	}
+
+	/**
+	 * Verifies that ignore and connect button alert is visible
+	 * 
+	 * @step. ^I see accept ignore request alert$
+	 * @throws Exception
+	 */
+	@When("^I see accept ignore request alert$")
+	public void ISeeAcceptIgnoreRequestAlert() throws Exception {
+		Assert.assertTrue(getPendingRequestsPage().isConnectButtonDisplayed());
+		Assert.assertTrue(getPendingRequestsPage().isIgnoreButtonDisplayed());
+	}
+
+	/**
+	 * Verifies that you both know section is visible
+	 * 
+	 * @step. ^I see YOU BOTH KNOW people section$
+	 * @throws Exception
+	 */
+	@When("^I see YOU BOTH KNOW people section$")
+	public void ISeeYOUBOTHKNOWPeopleSection() throws Exception {
+		Assert.assertTrue(getPendingRequestsPage().isYouBothKnowDisplayed());
+	}
+
+	/**
+	 * Clicks on a person in the you both know section
+	 * 
+	 * @step. ^I click person in YOU BOTH KNOW section$
+	 * @throws Exception
+	 */
+	@When("^I click person in YOU BOTH KNOW section$")
+	public void IClickPersonInYOUBOTHKNOWSection() throws Exception {
+		getPendingRequestsPage().clickYouBothKnowPeopleIcon();
+	}
+
+	/**
+	 * Verify that name and surname exists on the page
+	 * 
+	 * @step. ^I see user (.*) found on Pending request page$
+	 * @throws Exception
+	 */
+	@When("^I see user (.*) found on Pending request page$")
+	public void WhenISeeUserFoundOnPendingRequestPage(String contact)
+			throws Exception {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		Assert.assertEquals(contact, getPendingRequestsPage()
+				.getRequesterName());
 	}
 
 }

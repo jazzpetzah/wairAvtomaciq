@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @smoke @id589
+  @regression @rc @id589
   Scenario Outline: Register new user using photo album
     Given I see sign in screen
     When I enter phone number for user <Name>
@@ -16,9 +16,8 @@ Feature: Registration
     Examples: 
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
-      
-      
-  @staging @id304 
+
+  @obsolete @id304
   Scenario Outline: Attempt to register an email with spaces
     Given I see sign in screen
     When I press Join button
@@ -34,7 +33,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id304 
+  @obsolete @id304
   Scenario Outline: Attempt to register an email with incorrect format
     Given I see sign in screen
     When I press Join button
@@ -50,7 +49,7 @@ Feature: Registration
       | Name      |
       | user1Name |
 
-  @staging @id284 
+  @obsolete @id284
   Scenario Outline: Conserve user input throughout registration
     Given I see sign in screen
     When I press Join button
@@ -68,7 +67,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id282 
+  @obsolete @id282
   Scenario Outline: Can return to email page to change email if input incorrectly
     Given I see sign in screen
     When I press Join button
@@ -90,7 +89,7 @@ Feature: Registration
       | Correct    | Password      | Name      | Incorrect           |
       | user1Email | user1Password | user1Name | error@wearezeta.com |
 
-  @staging @id528 @id529 @id530 
+  @obsolete @id528 @id529 @id530
   Scenario Outline: Register new user using username with maximum characters allowed
     Given I see sign in screen
     When I press Join button
@@ -106,7 +105,7 @@ Feature: Registration
       | Email      | Password      | MaxChars | Language |
       | user1Email | user1Password | 72       | English  |
 
-  @staging @id286
+  @obsolete @id286
   Scenario Outline: Take or select a photo label validation
     Given I see sign in screen
     When I press Join button
@@ -116,7 +115,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id285 
+  @obsolete @id285
   Scenario Outline: Take or select a photo label not visible when picture is selected
     Given I see sign in screen
     When I press Join button
@@ -130,7 +129,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id273 @id301 
+  @obsolete @id273 @id301
   Scenario Outline: Next Button should not be visible on first registration step visit
     Given I see sign in screen
     When I press Join button
@@ -152,7 +151,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging
+  @obsolete
   Scenario Outline: Automatic email verification
     Given I see sign in screen
     When I press Join button
@@ -171,7 +170,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id305 
+  @obsolete @id305
   Scenario Outline: Minimum 8 chars password requirement validation
     Given I see sign in screen
     When I press Join button
@@ -188,7 +187,7 @@ Feature: Registration
       | Email      | Password | Name      |
       | user1Email | 1234567  | user1Name |
 
-  @staging @id298 
+  @obsolete @id298
   Scenario Outline: Can re-send verification email from verification screen
     Given I see sign in screen
     When I press Join button
@@ -211,7 +210,7 @@ Feature: Registration
       | Email      | Password      | Name      | EmailCount |
       | user1Email | user1Password | user1Name | 20         |
 
-  @staging @id302 
+  @obsolete @id302
   Scenario Outline: Verify back button during registration process
     Given I see sign in screen
     When I press Join button
@@ -233,7 +232,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id798 
+  @obsolete @id798
   Scenario Outline: Email verification reminder is displayed when attempt is made to sign in with unverified email
     Given I see sign in screen
     When I press Join button
@@ -252,7 +251,71 @@ Feature: Registration
     And I have entered password <Password>
     And I attempt to press Login button
     Then I see email verification reminder
-    
-     Examples: 
+
+    Examples: 
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
+
+  @staging @id2468
+  Scenario Outline: Verify user is logged in when trying to register with a phone already assigned to the email
+    Given There is 1 user where <Name> is me
+    Given I see sign in screen
+    When I input phone number of already registered user <Name>
+    And I enter verification code for user <Name>
+    Then I see Contact list with my name <Name>
+
+    Examples: 
+      | Name      |
+      | user1Name |
+
+  @staging @noAcceptAlert @id1517
+  Scenario Outline: Verify that it's impossible to proceed registration with more than 16 characters in Phone
+    Given I see sign in screen
+    When I enter X digits phone number
+    Then I see invalid phone number alert
+
+    Examples: 
+      | Name      | X  |
+      | user1Name | 16 |
+
+  @staging @noAcceptAlert @id2742
+  Scenario Outline: Verify notification appearance in case of incorrect code
+    Given I see sign in screen
+    When I enter phone number for user <Name>
+    And I input random activation code
+    Then I see invalid code alert
+
+    Examples: 
+      | Name      |
+      | user1Name |
+
+  @staging @id295
+  Scenario Outline: Verify cutting spaces from the beginning and ending the name
+    Given I see sign in screen
+    When I enter phone number for user <Name>
+    And I enter activation code
+    And I accept terms of service
+    And I fill in name <Name> with leading and trailing spaces and hit Enter
+    And I press Picture button
+    And I choose a picture from camera roll
+    And I See selected picture
+    And I confirm selection
+    Then I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    Then I see user name doesnt contains spaces
+
+    Examples: 
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
+
+  @staging @id2467
+  Scenario Outline: Verify user is logged in when trying to register with already registered phone
+    Given There is 1 user where <Name> is me with phone number only
+    Given I see sign in screen
+    When I input phone number of already registered user <Name>
+    And I enter verification code for user <Name>
+    Then I see Contact list with my name <Name>
+
+    Examples: 
+      | Name      |
+      | user1Name |

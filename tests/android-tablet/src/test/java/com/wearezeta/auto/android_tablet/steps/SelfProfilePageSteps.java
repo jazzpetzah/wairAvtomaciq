@@ -20,13 +20,11 @@ public class SelfProfilePageSteps {
 			.getInstance();
 
 	private TabletSelfProfilePage getSelfProfilePage() throws Exception {
-		return (TabletSelfProfilePage) pagesCollection
-				.getPage(TabletSelfProfilePage.class);
+		return pagesCollection.getPage(TabletSelfProfilePage.class);
 	}
 
 	private SelfProfileCameraPage getSelfProfileCameraPage() throws Exception {
-		return (SelfProfileCameraPage) pagesCollection
-				.getPage(SelfProfileCameraPage.class);
+		return pagesCollection.getPage(SelfProfileCameraPage.class);
 	}
 
 	/**
@@ -205,7 +203,7 @@ public class SelfProfilePageSteps {
 		getSelfProfileCameraPage().confirmPictureSelection();
 	}
 
-	private static final double MAX_SCREENSHOTS_OVERLAP_SCORE = 0.5;
+	private static final double MAX_SCREENSHOTS_OVERLAP_SCORE = 0.6;
 	private static final long PROFILE_PICTURE_UPDATE_TIMEOUT_MILLISECONDS = 10000;
 
 	/**
@@ -236,8 +234,41 @@ public class SelfProfilePageSteps {
 		} while (System.currentTimeMillis() - millisecondsStarted <= PROFILE_PICTURE_UPDATE_TIMEOUT_MILLISECONDS);
 		Assert.assertTrue(
 				String.format(
-						"The overlap value between the previous and the curernt profile picture is greater than expected (%.2f > %.02f)",
+						"The overlap value between the previous and the current profile picture is greater than expected (%.2f > %.02f)",
 						overlapScore, MAX_SCREENSHOTS_OVERLAP_SCORE),
 				overlapScore <= MAX_SCREENSHOTS_OVERLAP_SCORE);
+	}
+
+	/**
+	 * Verify whether chathead notification is visible
+	 * 
+	 * @step. ^I (do not )?see chathead notification$
+	 * 
+	 * @param shouldNotSee
+	 *            equals to null if the notification should be visible
+	 * @throws Exception
+	 */
+	@Then("^I (do not )?see chathead notification$")
+	public void ISeeChatheadNotification(String shouldNotSee) throws Exception {
+		if (shouldNotSee == null) {
+			Assert.assertTrue("Chathead notification is not visible",
+					getSelfProfilePage().waitUntilChatheadNotificationVisible());
+		} else {
+			Assert.assertTrue("Chathead notification is still visible",
+					getSelfProfilePage()
+							.waitUntilChatheadNotificationInvisible());
+		}
+	}
+
+	/**
+	 * Tap chathead notification as soon as it appears on the screen
+	 * 
+	 * @step. ^I tap the chathead$
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I tap the chathead notification$")
+	public void ITapChathead() throws Exception {
+		getSelfProfilePage().tapChatheadNotification();
 	}
 }

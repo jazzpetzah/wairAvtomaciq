@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @regression @id855
+  @regression @rc @id855
   Scenario Outline: Verify swipe right tutorial appearance
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -14,7 +14,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @smoke @id330
+  @regression @rc @IPv6 @id330
   Scenario Outline: Send Message to contact
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -47,7 +47,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @smoke @id332 @id1470
+  @regression @rc @IPv6 @id332 @id1470
   Scenario Outline: Send a camera roll picture to user from contact list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -81,7 +81,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @id1468
+  @regression @rc @IPv6 @id1468
   Scenario Outline: Play/pause SoundCloud media link from the media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -355,7 +355,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id526
+  @regression @rc @IPv6 @id526
   Scenario Outline: I can send and play inline youtube link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -374,7 +374,7 @@ Feature: Conversation View
       | Name      | Contact   | YouTubeLink                                |
       | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
 
-  @regression @id1387
+  @obsolete @id1387
   Scenario Outline: Verify you can play/pause media from the Media Bar - YouTube
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -512,7 +512,7 @@ Feature: Conversation View
       | Name      | Contact   | Contact2  | NewName  | Picture                      |
       | user1Name | user2Name | user3Name | CHATHEAD | aqaPictureContact600_800.jpg |
 
-  @regression @id1476
+  @regression @rc @id1476
   Scenario Outline: Play/pause controls can change playing media state (SoundCloud)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -540,7 +540,7 @@ Feature: Conversation View
       | Name      | Contact   | SoundCloudLink                                                            |
       | user1Name | user2Name | https://soundcloud.com/isabella-emanuelsson/david-guetta-she-wolf-falling |
 
-  @smoke @id2762
+  @regression @IPv6 @id2762
   Scenario Outline: Receive message from contact
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -555,7 +555,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @smoke @id2763 @deployPictures
+  @regression @IPv6 @id2763 @deployPictures
   Scenario Outline: Receive a camera roll picture from user from contact list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -570,7 +570,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     | ConversationType |
       | user1Name | user2Name | testing.jpg | single user      |
 
-  @regression @id2976
+  @regression @rc @id2976
   Scenario Outline: I can send a sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -588,7 +588,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @regression @id3093 @id3092
+  @regression @rc @id3093 @id3092
   Scenario Outline: Verify opening and closing the cursor by clicking swiping right/left
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -658,7 +658,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     | ConversationType |
       | user1Name | user2Name | testing.jpg | single user      |
 
-  @regression @id3263
+  @regression @rc @id3263
   Scenario Outline: Verify drawing on the image from gallery
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -675,6 +675,218 @@ Feature: Conversation View
     And I send my sketch
     And I press Confirm button
     Then I see new photo in the dialog
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @regression @id2781
+  Scenario Outline: Verify player isn't displayed for vimeo links without video IDs
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Name> sent message <VimeoLink> to conversation <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    Then I see vimeo link <VimeoLink> but NO media player
+
+    Examples: 
+      | Name      | Contact   | VimeoLink                    |
+      | user1Name | user2Name | https://vimeo.com/categories |
+
+  @regression @id2780
+  Scenario Outline: Verify player is displayed for vimeo links with video IDs
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Name> sent message <VimeoLink> to conversation <Contact1>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    Then I see vimeo link <VimeoLink> and media in dialog
+
+    Examples: 
+      | Name      | Contact1  | VimeoLink                   |
+      | user1Name | user2Name | https://vimeo.com/129426512 |
+
+  @regression @id3788
+  Scenario Outline: Verify sending link and opening it
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Name> sent message <Link> to conversation <Contact1>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I see Link <Link> in dialog
+    And I tap on Link
+    Then I see WireWebsitePage
+
+    Examples: 
+      | Name      | Contact1  | Link                  |
+      | user1Name | user2Name | https://www.wire.com/ |
+
+  @regression @id3789
+  Scenario Outline: Verify sending link and text in one message and opening the link
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Name> sent message <MessageAndLink> to conversation <Contact1>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I see Link <MessageAndLink> in dialog
+    And I tap on Link
+    Then I see WireWebsitePage
+
+    Examples: 
+      | Name      | Contact1  | MessageAndLink                  |
+      | user1Name | user2Name | Check https://www.wire.com/ out |
+
+  @regression @id3798
+  Scenario Outline: Verify input field and action buttons are not shown simultaniously
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>, <Contact2>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I type the message
+    And I return to the chat list
+    When I tap on contact name <Contact2>
+    And I see dialog page
+    And I return to the chat list
+    And I tap on contact name <Contact1>
+    And I see dialog page
+    Then I see Close input options button is not visible
+    And I see controller buttons can not be visible
+    And I see the message in input field
+
+    Examples: 
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
+
+  @regression @id3963
+  Scenario Outline: Verify posting in a 1-to-1 conversation without content
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Name> sent message <Message> to conversation <Contact1>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact1>
+    And I click delete menu button
+    And I confirm delete conversation content
+    Then I dont see conversation <GroupChatName> in contact list
+    And I open search by taping on it
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I search for user name <Contact1> and tap on it on People picker page
+    And I click open conversation button on People picker page
+    Then I see dialog page
+    And I type the message
+    And I send the message
+    And I see message in the dialog
+
+    Examples: 
+      | Name      | Contact1  | Message |
+      | user1Name | user2Name | testing |
+
+  @staging @id1158
+  Scenario Outline: Verify possibility to copy image in the conversation view
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
+    And I see dialog page
+    And I see new photo in the dialog
+    And I longpress on image in the conversation
+    And I tap on copy badge
+    And I tap and hold on message input
+    And I click on popup Paste item
+    And I press Confirm button
+    Then I see new photo in the dialog
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
+      | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
+
+  @staging @id562
+  Scenario Outline: Verify downloading images in fullscreen
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
+    And I see dialog page
+    And I see new photo in the dialog
+    And I tap and hold image to open full screen
+    And I see Full Screen Page opened
+    And I see download button shown on fullscreen page
+    And I tap download button on fullscreen page
+    And I tap close fullscreen page button
+    And I swipe the text input cursor
+    And I press Add Picture button
+    And I press Camera Roll button
+    And I choose last picture from camera roll
+    And I press Confirm button
+    Then I verify image in dialog is same as template <Picture>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
+      | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
+
+  @staging @id715
+  Scenario Outline: Verify you still receive messages from blocked person in a group chat
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>, <Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>, <Contact2>
+    Given User <Name> blocks user <Contact1>
+    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
+    Given Contact <Contact1> sends image <Picture> to <ConversationType> conversation <GroupChatName>
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I tap on group chat with name <GroupChatName>
+    Then I see only 3 messages
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message                | Picture     | ConversationType |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | Caramba!      | He-hey, do you see it? | testing.jpg | group            |
+
+  @staging @id1245
+  Scenario Outline: Verify cursor swiping is disabled when you scroll back into a conversation
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
+    Given User <Name> sent long message to conversation <Contact>
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
+    And I tap on text input
+    And I scroll to the beginning of the conversation
+    And I swipe the text input cursor
+    Then I see controller buttons can not be visible
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
+      | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
+
+  @staging @id2019
+  Scenario Outline: Verify people icon is changed on avatar with opening keyboard and back
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I see plus button next to text input
+    And I fill in message using script
+    And I see plus icon is changed to user avatar icon
+    And I clear conversation text input
+    Then I see plus button next to text input
 
     Examples: 
       | Name      | Contact   |

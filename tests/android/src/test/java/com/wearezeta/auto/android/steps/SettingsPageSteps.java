@@ -1,87 +1,104 @@
 package com.wearezeta.auto.android.steps;
 
+import com.wearezeta.auto.common.ImageUtil;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.SettingsPage;
 
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
+
+import java.awt.image.BufferedImage;
 
 public class SettingsPageSteps {
 
-	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
-		.getInstance();
+    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
+            .getInstance();
 
-	private SettingsPage getSettingsPage() throws Exception {
-		return (SettingsPage) pagesCollection.getPage(SettingsPage.class);
-	}
+    private SettingsPage getSettingsPage() throws Exception {
+        return pagesCollection.getPage(SettingsPage.class);
+    }
 
-	/**
-	 * Checks to see that the settings page is visible
-	 * 
-	 * @step. ^I see settings page$
-	 * 
-	 * @throws Throwable
-	 */
-	@Then("^I see settings page$")
-	public void ISeeSettingsPage() throws Throwable {
-		Assert.assertTrue("Settings page is not visible", getSettingsPage()
-			.isSettingsPageVisible());
-	}
+    /**
+     * Checks to see that the settings page is visible
+     *
+     * @throws Exception
+     * @step. ^I see settings page$
+     */
+    @Then("^I see settings page$")
+    public void ISeeSettingsPage() throws Exception {
+        Assert.assertTrue("Settings page is not visible", getSettingsPage()
+                .waitUntilVisible());
+    }
 
-	/**
-	 * Check that change password item is present in settings menu
-	 * 
-	 * @step. ^I see change password item$
-	 * 
-	 * @throws Throwable
-	 */
-	@Then("^I see change password item$")
-	public void ISeeSettingsChangePassword() throws Throwable {
-		Assert.assertTrue(getSettingsPage().isChangePasswordVisible());
-	}
+    /**
+     * Tap the corresponding menu item
+     *
+     * @param name the name of the corresponding menu item
+     * @throws Exception
+     * @step. ^I select \"(.*)\" settings menu item$
+     */
+    @When("^I select \"(.*)\" settings menu item$")
+    public void ISelectSettingsMenuItem(String name) throws Exception {
+        getSettingsPage().selectMenuItem(name);
+    }
 
-	/**
-	 * Navigates to the spotify login page in the settings
-	 * 
-	 * @step. ^I navigate to the spotify login page$
-	 * 
-	 * @throws Throwable
-	 */
-	@Then("^I navigate to the spotify login page$")
-	public void IClickTheServicesButton() throws Throwable {
-		getSettingsPage().clickServicesButton();
-		getSettingsPage().clickConnectWithSpotifyButton();
-	}
+    /**
+     * Click the corresponding button on sign out alert to confirm it
+     *
+     * @throws Exception
+     * @step. ^I confirm sign out$
+     */
+    @And("^I confirm sign out$")
+    public void IConfirmSignOut() throws Exception {
+        getSettingsPage().confirmSignOut();
+    }
 
-	/**
-	 * Navigates the spotify web view and fills it out with the provided
-	 * credentials
-	 * 
-	 * @step. ^I input (.*) and (.*) into the spotify login page$
-	 * 
-	 * @throws Throwable
-	 */
-	@Then("^I input (.*) and (.*) into the spotify login page$")
-	public void IClickOnLogIntoSpotify(String username, String password)
-		throws Throwable {
-		SettingsPage settingsPage = getSettingsPage();
+    private BufferedImage previousThemeSwitcherState = null;
 
-		settingsPage.openSpotifyLoginFields();
-		settingsPage.enterSpotifyUsername(username);
-		settingsPage.enterSpotifyPassword(password);
-		settingsPage.navigateBackToSettingsScreen();
-	}
+    /**
+     * Store the current value of Theme setting into variable
+     *
+     * @throws Exception
+     * @step. ^I remember the value of "Theme" setting$
+     */
+    @And("^I remember the value of \"Theme\" setting$")
+    public void IRememberValueOfThemeSetting() throws Exception {
+        previousThemeSwitcherState = getSettingsPage().getThemeSwitcherState().orElseThrow(
+                IllegalStateException::new);
+    }
 
-	/**
-	 * Checks to see that the "Connect to Spotify" button has changed to
-	 * "Disconnect from Spotify"
-	 * 
-	 * @step. ^I see that I am connected to spotify$
-	 * 
-	 * @throws Throwable
-	 */
-	@Then("^I see that I am connected to spotify$")
-	public void ISeeIAmConnectedToSpotify() throws Throwable {
-		Assert.assertTrue(getSettingsPage().doesSpotifyOptionSayDisconnect());
-	}
+    /**
+     * Verify whether the value of Theme setting has been changed since the list snapshot
+     *
+     * @throws Exception
+     * @step. ^I verify the value of "Theme" setting is changed$
+     */
+    @Then("^I verify the value of \"Theme\" setting is changed$")
+    public void IVerifyValueOfThemeSettingIsChanged() throws Exception {
+        if (previousThemeSwitcherState == null) {
+            throw new IllegalStateException("Please remember the previous value of Theme setting first");
+        }
+        final BufferedImage currentThemeSwitcherState = getSettingsPage().getThemeSwitcherState().orElseThrow(
+                IllegalStateException::new);
+        final double similarity = ImageUtil.getOverlapScore(currentThemeSwitcherState, previousThemeSwitcherState,
+                ImageUtil.RESIZE_TO_MAX_SCORE);
+        Assert.assertTrue(String.format(
+                "The current Theme setting value has not been changed since the last snapshot was taken (%.2f >= %.2f)",
+                similarity, 0.97),
+                similarity < 0.97);
+    }
+
+    /**
+     * Switch current theme. The chooser itself should be already visible
+     *
+     * @throws Exception
+     * @step. ^I switch color theme in settings$
+     */
+    @And("^I switch color theme in settings$")
+    public void ISelectUnselectedTheme() throws Exception {
+        getSettingsPage().switchTheme();
+    }
+
 }

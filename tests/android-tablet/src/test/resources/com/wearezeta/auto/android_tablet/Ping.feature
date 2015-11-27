@@ -1,7 +1,7 @@
- Feature: Ping
- 
-  @id2253 @smoke
-  Scenario Outline: Send ping and ping again to contact in portrait mode
+Feature: Ping
+
+  @id2253 @regression @rc
+  Scenario Outline: (AN-2955) Send ping and ping again to contact in portrait mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to portrait
@@ -10,18 +10,19 @@
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And I see the conversation view
-    And I swipe left on text input in the conversation view
+    And I swipe right on text input in the conversation view
     When I tap Ping button in the conversation view
     Then I see the ping message "<Message1>" in the conversation view
-    And I tap Ping button in the conversation view
-    Then I see the ping message "<Message2>" in the conversation view  
+    When I swipe right on text input in the conversation view
+    And I tap Ping button twice in the conversation view
+    Then I see the ping message "<Message2>" in the conversation view
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message1   | Message2         |
       | user1Name | user2Name | YOU PINGED | YOU PINGED AGAIN |
 
-  @id2239 @smoke
-  Scenario Outline: Send ping and ping again to contact in landscape mode
+  @id2239 @regression @rc
+  Scenario Outline: (AN-2955) Send ping and ping again to contact in landscape mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
@@ -30,17 +31,18 @@
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And I see the conversation view
-    And I swipe left on text input in the conversation view
+    And I swipe right on text input in the conversation view
     When I tap Ping button in the conversation view
     Then I see the ping message "<Message1>" in the conversation view
-    And I tap Ping button in the conversation view
+    When I swipe right on text input in the conversation view
+    And I tap Ping button twice in the conversation view
     Then I see the ping message "<Message2>" in the conversation view
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message1   | Message2         |
       | user1Name | user2Name | YOU PINGED | YOU PINGED AGAIN |
 
-  @id2863 @regression
+  @id2863 @regression @rc
   Scenario Outline: Receive "Ping" and "Ping Again" in group conversation (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -57,11 +59,11 @@
     Then I see the ping message "<HotPingMessage>" in the conversation view
     And I do not see the ping message "<PingMessage>" in the conversation view
 
-    Examples: 
-      | Name      | Contact1  | Contact2  | GroupChatName  | PingMessage       | HotPingMessage         |
-      | user1Name | user2Name | user3Name | PingChat       | user2Name PINGED  | user2Name PINGED AGAIN |
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | PingMessage      | HotPingMessage         |
+      | user1Name | user2Name | user3Name | PingChat      | user2Name PINGED | user2Name PINGED AGAIN |
 
-  @id3262 @regression
+  @id3262 @regression @rc
   Scenario Outline: Receive "Ping" and "Ping Again" in group conversation (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -78,6 +80,6 @@
     Then I see the ping message "<HotPingMessage>" in the conversation view
     And I do not see the ping message "<PingMessage>" in the conversation view
 
-    Examples: 
-      | Name      | Contact1  | Contact2  | GroupChatName  | PingMessage       | HotPingMessage         |
-      | user1Name | user2Name | user3Name | PingChat       | user2Name PINGED  | user2Name PINGED AGAIN |
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | PingMessage      | HotPingMessage         |
+      | user1Name | user2Name | user3Name | PingChat      | user2Name PINGED | user2Name PINGED AGAIN |

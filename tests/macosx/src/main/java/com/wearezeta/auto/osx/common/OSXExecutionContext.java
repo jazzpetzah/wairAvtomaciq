@@ -1,55 +1,57 @@
 package com.wearezeta.auto.osx.common;
 
+import com.wearezeta.auto.common.Platform;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
-import org.apache.log4j.Logger;
-
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.log.ZetaLogger;
-
 public class OSXExecutionContext {
+	public static final Platform CURRENT_PLATFORM = Platform.Mac;
+	public static final Platform CURRENT_SECONDARY_PLATFORM = Platform.Web;
 
-	private static final Logger log = ZetaLogger
-			.getLog(OSXExecutionContext.class.getSimpleName());
+	public static final String EXTENDED_LOGGING_LEVEL = System.getProperty(
+			"extendedLoggingLevel", "SEVERE");
 
-	public static String appiumUrl;
+	public static final String APPIUM_MAC_PATH = System.getProperty(
+			"com.wire.appium.mac.path", "/Applications/AppiumForMac.app");
 
-	public static String wirePath;
+	public static final String APPIUM_HUB_URL = System.getProperty(
+			"com.wire.appium.hub.url", "http://localhost:4622/wd/hub");
 
-	public static String wireConfigDomain;
+	public static final String WIRE_APP_PATH = System.getProperty(
+			"com.wire.app.path", "/Applications/Wire.app");
 
-	public static String userDocuments = System.getProperty("user.home")
-			+ "/Documents/";
+	public static final String CONFIG_DOMAIN = System.getProperty(
+			"wireConfigDomain", "com.wearezeta.zclient.mac.development");
 
-	public static HashMap<String, BufferedImage> screenshots = new HashMap<String, BufferedImage>();
+	public static final String OS_NAME = System.getProperty("com.wire.os.name",
+			"Mac");
 
-	static {
-		try {
-			appiumUrl = CommonUtils
-					.getOsxAppiumUrlFromConfig(OSXExecutionContext.class);
-		} catch (Exception e) {
-			log.debug("Failed to read Appium URL from config file. "
-					+ "Setting default value: http://localhost:4622/wd/hub");
-			appiumUrl = "http://localhost:4622/wd/hub";
-		}
+	public static final String OS_VERSION = System.getProperty(
+			"com.wire.os.version", "10");
 
-		try {
-			wirePath = CommonUtils
-					.getOsxApplicationPathFromConfig(OSXExecutionContext.class);
-		} catch (Exception e) {
-			log.debug("Failed to read Wire path from config file. "
-					+ "Setting default value: Wire");
-			wirePath = "Wire";
-		}
+	public static final String BROWSER_NAME = System.getProperty(
+			"com.wire.browser.name", "Chrome");
 
-		try {
-			wireConfigDomain = OSXCommonUtils
-					.getWireConfigDomainFromConfig(OSXExecutionContext.class);
-		} catch (Exception e) {
-			log.debug("Failed to read config domain for Wire. "
-					+ "Setting default value: com.wearezeta.zclient.mac.development");
-			wireConfigDomain = ConfigurationDomainEnum.DEVELOPMENT.getDomain();
-		}
-	}
+	public static final String BROWSER_VERSION = System.getProperty(
+			"com.wire.browser.version", "45");
+
+	public static final String ELECTRON_SUFFIX = System.getProperty(
+			"com.wire.electron.path.suffix", "/Contents/MacOS/Electron");
+
+	public static final String CHROMEDRIVER_PATH = System.getProperty(
+			"com.wire.chromedriver.path", "/Applications/chromedriver");
+
+	public static final String ENV = System.getProperty("com.wire.environment",
+			"Staging");
+
+	public static final String ENV_URL = System.getProperty(
+			"com.wire.environment.url",
+			"https://wire-webapp-staging.zinfra.io/");
+
+	public static final String USER_HOME = System.getProperty("user.home");
+
+	public static final String USERNAME = System.getProperty("user.name");
+
+	public static final HashMap<String, BufferedImage> SCREENSHOTS = new HashMap<>();
+
 }

@@ -14,7 +14,7 @@ import com.wearezeta.auto.ios.tablet.locators.IOSTabletLocators;
 
 public class CameraRollTabletPopoverPage extends CameraRollPage{
 	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathCameraLibraryButton)
+	@FindBy(how = How.NAME, using = IOSLocators.nameCameraLibraryButton)
 	private WebElement cameraLibraryButton;
 	
 	@FindBy(how = How.XPATH, using = IOSTabletLocators.CameraRollTabletPopoverPage.xpathIPADCameraLibraryFirstFolder)

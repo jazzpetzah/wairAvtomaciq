@@ -1,7 +1,7 @@
 Feature: Search
 
   @id2249 @regression
-  Scenario Outline: Open/Close Search by different actions in landscape mode
+  Scenario Outline: (AN-3065) Open/Close Search by different actions in landscape mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I rotate UI to landscape
@@ -27,7 +27,7 @@ Feature: Search
     When I do short swipe down on conversations list
     Then I do not see People Picker page
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -58,7 +58,7 @@ Feature: Search
     When I do short swipe down on conversations list
     Then I do not see People Picker page
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -75,7 +75,7 @@ Feature: Search
     When I swipe right to show the conversations list
     Then I see People Picker page
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -93,10 +93,13 @@ Feature: Search
     And I tap the found item <Contact> on People Picker page
     And I see the Incoming connections page
     And I ignore incoming connection request from <Contact> on Incoming connections page
+    # Workaround for a bug
+    And I tap in the center of Self Profile page
+    And I tap in the center of Self Profile page
     And I swipe right to show the conversations list
     Then I see the Conversations list with no conversations
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -116,31 +119,11 @@ Feature: Search
     And I ignore incoming connection request from <Contact> on Incoming connections page
     Then I see the Conversations list with no conversations
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2851 @regression
-  Scenario Outline: I can't send connection message with space only
-    Given There are 2 users where <Name> is me
-    Given I rotate UI to landscape
-    Given I sign in using my email
-    Given I see the Conversations list with no conversations
-    And I wait until <ContactEmail> exists in backend search results
-    And I tap Search input
-    And I see People Picker page
-    And I enter "<ContactEmail>" into Search input on People Picker page
-    When I tap the found item <Contact> on People Picker page
-    And I see Outgoing Connection popover
-    And I see the name <Contact> on Outgoing Connection popover
-    And I enter connection message " " on Outgoing Connection popover
-    Then I see Connect button is not tappable on Outgoing Connection popover
-
-    Examples:
-      | Name      | Contact   | ContactEmail |
-      | user1Name | user2Name | user2Email   |
-
-  @id2853 @regression
+  @id2853 @regression @rc
   Scenario Outline: I want to discard the new connect request (sending) by returning to the search results after selecting someone I’m not connected to
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -161,3 +144,345 @@ Feature: Search
     Examples:
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
+
+  @id3882 @regression @rc
+  Scenario Outline: Verify opening conversation with action button (landscape)
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I wait until <Contact> exists in backend search results
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact>" into Search input on People Picker page
+    And I tap the found item <Contact> on People Picker page
+    When I tap Open Conversation button on People Picker page
+    Then I do not see People Picker page
+    And I see the conversation view
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @id3891 @regression @rc
+  Scenario Outline: Verify opening conversation with action button (portrait)
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I wait until <Contact> exists in backend search results
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact>" into Search input on People Picker page
+    And I tap the found item <Contact> on People Picker page
+    When I tap Open Conversation button on People Picker page
+    Then I do not see People Picker page
+    And I see the conversation view
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @id3885 @regression
+  Scenario Outline: Verify starting a new group conversation with action button (landscape)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact1>" into Search input on People Picker page
+    And I tap the found item <Contact1> on People Picker page
+    And I enter "<Contact2>" into Search input on People Picker page
+    And I tap the found item <Contact2> on People Picker page
+    When I tap Create Conversation button on People Picker page
+    Then I do not see People Picker page
+    And I see the conversation view
+    When I tap Show Tools button on conversation view page
+    And I tap Show Details button on conversation view page
+    And I see the Group popover
+    Then I see the participant avatar Myself on Group popover
+    And I see the participant avatar <Contact1> on Group popover
+    And I see the participant avatar <Contact2> on Group popover
+
+    Examples:
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
+
+  @id3894 @regression
+  Scenario Outline: Verify starting a new group conversation with action button (portrait)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact1>" into Search input on People Picker page
+    And I tap the found item <Contact1> on People Picker page
+    And I enter "<Contact2>" into Search input on People Picker page
+    And I tap the found item <Contact2> on People Picker page
+    When I tap Create Conversation button on People Picker page
+    Then I do not see People Picker page
+    And I see the conversation view
+    When I tap Show Tools button on conversation view page
+    And I tap Show Details button on conversation view page
+    And I see the Group popover
+    Then I see the participant avatar Myself on Group popover
+    And I see the participant avatar <Contact1> on Group popover
+    And I see the participant avatar <Contact2> on Group popover
+
+    Examples:
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
+
+  @id3884 @regression
+  Scenario Outline: Verify sending a photo with action button (landscape)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact>" into Search input on People Picker page
+    And I tap the found item <Contact> on People Picker page
+    When I tap Camera button on People Picker page
+    And I tap Take Photo button in the conversation view
+    And I confirm the picture for the conversation view
+    Then I see a new picture in the conversation view
+    And I do not see People Picker page
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @id3893 @regression
+  Scenario Outline: Verify sending a photo with action button (portrait)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact>" into Search input on People Picker page
+    And I tap the found item <Contact> on People Picker page
+    When I tap Camera button on People Picker page
+    And I tap Take Photo button in the conversation view
+    And I confirm the picture for the conversation view
+    Then I see a new picture in the conversation view
+    And I do not see People Picker page
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @id3887 @regression
+  Scenario Outline: Verify sharing a photo to a newly created group conversation with action button (landscape)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact1>" into Search input on People Picker page
+    And I tap the found item <Contact1> on People Picker page
+    And I enter "<Contact2>" into Search input on People Picker page
+    And I tap the found item <Contact2> on People Picker page
+    When I tap Camera button on People Picker page
+    And I tap Take Photo button in the conversation view
+    And I confirm the picture for the conversation view
+    Then I see a new picture in the conversation view
+    And I do not see People Picker page
+    And I see the conversation view
+    When I tap Show Tools button on conversation view page
+    And I tap Show Details button on conversation view page
+    And I see the Group popover
+    Then I see the participant avatar Myself on Group popover
+    And I see the participant avatar <Contact1> on Group popover
+    And I see the participant avatar <Contact2> on Group popover
+
+    Examples:
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
+
+  @id3896 @regression
+  Scenario Outline: Verify sharing a photo to a newly created group conversation with action button (portrait)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact1>" into Search input on People Picker page
+    And I tap the found item <Contact1> on People Picker page
+    And I enter "<Contact2>" into Search input on People Picker page
+    And I tap the found item <Contact2> on People Picker page
+    When I tap Camera button on People Picker page
+    And I tap Take Photo button in the conversation view
+    And I confirm the picture for the conversation view
+    Then I see a new picture in the conversation view
+    And I do not see People Picker page
+    And I see the conversation view
+    When I tap Show Tools button on conversation view page
+    And I tap Show Details button on conversation view page
+    And I see the Group popover
+    Then I see the participant avatar Myself on Group popover
+    And I see the participant avatar <Contact1> on Group popover
+    And I see the participant avatar <Contact2> on Group popover
+
+    Examples:
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
+
+  @id3881 @regression
+  Scenario Outline: (AN-2894) Verify button Open is changed to Create after checking second person (landscape)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact1>" into Search input on People Picker page
+    When I tap the found item <Contact1> on People Picker page
+    Then I see Open Conversation button on People Picker page
+    When I enter "<Contact2>" into Search input on People Picker page
+    And I tap the found item <Contact2> on People Picker page
+    Then I see Create Conversation button on People Picker page
+    When I tap the found item <Contact2> on People Picker page
+    Then I see Open Conversation button on People Picker page
+    When I tap the found item <Contact1> on People Picker page
+    Then I do not see Open Conversation button on People Picker page
+
+    Examples:
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
+
+  @id3890 @regression
+  Scenario Outline: (AN-2894) Verify button Open is changed to Create after checking second person (portrait)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact1>" into Search input on People Picker page
+    When I tap the found item <Contact1> on People Picker page
+    Then I see Open Conversation button on People Picker page
+    When I enter "<Contact2>" into Search input on People Picker page
+    And I tap the found item <Contact2> on People Picker page
+    Then I see Create Conversation button on People Picker page
+    When I tap the found item <Contact2> on People Picker page
+    Then I see Open Conversation button on People Picker page
+    When I tap the found item <Contact1> on People Picker page
+    Then I do not see Open Conversation button on People Picker page
+
+    Examples:
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
+
+  @id3883 @regression
+  Scenario Outline: Verify starting a call with action button (landscape)
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I wait until <Contact> exists in backend search results
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact>" into Search input on People Picker page
+    And I tap the found item <Contact> on People Picker page
+    When I tap Call button on People Picker page
+    Then I do not see People Picker page
+    And I see the conversation view
+    And I see calling overlay Big bar
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @id3892 @regression
+  Scenario Outline: Verify starting a call with action button (portrait)
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I wait until <Contact> exists in backend search results
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact>" into Search input on People Picker page
+    And I tap the found item <Contact> on People Picker page
+    When I tap Call button on People Picker page
+    Then I do not see People Picker page
+    And I see the conversation view
+    And I see calling overlay Big bar
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @id3886 @regression
+  Scenario Outline: Verify starting a group conversation and a group call with action button (landscape)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact1>" into Search input on People Picker page
+    And I tap the found item <Contact1> on People Picker page
+    And I enter "<Contact2>" into Search input on People Picker page
+    And I tap the found item <Contact2> on People Picker page
+    When I tap Call button on People Picker page
+    Then I do not see People Picker page
+    And I see the conversation view
+    And I see calling overlay Big bar
+    When I tap Show Tools button on conversation view page
+    And I tap Show Details button on conversation view page
+    And I see the Group popover
+    Then I see the participant avatar Myself on Group popover
+    And I see the participant avatar <Contact1> on Group popover
+    And I see the participant avatar <Contact2> on Group popover
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | GroupChat     |
+
+  @id3895 @regression
+  Scenario Outline: Verify starting a group conversation and a group call with action button (portrait)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact1>" into Search input on People Picker page
+    And I tap the found item <Contact1> on People Picker page
+    And I enter "<Contact2>" into Search input on People Picker page
+    And I tap the found item <Contact2> on People Picker page
+    When I tap Call button on People Picker page
+    Then I do not see People Picker page
+    And I see the conversation view
+    And I see calling overlay Big bar
+    When I tap Show Tools button on conversation view page
+    And I tap Show Details button on conversation view page
+    And I see the Group popover
+    Then I see the participant avatar Myself on Group popover
+    And I see the participant avatar <Contact1> on Group popover
+    And I see the participant avatar <Contact2> on Group popover
+
+    Examples:
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |

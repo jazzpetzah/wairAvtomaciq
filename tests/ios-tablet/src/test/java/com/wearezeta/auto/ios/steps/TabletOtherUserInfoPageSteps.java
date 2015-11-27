@@ -83,4 +83,43 @@ public class TabletOtherUserInfoPageSteps {
 				participantEmailTextFieldValue.equalsIgnoreCase(email));
 	}
 
+	/**
+	 * Verify connect label shown on not connected user profile popover
+	 * 
+	 * @step. I see Connect label on Other user profile popover
+	 * 
+	 * @throws Exception
+	 */
+	@Then("I see Connect label on Other user profile popover")
+	public void ISeeConnectLabelOnOtherUserProfilePopover() throws Exception {
+		Assert.assertTrue("Connect label is not shown",
+				getTabletOtherUserInfoPage().isConnectLabelVisible());
+	}
+
+	/**
+	 * Verify connect button shown on not connected user profile popover
+	 * 
+	 * @step. I see Connect Button on Other user profile popover
+	 * 
+	 * @throws Exception
+	 */
+	@Then("I see Connect Button on Other user profile popover")
+	public void ISeeConnectButtonOnOtherUserProfilePopover() throws Exception {
+		Assert.assertTrue("Connect button is not shown",
+				getTabletOtherUserInfoPage().isConnectButtonVisible());
+	}
+
+	/**
+	 * Click on Connect button on not connected user profile popover
+	 * 
+	 * @step. ^I click Connect button on not connected user profile popover$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click Connect button on not connected user profile popover$")
+	public void IClickConnectButtonOnNotConnectedUserProfilePopover()
+			throws Exception {
+		getTabletOtherUserInfoPage().clickConnectButton();
+	}
+
 }

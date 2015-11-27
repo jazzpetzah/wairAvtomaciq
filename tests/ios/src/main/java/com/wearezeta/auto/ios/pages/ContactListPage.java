@@ -28,8 +28,11 @@ public class ContactListPage extends IOSPage {
 			.getSimpleName());
 
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.70;
-	private final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.85;
-	private final int CONV_SWIPE_TIME = 1500;
+	private final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.80;
+	private final int CONV_SWIPE_TIME = 500;
+
+	@FindBy(how = How.NAME, using = IOSLocators.ContactListPage.nameSelfButton)
+	private WebElement selfUserButton;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathNameContactList)
 	private List<WebElement> contactListNames;
@@ -81,6 +84,12 @@ public class ContactListPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.ContactListPage.nameMuteCallButton)
 	private WebElement muteCallButton;
+
+	@FindBy(how = How.NAME, using = IOSLocators.nameLeaveConversationButton)
+	private WebElement leaveActionMenuButton;
+
+	@FindBy(how = How.NAME, using = IOSLocators.nameCancelButton)
+	private WebElement cancelActionMenuButton;
 
 	private int oldLocation = 0;
 
@@ -147,12 +156,18 @@ public class ContactListPage extends IOSPage {
 		return new PersonalInfoPage(this.getLazyDriver());
 	}
 
+	public String getSelfButtonLabel() {
+		String v = selfUserButton.getAttribute("label").toUpperCase();
+		return v;
+	}
+
+	public boolean isSelfButtonContainingFirstNameLetter(String name) {
+		String sub = name.substring(0, 1).toUpperCase();
+		return sub.equals(getSelfButtonLabel());
+	}
+
 	public IOSPage tapOnName(String name) throws Exception {
 		WebElement el = findNameInContactList(name);
-		if (el == null) {
-			this.minimizeApplication(3);
-			el = findNameInContactList(name);
-		}
 		boolean clickableGlitch = false;
 		try {
 			this.getWait().until(ExpectedConditions.elementToBeClickable(el));
@@ -260,7 +275,7 @@ public class ContactListPage extends IOSPage {
 
 	public IOSPage swipeRightOnContact(String contact) throws Exception {
 		DriverUtils.swipeRight(this.getDriver(),
-				findNameInContactList(contact), CONV_SWIPE_TIME, 70, 50);
+				findNameInContactList(contact), CONV_SWIPE_TIME, 90, 50);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 
@@ -272,8 +287,18 @@ public class ContactListPage extends IOSPage {
 			swipeRightOnContact(conversation);
 			count++;
 		} while ((count < 5)
-				&& !isArchiveCovnersationButtonVisible(conversation));
+				&& !isArchiveConversationButtonVisible(conversation));
 
+	}
+
+	public void swipeRightConversationToRevealActionButtons(String conversation)
+			throws Exception {
+		int count = 0;
+
+		do {
+			swipeRightOnContact(conversation);
+			count++;
+		} while ((count < 5) && !isCancelActionButtonVisible());
 	}
 
 	public IOSPage longSwipeRightOnContact(int time, String contact)
@@ -283,9 +308,13 @@ public class ContactListPage extends IOSPage {
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 
-	private String getFirstConversationName() {
-		String text = firstChatInChatListTextField.getText();
-		return text;
+	public String getFirstConversationName() throws Exception {
+		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.xpath(IOSLocators.xpathFirstChatInChatListTextField), 5)) {
+			String text = firstChatInChatListTextField.getText();
+			return text;
+		} else
+			return null;
 	}
 
 	public boolean verifyChangedGroupNameInChatList() throws Exception {
@@ -365,6 +394,11 @@ public class ContactListPage extends IOSPage {
 				By.name(name), 5);
 	}
 
+	public boolean contactIsNotDisplayed(String name) throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.name(name), 5);
+	}
+
 	public boolean isTutorialShown() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.nameTutorialView), 10);
@@ -412,7 +446,7 @@ public class ContactListPage extends IOSPage {
 	}
 
 	public boolean conversationWithUsersPresented(String name1, String name2,
-			String name3) {
+			String name3) throws Exception {
 		String firstChat = getFirstConversationName();
 		boolean chatExist = firstChat.contains(name1)
 				&& firstChat.contains(name2) && firstChat.contains(name3);
@@ -433,6 +467,7 @@ public class ContactListPage extends IOSPage {
 			boolean isSilenced) throws Exception {
 		String deviceType = CommonUtils.getDeviceName(this.getClass());
 		BufferedImage silencedConversation = null;
+
 		BufferedImage referenceImage = null;
 		WebElement element = findCellInContactList(conversation);
 		silencedConversation = CommonUtils.getElementScreenshot(element,
@@ -452,7 +487,9 @@ public class ContactListPage extends IOSPage {
 					.getImagesPath() + "verifyUnsilenceTestIphone6.png");
 		} else if (deviceType.equals("iPad Air") && isSilenced) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "silenceiPadAir.png");
+					.getImagesPath()
+					+ "verifySilenceiPadAir_"
+					+ getOrientation().toString() + ".png");
 		} else if (deviceType.equals("iPad Air") && !isSilenced) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath()
@@ -495,27 +532,36 @@ public class ContactListPage extends IOSPage {
 		return true;
 	}
 
-	private boolean isArchiveCovnersationButtonVisible(String conversation)
-			throws Exception {
-		WebElement archiveButton = this
-				.getDriver()
-				.findElement(
-						By.xpath(String
-								.format(IOSLocators.ContactListPage.xpathArchiveConversationButton,
-										conversation)));
-		return DriverUtils.waitUntilElementClickable(getDriver(),
-				archiveButton, 3);
+	private boolean isCancelActionButtonVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				cancelActionMenuButton);
 	}
 
-	public void clickArchiveCoversationButton(String conversation)
+	private boolean isArchiveConversationButtonVisible(String conversation)
+			throws Exception {
+		if (DriverUtils
+				.waitUntilLocatorAppears(
+						getDriver(),
+						By.xpath(IOSLocators.ContactListPage.xpathArchiveConversationButton),
+						3)) {
+			WebElement archiveButton = this
+					.getDriver()
+					.findElement(
+							By.xpath(IOSLocators.ContactListPage.xpathArchiveConversationButton));
+			return DriverUtils.waitUntilElementClickable(getDriver(),
+					archiveButton, 3);
+		} else {
+			return false;
+		}
+	}
+
+	public void clickArchiveConversationButton(String conversation)
 			throws Exception {
 		WebElement archiveButton = this
 				.getDriver()
 				.findElement(
-						By.xpath(String
-								.format(IOSLocators.ContactListPage.xpathArchiveConversationButton,
-										conversation)));
-		archiveButton.click();
+						By.xpath(IOSLocators.ContactListPage.xpathArchiveConversationButton));
+		DriverUtils.mobileTapByCoordinates(getDriver(), archiveButton);
 	}
 
 	public void archiveConversation(String conversation) throws Exception {
@@ -583,20 +629,59 @@ public class ContactListPage extends IOSPage {
 							+ "unreadMessageIndicator0_iPad.png");
 				}
 
-			} else {
-				referenceImage = ImageUtil
-						.readImageFromFile(IOSPage.getImagesPath()
-								+ "unreadMessageIndicator0_iPhone.png");
+			} else if (CommonUtils.getDeviceName(this.getClass()).equals(
+					"iPhone 6")) {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath()
+						+ "unreadMessageIndicator0_iPhone6.png");
+			} else if (CommonUtils.getDeviceName(this.getClass()).equals(
+					"iPhone 6 Plus")) {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath()
+						+ "unreadMessageIndicator0_iPhone6Plus.png");
 			}
 		} else if (numberOfMessages == 1) {
-			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "unreadMessageIndicator1.png");
+			if (CommonUtils.getDeviceName(this.getClass()).equals("iPhone 6")) {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath()
+						+ "unreadMessageIndicator1_iPhone6.png");
+			} else if (CommonUtils.getDeviceName(this.getClass()).equals(
+					"iPhone 6 Plus")) {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath()
+						+ "unreadMessageIndicator1_iPhone6Plus.png");
+			} else {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath() + "unreadMessageIndicator1.png");
+			}
 		} else if (numberOfMessages > 1 && numberOfMessages < 10) {
-			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "unreadMessageIndicator5.png");
+			if (CommonUtils.getDeviceName(this.getClass()).equals("iPhone 6")) {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath()
+						+ "unreadMessageIndicator5_iPhone6.png");
+			} else if (CommonUtils.getDeviceName(this.getClass()).equals(
+					"iPhone 6 Plus")) {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath()
+						+ "unreadMessageIndicator5_iPhone6Plus.png");
+			} else {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath() + "unreadMessageIndicator5.png");
+			}
 		} else if (numberOfMessages >= 10) {
-			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "unreadMessageIndicator10.png");
+			if (CommonUtils.getDeviceName(this.getClass()).equals("iPhone 6")) {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath()
+						+ "unreadMessageIndicator10_iPhone6.png");
+			} else if (CommonUtils.getDeviceName(this.getClass()).equals(
+					"iPhone 6 Plus")) {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath()
+						+ "unreadMessageIndicator10_iPhone6Plus.png");
+			} else {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath() + "unreadMessageIndicator10.png");
+			}
 		}
 
 		score = ImageUtil.getOverlapScore(referenceImage,
@@ -688,6 +773,51 @@ public class ContactListPage extends IOSPage {
 		}
 
 		return true;
+	}
+
+	public boolean isActionMenuVisibleForConversation(String conversation)
+			throws Exception {
+		String xpath = String
+				.format(IOSLocators.ContactListPage.xpathFormatActionMenuConversationName,
+						conversation.toUpperCase());
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(xpath));
+	}
+
+	public boolean isButtonVisibleInActionMenu(String buttonTitle)
+			throws Exception {
+		String xpath = String.format(
+				IOSLocators.ContactListPage.xpathFormatActionMenuXButton,
+				buttonTitle.toUpperCase());
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(xpath));
+	}
+
+	public void clickArchiveButtonInActionMenu() throws Exception {
+		WebElement archiveButton = this
+				.getDriver()
+				.findElement(
+						By.xpath(IOSLocators.ContactListPage.xpathArchiveConversationButton));
+		DriverUtils.mobileTapByCoordinates(getDriver(), archiveButton);
+	}
+
+	public void clickLeaveButtonInActionMenu() {
+		leaveActionMenuButton.click();
+	}
+
+	public void clickCancelButtonInActionMenu() {
+		cancelActionMenuButton.click();
+	}
+
+	public String getSelectedConversationCellValue(String conversation)
+			throws Exception {
+		WebElement conversationCell = this
+				.getDriver()
+				.findElement(
+						By.xpath(String
+								.format(IOSLocators.ContactListPage.xpathSpecificContactListCell,
+										conversation)));
+		return conversationCell.getAttribute("value");
 	}
 
 }

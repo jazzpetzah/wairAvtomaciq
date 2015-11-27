@@ -1,22 +1,44 @@
 Feature: Settings
 
-  @regression @id1530
-  Scenario Outline: Verify possibility of reseting password
-    Given There is 1 user where <Name> is me
-    Given I see Welcome screen
-    Given I start Sign In
-    When I select to Reset Password
-    Then I see Forgot Password page in browser
-    When I go to Forgot Password page
-    And I see Forgot Password page in browser
-    And I enter user email <Email> to change password
-    And I open change password link from email
-    And I reset password to <NewPassword>
-    And I type login <Email>
-    And I type password <NewPassword>
-    And I press Sign In button
-    Then I see name <Name> in User profile
+  @smoke @id3943
+  Scenario Outline: Open preferences with menu bar
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    When I click menu bar item "Wire" and menu item "Preferences"
+    Then I see Settings dialog
 
     Examples: 
-      | Email      | Password      | Name      | NewPassword |
-      | user1Email | user1Password | user1Name | aqa234567   |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @smoke @id3944
+  Scenario Outline: Open preferences with keyboard shortcut
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    When I type shortcut combination to open preferences
+    Then I see Settings dialog
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @smoke @id3953
+  Scenario Outline: Verify that the webapp settings button is not shown
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    When I open self profile
+    And the camera button in self profile is clickable
+    Then I do not see the settings button on self profile page
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |

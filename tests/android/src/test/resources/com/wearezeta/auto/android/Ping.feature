@@ -1,6 +1,6 @@
 Feature: Ping
 
-  @id317 @smoke
+  @id317 @regression @rc @rc42
   Scenario Outline: Send Ping & Hot Ping to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -12,7 +12,7 @@ Feature: Ping
     And I press Ping button
     Then I see Ping message <Msg> in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Msg        |
       | user1Name | user2Name | YOU PINGED |
 
@@ -32,11 +32,11 @@ Feature: Ping
     And I press Ping button
     Then I see Ping message <Msg2> in the dialog
 
-    Examples: 
-      | Name      | Contact1  | Contact2  | GroupChatName     | Msg1        | Msg2             |
-      | user1Name | user3Name | user2Name | SendPingGroupChat | YOU PINGED  | YOU PINGED AGAIN |
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName     | Msg1       | Msg2             |
+      | user1Name | user3Name | user2Name | SendPingGroupChat | YOU PINGED | YOU PINGED AGAIN |
 
-  @id1374 @regression
+  @id1374 @regression @rc
   Scenario Outline: Verify you can receive Ping & Hot Ping in a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -50,6 +50,6 @@ Feature: Ping
     And Contact <Contact1> hotping conversation <GroupChatName>
     Then I see Ping message <Action2> in the dialog
 
-    Examples: 
-      | Name      | Contact1  | Contact2  | GroupChatName        | Action1           | Action2                |
-      | user1Name | user3Name | user2Name | ReceivePingGroupChat | user3Name PINGED  | user3Name PINGED AGAIN |
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName        | Action1          | Action2                |
+      | user1Name | user3Name | user2Name | ReceivePingGroupChat | user3Name PINGED | user3Name PINGED AGAIN |

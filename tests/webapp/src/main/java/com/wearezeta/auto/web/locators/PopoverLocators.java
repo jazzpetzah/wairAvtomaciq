@@ -10,8 +10,8 @@ public final class PopoverLocators {
 		public static final String xpathUserEmail = "//*[@data-uie-name='status-user-email']";
 		public static final String xpathAddButton = "//*[@data-uie-name='do-add-people']";
 		public static final String xpathSearchInputField = "//input[@type='text' and contains(@class, 'search-input')]";
-		public static final String cssSearchResultItems = ".participants-search .search-list-item";
-		public static final String xpathCreateConversationButton = "//div[contains(@class, 'search-button-add')]";
+		public static final String cssSearchResultItems = ".participants-search-list .search-list-item";
+		public static final String cssCreateGroupConversationButton = "#participants-bubble [data-uie-name='do-create']";
 		public static final Function<String, String> xpathSearchResultByName = (
 				name) -> String.format(
 				"//*[@data-uie-name='item-user' and .//*[text()='%s']]", name);
@@ -21,7 +21,7 @@ public final class PopoverLocators {
 
 	public static final class ConnectToPopover {
 
-		public static final String xpathRootLocator = "//div[@id='people-picker-user-bubble']";
+		public static final String xpathRootLocator = "//*[@id='people-picker-user-bubble' or @id='participants-bubble']";
 
 		public static final class ConnectToPage {
 
@@ -31,37 +31,39 @@ public final class PopoverLocators {
 			public static final String xpathConnectButton = xpathRootLocator
 					+ "//*[@data-uie-name='do-connect']";
 		}
-		
+
 		public static final class PendingOutgoingConnectionPage {
 
 			public static final String xpathCancelRequestButton = xpathRootLocator
 					+ "//*[@data-uie-name='go-cancel']";
 		}
-		
+
 		public static final class CancelRequestConfirmationPage {
-			
+
 			public static final String xpathNoButton = "//*[@data-uie-name='do-cancel']";
-		
+
 			public static final String xpathYesButton = "//*[@data-uie-name='do-confirm']";
 		}
 	}
 
-	public static final class SendInvitationPopover {
+	public static final class BringYourFriendsPopover {
 
-		public static final String xpathRootLocator = "//div[@id='invite-bubble']";
+		public static final String idRootLocator = "invite-bubble";
 
-		public static final class SendInvitationPage {
+		public static final String cssInvitationTextarea = "#invite-bubble textarea";
 
-			public static final String xpathInvitationText = xpathRootLocator
-					+ "//textarea";
-			
-			public static final String cssInvitationText = ".invite-link-box .message"; 
-		}
+		public static final String cssInvitationText = ".invite-link-box .message";
+
+		public static final String cssInvitationButton = "#invite-bubble [data-uie-name='go-share-invite']";
+
+		public static final String cssGmailImportButton = "#invite-bubble [data-uie-name='go-import-google']";
 	}
 
 	public static final class SingleUserPopover {
 
 		public static final String xpathRootLocator = "//div[@id='participants-bubble']";
+
+		public static final String xpathUserName = "//*[@data-uie-name='status-user']";
 
 		public static final class SingleUserInfoPage {
 
@@ -73,7 +75,7 @@ public final class PopoverLocators {
 			public static final String xpathOpenConversationButton = xpathRootLocator
 					+ xpathPageRootLocator
 					+ "//*[@data-uie-name='go-conversation']";
-			
+
 			public static final String xpathUnblockButton = xpathPageRootLocator
 					+ "//*[@data-uie-name='do-unblock']";
 		}
@@ -113,7 +115,7 @@ public final class PopoverLocators {
 					"%s//*[@data-uie-name='item-user' and .//*[text()='%s']]",
 					xpathRootLocator + xpathPageRootLocator, name);
 
-			public static final String cssPeopleCount = ".participants-group-header .people span";
+			public static final String cssPeopleCount = ".participants-group-header .people";
 		}
 
 		public static final class LeaveGroupConfirmationPage {

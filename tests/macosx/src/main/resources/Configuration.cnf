@@ -2,11 +2,10 @@
 #Configure before running tests
 osxAppiumUrl=${Url}
 osxApplicationPath=${appPath}
-generateUsers=${generateUsers}
-driverTimeoutSeconds=${driverTimeoutSeconds}
+driverTimeoutSeconds=${com.wire.driver.timeout.seconds}
 pictureResultsPath=${pictureResultsPath}
 osxClientInfoPlist=${osxClientInfoPlist}
 defaultEmail=${defaultEmail}
 defaultImagesPath=${Root}/${defaultImagesPath}
 wireConfigDomain=${wireConfigDomain}
-backendType=${backendType}
+backendType=${com.wire.environment}

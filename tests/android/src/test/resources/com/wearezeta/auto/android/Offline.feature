@@ -20,11 +20,11 @@ Feature: Offline
     Then Last message is <Message2>
     And I see new picture in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message1 | Message2 | Picture     |
       | user1Name | user2Name | Msg1     | Msg2     | testing.jpg |
 
-  @id1516 @regression
+  @id1516 @regression @rc
   Scenario Outline: I want to see an unsent indicator when I send message or image during offline
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -43,6 +43,6 @@ Feature: Offline
     And I press "Confirm" button
     Then I see unsent indicator next to new picture in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message    |
       | user1Name | user2Name | My message |

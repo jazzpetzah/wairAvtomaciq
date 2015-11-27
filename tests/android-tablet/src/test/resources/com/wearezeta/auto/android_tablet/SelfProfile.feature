@@ -1,6 +1,6 @@
 Feature: Self Profile
 
-  @id2264 @smoke
+  @id2264 @regression @rc
   Scenario Outline: I can change my name in portrait mode
     Given There is 1 user where <Name> is me
     Given I rotate UI to portrait
@@ -12,11 +12,11 @@ Feature: Self Profile
     And I change my name to <NewName> on Self Profile page
     Then I see my name on Self Profile page
 
-    Examples: 
+    Examples:
       | Name      | NewName     |
       | user1Name | NewTestName |
 
-  @id2250 @smoke
+  @id2250 @regression @rc
   Scenario Outline: I can change my name in landscape mode
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -27,11 +27,11 @@ Feature: Self Profile
     And I change my name to <NewName> on Self Profile page
     Then I see my name on Self Profile page
 
-    Examples: 
+    Examples:
       | Name      | NewName     |
       | user1Name | NewTestName |
 
-  @id2288 @smoke
+  @id2288 @regression @rc
   Scenario Outline: Change profile picture using existing from gallery in portrait mode
     Given There is 1 user where <Name> is me
     Given I rotate UI to portrait
@@ -43,16 +43,15 @@ Feature: Self Profile
     And I remember my current profile picture on Self Profile page
     And I tap Change Picture button on Self Profile page
     And I tap Gallery button on Self Profile page
-    And I select a picture from the Gallery
     And I confirm my picture on the Self Profile page
     And I tap in the center of Self Profile page
     Then I verify that my current profile picture is different from the previous one
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
-  @id2289 @smoke
+  @id2289 @regression @rc
   Scenario Outline: Change profile picture using existing from gallery in landscape mode
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -63,12 +62,11 @@ Feature: Self Profile
     And I remember my current profile picture on Self Profile page
     And I tap Change Picture button on Self Profile page
     And I tap Gallery button on Self Profile page
-    And I select a picture from the Gallery
     And I confirm my picture on the Self Profile page
     And I tap in the center of Self Profile page
     Then I verify that my current profile picture is different from the previous one
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -88,7 +86,7 @@ Feature: Self Profile
     And I tap in the center of Self Profile page
     Then I verify that my current profile picture is different from the previous one
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -107,6 +105,7 @@ Feature: Self Profile
     And I tap in the center of Self Profile page
     Then I verify that my current profile picture is different from the previous one
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
+

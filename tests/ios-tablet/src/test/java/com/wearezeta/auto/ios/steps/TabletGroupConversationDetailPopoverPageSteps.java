@@ -194,7 +194,22 @@ public class TabletGroupConversationDetailPopoverPageSteps {
 	 */
 	@When("^I click NOTIFY button on iPad ellipsis menu$")
 	public void IClickNOTIFYButtonOniPadEllipsisMenu() throws Throwable {
-		getTabletGroupConversationDetailPopoverPage().pressNotifyEllipsisButton();
+		getTabletGroupConversationDetailPopoverPage()
+				.pressNotifyEllipsisButton();
+	}
+
+	/**
+	 * Waits until popover is closed
+	 * 
+	 * @step. ^I wait until popover is closed$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I wait until popover is closed$")
+	public void IWaitUntilPopoverIsClosed() throws Exception {
+		Assert.assertTrue("Popover is still shown",
+				getTabletGroupConversationDetailPopoverPage()
+						.waitConversationInfoPopoverToClose());
 	}
 
 }

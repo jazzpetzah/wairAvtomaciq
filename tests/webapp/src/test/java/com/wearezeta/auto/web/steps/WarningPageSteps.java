@@ -2,12 +2,15 @@ package com.wearezeta.auto.web.steps;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.web.pages.PagesCollection;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.WarningPage;
 
 import cucumber.api.java.en.Then;
 
 public class WarningPageSteps {
+
+	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
+			.getInstance();
 
 	/**
 	 * Verifies whether the 'missing WebRTC support warning bar' is visible
@@ -22,16 +25,14 @@ public class WarningPageSteps {
 	 */
 	@Then("^I( do not)? see a warning$")
 	public void ISeeWarning(String doNot) throws Exception {
-		PagesCollection.warningPage = (WarningPage) PagesCollection.loginPage
-				.instantiatePage(WarningPage.class);
 		if (doNot == null) {
 			Assert.assertTrue(
 					"Missing WebRTC support warning bar is not visible",
-					PagesCollection.warningPage
+					webappPagesCollection.getPage(WarningPage.class)
 							.isMissingWebRTCSupportWarningBarVisible());
 		} else {
 			Assert.assertTrue("Missing WebRTC support warning bar is visible",
-					PagesCollection.warningPage
+					webappPagesCollection.getPage(WarningPage.class)
 							.isMissingWebRTCSupportWarningBarInvisible());
 		}
 	}
@@ -45,7 +46,8 @@ public class WarningPageSteps {
 	 */
 	@Then("^I close the warning$")
 	public void IClickCloseMissingWebRTCSupportWarning() throws Exception {
-		PagesCollection.warningPage.clickCloseMissingWebRTCSupportWarningBar();
+		webappPagesCollection.getPage(WarningPage.class)
+				.clickCloseMissingWebRTCSupportWarningBar();
 	}
 
 	/**
@@ -60,8 +62,9 @@ public class WarningPageSteps {
 	 */
 	@Then("^I see \"(.*)\" link in warning$")
 	public void ISeeLinkInMessage(String linkCaption) throws Exception {
-		PagesCollection.warningPage
-				.isLinkWithCaptionInMissingWebRTCSupportWarningBarVisible(linkCaption);
+		webappPagesCollection.getPage(WarningPage.class)
+				.isLinkWithCaptionInMissingWebRTCSupportWarningBarVisible(
+						linkCaption);
 	}
 
 	/**
@@ -76,15 +79,13 @@ public class WarningPageSteps {
 	 */
 	@Then("^I( do not)? see another call warning modal$")
 	public void ISeeAnotherCallWarningModal(String doNot) throws Exception {
-		PagesCollection.warningPage = (WarningPage) PagesCollection.loginPage
-				.instantiatePage(WarningPage.class);
 		if (doNot == null) {
 			Assert.assertTrue("Another call warning modal is not visible",
-					PagesCollection.warningPage
+					webappPagesCollection.getPage(WarningPage.class)
 							.isAnotherCallWarningModalVisible());
 		} else {
 			Assert.assertTrue("Another call warning modal is visible",
-					PagesCollection.warningPage
+					webappPagesCollection.getPage(WarningPage.class)
 							.isAnotherCallWarningModalInvisible());
 		}
 	}
@@ -98,7 +99,8 @@ public class WarningPageSteps {
 	 */
 	@Then("^I close the another call warning modal$")
 	public void IClickCloseAnotherCallWarningModal() throws Exception {
-		PagesCollection.warningPage.clickCloseAnotherCallWarningModal();
+		webappPagesCollection.getPage(WarningPage.class)
+				.clickCloseAnotherCallWarningModal();
 	}
 
 	/**
@@ -117,8 +119,9 @@ public class WarningPageSteps {
 		Assert.assertTrue(
 				"Button '" + buttonCaption
 						+ "' in another call warning modal was not clickable",
-				PagesCollection.warningPage
-						.clickButtonWithCaptionInAnotherCallWarningModal(buttonCaption));
+				webappPagesCollection.getPage(WarningPage.class)
+						.clickButtonWithCaptionInAnotherCallWarningModal(
+								buttonCaption));
 	}
 
 	/**
@@ -133,14 +136,13 @@ public class WarningPageSteps {
 	 */
 	@Then("^I( do not)? see full call warning modal$")
 	public void ISeeFullCallWarningModal(String doNot) throws Exception {
-		PagesCollection.warningPage = (WarningPage) PagesCollection.loginPage
-				.instantiatePage(WarningPage.class);
 		if (doNot == null) {
 			Assert.assertTrue("Full call warning modal is not visible",
-					PagesCollection.warningPage.isFullCallWarningModalVisible());
+					webappPagesCollection.getPage(WarningPage.class)
+							.isFullCallWarningModalVisible());
 		} else {
 			Assert.assertTrue("Full call warning modal is visible",
-					PagesCollection.warningPage
+					webappPagesCollection.getPage(WarningPage.class)
 							.isFullCallWarningModalInvisible());
 		}
 	}
@@ -154,7 +156,8 @@ public class WarningPageSteps {
 	 */
 	@Then("^I close the full call warning modal$")
 	public void IClickCloseFullCallWarningModal() throws Exception {
-		PagesCollection.warningPage.clickCloseFullCallWarningModal();
+		webappPagesCollection.getPage(WarningPage.class)
+				.clickCloseFullCallWarningModal();
 	}
 
 	/**
@@ -173,8 +176,9 @@ public class WarningPageSteps {
 		Assert.assertTrue(
 				"Button '" + buttonCaption
 						+ "' in full call warning modal was not clickable",
-				PagesCollection.warningPage
-						.clickButtonWithCaptionInFullCallWarningModal(buttonCaption));
+				webappPagesCollection.getPage(WarningPage.class)
+						.clickButtonWithCaptionInFullCallWarningModal(
+								buttonCaption));
 	}
 
 }

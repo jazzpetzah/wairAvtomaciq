@@ -112,11 +112,12 @@ public final class PlatformDrivers {
 
 	public synchronized void quitDriver(Platform platform) throws Exception {
 		try {
-			drivers.get(platform)
-					.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
-							TimeUnit.MILLISECONDS).quit();
+                    RemoteWebDriver driver = drivers.get(platform)
+                            .get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+                                    TimeUnit.MILLISECONDS);
+                    driver.quit();
 			log.debug(String.format(
-					"Successfully quit driver instance for platfrom '%s'",
+					"Successfully quit driver instance for platform '%s'",
 					platform.name()));
 		} finally {
 			drivers.remove(platform);
@@ -128,6 +129,10 @@ public final class PlatformDrivers {
 			driver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
 					TimeUnit.MILLISECONDS).getPageSource();
 		}
+	}
+
+	public Map<Platform, Future<? extends RemoteWebDriver>> getDrivers() {
+		return drivers;
 	}
 
 	{

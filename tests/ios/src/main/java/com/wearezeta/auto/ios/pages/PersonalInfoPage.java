@@ -115,8 +115,14 @@ public class PersonalInfoPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathAboutPageWireLogo)
 	private WebElement aboutPageWireLogo;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathAboutCloseButton)
+	@FindBy(how = How.NAME, using = IOSLocators.nameAboutCloseButton)
 	private WebElement aboutCloseButton;
+
+	@FindBy(how = How.NAME, using = IOSLocators.PersonalInfoPage.nameAddPhoneNumberButton)
+	private WebElement addPhoneNumberButton;
+
+	@FindBy(how = How.NAME, using = IOSLocators.PersonalInfoPage.nameThemeSwitcherButton)
+	private WebElement themeSwitcherButton;
 
 	public PersonalInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
@@ -137,6 +143,11 @@ public class PersonalInfoPage extends IOSPage {
 	public String getUserNameValue() {
 		String name = profileNameEditField.getText();
 		return name;
+	}
+	
+	public boolean isUserNameContainingSpaces() {
+		String name = profileNameEditField.getAttribute("value");
+		return name.contains(" ");
 	}
 
 	public String getUserEmailVaue() {
@@ -159,8 +170,9 @@ public class PersonalInfoPage extends IOSPage {
 		return this;
 	}
 
-	public boolean isAboutPageVisible() {
-		return termsOfUseButton.isDisplayed();
+	public boolean isAboutPageVisible() throws Exception {
+		return DriverUtils.waitUntilElementClickable(getDriver(),
+				termsOfUseButton);
 	}
 
 	public void clickAboutCloseButton() {
@@ -278,6 +290,8 @@ public class PersonalInfoPage extends IOSPage {
 	}
 
 	public void changeName(String newName) throws Exception {
+		DriverUtils
+				.waitUntilElementClickable(getDriver(), profileNameEditField);
 		profileNameEditField.clear();
 		profileNameEditField.sendKeys(newName + "\n");
 	}
@@ -434,5 +448,28 @@ public class PersonalInfoPage extends IOSPage {
 			throws Exception {
 		swipeColorPickerFromColorToColor(AccentColor.getByName(currentColor)
 				.getId(), AccentColor.getByName(destColor).getId());
+	}
+
+	public void clickAddPhoneNumberButton() {
+		addPhoneNumberButton.click();
+	}
+
+	public boolean isPhoneNumberAttachedToProfile(String number)
+			throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By
+				.xpath(String.format(
+						IOSLocators.PersonalInfoPage.xpathPhoneEmailField,
+						number)));
+	}
+
+	public boolean isThemeSwitcherButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.name(IOSLocators.PersonalInfoPage.nameThemeSwitcherButton),
+				5);
+	}
+
+	public void clickThemeSwitcherButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), themeSwitcherButton);
+		themeSwitcherButton.click();
 	}
 }

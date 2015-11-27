@@ -1,6 +1,6 @@
 Feature: Settings
 
-  @regression @id2587
+  @regression @rc @id2587
   Scenario Outline: Verify user can access settings [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -19,7 +19,8 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    When I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
     Then I see settings page
@@ -49,7 +50,8 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    When I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on About button on personal page
     Then I see About page
@@ -80,7 +82,8 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    When I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
     And I click on Change Password button in Settings
@@ -111,7 +114,8 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    When I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
     When I tap on Sound Alerts
@@ -141,16 +145,17 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    When I tap on my name <Name>
     And I click on Settings button on personal page
-    When I click on Help button from the options menu
+    And I click on Help button from the options menu
     Then I see Support web page
 
     Examples: 
       | Name      |
       | user1Name |
 
-  @regression @id2602
+  @staging @rc @id2602
   Scenario Outline: Verify switching on/off chatheads [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given User <Contact2> change avatar picture to <Picture>
@@ -165,7 +170,7 @@ Feature: Settings
     And I see the Sound alerts page
     And I switch on or off the chathead preview
     And I close the Settings
-    And I swipe right on the personal page
+    And I close self profile
     When I tap on contact name <Contact>
     And I see dialog page
     And Contact <Contact2> sends random message to user <Name>
@@ -178,7 +183,7 @@ Feature: Settings
     And I see the Sound alerts page
     And I switch on or off the chathead preview
     And I close the Settings
-    And I swipe right on the personal page
+    And I close self profile
     When I tap on contact name <Contact>
     And I see dialog page
     And Contact <Contact2> sends random message to user <Name>
@@ -206,6 +211,7 @@ Feature: Settings
     And I see the Sound alerts page
     And I switch on or off the chathead preview
     And I close the Settings
+    And I close self profile
     When I tap on contact name <Contact>
     And I see dialog page
     And Contact <Contact2> sends random message to user <Name>
@@ -217,6 +223,7 @@ Feature: Settings
     And I see the Sound alerts page
     And I switch on or off the chathead preview
     And I close the Settings
+    And I close self profile
     When I tap on contact name <Contact>
     And I see dialog page
     And Contact <Contact2> sends random message to user <Name>

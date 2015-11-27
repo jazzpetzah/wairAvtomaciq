@@ -3,6 +3,7 @@
 import paramiko
 import requests
 from multiprocessing import Process
+import sys
 import time
 import xml.etree.ElementTree as ET
 
@@ -41,22 +42,22 @@ class RestartNodesWithLabels(CliHandlerBase):
             if node.is_online():
                 time.sleep(5)
             else:
-                print('Node "{}" has been successfully transitioned to offline state after {} seconds'\
+                sys.stderr.write('Node "{}" has been successfully transitioned to offline state after {} seconds\n'\
                       .format(node.name, int(time.time() - seconds_started)))
                 break
         if node.is_online():
-            print('!!! Node "{}" is still online after {} seconds timeout'.\
+            sys.stderr.write('!!! Node "{}" is still online after {} seconds timeout\n'.\
                                format(node.name, OFFLINE_TIMEOUT_SECONDS))
         seconds_started = time.time()
         while (time.time() - seconds_started <= ONLINE_TIMEOUT_SECONDS):
             if not node.is_online():
                 time.sleep(5)
             else:
-                print('Node "{}" has been successfully restarted after {} seconds'.\
+                sys.stderr.write('Node "{}" has been successfully restarted after {} seconds\n'.\
                       format(node.name, int(time.time() - seconds_started)))
                 return node.name
         if not node.is_online():
-            print('!!! Node "{}" is still offline after {} seconds timeout'.\
+            sys.stderr.write('!!! Node "{}" is still offline after {} seconds timeout\n'.\
                                format(node.name, ONLINE_TIMEOUT_SECONDS))
 
     def _invoke(self):
@@ -64,28 +65,23 @@ class RestartNodesWithLabels(CliHandlerBase):
         args = parser.parse_args()
         expected_labels = self._normalize_labels(args.labels.split(','))
         count_of_nodes_to_restart = 0
-        try:
-            workers = []
-            for _, node in self._jenkins.get_nodes().iteritems():
-                if node.is_online():
-                    response = node.jenkins.requester.get_and_confirm_status(
-                                                    "%(baseurl)s/config.xml" % node.__dict__)
-                    et = ET.fromstring(response.text)
-                    node_labels_str = et.find('label').text
-                    if node_labels_str:
-                        node_labels = self._normalize_labels(node_labels_str.split(' '))
-                    else:
-                        node_labels = set()
-                    if expected_labels.issubset(node_labels):
-                        print('Found matching node "{}". Restarting...'.format(node.name))
-                        hostname = et.find('.//host').text
-                        workers.append(Process(target=self._restart_node_and_wait,
-                                    args=(node, hostname, args.node_user, args.node_password)))
-                        workers[-1].start()
-                        count_of_nodes_to_restart += 1
-            [w.join() for w in workers]
-        except ImportError:
-            # nodes.py tries to import pdb in case of error
-            # intercepting this and raise connection error to retry on the higher level 
-            raise requests.exceptions.ConnectionError("Just retry")
+        workers = []
+        for _, node in self._jenkins.get_nodes().iteritems():
+            if node.is_online():
+                response = node.jenkins.requester.get_and_confirm_status(
+                                                "%(baseurl)s/config.xml" % node.__dict__)
+                et = ET.fromstring(response.text)
+                node_labels_str = et.find('label').text
+                if node_labels_str:
+                    node_labels = self._normalize_labels(node_labels_str.split(' '))
+                else:
+                    node_labels = set()
+                if expected_labels.issubset(node_labels):
+                    sys.stderr.write('Found matching node "{}". Restarting...\n'.format(node.name))
+                    hostname = et.find('.//host').text
+                    workers.append(Process(target=self._restart_node_and_wait,
+                                args=(node, hostname, args.node_user, args.node_password)))
+                    workers[-1].start()
+                    count_of_nodes_to_restart += 1
+        [w.join() for w in workers]
         return count_of_nodes_to_restart

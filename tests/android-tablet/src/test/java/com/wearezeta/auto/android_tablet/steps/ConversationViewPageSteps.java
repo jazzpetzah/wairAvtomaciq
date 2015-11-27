@@ -1,5 +1,7 @@
 package com.wearezeta.auto.android_tablet.steps;
 
+import java.awt.image.BufferedImage;
+
 import org.junit.Assert;
 
 import com.wearezeta.auto.android_tablet.pages.TabletConversationViewPage;
@@ -20,14 +22,12 @@ public class ConversationViewPageSteps {
 
 	private TabletConversationViewPage getConversationViewPage()
 			throws Exception {
-		return (TabletConversationViewPage) pagesCollection
-				.getPage(TabletConversationViewPage.class);
+		return pagesCollection.getPage(TabletConversationViewPage.class);
 	}
 
 	private ConversationViewCameraPage getConversationViewCameraPage()
 			throws Exception {
-		return (ConversationViewCameraPage) pagesCollection
-				.getPage(ConversationViewCameraPage.class);
+		return pagesCollection.getPage(ConversationViewCameraPage.class);
 	}
 
 	/**
@@ -274,26 +274,33 @@ public class ConversationViewPageSteps {
 	/**
 	 * Swipe on the text input field to show the available instruments
 	 * 
-	 * @step. ^I swipe left on text input in (?:the |\\s*)[Cc]onversation view$
+	 * @step. ^I swipe right on text input in (?:the |\\s*)[Cc]onversation view$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I swipe left on text input in (?:the |\\s*)[Cc]onversation view$")
-	public void ISwipeLeftOnTextInput() throws Exception {
-		getConversationViewPage().swipeLeftOnTextInput();
+	@When("^I swipe right on text input in (?:the |\\s*)[Cc]onversation view$")
+	public void ISwipeOnTextInput() throws Exception {
+		getConversationViewPage().swipeOnTextInput();
 	}
 
 	/**
-	 * Tap the Ping button to send Ping event from the currently opened
-	 * conversation
+	 * Tap the Ping button to send Ping/Ping Again event from the currently
+	 * opened conversation
 	 * 
-	 * @step. ^I tap Ping button in (?:the |\\s*)[Cc]onversation view$
+	 * @step. ^I tap Ping button (twice )?in (?:the |\\s*)[Cc]onversation view$
+	 * 
+	 * @param shouldTapTwice
+	 *            equals to null if 'twice' part does not exist in the step
+	 *            signature
 	 * 
 	 * @throws Exception
 	 */
-	@And("^I tap Ping button in (?:the |\\s*)[Cc]onversation view$")
-	public void ITapPingButton() throws Exception {
+	@And("^I tap Ping button (twice )?in (?:the |\\s*)[Cc]onversation view$")
+	public void ITapPingButton(String shouldTapTwice) throws Exception {
 		getConversationViewPage().tapPingButton();
+		if (shouldTapTwice != null) {
+			getConversationViewPage().tapPingButton();
+		}
 	}
 
 	/**
@@ -457,7 +464,7 @@ public class ConversationViewPageSteps {
 		getConversationViewPage().scrollToTheBottom();
 	}
 
-	private static final double MAX_SIMILARITY_THRESHOLD = 0.95;
+	private static final double MAX_SIMILARITY_THRESHOLD = 0.97;
 
 	private static enum PictureDestination {
 		CONVERSATION_VIEW, PREVIEW;
@@ -480,7 +487,7 @@ public class ConversationViewPageSteps {
 				.toUpperCase().replace(" ", "_"));
 		double avgThreshold;
 		// no need to wait, since screenshoting procedure itself is quite long
-		final long screenshotingDelay = 0;
+		final long screenshotingDelay = 200;
 		final int maxFrames = 4;
 		switch (dst) {
 		case CONVERSATION_VIEW:
@@ -489,9 +496,9 @@ public class ConversationViewPageSteps {
 					maxFrames, screenshotingDelay);
 			Assert.assertTrue(
 					String.format(
-							"The picture in the conversation view seems to be static (%.2f >= %.2f)",
+							"The picture in the conversation view seems to be static (%.2f > %.2f)",
 							avgThreshold, MAX_SIMILARITY_THRESHOLD),
-					avgThreshold < MAX_SIMILARITY_THRESHOLD);
+					avgThreshold <= MAX_SIMILARITY_THRESHOLD);
 			break;
 		case PREVIEW:
 			avgThreshold = ImageUtil.getAnimationThreshold(
@@ -499,10 +506,255 @@ public class ConversationViewPageSteps {
 					maxFrames, screenshotingDelay);
 			Assert.assertTrue(
 					String.format(
-							"The picture in the image preview view seems to be static (%.2f >= %.2f)",
+							"The picture in the image preview view seems to be static (%.2f > %.2f)",
 							avgThreshold, MAX_SIMILARITY_THRESHOLD),
-					avgThreshold < MAX_SIMILARITY_THRESHOLD);
+					avgThreshold <= MAX_SIMILARITY_THRESHOLD);
 			break;
 		}
+	}
+
+	/**
+	 * Verify whether unsent indicator is visible next to the particular message
+	 * 
+	 * @step. ^I see unsent indicator next to the message \"(.*)\" in the
+	 *        [Cc]onversation view$
+	 * 
+	 * @param msg
+	 *            the expected message text
+	 * @throws Exception
+	 */
+	@Then("^I see unsent indicator next to the message \"(.*)\" in the [Cc]onversation view$")
+	public void ISeeUnsentIndicatorNextTo(String msg) throws Exception {
+		Assert.assertTrue(
+				String.format(
+						"Unsent indicator is not visible next to the '%s' message",
+						msg), getConversationViewPage()
+						.waitUntilUnsentIndicatorIsVisible(msg));
+	}
+
+	/**
+	 * Verify whether unsent indicator is visible next to a picture
+	 * 
+	 * @step. ^I see unsent indicator next to new picture in the [Cc]onversation
+	 *        view$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see unsent indicator next to new picture in the [Cc]onversation view$")
+	public void ISeeUnsentIndicatorNextToAPicture() throws Exception {
+		Assert.assertTrue("Unsent indicator is not visible next to a picture",
+				getConversationViewPage()
+						.waitUntilUnsentIndicatorIsVisibleForAPicture());
+	}
+
+	/**
+	 * Verify whether Close Picture Preview button is visible
+	 * 
+	 * @step. ^I (do not )?see Close Picture Preview button in the
+	 *        [Cc]onversation view$
+	 * 
+	 * @param shouldNotBeVisible
+	 *            equals to null if 'do not' part does not exist in step
+	 *            signature
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I (do not )?see Close Picture Preview button in the [Cc]onversation view$")
+	public void ISeeClosePreview(String shouldNotBeVisible) throws Exception {
+		if (shouldNotBeVisible == null) {
+			Assert.assertTrue("Close Picture Preview button is not visible",
+					getConversationViewPage()
+							.waitUntilClosePicturePreviewButtonVisible());
+		} else {
+			Assert.assertTrue("Close Picture Preview button is still visible",
+					getConversationViewPage()
+							.waitUntilClosePicturePreviewButtonInvisible());
+		}
+	}
+
+	/**
+	 * Tap the Close Picture Preview button
+	 * 
+	 * @step. ^I tap Close Picture Preview button in the [Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap Close Picture Preview button in the [Cc]onversation view$")
+	public void ITapClosePreviewButton() throws Exception {
+		getConversationViewPage().tapClosePicturePreviewButton();
+	}
+
+	/**
+	 * Tap Play/Pause button in the recent SoundCloud player preview
+	 * 
+	 * @step. ^I tap (?:Play|Puase) button in the [Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap (?:Play|Puase) button in the [Cc]onversation view$")
+	public void ITapPlayPauseButton() throws Exception {
+		getConversationViewPage().tapPlayPauseButton();
+	}
+
+	/**
+	 * Verify whether Giphy button is visible in the convo view
+	 * 
+	 * @step. ^I (do not )?see Giphy button in the [Cc]onversation view$
+	 * 
+	 * @param shouldNotSee
+	 *            equals to null if 'do not' sentence does not exist in step
+	 *            signature
+	 * @throws Exception
+	 */
+	@Then("^I (do not )?see Giphy button in the [Cc]onversation view$")
+	public void ISeeGiphyButton(String shouldNotSee) throws Exception {
+		if (shouldNotSee == null) {
+			Assert.assertTrue(
+					"Giphy button is not visible in the conversation view",
+					getConversationViewPage().waitUntilGiphyButtonVisible());
+		} else {
+			Assert.assertTrue(
+					"Giphy button is visible in the conversation view, but should be hidden",
+					getConversationViewPage().waitUntilGiphyButtonInvisible());
+		}
+	}
+
+	/**
+	 * Tap Giphy button
+	 * 
+	 * @step. ^I tap Giphy button in the [Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap Giphy button in the [Cc]onversation view$")
+	public void ITapGiphyButton() throws Exception {
+		getConversationViewPage().tapGiphyButton();
+	}
+
+	/**
+	 * Tap Sketch button
+	 * 
+	 * @step. ^I tap Sketch button on [Cc]onversation view page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap Sketch button on [Cc]onversation view page$")
+	public void ITapSketchButton() throws Exception {
+		getConversationViewPage().tapSketchButton();
+	}
+
+	/**
+	 * Tap Draw Sketch button on picture confirmation page
+	 * 
+	 * @step. ^I tap Sketch button on the picture preview$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap Sketch button on the picture preview$")
+	public void ITapSketchButtonOnPicturePreview() throws Exception {
+		getConversationViewPage().tapSketchButtonOnPicturePreview();
+	}
+
+	private BufferedImage previousMediaButtonState = null;
+
+	/**
+	 * Store the screenshot of current media button state in the internal
+	 * variable for further comparison
+	 * 
+	 * @step. ^I remember the state of media button in (?:the
+	 *        |\\s*)[Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I remember the state of media button in (?:the |\\s*)[Cc]onversation view$")
+	public void IRememberMediaButtonState() throws Exception {
+		this.previousMediaButtonState = getConversationViewPage()
+				.getMediaButtonScreenshot();
+	}
+
+	private static final double MAX_SIMILARITY_VALUE = 0.97;
+
+	/**
+	 * Verify whether the current state of media control button is changed in
+	 * comparison to the previously screenshoted one
+	 * 
+	 * @step. ^I see the state of media button in (?:the |\\s*)[Cc]onversation
+	 *        view is changed$
+	 * 
+	 * @param shouldNotBeChanged
+	 *            equals to null if "not " part does not exist in step signature
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see the state of media button in (?:the |\\s*)[Cc]onversation view is (not )?changed$")
+	public void ISeeMediaButtonStateIsChanged(String shouldNotBeChanged)
+			throws Exception {
+		if (this.previousMediaButtonState == null) {
+			throw new IllegalStateException(
+					"Please take a screenshot of media button first");
+		}
+		final int maxRetries = 3;
+		int ntry = 1;
+		double score = 1;
+		do {
+			final BufferedImage currentMediaButtonState = getConversationViewPage()
+					.getMediaButtonScreenshot();
+			score = ImageUtil.getOverlapScore(this.previousMediaButtonState,
+					currentMediaButtonState,
+					ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
+			if (shouldNotBeChanged == null) {
+				if (score < MAX_SIMILARITY_VALUE) {
+					return;
+				}
+			} else {
+				if (score >= MAX_SIMILARITY_VALUE) {
+					return;
+				}
+			}
+			Thread.sleep(1000);
+			ntry++;
+		} while (ntry <= maxRetries);
+		if (shouldNotBeChanged == null) {
+			Assert.assertTrue(
+					String.format(
+							"The current and the previous button states seems to be identical (%.2f >= %.2f)",
+							score, MAX_SIMILARITY_VALUE),
+					score < MAX_SIMILARITY_VALUE);
+		} else {
+			Assert.assertTrue(
+					String.format(
+							"The current and the previous button states seems to be different (%.2f < %.2f)",
+							score, MAX_SIMILARITY_VALUE),
+					score >= MAX_SIMILARITY_VALUE);
+		}
+	}
+
+	/**
+	 * Tap Media Bar control button to start/pause media playback
+	 * 
+	 * @step. ^I tap (?:Pause|Play) button on Media Bar in (?:the
+	 *        |\\s*)[Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap (?:Pause|Play) button on Media Bar in (?:the |\\s*)[Cc]onversation view$")
+	public void ITapMediaBarControlButton() throws Exception {
+		getConversationViewPage().tapMediaBarControlButton();
+	}
+
+	private final static int MAX_SWIPES = 8;
+
+	/**
+	 * Scroll up until media bar is shown
+	 * 
+	 * @step. ^I scroll up until Media Bar is visible in (?:the
+	 *        |\\s*)[Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I scroll up until Media Bar is visible in (?:the |\\s*)[Cc]onversation view$")
+	public void IScrollUpUntilMediaBarVisible() throws Exception {
+		Assert.assertTrue("Media Bar is not visible", getConversationViewPage()
+				.scrollUpUntilMediaBarVisible(MAX_SWIPES));
 	}
 }

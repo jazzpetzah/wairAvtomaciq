@@ -21,6 +21,9 @@ public class AddEmailAddressPage extends WebPage {
 	@FindBy(id = "wire-mail-add")
 	private WebElement addButton;
 
+	@FindBy(css = WebAppLocators.AddEmailAddressPage.cssSkipForNowButton)
+	private WebElement skipForNowButton;
+
 	@FindBy(css = WebAppLocators.AddEmailAddressPage.cssErrorMessage)
 	private WebElement errorMessage;
 
@@ -43,7 +46,7 @@ public class AddEmailAddressPage extends WebPage {
 
 	public void setPassword(String password) throws Exception {
 		passwordField.click();
-	    passwordField.clear();
+		passwordField.clear();
 		passwordField.sendKeys(password);
 	}
 
@@ -51,25 +54,33 @@ public class AddEmailAddressPage extends WebPage {
 		addButton.click();
 	}
 
+	public boolean isSkipButtonVisible() throws Exception {
+		return skipForNowButton.isDisplayed();
+	}
+
+	public void clickSkipForNowButton() {
+		skipForNowButton.click();
+	}
+
 	public String getErrorMessage() throws Exception {
 		DriverUtils
 				.waitUntilLocatorAppears(
 						getDriver(),
-						By.cssSelector(WebAppLocators.PhoneNumberVerificationPage.cssErrorMessage));
+						By.cssSelector(WebAppLocators.AddEmailAddressPage.cssErrorMessage));
 		return errorMessage.getText();
 	}
 
-	public boolean isRedDotOnEmailField() throws Exception {
+	public boolean isEmailFieldMarkedAsError() throws Exception {
 		return DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						getDriver(),
-						By.cssSelector(WebAppLocators.AddEmailAddressPage.cssRedDotOnEmailField));
+						By.cssSelector(WebAppLocators.AddEmailAddressPage.cssErrorMarkedEmailField));
 	}
 
-	public boolean isRedDotOnPasswordField() throws Exception {
+	public boolean isPasswordFieldMarkedAsError() throws Exception {
 		return DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						getDriver(),
-						By.cssSelector(WebAppLocators.AddEmailAddressPage.cssRedDotOnPasswordField));
+						By.cssSelector(WebAppLocators.AddEmailAddressPage.cssErrorMarkedPasswordField));
 	}
 }

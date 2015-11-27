@@ -128,7 +128,7 @@ public class ContactListPage extends WebPage {
 	 *         comma character(s)
 	 * @throws Exception
 	 */
-	private String fixDefaultGroupConvoName(String conversationName,
+	protected String fixDefaultGroupConvoName(String conversationName,
 			boolean includeArchived, boolean throwOnError) throws Exception {
 		if (conversationName.contains(DEFAULT_GROUP_CONVO_NAMES_SEPARATOR)) {
 			final Set<String> initialNamesSet = new HashSet<String>(
@@ -239,7 +239,7 @@ public class ContactListPage extends WebPage {
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
 		final String locator = WebAppLocators.ContactListPage.xpathMissedCallNotificationByContactName
 				.apply(conversationName);
-		return DriverUtils.waitUntilLocatorAppears(getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.xpath(locator));
 	}
 
@@ -247,6 +247,42 @@ public class ContactListPage extends WebPage {
 			throws Exception {
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
 		final String locator = WebAppLocators.ContactListPage.xpathMissedCallNotificationByContactName
+				.apply(conversationName);
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.xpath(locator));
+	}
+
+	public boolean isJoinedGroupCallNotificationVisibleForConversation(
+			String conversationName) throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final String locator = WebAppLocators.ContactListPage.xpathJoinedGroupCallNotificationByConversationName
+				.apply(conversationName);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(locator));
+	}
+
+	public boolean isJoinedGroupCallNotificationInvisibleForConversation(
+			String conversationName) throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final String locator = WebAppLocators.ContactListPage.xpathJoinedGroupCallNotificationByConversationName
+				.apply(conversationName);
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.xpath(locator));
+	}
+
+	public boolean isUnjoinedGroupCallNotificationVisibleForConversation(
+			String conversationName) throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final String locator = WebAppLocators.ContactListPage.xpathUnjoinedGroupCallNotificationByConversationName
+				.apply(conversationName);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(locator));
+	}
+
+	public boolean isUnjoinedGroupCallNotificationInvisibleForConversation(
+			String conversationName) throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final String locator = WebAppLocators.ContactListPage.xpathUnjoinedGroupCallNotificationByConversationName
 				.apply(conversationName);
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.xpath(locator));
@@ -367,8 +403,7 @@ public class ContactListPage extends WebPage {
 
 	private static final int OPEN_CONVO_LIST_ENTRY_TIMEOUT = 8; // seconds
 
-	public ConversationPage openConversation(String conversationName)
-			throws Exception {
+	public void openConversation(String conversationName) throws Exception {
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
 		final By entryLocator = By
 				.cssSelector(WebAppLocators.ContactListPage.cssContactListEntryByName
@@ -381,10 +416,9 @@ public class ContactListPage extends WebPage {
 		selectEntryWithRetry(entryLocator,
 				WebAppLocators.ContactListPage.cssContactListEntryByName
 						.apply(conversationName));
-		return new ConversationPage(this.getLazyDriver());
 	}
 
-	public PendingConnectionsPage openConnectionRequestsList() throws Exception {
+	public void openConnectionRequestsList() throws Exception {
 		final By entryLocator = By
 				.cssSelector(WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
@@ -392,16 +426,14 @@ public class ContactListPage extends WebPage {
 				+ OPEN_CONVO_LIST_ENTRY_TIMEOUT + " second(s) timeout";
 		selectEntryWithRetry(entryLocator,
 				WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
-		return new PendingConnectionsPage(this.getLazyDriver());
 	}
 
-	public SelfProfilePage openSelfProfile() throws Exception {
+	public void openSelfProfile() throws Exception {
 		waitForSelfProfileAvatar();
 		selfProfileAvatar.click();
-		return new SelfProfilePage(this.getLazyDriver());
 	}
 
-	public PeoplePickerPage openPeoplePicker() throws Exception {
+	public void openPeoplePicker() throws Exception {
 		DriverUtils
 				.waitUntilLocatorAppears(
 						this.getDriver(),
@@ -411,7 +443,6 @@ public class ContactListPage extends WebPage {
 		} else {
 			openPeoplePickerButton.click();
 		}
-		return new PeoplePickerPage(this.getLazyDriver());
 	}
 
 	public void clickUnmuteConversation() throws Exception {
@@ -429,8 +460,7 @@ public class ContactListPage extends WebPage {
 		blockButton.click();
 	}
 
-	public ConversationPage unarchiveConversation(String conversationName)
-			throws Exception {
+	public void unarchiveConversation(String conversationName) throws Exception {
 		conversationName = fixDefaultGroupConvoName(conversationName, true);
 		final By archivedEntryLocator = By
 				.xpath(WebAppLocators.ContactListPage.xpathArchivedContactListEntryByName
@@ -449,15 +479,13 @@ public class ContactListPage extends WebPage {
 		final WebElement unarchivedEntry = this.getDriver().findElement(
 				unarchivedEntryLocator);
 		waitUtilEntryIsSelected(unarchivedEntry);
-
-		return new ConversationPage(this.getLazyDriver());
 	}
 
 	public String getIncomingPendingItemText() throws Exception {
 		final By entryLocator = By
 				.cssSelector(WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				entryLocator, 3) : "There are no visible incoming pending connections in the conversations list";
+				entryLocator) : "There are no visible incoming pending connections in the conversations list";
 		return getDriver().findElement(entryLocator).getText();
 	}
 
@@ -570,7 +598,7 @@ public class ContactListPage extends WebPage {
 			throws Exception {
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
 		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
-			conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "l"));
+			conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "s"));
 		} else {
 			throw new PendingException(
 					"Webdriver does not support shortcuts for Mac browsers");

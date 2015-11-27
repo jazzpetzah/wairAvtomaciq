@@ -1,7 +1,7 @@
 Feature: Lock/Unlock
 
   @id2181 @regression
-  Scenario Outline: UI saves its state after device lock/unlock (portrait)
+  Scenario Outline: (AN-2898) UI saves its state after device lock/unlock (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -50,7 +50,7 @@ Feature: Lock/Unlock
     And I unlock the device
     Then I see the Group popover
     And I tap Close button on Group popover
-    When I navigate back
+    When I swipe right to show the conversations list
     And I tap the conversation <Contact1>
     And I see the conversation view
     And I lock the device
@@ -63,6 +63,6 @@ Feature: Lock/Unlock
     And I unlock the device
     Then I see the Single user popover
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName     | Message1to1 | MessageGroup | ItemName |
       | user1Name | user2Name | user3Name | SendMessGroupChat | Msg1to1     | MsgGroup     | ABOUT    |

@@ -28,10 +28,8 @@ public class PasswordChangePage extends WebPage {
 		passwordField.sendKeys(newPassword);
 	}
 
-	public PasswordChangeSuccessfullPage clickChangePasswordButton()
-			throws Exception {
+	public void clickChangePasswordButton() throws Exception {
 		changePasswordButton.submit();
-		return new PasswordChangeSuccessfullPage(this.getLazyDriver());
 	}
 
 	@Override

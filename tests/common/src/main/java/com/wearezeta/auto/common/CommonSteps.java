@@ -1,26 +1,21 @@
 package com.wearezeta.auto.common;
 
+import com.wearezeta.auto.common.backend.*;
+import com.wearezeta.auto.common.driver.PlatformDrivers;
+import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
+import com.wearezeta.auto.common.usrmgmt.*;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+
+import org.apache.log4j.Logger;
+import org.junit.Assert;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
-import org.junit.Assert;
-
-import com.wearezeta.auto.common.backend.AccentColor;
-import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.backend.BackendRequestException;
-import com.wearezeta.auto.common.backend.ConnectionStatus;
-import com.wearezeta.auto.common.driver.PlatformDrivers;
-import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.common.usrmgmt.RegistrationStrategy;
 
 public final class CommonSteps {
 	public static final String CONNECTION_NAME = "CONNECT TO ";
@@ -64,7 +59,7 @@ public final class CommonSteps {
 	}
 
 	public void ConnectionRequestIsSentTo(String userFromNameAlias,
-			String usersToNameAliases) throws Throwable {
+			String usersToNameAliases) throws Exception {
 		ClientUser userFrom = usrMgr
 				.findUserByNameOrNameAlias(userFromNameAlias);
 		for (String userToNameAlias : splitAliases(usersToNameAliases)) {
@@ -137,6 +132,12 @@ public final class CommonSteps {
 		usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(myNameAlias));
 	}
 
+	public void ThereAreNUsersWhereXIsMeRegOnlyByMail(Platform currentPlatform,
+			int count, String myNameAlias) throws Exception {
+		usrMgr.createUsersOnBackend(count, RegistrationStrategy.ByEmailOnly);
+		usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(myNameAlias));
+	}
+
 	public void ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(
 			Platform currentPlatform, int count, String myNameAlias)
 			throws Exception {
@@ -151,11 +152,17 @@ public final class CommonSteps {
 		BackendAPIWrappers.ignoreAllConnections(userTo);
 	}
 
+	public void CancelAllConnectRequests(String userToNameAlias)
+			throws Exception {
+		ClientUser userTo = usrMgr.findUserByNameOrNameAlias(userToNameAlias);
+		BackendAPIWrappers.cancelAllConnections(userTo);
+	}
+
 	private static final int DRIVER_PING_INTERVAL_SECONDS = 60;
 
 	/**
 	 * Wait for time in seconds
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public void WaitForTime(int seconds) throws Exception {
@@ -184,35 +191,8 @@ public final class CommonSteps {
 		}
 	}
 
-	/**
-	 * Wait for time in seconds
-	 * 
-	 * @throws Exception
-	 */
 	public void WaitForTime(double seconds) throws Exception {
-		final Thread pingThread = new Thread() {
-			public void run() {
-				do {
-					try {
-						Thread.sleep(DRIVER_PING_INTERVAL_SECONDS * 1000);
-					} catch (InterruptedException e) {
-						return;
-					}
-					try {
-						PlatformDrivers.getInstance().pingDrivers();
-					} catch (Exception e) {
-						e.printStackTrace();
-						return;
-					}
-				} while (!isInterrupted());
-			}
-		};
-		pingThread.start();
-		try {
-			Thread.sleep((int) (seconds * 1000));
-		} finally {
-			pingThread.interrupt();
-		}
+		WaitForTime((int) seconds);
 	}
 
 	public void BlockContact(String blockAsUserNameAlias,
@@ -261,6 +241,11 @@ public final class CommonSteps {
 		final String conversationIDToArchive = BackendAPIWrappers
 				.getConversationIdByName(user, archiveConversationWithGroup);
 		BackendAPIWrappers.archiveGroupConv(user, conversationIDToArchive);
+	}
+
+	public void GenerateNewLoginCode(String asUser) throws Exception {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(asUser);
+		BackendAPIWrappers.generateNewLoginCode(user);
 	}
 
 	public void MuteConversationWithUser(String usersToNameAliases,
@@ -321,6 +306,16 @@ public final class CommonSteps {
 		BackendAPIWrappers.sendDialogMessage(msgFromUser, msgToUser, message);
 	}
 
+	public void UserSentOtrMessageToUser(String msgFromUserNameAlias,
+			String dstUserNameAlias, String message) throws Exception {
+		ClientUser msgFromUser = usrMgr
+				.findUserByNameOrNameAlias(msgFromUserNameAlias);
+		ClientUser msgToUser = usrMgr
+				.findUserByNameOrNameAlias(dstUserNameAlias);
+		SEBridge.getInstance().sendConversationMessage(msgFromUser,
+				msgToUser.getId(), message);
+	}
+
 	public void UserHotPingedConversation(String hotPingFromUserNameAlias,
 			String dstConversationName) throws Exception {
 		ClientUser hotPingFromUser = usrMgr
@@ -342,8 +337,20 @@ public final class CommonSteps {
 				dstConversationName, message);
 	}
 
-	public void UserSendsImageToConversation(String imageSenderUserNameAlias,
-			String imagePath, String dstConversationName, Boolean isGroup)
+	public void UserSentOtrMessageToConversation(String userFromNameAlias,
+			String dstConversationName, String message) throws Exception {
+		ClientUser userFrom = usrMgr
+				.findUserByNameOrNameAlias(userFromNameAlias);
+		dstConversationName = usrMgr.replaceAliasesOccurences(
+				dstConversationName, FindBy.NAME_ALIAS);
+		String dstConvId = BackendAPIWrappers.getConversationIdByName(userFrom,
+				dstConversationName);
+		SEBridge.getInstance().sendConversationMessage(userFrom, dstConvId,
+				message);
+	}
+
+	public void UserSentImageToConversation(String imageSenderUserNameAlias,
+			String imagePath, String dstConversationName, boolean isGroup)
 			throws Exception {
 		ClientUser imageSender = usrMgr
 				.findUserByNameOrNameAlias(imageSenderUserNameAlias);
@@ -356,6 +363,24 @@ public final class CommonSteps {
 			dstConversationName = usrMgr.replaceAliasesOccurences(
 					dstConversationName, FindBy.NAME_ALIAS);
 			BackendAPIWrappers.sendPictureToChatByName(imageSender,
+					dstConversationName, imagePath);
+		}
+	}
+
+	public void UserSentImageToConversationOtr(String imageSenderUserNameAlias,
+			String imagePath, String dstConversationName, boolean isGroup)
+			throws Exception {
+		ClientUser imageSender = usrMgr
+				.findUserByNameOrNameAlias(imageSenderUserNameAlias);
+		if (!isGroup) {
+			ClientUser imageReceiver = usrMgr
+					.findUserByNameOrNameAlias(dstConversationName);
+			BackendAPIWrappers.sendPictureToSingleUserConversationOtr(
+					imageSender, imageReceiver, imagePath);
+		} else {
+			dstConversationName = usrMgr.replaceAliasesOccurences(
+					dstConversationName, FindBy.NAME_ALIAS);
+			BackendAPIWrappers.sendPictureToChatByNameOtr(imageSender,
 					dstConversationName, imagePath);
 		}
 	}
@@ -403,7 +428,7 @@ public final class CommonSteps {
 	}
 
 	public void WaitUntilSuggestionFound(String userAsNameAlias)
-			throws NoSuchUserException, Exception {
+			throws Exception {
 		BackendAPIWrappers.waitUntilSuggestionFound(
 				usrMgr.findUserByNameOrNameAlias(userAsNameAlias),
 				BACKEND_SUGGESTIONS_SYNC_TIMEOUT);
@@ -427,6 +452,13 @@ public final class CommonSteps {
 		BackendAPIWrappers.waitUntilContactsFound(
 				usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query, 1,
 				true, BACKEND_USER_SYNC_TIMEOUT);
+	}
+
+	public void WaitUntilTopPeopleContactsIsFoundInSearch(
+			String searchByNameAlias, int size) throws Exception {
+		BackendAPIWrappers.waitUntilTopPeopleContactsFound(
+				usrMgr.findUserByNameOrNameAlias(searchByNameAlias), size,
+				size, true, BACKEND_USER_SYNC_TIMEOUT);
 	}
 
 	public void WaitUntilContactBlockStateInSearch(String searchByNameAlias,
@@ -537,5 +569,20 @@ public final class CommonSteps {
 			emailsToAdd.add(email);
 		}
 		BackendAPIWrappers.uploadAddressBookWithContacts(userAs, emailsToAdd);
+	}
+
+	public void UserXSendsPersonalInvitationWithMessageToUserWithMail(
+			String sender, String toMail, String message) throws Exception {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(sender);
+		ClientUser invitee = usrMgr.findUserByEmailOrEmailAlias(toMail);
+		BackendAPIWrappers.sendPersonalInvitation(user, invitee.getEmail(),
+				invitee.getName(), message);
+	}
+
+	public void IAddUserToTheListOfTestCaseUsers(String nameAlias)
+			throws Exception {
+		ClientUser userToAdd = usrMgr.findUserByNameOrNameAlias(nameAlias);
+		userToAdd.setUserState(UserState.Created);
+		usrMgr.appendCustomUser(userToAdd);
 	}
 }

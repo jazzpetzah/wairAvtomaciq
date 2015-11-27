@@ -75,12 +75,14 @@ public class PerformanceSteps {
 		perfCommon.sendMultipleMessagesIntoConversation(contact, msgsCount);
 	}
 
-	private void waitUntilConversationsListIsFullyLoaded() throws Exception {
-		final int maxTries = 10;
+	private void waitUntilConversationsListIsFullyLoaded(int retries)
+			throws Exception {
+		final int maxTries = retries;
 		final long millisecondsDelay = 20000;
 		int ntry = 1;
 		int visibleContactsSize;
-		while ((visibleContactsSize = getContactListPage().GetVisibleContacts().size()) == 0 && ntry <= maxTries) {
+		while ((visibleContactsSize = getContactListPage().GetVisibleContacts()
+				.size()) == 0 && ntry <= maxTries) {
 			log.debug("Waiting for contact list. Iteration #" + ntry);
 			Thread.sleep(millisecondsDelay);
 			ntry++;
@@ -127,6 +129,33 @@ public class PerformanceSteps {
 	}
 
 	/**
+	 * Restarts application and starts new Appium session
+	 * 
+	 * @step. ^I restart application$
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I restart application$")
+	public void IResetApplication() throws Exception {
+		CommonIOSSteps commonSteps = new CommonIOSSteps();
+		commonSteps.tearDown();
+		commonSteps.commonBefore(commonSteps.resetIOSDriver(false, true));
+		Thread.sleep(60000);
+	}
+	
+	/**
+	 * Waits until spinner after sign in disappers before contact list is shown
+	 * 
+	 * @step. ^I wait for contact list loaded$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I wait for contact list loaded$")
+	public void IWaitForContactListLoaded() throws Exception {
+		waitUntilConversationsListIsFullyLoaded(50);
+	}
+
+	/**
 	 * Starts standard actions loop (read messages/send messages) to measure
 	 * application performance
 	 * 
@@ -142,7 +171,11 @@ public class PerformanceSteps {
 	@When("^I start test cycle for (\\d+) minutes? with messages received from (.*)")
 	public void WhenIStartTestCycleForNMinutes(int timeout, String fromContact)
 			throws Exception {
-		waitUntilConversationsListIsFullyLoaded();
+		if (getDialogPage().waitForCursorInputVisible()) {
+			GroupChatPageSteps steps = new GroupChatPageSteps();
+			steps.IReturnToChatList();
+		}
+		waitUntilConversationsListIsFullyLoaded(10);
 		final String destConvoName = usrMgr.findUserByNameOrNameAlias(
 				fromContact).getName();
 		String firstConvoName = getContactListPage().getFirstDialogName();

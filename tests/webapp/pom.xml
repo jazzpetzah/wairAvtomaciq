@@ -21,21 +21,22 @@
 		<driverTimeoutSeconds>7</driverTimeoutSeconds>
 		<defaultEmail>smoketester@wire.com</defaultEmail>
 		<!-- edge | staging | production -->
-        <backendType>staging</backendType>
+		<backendType>staging</backendType>
 		<!-- leave webappApplicationPath empty to get the default URL for the backendType -->
-        <webappApplicationPath></webappApplicationPath>
+		<webappApplicationPath></webappApplicationPath>
 		<webappImagesPath>img/</webappImagesPath>
 		<!-- The levels in descending order are: SEVERE (highest value), WARNING, 
 			INFO, CONFIG, FINE, FINER, FINEST (lowest value). In addition there is a 
 			level OFF that can be used to turn off logging, and a level ALL that can 
 			be used to enable logging of all messages. -->
 		<extendedLoggingLevel>SEVERE</extendedLoggingLevel>
+        <rcNotificationsRecepients>michael@wire.com,sven.jost@wire.com,nick@wire.com</rcNotificationsRecepients>
 
 		<!-- new -->
 		<com.wire.os.name>Windows</com.wire.os.name>
 		<com.wire.os.version>7</com.wire.os.version>
 		<com.wire.browser.name>Chrome</com.wire.browser.name>
-        <com.wire.browser.version>44.0</com.wire.browser.version>
+		<com.wire.browser.version>44.0</com.wire.browser.version>
 	</properties>
 
 	<dependencies>
@@ -44,12 +45,6 @@
 			<artifactId>auto-common</artifactId>
 			<version>1.0-SNAPSHOT</version>
 			<type>jar</type>
-		</dependency>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
 		</dependency>
 
 		<dependency>
@@ -63,23 +58,6 @@
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
 			<version>2.47.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>info.cukes</groupId>
-			<artifactId>cucumber-picocontainer</artifactId>
-			<version>1.1.8</version>
-		</dependency>
-		<dependency>
-			<groupId>info.cukes</groupId>
-			<artifactId>cucumber-junit</artifactId>
-			<version>1.1.8</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20140107</version>
 		</dependency>
 	</dependencies>
 
@@ -126,9 +104,9 @@
 						<com.wire.os.name>${com.wire.os.name}</com.wire.os.name>
 						<com.wire.os.version>${com.wire.os.version}</com.wire.os.version>
 						<com.wire.browser.name>${com.wire.browser.name}</com.wire.browser.name>
-                        <com.wire.browser.version>${com.wire.browser.version}</com.wire.browser.version>
-                        <hubHost>${hubHost}</hubHost>
-                        <hubPort>${hubPort}</hubPort>
+						<com.wire.browser.version>${com.wire.browser.version}</com.wire.browser.version>
+						<hubHost>${hubHost}</hubHost>
+						<hubPort>${hubPort}</hubPort>
 					</systemPropertyVariables>
 				</configuration>
 			</plugin>

@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @id9 @smoke
+  @id9 @regression @rc
   Scenario Outline: Register new user by phone and set profile picture using camera
     Given I see welcome screen
     And I input a new phone number for user <Name>
@@ -10,6 +10,6 @@ Feature: Registration
     And I confirm selection
     And I see Contact list with no contacts
 
-    Examples: 
-      | AreaCode 	| Name      |
-      | QA-Shortcut	| user1Name |
+    Examples:
+      | AreaCode    | Name      |
+      | QA-Shortcut | user1Name |

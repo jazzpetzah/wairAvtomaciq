@@ -54,7 +54,7 @@ public abstract class IOSPage extends BasePage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameKeyboardDeleteButton)
 	private WebElement keyboardDeleteBtn;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameKeyboardGoButton)
 	private WebElement keyboardGoBtn;
 
@@ -63,9 +63,12 @@ public abstract class IOSPage extends BasePage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.KeyboardButtons.nameHideKeyboardButton)
 	private WebElement keyboardHideBtn;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.KeyboardButtons.nameSpaceButton)
 	private WebElement keyboardSpaceBtn;
+
+	@FindBy(how = How.NAME, using = IOSLocators.KeyboardButtons.nameDoneButton)
+	private WebElement keyboardDoneBtn;
 
 	private static String imagesPath = "";
 
@@ -95,7 +98,6 @@ public abstract class IOSPage extends BasePage {
 	public abstract IOSPage returnBySwipe(SwipeDirection direction)
 			throws Exception;
 
-	@Override
 	public IOSPage swipeLeft(int time) throws Exception {
 		DriverUtils.swipeLeft(this.getDriver(), content, time);
 		return returnBySwipe(SwipeDirection.LEFT);
@@ -108,7 +110,6 @@ public abstract class IOSPage extends BasePage {
 		return returnBySwipe(SwipeDirection.LEFT);
 	}
 
-	@Override
 	public IOSPage swipeRight(int time) throws Exception {
 		DriverUtils.swipeRight(this.getDriver(), content, time);
 		return returnBySwipe(SwipeDirection.RIGHT);
@@ -121,7 +122,6 @@ public abstract class IOSPage extends BasePage {
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 
-	@Override
 	public IOSPage swipeUp(int time) throws Exception {
 		DriverUtils.swipeUp(this.getDriver(), content, time);
 		return returnBySwipe(SwipeDirection.UP);
@@ -148,7 +148,6 @@ public abstract class IOSPage extends BasePage {
 		return returnBySwipe(SwipeDirection.UP);
 	}
 
-	@Override
 	public IOSPage swipeDown(int time) throws Exception {
 		DriverUtils.swipeDown(this.getDriver(), content, time);
 		return returnBySwipe(SwipeDirection.DOWN);
@@ -177,15 +176,18 @@ public abstract class IOSPage extends BasePage {
 		IOSPage.imagesPath = imagesPath;
 	}
 
-	public void clickPopupSelectAllButton() {
+	public void clickPopupSelectAllButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), popupSelectAll);
 		popupSelectAll.click();
 	}
 
-	public void clickPopupCopyButton() {
+	public void clickPopupCopyButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), popupCopy);
 		popupCopy.click();
 	}
 
-	public void clickPopupPasteButton() {
+	public void clickPopupPasteButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), popupPaste);
 		popupPaste.click();
 	}
 
@@ -223,13 +225,16 @@ public abstract class IOSPage extends BasePage {
 	}
 
 	public boolean isKeyboardVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(), keyboard);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.className(IOSLocators.classNameKeyboard), 3)
+				&& DriverUtils.waitUntilElementClickable(getDriver(), keyboard,
+						3);
 	}
 
 	public void clickKeyboardDeleteButton() {
 		keyboardDeleteBtn.click();
 	}
-	
+
 	public void clickKeyboardGoButton() {
 		keyboardGoBtn.click();
 	}
@@ -241,9 +246,14 @@ public abstract class IOSPage extends BasePage {
 	public void clickHideKeyboarButton() {
 		keyboardHideBtn.click();
 	}
-	
+
 	public void clickSpaceKeyboardButton() {
 		keyboardSpaceBtn.click();
+	}
+
+	public void clickDoneKeyboardButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), keyboardDoneBtn);
+		keyboardDoneBtn.click();
 	}
 
 	public static Object executeScript(String script) throws Exception {
@@ -257,7 +267,7 @@ public abstract class IOSPage extends BasePage {
 
 	public void cmdVscript(String[] scriptString) throws ScriptException {
 		// final String[] scriptArr = new String[] {
-		// "property thisapp: \"iOS Simulator\"",
+		// "property thisapp: \"Simulator\"",
 		// "tell application \"System Events\"", " tell process thisapp",
 		// " click menu item \"Paste\" of menu \"Edit\" of menu bar 1",
 		// " end tell", "end tell" };
@@ -297,6 +307,20 @@ public abstract class IOSPage extends BasePage {
 		}
 	}
 
+	public void dismissAllAlerts() throws Exception {
+		int count = 0;
+		final int NUMBER_OF_RETRIES = 3;
+		final int ALERT_WAITING_TIMEOUT = 3;
+		do {
+			try {
+				this.getDriver().switchTo().alert().dismiss();
+			} catch (Exception e) {
+				// do nothing
+			}
+		} while (DriverUtils.waitUntilAlertAppears(this.getDriver(),
+				ALERT_WAITING_TIMEOUT) && count++ < NUMBER_OF_RETRIES);
+	}
+
 	public void rotateScreen(ScreenOrientation orientation) throws Exception {
 		switch (orientation) {
 		case LANDSCAPE:
@@ -309,6 +333,16 @@ public abstract class IOSPage extends BasePage {
 			break;
 		}
 
+	}
+
+	public void rotateDeviceToRefreshElementsTree() throws Exception {
+		if (getOrientation() == ScreenOrientation.PORTRAIT) {
+			rotateLandscape();
+			rotatePortrait();
+		} else {
+			rotatePortrait();
+			rotateLandscape();
+		}
 	}
 
 	private void rotateLandscape() throws Exception {

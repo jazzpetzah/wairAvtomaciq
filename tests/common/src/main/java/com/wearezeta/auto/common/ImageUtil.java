@@ -26,9 +26,24 @@ public class ImageUtil {
 	public static final int RESIZE_FROM2560x1600OPTIMIZED = 4;
 	public static final int RESIZE_TEMPLATE_TO_RESOLUTION = 5;
 	public static final int RESIZE_FROM_OPTIMIZED = 6;
+	public static final int RESIZE_TO_MAX_SCORE = 7;
 
 	static {
-		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		String arch = System.getProperty("sun.arch.data.model");
+		String libPath = Core.NATIVE_LIBRARY_NAME;
+		String os = System.getProperty("os.name");
+		// Check if OS is windows
+		if (os.toLowerCase().contains("win")) {
+			if ("64".equals(arch)) {
+				libPath = libPath.replaceAll("opencv_java249",
+						"opencv_java249_x64");
+			} else {
+				libPath = libPath.replaceAll("opencv_java249",
+						"opencv_java249_x86");
+			}
+		}
+		System.out.println("Loading OpenCV Lib from " + libPath);
+		System.loadLibrary(libPath);
 	}
 
 	private static Mat convertImageToOpenCVMat(BufferedImage image) {
@@ -111,7 +126,20 @@ public class ImageUtil {
 
 	public static double getOverlapScore(BufferedImage refImage,
 			BufferedImage tplImage, int resizeMode) {
-		return getOverlapScore(refImage, tplImage, resizeMode, 1, 1);
+		if (resizeMode == RESIZE_TO_MAX_SCORE) {
+			if (getOverlapScore(refImage, tplImage,
+					RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION, 1, 1) > getOverlapScore(
+					refImage, tplImage,
+					RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION, 1, 1)) {
+				return getOverlapScore(refImage, tplImage,
+						RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION, 1, 1);
+			} else {
+				return getOverlapScore(refImage, tplImage,
+						RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION, 2, 1);
+			}
+		} else {
+			return getOverlapScore(refImage, tplImage, resizeMode, 1, 1);
+		}
 	}
 
 	public static double getOverlapScore(BufferedImage refImage,
@@ -180,6 +208,28 @@ public class ImageUtil {
 		ImageIO.write(im, "PNG", new File(filePath));
 	}
 
+	/**
+	 * Resizes image to the given ratio (use >1 to upscale, or <1 to downscale)
+	 * Upscale ratio is limited to 2; Downscale ratio is limited to 0.2;
+	 */
+	public static BufferedImage resizeImage(BufferedImage image,
+			float resizeRatio) throws IOException {
+		if (resizeRatio > 2)
+			resizeRatio = 2;
+		if (resizeRatio < 0.2f)
+			resizeRatio = 0.2f;
+		if (resizeRatio == 1)
+			return image;
+		int w = image.getWidth(), h = image.getHeight();
+		int scaledW = Math.round(w * resizeRatio);
+		int scaledH = Math.round(h * resizeRatio);
+		BufferedImage result = new BufferedImage(scaledW, scaledH,
+				BufferedImage.TYPE_INT_RGB);
+		Graphics2D g = result.createGraphics();
+		g.drawImage(image, 0, 0, scaledW, scaledH, null);
+		return result;
+	}
+
 	public static BufferedImage tilt(BufferedImage image, double angle) {
 		double sin = Math.abs(Math.sin(angle)), cos = Math.abs(Math.cos(angle));
 		int w = image.getWidth(), h = image.getHeight();
@@ -228,10 +278,9 @@ public class ImageUtil {
 					ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION));
 			idx++;
 		}
-		return thresholds.stream().reduce(0.0, (x, y) -> x + y)
-				/ thresholds.size();
+		return thresholds.stream().min(Double::compare).orElse(100.0);
 	}
-	
+
 	public static boolean isLandscape(BufferedImage bi) {
 		return (bi.getWidth() > bi.getHeight());
 	}

@@ -12,23 +12,13 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I search for user name <UnconnectedUser> and tap on it on People picker page
     And I see connect to <UnconnectedUser> dialog
-    And I delete all connect message content
-    And I see that connect button is disabled
-    And I input message in connect dialog with <NumOfMessageChars> characters
-    And I fill in 3 characters in connect dialog
-    And I see message with max number of characters
     And I click Connect button on connect to dialog
-    And I click close button to dismiss people view
-    And I swipe down contact list on iPad
-    And I see People picker page
-    And I tap on Search input on People picker page
-    And I input in People picker search field user email <ContactEmail>
     Then I see the user <UnconnectedUser> avatar with a clock
-    And I click close button to dismiss people view
-    And I see conversation with not connected user <UnconnectedUser>
-    And I tap on contact name <UnconnectedUser>
+    When I click close button to dismiss people view
+    Then I see conversation with not connected user <UnconnectedUser>
+    When I tap on contact name <UnconnectedUser>
     And I open pending user conversation details
-    And I see <UnconnectedUser> user pending profile popover on iPad
+    Then I see <UnconnectedUser> user pending profile popover on iPad
 
     Examples: 
       | Name      | UnconnectedUser | ContactEmail | NumOfMessageChars | StartLetter | Color        |
@@ -47,29 +37,19 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I search for user name <UnconnectedUser> and tap on it on People picker page
     And I see connect to <UnconnectedUser> dialog
-    And I delete all connect message content
-    And I see that connect button is disabled
-    And I input message in connect dialog with <NumOfMessageChars> characters
-    And I fill in 3 characters in connect dialog
-    And I see message with max number of characters
     And I click Connect button on connect to dialog
-    And I click close button to dismiss people view
-    And I swipe down contact list on iPad
-    And I see People picker page
-    And I tap on Search input on People picker page
-    And I input in People picker search field user email <ContactEmail>
     Then I see the user <UnconnectedUser> avatar with a clock
-    And I click close button to dismiss people view
-    And I see conversation with not connected user <UnconnectedUser>
-    And I tap on contact name <UnconnectedUser>
+    When I click close button to dismiss people view
+    Then I see conversation with not connected user <UnconnectedUser>
+    When I tap on contact name <UnconnectedUser>
     And I open pending user conversation details
-    And I see <UnconnectedUser> user pending profile popover on iPad
+    Then I see <UnconnectedUser> user pending profile popover on iPad
 
     Examples: 
       | Name      | UnconnectedUser | ContactEmail | NumOfMessageChars | StartLetter | Color        |
       | user1Name | user2Name       | user2Email   | 140               | T           | BrightOrange |
 
-  @regression @id2119
+  @regression @rc @id2119
   Scenario Outline: Verify sending connection request after opening profile by clicking on the name and avatar [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -120,7 +100,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail | Contact2  |
       | user1Name | user2Name | user2Email   | user3Name |
 
-  @regression @id2610
+  @regression @rc @id2354 @id2610
   Scenario Outline: Send connection request to unconnected participant in a group chat [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <GroupCreator>
@@ -131,7 +111,7 @@ Feature: Connect
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap on not connected contact <UnconnectedUser>
-    And I click Connect button on connect to dialog
+    And I click Connect button on not connected user profile popover
     And I exit the group info iPad popover
     And I swipe right on group chat page
     Then I see first item in contact list named <UnconnectedUser>
@@ -152,7 +132,7 @@ Feature: Connect
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap on not connected contact <UnconnectedUser>
-    And I click Connect button on connect to dialog
+    And I click Connect button on not connected user profile popover
     And I exit the group info iPad popover
     Then I see first item in contact list named <UnconnectedUser>
 
@@ -173,7 +153,6 @@ Feature: Connect
     And I click on Pending request link in contact list
     And I see Pending request page
     And I click on Ignore button on Pending requests page <SentRequests> times
-    And I swipe right on Dialog page
     And I dont see Pending request link in contact list
     And I don't see conversation with not connected user <Contact1>
     And I wait until <Contact1> exists in backend search results
@@ -227,7 +206,7 @@ Feature: Connect
     And I click on Pending request link in contact list
     And I see Pending request page
     And I click on Connect button on Pending requests page <SentRequests> times
-    And I swipe right on Dialog page
+    And I return to the chat list
     Then I dont see Pending request link in contact list
     And I see user <Contact1> in contact list
     And I see user <Contact2> in contact list
@@ -304,7 +283,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @id2341
+  @regression @rc @id2341
   Scenario Outline: Verify you don't receive any messages from blocked person in 1to1 chat [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -322,13 +301,13 @@ Feature: Connect
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
     And I tap on connected user <Contact> on People picker page
-    And I unblock user
+    And I unblock user on iPad
     And I wait for 5 seconds
     And I see new photo in the dialog
     And I see message in the dialog
-    And I swipe right on Dialog page
-    And I see People picker page
-    And I click close button to dismiss people view
+    And I return to the chat list
+    #And I see People picker page
+    #And I click close button to dismiss people view
     And Contact <Contact> sends random message to user <Name>
     When I tap on contact name <Contact>
     Then I see message in the dialog
@@ -356,11 +335,11 @@ Feature: Connect
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
     And I tap on connected user <Contact> on People picker page
-    And I unblock user
+    And I unblock user on iPad
     And I wait for 5 seconds
     And I see new photo in the dialog
     And I see message in the dialog
-    And I click close button to dismiss people view
+    #And I click close button to dismiss people view
     And Contact <Contact> sends random message to user <Name>
     When I tap on contact name <Contact>
     Then I see message in the dialog
@@ -428,7 +407,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @regression @id1492
+  @regression @rc @id1492
   Scenario Outline: Verify you can send an invitation via mail [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -439,7 +418,9 @@ Feature: Connect
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I press the send an invite button
+    And I press invite others button
     And I press the copy button
+    And I click close Invite list button
     And I click clear button
     And I tap on contact name <Contact>
     And I see dialog page
@@ -465,7 +446,9 @@ Feature: Connect
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I press the send an invite button
+    And I press invite others button
     And I press the copy button
+    And I click close Invite list button
     And I click clear button
     And I tap on contact name <Contact>
     And I see dialog page
@@ -479,11 +462,11 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id2768 @deployAddressBook @noAcceptAlert
+  @staging @id2768 @deployAddressBook @noAcceptAlert @obsolete
   Scenario Outline: Verify you can see People you may know on Wire after uploading your address book
     Given There are 1 user where <Name> is me
     Given I Sign in on tablet using my email
-    And I dismiss alert
+    And I dismiss all alerts
     And I see Contact list with my name <Name>
     And I open search by taping on it
     And I see Upload contacts dialog
@@ -510,7 +493,7 @@ Feature: Connect
     And I click Cancel request button
     Then I see Cancel request confirmation page
     And I confirm Cancel request by click on Yes button
-    And I swipe right on the personal page
+    And I close self profile
     Then I dont see conversation <Contact> in contact list
 
     Examples: 
@@ -537,7 +520,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @regression @id3228
+  @regression @rc @id3228
   Scenario Outline: Verify sending connection request after disconnecting [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
@@ -548,7 +531,7 @@ Feature: Connect
     And I open conversation details
     And I click Cancel request button
     And I confirm Cancel request by click on Yes button
-    And I swipe right on the personal page
+    And I close self profile
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
     And I see user <Contact1> found on People picker page
@@ -588,3 +571,211 @@ Feature: Connect
     Examples: 
       | Name      | Contact1  |
       | user1Name | user2Name |
+
+  @regression @id3229
+  Scenario Outline: Verify possibility of disconnecting from Search UI [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Me sent connection request to <Contact1>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact1>
+    And I see user <Contact1> found on People picker page
+    And I see the user <Contact1> avatar with a clock
+    And I tap on NOT connected user name on People picker page <Contact1>
+    And I click Cancel request button
+    And I see Cancel request confirmation page
+    And I confirm Cancel request by click on Yes button
+    And I see user <Contact1> found on People picker page
+    Then I see the user <Contact1> avatar without the pending clock
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
+
+  @regression @id3304
+  Scenario Outline: Verify possibility of disconnecting from Search UI [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Me sent connection request to <Contact1>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact1>
+    And I see user <Contact1> found on People picker page
+    And I see the user <Contact1> avatar with a clock
+    And I tap on NOT connected user name on People picker page <Contact1>
+    And I click Cancel request button
+    And I see Cancel request confirmation page
+    And I confirm Cancel request by click on Yes button
+    And I see user <Contact1> found on People picker page
+    Then I see the user <Contact1> avatar without the pending clock
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
+
+  @staging @id2332 @ZIOS-4985
+  Scenario Outline: Verify ignoring a connection request from another person (People view) [PORTRAIT]
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact3> sent connection request to me
+    Given <Contact1> is connected to <Contact2>,<Contact3>
+    Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>,<Contact3>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    And I see Pending request link in contact list
+    And I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details
+    And I select user on iPad group popover <Contact3>
+    And I see incoming pending popover from user <Contact3> on iPad
+    And I tap on start dialog button on other user profile page
+    And I click on Ignore button on Pending requests page
+    And I exit the group info iPad popover
+    And I return to the chat list
+    Then I dont see Pending request link in contact list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
+      | user1Name | user2Name | user3Name | user4Name | IGNORECONNECT |
+
+  @staging @id3305 @ZIOS-4985
+  Scenario Outline: Verify ignoring a connection request from another person (People view) [LANDSCAPE]
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact3> sent connection request to me
+    Given <Contact1> is connected to <Contact2>,<Contact3>
+    Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>,<Contact3>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    And I see Pending request link in contact list
+    And I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details
+    And I select user on iPad group popover <Contact3>
+    And I see incoming pending popover from user <Contact3> on iPad
+    And I tap on start dialog button on other user profile page
+    And I click on Ignore button on Pending requests page
+    And I exit the group info iPad popover
+    Then I dont see Pending request link in contact list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
+      | user1Name | user2Name | user3Name | user4Name | IGNORECONNECT |
+
+  @regression @id3795
+  Scenario Outline: Verify common connections are not tappable [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact2> sent connection request to me
+    Given <Contact1> is connected to <Contact2>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    And I see Pending request link in contact list
+    And I click on Pending request link in contact list
+    And I see Pending request page
+    And I see YOU BOTH KNOW people section
+    And I click person in YOU BOTH KNOW section
+    Then I see Pending request page
+
+    Examples: 
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
+
+  @regression @id3796
+  Scenario Outline: Verify common connections are not tappable [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact2> sent connection request to me
+    Given <Contact1> is connected to <Contact2>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    And I see Pending request link in contact list
+    And I click on Pending request link in contact list
+    And I see Pending request page
+    And I see YOU BOTH KNOW people section
+    And I click person in YOU BOTH KNOW section
+    Then I see Pending request page
+
+    Examples: 
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
+      
+  @regression @id3903
+  Scenario Outline: Verify inbox is highlighted and opened in the list [PORTRAIT]
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact3>
+    Given <Contact> sent connection request to Me
+    Given <Contact2> sent connection request to Me
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+	And I see Pending request link in contact list
+	And I click on Pending request link in contact list
+    Then I see Pending request page
+    When I swipe right in current window
+	And I see conversation 2 people waiting is selected in list
+	And I swipe left in current window
+	Then I see Pending request page
+
+    Examples: 
+      | Name      | Contact   | Contact2  | Contact3  |
+      | user1Name | user2Name | user3Name | user4Name |
+      
+  @regression @id3904
+  Scenario Outline: Verify inbox is highlighted and opened in the list [LANDSCAPE]
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact3>
+    Given <Contact> sent connection request to Me
+    Given <Contact2> sent connection request to Me
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+	And I see Pending request link in contact list
+	And I click on Pending request link in contact list
+    Then I see Pending request page
+    When I swipe right in current window
+	And I see conversation 2 people waiting is selected in list
+
+    Examples: 
+      | Name      | Contact   | Contact2  | Contact3  |
+      | user1Name | user2Name | user3Name | user4Name |
+      
+  @regression @id3997
+  Scenario Outline: Verify displaying first and last names for the incoming connection request {PORTRAIT}
+    Given There are 2 users where <Name> is me
+    Given <Contact> sent connection request to Me
+    Given User <Contact> changes name to <NewName>
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I see Pending request link in contact list
+    And I click on Pending request link in contact list
+    And I see Pending request page
+    Then I see user <NewName> found on Pending request page
+
+    Examples: 
+      | Name      | Contact   | NewName  |
+      | user1Name | user2Name | New Name | 
+
+  @regression @id3998
+  Scenario Outline: Verify displaying first and last names for the incoming connection request [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given <Contact> sent connection request to Me
+    Given User <Contact> changes name to <NewName>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I see Pending request link in contact list
+    And I click on Pending request link in contact list
+    And I see Pending request page
+    Then I see user <NewName> found on Pending request page
+
+    Examples: 
+      | Name      | Contact   | NewName  |
+      | user1Name | user2Name | New Name | 

@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @id191 @id193 @smoke
+  @id191 @id193 @regression @rc @rc42
   Scenario Outline: Send connection request from search
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -12,18 +12,16 @@ Feature: Connect
     And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
-    And I tap on edit connect request field
-    And I type Connect request "<Message>"
     And I click Connect button on connect to page
     And I see People picker page
     And I navigate back to Conversations List
     Then I see contact list with name <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message       |
       | user1Name | user2Name | Hellow friend |
 
-  @id323 @smoke
+  @id323 @regression @rc
   Scenario Outline: Accept incoming connection request from conversation list
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to <Name>
@@ -34,11 +32,11 @@ Feature: Connect
     And I Connect with contact by pressing button
     Then I see contact list with name <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @id1411 @regression
+  @id1411 @regression @rc @rc42
   Scenario Outline: I can see a new inbox for connection when receive new connection request
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -51,7 +49,7 @@ Feature: Connect
     Then I see Contact list
     Then I do not see contact list with name <WaitingMess>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
@@ -88,7 +86,7 @@ Feature: Connect
     And I press Ignore connect button
     And I do not see contact list with name <WaitingMess1>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | WaitingMess1     | Contact2  | WaitingMess2     | Contact3  | Contact4  | WaitingMess3     |
       | user1Name | user2Name | 1 person waiting | user3Name | 2 people waiting | user4Name | user5Name | 3 people waiting |
 
@@ -116,7 +114,7 @@ Feature: Connect
     Then I navigate back from dialog page
     And I see contact list with name <WaitingMess2>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | WaitingMess1     | WaitingMess2     |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 4 people waiting | 3 people waiting |
 
@@ -138,9 +136,10 @@ Feature: Connect
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
     And I Connect with contact by pressing button
+    And I wait for 5 seconds
     Then I see Connect to <Contact> Dialog page
 
-    Examples: 
+    Examples:
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
@@ -161,55 +160,11 @@ Feature: Connect
     And I Connect with contact by pressing button
     Then I see contact list with name <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
   @id547 @regression
-  Scenario Outline: I can see the char counter changes when writing the first connect message
-    Given There are 3 users where <Name> is me
-    Given I sign in using my email or phone number
-    Given I see Contact list with no contacts
-    And I wait until <Contact> exists in backend search results
-    When I open Search by tap
-    And I see People picker page
-    And I tap on Search input on People picker page
-    And I enter "<Contact>" into Search input on People Picker page
-    And I tap on user name found on People picker page <Contact>
-    And I see connect to <Contact> dialog
-    And I tap on edit connect request field
-    Then I see counter value <CounterValue1>
-    And I see connect button enabled state is <FirstState>
-    And I type Connect request "<Message>"
-    And I see counter value <CounterValue2>
-    And I see connect button enabled state is <SecondState>
-
-    Examples: 
-      | Name      | Contact   | CounterValue1 | Message | CounterValue2 | FirstState | SecondState |
-      | user1Name | user2Name | 140           | test    | 136           | false      | true        |
-
-  @id548 @regression
-  Scenario Outline: I can not send first message with space only
-    Given There are 2 users where <Name> is me
-    Given I sign in using my email or phone number
-    Given I see Contact list with no contacts
-    And I wait until <Contact> exists in backend search results
-    When I open Search by tap
-    And I see People picker page
-    And I tap on Search input on People picker page
-    And I enter "<Contact>" into Search input on People Picker page
-    And I tap on user name found on People picker page <Contact>
-    And I see connect to <Contact> dialog
-    And I tap on edit connect request field
-    And I type Connect request "    "
-    Then I see counter value <CounterValue>
-    And I see connect button enabled state is <FirstState>
-
-    Examples: 
-      | Name      | Contact   | CounterValue | FirstState |
-      | user1Name | user2Name | 136          | false      |
-
-  @id554 @regression
   Scenario Outline: I would not know other person has ignored my connection request
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -221,19 +176,17 @@ Feature: Connect
     And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
-    And I tap on edit connect request field
-    And I type Connect request "<Message>"
     And I click Connect button on connect to page
     When <Contact> ignore all requests
     And I press Clear button
     Then I tap on contact name <Contact>
     And I see that connection is pending
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message |
       | user1Name | user2Name | Test    |
 
-  @id541 @regression
+  @id541 @regression @rc
   Scenario Outline: I can receive new connection request when app in background
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -249,11 +202,11 @@ Feature: Connect
     And I see Accept and Ignore buttons
     And I press Ignore connect button
 
-    Examples: 
+    Examples:
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @id553 @regression
+  @id553 @regression @rc
   Scenario Outline: I want to see that the other person has accepted the connect request in the conversation view
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -265,8 +218,6 @@ Feature: Connect
     And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
-    And I tap on edit connect request field
-    And I type Connect request "<Message>"
     And I click Connect button on connect to page
     And I wait for 2 seconds
     When <Contact> accept all requests
@@ -276,11 +227,11 @@ Feature: Connect
     And I tap on contact name <Contact>
     And I see Connect to <Contact> Dialog page
 
-    Examples: 
-      | Name      | Contact   | Message |
-      | user1Name | user2Name | Test    |
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
-  @id552 @regression
+  @id552 @regression @rc
   Scenario Outline: I want to discard the new connect request (sending) by returning to the search results after selecting someone I’m not connected to
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -292,48 +243,48 @@ Feature: Connect
     And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
-    And I tap on edit connect request field
     Then I close Connect To dialog
     And I see People picker page
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
   @id550 @regression
-  Scenario Outline: I want to initiate a connect request by selecting someone from within a group conversation
+  Scenario Outline: (CM-691) I want to initiate a connect request by selecting someone from within a group conversation
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given <Contact1> is connected to <Contact2>
-    Given <Contact1> has group chat <ChatName> with Myself,<Contact2>
+    Given <Contact1> has group chat <ChatName> with <Name>, <Contact2>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
     When I tap on contact name <ChatName>
     And I tap conversation details button
+    #Sometimes here only one user visible (backend issue)
     And I tap on group chat contact <Contact2>
     And I see connect to <Contact2> dialog
-    And I tap on edit connect request field
-    And I type Connect request "<Message>"
+    And I click left Connect button
     And I click Connect button on connect to page
-    And I return to group chat page
+    And I close participant page by UI button
     And I navigate back from dialog page
     And I see contact list with name <Contact2>
 
-    Examples: 
-      | Name      | Contact1  | Contact2  | ChatName         | Message        |
-      | user1Name | user2Name | user3Name | ContactGroupChat | Yo! What's up! |
+    Examples:
+      | Name      | Contact1  | Contact2  | ChatName         |
+      | user1Name | user2Name | user3Name | ContactGroupChat |
 
   @id676 @regression
   Scenario Outline: I want to block a person from 1:1 conversation
-    Given There are 2 users where <Name> is me
-    Given <Contact1> is connected to <Name>
+    Given There are 3 users where <Name> is me
+    # Having the extra user is a workaround for an app bug
+    Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I see dialog page
     And I tap conversation details button
     And I press options menu button
-    And I Press Block button
+    And I press BLOCK conversation menu button
     And I confirm block
     Then I do not see contact list with name <Contact1>
     And I wait until <Contact1> exists in backend search results
@@ -344,74 +295,83 @@ Feature: Connect
     And I enter "<Contact1>" into Search input on People Picker page
     And I see user <Contact1> found on People picker page
     And I tap on user name found on People picker page <Contact1>
-    Then User info should be shown with Block button
+    Then User info should be shown with Unblock button
 
-    Examples: 
-      | Name      | Contact1  |
-      | user1Name | user2Name |
+    Examples:
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @id680 @regression
   Scenario Outline: I want to see user has been blocked within the Start UI
-    Given There are 2 users where <Name> is me
+    Given There are 3 users where <Name> is me
+    # Having the extra user is a workaround for an app bug
+    Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    Given I see Contact list with no contacts
-    And I wait until <Contact> exists in backend search results
+    Given I see Contact list with contacts
+    And I wait until <Contact2> exists in backend search results
     When I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
-    And I enter "<Contact>" into Search input on People Picker page
-    And I tap on user name found on People picker page <Contact>
-    And I see connect to <Contact> dialog
-    And I tap on edit connect request field
-    And I type Connect request "<Message>"
+    And I enter "<Contact2>" into Search input on People Picker page
+    And I tap on user name found on People picker page <Contact2>
+    And I see connect to <Contact2> dialog
     And I click Connect button on connect to page
     And I press Clear button
-    And I see contact list with name <Contact>
-    When I tap on contact name <Contact>
+    And I see contact list with name <Contact2>
+    When I tap on contact name <Contact2>
     And I see that connection is pending
-    And I click Block button on connect to page
+    And I click ellipsis button
+    And I click Block button
     And I confirm block on connect to page
-    And I wait for 5 seconds
-    Then I do not see contact list with name <Contact>
-    And I wait until <Contact> exists in backend search results
+    Then I do not see dialog page
+    Then I do not see contact list with name <Contact2>
+    And I wait until <Contact2> exists in backend search results
     And I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
-    And I enter "<Contact>" into Search input on People Picker page
-    And I see user <Contact> found on People picker page
-    And I tap on user name found on People picker page <Contact>
-    Then User info should be shown with Block button
-    And I click Unblock button
+    And I enter "<Contact2>" into Search input on People Picker page
+    And I see user <Contact2> found on People picker page
+    And I tap on user name found on People picker page <Contact2>
+    And User info should be shown with Unblock button
+    When I click Unblock button
+    And I navigate back from dialog page
+    Then I see contact list with name <Contact2>
 
-    Examples: 
-      | Name      | Contact   | Message      |
-      | user1Name | user2Name | Hello friend |
+    Examples:
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @id720 @regression
   Scenario Outline: I want to be seen in the search results of someone I blocked
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
+    Given There are 3 users where <Name> is me
+    # Having the extra user is a workaround for an app bug
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given User <Contact1> blocks user Myself
     Given I sign in using my email
     Given I see Contact list with contacts
-    When User <Contact> blocks user Myself
-    Then I wait until <Contact> exists in backend search results
+    And I see contact list with name <Contact1>
+    And I see contact list with name <Contact2>
+    And I wait until <Contact1> exists in backend search results
     When I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
-    And I enter "<Contact>" into Search input on People Picker page
-    Then I see user <Contact> found on People picker page
+    And I enter "<Contact1>" into Search input on People Picker page
+    Then I see user <Contact1> found on People picker page
 
-    Examples: 
-      | Name      | Contact   |
-      | user1Name | user2Name |
+    Examples:
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @id723 @regression
-  Scenario Outline: I want to unblock someone from their Profile view
-    Given There are 3 users where <Name> is me
+  Scenario Outline: (BUG AN-2721) I want to unblock someone from their Profile view
+    Given There are 4 users where <Name> is me
+      # Having the extra user is a workaround for an app bug
     Given Myself is connected to <Contact1>,<Contact2>
     Given User <Name> blocks user <Contact1>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
+    When I tap on contact name <Contact2>
+    And I navigate back from dialog page
     And I wait until <Contact1> exists in backend search results
     And I open Search by tap
     And I see People picker page
@@ -419,17 +379,17 @@ Feature: Connect
     And I enter "<Contact1>" into Search input on People Picker page
     And I see user <Contact1> found on People picker page
     And I tap on user name found on People picker page <Contact1>
-    Then User info should be shown with Block button
-    And I click Unblock button
-    And I see dialog page
+    And User info should be shown with Unblock button
+    When I click Unblock button
+    Then I see dialog page
     And I navigate back from dialog page
     And I see contact list with name <Contact1>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id1405 @regression
+  @id1405 @regression @rc
   Scenario Outline: Impossibility of starting 1:1 conversation with pending user (Search)
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -447,7 +407,7 @@ Feature: Connect
     And I tap on user name found on People picker page <Contact>
     Then I see that connection is pending
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -467,11 +427,11 @@ Feature: Connect
     And Contact <Contact> ping conversation <Name>
     Then Last message is <Message>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Message          | Picture     |
       | user1Name | user2Name | Hello my friend! | testing.jpg |
 
-  @id2215 @regression
+  @id2215 @regression @rc @rc42
   Scenario Outline: I can connect to someone from PYMK by clicking +
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Contact2>
@@ -489,11 +449,11 @@ Feature: Connect
     When I open Search by tap
     Then I do not see the previously remembered PYMK item
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id2216 @regression
+  @id2216 @regression @rc
   Scenario Outline: I can connect to someone from PYMK by tap and typing connect message
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Contact2>
@@ -505,8 +465,6 @@ Feature: Connect
     And I keep reopening People Picker until PYMK are visible
     And I remember the name of the first PYMK item
     When I tap the first PYMK item
-    And I tap on edit connect request field
-    And I type Connect request "<Message>"
     And I click Connect button on connect to page
     And I see People picker page
     And I press Clear button
@@ -514,21 +472,6 @@ Feature: Connect
     When I open Search by tap
     Then I do not see the previously remembered PYMK item
 
-    Examples: 
-      | Name      | Contact1  | Contact2  | Message       |
-      | user1Name | user2Name | user3Name | Hellow friend |
-
-  @regression @id2661 @deployAddressBook
-  Scenario Outline: Verify you can see People you may know on Wire after uploading your address book
-    Given There is 1 user where <Name> is me
-    Given I add predefined users to address book
-    Given I sign in using my email or phone number
-    And I see Contact list with no contacts
-    When I open Search by tap
-    Then I see recommended user <Contact1> in People Picker
-
-    # disabled step which checks missing contact with phone only
-    #    And I see recommended user <Contact2> in People Picker
-    Examples: 
-      | Name      | Contact1 | Contact2 |
-      | user1Name | vb003    | Dorothy  |
+    Examples:
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |

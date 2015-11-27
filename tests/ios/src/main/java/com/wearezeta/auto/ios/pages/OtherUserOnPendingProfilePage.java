@@ -29,6 +29,12 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.OtherUserProfilePage.xpathCancelRequestYesButton)
 	private WebElement cancelRequestConfirmationYesButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameExitOtherUserPersonalInfoPageButton)
+	private WebElement backButtonToGroupPopover;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameRemoveFromConversation)
+	private WebElement removePendingPersonFromChat;
 
 	public OtherUserOnPendingProfilePage(Future<ZetaIOSDriver> lazyDriver)
 			throws Exception {
@@ -79,5 +85,15 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void clickBackButtonToReturnToGroupPageOrPopover() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(),
+				backButtonToGroupPopover);
+		backButtonToGroupPopover.click();
+	}
+
+	public boolean isRemoveFromGroupConversationVisible() {
+		return removePendingPersonFromChat.isDisplayed();
 	}
 }

@@ -3,9 +3,7 @@ package com.wearezeta.auto.ios.steps;
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.CommonSteps;
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -45,13 +43,6 @@ public class CommonIOSTabletSteps {
 
 	@After
 	public void tearDown() throws Exception {
-
-		if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-			IOSCommonUtils.collectSimulatorLogs(
-					CommonUtils.getDeviceName(getClass()),
-					steps.getTestStartedDate());
-		}
-
 		commonSteps.getUserManager().resetUsers();
 	}
 

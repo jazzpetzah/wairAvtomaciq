@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 
 from datetime import datetime
+import random
+import sys
+import time
+import traceback
 import urllib
 
 from cli_handlers.cli_handler_base import CliHandlerBase
@@ -41,18 +45,36 @@ class ExecuteJob(CliHandlerBase):
         parser = self._get_parser()
         args = parser.parse_args()
         job_name = self._normalize_job_name(args.name)
-        job = self._jenkins.get_job(job_name)
+        MAX_TRY_COUNT = 3
+        try_num = 0
         start_time = datetime.now()
-        job.invoke(securitytoken=args.token,
-                   block=args.block,
+        job = None
+        while True:
+            try:
+                job = self._jenkins.get_job(job_name)
+            except Exception as e:
+                traceback.print_exc()
+                try_num += 1
+                if try_num >= MAX_TRY_COUNT:
+                    raise e
+                sys.stderr.write('Sleeping a while before retry #{} of {}...\n'.format(try_num, MAX_TRY_COUNT))
+                time.sleep(random.randint(20, 40))
+        queue_item = job.invoke(securitytoken=args.token,
                    build_params=self._encoded_params_to_dict(args.params),
                    cause=args.cause)
         if args.block:
+            queue_item.block_until_complete(delay=5)
             timedelta_str = self._timedelta_to_str(datetime.now() - start_time)
-            return 'Jenkins job "{0}" is '\
-                'completed (duration: {1})'.format(args.name,
-                                                   timedelta_str)
+            return 'Jenkins job "{0}" is completed (duration: {1})'.format(args.name, timedelta_str)
         else:
             return 'Jenkins job "{0}" has been successfully invoked '\
-                'on {1}'.format(args.name,
-                                datetime.now().isoformat(' '))
+                'on {1}'.format(args.name, datetime.now().isoformat(' '))
+
+    @classmethod
+    def is_external_jenkins_url_required(cls):
+        return True
+
+    def _is_exceptions_handled_in_invoke(self):
+        """Set this to true in a subclass if you don't
+        want to retry automatically on exception inside _invoke method"""
+        return True

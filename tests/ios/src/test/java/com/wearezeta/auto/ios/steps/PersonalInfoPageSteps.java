@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.IOSPage;
@@ -362,11 +363,24 @@ public class PersonalInfoPageSteps {
 		Assert.assertTrue(getPersonalInfoPage().getUserNameValue().equals(name));
 	}
 
+	/**
+	 * Verify that user name doesnt contains spaces
+	 * 
+	 * @step. ^I see user name doesnt contains spaces$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see user name doesnt contains spaces$")
+	public void ISeeUserNameNotContainSpaces() throws Exception {
+		Assert.assertFalse("User name contains space chars",
+				getPersonalInfoPage().isUserNameContainingSpaces());
+	}
+
 	@When("I see email (.*) on Personal page")
 	public void ISeeMyEmailOnPersonalPage(String email) throws Exception {
 		email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
-		Assert.assertTrue(email
-				.equals(getPersonalInfoPage().getUserEmailVaue()));
+		Assert.assertTrue(getPersonalInfoPage().getUserEmailVaue().contains(
+				email));
 	}
 
 	@When("I attempt to enter (.*) and press return")
@@ -467,7 +481,8 @@ public class PersonalInfoPageSteps {
 	 */
 	@Then("^I see my new name (.*)$")
 	public void ISeeMyNewName(String name) throws Throwable {
-		String actualName = getPersonalInfoPage().getUserNameValue().toLowerCase();
+		String actualName = getPersonalInfoPage().getUserNameValue()
+				.toLowerCase();
 		Assert.assertTrue(actualName.contains(name.toLowerCase()));
 	}
 
@@ -586,6 +601,57 @@ public class PersonalInfoPageSteps {
 	public void ISeeSelfProfilePage() throws Exception {
 		Assert.assertTrue("Self profile page is not visible",
 				getPersonalInfoPage().waitSelfProfileVisible());
+	}
+
+	/**
+	 * Clicks the Add Phone Number Button in self profile
+	 * 
+	 * @step. ^I tap to add my phone number$
+	 * @throws Throwable
+	 */
+	@When("^I tap to add my phone number$")
+	public void ITapToAddMyPhoneNumber() throws Throwable {
+		getPersonalInfoPage().clickAddPhoneNumberButton();
+	}
+
+	/**
+	 * Verifies that phone number is added to profile
+	 * 
+	 * @step. ^I see phone number attached to profile$
+	 * @throws Throwable
+	 */
+	@Then("^I see phone number attached to profile$")
+	public void ISeePhoneNumberAttachedToProfile() throws Throwable {
+		ClientUser self = usrMgr.getSelfUserOrThrowError();
+		String number = self.getPhoneNumber().toString();
+		Assert.assertTrue("Phone number did not get attached to the profile",
+				getPersonalInfoPage().isPhoneNumberAttachedToProfile(number));
+	}
+
+	/**
+	 * Verifies that theme switcher button is shown on self profile page
+	 * 
+	 * @step. ^I see theme switcher button on self profile page$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see theme switcher button on self profile page$")
+	public void ISeeThemeSwitcherButton() throws Exception {
+		Assert.assertTrue("Theme switcher button is not visible",
+				getPersonalInfoPage().isThemeSwitcherButtonVisible());
+	}
+
+	/**
+	 * Verifies that theme switcher button is NOT shown on self profile page
+	 * 
+	 * @step. ^I dont see theme switcher button on self profile page$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I dont see theme switcher button on self profile page$")
+	public void IDontSeeThemeSwitcherButton() throws Exception {
+		Assert.assertFalse("Theme switcher button is visible",
+				getPersonalInfoPage().isThemeSwitcherButtonVisible());
 	}
 
 }

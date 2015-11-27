@@ -14,11 +14,11 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class TabletConversationViewPage extends AndroidTabletPage {
-	public static final String idRootLocator = "fl__message_stream_land_container";
+	public static final String idRootLocator = "pfac__conversation__list_view_container";
 
 	public static final Function<String, String> xpathSystemMessageByContent = content -> String
 			.format("//*[@id='ltv__row_conversation__message' and contains(@value, '%s')]",
-					content.toUpperCase());
+					content);
 
 	public static final Function<String, String> xpathChatHeaderMessageByContent = content -> String
 			.format("//*[@id='ttv__row_conversation__connect_request__chathead_footer__label' and contains(@value, '%s')]",
@@ -69,7 +69,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 	}
 
 	private DialogPage getDialogPage() throws Exception {
-		return (DialogPage) this.getAndroidPageInstance(DialogPage.class);
+		return this.getAndroidPageInstance(DialogPage.class);
 	}
 
 	public boolean waitUntilVisible() throws Exception {
@@ -95,7 +95,10 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
-	public void tapTextInput() {
+	public void tapTextInput() throws Exception {
+		// FIXME: Scroll to the bottom if cursor input is not visible
+		this.scrollToTheBottom();
+
 		caret.click();
 	}
 
@@ -114,8 +117,8 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
-	public void swipeLeftOnTextInput() throws Exception {
-		getDialogPage().swipeOnCursorInput();
+	public void swipeOnTextInput() throws Exception {
+		getDialogPage().swipeRightOnCursorInput();
 	}
 
 	public void tapPingButton() throws Exception {
@@ -132,7 +135,10 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
-	public void tapShowInstrumentsButton() throws InterruptedException {
+	public void tapShowInstrumentsButton() throws Exception {
+		// FIXME: Workaround for incorrectly positioned cursor
+		scrollToTheBottom();
+
 		showToolsButton.click();
 	}
 
@@ -170,7 +176,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 	}
 
 	public void scrollToTheBottom() throws Exception {
-		getDialogPage().tapDialogPageBottom();
+		getDialogPage().scrollToTheBottom();
 	}
 
 	public Optional<BufferedImage> getRecentPictureScreenshot()
@@ -209,5 +215,74 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 	public boolean waitUntilPicturesNotVisible() throws Exception {
 		final By locator = By.id(DialogPage.idDialogImages);
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+	}
+
+	public boolean waitUntilUnsentIndicatorIsVisible(String msg)
+			throws Exception {
+		return getDialogPage().waitForUnsentIndicator(msg);
+	}
+
+	public boolean waitUntilUnsentIndicatorIsVisibleForAPicture()
+			throws Exception {
+		return getDialogPage().waitForAPictureWithUnsentIndicator();
+	}
+
+	public void tapPlayPauseButton() throws Exception {
+		getDialogPage().tapPlayPauseBtn();
+	}
+
+	public boolean waitUntilClosePicturePreviewButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idCloseImageBtn));
+	}
+
+	public boolean waitUntilClosePicturePreviewButtonInvisible()
+			throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.id(idCloseImageBtn));
+	}
+
+	public void tapClosePicturePreviewButton() throws Exception {
+		getDriver().findElement(By.id(idCloseImageBtn)).click();
+	}
+
+	public boolean waitUntilGiphyButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(giphyPreviewButtonId));
+	}
+
+	public boolean waitUntilGiphyButtonInvisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.id(giphyPreviewButtonId));
+	}
+
+	public void tapGiphyButton() throws Exception {
+		this.getDriver().findElement(By.id(giphyPreviewButtonId)).click();
+	}
+
+	public void tapSketchButton() throws Exception {
+		getDialogPage().tapSketchBtn();
+	}
+
+	public Optional<BufferedImage> getImageScreenshotInFullScreen()
+			throws Exception {
+		return getDialogPage().getLastImageInFullScreen();
+	}
+
+	public void tapSketchButtonOnPicturePreview() throws Exception {
+		getDialogPage().tapSketchOnImageButton();
+	}
+
+	public BufferedImage getMediaButtonScreenshot() throws Exception {
+		return getDialogPage().getMediaControlButtonScreenshot();
+	}
+
+	public boolean scrollUpUntilMediaBarVisible(final int maxScrollRetries)
+			throws Exception {
+		return getDialogPage().scrollUpUntilMediaBarVisible(maxScrollRetries);
+	}
+
+	public void tapMediaBarControlButton() throws Exception {
+		getDialogPage().tapPlayPauseMediaBarBtn();
 	}
 }

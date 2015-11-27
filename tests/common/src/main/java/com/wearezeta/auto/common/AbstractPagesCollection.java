@@ -7,33 +7,32 @@ import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 
-public abstract class AbstractPagesCollection {
+public abstract class AbstractPagesCollection<B extends BasePage> {
 
 	private final Logger log = ZetaLogger.getLog(this.getClass()
 			.getSimpleName());
 
-	private final Map<Class<? extends BasePage>, BasePage> pagesMapping = new LinkedHashMap<Class<? extends BasePage>, BasePage>();
+	protected final Map<Class<? extends BasePage>, B> pagesMapping = new LinkedHashMap<>();
 
-	public BasePage getCommonPage() throws Exception {
-		if (pagesMapping.size() == 0) {
+	public B getCommonPage() throws Exception {
+		if (pagesMapping.isEmpty()) {
 			throw new IllegalStateException(
 					"No pages are created yet! Please set the first page first!");
 		}
-		return pagesMapping.get(pagesMapping.keySet().iterator().next());
+		return (B) pagesMapping.get(pagesMapping.keySet().iterator().next());
 	}
 
-	public BasePage getPage(Class<? extends BasePage> pageClass)
-			throws Exception {
+	public <T extends B> T getPage(Class<T> pageClass) throws Exception {
 		if (!pagesMapping.containsKey(pageClass)) {
 			this.printPages();
 			log.debug(String.format(" > +++ %s", pageClass.getSimpleName()));
 			pagesMapping.put(pageClass,
 					getCommonPage().instantiatePage(pageClass));
 		}
-		return pagesMapping.get(pageClass);
+		return pageClass.cast(pagesMapping.get(pageClass));
 	}
 
-	public boolean removePage(Class<? extends BasePage> pageClass) {
+	public boolean removePage(Class<? extends B> pageClass) {
 		if (!pagesMapping.containsKey(pageClass)) {
 			return false;
 		}
@@ -41,7 +40,7 @@ public abstract class AbstractPagesCollection {
 		return true;
 	}
 
-	public boolean hasPage(Class<? extends BasePage> pageClass) {
+	public <T extends B> boolean hasPage(Class<T> pageClass) {
 		return this.pagesMapping.containsKey(pageClass);
 	}
 
@@ -54,7 +53,7 @@ public abstract class AbstractPagesCollection {
 		}
 	}
 
-	public void setFirstPage(BasePage page) {
+	public <T extends B> void setFirstPage(T page) {
 		if (page == null) {
 			throw new IllegalStateException(
 					"Page object should be defined! 'null' values are not acceptable.");
@@ -66,7 +65,7 @@ public abstract class AbstractPagesCollection {
 	}
 
 	public void printPages() {
-		if (pagesMapping.size() == 0) {
+		if (pagesMapping.isEmpty()) {
 			log.debug("No pages are currently created");
 			return;
 		}

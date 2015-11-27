@@ -4,12 +4,12 @@ import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.web.pages.PagesCollection;
+import com.wearezeta.auto.web.pages.PendingConnectionsPage;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -18,6 +18,8 @@ import org.junit.Assert;
 public class PendingConnectionsPageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
+			.getInstance();
 
 	/**
 	 * Checks if given mail is present in connection request from user
@@ -25,32 +27,29 @@ public class PendingConnectionsPageSteps {
 	 *
 	 * @step. ^I see mail (.*)in connection request from user (.*)$
 	 *
-	 * @param user
+	 * @param userAlias
 	 *            name of user which sent connection request
 	 * @param mailAlias
 	 *            the mail alias to test for when mail alias is shown
 	 * @throws Exception
 	 */
 	@Then("^I see mail (.*)in connection request from user (.*)$")
-	public void ICanSeeEmailFromUser(String mailAlias, String user)
+	public void ICanSeeEmailFromUser(String mailAlias, String userAlias)
 			throws Exception {
-		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
+		ClientUser user = usrMgr.findUserBy(userAlias, FindBy.NAME_ALIAS);
 		mailAlias = mailAlias.trim();
 		if ("".equals(mailAlias)) {
 			// no mail given. just check if any text is in mail field
-			Assert.assertFalse(PagesCollection.pendingConnectionsPage
-					.getEmailByName(user).isEmpty());
+			assertThat(
+					webappPagesCollection.getPage(PendingConnectionsPage.class)
+							.getEmailByName(user.getId()), not(equalTo("")));
 		} else {
 			// mail given. strict check for mail
-			String email = null;
-			try {
-				email = usrMgr.findUserByEmailOrEmailAlias(mailAlias)
-						.getEmail();
-			} catch (NoSuchUserException e) {
-				// Ignore silently
-			}
-			Assert.assertTrue(PagesCollection.pendingConnectionsPage
-					.getEmailByName(user).equals(email));
+			String email = user.getEmail();
+			assertThat(
+					webappPagesCollection.getPage(PendingConnectionsPage.class)
+							.getEmailByName(user.getId()).toLowerCase(),
+					equalTo(email));
 
 		}
 	}
@@ -70,8 +69,9 @@ public class PendingConnectionsPageSteps {
 	public void ISeeConnectionMessageFromUser(String message, String user)
 			throws Exception {
 		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
-		Assert.assertTrue(PagesCollection.pendingConnectionsPage
-				.getMessageByName(user).equals(message));
+		Assert.assertTrue(webappPagesCollection
+				.getPage(PendingConnectionsPage.class).getMessageByName(user)
+				.equals(message));
 
 	}
 
@@ -85,10 +85,10 @@ public class PendingConnectionsPageSteps {
 	 */
 	@Then("^I see avatar in connection request from user (.*)$")
 	public void ISeeAvatarFromUser(String nameAlias) throws Exception {
-		//user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
+		// user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(nameAlias);
-		Assert.assertTrue(PagesCollection.pendingConnectionsPage
-				.isAvatarByIdVisible(user.getId()));
+		Assert.assertTrue(webappPagesCollection.getPage(
+				PendingConnectionsPage.class).isAvatarByIdVisible(user.getId()));
 
 	}
 
@@ -105,7 +105,8 @@ public class PendingConnectionsPageSteps {
 	public void ISeeAcceptButtonConnectionFromUser(String userAlias)
 			throws Exception {
 		ClientUser user = usrMgr.findUserBy(userAlias, FindBy.NAME_ALIAS);
-		Assert.assertTrue(PagesCollection.pendingConnectionsPage
+		Assert.assertTrue(webappPagesCollection.getPage(
+				PendingConnectionsPage.class)
 				.isAcceptRequestButtonForUserVisible(user.getId()));
 	}
 
@@ -114,16 +115,17 @@ public class PendingConnectionsPageSteps {
 	 * visible
 	 *
 	 * @step. ^I see ignore button in connection request from user (.*)$
-	 * @param user
+	 * @param userAlias
 	 *            name of user which sent connection request
 	 * @throws Exception
 	 */
 	@Then("^I see ignore button in connection request from user (.*)$")
-	public void ISeeIgnoreButtonConnectionFromUser(String user)
+	public void ISeeIgnoreButtonConnectionFromUser(String userAlias)
 			throws Exception {
-		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
-		Assert.assertTrue(PagesCollection.pendingConnectionsPage
-				.isIgnoreRequestButtonForUserVisible(user));
+		ClientUser user = usrMgr.findUserBy(userAlias, FindBy.NAME_ALIAS);
+		Assert.assertTrue(webappPagesCollection.getPage(
+				PendingConnectionsPage.class)
+				.isIgnoreRequestButtonForUserVisible(user.getId()));
 	}
 
 	/**
@@ -141,8 +143,9 @@ public class PendingConnectionsPageSteps {
 			String userAlias) throws Exception {
 		ClientUser user = usrMgr.findUserBy(userAlias, FindBy.NAME_ALIAS);
 		AccentColor accentColor = usrMgr.getSelfUser().getAccentColor();
-		assertThat(PagesCollection.pendingConnectionsPage
-				.getAcceptRequestButtonBgColor(user.getId()),equalTo(accentColor));
+		assertThat(webappPagesCollection.getPage(PendingConnectionsPage.class)
+				.getAcceptRequestButtonBgColor(user.getId()),
+				equalTo(accentColor));
 	}
 
 	/**
@@ -151,17 +154,59 @@ public class PendingConnectionsPageSteps {
 	 *
 	 * @step. ^I see correct color for ignore button in connection request from
 	 *        user (.*)$
-	 * @param user
+	 * @param userAlias
 	 *            name of user which sent connection request
 	 * @throws Exception
 	 */
 	@Then("^I see correct color for ignore button in connection request from user (.*)$")
-	public void ISeeCorrectColorForIgnoreButtonConnectionFromUser(String user)
-			throws Exception {
-		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
+	public void ISeeCorrectColorForIgnoreButtonConnectionFromUser(
+			String userAlias) throws Exception {
+		ClientUser user = usrMgr.findUserBy(userAlias, FindBy.NAME_ALIAS);
 		AccentColor accentColor = usrMgr.getSelfUser().getAccentColor();
-		Assert.assertTrue(PagesCollection.pendingConnectionsPage
-				.getIgnoreRequestButtonBorderColor(user).equals(accentColor));
+		Assert.assertTrue(webappPagesCollection
+				.getPage(PendingConnectionsPage.class)
+				.getIgnoreRequestButtonBorderColor(user.getId())
+				.equals(accentColor));
+	}
+
+	/**
+	 * Check number of avatars under "you both know"
+	 * 
+	 * @step. ^I see an amount of (\\d+) avatars in known connections in
+	 *        connection request from user (.*)$
+	 * @param amount
+	 *            amount of avatars
+	 * @param nameAlias
+	 *            name of user who sent connection request
+	 * @throws Throwable
+	 */
+	@When("^I see an amount of (\\d+) avatars? in known connections in connection request from user (.*)$")
+	public void ISeeXAvatarsInConnectionRequest(int amount, String nameAlias)
+			throws Throwable {
+		ClientUser user = usrMgr.findUserBy(nameAlias, FindBy.NAME_ALIAS);
+		assertThat(webappPagesCollection.getPage(PendingConnectionsPage.class)
+				.getAmountOfKnownConnectionAvatars(user.getId()),
+				equalTo(amount));
+	}
+
+	/**
+	 * Check number of others (not avatars) under "you both know"
+	 * 
+	 * @step. ^I see an amount of (\\d+) others in known connections in
+	 *        connection request from user (.*)$
+	 * @param amount
+	 *            amount of avatars
+	 * @param nameAlias
+	 *            name of user who sent connection request
+	 * @throws Throwable
+	 */
+	@When("^I see an amount of (\\d+) others in known connections in connection request from user (.*)$")
+	public void ISeeXOthersInConnectionRequest(int amount, String nameAlias)
+			throws Throwable {
+		ClientUser user = usrMgr.findUserBy(nameAlias, FindBy.NAME_ALIAS);
+		assertThat(webappPagesCollection.getPage(PendingConnectionsPage.class)
+				.getOthersTextOfKnownConnections(user.getId()), equalTo("+"
+				+ amount));
 	}
 
 	/**
@@ -177,8 +222,8 @@ public class PendingConnectionsPageSteps {
 	public void IAcceptConnectionRequestFromUser(String userAlias)
 			throws Exception {
 		ClientUser user = usrMgr.findUserBy(userAlias, FindBy.NAME_ALIAS);
-		PagesCollection.pendingConnectionsPage.acceptRequestFromUser(user
-				.getId());
+		webappPagesCollection.getPage(PendingConnectionsPage.class)
+				.acceptRequestFromUser(user.getId());
 	}
 
 	/**
@@ -186,14 +231,16 @@ public class PendingConnectionsPageSteps {
 	 * 
 	 * @step. ^I ignore connection request from user (.*)$
 	 * 
-	 * @param user
+	 * @param userAlias
 	 *            name of user which sent connection request
 	 * @throws Exception
 	 */
 	@When("^I ignore connection request from user (.*)$")
-	public void IIgnoreConnectionRequestFromUser(String user) throws Exception {
-		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
-		PagesCollection.pendingConnectionsPage.ignoreRequestFromUser(user);
+	public void IIgnoreConnectionRequestFromUser(String userAlias)
+			throws Exception {
+		ClientUser user = usrMgr.findUserBy(userAlias, FindBy.NAME_ALIAS);
+		webappPagesCollection.getPage(PendingConnectionsPage.class)
+				.ignoreRequestFromUser(user.getId());
 	}
 
 }

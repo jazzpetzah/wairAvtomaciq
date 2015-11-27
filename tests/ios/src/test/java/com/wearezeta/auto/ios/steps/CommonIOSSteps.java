@@ -39,7 +39,7 @@ public class CommonIOSSteps {
 
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 	private static final String DEFAULT_USER_AVATAR = "android_dialog_sendpicture_result.png";
-	private Date testStartedDate;
+	private Date testStartedDate = new Date();
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
 			.getInstance();
@@ -53,7 +53,10 @@ public class CommonIOSSteps {
 	}
 
 	public static final Platform CURRENT_PLATFORM = Platform.iOS;
-	public static final String PLATFORM_VERSION = "8.3";
+
+	private static String getPlatformVersion() throws Exception {
+		return CommonUtils.getPlatformVersionFromConfig(CommonIOSSteps.class);
+	}
 
 	private static String getUrl() throws Exception {
 		return CommonUtils.getIosAppiumUrlFromConfig(CommonIOSSteps.class);
@@ -72,15 +75,20 @@ public class CommonIOSSteps {
 		CommonIOSSteps.skipBeforeAfter = skipBeforeAfter;
 	}
 
-	@SuppressWarnings("unchecked")
 	public Future<ZetaIOSDriver> resetIOSDriver(boolean enableAutoAcceptAlerts)
 			throws Exception {
+		return resetIOSDriver(enableAutoAcceptAlerts, false);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Future<ZetaIOSDriver> resetIOSDriver(boolean enableAutoAcceptAlerts,
+			boolean overrideWaitForAppScript) throws Exception {
 		final DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
 		capabilities.setCapability("app", getPath());
 		final String deviceName = CommonUtils.getDeviceName(this.getClass());
 		capabilities.setCapability("deviceName", deviceName);
-		capabilities.setCapability("platformVersion", PLATFORM_VERSION);
+		capabilities.setCapability("platformVersion", getPlatformVersion());
 		capabilities.setCapability("sendKeyStrategy", "grouped");
 		final String backendType = CommonUtils.getBackendType(this.getClass());
 		capabilities
@@ -90,6 +98,11 @@ public class CommonIOSSteps {
 								+ backendType);
 		if (enableAutoAcceptAlerts) {
 			capabilities.setCapability("autoAcceptAlerts", true);
+		}
+
+		if (overrideWaitForAppScript) {
+			capabilities.setCapability("waitForAppScript",
+					"$.delay(20000); true;");
 		}
 
 		setTestStartedDate(new Date());
@@ -152,6 +165,18 @@ public class CommonIOSSteps {
 	}
 
 	/**
+	 * Dismiss all alerts that appears before timeout
+	 * 
+	 * @step. ^I dismiss all alerts$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I dismiss all alerts$")
+	public void IDismissAllAlerts() throws Exception {
+		pagesCollecton.getCommonPage().dismissAllAlerts();
+	}
+
+	/**
 	 * Hide keyboard using mobile command
 	 * 
 	 * @step. ^I hide keyboard$
@@ -185,6 +210,18 @@ public class CommonIOSSteps {
 	@When("I click space keyboard button")
 	public void IClickSpaceKeyboardButton() throws Exception {
 		pagesCollecton.getCommonPage().clickSpaceKeyboardButton();
+	}
+
+	/**
+	 * Click on Done button on keyboard
+	 * 
+	 * @step. I click DONE keyboard button
+	 * 
+	 * @throws Exception
+	 */
+	@When("I click DONE keyboard button")
+	public void IClickDoneKeyboardButton() throws Exception {
+		pagesCollecton.getCommonPage().clickDoneKeyboardButton();
 	}
 
 	/**
@@ -232,7 +269,7 @@ public class CommonIOSSteps {
 	/**
 	 * Removes user from group conversation
 	 * 
-	 * @step. ^User (.*) removed user (.*) from group chat (.*)
+	 * @step. ^(.*) removed (.*) from group chat (.*)$
 	 * 
 	 * @param chatOwnerNameAlias
 	 *            name of the user who deletes
@@ -244,11 +281,31 @@ public class CommonIOSSteps {
 	 *            name of the group conversation
 	 * @throws Exception
 	 */
-	@Given("^(.*) removed (.*) from group chat (.*)")
+	@Given("^(.*) removed (.*) from group chat (.*)$")
 	public void UserARemovedUserBFromGroupChat(String chatOwnerNameAlias,
 			String userToRemove, String chatName) throws Exception {
 		commonSteps.UserXRemoveContactFromGroupChat(chatOwnerNameAlias,
 				userToRemove, chatName);
+	}
+
+	/**
+	 * Adding user to group conversation
+	 * 
+	 * @step. ^(.*) added (.*) to group chat (.*)
+	 * 
+	 * @param chatOwnerNameAlias
+	 *            name of the user who is adding
+	 * @param userToAdd
+	 *            name of the user to be added
+	 * @param chatName
+	 *            name of the group conversation
+	 * @throws Exception
+	 */
+	@When("^(.*) added (.*) to group chat (.*)")
+	public void UserXaddUserBToGroupChat(String chatOwnerNameAlias,
+			String userToAdd, String chatName) throws Exception {
+		commonSteps.UserXAddedContactsToGroupChat(chatOwnerNameAlias,
+				userToAdd, chatName);
 	}
 
 	/**
@@ -289,10 +346,67 @@ public class CommonIOSSteps {
 		IChangeUserAvatarPicture(myNameAlias, "default");
 	}
 
+	/**
+	 * Creates specified number of users and sets user with specified name as
+	 * main user. The user is registered with a phone number only and has no
+	 * email address attached
+	 *
+	 * @step. ^There (?:is|are) (\\d+) users? where (.*) is me with phone number
+	 *        only$
+	 *
+	 * @param count
+	 *            number of users to create
+	 * @param myNameAlias
+	 *            user name or name alias to use as main user
+	 *
+	 * @throws Exception
+	 */
+	@Given("^There (?:is|are) (\\d+) users? where (.*) is me with phone number only$")
+	public void ThereAreNUsersWhereXIsMeWithoutEmail(int count,
+			String myNameAlias) throws Exception {
+		commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(
+				CURRENT_PLATFORM, count, myNameAlias);
+	}
+
+	/**
+	 * Creates specified number of users and sets user with specified name as
+	 * main user. The user is registered with a email only and has no phone
+	 * number attached
+	 *
+	 * @step. ^There (?:is|are) (\\d+) users? where (.*) is me with email only$
+	 *
+	 * @param count
+	 *            number of users to create
+	 * @param myNameAlias
+	 *            user name or name alias to use as main user
+	 *
+	 * @throws Exception
+	 */
+	@Given("^There (?:is|are) (\\d+) users? where (.*) is me with email only$")
+	public void ThereAreNUsersWhereXIsMeWithoutPhone(int count,
+			String myNameAlias) throws Exception {
+		commonSteps.ThereAreNUsersWhereXIsMeRegOnlyByMail(CURRENT_PLATFORM,
+				count, myNameAlias);
+	}
+
 	@When("^(.*) ignore all requests$")
 	public void IgnoreAllIncomingConnectRequest(String userToNameAlias)
 			throws Exception {
 		commonSteps.IgnoreAllIncomingConnectRequest(userToNameAlias);
+	}
+	
+	/**
+	 * 
+	 * Cancel all connection requests in pending status
+	 * @step. ^(.*) cancel all connection requests$
+	 * @param userToNameAlias
+	 * 		user name who will cancel requests
+	 * @throws Exception
+	 */
+	@When("^(.*) cancel all connection requests$")
+	public void CancelAllIncomingConnectRequest(String userToNameAlias)
+			throws Exception {
+		commonSteps.CancelAllConnectRequests(userToNameAlias);
 	}
 
 	@When("^I wait for (\\d+) seconds?$")
@@ -371,6 +485,18 @@ public class CommonIOSSteps {
 				archivedUserNameAlias);
 	}
 
+	/**
+	 * Call method in BackEnd that should generate new verification code
+	 * 
+	 * @param user
+	 *            user name
+	 * @throws Exception
+	 */
+	@When("New verification code is generated for user (.*)")
+	public void newVerificationCodeGenrated(String user) throws Exception {
+		commonSteps.GenerateNewLoginCode(user);
+	}
+
 	@When("^(.*) accept all requests$")
 	public void AcceptAllIncomingConnectionRequests(String userToNameAlias)
 			throws Exception {
@@ -421,7 +547,17 @@ public class CommonIOSSteps {
 						: name));
 	}
 
-	@When("^User (\\w+) change name to (.*)$")
+	/**
+	 * Change user name on the backend
+	 * 
+	 * @param userNameAlias
+	 *            user's name alias to change
+	 * @param newName
+	 *            new given name
+	 * @throws Exception
+	 * @step. ^User (\\w+) changes? name to (.*)$
+	 */
+	@When("^User (\\w+) changes? name to (.*)$")
 	public void IChangeUserName(String userNameAlias, String newName)
 			throws Exception {
 		commonSteps.IChangeUserName(userNameAlias, newName);
@@ -487,7 +623,7 @@ public class CommonIOSSteps {
 			throw new Exception(
 					"Incorrect type of conversation specified (single user | group) expected.");
 		}
-		commonSteps.UserSendsImageToConversation(imageSenderUserNameAlias,
+		commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,
 				imagePath, dstConversationName, isGroup);
 	}
 
@@ -504,8 +640,7 @@ public class CommonIOSSteps {
 		pagesCollecton.clearAllPages();
 		IOSKeyboard.dispose();
 
-		if (CommonUtils.getIsSimulatorFromConfig(getClass())
-				&& !skipBeforeAfter) {
+		if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
 			IOSCommonUtils
 					.collectSimulatorLogs(
 							CommonUtils.getDeviceName(getClass()),
@@ -578,6 +713,18 @@ public class CommonIOSSteps {
 	@When("^I swipe left in current window$")
 	public void ISwipeLeftInCurrentWindow() throws Exception {
 		pagesCollecton.getCommonPage().swipeLeft(1000);
+	}
+
+	/**
+	 * General swipe action
+	 * 
+	 * @step. ^I swipe right in current window$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I swipe right in current window$")
+	public void ISwipeRightInCurrentWindow() throws Exception {
+		pagesCollecton.getCommonPage().swipeRight(1000);
 	}
 
 	/**

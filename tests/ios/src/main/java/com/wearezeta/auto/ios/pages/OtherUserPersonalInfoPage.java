@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.util.List;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
@@ -26,7 +27,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameAddContactToChatButton)
 	private WebElement addButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameOtherUserAddContactToChatButton)
 	private WebElement addOtherUserButton;
 
@@ -39,8 +40,17 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.DialogInfoPage.xpathArchiveButton)
 	private WebElement archiveButton;
 
+	@FindBy(how = How.XPATH, using = IOSLocators.ConversationActionMenu.xpathDeleteConversationButton)
+	private WebElement deleteButton;
+
+	@FindBy(how = How.XPATH, using = IOSLocators.ConversationActionMenu.xpathConfirmDeleteButton)
+	private WebElement confirmDeleteButton;
+
+	@FindBy(how = How.NAME, using = IOSLocators.ConversationActionMenu.nameAlsoLeaveCheckerButton)
+	private WebElement alsoLeaveButton;
+
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherPersonalInfoPageNameField)
-	private WebElement nameField;
+	private List<WebElement> nameField;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherPersonalInfoPageEmailField)
 	private WebElement emailField;
@@ -50,7 +60,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameOtherUserConversationMenu)
 	private WebElement otherUserConversationMenuButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameConversationMenu)
 	private WebElement conversationMenuButton;
 
@@ -63,18 +73,26 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameUnsilenceConversationButton)
 	private WebElement notifyMenuButton;
 
+	@FindBy(how = How.NAME, using = IOSLocators.nameBlockMenuButton)
+	private WebElement blockMenuButton;
+
+	@FindBy(how = How.NAME, using = IOSLocators.nameCancelButton)
+	private WebElement cancelButton;
+
+	@FindBy(how = How.XPATH, using = IOSLocators.ConversationActionMenu.xpathActionMenu)
+	private WebElement actionMenu;
+
 	public OtherUserPersonalInfoPage(Future<ZetaIOSDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
 	}
 
 	public void catchContinueAlert() throws Exception {
-		try {
+		if (DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(IOSLocators.nameContinueButton), 5)) {
 			WebElement el = this.getDriver().findElementByName(
 					IOSLocators.nameContinueButton);
+			DriverUtils.waitUntilElementClickable(getDriver(), el);
 			el.click();
-		} catch (NoSuchElementException ex) {
-			// do nothing
 		}
 	}
 
@@ -84,6 +102,20 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
 	public void clickArchiveMenuButton() {
 		archiveButton.click();
+	}
+
+	public void clickDeleteMenuButton() {
+		deleteButton.click();
+	}
+
+	public void clickConfirmDeleteButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), confirmDeleteButton);
+		confirmDeleteButton.click();
+	}
+
+	public void clickAlsoLeaveButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), alsoLeaveButton);
+		alsoLeaveButton.click();
 	}
 
 	public IOSPage leavePageToGroupInfoPage() throws Exception {
@@ -97,7 +129,8 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 	}
 
 	public PeoplePickerPage addContactToChat() throws Exception {
-		if (DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(IOSLocators.nameAddContactToChatButton), 2)) {
+		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.name(IOSLocators.nameAddContactToChatButton), 2)) {
 			addButton.click();
 		} else {
 			addOtherUserButton.click();
@@ -135,13 +168,22 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 	}
 
 	public String getNameFieldValue() {
-		return nameField.getAttribute("value");
+		if (nameField.size() == 1)
+			return nameField.get(0).getText();
+		else
+			for (WebElement el: nameField) {
+				if (!el.getText().trim().equals("")) {
+					return el.getText();
+				}
+			}
+		return "";
 	}
 
 	public String getEmailFieldValue() throws Exception {
 		String result = "";
 		try {
-			DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(IOSLocators.xpathOtherPersonalInfoPageEmailField));
+			DriverUtils.waitUntilLocatorAppears(getDriver(),
+					By.xpath(IOSLocators.xpathOtherPersonalInfoPageEmailField));
 			result = emailField.getAttribute("value");
 		} catch (NoSuchElementException ex) {
 
@@ -160,7 +202,8 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 	}
 
 	public void openConversationMenu() throws Exception {
-		if (DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(IOSLocators.nameConversationMenu), 2)) {
+		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.name(IOSLocators.nameConversationMenu), 2)) {
 			conversationMenuButton.click();
 		} else {
 			otherUserConversationMenuButton.click();
@@ -175,6 +218,19 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 	public void clickNotifyMenuButton() throws InterruptedException {
 		notifyMenuButton.click();
 		Thread.sleep(2000);
+	}
+
+	public void clickBlockMenuButton() {
+		blockMenuButton.click();
+	}
+
+	public void clickCancelButton() {
+		cancelButton.click();
+	}
+
+	public boolean isActionMenuVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.xpath(IOSLocators.ConversationActionMenu.xpathActionMenu));
 	}
 
 	@Override

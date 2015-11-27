@@ -30,6 +30,11 @@ public class IOSCommonUtils {
 			NSDictionary rootDict = (NSDictionary) PropertyListParser
 					.parse(file);
 			clientBuild = rootDict.objectForKey("CFBundleVersion").toString();
+			String trackInfo = rootDict.objectForKey("WireBundleId").toString();
+			String majorVersion = rootDict.objectForKey("CFBundleShortVersionString").toString();
+			trackInfo = trackInfo.substring(trackInfo.indexOf("-") + 1, trackInfo.length());
+			clientBuild = majorVersion + "." + clientBuild + "-" + trackInfo;
+			log.info("Got build number: " + clientBuild);
 			NSDictionary zcBuildInfo = (NSDictionary) rootDict
 					.objectForKey("ZCBuildInfo");
 			NSDictionary zmessagingDict = (NSDictionary) zcBuildInfo
@@ -128,7 +133,7 @@ public class IOSCommonUtils {
 						new String[] {
 								"/bin/bash",
 								"-c",
-								"xcrun simctl list devices | grep -i '"
+								"xcrun simctl list devices | grep -v 'unavailable' | grep -i '"
 										+ deviceName
 										+ "' | tail -n 1 | cut -d '(' -f2 | cut -d ')' -f1" })
 				.trim();

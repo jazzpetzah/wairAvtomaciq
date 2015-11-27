@@ -144,4 +144,86 @@ public class OtherUserPersonalInfoPageSteps {
 	public void IClickArchiveMenu() throws Exception {
 		getOtherUserPersonalInfoPage().clickArchiveMenuButton();
 	}
+
+	/**
+	 * Click delete menu button in ellipsis menu
+	 * 
+	 * @step. ^I click delete menu button$
+	 * @throws Exception
+	 */
+	@When("^I click delete menu button$")
+	public void IClickDeleteMenu() throws Exception {
+		getOtherUserPersonalInfoPage().clickDeleteMenuButton();
+	}
+
+	/**
+	 * Click delete to confirm conversation content deletion
+	 * 
+	 * @step. ^I confirm delete conversation content$
+	 * @throws Exception
+	 */
+	@When("^I confirm delete conversation content$")
+	public void IConfirmDelete() throws Exception {
+		getOtherUserPersonalInfoPage().clickConfirmDeleteButton();
+	}
+	
+	/**
+	 * Select Also Leave option on Delete conversation dialog
+	 * 
+	 * @step. ^I select Also Leave option on Delete conversation dialog$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I select Also Leave option on Delete conversation dialog$")
+	public void ISelectAlsoLeaveOptionOnDeleteDialog() throws Exception {
+		getOtherUserPersonalInfoPage().clickAlsoLeaveButton();
+	}
+
+	/**
+	 * Clicks on the Block button in the profile menu
+	 * 
+	 * @step. ^I press menu Block button$
+	 * @throws Throwable
+	 */
+	@When("^I press menu Block button$")
+	public void IPressMenuBlockButton() throws Throwable {
+		getOtherUserPersonalInfoPage().clickBlockMenuButton();
+	}
+
+	/**
+	 * Confirms the blocking alert by clicking block
+	 * 
+	 * @step. ^I confirm blocking alert$
+	 * @throws Throwable
+	 */
+	@When("^I confirm blocking alert$")
+	public void IConfirmBlockingAlert() throws Throwable {
+		getOtherUserPersonalInfoPage().clickBlockMenuButton();
+	}
+
+	/**
+	 * Click on cancel button
+	 * 
+	 * @step. I click Cancel button
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click Cancel button$")
+	public void IClickCancelButton() throws Exception {
+		getOtherUserPersonalInfoPage().clickCancelButton();
+	}
+
+	/**
+	 * Verify if conversation action menu is visible
+	 * 
+	 * @step. I see conversation action menu
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see conversation action menu$")
+	public void ISeeConversationActionMenu() throws Exception {
+		Assert.assertTrue("Conversation action menu is not visible",
+				getOtherUserPersonalInfoPage().isActionMenuVisible());
+	}
+
 }

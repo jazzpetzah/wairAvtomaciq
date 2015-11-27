@@ -2,8 +2,8 @@
 #Configure before running tests
 iosAppiumUrl=${Url}
 iosApplicationPath=${appPath}
+platformVersion=${platformVersion}
 isSimulator=${isSimulator}
-generateUsers=${generateUsers}
 swipeScriptPath=${Root}/${swipeScriptPath}
 pathToUserpic=${Root}/${pathToUserpic}
 driverTimeoutSeconds=${driverTimeoutSeconds}
@@ -15,3 +15,4 @@ defaultEmail=${defaultEmail}
 deviceName=${deviceName}
 backendType=${backendType}
 pathToAddressBook=${Root}/${pathToAddressBook}
+rcNotificationsRecepients=${rcNotificationsRecepients}

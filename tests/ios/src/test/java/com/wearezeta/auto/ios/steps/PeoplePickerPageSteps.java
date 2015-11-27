@@ -5,13 +5,11 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.ContactListPage;
-import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.PeoplePickerPage;
 
 import cucumber.api.java.en.Then;
@@ -214,12 +212,14 @@ public class PeoplePickerPageSteps {
 
 	@When("I re-enter the people picker if CONNECT label is not there")
 	public void IRetryPeoplePickerIfNoConnectLabel() throws Exception {
-		while (!getPeoplePickerPage().isConnectLabelVisible()) {
-			IClickCloseButtonDismissPeopleView();
-			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
-				getСontactListPage().swipeDown(1000);
+		for (int i = 0; i < 3; i++) {
+			if (!getPeoplePickerPage().isConnectLabelVisible()) {
+				IClickCloseButtonDismissPeopleView();
+				Thread.sleep(5000);
+				getСontactListPage().openSearch();
+				getPeoplePickerPage().closeShareContactsIfVisible();
 			} else {
-				getСontactListPage().swipeDownSimulator();
+				break;
 			}
 		}
 	}
@@ -227,6 +227,16 @@ public class PeoplePickerPageSteps {
 	@When("^I tap on Search input on People picker page$")
 	public void WhenITapOnSearchInputOnPeoplePickerPage() throws Exception {
 		getPeoplePickerPage().tapOnPeoplePickerSearch();
+	}
+
+	@When("^I fill in Search field user name (.*)$")
+	public void WhenIFillInSearchFieldUserName(String contact) throws Exception {
+		try {
+			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		getPeoplePickerPage().inputTextInSearch(contact);
 	}
 
 	@When("^I input in People picker search field user name (.*)$")
@@ -253,6 +263,22 @@ public class PeoplePickerPageSteps {
 		getPeoplePickerPage().fillTextInPeoplePickerSearch(email);
 	}
 
+	/**
+	 * Input conversation name in Search input
+	 * 
+	 * @step. ^I input conversation name (.*) in Search input$
+	 * 
+	 * @param name
+	 *            exact conversation name
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I input conversation name (.*) in Search input$")
+	public void IInputConversationNameInSearchInput(String name)
+			throws Exception {
+		WhenIFillInSearchFieldUserName(name);
+	}
+
 	@When("I tap go to enter conversation")
 	public void IEnterConversation() throws Exception {
 		getPeoplePickerPage().goIntoConversation();
@@ -269,6 +295,63 @@ public class PeoplePickerPageSteps {
 		Assert.assertTrue("User: " + contact
 				+ " is not presented on People picker page",
 				getPeoplePickerPage().waitUserPickerFindUser(contact));
+	}
+
+	/**
+	 * Verify user is not found on people picker
+	 * 
+	 * @step. ^I see that user (.*) is NOT found on People picker page$
+	 * 
+	 * @param contact
+	 *            user name
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see that user (.*) is NOT found on People picker page$")
+	public void WhenISeeUserNotFoundOnPeoplePickerPage(String contact)
+			throws Exception {
+		try {
+			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		Assert.assertFalse("User: " + contact
+				+ " is presented on People picker page", getPeoplePickerPage()
+				.waitUserPickerFindUser(contact));
+	}
+
+	/**
+	 * Verify that conversation is not presented in search results
+	 * 
+	 * @step. ^I see conversation (.*) is NOT presented in Search results$
+	 * 
+	 * @param name
+	 *            conversation name to search
+	 * @throws Exception
+	 */
+	@When("^I see conversation (.*) is NOT presented in Search results$")
+	public void ISeeConversationIsNotFoundInSearchResult(String name)
+			throws Exception {
+		Assert.assertFalse("Conversation: " + name
+				+ " is presented in Search results", getPeoplePickerPage()
+				.waitUserPickerFindUser(name));
+	}
+
+	/**
+	 * Verify that conversation is presented in search results
+	 * 
+	 * @step. ^I see conversation (.*) is presented in Search results$
+	 * 
+	 * @param name
+	 *            conversation name to search
+	 * @throws Exception
+	 */
+	@When("^I see conversation (.*) is presented in Search results$")
+	public void ISeeConversationIsFoundInSearchResult(String name)
+			throws Exception {
+		Assert.assertTrue("Conversation: " + name
+				+ " is not presented in Search results", getPeoplePickerPage()
+				.waitUserPickerFindUser(name));
 	}
 
 	@When("^I tap on NOT connected user name on People picker page (.*)$")
@@ -309,7 +392,24 @@ public class PeoplePickerPageSteps {
 		double score = getPeoplePickerPage().checkAvatarClockIcon(contact);
 		Assert.assertTrue(
 				"Avatar with clock icon is not correct - overlap score is only: "
-						+ score, score > 0.50);
+						+ score, score > 0.49);
+	}
+
+	/**
+	 * Verifies that pending clock is not visible on searched avatar
+	 * 
+	 * @step. ^I see the user (.*) avatar without the pending clock$
+	 * @param name
+	 *            of contact without pending clock
+	 * @throws Throwable
+	 */
+	@Then("^I see the user (.*) avatar without the pending clock$")
+	public void ISeeTheUserAvatarWithoutThePendingClock(String name)
+			throws Throwable {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		double score = getPeoplePickerPage().checkAvatarClockIcon(name);
+		Assert.assertFalse("Avatar icon still has a clock - overlap score is: "
+				+ score, score < 0.50);
 	}
 
 	@When("^I search for ignored user name (.*) and tap on it$")
@@ -345,6 +445,18 @@ public class PeoplePickerPageSteps {
 	public void WhenIClickClearButton() throws Exception {
 		getPeoplePickerPage().dismissPeoplePicker();
 	}
+	
+	/**
+	 * Click on close button to dismiss Invite list
+	 * 
+	 * @step. ^I click close Invite list button$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click close Invite list button$")
+	public void WhenIClickCloseInviteListButton() throws Exception {
+		getPeoplePickerPage().closeInviteList();
+	}
 
 	/**
 	 * Select pointed amount of contacts from top people in a row starting from
@@ -377,6 +489,21 @@ public class PeoplePickerPageSteps {
 				numberOfTopConnections, contact);
 	}
 
+	/**
+	 * Tap on top connection contact avatar by pointed id order
+	 * 
+	 * @step. I tap on (\\d+)\\w+ top connection contact
+	 * 
+	 * @param i
+	 *            contact order in top peoples
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap on (\\d+)\\w+ top connection contact$")
+	public void IClickOnTopConnectionByOrder(int i) throws Exception {
+		getPeoplePickerPage().tapOnTopConnectionAvatarByOrder(i);
+	}
+
 	@When("I click on connected user (.*) avatar on People picker page")
 	public void IClickOnUserIconToAddItToExistingGroupChat(String contact)
 			throws Throwable {
@@ -400,6 +527,20 @@ public class PeoplePickerPageSteps {
 	public void ISelectUserOnPeoplePickerPage(String name) throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		getPeoplePickerPage().selectUser(name);
+	}
+
+	/**
+	 * Click on conversation in search result with pointed name
+	 * 
+	 * @step. ^I tap on conversation (.*) in search result$
+	 * 
+	 * @param name
+	 *            conversation name
+	 * @throws Exception
+	 */
+	@When("^I tap on conversation (.*) in search result$")
+	public void ITapOnConversationFromSearch(String name) throws Exception {
+		ISelectUserOnPeoplePickerPage(name);
 	}
 
 	@When("I see Create Conversation button on People picker page")
@@ -472,11 +613,25 @@ public class PeoplePickerPageSteps {
 	 * Unblocks a blocked user by clicking the unblock button
 	 * 
 	 * @step. I unblock user
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I unblock user$")
 	public void IUnblockUser() throws Exception {
 		getPeoplePickerPage().unblockUser();
+	}
+
+	/**
+	 * Unblocks a blocked user by clicking the unblock button for iPad
+	 * 
+	 * @step. I unblock user on iPad
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I unblock user on iPad$")
+	public void IUnblockUserOniPad() throws Exception {
+		getPeoplePickerPage().unblockUserOniPad();
 	}
 
 	/**
@@ -609,11 +764,40 @@ public class PeoplePickerPageSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I see action buttons appeared on People picker page")
+	@When("^I see action buttons appeared on People picker page$")
 	public void ISeeActionButttonsAppearedOnPeoplePickerPage() throws Exception {
 		ISeeOpenConversationActionButton();
 		ISeeCallActionButtonOnPeoplePickerPage();
 		ISeeSendImageActionButtonOnPeoplePickerPage();
 	}
 
+	/**
+	 * Verify that Open, Call and Send image action buttons are NOT visible
+	 * 
+	 * @step. ^I see action buttons disappeared on People picker page
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see action buttons disappeared on People picker page$")
+	public void ISeeActionButttonsDisappearedOnPeoplePickerPage()
+			throws Exception {
+		Assert.assertFalse("Open conversation button is still visible",
+				getPeoplePickerPage().isOpenConversationButtonVisible());
+		Assert.assertFalse("Call action button is still visible",
+				getPeoplePickerPage().isCallButtonVisible());
+		Assert.assertFalse("Send image action button is still visible",
+				getPeoplePickerPage().isSendImageButtonVisible());
+	}
+
+	/**
+	 * Opens conversation from the action button in people picker
+	 * 
+	 * @step. ^I click open conversation action button on People picker page$
+	 * @throws Throwable
+	 */
+	@When("^I click open conversation action button on People picker page$")
+	public void IClickOpenConversationActionButtonOnPeoplePickerPage()
+			throws Throwable {
+		getPeoplePickerPage().clickOpenConversationButton();
+	}
 }

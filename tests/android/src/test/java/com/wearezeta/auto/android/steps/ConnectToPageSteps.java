@@ -38,6 +38,8 @@ public class ConnectToPageSteps {
 				getConnectToPage().isConnectToHeaderVisible(contact));
 	}
 
+	private final static int MAX_USERS = 5;
+
 	/**
 	 * Scroll to gived user in the inbox
 	 * 
@@ -50,7 +52,7 @@ public class ConnectToPageSteps {
 	@When("^I scroll to inbox contact (.*)$")
 	public void WhenIScrollToInboxContact(String contact) throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		getConnectToPage().scrollToInboxContact(contact);
+		getConnectToPage().scrollToInboxContact(contact, MAX_USERS);
 	}
 
 	/**
@@ -136,33 +138,6 @@ public class ConnectToPageSteps {
 	}
 
 	/**
-	 * Taps on the connection request message to put it in focus. Note: The
-	 * message is also cleared (method name does not suggest this).
-	 * 
-	 * @step. ^I tap on edit connect request field$
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I tap on edit connect request field$")
-	public void WhenITapOnEditConnectRequestField() throws Exception {
-		getConnectToPage().tapEditConnectionRequest();
-	}
-
-	/**
-	 * Types a message into the connect message input area
-	 * 
-	 * @step. ^I type Connect request \"(.*)\"$
-	 * 
-	 * @param message
-	 *            The message to be sent
-	 * @throws Exception
-	 */
-	@When("^I type Connect request \"(.*)\"$")
-	public void WhenITypeConnectRequest(String message) throws Exception {
-		getConnectToPage().typeConnectionRequest(message);
-	}
-
-	/**
 	 * Checks to see if the connect button is either enabled or disabled (true
 	 * or false)
 	 * 
@@ -193,6 +168,18 @@ public class ConnectToPageSteps {
 	/**
 	 * Taps the connect button to send a connection request
 	 * 
+	 * @step. ^I click left Connect button$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click left Connect button$")
+	public void WhenIClickLeftConnectButton() throws Exception {
+		getConnectToPage().pressLeftConnectButton();
+	}
+
+	/**
+	 * Taps the connect button to send a connection request
+	 * 
 	 * @step. ^I click [Cc]onnect button on connect to page$
 	 * 
 	 * @throws Exception
@@ -203,15 +190,39 @@ public class ConnectToPageSteps {
 	}
 
 	/**
+	 * Click ellipsis button to open additional menu items
+	 * 
+	 * @step. ^I click ellipsis button$"
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click ellipsis button$")
+	public void IClickEllipsisButton() throws Exception {
+		getConnectToPage().clickEllipsisButton();
+	}
+
+	/**
 	 * Blocks an incoming connection request
 	 * 
 	 * @step. ^I click Block button on connect to page$
 	 * @throws Exception
 	 * 
 	 */
-	@When("^I click Block button on connect to page$")
+	@When("^I click Block button$")
 	public void IClickBlockButton() throws Exception {
 		getConnectToPage().clickBlockBtn();
+	}
+
+	/**
+	 * Unblocks an incoming connection request
+	 * 
+	 * @step. ^I click Unblock button on connect to page$
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I click Unblock button$")
+	public void IClickUnblockButton() throws Exception {
+		getConnectToPage().clickUnblockBtn();
 	}
 
 	/**

@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
+import java.util.List;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -9,11 +10,15 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class ConnectToPage extends AndroidPage {
 	public static final String idConnectToHeader = "taet__participants__header";
+	@FindBy(id = idConnectToHeader)
+	private WebElement connectToHeader;
+
+	@FindBy(id = idConnectToHeader)
+	private List<WebElement> connectToHeaders;
 
 	private static final Function<String, String> xpathConnectToHeaderByText = text -> String
 			.format("//*[@id='taet__participants__header' and @value='%s']",
@@ -23,16 +28,21 @@ public class ConnectToPage extends AndroidPage {
 	@FindBy(id = idConnectRequestAccept)
 	private WebElement connectAcceptBtn;
 
+	private static final Function<String, String> xpathAcceptButtonByHeaderText = text -> String
+			.format("//*[@id='ll__connect_request__main_container' and .%s]//*[@id='%s']",
+					xpathConnectToHeaderByText.apply(text),
+					idConnectRequestAccept);
+
+	@FindBy(id = idConnectRequestAccept)
+	private List<WebElement> connectAcceptBtns;
+
 	private static final String idConnectRequestIgnore = "zb__connect_request__ignore_button";
 	@FindBy(id = idConnectRequestIgnore)
 	private WebElement connectIgnoreBtn;
 
-	private static final String idPaticipantsPendingLabel = "ttv__participants__left_label";
-	@FindBy(id = idPaticipantsPendingLabel)
-	private WebElement pendingText;
-
-	@FindBy(id = PeoplePickerPage.idConnectionRequiesMessage)
-	private WebElement connectionRequestMessage;
+	private static final Function<String, String> xpathUserDetailsLeftButton = label -> String
+			.format("//*[@id='ttv__participants__left_label' and @value='%s']",
+					label);
 
 	@FindBy(id = PeoplePickerPage.idSendConnectionRequestButton)
 	private WebElement sendConnectionRequestButton;
@@ -44,25 +54,46 @@ public class ConnectToPage extends AndroidPage {
 	@FindBy(id = PeoplePickerPage.idParticipantsClose)
 	private WebElement closeButton;
 
+	private static final Function<String, String> xpathConnectMenuItemByText = text -> String
+			.format("//*[@id='ttv__settings_box__item' and @value='%s']",
+					text.toUpperCase());
+
 	@FindBy(id = OtherUserPersonalInfoPage.idRightActionButton)
-	private WebElement blockButton;
+	private WebElement ellipsisButton;
 
-	@FindBy(id = idConfirmBtn)
+	@FindBy(xpath = xpathConfirmBtn)
 	private WebElement confirmBtn;
-
-	// private final CommonSteps commonSteps = CommonSteps.getInstance();
 
 	public ConnectToPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
 
-	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
-		return null;
+	public void clickEllipsisButton() {
+		ellipsisButton.click();
 	}
 
-	public void clickBlockBtn() {
+	public void clickBlockBtn() throws Exception {
+		final By blockButtonLocator = By.xpath(xpathConnectMenuItemByText
+				.apply("Block"));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				blockButtonLocator);
+		final WebElement blockButton = getDriver().findElement(
+				blockButtonLocator);
+		DriverUtils.waitUntilElementClickable(getDriver(), blockButton);
 		blockButton.click();
+	}
+
+	public void clickUnblockBtn() throws Exception {
+		for (String id : new String[] {
+				OtherUserPersonalInfoPage.idConnectRequestUnblock,
+				OtherUserPersonalInfoPage.idSingleUserUnblock }) {
+			if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(id),
+					1)) {
+				getDriver().findElement(By.id(id)).click();
+				return;
+			}
+		}
+		throw new AssertionError("Unblock button is not visible");
 	}
 
 	public void pressConfirmBtn() throws Exception {
@@ -71,16 +102,8 @@ public class ConnectToPage extends AndroidPage {
 		confirmBtn.click();
 	}
 
-	public ContactListPage navigateBack() throws Exception {
-		// driver.navigate().back();
-		swipeRightCoordinates(1000);
-		return new ContactListPage(this.getLazyDriver());
-	}
-
-	private static final int MAX_SCROLLS = 8;
-
-	public boolean isConnectToHeaderVisible(String text) throws Exception {
-		final By locator = By.xpath(xpathConnectToHeaderByText.apply(text));
+	public boolean isConnectToHeaderVisible(String name) throws Exception {
+		final By locator = By.xpath(xpathConnectToHeaderByText.apply(name));
 		boolean result = DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				locator);
 		if (!result)
@@ -89,39 +112,41 @@ public class ConnectToPage extends AndroidPage {
 		return result;
 	}
 
-	public void scrollToInboxContact(String contactName) throws Exception {
-		scrollToInboxContact(contactName, MAX_SCROLLS);
-	}
-
-	public void scrollToInboxContact(String contactName, int maxScrolls)
+	public void scrollToInboxContact(String contactName, final int maxUsers)
 			throws Exception {
-		final By locator = By.xpath(xpathConnectToHeaderByText
+		final By locator = By.xpath(xpathAcceptButtonByHeaderText
 				.apply(contactName));
 		int ntry = 1;
+		final int SCROLL_POS_START = 48;
+		final int SCROLL_POS_END = 70;
+		final int maxScrolls = maxUsers
+				* (100 / (SCROLL_POS_END - SCROLL_POS_START) + 1);
 		do {
-			if (DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, 3)) {
-				log.debug("Locator had disappeared. Swipe #" + ntry);
-				this.waitUntilIgnoreButtonIsClickable();
-				this.swipeDownCoordinates(1000, 50);
+			if (DriverUtils
+					.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
 				return;
-			} else {
-				log.debug("Locator still visible. Swipe #" + ntry);
-				this.waitUntilIgnoreButtonIsClickable();
-				this.swipeUpCoordinates(1000, 50);
 			}
+			this.swipeByCoordinates(1000, 50, SCROLL_POS_END, 50,
+					SCROLL_POS_START);
 			ntry++;
 		} while (ntry <= maxScrolls);
-		this.waitUntilIgnoreButtonIsClickable();
 		throw new RuntimeException(
 				String.format(
-						"Failed to find user %s in the inbox after scrolling %s users!",
+						"Failed to find user %s in the inbox after scrolling %s times!",
 						contactName, maxScrolls));
 	}
 
 	public DialogPage pressAcceptConnectButton() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				connectAcceptBtn);
-		connectAcceptBtn.click();
+		if (connectAcceptBtn.getLocation().getY() > this.getDriver().manage()
+				.window().getSize().getHeight() / 2
+				&& connectAcceptBtn.getLocation().getY() < this.getDriver()
+						.manage().window().getSize().getHeight()) {
+			connectAcceptBtn.click();
+		} else {
+			connectAcceptBtns.get(1).click();
+		}
 		return new DialogPage(this.getLazyDriver());
 	}
 
@@ -142,18 +167,19 @@ public class ConnectToPage extends AndroidPage {
 	}
 
 	public boolean isPending() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				pendingText);
+		return DriverUtils.isElementPresentAndDisplayed(
+				getDriver(),
+				getDriver().findElement(
+						By.xpath(xpathUserDetailsLeftButton.apply("Pending"))));
 	}
 
-	public void tapEditConnectionRequest() throws Exception {
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(PeoplePickerPage.idConnectionRequiesMessage)) : "The invitation input field is not visible";
-		connectionRequestMessage.clear();
-	}
+	public void pressLeftConnectButton() throws Exception {
+		final WebElement leftConnectBtn = getDriver().findElement(
+				By.xpath(xpathUserDetailsLeftButton.apply("Connect")));
+		this.getWait().until(
+				ExpectedConditions.elementToBeClickable(leftConnectBtn));
+		leftConnectBtn.click();
 
-	public void typeConnectionRequest(String message) throws Exception {
-		connectionRequestMessage.sendKeys(message);
 	}
 
 	public ContactListPage pressConnectButton() throws Exception {

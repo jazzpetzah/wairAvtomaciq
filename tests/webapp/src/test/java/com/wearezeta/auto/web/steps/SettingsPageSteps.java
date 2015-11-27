@@ -2,7 +2,7 @@ package com.wearezeta.auto.web.steps;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.web.pages.PagesCollection;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.SettingsPage;
 import com.wearezeta.auto.web.pages.SettingsPage.SoundAlertsLevel;
 
@@ -10,6 +10,9 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class SettingsPageSteps {
+
+	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
+			.getInstance();
 
 	/**
 	 * Verifies whether settings dialog is visible
@@ -21,9 +24,8 @@ public class SettingsPageSteps {
 	 */
 	@Then("^I see Settings dialog$")
 	public void ISeeSetingsDialog() throws Exception {
-		PagesCollection.settingsPage = (SettingsPage) PagesCollection.loginPage
-				.instantiatePage(SettingsPage.class);
-		Assert.assertTrue(PagesCollection.settingsPage.isVisible());
+		Assert.assertTrue(webappPagesCollection.getPage(SettingsPage.class)
+				.isVisible());
 	}
 
 	/**
@@ -33,12 +35,12 @@ public class SettingsPageSteps {
 	 * 
 	 * @param newLevel
 	 *            possible values None, Some, All
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@When("^I select Sound Alerts setting to be (None|Some|All)")
 	public void ISelectSoundAlertsSetting(String newLevel) throws Exception {
-		PagesCollection.settingsPage.setSoundAlertsLevel(SoundAlertsLevel
-				.fromString(newLevel));
+		webappPagesCollection.getPage(SettingsPage.class).setSoundAlertsLevel(
+				SoundAlertsLevel.fromString(newLevel));
 	}
 
 	/**
@@ -50,9 +52,9 @@ public class SettingsPageSteps {
 	 *            possible values None, Some, All
 	 */
 	@When("^I see Sound Alerts setting is set to (None|Some|All)")
-	public void ISeeSoundAlertsSettingIs(String expectedValue) {
-		final String currentValue = PagesCollection.settingsPage
-				.getSoundAlertsLevel().toString();
+	public void ISeeSoundAlertsSettingIs(String expectedValue) throws Exception {
+		final String currentValue = webappPagesCollection
+				.getPage(SettingsPage.class).getSoundAlertsLevel().toString();
 		Assert.assertTrue(
 				String.format(
 						"Current sound alerts setting ('%s') is not equal to the expected one: '%s'",
@@ -66,8 +68,8 @@ public class SettingsPageSteps {
 	 * @step. I click close settings page button
 	 */
 	@When("I click close settings page button")
-	public void IClickCloseSettingsPageButton() {
-		PagesCollection.settingsPage.clickCloseButton();
+	public void IClickCloseSettingsPageButton() throws Exception {
+		webappPagesCollection.getPage(SettingsPage.class).clickCloseButton();
 	}
 
 }

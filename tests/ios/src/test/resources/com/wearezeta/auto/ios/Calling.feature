@@ -19,7 +19,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @regression @id908
+  @regression @rc @id908
   Scenario Outline: Verify starting outgoing call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -36,7 +36,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id2067 @id909
+  @regression @IPv6 @id2067 @id909
   Scenario Outline: Verify starting and ending outgoing call by same person
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -55,7 +55,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @calling_basic @regression @id896
+  @calling_basic @regression @rc @id896
   Scenario Outline: Verify ignoring of incoming call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -70,7 +70,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @calling_basic @regression @id2093
+  @calling_basic @regression @rc @IPv6 @id2093
   Scenario Outline: Verify accepting incoming call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -103,7 +103,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @regression @id1228
+  @regression @rc @id1228
   Scenario Outline: Verify missed call indicator appearance (list)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
@@ -141,7 +141,6 @@ Feature: Calling
     And I see mute call, end call and speakers buttons
     And I end started call
     And I dont see calling page
-    And <Contact> stops all waiting instances
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
@@ -164,7 +163,6 @@ Feature: Calling
     Then I lock screen for 5 seconds
     And I see mute call, end call and speakers buttons
     And I end started call
-    And <Contact> stops all waiting instances
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
@@ -184,14 +182,17 @@ Feature: Calling
     And I see mute call, end call and speakers buttons
     And I wait for 5 seconds
     And <Contact2> calls me using <CallBackend2>
-    And I dont see incoming calling message from contact <Contact2>
+    And I see incoming calling message for contact <Contact2>
+    And I ignore incoming call
     And <Contact1> accepts next incoming call automatically
     And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see mute call, end call and speakers buttons
+    And I see mute call, end call buttons
+    And <Contact2> stops all calls to me
     And I end started call
-    Then I see missed call from contact <Contact2>
-    And I swipe right on Dialog page
+    And I return to the chat list
     And I see missed call indicator in list for contact <Contact2>
+    And I tap on contact name <Contact2>
+    Then I see missed call from contact <Contact2>
 
     Examples: 
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
@@ -213,8 +214,6 @@ Feature: Calling
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then I close the app for 5 seconds
     And I see mute call, end call and speakers buttons
-    And I end started call
-    And <Contact> stops all waiting instances
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
@@ -269,7 +268,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | webdriver   | autocall     | 30      |
 
-  @regression @id2682
+  @regression @rc @IPv6 @id2682
   Scenario Outline: Verify accepting group call in foreground
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
@@ -287,12 +286,15 @@ Feature: Calling
     And <Contact1> calls <GroupChatName> using <CallBackend2>
     And I see incoming group calling message
     And I accept incoming call
-    Then I see mute call, end call and speakers buttons
+    And I see mute call, end call and speakers buttons
+    Then I see <NumberOfAvatars> avatars in the group call bar
+    And I wait for 10 seconds
+    Then <Contact2>,<Contact3>,<Contact4> verify to have 4 flows
+    Then <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
 
     Examples: 
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName      | CallBackend | CallBackend2 |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | firefox     | autocall     |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | chrome      | autocall     |
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName      | CallBackend | CallBackend2 |NumberOfAvatars |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | chrome      | autocall     | 5              |
 
   @regression @id2683
   Scenario Outline: Verify ignoring group call in foreground
@@ -316,7 +318,7 @@ Feature: Calling
       | user1Name | user2Name | user3Name | IgnoringGROUPCALL | firefox     | autocall     |
       | user1Name | user2Name | user3Name | IgnoringGROUPCALL | chrome      | autocall     |
 
-  @regression @id2686
+  @regression @rc @id2686
   Scenario Outline: Verify receiving group call during 1-to-1 call (and accepting it)
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
@@ -401,7 +403,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    | CallBackend | CallBackend2 |
       | user1Name | user2Name | user3Name | user4Name | user5Name | LEAVEINGROUPCALL | firefox     | autocall     |
 
-  @regression @id2678
+  @regression @rc @id2678
   Scenario Outline: Verify leaving and coming back to the call in 20 sec
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
@@ -460,7 +462,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars | NumberOf1on1CallAvatars |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | GROUPCALL     | firefox     | autocall     | 5               | 2                       |
 
-  @regression @id3270
+  @regression @rc @IPv6 @id3270
   Scenario Outline: Verify possibility of starting group call
     Given There are 10 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>
@@ -478,7 +480,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Contact8  | Contact9   | GroupChatName  | CallBackend | CallBackend2 | NumberOfAvatars |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | user9Name | user10Name | StartGROUPCALL | firefox     | autocall     | 5               |
 
-  @regression @id2684
+  @regression @rc @id2684
   Scenario Outline: Verify possibility to join call after 45 seconds of starting it
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
@@ -534,3 +536,52 @@ Feature: Calling
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | CallBackend2 | NumberOfAvatars | NewNumberOfAvatars |
       | user1Name | user2Name | user3Name | user4Name | user5Name | RemoveGROUPCALL | chrome      | autocall     | 5               | 4                  |
+
+  @regression @id2673 @noAcceptAlert
+  Scenario Outline: Verify impossibility to connect 6th person to the call
+    Given There are 6 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts waiting instance using <CallBackend>
+    Given <Contact1> accepts next incoming call automatically
+    Given <Contact2> accepts next incoming call automatically
+    Given <Contact3> accepts next incoming call automatically
+    Given <Contact4> accepts next incoming call automatically
+    Given I sign in using my email or phone number
+    And I dismiss alert
+    And I accept alert
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    When <Contact5> calls <GroupChatName> using <CallBackend2>
+    And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact3> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact4> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see incoming group calling message
+    And I accept incoming call
+    Then I see group call is Full message
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars | Timeout |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | FullGROUPCALL | chrome      | autocall     | 5               | 60      |
+
+  @calling_basic @rc @id880
+  Scenario Outline: Verify putting client to the background during 1-to-1 call
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When <Contact> calls me using <CallBackend>
+    And I see incoming calling message for contact <Contact>
+    And I accept incoming call
+    Then I see mute call, end call and speakers buttons
+    And I see started call message for contact <Contact>
+    When I close the app for 5 seconds
+    Then I see mute call, end call and speakers buttons
+    And I see started call message for contact <Contact>
+    And <Contact> verifies that call status to me is changed to active in 2 seconds
+
+    Examples: 
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | autocall    |

@@ -21,68 +21,64 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import java.util.concurrent.TimeUnit;
 
 public class CommonUtils {
-	public static final String OS_NAME_WINDOWS = "Windows";
-
 	public static final int MAX_PARALLEL_USER_CREATION_TASKS = 25;
 
 	private static final String USER_IMAGE = "userpicture_landscape.jpg";
-	private static final String RESULT_USER_IMAGE = "userpicture_mobile_check.jpg";
 	private static final String PING_IMAGE = "ping_image.png";
 	private static final String HOT_PING_IMAGE = "hot_ping_image.png";
 	private static final String IOS_PING_IMAGE = "ios_ping_image.png";
 	private static final String IOS_HOT_PING_IMAGE = "ios_hot_ping_image.png";
 	private static final String IOS_AVATAR_CLOCK_IMAGE = "new_avatarclock.png";
-	private static final String MEDIABAR_PLAY_IMAGE = "android_mediabar_play_image.png";
-	private static final String MEDIABAR_PAUSE_IMAGE = "android_mediabar_pause_image.png";
-	private static final String MEDIA_PLAY_IMAGE = "android_media_play_image.png";
-	private static final String MEDIA_PAUSE_IMAGE = "android_media_pause_image.png";
+	private static final String MEDIABAR_PLAY_IMAGE = "android_mediabar_play_image_(white).png";
+	private static final String MEDIABAR_PAUSE_IMAGE = "android_mediabar_pause_image_(white).png";
 	private static final String ALPHANUMERIC_PLUS_SYMBOLS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJLMNOPQRSTUVWXYZ1234567890!@#$%^&*()";
 
 	private static final Random rand = new Random();
-	public static final int BACKEND_SYNC_TIMEOUT = 5000 + rand.nextInt(4000); // milliseconds
 
 	private static final Logger log = ZetaLogger.getLog(CommonUtils.class
 			.getSimpleName());
 
 	private static final String TCPBLOCK_PREFIX_PATH = "/usr/local/bin/";
 
-	public static String getOsName() {
-		return System.getProperty("os.name");
-	}
-
 	public static boolean trueInPercents(int percent) {
 		Random rand = new Random();
 		int nextInt = rand.nextInt(100);
-		if (nextInt < percent)
-			return true;
-		else
-			return false;
+		return nextInt < percent;
 	}
 
 	public static int executeOsXCommand(String[] cmd) throws Exception {
 		Process process = Runtime.getRuntime().exec(cmd);
 		log.debug("Process started for cmdline " + Arrays.toString(cmd));
 		outputErrorStreamToLog(process.getErrorStream());
-		log.debug("Process exited with code " + process.waitFor());
 		return process.waitFor();
+	}
+
+	public static boolean executeOsCommandWithTimeout(String[] cmd,
+			long timeoutSeconds) throws Exception {
+		Process process = Runtime.getRuntime().exec(cmd);
+		log.debug("Process started for cmdline " + Arrays.toString(cmd));
+		outputErrorStreamToLog(process.getErrorStream());
+		return process.waitFor(timeoutSeconds, TimeUnit.SECONDS);
 	}
 
 	public static String executeOsXCommandWithOutput(String[] cmd)
 			throws Exception {
 		Process process = Runtime.getRuntime().exec(cmd);
 		log.debug("Process started for cmdline " + Arrays.toString(cmd));
-		InputStream stream = process.getInputStream();
-		BufferedReader br = new BufferedReader(new InputStreamReader(
-				process.getInputStream()));
-		StringBuilder sb = new StringBuilder("\n");
-		String s;
-		while ((s = br.readLine()) != null) {
-			sb.append("\t" + s + "\n");
+		String output;
+		try (InputStream stream = process.getInputStream()) {
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+					process.getInputStream()));
+			StringBuilder sb = new StringBuilder("\n");
+			String s;
+			while ((s = br.readLine()) != null) {
+				sb.append("\t").append(s).append("\n");
+			}
+			output = sb.toString();
 		}
-		String output = sb.toString();
-		stream.close();
 		outputErrorStreamToLog(process.getErrorStream());
 		log.debug("Process exited with code " + process.waitFor());
 		return output;
@@ -114,73 +110,47 @@ public class CommonUtils {
 	public static String getDefaultImagesPath(Class<?> c) throws Exception {
 		return getValueFromConfig(c, "defaultImagesPath");
 	}
-	
+
 	public static String getImagePath(Class<?> c) throws Exception {
-		String path = getValueFromConfig(c, "defaultImagesPath") + USER_IMAGE;
-		return path;
+		return getValueFromConfig(c, "defaultImagesPath") + USER_IMAGE;
 	}
 
 	public static String getPingIconPath(Class<?> c) throws Exception {
-		String path = getValueFromConfig(c, "defaultImagesPath") + PING_IMAGE;
-		return path;
+		return getValueFromConfig(c, "defaultImagesPath") + PING_IMAGE;
 	}
 
 	public static String getPingIconPathIOS(Class<?> c) throws Exception {
-		String path = getValueFromConfig(c, "iosImagesPath") + IOS_PING_IMAGE;
-		return path;
+		return getValueFromConfig(c, "iosImagesPath") + IOS_PING_IMAGE;
 	}
 
 	public static String getHotPingIconPath(Class<?> c) throws Exception {
-		String path = getValueFromConfig(c, "defaultImagesPath")
+		return getValueFromConfig(c, "defaultImagesPath")
 				+ HOT_PING_IMAGE;
-		return path;
 	}
 
 	public static String getHotPingIconPathIOS(Class<?> c) throws Exception {
-		String path = getValueFromConfig(c, "iosImagesPath")
+		return getValueFromConfig(c, "iosImagesPath")
 				+ IOS_HOT_PING_IMAGE;
-		return path;
 	}
 
 	public static String getAvatarWithClockIconPathIOS(Class<?> c)
 			throws Exception {
-		String path = getValueFromConfig(c, "iosImagesPath")
+		return getValueFromConfig(c, "iosImagesPath")
 				+ IOS_AVATAR_CLOCK_IMAGE;
-		return path;
 	}
 
 	public static String getImagesPath(Class<?> c) throws Exception {
 		return getValueFromConfig(c, "defaultImagesPath");
 	}
 
-	public static String getResultImagePath(Class<?> c) throws Exception {
-		String path = getValueFromConfig(c, "defaultImagesPath")
-				+ RESULT_USER_IMAGE;
-		return path;
-	}
-
 	public static String getMediaBarPlayIconPath(Class<?> c) throws Exception {
-		String path = getValueFromConfig(c, "defaultImagesPath")
+		return getValueFromConfig(c, "defaultImagesPath")
 				+ MEDIABAR_PLAY_IMAGE;
-		return path;
 	}
 
 	public static String getMediaBarPauseIconPath(Class<?> c) throws Exception {
-		String path = getValueFromConfig(c, "defaultImagesPath")
+		return getValueFromConfig(c, "defaultImagesPath")
 				+ MEDIABAR_PAUSE_IMAGE;
-		return path;
-	}
-
-	public static String getMediaPlayIconPath(Class<?> c) throws Exception {
-		String path = getValueFromConfig(c, "defaultImagesPath")
-				+ MEDIA_PLAY_IMAGE;
-		return path;
-	}
-
-	public static String getMediaPauseIconPath(Class<?> c) throws Exception {
-		String path = getValueFromConfig(c, "defaultImagesPath")
-				+ MEDIA_PAUSE_IMAGE;
-		return path;
 	}
 
 	public static String getPictureResultsPathFromConfig(Class<?> c)
@@ -276,12 +246,6 @@ public class CommonUtils {
 		return getValueFromCommonConfig(c, "defaultEmailServer");
 	}
 
-
-	public static String getOpenCVLibPathFromConfig(Class<?> c)
-			throws Exception {
-		return getValueFromCommonConfig(c, "openCVLibPath");
-	}
-	
 	public static String getDriverTimeoutFromConfig(Class<?> c)
 			throws Exception {
 		return getValueFromConfig(c, "driverTimeoutSeconds");
@@ -308,10 +272,6 @@ public class CommonUtils {
 		}
 	}
 
-	public static String getOsxAppiumUrlFromConfig(Class<?> c) throws Exception {
-		return getValueFromConfig(c, "osxAppiumUrl");
-	}
-
 	public static String getAndroidAppiumUrlFromConfig(Class<?> c)
 			throws Exception {
 		return getValueFromConfig(c, "androidAppiumUrl");
@@ -321,22 +281,12 @@ public class CommonUtils {
 		return getValueFromConfig(c, "iosAppiumUrl");
 	}
 
-	public static String getWebAppAppiumUrlFromConfig(Class<?> c)
-			throws Exception {
-		return getValueFromConfig(c, "webappAppiumUrl");
-	}
-
 	public static Boolean getIsSimulatorFromConfig(Class<?> c) throws Exception {
 		return (getValueFromConfig(c, "isSimulator").equals("true"));
 	}
 
 	public static String getSwipeScriptPath(Class<?> c) throws Exception {
 		return getValueFromConfig(c, "swipeScriptPath");
-	}
-
-	public static String getOsxApplicationPathFromConfig(Class<?> c)
-			throws Exception {
-		return getValueFromConfig(c, "osxApplicationPath");
 	}
 
 	public static String getWebAppApplicationPathFromConfig(Class<?> c)
@@ -385,11 +335,6 @@ public class CommonUtils {
 		return getValueFromConfig(c, "iosImagesPath");
 	}
 
-	public static String getGenerateUsersFlagFromConfig(Class<?> c)
-			throws Exception {
-		return getValueFromConfig(c, "generateUsers");
-	}
-
 	public static String getAndroidPackageFromConfig(Class<?> c) {
 		try {
 			return getValueFromConfig(c, "package");
@@ -397,11 +342,6 @@ public class CommonUtils {
 			e.printStackTrace();
 			return null;
 		}
-	}
-
-	public static String getWebAppImagesPathFromConfig(Class<?> c)
-			throws Exception {
-		return getValueFromConfig(c, "webappImagesPath");
 	}
 
 	public static String getUserPicturePathFromConfig(Class<?> c)
@@ -430,8 +370,7 @@ public class CommonUtils {
 			result.append(characters.charAt(rand.nextInt(characters.length())));
 			numberOfCharacters--;
 		}
-		String text = result.toString();
-		return text;
+		return result.toString();
 	}
 
 	public static String generateRandomStringFromAlphanumericPlusSymbolsWithLengh(
@@ -449,13 +388,14 @@ public class CommonUtils {
 		return getValueFromCommonConfig(c, "jenkinsSuLogin");
 	}
 
+	public static Optional<String> getRCNotificationsRecepients(Class<?> c)
+			throws Exception {
+		return getOptionalValueFromConfig(c, "rcNotificationsRecepients");
+	}
+
 	public static String getJenkinsSuperUserPassword(Class<?> c)
 			throws Exception {
 		return getValueFromCommonConfig(c, "jenkinsSuPassword");
-	}
-
-	public static String getJenkinsProjectDir(Class<?> c) throws Exception {
-		return getValueFromCommonConfig(c, "jenkinsProjectDir");
 	}
 
 	public static String getDefaultCallingServiceUrlFromConfig(Class<?> c)
@@ -464,15 +404,16 @@ public class CommonUtils {
 	}
 
 	public static Optional<BufferedImage> getElementScreenshot(
-			WebElement element, AppiumDriver driver) throws Exception {
+			WebElement element, AppiumDriver<? extends WebElement> driver)
+			throws Exception {
 		return getElementScreenshot(element, driver, "iPhone 6");
 	}
 
 	public static Optional<BufferedImage> getElementScreenshot(
-			WebElement element, AppiumDriver driver, String deviceName)
-			throws Exception {
+			WebElement element, AppiumDriver<? extends WebElement> driver,
+			String deviceName) throws Exception {
 		int multiply = 3;
-		if (deviceName.equals("iPhone 6")||deviceName.equals("iPad Air")) {
+		if (deviceName.equals("iPhone 6") || deviceName.equals("iPad Air")) {
 			multiply = 2;
 		} else if (deviceName.equals("Android Device")) {
 			multiply = 1;
@@ -506,14 +447,6 @@ public class CommonUtils {
 		}
 	}
 
-	public static String getContactName(String login) {
-		String[] firstParts = null;
-		String[] secondParts = null;
-		firstParts = login.split("\\+");
-		secondParts = firstParts[1].split("@");
-		return secondParts[0];
-	}
-
 	public static void blockTcpForAppName(String appName) throws Exception {
 		final String blockTcpForAppCmd = "echo "
 				+ getJenkinsSuperUserPassword(CommonUtils.class) + "| sudo -S "
@@ -544,28 +477,8 @@ public class CommonUtils {
 		}
 	}
 
-	public static String readTextFileFromResources(String resourcePath)
-			throws IOException {
-		BufferedReader in = new BufferedReader(new InputStreamReader(
-				CommonUtils.class.getResourceAsStream(resourcePath)));
-		String full = "";
-		String s;
-		while ((s = in.readLine()) != null) {
-			full += s + "\n";
-		}
-		return full;
-	}
-
 	public static void defineNoHeadlessEnvironment() {
 		System.setProperty("java.awt.headless", "false");
-	}
-
-	public static void disableSeleniumLogs() {
-		System.setProperty("org.apache.commons.logging.Log",
-				"org.apache.commons.logging.impl.SimpleLog");
-		System.setProperty(
-				"org.apache.commons.logging.simplelog.log.org.apache.http",
-				"warn");
 	}
 
 	public static String encodeSHA256Base64(String item) throws Exception {
@@ -593,4 +506,31 @@ public class CommonUtils {
 	public static boolean getInitNoteIpFromConfig(Class<?> c) throws Exception {
 		return Boolean.valueOf(getValueFromCommonConfig(c, "initNodeIp"));
 	}
+
+	public static String getZephyrCycleNameFromConfig(Class<?> c)
+			throws Exception {
+		return getValueFromCommonConfig(c, "zephyrCycleName");
+	}
+
+	public static String getZephyrPhaseNameFromConfig(Class<?> c)
+			throws Exception {
+		return getValueFromCommonConfig(c, "zephyrPhaseName");
+	}
+
+	public static String getZephyrServerFromConfig(Class<?> c) throws Exception {
+		return getValueFromCommonConfig(c, "zephyrServer");
+	}
+
+	public static String generateRandomXdigits(int i) {
+		Random rand = new Random();
+		long random = (long) (Math.pow(10, i - 1)) * (rand.nextInt(8) + 1)
+				+ (long) rand.nextInt((int) (Math.pow(10, i - 1)));
+		return Long.toString(Math.abs(random));
+	}
+
+	public static String getPlatformVersionFromConfig(Class<?> cls)
+			throws Exception {
+		return getValueFromConfig(cls, "platformVersion");
+	}
+
 }

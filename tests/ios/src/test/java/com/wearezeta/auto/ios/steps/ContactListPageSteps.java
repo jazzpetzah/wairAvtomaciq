@@ -28,31 +28,45 @@ public class ContactListPageSteps {
 			.getInstance();
 
 	private ContactListPage getContactListPage() throws Exception {
-		return (ContactListPage) pagesCollecton.getPage(ContactListPage.class);
+		return pagesCollecton.getPage(ContactListPage.class);
 	}
 
 	private LoginPage getLoginPage() throws Exception {
-		return (LoginPage) pagesCollecton.getPage(LoginPage.class);
+		return pagesCollecton.getPage(LoginPage.class);
 	}
 
 	private PersonalInfoPage getPersonalInfoPage() throws Exception {
-		return (PersonalInfoPage) pagesCollecton
-				.getPage(PersonalInfoPage.class);
+		return pagesCollecton.getPage(PersonalInfoPage.class);
 	}
 
 	@Given("^I see Contact list with my name (.*)$")
 	public void GivenISeeContactListWithMyName(String name) throws Throwable {
 
 		boolean loginFinished = getLoginPage().isLoginFinished();
-		if (!loginFinished) {
-			log.debug(getLoginPage().getPageSource());
-		}
+
 		Assert.assertTrue("Self profile button dind't appear in contact list",
 				loginFinished);
 	}
-	
+
+	/**
+	 * Verify label in Self button
+	 * 
+	 * @step. ^I see my name (.*) first letter as label of Self Button$
+	 * 
+	 * @param name
+	 *            username
+	 * @throws Exception
+	 */
+	@When("^I see my name (.*) first letter as label of Self Button$")
+	public void ISeeFirstLetterAsLabelSelfButton(String name) throws Exception {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		Assert.assertTrue(getContactListPage()
+				.isSelfButtonContainingFirstNameLetter(name));
+	}
+
 	/**
 	 * Click MAYBE LATER on settings warning screen
+	 * 
 	 * @step. ^I dismiss settings warning$
 	 * @throws Exception
 	 */
@@ -119,7 +133,8 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		Assert.assertTrue(getContactListPage().isChatInContactList(value));
+		Assert.assertEquals("User name doesn't appeared in contact list.", value, getContactListPage()
+				.getFirstConversationName());
 	}
 
 	/**
@@ -193,7 +208,7 @@ public class ContactListPageSteps {
 	@When("^I swipe right on a (.*)$")
 	public void ISwipeRightOnContact(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		getContactListPage().swipeRightConversationToRevealArchiveButton(
+		getContactListPage().swipeRightConversationToRevealActionButtons(
 				contact);
 	}
 
@@ -296,7 +311,8 @@ public class ContactListPageSteps {
 
 	@When("I dont see Pending request link in contact list")
 	public void IDontSeePendingRequestLinkInContacts() throws Exception {
-		Assert.assertFalse(getContactListPage().isPendingRequestInContactList());
+		Assert.assertFalse("Pending request link is shown in contact list",
+				getContactListPage().isPendingRequestInContactList());
 	}
 
 	@When("I see conversation with not connected user (.*)")
@@ -335,11 +351,20 @@ public class ContactListPageSteps {
 				+ name3 + ", " + " is in chat list", chatExists);
 	}
 
+	/**
+	 * Verify that conversation with pointed name is not displayed in contact
+	 * list
+	 * 
+	 * @step. I dont see conversation (.*) in contact list
+	 * @param name
+	 *            conversation name to verify
+	 * @throws Exception
+	 */
 	@When("I dont see conversation (.*) in contact list")
 	public void IDoNotSeeConversationInContactList(String name)
 			throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		Assert.assertFalse(getContactListPage().isDisplayedInContactList(name));
+		Assert.assertTrue(getContactListPage().contactIsNotDisplayed(name));
 	}
 
 	/**
@@ -454,7 +479,7 @@ public class ContactListPageSteps {
 				FindBy.NAME_ALIAS);
 		getContactListPage().archiveConversation(conversation);
 	}
-	
+
 	/**
 	 * Click on archive button for a conversation
 	 * 
@@ -471,7 +496,7 @@ public class ContactListPageSteps {
 			throws Exception {
 		conversation = usrMgr.replaceAliasesOccurences(conversation,
 				FindBy.NAME_ALIAS);
-		getContactListPage().clickArchiveCoversationButton(conversation);
+		getContactListPage().clickArchiveConversationButton(conversation);
 	}
 
 	private BufferedImage referenceImage = null;
@@ -680,4 +705,93 @@ public class ContactListPageSteps {
 		getContactListPage().clickMuteCallButton();
 	}
 
+	/**
+	 * Checks that conversation name appears in displayed action menu
+	 * 
+	 * @step. ^I see conversation (.*) name in action menu in [Cc]ontact
+	 *        [Ll]ist$
+	 * 
+	 * @param conversation
+	 *            conversation name
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I see conversation (.*) name in action menu in [Cc]ontact [Ll]ist$")
+	public void ISeeConversationNameInActionMenu(String conversation)
+			throws Exception {
+		conversation = usrMgr.replaceAliasesOccurences(conversation,
+				FindBy.NAME_ALIAS);
+		Assert.assertTrue("There is no conversation name " + conversation
+				+ " in opened action menu.", getContactListPage()
+				.isActionMenuVisibleForConversation(conversation));
+	}
+
+	/**
+	 * Checks that specified button is exist in displayed action menu
+	 * 
+	 * @step. ^I see (Silence|Delete|Leave|Archive|Block|Cancel) button in
+	 *        action menu in [Cc]ontact [Ll]ist$
+	 * 
+	 * @param buttonTitle
+	 *            Silence | Delete | Leave | Archive | Block | Cancel
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I see (Silence|Delete|Leave|Archive|Block|Cancel) button in action menu in [Cc]ontact [Ll]ist$")
+	public void ISeeXButtonInActionMenu(String buttonTitle) throws Exception {
+		Assert.assertTrue("There is no button " + buttonTitle.toUpperCase()
+				+ " in opened action menu.", getContactListPage()
+				.isButtonVisibleInActionMenu(buttonTitle));
+	}
+
+	/**
+	 * Clicks the Archive button in action menu of contact list
+	 * 
+	 * @step. ^I press Archive button in action menu in Contact List$
+	 * @throws Throwable
+	 */
+	@When("^I press Archive button in action menu in Contact List$")
+	public void IPressArchiveButtonInActionMenuInContactList() throws Throwable {
+		getContactListPage().clickArchiveButtonInActionMenu();
+	}
+
+	/**
+	 * Clicks the Leave button in action menu of contact list
+	 * 
+	 * @step. ^I press Leave button in action menu in Contact List$
+	 * @throws Throwable
+	 */
+	@When("^I press Leave button in action menu in Contact List$")
+	public void IPressLeaveButtonInActionMenuInContactList() throws Throwable {
+		getContactListPage().clickLeaveButtonInActionMenu();
+	}
+
+	/**
+	 * Clicks the Cancel button in action menu of contact list
+	 * 
+	 * @step. ^I press Cancel button in action menu in Contact list$
+	 * @throws Throwable
+	 */
+	@Then("^I press Cancel button in action menu in Contact List$")
+	public void IPressCancelButtonInActionMenuInContactList() throws Throwable {
+		getContactListPage().clickCancelButtonInActionMenu();
+	}
+
+	/**
+	 * Verifies that next conversation is selected in list
+	 * 
+	 * @step. ^I see conversation (.*) is selected in list$
+	 * @param conversation
+	 *            that is selected now
+	 * @throws Throwable
+	 */
+	@Then("^I see conversation (.*) is selected in list$")
+	public void ISeeConversationIsSelectedInList(String conversation)
+			throws Throwable {
+		conversation = usrMgr.replaceAliasesOccurences(conversation,
+				FindBy.NAME_ALIAS);
+		String convIsSelected = getContactListPage()
+				.getSelectedConversationCellValue(conversation);
+		Assert.assertEquals("Converstaion is not selected", "1", convIsSelected);
+	}
 }

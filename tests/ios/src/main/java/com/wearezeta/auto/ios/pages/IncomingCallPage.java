@@ -39,8 +39,11 @@ public class IncomingCallPage extends CallPage {
 	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameEndCallAlertButton)
 	private WebElement endCallAlertButton;
 
-	@FindBy(how = How.CLASS_NAME, using = IOSLocators.IncomingCallPage.classNameUIACollectionCell)
+	@FindBy(how = How.XPATH, using = IOSLocators.IncomingCallPage.xpathGroupCallAvatars)
 	private List<WebElement> numberOfGroupCallAvatars;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.IncomingCallPage.xpathGroupCallFullMessage)
+	private WebElement groupCallFullMessage;
 	
 	public IncomingCallPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
@@ -66,6 +69,7 @@ public class IncomingCallPage extends CallPage {
 	}
 
 	public StartedCallPage acceptIncomingCallClick() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), acceptCallButton);
 		acceptCallButton.click();
 		return new StartedCallPage(getLazyDriver());
 	}
@@ -103,5 +107,9 @@ public class IncomingCallPage extends CallPage {
 
 	public void clickJoinCallButton() {
 		joinCallButton.click();
+	}
+
+	public boolean isGroupCallFullMessageShown() {
+		return groupCallFullMessage.isDisplayed();
 	}
 }

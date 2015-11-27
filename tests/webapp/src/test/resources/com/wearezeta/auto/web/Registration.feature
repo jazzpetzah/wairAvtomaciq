@@ -28,6 +28,29 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
+  @regression @id4164
+  Scenario Outline: Verify I can accept personal invitation
+    Given There is 1 user where <Name> is me
+    When me sends personal invitation to mail <ContactMail> with message <Message>
+    Then I verify user <Contact> has received an email invitation
+    When <Contact> navigates to personal invitation registration page
+    Then <Contact> verifies email is correct on Registration page
+    And <Contact> verifies username is correct on Registration page
+    And I enter user password "<Password>" on Registration page
+    And I submit registration form
+    And User <Contact> is Me without avatar
+    And I see Self Picture Upload dialog
+    And I force carousel mode on Self Picture Upload dialog
+    And I select random picture from carousel on Self Picture Upload dialog
+    And I confirm picture selection on Self Picture Upload dialog
+    And I see Contacts Upload dialog
+    And I close Contacts Upload dialog
+    And I see Contact list with name <Name>
+
+    Examples: 
+      | Login      | Password      | Name      | ContactMail | Contact    | Message |
+      | user1Email | user1Password | user1Name | user2Email  | user2Name  | Hello   |
+
   @smoke @id2064
   Scenario Outline: Photo selection dialogue - choose picture from library
     Given There is 1 user where <Name> is me without avatar picture
@@ -80,10 +103,10 @@ Feature: Registration
     And I enter user email <UsedEmail> on Registration page
     And I enter user password "<NewPassword>" on Registration page
     And I submit registration form
-    Then I see error "EMAIL ADDRESS ALREADY TAKEN" on Verification page
-    And I verify that a red dot is shown inside the email field on the registration form
+    Then I see error "Email address already taken" on Verification page
+    And I verify that the email field on the registration form is marked as error
     When I enter user email <UnusedEmail> on Registration page
-    Then I verify that a red dot is not shown inside the email field on the registration form
+    Then I verify that the email field on the registration form is not marked as error
     When I submit registration form
     Then I verify that an envelope icon is shown
     And I see email <UnusedEmail> on Verification page
@@ -98,8 +121,8 @@ Feature: Registration
     And I enter user email <Email> on Registration page
     And I enter user password "<Password>" on Registration page
     And I submit registration form
-    Then I see error "SORRY. THIS EMAIL ADDRESS IS FORBIDDEN." on Verification page
-    And I verify that a red dot is shown inside the email field on the registration form
+    Then I verify that the email field on the registration form is marked as error
+    And I see error "Sorry. This email address is forbidden." on Verification page
 
     Examples: 
       | Name      | Email              | Password      |
@@ -116,7 +139,7 @@ Feature: Registration
     When I see Contacts Upload dialog
     And I click button to import Gmail Contacts
     And I see Google login popup
-    And I sign up at Google with email smoketester.wire@gmail.com and password aqa123456
+    And I sign up at Google with email smoketester.wire@gmail.com and password aqa123456!
     Then I see more than 5 suggestions in people picker
 
   @regression @id2051
@@ -131,7 +154,7 @@ Feature: Registration
     When I see Sign In page
     When I Sign in using login <Email> and password <Password>
     Then I verify that an envelope icon is shown
-    And I see email <Email> on Verification page
+    And I see email <Email> on pending page
 
     Examples: 
       | Email      | Password      | Name      |
@@ -143,11 +166,12 @@ Feature: Registration
     And I enter user email <Email> on Registration page
     And I enter user password "<Password>" on Registration page
     And I submit registration form
-    Then I see error "PLEASE ENTER A VALID EMAIL ADDRESS." on Verification page
-    And I verify that a red dot is shown inside the email field on the registration form
+    Then I verify that the email field on the registration form is marked as error
+    And I see error "Not a valid email address." on Verification page
 
     Examples: 
       | Email        | Password      | Name      |
       | @example.com | user1Password | user1Name |
       | example@     | user1Password | user1Name |
       | @            | user1Password | user1Name |
+      | @            | 12            | user1Name |

@@ -1,8 +1,7 @@
 Feature: Calling
 
-  #CallBackend available values: 'autocall', 'webdriver'
-  @id373 @calling_basic
-  Scenario Outline: Verify calling from missed call indicator in conversation
+  @id373 @calling_basic @rc
+  Scenario Outline: (AN-2993) Verify missed call indicator in conversations list and system message inside conversation
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
@@ -10,15 +9,16 @@ Feature: Calling
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
     And <Contact> stops all calls to me
+    Then I do not see calling overlay Big bar
     When I tap on contact name <Contact>
     And I see dialog page
     Then I see dialog with missed call from <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @id1503 @calling_basic
+  @id1503 @calling_basic @rc
   Scenario Outline: Silence an incoming call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -27,13 +27,45 @@ Feature: Calling
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I click the ignore call button
-    Then I cannot see the call bar
+    Then I do not see calling overlay Big bar
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @id1497 @calling_basic
+  @id727 @calling_basic @rc
+  Scenario Outline: I can start 1:1 call
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I swipe on text input
+    And I press Call button
+    Then I see call overlay
+    Then I see calling overlay Big bar
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @id814 @calling_basic @rc
+  Scenario Outline: I can accept incoming 1:1 call
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When <Contact1> calls me using <CallBackend>
+    And I answer the call from the overlay bar
+    And I see dialog page
+    Then I see calling overlay Big bar
+
+    Examples:
+      | Name      | Contact1  | Contact2  | CallBackend |
+      | user1Name | user2Name | user3Name | autocall    |
+
+  @id1497 @calling_basic @rc
   Scenario Outline: Receive call while Wire is running in the background
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -46,11 +78,11 @@ Feature: Calling
     And I answer the call from the lock screen
     Then I see started call message for contact <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @id1499 @calling_basic
+  @id1499 @calling_basic @rc
   Scenario Outline: Receive call while mobile in sleeping mode(screen locked)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -63,11 +95,11 @@ Feature: Calling
     And I answer the call from the lock screen
     Then I see started call message for contact <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @id347 @regression
+  @id347 @calling_basic
   Scenario Outline: Send text, image and knock while in the call with same user
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -95,11 +127,11 @@ Feature: Calling
     And I type the message "<Message>" and send it
     Then I see my message "<Message>" in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend | Message                   | Msg        |
       | user1Name | user2Name | autocall    | simple message in english | YOU PINGED |
 
-  @id2210 @regression
+  @id2210 @calling_basic @rc @rc42
   Scenario Outline: Calling bar buttons are clickable and change their states
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -120,11 +152,11 @@ Feature: Calling
     Then I do not see call overlay
     And <Contact> stops all calls to me
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName |
       | user1Name | user2Name | autocall    | Speaker        | Mute        |
 
-  @id2212 @regression
+  @id2212 @calling_basic
   Scenario Outline: Correct calling bar in different places
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -135,28 +167,25 @@ Feature: Calling
     And I see dialog page
     Then I see calling overlay Big bar
     And I navigate back from dialog page
-    And I see Contact list
     And I open Search by tap
     And I see People picker page
     And I see calling overlay Micro bar
     And I press Clear button
-    Then I see Contact list
     And I tap on my avatar
     And I see personal info page
     And I see calling overlay Micro bar
     And I close Personal Info Page
     And I see calling overlay Micro bar
-    And I see Contact list
     And I tap on contact name <Contact2>
     And I see dialog page
     And I see calling overlay Mini bar
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | CallBackend |
       | user1Name | user2Name | user3Name | autocall    |
 
-  @id2211 @regression
-  Scenario Outline: I can dismiss calling bar by swipe
+  @id2211 @calling_basic
+  Scenario Outline: (AN-2568) I can dismiss calling bar by swipe
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
@@ -170,11 +199,11 @@ Feature: Calling
     Then I do not see call overlay
     And <Contact> stops all calls to me
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @id3239 @regression
+  @id3239 @calling_basic
   Scenario Outline: Calling bar buttons are clickable and change their states in a group call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -195,11 +224,11 @@ Feature: Calling
     When I press Cancel call button
     Then I do not see call overlay
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName    | SpeakerBtnName | MuteBtnName |
       | user1Name | user2Name | user3Name | ChatForGroupCall | Speaker        | Mute        |
 
-  @id3240 @calling_basic
+  @id3240 @calling_basic @rc @rc42
   Scenario Outline: I can start group call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -217,32 +246,38 @@ Feature: Calling
     When <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
 
-    Examples: 
+    Examples:
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
 
-  @id3172 @regression
+  @id3172 @regression @rc @rc42
   Scenario Outline: I can join group call in foreground
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given There are 5 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Contact2> starts waiting instance using <CallBackend>
+    Given <Contact2> accepts next incoming call automatically
+    Given <Contact3> starts waiting instance using <CallBackend>
+    Given <Contact3> accepts next incoming call automatically
+    Given <Contact4> starts waiting instance using <CallBackend>
+    Given <Contact4> accepts next incoming call automatically
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
-    And <Contact1> calls <GroupChatName> using <CallBackend>
-    And <Contact2> calls <GroupChatName> using <CallBackend>
-    Then I see call overlay
+    And I see dialog page
+    And <Contact1> calls <GroupChatName> using <CallBackend2>
     And I answer the call from the overlay bar
     Then I do not see join group call overlay
     And I see calling overlay Big bar
-    When <Contact1> stops all calls to <GroupChatName>
-    And <Contact2> stops all calls to <GroupChatName>
+    And I wait for 10 seconds
+    Then <Contact2>,<Contact3>,<Contact4> verify to have 4 flows
+    Then <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
 
-    Examples: 
-      | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
-      | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
+    Examples:
+      | CallBackend | CallBackend2 | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    |
+      | chrome      | autocall     | user1Name | user2Name | user3Name | user4Name | user5Name | ChatForGroupCall |
 
-  @id3174 @regression
+  @id3174 @calling_basic @rc
   Scenario Outline: I can join group call after I ignored it
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -261,11 +296,11 @@ Feature: Calling
     And <Contact1> stops all calls to <GroupChatName>
     Then I do not see join group call overlay
 
-    Examples: 
+    Examples:
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
 
-  @id3168 @regression
+  @id3168 @calling_basic @rc
   Scenario Outline: I can join group call after I leave it
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -275,7 +310,6 @@ Feature: Calling
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    Then I see call overlay
     When I answer the call from the overlay bar
     Then I do not see join group call overlay
     And I see calling overlay Big bar
@@ -289,7 +323,7 @@ Feature: Calling
     And <Contact2> stops all calls to <GroupChatName>
     Then I do not see join group call overlay
 
-    Examples: 
+    Examples:
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
 
@@ -300,12 +334,11 @@ Feature: Calling
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
+    And I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
     And <Contact3> calls <GroupChatName> using <CallBackend>
     And <Contact4> calls <GroupChatName> using <CallBackend>
-    Then I see call overlay
     When I answer the call from the overlay bar
     Then I do not see join group call overlay
     And I see calling overlay Big bar
@@ -315,9 +348,9 @@ Feature: Calling
     And <Contact3> stops all calls to <GroupChatName>
     And <Contact4> stops all calls to <GroupChatName>
 
-    Examples: 
-      | CallBackend | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    |
-      | autocall    | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | MaxGroupCallChat |
+    Examples:
+      | CallBackend | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    |
+      | autocall    | user1Name | user2Name | user3Name | user4Name | user5Name | MaxGroupCallChat |
 
   @id3165 @calling_basic
   Scenario Outline: Verify impossibility to connect 6th person to the call
@@ -332,7 +365,6 @@ Feature: Calling
     And <Contact3> calls <GroupChatName> using <CallBackend>
     And <Contact4> calls <GroupChatName> using <CallBackend>
     And <Contact5> calls <GroupChatName> using <CallBackend>
-    Then I see call overlay
     When I answer the call from the overlay bar
     Then I see group call is full alert
     And I close group call is full alert
@@ -346,9 +378,9 @@ Feature: Calling
     And <Contact4> stops all calls to <GroupChatName>
     And <Contact5> stops all calls to <GroupChatName>
 
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName       | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | MaxGroupCallNegChat | autocall    |
+    Examples:
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName       | CallBackend |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | MaxGroupCallNegChat | autocall    |
 
   @id3253 @calling_basic
   Scenario Outline: Verify starting outgoing 1to1 call during group call
@@ -360,7 +392,6 @@ Feature: Calling
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    And I see call overlay
     And I answer the call from the overlay bar
     And I do not see join group call overlay
     And I see calling overlay Big bar
@@ -379,9 +410,9 @@ Feature: Calling
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
 
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
+    Examples:
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
+      | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
   @id3255 @calling_basic
   Scenario Outline: Verify cancel outgoing 1to1 call during group call
@@ -393,9 +424,7 @@ Feature: Calling
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    Then I see call overlay
     When I answer the call from the overlay bar
-    Then I do not see join group call overlay
     And I see calling overlay Big bar
     And I navigate back from dialog page
     And I tap on contact name <Contact3>
@@ -411,11 +440,11 @@ Feature: Calling
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
 
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
+    Examples:
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
+      | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
-  @id3180 @regression
+  @id3180 @calling_advanced
   Scenario Outline: Verify receiving 1to1 call during group call and accepting it
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -425,7 +454,6 @@ Feature: Calling
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    Then I see call overlay
     When I answer the call from the overlay bar
     Then I do not see join group call overlay
     And I see calling overlay Big bar
@@ -442,12 +470,11 @@ Feature: Calling
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
 
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
+    Examples:
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
+      | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
-  #AN-2540
-  @id3176 @staging
+  @id3176 @calling_advanced @rc
   Scenario Outline: Verify receiving group call during 1to1 call and accepting it
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -473,13 +500,12 @@ Feature: Calling
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
 
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
+    Examples:
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
+      | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
-  #AN-2540
-  @id3181 @staging
-  Scenario Outline: Verify receiving 1to1 call during group call and ignoring it
+  @id3181 @calling_advanced
+  Scenario Outline: (AN-2578 AN-2816 AN-2864) Verify receiving 1to1 call during group call and ignoring it
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
@@ -488,9 +514,7 @@ Feature: Calling
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    And I see call overlay
     And I answer the call from the overlay bar
-    And I do not see join group call overlay
     And I see calling overlay Big bar
     And <Contact3> calls <Name> using <CallBackend>
     And I see incoming calling message for contact <Contact3>
@@ -507,11 +531,11 @@ Feature: Calling
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
 
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
+    Examples:
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
+      | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
-  @id3170 @regression
+  @id3170 @calling_basic @rc @rc42
   Scenario Outline: Verify accepting group call in background
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -529,11 +553,11 @@ Feature: Calling
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
 
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallChat | autocall    |
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | CallBackend |
+      | user1Name | user2Name | user3Name | GroupCallChat | autocall    |
 
-  @id2649 @regression
+  @id2649 @calling_basic
   Scenario Outline: Lock device screen after initiating call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -543,16 +567,17 @@ Feature: Calling
     And I see dialog page
     And I swipe on text input
     And I press Call button
-    And I see call overlay
+    And I see calling overlay Big bar
     When I lock the device
+    And I wait for 2 seconds
     And I unlock the device
-    Then I see call overlay
+    Then I see calling overlay Big bar
 
-    Examples: 
-      | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
-  @id1467 @regression
+  @id1467 @calling_basic @rc @rc42
   Scenario Outline: Put client into background when in the call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -567,11 +592,11 @@ Feature: Calling
     Then I see call overlay
     And <Contact> stops all calls to me
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @id369 @regression
+  @id369 @calling_advanced
   Scenario Outline: Other user trying to call me while I'm already in zeta call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -587,11 +612,11 @@ Feature: Calling
     Then I see incoming calling message for contact <Contact2>
     And <Contact1>,<Contact2> stop all calls to me
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | CallBackend |
       | user1Name | user2Name | user3Name | autocall    |
 
-  @id3184 @staging
+  @id3184 @regression
   Scenario Outline: Verify leaving group conversation during the call
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -601,22 +626,18 @@ Feature: Calling
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    And I see call overlay
     And I answer the call from the overlay bar
     And I do not see join group call overlay
     And I see calling overlay Big bar
     And I tap conversation details button
     And I press options menu button
-    And I press Leave conversation button
-    And I confirm leaving
-    And I see Contact list
-    And <Name> is unarchived group chat <GroupChatName>
-    And I tap on contact name <GroupChatName>
-    Then I do not see "JOIN CALL" button
-    And I do not see call overlay
+    And I press Leave conversation menu button
+    When I confirm leaving
+    Then I see Contact list
+    And I do not see contact list with name <GroupChatName>
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
 
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallChat | autocall    |
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | CallBackend |
+      | user1Name | user2Name | user3Name | GroupCallChat | autocall    |

@@ -10,6 +10,8 @@ import java.util.concurrent.Future;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
+import com.wearezeta.auto.common.email.PasswordResetMessage;
+import com.wearezeta.auto.common.email.WireMessage;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -40,7 +42,6 @@ public class LoginPageSteps {
 				.getPage(RegistrationPage.class);
 	}
 
-	private ClientUser userToRegister = null;
 	private Future<String> activationMessage;
 	private static final String stagingURLForgot = "https://staging-website.zinfra.io/forgot/";
 
@@ -95,7 +96,7 @@ public class LoginPageSteps {
 	private void phoneLoginSequence(final PhoneNumber number) throws Exception {
 		getLoginPage().clickPhoneLogin();
 
-		getRegistrationPage().inputPhoneNumber(
+		getRegistrationPage().selectCodeAndInputPhoneNumber(
 				number.toString().replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""),
 				PhoneNumber.WIRE_COUNTRY_PREFIX);
 		String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(number);
@@ -103,6 +104,160 @@ public class LoginPageSteps {
 		getRegistrationPage().inputActivationCode(code);
 
 		getLoginPage().waitForLoginToFinish();
+	}
+
+	/**
+	 * Enters the phone number and verification code at self profile page
+	 * 
+	 * @step. ^I enter phone number and verification code$
+	 * @throws Throwable
+	 */
+	@When("^I enter phone number and verification code$")
+	public void IEnterPhoneNumberAndVerificationCode() throws Throwable {
+		ClientUser self = usrMgr.getSelfUserOrThrowError();
+		self.setPhoneNumber(new PhoneNumber(PhoneNumber.WIRE_COUNTRY_PREFIX));
+		getRegistrationPage().selectCodeAndInputPhoneNumber(
+				self.getPhoneNumber().toString()
+						.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""),
+				PhoneNumber.WIRE_COUNTRY_PREFIX);
+		String code = BackendAPIWrappers.getActivationCodeByPhoneNumber(self
+				.getPhoneNumber());
+
+		getRegistrationPage().inputActivationCode(code);
+	}
+
+	/**
+	 * Enter verification code for specified user
+	 * 
+	 * @step. ^I enter verification code for user (.*)$
+	 * 
+	 * @param name
+	 *            name of user
+	 * @throws Exception
+	 */
+	@When("^I enter verification code for user (.*)$")
+	public void IEnterVerificationCodeForUser(String name) throws Exception {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
+		String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(user
+				.getPhoneNumber());
+		getRegistrationPage().inputActivationCode(code);
+	}
+
+	/**
+	 * Inputs not valid verification code
+	 * 
+	 * @step. ^I enter random verification code$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I enter random verification code$")
+	public void IEnterRandomVerificationCode() throws Exception {
+		getRegistrationPage().inputRandomActivationCode();
+	}
+	
+	/**
+	 * Inputs random activation code
+	 * 
+	 * @step. ^I input random activation code$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I input random activation code$")
+	public void IEnterRandomActivationCode() throws Exception {
+		getRegistrationPage().inputRandomActivationCode();
+	}
+
+	/**
+	 * Sends new verification code for specified user and enter previous one
+	 * 
+	 * @step. ^I enter verification code for user (.*)$
+	 * 
+	 * @param name
+	 *            name of user
+	 * @throws Exception
+	 */
+	@When("^I enter previous verification code for user (.*)$")
+	public void IEnterPreviousVerificationCodeForUser(String name)
+			throws Exception {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
+		String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(user
+				.getPhoneNumber());
+		getRegistrationPage().clickResendCodeButton();
+		getRegistrationPage().inputActivationCode(code);
+	}
+
+	/**
+	 * Click on RESEND button to send new verification code
+	 * 
+	 * @step. ^I tap RESEND code button$"
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap RESEND code button$")
+	public void ITapResendCodeButton() throws Exception {
+		getRegistrationPage().clickResendCodeButton();
+	}
+
+	/**
+	 * Verify if PHONE SIGN IN button is visible
+	 * 
+	 * @step. ^I see PHONE SIGN IN button$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see PHONE SIGN IN button$")
+	public void ISeePhoneSignInButton() throws Exception {
+		Assert.assertTrue("PHONE SIGN IN button is not visible", getLoginPage()
+				.isPhoneSignInButtonVisible());
+	}
+
+	/**
+	 * Tap on PHONE SIGN IN button is visible
+	 * 
+	 * @step. I tap on PHONE SIGN IN button
+	 * 
+	 * @throws Exception
+	 */
+	@When("I tap on PHONE SIGN IN button")
+	public void ITapPhoneSignInButton() throws Exception {
+		getLoginPage().clickPhoneLogin();
+	}
+
+	/**
+	 * Verify country picker button presented
+	 * 
+	 * @step. ^I see country picker button on Sign in screen$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see country picker button on Sign in screen$")
+	public void ISeeCountryPickerButton() throws Exception {
+		Assert.assertTrue("Country picker button is not visible",
+				getLoginPage().isCountryPickerButttonVisible());
+	}
+
+	/**
+	 * Verify verification code page shown
+	 * 
+	 * @step. ^I see verification code page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see verification code page$")
+	public void ISeeVerificationCodePage() throws Exception {
+		Assert.assertTrue(getRegistrationPage().isVerificationCodePageVisible());
+	}
+
+	/**
+	 * Verify set email/password suggesstion page is shown
+	 * 
+	 * @step. ^I see set email/password suggesstion page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see set email/password suggesstion page$")
+	public void ISeeSetEmailPassSuggestionPage() throws Exception {
+		Assert.assertTrue(getLoginPage().isSetEmailPasswordSuggestionVisible());
 	}
 
 	/**
@@ -141,6 +296,18 @@ public class LoginPageSteps {
 	@When("I press Sign in button")
 	public void WhenIPressSignInButton() throws Exception {
 		getLoginPage().signIn();
+	}
+
+	/**
+	 * Tap I HAVE AN ACCOUNT button
+	 * 
+	 * @step. I tap I HAVE AN ACCOUNT button
+	 * 
+	 * @throws Exception
+	 */
+	@When("I tap I HAVE AN ACCOUNT button")
+	public void ITapHaveAnAccount() throws Exception {
+		WhenIPressSignInButton();
 	}
 
 	/**
@@ -417,6 +584,71 @@ public class LoginPageSteps {
 	}
 
 	/**
+	 * Verifies whether the notification Resend avialble in 10 min is shown
+	 * 
+	 * @step. ^I see Resend will be possible after 10 min aleart$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see Resend will be possible after 10 min aleart$")
+	public void ISeeResendIn10minAlert() throws Exception {
+		Assert.assertTrue("I don't see Resend in 10 min alert", getLoginPage()
+				.isResendIn10minAlertVisible());
+	}
+
+	/**
+	 * Verifies whether the notification invalid phone number shown
+	 * 
+	 * @step. ^I see invalid phone number alert$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see invalid phone number alert$")
+	public void ISeeInvalidPhoneNumberAlert() throws Exception {
+		Assert.assertTrue("I don't see invalid phone number alert",
+				getLoginPage().isInvalidPhoneNumberAlertShown());
+	}
+	
+	/**
+	 * Verifies whether the notification invalid email is shown
+	 * 
+	 * @step. ^I see invalid email alert$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see invalid email alert$")
+	public void ISeeInvalidEmailAlert() throws Exception {
+		Assert.assertTrue("I don't see invalid email alert",
+				getLoginPage().isInvalidEmailAlertShown());
+	}
+	
+	/**
+	 * Verifies whether the notification registered phone number shown
+	 * 
+	 * @step. ^I see already registered phone number alert$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see already registered phone number alert$")
+	public void ISeeRegisteredNumberAlert() throws Exception {
+		Assert.assertTrue("I don't see registered phone number alert",
+				getLoginPage().isRegisteredNumberAlertShown());
+	}
+	
+	/**
+	 * Verifies whether the notification already registered email shown
+	 * 
+	 * @step. ^I see already registered email alert$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see already registered email alert$")
+	public void ISeeAlreadyRegisteredEmailAlert() throws Exception {
+		Assert.assertTrue("I don't see already registered email alert",
+				getLoginPage().isAlreadyRegisteredEmailAlertShown());
+	}
+
+	/**
 	 * Clicks on the Forgot/Change password button on the Sign In screen
 	 * 
 	 * @step. ^I click on Change Password button on SignIn$
@@ -446,19 +678,13 @@ public class LoginPageSteps {
 		email = usrMgr.replaceAliasesOccurences(email, FindBy.EMAIL_ALIAS);
 		getLoginPage().tapEmailFieldToChangePassword(email);
 
-		userToRegister = new ClientUser();
-		this.userToRegister.setName("SmoketesterReset");
-		this.userToRegister.clearNameAliases();
-		this.userToRegister.addNameAlias("SmoketesterReset");
-		this.userToRegister.setEmail(email);
-		this.userToRegister.clearEmailAliases();
-		this.userToRegister.addEmailAlias(email);
-
 		// activate the user, to get access to the mails
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
-		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
+		expectedHeaders.put("Delivered-To", email);
+		expectedHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME,
+				PasswordResetMessage.MESSAGE_PURPOSE);
 		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
-				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
+				expectedHeaders, BackendAPIWrappers.ACTIVATION_TIMEOUT);
 	}
 
 	/**
@@ -496,22 +722,8 @@ public class LoginPageSteps {
 	 */
 	@When("^I type in new password (.*)$")
 	public void ITypeInNewPassword(String newPassword) throws Exception {
+		usrMgr.getSelfUserOrThrowError().setPassword(newPassword);
 		getLoginPage().tapPasswordFieldToChangePassword(newPassword);
-	}
-
-	/**
-	 * Verifys that the confirmation page for changed password is visible
-	 * 
-	 * @step. ^I see password changed confirmation page$
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I see password changed confirmation page$")
-	public void ISeePasswordChangedConfirmationPage() throws Exception {
-		boolean confirmationIsVisible = getLoginPage()
-				.passwordConfiamtionIsVisible();
-		Assert.assertTrue("Password changed confirmation is not visible",
-				confirmationIsVisible);
 	}
 
 	/**
@@ -524,6 +736,15 @@ public class LoginPageSteps {
 	@When("^Return to Wire app$")
 	public void ReturnToWireApp() throws Exception {
 		getLoginPage().pressSimulatorHomeButton();
+	}
+
+	/**
+	 * 
+	 * @throws Throwable
+	 */
+	@When("^I click Not Now to not add phone number$")
+	public void IClickNotNowToNotAddPhoneNumber() throws Throwable {
+		getLoginPage().clickPhoneNotNow();
 	}
 
 }

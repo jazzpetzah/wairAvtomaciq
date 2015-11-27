@@ -13,6 +13,8 @@ public class IOSPerfReportModel extends PerfReportModel {
 
 	private static final String LOGIN_SUCCESS_REGEX = "Login success after ([\\d]+)";
 
+	private static final String CONTACT_LIST_LOADED_REGEX = "Contact List load after ([\\d]+)";
+
 	// FIXME: replace with message without mistakes after developers will fix it
 	private static final String CONVERSATION_PAGE_VISIBLE_REGEX = "Conver?sation loaded afth?er ([\\d]+)";
 
@@ -49,8 +51,9 @@ public class IOSPerfReportModel extends PerfReportModel {
 	}
 
 	public void loadDataFromLog(final String output) {
-		this.setAppStartupTime(readLogValue(APP_LAUNCH_TIME_REGEX, output));
-		this.setSignInTime(readLogValue(LOGIN_SUCCESS_REGEX, output));
+		this.setAppStartupTime(readLastLogValue(APP_LAUNCH_TIME_REGEX, output));
+		this.setSignInTime(readLogValue(LOGIN_SUCCESS_REGEX, output)
+				+ readLogValue(CONTACT_LIST_LOADED_REGEX, output));
 		this.clearConvoStartupTimes();
 		for (long timeMillis : readLogValues(CONVERSATION_PAGE_VISIBLE_REGEX,
 				output)) {

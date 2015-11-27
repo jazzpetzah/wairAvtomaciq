@@ -17,6 +17,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.IOSPage;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
@@ -54,6 +55,9 @@ public class RegistrationPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathYourName)
 	private WebElement yourName;
 
+	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathYourFilledName)
+	private WebElement yourFilledName;
+	
 	@FindBy(how = How.NAME, using = IOSLocators.nameYourEmail)
 	private WebElement yourEmail;
 
@@ -108,11 +112,17 @@ public class RegistrationPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathPhoneNumber)
 	private WebElement phoneNumber;
 
+	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.namePhoneNumberField)
+	private WebElement phoneNumberField;
+
 	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathActivationCode)
 	private WebElement activationCode;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathCountry)
 	private WebElement selectCountry;
+
+	@FindBy(how = How.NAME, using = IOSLocators.LoginPage.nameCountryPickerButton)
+	private WebElement countryPickerButton;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathCountryList)
 	private WebElement countryList;
@@ -123,8 +133,20 @@ public class RegistrationPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.nameAgreeButton)
 	private WebElement agreeButton;
 
+	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.nameTermOfUsePage)
+	private WebElement termOfUsePage;
+
 	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.nameSelectPictureButton)
 	private WebElement selectPictureButton;
+
+	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.xpathVerificationPage)
+	private WebElement verificationPage;
+
+	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.nameResendCodeButton)
+	private WebElement resendCodeButton;
+
+	@FindBy(how = How.NAME, using = IOSLocators.Alerts.nameInvalidCode)
+	private WebElement invalidCodeAlert;
 
 	private String name;
 	private String email;
@@ -153,8 +175,13 @@ public class RegistrationPage extends IOSPage {
 		agreeButton.click();
 	}
 
+	public boolean isTermOfUsePageVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				termOfUsePage);
+	}
+
 	private void selectCountryByCode(String code) throws Exception {
-		selectCountry.click();
+		countryPickerButton.click();
 		boolean result = false;
 		int count = 0;
 		while (!result && count < 10) {
@@ -178,16 +205,27 @@ public class RegistrationPage extends IOSPage {
 		}
 	}
 
-	public void inputPhoneNumber(String number, String code) throws Exception {
+	public void selectCodeAndInputPhoneNumber(String number, String code)
+			throws Exception {
 		selectCountryByCode(code);
+		inputPhoneNumber(number);
+	}
+
+	public void inputPhoneNumber(String number) throws Exception {
 		getWait().until(ExpectedConditions.elementToBeClickable(phoneNumber));
 		try {
-			phoneNumber.sendKeys(number);
+			phoneNumberField.sendKeys(number);
 		} catch (WebDriverException ex) {
-			phoneNumber.clear();
-			phoneNumber.sendKeys(number);
+			phoneNumberField.clear();
+			phoneNumberField.sendKeys(number);
 		}
 		confirmInput.click();
+	}
+
+	public boolean isVerificationCodePageVisible() throws Exception {
+		boolean flag = DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.xpath(IOSLocators.RegistrationPage.xpathVerificationPage));
+		return flag;
 	}
 
 	public void inputActivationCode(String code) throws Exception {
@@ -195,6 +233,15 @@ public class RegistrationPage extends IOSPage {
 				.until(ExpectedConditions.elementToBeClickable(activationCode));
 		activationCode.sendKeys(code);
 		confirmInput.click();
+	}
+
+	public void inputRandomActivationCode() throws Exception {
+		inputActivationCode(CommonUtils.generateRandomXdigits(6));
+	}
+
+	public void clickResendCodeButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), resendCodeButton);
+		resendCodeButton.click();
 	}
 
 	public boolean isTakePhotoSmileDisplayed() {
@@ -237,6 +284,11 @@ public class RegistrationPage extends IOSPage {
 
 	public void switchToRearCamera() {
 		clickSwitchCameraButton();
+	}
+
+	public boolean isSetPicturePageVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.name(IOSLocators.RegistrationPage.nameSelectPictureButton));
 	}
 
 	public CameraRollPage selectPicture() throws Exception {
@@ -301,10 +353,8 @@ public class RegistrationPage extends IOSPage {
 	}
 
 	public void scriptInputEmail(String val) throws Exception {
-		String script = String.format(
-				IOSLocators.scriptRegistrationEmailInputPath
-						+ ".setValue(\"%s\");", val);
-		this.getDriver().executeScript(script);
+		DriverUtils.sendTextToInputByScript(getDriver(),
+				IOSLocators.scriptRegistrationEmailInputPath, val);
 	}
 
 	public void scriptInputAndConfirmEmail(String val) throws Exception {
@@ -417,7 +467,11 @@ public class RegistrationPage extends IOSPage {
 	}
 
 	public String getUsernameFieldValue() {
-		return yourName.getText();
+		return yourFilledName.getText();
+	}
+
+	public boolean userNameContainSpaces() {
+		return getUsernameFieldValue().contains(" ");
 	}
 
 	public String getEmailFieldValue() {
@@ -519,8 +573,19 @@ public class RegistrationPage extends IOSPage {
 				timeoutSeconds);
 	}
 
-	public boolean isEmailVerifPromptVisible() {
-		return emailVerifPrompt.isDisplayed();
+	public boolean isEmailVerifPromptVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				emailVerifPrompt);
+	}
+
+	public void reSendActivationCode() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), reSendButton);
+	}
+
+	public boolean isInvalidCodeAlertShown() throws Exception {
+		DriverUtils.waitUntilAlertAppears(getDriver());
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				invalidCodeAlert);
 	}
 
 }

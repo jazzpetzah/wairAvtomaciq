@@ -6,7 +6,9 @@ import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(format = {"html:target/report", "json:target/smoke_report.json", "com.wearezeta.auto.ios.tools.IOSZetaFormatter"}, tags  = { "@performance" } )
+@CucumberOptions(format = { "html:target/report",
+		"json:target/smoke_report.json",
+		"com.wearezeta.auto.ios.tools.IOSZetaFormatter" }, tags = { "@performance" })
 public class PerformanceRun {
 
 }

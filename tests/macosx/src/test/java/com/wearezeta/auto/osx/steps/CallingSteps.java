@@ -1,8 +1,12 @@
 package com.wearezeta.auto.osx.steps;
 
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.hasSize;
 
 import com.wearezeta.auto.common.CommonCallingSteps2;
+import com.wearezeta.auto.common.calling2.v1.model.Flow;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -68,8 +72,8 @@ public class CallingSteps {
 	 *            destination conversation
 	 * @param expectedStatuses
 	 *            comma-separated list of expected call statuses. See
-	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus
-	 *            for more details
+	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus for
+	 *            more details
 	 * @param timeoutSeconds
 	 *            number of seconds to wait until call status is changed
 	 * @throws Exception
@@ -95,8 +99,8 @@ public class CallingSteps {
 	 *            comma-separated list of callee names/aliases
 	 * @param expectedStatuses
 	 *            comma-separated list of expected call statuses. See
-	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus
-	 *            for more details
+	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus for
+	 *            more details
 	 * @param timeoutSeconds
 	 *            number of seconds to wait until call status is changed
 	 * @throws Exception
@@ -104,10 +108,8 @@ public class CallingSteps {
 	@Then("(.*) verif(?:y|ies) that waiting instance status is changed to (.*) in (\\d+) seconds?$")
 	public void UsersVerifyCallStatusToUserY(String callees,
 			String expectedStatuses, int timeoutSeconds) throws Exception {
-		for (String callee : splitAliases(callees)) {
-			commonCallingSteps.verifyAcceptingCallStatus(callee,
-					expectedStatuses, timeoutSeconds);
-		}
+		commonCallingSteps.verifyAcceptingCallStatus(splitAliases(callees),
+				expectedStatuses, timeoutSeconds);
 	}
 
 	/**
@@ -143,9 +145,7 @@ public class CallingSteps {
 	@When("(.*) accepts? next incoming call automatically$")
 	public void UsersAcceptNextIncomingCallAutomatically(String callees)
 			throws Exception {
-		for (String callee : splitAliases(callees)) {
-			commonCallingSteps.acceptNextCall(callee);
-		}
+		commonCallingSteps.acceptNextCall(splitAliases(callees));
 	}
 
 	/**
@@ -161,6 +161,47 @@ public class CallingSteps {
 	public void UsersStopIncomingCalls(String callees) throws Exception {
 		for (String callee : splitAliases(callees)) {
 			commonCallingSteps.stopWaitingCall(callee);
+		}
+	}
+
+
+	/**
+	 * Verify that the instance has X active flows
+	 * 
+	 * @step. (.*) verif(?:ies|y) to have (\\d+) flows?$
+	 * @param callees
+	 *            comma separated list of callee names/aliases
+	 * @param numberOfFlows
+	 *            expected number of flows
+	 * @throws Exception
+	 */
+	@Then("(.*) verif(?:ies|y) to have (\\d+) flows?$")
+	public void UserXVerifesHavingXFlows(String callees, int numberOfFlows)
+			throws Exception {
+		for (String callee : splitAliases(callees)) {
+			assertThat(commonCallingSteps.getFlows(callee),
+					hasSize(numberOfFlows));
+		}
+	}
+
+	/**
+	 * Verify that each flow of the instance had incoming and outgoing bytes
+	 * running over the line
+	 *
+	 * @step. (.*) verif(?:ies|y) that all flows have greater than 0 bytes$
+	 * 
+	 * @param callees
+	 *            comma separated list of callee names/aliases
+	 * @throws Exception
+	 */
+	@Then("(.*) verif(?:ies|y) that all flows have greater than 0 bytes$")
+	public void UserXVerifesHavingXFlows(String callees) throws Exception {
+		for (String callee : splitAliases(callees)) {
+			for (Flow flow : commonCallingSteps.getFlows(callee)) {
+				assertThat("incoming bytes", flow.getBytesIn(), greaterThan(0L));
+				assertThat("outgoing bytes", flow.getBytesOut(),
+						greaterThan(0L));
+			}
 		}
 	}
 }

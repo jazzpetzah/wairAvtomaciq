@@ -3,7 +3,7 @@
 iosAppiumUrl=${Url}
 iosApplicationPath=${appPath}
 isSimulator=${isSimulator}
-generateUsers=${generateUsers}
+platformVersion=${platformVersion}
 swipeScriptPath=${Root}/${swipeScriptPath}
 pathToUserpic=${Root}/${pathToUserpic}
 driverTimeoutSeconds=${driverTimeoutSeconds}
@@ -16,3 +16,4 @@ deviceName=${deviceName}
 backendType=${backendType}
 pathToAddressBook=${Root}/${pathToAddressBook}
 perfReportPath=${perfReportPath}
+rcNotificationsRecepients=${rcNotificationsRecepients}

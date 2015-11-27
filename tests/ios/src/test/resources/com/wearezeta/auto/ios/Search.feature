@@ -1,6 +1,6 @@
 Feature: Search
 
-  @smoke @id2147
+  @regression @id2147
   Scenario Outline: Verify search by email
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -15,7 +15,7 @@ Feature: Search
       | Name      | ContactEmail | ContactName |
       | user1Name | user2Email   | user2Name   |
 
-  @smoke @id2148
+  @regression @rc @id2148 @id2543
   Scenario Outline: Verify search by name
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -30,11 +30,11 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id299 @noAcceptAlert
+  @regression @id299 @noAcceptAlert @obsolete
   Scenario Outline: Verify denying address book uploading
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
-    And I dismiss alert
+    And I dismiss all alerts
     And I dismiss settings warning
     And I open search by taping on it
     And I see Upload contacts dialog
@@ -52,12 +52,12 @@ Feature: Search
       | user1Name |
 
   #regression
-  @staging @id311 @deployAddressBook @noAcceptAlert
+  @staging @id311 @deployAddressBook @noAcceptAlert @obsolete
   Scenario Outline: Verify uploading address book to the server
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    And I dismiss alert
+    And I dismiss all alerts
     And I dismiss settings warning
     And I open search by taping on it
     And I see Upload contacts dialog
@@ -71,7 +71,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @id1394
+  @regression @rc @id1394
   Scenario Outline: Start 1:1 chat with users from Top Connections
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -93,7 +93,7 @@ Feature: Search
       | Name      | UserCount | Contact   |
       | user1Name | 4         | user2Name |
 
-  @id1150 @regression
+  @regression @rc @id1150
   Scenario Outline: Start group chat with users from Top Connections
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -119,7 +119,7 @@ Feature: Search
       | Name      | ConvoName    | UserCount | Contact   |
       | user1Name | TopGroupTest | 4         | user2Name |
 
-  @id1454 @regression
+  @regression @rc @id1454
   Scenario Outline: Verify sending a connection request to user chosen from search
     Given There are 2 users where <Name> is me
     Given User <UnconnectedUser> name starts with <StartLetter>
@@ -197,7 +197,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id2117
+  @regression @rc @id2117
   Scenario Outline: Verify dismissing with clicking on Hide
     Given There are 5 users where <Name> is me
     Given <ContactWithFriends> is connected to <Name>
@@ -218,7 +218,7 @@ Feature: Search
       | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
       | user1Name | user2Name          | user3Name | user4Name | user5Name |
 
-  @regression @id2116
+  @regression @rc @id2116
   Scenario Outline: Verify dismissing with one single gesture
     Given There are 5 users where <Name> is me
     Given <ContactWithFriends> is connected to <Name>
@@ -257,7 +257,7 @@ Feature: Search
       | Name      | Contact   | NewName  | LastName |
       | user1Name | user2Name | NEW NAME | NAME     |
 
-  @regression @id2118
+  @regression @rc @id2540 @id2118
   Scenario Outline: Verify sending connection request from PYMK
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -276,7 +276,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @staging @id3282
+  @regression @rc @id3282
   Scenario Outline: Verify starting a call with action button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -297,7 +297,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3282
+  @regression @rc @id3286
   Scenario Outline: Verify sharing a photo to a newly created group conversation with action button
     Given There are 4 users where <Name> is me
     Given Myself is connected to all other users
@@ -322,7 +322,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @staging @id3276
+  @regression @id3276
   Scenario Outline: Verify action buttons appear after selecting person from Top People
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -332,8 +332,141 @@ Feature: Search
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
-    And I tap on first 1 top connections
+    When I tap on first 1 top connections
+    Then I see action buttons appeared on People picker page
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @regression @id3277
+  Scenario Outline: Verify action buttons appear after choosing user from search results
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I input in People picker search field user name <Contact>
+    And I see user <Contact> found on People picker page
+    When I tap on connected user <Contact> on People picker page
+    Then I see action buttons appeared on People picker page
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @regression @id3280
+  Scenario Outline: Verify button Open is changed on Create after checking second person
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    When I tap on 1st top connection contact
+    Then I see open conversation action button on People picker page
+    When I tap on 2nd top connection contact
+    Then I see Create Conversation button on People picker page
+
+    Examples: 
+      | Name      |
+      | user1Name |
+
+  @regression @id3278
+  Scenario Outline: Verify action buttons disappear by unchecking the avatar
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    When I tap on 1st top connection contact
+    Then I see action buttons appeared on People picker page
+    When I tap on 1st top connection contact
+    Then I see action buttons disappeared on People picker page
+
+    Examples: 
+      | Name      |
+      | user1Name |
+
+  @regression @id3279
+  Scenario Outline: Verify action buttons disappear by deleting token from a search field
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    And I tap on 1st top connection contact
     And I see action buttons appeared on People picker page
+    And I tap on 2nd top connection contact
+    And I see Create Conversation button on People picker page
+    And I press backspace button
+    Then I see open conversation action button on People picker page
+    And I press backspace button
+    Then I see action buttons disappeared on People picker page
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user3Name |
+
+  @regression @id3281
+  Scenario Outline: Verify opening conversation with action button
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    And I tap on 1st top connection contact
+    And I see open conversation action button on People picker page
+    And I click open conversation action button on People picker page
+    Then I see dialog page
+
+    Examples: 
+      | Name      |
+      | user1Name |
+
+  @regression @id2121
+  Scenario Outline: Verify label hiding after dismissing all PYMK
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact1> is connected to <Contact2>,<Contact3>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if CONNECT label is not there
+    And I see CONNECT label
+    And I swipe to reveal hide button for suggested contact <Contact2>
+    And I tap hide for suggested contact <Contact2>
+    And I swipe to reveal hide button for suggested contact <Contact3>
+    And I tap hide for suggested contact <Contact3>
+    Then I dont see CONNECT label
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  |
+      | user1Name | user2Name | user3Name | user4Name |
+
+  @staging @id2120
+  Scenario Outline: Verify impossibility of dismissing if search isn't empty
+    Given There are 2 users where <Name> is me
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I input in People picker search field user name <Contact>
+    And I see user <Contact> found on People picker page
+    And I swipe completely to dismiss suggested contact <Contact>
+    Then I see user <Contact> found on People picker page
 
     Examples: 
       | Name      | Contact   |

@@ -1,7 +1,5 @@
 package com.wearezeta.auto.android_tablet.steps;
 
-import org.junit.Assert;
-
 import com.wearezeta.auto.android_tablet.pages.TabletEmailSignInPage;
 import com.wearezeta.auto.android_tablet.pages.TabletWelcomePage;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -19,8 +17,7 @@ public class EmailSignInPageSteps {
 			.getInstance();
 
 	private TabletEmailSignInPage getEmailSignInPage() throws Exception {
-		return (TabletEmailSignInPage) pagesCollection
-				.getPage(TabletEmailSignInPage.class);
+		return pagesCollection.getPage(TabletEmailSignInPage.class);
 	}
 
 	/**
@@ -41,8 +38,7 @@ public class EmailSignInPageSteps {
 		getEmailSignInPage().setLogin(selfUser.getEmail());
 		getEmailSignInPage().setPassword(selfUser.getPassword());
 		getEmailSignInPage().tapSignInButton();
-		Assert.assertTrue("Sign in page is still visible after timeout",
-				getEmailSignInPage().waitUntilNotVisible());
+		getEmailSignInPage().verifyNotVisible();
 	}
 
 	/**
@@ -87,7 +83,7 @@ public class EmailSignInPageSteps {
 	public void IClickSignInButton() throws Exception {
 		getEmailSignInPage().tapSignInButton();
 	}
-	
+
 	/**
 	 * Checks to see that the login error message contains the correct text
 	 * After providing a false email address or password
@@ -102,7 +98,7 @@ public class EmailSignInPageSteps {
 	public void ISeeErrorMessage(String expectedMsg) throws Exception {
 		getEmailSignInPage().verifyErrorMessageText(expectedMsg);
 	}
-	
+
 	/**
 	 * Tap OK button on an alert
 	 * 

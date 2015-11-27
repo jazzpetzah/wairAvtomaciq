@@ -12,10 +12,6 @@ import com.wearezeta.auto.web.locators.WebAppLocators;
 
 import static com.wearezeta.auto.web.locators.WebAppLocators.Common.TITLE_ATTRIBUTE_LOCATOR;
 
-import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
-import com.wearezeta.auto.web.pages.popovers.PeoplePopoverContainer;
-import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
-
 import cucumber.api.PendingException;
 
 import java.awt.image.BufferedImage;
@@ -23,6 +19,7 @@ import java.util.List;
 import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -43,6 +40,8 @@ public class ConversationPage extends WebPage {
 			.getSimpleName());
 
 	private static final String TOOLTIP_PEOPLE = "People";
+
+	private static final String CALLING_IN_LABEL = "IN ";
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathLastImageEntry)
 	private WebElement lastImageEntry;
@@ -91,6 +90,15 @@ public class ConversationPage extends WebPage {
 
 	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idBlackBorder)
 	private WebElement blackBorder;
+
+	@FindBy(css = WebAppLocators.ConversationPage.cssUserAvatar)
+	private WebElement userAvatar;
+
+	@FindBy(xpath = WebAppLocators.ConversationPage.xpathJoinCallBar)
+	private WebElement joinCallBar;
+
+	@FindBy(css = WebAppLocators.ConversationPage.cssLabelOnOutgoingCall)
+	private WebElement labelOnOutgoingCall;
 
 	public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
@@ -183,21 +191,14 @@ public class ConversationPage extends WebPage {
 				locator, 5);
 	}
 
-	public PeoplePopoverContainer clickPeopleButton(boolean isGroup)
-			throws Exception {
+	public void clickPeopleButton() throws Exception {
 		DriverUtils.waitUntilElementClickable(this.getDriver(),
 				showParticipants);
 		showParticipants.click();
-		if (isGroup) {
-			return new GroupPopoverContainer(this.getLazyDriver());
-		} else {
-			return new SingleUserPopoverContainer(this.getLazyDriver());
-		}
 	}
 
-	public PeoplePickerPage clickShowParticipantsButton() throws Exception {
+	public void clickShowParticipantsButton() throws Exception {
 		showParticipants.click();
-		return new PeoplePickerPage(this.getLazyDriver());
 	}
 
 	public boolean isPeopleButtonToolTipCorrect() {
@@ -358,22 +359,26 @@ public class ConversationPage extends WebPage {
 				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " second(s)";
 	}
 
+	public List<String> getNamesFromOutgoingCallingBar() throws Exception {
+		assert isCallingBarVisible() : "Calling bar is not visible!";
+		String label = labelOnOutgoingCall.getText();
+		label = label.substring(CALLING_IN_LABEL.length(), label.length());
+		return Arrays.asList(label.split(", "));
+	}
+
 	public void waitForCallingBarToBeDisplayedWithName(String name)
 			throws Exception {
 		assert DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
 						By.xpath(WebAppLocators.ConversationPage.xpathCallingBarRootByName
-								.apply(name)),
-						MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Calling bar with name "
-				+ name
-				+ " has not been shown within "
-				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " second(s)";
+								.apply(name))) : "Calling bar with name "
+				+ name + " has not been shown.";
 	}
 
 	public void clickAcceptCallButton() throws Exception {
 		final By locator = By
-				.xpath(WebAppLocators.ConversationPage.xpathAcceptCallButton);
+				.cssSelector(WebAppLocators.ConversationPage.cssAcceptCallButton);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator, MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Accept call button has not been shown after "
 				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
@@ -382,7 +387,7 @@ public class ConversationPage extends WebPage {
 
 	public void clickEndCallButton() throws Exception {
 		final By locator = By
-				.xpath(WebAppLocators.ConversationPage.xpathEndCallButton);
+				.cssSelector(WebAppLocators.ConversationPage.cssEndCallButton);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator, MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "End call button has not been shown after "
 				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
@@ -391,7 +396,7 @@ public class ConversationPage extends WebPage {
 
 	public void clickSilenceCallButton() throws Exception {
 		final By locator = By
-				.xpath(WebAppLocators.ConversationPage.xpathSilenceIncomingCallButton);
+				.cssSelector(WebAppLocators.ConversationPage.cssSilenceIncomingCallButton);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator, MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Silence call button has not been shown after "
 				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
@@ -403,6 +408,11 @@ public class ConversationPage extends WebPage {
 				By.xpath(WebAppLocators.ConversationPage.xpathCallingBarRoot),
 				MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Calling bar has not been hidden within "
 				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " second(s)";
+	}
+
+	public boolean isCallingBarVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.xpath(WebAppLocators.ConversationPage.xpathCallingBarRoot));
 	}
 
 	public String getLastTextMessage() throws Exception {
@@ -462,9 +472,8 @@ public class ConversationPage extends WebPage {
 		}
 	}
 
-	public GiphyPage clickGIFButton() throws Exception {
+	public void clickGIFButton() throws Exception {
 		gifButton.click();
-		return new GiphyPage(getLazyDriver());
 	}
 
 	public boolean isGifVisible() throws Exception {
@@ -485,14 +494,13 @@ public class ConversationPage extends WebPage {
 		return conversationInput.getAttribute("value");
 	}
 
-	public PeoplePickerPage pressShortCutForSearch() throws Exception {
+	public void pressShortCutForSearch() throws Exception {
 		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
 			conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "n"));
 		} else {
 			throw new PendingException(
 					"Webdriver does not support shortcuts for Mac browsers");
 		}
-		return new PeoplePickerPage(getLazyDriver());
 	}
 
 	public void hoverPingButton() throws Exception {
@@ -513,7 +521,7 @@ public class ConversationPage extends WebPage {
 
 	public void pressShortCutForPing() throws Exception {
 		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
-			conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "g"));
+			conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "k"));
 		} else {
 			throw new PendingException(
 					"Webdriver does not support shortcuts for Mac browsers");
@@ -543,11 +551,24 @@ public class ConversationPage extends WebPage {
 
 	public void pressShortCutForCall() throws Exception {
 		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
-			conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "t"));
+			conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "r"));
 		} else {
 			throw new PendingException(
 					"Webdriver does not support shortcuts for Mac browsers");
 		}
+	}
+
+	public void clickUserAvatar() throws Exception {
+		DriverUtils.waitUntilElementClickable(this.getDriver(), userAvatar);
+		userAvatar.click();
+	}
+
+	public void clickUserAvatar(String userId) throws Exception {
+		String css = WebAppLocators.ConversationPage.cssUserAvatarById
+				.apply(userId);
+		final WebElement avatar = getDriver().findElement(By.cssSelector(css));
+		DriverUtils.waitUntilElementClickable(this.getDriver(), avatar);
+		avatar.click();
 	}
 
 	public boolean isActionMessageNotSent(final Set<String> parts)
@@ -574,5 +595,11 @@ public class ConversationPage extends WebPage {
 			}
 			return false;
 		}
+	}
+
+	public void clickJoinCallBar() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
+				joinCallBar) : "Join call bar has not been shown";
+		joinCallBar.click();
 	}
 }

@@ -12,24 +12,27 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!-- v1: http://192.168.10.44:21980 || v2: https://192.168.10.44:25443
+		<!-- v1: http://192.168.10.44:21980 || v2: https://192.168.10.44:25443 
 			|| local: http://localhost:8080 -->
 		<!-- note there's no trailing slash -->
-		<defaultCallingServiceUrl>https://192.168.10.44:25443</defaultCallingServiceUrl>
+		<defaultCallingServiceUrl>https://192.168.10.44:27443</defaultCallingServiceUrl>
 		<!-- JavaX | REST -->
 		<mailboxHandlerType>REST</mailboxHandlerType>
 		<defaultEmailListenerServiceHost>192.168.10.44</defaultEmailListenerServiceHost>
 		<defaultEmailListenerServicePort>21990</defaultEmailListenerServicePort>
 		<makeScreenshots>true</makeScreenshots>
 		<initNodeIp>true</initNodeIp>
-		<openCVLibPath>/usr/local/opt/opencv/share/OpenCV/java/libopencv_java2411.dylib</openCVLibPath>
+		<zephyrCycleName></zephyrCycleName>
+		<zephyrPhaseName></zephyrPhaseName>
+		<zephyrServer>192.168.10.45</zephyrServer>
+		<jenkinsJobUrl></jenkinsJobUrl>
 	</properties>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.opencv</groupId>
-			<artifactId>opencv-java</artifactId>
-			<version>2.4.9</version>
+			<groupId>nu.pattern</groupId>
+			<artifactId>opencv</artifactId>
+			<version>2.4.9-7</version>
 		</dependency>
 
 		<dependency>
@@ -45,15 +48,33 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.4.1</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
 			<version>2.47.1</version>
+			<exclusions>
+				<exclusion>
+					<groupId>io.netty</groupId>
+					<artifactId>netty</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
 			<groupId>io.appium</groupId>
 			<artifactId>java-client</artifactId>
-			<version>2.1.0</version>
+			<version>3.2.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.ow2.asm</groupId>
+					<artifactId>asm</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -69,15 +90,15 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.sun.mail</groupId>
-			<artifactId>javax.mail</artifactId>
-			<version>1.5.2</version>
+			<groupId>info.cukes</groupId>
+			<artifactId>cucumber-java</artifactId>
+			<version>1.1.8</version>
 		</dependency>
 
 		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>17.0</version>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>1.5.2</version>
 		</dependency>
 
 		<dependency>
@@ -91,17 +112,25 @@
 			<artifactId>jersey-media-json-jackson</artifactId>
 			<version>2.19</version>
 		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.jaxrs</groupId>
-			<artifactId>jackson-jaxrs-json-provider</artifactId>
-			<version>2.5.0</version>
-		</dependency>
 
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
 			<artifactId>jersey-client</artifactId>
 			<version>2.19</version>
 		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.34</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.wearezeta</groupId>
+			<artifactId>zmessaging-actor</artifactId>
+			<version>46-SNAPSHOT</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -124,7 +153,17 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
-
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
 		</plugins>
 
 		<resources>
@@ -134,4 +173,12 @@
 			</resource>
 		</resources>
 	</build>
+	<repositories>
+		<repository>
+			<id>releases</id>
+			<name>Releases</name>
+			<url>http://192.168.10.18:8081/nexus/content/repositories/snapshots/</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
 </project>

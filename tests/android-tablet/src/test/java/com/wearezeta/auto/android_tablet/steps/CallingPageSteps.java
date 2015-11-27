@@ -22,8 +22,7 @@ public class CallingPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private TabletCallingOverlayPage getCallingOverlayPage() throws Exception {
-		return (TabletCallingOverlayPage) pagesCollection
-				.getPage(TabletCallingOverlayPage.class);
+		return pagesCollection.getPage(TabletCallingOverlayPage.class);
 	}
 
 	/**
@@ -40,12 +39,11 @@ public class CallingPageSteps {
 	public void WhenISeeCallingOverlayBigBar(String shouldNotSee)
 			throws Exception {
 		if (shouldNotSee == null) {
-			Assert.assertTrue(getCallingOverlayPage().callingOverlayIsVisible());
-			Assert.assertTrue(getCallingOverlayPage()
-					.incomingCallerAvatarIsVisible());
+			Assert.assertTrue("Calling overlay should be visible",
+					getCallingOverlayPage().callingOverlayIsVisible());
 		} else {
-			Assert.assertTrue(getCallingOverlayPage()
-					.incomingCallerAvatarIsInvisible());
+			Assert.assertTrue("Calling overlay should be hidden",
+					getCallingOverlayPage().callingOverlayNotVisible());
 		}
 	}
 
@@ -63,11 +61,32 @@ public class CallingPageSteps {
 	public void WhenISeeCallingOverlayMiniBar(String shouldNotSee)
 			throws Exception {
 		if (shouldNotSee == null) {
-			Assert.assertTrue(getCallingOverlayPage()
-					.ongoingCallMinibarIsVisible());
+			Assert.assertTrue("Mini bar should be visible",
+					getCallingOverlayPage().ongoingCallMinibarIsVisible());
 		} else {
-			Assert.assertTrue(getCallingOverlayPage()
-					.ongoingCallMinibarIsInvisible());
+			Assert.assertTrue("Mini bar should be hidden",
+					getCallingOverlayPage().ongoingCallMinibarIsInvisible());
+		}
+	}
+	
+	/**
+	 * Checks to see if call overlay is present or not
+	 * 
+	 * @step. ^I( do not)? see call overlay$
+	 * @param shouldNotSee
+	 *            is set to null if " do not" part does not exist
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I( do not)? see generic calling overlay$")
+	public void WhenISeeGenericCallOverlay(String shouldNotSee) throws Exception {
+		if (shouldNotSee == null) {
+			Assert.assertTrue("Call overlay not visible",
+					getCallingOverlayPage().callingOverlayIsVisible());
+		} else {
+			Assert.assertTrue(
+					"Call overlay is visible, it should have been dismissed",
+					getCallingOverlayPage().callingOverlayNotVisible());
 		}
 	}
 
@@ -92,10 +111,13 @@ public class CallingPageSteps {
 			getCallingOverlayPage().tapDismissButton();
 			break;
 		case MUTE:
-			getCallingOverlayPage().tapMuteButton();
+			getCallingOverlayPage().tapMuteMicButton();
 			break;
 		case SPEAKER:
 			getCallingOverlayPage().tapSpeakerButton();
+			break;
+		case IGNORE:
+			getCallingOverlayPage().tapIgnoreButton();
 			break;
 		default:
 			throw new IllegalStateException(String.format(
@@ -106,7 +128,7 @@ public class CallingPageSteps {
 	private Map<OverlayButton, BufferedImage> savedButtonStates = new HashMap<>();
 
 	private static enum OverlayButton {
-		ACCEPT, DISMISS, MUTE, SPEAKER;
+		ACCEPT, DISMISS, MUTE, SPEAKER, IGNORE;
 	}
 
 	private Optional<BufferedImage> getButtonStateScreenshot(OverlayButton btn)

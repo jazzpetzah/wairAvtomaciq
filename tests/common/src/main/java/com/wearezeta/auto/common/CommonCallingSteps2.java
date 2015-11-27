@@ -20,9 +20,13 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -32,7 +36,11 @@ public final class CommonCallingSteps2 {
 	public static final Logger LOG = ZetaLogger
 			.getLog(CommonCallingSteps2.class.getName());
 
-	private static final int INSTANCE_START_TIMEOUT_SECONDS = 120;
+	// Request timeout of 120 secs is set by callingservice, we add additional
+	// 10 seconds on the client side to actually get a timeout response to
+	// recocgnize a failed instances creation for retry mechanisms
+	private static final int INSTANCE_START_TIMEOUT_SECONDS = 130;
+	private static final int INSTANCE_CREATION_RETRIES = 3;
 	private static final long POLLING_FREQUENCY_MILLISECONDS = 1000;
 	private static CommonCallingSteps2 singleton = null;
 
@@ -142,8 +150,8 @@ public final class CommonCallingSteps2 {
 	 * Migration: UserXVerifesWaitingInstanceStatus(String userAsNameAlias,
 	 * String expectedStatuses, int secondsTimeout)
 	 *
-	 * @param calleeName
-	 *            the name of the callee
+	 * @param calleeNames
+	 *            list of the names of the callees
 	 * @param expectedStatuses
 	 *            the expected status
 	 * @param secondsTimeout
@@ -151,12 +159,15 @@ public final class CommonCallingSteps2 {
 	 * @throws Exception
 	 * @see com.wearezeta.auto.common.calling2.v1.model.CallStatus
 	 */
-	public void verifyAcceptingCallStatus(String calleeName,
+	public void verifyAcceptingCallStatus(List<String> calleeNames,
 			String expectedStatuses, int secondsTimeout) throws Exception {
-		ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
-		waitForExpectedCallStatuses(getInstanceByParticipant(userAs),
-				getWaitingCallByParticipant(userAs),
-				callStatusesListToObject(expectedStatuses), secondsTimeout);
+		for (String calleeName : calleeNames) {
+			final ClientUser userAs = usrMgr
+					.findUserByNameOrNameAlias(calleeName);
+			waitForExpectedCallStatuses(getInstanceByParticipant(userAs),
+					getWaitingCallByParticipant(userAs),
+					callStatusesListToObject(expectedStatuses), secondsTimeout);
+		}
 	}
 
 	/**
@@ -223,14 +234,28 @@ public final class CommonCallingSteps2 {
 	 */
 	public void startWaitingInstances(List<String> calleeNames,
 			String instanceType) throws Exception {
-		CompletableFuture<?>[] createTasks = new CompletableFuture[calleeNames
-				.size()];
+		int creationRetries = INSTANCE_CREATION_RETRIES;
+		List<String> callees = new ArrayList<>(calleeNames);
+		Collections.copy(callees, calleeNames);
+
+		do {
+			LOG.debug(creationRetries + " retries left");
+			LOG.debug("Creating instances for "
+					+ Arrays.toString(callees.toArray()));
+			callees = createInstances(callees, instanceType);
+			creationRetries--;
+		} while (!callees.isEmpty() && creationRetries > 0);
+	}
+
+	private List<String> createInstances(List<String> calleeNames,
+			String instanceType) throws InterruptedException,
+			ExecutionException, NoSuchUserException {
+		Map<String, CompletableFuture<Instance>> createTasks = new HashMap<>(
+				calleeNames.size());
 		for (String calleeName : calleeNames) {
 			ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
-			int calleeIndex = calleeNames.indexOf(calleeName);
-			createTasks[calleeIndex] = CompletableFuture.supplyAsync(() -> {
+			createTasks.put(calleeName, CompletableFuture.supplyAsync(() -> {
 				try {
-
 					final Instance instance = client.startInstance(userAs,
 							instanceTypeFix(instanceType),
 							ZetaFormatter.getScenario());
@@ -242,17 +267,29 @@ public final class CommonCallingSteps2 {
 							userAs.getName()), ex);
 					return null;
 				}
-			});
+			}));
 		}
 		try {
-			CompletableFuture.allOf(createTasks).get(
+			CompletableFuture.allOf(
+					createTasks.values().toArray(
+							new CompletableFuture[createTasks.size()])).get(
 					INSTANCE_START_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+			return Collections.EMPTY_LIST;
 		} catch (TimeoutException e) {
 			LOG.error(String.format(
 					"Could not start all waiting instances in '%d' seconds",
 					INSTANCE_START_TIMEOUT_SECONDS), e);
+			List<String> calleesForRetry = new ArrayList<>();
+			Instance instance;
+			for (Map.Entry<String, CompletableFuture<Instance>> taskEntries : createTasks
+					.entrySet()) {
+				instance = taskEntries.getValue().getNow(null);
+				if (instance == null) {
+					calleesForRetry.add(taskEntries.getKey());
+				}
+			}
+			return calleesForRetry;
 		}
-
 	}
 
 	/**
@@ -262,15 +299,18 @@ public final class CommonCallingSteps2 {
 	 * Migration: UserXAcceptsNextIncomingCallAutomatically(String
 	 * userAsNameAlias)
 	 *
-	 * @param calleeName
-	 *            the name of the callee
+	 * @param calleeNames
+	 *            list of names of the callees
 	 * @throws Exception
 	 */
-	public void acceptNextCall(String calleeName) throws Exception {
-		ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
-		Call call = client
-				.acceptNextIncomingCall(getInstanceByParticipant(userAs));
-		addCall(call, userAs);
+	public void acceptNextCall(List<String> calleeNames) throws Exception {
+		for (String calleeName : calleeNames) {
+			final ClientUser userAs = usrMgr
+					.findUserByNameOrNameAlias(calleeName);
+			final Call call = client
+					.acceptNextIncomingCall(getInstanceByParticipant(userAs));
+			addCall(call, userAs);
+		}
 	}
 
 	/**
@@ -375,6 +415,11 @@ public final class CommonCallingSteps2 {
 	private void addInstance(Instance instance, ClientUser from) {
 		String key = makeKey(from);
 		instanceMapping.put(key, instance);
+	}
+
+	private void removeInstance(ClientUser from) {
+		String key = makeKey(from);
+		instanceMapping.remove(key);
 	}
 
 	private synchronized Instance getInstanceByParticipant(ClientUser userAs)

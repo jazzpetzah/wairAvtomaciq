@@ -1,42 +1,51 @@
 package com.wearezeta.auto.web.steps;
 
+import com.wearezeta.auto.web.pages.GiphyPage;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.web.pages.PagesCollection;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class GiphyPageSteps {
 
+	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
+			.getInstance();
+
 	@Then("^I see Giphy popup$")
 	public void ISeeGiphyPopup() throws Throwable {
 		Assert.assertTrue("Giphy link icon in Giphy popup not visible",
-				PagesCollection.giphyPage.isGiphyLinkVisible());
+				webappPagesCollection.getPage(GiphyPage.class)
+						.isGiphyQueryVisible());
 	}
 
 	@Then("^I verify that the search of the Giphy popup contains (.*)$")
-	public void IVerifyThatTheSearchOfTheGiphyPopupContains(String term) {
-		assertThat(PagesCollection.giphyPage.getSearchTerm(), equalTo(term.toUpperCase()));
+	public void IVerifyThatTheSearchOfTheGiphyPopupContains(String term)
+			throws Exception {
+		assertThat(webappPagesCollection.getPage(GiphyPage.class)
+				.getSearchTerm(), equalTo(term.toUpperCase()));
 	}
 
 	@Then("^I see gif image in Giphy popup$")
 	public void ISeeGifImageInGiphyPopup() throws Throwable {
 		Assert.assertTrue("Gif in Giphy popup not visible",
-				PagesCollection.giphyPage.isGifImageVisible());
+				webappPagesCollection.getPage(GiphyPage.class)
+						.isGifImageVisible());
 	}
 
 	@Then("^I see more button in Giphy popup$")
 	public void ISeeMoreButtonInGiphyPopup() throws Throwable {
 		Assert.assertTrue("More button in Giphy popup not visible",
-				PagesCollection.giphyPage.isMoreButtonVisible());
+				webappPagesCollection.getPage(GiphyPage.class)
+						.isMoreButtonVisible());
 	}
 
 	@When("^I click send button in Giphy popup$")
 	public void IClickSendButtonInGiphyPopup() throws Throwable {
-	    PagesCollection.giphyPage.clickSendButton();
+		webappPagesCollection.getPage(GiphyPage.class).clickSendButton();
 	}
 }

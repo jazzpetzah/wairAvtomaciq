@@ -5,7 +5,9 @@ import org.apache.log4j.Logger;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.web.pages.PagesCollection;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
+import com.wearezeta.auto.web.pages.external.PasswordChangePage;
+import com.wearezeta.auto.web.pages.external.PasswordChangeSuccessfullPage;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -21,6 +23,8 @@ public class PasswordChangeSteps {
 			.getLog(PasswordChangeSteps.class.getSimpleName());
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
+			.getInstance();
 
 	private static final int VISIBILITY_TIMEOUT_SECONDS = 15;
 
@@ -33,7 +37,7 @@ public class PasswordChangeSteps {
 	 */
 	@Then("^I see Password Change page$")
 	public void ISeePage() throws Exception {
-		PagesCollection.passwordChangePage
+		webappPagesCollection.getPage(PasswordChangePage.class)
 				.waitUntilVisible(VISIBILITY_TIMEOUT_SECONDS);
 	}
 
@@ -46,10 +50,11 @@ public class PasswordChangeSteps {
 	 *            password string or an alias
 	 */
 	@When("^I enter password (\\S+) on Password Change page$")
-	public void IEnterPassword(String passwordOrAlias) {
+	public void IEnterPassword(String passwordOrAlias) throws Exception {
 		passwordOrAlias = usrMgr.replaceAliasesOccurences(passwordOrAlias,
 				FindBy.PASSWORD_ALIAS);
-		PagesCollection.passwordChangePage.setNewPassword(passwordOrAlias);
+		webappPagesCollection.getPage(PasswordChangePage.class).setNewPassword(
+				passwordOrAlias);
 	}
 
 	/**
@@ -61,7 +66,7 @@ public class PasswordChangeSteps {
 	 */
 	@And("^I click Change Password button on Password Change page$")
 	public void IClickChangePasswordButton() throws Exception {
-		PagesCollection.passwordChangeSuccessfullPage = PagesCollection.passwordChangePage
+		webappPagesCollection.getPage(PasswordChangePage.class)
 				.clickChangePasswordButton();
 	}
 
@@ -75,8 +80,8 @@ public class PasswordChangeSteps {
 	@Then("^I see Password Change Succeeded page$")
 	public void ISeePasswordChangeSucceeded() throws Exception {
 		assertThat(
-				PagesCollection.passwordChangeSuccessfullPage
-						.isConfirmationTextVisible(),
-				is(true));
+				webappPagesCollection.getPage(
+						PasswordChangeSuccessfullPage.class)
+						.isConfirmationTextVisible(), is(true));
 	}
 }

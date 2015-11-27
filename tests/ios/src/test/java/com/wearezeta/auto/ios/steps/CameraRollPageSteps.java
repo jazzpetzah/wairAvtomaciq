@@ -22,6 +22,19 @@ public class CameraRollPageSteps {
 	public void IChooseAPictureFromCameraRoll() throws Throwable {
 		getCameraRollPage().selectImageFromLibrary();
 	}
+	
+	/**
+	 * Select last image from camera roll library
+	 * 
+	 * @step. ^I choose last picture from camera roll$
+	 * 
+	 * @throws Throwable
+	 */
+	@When("^I choose last picture from camera roll$")
+	public void IChooseLastPictureFromCameraRoll() throws Throwable {
+		getCameraRollPage().clickFirstLibraryFolder();
+		getCameraRollPage().clickLastImage();
+	}
 
 	@When("^I press Confirm button$")
 	public void IPressConfirmButton() throws Throwable {

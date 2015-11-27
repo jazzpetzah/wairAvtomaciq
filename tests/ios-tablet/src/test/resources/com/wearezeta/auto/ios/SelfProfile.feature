@@ -9,7 +9,10 @@ Feature: Self Profile
     And I tap to edit my name
     And I change name <Name> to <NewUsername>
     Then I see my new name <NewUsername1>
+    When I close self profile
     Then I see Contact list with my name <NewUsername1>
+    And I see my name <NewUsername1> first letter as label of Self Button
+    When I tap on my name <Name>
     And I tap to edit my name
     And I change name <Name> to <NewUsername>
     Then I see my new name <NewUsername1>
@@ -28,8 +31,10 @@ Feature: Self Profile
     And I tap to edit my name
     And I change name <Name> to <NewUsername>
     Then I see my new name <NewUsername1>
-    When I rotate UI to landscape
+    When I close self profile
     Then I see Contact list with my name <NewUsername1>
+    And I see my name <NewUsername1> first letter as label of Self Button
+    When I tap on my name <Name>
     And I tap to edit my name
     And I change name <Name> to <NewUsername>
     Then I see my new name <NewUsername1>
@@ -69,7 +74,7 @@ Feature: Self Profile
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id2574
+  @regression @rc @id2574
   Scenario Outline: Change your profile picture [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -106,7 +111,7 @@ Feature: Self Profile
       | Name      | Picture                             | Contact   |
       | user1Name | userpicture_ios_check_landscape.png | user2Name |
 
-  @regression @id2582
+  @regression @rc @id2582
   Scenario Outline: Attempt to enter a name with 0 chars [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -184,12 +189,13 @@ Feature: Self Profile
   Scenario Outline: Verify name change [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Name> sent message TestMessage to conversation <Contact>
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I tap to edit my name
     And I change name <Name> to <NewUsername>
-    And I swipe right on the personal page
+    And I close self profile
     And I see Contact list with my name <NewUsername>
     And I tap on contact name <Contact>
     Then I see my user name <NewUsername> in conversation
@@ -202,13 +208,14 @@ Feature: Self Profile
   Scenario Outline: Verify name change [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Name> sent message TestMessage to conversation <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I tap to edit my name
     And I change name <Name> to <NewUsername>
-    And I swipe right on the personal page
+    And I close self profile
     And I see Contact list with my name <NewUsername>
     And I tap on contact name <Contact>
     Then I see my user name <NewUsername> in conversation
@@ -217,7 +224,7 @@ Feature: Self Profile
       | Name      | NewUsername | Contact   |
       | user1Name | NewName     | user2Name |
 
-  @regression @id2571
+  @regression @rc @id2571
   Scenario Outline: Verify changing and applying accent color [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -227,7 +234,7 @@ Feature: Self Profile
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I slide my accent color via the colorpicker from <Color1> to <Color2>
-    And I swipe right on the personal page
+    And I close self profile
     Then I see 5 unread message indicator in list for contact <Contact>
 
     Examples: 
@@ -245,8 +252,141 @@ Feature: Self Profile
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I slide my accent color via the colorpicker from <Color1> to <Color2>
+    And I close self profile
     Then I see 5 unread message indicator in list for contact <Contact>
 
     Examples: 
       | Name      | NewName           | Color1 | Color2          | Contact   |
       | user1Name | AccentColorChange | Violet | StrongLimeGreen | user2Name |
+
+  @regression @id3850
+  Scenario Outline: Verify adding phone number to the contact signed up with email [PORTRAIT]
+    Given There is 1 users where <Name> is me with email only
+    Given I Sign in on tablet using my email
+    And I click Not Now to not add phone number
+    And I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    And I tap to add my phone number
+    And I see country picker button on Sign in screen
+    And I enter phone number and verification code
+    Then I see phone number attached to profile
+
+    Examples: 
+      | Name      |
+      | user1Name |
+
+  @regression @id3848
+  Scenario Outline: Verify adding phone number to the contact signed up with email [LANDSCAPE]
+    Given There is 1 users where <Name> is me with email only
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I click Not Now to not add phone number
+    And I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    And I tap to add my phone number
+    And I see country picker button on Sign in screen
+    And I enter phone number and verification code
+    Then I see phone number attached to profile
+
+    Examples: 
+      | Name      |
+      | user1Name |
+
+  @regression @noAcceptAlert @id3855
+  Scenario Outline: Verify error message appears in case of entering a not valid phone number [PORTRAIT]
+    Given There is 1 users where <Name> is me with email only
+    Given I Sign in on tablet using my email
+    And I accept alert
+    When I click Not Now to not add phone number
+    And I accept alert
+    And I see Contact list with my name <Name>
+    And I tap on my name <Name>
+    And I tap to add my phone number
+    And I see country picker button on Sign in screen
+    And I enter invalid phone number
+    Then I see invalid phone number alert
+
+    Examples: 
+      | Name      |
+      | user1Name |
+
+  @regression @noAcceptAlert @id3856
+  Scenario Outline: Verify error message appears in case of entering a not valid phone number [LANDSCAPE]
+    Given There is 1 users where <Name> is me with email only
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I accept alert
+    When I click Not Now to not add phone number
+    And I accept alert
+    And I see Contact list with my name <Name>
+    And I tap on my name <Name>
+    And I tap to add my phone number
+    And I see country picker button on Sign in screen
+    And I enter invalid phone number
+    Then I see invalid phone number alert
+
+    Examples: 
+      | Name      |
+      | user1Name |
+
+  @regression @noAcceptAlert @id3861
+  Scenario Outline: Verify error message appears in case of registering already taken phone number [PORTRAIT]
+    Given There is 1 users where <Name> is me with email only
+    Given I Sign in on tablet using my email
+    And I accept alert
+    When I click Not Now to not add phone number
+    And I accept alert
+    And I see Contact list with my name <Name>
+    And I tap on my name <Name>
+    And I tap to add my phone number
+    And I see country picker button on Sign in screen
+    And I input phone number <Number> with code <Code>
+    Then I see already registered phone number alert
+
+    Examples: 
+      | Name      | Number        | Code |
+      | user1Name | 8301652248706 | +0   |
+      
+  @regression @noAcceptAlert @id3862
+  Scenario Outline: Verify error message appears in case of registering already taken phone number [LANDSCAPE]
+    Given There is 1 users where <Name> is me with email only
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I accept alert
+    When I click Not Now to not add phone number
+    And I accept alert
+    And I see Contact list with my name <Name>
+    And I tap on my name <Name>
+    And I tap to add my phone number
+    And I see country picker button on Sign in screen
+    And I input phone number <Number> with code <Code>
+    Then I see already registered phone number alert
+
+    Examples: 
+      | Name      | Number        | Code |
+      | user1Name | 8301652248706 | +0   |
+
+  @regression @rc @id3986
+  Scenario Outline: Verify theme switcher is not shown on the self profile [PORTRAIT]
+    Given There is 1 user where <Name> is me
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    Then I dont see theme switcher button on self profile page
+
+    Examples: 
+      | Name      |
+      | user1Name |
+
+  @regression @id3989
+  Scenario Outline: Verify theme switcher is not shown on the self profile [LANDSCAPE]
+    Given There is 1 user where <Name> is me
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    Then I dont see theme switcher button on self profile page
+
+    Examples: 
+      | Name      |
+      | user1Name |

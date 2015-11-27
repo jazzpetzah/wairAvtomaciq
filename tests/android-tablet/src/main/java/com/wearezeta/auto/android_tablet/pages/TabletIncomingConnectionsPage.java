@@ -68,4 +68,21 @@ public class TabletIncomingConnectionsPage extends AndroidTabletPage {
 				.apply(expectedName));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
+
+	public void scrollUntilEntryIsVisible(String name, int maxTimes)
+			throws Exception {
+		final By locator = By.xpath(xpathIncomingRequestIgnoreButtonByName
+				.apply(name));
+		int ntry = 0;
+		while (ntry < maxTimes) {
+			if (DriverUtils
+					.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
+				return;
+			}
+			this.swipeUpCoordinates(1000, 50);
+			ntry++;
+		}
+		throw new RuntimeException(String.format(
+				"Incoming pending contact '%s' is still not visible", name));
+	}
 }

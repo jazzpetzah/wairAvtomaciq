@@ -1,383 +1,67 @@
 Feature: People View
 
-  @regression @id61
-  Scenario Outline: Check confirmation request on removing person from group chat
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
-    When I open conversation with <ChatName>
-    And I open Conversation info
-    And I choose user <Contact1> in Conversation info
-    And I select to remove user from group chat
-    Then I see confirmation request about removing user
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName            |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | ConfirmRemovingChat |
-
-  @regression @id95
-  Scenario Outline: Change conversation name
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
-    When I open conversation with <ChatName>
-    And I open Conversation info
-    And I set name <NewName> for conversation
-    Then I see contact <NewName> in Contact list
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName          | NewName      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | RenameGroupChat   | RANDOM       |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | RenameSpecSymChat | ÄäÖöÜüß conv |
-
-  @regression @id96
-  Scenario Outline: Do not accept erroneous input as group conversation name (only spaces)
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
-    When I open conversation with <ChatName>
-    And I open Conversation info
-    And I set name <NewName> for conversation
-    Then I do not see conversation <NewName> in contact list
-    And I see contact <ChatName> in Contact list
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName         | NewName |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | EditNameErr1Chat | \\u0020 |
-
-  @regression @id96
-  Scenario Outline: Do not accept erroneous input as group conversation name (leading spaces)
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
-    When I open conversation with <ChatName>
-    And I open Conversation info
-    And I set name <NewName> for conversation
-    Then I see contact <ExpectedNewName> in Contact list
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName         | NewName                                      | ExpectedNewName         |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | EditNameErr2Chat | \\u0020\\u0020\\u0020Test   Leading   Spaces | Test   Leading   Spaces |
-
-  @regression @id97
-  Scenario Outline: I can navigate forth and back between participant view and personal info
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
-    When I open conversation with <ChatName>
-    And I open Conversation info
-    And I choose user <Contact1> in Conversation info
-    Then I see <Contact1> name in Conversation info
-    And I return to participant view from personal info
-    And I see conversation name <ChatName> in conversation info
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | PartViewNavChat |
-
-  @regression @id100
-  Scenario Outline: Access profile information for the other participant in a 1on1 conversation
+  @smoke @id3921
+  Scenario Outline: Verify opening people popover with menu bar in 1:1 conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I change user <Contact> avatar picture from file aqaPictureContact.jpg
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
+    And I see my avatar on top of Contact list
     When I open conversation with <Contact>
-    And I open Conversation info
-    Then I see <Contact> name in Conversation info
-    And I see aqaPictureContact_osx_userinfo_1920x1080.png photo in Conversation info
-    And I see add new people button
-    And I see block a person button
+    And I click menu bar item "Conversation" and menu item "People"
+    Then I see Single User Profile popover
+    And I see username <Contact> on Single User Profile popover
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @regression @id102
-  Scenario Outline: Add user to group conversation
-    Given There are 4 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
-    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
-    And I open conversation with <ChatName>
-    When I open People Picker from conversation
-    And I search for user <Contact3>
-    And I see user <Contact3> in search results
-    And I add user <Contact3> from search results
-    Then I open conversation with <ChatName>
-    And I see message YOU ADDED <Contact3> in conversation
-    And I open Conversation info
-    And I see that conversation has 4 people
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | ChatName           |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | AddUserToGroupChat |
-
-  @smoke @id103
-  Scenario Outline: Create group chat from 1on1 conversation
+  @smoke @id3922
+  Scenario Outline: Verify opening people popover with menu bar in group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
-    And I open conversation with <Contact1>
-    When I open People Picker from conversation
-    And I search for user <Contact2>
-    And I see user <Contact2> in search results
-    And I add user <Contact2> from search results
-    Then I open conversation with <Contact1>, <Contact2>
-    And I see message YOU STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
+    And I see my avatar on top of Contact list
+    And I open conversation with <ChatName>
+    And I click menu bar item "Conversation" and menu item "People"
+    Then I see Group Participants popover
+    Then I see conversation title <ChatName> on Group Participants popover
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | PeoplePopover |
+
+  @smoke @id3923
+  Scenario Outline: Verify adding people to 1:1 conversation with menu bar
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    When I open conversation with <Contact>
+    And I click menu bar item "Conversation" and menu item "Add People…"
+    Then I see Single User Profile popover
+    And I see Add to conversation button on Single User popover
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @regression @id186
-  Scenario Outline: Display conversation info correctly
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
-    And I create group chat with <Contact1> and <Contact2>
-    When I open conversation with <Contact1>, <Contact2>
-    And I open Conversation info
-    Then I see conversation name <Contact1>, <Contact2> in conversation info
-    And I see that conversation has <Number> people
-    And I see <Number> participants avatars
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | Number |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | 3      |
-
-  @regression @id188
-  Scenario Outline: Group conversation name is displayed
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
-    And I open conversation with <ChatName>
-    And I open Conversation info
-    And I set name <NewName> for conversation
-    And I open conversation with <NewName>
-    And I open Conversation info
-    Then I see conversation name <NewName> in conversation info
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName               | NewName |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | CheckDisplayedNameChat | RANDOM  |
-
-  @smoke @id471
-  Scenario Outline: Leave group conversation
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
-    When I open conversation with <ChatName>
-    And I open Conversation info
-    And I leave conversation
-    And I go to archive
-    And I open conversation with <ChatName>
-    Then I see message YOU LEFT in conversation
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat |
-
-  @smoke @id492 @id1526
-  Scenario Outline: Remove user from group chat
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
-    When I open conversation with <ChatName>
-    And I open Conversation info
-    And I choose user <Contact1> in Conversation info
-    And I remove selected user from conversation
-    Then I see message YOU REMOVED <Contact1> in conversation
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | RemoveUserChat |
-
-  @regression @id535
-  Scenario Outline: Remove then add the same participant in group chat
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
-    And I open conversation with <ChatName>
-    And I open Conversation info
-    And I choose user <Contact1> in Conversation info
-    And I remove selected user from conversation
-    And I see message YOU REMOVED <Contact1> in conversation
-    And I open Conversation info
-    And I see that conversation has 2 people
-    And I open People Picker from conversation
-    And I search for user <Contact1>
-    And I see user <Contact1> in search results
-    And I add user <Contact1> from search results
-    Then I open conversation with <ChatName>
-    And I see message YOU ADDED <Contact1> in conversation
-    And I open Conversation info
-    And I see that conversation has 3 people
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName          |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | RemoveAddSameChat |
-
-  @regression @id618
-  Scenario Outline: Verify the new conversation is created on the other end
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
-    And I create group chat with <Contact1> and <Contact2>
-    And I open conversation with <Contact1>, <Contact2>
-    And I see message YOU STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
-    When I sign out
-    And I Sign in using login <Contact1Email> and password <Password>
-    And I see my name <Contact1> in Contact list
-    Then I see contact <Name>, <Contact2> in Contact list
-    And I open conversation with <Name>, <Contact2>
-    And I see message <Name> STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
-    And I sign out
-    And I Sign in using login <Contact2Email> and password <Password>
-    And I see my name <Contact2> in Contact list
-    Then I see contact <Name>, <Contact1> in Contact list
-    And I open conversation with <Name>, <Contact1>
-    And I see message <Name> STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact1Email | Contact2  | Contact2Email |
-      | user1Email | user1Password | user1Name | user2Name | user2Email    | user3Name | user3Email    |
-
-  @regression @id621
-  Scenario Outline: Leave group chat - second end verification
+  @smoke @id3924
+  Scenario Outline: Verify adding people to group conversation with menu bar
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
-    When I open People Picker from conversation
-    And I search for user <Contact3>
-    And I see user <Contact3> in search results
-    And I add user <Contact3> from search results
-    And I open conversation with <ChatName>
-    And I see message YOU ADDED <Contact3> in conversation
-    And I open Conversation info
-    And I see that conversation has 4 people
-    And I leave conversation
-    And I go to archive
-    And I open conversation with <ChatName>
-    And I see message YOU LEFT in conversation
-    Then I sign out
-    And I Sign in using login <Contact1Email> and password <Password>
-    And I see my name <Contact1> in Contact list
-    And I open conversation with <ChatName>
-    And I see message <Name> LEFT in conversation
-    And I open Conversation info
-    And I do not see user <Name> in Conversation info
-    And I see that conversation has 3 people
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact1Email | Contact2  | Contact3  | ChatName       |
-      | user1Email | user1Password | user1Name | user2Name | user2Email    | user3Name | user4Name | LeaveGroupChat |
-
-  @regression @id765
-  Scenario Outline: Verify you can see participant profiles in a group conversation
-    Given There are 4 users where <Name> is me
-    Given I change user <Contact1> avatar picture from file <AvatarPicture>
-    Given I change user <Contact2> avatar picture from file <AvatarPicture>
-    Given I change user <Contact3> avatar picture from file <AvatarPicture>
-    Given <Contact1> is connected to me,<Contact2>,<Contact3>
-    Given I sent connection request to <Contact2>
-    Given <Contact1> has group chat <ChatName> with me,<Contact2>,<Contact3>
-    Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
-    When I open conversation with <ChatName>
-    And I open Conversation info
-    And I choose user <Contact1> in Conversation info
-    Then I see <Contact1> name in Conversation info
-    And I see <Contact1> email in Conversation info
-    And I see aqaPictureContact_osx_userinfo_1920x1080.png photo in Conversation info
-    And I see open conversation button
-    And I see remove person from conversation button
-    When I return to participant view from personal info
-    And I choose user <Contact2> in Conversation info
-    Then I see <Contact2> name in Conversation info
-    And I dont see <Contact2> email in Conversation info
-    And I see aqaPictureContact_osx_userinfo_1920x1080.png photo in Conversation info
-    And I see pending button
-    And I see connection request message <ConnectionRequestMessage>
-    And I see remove person from conversation button
-    When I return to participant view from personal info
-    And I choose user <Contact3> in Conversation info
-    Then I see <Contact3> name in Conversation info
-    And I dont see <Contact3> email in Conversation info
-    And I see aqaPictureContact_osx_userinfo_1920x1080.png photo in Conversation info
-    And I see connect button
-    And I see remove person from conversation button
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | ChatName                | ConnectionRequestMessage | AvatarPicture         |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | ParticipantProfilesChat | Hello!                   | aqaPictureContact.jpg |
-
-  @regression @id619
-  Scenario Outline: Verify new users are added to a group conversation on the other end
-    Given There are 4 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
-    Given Myself has group chat <ChatName> with <Contact2>,<Contact3>
-    Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
-    And I open conversation with <ChatName>
-    When I open People Picker from conversation
-    And I search for user <Contact1>
-    And I see user <Contact1> in search results
-    And I add user <Contact1> from search results
-    And I open conversation with <ChatName>
-    And I see message YOU ADDED <Contact1> in conversation
-    Then I sign out
-    And I Sign in using login <Contact1> and password <Password>
-    And I see my name <Contact1> in Contact list
-    And I open conversation with <ChatName>
+    And I click menu bar item "Conversation" and menu item "Add People…"
+    Then I see Group Participants popover
+    And I see Add People message on Group Participants popover
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | ChatName      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | AddUserSEChat |
-
-  @regression @id1527
-  Scenario Outline: Verify you cannot start 1on1 conversation from a group chat if the other user is not in your contact list
-    Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to <Name>,<Contact2>
-    Given <Contact1> has group chat <ChatName> with <Name>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
-    And I see my name <Name> in Contact list
-    When I open conversation with <ChatName>
-    And I open Conversation info
-    And I choose user <Contact2> in Conversation info
-    And I see connect button
-    Then I do not see open conversation button
-    And I click on connect button on people popover
-	And I do not see conversation <Contact2> in contact list
-	And I see connect popover
-	And I send connection request to selected user
-	Then I see contact <Contact2> in contact list
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName                |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | ParticipantProfilesChat |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | PeoplePopover |

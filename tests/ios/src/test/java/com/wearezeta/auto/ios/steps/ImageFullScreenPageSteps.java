@@ -116,7 +116,7 @@ public class ImageFullScreenPageSteps {
 		referenceImage = getImageFullScreenPage().takeScreenshot().orElseThrow(
 				AssertionError::new);
 		BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage
-				.getImagesPath() + "userpicture_ios_check_landscape.png");
+				.getImagesPath() + "dialog_userpicture_ios_check_landscape.png");
 		double score = ImageUtil.getOverlapScore(referenceImage, templateImage,
 				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 		System.out.print("SCORE: " + score);

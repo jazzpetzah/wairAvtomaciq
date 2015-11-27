@@ -6,14 +6,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.android_tablet.pages.AndroidTabletPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public abstract class AbstractCameraPage extends AndroidTabletPage {
-	public static final String xpathConfirmButton = "//*[@id='ttv__confirmation__confirm' and @value='OK']";
-	@FindBy(xpath = xpathConfirmButton)
+	@FindBy(xpath = DialogPage.xpathConfirmOKButton)
 	protected WebElement okConfirmButton;
 
 	public static final String idGalleryButton = "gtv__camera_control__pick_from_gallery";
@@ -50,13 +50,25 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
 				By.id(idTakePhotoButton));
 	}
 
+	private boolean isGalleryModeActivated = false;
+
 	public void confirmPictureSelection() throws Exception {
+		// Workaround for unexpected orientation change issue
 		if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(xpathConfirmButton))) {
-			takePhotoButton.click();
+				By.xpath(DialogPage.xpathConfirmOKButton))) {
+			if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+					getLensButtonLocator(), 2)) {
+				tapLensButton();
+			}
+			if (isGalleryModeActivated) {
+				tapGalleryButton();
+				isGalleryModeActivated = false;
+			} else {
+				tapTakePhotoButton();
+			}
+			assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+					By.xpath(DialogPage.xpathConfirmOKButton), 3) : "Picture selection confirmation has not been shown after the timeout";
 		}
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(xpathConfirmButton)) : "Picture selection confirmation has not been shown after the timeout";
 		okConfirmButton.click();
 		ScreenOrientationHelper.getInstance().fixOrientation(getDriver());
 	}
@@ -65,6 +77,7 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(idGalleryButton));
 		galleryButton.click();
+		isGalleryModeActivated = true;
 	}
 
 }

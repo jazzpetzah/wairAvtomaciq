@@ -21,11 +21,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.image_send.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.onboarding.AddressBook;
 import com.wearezeta.auto.common.rest.CommonRESTHandlers;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
-import com.wearezeta.auto.image_send.*;
 
 import java.awt.image.BufferedImage;
 import java.security.KeyManagementException;
@@ -621,6 +621,18 @@ final class BackendREST {
 		return new JSONObject(output);
 	}
 
+	public static JSONObject searchForTopPeopleContacts(AuthToken token,
+			int size) throws Exception {
+		// Changed this to make it look the same as in webapp
+		// size [1..100]
+		Builder webResource = buildDefaultRequestWithAuth(
+				String.format("search/top?size=%d", size),
+				MediaType.APPLICATION_JSON, token);
+		final String output = restHandlers.httpGet(webResource,
+				new int[] { HttpStatus.SC_OK });
+		return new JSONObject(output);
+	}
+
 	public static JSONObject addContactsToGroupConvo(AuthToken token,
 			List<String> contactsIds, String conversationId) throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth(
@@ -663,6 +675,21 @@ final class BackendREST {
 				MediaType.APPLICATION_JSON, token);
 		final String output = restHandlers.httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
+		return new JSONObject(output);
+	}
+
+	public static JSONObject sendPersonalInvitation(AuthToken token,
+			String toEmail, String toName, String message) throws Exception {
+		Builder webResource = buildDefaultRequestWithAuth(
+				String.format("invitations"), MediaType.APPLICATION_JSON, token);
+		JSONObject requestBody = new JSONObject();
+		requestBody.put("email", toEmail);
+		requestBody.put("invitee_name", toName);
+		requestBody.put("message", message);
+		// We don't allow status code 200 since this would mean the user to
+		// invite already exists
+		final String output = restHandlers.httpPost(webResource,
+				requestBody.toString(), new int[] { HttpStatus.SC_CREATED });
 		return new JSONObject(output);
 	}
 

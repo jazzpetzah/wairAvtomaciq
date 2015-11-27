@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.steps;
 
-import java.awt.image.BufferedImage;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 
@@ -9,7 +8,6 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -20,7 +18,6 @@ import com.wearezeta.auto.ios.IOSConstants;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.pages.GroupChatPage;
-import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 import cucumber.api.java.en.Then;
@@ -71,7 +68,7 @@ public class DialogPageSteps {
 
 	@When("^I tap on text input$")
 	public void WhenITapOnTextInput() throws Exception {
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 3; i++) {
 			getDialogPage().tapOnCursorInput();
 			if (getDialogPage().isKeyboardVisible()) {
 				break;
@@ -97,6 +94,18 @@ public class DialogPageSteps {
 		// message = CommonUtils.generateGUID().replace('-', 'x');
 		message = automationMessage;
 		getDialogPage().sendStringToInput(message);
+	}
+
+	/**
+	 * Fill in message in text input using script
+	 * 
+	 * @step. ^I fill in message using script$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I fill in message using script$")
+	public void IFillInMessageUsingScript() throws Exception {
+		getDialogPage().fillInMessageUsingScript(automationMessage);
 	}
 
 	@When("I input message from keyboard (.*)")
@@ -425,21 +434,21 @@ public class DialogPageSteps {
 
 	@Then("I see playing media is paused")
 	public void ThePlayingMediaIsPaused() throws Exception {
-		String pausedState = IOSLocators.MEDIA_STATE_PAUSED;
+		String pausedState = IOSConstants.MEDIA_STATE_PAUSED;
 		mediaState = getDialogPage().getMediaState();
 		Assert.assertEquals(pausedState, mediaState);
 	}
 
 	@Then("I see media is playing")
 	public void TheMediaIsPlaying() throws Exception {
-		String playingState = IOSLocators.MEDIA_STATE_PLAYING;
+		String playingState = IOSConstants.MEDIA_STATE_PLAYING;
 		mediaState = getDialogPage().getMediaState();
 		Assert.assertEquals(playingState, mediaState);
 	}
 
 	@Then("The media stops playing")
 	public void TheMediaStoppsPlaying() throws Exception {
-		String endedState = IOSLocators.MEDIA_STATE_STOPPED;
+		String endedState = IOSConstants.MEDIA_STATE_STOPPED;
 		mediaState = getDialogPage().getMediaState();
 		Assert.assertEquals(endedState, mediaState);
 	}
@@ -531,14 +540,14 @@ public class DialogPageSteps {
 	@When("I input message with trailing emtpy spaces")
 	public void IInputMessageWithTrailingEmptySpace() throws Throwable {
 		message = automationMessage + "." + onlySpacesMessage;
-		getDialogPage().sendStringToInput(message);
+		getDialogPage().sendMessageUsingScript(message);
 	}
 
 	@When("I input message with lower case and upper case")
 	public void IInputMessageWithLowerAndUpperCase() throws Throwable {
 		message = CommonUtils.generateRandomString(7).toLowerCase()
 				+ CommonUtils.generateRandomString(7).toUpperCase();
-		getDialogPage().sendStringToInput(message);
+		getDialogPage().sendMessageUsingScript(message);
 	}
 
 	@When("I input more than 200 chars message and send it")
@@ -569,15 +578,19 @@ public class DialogPageSteps {
 		getDialogPage().sendMessageUsingScript(message);
 	}
 
-	@When("I verify image in dialog is same as template (.*)")
+	/**
+	 * Verify last image in dialog is same as template
+	 * 
+	 * @step. ^I verify image in dialog is same as template (.*)$
+	 * 
+	 * @param filename
+	 *            template file name
+	 * @throws Throwable
+	 */
+	@When("^I verify image in dialog is same as template (.*)$")
 	public void IVerifyImageInDialogSameAsTemplate(String filename)
 			throws Throwable {
-		BufferedImage templateImage = getDialogPage().takeImageScreenshot();
-		BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage
-				.getImagesPath() + filename);
-		double score = ImageUtil.getOverlapScore(referenceImage, templateImage,
-				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
-		System.out.println("SCORE: " + score);
+		double score = getDialogPage().isLastImageSameAsTemplate(filename);
 		Assert.assertTrue(
 				"Overlap between two images has no enough score. Expected >= "
 						+ IOSConstants.MIN_IMG_SCORE + ", current = " + score,
@@ -811,6 +824,23 @@ public class DialogPageSteps {
 	}
 
 	/**
+	 * Verify if dialog page with pointed user is shown. It's ok to use only if
+	 * there is not or small amount of messages in dialog.
+	 * 
+	 * @step. ^I see dialog page with contact (.*)$
+	 * 
+	 * @param contact
+	 *            contact name
+	 * @throws Exception
+	 */
+	@When("^I see dialog page with contact (.*)$")
+	public void ISeeDialogPageWithContact(String contact) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		Assert.assertTrue("Dialog with user is not visible", getDialogPage()
+				.isConnectedToUserStartedConversationLabelVisible(contact));
+	}
+
+	/**
 	 * Verify is plus button is visible
 	 * 
 	 * @step. ^I see plus button next to text input$
@@ -916,11 +946,13 @@ public class DialogPageSteps {
 		ISeeSketchButtonShown();
 		ISeePingButtonShown();
 	}
-	
+
 	/**
-	 * Verify that only Details button is shown. Rest button should not be visible
+	 * Verify that only Details button is shown. Rest button should not be
+	 * visible
 	 * 
-	 * @step. I see only Details button. Call, Camera, Sketch, Ping are not shown
+	 * @step. I see only Details button. Call, Camera, Sketch, Ping are not
+	 *        shown
 	 * 
 	 * @throws Exception
 	 */
@@ -964,6 +996,22 @@ public class DialogPageSteps {
 	}
 
 	/**
+	 * Verify that ping controller button's x coordinate is less then
+	 * conversation window's x coordinate
+	 * 
+	 * @step. ^I see controller buttons can not be visible$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see controller buttons can not be visible$")
+	public void ISeeControllerButtonsNotVisible() throws Exception {
+		Assert.assertFalse(
+				"Controller buttons can be visible. Please check screenshots",
+				getDialogPage()
+						.isTherePossibilityControllerButtonsToBeDisplayed());
+	}
+
+	/**
 	 * Click on plus button next to text input
 	 * 
 	 * @step. ^I click plus button next to text input$
@@ -985,5 +1033,168 @@ public class DialogPageSteps {
 	@When("^I click Close input options button$")
 	public void IClickCloseButtonInputOptions() throws Exception {
 		getDialogPage().clickCloseButton();
+	}
+
+	/**
+	 * Verifies that vimeo link without ID is shown but NO player
+	 * 
+	 * @step. ^I see vimeo link (.*) but NO media player$
+	 * @param link
+	 *            of the vimeo video without ID
+	 * @throws Throwable
+	 */
+	@Then("^I see vimeo link (.*) but NO media player$")
+	public void ISeeVimeoLinkButNOMediaPlayer(String link) throws Throwable {
+		Assert.assertFalse("Media player is shown in dialog", getDialogPage()
+				.isYoutubeContainerVisible());
+		Assert.assertEquals(link.toLowerCase(), getDialogPage()
+				.getLastMessageFromDialog().toLowerCase());
+	}
+
+	/**
+	 * Verifies that vimeo link and the video container is visible
+	 * 
+	 * @step. ^I see vimeo link (.*) and media in dialog$
+	 * @param link
+	 *            of vimeo video
+	 * @throws Throwable
+	 */
+	@Then("^I see vimeo link (.*) and media in dialog$")
+	public void ISeeVimeoLinkAndMediaInDialog(String link) throws Throwable {
+		Assert.assertTrue("Media is missing in dialog", getDialogPage()
+				.isYoutubeContainerVisible());
+		Assert.assertEquals(link.toLowerCase(), getDialogPage()
+				.getLastMessageFromDialog().toLowerCase());
+	}
+
+	/**
+	 * Verifies amount of messages in conversation
+	 * 
+	 * @step. ^I see only (.*) messages?$
+	 * @param msgCount
+	 *            expected number of messages
+	 * @throws Exception
+	 */
+	@When("^I see only (.*) messages?$")
+	public void ISeeOnlyXAmountOfMessages(int msgCount) throws Exception {
+		Assert.assertTrue("Wrong amount of messages",
+				msgCount == getDialogPage().getNumberOfMessageEntries());
+	}
+
+	/**
+	 * Verifies that link is seen in conversation view
+	 * 
+	 * @step. ^I see Link (.*) in dialog$
+	 * @param link
+	 *            that we sent to user
+	 * @throws Throwable
+	 */
+	@When("^I see Link (.*) in dialog$")
+	public void ISeeLinkInDialog(String link) throws Throwable {
+		Assert.assertEquals(link.toLowerCase(), getDialogPage()
+				.getLastMessageFromDialog().toLowerCase());
+	}
+
+	/**
+	 * Tap on the sent link to open it
+	 * 
+	 * @step. ^I tap on Link$
+	 * @throws Throwable
+	 */
+	@When("^I tap on Link$")
+	public void ITapOnLink() throws Throwable {
+		getDialogPage().tapOnLink();
+	}
+
+	/**
+	 * Taps on a link that got sent together with a message
+	 * 
+	 * @step. ^I tap on Link with a message$
+	 * @throws Throwable
+	 */
+	@When("^I tap on Link with a message$")
+	public void ITapOnLinkWithAMessage() throws Throwable {
+		getDialogPage().tapOnLinkWithinAMessage();
+	}
+
+	/**
+	 * Verify that input field contains expected text message
+	 * 
+	 * @step. ^I see the message in input field$
+	 * @throws Exception
+	 */
+	@When("^I see the message in input field$")
+	public void WhenISeeMessageInInputField() throws Exception {
+
+		Assert.assertTrue("Input field has incorrect message or empty",
+				message.equals(getDialogPage().getStringFromInput()));
+	}
+
+	/**
+	 * Verifies that 'Connected to username' message is the only message in
+	 * dialog
+	 * 
+	 * @step. ^I see the only message in dialog is system message CONNECTED TO
+	 *        (.*)$
+	 * 
+	 * @param username
+	 *            name of the contact
+	 * @throws Exception
+	 */
+	@When("^I see the only message in dialog is system message CONNECTED TO (.*)$")
+	public void ISeeLastMessageIsSystem(String username) throws Exception {
+		username = usrMgr.findUserByNameOrNameAlias(username).getName();
+		ISeeOnlyXAmountOfMessages(1);
+		Assert.assertTrue(getDialogPage()
+				.isConnectedToUserStartedConversationLabelVisible(username));
+	}
+
+	/**
+	 * Long press on the image displayed in the conversation
+	 * 
+	 * @step. ^I longpress on image in the conversation$
+	 * @throws Exception
+	 */
+	@When("^I longpress on image in the conversation$")
+	public void ILongPressOnImage() throws Exception {
+		getDialogPage().tapHoldImage();
+	}
+
+	/**
+	 * Clicking on copy badge/icon/window in conversation
+	 * 
+	 * @step. ^I tap on copy badge$
+	 * @throws Exception
+	 */
+	@When("^I tap on copy badge$")
+	public void ITapCopyBadge() throws Exception {
+		getDialogPage().clickPopupCopyButton();
+	}
+
+	/**
+	 * Verify plus icon is replaced with user avatar icon
+	 * 
+	 * @step. ^I see plus icon is changed to user avatar icon$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see plus icon is changed to user avatar icon$")
+	public void ISeePluseIconChangedToUserAvatar() throws Exception {
+		Assert.assertFalse("Plus icon is still visible", getDialogPage()
+				.isPlusButtonVisible());
+		Assert.assertTrue("User avatar is not visible", getDialogPage()
+				.isUserAvatarNextToInputVisible());
+	}
+
+	/**
+	 * Clear conversation text input
+	 * 
+	 * @step. I clear conversation text input$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I clear conversation text input$")
+	public void IClearConversationTextInput() throws Exception {
+		getDialogPage().clearTextInput();
 	}
 }

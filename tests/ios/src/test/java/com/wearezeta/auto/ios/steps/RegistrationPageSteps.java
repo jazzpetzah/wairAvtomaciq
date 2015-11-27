@@ -7,6 +7,7 @@ import java.util.concurrent.Future;
 
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.LanguageUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
@@ -83,6 +84,18 @@ public class RegistrationPageSteps {
 	@When("^I See photo taken$")
 	public void ISeePhotoTaken() throws Exception {
 		Assert.assertTrue(getRegistrationPage().isPictureSelected());
+	}
+
+	/**
+	 * Verify Set picture page shown
+	 * 
+	 * @step. I see Set Picture page
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see Set Picture page$")
+	public void ISeeSetPicturePage() throws Exception {
+		getRegistrationPage().isSetPicturePageVisible();
 	}
 
 	@When("^I press Picture button$")
@@ -177,8 +190,80 @@ public class RegistrationPageSteps {
 		this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
 		String number = this.userToRegister.getPhoneNumber().toString();
 		number = number.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, "");
-		getRegistrationPage().inputPhoneNumber(number,
+		getRegistrationPage().selectCodeAndInputPhoneNumber(number,
 				PhoneNumber.WIRE_COUNTRY_PREFIX);
+	}
+
+	/**
+	 * Input phone number of allready registered user
+	 * 
+	 * @step. ^I input phone number of already registered user (.*)$
+	 * 
+	 * @param name
+	 *            username
+	 * @throws Exception
+	 */
+	@When("^I input phone number of already registered user (.*)$")
+	public void IInputPhoneNumberOfRegisteredUser(String name) throws Exception {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
+		String number = user.getPhoneNumber().toString();
+		number = number.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, "");
+		getRegistrationPage().selectCodeAndInputPhoneNumber(number,
+				PhoneNumber.WIRE_COUNTRY_PREFIX);
+	}
+
+	/**
+	 * Input in sign in by phone number page a random phone number
+	 * 
+	 * @step. ^I enter random phone number$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I enter random phone number$")
+	public void IEnterRandomePhoneNumber() throws Exception {
+		getRegistrationPage().inputPhoneNumber(
+				CommonUtils.generateRandomXdigits(7));
+	}
+
+	/**
+	 * Input in phone number field page phone number with code
+	 * 
+	 * @step. ^I input phone number (.*) with code (.*)$
+	 * @param number
+	 *            phone number
+	 * @param code
+	 *            country code
+	 * @throws Exception
+	 */
+	@When("^I input phone number (.*) with code (.*)$")
+	public void IInputPhoneNumber(String number, String code) throws Exception {
+		getRegistrationPage().selectCodeAndInputPhoneNumber(number, code);
+	}
+
+	/**
+	 * Input in phone number field page an invalid phone number
+	 * 
+	 * @step. ^I enter invalid phone number$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I enter invalid phone number$")
+	public void IEnterInvalidPhoneNumber() throws Exception {
+		getRegistrationPage().inputPhoneNumber(
+				CommonUtils.generateRandomXdigits(11));
+	}
+
+	/**
+	 * Input in phone number field page a random X digits
+	 * 
+	 * @step. ^I enter (.*) digits phone number
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I enter (.*) digits phone number$")
+	public void IEnterXDigitesPhoneNumber(int x) throws Exception {
+		getRegistrationPage().inputPhoneNumber(
+				CommonUtils.generateRandomXdigits(x));
 	}
 
 	/**
@@ -189,6 +274,18 @@ public class RegistrationPageSteps {
 	@When("^I accept terms of service$")
 	public void IAcceptTermsOfService() throws Exception {
 		getRegistrationPage().clickAgreeButton();
+	}
+
+	/**
+	 * Verify Term Of Use page shown
+	 * 
+	 * @step. ^I see Term Of Use page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see Term Of Use page$")
+	public void ISeeTermOfUsePage() throws Exception {
+		Assert.assertTrue(getRegistrationPage().isTermOfUsePageVisible());
 	}
 
 	/**
@@ -234,6 +331,46 @@ public class RegistrationPageSteps {
 		getRegistrationPage().inputName();
 	}
 
+	/**
+	 * Fill in name field username with leading and trailing spaces
+	 * 
+	 * @step. ^I fill in name (.*) with leading and trailing spaces and hit
+	 *        Enter$
+	 * 
+	 * @param name
+	 *            username
+	 * @throws Exception
+	 */
+	@When("^I fill in name (.*) with leading and trailing spaces and hit Enter$")
+	public void IInputNameWithSpacesAndHitEnter(String name) throws Exception {
+		getRegistrationPage().setName("  " + name + "  ");
+		getRegistrationPage().inputName();
+	}
+
+	/**
+	 * Fill in name field username with leading and trailing spaces on iPad
+	 * 
+	 * @step. ^I fill in name (.*) with leading and trailing spaces on iPad
+	 * 
+	 * @param name
+	 *            username
+	 * @throws Exception
+	 */
+	@When("^I fill in name (.*) with leading and trailing spaces on iPad$")
+	public void IInputNameWithSpacesOnIpad(String name) throws Exception {
+		try {
+			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
+		} catch (NoSuchUserException e) {
+			if (this.userToRegister == null) {
+				this.userToRegister = new ClientUser();
+			}
+			this.userToRegister.setName(name);
+			this.userToRegister.clearNameAliases();
+			this.userToRegister.addNameAlias(name);
+		}
+		getRegistrationPage().setName("  " + userToRegister.getName() + "  ");
+	}
+
 	@Then("^I verify that my username is at most (\\d+) characters long$")
 	public void IVerifyUsernameLength(int charactersLimit) throws Exception {
 		String realUserName = getRegistrationPage().getUsernameFieldValue();
@@ -261,6 +398,29 @@ public class RegistrationPageSteps {
 		} else {
 			getRegistrationPage().setEmail(
 					this.userToRegister.getEmail() + "\n");
+		}
+	}
+
+	/**
+	 * Step that should be used for iOS registration tests before starting
+	 * monitoring email
+	 * 
+	 * @step. ^My user email is (.*)$
+	 * 
+	 * @param email
+	 *            user email
+	 * @throws Exception
+	 */
+	@When("^My user email is (.*)$")
+	public void UserToRegisterEmailSettinTo(String email) throws Exception {
+		try {
+			String realEmail = usrMgr.findUserByEmailOrEmailAlias(email)
+					.getEmail();
+			this.userToRegister.setEmail(realEmail);
+		} catch (NoSuchUserException e) {
+			if (this.userToRegister == null) {
+				this.userToRegister = new ClientUser();
+			}
 		}
 	}
 
@@ -341,7 +501,7 @@ public class RegistrationPageSteps {
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
 		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
-				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
+				expectedHeaders, BackendAPIWrappers.ACTIVATION_TIMEOUT);
 		getRegistrationPage().inputPassword();
 	}
 
@@ -398,7 +558,7 @@ public class RegistrationPageSteps {
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
 		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
-				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
+				expectedHeaders, BackendAPIWrappers.ACTIVATION_TIMEOUT);
 		getRegistrationPage().createAccount();
 	}
 
@@ -418,7 +578,7 @@ public class RegistrationPageSteps {
 		String expectedRecipient = this.userToRegister.getEmail();
 		getRegistrationPage().waitUntilEmailsCountReachesExpectedValue(
 				expectedCnt, expectedRecipient,
-				BackendAPIWrappers.BACKEND_ACTIVATION_TIMEOUT);
+				BackendAPIWrappers.ACTIVATION_TIMEOUT);
 	}
 
 	@Then("^I resend verification email$")
@@ -440,7 +600,7 @@ public class RegistrationPageSteps {
 	public void ISeeConfirmationPage() throws Exception {
 		Assert.assertTrue(getRegistrationPage().isConfirmationShown());
 	}
-	
+
 	/**
 	 * Start monitoring thread for activation email. Please put this step BEFORE
 	 * you submit the registration form
@@ -454,7 +614,7 @@ public class RegistrationPageSteps {
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
 		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
-				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
+				expectedHeaders, BackendAPIWrappers.ACTIVATION_TIMEOUT);
 	}
 
 	@Then("^I verify registration address$")
@@ -514,6 +674,32 @@ public class RegistrationPageSteps {
 	@Then("^I see email verification reminder$")
 	public void ISeeEmailVerificationReminder() throws Exception {
 		Assert.assertTrue(getRegistrationPage().isEmailVerifPromptVisible());
+	}
+
+	/**
+	 * Verifies whether the notification invalid code is shown
+	 * 
+	 * @step. ^I see invalid code alert$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see invalid code alert$")
+	public void ISeeInvalidEmailAlert() throws Exception {
+		Assert.assertTrue("I don't see invalid code alert",
+				getRegistrationPage().isInvalidCodeAlertShown());
+	}
+
+	/**
+	 * Verifies that spaces in name field are trimmed
+	 * 
+	 * @step. ^I verify name input do not contains spaces$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I verify name input do not contains spaces$")
+	public void IVerifyNameDoNotContainSpaces() throws Exception {
+		Assert.assertFalse("Username field contains spaces",
+				getRegistrationPage().userNameContainSpaces());
 	}
 
 }
