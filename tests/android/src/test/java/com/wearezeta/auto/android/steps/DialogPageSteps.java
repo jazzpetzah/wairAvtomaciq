@@ -7,6 +7,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -353,11 +354,11 @@ public class DialogPageSteps {
      * action
      *
      * @param buttonName the button to press
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I press \"(.*)\" button$
      */
     @When("^I press \"(.*)\" button$")
-    public void WhenIPressButton(String buttonName) throws Throwable {
+    public void WhenIPressButton(String buttonName) throws Exception {
         switch (buttonName.toLowerCase()) {
             case "take photo":
                 getDialogPage().takePhoto();
@@ -372,8 +373,9 @@ public class DialogPageSteps {
                 getDialogPage().closeFullScreenImage();
                 break;
             case "switch camera":
-                if (getDialogPage().isSwitchCameraButtonVisible()) {
-                    getDialogPage().tapSwitchCameraButton();
+                if (!getDialogPage().tapSwitchCameraButton()) {
+                    throw new PendingException("Device under test does not have front camera. " +
+                            "Skipping all the further verification...");
                 }
                 break;
             case "sketch image paint":

@@ -356,13 +356,13 @@ public class DialogPage extends AndroidPage {
     private WebElement getButtonElementByName(String name) {
         final String uppercaseName = name.toUpperCase();
         switch (uppercaseName) {
-        case "MUTE":
-            return muteBtn;
-        case "SPEAKER":
-            return speakerBtn;
-        default:
-            throw new NoSuchElementException(String.format(
-                    "Button '%s' is unknown", name));
+            case "MUTE":
+                return muteBtn;
+            case "SPEAKER":
+                return speakerBtn;
+            default:
+                throw new NoSuchElementException(String.format(
+                        "Button '%s' is unknown", name));
         }
     }
 
@@ -683,12 +683,15 @@ public class DialogPage extends AndroidPage {
                 IllegalStateException::new);
     }
 
-    public boolean isSwitchCameraButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idSwitchCameraButton));
-    }
-
-    public void tapSwitchCameraButton() {
+    /**
+     * This method will return false if Take Photo button will not be visible after Switch Camera button is clicked
+     *
+     * @return
+     * @throws Exception
+     */
+    public boolean tapSwitchCameraButton() throws Exception {
         switchCameraButton.click();
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+                By.xpath(xpathDialogTakePhotoButton));
     }
 }
