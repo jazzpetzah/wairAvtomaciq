@@ -223,7 +223,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id4089 @staging
+  @id4089 @regression
   Scenario Outline: Verify there is no options menu for incoming connection requests
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to <Name>
@@ -236,7 +236,7 @@ Feature: Conversation List
       | Name      | Contact   | WaitingMess1     |
       | user1Name | user2Name | 1 person waiting |
 
-  @id4090 @staging
+  @id4090 @regression
   Scenario Outline: Verify that options menu from list is the same as opened from the other user profile
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

@@ -297,7 +297,7 @@ public class CommonAndroidTabletSteps {
      * @step. ^I (minimize|restore) the application$
      */
     @When("^I (minimize|restore) the application$")
-    public void IMinimizeRestoreApplication(String action) throws Exception {
+    public void IMinimizeRestoreApllication(String action) throws Exception {
         switch (action) {
             case "minimize":
                 AndroidCommonUtils.tapHomeButton();

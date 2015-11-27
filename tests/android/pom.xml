@@ -21,7 +21,6 @@
 		<waitActivities>com.waz.zclient.LaunchActivity,com.waz.zclient.AppEntryActivity</waitActivities>
 		<driverTimeoutSeconds>7</driverTimeoutSeconds>
 		<defaultEmail>smoketester@wire.com</defaultEmail>
-		<androidAddressBookMailAccount>smoketester@wearezeta.com</androidAddressBookMailAccount>
 		<pictureResultsPath>${user.home}/Downloads/</pictureResultsPath>
 		<perfReportPath>${user.home}/Documents/performance.json</perfReportPath>
 		<androidVersion>44</androidVersion>

@@ -174,12 +174,6 @@ public class CommonWebAppSteps {
 				Thread.sleep(1000);
 				// setup of the browser
 				lazyWebDriver.setFileDetector(new LocalFileDetector());
-				if (WebAppExecutionContext.getBrowser().equals(Browser.Safari)) {
-					WebCommonUtils.closeAllAdditionalTabsInSafari(lazyWebDriver
-							.getNodeIp());
-					WebCommonUtils.clearHistoryInSafari(lazyWebDriver
-							.getNodeIp());
-				}
 				if (WebAppExecutionContext.getBrowser()
 						.isSupportingMaximizingTheWindow()) {
 					lazyWebDriver.manage().window().maximize();
@@ -195,6 +189,10 @@ public class CommonWebAppSteps {
 												WebAppConstants.MIN_WEBAPP_WINDOW_WIDTH,
 												WebAppConstants.MIN_WEBAPP_WINDOW_HEIGHT));
 					}
+				}
+				if (WebAppExecutionContext.getBrowser().equals(Browser.Safari)) {
+					WebCommonUtils.clearHistoryInSafari(lazyWebDriver
+							.getNodeIp());
 				}
 				return lazyWebDriver;
 			}
@@ -533,7 +531,7 @@ public class CommonWebAppSteps {
 	}
 
 	/**
-	 * Pings BackEnd until user is indexed and available in search
+	 * Pings BackEnd until user is indexed and avialable in search
 	 *
 	 * @step. ^(\\w+) waits? until (.*) exists in backend search results$
 	 *
@@ -549,27 +547,6 @@ public class CommonWebAppSteps {
 	public void UserWaitsUntilContactExistsInHisSearchResults(
 			String searchByNameAlias, String query) throws Exception {
 		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
-	}
-
-	/**
-	 * Pings BackEnd until Top people user is indexed and available in search
-	 *
-	 * @step. ^(\\w+) waits? until (\\d+) Top People users? exist in backend Top
-	 *        people results$
-	 *
-	 * @param searchByNameAlias
-	 *            user name to search string
-	 *
-	 * @param size
-	 *            number int
-	 *
-	 * @throws Exception
-	 */
-	@Given("^(\\w+) waits? until (\\d+) Top People users? exist in backend search results$")
-	public void UserWaitsUntilTopPeopleContactExistsInHisSearchResults(
-			String searchByNameAlias, int size) throws Exception {
-		commonSteps.WaitUntilTopPeopleContactsIsFoundInSearch(
-				searchByNameAlias, size);
 	}
 
 	/**
