@@ -19,7 +19,7 @@ public class InvitationsPage extends AndroidPage {
 	@FindBy(id = idInviteMorePeopleContactsBtn)
 	private By inviteContactsBtnLocator =  By.id(idInviteMorePeopleContactsBtn);
 	
-	private static final String idInviteMorePeopleSearchBtn = "zb__conversationlist__show_contacts";
+	private static final String idInviteMorePeopleSearchBtn = "zb__pickuser__show_contact_list";
 	@FindBy(id = idInviteMorePeopleSearchBtn)
 	private By inviteSearchBtnLocator = By.id(idInviteMorePeopleSearchBtn);
 	
@@ -102,7 +102,7 @@ public class InvitationsPage extends AndroidPage {
 	}
 	
 	public boolean waitForInviteMorePeopleSearchButtonVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), inviteSearchBtnLocator);
+	    return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), inviteSearchBtnLocator);
 	}
 
 	public boolean waitForInviteMorePeopleSearchButtonNotVisible() throws Exception {
