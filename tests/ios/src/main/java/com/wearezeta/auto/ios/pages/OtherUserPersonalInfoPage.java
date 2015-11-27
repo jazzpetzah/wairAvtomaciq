@@ -88,12 +88,11 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 	}
 
 	public void catchContinueAlert() throws Exception {
-		try {
+		if (DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(IOSLocators.nameContinueButton), 5)) {
 			WebElement el = this.getDriver().findElementByName(
 					IOSLocators.nameContinueButton);
+			DriverUtils.waitUntilElementClickable(getDriver(), el);
 			el.click();
-		} catch (NoSuchElementException ex) {
-			// do nothing
 		}
 	}
 
