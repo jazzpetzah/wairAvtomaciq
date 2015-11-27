@@ -5,6 +5,7 @@ Feature: Calling
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    And I wait for 20 seconds
     Given <Contact> starts waiting instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
     Given I switch to Sign In page
