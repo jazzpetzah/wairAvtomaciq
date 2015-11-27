@@ -299,16 +299,13 @@ public class DialogPage extends AndroidPage {
             // Wait for animation
             Thread.sleep(500);
         } else {
-            try {
-                this.hideKeyboard();
-            } catch (Exception e) {
+            this.hideKeyboard();
+            if(!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idCursorFrame), 2)) {
+                throw new IllegalStateException("Cursor frame is not visible");
             }
         }
         cursorFrame.click();
-        try {
-            this.hideKeyboard();
-        } catch (Exception e) {
-        }
+        this.hideKeyboard();
     }
 
     public void tapAddPictureBtn() throws Exception {
