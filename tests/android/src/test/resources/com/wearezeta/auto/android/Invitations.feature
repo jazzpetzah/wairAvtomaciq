@@ -20,7 +20,7 @@ Feature: Invitations
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @id4162 @staging
+  @id4162 @regression @rc
   Scenario Outline: Invitations (Registration): I can receive and accept an email notification
     Given There is 1 user where <Name> is me
     Given Myself sends personal invitation to mail <ContactEmail> with message <Message>
