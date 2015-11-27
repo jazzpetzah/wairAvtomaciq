@@ -11,6 +11,7 @@ Feature: Archive
     And I see contact list with name <Contact1>
     When I swipe right on a <Contact1>
     And I select ARCHIVE from conversation settings menu
+    And I navigate back from dialog page
     Then I do not see contact list with name <Contact1>
     And I swipe up contact list
     And I see contact list with name <Contact1>
@@ -32,6 +33,7 @@ Feature: Archive
     And I see contact list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I select ARCHIVE from conversation settings menu
+    And I navigate back from dialog page
     Then I do not see contact list with name <GroupChatName>
     And I swipe up contact list
     And I see contact list with name <GroupChatName>
