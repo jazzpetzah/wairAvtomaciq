@@ -181,7 +181,6 @@ public class CommonAndroidSteps {
 
     @Before("~@performance")
     public void setUp() throws Exception {
-        commonBefore();
         initFirstPage();
     }
 
@@ -226,10 +225,6 @@ public class CommonAndroidSteps {
     @When("^I swipe down$")
     public void ISwipeDown() throws Exception {
         pagesCollection.getCommonPage().swipeDownCoordinates(DEFAULT_SWIPE_TIME);
-    }
-
-    public void commonBefore() throws Exception {
-        ZetaFormatter.setBuildNumber(AndroidCommonUtils.readClientVersionFromAdb());
     }
 
     /**

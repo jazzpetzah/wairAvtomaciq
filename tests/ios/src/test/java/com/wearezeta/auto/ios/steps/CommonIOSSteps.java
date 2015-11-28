@@ -127,9 +127,6 @@ public class CommonIOSSteps {
 	}
 
 	public void commonBefore(Future<ZetaIOSDriver> lazyDriver) throws Exception {
-		ZetaFormatter.setBuildNumber(IOSCommonUtils
-				.readClientVersionFromPlist().getClientBuildNumber());
-
 		pagesCollecton.setFirstPage(new LoginPage(lazyDriver));
 		ZetaFormatter.setLazyDriver(lazyDriver);
 	}

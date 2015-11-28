@@ -194,21 +194,9 @@ public class CommonAndroidTabletSteps {
         screenOrientationHelper.resetOrientation();
     }
 
-    public void commonBefore() throws Exception {
-        ZetaFormatter.setBuildNumber(AndroidCommonUtils
-                .readClientVersionFromAdb());
-    }
-
-    @Before({"~@unicode"})
+    @Before
     public void setUp() throws Exception {
-        commonBefore();
         initFirstPage(false);
-    }
-
-    @Before({"@unicode"})
-    public void setUpUnicode() throws Exception {
-        commonBefore();
-        initFirstPage(true);
     }
 
     @After

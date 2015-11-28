@@ -60,8 +60,6 @@ public class ZetaFormatter implements Formatter, Reporter {
 
     private long stepStartedTimestamp;
 
-    private static String buildNumber = "unknown";
-
     @Override
     public void background(Background arg0) {
 
@@ -170,8 +168,7 @@ public class ZetaFormatter implements Formatter, Reporter {
 
     private void takeStepScreenshot(final Result stepResult,
                                     final String stepName) throws Exception {
-        final ZetaDriver driver = getDriver(
-                stepResult.getStatus().equals(Result.FAILED)).orElse(null);
+        final ZetaDriver driver = getDriver().orElse(null);
         if (driver != null) {
             if (stepResult.getStatus().equals(Result.SKIPPED.getStatus())) {
                 // Don't make screenshots for skipped steps to speed up
@@ -253,9 +250,9 @@ public class ZetaFormatter implements Formatter, Reporter {
     public void write(String arg0) {
     }
 
-    private static Optional<ZetaDriver> getDriver(boolean forceWait)
+    private static Optional<ZetaDriver> getDriver()
             throws Exception {
-        if (lazyDriver.isDone() || forceWait) {
+        if (lazyDriver.isDone()) {
             return Optional.of((ZetaDriver) lazyDriver
                     .get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
                             TimeUnit.MILLISECONDS));
@@ -427,10 +424,6 @@ public class ZetaFormatter implements Formatter, Reporter {
 
     public static String getRecentTestResult() {
         return recentTestResult;
-    }
-
-    public static void setBuildNumber(String buildNumber) {
-        ZetaFormatter.buildNumber = buildNumber;
     }
 
     public static String getFeature() {
