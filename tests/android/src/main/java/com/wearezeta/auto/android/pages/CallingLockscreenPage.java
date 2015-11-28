@@ -19,7 +19,7 @@ public class CallingLockscreenPage extends AndroidPage {
     private static final Function<String, String> xpathCallingUserByName = name ->
             String.format("//*[@id='ttv__notifications__incoming_call__lockscreen__header' and @value='%s']", name);
 
-    private static final String idMainContent = "fl_main_content";
+    public static final String idMainContent = "fl_main_content";
     @FindBy(id = idMainContent)
     private WebElement mainContentArea;
 
