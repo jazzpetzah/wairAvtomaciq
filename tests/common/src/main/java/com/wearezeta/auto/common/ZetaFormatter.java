@@ -14,7 +14,6 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
@@ -253,9 +252,7 @@ public class ZetaFormatter implements Formatter, Reporter {
     private static Optional<ZetaDriver> getDriver()
             throws Exception {
         if (lazyDriver.isDone()) {
-            return Optional.of((ZetaDriver) lazyDriver
-                    .get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
-                            TimeUnit.MILLISECONDS));
+            return Optional.of((ZetaDriver) lazyDriver.get());
         } else {
             return Optional.empty();
         }

@@ -21,7 +21,6 @@ import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.logging.LogEntry;
@@ -40,7 +39,6 @@ import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
-import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -141,6 +139,8 @@ public class CommonWebAppSteps {
 				+ "'");
 	}
 
+	private static final long DRIVER_INIT_TIMEOUT = 60 * 1000;
+
 	@Before("~@performance")
 	public void setUp(Scenario scenario) throws Exception {
 		String platform = WebAppExecutionContext.getPlatform();
@@ -201,8 +201,7 @@ public class CommonWebAppSteps {
 		final Future<ZetaWebAppDriver> lazyWebDriver = pool
 				.submit(callableWebAppDriver);
 		webdrivers.put(uniqueName, lazyWebDriver);
-		lazyWebDriver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
-				TimeUnit.MILLISECONDS).get(url);
+		lazyWebDriver.get(DRIVER_INIT_TIMEOUT, TimeUnit.MILLISECONDS).get(url);
 		WebappPagesCollection.getInstance().setFirstPage(
 				new RegistrationPage(lazyWebDriver, url));
 		ZetaFormatter.setLazyDriver(lazyWebDriver);
@@ -828,8 +827,7 @@ public class CommonWebAppSteps {
 					List<LogEntry> browserLog = getBrowserLog(PlatformDrivers
 							.getInstance()
 							.getDriver(CURRENT_PLATFORM)
-							.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
-									TimeUnit.MILLISECONDS));
+							.get(DRIVER_INIT_TIMEOUT, TimeUnit.MILLISECONDS));
 
 					StringBuilder bLog = new StringBuilder("\n");
 					browserLog.stream().forEach(
@@ -895,9 +893,7 @@ public class CommonWebAppSteps {
 		if (webdrivers.containsKey(uniqueName)) {
 			Future<ZetaWebAppDriver> webdriver = webdrivers.get(uniqueName);
 			try {
-				ZetaWebAppDriver driver = webdriver.get(
-						ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
-						TimeUnit.MILLISECONDS);
+				ZetaWebAppDriver driver = webdriver.get(DRIVER_INIT_TIMEOUT, TimeUnit.MILLISECONDS);
 
 				// save browser console if possible
 				if (WebAppExecutionContext.getBrowser()
@@ -906,12 +902,10 @@ public class CommonWebAppSteps {
 				}
 
 				if (driver instanceof ZetaWebAppDriver) {
-					// logout with JavaScript because otherwise backend will
-					// block
-					// us because of to many login requests
+					// logout with JavaScript because otherwise backend will block
+					// us because of top many login requests
 					String logoutScript = "(typeof wire !== 'undefined') && wire.auth.repository.logout();";
-					JavascriptExecutor js = (JavascriptExecutor) driver;
-					js.executeScript(logoutScript);
+					driver.executeScript(logoutScript);
 				}
 
 				// show link to saucelabs
@@ -929,8 +923,7 @@ public class CommonWebAppSteps {
 				e.printStackTrace();
 			} finally {
 				log.debug("Trying to quit webdriver for " + uniqueName);
-				webdriver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
-						TimeUnit.MILLISECONDS).quit();
+				webdriver.get(DRIVER_INIT_TIMEOUT, TimeUnit.MILLISECONDS).quit();
 				log.debug("Remove webdriver for " + uniqueName + " from map");
 				webdrivers.remove(uniqueName);
 			}
