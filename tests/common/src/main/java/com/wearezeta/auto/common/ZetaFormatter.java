@@ -251,7 +251,7 @@ public class ZetaFormatter implements Formatter, Reporter {
 
     private static Optional<ZetaDriver> getDriver()
             throws Exception {
-        if (lazyDriver.isDone()) {
+        if (lazyDriver.isDone() && !lazyDriver.isCancelled()) {
             return Optional.of((ZetaDriver) lazyDriver.get());
         } else {
             return Optional.empty();

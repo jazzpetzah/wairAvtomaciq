@@ -112,14 +112,14 @@ public final class PlatformDrivers {
     public synchronized void quitDriver(Platform platform) throws Exception {
         try {
             final Future<? extends RemoteWebDriver> futureDriver = drivers.get(platform);
-            if (futureDriver.isDone()) {
+            if (futureDriver.isDone() && !futureDriver.isCancelled()) {
                 final RemoteWebDriver driver = futureDriver.get();
                 driver.quit();
                 log.debug(String.format(
                         "Successfully quit driver instance for platform '%s'",
                         platform.name()));
-            } else {
-                futureDriver.cancel(false);
+            } else if (!futureDriver.isCancelled() && !futureDriver.isDone()) {
+                futureDriver.cancel(true);
                 log.warn(String.format("Canceled driver creation for platform '%s'", platform.getName()));
             }
         } finally {
@@ -129,7 +129,7 @@ public final class PlatformDrivers {
 
     public void pingDrivers() throws Exception {
         for (Future<? extends RemoteWebDriver> driver : drivers.values()) {
-            if (driver.isDone()) {
+            if (driver.isDone() && !driver.isCancelled()) {
                 driver.get().getPageSource();
             } else {
                 log.warn("The driver was not pinged, because it is still being created");
@@ -148,9 +148,9 @@ public final class PlatformDrivers {
                 for (Future<? extends RemoteWebDriver> futureDriver : drivers
                         .values()) {
                     try {
-                        if (futureDriver.isDone()) {
+                        if (futureDriver.isDone() && !futureDriver.isCancelled()) {
                             futureDriver.get().quit();
-                        } else {
+                        } else if (!futureDriver.isCancelled() && !futureDriver.isDone()){
                             futureDriver.cancel(true);
                             log.warn(String.format("Canceled driver creation for the current platform"));
                         }
