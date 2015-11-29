@@ -36,10 +36,10 @@ public final class CommonCallingSteps2 {
 	public static final Logger LOG = ZetaLogger
 			.getLog(CommonCallingSteps2.class.getName());
 
-	// Request timeout of 120 secs is set by callingservice, we add additional
+	// Request timeout of 180 secs is set by callingservice, we add additional
 	// 10 seconds on the client side to actually get a timeout response to
 	// recocgnize a failed instances creation for retry mechanisms
-	private static final int INSTANCE_START_TIMEOUT_SECONDS = 130;
+	private static final int INSTANCE_START_TIMEOUT_SECONDS = 190;
 	private static final int INSTANCE_CREATION_RETRIES = 3;
 	private static final long POLLING_FREQUENCY_MILLISECONDS = 1000;
 	private static CommonCallingSteps2 singleton = null;
