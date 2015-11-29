@@ -170,14 +170,15 @@ public class CommonWebAppSteps {
 			public ZetaWebAppDriver call() throws Exception {
 				ZetaWebAppDriver lazyWebDriver = null;
 				if (WebAppExecutionContext.getBrowser().equals(Browser.Safari)) {
-					// wait for safari to close properly before starting it for
-					// a new test
-					Thread.sleep(5000);
-					int retries = 10;
+					int retries = 3;// TODO introduce constant
 					boolean failed = false;
 					do {
 						try {
 							retries--;
+							// wait for safari to close properly before starting
+							// it for
+							// a new test
+							Thread.sleep(5000);
 							lazyWebDriver = new ZetaWebAppDriver(new URL(
 									"http://" + hubHost + ":" + hubPort
 											+ "/wd/hub"), capabilities);
@@ -708,7 +709,7 @@ public class CommonWebAppSteps {
 	 * @param alias
 	 *            user name/alias
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Then("^I verify user (.*) has received (?:an |\\s*)email invitation$")
 	public void IVerifyUserReceiverInvitation(String alias) throws Exception {
