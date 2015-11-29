@@ -57,6 +57,7 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.openqa.selenium.WebDriverException;
 
 public class CommonWebAppSteps {
 
@@ -167,9 +168,31 @@ public class CommonWebAppSteps {
 
 			@Override
 			public ZetaWebAppDriver call() throws Exception {
-				final ZetaWebAppDriver lazyWebDriver = new ZetaWebAppDriver(
-						new URL("http://" + hubHost + ":" + hubPort + "/wd/hub"),
-						capabilities);
+				ZetaWebAppDriver lazyWebDriver = null;
+				if (WebAppExecutionContext.getBrowser().equals(Browser.Safari)) {
+					int retries = 10;
+					boolean failed = false;
+					do {
+						try {
+							retries--;
+							lazyWebDriver = new ZetaWebAppDriver(new URL(
+									"http://" + hubHost + ":" + hubPort
+											+ "/wd/hub"), capabilities);
+							failed = false;
+						} catch (WebDriverException e) {
+							log.warn("Safari driver init failed - retrying", e);
+							failed = true;
+						}
+					} while (failed && retries > 0);
+
+					if (failed) {
+						throw new Exception("Failed to init Safari driver");
+					}
+				} else {
+					lazyWebDriver = new ZetaWebAppDriver(new URL("http://"
+							+ hubHost + ":" + hubPort + "/wd/hub"),
+							capabilities);
+				}
 				// setup of the browser
 				lazyWebDriver.setFileDetector(new LocalFileDetector());
 				if (WebAppExecutionContext.getBrowser().equals(Browser.Safari)) {
@@ -825,8 +848,7 @@ public class CommonWebAppSteps {
 				if (WebAppExecutionContext.getBrowser()
 						.isSupportingConsoleLogManagement()) {
 					List<LogEntry> browserLog = getBrowserLog(PlatformDrivers
-							.getInstance()
-							.getDriver(CURRENT_PLATFORM)
+							.getInstance().getDriver(CURRENT_PLATFORM)
 							.get(DRIVER_INIT_TIMEOUT, TimeUnit.MILLISECONDS));
 
 					StringBuilder bLog = new StringBuilder("\n");
@@ -893,7 +915,8 @@ public class CommonWebAppSteps {
 		if (webdrivers.containsKey(uniqueName)) {
 			Future<ZetaWebAppDriver> webdriver = webdrivers.get(uniqueName);
 			try {
-				ZetaWebAppDriver driver = webdriver.get(DRIVER_INIT_TIMEOUT, TimeUnit.MILLISECONDS);
+				ZetaWebAppDriver driver = webdriver.get(DRIVER_INIT_TIMEOUT,
+						TimeUnit.MILLISECONDS);
 
 				// save browser console if possible
 				if (WebAppExecutionContext.getBrowser()
@@ -902,7 +925,8 @@ public class CommonWebAppSteps {
 				}
 
 				if (driver instanceof ZetaWebAppDriver) {
-					// logout with JavaScript because otherwise backend will block
+					// logout with JavaScript because otherwise backend will
+					// block
 					// us because of top many login requests
 					String logoutScript = "(typeof wire !== 'undefined') && wire.auth.repository.logout();";
 					driver.executeScript(logoutScript);
@@ -923,7 +947,8 @@ public class CommonWebAppSteps {
 				e.printStackTrace();
 			} finally {
 				log.debug("Trying to quit webdriver for " + uniqueName);
-				webdriver.get(DRIVER_INIT_TIMEOUT, TimeUnit.MILLISECONDS).quit();
+				webdriver.get(DRIVER_INIT_TIMEOUT, TimeUnit.MILLISECONDS)
+						.quit();
 				log.debug("Remove webdriver for " + uniqueName + " from map");
 				webdrivers.remove(uniqueName);
 			}
