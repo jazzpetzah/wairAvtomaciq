@@ -170,6 +170,9 @@ public class CommonWebAppSteps {
 			public ZetaWebAppDriver call() throws Exception {
 				ZetaWebAppDriver lazyWebDriver = null;
 				if (WebAppExecutionContext.getBrowser().equals(Browser.Safari)) {
+					// wait for safari to close properly before starting it for
+					// a new test
+					Thread.sleep(5000);
 					int retries = 10;
 					boolean failed = false;
 					do {
