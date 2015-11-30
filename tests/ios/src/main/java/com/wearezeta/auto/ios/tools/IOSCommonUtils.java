@@ -65,11 +65,6 @@ public class IOSCommonUtils {
 		return CommonUtils.getValueFromConfig(c, "iosClientInfoPlist");
 	}
 
-	public static String getIosAppiumLogPathFromConfig(Class<?> c)
-			throws Exception {
-		return CommonUtils.getValueFromConfig(c, "iosAppiumLogPath");
-	}
-
 	/**
 	 * 
 	 * @param deviceName

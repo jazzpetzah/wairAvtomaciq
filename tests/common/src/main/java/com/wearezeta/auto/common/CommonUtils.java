@@ -223,6 +223,11 @@ public class CommonUtils {
 
 	private static final String COMMON_CONFIG = "CommonConfiguration.cnf";
 
+	public static Optional<String> getOptionalValueFromCommonConfig(Class<?> c,
+															  String key) throws Exception {
+		return getValueFromConfigFile(c, key, COMMON_CONFIG);
+	}
+
 	public static String getValueFromCommonConfig(Class<?> c, String key)
 			throws Exception {
 		final Optional<String> value = getValueFromConfigFile(c, key,

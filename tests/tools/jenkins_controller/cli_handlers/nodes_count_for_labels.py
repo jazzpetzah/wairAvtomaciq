@@ -7,7 +7,6 @@ from pprint import pformat
 import random
 import re
 import smtplib
-import socket
 import sys
 import time
 import traceback
@@ -85,10 +84,13 @@ class NodesCountForLabels(CliHandlerBase):
             for verifier in verifiers_chunk:
                 verifier.join(timeout=VERIFICATION_JOB_TIMEOUT)
                 if verifier.is_alive():
-                    sys.stderr.write('Verifier process for the node "{}" timed out'.format(verifier.node_name))
+                    sys.stderr.write(
+                        'Verifier process for the node "{}" timed out. Assuming the node as valid by default...\n'.\
+                         format(verifier.node.name))
+                    ready_nodes_queue.put_nowait(verifier.node)
                     verifier.terminate()
                 else:
-                    sys.stderr.write('Finished verification for the node "{}"'.format(verifier.node_name))
+                    sys.stderr.write('Finished verification for the node "{}"\n'.format(verifier.node.name))
         ready_nodes = []
         while not ready_nodes_queue.empty():
             ready_nodes.append(ready_nodes_queue.get_nowait().name)
@@ -108,8 +110,8 @@ class BaseNodeVerifier(Process):
         self._verification_kwargs = kwargs
 
     @property
-    def node_name(self):
-        return self._node.name
+    def node(self):
+        return self._node
 
     def _send_email_notification(self, subject, body):
         if 'notification_receivers' not in self._verification_kwargs or \
@@ -153,7 +155,6 @@ class BaseNodeVerifier(Process):
                     raise e
                 sys.stderr.write('Sleeping a while before retry #{} of {}...\n'.format(try_num, MAX_TRY_COUNT))
                 time.sleep(random.randint(2, 10))
-                try_num = 0
         if is_passed:
             self._ready_nodes_queue.put_nowait(self._node)
         else:
@@ -227,6 +228,10 @@ class IOSSimulator(BaseNodeVerifier):
             client.connect(self._node_hostname, username=self._verification_kwargs['node_user'],
                            password=self._verification_kwargs['node_password'])
             simulator_name = self._verification_kwargs['ios_simulator_name']
+
+            client.exec_command('/usr/bin/killall -9 "iOS Simulator"')
+            time.sleep(1)
+
             available_simulators = self._get_installed_simulators(client)
             dst_name = filter(lambda x: x.lower().find(simulator_name.lower()) >= 0,
                               available_simulators.iterkeys())
@@ -234,24 +239,23 @@ class IOSSimulator(BaseNodeVerifier):
             if dst_name:
                 simulator_name = dst_name[0]
             else:
-                msg = 'There is no "{}" simulator available. The list of available simulators for the node "{}":\n{}'.\
+                msg = 'There is no "{}" simulator available. The list of available simulators for the node "{}":\n{}\n'.\
                                  format(simulator_name, self._node.name, pformat(available_simulators))
                 sys.stderr.write(msg)
                 self._send_email_notification('Non-existing simulator name "{}" has been provided'.\
                                               format(simulator_name), msg)
-                return True
-            client.exec_command('/usr/bin/killall "iOS Simulator"')
-            time.sleep(1)
-            try:
-                client.exec_command('/usr/bin/xcrun instruments -w "{}"'.format(simulator_name),
-                                    timeout=IOS_SIMULATOR_BOOT_TIMEOUT)
-            except (socket.timeout, paramiko.SSHException) as e:
-                msg = 'The "{}" simulator is still booting after {} seconds timeout.'.\
-                                 format(simulator_name, IOS_SIMULATOR_BOOT_TIMEOUT)
-                sys.stderr.write(msg)
-                self._send_email_notification('"{}" node is broken'.format(self._node.name), msg)
-                result = False
-            client.exec_command('/usr/bin/killall "iOS Simulator"')
+                return False
+
+            # try:
+            #     client.exec_command('/usr/bin/xcrun instruments -w "{}"'.format(simulator_name),
+            #                         timeout=IOS_SIMULATOR_BOOT_TIMEOUT)
+            # except (socket.timeout, paramiko.SSHException) as e:
+            #     msg = 'The "{}" simulator is still booting after {} seconds timeout.\n'.\
+            #                      format(simulator_name, IOS_SIMULATOR_BOOT_TIMEOUT)
+            #     sys.stderr.write(msg)
+            #     self._send_email_notification('"{}" node is broken'.format(self._node.name), msg)
+            #     result = False
+            # client.exec_command('/usr/bin/killall -9 "iOS Simulator"')
             return result
         finally:
             client.close()

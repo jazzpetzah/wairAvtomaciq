@@ -19,9 +19,9 @@ public class CallingLockscreenPage extends AndroidPage {
     private static final Function<String, String> xpathCallingUserByName = name ->
             String.format("//*[@id='ttv__notifications__incoming_call__lockscreen__header' and @value='%s']", name);
 
-    private static final String idIncomingCallChathead = "civ__notifications__incoming_call__dummy";
-    @FindBy(id = idIncomingCallChathead)
-    private WebElement incomingCallChathead;
+    public static final String idMainContent = "fl_main_content";
+    @FindBy(id = idMainContent)
+    private WebElement mainContentArea;
 
     public CallingLockscreenPage(Future<ZetaAndroidDriver> lazyDriver)
             throws Exception {
@@ -39,8 +39,7 @@ public class CallingLockscreenPage extends AndroidPage {
     }
 
     public void acceptCall() throws Exception {
-        DriverUtils.swipeRight(this.getDriver(), incomingCallChathead, 1500,
-                200, 50);
+        DriverUtils.swipeElementPointToPoint(getDriver(), mainContentArea, 1500, 50, 90, 80, 90);
     }
 
 }

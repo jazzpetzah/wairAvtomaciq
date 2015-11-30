@@ -82,7 +82,8 @@ public class WebCommonUtils extends CommonUtils {
 				.executeOsXCommand(new String[] { "bash", "-c", command });
 	}
 
-	private static void setCorrectPermissionsOfKeyFile() throws URISyntaxException {
+	private static void setCorrectPermissionsOfKeyFile()
+			throws URISyntaxException {
 		File keyFile = new File(getSshKeyPath());
 		if (!keyFile.setReadable(false, false)
 				|| !keyFile.setReadable(true, true)) {
@@ -194,8 +195,9 @@ public class WebCommonUtils extends CommonUtils {
 		final String srcScriptPath = String.format("%s/%s",
 				WebAppConstants.TMP_ROOT,
 				WebAppConstants.Scripts.SAFARI_OPEN_TAB_SCRIPT);
-	    URI uri = new URI(WebCommonUtils.class.getResource(srcScriptPath).toString());
-	    File srcScript = new File(uri.getPath());
+		URI uri = new URI(WebCommonUtils.class.getResource(srcScriptPath)
+				.toString());
+		File srcScript = new File(uri.getPath());
 		try {
 			formatTextInFileAndSave(scriptStream, srcScriptPath,
 					new String[] { url });
@@ -338,6 +340,25 @@ public class WebCommonUtils extends CommonUtils {
 		final String dstScriptPath = String.format("%s/%s",
 				WebAppConstants.TMP_ROOT,
 				WebAppConstants.Scripts.SAFARI_CLEAR_HISTORY_SCRIPT);
+		// get file via resources
+		URL url = WebCommonUtils.class.getResource(srcScriptPath);
+		assert url != null : "There's no file by path " + srcScriptPath
+				+ " on your resources";
+		File srcScript = new File(new URI(url.toString()).getPath());
+		putFileOnExecutionNode(nodeIp, srcScript, dstScriptPath);
+		executeAppleScriptFileOnNode(nodeIp, dstScriptPath);
+	}
+
+	public static void closeAllAdditionalTabsInSafari(String nodeIp)
+			throws Exception {
+		final String srcScriptPath = String
+				.format("/%s/%s",
+						WebAppConstants.Scripts.RESOURCES_SCRIPTS_ROOT,
+						WebAppConstants.Scripts.SAFARI_CLOSE_ALL_ADDITIONAL_TABS_SCRIPT);
+		final String dstScriptPath = String
+				.format("%s/%s",
+						WebAppConstants.TMP_ROOT,
+						WebAppConstants.Scripts.SAFARI_CLOSE_ALL_ADDITIONAL_TABS_SCRIPT);
 		// get file via resources
 		URL url = WebCommonUtils.class.getResource(srcScriptPath);
 		assert url != null : "There's no file by path " + srcScriptPath

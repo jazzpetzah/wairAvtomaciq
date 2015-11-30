@@ -1,7 +1,7 @@
 Feature: Calling
 
   @id373 @calling_basic @rc
-  Scenario Outline: (AN-2993) Verify missed call indicator in conversations list and system message inside conversation
+  Scenario Outline: Verify missed call indicator in conversations list and system message inside conversation
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
@@ -269,9 +269,10 @@ Feature: Calling
     And I answer the call from the overlay bar
     Then I do not see join group call overlay
     And I see calling overlay Big bar
-    And I wait for 10 seconds
-    Then <Contact2>,<Contact3>,<Contact4> verify to have 4 flows
-    Then <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
+    # FIXME: Temporarily disable calling flows verification since this is unstable on webapp side
+    # And I wait for 10 seconds
+    # Then <Contact2>,<Contact3>,<Contact4> verify to have 4 flows
+    # Then <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
 
     Examples:
       | CallBackend | CallBackend2 | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    |

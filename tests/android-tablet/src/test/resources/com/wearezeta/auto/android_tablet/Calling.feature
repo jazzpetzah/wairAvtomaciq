@@ -64,10 +64,11 @@ Feature: Calling
     And I see the conversation view
     And <Contact1> calls <GroupChatName> using <CallBackend2>
     And I tap <AcceptBtnName> button on the calling overlay
-    And I wait for 10 seconds
     And I see calling overlay Big bar
-    Then <Contact2>,<Contact3>,<Contact4> verify to have 4 flows
-    Then <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
+    # FIXME: Wait until webapp calling issues are fixed on staging
+    # And I wait for 10 seconds
+    # Then <Contact2>,<Contact3>,<Contact4> verify to have 4 flows
+    # Then <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
 
     Examples:
       | CallBackend | CallBackend2 | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    | AcceptBtnName |
@@ -266,7 +267,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @id2875 @calling_basic
+  @id2875 @calling_basic @rc
   Scenario Outline: Receive call while tablet in sleeping mode (screen locked) (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

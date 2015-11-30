@@ -69,6 +69,7 @@ Feature: Search
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
+    And I wait until <Contact> exists in backend search results
     And I open conversation with <Contact>
     And I click People button in one to one conversation
     Then I see Single User Profile popover
@@ -163,8 +164,7 @@ Feature: Search
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I see my avatar on top of Contact list
-    # Wait for the backend to process the top people list
-    And I wait for 20 seconds
+    And I wait till Top People list contains 2 people
     And I open People Picker from Contact List
     And I wait till Top People list appears
     When I select <Contact1> from Top People
@@ -188,8 +188,8 @@ Feature: Search
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I see my avatar on top of Contact list
-    And I open People Picker from Contact List
     And I wait till Top People list contains 3 people
+    And I open People Picker from Contact List
     When I select <Contact1>,<Contact2> from Top People
     And I choose to create conversation from People Picker
     Then I see Contact list with name <Contact1>,<Contact2>
@@ -232,9 +232,8 @@ Feature: Search
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I see my avatar on top of Contact list
-    # Wait a bit until top people were calculated by backend
-    And I open People Picker from Contact List
     And I wait till Top People list contains 8 people
+    And I open People Picker from Contact List
     And I see More button
     When I click on More button
     Then I see 10 people in Top people list
@@ -251,6 +250,7 @@ Feature: Search
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
+    And I wait until <Contact1> exists in backend search results
     When I open People Picker from Contact List
     And I type <Contact1> in search field of People Picker
     And I see user <Contact1> found in People Picker
@@ -272,6 +272,8 @@ Feature: Search
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
+    And I wait until <Contact1> exists in backend search results
+    And I wait until <Contact2> exists in backend search results
     When I open People Picker from Contact List
     And I type <Contact1> in search field of People Picker
     And I see user <Contact1> found in People Picker
