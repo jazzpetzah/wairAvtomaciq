@@ -91,6 +91,9 @@ public class ContactListPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameCancelButton)
 	private WebElement cancelActionMenuButton;
 
+	@FindBy(how = How.NAME, using = IOSLocators.nameSendAnInviteButton)
+	private WebElement inviteMorePeopleButton;
+
 	private int oldLocation = 0;
 
 	public ContactListPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -818,6 +821,16 @@ public class ContactListPage extends IOSPage {
 								.format(IOSLocators.ContactListPage.xpathSpecificContactListCell,
 										conversation)));
 		return conversationCell.getAttribute("value");
+	}
+
+	public boolean isInviteMorePeopleButtonVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				inviteMorePeopleButton);
+	}
+
+	public boolean isInviteMorePeopleButtonNotVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.name(IOSLocators.nameSendAnInviteButton));
 	}
 
 }
