@@ -421,6 +421,8 @@ public final class WebAppLocators {
 		public static final String cssErrorMarkedEmailField = "#form-account-register .input-error[data-uie-name='enter-email']";
 
 		public static final String cssErrorMessages = "#form-account-register [data-uie-name='status-error'] .error";
+
+		public static final String xpathVerifyLaterButton = "//div[@id='posted-later-link']";
 	}
 
 	public static final class SelfPictureUploadPage {

@@ -267,7 +267,8 @@ public class GroupChatInfoPage extends IOSPage {
 				.className("UIACollectionCell"));
 	}
 
-	public void exitGroupInfoPage() {
+	public void exitGroupInfoPage() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), exitGroupInfoPageButton);
 		exitGroupInfoPageButton.click();
 	}
 
