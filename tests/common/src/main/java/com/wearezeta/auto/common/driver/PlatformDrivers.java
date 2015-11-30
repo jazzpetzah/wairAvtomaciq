@@ -2,11 +2,7 @@ package com.wearezeta.auto.common.driver;
 
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -122,8 +118,12 @@ public final class PlatformDrivers {
                         platform.name()));
             } else if (!futureDriver.isCancelled() && !futureDriver.isDone()) {
                 futureDriver.cancel(true);
-                // To let the driver to quit if necessary
-                futureDriver.get(DRIVER_CANCELLATION_TIMEOUT, TimeUnit.MILLISECONDS);
+                try {
+                    // To let the driver to quit if necessary
+                    futureDriver.get(DRIVER_CANCELLATION_TIMEOUT, TimeUnit.MILLISECONDS);
+                } catch (CancellationException e) {
+                    // ignore silently
+                }
                 log.warn(String.format("Canceled driver creation for platform '%s'", platform.getName()));
             }
         } finally {
@@ -154,10 +154,14 @@ public final class PlatformDrivers {
                     try {
                         if (futureDriver.isDone() && !futureDriver.isCancelled()) {
                             futureDriver.get().quit();
-                        } else if (!futureDriver.isCancelled() && !futureDriver.isDone()){
+                        } else if (!futureDriver.isCancelled() && !futureDriver.isDone()) {
                             futureDriver.cancel(true);
-                            // To let the driver to quit if necessary
-                            futureDriver.get(DRIVER_CANCELLATION_TIMEOUT, TimeUnit.MILLISECONDS);
+                            try {
+                                // To let the driver to quit if necessary
+                                futureDriver.get(DRIVER_CANCELLATION_TIMEOUT, TimeUnit.MILLISECONDS);
+                            } catch (CancellationException e) {
+                                // ignore silently
+                            }
                             log.warn(String.format("Canceled driver creation for the current platform"));
                         }
                     } catch (Exception e) {
