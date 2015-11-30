@@ -267,7 +267,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @id2875 @calling_basic
+  @id2875 @calling_basic @rc
   Scenario Outline: Receive call while tablet in sleeping mode (screen locked) (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
