@@ -291,3 +291,15 @@ Feature: Conversation List
     Examples:
       | Name      | Contact1  | Contact2 | GroupChatName |
       | user1Name | user2Name | user3Name| MenuItems     |
+
+  @id4092 @staging @torun
+  Scenario Outline: I can open options menu by tap on three dots button
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    And I see Contact list with contacts
+    When I short swipe right on a <Contact1>
+
+    Examples:
+      | Name      | Contact1  |
+      | user1Name | user2Name |
