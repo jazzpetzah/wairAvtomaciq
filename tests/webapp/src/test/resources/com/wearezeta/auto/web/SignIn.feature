@@ -165,3 +165,24 @@ Feature: Sign In
     Examples: 
       | Name      |
       | user1Name |
+
+  @regression @id4071
+  Scenario Outline: Verify you can verify added email later when sign in with a phone number
+    Given There is 1 user where <Name> is me with phone number only
+    Given I switch to sign in page
+    When I switch to phone number sign in page
+    When I sign in using phone number of user <Name>
+    And I click on sign in button on phone number sign in
+    And I enter phone verification code for emailless user <Name>
+    Then I see Skip for now button on add email address dialog
+    When I enter email of user <Name> on add email address dialog
+    And I enter password <PasswordOfOtherUser> on add email address dialog
+    Then I click add button on add email address dialog
+    And I verify that an envelope icon is shown
+    When I click on Verify later button on Verification page
+    Then I am signed in properly
+    And I see Self Picture Upload dialog
+
+    Examples: 
+      | Name      | PasswordOfOtherUser |
+      | user1Name | aqa123456!          |
