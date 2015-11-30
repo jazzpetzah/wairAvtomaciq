@@ -248,6 +248,14 @@ public class ContactListPage extends AndroidPage {
                 20, 50, 90, 50);
     }
 
+    public void swipeShortRightOnConversation(int durationMilliseconds, String name)
+            throws Exception {
+        final By locator = By.xpath(xpathContactByName.apply(name));
+        DriverUtils.swipeRight(this.getDriver(),
+                this.getDriver().findElement(locator), durationMilliseconds,
+                20, 50, 50, 50);
+    }
+
     public boolean isContactMuted(String name) throws Exception {
         final By locator = By.xpath(xpathMutedIconByConvoName.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),

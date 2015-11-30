@@ -120,6 +120,19 @@ public class ContactListPageSteps {
     }
 
     /**
+     * Makes a short swipe on teh contact to get the 3 dots for the option menu
+     * @step. ^I short swipe right on a (.*)
+     * @param contact to swipe on
+     * @throws Exception
+     */
+    @When("^I short swipe right on a (.*)$")
+    public void IShortSwipeRightOnAUser(String contact) throws Exception {
+        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+        getContactListPage().swipeShortRightOnConversation(3000,contact);
+
+    }
+
+    /**
      * Presses on search bar in the conversation List to open search (people
      * picker)
      *
