@@ -372,7 +372,7 @@ public class ZetaFormatter implements Formatter, Reporter {
             }
             try {
                 jenkinsJobUrl = CommonUtils
-                        .getOptionalValueFromConfig(getClass(), "jenkinsJobUrl");
+                        .getOptionalValueFromCommonConfig(getClass(), "jenkinsJobUrl");
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
