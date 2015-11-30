@@ -178,8 +178,8 @@ Feature: Sign In
     When I enter email of user <Name> on add email address dialog
     And I enter password <PasswordOfOtherUser> on add email address dialog
     Then I click add button on add email address dialog
-    When I see Verify later button on verify page
-    And I click on Verify later button on verify page
+    And I verify that an envelope icon is shown
+    When I click on Verify later button on Verification page
     Then I am signed in properly
     And I see Self Picture Upload dialog
 
