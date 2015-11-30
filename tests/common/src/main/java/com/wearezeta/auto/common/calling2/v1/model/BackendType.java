@@ -2,5 +2,5 @@ package com.wearezeta.auto.common.calling2.v1.model;
 
 public enum BackendType {
 
-	EDGE, STAGING, PRODUCTION;
+	EDGE, STAGING, PRODUCTION, BENNY;
 }

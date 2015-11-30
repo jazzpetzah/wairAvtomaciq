@@ -124,19 +124,16 @@ public class CommonUtils {
 	}
 
 	public static String getHotPingIconPath(Class<?> c) throws Exception {
-		return getValueFromConfig(c, "defaultImagesPath")
-				+ HOT_PING_IMAGE;
+		return getValueFromConfig(c, "defaultImagesPath") + HOT_PING_IMAGE;
 	}
 
 	public static String getHotPingIconPathIOS(Class<?> c) throws Exception {
-		return getValueFromConfig(c, "iosImagesPath")
-				+ IOS_HOT_PING_IMAGE;
+		return getValueFromConfig(c, "iosImagesPath") + IOS_HOT_PING_IMAGE;
 	}
 
 	public static String getAvatarWithClockIconPathIOS(Class<?> c)
 			throws Exception {
-		return getValueFromConfig(c, "iosImagesPath")
-				+ IOS_AVATAR_CLOCK_IMAGE;
+		return getValueFromConfig(c, "iosImagesPath") + IOS_AVATAR_CLOCK_IMAGE;
 	}
 
 	public static String getImagesPath(Class<?> c) throws Exception {
@@ -144,8 +141,7 @@ public class CommonUtils {
 	}
 
 	public static String getMediaBarPlayIconPath(Class<?> c) throws Exception {
-		return getValueFromConfig(c, "defaultImagesPath")
-				+ MEDIABAR_PLAY_IMAGE;
+		return getValueFromConfig(c, "defaultImagesPath") + MEDIABAR_PLAY_IMAGE;
 	}
 
 	public static String getMediaBarPauseIconPath(Class<?> c) throws Exception {
@@ -263,6 +259,7 @@ public class CommonUtils {
 		case "edge":
 			return getValueFromCommonConfig(c, "edgeBackendUrl");
 		case "staging":
+		case "benny":
 			return getValueFromCommonConfig(c, "stagingBackendUrl");
 		case "production":
 			return getValueFromCommonConfig(c, "productionBackendUrl");
@@ -303,6 +300,8 @@ public class CommonUtils {
 				return getValueFromConfig(c, "webappStagingApplicationPath");
 			case "production":
 				return getValueFromConfig(c, "webappProductionApplicationPath");
+			case "benny":
+				return getValueFromConfig(c, "webappBennyApplicationPath");
 			default:
 				throw new RuntimeException(String.format(
 						"Non supported backend type '%s'", currentBackendType));

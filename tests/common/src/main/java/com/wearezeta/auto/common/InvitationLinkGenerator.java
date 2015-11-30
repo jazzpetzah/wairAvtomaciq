@@ -59,6 +59,7 @@ public class InvitationLinkGenerator {
 				.getBackendType(InvitationLinkGenerator.class);
 		switch (currentBackendType.toLowerCase()) {
 		case "staging":
+		case "benny":
 			return String.format("https://staging-website.zinfra.io/c/%s",
 					encodeToken(uuid));
 		case "production":

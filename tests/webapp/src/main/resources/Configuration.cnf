@@ -4,6 +4,7 @@ hubHost=${hubHost}
 hubPort=${hubPort}
 webappAppiumUrl=${url}
 webappApplicationPath=${webappApplicationPath}
+webappBennyApplicationPath=https://wire-webapp-benny.zinfra.io/
 webappEdgeApplicationPath=https://wire-webapp-edge.zinfra.io/
 webappStagingApplicationPath=https://wire-webapp-staging.zinfra.io/
 webappProductionApplicationPath=https://app.wire.com/
