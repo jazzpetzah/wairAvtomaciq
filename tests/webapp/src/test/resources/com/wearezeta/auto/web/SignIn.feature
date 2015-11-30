@@ -166,7 +166,7 @@ Feature: Sign In
       | Name      |
       | user1Name |
 
-  @regression @id4071 @torun
+  @regression @id4071
   Scenario Outline: Verify you can verify added email later when sign in with a phone number
     Given There is 1 user where <Name> is me with phone number only
     Given I switch to sign in page
