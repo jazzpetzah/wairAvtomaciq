@@ -211,11 +211,11 @@ public class OtherUserPersonalInfoPageSteps {
 	 *
 	 * @param itemName menu item name
 	 * @param position index position of item in menu
-	 * @throws Throwable
+	 * @throws Exception
 	 * @step. ^I see (.*) button in user profile menu at position (\\d+)$
 	 */
 	@Then("^I see (.*) button in option menu at position (\\d+)$")
-	public void ISeeButtonInUserProfileMenuAtPosition(String itemName, int position) throws Throwable {
+	public void ISeeButtonInUserProfileMenuAtPosition(String itemName, int position) throws Exception {
 		Assert.assertTrue("The user profile menu item is not visible",
 				getOtherUserPersonalInfoPage().isUserProfileMenuItemVisible(itemName));
 		Assert.assertEquals("Menu item is not at correct index", itemName,
