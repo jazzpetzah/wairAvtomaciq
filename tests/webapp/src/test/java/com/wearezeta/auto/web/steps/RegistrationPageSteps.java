@@ -29,6 +29,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+
 import org.junit.Assert;
 
 public class RegistrationPageSteps {
@@ -351,5 +352,18 @@ public class RegistrationPageSteps {
 	public void ISwitchToLoginPage() throws Exception {
 		webappPagesCollection.getPage(RegistrationPage.class)
 				.switchToLoginPage();
+	}
+
+	/**
+	 * Clicks on Verify later button on Verification page
+	 * 
+	 * @step. ^I click on Verify later button on Verification page$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I click on Verify later button on Verification page$")
+	public void IClickVerifyLaterButton() throws Exception {
+		webappPagesCollection.getPage(RegistrationPage.class)
+				.clickVerifyLaterButton();
 	}
 }
