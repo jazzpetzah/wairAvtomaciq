@@ -469,4 +469,25 @@ public class ContactListPageSteps {
         }
     }
 
+    /**
+     * Verifies that the three dot button to open the option menu is visible
+     * @step. ^I see three dots option menu button$
+     * @throws Exception
+     */
+    @When("^I see three dots option menu button$")
+    public void ISeeThreeDotsOptionMenuButton() throws Exception {
+        Assert.assertTrue("Three dot button is not visible",
+                getContactListPage().isThreeDotButtonVisible());
+    }
+
+    /**
+     * Taps the three dot button to open the option menu
+     * @step. ^I press the three dots option menu button$
+     * @throws Exception
+     */
+    @When("^I press the three dots option menu button$")
+    public void IPressTheThreeDotsOptionMenuButton() throws Exception {
+        getContactListPage().tapThreeDotOptionMenuButton();
+    }
+
 }

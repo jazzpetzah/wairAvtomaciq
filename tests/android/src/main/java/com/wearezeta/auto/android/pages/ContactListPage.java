@@ -131,6 +131,11 @@ public class ContactListPage extends AndroidPage {
     @FindBy(id = idInviteButton)
     private WebElement inviteButton;
 
+    private static final String idThreeDotsOptionMenuButton = "v__row_conversation__menu_indicator__second_dot";
+    @FindBy(id = idThreeDotsOptionMenuButton)
+    private WebElement threeDotOptionMenuButton;
+
+
     private static final Logger log = ZetaLogger.getLog(ContactListPage.class
             .getSimpleName());
 
@@ -457,5 +462,13 @@ public class ContactListPage extends AndroidPage {
 
     public boolean isLeaveCheckBoxVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),By.id(idLeaveCheckbox));
+    }
+
+    public boolean isThreeDotButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),By.id(idThreeDotsOptionMenuButton));
+    }
+
+    public void tapThreeDotOptionMenuButton() {
+        threeDotOptionMenuButton.click();
     }
 }
