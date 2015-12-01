@@ -259,15 +259,33 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * Takes screenshot for comparison
+     * Takes 1st screenshot for comparison, previous taken screenshots will be cleaned
      *
      * @throws Exception
-     * @step. ^I take screenshot$
+     * @step. ^I take 1st screenshot$
      */
-    @When("^I take screenshot$")
+    @When("^I take 1st screenshot$")
     public void WhenITake1stScreenshot() throws Exception {
         final Optional<BufferedImage> screenshot = pagesCollection.getCommonPage().takeScreenshot();
         if (screenshot.isPresent()) {
+            images.clear();
+            images.add(screenshot.get());
+        } else {
+            throw new RuntimeException("Selenium has failed to take the screenshot from current page");
+        }
+    }
+    
+    /**
+     * Takes 2nd screenshot for comparison
+     *
+     * @throws Exception
+     * @step. ^I take 2nd screenshot$
+     */
+    @When("^I take 2nd screenshot$")
+    public void WhenITake2ndScreenshot() throws Exception {
+        final Optional<BufferedImage> screenshot = pagesCollection.getCommonPage().takeScreenshot();
+        if (screenshot.isPresent()) {
+            if (images.size() == 2) images.remove(1);
             images.add(screenshot.get());
         } else {
             throw new RuntimeException("Selenium has failed to take the screenshot from current page");
@@ -294,11 +312,11 @@ public class CommonAndroidSteps {
     @Then("^I compare 1st and 2nd screenshots and they are( not)? different$")
     public void ThenICompare1st2ndScreenshotsAndTheyAreDifferent(String shouldBeEqual) {
         double score = ImageUtil.getOverlapScore(images.get(0), images.get(1));
+        double targetScore = 0.75d;
         if (shouldBeEqual == null)
-            Assert.assertTrue(score < 0.75d);
+            Assert.assertTrue("Screenshots overlap score="+score+", but expected less than " + targetScore, score < targetScore);
         else
-            Assert.assertTrue(score > 0.75d);
-        images.clear();
+            Assert.assertTrue("Screenshots overlap score="+score+", but expected more than " + targetScore, score >= targetScore);
     }
 
     /**
