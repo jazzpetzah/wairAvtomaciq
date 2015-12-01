@@ -446,4 +446,8 @@ public class ContactListPage extends AndroidPage {
     public void tapInviteButton() {
         inviteButton.click();
     }
+
+    public boolean isLeaveCheckBoxVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),By.id(idLeaveCheckbox));
+    }
 }

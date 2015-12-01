@@ -498,6 +498,23 @@ public class CommonWebAppSteps {
         commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
     }
 
+	/**
+	 * Pings BackEnd until user is indexed and available in top people
+	 *
+	 * @param searchByNameAlias
+	 *            user name to search string
+	 * @param size
+	 *            number of top people
+	 * @throws Exception
+	 * @step. ^(\\w+) waits? until (.*) exists in backend search results$
+	 */
+	@Given("^(\\w+) waits? until (\\d+) people in backend top people results$")
+	public void UserWaitsUntilContactExistsInTopPeopleResults(
+			String searchByNameAlias, int size) throws Exception {
+		commonSteps.WaitUntilTopPeopleContactsIsFoundInSearch(
+				searchByNameAlias, size);
+	}
+
     /**
      * Wait for specified amount of seconds
      *
