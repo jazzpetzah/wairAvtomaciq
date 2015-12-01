@@ -55,6 +55,15 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
 		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.xpath(IOSTabletLocators.xpathPopover), 10);
 	}
+	
+	public void dismissPopover() throws Exception {
+		for (int i=0; i<3; i++) {
+			tapOnTopLeftScreen();
+			if (waitConversationInfoPopoverToClose()) {
+				break;
+			}
+		}
+	}
 
 	public TabletOtherUserInfoPage selectUserByNameOniPadPopover(String name)
 			throws Exception {

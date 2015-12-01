@@ -493,7 +493,8 @@ Feature: Connect
     And I click Cancel request button
     Then I see Cancel request confirmation page
     And I confirm Cancel request by click on Yes button
-    And I close self profile
+    And I dismiss popover on iPad
+    When I return to the chat list
     Then I dont see conversation <Contact> in contact list
 
     Examples: 
