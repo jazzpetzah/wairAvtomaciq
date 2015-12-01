@@ -306,9 +306,9 @@ Feature: Conversation List
 
     Examples:
       | Name      | Contact1  | Contact2 | GroupChatName |
-      | user1Name | user2Name | user3Name| NoLeaveBox    |  
+      | user1Name | user2Name | user3Name| NoLeaveBox    |
 
-  @id4092 @staging @torun
+  @id4092 @staging
   Scenario Outline: I can open options menu by tap on three dots button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

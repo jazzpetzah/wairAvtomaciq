@@ -471,8 +471,9 @@ public class ContactListPageSteps {
 
     /**
      * Verifies that the three dot button to open the option menu is visible
-     * @step. ^I see three dots option menu button$
+     *
      * @throws Exception
+     * @step. ^I see three dots option menu button$
      */
     @When("^I see three dots option menu button$")
     public void ISeeThreeDotsOptionMenuButton() throws Exception {
@@ -482,8 +483,9 @@ public class ContactListPageSteps {
 
     /**
      * Taps the three dot button to open the option menu
-     * @step. ^I press the three dots option menu button$
+     *
      * @throws Exception
+     * @step. ^I press the three dots option menu button$
      */
     @When("^I press the three dots option menu button$")
     public void IPressTheThreeDotsOptionMenuButton() throws Exception {
