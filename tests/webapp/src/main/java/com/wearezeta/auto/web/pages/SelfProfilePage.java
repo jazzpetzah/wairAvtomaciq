@@ -17,7 +17,7 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class SelfProfilePage extends WebPage {
-	@FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathGearButton)
+	@FindBy(how = How.CSS, using = WebAppLocators.SelfProfilePage.cssGearButton)
 	private WebElement gearButton;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathCameraButton)
