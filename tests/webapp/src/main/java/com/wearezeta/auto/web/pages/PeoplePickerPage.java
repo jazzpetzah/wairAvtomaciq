@@ -7,9 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -30,9 +28,6 @@ public class PeoplePickerPage extends WebPage {
 
 	private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class
 			.getSimpleName());
-	private static final int TIMEOUT_WAITING_FOR_TOP_PEOPLE = 60; // in seconds
-	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-			.getInstance();
 
 	@FindBy(how = How.CSS, using = WebAppLocators.PeoplePickerPage.cssNameSearchInput)
 	private WebElement searchInput;
@@ -300,28 +295,4 @@ public class PeoplePickerPage extends WebPage {
 	public int getNumberOfTopPeople() {
 		return topPeople.size();
 	}
-
-	public boolean waitUntilNumberOfTopPeople(int count) throws Exception {
-		Wait<WebDriver> wait = new FluentWait<WebDriver>(getDriver())
-				.withTimeout(TIMEOUT_WAITING_FOR_TOP_PEOPLE, TimeUnit.SECONDS)
-				.pollingEvery(1, TimeUnit.SECONDS)
-				.ignoring(NoSuchElementException.class)
-				.ignoring(StaleElementReferenceException.class)
-				.ignoring(InvalidElementStateException.class);
-		return wait.until(drv -> {
-			if (getNumberOfTopPeople() == count) {
-				return true;
-			} else {
-				try {
-					closeSearch();
-					webappPagesCollection.getPage(ContactListPage.class)
-							.openPeoplePicker();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				return false;
-			}
-		});
-	}
-
 }
