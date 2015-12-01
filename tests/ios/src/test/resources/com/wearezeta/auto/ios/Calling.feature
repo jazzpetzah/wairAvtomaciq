@@ -138,13 +138,13 @@ Feature: Calling
     And I see mute call, end call and speakers buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 300 seconds
-    And I see mute call, end call buttons
+    And I see mute call, end call and speakers buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 300 seconds
-    And I see mute call, end call buttons
+    And I see mute call, end call and speakers buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 300 seconds
-    And I see mute call, end call buttons
+    And I see mute call, end call and speakers buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see mute call, end call and speakers buttons
     And I end started call

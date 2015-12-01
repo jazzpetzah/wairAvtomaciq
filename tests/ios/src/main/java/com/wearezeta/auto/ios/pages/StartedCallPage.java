@@ -34,7 +34,7 @@ public class StartedCallPage extends CallPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.StartedCallPage.nameMuteCallButton)
 	private WebElement muteCallButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameCallingMessageUser)
 	private WebElement callingMessageUser;
 
@@ -70,21 +70,18 @@ public class StartedCallPage extends CallPage {
 	}
 
 	public boolean isEndCallVisible() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.name(IOSLocators.StartedCallPage.nameEndCallButton));
-		return endCallButton.isDisplayed();
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				endCallButton);
 	}
 
 	public boolean isSpeakersVisible() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.name(IOSLocators.StartedCallPage.nameSpeakersButton));
-		return speakersButton.isDisplayed();
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				speakersButton);
 	}
 
 	public boolean isMuteCallVisible() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.name(IOSLocators.StartedCallPage.nameMuteCallButton));
-		return muteCallButton.isDisplayed();
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				muteCallButton);
 	}
 
 	public void clickEndCallButton() {
