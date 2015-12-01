@@ -128,7 +128,7 @@ public class ContactListPageSteps {
     @When("^I short swipe right on a (.*)$")
     public void IShortSwipeRightOnAUser(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        getContactListPage().swipeShortRightOnConversation(3000,contact);
+        getContactListPage().swipeShortRightOnConversation(1000,contact);
 
     }
 
