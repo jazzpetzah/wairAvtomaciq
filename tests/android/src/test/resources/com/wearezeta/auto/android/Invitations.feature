@@ -98,8 +98,8 @@ Feature: Invitations
       | Name      |
       | user1Name |
 
-  @id4172 @staging @torun
-  Scenario Outline: Sending invite to user which already on Wire create pending connection request
+  @id4172 @staging
+  Scenario Outline: (AN-3118) Sending invite to user which already on Wire create pending connection request
     Given I delete all contacts from Address Book
     Given There are 2 users where <Name> is me
     Given I add <Contact> into Address Book
@@ -111,7 +111,9 @@ Feature: Invitations
     And I select <ContactEmail> email on invitation sending alert
     And I confirm invitation sending alert
     When I press back button
-    And I press back button
+    # FIXME: workaround for AN-3118
+    And I minimize the application
+    And I restore the application
     Then I see contact list with name <Contact>
     When I tap on contact name <Contact>
     Then I see outgoing pending connection to <Contact>
