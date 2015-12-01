@@ -207,6 +207,7 @@ class RealAndroidDevice(BaseNodeVerifier):
 
 
 IOS_SIMULATOR_BOOT_TIMEOUT = 60 * 2 # seconds
+IOS_SIMULATOR_EXECUTABLE_NAME = 'Simulator'
 
 class IOSSimulator(BaseNodeVerifier):
     def _get_installed_simulators(self, ssh_client):
@@ -230,7 +231,7 @@ class IOSSimulator(BaseNodeVerifier):
                            password=self._verification_kwargs['node_password'])
             simulator_name = self._verification_kwargs['ios_simulator_name']
 
-            client.exec_command('/usr/bin/killall "iOS Simulator"')
+            client.exec_command('/usr/bin/killall "{}"'.format(IOS_SIMULATOR_EXECUTABLE_NAME))
             time.sleep(1)
 
             available_simulators = self._get_installed_simulators(client)
@@ -255,7 +256,7 @@ class IOSSimulator(BaseNodeVerifier):
                 sys.stderr.write(msg)
                 self._send_email_notification('"{}" node is broken'.format(self._node.name), msg)
                 result = False
-            client.exec_command('/usr/bin/killall "iOS Simulator"')
+            client.exec_command('/usr/bin/killall "{}"'.format(IOS_SIMULATOR_EXECUTABLE_NAME))
             return result
         finally:
             client.close()
