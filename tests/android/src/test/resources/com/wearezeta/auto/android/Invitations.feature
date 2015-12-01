@@ -97,3 +97,27 @@ Feature: Invitations
     Examples: 
       | Name      |
       | user1Name |
+
+  @id4160 @staging
+  Scenario Outline: Verify that swipe do nothing in invites page
+    Given There are 1 user where <Name> is me
+    Given I sign in using my email or phone number
+    Given I see Contact list with no contacts
+    When I tap Invite button at the bottom of conversations list
+    And I take 1st screenshot
+    And I swipe up
+    And I take 2nd screenshot
+    Then I compare 1st and 2nd screenshots and they are not different
+    When I swipe down
+    And I take 2nd screenshot
+    Then I compare 1st and 2nd screenshots and they are not different
+    When I swipe right
+    And I take 2nd screenshot
+    Then I compare 1st and 2nd screenshots and they are not different
+    When I swipe left
+    And I take 2nd screenshot
+    Then I compare 1st and 2nd screenshots and they are not different
+
+    Examples: 
+      | Name      |
+      | user1Name |
