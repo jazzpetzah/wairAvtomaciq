@@ -880,4 +880,21 @@ public class CommonAndroidSteps {
     public void IAddUserToTheList(String nameAlias) throws Exception {
         commonSteps.IAddUserToTheListOfTestCaseUsers(nameAlias);
     }
+
+    /**
+     * User X removes User Y from a group conversation via backend
+     *
+     * @param user1
+     * @param user2
+     * @param group
+     * @throws Exception
+     * @step. ^(.*) removes (.*) from group (.*)$
+     */
+    @Given("^(.*) removes (.*) from group (.*)$")
+    public void UserXRemovesUserYFromGroup(String user1, String user2, String group) throws Exception {
+        user1 = usrMgr.findUserByNameOrNameAlias(user1).getName();
+        user2 = usrMgr.findUserByNameOrNameAlias(user2).getName();
+        group = usrMgr.replaceAliasesOccurences(group, ClientUsersManager.FindBy.NAME_ALIAS);
+        commonSteps.UserXRemoveContactFromGroupChat(user1, user2, group);
+    }
 }

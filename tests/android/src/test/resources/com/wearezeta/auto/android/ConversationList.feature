@@ -292,6 +292,22 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2 | GroupChatName |
       | user1Name | user2Name | user3Name| MenuItems     |
 
+  @id4093 @staging
+  Scenario Outline: Check there is no leave checkbox when you delete conversation where you was dropped
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <Contact1> removes <Name> from group <GroupChatName>
+    Given I sign in using my email or phone number
+    And I see Contact list with contacts
+    When I swipe right on a <GroupChatName>
+    And I select DELETE from conversation settings menu
+    Then I do not see the Leave check box
+
+    Examples:
+      | Name      | Contact1  | Contact2 | GroupChatName |
+      | user1Name | user2Name | user3Name| NoLeaveBox    |  
+
   @id4092 @staging @torun
   Scenario Outline: I can open options menu by tap on three dots button
     Given There are 2 users where <Name> is me
