@@ -101,7 +101,7 @@ public class PeoplePickerPage extends AndroidPage {
     @FindBy(id = idPickerListContainer)
     private WebElement content;
 
-    @FindBy(id = ConnectToPage.idConnectToHeader)
+    @FindBy(id = IncomingPendingConnectionsPage.idConnectToHeader)
     private List<WebElement> connectToHeader;
 
     private static final String idPickerRecomendedName = "ttv_pickuser__recommended_name";

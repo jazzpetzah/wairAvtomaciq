@@ -19,20 +19,19 @@ public class WelcomePageSteps {
 			.getInstance();
 
 	private WelcomePage getWelcomePage() throws Exception {
-		return (WelcomePage) pagesCollection.getPage(WelcomePage.class);
+		return pagesCollection.getPage(WelcomePage.class);
 	}
 
 	private AreaCodePage getAreaCodePage() throws Exception {
-		return (AreaCodePage) pagesCollection.getPage(AreaCodePage.class);
+		return pagesCollection.getPage(AreaCodePage.class);
 	}
 
 	private PhoneNumberVerificationPage getVerificationPage() throws Exception {
-		return (PhoneNumberVerificationPage) pagesCollection
-				.getPage(PhoneNumberVerificationPage.class);
+		return pagesCollection.getPage(PhoneNumberVerificationPage.class);
 	}
 
 	private AddNamePage getAddNamePage() throws Exception {
-		return (AddNamePage) pagesCollection.getPage(AddNamePage.class);
+		return pagesCollection.getPage(AddNamePage.class);
 	}
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();

@@ -46,11 +46,11 @@ public class UnknownUserDetailsPage extends AndroidPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
-	public ConnectToPage tapConnectButton() throws Exception {
+	public IncomingPendingConnectionsPage tapConnectButton() throws Exception {
 		assert DriverUtils
 				.waitUntilElementClickable(getDriver(), connectButton);
 		connectButton.click();
-		return new ConnectToPage(this.getLazyDriver());
+		return new IncomingPendingConnectionsPage(this.getLazyDriver());
 	}
 
 	public void tapPendingButton() throws Exception {

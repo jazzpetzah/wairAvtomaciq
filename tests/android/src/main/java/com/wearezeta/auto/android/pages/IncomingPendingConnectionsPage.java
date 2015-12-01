@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
-public class ConnectToPage extends AndroidPage {
+public class IncomingPendingConnectionsPage extends AndroidPage {
 	public static final String idConnectToHeader = "taet__participants__header";
 	@FindBy(id = idConnectToHeader)
 	private WebElement connectToHeader;
@@ -64,7 +64,7 @@ public class ConnectToPage extends AndroidPage {
 	@FindBy(xpath = xpathConfirmBtn)
 	private WebElement confirmBtn;
 
-	public ConnectToPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
+	public IncomingPendingConnectionsPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
 

@@ -103,7 +103,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	@FindBy(id = idParticipantsSubHeader)
 	private WebElement participantsSubHeader;
 
-	@FindBy(id = ConnectToPage.idConnectToHeader)
+	@FindBy(id = IncomingPendingConnectionsPage.idConnectToHeader)
 	private List<WebElement> connectToHeader;
 
 	public OtherUserPersonalInfoPage(Future<ZetaAndroidDriver> lazyDriver)
