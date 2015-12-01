@@ -315,6 +315,9 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     And I see Contact list with contacts
     When I short swipe right on a <Contact1>
+    And I see three dots option menu button
+    And I press the three dots option menu button
+    Then I see SILENCE button in conversation settings menu at position 1
 
     Examples:
       | Name      | Contact1  |
