@@ -441,4 +441,19 @@ public class ContactListPageSteps {
         getContactListPage().tapInviteButton();
     }
 
+    /**
+     * Verifies if Leave check box is visible or not
+     * @step. ^I( do not)? see the Leave check box$
+     * @param shouldNotSee equals to null if "do not" part does not exist
+     * @throws Exception
+     */
+    @Then("^I( do not)? see the Leave check box$")
+    public void ISeeTheLeaveCheckBox(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue(getContactListPage().isLeaveCheckBoxVisible());
+        } else {
+            Assert.assertFalse(getContactListPage().isLeaveCheckBoxVisible());
+        }
+    }
+
 }

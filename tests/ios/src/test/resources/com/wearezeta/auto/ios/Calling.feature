@@ -137,7 +137,15 @@ Feature: Calling
     And I press call button
     And I see mute call, end call and speakers buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    Then I wait for 900 seconds
+    And I wait for 300 seconds
+    And I see mute call, end call and speakers buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 300 seconds
+    And I see mute call, end call and speakers buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 300 seconds
+    And I see mute call, end call and speakers buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see mute call, end call and speakers buttons
     And I end started call
     And I dont see calling page

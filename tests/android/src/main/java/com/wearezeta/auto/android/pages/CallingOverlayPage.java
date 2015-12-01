@@ -76,7 +76,7 @@ public class CallingOverlayPage extends AndroidPage {
     @FindBy(id = idAnswerCallContinueButton)
     private WebElement answerCallContinueButton;
 
-    private static final String xpathEndCurrentCallAlertTitle = "//DialogTitle[@id='alertTitle' and @value='End current call?']";
+    private static final String xpathEndCurrentCallAlertTitle = "//*[@value='Hang up current call?']";
 
     private static final String idEndCurrentCallCancelButton = "button2";
     @FindBy(id = idEndCurrentCallCancelButton)
