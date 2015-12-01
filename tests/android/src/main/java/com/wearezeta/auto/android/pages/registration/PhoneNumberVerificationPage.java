@@ -74,18 +74,4 @@ public class PhoneNumberVerificationPage extends AndroidPage {
 				By.id(idOkButton));
 	}
 
-	public boolean isIncorrectCodeErrorAppears() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.id(idOkButton));
-	}
-
-	public void clickOk() throws Exception {
-		okButton.click();
-	}
-
-	public WelcomePage clickEditPhoneButton() throws Exception {
-		editPhoneButton.click();
-		return new WelcomePage(this.getLazyDriver());
-	}
-
 }

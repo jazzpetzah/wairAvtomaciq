@@ -1023,7 +1023,7 @@ public final class BackendAPIWrappers {
 				toEmail, toName, message);
 	}
 
-	public static InvitationMessage getInvitationMessage(String email)
+	public static Optional<InvitationMessage> getInvitationMessage(String email)
 			throws Exception {
 		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
 		Map<String, String> expectedHeaders = new HashMap<>();
@@ -1031,10 +1031,10 @@ public final class BackendAPIWrappers {
 		try {
 			final String msg = mbox.getMessage(expectedHeaders,
 					INVITATION_RECEIVING_TIMEOUT, 0).get();
-			return new InvitationMessage(msg);
+			return Optional.of(new InvitationMessage(msg));
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			return Optional.empty();
 		}
 	}
 

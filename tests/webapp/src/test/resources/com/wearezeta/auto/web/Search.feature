@@ -164,7 +164,7 @@ Feature: Search
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I see my avatar on top of Contact list
-    And I wait till Top People list contains 2 people
+    And Myself waits until 2 people in backend top people results
     And I open People Picker from Contact List
     And I wait till Top People list appears
     When I select <Contact1> from Top People
@@ -188,7 +188,7 @@ Feature: Search
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I see my avatar on top of Contact list
-    And I wait till Top People list contains 3 people
+    And Myself waits until 3 people in backend top people results
     And I open People Picker from Contact List
     When I select <Contact1>,<Contact2> from Top People
     And I choose to create conversation from People Picker
@@ -232,7 +232,7 @@ Feature: Search
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I see my avatar on top of Contact list
-    And I wait till Top People list contains 8 people
+    And Myself waits until 10 people in backend top people results
     And I open People Picker from Contact List
     And I see More button
     When I click on More button

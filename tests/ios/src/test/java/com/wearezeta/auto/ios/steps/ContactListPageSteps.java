@@ -133,8 +133,8 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		Assert.assertEquals("User name doesn't appeared in contact list.", value, getContactListPage()
-				.getFirstConversationName());
+		Assert.assertEquals("User name doesn't appeared in contact list.",
+				value, getContactListPage().getFirstConversationName());
 	}
 
 	/**
@@ -794,4 +794,33 @@ public class ContactListPageSteps {
 				.getSelectedConversationCellValue(conversation);
 		Assert.assertEquals("Converstaion is not selected", "1", convIsSelected);
 	}
+
+	/**
+	 * Verify if Invite more people button is shown in contact list
+	 * 
+	 * @step. ^I see Invite more people button in contact list$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see Invite more people button in contact list$")
+	public void ISeeInviteMorePeopleButtonInContactList() throws Exception {
+		Assert.assertTrue(
+				"Invite more people button is not shown in contact list",
+				getContactListPage().isInviteMorePeopleButtonVisible());
+	}
+
+	/**
+	 * Verify if Invite more people button is NOT shown in contact list
+	 * 
+	 * @step. ^I DONT see Invite more people button in contact list$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I DONT see Invite more people button in contact list$")
+	public void IDontSeeInviteMorePeopleButtonInContactList() throws Exception {
+		Assert.assertTrue(
+				"Invite more people button is shown in contact list",
+				getContactListPage().isInviteMorePeopleButtonNotVisible());
+	}
+
 }

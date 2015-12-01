@@ -55,6 +55,9 @@ public class RegistrationPage extends WebPage {
 	@FindBy(css = WebAppLocators.RegistrationPage.cssErrorMessages)
 	private List<WebElement> errorMessages;
 
+	@FindBy(xpath = WebAppLocators.RegistrationPage.xpathVerifyLaterButton)
+	private WebElement verifyLaterButton;
+
 	public RegistrationPage(Future<ZetaWebAppDriver> lazyDriver, String url)
 			throws Exception {
 		super(lazyDriver, url);
@@ -158,6 +161,10 @@ public class RegistrationPage extends WebPage {
 	@Override
 	public void setUrl(String url) {
 		super.setUrl(url);
+	}
+
+	public void clickVerifyLaterButton() {
+		verifyLaterButton.click();
 	}
 
 }

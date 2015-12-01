@@ -21,7 +21,7 @@ Feature: Connect
       | Name      | Contact   | Message       |
       | user1Name | user2Name | Hellow friend |
 
-  @id323 @regression @rc
+  @id323 @regression @rc @rc42
   Scenario Outline: Accept incoming connection request from conversation list
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to <Name>

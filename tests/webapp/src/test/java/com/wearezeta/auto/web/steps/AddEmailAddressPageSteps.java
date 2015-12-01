@@ -139,4 +139,5 @@ public class AddEmailAddressPageSteps {
 				.getPage(AddEmailAddressPage.class)
 				.isPasswordFieldMarkedAsError());
 	}
+
 }
