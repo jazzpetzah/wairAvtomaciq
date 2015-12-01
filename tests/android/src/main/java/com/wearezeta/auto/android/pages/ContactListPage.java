@@ -97,7 +97,7 @@ public class ContactListPage extends AndroidPage {
     @FindBy(id = idPager)
     private WebElement mainControl;
 
-    @FindBy(id = ConnectToPage.idConnectToHeader)
+    @FindBy(id = IncomingPendingConnectionsPage.idConnectToHeader)
     private WebElement connectToHeader;
 
     @FindBy(id = idSearchHintClose)
