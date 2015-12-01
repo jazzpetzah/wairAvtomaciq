@@ -220,7 +220,7 @@ public class CommonUtils {
 	private static final String COMMON_CONFIG = "CommonConfiguration.cnf";
 
 	public static Optional<String> getOptionalValueFromCommonConfig(Class<?> c,
-															  String key) throws Exception {
+			String key) throws Exception {
 		return getValueFromConfigFile(c, key, COMMON_CONFIG);
 	}
 
@@ -265,6 +265,10 @@ public class CommonUtils {
 			return getValueFromCommonConfig(c, "edgeBackendUrl");
 		case "staging":
 		case "benny":
+		case "gregor":
+		case "rene":
+		case "lipis":
+		case "chris":
 			return getValueFromCommonConfig(c, "stagingBackendUrl");
 		case "production":
 			return getValueFromCommonConfig(c, "productionBackendUrl");
@@ -307,6 +311,14 @@ public class CommonUtils {
 				return getValueFromConfig(c, "webappProductionApplicationPath");
 			case "benny":
 				return getValueFromConfig(c, "webappBennyApplicationPath");
+			case "gregor":
+				return getValueFromConfig(c, "webappGregorApplicationPath");
+			case "rene":
+				return getValueFromConfig(c, "webappReneApplicationPath");
+			case "lipis":
+				return getValueFromConfig(c, "webappLipisApplicationPath");
+			case "chris":
+				return getValueFromConfig(c, "webappChrisApplicationPath");
 			default:
 				throw new RuntimeException(String.format(
 						"Non supported backend type '%s'", currentBackendType));
