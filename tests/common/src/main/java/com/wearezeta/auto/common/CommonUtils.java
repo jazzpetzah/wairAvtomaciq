@@ -378,6 +378,10 @@ public class CommonUtils {
 		return RandomStringUtils.randomAlphanumeric(lengh);
 	}
 
+	public static String generateRandomNumericString(int length){
+		return RandomStringUtils.randomNumeric(length);
+	}
+
 	private static String generateRandomStringFromTargetStringSetWithLengh(
 			int numberOfCharacters, String characters) {
 		StringBuilder result = new StringBuilder();
