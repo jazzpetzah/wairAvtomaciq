@@ -10,6 +10,7 @@ import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
+import com.wearezeta.auto.common.CommonUtils;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
@@ -122,14 +123,31 @@ public class WelcomePageSteps {
 		getAddNamePage().clickConfirm();
 	}
 
+	/**
+	 * Inputs a random not correct code into the field
+	 *
+	 * @throws Exception
+	 * @step. ^I input random activation code$
+	 */
 	@When("^I input random activation code$")
-	public void i_input_random_activation_code() throws Throwable {
-
+	public void IInputRandomActivationCode() throws Exception {
+		final String randomVerificationCode = CommonUtils.generateRandomNumericString(6);
+		getVerificationPage().inputVerificationCode(randomVerificationCode);
+		getVerificationPage().clickConfirm();
 	}
 
+	/**
+	 * Verifies the correct invalid code error alert
+	 *
+	 * @throws Exception
+	 * @step. ^I see invalid code alert$
+	 */
 	@Then("^I see invalid code alert$")
-	public void i_see_invalid_code_alert() throws Throwable {
-
+	public void ISeeInvalidCodeAlert() throws Exception {
+		String errorHeader = "Invalid Code";
+		String errorMessage = "Please enter a valid code.";
+		Assert.assertEquals(errorHeader, getVerificationPage().getErrorAlertHeader());
+		Assert.assertEquals(errorMessage, getVerificationPage().getErrorAlertMessage());
 	}
 
 }
