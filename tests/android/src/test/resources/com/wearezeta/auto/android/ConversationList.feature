@@ -292,7 +292,6 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2 | GroupChatName |
       | user1Name | user2Name | user3Name| MenuItems     |
 
-  #Bug AN-2551: Leave Box is visible
   @id4093 @staging
   Scenario Outline: Check there is no leave checkbox when you delete conversation where you was dropped
     Given There are 3 users where <Name> is me

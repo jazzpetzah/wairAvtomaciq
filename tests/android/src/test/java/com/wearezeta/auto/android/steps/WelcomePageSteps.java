@@ -13,6 +13,7 @@ import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
+import cucumber.api.java.en.Then;
 
 public class WelcomePageSteps {
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
@@ -119,6 +120,16 @@ public class WelcomePageSteps {
 		final String name = this.userToRegister.getName();
 		getAddNamePage().inputName(name);
 		getAddNamePage().clickConfirm();
+	}
+
+	@When("^I input random activation code$")
+	public void i_input_random_activation_code() throws Throwable {
+
+	}
+
+	@Then("^I see invalid code alert$")
+	public void i_see_invalid_code_alert() throws Throwable {
+
 	}
 
 }
