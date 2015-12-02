@@ -38,6 +38,9 @@ public class WelcomePageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
+	private static final String ERROR_CODE_ALERT_HEADER = "Invalid Code";
+	private static final String ERROR_CODE_ALERT_MESSAGE = "Please enter a valid code.";
+
 	private ClientUser userToRegister = null;
 
 	/**
@@ -144,10 +147,8 @@ public class WelcomePageSteps {
 	 */
 	@Then("^I see invalid code alert$")
 	public void ISeeInvalidCodeAlert() throws Exception {
-		String errorHeader = "Invalid Code";
-		String errorMessage = "Please enter a valid code.";
-		Assert.assertEquals(errorHeader, getVerificationPage().getErrorAlertHeader());
-		Assert.assertEquals(errorMessage, getVerificationPage().getErrorAlertMessage());
+		Assert.assertEquals(ERROR_CODE_ALERT_HEADER, getVerificationPage().getErrorAlertHeader());
+		Assert.assertEquals(ERROR_CODE_ALERT_MESSAGE, getVerificationPage().getErrorAlertMessage());
 	}
 
 }
