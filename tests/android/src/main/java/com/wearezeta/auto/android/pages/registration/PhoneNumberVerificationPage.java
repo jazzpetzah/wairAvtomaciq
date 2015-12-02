@@ -41,6 +41,14 @@ public class PhoneNumberVerificationPage extends AndroidPage {
 	@FindBy(id = idEditPhoneButton)
 	private WebElement editPhoneButton;
 
+	public static final String idErrorAlertHeader = "alertTitle";
+	@FindBy(id = idErrorAlertHeader)
+	private WebElement errorAlertHeader;
+
+	public static final String idErrorAlertMessage = "message";
+	@FindBy(id = idErrorAlertMessage)
+	private WebElement errorAlertMessage;
+
 	public PhoneNumberVerificationPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -74,4 +82,11 @@ public class PhoneNumberVerificationPage extends AndroidPage {
 				By.id(idOkButton));
 	}
 
+	public String getErrorAlertHeader() {
+		return errorAlertHeader.getText();
+	}
+
+	public String getErrorAlertMessage() {
+		return errorAlertMessage.getText();
+	}
 }
