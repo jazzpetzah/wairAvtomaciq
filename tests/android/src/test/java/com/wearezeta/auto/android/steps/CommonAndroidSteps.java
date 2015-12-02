@@ -262,13 +262,13 @@ public class CommonAndroidSteps {
      * Takes 1st screenshot for comparison, previous taken screenshots will be cleaned
      *
      * @throws Exception
-     * @step. ^I take 1st screenshot$
+     * @step. ^I take( 1st)? screenshot$
      */
-    @When("^I take 1st screenshot$")
-    public void WhenITake1stScreenshot() throws Exception {
+    @When("^I take( 1st)? screenshot$")
+    public void WhenITake1stScreenshot(String first) throws Exception {
         final Optional<BufferedImage> screenshot = pagesCollection.getCommonPage().takeScreenshot();
         if (screenshot.isPresent()) {
-            images.clear();
+            if (first != null || (images.size() >= 2 && first == null)) images.clear();
             images.add(screenshot.get());
         } else {
             throw new RuntimeException("Selenium has failed to take the screenshot from current page");
