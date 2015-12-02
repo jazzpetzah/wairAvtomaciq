@@ -4,7 +4,14 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
+
+import com.wearezeta.auto.common.log.ZetaLogger;
+
 public class InvitationMessage extends WireMessage {
+
+	public static final Logger log = ZetaLogger.getLog(InvitationMessage.class
+            .getSimpleName());
 
 	public InvitationMessage(String msg) throws Exception {
 		super(msg);
@@ -13,8 +20,8 @@ public class InvitationMessage extends WireMessage {
 	public String extractInvitationLink() throws Exception {
 		ArrayList<String> links = new ArrayList<String>();
 
-		String regex = "<a href=\"([^\"]*)\"[^>]*>ACCEPT</a>";
-		Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+		String regex = "(https://.*/i/[0-9a-zA-Z]+)";
+		Pattern p = Pattern.compile(regex);
 		Matcher urlMatcher = p.matcher(this.getContent());
 		while (urlMatcher.find()) {
 			links.add(urlMatcher.group(1));
