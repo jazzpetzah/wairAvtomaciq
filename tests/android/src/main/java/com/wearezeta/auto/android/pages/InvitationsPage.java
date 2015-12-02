@@ -49,11 +49,6 @@ public class InvitationsPage extends AndroidPage {
     @FindBy(xpath = xpathAlertOK)
     private WebElement alertOKButton;
 
-    @Override
-    protected ZetaAndroidDriver getDriver() throws Exception {
-        return (ZetaAndroidDriver) super.getDriver();
-    }
-
     public InvitationsPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -129,5 +124,10 @@ public class InvitationsPage extends AndroidPage {
 
     public void tapOnInvitePageCloseBtn() throws Exception {
         invitePageCloseBtn.click();
+    }
+
+    public boolean waitUntilUserNameIsInvisible(String name) throws Exception {
+        final By locator = By.xpath(xpathUserToInviteByName.apply(name));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 }

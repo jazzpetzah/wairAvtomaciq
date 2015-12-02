@@ -1,11 +1,14 @@
 package com.wearezeta.auto.android_tablet.steps;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 
 import com.wearezeta.auto.android.common.logging.LoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionFailedLoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionPassedLoggingProfile;
+import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import gherkin.formatter.model.Result;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -771,6 +774,49 @@ public class CommonAndroidTabletSteps {
         } else {
             Assert.assertFalse("Wire is currently still in foreground",
                     AndroidCommonUtils.isAppInForeground(packageId));
+        }
+    }
+
+    /**
+     * Delete all existing contacts from Address Book.
+     * !Be careful to when executing this test on non-testing devices!
+     *
+     * @throws Exception
+     * @step. ^I delete all contacts from Address Book$
+     */
+    @Given("^I delete all contacts from Address Book$")
+    public void IDeleteAllContacts() throws Exception {
+        AndroidCommonUtils.clearAllContacts();
+    }
+
+    /**
+     * Add a new contact into address book
+     *
+     * @param alias         user alias
+     * @param whatToExclude comma-separated list of user properties to exclude from being added to AB.
+     *                      Can be email|phone
+     * @throws Exception
+     * @step. ^I add (.*) into Address Book(?:\s+excluding\s+|\s*)(.*)
+     */
+    @Given("^I add (.*) into Address Book(?:\\s+excluding\\s+|\\s*)(.*)")
+    public void IImportUserIntoAddressBook(String alias, String whatToExclude) throws Exception {
+        List<String> excludesList = new ArrayList<>();
+        if (whatToExclude != null) {
+            excludesList = CommonSteps.splitAliases(whatToExclude.trim());
+        }
+        final String name = usrMgr.findUserByNameOrNameAlias(alias).getName();
+        final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
+        final PhoneNumber phoneNumber = usrMgr.findUserByNameOrNameAlias(alias).getPhoneNumber();
+        if (excludesList.isEmpty()) {
+            AndroidCommonUtils.insertContact(name, email, phoneNumber);
+        } else if (excludesList.contains("email") && excludesList.contains("phone")) {
+            AndroidCommonUtils.insertContact(name);
+        } else if (excludesList.contains("email")) {
+            AndroidCommonUtils.insertContact(name, email);
+        } else if (excludesList.contains("phone")) {
+            AndroidCommonUtils.insertContact(name, phoneNumber);
+        } else {
+            throw new IllegalArgumentException(String.format("Cannot parse what to exclude from '%s'", whatToExclude));
         }
     }
 }

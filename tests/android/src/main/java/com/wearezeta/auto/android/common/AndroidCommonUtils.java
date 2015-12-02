@@ -548,6 +548,11 @@ public class AndroidCommonUtils extends CommonUtils {
         }
     }
 
+    public static void insertContact(String name) throws Exception {
+        final List<Integer> ids = insertContactAndGetIds();
+        bindContactNameById(ids, name);
+    }
+
     public static void insertContact(String name, String email,
                                      PhoneNumber phoneNumber) throws Exception {
         final List<Integer> ids = insertContactAndGetIds();
