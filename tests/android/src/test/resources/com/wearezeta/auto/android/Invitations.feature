@@ -122,7 +122,7 @@ Feature: Invitations
       | Name      |
       | user1Name |
 
-  @id4172 @staging
+  @id4172 @regression @rc
   Scenario Outline: (AN-3118) Sending invite to user which already on Wire create pending connection request
     Given I delete all contacts from Address Book
     Given There are 2 users where <Name> is me
