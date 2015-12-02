@@ -28,7 +28,7 @@ public class SelfProfilePage extends
 
 	public boolean isSettingsButtonVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.xpath(WebAppLocators.SelfProfilePage.xpathGearButton));
+				By.xpath(WebAppLocators.SelfProfilePage.cssGearButton));
 	}
 
 	public boolean isCameraButtonClickable() throws Exception {
