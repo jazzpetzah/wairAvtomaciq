@@ -263,7 +263,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @id4091 @staging
+  @id4091 @regression
   Scenario Outline: Verify that options menu from list is the same as opened from the participants view
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -308,7 +308,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2 | GroupChatName |
       | user1Name | user2Name | user3Name| NoLeaveBox    |
 
-  @id4092 @staging
+  @id4092 @regression
   Scenario Outline: I can open options menu by tap on three dots button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
