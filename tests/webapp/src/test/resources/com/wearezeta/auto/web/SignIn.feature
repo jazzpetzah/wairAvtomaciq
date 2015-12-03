@@ -30,7 +30,7 @@ Feature: Sign In
 
     Examples: 
       | Email      | Password      | Error                                      |
-      | user1Email | wrongPassword | Wrong email or password. Please try again. |
+      | user1Email | wrongPassword | Please verify your details and try again.  |
 
   @smoke @id4014
   Scenario Outline: Verify sign in button is disabled in case of empty credentials
