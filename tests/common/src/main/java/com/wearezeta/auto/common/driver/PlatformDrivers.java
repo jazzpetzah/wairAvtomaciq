@@ -105,7 +105,7 @@ public final class PlatformDrivers {
                 .getDriverTimeoutFromConfig(PlatformDrivers.class)));
     }
 
-    private static final long DRIVER_CANCELLATION_TIMEOUT = 10000; // milliseconds
+    private static final long DRIVER_CANCELLATION_TIMEOUT = 30000; // milliseconds
 
     public synchronized void quitDriver(Platform platform) throws Exception {
         try {
@@ -117,13 +117,12 @@ public final class PlatformDrivers {
                         "Successfully quit driver instance for platform '%s'",
                         platform.name()));
             } else if (!futureDriver.isCancelled() && !futureDriver.isDone()) {
-                futureDriver.cancel(true);
                 try {
-                    // To let the driver to quit if necessary
                     futureDriver.get(DRIVER_CANCELLATION_TIMEOUT, TimeUnit.MILLISECONDS);
-                } catch (CancellationException e) {
-                    // ignore silently
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+                futureDriver.cancel(true);
                 log.warn(String.format("Canceled driver creation for platform '%s'", platform.getName()));
             }
         } finally {
@@ -156,13 +155,7 @@ public final class PlatformDrivers {
                             futureDriver.get().quit();
                         } else if (!futureDriver.isCancelled() && !futureDriver.isDone()) {
                             futureDriver.cancel(true);
-                            try {
-                                // To let the driver to quit if necessary
-                                futureDriver.get(DRIVER_CANCELLATION_TIMEOUT, TimeUnit.MILLISECONDS);
-                            } catch (CancellationException e) {
-                                // ignore silently
-                            }
-                            log.warn(String.format("Canceled driver creation for the current platform"));
+                            log.warn("Canceled driver creation for the current platform");
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
