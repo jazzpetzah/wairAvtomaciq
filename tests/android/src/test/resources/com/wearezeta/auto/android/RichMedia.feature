@@ -47,8 +47,8 @@ Feature: Rich Media
     Then I verify the state of PlayPause media item button is changed
 
     Examples:
-      | Name      | Contact1  | SoudCloudLink                                              |
-      | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
+      | Name      | Contact1  | SoudCloudLink                                               |
+      | user1Name | user2Name | https://soundcloud.com/binary_for_breakfast/star-wars-theme |
       
   @id1510 @regression @rc
   Scenario Outline: Verify conversation list play/pause controls can change playing SoundCloud media state
@@ -67,8 +67,8 @@ Feature: Rich Media
     Then I see PlayPause media content button for conversation <Contact1>
 
     Examples:
-      | Name      | Contact1  | SoudCloudLink                                              |
-      | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
+      | Name      | Contact1  | SoudCloudLink                                               |
+      | user1Name | user2Name | https://soundcloud.com/binary_for_breakfast/star-wars-theme |
       
   @id1505 @regression
   Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation (SoundCloud)
@@ -93,8 +93,8 @@ Feature: Rich Media
     Then I see the state of PlayPause button next to the <Contact1> conversation is changed
 
     Examples:
-      | Name      | Contact1  | Contact2  | SoundCloudLink                                             |
-      | user1Name | user2Name | user3Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
+      | Name      | Contact1  | Contact2  | SoundCloudLink                                              |
+      | user1Name | user2Name | user3Name | https://soundcloud.com/binary_for_breakfast/star-wars-theme |
       
   @id170 @regression @rc @rc42
   Scenario Outline: Verify you can send youtube link
