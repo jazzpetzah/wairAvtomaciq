@@ -20,7 +20,7 @@ Feature: Calling
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
 
-  @id2910 @calling_basic @rc
+  @id2910 @calling_basic @rc @rc44
   Scenario Outline: Calling bar buttons are clickable and change its state (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -45,7 +45,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName | AcceptBtnName | DismissBtnName |
       | user1Name | user2Name | autocall    | Speaker        | Mute        | Accept        | Dismiss        |
 
-  @id4009 @regression @rc
+  @id4009 @regression @rc @rc44
   Scenario Outline: I can join group call in foreground (landscape)
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
@@ -74,7 +74,7 @@ Feature: Calling
       | CallBackend | CallBackend2 | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    | AcceptBtnName |
       | chrome      | autocall     | user1Name | user2Name | user3Name | user4Name | user5Name | ChatForGroupCall | Accept        |
 
-  @id3123 @calling_basic @rc
+  @id3123 @calling_basic @rc @rc44
   Scenario Outline: Calling bar buttons are clickable and change its state (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

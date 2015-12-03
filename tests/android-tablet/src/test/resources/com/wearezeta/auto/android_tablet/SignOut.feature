@@ -20,7 +20,7 @@ Feature: Sign Out
       | Name      |
       | user1Name |
 
-  @id2251 @regression @rc
+  @id2251 @regression @rc @rc44
   Scenario Outline: Sign out from Wire in landscape mode
     Given There is 1 user where <Name> is me
     Given I see welcome screen

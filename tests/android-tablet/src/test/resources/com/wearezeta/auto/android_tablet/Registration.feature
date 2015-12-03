@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @id2286 @regression @rc
+  @id2286 @regression @rc @rc44
   Scenario Outline: Register new user using front camera in landscape mode
     Given I see welcome screen
     Given I rotate UI to landscape

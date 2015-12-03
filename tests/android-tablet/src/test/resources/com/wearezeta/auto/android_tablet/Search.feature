@@ -145,7 +145,7 @@ Feature: Search
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @id3882 @regression @rc
+  @id3882 @regression @rc @rc44
   Scenario Outline: Verify opening conversation with action button (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

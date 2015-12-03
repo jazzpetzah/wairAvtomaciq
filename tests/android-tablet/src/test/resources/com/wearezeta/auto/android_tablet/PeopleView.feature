@@ -19,7 +19,7 @@ Feature: People View
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @id2247 @regression @rc
+  @id2247 @regression @rc @rc44
   Scenario Outline: Check contact personal info in landscape mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -62,7 +62,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName  | ItemLeave |
       | user1Name | user2Name | user3Name | LeaveGroupChat | LEAVE     |
 
-  @id2243 @regression @rc
+  @id2243 @regression @rc @rc44
   Scenario Outline: Leave group conversation in landscape mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -159,7 +159,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id2283 @regression @rc
+  @id2283 @regression @rc @rc44
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People in landscape mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
