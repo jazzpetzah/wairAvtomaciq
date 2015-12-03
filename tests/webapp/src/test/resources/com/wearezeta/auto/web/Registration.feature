@@ -167,7 +167,7 @@ Feature: Registration
     And I enter user password "<Password>" on Registration page
     And I submit registration form
     Then I verify that the email field on the registration form is marked as error
-    And I see error "Not a valid email address." on Verification page
+    And I see error "Please enter a valid email address." on Verification page
 
     Examples: 
       | Email        | Password      | Name      |
