@@ -101,7 +101,7 @@ Feature: Calling_Matrix
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
-    Given <Contact1>,<Contact2> starts waiting instance using <Backend>
+    Given <Contact1> starts waiting instance using <Backend>
     Given <Contact1> accept next incoming call automatically
     Given <Contact1> verify that waiting instance status is changed to waiting in <Timeout> seconds
     Given I switch to Sign In page
