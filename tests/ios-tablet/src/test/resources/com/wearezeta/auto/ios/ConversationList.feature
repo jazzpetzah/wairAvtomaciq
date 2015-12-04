@@ -867,11 +867,11 @@ Feature: Conversation List
     Given There are <Number> users where <Name> is me
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
-    And I see Invite more people button in contact list
+    And I see Invite more people button
     And Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>
-    And I see Invite more people button in contact list
+    And I see Invite more people button
     And Myself is connected to <Contact7>
-    Then I DONT see Invite more people button in contact list
+    Then I DONT see Invite more people button
 
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Number |
@@ -883,11 +883,11 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
-    And I see Invite more people button in contact list
+    And I see Invite more people button
     And Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>
-    And I see Invite more people button in contact list
+    And I see Invite more people button
     And Myself is connected to <Contact7>
-    Then I DONT see Invite more people button in contact list
+    Then I DONT see Invite more people button
 
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Number |
