@@ -384,7 +384,7 @@ public class ContactListPage extends AndroidPage {
         assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
                 .format("Conversation menu item '%s' could not be found on the current screen",
                         itemName);
-        getDriver().findElement(locator).click();
+        DriverUtils.tapOutsideOfTheElement(getDriver(), getDriver().findElement(locator), 0, -5, false);
     }
 
     public boolean waitUntilMissedCallNotificationVisible(String convoName)

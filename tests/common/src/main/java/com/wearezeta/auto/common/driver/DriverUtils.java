@@ -683,6 +683,29 @@ public class DriverUtils {
         driver.tap(1, x, y, SINGLE_TAP_DURATION);
     }
 
+    /**
+     * Taps outside of the element with the offset given in px or in % of screen size
+     */
+    public static void tapOutsideOfTheElement(
+            AppiumDriver<? extends WebElement> driver, WebElement element,
+            int xOffset, int yOffset, boolean usePxOffset) {
+        if (!usePxOffset) {
+            final Point coords = element.getLocation();
+            final Dimension screenSize = driver.manage().window().getSize();
+            final Dimension elementSize = element.getSize();
+            int dstX = 0;
+            int dstY = 0;
+            dstX = coords.getX() + elementSize.getWidth()/2 + screenSize.getWidth() * xOffset / 100;
+            dstY = coords.getY() + elementSize.getHeight()/2 + screenSize.getHeight() * yOffset / 100;
+            dstX = (dstX > screenSize.getWidth()) ? screenSize.getWidth() : dstX;
+            dstY = (dstX > screenSize.getHeight()) ? screenSize.getHeight() : dstY;
+            dstX = (dstX < 0) ? 0 : dstX;
+            dstY = (dstY < 0) ? 0 : dstY;
+            log.info("Tap on " + dstX + ":" + dstY);
+            driver.tap(1, dstX, dstY, SINGLE_TAP_DURATION);
+        } else tapOutsideOfTheElement(driver, element, xOffset, yOffset);
+    }
+    
     public static void tapOutsideOfTheElement(
             AppiumDriver<? extends WebElement> driver, WebElement element,
             int xOffset, int yOffset) {
