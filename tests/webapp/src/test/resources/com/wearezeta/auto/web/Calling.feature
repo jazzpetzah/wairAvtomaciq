@@ -235,7 +235,7 @@ Feature: Calling
     Then I do not see the calling bar
     When I call
     Then I see another call warning modal
-    When I click on "Continue" button in another call warning modal
+    When I click on "Hang Up" button in another call warning modal
     Then I do not see another call warning modal
     Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then I see the calling bar from user <Contact2>
@@ -312,7 +312,7 @@ Feature: Calling
     Then I do not see the calling bar
     When I call
     Then I see another call warning modal
-    Then I click on "Continue" button in another call warning modal
+    Then I click on "Hang Up" button in another call warning modal
     Then I do not see another call warning modal
     Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then I see the calling bar from user <Contact2>

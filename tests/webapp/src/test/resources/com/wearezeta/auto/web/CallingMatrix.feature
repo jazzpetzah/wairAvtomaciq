@@ -110,6 +110,7 @@ Feature: Calling_Matrix
     When I open conversation with <ChatName1>
     And <Contact2> calls <ChatName1> using <Backend>
     Then <Contact1> verify that waiting instance status is changed to active in <Timeout> seconds
+    Then <Contact2> verify that call status to <ChatName1> is changed to active in <Timeout> seconds
     When I accept the incoming call
     And I see the calling bar from users <Contact1>,<Contact2>
     And I wait for 10 seconds
@@ -140,6 +141,9 @@ Feature: Calling_Matrix
     Then <Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verify that call status to <ChatName1> is changed to active in <Timeout> seconds
     And I see the calling bar from users <Contact1>,<Contact2>
+    And I wait for 10 seconds
+    And <Contact2> verify to have 2 flows
+    And <Contact2> verify that all flows have greater than 0 bytes
     And I end the call
 
     Examples: 
