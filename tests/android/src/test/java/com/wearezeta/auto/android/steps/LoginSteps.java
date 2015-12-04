@@ -54,15 +54,8 @@ public class LoginSteps {
     public void ISignInUsingMyEmail() throws Exception {
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
         assert getWelcomePage().waitForInitialScreen() : "The initial screen was not shown";
-        getWelcomePage().tapIHaveAnAccount();
-        try {
-            getEmailSignInPage().setLogin(self.getEmail());
-        } catch (NoSuchElementException e) {
-            // FIXME: try again because sometimes tapping "I have account"
-            // button fails without any reason
-            getWelcomePage().tapIHaveAnAccount();
-            getEmailSignInPage().setLogin(self.getEmail());
-        }
+        getWelcomePage().tapSignInTab();
+        getEmailSignInPage().setLogin(self.getEmail());
         getEmailSignInPage().setPassword(self.getPassword());
         getEmailSignInPage().logIn(true, DEFAULT_LOGIN_SCREEN_TIMEOUT_SECONDS);
     }

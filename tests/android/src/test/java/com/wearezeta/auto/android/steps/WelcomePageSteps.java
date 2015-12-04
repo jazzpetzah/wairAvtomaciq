@@ -64,7 +64,7 @@ public class WelcomePageSteps {
 	 */
 	@When("^I switch to email sign in screen$")
 	public void ISwitchToEmailSignIn() throws Exception {
-		getWelcomePage().tapIHaveAnAccount();
+		getWelcomePage().tapSignInTab();
 	}
 
 	/**
