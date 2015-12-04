@@ -18,9 +18,8 @@ public class InvitationMessage extends WireMessage {
 	}
 
 	public String extractInvitationLink() throws Exception {
-		ArrayList<String> links = new ArrayList<String>();
-
-		String regex = "(https://.*/i/[0-9a-zA-Z]+)";
+		ArrayList<String> links = new ArrayList<>();
+		String regex = "https://.*/i/([^\"<\\s]+)";
 		Pattern p = Pattern.compile(regex);
 		Matcher urlMatcher = p.matcher(this.getContent());
 		while (urlMatcher.find()) {
