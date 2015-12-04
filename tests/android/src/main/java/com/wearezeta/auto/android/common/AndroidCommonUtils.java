@@ -494,7 +494,7 @@ public class AndroidCommonUtils extends CommonUtils {
         final List<Integer> result = new ArrayList<>();
         final Map<String, String> accountTypes = new HashMap<>();
         accountTypes.put("vnd.sec.contact.phone", "vnd.sec.contact.phone");
-        accountTypes.put("com.google", MessagingUtils.getAccountName());
+        // accountTypes.put("com.google", MessagingUtils.getAccountName());
         for (Map.Entry<String, String> accountInfo : accountTypes.entrySet()) {
             executeAdb(String.format("shell content insert "
                     + "--uri content://com.android.contacts/raw_contacts "
@@ -577,7 +577,7 @@ public class AndroidCommonUtils extends CommonUtils {
 
     public static void broadcastInvitationCode(String code) throws Exception {
         executeAdb(String.format("shell am broadcast -a com.android.vending.INSTALL_REFERRER " +
-                "-n \"%s/com.waz.zclient.broadcast.ReferralBroadcastReceiver\" "+
+                "-n \"%s/com.waz.zclient.broadcast.ReferralBroadcastReceiver\" " +
                 "--es referrer \"invite-%s\"", getAndroidPackageFromConfig(AndroidCommonUtils.class), code));
     }
 }
