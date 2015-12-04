@@ -284,6 +284,8 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <Contact2> starts waiting instance using chrome
+    Given <Contact2> accepts next incoming call automatically
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
@@ -291,12 +293,10 @@ Feature: Calling
     Then I see call overlay
     When I click the ignore call button
     Then I see "JOIN CALL" button
-    And I wait for 45 seconds
+    And I wait for 30 seconds
     When I press join group call button
     Then I do not see "JOIN CALL" button
     And I see calling overlay Big bar
-    And <Contact1> stops all calls to <GroupChatName>
-    Then I do not see join group call overlay
 
     Examples:
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
