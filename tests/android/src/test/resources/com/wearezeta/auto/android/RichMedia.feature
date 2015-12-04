@@ -35,7 +35,7 @@ Feature: Rich Media
     And Contact <Contact1> send 18 messages to user Myself
     And I scroll to the bottom of conversation view
     And I tap on text input
-    And I type the message "<SoudCloudLink>" and send it
+    And I type the message "<SoundCloudLink>" and send it
     And Contact <Contact1> send message to user Myself
     And I scroll to the bottom of conversation view
     And I press PlayPause media item button
@@ -47,7 +47,7 @@ Feature: Rich Media
     Then I verify the state of PlayPause media item button is changed
 
     Examples:
-      | Name      | Contact1  | SoudCloudLink                                               |
+      | Name      | Contact1  | SoundCloudLink                                              |
       | user1Name | user2Name | https://soundcloud.com/binary_for_breakfast/star-wars-theme |
       
   @id1510 @regression @rc
