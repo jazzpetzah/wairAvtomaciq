@@ -81,7 +81,7 @@ Feature: Invitations
       | Name      | Contact1  |
       | user1Name | user2Name |
       
-  @id4159 @staging
+  @id4159 @regression
   Scenario Outline: Verify that keyboard is closed when I close invites page
     Given There are 1 user where <Name> is me
     Given I sign in using my email or phone number

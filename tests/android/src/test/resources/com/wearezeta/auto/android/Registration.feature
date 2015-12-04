@@ -11,10 +11,10 @@ Feature: Registration
     And I see Contact list with no contacts
 
     Examples:
-      | AreaCode    | Name      |
-      | QA-Shortcut | user1Name |
+      | Name      |
+      | user1Name |
 
-  @id4094 @staging @noAcceptAlert
+  @id4094 @regression @noAcceptAlert
   Scenario Outline: Wrong phone activation code is followed by correct error message
     Given I see welcome screen
     When I input a new phone number for user <Name>
