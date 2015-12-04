@@ -558,7 +558,7 @@ Feature: Connect
       | user1Name | user2Name |
 
   @id2846 @regression @rc
-  Scenario Outline: I can receive new connection request when app in background
+  Scenario Outline: (AN-3136) I can receive new connection request when app in background
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
     Given I sign in using my email
@@ -568,6 +568,8 @@ Feature: Connect
     And I restore the application
     Then I see the conversation <WaitingMsg> in my conversations list
     When I tap the conversation <WaitingMsg>
+    And I wait for 5 seconds
+    And I tap the conversation <WaitingMsg>
     Then I see the Incoming connections page
     And I see email <ContactEmail> on Incoming connections page
     And I see name <Contact> on Incoming connections page
