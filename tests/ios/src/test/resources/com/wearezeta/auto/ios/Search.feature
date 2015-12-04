@@ -471,3 +471,33 @@ Feature: Search
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @staging @id4118
+  Scenario Outline: Verify action buttons appear after choosing user from search results
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see Invite more people button
+    And I tap on 1st top connection contact
+    And I DONT see Invite more people button
+    And I see action buttons appeared on People picker page
+    And I tap on 1st top connection contact
+    And I see action buttons disappeared on People picker page
+    And I see Invite more people button
+    And I input in People picker search field user name <Contact>
+    And I see user <Contact> found on People picker page
+    And I tap on connected user <Contact> on People picker page
+    And I DONT see Invite more people button
+    And I see action buttons appeared on People picker page
+    And I press backspace button
+    And I press backspace button
+    And I see action buttons disappeared on People picker page
+    Then I see Invite more people button
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |

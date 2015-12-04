@@ -798,28 +798,28 @@ public class ContactListPageSteps {
 	/**
 	 * Verify if Invite more people button is shown in contact list
 	 * 
-	 * @step. ^I see Invite more people button in contact list$
+	 * @step. ^I see Invite more people button$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I see Invite more people button in contact list$")
-	public void ISeeInviteMorePeopleButtonInContactList() throws Exception {
+	@When("^I see Invite more people button$")
+	public void ISeeInviteMorePeopleButton() throws Exception {
 		Assert.assertTrue(
-				"Invite more people button is not shown in contact list",
+				"Invite more people button is not shown",
 				getContactListPage().isInviteMorePeopleButtonVisible());
 	}
 
 	/**
 	 * Verify if Invite more people button is NOT shown in contact list
 	 * 
-	 * @step. ^I DONT see Invite more people button in contact list$
+	 * @step. ^I DONT see Invite more people button$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I DONT see Invite more people button in contact list$")
-	public void IDontSeeInviteMorePeopleButtonInContactList() throws Exception {
+	@When("^I DONT see Invite more people button$")
+	public void IDontSeeInviteMorePeopleButton() throws Exception {
 		Assert.assertTrue(
-				"Invite more people button is shown in contact list",
+				"Invite more people button is shown",
 				getContactListPage().isInviteMorePeopleButtonNotVisible());
 	}
 
