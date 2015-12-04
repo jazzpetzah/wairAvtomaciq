@@ -47,7 +47,7 @@ Feature: Connect
       | user1Name | user2Name |
 
   @id2245 @regression @rc @rc44
-  Scenario Outline: (AN-3136) Accept connection request in landscape mode
+  Scenario Outline: Accept connection request in landscape mode
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
     Given I rotate UI to landscape
@@ -55,8 +55,6 @@ Feature: Connect
     Given I see the Conversations list with conversation
     And I see the conversation <WaitingMess> in my conversations list
     When I tap the conversation <WaitingMess>
-    And I wait for 5 seconds
-    And I tap the conversation <WaitingMess>
     And I see the Incoming connections page
     And I accept incoming connection request from <Contact> on Incoming connections page
     Then I see the conversation <Contact> in my conversations list
@@ -67,7 +65,7 @@ Feature: Connect
       | user1Name | user2Name | 1 person waiting |
 
   @id2259 @regression @rc @rc44
-  Scenario Outline: (AN-2735 AN-2735) Accept connection request in portrait mode
+  Scenario Outline: (AN-2735) Accept connection request in portrait mode
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
     Given I rotate UI to portrait
@@ -75,8 +73,6 @@ Feature: Connect
     Given I see the Conversations list with conversation
     And I see the conversation <WaitingMess> in my conversations list
     When I tap the conversation <WaitingMess>
-    And I wait for 5 seconds
-    And I tap the conversation <WaitingMess>
     And I see the Incoming connections page
     And I accept incoming connection request from <Contact> on Incoming connections page
     Then I see the conversation view
@@ -562,7 +558,7 @@ Feature: Connect
       | user1Name | user2Name |
 
   @id2846 @regression @rc
-  Scenario Outline: (AN-3136) I can receive new connection request when app in background
+  Scenario Outline: I can receive new connection request when app in background
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
     Given I sign in using my email
@@ -572,8 +568,6 @@ Feature: Connect
     And I restore the application
     Then I see the conversation <WaitingMsg> in my conversations list
     When I tap the conversation <WaitingMsg>
-    And I wait for 5 seconds
-    And I tap the conversation <WaitingMsg>
     Then I see the Incoming connections page
     And I see email <ContactEmail> on Incoming connections page
     And I see name <Contact> on Incoming connections page
