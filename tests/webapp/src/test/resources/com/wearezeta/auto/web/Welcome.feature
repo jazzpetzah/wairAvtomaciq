@@ -27,5 +27,5 @@ Feature: Welcome
     And I see Contacts Upload dialog
 
     Examples: 
-      | Email      | OldPassword   | Name      | NewPassword | LoginErr                                   |
-      | user1Email | user1Password | user1Name | aqa654321#  | Wrong email or password. Please try again. |
+      | Email      | OldPassword   | Name      | NewPassword | LoginErr                                  |
+      | user1Email | user1Password | user1Name | aqa654321#  | Please verify your details and try again. |

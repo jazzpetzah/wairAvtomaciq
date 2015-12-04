@@ -123,8 +123,8 @@ Feature: Sign In
     Then I verify that an envelope icon is shown
 
     Examples: 
-      | Name      | EmailOfOtherUser      | PasswordOfOtherUser | ErrorAlready                | InvalidEmail | ErrorInvalidEmail          | InvalidPassword | ErrorInvalidPassword                      |
-      | user1Name | qa1+qa1@wearezeta.com | aqa123456!          | Email address already taken | @example.com | Not a valid email address. | 123             | Your password needs at least 8 characters |
+      | Name      | EmailOfOtherUser      | PasswordOfOtherUser | ErrorAlready                | InvalidEmail | ErrorInvalidEmail                   | InvalidPassword | ErrorInvalidPassword                      |
+      | user1Name | qa1+qa1@wearezeta.com | aqa123456!          | Email address already taken | @example.com | Please enter a valid email address. | 123             | Your password needs at least 8 characters |
 
   @regression @id2227
   Scenario Outline: Show invitation button when Gmail import on registration has no suggestions
