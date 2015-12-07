@@ -7,7 +7,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
@@ -30,12 +29,11 @@ public class TabletWelcomePage extends AndroidTabletPage {
 
     public boolean waitForInitialScreen() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(WelcomePage.xpathSignInTab), 15);
+                By.id(TabletWelcomePage.idHaveAccountButton), 30);
     }
 
     public void tapSignInButton() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idHaveAccountButton), 30) : "SIGN IN button is not visible after timeout";
+        assert waitForInitialScreen() : "SIGN IN button is not visible after timeout";
         assert DriverUtils.waitUntilElementClickable(getDriver(),
                 haveAccountButton) : "SIGN IN button is not clickable after timeout";
         haveAccountButton.click();
