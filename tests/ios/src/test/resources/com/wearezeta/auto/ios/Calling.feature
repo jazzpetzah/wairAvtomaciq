@@ -461,13 +461,17 @@ Feature: Calling
     When <Contact2> calls <GroupChatName> using <CallBackend2>
     And I see incoming group calling message
     And I accept incoming call
+    And I wait for 3 seconds
+    And I tap on contact I am in a call with <GroupChatName>
     Then I see mute call, end call and speakers buttons
     Then I see <NumberOfAvatars> avatars in the group call bar
     When <Contact5> calls me using <CallBackend2>
     And I see incoming calling message for contact <Contact5>
     And I accept incoming call
     And I see Accept second call alert
-    And I press End Call button on alert
+    And I press Accept button on alert
+    And I swipe right on Dialog page
+    And I tap on contact I am in a call with <Contact5>
     Then I see mute call, end call and speakers buttons
     Then I see <NumberOf1on1CallAvatars> avatars in the group call bar
 
@@ -534,6 +538,7 @@ Feature: Calling
     And I see dialog page
     And I swipe the text input cursor
     And I press call button
+    And I wait for 10 seconds
     And I see mute call, end call and speakers buttons
     And I wait for 3 seconds
     And I see <NumberOfAvatars> avatars in the group call bar
