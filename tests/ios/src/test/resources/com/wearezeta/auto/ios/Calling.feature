@@ -124,7 +124,7 @@ Feature: Calling
       | Name      | Contact   | Contact1  | Number | Color           | CallBackend |
       | user1Name | user2Name | user3Name | 2      | StrongLimeGreen | autocall    |
 
-  @calling_basic @id882 @torun
+  @calling_basic @id882
   Scenario Outline: In zeta call for more than 15 mins
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -168,14 +168,14 @@ Feature: Calling
     And I swipe the text input cursor
     And I press call button
     And I see mute call, end call and speakers buttons
-    #And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then I lock screen for 5 seconds
     And I see mute call, end call and speakers buttons
     And I end started call
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | firefox     | 120     |
+      | user1Name | user2Name | firefox     | 60      |
 
   @staging @id2645
   Scenario Outline: 3rd person tries to call me after I initate a call to somebody
@@ -339,14 +339,18 @@ Feature: Calling
     And I see Contact list with my name <Name>
     When <Contact1> calls me using <CallBackend2>
     And I accept incoming call
+    And I wait for 5 seconds
+    And I tap on contact I am in a call with <Contact1>
     Then I see mute call, end call and speakers buttons
     When <Contact2> calls <GroupChatName> using <CallBackend2>
     And I see incoming group calling message
     And I accept incoming call
     And I see Accept second call alert
-    And I press End Call button on alert
-    Then I see mute call, end call and speakers buttons
+    And I press Accept button on alert
+    And I swipe right on Dialog page
+    And I tap on contact I am in a call with <GroupChatName>
     Then I see <NumberOfAvatars> avatars in the group call bar
+    Then I see mute call, end call and speakers buttons
 
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars |
