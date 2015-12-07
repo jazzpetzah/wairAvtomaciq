@@ -496,7 +496,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id2132
+  @staging @id2132
   Scenario Outline: Verify displaying chathead when another conversation is opened
     Given There are 3 users where <Name> is me
     Given User <Contact2> change avatar picture to <Picture>
