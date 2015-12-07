@@ -1,6 +1,6 @@
 Feature: Invitations
 
-  @id4177 @staging
+  @id4177 @regression
   Scenario Outline: Verify impossibility of sending invite to the person with a wrong email or phone (landscape)
     Given I delete all contacts from Address Book
     Given There is 1 user where <Name> is me
