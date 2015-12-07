@@ -270,6 +270,8 @@ public class CommonAndroidSteps {
         if (screenshot.isPresent()) {
             if (first != null || (images.size() >= 2 && first == null)) images.clear();
             images.add(screenshot.get());
+//            File outputfile = new File("/Project/screen_"+System.nanoTime()+".png");
+//            ImageIO.write(screenshot.get(), "png", outputfile);
         } else {
             throw new RuntimeException("Selenium has failed to take the screenshot from current page");
         }
