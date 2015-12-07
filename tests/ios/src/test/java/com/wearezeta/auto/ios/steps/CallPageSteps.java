@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -284,6 +285,24 @@ public class CallPageSteps {
 	@Then("^I see group call is Full message$")
 	public void ISeeGroupCallIsFullMessage() throws Throwable {
 		Assert.assertTrue(getIncomingCallPage().isGroupCallFullMessageShown());
+	}
+
+	/**
+	 * Taps the person in list you have a call right now
+	 *
+	 * @param name in list your in call with and want to tap
+	 * @throws Throwable
+	 * @step. ^I tap on contact I am in a call with (.*)$
+	 */
+	@When("^I tap on contact I am in a call with (.*)$")
+	public void ITapOnContactIamInACallWith(String name) throws Throwable {
+		try {
+			name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		getIncomingCallPage().tapOnNameInCallWith(name);
+
 	}
 
 }

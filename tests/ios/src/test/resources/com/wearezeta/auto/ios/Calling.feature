@@ -79,6 +79,7 @@ Feature: Calling
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
+    And I tap on contact I am in a call with <Contact>
     Then I see mute call, end call and speakers buttons
     And I see started call message for contact <Contact>
 
