@@ -605,7 +605,7 @@ public final class IOSLocators {
 
 		public static final String nameSecondCallAlert = "Answer call?";
 
-		public static final String nameEndCallAlertButton = "End Call";
+		public static final String nameAnswerCallAlertButton = "Answer";
 
 		public static final String xpathGroupCallAvatars = "//UIAWindow[@name='ZClientNotificationWindow']//UIACollectionCell";
 

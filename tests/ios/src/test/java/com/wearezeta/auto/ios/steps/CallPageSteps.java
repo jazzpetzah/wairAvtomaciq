@@ -228,12 +228,12 @@ public class CallPageSteps {
 	}
 
 	/**
-	 * Presses the end call button on the second incoming call alert
+	 * Presses the accept button on the second incoming call alert
 	 * 
-	 * @step. ^I press End Call button on alert$
+	 * @step. ^I press Accept button on alert$
 	 * @throws Throwable
 	 */
-	@When("^I press End Call button on alert$")
+	@When("^I press Accept button on alert$")
 	public void IPressEndCallButtonOnAlert() throws Throwable {
 		getIncomingCallPage().pressEndCallAlertButton();
 	}
@@ -296,11 +296,12 @@ public class CallPageSteps {
 	 */
 	@When("^I tap on contact I am in a call with (.*)$")
 	public void ITapOnContactIamInACallWith(String name) throws Throwable {
-		try {
-			name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		} catch (NoSuchUserException e) {
+		//try {
+			//name = usrMgr.findUserByNameOrNameAlias(name).getName();
+			name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+		//} catch (NoSuchUserException e) {
 			// Ignore silently
-		}
+		//}
 		getIncomingCallPage().tapOnNameInCallWith(name);
 
 	}

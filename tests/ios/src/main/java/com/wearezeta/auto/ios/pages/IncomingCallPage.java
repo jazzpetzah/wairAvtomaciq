@@ -37,8 +37,8 @@ public class IncomingCallPage extends CallPage {
 	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameSecondCallAlert)
 	private WebElement secondCallAlert;
 
-	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameEndCallAlertButton)
-	private WebElement endCallAlertButton;
+	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameAnswerCallAlertButton)
+	private WebElement answerCallAlertButton;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.IncomingCallPage.xpathGroupCallAvatars)
 	private List<WebElement> numberOfGroupCallAvatars;
@@ -101,7 +101,7 @@ public class IncomingCallPage extends CallPage {
 	}
 
 	public void pressEndCallAlertButton() {
-		endCallAlertButton.click();
+		answerCallAlertButton.click();
 
 	}
 
