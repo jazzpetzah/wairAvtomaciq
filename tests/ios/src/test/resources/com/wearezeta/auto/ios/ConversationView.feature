@@ -187,9 +187,12 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I send long message
+    And I type the message and send it
     And I scroll to the beginning of the conversation
+    And I see plus button is not shown
     And I tap on text input
-    Then I see last message in the dialog
+    Then I see conversation is scrolled to the end
+    And I see message in the dialog
 
     Examples: 
       | Name      | Contact   |
