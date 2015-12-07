@@ -124,7 +124,7 @@ Feature: Calling
       | Name      | Contact   | Contact1  | Number | Color           | CallBackend |
       | user1Name | user2Name | user3Name | 2      | StrongLimeGreen | autocall    |
 
-  @calling_basic @id882
+  @calling_basic @id882 @torun
   Scenario Outline: In zeta call for more than 15 mins
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -153,7 +153,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | webdriver   | 960     |
+      | user1Name | user2Name | firefox     | 30      |
 
   @calling_basic @id2296
   Scenario Outline: Screenlock device when in the call
@@ -175,7 +175,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | webdriver   | 120     |
+      | user1Name | user2Name | firefox     | 120     |
 
   @staging @id2645
   Scenario Outline: 3rd person tries to call me after I initate a call to somebody
@@ -205,7 +205,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | user3Name | webdriver   | autocall     | 120     |
+      | user1Name | user2Name | user3Name | firefox     | autocall     | 120     |
 
   @calling_basic @id2646
   Scenario Outline: Put app into background after initiating call
@@ -226,7 +226,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | webdriver   | 120     |
+      | user1Name | user2Name | firefox     | 120     |
 
   @calling_basic @id933
   Scenario Outline: I want to accept a call through the incoming voice dialogue (Button)
@@ -245,7 +245,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | webdriver   | autocall     | 120     |
+      | user1Name | user2Name | firefox     | autocall     | 120     |
 
   @calling_basic @id913
   Scenario Outline: I want to end the call from the ongoing voice overlay
@@ -275,7 +275,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | webdriver   | autocall     | 30      |
+      | user1Name | user2Name | firefox     | autocall     | 30      |
 
   @regression @rc @IPv6 @id2682
   Scenario Outline: Verify accepting group call in foreground
@@ -303,7 +303,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName      | CallBackend | CallBackend2 |NumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | chrome      | autocall     | 5              |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | firefox     | autocall     | 5              |
 
   @regression @id2683
   Scenario Outline: Verify ignoring group call in foreground
@@ -325,7 +325,7 @@ Feature: Calling
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName     | CallBackend | CallBackend2 |
       | user1Name | user2Name | user3Name | IgnoringGROUPCALL | firefox     | autocall     |
-      | user1Name | user2Name | user3Name | IgnoringGROUPCALL | chrome      | autocall     |
+
 
   @regression @rc @id2686
   Scenario Outline: Verify receiving group call during 1-to-1 call (and accepting it)
@@ -512,7 +512,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | WaitGROUPCALL | chrome      | autocall     | 5               |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | WaitGROUPCALL | firefox     | autocall     | 5               |
 
   @regression @id2697
   Scenario Outline: Verify removing people from the conversation who joined the group call
@@ -544,7 +544,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | CallBackend2 | NumberOfAvatars | NewNumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | RemoveGROUPCALL | chrome      | autocall     | 5               | 4                  |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | RemoveGROUPCALL | firefox     | autocall     | 5               | 4                  |
 
   @regression @id2673 @noAcceptAlert
   Scenario Outline: Verify impossibility to connect 6th person to the call
@@ -573,7 +573,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars | Timeout |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | FullGROUPCALL | chrome      | autocall     | 5               | 60      |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | FullGROUPCALL | firefox     | autocall     | 5               | 60      |
 
   @calling_basic @rc @id880
   Scenario Outline: Verify putting client to the background during 1-to-1 call
