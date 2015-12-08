@@ -154,7 +154,7 @@ Feature: Conversation View
       | Name      | Contact   | CloseAppTime |
       | user1Name | user2Name | 2            |
 
-  @regression @id3205
+  @staging @id3205
   Scenario Outline: Verify appearance of title bar for conversation, restored from background [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
