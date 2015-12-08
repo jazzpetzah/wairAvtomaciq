@@ -299,7 +299,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I try to send message with only spaces
-    And I see message with only spaces is not send
+    And I see the only message in dialog is system message CONNECTED TO <Contact>
     And I input message with leading empty spaces
     And I send the message
     And I see message in the dialog
