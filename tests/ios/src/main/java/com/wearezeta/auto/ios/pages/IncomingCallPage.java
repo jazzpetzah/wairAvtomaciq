@@ -100,7 +100,7 @@ public class IncomingCallPage extends CallPage {
 		return secondCallAlert.isDisplayed();
 	}
 
-	public void pressEndCallAlertButton() {
+	public void pressAnswerCallAlertButton() {
 		answerCallAlertButton.click();
 
 	}

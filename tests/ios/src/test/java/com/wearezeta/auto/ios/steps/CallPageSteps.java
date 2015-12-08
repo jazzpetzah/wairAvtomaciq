@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.steps;
 
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -234,8 +233,8 @@ public class CallPageSteps {
 	 * @throws Throwable
 	 */
 	@When("^I press Accept button on alert$")
-	public void IPressEndCallButtonOnAlert() throws Throwable {
-		getIncomingCallPage().pressEndCallAlertButton();
+	public void IPressAnswerCallButtonOnAlert() throws Throwable {
+		getIncomingCallPage().pressAnswerCallAlertButton();
 	}
 
 	/**
@@ -296,12 +295,9 @@ public class CallPageSteps {
 	 */
 	@When("^I tap on contact I am in a call with (.*)$")
 	public void ITapOnContactIamInACallWith(String name) throws Throwable {
-		//try {
-			//name = usrMgr.findUserByNameOrNameAlias(name).getName();
-			name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-		//} catch (NoSuchUserException e) {
-			// Ignore silently
-		//}
+
+		name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+
 		getIncomingCallPage().tapOnNameInCallWith(name);
 
 	}

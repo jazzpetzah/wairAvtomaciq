@@ -538,7 +538,7 @@ Feature: Calling
     And I see dialog page
     And I swipe the text input cursor
     And I press call button
-    And I wait for 10 seconds
+    And I wait for 5 seconds
     And I see mute call, end call and speakers buttons
     And I wait for 3 seconds
     And I see <NumberOfAvatars> avatars in the group call bar
