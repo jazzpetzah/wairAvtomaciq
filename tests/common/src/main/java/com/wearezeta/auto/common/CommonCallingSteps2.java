@@ -472,15 +472,6 @@ public final class CommonCallingSteps2 {
 			instanceType = "CHROME";
 			LOG.warn("Please use CHROME or FIREFOX instead of WEBDRIVER as instance type for calling! WEBDRIVER will be removed in future versions.");
 		}
-		// ########################
-		// FIXME: Temporary reroute of chrome instance requests to firefox
-		// instances due to webapp calling issues
-		// ########################
-		if (instanceType.equals("CHROME")) {
-			instanceType = "FIREFOX";
-			LOG.warn("TEMPORARY CHANGE: Rerouting from instance type CHROME to instance type FIREFOX.");
-		}
-		// ########################
 		return InstanceType.valueOf(instanceType);
 	}
 
