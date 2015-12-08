@@ -184,25 +184,6 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend |
       | user1Name | user2Name | user3Name | autocall    |
 
-  @id2211 @calling_basic
-  Scenario Outline: (AN-2568) I can dismiss calling bar by swipe
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And <Contact> calls me using <CallBackend>
-    And I see call overlay
-    And I answer the call from the overlay bar
-    And I dismiss calling bar by swipe
-    Then I do not see call overlay
-    And <Contact> stops all calls to me
-
-    Examples:
-      | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
-
   @id3239 @calling_basic
   Scenario Outline: Calling bar buttons are clickable and change their states in a group call
     Given There are 3 users where <Name> is me

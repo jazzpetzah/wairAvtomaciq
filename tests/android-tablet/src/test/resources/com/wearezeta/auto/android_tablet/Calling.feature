@@ -147,42 +147,6 @@ Feature: Calling
       | CallBackend | Name      | Contact1  | Contact2  |
       | autocall    | user1Name | user2Name | user3Name |
 
-  @id3124 @calling_basic @rc
-  Scenario Outline: (AN-2568) I can dismiss calling bar by swipe (portrait)
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I rotate UI to portrait
-    Given I sign in using my email
-    Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
-    And I tap the conversation <Contact>
-    And <Contact> calls me using <CallBackend>
-    And I see calling overlay Big bar
-    When I swipe up on the calling overlay
-    Then I do not see calling overlay Big bar
-
-    Examples:
-      | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
-
-  @id2911 @calling_basic @rc
-  Scenario Outline: (AN-2568) I can dismiss calling bar by swipe (landscape)
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I rotate UI to landscape
-    Given I sign in using my email
-    Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
-    And I tap the conversation <Contact>
-    And <Contact> calls me using <CallBackend>
-    And I see calling overlay Big bar
-    When I swipe up on the calling overlay
-    Then I do not see calling overlay Big bar
-
-    Examples:
-      | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
-
   @id2840 @calling_basic
   Scenario Outline: Send text, image and ping while in the call with same user (portrait)
     Given There are 2 users where <Name> is me

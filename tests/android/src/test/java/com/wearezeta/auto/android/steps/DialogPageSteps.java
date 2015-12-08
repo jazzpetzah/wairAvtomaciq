@@ -719,20 +719,7 @@ public class DialogPageSteps {
                         .waitUntilMissedCallMessageIsVisible(expectedMessage));
     }
 
-    /**
-     * Swipes on calling bar to dismiss a call
-     *
-     * @throws Exception
-     * @step. ^I dismiss calling bar by swipe$
-     */
-    @When("I dismiss calling bar by swipe$")
-    public void IDismissCalling() throws Exception {
-        Assert.assertTrue("Call overlay is not visible, nothing to swipe",
-                getCallingOverlayPage().waitUntilVisible());
-        getDialogPage().swipeByCoordinates(1500, 30, 25, 30, 5);
-    }
-
-    /**
+     /**
      * Checks to see if join group call overlay is present or not
      *
      * @param shouldNotSee is set to null if " do not" part does not exist

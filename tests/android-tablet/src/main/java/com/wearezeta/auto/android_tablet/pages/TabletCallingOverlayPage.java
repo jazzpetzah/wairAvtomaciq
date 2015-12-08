@@ -71,10 +71,6 @@ public class TabletCallingOverlayPage extends AndroidTabletPage {
 		return getCallingOverlayPage().ongoingCallMinibarIsInvisible();
 	}
 
-	public void dismissBySwipeUp() throws Exception {
-		getCallingOverlayPage().dismissBySwipeUp();
-	}
-
 	public boolean waitForCallParticipantVisible(String participant)
 			throws Exception {
 		return getCallingOverlayPage().waitUntilNameAppearsOnCallingBarAvatar(

@@ -274,14 +274,4 @@ public class CallingOverlayPage extends AndroidPage {
     public boolean ongoingCallMinibarIsInvisible() throws Exception {
         return ongoingCallMicrobarIsVisible();
     }
-
-    public void dismissBySwipeUp() throws Exception {
-        final Point coords = callingContainer.getLocation();
-        final Dimension elementSize = callingContainer.getSize();
-        // We cannot swipe in the middle because of
-        // https://wearezeta.atlassian.net/browse/AN-2568
-        this.getDriver().swipe(coords.x + elementSize.width / 4,
-                coords.y + elementSize.height - 20,
-                coords.x + elementSize.width / 4, coords.y, 1000);
-    }
 }
