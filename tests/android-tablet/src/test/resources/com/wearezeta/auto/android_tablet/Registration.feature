@@ -114,5 +114,5 @@ Feature: Registration
     Then I see the Conversations list with no conversations
 
     Examples:
-      | Email      | Password      | ErrMessage                                     |
-      | user1Email | user1Password | Please check internet connection and try again |
+      | Email      | Password      | ErrMessage                                           |
+      | user1Email | user1Password | Please check your Internet connection and try again. |
