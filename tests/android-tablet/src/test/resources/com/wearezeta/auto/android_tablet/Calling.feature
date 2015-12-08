@@ -100,7 +100,7 @@ Feature: Calling
       | user1Name | user2Name | autocall    | Speaker        | Mute        | Accept        | Dismiss        |
 
   @id2842 @calling_basic
-  Scenario Outline: I see miss call notification on the list and inside conversation view (portrait)
+  Scenario Outline: (AN-3145) I see miss call notification on the list and inside conversation view (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to portrait
