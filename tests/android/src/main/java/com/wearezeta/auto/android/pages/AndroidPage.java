@@ -37,7 +37,7 @@ public abstract class AndroidPage extends BasePage {
 
 	private static final String idChatheadNotification = "mncv__notifications__chathead";
 
-	public static final long DRIVER_INIT_TIMEOUT = 1000 * 90; // milliseconds
+	public static final long DRIVER_INIT_TIMEOUT = 1000 * 60 * 2; // milliseconds
 
 	protected static final Logger log = ZetaLogger.getLog(CommonUtils.class
 			.getSimpleName());
