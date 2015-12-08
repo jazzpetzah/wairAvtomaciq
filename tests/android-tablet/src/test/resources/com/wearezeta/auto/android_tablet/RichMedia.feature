@@ -112,6 +112,7 @@ Feature: Rich Media
     When I tap Send button on the Giphy preview page
     Then I see the conversation view
     And I see a new picture in the conversation view
+    And I scroll to the bottom of the Conversation view
     And I see the picture in the conversation view is animated
 
     Examples:
@@ -137,6 +138,7 @@ Feature: Rich Media
     When I tap Send button on the Giphy preview page
     Then I see the conversation view
     And I see a new picture in the conversation view
+    And I scroll to the bottom of the Conversation view
     And I see the picture in the conversation view is animated
 
     Examples:
