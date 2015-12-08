@@ -29,7 +29,7 @@ public class WelcomePage extends AndroidPage {
 	@FindBy(id = idphoneInputField)
 	private WebElement phoneInputField;
 
-	public static final String xpathSignInTab = "//*[@id='til__app_entry']//*[@value='LOG IN']";
+	public static final String xpathSignInTab = "//*[@id='til__app_entry']//*[*][1]";
 	@FindBy(xpath = xpathSignInTab)
 	protected WebElement signInTab;
 
