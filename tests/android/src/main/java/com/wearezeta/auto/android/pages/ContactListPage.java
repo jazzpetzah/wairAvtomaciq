@@ -7,6 +7,7 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -369,6 +370,9 @@ public class ContactListPage extends AndroidPage {
     }
 
     public boolean isNoConversationsVisible() throws Exception {
+        Assert.assertTrue(
+                "Conversations list frame is not visible",
+                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idConversationListFrame)));
         for (int i = contactListNames.size(); i >= 1; i--) {
             final By locator = By.xpath(xpathContactByIndex.apply(i));
             if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator)) {

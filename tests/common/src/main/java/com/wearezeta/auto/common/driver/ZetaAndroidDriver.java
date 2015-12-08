@@ -28,6 +28,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements
         ZetaDriver, HasTouchScreen {
@@ -209,8 +211,14 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements
                 .waitFor();
         byte[] output = FileUtils.readFileToByteArray(result);
         if (CommonUtils.getIsTabletFromConfig(this.getClass())) {
-            final SurfaceOrientation currentOrientation = this
-                    .getSurfaceOrientation();
+            SurfaceOrientation currentOrientation;
+            try {
+                currentOrientation = this.getSurfaceOrientation();
+            } catch (Exception e) {
+                e.printStackTrace();
+                // Use the default value if command failed
+                currentOrientation = SurfaceOrientation.ROTATION_0;
+            }
             log.debug(String.format("Current screen orientation value -> %s",
                     currentOrientation.getCode()));
             output = fixScreenshotOrientation(output, currentOrientation);
@@ -353,10 +361,15 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements
      * @throws Exception
      */
     private SurfaceOrientation getSurfaceOrientation() throws Exception {
-        final String output = getAdbOutput(
-                "shell dumpsys input | grep 'SurfaceOrientation' | awk '{ print $2 }' | head -n 1")
-                .trim();
-        return SurfaceOrientation.getByCode(Integer.parseInt(output));
+        final String output = getAdbOutput("shell dumpsys input").trim();
+        String regex = "SurfaceOrientation:\\s+(\\d+)";
+        Pattern p = Pattern.compile(regex);
+        Matcher urlMatcher = p.matcher(output);
+        if (urlMatcher.find()) {
+            return SurfaceOrientation.getByCode(Integer.parseInt(urlMatcher.group(1)));
+        }
+        throw new IllegalStateException(String.format("Surface orientation cannot be parsed from the output\n%s",
+                output));
     }
 
     /**

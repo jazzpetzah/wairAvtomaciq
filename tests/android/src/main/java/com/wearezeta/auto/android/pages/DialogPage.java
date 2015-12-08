@@ -662,7 +662,7 @@ public class DialogPage extends AndroidPage {
             throws Exception {
         int swipeNum = 1;
         while (swipeNum <= maxScrollRetries) {
-            swipeByCoordinates(500, 50, 20, 50, 90);
+            swipeByCoordinates(1000, 50, 10, 50, 90);
             if (waitUntilMediaBarVisible(2)) {
                 return true;
             }

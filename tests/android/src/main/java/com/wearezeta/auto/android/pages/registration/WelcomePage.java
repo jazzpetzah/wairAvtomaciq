@@ -29,7 +29,7 @@ public class WelcomePage extends AndroidPage {
 	@FindBy(id = idphoneInputField)
 	private WebElement phoneInputField;
 
-	public static final String xpathSignInTab = "//*[@id='til__app_entry']//*[@value='SIGN IN']";
+	public static final String xpathSignInTab = "//*[@id='til__app_entry']//*[*][1]";
 	@FindBy(xpath = xpathSignInTab)
 	protected WebElement signInTab;
 
@@ -41,8 +41,8 @@ public class WelcomePage extends AndroidPage {
 	@FindBy(id = idAreaCodeSelector)
 	protected WebElement areaCodeSelectorButton;
 
-	public static final String idphoneConfirmationButton = "pcb__signup";
-	@FindBy(id = idphoneConfirmationButton)
+	public static final String idPhoneConfirmationButton = "pcb__signup";
+	@FindBy(id = idPhoneConfirmationButton)
 	protected WebElement phoneConfirmationButton;
 
 	public WelcomePage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {

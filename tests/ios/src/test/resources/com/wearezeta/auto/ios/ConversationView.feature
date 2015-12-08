@@ -187,9 +187,12 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I send long message
+    And I type the message and send it
     And I scroll to the beginning of the conversation
+    And I see plus button is not shown
     And I tap on text input
-    Then I see last message in the dialog
+    Then I see conversation is scrolled to the end
+    And I see message in the dialog
 
     Examples: 
       | Name      | Contact   |
@@ -493,7 +496,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id2132
+  @staging @id2132
   Scenario Outline: Verify displaying chathead when another conversation is opened
     Given There are 3 users where <Name> is me
     Given User <Contact2> change avatar picture to <Picture>

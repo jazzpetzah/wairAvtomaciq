@@ -1197,4 +1197,16 @@ public class DialogPageSteps {
 	public void IClearConversationTextInput() throws Exception {
 		getDialogPage().clearTextInput();
 	}
+	
+	/**
+	 * Verify that conversation is scrolled to the end by verifying that plus button and text input is visible
+	 * 
+	 * @step. ^I see conversation is scrolled to the end$
+	 * @throws Throwable 
+	 */
+	@When("^I see conversation is scrolled to the end$")
+	public void ISeeConversationIsScrolledToEnd() throws Throwable {
+		Assert.assertTrue(getDialogPage().isPlusButtonVisible());
+		Assert.assertTrue(getDialogPage().isCursorInputVisible());
+	}
 }

@@ -59,7 +59,7 @@ public class SettingsPage extends AndroidPage {
     }
 
     public void confirmSignOut() throws Exception {
-        final By locator = By.xpath(xpathConfirmBtnByName.apply("Sign out"));
+        final By locator = By.xpath(xpathConfirmBtnByName.apply("Log out"));
         assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) :
                 "Sign out confirmation is not visible";
         getDriver().findElement(locator).click();
