@@ -57,6 +57,7 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.openqa.selenium.WebDriverException;
 
 public class CommonWebAppSteps {
 
@@ -165,38 +166,64 @@ public class CommonWebAppSteps {
 
         Callable<ZetaWebAppDriver> callableWebAppDriver = new Callable<ZetaWebAppDriver>() {
 
-            @Override
-            public ZetaWebAppDriver call() throws Exception {
-                final ZetaWebAppDriver lazyWebDriver = new ZetaWebAppDriver(
-                        new URL("http://" + hubHost + ":" + hubPort + "/wd/hub"),
-                        capabilities);
-                // setup of the browser
-                lazyWebDriver.setFileDetector(new LocalFileDetector());
-                if (WebAppExecutionContext.getBrowser().equals(Browser.Safari)) {
-                    WebCommonUtils.closeAllAdditionalTabsInSafari(lazyWebDriver
-                            .getNodeIp());
-                    WebCommonUtils.clearHistoryInSafari(lazyWebDriver
-                            .getNodeIp());
-                }
-                if (WebAppExecutionContext.getBrowser()
-                        .isSupportingMaximizingTheWindow()) {
-                    lazyWebDriver.manage().window().maximize();
-                } else {
-                    if (WebAppExecutionContext.getBrowser()
-                            .isSupportingSettingWindowSize()) {
-                        // http://stackoverflow.com/questions/14373371/ie-is-continously-maximizing-and-minimizing-when-test-suite-executes
-                        lazyWebDriver
-                                .manage()
-                                .window()
-                                .setSize(
-                                        new Dimension(
-                                                WebAppConstants.MIN_WEBAPP_WINDOW_WIDTH,
-                                                WebAppConstants.MIN_WEBAPP_WINDOW_HEIGHT));
-                    }
-                }
-                return lazyWebDriver;
-            }
-        };
+			@Override
+			public ZetaWebAppDriver call() throws Exception {
+				ZetaWebAppDriver lazyWebDriver = null;
+				if (WebAppExecutionContext.getBrowser().equals(Browser.Safari)) {
+					int retries = 3;// TODO introduce constant
+					boolean failed = false;
+					do {
+						try {
+							retries--;
+							// wait for safari to close properly before starting
+							// it for
+							// a new test
+							Thread.sleep(5000);
+							lazyWebDriver = new ZetaWebAppDriver(new URL(
+									"http://" + hubHost + ":" + hubPort
+											+ "/wd/hub"), capabilities);
+							failed = false;
+						} catch (WebDriverException e) {
+							log.warn("Safari driver init failed - retrying", e);
+							failed = true;
+						}
+					} while (failed && retries > 0);
+
+					if (failed) {
+						throw new Exception("Failed to init Safari driver");
+					}
+				} else {
+					lazyWebDriver = new ZetaWebAppDriver(new URL("http://"
+							+ hubHost + ":" + hubPort + "/wd/hub"),
+							capabilities);
+				}
+				// setup of the browser
+				lazyWebDriver.setFileDetector(new LocalFileDetector());
+				if (WebAppExecutionContext.getBrowser().equals(Browser.Safari)) {
+					WebCommonUtils.closeAllAdditionalTabsInSafari(lazyWebDriver
+							.getNodeIp());
+					WebCommonUtils.clearHistoryInSafari(lazyWebDriver
+							.getNodeIp());
+				}
+				if (WebAppExecutionContext.getBrowser()
+						.isSupportingMaximizingTheWindow()) {
+					lazyWebDriver.manage().window().maximize();
+				} else {
+					if (WebAppExecutionContext.getBrowser()
+							.isSupportingSettingWindowSize()) {
+						// http://stackoverflow.com/questions/14373371/ie-is-continously-maximizing-and-minimizing-when-test-suite-executes
+						lazyWebDriver
+								.manage()
+								.window()
+								.setSize(
+										new Dimension(
+												WebAppConstants.MIN_WEBAPP_WINDOW_WIDTH,
+												WebAppConstants.MIN_WEBAPP_WINDOW_HEIGHT));
+					}
+				}
+				return lazyWebDriver;
+			}
+		};
 
         final Future<ZetaWebAppDriver> lazyWebDriver = pool
                 .submit(callableWebAppDriver);
