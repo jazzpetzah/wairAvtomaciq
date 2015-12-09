@@ -144,7 +144,7 @@ Feature: Conversation List
     Then I see Contact list with name <ChatName>
     And I open self profile
     And I click gear button on self profile page
-      And I select log out menu item on self profile page
+      And I select Log out menu item on self profile page
     And User <Contact1> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
@@ -173,7 +173,7 @@ Feature: Conversation List
     Then I do not see Contact list with name <Contact>
     When I open self profile
     And I click gear button on self profile page
-      And I select log out menu item on self profile page
+      And I select Log out menu item on self profile page
     And User <Contact> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
@@ -208,7 +208,7 @@ Feature: Conversation List
     Then I do not see text message <Msg1>
     When I open self profile
       And I click gear button on self profile page
-      And I select log out menu item on self profile page
+      And I select Log out menu item on self profile page
     And User <Contact1> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
@@ -296,7 +296,7 @@ Feature: Conversation List
     Then I do not see Contact list with name <ChatName>
     And I open self profile
       And I click gear button on self profile page
-      And I select log out menu item on self profile page
+      And I select Log out menu item on self profile page
     And User <Contact1> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
@@ -347,8 +347,8 @@ Feature: Conversation List
     When User <Contact1> sent message <Msg1> to conversation <Contact1>
     Then I see Contact list with name <Contact1>
     And I open self profile
-      And I click gear button on self profile page
-      And I select log out menu item on self profile page
+    And I click gear button on self profile page
+      And I select Log out menu item on self profile page
     And User <Contact1> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
