@@ -32,7 +32,7 @@ public class LoginPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameSignInButton)
 	private WebElement signInButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathLoginButton)
+	@FindBy(how = How.NAME, using = IOSLocators.nameLoginButton)
 	private WebElement confirmSignInButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameRegisterButton)
@@ -191,7 +191,7 @@ public class LoginPage extends IOSPage {
 	public void waitForLoginToFinish() throws Exception {
 
 		if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.xpath(IOSLocators.xpathLoginButton), 40)) {
+				By.name(IOSLocators.nameLoginButton), 40)) {
 			throw new AssertionError(
 					"Login button is still visible after the timeout");
 		}

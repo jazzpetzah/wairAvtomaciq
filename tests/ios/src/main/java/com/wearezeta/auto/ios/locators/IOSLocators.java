@@ -10,7 +10,7 @@ public final class IOSLocators {
 
 	public static final String nameTermsOfServiceButton = "LegalCheckmarkButton";
 
-	public static final String xpathLoginButton = "//UIASecureTextField/UIAButton[1]";
+	public static final String nameLoginButton = "RegistrationConfirmButton";
 
 	public static final String nameLoginField = "EmailField";
 
