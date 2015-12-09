@@ -1,4 +1,4 @@
-Feature: Sign In
+Feature: Log In
 
   @id2262 @regression @rc @rc44
   Scenario Outline: Sign in to Wire in portrait mode
