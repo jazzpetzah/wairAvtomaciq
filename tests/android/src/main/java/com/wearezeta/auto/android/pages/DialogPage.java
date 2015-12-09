@@ -25,8 +25,6 @@ public class DialogPage extends AndroidPage {
 
     public static final String MEDIA_PLAY = "PLAY";
     public static final String MEDIA_PAUSE = "PAUSE";
-    public static final String PING_LABEL = "PINGED";
-    public static final String HOT_PING_LABEL = "PINGED AGAIN";
 
     public static final String xpathConfirmOKButton = "//*[@id='ttv__confirmation__confirm' and @value='OK']";
 
@@ -504,20 +502,6 @@ public class DialogPage extends AndroidPage {
                 && System.currentTimeMillis() - millisecondsStarted < maxAnimationDurationMillis);
         assert participantsButton.getLocation().getY() < 0;
         return new OtherUserPersonalInfoPage(this.getLazyDriver());
-    }
-
-    public double checkPingIcon(String label) throws Exception {
-        String path = null;
-        BufferedImage pingImage = getElementScreenshot(pingIcon).orElseThrow(
-                IllegalStateException::new);
-        if (label.equals(PING_LABEL)) {
-            path = CommonUtils.getPingIconPath(DialogPage.class);
-        } else if (label.equals(HOT_PING_LABEL)) {
-            path = CommonUtils.getHotPingIconPath(DialogPage.class);
-        }
-        BufferedImage templateImage = ImageUtil.readImageFromFile(path);
-        return ImageUtil.getOverlapScore(pingImage, templateImage,
-                ImageUtil.RESIZE_TO_MAX_SCORE);
     }
 
     public boolean waitForPingMessageWithText(String expectedText)

@@ -532,21 +532,6 @@ public class DialogPageSteps {
     }
 
     /**
-     * Seems to currently be blocked out in all tests
-     *
-     * @param iconLabel
-     * @throws Exception
-     * @step. ^I see (.*) icon$
-     */
-    @Then("^I see (.*) icon$")
-    public void ThenIseeIcon(String iconLabel) throws Exception {
-        final double score = getDialogPage().checkPingIcon(iconLabel);
-        Assert.assertTrue(
-                "Overlap between two images has not enough score. Expected >= 0.75, current = "
-                        + score, score >= 0.75d);
-    }
-
-    /**
      * Checks to see that a group chat exists, where the name of the group chat
      * is the list of users
      *
