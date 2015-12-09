@@ -43,7 +43,7 @@ Feature: Search
     Then I see Contact list with name <Contact1>,<Contact2>
     And I open self profile
     And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+      And I select log out menu item on self profile page
     And User <Contact1> is me
     And I see Sign In page
     And I Sign in using login <Contact1Email> and password <Contact1Password>
@@ -51,7 +51,7 @@ Feature: Search
     Then I see Contact list with name <Name>,<Contact2>
     And I open self profile
     And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+      And I select log out menu item on self profile page
     And User <Contact2> is me
     And I see Sign In page
     And I Sign in using login <Contact2Email> and password <Contact2Password>
@@ -129,8 +129,8 @@ Feature: Search
     And I open conversation with <Name2>
     And I see CONNECTING TO action for <Name2> in conversation
     And I open self profile
-    And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+      And I click gear button on self profile page
+      And I select log out menu item on self profile page
     And User <Name2> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
@@ -140,8 +140,8 @@ Feature: Search
     When I accept connection request from user <Name>
     Then I see conversation with <Name> is selected in conversations list
     And I open self profile
-    And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+      And I click gear button on self profile page
+      And I select log out menu item on self profile page
     And User <Name> is me
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>

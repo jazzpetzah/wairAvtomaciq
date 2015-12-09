@@ -45,7 +45,7 @@ Feature: Self Profile
     When I open self profile
     And I set my accent color to <ColorName>
     And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+      And I select log out menu item on self profile page
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
     And I see Contacts Upload dialog
