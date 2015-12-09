@@ -24,7 +24,7 @@
 		<initNodeIp>true</initNodeIp>
 		<zephyrCycleName></zephyrCycleName>
 		<zephyrPhaseName></zephyrPhaseName>
-		<zephyrServer>192.168.10.45</zephyrServer>
+		<zephyrServer>192.168.10.44</zephyrServer>
 		<jenkinsJobUrl></jenkinsJobUrl>
 	</properties>
 

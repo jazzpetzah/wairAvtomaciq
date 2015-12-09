@@ -25,7 +25,7 @@ Feature: Sign In
       | user1Name |
 
   @id209 @regression
-  Scenario Outline: I can change sign in user
+  Scenario Outline: (AN-3115) I can change sign in user
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
     Given I see Contact list with no contacts
@@ -34,7 +34,7 @@ Feature: Sign In
     When I tap options button
     And I tap settings button
     And I select "Account" settings menu item
-    And I select "Sign out" settings menu item
+    And I select "Log out" settings menu item
     And I confirm sign out
     Then I see welcome screen
     When User <Name2> is me
@@ -77,5 +77,5 @@ Feature: Sign In
     Then I see Contact list with contacts
 
     Examples:
-      | Name      | Email      | Password      | Contact   | ErrMessage                          |
-      | user1Name | user1Email | user1Password | user2Name | Please enter a valid email address. |
+      | Name      | Email      | Password      | Contact   | ErrMessage                                          |
+      | user1Name | user1Email | user1Password | user2Name | Please check your internet connection and try again |

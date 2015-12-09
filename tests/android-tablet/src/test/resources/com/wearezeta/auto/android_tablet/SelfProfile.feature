@@ -16,7 +16,7 @@ Feature: Self Profile
       | Name      | NewName     |
       | user1Name | NewTestName |
 
-  @id2250 @regression @rc
+  @id2250 @regression @rc @rc44
   Scenario Outline: I can change my name in landscape mode
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -31,7 +31,7 @@ Feature: Self Profile
       | Name      | NewName     |
       | user1Name | NewTestName |
 
-  @id2288 @regression @rc
+  @id2288 @regression @rc @rc44
   Scenario Outline: Change profile picture using existing from gallery in portrait mode
     Given There is 1 user where <Name> is me
     Given I rotate UI to portrait
@@ -51,7 +51,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @id2289 @regression @rc
+  @id2289 @regression @rc @rc44
   Scenario Outline: Change profile picture using existing from gallery in landscape mode
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape

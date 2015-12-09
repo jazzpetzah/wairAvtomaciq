@@ -212,4 +212,16 @@ public class TabletGroupConversationDetailPopoverPageSteps {
 						.waitConversationInfoPopoverToClose());
 	}
 
+	/**
+	 * Tap on the screen to dismiss popover
+	 * 
+	 * @step I dismiss popover on iPad$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I dismiss popover on iPad$")
+	public void IDismissPopover() throws Exception {
+		getTabletGroupConversationDetailPopoverPage().dismissPopover();
+	}
+
 }

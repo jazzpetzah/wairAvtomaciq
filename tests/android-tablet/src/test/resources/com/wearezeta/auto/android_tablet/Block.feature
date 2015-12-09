@@ -70,7 +70,7 @@ Feature: Block
       | Name      | Contact   | Message       |
       | user1Name | user2Name | Hellow friend |
 
-  @id2859 @regression @rc
+  @id2859 @regression @rc @rc44
   Scenario Outline: I block user from 1:1 pop-over and can see blocked user in search results with blocked badge (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

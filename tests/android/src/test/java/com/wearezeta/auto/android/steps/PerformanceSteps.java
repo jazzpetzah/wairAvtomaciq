@@ -77,13 +77,13 @@ public class PerformanceSteps {
 	public void ISignInUsingMyEmail(int timeoutSeconds) throws Throwable {
 		final ClientUser self = usrMgr.getSelfUserOrThrowError();
 		assert getWelcomePage().waitForInitialScreen() : "The initial screen was not shown";
-		getWelcomePage().tapIHaveAnAccount();
+		getWelcomePage().tapSignInTab();
 		try {
 			getEmailSignInPage().setLogin(self.getEmail());
 		} catch (NoSuchElementException e) {
 			// FIXME: try again because sometimes tapping "I have account"
 			// button fails without any reason
-			getWelcomePage().tapIHaveAnAccount();
+			getWelcomePage().tapSignInTab();
 			getEmailSignInPage().setLogin(self.getEmail());
 		}
 		getEmailSignInPage().setPassword(self.getPassword());

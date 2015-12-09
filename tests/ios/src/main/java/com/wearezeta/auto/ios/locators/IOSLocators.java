@@ -605,13 +605,15 @@ public final class IOSLocators {
 
 		public static final String nameSecondCallAlert = "Answer call?";
 
-		public static final String nameEndCallAlertButton = "End Call";
+		public static final String nameAnswerCallAlertButton = "Answer";
 
 		public static final String xpathGroupCallAvatars = "//UIAWindow[@name='ZClientNotificationWindow']//UIACollectionCell";
 
 		public static final String classNameUIACollectionCell = "UIACollectionCell";
 
 		public static final String xpathGroupCallFullMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAAlert[@name='The call is full']";
+
+		public static final String xpathUserInCallContactListCell = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText";
 	}
 
 	public final class DialogPage {
@@ -686,7 +688,7 @@ public final class IOSLocators {
 	}
 
 	public final class LoginPage {
-		public static final String namePhoneLoginButton = "PHONE SIGN IN";
+		public static final String namePhoneLoginButton = "RegistrationRightButton";
 		public static final String nameBackButton = "BackToWelcomeButton";
 		public static final String nameEmailLoginButton = "EMAIL SIGN IN";
 		public static final String nameMaybeLater = "MAYBE LATER";

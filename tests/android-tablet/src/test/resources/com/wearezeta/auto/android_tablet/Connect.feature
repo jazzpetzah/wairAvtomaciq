@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @id2281 @regression @rc
+  @id2281 @regression @rc @rc44
   Scenario Outline: Send connection request from search by name in landscape
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -23,7 +23,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2280 @regression @rc
+  @id2280 @regression @rc @rc44
   Scenario Outline: Send connection request from search by name in portrait
     Given There are 2 users where <Name> is me
     Given I rotate UI to portrait
@@ -46,7 +46,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2245 @regression @rc
+  @id2245 @regression @rc @rc44
   Scenario Outline: Accept connection request in landscape mode
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
@@ -64,7 +64,7 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @id2259 @regression @rc
+  @id2259 @regression @rc @rc44
   Scenario Outline: (AN-2735) Accept connection request in portrait mode
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
@@ -186,7 +186,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @id2915 @regression @rc
+  @id2915 @regression @rc @rc44
   Scenario Outline: Connect to someone from PYMK by clicking + (portrait)
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Contact2>
@@ -211,7 +211,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id3117 @regression @rc
+  @id3117 @regression @rc @rc44
   Scenario Outline: Connect to someone from PYMK by clicking + (landscape)
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Contact2>

@@ -396,4 +396,16 @@ public class ConversationsListPageSteps {
 		playPauseButtonCoords.put(convoName, getConversationsListPage()
 				.calcPlayPauseButtonCoordinates(convoName));
 	}
+
+	/**
+	 * Tap the Invite button at the bottom of convo list
+	 *
+	 * @step. ^I tap Invite button at the bottom of conversations list$"
+	 *
+	 * @throws Exception
+     */
+	@When("^I tap Invite button at the bottom of conversations list$")
+	public void ITapInviteButton() throws Exception {
+		getConversationsListPage().tapInviteButton();
+	}
 }

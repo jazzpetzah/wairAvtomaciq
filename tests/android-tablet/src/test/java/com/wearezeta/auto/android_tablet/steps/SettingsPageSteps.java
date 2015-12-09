@@ -45,13 +45,13 @@ public class SettingsPageSteps {
 	/**
 	 * Confirm logout alert
 	 * 
-	 * @step. ^I confirm signout on (?:the |\\s*)[Ss]ettings page$
+	 * @step. ^I confirm logout on (?:the |\\s*)[Ss]ettings page$
 	 * 
 	 * @throws Exception
 	 */
-	@And("^I confirm signout on (?:the |\\s*)[Ss]ettings page$")
-	public void IConfirmSignout() throws Exception {
-		getSettingsPage().confirmSignOut();
+	@And("^I confirm logout on (?:the |\\s*)[Ss]ettings page$")
+	public void IConfirmLogout() throws Exception {
+		getSettingsPage().confirmLogout();
 	}
 
 }

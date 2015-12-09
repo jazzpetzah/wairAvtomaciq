@@ -184,25 +184,6 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend |
       | user1Name | user2Name | user3Name | autocall    |
 
-  @id2211 @calling_basic
-  Scenario Outline: (AN-2568) I can dismiss calling bar by swipe
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And <Contact> calls me using <CallBackend>
-    And I see call overlay
-    And I answer the call from the overlay bar
-    And I dismiss calling bar by swipe
-    Then I do not see call overlay
-    And <Contact> stops all calls to me
-
-    Examples:
-      | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
-
   @id3239 @calling_basic
   Scenario Outline: Calling bar buttons are clickable and change their states in a group call
     Given There are 3 users where <Name> is me
@@ -270,19 +251,22 @@ Feature: Calling
     Then I do not see join group call overlay
     And I see calling overlay Big bar
     # FIXME: Temporarily disable calling flows verification since this is unstable on webapp side
-    # And I wait for 10 seconds
+    # And <Contact2>,<Contact3>,<Contact4> verify that waiting instance status is changed to active in <Timeout> seconds
+    # And I wait for 5 seconds
     # Then <Contact2>,<Contact3>,<Contact4> verify to have 4 flows
     # Then <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
 
     Examples:
-      | CallBackend | CallBackend2 | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    |
-      | chrome      | autocall     | user1Name | user2Name | user3Name | user4Name | user5Name | ChatForGroupCall |
+      | CallBackend | CallBackend2 | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    | Timeout |
+      | chrome      | autocall     | user1Name | user2Name | user3Name | user4Name | user5Name | ChatForGroupCall | 60      |
 
   @id3174 @calling_basic @rc
   Scenario Outline: I can join group call after I ignored it
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <Contact2> starts waiting instance using chrome
+    Given <Contact2> accepts next incoming call automatically
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
@@ -290,12 +274,10 @@ Feature: Calling
     Then I see call overlay
     When I click the ignore call button
     Then I see "JOIN CALL" button
-    And I wait for 45 seconds
+    And I wait for 30 seconds
     When I press join group call button
     Then I do not see "JOIN CALL" button
     And I see calling overlay Big bar
-    And <Contact1> stops all calls to <GroupChatName>
-    Then I do not see join group call overlay
 
     Examples:
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |

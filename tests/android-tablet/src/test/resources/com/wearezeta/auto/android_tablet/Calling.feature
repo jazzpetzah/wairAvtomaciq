@@ -20,7 +20,7 @@ Feature: Calling
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
 
-  @id2910 @calling_basic @rc
+  @id2910 @calling_basic @rc @rc44
   Scenario Outline: Calling bar buttons are clickable and change its state (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -45,7 +45,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName | AcceptBtnName | DismissBtnName |
       | user1Name | user2Name | autocall    | Speaker        | Mute        | Accept        | Dismiss        |
 
-  @id4009 @regression @rc
+  @id4009 @regression @rc @rc44
   Scenario Outline: I can join group call in foreground (landscape)
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
@@ -74,7 +74,7 @@ Feature: Calling
       | CallBackend | CallBackend2 | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    | AcceptBtnName |
       | chrome      | autocall     | user1Name | user2Name | user3Name | user4Name | user5Name | ChatForGroupCall | Accept        |
 
-  @id3123 @calling_basic @rc
+  @id3123 @calling_basic @rc @rc44
   Scenario Outline: Calling bar buttons are clickable and change its state (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -100,7 +100,7 @@ Feature: Calling
       | user1Name | user2Name | autocall    | Speaker        | Mute        | Accept        | Dismiss        |
 
   @id2842 @calling_basic
-  Scenario Outline: I see miss call notification on the list and inside conversation view (portrait)
+  Scenario Outline: (AN-3145) I see miss call notification on the list and inside conversation view (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to portrait
@@ -125,7 +125,7 @@ Feature: Calling
       | autocall    | user1Name | user2Name | user3Name |
 
   @id3125 @calling_basic
-  Scenario Outline: I see miss call notification on the list and inside conversation view (landscape)
+  Scenario Outline: (AN-3145) I see miss call notification on the list and inside conversation view (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to landscape
@@ -146,42 +146,6 @@ Feature: Calling
     Examples:
       | CallBackend | Name      | Contact1  | Contact2  |
       | autocall    | user1Name | user2Name | user3Name |
-
-  @id3124 @calling_basic @rc
-  Scenario Outline: (AN-2568) I can dismiss calling bar by swipe (portrait)
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I rotate UI to portrait
-    Given I sign in using my email
-    Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
-    And I tap the conversation <Contact>
-    And <Contact> calls me using <CallBackend>
-    And I see calling overlay Big bar
-    When I swipe up on the calling overlay
-    Then I do not see calling overlay Big bar
-
-    Examples:
-      | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
-
-  @id2911 @calling_basic @rc
-  Scenario Outline: (AN-2568) I can dismiss calling bar by swipe (landscape)
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I rotate UI to landscape
-    Given I sign in using my email
-    Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
-    And I tap the conversation <Contact>
-    And <Contact> calls me using <CallBackend>
-    And I see calling overlay Big bar
-    When I swipe up on the calling overlay
-    Then I do not see calling overlay Big bar
-
-    Examples:
-      | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
 
   @id2840 @calling_basic
   Scenario Outline: Send text, image and ping while in the call with same user (portrait)
@@ -267,7 +231,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @id2875 @calling_basic
+  @id2875 @calling_basic @rc
   Scenario Outline: Receive call while tablet in sleeping mode (screen locked) (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

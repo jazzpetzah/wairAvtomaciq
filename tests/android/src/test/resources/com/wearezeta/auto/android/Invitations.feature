@@ -81,7 +81,7 @@ Feature: Invitations
       | Name      | Contact1  |
       | user1Name | user2Name |
       
-  @id4159 @staging
+  @id4159 @regression
   Scenario Outline: Verify that keyboard is closed when I close invites page
     Given There are 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -97,3 +97,51 @@ Feature: Invitations
     Examples: 
       | Name      |
       | user1Name |
+
+  @id4160 @staging
+  Scenario Outline: Verify that swipe do nothing in invites page
+    Given There are 1 user where <Name> is me
+    Given I sign in using my email or phone number
+    Given I see Contact list with no contacts
+    When I tap Invite button at the bottom of conversations list
+    And I take 1st screenshot
+    And I swipe up
+    And I take 2nd screenshot
+    Then I compare 1st and 2nd screenshots and they are not different
+    When I swipe down
+    And I take 2nd screenshot
+    Then I compare 1st and 2nd screenshots and they are not different
+    When I swipe right
+    And I take 2nd screenshot
+    Then I compare 1st and 2nd screenshots and they are not different
+    When I swipe left
+    And I take 2nd screenshot
+    Then I compare 1st and 2nd screenshots and they are not different
+
+    Examples: 
+      | Name      |
+      | user1Name |
+
+  @id4172 @regression @rc
+  Scenario Outline: (AN-3118) Sending invite to user which already on Wire create pending connection request
+    Given I delete all contacts from Address Book
+    Given There are 2 users where <Name> is me
+    Given I add <Contact> into Address Book
+    Given I sign in using my email or phone number
+    Given I see Contact list with no contacts
+    And I tap Invite button at the bottom of conversations list
+    And I see <Contact> in the invites list
+    And I tap Invite button next to <Contact>
+    And I select <ContactEmail> email on invitation sending alert
+    And I confirm invitation sending alert
+    When I press back button
+    # FIXME: workaround for AN-3118
+    And I minimize the application
+    And I restore the application
+    Then I see contact list with name <Contact>
+    When I tap on contact name <Contact>
+    Then I see outgoing pending connection to <Contact>
+
+    Examples:
+      | Name      | Contact   | ContactEmail |
+      | user1Name | user2Name | user2Email   |

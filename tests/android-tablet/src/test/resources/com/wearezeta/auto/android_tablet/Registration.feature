@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @id2286 @regression @rc
+  @id2286 @regression @rc @rc44
   Scenario Outline: Register new user using front camera in landscape mode
     Given I see welcome screen
     Given I rotate UI to landscape
@@ -114,5 +114,5 @@ Feature: Registration
     Then I see the Conversations list with no conversations
 
     Examples:
-      | Email      | Password      | ErrMessage                                     |
-      | user1Email | user1Password | Please check internet connection and try again |
+      | Email      | Password      | ErrMessage                                           |
+      | user1Email | user1Password | Please check your Internet connection and try again. |

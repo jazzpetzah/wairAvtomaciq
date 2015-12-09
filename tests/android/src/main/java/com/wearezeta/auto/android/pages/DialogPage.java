@@ -25,8 +25,6 @@ public class DialogPage extends AndroidPage {
 
     public static final String MEDIA_PLAY = "PLAY";
     public static final String MEDIA_PAUSE = "PAUSE";
-    public static final String PING_LABEL = "PINGED";
-    public static final String HOT_PING_LABEL = "PINGED AGAIN";
 
     public static final String xpathConfirmOKButton = "//*[@id='ttv__confirmation__confirm' and @value='OK']";
 
@@ -39,7 +37,6 @@ public class DialogPage extends AndroidPage {
     public static final String idSelfAvatar = "civ__cursor__self_avatar";
     @FindBy(id = idSelfAvatar)
     private WebElement selfAvatar;
-    final By selfAvatarLocator = By.id(idSelfAvatar);
 
     private static final Function<String, String> xpathConversationMessageByText = text -> String
             .format("//*[@id='ltv__row_conversation__message' and @value='%s']",
@@ -55,7 +52,6 @@ public class DialogPage extends AndroidPage {
 
     @FindBy(id = giphyPreviewButtonId)
     private WebElement giphyPreviewButton;
-    final By giphyPreviewButtonLocator = By.id(giphyPreviewButtonId);
 
     @FindBy(id = idEditText)
     private WebElement cursorInput;
@@ -137,9 +133,9 @@ public class DialogPage extends AndroidPage {
     @FindBy(id = idBackgroundOverlay)
     private WebElement backgroundOverlay;
 
-    private static final String idConnectRequestChatLabel = "ttv__row_conversation__connect_request__chathead_footer__label";
-    @FindBy(id = idConnectRequestChatLabel)
-    private WebElement connectRequestChatLabel;
+    private static final String idStartChatLabel = "ttv__row_conversation__connect_request__chathead_footer__label";
+    private static final Function<String,String> xpathStartChatLabelByPartOfText =
+            text -> String.format("//*[@id='%s' and contains(@value, '%s')]", idStartChatLabel, text);
 
     private static final String idConnectRequestChatUserName = "ttv__row_conversation__connect_request__chathead_footer__username";
     @FindBy(id = idConnectRequestChatUserName)
@@ -266,13 +262,12 @@ public class DialogPage extends AndroidPage {
         final By cursorLocator = By.id(idCursorArea);
         int ntry = 1;
         do {
-            DriverUtils.swipeRight(this.getDriver(), cursorArea,
-                    DEFAULT_SWIPE_TIME);
+            DriverUtils.swipeElementPointToPoint(this.getDriver(), cursorArea,
+                    DEFAULT_SWIPE_TIME, 10, 50, 90, 50);
             final int currentCursorOffset = getDriver()
                     .findElement(cursorLocator).getLocation().getX();
             if (currentCursorOffset > getDriver().manage().window().getSize()
                     .getWidth() / 2) {
-                Thread.sleep(500);
                 return;
             }
             log.debug(String.format(
@@ -459,14 +454,9 @@ public class DialogPage extends AndroidPage {
                 By.xpath(xpathDialogTakePhotoButton)) : "Take Photo button is still visible after being clicked";
     }
 
-    public String getConnectRequestChatLabel() throws Exception {
-        assert isConnectRequestChatLabelVisible();
-        return connectRequestChatLabel.getText();
-    }
-
-    public boolean isConnectRequestChatLabelVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idConnectRequestChatLabel));
+    public boolean waitUntilStartChatTitleContains(String expectedText) throws Exception {
+        final By locator = By.xpath(xpathStartChatLabelByPartOfText.apply(expectedText));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     /**
@@ -512,20 +502,6 @@ public class DialogPage extends AndroidPage {
                 && System.currentTimeMillis() - millisecondsStarted < maxAnimationDurationMillis);
         assert participantsButton.getLocation().getY() < 0;
         return new OtherUserPersonalInfoPage(this.getLazyDriver());
-    }
-
-    public double checkPingIcon(String label) throws Exception {
-        String path = null;
-        BufferedImage pingImage = getElementScreenshot(pingIcon).orElseThrow(
-                IllegalStateException::new);
-        if (label.equals(PING_LABEL)) {
-            path = CommonUtils.getPingIconPath(DialogPage.class);
-        } else if (label.equals(HOT_PING_LABEL)) {
-            path = CommonUtils.getHotPingIconPath(DialogPage.class);
-        }
-        BufferedImage templateImage = ImageUtil.readImageFromFile(path);
-        return ImageUtil.getOverlapScore(pingImage, templateImage,
-                ImageUtil.RESIZE_TO_MAX_SCORE);
     }
 
     public boolean waitForPingMessageWithText(String expectedText)
@@ -662,7 +638,7 @@ public class DialogPage extends AndroidPage {
             throws Exception {
         int swipeNum = 1;
         while (swipeNum <= maxScrollRetries) {
-            swipeByCoordinates(500, 50, 20, 50, 90);
+            swipeByCoordinates(1000, 50, 10, 50, 90);
             if (waitUntilMediaBarVisible(2)) {
                 return true;
             }

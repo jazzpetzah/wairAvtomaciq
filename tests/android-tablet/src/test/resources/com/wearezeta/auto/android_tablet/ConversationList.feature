@@ -1,6 +1,6 @@
 Feature: Conversation List
 
-  @id2246 @regression @rc
+  @id2246 @regression @rc @rc44
   Scenario Outline: Mute and unmute conversation from conversation details in landscape mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -162,7 +162,7 @@ Feature: Conversation List
       | Name      | Contact   | SoundCloudLink                                             |
       | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
-  @id4046 @regression @rc
+  @id4046 @regression @rc @rc44
   Scenario Outline: Verify I can delete a 1:1 conversation from conversation list (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

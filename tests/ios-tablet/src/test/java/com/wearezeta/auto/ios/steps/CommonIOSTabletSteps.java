@@ -46,16 +46,4 @@ public class CommonIOSTabletSteps {
 		commonSteps.getUserManager().resetUsers();
 	}
 
-	/**
-	 * Tap on the screen to dismiss popover
-	 * 
-	 * @step I dismiss popover on iPad$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I dismiss popover on iPad$")
-	public void IDismissPopover() throws Exception {
-		steps.ITapOnTopLeftCornerOfTheScreen();
-	}
-
 }

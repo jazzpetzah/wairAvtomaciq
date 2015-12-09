@@ -121,7 +121,7 @@ public class ImageUtil {
 	public static double getOverlapScore(BufferedImage refImage,
 			BufferedImage tplImage) {
 		return getOverlapScore(refImage, tplImage,
-				RESIZE_FROM1920x1080OPTIMIZED);
+		        RESIZE_TO_MAX_SCORE);
 	}
 
 	public static double getOverlapScore(BufferedImage refImage,

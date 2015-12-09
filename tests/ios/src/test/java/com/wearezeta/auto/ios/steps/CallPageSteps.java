@@ -227,14 +227,14 @@ public class CallPageSteps {
 	}
 
 	/**
-	 * Presses the end call button on the second incoming call alert
+	 * Presses the accept button on the second incoming call alert
 	 * 
-	 * @step. ^I press End Call button on alert$
+	 * @step. ^I press Accept button on alert$
 	 * @throws Throwable
 	 */
-	@When("^I press End Call button on alert$")
-	public void IPressEndCallButtonOnAlert() throws Throwable {
-		getIncomingCallPage().pressEndCallAlertButton();
+	@When("^I press Accept button on alert$")
+	public void IPressAnswerCallButtonOnAlert() throws Throwable {
+		getIncomingCallPage().pressAnswerCallAlertButton();
 	}
 
 	/**
@@ -284,6 +284,22 @@ public class CallPageSteps {
 	@Then("^I see group call is Full message$")
 	public void ISeeGroupCallIsFullMessage() throws Throwable {
 		Assert.assertTrue(getIncomingCallPage().isGroupCallFullMessageShown());
+	}
+
+	/**
+	 * Taps the person in list you have a call right now
+	 *
+	 * @param name in list your in call with and want to tap
+	 * @throws Throwable
+	 * @step. ^I tap on contact I am in a call with (.*)$
+	 */
+	@When("^I tap on contact I am in a call with (.*)$")
+	public void ITapOnContactIamInACallWith(String name) throws Throwable {
+
+		name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+
+		getIncomingCallPage().tapOnNameInCallWith(name);
+
 	}
 
 }

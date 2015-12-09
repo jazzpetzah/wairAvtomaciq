@@ -548,6 +548,11 @@ public class AndroidCommonUtils extends CommonUtils {
         }
     }
 
+    public static void insertContact(String name) throws Exception {
+        final List<Integer> ids = insertContactAndGetIds();
+        bindContactNameById(ids, name);
+    }
+
     public static void insertContact(String name, String email,
                                      PhoneNumber phoneNumber) throws Exception {
         final List<Integer> ids = insertContactAndGetIds();
@@ -572,7 +577,7 @@ public class AndroidCommonUtils extends CommonUtils {
 
     public static void broadcastInvitationCode(String code) throws Exception {
         executeAdb(String.format("shell am broadcast -a com.android.vending.INSTALL_REFERRER " +
-                "-n \"%s/com.waz.zclient.broadcast.ReferralBroadcastReceiver\" "+
+                "-n \"%s/com.waz.zclient.broadcast.ReferralBroadcastReceiver\" " +
                 "--es referrer \"invite-%s\"", getAndroidPackageFromConfig(AndroidCommonUtils.class), code));
     }
 }

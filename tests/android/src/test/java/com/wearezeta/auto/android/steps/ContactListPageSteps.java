@@ -120,6 +120,19 @@ public class ContactListPageSteps {
     }
 
     /**
+     * Makes a short swipe on teh contact to get the 3 dots for the option menu
+     * @step. ^I short swipe right on a (.*)
+     * @param contact to swipe on
+     * @throws Exception
+     */
+    @When("^I short swipe right on a (.*)$")
+    public void IShortSwipeRightOnAUser(String contact) throws Exception {
+        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+        getContactListPage().swipeShortRightOnConversation(1000,contact);
+
+    }
+
+    /**
      * Presses on search bar in the conversation List to open search (people
      * picker)
      *
@@ -439,6 +452,44 @@ public class ContactListPageSteps {
     @When("^I tap Invite button at the bottom of conversations list$")
     public void ITapInviteButton() throws Exception {
         getContactListPage().tapInviteButton();
+    }
+
+    /**
+     * Verifies if Leave check box is visible or not
+     * @step. ^I( do not)? see the Leave check box$
+     * @param shouldNotSee equals to null if "do not" part does not exist
+     * @throws Exception
+     */
+    @Then("^I( do not)? see the Leave check box$")
+    public void ISeeTheLeaveCheckBox(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue(getContactListPage().isLeaveCheckBoxVisible());
+        } else {
+            Assert.assertFalse(getContactListPage().isLeaveCheckBoxVisible());
+        }
+    }
+
+    /**
+     * Verifies that the three dot button to open the option menu is visible
+     *
+     * @throws Exception
+     * @step. ^I see three dots option menu button$
+     */
+    @When("^I see three dots option menu button$")
+    public void ISeeThreeDotsOptionMenuButton() throws Exception {
+        Assert.assertTrue("Three dot button is not visible",
+                getContactListPage().isThreeDotButtonVisible());
+    }
+
+    /**
+     * Taps the three dot button to open the option menu
+     *
+     * @throws Exception
+     * @step. ^I press the three dots option menu button$
+     */
+    @When("^I press the three dots option menu button$")
+    public void IPressTheThreeDotsOptionMenuButton() throws Exception {
+        getContactListPage().tapThreeDotOptionMenuButton();
     }
 
 }

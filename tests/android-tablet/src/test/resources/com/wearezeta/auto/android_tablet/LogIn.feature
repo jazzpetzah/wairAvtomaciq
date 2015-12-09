@@ -1,6 +1,6 @@
-Feature: Sign In
+Feature: Log In
 
-  @id2262 @regression @rc
+  @id2262 @regression @rc @rc44
   Scenario Outline: Sign in to Wire in portrait mode
     Given There is 1 user where <Name> is me
     Given I see welcome screen
@@ -16,7 +16,7 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @id2248 @regression @rc
+  @id2248 @regression @rc @rc44
   Scenario Outline: Sign in to Wire in landscape mode
     Given There is 1 user where <Name> is me
     Given I see welcome screen

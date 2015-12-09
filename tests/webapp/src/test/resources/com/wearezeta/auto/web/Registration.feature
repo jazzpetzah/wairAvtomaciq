@@ -22,7 +22,7 @@ Feature: Registration
     Then I see user name on self profile page <Name>
     Then I see user email on self profile page <Email>
     And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+      And I select Log out menu item on self profile page
 
     Examples: 
       | Email      | Password      | Name      |
@@ -64,7 +64,7 @@ Feature: Registration
     Then I see my avatar on top of Contact list
     When I open self profile
     And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+    And I select Log out menu item on self profile page
     And I see Sign In page
     When I Sign in using login <Login> and password <Password>
     Then I do not see Self Picture Upload dialog
@@ -87,7 +87,7 @@ Feature: Registration
     Then I see my avatar on top of Contact list
     When I open self profile
     And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+    And I select Log out menu item on self profile page
     And I see Sign In page
     When I Sign in using login <Login> and password <Password>
     Then I do not see Self Picture Upload dialog
@@ -167,7 +167,7 @@ Feature: Registration
     And I enter user password "<Password>" on Registration page
     And I submit registration form
     Then I verify that the email field on the registration form is marked as error
-    And I see error "Not a valid email address." on Verification page
+    And I see error "Please enter a valid email address." on Verification page
 
     Examples: 
       | Email        | Password      | Name      |

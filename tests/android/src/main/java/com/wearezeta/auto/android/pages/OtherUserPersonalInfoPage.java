@@ -76,6 +76,9 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	private static final Function<Integer, String> xpathConvOptionsMenuItemByIndex = idx -> String
 			.format("(//*[@id='ttv__settings_box__item'])[%d]", idx);
 
+	private static final Function<Integer, String> xpathGroupOptionsMenuItemByIndex = idx -> String
+			.format("(//*[@id='fl__participant__settings_box']//*[starts-with(@id, 'ttv__settings_box__item')])[%d]", idx);
+
 	@FindBy(id = PeoplePickerPage.idParticipantsClose)
 	private WebElement closeButton;
 
@@ -100,7 +103,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	@FindBy(id = idParticipantsSubHeader)
 	private WebElement participantsSubHeader;
 
-	@FindBy(id = ConnectToPage.idConnectToHeader)
+	@FindBy(id = IncomingPendingConnectionsPage.idConnectToHeader)
 	private List<WebElement> connectToHeader;
 
 	public OtherUserPersonalInfoPage(Future<ZetaAndroidDriver> lazyDriver)
@@ -293,7 +296,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public String getUserProfileMenuItemNameAtIndex(int position) throws Exception {
-		final By locator = By.xpath(xpathConvOptionsMenuItemByIndex.apply(position));
+		final By locator = By.xpath(xpathGroupOptionsMenuItemByIndex.apply(position));
 		return this.getDriver().findElement(locator).getText();
 	}
 

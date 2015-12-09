@@ -530,17 +530,32 @@ public class DialogPageSteps {
 				.getLastMessageFromDialog()));
 	}
 
+	/**
+	 * Send message with leading empty spaces by script
+	 * 
+	 * @step. I input message with leading empty spaces
+	 * 
+	 * @throws Throwable
+	 */
 	@When("I input message with leading empty spaces")
 	public void IInpuMessageWithLeadingEmptySpace() throws Throwable {
 		message = onlySpacesMessage + automationMessage;
-		getDialogPage().sendStringToInput(message);
+		getDialogPage().sendMessageUsingScript(message);
 		message = automationMessage;
 	}
 
+	/**
+	 * Send message with trailing empty spaces by script
+	 * 
+	 * @step. I input message with trailing empty spaces
+	 * 
+	 * @throws Throwable
+	 */
 	@When("I input message with trailing emtpy spaces")
 	public void IInputMessageWithTrailingEmptySpace() throws Throwable {
-		message = automationMessage + "." + onlySpacesMessage;
+		message = automationMessage + onlySpacesMessage;
 		getDialogPage().sendMessageUsingScript(message);
+		message = automationMessage;
 	}
 
 	@When("I input message with lower case and upper case")
@@ -1196,5 +1211,17 @@ public class DialogPageSteps {
 	@When("^I clear conversation text input$")
 	public void IClearConversationTextInput() throws Exception {
 		getDialogPage().clearTextInput();
+	}
+	
+	/**
+	 * Verify that conversation is scrolled to the end by verifying that plus button and text input is visible
+	 * 
+	 * @step. ^I see conversation is scrolled to the end$
+	 * @throws Throwable 
+	 */
+	@When("^I see conversation is scrolled to the end$")
+	public void ISeeConversationIsScrolledToEnd() throws Throwable {
+		Assert.assertTrue(getDialogPage().isPlusButtonVisible());
+		Assert.assertTrue(getDialogPage().isCursorInputVisible());
 	}
 }

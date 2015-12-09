@@ -18,7 +18,7 @@ public class SelfProfilePage extends
 	// TODO hide behind driver impl
 	private final Robot robot = new Robot();
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathCameraButton)
+	@FindBy(how = How.CSS, using = WebAppLocators.SelfProfilePage.xpathCameraButton)
 	private WebElement cameraButton;
 
 	public SelfProfilePage(Future<ZetaWebAppDriver> lazyDriver)
@@ -28,7 +28,7 @@ public class SelfProfilePage extends
 
 	public boolean isSettingsButtonVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.xpath(WebAppLocators.SelfProfilePage.xpathGearButton));
+				By.cssSelector(WebAppLocators.SelfProfilePage.cssGearButton));
 	}
 
 	public boolean isCameraButtonClickable() throws Exception {

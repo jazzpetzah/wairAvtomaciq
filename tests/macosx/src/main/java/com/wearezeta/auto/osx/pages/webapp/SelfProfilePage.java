@@ -28,7 +28,7 @@ public class SelfProfilePage extends WebPage {
 	// TODO hide behind driver impl
 	private final Robot robot = new Robot();
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathGearButton)
+	@FindBy(how = How.CSS, using = WebAppLocators.SelfProfilePage.cssGearButton)
 	private WebElement gearButton;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathCameraButton)
@@ -59,7 +59,7 @@ public class SelfProfilePage extends WebPage {
 
 	public boolean isSettingsButtonVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.xpath(WebAppLocators.SelfProfilePage.xpathGearButton));
+				By.cssSelector(WebAppLocators.SelfProfilePage.cssGearButton));
 	}
 
 	public boolean isCameraButtonClickable() throws Exception {

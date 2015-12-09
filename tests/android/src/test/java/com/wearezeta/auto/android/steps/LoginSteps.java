@@ -7,7 +7,6 @@ import org.openqa.selenium.NoSuchElementException;
 
 import com.wearezeta.auto.android.pages.registration.AreaCodePage;
 import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
-import com.wearezeta.auto.android.pages.registration.PhoneNumberSignInPage;
 import com.wearezeta.auto.android.pages.registration.PhoneNumberVerificationPage;
 import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
@@ -38,10 +37,6 @@ public class LoginSteps {
         return pagesCollection.getPage(AreaCodePage.class);
     }
 
-    private PhoneNumberSignInPage getPhoneNumberSignInPage() throws Exception {
-        return pagesCollection.getPage(PhoneNumberSignInPage.class);
-    }
-
     private PhoneNumberVerificationPage getVerificationPage() throws Exception {
         return pagesCollection.getPage(PhoneNumberVerificationPage.class);
     }
@@ -59,15 +54,8 @@ public class LoginSteps {
     public void ISignInUsingMyEmail() throws Exception {
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
         assert getWelcomePage().waitForInitialScreen() : "The initial screen was not shown";
-        getWelcomePage().tapIHaveAnAccount();
-        try {
-            getEmailSignInPage().setLogin(self.getEmail());
-        } catch (NoSuchElementException e) {
-            // FIXME: try again because sometimes tapping "I have account"
-            // button fails without any reason
-            getWelcomePage().tapIHaveAnAccount();
-            getEmailSignInPage().setLogin(self.getEmail());
-        }
+        getWelcomePage().tapSignInTab();
+        getEmailSignInPage().setLogin(self.getEmail());
         getEmailSignInPage().setPassword(self.getPassword());
         getEmailSignInPage().logIn(true, DEFAULT_LOGIN_SCREEN_TIMEOUT_SECONDS);
     }
@@ -120,15 +108,7 @@ public class LoginSteps {
     public void ISignInUsingMyEmailOrPhoneNumber() throws Exception,
             AssertionError {
         if (random.nextInt(100) < PHONE_NUMBER_LOGIN_THRESHOLD) {
-            try {
-                ISignInUsingMyPhoneNumber();
-            } catch (AssertionError | Exception e) {
-                if (getVerificationPage().isIncorrectCodeErrorAppears())
-                    getVerificationPage().clickOk();
-                getVerificationPage().clickEditPhoneButton();
-                getPhoneNumberSignInPage().clickRegisterButton();
-                ISignInUsingMyEmail();
-            }
+            ISignInUsingMyPhoneNumber();
         } else {
             ISignInUsingMyEmail();
         }
