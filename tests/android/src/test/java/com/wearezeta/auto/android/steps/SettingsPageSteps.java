@@ -52,7 +52,7 @@ public class SettingsPageSteps {
      */
     @And("^I confirm sign out$")
     public void IConfirmSignOut() throws Exception {
-        getSettingsPage().confirmSignOut();
+        getSettingsPage().confirmLogout();
     }
 
     private BufferedImage previousThemeSwitcherState = null;
