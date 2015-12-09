@@ -129,7 +129,7 @@ Feature: Connect
     And I open conversation with <Name2>
     And I open self profile
     And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+      And I select log out menu item on self profile page
     And User <Name2> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
@@ -140,7 +140,7 @@ Feature: Connect
     And I see Contact list with name <Name>
     And I open self profile
     And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+      And I select log out menu item on self profile page
     And User <Name> is me
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
@@ -171,8 +171,8 @@ Feature: Connect
     And I see Contact list with name <Name2>
     And I open conversation with <Name2>
     And I open self profile
-    And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+      And I click gear button on self profile page
+      And I select log out menu item on self profile page
     And User <Name2> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
@@ -182,8 +182,8 @@ Feature: Connect
     And I ignore connection request from user <Name>
     And I do not see Contact list with name <Name>
     And I open self profile
-    And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+      And I click gear button on self profile page
+      And I select log out menu item on self profile page
     And User <Name> is me
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
@@ -254,8 +254,8 @@ Feature: Connect
     And I write random message
     And I send message
     And I open self profile
-    And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+      And I click gear button on self profile page
+      And I select log out menu item on self profile page
     And I see Sign In page
     And User <Name2> is me
     And I Sign in using login <Login2> and password <Password2>
@@ -265,8 +265,8 @@ Feature: Connect
     And I write random message
     And I send message
     And I open self profile
-    And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+      And I click gear button on self profile page
+      And I select log out menu item on self profile page
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
     And User <Name> is me
@@ -295,16 +295,16 @@ Feature: Connect
     And User <User2> sent message <Msg2> to conversation <User1>
     And I do not see Contact list with name <Name>
     When I open self profile
-    And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+      And I click gear button on self profile page
+      And I select log out menu item on self profile page
     And User <User2> is me
     And I Sign in using login <User2Email> and password <User2Password>
     Then I see my avatar on top of Contact list
     When I open conversation with <User1>
     Then I see text message <Msg2>
     When I open self profile
-    And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+      And I click gear button on self profile page
+      And I select log out menu item on self profile page
     And <User1> unblocks user <User2>
     And User <User1> is me
     And I Sign in using login <User1Email> and password <User1Password>
@@ -432,8 +432,8 @@ Feature: Connect
     When I close People Picker
     Then I do not see Contact list with name <Contact1>
     When I open self profile
-    And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+      And I click gear button on self profile page
+      And I select log out menu item on self profile page
     And User <Contact1> is me
     And I Sign in using login <Contact1Email> and password <Contact1Password>
     Then I see my avatar on top of Contact list
@@ -465,8 +465,8 @@ Feature: Connect
     Then I do not see Pending Outgoing Connection popover
     Then I do not see Contact list with name <Contact1>
     When I open self profile
-    And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+      And I click gear button on self profile page
+      And I select log out menu item on self profile page
     And User <Contact1> is me
     And I Sign in using login <Contact1Email> and password <Contact1Password>
     Then I see my avatar on top of Contact list

@@ -253,7 +253,7 @@ Feature: People View
     Then I see archive list with name <ChatName>
     When I open self profile
     And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+      And I select log out menu item on self profile page
     And I Sign in using login <KnownContact> and password <KnownContactPassword>
     And I open conversation with <ChatName>
     Then I see <MessageLeft> action for <Name> in conversation
@@ -341,7 +341,7 @@ Feature: People View
     Then I see <Message> action for <Contact2>,<Contact1> in conversation
     And I open self profile
     And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+      And I select log out menu item on self profile page
     And I see Sign In page
     And User <Contact1> is me
     And I Sign in using login <Contact1> and password <Password>
@@ -350,8 +350,8 @@ Feature: People View
     And I open conversation with <Name>,<Contact2>
     And I see user <Name> action <Message2> for <Contact2>,<Contact1> in conversation
     And I open self profile
-    And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+      And I click gear button on self profile page
+      And I select log out menu item on self profile page
     And I see Sign In page
     And User <Contact2> is me
     And I Sign in using login <Contact2> and password <Password>

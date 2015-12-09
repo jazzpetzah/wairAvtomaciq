@@ -688,7 +688,7 @@ public final class IOSLocators {
 	}
 
 	public final class LoginPage {
-		public static final String namePhoneLoginButton = "LOG IN BY PHONE";
+		public static final String namePhoneLoginButton = "RegistrationRightButton";
 		public static final String nameBackButton = "BackToWelcomeButton";
 		public static final String nameEmailLoginButton = "EMAIL SIGN IN";
 		public static final String nameMaybeLater = "MAYBE LATER";
