@@ -412,7 +412,7 @@ public class PeoplePickerPage extends IOSPage {
 
 	public boolean isUserSelected(String name) throws Exception {
 		WebElement el = getDriver().findElement(
-				By.xpath(String.format(IOSLocators.xpathPeoplePickerUserAvatar,
+				By.xpath(String.format(IOSLocators.xpathPeoplePickerSelectedCell,
 						name)));
 		boolean flag = el.getAttribute("value").equals("1");
 		return flag;
@@ -420,7 +420,7 @@ public class PeoplePickerPage extends IOSPage {
 
 	public void clickConnectedUserAvatar(String name) throws Exception {
 		WebElement el = getDriver().findElement(
-				By.xpath(String.format(IOSLocators.xpathPeoplePickerUserAvatar,
+				By.xpath(String.format(IOSLocators.xpathPeoplePickerSelectedCell,
 						name)));
 		el.click();
 	}

@@ -43,10 +43,10 @@ Feature: People View
     And I see user <Contact3> found on People picker page
     And I tap on connected user <Contact3> on People picker page
     And I click on Go button
+    Then I can see You Added <Contact3> message
+    When I open group conversation details
     Then I see that conversation has <Number> people
-    And I see <Number> participants avatars
-    When I exit the group info page
-    And I can see You Added <Contact3> message
+    Then I see <Number> participants avatars
 
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | Number | GroupChatName |
@@ -221,15 +221,15 @@ Feature: People View
     And I see People picker page
     #And I dont see keyboard
     And I tap on connected user <Contact2> on People picker page
-    And I see user <Contact2> on People picker page is selected
+    Then I see user <Contact2> on People picker page is selected
     And I tap on connected user <Contact2> on People picker page
-    And I see user <Contact2> on People picker page is NOT selected
+    Then I see user <Contact2> on People picker page is NOT selected
     And I tap on connected user <Contact2> on People picker page
     And I tap on Search input on People picker page
-    And I see keyboard
-    And I don't see Add to conversation button
+    Then I see keyboard
+    #And I don't see Add to conversation button
     And I press keyboard Delete button
-    And I see user <Contact2> on People picker page is NOT selected
+    Then I see user <Contact2> on People picker page is NOT selected
 
     Examples: 
       | Name      | Contact1  | Contact2  |

@@ -485,6 +485,7 @@ public final class IOSLocators {
 	public static final String namePeoplePickerOtheraLabel = "OTHERS";
 	public static final String NamePeoplePickerTopPeopleLabel = "TOP PEOPLE";
 	public static final String xpathPeoplePickerUserAvatar = "//UIACollectionCell[descendant::UIAButton[@name='HIDE'] and UIAStaticText[@name='%s']]";
+	public static final String xpathPeoplePickerSelectedCell = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[2]/UIATableCell[@name='%s']";
 	public static final String namePeoplePickerAddToConversationButton = "ADD TO CONVERSATION";
 	public static final String xpathPeoplePickerTopConnectionsAvatar = "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell[%d]";
 	public static final String xpathPeoplePickerTopConnectionsName = "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell[%d]/UIAStaticText[last()]";
@@ -516,7 +517,7 @@ public final class IOSLocators {
 
 	public static final String classNameKeyboard = "UIAKeyboard";
 
-	public static final String nameKeyboardDeleteButton = "Delete";
+	public static final String nameKeyboardDeleteButton = "delete";
 	public static final String nameKeyboardReturnButton = "Send";
 
 	public static final class KeyboardButtons {

@@ -144,6 +144,7 @@ public class CommonIOSSteps {
 	@When("^I press keyboard Delete button$")
 	public void IPressKeyboardDeleteBtn() throws Exception {
 		pagesCollecton.getCommonPage().clickKeyboardDeleteButton();
+		pagesCollecton.getCommonPage().clickKeyboardDeleteButton();
 	}
 
 	@When("^I scroll up page a bit$")
