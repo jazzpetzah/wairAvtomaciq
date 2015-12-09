@@ -416,7 +416,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user3Name | OnlyConnected |
 
-  @regression @id3957
+  @regression @id3957 @torun
   Scenario Outline: Verify that deleted conversation via participant view isn't going to archive
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users

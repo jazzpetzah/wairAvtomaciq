@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.*;
 import java.util.concurrent.Future;
 
@@ -23,7 +22,6 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
-import javax.imageio.ImageIO;
 
 public class ContactListPage extends IOSPage {
 
@@ -486,8 +484,6 @@ public class ContactListPage extends IOSPage {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "verifyUnsilenceIphone6plus.png");
 		} else if (deviceType.equals("iPhone 6") && isSilenced) {
-//			File outputfile = new File("silenceiPhone6.png");
-//			ImageIO.write(silencedConversation, "png", outputfile);
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "silenceiPhone6.png");
 		} else if (deviceType.equals("iPhone 6") && !isSilenced) {
