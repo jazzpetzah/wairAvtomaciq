@@ -10,7 +10,7 @@ Feature: Sign Out
     And I see my avatar on top of Contact list
     When I open self profile
     And I click gear button on self profile page
-      And I select log out menu item on self profile page
+    And I select Log out menu item on self profile page
     And I see Sign In page
     And User <Name2> is me
     And I Sign in using login <Login2> and password <Password2>
