@@ -452,7 +452,6 @@ Feature: People View
     And I click delete menu button
     And I select Also Leave option on Delete conversation dialog
     And I confirm delete conversation content
-    And I return to the chat list
     And I open search by taping on it
     And I input conversation name <GroupChatName> in Search input
     Then I see conversation <GroupChatName> is NOT presented in Search results
