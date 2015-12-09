@@ -39,7 +39,6 @@ public class DialogPage extends AndroidPage {
     public static final String idSelfAvatar = "civ__cursor__self_avatar";
     @FindBy(id = idSelfAvatar)
     private WebElement selfAvatar;
-    final By selfAvatarLocator = By.id(idSelfAvatar);
 
     private static final Function<String, String> xpathConversationMessageByText = text -> String
             .format("//*[@id='ltv__row_conversation__message' and @value='%s']",
@@ -55,7 +54,6 @@ public class DialogPage extends AndroidPage {
 
     @FindBy(id = giphyPreviewButtonId)
     private WebElement giphyPreviewButton;
-    final By giphyPreviewButtonLocator = By.id(giphyPreviewButtonId);
 
     @FindBy(id = idEditText)
     private WebElement cursorInput;
@@ -137,9 +135,9 @@ public class DialogPage extends AndroidPage {
     @FindBy(id = idBackgroundOverlay)
     private WebElement backgroundOverlay;
 
-    private static final String idConnectRequestChatLabel = "ttv__row_conversation__connect_request__chathead_footer__label";
-    @FindBy(id = idConnectRequestChatLabel)
-    private WebElement connectRequestChatLabel;
+    private static final String idStartChatLabel = "ttv__row_conversation__connect_request__chathead_footer__label";
+    private static final Function<String,String> xpathStartChatLabelByPartOfText =
+            text -> String.format("//*[@id='%s' and contains(@value, '%s')]", idStartChatLabel, text);
 
     private static final String idConnectRequestChatUserName = "ttv__row_conversation__connect_request__chathead_footer__username";
     @FindBy(id = idConnectRequestChatUserName)
@@ -458,14 +456,9 @@ public class DialogPage extends AndroidPage {
                 By.xpath(xpathDialogTakePhotoButton)) : "Take Photo button is still visible after being clicked";
     }
 
-    public String getConnectRequestChatLabel() throws Exception {
-        assert isConnectRequestChatLabelVisible();
-        return connectRequestChatLabel.getText();
-    }
-
-    public boolean isConnectRequestChatLabelVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idConnectRequestChatLabel));
+    public boolean waitUntilStartChatTitleContains(String expectedText) throws Exception {
+        final By locator = By.xpath(xpathStartChatLabelByPartOfText.apply(expectedText));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     /**

@@ -524,13 +524,11 @@ public class DialogPageSteps {
      * @step. ^I see Connect to (.*) Dialog page$
      */
     @Then("^I see Connect to (.*) Dialog page$")
-    public void ThenIseeConnectToDialogPage(String contact) throws Exception {
+    public void ThenISeeConnectToDialogPage(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        final String actualLabel = getDialogPage().getConnectRequestChatLabel();
         Assert.assertTrue(String.format(
-                "The actual label '%s' does not contain '%s' part",
-                actualLabel, contact),
-                actualLabel.toLowerCase().contains(contact.toLowerCase()));
+                "The name '%s' is not visible in start chat title",
+                contact), getDialogPage().waitUntilStartChatTitleContains(contact));
     }
 
     /**
@@ -547,9 +545,6 @@ public class DialogPageSteps {
                 "Overlap between two images has not enough score. Expected >= 0.75, current = "
                         + score, score >= 0.75d);
     }
-
-    // ------- From Group Chat Page
-    public static final String userRemovedMessage = "YOU REMOVED ";
 
     /**
      * Checks to see that a group chat exists, where the name of the group chat
@@ -719,7 +714,7 @@ public class DialogPageSteps {
                         .waitUntilMissedCallMessageIsVisible(expectedMessage));
     }
 
-     /**
+    /**
      * Checks to see if join group call overlay is present or not
      *
      * @param shouldNotSee is set to null if " do not" part does not exist
