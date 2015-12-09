@@ -281,8 +281,6 @@ Feature: Connect
   Scenario Outline: Verify you dont receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <User1> is me
     Given Myself is connected to <User2>
-    Given Contact <User2> sends image <Picture1> to single user conversation <User1>
-    Given User <User2> pinged in the conversation with <User1>
     Given User <User2> sent message <Msg1> to conversation <User1>
     Given I switch to Sign In page
     Given I Sign in using login <User1> and password <User1Password>
