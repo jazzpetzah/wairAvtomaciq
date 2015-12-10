@@ -725,7 +725,7 @@ Feature: Conversation List
       | Name      | Contact   | Picture     | ConversationType |
       | user1Name | user2Name | testing.jpg | single user      |
 
-  @regression @id3966
+  @regression @id3966 @ZIOS-5247
   Scenario Outline: Verify removing the content and leaving from the group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -749,7 +749,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
-  @regression @id3967
+  @regression @id3967 @ZIOS-5247
   Scenario Outline: Verify removing the content and leaving from the group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
