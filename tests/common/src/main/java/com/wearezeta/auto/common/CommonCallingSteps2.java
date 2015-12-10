@@ -15,7 +15,7 @@ import com.wearezeta.auto.common.calling2.v1.model.Call;
 import com.wearezeta.auto.common.calling2.v1.model.CallStatus;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
 import com.wearezeta.auto.common.calling2.v1.model.Instance;
-import com.wearezeta.auto.common.calling2.v1.model.InstanceType;
+import com.wearezeta.auto.common.calling2.v1.model.VersionedInstanceType;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -42,6 +42,7 @@ public final class CommonCallingSteps2 {
 	private static final int INSTANCE_START_TIMEOUT_SECONDS = 190;
 	private static final int INSTANCE_CREATION_RETRIES = 3;
 	private static final long POLLING_FREQUENCY_MILLISECONDS = 1000;
+	private static final String REGEX_CONTAINS_NUMBER = ".*\\d.*";
 	private static CommonCallingSteps2 singleton = null;
 
 	private final ExecutorService executor;
@@ -109,8 +110,9 @@ public final class CommonCallingSteps2 {
 
 		final String convId = getConversationId(userAs, conversationName);
 
-		final Instance instance = client.startInstance(userAs,
-				instanceTypeFix(instanceType), ZetaFormatter.getScenario());
+		Instance instance = client.startInstance(userAs,
+				convertTypeStringToTypeObject(instanceType),
+				ZetaFormatter.getScenario());
 		addInstance(instance, userAs);
 
 		final Call call = client.callToUser(instance, convId);
@@ -212,7 +214,8 @@ public final class CommonCallingSteps2 {
 		ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
 
 		final Instance instance = client.startInstance(userAs,
-				instanceTypeFix(instanceType), ZetaFormatter.getScenario());
+				convertTypeStringToTypeObject(instanceType),
+				ZetaFormatter.getScenario());
 		addInstance(instance, userAs);
 	}
 
@@ -257,8 +260,9 @@ public final class CommonCallingSteps2 {
 			createTasks.put(calleeName, CompletableFuture.supplyAsync(() -> {
 				try {
 					final Instance instance = client.startInstance(userAs,
-							instanceTypeFix(instanceType),
+							convertTypeStringToTypeObject(instanceType),
 							ZetaFormatter.getScenario());
+					addInstance(instance, userAs);
 					addInstance(instance, userAs);
 					return instance;
 				} catch (CallingServiceInstanceException ex) {
@@ -458,21 +462,17 @@ public final class CommonCallingSteps2 {
 		}
 	}
 
-	/**
-	 * Converts a string for the calling service instance type to an Enum. For
-	 * compatibility reasons WEBDRIVER is changed to CHROME. WEBDRIVER was used
-	 * as the callingservice didn't supported other browsers than CHROME.
-	 *
-	 * @param instanceType
-	 * @return
-	 */
-	private InstanceType instanceTypeFix(String instanceType) {
-		instanceType = instanceType.toUpperCase();
-		if (instanceType.equals("WEBDRIVER")) {
-			instanceType = "CHROME";
-			LOG.warn("Please use CHROME or FIREFOX instead of WEBDRIVER as instance type for calling! WEBDRIVER will be removed in future versions.");
+	private VersionedInstanceType convertTypeStringToTypeObject(
+			String instanceType) {
+		instanceType = instanceType.toLowerCase();
+		final String[] versionedType = instanceType.split(":");
+		final String type = versionedType[0];
+		final String version = versionedType[1];
+		if (type == null || version == null) {
+			throw new IllegalArgumentException(
+					"Could not parse instance type and/or version");
 		}
-		return InstanceType.valueOf(instanceType);
+		return new VersionedInstanceType(type, version);
 	}
 
 	private String getConversationId(ClientUser userAs, String name)

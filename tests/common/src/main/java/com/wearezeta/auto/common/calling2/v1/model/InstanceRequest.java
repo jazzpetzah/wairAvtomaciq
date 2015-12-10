@@ -8,12 +8,12 @@ public final class InstanceRequest {
 	private final String email;
 	private final String password;
 	private final BackendType backend;
-	private final InstanceType instanceType;
+	private final VersionedInstanceType instanceType;
 	private final String name;
 	private final long timeout = 1000L * 60 * 60;
 
 	public InstanceRequest(String email, String password, BackendType backend,
-			InstanceType instanceType, String name) {
+			VersionedInstanceType instanceType, String name) {
 		this.email = email;
 		this.password = password;
 		this.backend = backend;
@@ -33,7 +33,7 @@ public final class InstanceRequest {
 		return backend;
 	}
 
-	public InstanceType getInstanceType() {
+	public VersionedInstanceType getInstanceType() {
 		return instanceType;
 	}
 
