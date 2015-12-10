@@ -43,9 +43,6 @@ Feature: Calling_Matrix
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the calling bar
     Then I see the calling bar from user <Contact>
-    And I wait for 10 seconds
-    And <Contact> verify to have 1 flows
-    And <Contact> verify that all flows have greater than 0 bytes
     And I end the call
 
     Examples: 
