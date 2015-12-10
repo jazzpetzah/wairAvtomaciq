@@ -580,7 +580,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
       | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
 
-  @regression @id3964
+  @regression @id3964 @ZIOS-5063
   Scenario Outline: Verify posting in a 1-to-1 conversation without content [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -606,7 +606,7 @@ Feature: Conversation View
       | Name      | Contact1  | Message |
       | user1Name | user2Name | testing |
 
-  @regression @id3965
+  @regression @id3965 @ZIOS-5063
   Scenario Outline: Verify posting in a 1-to-1 conversation without content [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
