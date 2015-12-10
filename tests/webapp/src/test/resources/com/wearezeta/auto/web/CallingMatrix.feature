@@ -21,9 +21,10 @@ Feature: Calling_Matrix
     And I end the call
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
-      | user1Email | user1Password | user1Name | user2Name | firefox     | 60      |
+      | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome:46.0.2490.86 | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome:45.0.2454.85 | 60      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:42.0        | 60      |
 
   @id0002 @calling_matrix @calling @calling_debug
   Scenario Outline: Verify I can receive 1:1 call from <CallBackend>
