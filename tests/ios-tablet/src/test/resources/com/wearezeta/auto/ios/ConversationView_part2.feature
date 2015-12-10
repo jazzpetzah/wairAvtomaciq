@@ -12,7 +12,7 @@ Feature: Conversation View
     And I type the message and send it
     And I scroll to the beginning of the conversation
     And I see plus button is not shown
-    And I tap on text input
+    And I tap on text input to scroll to the end
     Then I see conversation is scrolled to the end
     And I see message in the dialog
 
@@ -33,7 +33,7 @@ Feature: Conversation View
     And I type the message and send it
     And I scroll to the beginning of the conversation
     And I see plus button is not shown
-    And I tap on text input
+    And I tap on text input to scroll to the end
     Then I see conversation is scrolled to the end
     And I see message in the dialog
 
@@ -731,7 +731,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact>
-    And I tap on text input
+    And I tap on text input to scroll to the end
     And I scroll to the beginning of the conversation
     And I swipe the text input cursor
     Then I see controller buttons can not be visible
@@ -750,7 +750,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact>
-    And I tap on text input
+    And I tap on text input to scroll to the end
     And I scroll to the beginning of the conversation
     And I swipe the text input cursor
     Then I see controller buttons can not be visible
