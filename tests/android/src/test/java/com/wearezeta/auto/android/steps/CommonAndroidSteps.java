@@ -816,6 +816,8 @@ public class CommonAndroidSteps {
     @When("^I rotate UI to landscape$")
     public void WhenIRotateUILandscape() throws Exception {
         pagesCollection.getCommonPage().rotateLandscape();
+        // To let the UI to handle up changes
+        Thread.sleep(1000);
     }
 
     /**
@@ -827,6 +829,8 @@ public class CommonAndroidSteps {
     @When("^I rotate UI to portrait$")
     public void WhenIRotateUIPortrait() throws Exception {
         pagesCollection.getCommonPage().rotatePortrait();
+        // To let the UI to handle up changes
+        Thread.sleep(1000);
     }
 
     /**
