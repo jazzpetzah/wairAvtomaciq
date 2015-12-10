@@ -141,7 +141,7 @@ Feature: Conversation View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I tap on text input
+    And I tap on text input to scroll to the end
     And I return to the chat list
     And I tap on contact name <Contact>
     And I see media link <SoundCloudLink> and media in dialog

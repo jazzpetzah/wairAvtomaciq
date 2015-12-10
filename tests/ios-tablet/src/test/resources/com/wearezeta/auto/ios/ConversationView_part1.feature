@@ -512,7 +512,7 @@ Feature: Conversation View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     Then I see dialog page
-    And I scroll to the end of the conversation
+    And I tap on text input to scroll to the end
     And I see media link <SoundCloudLink> and media in dialog
     When I tap media link
     And I scroll media out of sight until media bar appears
