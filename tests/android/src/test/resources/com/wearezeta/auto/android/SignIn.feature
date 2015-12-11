@@ -78,4 +78,4 @@ Feature: Sign In
 
     Examples:
       | Name      | Email      | Password      | Contact   | ErrMessage                                           |
-      | user1Name | user1Email | user1Password | user2Name | Please check your internet connection and try again. |
+      | user1Name | user1Email | user1Password | user2Name | Please check your Internet connection and try again. |
