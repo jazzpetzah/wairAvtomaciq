@@ -247,6 +247,7 @@ public class LoginPage extends IOSPage {
 	public void dismisSettingsWaring() throws Exception {
 		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
 				By.name(IOSLocators.LoginPage.nameMaybeLater))) {
+			DriverUtils.waitUntilElementClickable(getDriver(), maybeLater);
 			for (int i = 0; i < 3; i++) {
 				try {
 					maybeLater.click();
@@ -267,12 +268,8 @@ public class LoginPage extends IOSPage {
 
 	public Boolean isLoginFinished() throws Exception {
 		dismisSettingsWaring();
-		DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.name(IOSLocators.ContactListPage.nameSelfButton));
-		return DriverUtils.isElementPresentAndDisplayed(
-				getDriver(),
-				getDriver().findElement(
-						By.name(IOSLocators.ContactListPage.nameSelfButton)));
+		return DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.name(IOSLocators.ContactListPage.nameSelfButton), 60);
 	}
 
 	@Override

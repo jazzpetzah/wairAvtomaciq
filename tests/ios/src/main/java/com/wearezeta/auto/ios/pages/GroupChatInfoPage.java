@@ -351,4 +351,9 @@ public class GroupChatInfoPage extends IOSPage {
 		page = new PeoplePickerPage(this.getLazyDriver());
 		return page;
 	}
+	
+	public boolean waitForContactToDisappear(String contact) throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				By.xpath(String.format(IOSLocators.GroupChatInfoPage.xpathUserNameLabel, contact)));
+	}
 }

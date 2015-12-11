@@ -88,7 +88,8 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 	}
 
 	public void catchContinueAlert() throws Exception {
-		if (DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(IOSLocators.nameContinueButton), 5)) {
+		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.name(IOSLocators.nameContinueButton), 5)) {
 			WebElement el = this.getDriver().findElementByName(
 					IOSLocators.nameContinueButton);
 			DriverUtils.waitUntilElementClickable(getDriver(), el);
@@ -123,9 +124,10 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 		return new GroupChatInfoPage(this.getLazyDriver());
 	}
 
-	public DialogPage leavePageToDialogPage() throws Exception {
+	public void clickCloseUserProfileButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(),
+				exitOtherPersonalInfoPageButton);
 		exitOtherPersonalInfoPageButton.click();
-		return new DialogPage(this.getLazyDriver());
 	}
 
 	public PeoplePickerPage addContactToChat() throws Exception {
@@ -171,7 +173,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 		if (nameField.size() == 1)
 			return nameField.get(0).getText();
 		else
-			for (WebElement el: nameField) {
+			for (WebElement el : nameField) {
 				if (!el.getText().trim().equals("")) {
 					return el.getText();
 				}
