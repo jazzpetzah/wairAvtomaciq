@@ -22,7 +22,6 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
-
 public class ContactListPage extends IOSPage {
 
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
@@ -121,8 +120,7 @@ public class ContactListPage extends IOSPage {
 	}
 
 	public PeoplePickerPage openSearch() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.name(IOSLocators.ContactListPage.nameOpenStartUI));
+		DriverUtils.waitUntilElementClickable(getDriver(), openStartUI);
 		openStartUI.click();
 		return new PeoplePickerPage(getLazyDriver());
 	}

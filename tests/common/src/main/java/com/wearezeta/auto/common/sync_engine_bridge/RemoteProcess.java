@@ -20,12 +20,12 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
 
 	private final ActorRef coordinatorActorRef;
 
-	// TODO make configurable
-	private static final String BACKEND = "staging";
+	private final String backendType;
 
 	public RemoteProcess(String processName, ActorRef coordinatorActorRef,
-			FiniteDuration actorTimeout) {
+			FiniteDuration actorTimeout, String backendType) {
 		super(actorTimeout);
+		this.backendType = backendType;
 		this.setName(processName);
 		this.coordinatorActorRef = coordinatorActorRef;
 		if (!coordinatorConnected()) {
@@ -63,7 +63,7 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
 		final String serialized = Serialization
 				.serializedActorPath(coordinatorActorRef);
 		final String[] cmd = { "java", "-jar", getActorsJarLocation(),
-				this.name(), serialized, BACKEND };
+				this.name(), serialized, backendType };
 		final ProcessBuilder pb = new ProcessBuilder(cmd);
 
 		// ! Having a log file is mandatory
