@@ -409,7 +409,9 @@ Feature: Search
     And I tap on 2nd top connection contact
     And I see Create Conversation button on People picker page
     And I press backspace button
+    And I press backspace button
     Then I see open conversation action button on People picker page
+    And I press backspace button
     And I press backspace button
     Then I see action buttons disappeared on People picker page
 
