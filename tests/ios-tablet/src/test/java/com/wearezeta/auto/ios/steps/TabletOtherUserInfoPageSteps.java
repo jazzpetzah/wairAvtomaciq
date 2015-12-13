@@ -121,5 +121,18 @@ public class TabletOtherUserInfoPageSteps {
 			throws Exception {
 		getTabletOtherUserInfoPage().clickConnectButton();
 	}
+	
+	/**
+	 * Click on Back button on user profile popover (usually to return to group chat info page )
+	 * 
+	 * @step. ^I click Go back button on user profile popover$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click Go back button on user profile popover$")
+	public void IClickGOButtonOnUserProfilePopover()
+			throws Exception {
+		getTabletOtherUserInfoPage().clickGoBackButton();
+	}
 
 }

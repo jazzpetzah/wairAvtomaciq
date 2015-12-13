@@ -148,7 +148,8 @@ Feature: People View
     And I click Remove on iPad
     And I see remove warning message on iPad
     And I confirm remove on iPad
-    Then I see that contact <Contact2> is not present on group popover on iPad
+    And I click Go back button on user profile popover
+    Then I see that <Contact2> is not present on group chat info page
 
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -169,7 +170,8 @@ Feature: People View
     And I click Remove on iPad
     And I see remove warning message on iPad
     And I confirm remove on iPad
-    Then I see that contact <Contact2> is not present on group popover on iPad
+    And I click Go back button on user profile popover
+    Then I see that <Contact2> is not present on group chat info page
 
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -758,7 +760,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
-  @regression @id3975
+  @regression @id3975 @ZIOS-5063
   Scenario Outline: Verify removing the content from the group conversation via participant view [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -785,7 +787,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
       | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
 
-  @staging @id3976
+  @staging @id3976 @ZIOS-5063
   Scenario Outline: Verify removing the content from the group conversation via participant view [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users

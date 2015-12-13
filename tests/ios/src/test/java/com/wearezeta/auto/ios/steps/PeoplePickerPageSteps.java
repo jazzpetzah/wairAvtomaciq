@@ -276,7 +276,7 @@ public class PeoplePickerPageSteps {
 	@When("^I input conversation name (.*) in Search input$")
 	public void IInputConversationNameInSearchInput(String name)
 			throws Exception {
-		WhenIFillInSearchFieldUserName(name);
+		WhenIInputInPeoplePickerSearchFieldUserName(name);
 	}
 
 	@When("I tap go to enter conversation")

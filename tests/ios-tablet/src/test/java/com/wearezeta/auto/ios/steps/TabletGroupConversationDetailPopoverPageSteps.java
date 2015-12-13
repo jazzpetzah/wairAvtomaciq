@@ -71,22 +71,6 @@ public class TabletGroupConversationDetailPopoverPageSteps {
 	}
 
 	/**
-	 * Veryfies that there is one less user on the group conversation popover
-	 * 
-	 * @step. ^I see that contact (.*) is not present on group popover on iPad$
-	 * @param name
-	 *            of user that got removed, should not be there
-	 * @throws Throwable
-	 */
-	@Then("^I see that contact (.*) is not present on group popover on iPad$")
-	public void ISeeThatContactIsNotPresentOnGroupPopoverOniPad(String name)
-			throws Throwable {
-		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		Assert.assertTrue(getTabletGroupConversationDetailPopoverPage()
-				.waitForContactToDisappearOniPadPopover(name));
-	}
-
-	/**
 	 * Presses in the ellipses menu on the RENAME button
 	 * 
 	 * @step. ^I press RENAME on the menu on iPad$

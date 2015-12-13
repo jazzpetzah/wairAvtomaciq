@@ -276,7 +276,7 @@ public final class WebAppLocators {
 		public static final String cssGIFButton = "[data-uie-name='do-giphy-popover']";
 
 		// bars (call bar)
-		public static String xpathCallingBarRoot = "//*[contains(@class, 'call-menu') and contains(@class, 'on')]";
+		public static String xpathCallingBarRoot = "//*[contains(@class, 'call-menu') and contains(@class, ' on')]";
 
 		public static final Function<String, String> xpathCallingBarRootByName = text -> String
 				.format(xpathCallingBarRoot

@@ -1,5 +1,6 @@
 package com.wearezeta.auto.common.sync_engine_bridge;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
@@ -17,9 +18,10 @@ public class SEBridge {
     private static final Future<DevicePool> devicePool;
     private static final ExecutorService pool = Executors.newFixedThreadPool(1);
 
-    static {
-        devicePool = pool.submit(() -> new DevicePool());
-    }
+	static {
+		devicePool = pool.submit(() -> new DevicePool(CommonUtils
+				.getBackendType(CommonUtils.class)));
+	}
 
     private static SEBridge instance = null;
     private static final int POOL_CREATION_TIMEOUT = 60; // seconds
@@ -116,6 +118,10 @@ public class SEBridge {
         getCachedDevice(userFrom).sendMessage(convId, message);
     }
 
+	public void addRemoteDeviceToAccount(ClientUser user) throws Exception {
+		getCachedDevice(user);
+	}
+
     public void sendImage(ClientUser userFrom, String convId, String path)
             throws Exception {
         verifyPathExists(path);
@@ -128,4 +134,5 @@ public class SEBridge {
             this.getDevicePool().clear();
         }
     }
+
 }

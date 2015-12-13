@@ -86,7 +86,8 @@ Feature: People View
     And I click Remove
     And I see warning message
     And I confirm remove
-    Then I see that <Contact2> is not present on group chat page
+    And I click close user profile page button
+    Then I see that <Contact2> is not present on group chat info page
 
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -290,7 +291,7 @@ Feature: People View
     And I see user <Contact3> on People picker page is NOT selected
     And I click close button to dismiss people view
     And I see <Contact1> user profile page
-    And I close user profile page to return to dialog page
+    And I click close user profile page button
     And I see dialog page
     And I return to the chat list
     And I see Contact list with my name <Name>
@@ -314,7 +315,7 @@ Feature: People View
     And I open conversation details
     And I press conversation menu button
     And I press menu silence button
-    And I close user profile page to return to dialog page
+    And I click close user profile page button
     And I see dialog page
     And I return to the chat list
     And I see Contact list with my name <Name>
@@ -339,7 +340,7 @@ Feature: People View
     And I open conversation details
     And I press conversation menu button
     And I press menu notify button
-    And I close user profile page to return to dialog page
+    And I click close user profile page button
     And I see dialog page
     And I return to the chat list
     And I see Contact list with my name <Name>

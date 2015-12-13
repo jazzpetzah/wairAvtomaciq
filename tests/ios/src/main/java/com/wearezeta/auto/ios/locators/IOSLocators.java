@@ -785,5 +785,9 @@ public final class IOSLocators {
 		public static final String xpathConfirmPictureButton = "//UIAButton[@name='OK' and @visible='true']";
 		public static final String xpathCameraLibraryFirstFolder = "//UIATableCell[@name='Moments']";
 	}
+	
+	public final class GroupChatInfoPage {
+		public static final String xpathUserNameLabel = "//UIACollectionView[preceding-sibling::UIATextView[@name='ParticipantsView_GroupName']]/UIACollectionCell/UIAStaticText[last() and @name='%s']";
+	}
 
 }

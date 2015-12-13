@@ -77,5 +77,5 @@ Feature: Sign In
     Then I see Contact list with contacts
 
     Examples:
-      | Name      | Email      | Password      | Contact   | ErrMessage                                          |
-      | user1Name | user1Email | user1Password | user2Name | Please check your internet connection and try again |
+      | Name      | Email      | Password      | Contact   | ErrMessage                                           |
+      | user1Name | user1Email | user1Password | user2Name | Please check your Internet connection and try again. |

@@ -98,8 +98,8 @@ Feature: Invitations
       | Name      |
       | user1Name |
 
-  @id4160 @staging
-  Scenario Outline: Verify that swipe do nothing in invites page
+  @id4160 @regression
+  Scenario Outline: (BUG AN-3141) Verify that swipe do nothing in invites page
     Given There are 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see Contact list with no contacts
@@ -108,7 +108,7 @@ Feature: Invitations
     And I swipe up
     And I take 2nd screenshot
     Then I compare 1st and 2nd screenshots and they are not different
-    When I swipe down
+    When I swipe down from 20%
     And I take 2nd screenshot
     Then I compare 1st and 2nd screenshots and they are not different
     When I swipe right
