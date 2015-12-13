@@ -19,6 +19,8 @@ Feature: Calling_Matrix
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
     And I end the call
+    And I do not see the calling bar
+    Then <Contact> verify that waiting instance status is changed to destroyed in <Timeout> seconds
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
@@ -44,6 +46,7 @@ Feature: Calling_Matrix
     And I see the calling bar
     Then I see the calling bar from user <Contact>
     And I end the call
+    And I do not see the calling bar
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
@@ -68,6 +71,8 @@ Feature: Calling_Matrix
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
     And I end the call
+    And I do not see the calling bar
+    Then <Contact> verify that waiting instance status is changed to destroyed in <Timeout> seconds
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
@@ -92,6 +97,7 @@ Feature: Calling_Matrix
     And I see the calling bar
     Then I see the calling bar from user <Contact>
     And I end the call
+    And I do not see the calling bar
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend   | Timeout |
@@ -118,6 +124,13 @@ Feature: Calling_Matrix
     And <Contact1>,<Contact2> verifies to have 2 flows
     And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
     And I end the call
+    And I do not see the calling bar
+    And <Contact1>,<Contact2> verifies to have 1 flows
+    And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
+    # Stops all waiting instance calls
+    And <Contact1> stops all waiting instances
+    Then <Contact2> verify that waiting instance status is changed to destroyed in <Timeout> seconds
+
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | WaitBackend         | Timeout |
@@ -171,6 +184,12 @@ Feature: Calling_Matrix
     And <Contact1>,<Contact2> verify to have 2 flows
     And <Contact1>,<Contact2> verify that all flows have greater than 0 bytes
     And I end the call
+    And I do not see the calling bar
+    And <Contact1>,<Contact2> verifies to have 1 flows
+    And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
+    # Stops all waiting instance calls
+    And <Contact1> stops all waiting instances
+    Then <Contact2> verify that waiting instance status is changed to destroyed in <Timeout> seconds
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend             | Timeout |
@@ -202,6 +221,12 @@ Feature: Calling_Matrix
     And <Contact2> verify to have 2 flows
     And <Contact2> verify that all flows have greater than 0 bytes
     And I end the call
+    And I do not see the calling bar
+    And <Contact2> verifies to have 1 flows
+    And <Contact2> verifies that all flows have greater than 0 bytes
+    # Stops all autocall instance calls
+    And <Contact1> stops all calls to <ChatName1>
+    Then <Contact2> verify that waiting instance status is changed to destroyed in <Timeout> seconds
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend       | WaitBackend         | Timeout |
@@ -234,6 +259,9 @@ Feature: Calling_Matrix
     Then <Contact1> verify that call status to <ChatName1> is changed to active in <Timeout> seconds
     And I see the calling bar from users <Contact1>,<Contact2>
     And I end the call
+    And I do not see the calling bar
+    # Stops all autocall instance calls
+    And <Contact1> stops all calls to <ChatName1>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend       | WaitBackend | Timeout |
