@@ -43,6 +43,7 @@ Feature: Calling_Matrix
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the calling bar
+    And I wait for 10 seconds
     Then I see the calling bar from user <Contact>
     And I end the call
     And I do not see the calling bar
