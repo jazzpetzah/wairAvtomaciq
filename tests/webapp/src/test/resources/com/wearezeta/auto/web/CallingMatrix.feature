@@ -125,6 +125,7 @@ Feature: Calling_Matrix
     And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
     And I end the call
     And I do not see the calling bar
+    And I wait for 10 seconds
     And <Contact1>,<Contact2> verifies to have 1 flows
     And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
     # Stops all waiting instance calls
@@ -185,6 +186,7 @@ Feature: Calling_Matrix
     And <Contact1>,<Contact2> verify that all flows have greater than 0 bytes
     And I end the call
     And I do not see the calling bar
+    And I wait for 10 seconds
     And <Contact1>,<Contact2> verifies to have 1 flows
     And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
     # Stops all waiting instance calls
@@ -222,6 +224,7 @@ Feature: Calling_Matrix
     And <Contact2> verify that all flows have greater than 0 bytes
     And I end the call
     And I do not see the calling bar
+    And I wait for 10 seconds
     And <Contact2> verifies to have 1 flows
     And <Contact2> verifies that all flows have greater than 0 bytes
     # Stops all autocall instance calls
