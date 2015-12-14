@@ -267,6 +267,10 @@ public final class IOSLocators {
 
 	public static final String nameSettingsChangePasswordButton = "Change Password";
 
+	public static final String nameSettingsResetPasswordButton = "Reset Password";
+
+	public static final String nameSettingsAccountInfoButton = "Account";
+
 	public static final String xpathChangePasswordPageChangePasswordButton = "//UIAButton[@name='CHANGE PASSWORD']";
 
 	public static final String nameOptionsHelpButton = "HELP";
