@@ -70,6 +70,12 @@ public class PersonalInfoPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameSettingsChangePasswordButton)
 	private WebElement settingsChangePasswordButton;
 
+	@FindBy(how = How.NAME, using = IOSLocators.nameSettingsResetPasswordButton)
+	private WebElement settingsResetPasswordButton;
+
+	@FindBy(how = How.NAME, using = IOSLocators.nameSettingsAccountInfoButton)
+	private WebElement settingsAccountInfoButton;
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameOptionsHelpButton)
 	private WebElement settingsHelpButton;
 
@@ -255,7 +261,7 @@ public class PersonalInfoPage extends IOSPage {
 	}
 
 	public void clickChangePasswordButton() {
-		settingsChangePasswordButton.click();
+		settingsResetPasswordButton.click();
 	}
 
 	public LoginPage clickSignoutButton() throws Exception {
@@ -473,5 +479,10 @@ public class PersonalInfoPage extends IOSPage {
 	public void clickThemeSwitcherButton() throws Exception {
 		DriverUtils.waitUntilElementClickable(getDriver(), themeSwitcherButton);
 		themeSwitcherButton.click();
+	}
+
+	public void clickAccountInfoButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), settingsAccountInfoButton);
+		settingsAccountInfoButton.click();
 	}
 }
