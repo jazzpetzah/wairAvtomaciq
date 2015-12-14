@@ -163,6 +163,7 @@ public final class IOSLocators {
 	public static final String xpathLastChatMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/*[last()]";
 
 	public static final String xpathStartedConversationMessage = "//UIAStaticText[starts-with(@name, 'YOU STARTED A CONVERSATION WITH')]";
+	public static final String xpathAddedToConversationMessage = "//UIAStaticText[starts-with(@name, 'YOU ADDED')]";
 
 	public static final String xpathFormatSpecificMessageContains = "//UIATextView[contains(@name,'%s')]";
 

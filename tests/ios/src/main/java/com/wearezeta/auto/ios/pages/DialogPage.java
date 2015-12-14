@@ -96,6 +96,9 @@ public class DialogPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathStartedConversationMessage)
 	private WebElement startedConversationMessage;
 
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathAddedToConversationMessage)
+	private WebElement addedToConversationMessage;
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameAddPictureButton)
 	private WebElement addPictureButton;
 
@@ -181,6 +184,10 @@ public class DialogPage extends IOSPage {
 
 	public String getStartedtChatMessage() {
 		return startedConversationMessage.getText();
+	}
+
+	public String getAddedtoChatMessage() {
+		return addedToConversationMessage.getText();
 	}
 
 	public boolean isMessageVisible(String msg) throws Exception {
