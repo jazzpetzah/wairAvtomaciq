@@ -340,14 +340,16 @@ public final class CommonCallingSteps2 {
 		if (instanceMapping.size() > 0) {
 			LOG.debug("Executing asynchronous cleanup of call instance leftovers...");
 		}
+		final String callingServiceUrl = CommonUtils
+				.getDefaultCallingServiceUrlFromConfig(CommonCallingSteps2.class);
 		for (Map.Entry<String, Instance> entry : instanceMapping.entrySet()) {
+			final Instance instance = entry.getValue();
+			LOG.debug("---BROWSER LOG FOR INSTANCE:\n" + instance + "\n"
+					+ callingServiceUrl + "/api/v1/instance/"
+					+ instance.getId() + "/log");
 			CompletableFuture.runAsync(() -> {
-				final Instance instance = entry.getValue();
 				try {
 					client.stopInstance(instance);
-					LOG.debug("---BROWSER LOG FOR INSTANCE:\n" + instance
-							+ "\n" + client.getLog(instance) + "\n"
-							+ "---END OF BROWSER LOG FOR INSTANCE");
 				} catch (CallingServiceInstanceException ex) {
 					LOG.warn(String.format(
 							"Could not properly shut down instance '%s'",
