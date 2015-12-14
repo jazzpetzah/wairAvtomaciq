@@ -189,7 +189,7 @@ Feature: People View
     And I open group conversation details
     And I press conversation menu button on iPad
     And I press RENAME on the menu on iPad
-    And I change group conversation name on iPad popover to <ChatName>
+    And I change group conversation name to <ChatName>
     And I exit the group info iPad popover
     Then I see you renamed conversation to <ChatName> message shown in Group Chat
     And I swipe right on group chat page
@@ -212,7 +212,7 @@ Feature: People View
     And I open group conversation details
     And I press conversation menu button on iPad
     And I press RENAME on the menu on iPad
-    And I change group conversation name on iPad popover to <ChatName>
+    And I change group conversation name to <ChatName>
     And I exit the group info iPad popover
     Then I see you renamed conversation to <ChatName> message shown in Group Chat
     Then I see in contact list group chat named <ChatName>
