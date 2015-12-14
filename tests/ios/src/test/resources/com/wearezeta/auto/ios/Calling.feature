@@ -70,7 +70,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @calling_basic @regression @rc @IPv6 @id2093
+  @calling_basic @regression @rc @IPv6 @id2093 @torun
   Scenario Outline: Verify accepting incoming call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -79,7 +79,7 @@ Feature: Calling
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
-    And I tap on contact I am in a call with <Contact>
+    And I tap on contact name <Contact>
     Then I see mute call, end call and speakers buttons
     And I see started call message for contact <Contact>
 
