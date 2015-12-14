@@ -346,7 +346,8 @@ public final class CommonCallingSteps2 {
 				try {
 					client.stopInstance(instance);
 					LOG.debug("---BROWSER LOG FOR INSTANCE:\n" + instance
-							+ "\n" + client.getLog(instance));
+							+ "\n" + client.getLog(instance) + "\n"
+							+ "---END OF BROWSER LOG FOR INSTANCE");
 				} catch (CallingServiceInstanceException ex) {
 					LOG.warn(String.format(
 							"Could not properly shut down instance '%s'",
