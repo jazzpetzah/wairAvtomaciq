@@ -73,4 +73,11 @@ public class VersionedInstanceType {
 	public boolean isZCall() {
 		return this.getName().toLowerCase().contains("zcall");
 	}
+
+	@Override
+	public String toString() {
+		return "VersionedInstanceType{" + "name=" + name + ", version="
+				+ version + '}';
+	}
+
 }
