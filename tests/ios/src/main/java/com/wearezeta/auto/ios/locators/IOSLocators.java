@@ -126,7 +126,7 @@ public final class IOSLocators {
 
 	public static final String nameCreateConversationButton = "CREATE";
 
-	public static final String nameKeyboardGoButton = "Return";
+	public static final String nameKeyboardEnterButton = "Return";
 
 	public static final String classUIATextView = "UIATextView";
 
@@ -542,6 +542,11 @@ public final class IOSLocators {
 	public static final String scriptRegistrationEmailInputPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textFields()[\"RegistrationEmailField\"]";
 	public static final String scriptSearchField = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textViews()[\"textViewSearch\"]";
 
+	public static class ScriptLocator {
+		public static final String scriptGroupChatNameInput = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textViews()[\"ParticipantsView_GroupName\"]";
+		public static final String scriptGroupChatNameInputIpad = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].popover().textViews()[\"ParticipantsView_GroupName\"]";
+		
+	}
 	public static final String nameYouLeftMessage = "YOU LEFT";
 	public static final String nameYouPingedMessage = "YOU PINGED";
 	public static final String nameYouPingedAgainMessage = "YOU PINGED AGAIN";

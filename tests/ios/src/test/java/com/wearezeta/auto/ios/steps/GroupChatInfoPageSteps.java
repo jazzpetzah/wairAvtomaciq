@@ -62,9 +62,8 @@ public class GroupChatInfoPageSteps {
 	 */
 	@When("^I try to change group conversation name to random with length (.*)$")
 	public void IChangeConversationNameToRandom(int length) throws Exception {
-
-		getGroupChatInfoPage().changeConversationName(
-				CommonUtils.generateRandomString(length));
+		String name = CommonUtils.generateRandomString(length);
+		getGroupChatInfoPage().setGroupChatNameByScript(name);
 	}
 
 	@Then("^I see that the conversation name is correct with (.*) and (.*)$")

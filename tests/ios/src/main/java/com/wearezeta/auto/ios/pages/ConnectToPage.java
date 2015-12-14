@@ -192,7 +192,7 @@ public class ConnectToPage extends IOSPage {
 				connectOtherUserButton)) {
 			connectOtherUserButton.click();
 		} else if (isKeyboardVisible()) {
-			clickKeyboardGoButton();
+			clickKeyboardEnterButton();
 			connectOtherUserButton.click();
 		}
 		return new PeoplePickerPage(this.getLazyDriver());
