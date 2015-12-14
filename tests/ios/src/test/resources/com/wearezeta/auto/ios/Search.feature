@@ -131,18 +131,9 @@ Feature: Search
     And I tap on Search input on People picker page
     And I search for user name <UnconnectedUser> and tap on it on People picker page
     Then I see connect to <UnconnectedUser> dialog
-    #And I delete all connect message content
-    #And I see that connect button is disabled
-    #And I type message in connect dialog with <NumOfMessageChars> characters
-    #And I see message with max number of characters
     And I click Connect button on connect to dialog
     Then I see the user <UnconnectedUser> avatar with a clock
     And I click close button to dismiss people view
-    #When I open search by taping on it
-    #And I see People picker page
-    #And I tap on Search input on People picker page
-    #And I input in People picker search field user email <ContactEmail>
-    #And I click close button to dismiss people view
     And I see conversation with not connected user <UnconnectedUser>
     And I tap on contact name <UnconnectedUser>
     And I swipe up on pending dialog page to open other user pending personal page
