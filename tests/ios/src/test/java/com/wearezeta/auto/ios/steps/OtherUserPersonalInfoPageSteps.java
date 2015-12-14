@@ -74,15 +74,15 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	/**
-	 * Close other user personal info page to return to 1on1 dialog
+	 * Close other user personal info page by click on close button
 	 * 
-	 * @step. ^I close user profile page to return to dialog page$
+	 * @step. ^I click close user profile page button$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I close user profile page to return to dialog page$")
+	@When("^I click close user profile page button$")
 	public void ICloseUserProfileForDialog() throws Exception {
-		getOtherUserPersonalInfoPage().leavePageToDialogPage();
+		getOtherUserPersonalInfoPage().clickCloseUserProfileButton();
 	}
 
 	@When("^I swipe down on other user profile page$")

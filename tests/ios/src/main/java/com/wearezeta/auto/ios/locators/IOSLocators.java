@@ -10,7 +10,7 @@ public final class IOSLocators {
 
 	public static final String nameTermsOfServiceButton = "LegalCheckmarkButton";
 
-	public static final String xpathLoginButton = "//UIASecureTextField/UIAButton[1]";
+	public static final String nameLoginButton = "RegistrationConfirmButton";
 
 	public static final String nameLoginField = "EmailField";
 
@@ -785,6 +785,10 @@ public final class IOSLocators {
 		public static final String xpathLibraryLastPicture = "//UIACollectionView/UIACollectionCell[last()]";
 		public static final String xpathConfirmPictureButton = "//UIAButton[@name='OK' and @visible='true']";
 		public static final String xpathCameraLibraryFirstFolder = "//UIATableCell[@name='Moments']";
+	}
+	
+	public final class GroupChatInfoPage {
+		public static final String xpathUserNameLabel = "//UIACollectionView[preceding-sibling::UIATextView[@name='ParticipantsView_GroupName']]/UIACollectionCell/UIAStaticText[last() and @name='%s']";
 	}
 
 }

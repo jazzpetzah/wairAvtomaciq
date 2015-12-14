@@ -57,7 +57,8 @@ public class ContactsUiPage extends IOSPage {
 		return flag;
 	}
 
-	public void tapInviteOthersButton() {
+	public void tapInviteOthersButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), inviteOthersButton);
 		inviteOthersButton.click();
 	}
 
@@ -67,10 +68,10 @@ public class ContactsUiPage extends IOSPage {
 	}
 
 	public void clickOpenButtonNextToUser(String contact) throws Exception {
-		WebElement openButton = getDriver()
-				.findElement(
-						By.xpath(String
-								.format(IOSLocators.ContactsUIPage.xpathOpenButtonNextToUser, contact)));
+		WebElement openButton = getDriver().findElement(
+				By.xpath(String.format(
+						IOSLocators.ContactsUIPage.xpathOpenButtonNextToUser,
+						contact)));
 		openButton.click();
 
 	}

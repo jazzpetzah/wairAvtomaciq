@@ -128,7 +128,7 @@
 		<dependency>
 			<groupId>com.wearezeta</groupId>
 			<artifactId>zmessaging-actor</artifactId>
-			<version>46-SNAPSHOT</version>
+			<version>48-SNAPSHOT</version>
 		</dependency>
 
 	</dependencies>

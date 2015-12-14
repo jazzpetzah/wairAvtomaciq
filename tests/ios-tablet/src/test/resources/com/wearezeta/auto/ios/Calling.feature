@@ -333,7 +333,6 @@ Feature: Calling
     And I see mute call, end call buttons
     And <Contact2> stops all calls to me
     And I end started call
-    And I return to the chat list
     And I see missed call indicator in list for contact <Contact2>
     And I tap on contact name <Contact2>
     Then I see missed call from contact <Contact2>

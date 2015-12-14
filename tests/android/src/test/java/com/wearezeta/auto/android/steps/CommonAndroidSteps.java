@@ -226,6 +226,17 @@ public class CommonAndroidSteps {
     public void ISwipeDown() throws Exception {
         pagesCollection.getCommonPage().swipeDownCoordinates(DEFAULT_SWIPE_TIME);
     }
+    
+    /**
+    * Swipe down from given high %8 to 90% of hight
+    *
+    * @throws Exception
+    * @step. ^I swipe down from\\s(\\d+)%$
+    */
+    @When("^I swipe down from\\s(\\d+)%$")
+    public void ISwipeDownFrom(int startPercent) throws Exception {
+        pagesCollection.getCommonPage().swipeByCoordinates(DEFAULT_SWIPE_TIME, 50, startPercent, 50, 90);
+    }
 
     /**
      * Sends the application into back stack and displays the home screen.
@@ -805,6 +816,8 @@ public class CommonAndroidSteps {
     @When("^I rotate UI to landscape$")
     public void WhenIRotateUILandscape() throws Exception {
         pagesCollection.getCommonPage().rotateLandscape();
+        // To let the UI to handle up changes
+        Thread.sleep(1000);
     }
 
     /**
@@ -816,6 +829,8 @@ public class CommonAndroidSteps {
     @When("^I rotate UI to portrait$")
     public void WhenIRotateUIPortrait() throws Exception {
         pagesCollection.getCommonPage().rotatePortrait();
+        // To let the UI to handle up changes
+        Thread.sleep(1000);
     }
 
     /**

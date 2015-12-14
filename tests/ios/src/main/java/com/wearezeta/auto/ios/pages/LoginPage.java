@@ -32,7 +32,7 @@ public class LoginPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameSignInButton)
 	private WebElement signInButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathLoginButton)
+	@FindBy(how = How.NAME, using = IOSLocators.nameLoginButton)
 	private WebElement confirmSignInButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameRegisterButton)
@@ -191,7 +191,7 @@ public class LoginPage extends IOSPage {
 	public void waitForLoginToFinish() throws Exception {
 
 		if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.xpath(IOSLocators.xpathLoginButton), 40)) {
+				By.name(IOSLocators.nameLoginButton), 40)) {
 			throw new AssertionError(
 					"Login button is still visible after the timeout");
 		}
@@ -247,6 +247,7 @@ public class LoginPage extends IOSPage {
 	public void dismisSettingsWaring() throws Exception {
 		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
 				By.name(IOSLocators.LoginPage.nameMaybeLater))) {
+			DriverUtils.waitUntilElementClickable(getDriver(), maybeLater);
 			for (int i = 0; i < 3; i++) {
 				try {
 					maybeLater.click();
@@ -267,12 +268,8 @@ public class LoginPage extends IOSPage {
 
 	public Boolean isLoginFinished() throws Exception {
 		dismisSettingsWaring();
-		DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.name(IOSLocators.ContactListPage.nameSelfButton));
-		return DriverUtils.isElementPresentAndDisplayed(
-				getDriver(),
-				getDriver().findElement(
-						By.name(IOSLocators.ContactListPage.nameSelfButton)));
+		return DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.name(IOSLocators.ContactListPage.nameSelfButton), 60);
 	}
 
 	@Override

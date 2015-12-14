@@ -26,9 +26,12 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
 
 	@FindBy(how = How.XPATH, using = IOSTabletLocators.TabletOtherUserInfoPage.xpathOtherUserConnectLabel)
 	private WebElement connectLabel;
-	
+
 	@FindBy(how = How.XPATH, using = IOSTabletLocators.TabletOtherUserInfoPage.xpathOtherUserConnectButton)
 	private WebElement connectButton;
+
+	@FindBy(how = How.NAME, using = IOSLocators.nameOtherUserProfilePageCloseButton)
+	private WebElement goBackButton;
 
 	public TabletOtherUserInfoPage(Future<ZetaIOSDriver> lazyDriver)
 			throws Exception {
@@ -69,7 +72,7 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
 	public void clickConnectLabel() {
 		connectLabel.click();
 	}
-	
+
 	public boolean isConnectButtonVisible() throws Exception {
 		DriverUtils
 				.waitUntilLocatorAppears(
@@ -82,6 +85,11 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
 
 	public void clickConnectButton() {
 		connectButton.click();
+	}
+
+	public void clickGoBackButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), goBackButton);
+		goBackButton.click();
 	}
 
 }

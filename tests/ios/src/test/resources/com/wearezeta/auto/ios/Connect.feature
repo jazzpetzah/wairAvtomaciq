@@ -364,7 +364,7 @@ Feature: Connect
     And I click on start conversation button on pending profile page
     And I see accept ignore request alert
     And I click on Ignore button on Pending requests page
-    And I close user profile page to return to dialog page
+    And I click close user profile page button
     And I exit the group info page
     And I return to the chat list
     Then I dont see Pending request link in contact list

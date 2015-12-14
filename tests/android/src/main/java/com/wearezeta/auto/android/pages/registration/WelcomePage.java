@@ -59,13 +59,12 @@ public class WelcomePage extends AndroidPage {
 		return new PhoneNumberVerificationPage(this.getLazyDriver());
 	}
 
-	public EmailSignInPage tapSignInTab() throws Exception {
+	public void tapSignInTab() throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.xpath(xpathSignInTab), 30);
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				signInTab);
 		signInTab.click();
-		return new EmailSignInPage(this.getLazyDriver());
 	}
 
 	public boolean waitForInitialScreen() throws Exception {

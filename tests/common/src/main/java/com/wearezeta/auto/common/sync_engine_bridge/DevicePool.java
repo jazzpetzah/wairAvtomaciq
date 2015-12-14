@@ -32,14 +32,14 @@ class DevicePool {
 
 	private List<Device> devices = new CopyOnWriteArrayList<>();
 
-	public DevicePool() {
+	public DevicePool(String backendType) {
 		final Config config = ConfigFactory.load("actor_coordinator");
 		final ActorSystem system = ActorSystem.create("CoordinatorSystem",
 				config);
 		this.coordinatorActorRef = system.actorOf(
 				Props.create(CoordinatorActor.class), "coordinatorActor");
 		this.hostProcess = new RemoteProcess(this.processName,
-				this.coordinatorActorRef, ACTOR_DURATION);
+				this.coordinatorActorRef, ACTOR_DURATION, backendType);
 	}
 
 	private synchronized String getNewDeviceName() {

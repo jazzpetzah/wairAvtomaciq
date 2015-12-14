@@ -77,6 +77,23 @@ public class DialogPageSteps {
 	}
 
 	/**
+	 * Tap on text input to scroll to the end of conversation
+	 * 
+	 * @step. ^I tap on text input to scroll to the end$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap on text input to scroll to the end$")
+	public void WhenITapOnTextInputToScroll() throws Exception {
+		for (int i = 0; i < 3; i++) {
+			getDialogPage().tapOnCursorInput();
+			if (getDialogPage().isPlusButtonVisible()) {
+				break;
+			}
+		}
+	}
+
+	/**
 	 * Verify that text input is not allowed
 	 * 
 	 * @step. I see text input in dialog is not allowed
@@ -475,7 +492,7 @@ public class DialogPageSteps {
 
 	@Then("I dont see media bar on dialog page")
 	public void ISeeMediaBarDisappear() throws Exception {
-		Assert.assertFalse(getDialogPage().isMediaBarDisplayed());
+		Assert.assertTrue(getDialogPage().waitMediabarClose());
 	}
 
 	@When("^I tap on the media bar$")
@@ -1212,12 +1229,13 @@ public class DialogPageSteps {
 	public void IClearConversationTextInput() throws Exception {
 		getDialogPage().clearTextInput();
 	}
-	
+
 	/**
-	 * Verify that conversation is scrolled to the end by verifying that plus button and text input is visible
+	 * Verify that conversation is scrolled to the end by verifying that plus
+	 * button and text input is visible
 	 * 
 	 * @step. ^I see conversation is scrolled to the end$
-	 * @throws Throwable 
+	 * @throws Throwable
 	 */
 	@When("^I see conversation is scrolled to the end$")
 	public void ISeeConversationIsScrolledToEnd() throws Throwable {

@@ -117,11 +117,6 @@ public class GroupChatPage extends DialogPage {
 		return result;
 	}
 
-	public boolean waitForContactToDisappear(String contact) throws Exception {
-		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.name(contact));
-	}
-
 	@Override
 	public IOSPage openConversationDetailsClick() throws Exception {
 		for (int i = 0; i < 3; i++) {
