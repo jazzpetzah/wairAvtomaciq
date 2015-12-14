@@ -70,7 +70,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @calling_basic @regression @rc @IPv6 @id2093 @torun
+  @calling_basic @regression @rc @IPv6 @id2093
   Scenario Outline: Verify accepting incoming call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -340,7 +340,7 @@ Feature: Calling
     When <Contact1> calls me using <CallBackend2>
     And I accept incoming call
     And I wait for 5 seconds
-    And I tap on contact I am in a call with <Contact1>
+    And I tap on contact name <Contact1>
     Then I see mute call, end call and speakers buttons
     When <Contact2> calls <GroupChatName> using <CallBackend2>
     And I see incoming group calling message
@@ -348,7 +348,7 @@ Feature: Calling
     And I see Accept second call alert
     And I press Accept button on alert
     And I swipe right on Dialog page
-    And I tap on contact I am in a call with <GroupChatName>
+    And I tap on group chat with name <GroupChatName>
     Then I see <NumberOfAvatars> avatars in the group call bar
     Then I see mute call, end call and speakers buttons
 
@@ -462,7 +462,7 @@ Feature: Calling
     And I see incoming group calling message
     And I accept incoming call
     And I wait for 3 seconds
-    And I tap on contact I am in a call with <GroupChatName>
+    And I tap on group chat with name <GroupChatName>
     Then I see mute call, end call and speakers buttons
     Then I see <NumberOfAvatars> avatars in the group call bar
     When <Contact5> calls me using <CallBackend2>
@@ -471,7 +471,7 @@ Feature: Calling
     And I see Accept second call alert
     And I press Accept button on alert
     And I swipe right on Dialog page
-    And I tap on contact I am in a call with <Contact5>
+    And I tap on contact name <Contact5>
     Then I see mute call, end call and speakers buttons
     Then I see <NumberOf1on1CallAvatars> avatars in the group call bar
 
@@ -522,7 +522,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars |
       | user1Name | user2Name | user3Name | user4Name | user5Name | WaitGROUPCALL | firefox     | autocall     | 5               |
 
-  @regression @id2697
+  @regression @id2697 @torun
   Scenario Outline: Verify removing people from the conversation who joined the group call
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
