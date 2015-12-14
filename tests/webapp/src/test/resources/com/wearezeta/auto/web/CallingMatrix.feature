@@ -230,17 +230,49 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend       | WaitBackend         | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.10 | chrome:47.0.2526.73 | 60      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.09 | chrome:47.0.2526.73 | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.10 | chrome:46.0.2490.86 | 60      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.09 | chrome:46.0.2490.86 | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.10 | chrome:45.0.2454.85 | 60      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.09 | chrome:45.0.2454.85 | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.10 | firefox:43.0b9      | 60      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.09 | firefox:43.0b9      | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.10 | firefox:42.0        | 60      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.09 | firefox:42.0        | 60      |
 
   @id0009 @calling_matrix @calling @calling_debug
+  Scenario Outline: Verify I can join group call with AVS <Backend> and <WaitBackend>
+    Given My browser supports calling
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
+    Given <Contact2> starts waiting instance using <WaitBackend>
+    Given <Contact2> accept next incoming call automatically
+    Given <Contact2> verify that waiting instance status is changed to waiting in <Timeout> seconds
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Then I see my avatar on top of Contact list
+    When I open conversation with <ChatName1>
+    And <Contact1> calls <ChatName1> using <Backend>
+    When I accept the incoming call
+    Then <Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
+    Then <Contact1> verify that call status to <ChatName1> is changed to active in <Timeout> seconds
+    And I see the calling bar from users <Contact1>,<Contact2>
+    And I wait for 10 seconds
+    And <Contact2> verify to have 2 flows
+    And <Contact2> verify that all flows have greater than 0 bytes
+    And I end the call
+    And I do not see the calling bar
+    And I wait for 10 seconds
+    And <Contact2> verifies to have 1 flows
+    And <Contact2> verifies that all flows have greater than 0 bytes
+    # Stops all autocall instance calls
+    And <Contact1> stops all calls to <ChatName1>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend       | WaitBackend         | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.09 | chrome:47.0.2526.73 | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.09 | chrome:46.0.2490.86 | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.09 | chrome:45.0.2454.85 | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.09 | firefox:43.0b9      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.09 | firefox:42.0        | 60      |
+
+  @id0010 @calling_matrix @calling @calling_debug
   Scenario Outline: Verify I can join group call with AVS <Backend> and <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
