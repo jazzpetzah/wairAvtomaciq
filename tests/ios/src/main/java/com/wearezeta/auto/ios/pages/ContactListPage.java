@@ -690,9 +690,9 @@ public class ContactListPage extends IOSPage {
 				unreadMessageIndicator,
 				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 
-		if (score <= MIN_ACCEPTABLE_IMAGE_SCORE) {
+		if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
 			log.debug("Overlap Score is " + score
-					+ ". And minimal expected is " + MIN_ACCEPTABLE_IMAGE_SCORE);
+					+ ". And minimal expected is " + MIN_ACCEPTABLE_IMAGE_VALUE);
 			return false;
 
 		}

@@ -84,7 +84,7 @@ Feature: Self Profile
     When I tap on my name <Name>
     And I slide my accent color via the colorpicker from <Color1> to <Color2>
     And I close self profile
-    Then I see 5 unread message indicator in list for contact <Contact>
+    Then I see 1 unread message indicator in list for contact <Contact>
 
     Examples: 
       | Name      | Color1 | Color2          | Contact   |
