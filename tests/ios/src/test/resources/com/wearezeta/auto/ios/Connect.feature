@@ -432,7 +432,6 @@ Feature: Connect
     And I unblock user
     Then I see dialog page
     When I navigate back to conversations view
-    And I click close button to dismiss people view
     Then I see user <Contact> in contact list
 
     Examples: 
