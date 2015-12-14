@@ -9,9 +9,12 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I send long message
+    And I type the message and send it
     And I scroll to the beginning of the conversation
-    And I tap on text input
-    Then I see last message in the dialog
+    And I see plus button is not shown
+    And I tap on text input to scroll to the end
+    Then I see conversation is scrolled to the end
+    And I see message in the dialog
 
     Examples: 
       | Name      | Contact   |
@@ -27,9 +30,12 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I send long message
+    And I type the message and send it
     And I scroll to the beginning of the conversation
-    And I tap on text input
-    Then I see last message in the dialog
+    And I see plus button is not shown
+    And I tap on text input to scroll to the end
+    Then I see conversation is scrolled to the end
+    And I see message in the dialog
 
     Examples: 
       | Name      | Contact   |
@@ -148,7 +154,7 @@ Feature: Conversation View
       | Name      | Contact   | CloseAppTime |
       | user1Name | user2Name | 2            |
 
-  @regression @id3205
+  @staging @id3205
   Scenario Outline: Verify appearance of title bar for conversation, restored from background [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -574,7 +580,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
       | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
 
-  @regression @id3964
+  @regression @id3964 @ZIOS-5063
   Scenario Outline: Verify posting in a 1-to-1 conversation without content [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -600,7 +606,7 @@ Feature: Conversation View
       | Name      | Contact1  | Message |
       | user1Name | user2Name | testing |
 
-  @regression @id3965
+  @regression @id3965 @ZIOS-5063
   Scenario Outline: Verify posting in a 1-to-1 conversation without content [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -725,7 +731,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact>
-    And I tap on text input
+    And I tap on text input to scroll to the end
     And I scroll to the beginning of the conversation
     And I swipe the text input cursor
     Then I see controller buttons can not be visible
@@ -744,7 +750,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact>
-    And I tap on text input
+    And I tap on text input to scroll to the end
     And I scroll to the beginning of the conversation
     And I swipe the text input cursor
     Then I see controller buttons can not be visible

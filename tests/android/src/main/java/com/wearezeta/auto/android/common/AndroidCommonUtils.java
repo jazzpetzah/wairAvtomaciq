@@ -205,14 +205,6 @@ public class AndroidCommonUtils extends CommonUtils {
                 mainActivity));
     }
 
-    public static void rotateLanscape() throws Exception {
-        executeAdb("shell content insert --uri content://settings/system --bind name:s:user_rotation --bind value:i:1");
-    }
-
-    public static void rotatePortrait() throws Exception {
-        executeAdb("shell content insert --uri content://settings/system --bind name:s:user_rotation --bind value:i:0");
-    }
-
     /**
      * http://stackoverflow.com/questions/13850192/how-to-lock-android-screen-
      * via-adb
@@ -548,6 +540,11 @@ public class AndroidCommonUtils extends CommonUtils {
         }
     }
 
+    public static void insertContact(String name) throws Exception {
+        final List<Integer> ids = insertContactAndGetIds();
+        bindContactNameById(ids, name);
+    }
+
     public static void insertContact(String name, String email,
                                      PhoneNumber phoneNumber) throws Exception {
         final List<Integer> ids = insertContactAndGetIds();
@@ -572,7 +569,7 @@ public class AndroidCommonUtils extends CommonUtils {
 
     public static void broadcastInvitationCode(String code) throws Exception {
         executeAdb(String.format("shell am broadcast -a com.android.vending.INSTALL_REFERRER " +
-                "-n \"%s/com.waz.zclient.broadcast.ReferralBroadcastReceiver\" "+
+                "-n \"%s/com.waz.zclient.broadcast.ReferralBroadcastReceiver\" " +
                 "--es referrer \"invite-%s\"", getAndroidPackageFromConfig(AndroidCommonUtils.class), code));
     }
 }

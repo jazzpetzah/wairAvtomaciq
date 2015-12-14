@@ -114,11 +114,11 @@ public class InvitationsPageSteps {
      * Verify that invitation email exists in user's mailbox
      *
      * @param alias user name/alias
-     * @throws Exception
+     * @throws Throwable
      * @step. ^I verify user (.*) has received (?:an |\s*)email invitation$
      */
     @Then("^I verify user (.*) has received (?:an |\\s*)email invitation$")
-    public void IVerifyUserReceiverInvitation(String alias) throws Exception {
+    public void IVerifyUserReceiverInvitation(String alias) throws Throwable {
         final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
         Assert.assertTrue(String.format("Invitation email for %s has not been received", email),
                 getInvitationsPage().isInvitationMessageReceivedBy(email));
@@ -187,11 +187,11 @@ public class InvitationsPageSteps {
      * Broadcast the link parsed from the recent invitation email for receiver
      *
      * @param receiver email/alias
-     * @throws Exception
+     * @throws Throwable
      * @step. ^I broadcast the invitation for (.*)
      */
     @When("^I broadcast the invitation for (.*)")
-    public void IBroadcastInvitation(String receiver) throws Exception {
+    public void IBroadcastInvitation(String receiver) throws Throwable {
         final String email = usrMgr.replaceAliasesOccurences(receiver,
                 ClientUsersManager.FindBy.EMAIL_ALIAS);
         final String code = getInvitationsPage().getRecentInvitationCode(email);

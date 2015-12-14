@@ -91,6 +91,9 @@ public class ContactListPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameCancelButton)
 	private WebElement cancelActionMenuButton;
 
+	@FindBy(how = How.NAME, using = IOSLocators.nameSendAnInviteButton)
+	private WebElement inviteMorePeopleButton;
+
 	private int oldLocation = 0;
 
 	public ContactListPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -117,8 +120,7 @@ public class ContactListPage extends IOSPage {
 	}
 
 	public PeoplePickerPage openSearch() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.name(IOSLocators.ContactListPage.nameOpenStartUI));
+		DriverUtils.waitUntilElementClickable(getDriver(), openStartUI);
 		openStartUI.click();
 		return new PeoplePickerPage(getLazyDriver());
 	}
@@ -481,7 +483,7 @@ public class ContactListPage extends IOSPage {
 					.getImagesPath() + "verifyUnsilenceIphone6plus.png");
 		} else if (deviceType.equals("iPhone 6") && isSilenced) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "silenceTestIphone6.png");
+					.getImagesPath() + "silenceiPhone6.png");
 		} else if (deviceType.equals("iPhone 6") && !isSilenced) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "verifyUnsilenceTestIphone6.png");
@@ -818,6 +820,16 @@ public class ContactListPage extends IOSPage {
 								.format(IOSLocators.ContactListPage.xpathSpecificContactListCell,
 										conversation)));
 		return conversationCell.getAttribute("value");
+	}
+
+	public boolean isInviteMorePeopleButtonVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				inviteMorePeopleButton);
+	}
+
+	public boolean isInviteMorePeopleButtonNotVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.name(IOSLocators.nameSendAnInviteButton));
 	}
 
 }

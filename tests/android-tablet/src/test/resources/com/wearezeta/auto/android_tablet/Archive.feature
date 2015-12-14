@@ -28,7 +28,7 @@ Feature: Archive
       | Name      | Contact1  | Contact2  | ArchiveItem | UnarchiveItem |
       | user1Name | user2Name | user3Name | ARCHIVE     | UNARCHIVE     |
 
-  @id2886 @regression @rc
+  @id2886 @regression @rc @rc44
   Scenario Outline: Verify you can archive and unarchive conversation (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

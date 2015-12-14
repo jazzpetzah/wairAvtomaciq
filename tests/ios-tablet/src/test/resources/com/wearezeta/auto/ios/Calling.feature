@@ -191,11 +191,17 @@ Feature: Calling
     And I press call button
     And I see mute call, end call buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    Then I wait for 900 seconds
+    And I wait for 300 seconds
     And I see mute call, end call buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 300 seconds
+    And I see mute call, end call buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 300 seconds
+    And I see mute call, end call buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I end started call
     And I dont see calling page
-    And <Contact> stops all waiting instances
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
@@ -216,11 +222,17 @@ Feature: Calling
     And I press call button
     And I see mute call, end call buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    Then I wait for 900 seconds
+    And I wait for 300 seconds
     And I see mute call, end call buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 300 seconds
+    And I see mute call, end call buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 300 seconds
+    And I see mute call, end call buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I end started call
     And I dont see calling page
-    And <Contact> stops all waiting instances
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
@@ -243,7 +255,6 @@ Feature: Calling
     Then I lock screen for 5 seconds
     And I see mute call, end call buttons
     And I end started call
-    And <Contact> stops all waiting instances
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
@@ -267,7 +278,6 @@ Feature: Calling
     Then I lock screen for 5 seconds
     And I see mute call, end call buttons
     And I end started call
-    And <Contact> stops all waiting instances
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
@@ -323,7 +333,6 @@ Feature: Calling
     And I see mute call, end call buttons
     And <Contact2> stops all calls to me
     And I end started call
-    And I return to the chat list
     And I see missed call indicator in list for contact <Contact2>
     And I tap on contact name <Contact2>
     Then I see missed call from contact <Contact2>
@@ -349,7 +358,6 @@ Feature: Calling
     Then I close the app for 5 seconds
     And I see mute call, end call buttons
     And I end started call
-    And <Contact> stops all waiting instances
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
@@ -373,7 +381,6 @@ Feature: Calling
     Then I close the app for 5 seconds
     And I see mute call, end call buttons
     And I end started call
-    And <Contact> stops all waiting instances
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |

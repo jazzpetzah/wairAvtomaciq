@@ -19,7 +19,7 @@ Feature: Conversation View
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @id2238 @regression @rc
+  @id2238 @regression @rc @rc44
   Scenario Outline: Send Message to contact in landscape mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -59,7 +59,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2240 @regression @rc
+  @id2240 @regression @rc @rc44
   Scenario Outline: Send Camera picture to contact in landscape mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -276,7 +276,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ChatWithImg   |
 
-  @id2828 @regression @rc
+  @id2828 @regression @rc @rc44
   Scenario Outline: Send existing image from gallery in 1:1 chat (landscape)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -339,7 +339,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName | NewGroupChatName |
       | user1Name | user2Name | user3Name | GroupChat     | NewChatName      |
 
-  @id3153 @regression @rc
+  @id3153 @regression @rc @rc44
   Scenario Outline: Verify editing the conversation name (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -362,7 +362,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName | NewGroupChatName |
       | user1Name | user2Name | user3Name | GroupChat     | NewChatName      |
 
-  @id3803 @regression @rc
+  @id3803 @regression @rc @rc44
   Scenario Outline: Send sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

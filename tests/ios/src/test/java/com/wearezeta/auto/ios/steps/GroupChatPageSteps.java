@@ -108,13 +108,6 @@ public class GroupChatPageSteps {
 		Assert.assertTrue(getGroupChatPage().isYouLeftMessageShown());
 	}
 
-	@Then("^I see that (.*) is not present on group chat page$")
-	public void ISeeContactIsNotPresentOnGroupChatPage(String contact)
-			throws Exception {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertTrue(getGroupChatPage().waitForContactToDisappear(contact));
-	}
-
 	@When("^I return to the chat list$")
 	public void IReturnToChatList() throws Exception {
 		getGroupChatPage().returnToContactList();

@@ -65,7 +65,7 @@ Feature: People View
       | user1Name | user2Name | user3Name | RemoveFromGroupChat | You removed |
 
   @id594 @regression @rc
-  Scenario Outline: Verify correct group info page information
+  Scenario Outline: (CM-691) Verify correct group info page information
     Given There are 3 users where <Name> is me
     Given <Contact1> has an avatar picture from file <Picture>
     Given <Contact2> has an accent color <Color1>

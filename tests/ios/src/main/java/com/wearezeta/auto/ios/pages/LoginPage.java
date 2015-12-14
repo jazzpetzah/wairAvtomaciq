@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Future;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -31,7 +32,7 @@ public class LoginPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameSignInButton)
 	private WebElement signInButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathLoginButton)
+	@FindBy(how = How.NAME, using = IOSLocators.nameLoginButton)
 	private WebElement confirmSignInButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameRegisterButton)
@@ -114,16 +115,16 @@ public class LoginPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.Alerts.nameInvalidPhoneNumber)
 	private WebElement invalidPhoneNumberAlert;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.Alerts.nameInvalidEmail)
 	private WebElement invalidEmailAlert;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.Alerts.nameAlreadyRegisteredNumber)
-	private WebElement alreadyRegisteredNumberAlert; 
-	
+	private WebElement alreadyRegisteredNumberAlert;
+
 	@FindBy(how = How.NAME, using = IOSLocators.Alerts.nameAlreadyRegisteredEmail)
 	private WebElement alreadyRegisteredEmailAlert;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.PeoplePickerPage.nameNotNowButton)
 	private WebElement notNowPhoneButton;
 
@@ -159,6 +160,10 @@ public class LoginPage extends IOSPage {
 	}
 
 	public boolean isPhoneSignInButtonVisible() throws Exception {
+		Assert.assertTrue(
+				"iPhone Sign in button is not presented in elements tree",
+				DriverUtils.waitUntilLocatorAppears(getDriver(),
+						By.name(IOSLocators.LoginPage.namePhoneLoginButton)));
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				phoneLoginButton);
 	}
@@ -186,7 +191,7 @@ public class LoginPage extends IOSPage {
 	public void waitForLoginToFinish() throws Exception {
 
 		if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.xpath(IOSLocators.xpathLoginButton), 40)) {
+				By.name(IOSLocators.nameLoginButton), 40)) {
 			throw new AssertionError(
 					"Login button is still visible after the timeout");
 		}
@@ -241,23 +246,30 @@ public class LoginPage extends IOSPage {
 
 	public void dismisSettingsWaring() throws Exception {
 		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.name(IOSLocators.LoginPage.nameMaybeLater), 5)) {
-			try {
-				maybeLater.click();
-			} catch (WebDriverException ex) {
-				maybeLater.click();
+				By.name(IOSLocators.LoginPage.nameMaybeLater))) {
+			DriverUtils.waitUntilElementClickable(getDriver(), maybeLater);
+			for (int i = 0; i < 3; i++) {
+				try {
+					maybeLater.click();
+				} catch (WebDriverException ex) {
+					// ignore silently
+				}
+				if (mayBeLaterIsNotShown()) {
+					break;
+				}
 			}
 		}
 	}
 
+	private boolean mayBeLaterIsNotShown() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.xpath(IOSLocators.LoginPage.nameMaybeLater), 3);
+	}
+
 	public Boolean isLoginFinished() throws Exception {
 		dismisSettingsWaring();
-		DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.name(IOSLocators.ContactListPage.nameSelfButton));
-		return DriverUtils.isElementPresentAndDisplayed(
-				getDriver(),
-				getDriver().findElement(
-						By.name(IOSLocators.ContactListPage.nameSelfButton)));
+		return DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.name(IOSLocators.ContactListPage.nameSelfButton), 60);
 	}
 
 	@Override
@@ -390,20 +402,19 @@ public class LoginPage extends IOSPage {
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				invalidPhoneNumberAlert);
 	}
-	
+
 	public boolean isInvalidEmailAlertShown() throws Exception {
 		DriverUtils.waitUntilAlertAppears(getDriver());
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				invalidEmailAlert);
 	}
-	
+
 	public boolean isRegisteredNumberAlertShown() throws Exception {
 		DriverUtils.waitUntilAlertAppears(getDriver());
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				alreadyRegisteredNumberAlert);
 	}
-	
-	
+
 	public boolean isAlreadyRegisteredEmailAlertShown() throws Exception {
 		DriverUtils.waitUntilAlertAppears(getDriver());
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),

@@ -7,48 +7,49 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class TabletWelcomePage extends AndroidTabletPage {
-	public final static String idRegisterButton = "zb__welcome__create_account";
-	@FindBy(id = idRegisterButton)
-	private WebElement registerButton;
+    public final static String idRegisterButton = "zb__welcome__create_account";
+    @FindBy(id = idRegisterButton)
+    private WebElement registerButton;
 
-	private final static Function<String, String> xpathLinkByText = text -> String
-			.format("//*[@value='%s']", text);
+    public static final String idHaveAccountButton = "zb__welcome__sign_in";
+    @FindBy(id = idHaveAccountButton)
+    protected WebElement haveAccountButton;
 
-	public TabletWelcomePage(Future<ZetaAndroidDriver> lazyDriver)
-			throws Exception {
-		super(lazyDriver);
-	}
+    private final static Function<String, String> xpathLinkByText = text -> String
+            .format("//*[@value='%s']", text);
 
-	private WelcomePage getWelcomePage() throws Exception {
-		return this.getAndroidPageInstance(WelcomePage.class);
-	}
+    public TabletWelcomePage(Future<ZetaAndroidDriver> lazyDriver)
+            throws Exception {
+        super(lazyDriver);
+    }
 
-	public boolean waitForInitialScreen() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(WelcomePage.idHaveAccountButton), 15);
-	}
+    public boolean waitForInitialScreen() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.id(TabletWelcomePage.idHaveAccountButton), 30);
+    }
 
-	public void tapIHaveAnAccount() throws Exception {
-		getWelcomePage().tapIHaveAnAccount();
-	}
+    public void tapSignInButton() throws Exception {
+        assert waitForInitialScreen() : "SIGN IN button is not visible after timeout";
+        assert DriverUtils.waitUntilElementClickable(getDriver(),
+                haveAccountButton) : "SIGN IN button is not clickable after timeout";
+        haveAccountButton.click();
+    }
 
-	public void tapRegisterButton() throws Exception {
-		registerButton.click();
-	}
+    public void tapRegisterButton() throws Exception {
+        registerButton.click();
+    }
 
-	public boolean waitUntilLinkVisible(String linkText) throws Exception {
-		final By locator = By.xpath(xpathLinkByText.apply(linkText));
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-	}
+    public boolean waitUntilLinkVisible(String linkText) throws Exception {
+        final By locator = By.xpath(xpathLinkByText.apply(linkText));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
 
-	public void tapLink(String linkText) throws Exception {
-		final By locator = By.xpath(xpathLinkByText.apply(linkText));
-		getDriver().findElement(locator).click();
-		;
-	}
+    public void tapLink(String linkText) throws Exception {
+        final By locator = By.xpath(xpathLinkByText.apply(linkText));
+        getDriver().findElement(locator).click();
+    }
 }

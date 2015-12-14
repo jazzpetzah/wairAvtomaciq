@@ -500,3 +500,18 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact   | Color           | Number |
       | user1Name | user2Name | StrongLimeGreen | 1      |
+
+  @staging @id4103
+  Scenario Outline: Verify 'Invite more people' is hidden after 6 connections
+    Given There are <Number> users where <Name> is me
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I see Invite more people button
+    And Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>
+    And I see Invite more people button
+    And Myself is connected to <Contact7>
+    Then I DONT see Invite more people button
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Number |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | 8      |

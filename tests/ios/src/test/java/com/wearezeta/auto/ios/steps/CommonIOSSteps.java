@@ -127,9 +127,6 @@ public class CommonIOSSteps {
 	}
 
 	public void commonBefore(Future<ZetaIOSDriver> lazyDriver) throws Exception {
-		ZetaFormatter.setBuildNumber(IOSCommonUtils
-				.readClientVersionFromPlist().getClientBuildNumber());
-
 		pagesCollecton.setFirstPage(new LoginPage(lazyDriver));
 		ZetaFormatter.setLazyDriver(lazyDriver);
 	}
@@ -146,6 +143,7 @@ public class CommonIOSSteps {
 
 	@When("^I press keyboard Delete button$")
 	public void IPressKeyboardDeleteBtn() throws Exception {
+		pagesCollecton.getCommonPage().clickKeyboardDeleteButton();
 		pagesCollecton.getCommonPage().clickKeyboardDeleteButton();
 	}
 

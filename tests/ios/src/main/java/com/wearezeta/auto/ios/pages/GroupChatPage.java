@@ -48,7 +48,7 @@ public class GroupChatPage extends DialogPage {
 
 	public boolean areRequired3ContactsAddedToChat(String name1, String name2,
 			String name3) {
-		String lastMessage = getStartedtChatMessage();
+		String lastMessage = getAddedtoChatMessage();
 		boolean flag = lastMessage.contains(name1.toUpperCase())
 				&& lastMessage.contains(name2.toUpperCase())
 				&& lastMessage.contains(name3.toUpperCase());
@@ -115,11 +115,6 @@ public class GroupChatPage extends DialogPage {
 		}
 
 		return result;
-	}
-
-	public boolean waitForContactToDisappear(String contact) throws Exception {
-		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.name(contact));
 	}
 
 	@Override

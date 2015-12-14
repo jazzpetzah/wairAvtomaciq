@@ -361,7 +361,7 @@ public class ContactListPage extends WebPage {
 		}
 	}
 
-	private static final int SELECTION_TIMEOUT = 3; // seconds
+	private static final int SELECTION_TIMEOUT = 5; // seconds
 	private static final String NON_SELECTED_ITEM_COLOR = "rgba(255, 255, 255, 1)";
 
 	private boolean isEntrySelected(WebElement entry) {

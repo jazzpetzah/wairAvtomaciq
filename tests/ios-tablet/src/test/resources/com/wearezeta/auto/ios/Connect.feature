@@ -240,20 +240,15 @@ Feature: Connect
       | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
   @regression @id2359
-  Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (Search) [PORTRAIT]
+  Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given Me sent connection request to <Contact>
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
-    When I open search by taping on it
-    And I see People picker page
-    And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
-    And I tap on user on pending name on People picker page <Contact>
-    And I see <Contact> user pending profile popover on iPad
-    And I click on start conversation button on pending profile page
+    And I see user <Contact> in contact list
+    When I tap on contact name <Contact>
+    And I see Pending Connect to <Contact> message on Dialog page from user <Name>   
     Then I see text input in dialog is not allowed
 
     Examples: 
@@ -261,22 +256,16 @@ Feature: Connect
       | user1Name | user2Name | user3Name |
 
   @regression @id3014
-  Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (Search) [LANDSCAPE]
+  Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given Me sent connection request to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
-    When I open search by taping on it
-    And I see People picker page
-    And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
-    And I click hide keyboard button
-    And I tap on user on pending name on People picker page <Contact>
-    And I see <Contact> user pending profile popover on iPad
-    And I click on start conversation button on pending profile page
+    And I see user <Contact> in contact list
+    When I tap on contact name <Contact>
+    And I see Pending Connect to <Contact> message on Dialog page from user <Name>   
     Then I see text input in dialog is not allowed
 
     Examples: 
@@ -493,7 +482,8 @@ Feature: Connect
     And I click Cancel request button
     Then I see Cancel request confirmation page
     And I confirm Cancel request by click on Yes button
-    And I close self profile
+    And I dismiss popover on iPad
+    When I return to the chat list
     Then I dont see conversation <Contact> in contact list
 
     Examples: 
@@ -531,7 +521,8 @@ Feature: Connect
     And I open conversation details
     And I click Cancel request button
     And I confirm Cancel request by click on Yes button
-    And I close self profile
+    And I dismiss popover on iPad
+    And I return to the chat list
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
     And I see user <Contact1> found on People picker page
@@ -558,6 +549,7 @@ Feature: Connect
     And I open conversation details
     And I click Cancel request button
     And I confirm Cancel request by click on Yes button
+    And I dismiss popover on iPad
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
     And I see user <Contact1> found on People picker page

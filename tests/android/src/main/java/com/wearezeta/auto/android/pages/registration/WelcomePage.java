@@ -29,9 +29,9 @@ public class WelcomePage extends AndroidPage {
 	@FindBy(id = idphoneInputField)
 	private WebElement phoneInputField;
 
-	public static final String idHaveAccountButton = "zb__welcome__sign_in";
-	@FindBy(id = idHaveAccountButton)
-	protected WebElement haveAccountButton;
+	public static final String xpathSignInTab = "//*[@id='til__app_entry']//*[*][1]";
+	@FindBy(xpath = xpathSignInTab)
+	protected WebElement signInTab;
 
 	public static final String idWelcomeSlogan = "tv__welcome__terms_of_service";
 	@FindBy(id = idWelcomeSlogan)
@@ -41,8 +41,8 @@ public class WelcomePage extends AndroidPage {
 	@FindBy(id = idAreaCodeSelector)
 	protected WebElement areaCodeSelectorButton;
 
-	public static final String idphoneConfirmationButton = "pcb__signup";
-	@FindBy(id = idphoneConfirmationButton)
+	public static final String idPhoneConfirmationButton = "pcb__signup";
+	@FindBy(id = idPhoneConfirmationButton)
 	protected WebElement phoneConfirmationButton;
 
 	public WelcomePage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
@@ -59,13 +59,12 @@ public class WelcomePage extends AndroidPage {
 		return new PhoneNumberVerificationPage(this.getLazyDriver());
 	}
 
-	public EmailSignInPage tapIHaveAnAccount() throws Exception {
+	public void tapSignInTab() throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idHaveAccountButton), 30);
+				By.xpath(xpathSignInTab), 30);
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
-				haveAccountButton);
-		haveAccountButton.click();
-		return new EmailSignInPage(this.getLazyDriver());
+				signInTab);
+		signInTab.click();
 	}
 
 	public boolean waitForInitialScreen() throws Exception {

@@ -113,11 +113,6 @@ public class EmailSignInPage extends AndroidPage {
 				timeoutSeconds));
 	}
 
-	public boolean waitForAddPhoneNumberAppear() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.id(AddPhoneNumberPage.idNotNowButton), 2);
-	}
-
 	public void verifyErrorMessageText(String expectedMsg) throws Exception {
 		final By locator = By.xpath(xpathLoginMessageByText.apply(expectedMsg));
 		assert DriverUtils

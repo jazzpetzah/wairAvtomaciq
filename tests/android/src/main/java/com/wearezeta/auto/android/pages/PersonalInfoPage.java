@@ -121,6 +121,8 @@ public class PersonalInfoPage extends AndroidPage {
     public void tapConfirmButton() throws Exception {
         this.hideKeyboard();
         assert DriverUtils.waitUntilElementClickable(getDriver(), confirmBtn);
+        // Wait for animation
+        Thread.sleep(1000);
         confirmBtn.click();
     }
 

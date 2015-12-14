@@ -24,8 +24,8 @@ public class TabletSettingsPage extends AndroidTabletPage {
 		getSettingsPage().selectMenuItem(itemName);
 	}
 
-	public void confirmSignOut() throws Exception {
-		getSettingsPage().confirmSignOut();
+	public void confirmLogout() throws Exception {
+		getSettingsPage().confirmLogout();
 	}
 
 }

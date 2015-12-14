@@ -39,9 +39,10 @@ public class GroupChatInfoPageSteps {
 	public void IChangeConversationNameTo(String name) throws Exception {
 		getGroupChatInfoPage().changeConversationName(name);
 	}
-	
+
 	/**
 	 * Try to input empty conversation name
+	 * 
 	 * @step. ^I try to change group conversation name to empty$
 	 * @throws Exception
 	 */
@@ -49,18 +50,20 @@ public class GroupChatInfoPageSteps {
 	public void IChangeConversationNameToEmpty() throws Exception {
 		getGroupChatInfoPage().changeConversationName("");
 	}
-	
+
 	/**
 	 * Try to input conversations name with given length
-	 * @step. ^I try to change group conversation name to random with length (.*)$"
+	 * 
+	 * @step. ^I try to change group conversation name to random with length
+	 *        (.*)$"
 	 * @param length
-	 * 		length of the conversation's name
+	 *            length of the conversation's name
 	 * @throws Exception
 	 */
 	@When("^I try to change group conversation name to random with length (.*)$")
 	public void IChangeConversationNameToRandom(int length) throws Exception {
-		
-		getGroupChatInfoPage().changeConversationName(CommonUtils.generateRandomString(length));
+		String name = CommonUtils.generateRandomString(length);
+		getGroupChatInfoPage().setGroupChatNameByScript(name);
 	}
 
 	@Then("^I see that the conversation name is correct with (.*) and (.*)$")
@@ -199,5 +202,22 @@ public class GroupChatInfoPageSteps {
 		pickerSteps.WhenISeeUserFoundOnPeoplePickerPage(contact);
 		pickerSteps.WhenITapOnUserNameFoundOnPeoplePickerPage(contact);
 		pickerSteps.WhenIClickOnAddToConversationButton();
+	}
+
+	/**
+	 * Verifies that contact is not presented on Group chat info page
+	 * 
+	 * @step. ^I see that (.*) is not present on group chat info page$
+	 * 
+	 * @param contact
+	 *            username
+	 * @throws Exception
+	 */
+	@Then("^I see that (.*) is not present on group chat info page$")
+	public void ISeeContactIsNotPresentOnGroupChatPage(String contact)
+			throws Exception {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		Assert.assertTrue(getGroupChatInfoPage().waitForContactToDisappear(
+				contact));
 	}
 }

@@ -29,8 +29,8 @@ Feature: Sign In
     And the password field on the sign in form is marked as error
 
     Examples: 
-      | Email      | Password      | Error                                      |
-      | user1Email | wrongPassword | Wrong email or password. Please try again. |
+      | Email      | Password      | Error                                     |
+      | user1Email | wrongPassword | Please verify your details and try again. |
 
   @smoke @id4014
   Scenario Outline: Verify sign in button is disabled in case of empty credentials
@@ -123,8 +123,8 @@ Feature: Sign In
     Then I verify that an envelope icon is shown
 
     Examples: 
-      | Name      | EmailOfOtherUser      | PasswordOfOtherUser | ErrorAlready                | InvalidEmail | ErrorInvalidEmail          | InvalidPassword | ErrorInvalidPassword                      |
-      | user1Name | qa1+qa1@wearezeta.com | aqa123456!          | Email address already taken | @example.com | Not a valid email address. | 123             | Your password needs at least 8 characters |
+      | Name      | EmailOfOtherUser      | PasswordOfOtherUser | ErrorAlready                | InvalidEmail | ErrorInvalidEmail                   | InvalidPassword | ErrorInvalidPassword                          |
+      | user1Name | qa1+qa1@wearezeta.com | aqa123456!          | Email address already taken | @example.com | Please enter a valid email address. | 123             | Choose a password with at least 8 characters. |
 
   @regression @id2227
   Scenario Outline: Show invitation button when Gmail import on registration has no suggestions
@@ -165,3 +165,24 @@ Feature: Sign In
     Examples: 
       | Name      |
       | user1Name |
+
+  @regression @id4071
+  Scenario Outline: Verify you can verify added email later when sign in with a phone number
+    Given There is 1 user where <Name> is me with phone number only
+    Given I switch to sign in page
+    When I switch to phone number sign in page
+    When I sign in using phone number of user <Name>
+    And I click on sign in button on phone number sign in
+    And I enter phone verification code for emailless user <Name>
+    Then I see Skip for now button on add email address dialog
+    When I enter email of user <Name> on add email address dialog
+    And I enter password <PasswordOfOtherUser> on add email address dialog
+    Then I click add button on add email address dialog
+    And I verify that an envelope icon is shown
+    When I click on Verify later button on Verification page
+    Then I am signed in properly
+    And I see Self Picture Upload dialog
+
+    Examples: 
+      | Name      | PasswordOfOtherUser |
+      | user1Name | aqa123456!          |

@@ -10,7 +10,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.google.common.base.Throwables;
-import com.wearezeta.auto.common.driver.ZetaDriver;
 
 public final class ZetaSearchContext implements SearchContext {
 	private Future<? extends RemoteWebDriver> lazyDriver;
@@ -21,16 +20,18 @@ public final class ZetaSearchContext implements SearchContext {
 
 	public RemoteWebDriver getDriver() {
 		try {
-			return lazyDriver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
-					TimeUnit.MILLISECONDS);
+			return lazyDriver.get(driverInitializationTimeout, TimeUnit.MILLISECONDS);
 		} catch (Exception e) {
 			Throwables.propagate(e);
 		}
 		return null;
 	}
 
-	public ZetaSearchContext(Future<? extends RemoteWebDriver> lazyDriver) {
+	private long driverInitializationTimeout;
+
+	public ZetaSearchContext(Future<? extends RemoteWebDriver> lazyDriver, long driverTimeout) {
 		this.lazyDriver = lazyDriver;
+        this.driverInitializationTimeout = driverTimeout;
 	}
 
 	@Override

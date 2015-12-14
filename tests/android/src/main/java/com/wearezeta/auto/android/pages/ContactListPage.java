@@ -7,6 +7,7 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -18,7 +19,10 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class ContactListPage extends AndroidPage {
 
-    private static final String xpathLoadingContactListItem = "//*[@id='tv_conv_list_topic' and contains(@value, '…')]";
+    private static final String LOADING_CONVERSATION_NAME = "…";
+
+    private static final String xpathLoadingContactListItem = "//*[@id='tv_conv_list_topic' and contains(@value, '"
+            + LOADING_CONVERSATION_NAME + "')]";
 
     public static final Function<String, String> xpathContactByName = name -> String
             .format("//*[@id='tv_conv_list_topic' and @value='%s' and @shown='true']",
@@ -94,7 +98,7 @@ public class ContactListPage extends AndroidPage {
     @FindBy(id = idPager)
     private WebElement mainControl;
 
-    @FindBy(id = ConnectToPage.idConnectToHeader)
+    @FindBy(id = IncomingPendingConnectionsPage.idConnectToHeader)
     private WebElement connectToHeader;
 
     @FindBy(id = idSearchHintClose)
@@ -127,6 +131,11 @@ public class ContactListPage extends AndroidPage {
     private static final String idInviteButton = "zb__conversationlist__show_contacts";
     @FindBy(id = idInviteButton)
     private WebElement inviteButton;
+
+    private static final String idThreeDotsOptionMenuButton = "v__row_conversation__menu_indicator__second_dot";
+    @FindBy(id = idThreeDotsOptionMenuButton)
+    private WebElement threeDotOptionMenuButton;
+
 
     private static final Logger log = ZetaLogger.getLog(ContactListPage.class
             .getSimpleName());
@@ -245,6 +254,14 @@ public class ContactListPage extends AndroidPage {
                 20, 50, 90, 50);
     }
 
+    public void swipeShortRightOnConversation(int durationMilliseconds, String name)
+            throws Exception {
+        final By locator = By.xpath(xpathContactByName.apply(name));
+        DriverUtils.swipeRight(this.getDriver(),
+                this.getDriver().findElement(locator), durationMilliseconds,
+                20, 50, 50, 50);
+    }
+
     public boolean isContactMuted(String name) throws Exception {
         final By locator = By.xpath(xpathMutedIconByConvoName.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
@@ -342,21 +359,20 @@ public class ContactListPage extends AndroidPage {
     public boolean isAnyConversationVisible() throws Exception {
         for (int i = contactListNames.size(); i >= 1; i--) {
             final By locator = By.xpath(xpathContactByIndex.apply(i));
-            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator)) {
-                if (!waitUntilConversationsInfoIsLoaded()) {
-                    throw new IllegalStateException(
-                            String.format(
-                                    "Not all conversations list items were loaded within %s seconds",
-                                    CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS));
-                }
+            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) ||
+                    !getDriver().findElement(locator).getText().equals(LOADING_CONVERSATION_NAME)) {
                 return true;
             }
         }
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathLastContact), CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
+                By.xpath(xpathLastContact), CONTACT_LIST_LOAD_TIMEOUT_SECONDS) &&
+                !getDriver().findElement(By.xpath(xpathLastContact)).getText().equals(LOADING_CONVERSATION_NAME);
     }
 
     public boolean isNoConversationsVisible() throws Exception {
+        Assert.assertTrue(
+                "Conversations list frame is not visible",
+                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idConversationListFrame)));
         for (int i = contactListNames.size(); i >= 1; i--) {
             final By locator = By.xpath(xpathContactByIndex.apply(i));
             if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator)) {
@@ -370,7 +386,10 @@ public class ContactListPage extends AndroidPage {
         final By locator = By.xpath(xpathConvoSettingsMenuItemByName
                 .apply(itemName));
         assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
-                .format("Conversation menu item '%s' could not be found on the current screen");
+                .format("Conversation menu item '%s' could not be found on the current screen",
+                        itemName);
+        //fix for options menu with icons
+        //DriverUtils.tapOutsideOfTheElement(getDriver(), getDriver().findElement(locator), 0, -5, false);
         getDriver().findElement(locator).click();
     }
 
@@ -445,5 +464,17 @@ public class ContactListPage extends AndroidPage {
 
     public void tapInviteButton() {
         inviteButton.click();
+    }
+
+    public boolean isLeaveCheckBoxVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),By.id(idLeaveCheckbox));
+    }
+
+    public boolean isThreeDotButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),By.id(idThreeDotsOptionMenuButton));
+    }
+
+    public void tapThreeDotOptionMenuButton() {
+        threeDotOptionMenuButton.click();
     }
 }

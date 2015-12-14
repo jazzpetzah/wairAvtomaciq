@@ -133,8 +133,8 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		Assert.assertEquals("User name doesn't appeared in contact list.", value, getContactListPage()
-				.getFirstConversationName());
+		Assert.assertEquals("User name doesn't appeared in contact list.",
+				value, getContactListPage().getFirstConversationName());
 	}
 
 	/**
@@ -364,7 +364,8 @@ public class ContactListPageSteps {
 	public void IDoNotSeeConversationInContactList(String name)
 			throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		Assert.assertTrue(getContactListPage().contactIsNotDisplayed(name));
+		Assert.assertTrue("Conversation is displayed", getContactListPage()
+				.contactIsNotDisplayed(name));
 	}
 
 	/**
@@ -534,7 +535,8 @@ public class ContactListPageSteps {
 				.getScreenshotFirstContact();
 		score = ImageUtil.getOverlapScore(convCellState, referenceImage,
 				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-		Assert.assertTrue("Ping symbol not visible", score <= MAX_OVERLAP_SCORE);
+		Assert.assertTrue("Ping symbol not visible. Score is : " + score,
+				score <= MAX_OVERLAP_SCORE);
 
 	}
 
@@ -794,4 +796,31 @@ public class ContactListPageSteps {
 				.getSelectedConversationCellValue(conversation);
 		Assert.assertEquals("Converstaion is not selected", "1", convIsSelected);
 	}
+
+	/**
+	 * Verify if Invite more people button is shown in contact list
+	 * 
+	 * @step. ^I see Invite more people button$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see Invite more people button$")
+	public void ISeeInviteMorePeopleButton() throws Exception {
+		Assert.assertTrue("Invite more people button is not shown",
+				getContactListPage().isInviteMorePeopleButtonVisible());
+	}
+
+	/**
+	 * Verify if Invite more people button is NOT shown in contact list
+	 * 
+	 * @step. ^I DONT see Invite more people button$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I DONT see Invite more people button$")
+	public void IDontSeeInviteMorePeopleButton() throws Exception {
+		Assert.assertTrue("Invite more people button is shown",
+				getContactListPage().isInviteMorePeopleButtonNotVisible());
+	}
+
 }

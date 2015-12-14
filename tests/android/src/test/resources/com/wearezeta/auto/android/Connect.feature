@@ -18,10 +18,10 @@ Feature: Connect
     Then I see contact list with name <Contact>
 
     Examples:
-      | Name      | Contact   | Message       |
-      | user1Name | user2Name | Hellow friend |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
-  @id323 @regression @rc
+  @id323 @regression @rc @rc42
   Scenario Outline: Accept incoming connection request from conversation list
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to <Name>
@@ -183,8 +183,8 @@ Feature: Connect
     And I see that connection is pending
 
     Examples:
-      | Name      | Contact   | Message |
-      | user1Name | user2Name | Test    |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @id541 @regression @rc
   Scenario Outline: I can receive new connection request when app in background

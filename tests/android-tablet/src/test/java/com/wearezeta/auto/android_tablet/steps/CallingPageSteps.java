@@ -243,18 +243,6 @@ public class CallingPageSteps {
 	}
 
 	/**
-	 * Swipe up on calling overlay to dismiss it
-	 * 
-	 * @step. ^I swipe up on (?:\\s*|the )calling overlay$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I swipe up on (?:\\s*|the )calling overlay$")
-	public void ISwipeUp() throws Exception {
-		getCallingOverlayPage().dismissBySwipeUp();
-	}
-
-	/**
 	 * Verify whether the particular call participant(s) name(s) exist on the
 	 * calling bar
 	 * 

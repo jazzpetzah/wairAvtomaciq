@@ -466,7 +466,7 @@ public class ConversationViewPageSteps {
 
 	private static final double MAX_SIMILARITY_THRESHOLD = 0.97;
 
-	private static enum PictureDestination {
+	private enum PictureDestination {
 		CONVERSATION_VIEW, PREVIEW;
 	}
 
@@ -487,7 +487,7 @@ public class ConversationViewPageSteps {
 				.toUpperCase().replace(" ", "_"));
 		double avgThreshold;
 		// no need to wait, since screenshoting procedure itself is quite long
-		final long screenshotingDelay = 200;
+		final long screenshotingDelay = 700;
 		final int maxFrames = 4;
 		switch (dst) {
 		case CONVERSATION_VIEW:

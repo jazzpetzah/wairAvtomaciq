@@ -27,8 +27,6 @@ public class CommonUtils {
 	public static final int MAX_PARALLEL_USER_CREATION_TASKS = 25;
 
 	private static final String USER_IMAGE = "userpicture_landscape.jpg";
-	private static final String PING_IMAGE = "ping_image.png";
-	private static final String HOT_PING_IMAGE = "hot_ping_image.png";
 	private static final String IOS_PING_IMAGE = "ios_ping_image.png";
 	private static final String IOS_HOT_PING_IMAGE = "ios_hot_ping_image.png";
 	private static final String IOS_AVATAR_CLOCK_IMAGE = "new_avatarclock.png";
@@ -107,36 +105,21 @@ public class CommonUtils {
 		return getValueFromConfig(c, "deviceName");
 	}
 
-	public static String getDefaultImagesPath(Class<?> c) throws Exception {
-		return getValueFromConfig(c, "defaultImagesPath");
-	}
-
 	public static String getImagePath(Class<?> c) throws Exception {
 		return getValueFromConfig(c, "defaultImagesPath") + USER_IMAGE;
-	}
-
-	public static String getPingIconPath(Class<?> c) throws Exception {
-		return getValueFromConfig(c, "defaultImagesPath") + PING_IMAGE;
 	}
 
 	public static String getPingIconPathIOS(Class<?> c) throws Exception {
 		return getValueFromConfig(c, "iosImagesPath") + IOS_PING_IMAGE;
 	}
 
-	public static String getHotPingIconPath(Class<?> c) throws Exception {
-		return getValueFromConfig(c, "defaultImagesPath")
-				+ HOT_PING_IMAGE;
-	}
-
 	public static String getHotPingIconPathIOS(Class<?> c) throws Exception {
-		return getValueFromConfig(c, "iosImagesPath")
-				+ IOS_HOT_PING_IMAGE;
+		return getValueFromConfig(c, "iosImagesPath") + IOS_HOT_PING_IMAGE;
 	}
 
 	public static String getAvatarWithClockIconPathIOS(Class<?> c)
 			throws Exception {
-		return getValueFromConfig(c, "iosImagesPath")
-				+ IOS_AVATAR_CLOCK_IMAGE;
+		return getValueFromConfig(c, "iosImagesPath") + IOS_AVATAR_CLOCK_IMAGE;
 	}
 
 	public static String getImagesPath(Class<?> c) throws Exception {
@@ -144,8 +127,7 @@ public class CommonUtils {
 	}
 
 	public static String getMediaBarPlayIconPath(Class<?> c) throws Exception {
-		return getValueFromConfig(c, "defaultImagesPath")
-				+ MEDIABAR_PLAY_IMAGE;
+		return getValueFromConfig(c, "defaultImagesPath") + MEDIABAR_PLAY_IMAGE;
 	}
 
 	public static String getMediaBarPauseIconPath(Class<?> c) throws Exception {
@@ -223,6 +205,11 @@ public class CommonUtils {
 
 	private static final String COMMON_CONFIG = "CommonConfiguration.cnf";
 
+	public static Optional<String> getOptionalValueFromCommonConfig(Class<?> c,
+			String key) throws Exception {
+		return getValueFromConfigFile(c, key, COMMON_CONFIG);
+	}
+
 	public static String getValueFromCommonConfig(Class<?> c, String key)
 			throws Exception {
 		final Optional<String> value = getValueFromConfigFile(c, key,
@@ -263,6 +250,11 @@ public class CommonUtils {
 		case "edge":
 			return getValueFromCommonConfig(c, "edgeBackendUrl");
 		case "staging":
+		case "benny":
+		case "gregor":
+		case "rene":
+		case "lipis":
+		case "chris":
 			return getValueFromCommonConfig(c, "stagingBackendUrl");
 		case "production":
 			return getValueFromCommonConfig(c, "productionBackendUrl");
@@ -303,6 +295,16 @@ public class CommonUtils {
 				return getValueFromConfig(c, "webappStagingApplicationPath");
 			case "production":
 				return getValueFromConfig(c, "webappProductionApplicationPath");
+			case "benny":
+				return getValueFromConfig(c, "webappBennyApplicationPath");
+			case "gregor":
+				return getValueFromConfig(c, "webappGregorApplicationPath");
+			case "rene":
+				return getValueFromConfig(c, "webappReneApplicationPath");
+			case "lipis":
+				return getValueFromConfig(c, "webappLipisApplicationPath");
+			case "chris":
+				return getValueFromConfig(c, "webappChrisApplicationPath");
 			default:
 				throw new RuntimeException(String.format(
 						"Non supported backend type '%s'", currentBackendType));
@@ -360,6 +362,10 @@ public class CommonUtils {
 
 	public static String generateRandomString(int lengh) {
 		return RandomStringUtils.randomAlphanumeric(lengh);
+	}
+
+	public static String generateRandomNumericString(int length){
+		return RandomStringUtils.randomNumeric(length);
 	}
 
 	private static String generateRandomStringFromTargetStringSetWithLengh(

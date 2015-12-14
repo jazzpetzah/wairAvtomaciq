@@ -48,7 +48,7 @@ Feature: Ping
     Then I see ping message <PING>
     When I open self profile
     And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+    And I select Log out menu item on self profile page
     And User <Name> sent message <Message> to conversation <Contact1>
     And I see Sign In page
     And User <Contact1> is me

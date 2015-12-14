@@ -524,32 +524,12 @@ public class DialogPageSteps {
      * @step. ^I see Connect to (.*) Dialog page$
      */
     @Then("^I see Connect to (.*) Dialog page$")
-    public void ThenIseeConnectToDialogPage(String contact) throws Exception {
+    public void ThenISeeConnectToDialogPage(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        final String actualLabel = getDialogPage().getConnectRequestChatLabel();
         Assert.assertTrue(String.format(
-                "The actual label '%s' does not contain '%s' part",
-                actualLabel, contact),
-                actualLabel.toLowerCase().contains(contact.toLowerCase()));
+                "The name '%s' is not visible in start chat title",
+                contact), getDialogPage().waitUntilStartChatTitleContains(contact));
     }
-
-    /**
-     * Seems to currently be blocked out in all tests
-     *
-     * @param iconLabel
-     * @throws Exception
-     * @step. ^I see (.*) icon$
-     */
-    @Then("^I see (.*) icon$")
-    public void ThenIseeIcon(String iconLabel) throws Exception {
-        final double score = getDialogPage().checkPingIcon(iconLabel);
-        Assert.assertTrue(
-                "Overlap between two images has not enough score. Expected >= 0.75, current = "
-                        + score, score >= 0.75d);
-    }
-
-    // ------- From Group Chat Page
-    public static final String userRemovedMessage = "YOU REMOVED ";
 
     /**
      * Checks to see that a group chat exists, where the name of the group chat
@@ -717,19 +697,6 @@ public class DialogPageSteps {
                         "Missed call message '%s' is not visible in the conversation view",
                         expectedMessage), getDialogPage()
                         .waitUntilMissedCallMessageIsVisible(expectedMessage));
-    }
-
-    /**
-     * Swipes on calling bar to dismiss a call
-     *
-     * @throws Exception
-     * @step. ^I dismiss calling bar by swipe$
-     */
-    @When("I dismiss calling bar by swipe$")
-    public void IDismissCalling() throws Exception {
-        Assert.assertTrue("Call overlay is not visible, nothing to swipe",
-                getCallingOverlayPage().waitUntilVisible());
-        getDialogPage().swipeByCoordinates(1500, 30, 25, 30, 5);
     }
 
     /**

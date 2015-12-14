@@ -10,7 +10,7 @@ Feature: Sign Out
     And I tap options button
     And I tap settings button
     And I select "Account" settings menu item
-    And I select "Sign out" settings menu item
+    And I select "Log out" settings menu item
     And I confirm sign out
     Then I see welcome screen
 

@@ -1,4 +1,4 @@
-Feature: Sign Out
+Feature: Log Out
 
   @id2266 @regression @rc
   Scenario Outline: Sign out from Wire in portrait mode
@@ -12,15 +12,15 @@ Feature: Sign Out
     And I tap Options button on Self Profile page
     And I select "SETTINGS" menu item on Self Profile page
     And I select "Account" menu item on Settings page
-    And I select "Sign out" menu item on Settings page
-    And I confirm signout on Settings page
+    And I select "Log out" menu item on Settings page
+    And I confirm logout on Settings page
     Then I see welcome screen
 
     Examples:
       | Name      |
       | user1Name |
 
-  @id2251 @regression @rc
+  @id2251 @regression @rc @rc44
   Scenario Outline: Sign out from Wire in landscape mode
     Given There is 1 user where <Name> is me
     Given I see welcome screen
@@ -31,8 +31,8 @@ Feature: Sign Out
     And I tap Options button on Self Profile page
     And I select "SETTINGS" menu item on Self Profile page
     And I select "Account" menu item on Settings page
-    And I select "Sign out" menu item on Settings page
-    And I confirm signout on Settings page
+    And I select "Log out" menu item on Settings page
+    And I confirm logout on Settings page
     Then I see welcome screen
 
     Examples:

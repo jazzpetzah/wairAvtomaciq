@@ -10,7 +10,7 @@ public final class IOSLocators {
 
 	public static final String nameTermsOfServiceButton = "LegalCheckmarkButton";
 
-	public static final String xpathLoginButton = "//UIASecureTextField/UIAButton[1]";
+	public static final String nameLoginButton = "RegistrationConfirmButton";
 
 	public static final String nameLoginField = "EmailField";
 
@@ -126,7 +126,7 @@ public final class IOSLocators {
 
 	public static final String nameCreateConversationButton = "CREATE";
 
-	public static final String nameKeyboardGoButton = "Return";
+	public static final String nameKeyboardEnterButton = "Return";
 
 	public static final String classUIATextView = "UIATextView";
 
@@ -163,6 +163,7 @@ public final class IOSLocators {
 	public static final String xpathLastChatMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/*[last()]";
 
 	public static final String xpathStartedConversationMessage = "//UIAStaticText[starts-with(@name, 'YOU STARTED A CONVERSATION WITH')]";
+	public static final String xpathAddedToConversationMessage = "//UIAStaticText[starts-with(@name, 'YOU ADDED')]";
 
 	public static final String xpathFormatSpecificMessageContains = "//UIATextView[contains(@name,'%s')]";
 
@@ -266,6 +267,10 @@ public final class IOSLocators {
 	public static final String xpathAllSoundAlertsButton = "//UIATableCell[@name='All']";
 
 	public static final String nameSettingsChangePasswordButton = "Change Password";
+
+	public static final String nameSettingsResetPasswordButton = "Reset Password";
+
+	public static final String nameSettingsAccountInfoButton = "Account";
 
 	public static final String xpathChangePasswordPageChangePasswordButton = "//UIAButton[@name='CHANGE PASSWORD']";
 
@@ -485,6 +490,7 @@ public final class IOSLocators {
 	public static final String namePeoplePickerOtheraLabel = "OTHERS";
 	public static final String NamePeoplePickerTopPeopleLabel = "TOP PEOPLE";
 	public static final String xpathPeoplePickerUserAvatar = "//UIACollectionCell[descendant::UIAButton[@name='HIDE'] and UIAStaticText[@name='%s']]";
+	public static final String xpathPeoplePickerSelectedCell = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[2]/UIATableCell[@name='%s']";
 	public static final String namePeoplePickerAddToConversationButton = "ADD TO CONVERSATION";
 	public static final String xpathPeoplePickerTopConnectionsAvatar = "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell[%d]";
 	public static final String xpathPeoplePickerTopConnectionsName = "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell[%d]/UIAStaticText[last()]";
@@ -516,7 +522,7 @@ public final class IOSLocators {
 
 	public static final String classNameKeyboard = "UIAKeyboard";
 
-	public static final String nameKeyboardDeleteButton = "Delete";
+	public static final String nameKeyboardDeleteButton = "delete";
 	public static final String nameKeyboardReturnButton = "Send";
 
 	public static final class KeyboardButtons {
@@ -540,6 +546,11 @@ public final class IOSLocators {
 	public static final String scriptRegistrationEmailInputPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textFields()[\"RegistrationEmailField\"]";
 	public static final String scriptSearchField = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textViews()[\"textViewSearch\"]";
 
+	public static class ScriptLocator {
+		public static final String scriptGroupChatNameInput = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textViews()[\"ParticipantsView_GroupName\"]";
+		public static final String scriptGroupChatNameInputIpad = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].popover().textViews()[\"ParticipantsView_GroupName\"]";
+		
+	}
 	public static final String nameYouLeftMessage = "YOU LEFT";
 	public static final String nameYouPingedMessage = "YOU PINGED";
 	public static final String nameYouPingedAgainMessage = "YOU PINGED AGAIN";
@@ -605,13 +616,15 @@ public final class IOSLocators {
 
 		public static final String nameSecondCallAlert = "Answer call?";
 
-		public static final String nameEndCallAlertButton = "End Call";
+		public static final String nameAnswerCallAlertButton = "Answer";
 
 		public static final String xpathGroupCallAvatars = "//UIAWindow[@name='ZClientNotificationWindow']//UIACollectionCell";
 
 		public static final String classNameUIACollectionCell = "UIACollectionCell";
 
 		public static final String xpathGroupCallFullMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAAlert[@name='The call is full']";
+
+		public static final String xpathUserInCallContactListCell = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText";
 	}
 
 	public final class DialogPage {
@@ -686,7 +699,7 @@ public final class IOSLocators {
 	}
 
 	public final class LoginPage {
-		public static final String namePhoneLoginButton = "PHONE SIGN IN";
+		public static final String namePhoneLoginButton = "RegistrationRightButton";
 		public static final String nameBackButton = "BackToWelcomeButton";
 		public static final String nameEmailLoginButton = "EMAIL SIGN IN";
 		public static final String nameMaybeLater = "MAYBE LATER";
@@ -781,6 +794,10 @@ public final class IOSLocators {
 		public static final String xpathLibraryLastPicture = "//UIACollectionView/UIACollectionCell[last()]";
 		public static final String xpathConfirmPictureButton = "//UIAButton[@name='OK' and @visible='true']";
 		public static final String xpathCameraLibraryFirstFolder = "//UIATableCell[@name='Moments']";
+	}
+	
+	public final class GroupChatInfoPage {
+		public static final String xpathUserNameLabel = "//UIACollectionView[preceding-sibling::UIATextView[@name='ParticipantsView_GroupName']]/UIACollectionCell/UIAStaticText[last() and @name='%s']";
 	}
 
 }

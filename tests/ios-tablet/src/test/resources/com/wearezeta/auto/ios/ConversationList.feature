@@ -725,7 +725,7 @@ Feature: Conversation List
       | Name      | Contact   | Picture     | ConversationType |
       | user1Name | user2Name | testing.jpg | single user      |
 
-  @regression @id3966
+  @regression @id3966 @ZIOS-5247
   Scenario Outline: Verify removing the content and leaving from the group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -749,7 +749,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
-  @regression @id3967
+  @regression @id3967 @ZIOS-5247
   Scenario Outline: Verify removing the content and leaving from the group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -857,7 +857,38 @@ Feature: Conversation List
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
-    
+
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @staging @id4104
+  Scenario Outline: Verify 'Invite more people' is hidden after 6 connections [PORTRAIT]
+    Given There are <Number> users where <Name> is me
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I see Invite more people button
+    And Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>
+    And I see Invite more people button
+    And Myself is connected to <Contact7>
+    Then I DONT see Invite more people button
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Number |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | 8      |
+
+  @staging @id4105
+  Scenario Outline: Verify 'Invite more people' is hidden after 6 connections [LANDSCAPE]
+    Given There are <Number> users where <Name> is me
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I see Invite more people button
+    And Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>
+    And I see Invite more people button
+    And Myself is connected to <Contact7>
+    Then I DONT see Invite more people button
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Number |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | 8      |

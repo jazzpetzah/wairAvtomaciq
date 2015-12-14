@@ -21,7 +21,6 @@ import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.logging.LogEntry;
@@ -40,7 +39,6 @@ import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
-import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -59,6 +57,7 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.openqa.selenium.WebDriverException;
 
 public class CommonWebAppSteps {
 
@@ -71,6 +70,8 @@ public class CommonWebAppSteps {
 	public static final Map<String, Future<ZetaWebAppDriver>> webdrivers = new HashMap<>();
 
 	public static final Platform CURRENT_PLATFORM = Platform.Web;
+
+	public static final int SAFARI_DRIVER_CREATION_RETRY = 3;
 
 	private static final String DEFAULT_USER_PICTURE = "/images/aqaPictureContact600_800.jpg";
 
@@ -141,6 +142,8 @@ public class CommonWebAppSteps {
 				+ "'");
 	}
 
+	private static final long DRIVER_INIT_TIMEOUT = 60 * 1000;
+
 	@Before("~@performance")
 	public void setUp(Scenario scenario) throws Exception {
 		String platform = WebAppExecutionContext.getPlatform();
@@ -167,11 +170,42 @@ public class CommonWebAppSteps {
 
 			@Override
 			public ZetaWebAppDriver call() throws Exception {
-				final ZetaWebAppDriver lazyWebDriver = new ZetaWebAppDriver(
-						new URL("http://" + hubHost + ":" + hubPort + "/wd/hub"),
-						capabilities);
+				ZetaWebAppDriver lazyWebDriver = null;
+				URL hubUrl = new URL("http://" + hubHost + ":" + hubPort
+						+ "/wd/hub");
+				if (WebAppExecutionContext.getBrowser().equals(Browser.Safari)) {
+					int retries = SAFARI_DRIVER_CREATION_RETRY;
+					boolean failed = false;
+					do {
+						try {
+							retries--;
+							// wait for safari to close properly before starting
+							// it for
+							// a new test
+							Thread.sleep(5000);
+							lazyWebDriver = new ZetaWebAppDriver(hubUrl,
+									capabilities);
+							failed = false;
+						} catch (WebDriverException e) {
+							log.warn("Safari driver init failed - retrying", e);
+							failed = true;
+						}
+					} while (failed && retries > 0);
+
+					if (failed) {
+						throw new Exception("Failed to init Safari driver");
+					}
+				} else {
+					lazyWebDriver = new ZetaWebAppDriver(hubUrl, capabilities);
+				}
 				// setup of the browser
 				lazyWebDriver.setFileDetector(new LocalFileDetector());
+				if (WebAppExecutionContext.getBrowser().equals(Browser.Safari)) {
+					WebCommonUtils.closeAllAdditionalTabsInSafari(lazyWebDriver
+							.getNodeIp());
+					WebCommonUtils.clearHistoryInSafari(lazyWebDriver
+							.getNodeIp());
+				}
 				if (WebAppExecutionContext.getBrowser()
 						.isSupportingMaximizingTheWindow()) {
 					lazyWebDriver.manage().window().maximize();
@@ -188,10 +222,6 @@ public class CommonWebAppSteps {
 												WebAppConstants.MIN_WEBAPP_WINDOW_HEIGHT));
 					}
 				}
-				if (WebAppExecutionContext.getBrowser().equals(Browser.Safari)) {
-					WebCommonUtils.clearHistoryInSafari(lazyWebDriver
-							.getNodeIp());
-				}
 				return lazyWebDriver;
 			}
 		};
@@ -199,8 +229,7 @@ public class CommonWebAppSteps {
 		final Future<ZetaWebAppDriver> lazyWebDriver = pool
 				.submit(callableWebAppDriver);
 		webdrivers.put(uniqueName, lazyWebDriver);
-		lazyWebDriver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
-				TimeUnit.MILLISECONDS).get(url);
+		lazyWebDriver.get(DRIVER_INIT_TIMEOUT, TimeUnit.MILLISECONDS).get(url);
 		WebappPagesCollection.getInstance().setFirstPage(
 				new RegistrationPage(lazyWebDriver, url));
 		ZetaFormatter.setLazyDriver(lazyWebDriver);
@@ -275,11 +304,10 @@ public class CommonWebAppSteps {
 	 * does support calling or not. This will cause Cucumber interpreter to skip
 	 * the current test instead of failing it.
 	 *
-	 *
-	 * @step. ^My browser( does not)? support[s] calling$
 	 * @param doesNot
 	 *            is set to null if "does not" part does not exist
 	 * @throws Exception
+	 * @step. ^My browser( does not)? support[s] calling$
 	 */
 	@Given("^My browser( does not)? support[s]? calling$")
 	public void MyBrowserSupportsCalling(String doesNot) throws Exception {
@@ -306,14 +334,12 @@ public class CommonWebAppSteps {
 	 * Creates specified number of users and sets user with specified name as
 	 * main user. Avatar picture for Self user is set automatically
 	 *
-	 * @step. ^There (?:is|are) (\\d+) users? where (.*) is me$
-	 *
 	 * @param count
 	 *            number of users to create
 	 * @param myNameAlias
 	 *            user name or name alias to use as main user
-	 *
 	 * @throws Exception
+	 * @step. ^There (?:is|are) (\\d+) users? where (.*) is me$
 	 */
 	@Given("^There (?:is|are) (\\d+) users? where (.*) is me$")
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
@@ -326,19 +352,16 @@ public class CommonWebAppSteps {
 	/**
 	 * Changes the accent color settings of the given user
 	 *
-	 *
-	 * @step. ^User (\\w+) change accent color to
-	 *        (StrongBlue|StrongLimeGreen|BrightYellow
-	 *        |VividRed|BrightOrange|SoftPink|Violet)$
-	 *
 	 * @param userNameAlias
 	 *            alias of the user where the accent color will be changed
 	 * @param newColor
 	 *            one of possible accent colors:
 	 *            StrongBlue|StrongLimeGreen|BrightYellow
 	 *            |VividRed|BrightOrange|SoftPink|Violet
-	 *
 	 * @throws Exception
+	 * @step. ^User (\\w+) change accent color to
+	 *        (StrongBlue|StrongLimeGreen|BrightYellow
+	 *        |VividRed|BrightOrange|SoftPink|Violet)$
 	 */
 	@Given("^User (\\w+) change accent color to (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet)$")
 	public void IChangeAccentColor(String userNameAlias, String newColor)
@@ -350,15 +373,13 @@ public class CommonWebAppSteps {
 	 * Creates specified number of users and sets user with specified name as
 	 * main user. Avatar picture for Self user is NOT set automatically
 	 *
-	 * @step. ^There (?:is|are) (\\d+) users? where (.*) is me without avatar
-	 *        picture$
-	 *
 	 * @param count
 	 *            number of users to create
 	 * @param myNameAlias
 	 *            user name or name alias to use as main user
-	 *
 	 * @throws Exception
+	 * @step. ^There (?:is|are) (\\d+) users? where (.*) is me without avatar
+	 *        picture$
 	 */
 	@Given("^There (?:is|are) (\\d+) users? where (.*) is me without avatar picture$")
 	public void ThereAreNUsersWhereXIsMeWithoutAvatar(int count,
@@ -372,15 +393,13 @@ public class CommonWebAppSteps {
 	 * main user. The user is registered with a phone number only and has no
 	 * email address attached
 	 *
-	 * @step. ^There (?:is|are) (\\d+) users? where (.*) is me with phone number
-	 *        only$
-	 *
 	 * @param count
 	 *            number of users to create
 	 * @param myNameAlias
 	 *            user name or name alias to use as main user
-	 *
 	 * @throws Exception
+	 * @step. ^There (?:is|are) (\\d+) users? where (.*) is me with phone number
+	 *        only$
 	 */
 	@Given("^There (?:is|are) (\\d+) users? where (.*) is me with phone number only$")
 	public void ThereAreNUsersWhereXIsMeWithoutEmail(int count,
@@ -392,14 +411,13 @@ public class CommonWebAppSteps {
 	/**
 	 * Set avatar picture for a particular user
 	 *
-	 * @step. ^User (\\w+) changes? avatar picture to (.*)
-	 *
 	 * @param userNameAlias
 	 *            user name/alias
 	 * @param path
 	 *            path to a picture on a local file system or 'default' to set
 	 *            the default picture
 	 * @throws Exception
+	 * @step. ^User (\\w+) changes? avatar picture to (.*)
 	 */
 	@When("^User (\\w+) changes? avatar picture to (.*)")
 	public void IChangeUserAvatarPicture(String userNameAlias, String path)
@@ -421,14 +439,12 @@ public class CommonWebAppSteps {
 	/**
 	 * Creates connection between to users
 	 *
-	 * @step. ^(\\w+) is connected to (.*)$
-	 *
 	 * @param userFromNameAlias
 	 *            user which sends connection request
 	 * @param usersToNameAliases
 	 *            user which accepts connection request
-	 *
 	 * @throws Exception
+	 * @step. ^(\\w+) is connected to (.*)$
 	 */
 	@Given("^(\\w+) is connected to (.*)$")
 	public void UserIsConnectedTo(String userFromNameAlias,
@@ -439,14 +455,12 @@ public class CommonWebAppSteps {
 	/**
 	 * Blocks a user
 	 *
-	 * @step. ^(\\w+) blocked (\\w+)$
-	 *
 	 * @param userAsNameAlias
 	 *            user which wants to block another
 	 * @param userToBlockNameAlias
 	 *            user to block
-	 *
 	 * @throws Exception
+	 * @step. ^(\\w+) blocked (\\w+)$
 	 */
 	@Given("^(\\w+) blocked (\\w+)$")
 	public void UserBlocks(String userAsNameAlias, String userToBlockNameAlias)
@@ -457,16 +471,14 @@ public class CommonWebAppSteps {
 	/**
 	 * Creates group chat with specified users
 	 *
-	 * @step. ^(.*) (?:has|have) group chat (.*) with (.*)
-	 *
 	 * @param chatOwnerNameAlias
 	 *            user that creates group chat
 	 * @param chatName
 	 *            group chat name
 	 * @param otherParticipantsNameAlises
 	 *            list of users which will be added to chat separated by comma
-	 *
 	 * @throws Exception
+	 * @step. ^(.*) (?:has|have) group chat (.*) with (.*)
 	 */
 	@Given("^(.*) (?:has|have) group chat (.*) with (.*)")
 	public void UserHasGroupChatWithContacts(String chatOwnerNameAlias,
@@ -480,12 +492,10 @@ public class CommonWebAppSteps {
 	 * Sets self user to be the current user. Avatar picture for this user is
 	 * set automatically
 	 *
-	 * @step. ^User (\\w+) is [Mm]e$
-	 *
 	 * @param nameAlias
 	 *            user to be set as self user
-	 *
 	 * @throws Exception
+	 * @step. ^User (\\w+) is [Mm]e$
 	 */
 	@Given("^User (\\w+) is [Mm]e$")
 	public void UserXIsMe(String nameAlias) throws Exception {
@@ -497,12 +507,10 @@ public class CommonWebAppSteps {
 	 * Sets self user to be the current user. Avatar picture for this user is
 	 * NOT set automatically
 	 *
-	 * @step. ^User (\\w+) is [Mm]e without avatar$
-	 *
 	 * @param nameAlias
 	 *            user to be set as self user
-	 *
 	 * @throws Exception
+	 * @step. ^User (\\w+) is [Mm]e without avatar$
 	 */
 	@Given("^User (\\w+) is [Mm]e without avatar$")
 	public void UserXIsMeWithoutAvatar(String nameAlias) throws Exception {
@@ -512,14 +520,12 @@ public class CommonWebAppSteps {
 	/**
 	 * Sends connection request by one user to another
 	 *
-	 * @step. ^(.*) sent connection request to (.*)
-	 *
 	 * @param userFromNameAlias
 	 *            user that sends connection request
 	 * @param usersToNameAliases
 	 *            user which receive connection request
-	 *
 	 * @throws Exception
+	 * @step. ^(.*) sent connection request to (.*)
 	 */
 	@Given("^(.*) sent connection request to (.*)")
 	public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
@@ -531,15 +537,12 @@ public class CommonWebAppSteps {
 	/**
 	 * Pings BackEnd until user is indexed and avialable in search
 	 *
-	 * @step. ^(\\w+) waits? until (.*) exists in backend search results$
-	 *
 	 * @param searchByNameAlias
 	 *            user name to search string
-	 *
 	 * @param query
 	 *            querry string
-	 *
 	 * @throws Exception
+	 * @step. ^(\\w+) waits? until (.*) exists in backend search results$
 	 */
 	@Given("^(\\w+) waits? until (.*) exists in backend search results$")
 	public void UserWaitsUntilContactExistsInHisSearchResults(
@@ -548,13 +551,29 @@ public class CommonWebAppSteps {
 	}
 
 	/**
-	 * Wait for specified amount of seconds
+	 * Pings BackEnd until user is indexed and available in top people
 	 *
-	 * @step. ^I wait for (\\d+) seconds?$
+	 * @param searchByNameAlias
+	 *            user name to search string
+	 * @param size
+	 *            number of top people
+	 * @throws Exception
+	 * @step. ^(\\w+) waits? until (.*) exists in backend search results$
+	 */
+	@Given("^(\\w+) waits? until (\\d+) people in backend top people results$")
+	public void UserWaitsUntilContactExistsInTopPeopleResults(
+			String searchByNameAlias, int size) throws Exception {
+		commonSteps.WaitUntilTopPeopleContactsIsFoundInSearch(
+				searchByNameAlias, size);
+	}
+
+	/**
+	 * Wait for specified amount of seconds
 	 *
 	 * @param seconds
 	 * @throws NumberFormatException
 	 * @throws InterruptedException
+	 * @step. ^I wait for (\\d+) seconds?$
 	 */
 	@When("^I wait for (\\d+) seconds?$")
 	public void WaitForTime(int seconds) throws Exception {
@@ -564,12 +583,12 @@ public class CommonWebAppSteps {
 	/**
 	 * Mute conversation
 	 *
-	 * @step. ^(.*) muted conversation with (.*)$
 	 * @param userToNameAlias
 	 *            user who want to mute conversation
 	 * @param muteUserNameAlias
 	 *            conversation or user to be muted
 	 * @throws Exception
+	 * @step. ^(.*) muted conversation with (.*)$
 	 */
 	@When("^(.*) muted conversation with (.*)$")
 	public void MuteConversationWithUser(String userToNameAlias,
@@ -581,13 +600,12 @@ public class CommonWebAppSteps {
 	/**
 	 * Archive conversation on the backend
 	 *
-	 * @step. ^(.*) archived conversation with (.*)$
-	 *
 	 * @param userToNameAlias
 	 *            the name/alias of conversations list owner
 	 * @param archivedUserNameAlias
 	 *            the name of conversation to archive
 	 * @throws Exception
+	 * @step. ^(.*) archived conversation with (.*)$
 	 */
 	@When("^(.*) archived conversation with (.*)$")
 	public void ArchiveConversationWithUser(String userToNameAlias,
@@ -599,13 +617,12 @@ public class CommonWebAppSteps {
 	/**
 	 * Send Ping into a conversation using the backend
 	 *
-	 * @step. ^User (.*) pinged in the conversation with (.*)$
-	 *
 	 * @param pingFromUserNameAlias
 	 *            conversations list owner name/alias
 	 * @param dstConversationName
 	 *            the name of conversation to send ping to
 	 * @throws Exception
+	 * @step. ^User (.*) pinged in the conversation with (.*)$
 	 */
 	@When("^User (.*) pinged in the conversation with (.*)$")
 	public void UserPingedConversation(String pingFromUserNameAlias,
@@ -617,13 +634,12 @@ public class CommonWebAppSteps {
 	/**
 	 * Send Hotping into a conversation using the backend
 	 *
-	 * @step. ^User (.*) pinged twice in the conversation with (.*)$
-	 *
 	 * @param pingFromUserNameAlias
 	 *            conversations list owner name/alias
 	 * @param dstConversationName
 	 *            the name of conversation to send ping to
 	 * @throws Exception
+	 * @step. ^User (.*) pinged twice in the conversation with (.*)$
 	 */
 	@When("^User (.*) pinged twice in the conversation with (.*)$")
 	public void UserHotPingedConversation(String pingFromUserNameAlias,
@@ -635,7 +651,6 @@ public class CommonWebAppSteps {
 	/**
 	 * Send message to a conversation
 	 *
-	 * @step. ^User (.*) sent message (.*) to conversation (.*)
 	 * @param userFromNameAlias
 	 *            user who want to mute conversation
 	 * @param message
@@ -643,6 +658,7 @@ public class CommonWebAppSteps {
 	 * @param conversationName
 	 *            the name of existing conversation to send the message to
 	 * @throws Exception
+	 * @step. ^User (.*) sent message (.*) to conversation (.*)
 	 */
 	@When("^User (.*) sent message (.*) to conversation (.*)")
 	public void UserSentMessageToConversation(String userFromNameAlias,
@@ -654,10 +670,6 @@ public class CommonWebAppSteps {
 	/**
 	 * Send personal invitation over the backend
 	 *
-	 *
-	 * @step. ^(.*) send personal invitation to mail (.*) with name (.*) and
-	 *        message (.*)$
-	 *
 	 * @param userToNameAlias
 	 *            the name/alias of conversations list owner
 	 * @param toMail
@@ -665,6 +677,8 @@ public class CommonWebAppSteps {
 	 * @param message
 	 *            the message for the invitee
 	 * @throws Exception
+	 * @step. ^(.*) send personal invitation to mail (.*) with name (.*) and
+	 *        message (.*)$
 	 */
 	@When("^(.*) sends personal invitation to mail (.*) with message (.*)$")
 	public void UserXSendsPersonalInvitation(String userToNameAlias,
@@ -676,37 +690,44 @@ public class CommonWebAppSteps {
 	/**
 	 * Verify that invitation email exists in user's mailbox
 	 *
-	 * @step. ^I verify user (.*) has received (?:an |\s*)email invitation$
-	 *
 	 * @param alias
 	 *            user name/alias
-	 * @throws Exception
-	 * 
+	 * @throws Throwable
+	 * @step. ^I verify user (.*) has received (?:an |\s*)email invitation$
 	 */
 	@Then("^I verify user (.*) has received (?:an |\\s*)email invitation$")
-	public void IVerifyUserReceiverInvitation(String alias) throws Exception {
+	public void IVerifyUserReceiverInvitation(String alias) throws Throwable {
 		final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
-		assertTrue(String.format(
-				"Invitation email for %s has not been received", email),
-				BackendAPIWrappers.getInvitationMessage(email).isValid());
+		assertTrue(
+				String.format("Invitation email for %s is not valid", email),
+				BackendAPIWrappers
+						.getInvitationMessage(email)
+						.orElseThrow(
+								() -> {
+									throw new IllegalStateException(
+											"Invitation message has not been received");
+								}).isValid());
 	}
 
 	/**
 	 * Navigates to the prefilled personal invitation registration page
 	 *
-	 * @step. ^(.*) navigates to personal invitation registration page$
-	 *
 	 * @param alias
 	 *            user name/alias
-	 * @throws Exception
-	 *
+	 * @throws Throwable
+	 * @step. ^(.*) navigates to personal invitation registration page$
 	 */
 	@Then("^(.*) navigates to personal invitation registration page$")
 	public void INavigateToPersonalInvitationRegistrationPage(String alias)
-			throws Exception {
+			throws Throwable {
 		final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
-		String url = BackendAPIWrappers.getInvitationMessage(email)
-				.extractInvitationLink();
+		String url = BackendAPIWrappers
+				.getInvitationMessage(email)
+				.orElseThrow(
+						() -> {
+							throw new IllegalStateException(
+									"Invitation message has not been received");
+						}).extractInvitationLink();
 		RegistrationPage registrationPage = WebappPagesCollection.getInstance()
 				.getPage(RegistrationPage.class);
 		registrationPage.setUrl(url);
@@ -717,8 +738,6 @@ public class CommonWebAppSteps {
 	 * Add one or more of your contacts to the existing group conversation on
 	 * the backend
 	 *
-	 * @step. ^User (.*) added contacts? (.*) to group chat (.*)
-	 *
 	 * @param asUser
 	 *            user name to add as
 	 * @param contacts
@@ -726,6 +745,7 @@ public class CommonWebAppSteps {
 	 * @param conversationName
 	 *            conversation name to add contacts to
 	 * @throws Exception
+	 * @step. ^User (.*) added contacts? (.*) to group chat (.*)
 	 */
 	@Given("^User (.*) added contacts? (.*) to group chat (.*)")
 	public void UserXAddedContactsToGroupChat(String asUser, String contacts,
@@ -765,11 +785,10 @@ public class CommonWebAppSteps {
 	/**
 	 * Record SHA256-hash of current user profile picture
 	 *
-	 * @step. (.*) takes? snapshot of current profile picture$
-	 *
 	 * @param asUser
 	 *            user name/alias
 	 * @throws Exception
+	 * @step. (.*) takes? snapshot of current profile picture$
 	 */
 	@Given("(.*) takes? snapshot of current profile picture$")
 	public void UserXTakesSnapshotOfProfilePicture(String asUser)
@@ -781,12 +800,11 @@ public class CommonWebAppSteps {
 	 * Verify whether current user picture is changed since the last snapshot
 	 * was made
 	 *
-	 * @step. ^I verify that current profile picture snapshot of (.*) differs?
-	 *        from the previous one$
-	 *
 	 * @param userNameAlias
 	 *            user name/alias
 	 * @throws Exception
+	 * @step. ^I verify that current profile picture snapshot of (.*) differs?
+	 *        from the previous one$
 	 */
 	@Then("^I verify that current profile picture snapshot of (.*) differs? from the previous one$")
 	public void UserXVerifiesSnapshotOfProfilePictureIsDifferent(
@@ -800,7 +818,6 @@ public class CommonWebAppSteps {
 	 * synthetic drag and drop
 	 *
 	 * @step. ^My browser supports synthetic drag and drop$
-	 *
 	 */
 	@Given("^My browser supports synthetic drag and drop$")
 	public void MyBrowserSupportsSyntheticDragDrop() {
@@ -813,9 +830,8 @@ public class CommonWebAppSteps {
 	/**
 	 * Verifies whether current browser log is empty or not
 	 *
-	 * @step. ^I verify browser log is empty$
-	 *
 	 * @throws Exception
+	 * @step. ^I verify browser log is empty$
 	 */
 	@Then("^I verify browser log is empty$")
 	public void VerifyBrowserLogIsEmpty() throws Exception {
@@ -824,10 +840,8 @@ public class CommonWebAppSteps {
 				if (WebAppExecutionContext.getBrowser()
 						.isSupportingConsoleLogManagement()) {
 					List<LogEntry> browserLog = getBrowserLog(PlatformDrivers
-							.getInstance()
-							.getDriver(CURRENT_PLATFORM)
-							.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
-									TimeUnit.MILLISECONDS));
+							.getInstance().getDriver(CURRENT_PLATFORM)
+							.get(DRIVER_INIT_TIMEOUT, TimeUnit.MILLISECONDS));
 
 					StringBuilder bLog = new StringBuilder("\n");
 					browserLog.stream().forEach(
@@ -849,9 +863,8 @@ public class CommonWebAppSteps {
 	 * Refreshes page by getting and setting the current URL. Note: Alternative
 	 * 'WebDriver.navigate().refresh()' hangs with Firefox.
 	 *
-	 * @step. ^I refresh page$
-	 *
 	 * @throws Exception
+	 * @step. ^I refresh page$
 	 */
 	@Then("^I refresh page$")
 	public void IRefreshPage() throws Exception {
@@ -893,8 +906,7 @@ public class CommonWebAppSteps {
 		if (webdrivers.containsKey(uniqueName)) {
 			Future<ZetaWebAppDriver> webdriver = webdrivers.get(uniqueName);
 			try {
-				ZetaWebAppDriver driver = webdriver.get(
-						ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+				ZetaWebAppDriver driver = webdriver.get(DRIVER_INIT_TIMEOUT,
 						TimeUnit.MILLISECONDS);
 
 				// save browser console if possible
@@ -906,10 +918,9 @@ public class CommonWebAppSteps {
 				if (driver instanceof ZetaWebAppDriver) {
 					// logout with JavaScript because otherwise backend will
 					// block
-					// us because of to many login requests
+					// us because of top many login requests
 					String logoutScript = "(typeof wire !== 'undefined') && wire.auth.repository.logout();";
-					JavascriptExecutor js = (JavascriptExecutor) driver;
-					js.executeScript(logoutScript);
+					driver.executeScript(logoutScript);
 				}
 
 				// show link to saucelabs
@@ -927,8 +938,8 @@ public class CommonWebAppSteps {
 				e.printStackTrace();
 			} finally {
 				log.debug("Trying to quit webdriver for " + uniqueName);
-				webdriver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
-						TimeUnit.MILLISECONDS).quit();
+				webdriver.get(DRIVER_INIT_TIMEOUT, TimeUnit.MILLISECONDS)
+						.quit();
 				log.debug("Remove webdriver for " + uniqueName + " from map");
 				webdrivers.remove(uniqueName);
 			}
@@ -938,8 +949,6 @@ public class CommonWebAppSteps {
 
 	/**
 	 * Sends an image from one user to a conversation
-	 *
-	 * @step. ^Contact (.*) sends image (.*) to (.*) conversation (.*)$
 	 *
 	 * @param imageSenderUserNameAlias
 	 *            the user to sending the image
@@ -951,9 +960,8 @@ public class CommonWebAppSteps {
 	 *            "single user" or "group" conversation.
 	 * @param dstConversationName
 	 *            the name of the conversation to send the image to.
-	 *
 	 * @throws Exception
-	 *
+	 * @step. ^Contact (.*) sends image (.*) to (.*) conversation (.*)$
 	 */
 	@When("^Contact (.*) sends image (.*) to (.*) conversation (.*)")
 	public void ContactSendImageToConversation(String imageSenderUserNameAlias,
@@ -977,14 +985,12 @@ public class CommonWebAppSteps {
 	/**
 	 * Unblocks user
 	 *
-	 * @step. ^(\\w+) unblocks (\\w+)$
-	 *
 	 * @param userAsNameAlias
 	 *            user which wants to unblock another
 	 * @param userToBlockNameAlias
 	 *            user to unblock
-	 *
 	 * @throws Exception
+	 * @step. ^(\\w+) unblocks (\\w+)$
 	 */
 	@Given("^(\\w+) unblocks user (\\w+)$")
 	public void UserUnblocks(String userAsNameAlias, String userToBlockNameAlias)
@@ -996,9 +1002,8 @@ public class CommonWebAppSteps {
 	 * Open the sign in page directly (not through a link). This is useful when
 	 * testing pages with dead ends (forget password, email verification)
 	 *
-	 * @step. ^I open Sign In page$
-	 *
 	 * @throws Exception
+	 * @step. ^I open Sign In page$
 	 */
 	@Given("^I open Sign In page$")
 	public void IOpenSignInPage() throws Exception {

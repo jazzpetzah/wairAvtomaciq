@@ -424,7 +424,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I try to send message with only spaces
-    And I see message with only spaces is not send
+    And I see the only message in dialog is system message CONNECTED TO <Contact>
     And I input message with leading empty spaces
     And I send the message
     And I see message in the dialog
@@ -446,7 +446,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I try to send message with only spaces
-    And I see message with only spaces is not send
+    And I see the only message in dialog is system message CONNECTED TO <Contact>
     And I input message with leading empty spaces
     And I send the message
     And I see message in the dialog
@@ -512,7 +512,7 @@ Feature: Conversation View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     Then I see dialog page
-    And I scroll to the end of the conversation
+    And I tap on text input to scroll to the end
     And I see media link <SoundCloudLink> and media in dialog
     When I tap media link
     And I scroll media out of sight until media bar appears
@@ -639,7 +639,7 @@ Feature: Conversation View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I tap on text input
+    And I tap on text input to scroll to the end
     And I return to the chat list
     And I tap on contact name <Contact>
     Then I see media link <SoundCloudLink> and media in dialog
@@ -667,7 +667,7 @@ Feature: Conversation View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I tap on text input
+    And I tap on text input to scroll to the end
     And I tap on contact name <Contact>
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
@@ -693,11 +693,11 @@ Feature: Conversation View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I tap on text input
+    And I tap on text input to scroll to the end
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
-    And I tap on text input
+    And I tap on text input to scroll to the end
     Then I dont see media bar on dialog page
 
     Examples: 
@@ -715,11 +715,11 @@ Feature: Conversation View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I tap on text input
+    And I tap on text input to scroll to the end
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
-    And I tap on text input
+    And I tap on text input to scroll to the end
     Then I dont see media bar on dialog page
 
     Examples: 

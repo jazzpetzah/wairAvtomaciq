@@ -35,7 +35,7 @@ public class PeoplePickerPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathUnicUserPickerSearchResult)
 	private WebElement userPickerSearchResult;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameKeyboardGoButton)
+	@FindBy(how = How.NAME, using = IOSLocators.nameKeyboardEnterButton)
 	private WebElement goButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameCreateConversationButton)
@@ -103,7 +103,7 @@ public class PeoplePickerPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.PeoplePickerPage.nameSendImageButton)
 	private WebElement sendImageButton;
-	
+
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathContactViewCloseButton)
 	private WebElement closeInviteButton;
 
@@ -194,6 +194,7 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public void fillTextInPeoplePickerSearch(String text) throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), peoplePickerSearch);
 		try {
 			sendTextToSeachInput(text);
 			clickSpaceKeyboardButton();
@@ -212,8 +213,8 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public boolean waitUserPickerFindUser(String user) throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(String.format(
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By
+				.xpath(String.format(
 						IOSLocators.PeoplePickerPage.xpathFormatFoundContact,
 						user)), 5);
 	}
@@ -412,16 +413,16 @@ public class PeoplePickerPage extends IOSPage {
 
 	public boolean isUserSelected(String name) throws Exception {
 		WebElement el = getDriver().findElement(
-				By.xpath(String.format(IOSLocators.xpathPeoplePickerUserAvatar,
-						name)));
+				By.xpath(String.format(
+						IOSLocators.xpathPeoplePickerSelectedCell, name)));
 		boolean flag = el.getAttribute("value").equals("1");
 		return flag;
 	}
 
 	public void clickConnectedUserAvatar(String name) throws Exception {
 		WebElement el = getDriver().findElement(
-				By.xpath(String.format(IOSLocators.xpathPeoplePickerUserAvatar,
-						name)));
+				By.xpath(String.format(
+						IOSLocators.xpathPeoplePickerSelectedCell, name)));
 		el.click();
 	}
 
@@ -584,6 +585,6 @@ public class PeoplePickerPage extends IOSPage {
 
 	public void closeInviteList() {
 		closeInviteButton.click();
-		
+
 	}
 }

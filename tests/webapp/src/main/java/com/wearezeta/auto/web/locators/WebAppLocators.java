@@ -178,7 +178,7 @@ public final class WebAppLocators {
 
 	public static final class SelfProfilePage {
 
-		public static final String xpathGearButton = "//div[@id='show-settings']";
+		public static final String cssGearButton = "#self-profile:not(.self-profile-transition-in) #show-settings";
 
 		public static final String xpathGearMenuRoot = "//div[@id='setting-bubble' and contains(@class, 'bubble-show')]";
 
@@ -276,7 +276,7 @@ public final class WebAppLocators {
 		public static final String cssGIFButton = "[data-uie-name='do-giphy-popover']";
 
 		// bars (call bar)
-		public static String xpathCallingBarRoot = "//*[contains(@class, 'call-menu') and contains(@class, 'on')]";
+		public static String xpathCallingBarRoot = "//*[contains(@class, 'call-menu') and contains(@class, ' on')]";
 
 		public static final Function<String, String> xpathCallingBarRootByName = text -> String
 				.format(xpathCallingBarRoot
@@ -421,6 +421,8 @@ public final class WebAppLocators {
 		public static final String cssErrorMarkedEmailField = "#form-account-register .input-error[data-uie-name='enter-email']";
 
 		public static final String cssErrorMessages = "#form-account-register [data-uie-name='status-error'] .error";
+
+		public static final String xpathVerifyLaterButton = "//div[@id='posted-later-link']";
 	}
 
 	public static final class SelfPictureUploadPage {

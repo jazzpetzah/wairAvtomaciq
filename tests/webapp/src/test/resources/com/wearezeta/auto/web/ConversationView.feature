@@ -30,7 +30,7 @@ Feature: Conversation View
     And I see only 1 picture in the conversation
     When I open self profile
     And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+    And I select Log out menu item on self profile page
     And I see Sign In page
     And User <Name2> is me
     And I Sign in using login <Login2> and password <Password2>

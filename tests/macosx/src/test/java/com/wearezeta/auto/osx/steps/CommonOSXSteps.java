@@ -47,7 +47,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -63,6 +65,7 @@ import static org.junit.Assert.assertEquals;
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
@@ -167,7 +170,7 @@ public class CommonOSXSteps {
 		logs.enable(LogType.BROWSER, level);
 		// logs.enable(LogType.CLIENT, Level.ALL);
 		// logs.enable(LogType.DRIVER, Level.ALL);
-		// logs.enable(LogType.PERFORMANCE, Level.ALL);
+		logs.enable(LogType.PERFORMANCE, Level.ALL);
 		// logs.enable(LogType.PROFILER, Level.ALL);
 		// logs.enable(LogType.SERVER, Level.ALL);
 		capabilities.setCapability(CapabilityType.LOGGING_PREFS, logs);
@@ -875,7 +878,33 @@ public class CommonOSXSteps {
 	}
 
 	private List<LogEntry> getBrowserLog(RemoteWebDriver driver) {
-		return driver.manage().logs().get(LogType.BROWSER).getAll();
+		List<LogEntry> logs = new ArrayList<LogEntry>();
+
+		Iterator<LogEntry> browserIter = driver.manage().logs().get(LogType.BROWSER).iterator();
+		Iterator<LogEntry> performanceIter = driver.manage().logs().get(LogType.PERFORMANCE).iterator();
+		LogEntry performanceEntry = performanceIter.next();
+		LogEntry browserEntry = browserIter.next();
+		do {
+			if (performanceEntry.getTimestamp() < browserEntry.getTimestamp()) {
+				logs.add(performanceEntry);
+				if (performanceIter.hasNext()) {
+					performanceEntry = performanceIter.next();
+				} else {
+					browserEntry = browserIter.next();
+				}
+			} else {
+				logs.add(browserEntry);
+				if (browserIter.hasNext()) {
+					browserEntry = browserIter.next();
+				} else {
+					performanceEntry = performanceIter.next();
+				}
+			}
+		} while (performanceIter.hasNext() || browserIter.hasNext());
+
+		//logs.addAll(driver.manage().logs().get(LogType.BROWSER).getAll());
+		//logs.addAll(driver.manage().logs().get(LogType.PERFORMANCE).getAll());
+		return logs;
 	}
 
 	private void writeBrowserLogsIntoMainLog(RemoteWebDriver driver) {

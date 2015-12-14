@@ -43,7 +43,7 @@ Feature: Search
     Then I see Contact list with name <Contact1>,<Contact2>
     And I open self profile
     And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+    And I select Log out menu item on self profile page
     And User <Contact1> is me
     And I see Sign In page
     And I Sign in using login <Contact1Email> and password <Contact1Password>
@@ -51,7 +51,7 @@ Feature: Search
     Then I see Contact list with name <Name>,<Contact2>
     And I open self profile
     And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+    And I select Log out menu item on self profile page
     And User <Contact2> is me
     And I see Sign In page
     And I Sign in using login <Contact2Email> and password <Contact2Password>
@@ -69,6 +69,7 @@ Feature: Search
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
+    And I wait until <Contact> exists in backend search results
     And I open conversation with <Contact>
     And I click People button in one to one conversation
     Then I see Single User Profile popover
@@ -129,7 +130,7 @@ Feature: Search
     And I see CONNECTING TO action for <Name2> in conversation
     And I open self profile
     And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+    And I select Log out menu item on self profile page
     And User <Name2> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
@@ -140,7 +141,7 @@ Feature: Search
     Then I see conversation with <Name> is selected in conversations list
     And I open self profile
     And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+    And I select Log out menu item on self profile page
     And User <Name> is me
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
@@ -163,8 +164,7 @@ Feature: Search
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I see my avatar on top of Contact list
-    # Wait for the backend to process the top people list
-    And I wait for 20 seconds
+    And Myself waits until 2 people in backend top people results
     And I open People Picker from Contact List
     And I wait till Top People list appears
     When I select <Contact1> from Top People
@@ -188,8 +188,8 @@ Feature: Search
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I see my avatar on top of Contact list
+    And Myself waits until 3 people in backend top people results
     And I open People Picker from Contact List
-    And I wait till Top People list contains 3 people
     When I select <Contact1>,<Contact2> from Top People
     And I choose to create conversation from People Picker
     Then I see Contact list with name <Contact1>,<Contact2>
@@ -232,9 +232,8 @@ Feature: Search
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I see my avatar on top of Contact list
-    # Wait a bit until top people were calculated by backend
+    And Myself waits until 10 people in backend top people results
     And I open People Picker from Contact List
-    And I wait till Top People list contains 8 people
     And I see More button
     When I click on More button
     Then I see 10 people in Top people list
@@ -251,6 +250,7 @@ Feature: Search
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
+    And I wait until <Contact1> exists in backend search results
     When I open People Picker from Contact List
     And I type <Contact1> in search field of People Picker
     And I see user <Contact1> found in People Picker
@@ -272,6 +272,8 @@ Feature: Search
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
+    And I wait until <Contact1> exists in backend search results
+    And I wait until <Contact2> exists in backend search results
     When I open People Picker from Contact List
     And I type <Contact1> in search field of People Picker
     And I see user <Contact1> found in People Picker

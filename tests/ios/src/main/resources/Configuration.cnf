@@ -10,7 +10,6 @@ driverTimeoutSeconds=${driverTimeoutSeconds}
 pictureResultsPath=${pictureResultsPath}
 iosImagesPath=${Root}/${iosImagesPath}
 iosClientInfoPlist=${iosClientInfoPlist}
-iosAppiumLogPath=${iosAppiumLogPath}
 defaultEmail=${defaultEmail}
 deviceName=${deviceName}
 backendType=${backendType}

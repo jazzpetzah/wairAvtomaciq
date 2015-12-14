@@ -220,4 +220,8 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 		DriverUtils.swipeElementPointToPoint(getDriver(), getDriver()
 				.findElement(locator), 1000, 20, 50, 100, 50);
 	}
+
+	public void tapInviteButton() throws Exception {
+		getContactListPage().tapInviteButton();
+	}
 }

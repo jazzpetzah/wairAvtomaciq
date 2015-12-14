@@ -141,7 +141,7 @@ Feature: Conversation View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I tap on text input
+    And I tap on text input to scroll to the end
     And I return to the chat list
     And I tap on contact name <Contact>
     And I see media link <SoundCloudLink> and media in dialog
@@ -165,13 +165,13 @@ Feature: Conversation View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I tap on text input
+    And I tap on text input to scroll to the end
     And I return to the chat list
     And I tap on contact name <Contact1>
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
-    And I tap on text input
+    And I tap on text input to scroll to the end
     Then I dont see media bar on dialog page
 
     Examples: 
@@ -187,9 +187,12 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I send long message
+    And I type the message and send it
     And I scroll to the beginning of the conversation
-    And I tap on text input
-    Then I see last message in the dialog
+    And I see plus button is not shown
+    And I tap on text input to scroll to the end
+    Then I see conversation is scrolled to the end
+    And I see message in the dialog
 
     Examples: 
       | Name      | Contact   |
@@ -296,7 +299,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I try to send message with only spaces
-    And I see message with only spaces is not send
+    And I see the only message in dialog is system message CONNECTED TO <Contact>
     And I input message with leading empty spaces
     And I send the message
     And I see message in the dialog
@@ -493,7 +496,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id2132
+  @staging @id2132
   Scenario Outline: Verify displaying chathead when another conversation is opened
     Given There are 3 users where <Name> is me
     Given User <Contact2> change avatar picture to <Picture>

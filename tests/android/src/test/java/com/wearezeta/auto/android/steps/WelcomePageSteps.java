@@ -10,32 +10,36 @@ import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
+import com.wearezeta.auto.common.CommonUtils;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
+import cucumber.api.java.en.Then;
 
 public class WelcomePageSteps {
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
 			.getInstance();
 
 	private WelcomePage getWelcomePage() throws Exception {
-		return (WelcomePage) pagesCollection.getPage(WelcomePage.class);
+		return pagesCollection.getPage(WelcomePage.class);
 	}
 
 	private AreaCodePage getAreaCodePage() throws Exception {
-		return (AreaCodePage) pagesCollection.getPage(AreaCodePage.class);
+		return pagesCollection.getPage(AreaCodePage.class);
 	}
 
 	private PhoneNumberVerificationPage getVerificationPage() throws Exception {
-		return (PhoneNumberVerificationPage) pagesCollection
-				.getPage(PhoneNumberVerificationPage.class);
+		return pagesCollection.getPage(PhoneNumberVerificationPage.class);
 	}
 
 	private AddNamePage getAddNamePage() throws Exception {
-		return (AddNamePage) pagesCollection.getPage(AddNamePage.class);
+		return pagesCollection.getPage(AddNamePage.class);
 	}
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
+	private static final String ERROR_CODE_ALERT_HEADER = "Invalid Code";
+	private static final String ERROR_CODE_ALERT_MESSAGE = "Please enter a valid code.";
 
 	private ClientUser userToRegister = null;
 
@@ -60,7 +64,7 @@ public class WelcomePageSteps {
 	 */
 	@When("^I switch to email sign in screen$")
 	public void ISwitchToEmailSignIn() throws Exception {
-		getWelcomePage().tapIHaveAnAccount();
+		getWelcomePage().tapSignInTab();
 	}
 
 	/**
@@ -120,6 +124,31 @@ public class WelcomePageSteps {
 		final String name = this.userToRegister.getName();
 		getAddNamePage().inputName(name);
 		getAddNamePage().clickConfirm();
+	}
+
+	/**
+	 * Inputs a random not correct code into the field
+	 *
+	 * @throws Exception
+	 * @step. ^I input random activation code$
+	 */
+	@When("^I input random activation code$")
+	public void IInputRandomActivationCode() throws Exception {
+		final String randomVerificationCode = CommonUtils.generateRandomNumericString(6);
+		getVerificationPage().inputVerificationCode(randomVerificationCode);
+		getVerificationPage().clickConfirm();
+	}
+
+	/**
+	 * Verifies the correct invalid code error alert
+	 *
+	 * @throws Exception
+	 * @step. ^I see invalid code alert$
+	 */
+	@Then("^I see invalid code alert$")
+	public void ISeeInvalidCodeAlert() throws Exception {
+		Assert.assertEquals(ERROR_CODE_ALERT_HEADER, getVerificationPage().getErrorAlertHeader());
+		Assert.assertEquals(ERROR_CODE_ALERT_MESSAGE, getVerificationPage().getErrorAlertMessage());
 	}
 
 }

@@ -33,7 +33,7 @@ Feature: Menus
     Then I see Sound Alerts setting is set to None
     And I click close settings page button
     And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+    And I select Log out menu item on self profile page
     Given I see Sign In page
     Given I Sign in using login <Email> and password <Password>
     And I see Contacts Upload dialog
@@ -48,7 +48,7 @@ Feature: Menus
     Then I see Sound Alerts setting is set to Some
     And I click close settings page button
     And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+    And I select Log out menu item on self profile page
     Given I see Sign In page
     Given I Sign in using login <Email> and password <Password>
     And I see Contacts Upload dialog

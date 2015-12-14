@@ -43,10 +43,10 @@ Feature: People View
     And I see user <Contact3> found on People picker page
     And I tap on connected user <Contact3> on People picker page
     And I click on Go button
+    Then I can see You Added <Contact3> message
+    When I open group conversation details
     Then I see that conversation has <Number> people
-    And I see <Number> participants avatars
-    When I exit the group info page
-    And I can see You Added <Contact3> message
+    Then I see <Number> participants avatars
 
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | Number | GroupChatName |
@@ -86,7 +86,8 @@ Feature: People View
     And I click Remove
     And I see warning message
     And I confirm remove
-    Then I see that <Contact2> is not present on group chat page
+    And I click close user profile page button
+    Then I see that <Contact2> is not present on group chat info page
 
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -221,15 +222,15 @@ Feature: People View
     And I see People picker page
     #And I dont see keyboard
     And I tap on connected user <Contact2> on People picker page
-    And I see user <Contact2> on People picker page is selected
+    Then I see user <Contact2> on People picker page is selected
     And I tap on connected user <Contact2> on People picker page
-    And I see user <Contact2> on People picker page is NOT selected
+    Then I see user <Contact2> on People picker page is NOT selected
     And I tap on connected user <Contact2> on People picker page
     And I tap on Search input on People picker page
-    And I see keyboard
-    And I don't see Add to conversation button
+    Then I see keyboard
+    #And I don't see Add to conversation button
     And I press keyboard Delete button
-    And I see user <Contact2> on People picker page is NOT selected
+    Then I see user <Contact2> on People picker page is NOT selected
 
     Examples: 
       | Name      | Contact1  | Contact2  |
@@ -290,7 +291,7 @@ Feature: People View
     And I see user <Contact3> on People picker page is NOT selected
     And I click close button to dismiss people view
     And I see <Contact1> user profile page
-    And I close user profile page to return to dialog page
+    And I click close user profile page button
     And I see dialog page
     And I return to the chat list
     And I see Contact list with my name <Name>
@@ -314,7 +315,7 @@ Feature: People View
     And I open conversation details
     And I press conversation menu button
     And I press menu silence button
-    And I close user profile page to return to dialog page
+    And I click close user profile page button
     And I see dialog page
     And I return to the chat list
     And I see Contact list with my name <Name>
@@ -339,7 +340,7 @@ Feature: People View
     And I open conversation details
     And I press conversation menu button
     And I press menu notify button
-    And I close user profile page to return to dialog page
+    And I click close user profile page button
     And I see dialog page
     And I return to the chat list
     And I see Contact list with my name <Name>
@@ -430,7 +431,6 @@ Feature: People View
     And I press conversation menu button
     And I click delete menu button
     And I confirm delete conversation content
-    And I return to the chat list
     And I dont see conversation <GroupChatName> in contact list
     And I open archived conversations
     Then I dont see conversation <GroupChatName> in contact list
@@ -453,7 +453,6 @@ Feature: People View
     And I click delete menu button
     And I select Also Leave option on Delete conversation dialog
     And I confirm delete conversation content
-    And I return to the chat list
     And I open search by taping on it
     And I input conversation name <GroupChatName> in Search input
     Then I see conversation <GroupChatName> is NOT presented in Search results
@@ -544,8 +543,8 @@ Feature: People View
     Then I see only 4 messages
 
     Examples: 
-      | Name      | Contact1  | Contact2  | GroupChatName | Message |   Image     |
-      | user1Name | user2Name | user3Name | TESTCHAT      | testing | testing.jpg | 
+      | Name      | Contact1  | Contact2  | GroupChatName | Message | Image       |
+      | user1Name | user2Name | user3Name | TESTCHAT      | testing | testing.jpg |
 
   @staging @id583
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (People view)
@@ -583,3 +582,21 @@ Feature: People View
     Examples: 
       | Name      | Contact1  |
       | user1Name | user2Name |
+
+  @staging @id1246
+  Scenario Outline: Verify length limit for group conversation name
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I open group conversation details
+    And I try to change group conversation name to empty
+    Then I see correct conversation name <GroupChatName>
+    When I try to change group conversation name to random with length <MaxGroupChatNameLenght>
+    Then I see correct conversation name <GroupChatName>
+
+    Examples: 
+      | Name      | Contact1  | Contact2   | GroupChatName | MaxGroupChatNameLenght |
+      | user1Name | user2Name | user3Name  | TESTCHAT      | 65                     |

@@ -181,7 +181,6 @@ public class CommonAndroidSteps {
 
     @Before("~@performance")
     public void setUp() throws Exception {
-        commonBefore();
         initFirstPage();
     }
 
@@ -227,9 +226,16 @@ public class CommonAndroidSteps {
     public void ISwipeDown() throws Exception {
         pagesCollection.getCommonPage().swipeDownCoordinates(DEFAULT_SWIPE_TIME);
     }
-
-    public void commonBefore() throws Exception {
-        ZetaFormatter.setBuildNumber(AndroidCommonUtils.readClientVersionFromAdb());
+    
+    /**
+    * Swipe down from given high %8 to 90% of hight
+    *
+    * @throws Exception
+    * @step. ^I swipe down from\\s(\\d+)%$
+    */
+    @When("^I swipe down from\\s(\\d+)%$")
+    public void ISwipeDownFrom(int startPercent) throws Exception {
+        pagesCollection.getCommonPage().swipeByCoordinates(DEFAULT_SWIPE_TIME, 50, startPercent, 50, 90);
     }
 
     /**
@@ -264,15 +270,35 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * Takes screenshot for comparison
+     * Takes 1st screenshot for comparison, previous taken screenshots will be cleaned
      *
      * @throws Exception
-     * @step. ^I take screenshot$
+     * @step. ^I take( 1st)? screenshot$
      */
-    @When("^I take screenshot$")
-    public void WhenITake1stScreenshot() throws Exception {
+    @When("^I take( 1st)? screenshot$")
+    public void WhenITake1stScreenshot(String first) throws Exception {
         final Optional<BufferedImage> screenshot = pagesCollection.getCommonPage().takeScreenshot();
         if (screenshot.isPresent()) {
+            if (first != null || (images.size() >= 2 && first == null)) images.clear();
+            images.add(screenshot.get());
+//            File outputfile = new File("/Project/screen_"+System.nanoTime()+".png");
+//            ImageIO.write(screenshot.get(), "png", outputfile);
+        } else {
+            throw new RuntimeException("Selenium has failed to take the screenshot from current page");
+        }
+    }
+    
+    /**
+     * Takes 2nd screenshot for comparison
+     *
+     * @throws Exception
+     * @step. ^I take 2nd screenshot$
+     */
+    @When("^I take 2nd screenshot$")
+    public void WhenITake2ndScreenshot() throws Exception {
+        final Optional<BufferedImage> screenshot = pagesCollection.getCommonPage().takeScreenshot();
+        if (screenshot.isPresent()) {
+            if (images.size() == 2) images.remove(1);
             images.add(screenshot.get());
         } else {
             throw new RuntimeException("Selenium has failed to take the screenshot from current page");
@@ -299,11 +325,11 @@ public class CommonAndroidSteps {
     @Then("^I compare 1st and 2nd screenshots and they are( not)? different$")
     public void ThenICompare1st2ndScreenshotsAndTheyAreDifferent(String shouldBeEqual) {
         double score = ImageUtil.getOverlapScore(images.get(0), images.get(1));
+        double targetScore = 0.75d;
         if (shouldBeEqual == null)
-            Assert.assertTrue(score < 0.75d);
+            Assert.assertTrue("Screenshots overlap score="+score+", but expected less than " + targetScore, score < targetScore);
         else
-            Assert.assertTrue(score > 0.75d);
-        images.clear();
+            Assert.assertTrue("Screenshots overlap score="+score+", but expected more than " + targetScore, score >= targetScore);
     }
 
     /**
@@ -790,6 +816,8 @@ public class CommonAndroidSteps {
     @When("^I rotate UI to landscape$")
     public void WhenIRotateUILandscape() throws Exception {
         pagesCollection.getCommonPage().rotateLandscape();
+        // To let the UI to handle up changes
+        Thread.sleep(1000);
     }
 
     /**
@@ -801,6 +829,8 @@ public class CommonAndroidSteps {
     @When("^I rotate UI to portrait$")
     public void WhenIRotateUIPortrait() throws Exception {
         pagesCollection.getCommonPage().rotatePortrait();
+        // To let the UI to handle up changes
+        Thread.sleep(1000);
     }
 
     /**
@@ -884,5 +914,22 @@ public class CommonAndroidSteps {
     @Given("^I add (.*) to the list of test case users$")
     public void IAddUserToTheList(String nameAlias) throws Exception {
         commonSteps.IAddUserToTheListOfTestCaseUsers(nameAlias);
+    }
+
+    /**
+     * User X removes User Y from a group conversation via backend
+     *
+     * @param user1
+     * @param user2
+     * @param group
+     * @throws Exception
+     * @step. ^(.*) removes (.*) from group (.*)$
+     */
+    @Given("^(.*) removes (.*) from group (.*)$")
+    public void UserXRemovesUserYFromGroup(String user1, String user2, String group) throws Exception {
+        user1 = usrMgr.findUserByNameOrNameAlias(user1).getName();
+        user2 = usrMgr.findUserByNameOrNameAlias(user2).getName();
+        group = usrMgr.replaceAliasesOccurences(group, ClientUsersManager.FindBy.NAME_ALIAS);
+        commonSteps.UserXRemoveContactFromGroupChat(user1, user2, group);
     }
 }
