@@ -27,7 +27,7 @@ public class CallingSteps {
 	 * Make call to a specific user. You may instantiate more than one incoming
 	 * call from single caller by calling this step multiple times
 	 *
-	 * @step. (.*) calls (.*) using (\\w+)$
+	 * @step. (.*) calls (.*) using (.*)$
 	 *
 	 * @param caller
 	 *            caller name/alias
@@ -38,7 +38,7 @@ public class CallingSteps {
 	 *            'firefox'
 	 * @throws Exception
 	 */
-	@When("(.*) calls (.*) using (\\w+)$")
+	@When("(.*) calls (.*) using (.*)$")
 	public void UserXCallsToUserYUsingCallBackend(String caller,
 			String conversationName, String callBackend) throws Exception {
 		commonCallingSteps.callToConversation(caller, conversationName,
@@ -157,7 +157,7 @@ public class CallingSteps {
 	 * Execute waiting instance as 'userAsNameAlias' user on calling server
 	 * using 'callingServiceBackend' tool
 	 *
-	 * @step. (.*) starts? waiting instance using (\\w+)$
+	 * @step. (.*) starts? waiting instance using (.*)$
 	 *
 	 * @param callees
 	 *            comma separated callee name/alias
@@ -165,7 +165,7 @@ public class CallingSteps {
 	 *            available values: 'blender', 'chrome', * 'firefox'
 	 * @throws Exception
 	 */
-	@When("(.*) starts? waiting instance using (\\w+)$")
+	@When("(.*) starts? waiting instance using (.*)$")
 	public void UserXStartsWaitingInstance(String callees,
 			String callingServiceBackend) throws Exception {
 		commonCallingSteps.startWaitingInstances(splitAliases(callees),

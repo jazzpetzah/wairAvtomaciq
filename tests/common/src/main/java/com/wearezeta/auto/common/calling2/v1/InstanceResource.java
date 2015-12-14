@@ -161,4 +161,18 @@ public class InstanceResource {
 			throw new CallingServiceInstanceException(ex);
 		}
 	}
+
+	public String getLog(Instance instance)
+			throws CallingServiceInstanceException {
+		final String target = String.format("%s/api/v%s/instance/%s/log",
+				callingServiceAdress, callingServiceVersion, instance.getId());
+		try {
+			return restHandler.httpGet(
+					buildDefaultRequest(target, MediaType.APPLICATION_JSON),
+					new GenericType<String>() {
+					}, new int[] { HttpStatus.SC_OK, HttpStatus.SC_NOT_FOUND });
+		} catch (RESTError ex) {
+			throw new CallingServiceInstanceException(ex);
+		}
+	}
 }
