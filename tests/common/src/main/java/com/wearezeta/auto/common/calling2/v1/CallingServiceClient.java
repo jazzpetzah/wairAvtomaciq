@@ -97,4 +97,9 @@ public class CallingServiceClient {
 			throws CallingServiceInstanceException {
 		return INSTANCE_RESOURCE.getFlows(instance);
 	}
+
+	public String getLog(Instance instance)
+			throws CallingServiceInstanceException {
+		return INSTANCE_RESOURCE.getLog(instance);
+	}
 }

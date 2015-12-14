@@ -42,7 +42,6 @@ public final class CommonCallingSteps2 {
 	private static final int INSTANCE_START_TIMEOUT_SECONDS = 190;
 	private static final int INSTANCE_CREATION_RETRIES = 3;
 	private static final long POLLING_FREQUENCY_MILLISECONDS = 1000;
-	private static final String REGEX_CONTAINS_NUMBER = ".*\\d.*";
 	private static CommonCallingSteps2 singleton = null;
 
 	private final ExecutorService executor;
@@ -346,6 +345,8 @@ public final class CommonCallingSteps2 {
 				final Instance instance = entry.getValue();
 				try {
 					client.stopInstance(instance);
+					LOG.debug("---BROWSER LOG FOR INSTANCE:\n" + instance
+							+ "\n" + client.getLog(instance));
 				} catch (CallingServiceInstanceException ex) {
 					LOG.warn(String.format(
 							"Could not properly shut down instance '%s'",
