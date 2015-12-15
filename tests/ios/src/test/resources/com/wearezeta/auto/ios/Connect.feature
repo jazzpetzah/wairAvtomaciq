@@ -362,9 +362,7 @@ Feature: Connect
     And I select contact <Contact3>
     And I see <Contact3> user pending profile page
     And I click on start conversation button on pending profile page
-    And I see accept ignore request alert
     And I click on Ignore button on Pending requests page
-    And I click close user profile page button
     And I exit the group info page
     And I return to the chat list
     Then I dont see Pending request link in contact list
@@ -432,7 +430,6 @@ Feature: Connect
     And I unblock user
     Then I see dialog page
     When I navigate back to conversations view
-    And I click close button to dismiss people view
     Then I see user <Contact> in contact list
 
     Examples: 
