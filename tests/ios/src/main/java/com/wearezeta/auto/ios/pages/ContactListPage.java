@@ -386,6 +386,11 @@ public class ContactListPage extends IOSPage {
 				By.xpath(IOSLocators.xpathPendingRequest), 5);
 	}
 
+	public boolean pendingRequestInContactListIsNotShown() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.xpath(IOSLocators.xpathPendingRequest));
+	}
+
 	public PendingRequestsPage clickPendingRequest() throws Exception {
 		pendingRequest.click();
 		return new PendingRequestsPage(this.getLazyDriver());

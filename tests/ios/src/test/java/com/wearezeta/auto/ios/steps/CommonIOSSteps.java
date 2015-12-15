@@ -395,16 +395,16 @@ public class CommonIOSSteps {
 	
 	/**
 	 * 
-	 * Cancel all connection requests in pending status
-	 * @step. ^(.*) cancel all connection requests$
+	 * Cancel all outgoing connection requests in pending status
+	 * @step. ^(.*) cancel all outgoing connection requests$
 	 * @param userToNameAlias
 	 * 		user name who will cancel requests
 	 * @throws Exception
 	 */
-	@When("^(.*) cancel all connection requests$")
-	public void CancelAllIncomingConnectRequest(String userToNameAlias)
+	@When("^(.*) cancel all outgoing connection requests$")
+	public void CancelAllOutgoingConnectRequest(String userToNameAlias)
 			throws Exception {
-		commonSteps.CancelAllConnectRequests(userToNameAlias);
+		commonSteps.CancelAllOutgoingConnectRequests(userToNameAlias);
 	}
 
 	@When("^I wait for (\\d+) seconds?$")
