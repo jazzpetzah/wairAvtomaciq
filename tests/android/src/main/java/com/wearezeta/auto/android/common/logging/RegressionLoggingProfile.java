@@ -12,7 +12,7 @@ public abstract class RegressionLoggingProfile extends LoggingProfile {
                 "/ResourceType", "/AlarmManager",
                 "/WifiStateMachine", "/SFPerfTracer",
                 "/LockPatternUtilsCache", "/StatusBar",
-                "/wifi", "/Wifi"));
+                "/wifi", "/Wifi", "/LightSensor"));
     }
 
     @Override
