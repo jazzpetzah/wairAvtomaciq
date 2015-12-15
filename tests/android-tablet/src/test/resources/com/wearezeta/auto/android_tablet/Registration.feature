@@ -15,12 +15,13 @@ Feature: Registration
     Then I see the Confirmation page
     And I see the entered email on the Confirmation page
     And I verify my registration via email
-    And I see the Take Registration Picture page
-    And I tap Camera button on the Take Registration Picture page
+    When I see the Unsplash Picture page
+    And I tap Choose My Own button on Unsplash Picture page
+    And I select Camera picture source on Unsplash Picture page
     And I tap Take Picture button on the Take Registration Picture page
     And I confirm my picture on the Take Registration Picture page
     And I see the conversations list with no conversations
-    And I see my name on Self Profile page
+    Then I see my name on Self Profile page
 
     Examples:
       | Email      | Password      | Name      |
@@ -41,12 +42,13 @@ Feature: Registration
     Then I see the Confirmation page
     And I see the entered email on the Confirmation page
     And I verify my registration via email
-    And I see the Take Registration Picture page
-    And I tap Camera button on the Take Registration Picture page
+    When I see the Unsplash Picture page
+    And I tap Choose My Own button on Unsplash Picture page
+    And I select Camera picture source on Unsplash Picture page
     And I tap Take Picture button on the Take Registration Picture page
     And I confirm my picture on the Take Registration Picture page
     And I see the conversations list with no conversations
-    And I see my name on Self Profile page
+    Then I see my name on Self Profile page
 
     Examples:
       | Email      | Password      | Name      |
@@ -69,7 +71,7 @@ Feature: Registration
     When I lock the device
     And I verify my registration via email
     And I unlock the device
-    Then I see the Take Registration Picture page
+    Then I see the Unsplash Picture page
 
     Examples:
       | Email      | Password      | Name      |
@@ -92,7 +94,7 @@ Feature: Registration
     When I lock the device
     And I verify my registration via email
     And I unlock the device
-    Then I see the Take Registration Picture page
+    Then I see the Unsplash Picture page
 
     Examples:
       | Email      | Password      | Name      |
