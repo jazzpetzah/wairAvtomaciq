@@ -654,4 +654,9 @@ public class PersonalInfoPageSteps {
 				getPersonalInfoPage().isThemeSwitcherButtonVisible());
 	}
 
+	@When("^I click on Account Info on settings page$")
+	public void IClickOnAccountInfoOnSettingsPage() throws Throwable {
+		getPersonalInfoPage().clickAccountInfoButton();
+	}
+
 }

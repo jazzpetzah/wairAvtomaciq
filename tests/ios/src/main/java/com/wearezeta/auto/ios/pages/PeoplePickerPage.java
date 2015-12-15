@@ -35,7 +35,7 @@ public class PeoplePickerPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathUnicUserPickerSearchResult)
 	private WebElement userPickerSearchResult;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameKeyboardGoButton)
+	@FindBy(how = How.NAME, using = IOSLocators.nameKeyboardEnterButton)
 	private WebElement goButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameCreateConversationButton)

@@ -27,9 +27,6 @@ public class OtherUserOnPendingPersonalInfoPageSteps {
 				getOtherUserOnPendingProfilePage().isUserNameDisplayed(name));
 		Assert.assertTrue("Close button not displayed",
 				getOtherUserOnPendingProfilePage().isClosePageButtonVisible());
-		Assert.assertTrue("Cancel request button is not displayed",
-				getOtherUserOnPendingProfilePage()
-						.isCancelRequestButtonVisible());
 	}
 
 	@When("^I see cancel request button on pending profile page$")

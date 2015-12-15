@@ -83,21 +83,6 @@ public class TabletGroupConversationDetailPopoverPageSteps {
 	}
 
 	/**
-	 * Changes name of the group on the ipad popover
-	 * 
-	 * @step. ^I change group conversation name on iPad popover to (.*)$
-	 * @param groupname
-	 *            new name of the conversation
-	 * @throws Throwable
-	 */
-	@When("^I change group conversation name on iPad popover to (.*)$")
-	public void IChangeGroupConversationNameOniPadPopoverTo(String groupname)
-			throws Throwable {
-		getTabletGroupConversationDetailPopoverPage().changeConversationName(
-				groupname);
-	}
-
-	/**
 	 * Closes the group info popover
 	 * 
 	 * @step. ^I exit the group info iPad popover$

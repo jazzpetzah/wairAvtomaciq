@@ -189,7 +189,7 @@ Feature: People View
     And I open group conversation details
     And I press conversation menu button on iPad
     And I press RENAME on the menu on iPad
-    And I change group conversation name on iPad popover to <ChatName>
+    And I change group conversation name to <ChatName>
     And I exit the group info iPad popover
     Then I see you renamed conversation to <ChatName> message shown in Group Chat
     And I swipe right on group chat page
@@ -212,7 +212,7 @@ Feature: People View
     And I open group conversation details
     And I press conversation menu button on iPad
     And I press RENAME on the menu on iPad
-    And I change group conversation name on iPad popover to <ChatName>
+    And I change group conversation name to <ChatName>
     And I exit the group info iPad popover
     Then I see you renamed conversation to <ChatName> message shown in Group Chat
     Then I see in contact list group chat named <ChatName>
@@ -897,8 +897,8 @@ Feature: People View
     Then I see only 4 messages
 
     Examples: 
-      | Name      | Contact1  | Contact2  | GroupChatName | Message |    Image    |
-      | user1Name | user2Name | user3Name | TESTCHAT      |  hello  | testing.jpg |
+      | Name      | Contact1  | Contact2  | GroupChatName | Message | Image       |
+      | user1Name | user2Name | user3Name | TESTCHAT      | hello   | testing.jpg |
 
   @regression @id4004
   Scenario Outline: Verify that left conversation is shown in the Archive [LANDSCAPE]
@@ -924,7 +924,7 @@ Feature: People View
     Then I see only 4 messages
 
     Examples: 
-      | Name      | Contact1  | Contact2  | GroupChatName | Message      |    Image    |
+      | Name      | Contact1  | Contact2  | GroupChatName | Message      | Image       |
       | user1Name | user2Name | user3Name | TESTCHAT      | hello, iPad! | testing.jpg |
 
   @regression @id3999
@@ -1002,3 +1002,40 @@ Feature: People View
     Examples: 
       | Name      | Contact1  |
       | user1Name | user2Name |
+
+  @staging @id2440
+  Scenario Outline: Verify length limit for group conversation name [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I open group conversation details
+    And I try to change group conversation name to empty
+    Then I see correct conversation name <GroupChatName>
+    When I try to change group conversation name to random with length <MaxGroupChatNameLenght>
+    Then I see correct conversation name <GroupChatName>
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName | MaxGroupChatNameLenght |
+      | user1Name | user2Name | user3Name | TESTCHAT      | 65                     |
+
+  @staging @id3950
+  Scenario Outline: Verify length limit for group conversation name [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I open group conversation details
+    And I try to change group conversation name to empty
+    Then I see correct conversation name <GroupChatName>
+    When I try to change group conversation name to random with length <MaxGroupChatNameLenght>
+    Then I see correct conversation name <GroupChatName>
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName | MaxGroupChatNameLenght |
+      | user1Name | user2Name | user3Name | TESTCHAT      | 65                     |
