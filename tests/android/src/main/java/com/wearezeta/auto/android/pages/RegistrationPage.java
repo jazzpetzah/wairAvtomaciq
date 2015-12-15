@@ -51,11 +51,11 @@ public class RegistrationPage extends AndroidPage {
     @FindBy(id = idInvitationContinueButton)
     private WebElement invitationContinueButton;
 
-    private static final String idChooseMyOwnButton = "zb__choose_own_picture";
+    public static final String idChooseMyOwnButton = "zb__choose_own_picture";
     @FindBy(id = idChooseMyOwnButton)
     private WebElement chooseMyOwnButton;
 
-    private static final String idKeepPictureButton = "zb__keep_picture";
+    public static final String idKeepPictureButton = "zb__keep_picture";
     @FindBy(id = idKeepPictureButton)
     private WebElement keepPictureButton;
 

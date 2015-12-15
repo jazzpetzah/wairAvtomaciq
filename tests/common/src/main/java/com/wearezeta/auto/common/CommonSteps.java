@@ -152,10 +152,10 @@ public final class CommonSteps {
 		BackendAPIWrappers.ignoreAllConnections(userTo);
 	}
 
-	public void CancelAllConnectRequests(String userToNameAlias)
+	public void CancelAllOutgoingConnectRequests(String userToNameAlias)
 			throws Exception {
 		ClientUser userTo = usrMgr.findUserByNameOrNameAlias(userToNameAlias);
-		BackendAPIWrappers.cancelAllConnections(userTo);
+		BackendAPIWrappers.cancelAllOutgoingConnections(userTo);
 	}
 
 	private static final int DRIVER_PING_INTERVAL_SECONDS = 60;

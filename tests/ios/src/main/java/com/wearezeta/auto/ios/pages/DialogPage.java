@@ -187,7 +187,7 @@ public class DialogPage extends IOSPage {
 	}
 
 	public String getAddedtoChatMessage() {
-		return addedToConversationMessage.getText();
+		return startedConversationMessage.getText();
 	}
 
 	public boolean isMessageVisible(String msg) throws Exception {
