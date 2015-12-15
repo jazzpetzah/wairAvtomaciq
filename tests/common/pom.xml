@@ -15,7 +15,7 @@
 		<!-- v1: http://192.168.10.44:21980 || v2: https://192.168.10.44:25443 
 			|| local: http://localhost:8080 -->
 		<!-- note there's no trailing slash -->
-		<defaultCallingServiceUrl>https://192.168.10.44:27443</defaultCallingServiceUrl>
+        <defaultCallingServiceUrl>https://192.168.10.44:27443</defaultCallingServiceUrl>
 		<!-- JavaX | REST -->
 		<mailboxHandlerType>REST</mailboxHandlerType>
 		<defaultEmailListenerServiceHost>192.168.10.44</defaultEmailListenerServiceHost>
