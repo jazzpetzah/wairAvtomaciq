@@ -32,7 +32,9 @@ Feature: Invitations
     And I restore the application
     And I input password "<ContactPassword>"
     And I confirm password
-    And I press Camera button twice
+    And I select to choose my own picture
+    And I select Camera as picture source
+    And I press Camera button
     And I confirm selection
     And I add <Contact> to the list of test case users
     And User <Contact> is me without picture
