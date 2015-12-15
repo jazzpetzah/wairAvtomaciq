@@ -16,8 +16,8 @@ Feature: Self Profile
     Then I see changed user picture <Picture>
 
     Examples: 
-      | Name      | Picture                   | Contact   |
-      | user1Name | userpicture_ios_check.png | user2Name |
+      | Name      | Picture                       | Contact   |
+      | user1Name | userpicture_ios_check_new.png | user2Name |
 
   @regression @id1055
   Scenario Outline: Attempt to enter a name with 0 chars
