@@ -15,7 +15,7 @@ import com.wearezeta.auto.common.calling2.v1.model.Call;
 import com.wearezeta.auto.common.calling2.v1.model.CallStatus;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
 import com.wearezeta.auto.common.calling2.v1.model.Instance;
-import com.wearezeta.auto.common.calling2.v1.model.InstanceType;
+import com.wearezeta.auto.common.calling2.v1.model.VersionedInstanceType;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -35,6 +35,12 @@ public final class CommonCallingSteps2 {
 
 	public static final Logger LOG = ZetaLogger
 			.getLog(CommonCallingSteps2.class.getName());
+
+	private static final String CALL_BACKEND_VERSION_SEPARATOR = ":";
+	private static final String ZCALL_DEFAULT_VERSION = "1.10";
+	private static final String AUTOCALL_DEFAULT_VERSION = "1.10";
+	private static final String FIREFOX_DEFAULT_VERSION = "42.0";
+	private static final String CHROME_DEFAULT_VERSION = "47.0.2526.73";
 
 	// Request timeout of 180 secs is set by callingservice, we add additional
 	// 10 seconds on the client side to actually get a timeout response to
@@ -109,8 +115,9 @@ public final class CommonCallingSteps2 {
 
 		final String convId = getConversationId(userAs, conversationName);
 
-		final Instance instance = client.startInstance(userAs,
-				instanceTypeFix(instanceType), ZetaFormatter.getScenario());
+		Instance instance = client.startInstance(userAs,
+				convertTypeStringToTypeObject(instanceType),
+				ZetaFormatter.getScenario());
 		addInstance(instance, userAs);
 
 		final Call call = client.callToUser(instance, convId);
@@ -212,7 +219,8 @@ public final class CommonCallingSteps2 {
 		ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
 
 		final Instance instance = client.startInstance(userAs,
-				instanceTypeFix(instanceType), ZetaFormatter.getScenario());
+				convertTypeStringToTypeObject(instanceType),
+				ZetaFormatter.getScenario());
 		addInstance(instance, userAs);
 	}
 
@@ -257,8 +265,9 @@ public final class CommonCallingSteps2 {
 			createTasks.put(calleeName, CompletableFuture.supplyAsync(() -> {
 				try {
 					final Instance instance = client.startInstance(userAs,
-							instanceTypeFix(instanceType),
+							convertTypeStringToTypeObject(instanceType),
 							ZetaFormatter.getScenario());
+					addInstance(instance, userAs);
 					addInstance(instance, userAs);
 					return instance;
 				} catch (CallingServiceInstanceException ex) {
@@ -337,9 +346,14 @@ public final class CommonCallingSteps2 {
 		if (instanceMapping.size() > 0) {
 			LOG.debug("Executing asynchronous cleanup of call instance leftovers...");
 		}
+		final String callingServiceUrl = CommonUtils
+				.getDefaultCallingServiceUrlFromConfig(CommonCallingSteps2.class);
 		for (Map.Entry<String, Instance> entry : instanceMapping.entrySet()) {
+			final Instance instance = entry.getValue();
+			LOG.debug("---BROWSER LOG FOR INSTANCE:\n" + instance + "\n"
+					+ callingServiceUrl + "/api/v1/instance/"
+					+ instance.getId() + "/log");
 			CompletableFuture.runAsync(() -> {
-				final Instance instance = entry.getValue();
 				try {
 					client.stopInstance(instance);
 				} catch (CallingServiceInstanceException ex) {
@@ -458,21 +472,38 @@ public final class CommonCallingSteps2 {
 		}
 	}
 
-	/**
-	 * Converts a string for the calling service instance type to an Enum. For
-	 * compatibility reasons WEBDRIVER is changed to CHROME. WEBDRIVER was used
-	 * as the callingservice didn't supported other browsers than CHROME.
-	 *
-	 * @param instanceType
-	 * @return
-	 */
-	private InstanceType instanceTypeFix(String instanceType) {
-		instanceType = instanceType.toUpperCase();
-		if (instanceType.equals("WEBDRIVER")) {
-			instanceType = "CHROME";
-			LOG.warn("Please use CHROME or FIREFOX instead of WEBDRIVER as instance type for calling! WEBDRIVER will be removed in future versions.");
+	private VersionedInstanceType convertTypeStringToTypeObject(
+			String instanceType) {
+		instanceType = instanceType.toLowerCase();
+		if (instanceType.contains(CALL_BACKEND_VERSION_SEPARATOR)) {
+			final String[] versionedType = instanceType
+					.split(CALL_BACKEND_VERSION_SEPARATOR);
+			final String type = versionedType[0];
+			final String version = versionedType[1];
+			if (type == null || version == null) {
+				throw new IllegalArgumentException(
+						"Could not parse instance type and/or version");
+			}
+			return new VersionedInstanceType(type, version);
+		} else {
+			switch (instanceType) {
+			case "chrome":
+				return new VersionedInstanceType(instanceType,
+						CHROME_DEFAULT_VERSION);
+			case "firefox":
+				return new VersionedInstanceType(instanceType,
+						FIREFOX_DEFAULT_VERSION);
+			case "autocall":
+				return new VersionedInstanceType(instanceType,
+						AUTOCALL_DEFAULT_VERSION);
+			case "zcall":
+				return new VersionedInstanceType(instanceType,
+						ZCALL_DEFAULT_VERSION);
+			default:
+				throw new IllegalArgumentException(
+						"Could not parse instance type and/or version");
+			}
 		}
-		return InstanceType.valueOf(instanceType);
 	}
 
 	private String getConversationId(ClientUser userAs, String name)
