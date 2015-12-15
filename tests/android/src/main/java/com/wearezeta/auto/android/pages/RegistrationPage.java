@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android.pages;
 
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -50,6 +51,17 @@ public class RegistrationPage extends AndroidPage {
     @FindBy(id = idInvitationContinueButton)
     private WebElement invitationContinueButton;
 
+    private static final String idChooseMyOwnButton = "zb__choose_own_picture";
+    @FindBy(id = idChooseMyOwnButton)
+    private WebElement chooseMyOwnButton;
+
+    private static final String idKeepPictureButton = "zb__keep_picture";
+    @FindBy(id = idKeepPictureButton)
+    private WebElement keepPictureButton;
+
+    private static Function<String, String> xpathChoosePictSrcDialogButtonByName = name ->
+            String.format("//*[starts-with(@id, 'button') and @value='%s']", name);
+
     public RegistrationPage(Future<ZetaAndroidDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
@@ -92,5 +104,16 @@ public class RegistrationPage extends AndroidPage {
 
     public void tapContinueButton() {
         invitationContinueButton.click();
+    }
+
+    public void tapOwnPictureButton() {
+        chooseMyOwnButton.click();
+    }
+
+    public void selectPictureSource(String src) throws Exception {
+        final By locator = By.xpath(xpathChoosePictSrcDialogButtonByName.apply(src));
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) :
+                "Source selection alert is not visible";
+        getDriver().findElement(locator).click();
     }
 }

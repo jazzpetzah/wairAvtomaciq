@@ -28,13 +28,13 @@ public class ProfilePicturePage extends AndroidPage {
 
 	public void clickCameraButton() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
-				cameraButton);
+				cameraButton) : "Camera button is clickable";
 		cameraButton.click();
 	}
 
 	public ContactListPage confirmPicture() throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(DialogPage.xpathConfirmOKButton));
+				By.xpath(DialogPage.xpathConfirmOKButton)) : "Confirm button is not visible";
 		confirmButton.click();
 		return new ContactListPage(this.getLazyDriver());
 	}
