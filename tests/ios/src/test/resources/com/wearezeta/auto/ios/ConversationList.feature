@@ -318,7 +318,7 @@ Feature: Conversation List
       | Name      | Contact   | Color  | NewName |
       | user1Name | user2Name | Violet | SILENCE |
 
-  @staging @id3899
+  @staging @id3899 @ZIOS-5279
   Scenario Outline: Verify first conversation in the list is highlighted and opened
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
