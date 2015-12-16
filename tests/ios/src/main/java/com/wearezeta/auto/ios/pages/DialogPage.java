@@ -117,7 +117,7 @@ public class DialogPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathNameMediaContainer)
 	private WebElement mediaContainer;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathMediaConversationCell)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathSoundCloudCellPlayButton)
 	private WebElement mediaLinkCell;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathYoutubeVimeoConversationCell)
