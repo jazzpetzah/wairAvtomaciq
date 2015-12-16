@@ -128,8 +128,8 @@ Feature: Conversation View
     Then I see conversation view is scrolled back to the playing media link <SoundCloudLink>
 
     Examples: 
-      | Name      | Contact   | SoundCloudLink                                                                       |
-      | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+      | Name      | Contact   | SoundCloudLink                                   |
+      | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
 
   @staging @id385
   Scenario Outline: Verify the Media Bar dissapears after playback finishes - SoundCloud
@@ -152,8 +152,8 @@ Feature: Conversation View
     Then I dont see media bar on dialog page
 
     Examples: 
-      | Name      | Contact   | SoundCloudLink                                                                       |
-      | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+      | Name      | Contact   | SoundCloudLink                                   |
+      | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
 
   @regression @id386
   Scenario Outline: Verify the Media Bar disappears when playing media is back in view - SoundCloud
