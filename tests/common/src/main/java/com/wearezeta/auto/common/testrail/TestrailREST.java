@@ -109,4 +109,12 @@ class TestrailREST {
         final String output = restHandlers.httpGet(webResource, new int[] { HttpStatus.SC_OK });
         return new JSONArray(output);
     }
+
+    public static JSONObject updateCase(long caseId, JSONObject newProperties) throws Exception {
+        Invocation.Builder webResource = buildRequest(String.format("update_case/%s",
+                caseId));;
+        final String output = restHandlers.httpPost(webResource, newProperties.toString(),
+                new int[] { HttpStatus.SC_OK });
+        return new JSONObject(output);
+    }
 }

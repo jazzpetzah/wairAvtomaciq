@@ -99,4 +99,16 @@ public class TestrailRESTWrapper {
                     response.getJSONObject(response.length() - 1).getInt("status_id"));
         }
     }
-}
+
+    public static void updateCaseIsAutomated(long caseId, boolean newValue) throws Exception {
+        final JSONObject requestBody = new JSONObject();
+        requestBody.put("custom_is_automated", newValue);
+        TestrailREST.updateCase(caseId, requestBody);
+    }
+
+    public static void updateCaseIsMuted(long caseId, boolean newValue) throws Exception {
+        final JSONObject requestBody = new JSONObject();
+        requestBody.put("custom_is_muted", newValue);
+        TestrailREST.updateCase(caseId, requestBody);
+    }
+ }

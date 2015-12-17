@@ -559,6 +559,14 @@ public class CommonUtils {
         return getOptionalValueFromCommonConfig(c, "testrailRunConfigName");
     }
 
+    public static boolean getSyncIsAutomated(Class<?> c) throws Exception {
+        return getValueFromCommonConfig(c, "syncIsAutomated").toLowerCase().equals("true");
+    }
+
+    public static boolean getSyncIsMuted(Class<?> c) throws Exception {
+        return getValueFromCommonConfig(c, "syncIsMuted").toLowerCase().equals("true");
+    }
+
 	public static String generateRandomXdigits(int i) {
 		Random rand = new Random();
 		long random = (long) (Math.pow(10, i - 1)) * (rand.nextInt(8) + 1)

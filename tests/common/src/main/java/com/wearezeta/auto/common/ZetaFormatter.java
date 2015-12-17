@@ -457,7 +457,11 @@ public class ZetaFormatter implements Formatter, Reporter {
                         && x.length() > RCTestcase.TESTRAIL_ID_TAG_PREFIX.length())
                 .map(x -> x.substring(RCTestcase.TESTRAIL_ID_TAG_PREFIX.length(),
                         x.length())).collect(Collectors.toList());
-        for (String tcId: actualIds) {
+        if (actualIds.isEmpty()) {
+            log.warn(String.format("Cannot change execution status for a test case (tags: '%s'). "+
+                            "No Testrail ids can be parsed.", normalizedTags));
+        }
+        for (String tcId : actualIds) {
             TestrailExecutionStatus previousTestResult = TestrailExecutionStatus.Untested;
             try {
                 previousTestResult =
@@ -501,11 +505,93 @@ public class ZetaFormatter implements Formatter, Reporter {
         try {
             // TODO: Remove Zephyr after transition period is completed
             syncZephyrTestResult(scenario);
+
             syncTestrailTestResult(scenario);
+            syncTestrailIsAutomatedState(scenario);
+            syncTestrailIsMutedState(scenario);
         } finally {
             recentTestResult = Result.UNDEFINED.toString();
             steps.clear();
             stepsIterator = Optional.empty();
+        }
+    }
+
+    private void syncTestrailIsAutomatedState(Scenario scenario) {
+        try {
+            if (!CommonUtils.getSyncIsAutomated(ZetaFormatter.class)) {
+                return;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        final List<String> actualIds = normalizeTags(scenario
+                .getTags())
+                .stream()
+                .filter(x -> x.startsWith(RCTestcase.TESTRAIL_ID_TAG_PREFIX)
+                        && x.length() > RCTestcase.TESTRAIL_ID_TAG_PREFIX.length())
+                .map(x -> x.substring(RCTestcase.TESTRAIL_ID_TAG_PREFIX.length(),
+                        x.length())).collect(Collectors.toList());
+        if (actualIds.isEmpty()) {
+            log.warn(String.format("Cannot change IsAutomated state for test case '%s' (tags: '%s'). "+
+                    "No Testrail ids can be parsed.",
+                    scenario.getName(), scenario.getTags()));
+        }
+        for (String caseId : actualIds) {
+            log.info(String.format("Setting IsAutomated property of test case #%s to TRUE",
+                    caseId));
+            try {
+                TestrailRESTWrapper.updateCaseIsAutomated(Long.parseLong(caseId), true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void syncTestrailIsMutedState(Scenario scenario) {
+        try {
+            if (!CommonUtils.getSyncIsMuted(ZetaFormatter.class)) {
+                return;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        final List<String> actualIds = normalizeTags(scenario
+                .getTags())
+                .stream()
+                .filter(x -> x.startsWith(RCTestcase.TESTRAIL_ID_TAG_PREFIX)
+                        && x.length() > RCTestcase.TESTRAIL_ID_TAG_PREFIX.length())
+                .map(x -> x.substring(RCTestcase.TESTRAIL_ID_TAG_PREFIX.length(),
+                        x.length())).collect(Collectors.toList());
+        final TestrailExecutionStatus actualTestResult =
+                new TestcaseResultToTestrailTransformer(steps).transform();
+        if (actualIds.isEmpty()) {
+            log.warn(String.format("Cannot change IsMuted state for test case '%s' (tags: '%s'). "+
+                            "No Testrail ids can be parsed.",
+                    scenario.getName(), scenario.getTags()));
+        }
+        for (String caseId : actualIds) {
+            switch (actualTestResult) {
+                case Passed:
+                    try {
+                        log.info(String.format("Setting IsMuted property of test case #%s to FALSE",
+                                caseId));
+                        TestrailRESTWrapper.updateCaseIsMuted(Long.parseLong(caseId), false);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case Failed:
+                    try {
+                        log.info(String.format("Setting IsMuted property of test case #%s to TRUE",
+                                caseId));
+                        TestrailRESTWrapper.updateCaseIsMuted(Long.parseLong(caseId), true);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+            }
         }
     }
 
