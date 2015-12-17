@@ -17,6 +17,7 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Optional;
 
 
@@ -38,7 +39,7 @@ class TestrailREST {
         return String.format("%s/index.php?/api/v2", host);
     }
 
-    private static String getTestailUser() throws Exception {
+    private static String getTestrailUser() throws Exception {
         return CommonUtils.getTestrailUsernameFromConfig(TestrailREST.class);
     }
 
@@ -66,9 +67,11 @@ class TestrailREST {
                 .target(dstUrl)
                 .request()
                 .accept(MediaType.APPLICATION_JSON)
+                .header("Content-Type", MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION,
-                        String.format("%s:%s", getTestailUser(),
-                                getTestrailToken()));
+                        String.format("Basic %s", Base64.getEncoder().encodeToString(
+                                String.format("%s:%s", getTestrailUser(),
+                                getTestrailToken()).getBytes())));
     }
 
     public static JSONArray getProjects() throws Exception {
@@ -112,7 +115,7 @@ class TestrailREST {
 
     public static JSONObject updateCase(long caseId, JSONObject newProperties) throws Exception {
         Invocation.Builder webResource = buildRequest(String.format("update_case/%s",
-                caseId));;
+                caseId));
         final String output = restHandlers.httpPost(webResource, newProperties.toString(),
                 new int[] { HttpStatus.SC_OK });
         return new JSONObject(output);

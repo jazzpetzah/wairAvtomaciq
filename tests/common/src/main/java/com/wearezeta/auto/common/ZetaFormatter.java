@@ -494,7 +494,7 @@ public class ZetaFormatter implements Formatter, Reporter {
                     .format(" --> Changing execution result of RC test case #%s from '%s' to '%s' "
                                     + "(Project Name: '%s', Plan Name: '%s', Run Name: '%s (%s)')\n\n",
                             tcId, previousTestResult.toString(), actualTestResult.toString(),
-                            projectName, planName, runName, configName));
+                            projectName, planName, runName, configName.orElse("<No Config>")));
             TestrailRESTWrapper.updateTestResult(testrailRunId.get(), Long.parseLong(tcId),
                     actualTestResult, jenkinsJobUrl);
         }
