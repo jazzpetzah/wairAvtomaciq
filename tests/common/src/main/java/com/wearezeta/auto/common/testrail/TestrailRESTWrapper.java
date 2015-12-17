@@ -41,10 +41,10 @@ public class TestrailRESTWrapper {
         final Set<String> normalizedActualConfig = new HashSet<>(
                 Arrays.asList(actualConfiguration.split(",")).stream().map(
                         String::trim).collect(Collectors.toList()));
-        return normalizedActualConfig.containsAll(normalizedExpectedConfig);
+        return normalizedExpectedConfig.equals(normalizedActualConfig);
     }
 
-    public static long getTestRunId(long testPlanId, String testRunName, String configurationName)
+    public static long getTestRunId(long testPlanId, String testRunName, Optional<String> configurationName)
             throws Exception {
         final JSONObject response = TestrailREST.getTestPlan(testPlanId);
         if (!response.has("entries")) {
@@ -56,9 +56,15 @@ public class TestrailRESTWrapper {
             if (entries.getJSONObject(entryIdx).has("runs")) {
                 final JSONArray runs = entries.getJSONObject(entryIdx).getJSONArray("runs");
                 for (int runIdx = 0; runIdx < runs.length(); runIdx++) {
-                    if (runs.getJSONObject(runIdx).getString("name").equals(testRunName)
-                            && isConfigurationEqual(configurationName,
-                                                    runs.getJSONObject(runIdx).getString("config"))) {
+                    if (runs.getJSONObject(runIdx).getString("name").equals(testRunName)) {
+                        if (configurationName.isPresent()) {
+                            if (isConfigurationEqual(configurationName.get(),
+                                    runs.getJSONObject(runIdx).getString("config"))) {
+                                return runs.getJSONObject(runIdx).getLong("id");
+                            } else {
+                                continue;
+                            }
+                        }
                         return runs.getJSONObject(runIdx).getLong("id");
                     }
                 }
@@ -69,8 +75,6 @@ public class TestrailRESTWrapper {
     }
 
     /**
-     *
-     *
      * @param testRunId
      * @param caseId
      * @param newStatus this has to be never set to TestrailExecutionStatus.Untested
@@ -78,13 +82,14 @@ public class TestrailRESTWrapper {
      * @param comment
      * @throws Exception
      */
+
     public static void updateTestResult(long testRunId, long caseId,
                                         TestrailExecutionStatus newStatus, Optional<String> comment)
             throws Exception {
         TestrailREST.addTestCaseResult(testRunId, caseId, newStatus.getId(), comment);
     }
 
-    public static TestrailExecutionStatus getCurrectTestResult(long testRunId, long caseId)
+    public static TestrailExecutionStatus getCurrentTestResult(long testRunId, long caseId)
             throws Exception {
         final JSONArray response = TestrailREST.getTestCaseResults(testRunId, caseId);
         if (response.length() == 0) {

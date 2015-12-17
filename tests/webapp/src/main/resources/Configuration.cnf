@@ -21,4 +21,4 @@ extendedLoggingLevel=${extendedLoggingLevel}
 backendType=${backendType}
 rcNotificationsRecepients=${rcNotificationsRecepients}
 testrailUser=smoketester+webapp@wire.com
-testrailPassword=12345678
+testrailToken=tCzqgGGNbbgAHsm4bYOV-0NAyG4.RwaoX7dOwAvwM

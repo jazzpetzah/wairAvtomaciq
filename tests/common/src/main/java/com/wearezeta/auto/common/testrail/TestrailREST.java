@@ -7,7 +7,6 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.rest.CommonRESTHandlers;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.HttpStatus;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -34,14 +33,9 @@ class TestrailREST {
     private static final CommonRESTHandlers restHandlers = new CommonRESTHandlers(
             TestrailREST::verifyRequestResult, MAX_REQUEST_RETRY_COUNT);
 
-    static {
-        log.setLevel(Level.DEBUG);
-        System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
-    }
-
     private static String getBaseURI() throws Exception {
-        final String host = CommonUtils.getTestrailServerFromConfig(TestrailREST.class);
-        return String.format("https://%s/index.php?/api/v2", host);
+        final String host = CommonUtils.getTestrailServerUrlFromConfig(TestrailREST.class);
+        return String.format("%s/index.php?/api/v2", host);
     }
 
     private static String getTestailUser() throws Exception {

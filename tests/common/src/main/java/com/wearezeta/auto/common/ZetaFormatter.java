@@ -422,8 +422,7 @@ public class ZetaFormatter implements Formatter, Reporter {
         }
         if (testrailProjectName.isPresent() && testrailProjectName.get().length() > 0
                 && testrailPlanName.isPresent() && testrailPlanName.get().length() > 0
-                && testrailRunName.isPresent() && testrailRunName.get().length() > 0
-                && testrailConfigName.isPresent() && testrailConfigName.get().length() > 0) {
+                && testrailRunName.isPresent() && testrailRunName.get().length() > 0) {
             final Set<String> normalizedTags = normalizeTags(scenario
                     .getTags());
             // Commented out due to the request from WebApp team
@@ -433,7 +432,7 @@ public class ZetaFormatter implements Formatter, Reporter {
             try {
                 syncCurrentTestResultWithTestrail(normalizedTags,
                         testrailProjectName.get(), testrailPlanName.get(),
-                        testrailRunName.get(), testrailConfigName.get(), jenkinsJobUrl);
+                        testrailRunName.get(), testrailConfigName, jenkinsJobUrl);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -443,7 +442,7 @@ public class ZetaFormatter implements Formatter, Reporter {
     private static Optional<Long> testrailRunId = Optional.empty();
 
     private void syncCurrentTestResultWithTestrail(Set<String> normalizedTags, String projectName,
-                                                   String planName, String runName, String configName,
+                                                   String planName, String runName, Optional<String> configName,
                                                    Optional<String> jenkinsJobUrl) throws Exception {
         if (!testrailRunId.isPresent()) {
             final long projectId = TestrailRESTWrapper.getProjectId(projectName);
@@ -462,7 +461,7 @@ public class ZetaFormatter implements Formatter, Reporter {
             TestrailExecutionStatus previousTestResult = TestrailExecutionStatus.Untested;
             try {
                 previousTestResult =
-                        TestrailRESTWrapper.getCurrectTestResult(testrailRunId.get(), Long.parseLong(tcId));
+                        TestrailRESTWrapper.getCurrentTestResult(testrailRunId.get(), Long.parseLong(tcId));
             } catch (TestrailRequestException e) {
                 if (e.getReturnCode() == 400) {
                     // No such test case error
@@ -470,7 +469,7 @@ public class ZetaFormatter implements Formatter, Reporter {
                             .format("It seems like there is no test case(s) # %s in Testrail project '%s', plan '%s', run '%s (%s)'. "
                                             + "This could slow down the whole RC run. "
                                             + "Please double check .feature files whether the %s tag is properly set!",
-                                    actualIds, projectName, planName, runName, configName,
+                                    actualIds, projectName, planName, runName, configName.orElse("<No Config>"),
                                     RCTestcase.RC_TAG);
                     log.warn(" --> " + warningMessage + "\n\n");
                     final Optional<String> rcNotificationsRecepients = CommonUtils
@@ -478,7 +477,7 @@ public class ZetaFormatter implements Formatter, Reporter {
                     if (rcNotificationsRecepients.isPresent()) {
                         final String notificationHeader = String
                                 .format("ACHTUNG! An extra RC test case has been executed in project '%s', test plan '%s', run '%s (%s)'",
-                                        projectName, planName, runName, configName);
+                                        projectName, planName, runName, configName.orElse("<No Config>"));
                         NotificationSender.getInstance().send(
                                 rcNotificationsRecepients.get(),
                                 notificationHeader, warningMessage);

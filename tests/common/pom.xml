@@ -26,6 +26,11 @@
 		<zephyrPhaseName></zephyrPhaseName>
 		<zephyrServer>192.168.10.44</zephyrServer>
 		<jenkinsJobUrl></jenkinsJobUrl>
+        <testrailServerUrl>http://192.168.10.44:29082/testrail</testrailServerUrl>
+		<testrailProjectName></testrailProjectName>
+        <testrailPlanName></testrailPlanName>
+        <testrailRunName></testrailRunName>
+        <testrailRunConfigName></testrailRunConfigName>
 	</properties>
 
 	<dependencies>

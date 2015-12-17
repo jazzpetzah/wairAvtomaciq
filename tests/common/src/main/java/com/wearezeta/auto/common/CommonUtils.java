@@ -527,8 +527,8 @@ public class CommonUtils {
 		return getValueFromCommonConfig(c, "zephyrServer");
 	}
 
-	public static String getTestrailServerFromConfig(Class<?> c) throws Exception {
-		return getValueFromCommonConfig(c, "testrailServer");
+	public static String getTestrailServerUrlFromConfig(Class<?> c) throws Exception {
+		return getValueFromCommonConfig(c, "testrailServerUrl");
 	}
 
     public static String getTestrailUsernameFromConfig(Class<?> c) throws Exception {
@@ -570,6 +570,5 @@ public class CommonUtils {
 			throws Exception {
 		return getValueFromConfig(cls, "platformVersion");
 	}
-
 
 }

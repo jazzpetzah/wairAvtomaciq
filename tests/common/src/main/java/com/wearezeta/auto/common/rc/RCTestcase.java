@@ -1,12 +1,8 @@
 package com.wearezeta.auto.common.rc;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.lang3.StringUtils;
 
 public abstract class RCTestcase {
 	public final static String MAGIC_TAG_PREFIX = "@";
@@ -17,7 +13,7 @@ public abstract class RCTestcase {
 	// id can contain more that one value
 	// multiple values are separated by SPACE character
 	private String id = "";
-	private Set<String> tags = new LinkedHashSet<String>();
+	private Set<String> tags = new LinkedHashSet<>();
 	private String name = "";
 	protected boolean isAutomated = false;
 
@@ -37,11 +33,11 @@ public abstract class RCTestcase {
 	}
 
 	public Set<String> getTags() {
-		return new LinkedHashSet<String>(this.tags);
+		return new LinkedHashSet<>(this.tags);
 	}
 
 	public void setTags(Set<String> tags) {
-		this.tags = new LinkedHashSet<String>(tags);
+		this.tags = new LinkedHashSet<>(tags);
 		isChanged = true;
 	}
 
@@ -57,34 +53,16 @@ public abstract class RCTestcase {
 			boolean isAutomated) {
 		this.id = id;
 		this.name = name;
-		this.tags = new LinkedHashSet<String>(tags);
+		this.tags = new LinkedHashSet<>(tags);
 		this.isAutomated = isAutomated;
-	}
-
-	public static String extractIdsFromTags(Set<String> tags) {
-		List<String> resultList = new ArrayList<String>();
-		for (String tag : tags) {
-			if (tag.startsWith(ZEPHYR_ID_TAG_PREFIX)) {
-				resultList.add(tag.substring(ZEPHYR_ID_TAG_PREFIX.length()));
-			}
-		}
-		if (resultList.size() > 0) {
-			return StringUtils.join(resultList, " ");
-		} else {
-			return "";
-		}
-	}
-
-	public static Set<String> splitIds(String id) {
-		return new LinkedHashSet<String>(Arrays.asList(id.split("\\s+")));
 	}
 
 	public static Set<String> extractTagsFromString(String in) {
 		in = in.trim();
 		if (in.length() > 0) {
-			final Set<String> tags = new LinkedHashSet<String>(Arrays.asList(in
+			final Set<String> tags = new LinkedHashSet<>(Arrays.asList(in
 					.split("\\s+")));
-			Set<String> resultTags = new LinkedHashSet<String>();
+			Set<String> resultTags = new LinkedHashSet<>();
 			for (String tag : tags) {
 				if (tag.startsWith(MAGIC_TAG_PREFIX)) {
 					resultTags.add(tag);
@@ -94,7 +72,7 @@ public abstract class RCTestcase {
 			}
 			return resultTags;
 		} else {
-			return new LinkedHashSet<String>();
+			return new LinkedHashSet<>();
 		}
 	}
 
