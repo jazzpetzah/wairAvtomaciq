@@ -17,3 +17,5 @@ backendType=${backendType}
 androidToolsPath=${androidToolsPath}
 isTablet=true
 rcNotificationsRecepients=${rcNotificationsRecepients}
+testrailUser=smoketester+android@wire.com
+testrailPassword=12345678

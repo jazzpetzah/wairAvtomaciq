@@ -16,3 +16,5 @@ deviceName=${deviceName}
 backendType=${backendType}
 pathToAddressBook=${Root}/${pathToAddressBook}
 rcNotificationsRecepients=${rcNotificationsRecepients}
+testrailUser=smoketester+ios@wire.com
+testrailPassword=12345678

@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
+import com.wearezeta.auto.common.rc.TestcaseResultToZephyrTransformer;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -27,7 +28,7 @@ import com.wearezeta.auto.common.email_notifier.NotificationSender;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.rc.IRCTestcasesStorage;
 import com.wearezeta.auto.common.rc.RCTestcase;
-import com.wearezeta.auto.common.rc.TestcaseResultAnalyzer;
+import com.wearezeta.auto.common.rc.TestcaseResultTransformer;
 import com.wearezeta.auto.common.zephyr.ExecutedZephyrTestcase;
 import com.wearezeta.auto.common.zephyr.ZephyrDB;
 import com.wearezeta.auto.common.zephyr.ZephyrExecutionStatus;
@@ -272,16 +273,16 @@ public class ZetaFormatter implements Formatter, Reporter {
     public void startOfScenarioLifeCycle(Scenario scenario) {
     }
 
-    private synchronized void syncCurrentTestResult(Set<String> normalizedTags,
-                                                    String cycleName, String phaseName, Optional<String> jenkinsJobUrl)
+    private synchronized void syncCurrentTestResultWithZephyr(Set<String> normalizedTags,
+                                                              String cycleName, String phaseName, Optional<String> jenkinsJobUrl)
             throws Exception {
         if (!cycle.isPresent()) {
             storage = Optional.of(new ZephyrDB(
                     CommonUtils.getZephyrServerFromConfig(getClass())));
             cycle = Optional.of(((ZephyrDB) storage.get()).getTestCycle(cycleName));
         }
-        final ZephyrExecutionStatus actualTestResult = TestcaseResultAnalyzer
-                .analyzeSteps(steps);
+        final ZephyrExecutionStatus actualTestResult =
+                new TestcaseResultToZephyrTransformer(steps).transform();
         final ZephyrTestPhase phase = cycle.get().getPhaseByName(phaseName);
         final List<ExecutedZephyrTestcase> rcTestCases = phase.getTestcases();
         boolean isAnyTestChanged = false;
@@ -355,41 +356,159 @@ public class ZetaFormatter implements Formatter, Reporter {
         return result;
     }
 
-    @Override
-    public void endOfScenarioLifeCycle(Scenario scenario) {
-        String zephyrCycleName;
-        String zephyrPhaseName;
+    private void syncZephyrTestResult(Scenario scenario) {
+        Optional<String> zephyrCycleName;
+        Optional<String> zephyrPhaseName;
         Optional<String> jenkinsJobUrl = Optional.empty();
         try {
+            zephyrCycleName = CommonUtils
+                    .getZephyrCycleNameFromConfig(getClass());
+            zephyrPhaseName = CommonUtils
+                    .getZephyrPhaseNameFromConfig(getClass());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        try {
+            jenkinsJobUrl = CommonUtils
+                    .getOptionalValueFromCommonConfig(getClass(), "jenkinsJobUrl");
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+        if (zephyrCycleName.isPresent() && zephyrCycleName.get().length() > 0
+                && zephyrPhaseName.isPresent() && zephyrPhaseName.get().length() > 0) {
+            final Set<String> normalizedTags = normalizeTags(scenario
+                    .getTags());
+            // Commented out due to the request from WebApp team
+            // if (!normalizedTags.contains(RCTestcase.RC_TAG)) {
+            // return;
+            // }
             try {
-                zephyrCycleName = CommonUtils
-                        .getZephyrCycleNameFromConfig(getClass());
-                zephyrPhaseName = CommonUtils
-                        .getZephyrPhaseNameFromConfig(getClass());
+                syncCurrentTestResultWithZephyr(normalizedTags, zephyrCycleName.get(),
+                        zephyrPhaseName.get(), jenkinsJobUrl);
             } catch (Exception e) {
                 e.printStackTrace();
-                return;
             }
+        }
+    }
+
+    private void syncTestrailTestResult(Scenario scenario) {
+        Optional<String> testrailPlanName;
+        Optional<String> testrailRunName;
+        Optional<String> testrailConfigName;
+        Optional<String> jenkinsJobUrl = Optional.empty();
+        try {
+            testrailPlanName = CommonUtils
+                    .getTestrailPlanNameFromConfig(getClass());
+            testrailRunName = CommonUtils
+                    .getTestrailRunNameFromConfig(getClass());
+            testrailConfigName = CommonUtils.
+                    getTestrailRunConfigNameFromConfig(getClass());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        try {
+            jenkinsJobUrl = CommonUtils
+                    .getOptionalValueFromCommonConfig(getClass(), "jenkinsJobUrl");
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+        if (testrailPlanName.isPresent() && testrailPlanName.get().length() > 0
+                && testrailRunName.isPresent() && testrailRunName.get().length() > 0
+                && testrailConfigName.isPresent() && testrailConfigName.get().length() > 0) {
+            final Set<String> normalizedTags = normalizeTags(scenario
+                    .getTags());
+            // Commented out due to the request from WebApp team
+            // if (!normalizedTags.contains(RCTestcase.RC_TAG)) {
+            // return;
+            // }
             try {
-                jenkinsJobUrl = CommonUtils
-                        .getOptionalValueFromCommonConfig(getClass(), "jenkinsJobUrl");
-            } catch (Exception e1) {
-                e1.printStackTrace();
+                syncCurrentTestResultWithTestrail(normalizedTags, testrailPlanName.get(),
+                        testrailRunName.get(), testrailConfigName.get(), jenkinsJobUrl);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            if (zephyrCycleName.length() > 0 && zephyrPhaseName.length() > 0) {
-                final Set<String> normalizedTags = normalizeTags(scenario
-                        .getTags());
-                // Commented out due to the request from WebApp team
-                // if (!normalizedTags.contains(RCTestcase.RC_TAG)) {
-                // return;
-                // }
-                try {
-                    syncCurrentTestResult(normalizedTags, zephyrCycleName,
-                            zephyrPhaseName, jenkinsJobUrl);
-                } catch (Exception e) {
-                    e.printStackTrace();
+        }
+    }
+
+    private void syncCurrentTestResultWithTestrail(Set<String> normalizedTags,
+                                                   String planName, String runName, String configName,
+                                                   Optional<String> jenkinsJobUrl) throws Exception {
+        if (!cycle.isPresent()) {
+            storage = Optional.of(new ZephyrDB(
+                    CommonUtils.getZephyrServerFromConfig(getClass())));
+            cycle = Optional.of(((ZephyrDB) storage.get()).getTestCycle(cycleName));
+        }
+        final ZephyrExecutionStatus actualTestResult = TestcaseResultTransformer
+                .analyzeSteps(steps);
+        final ZephyrTestPhase phase = cycle.get().getPhaseByName(phaseName);
+        final List<ExecutedZephyrTestcase> rcTestCases = phase.getTestcases();
+        boolean isAnyTestChanged = false;
+        boolean isAnyTestFound = false;
+        final List<String> actualIds = normalizedTags
+                .stream()
+                .filter(x -> x.startsWith(RCTestcase.ID_TAG_PREFIX)
+                        && x.length() > RCTestcase.ID_TAG_PREFIX.length())
+                .map(x -> x.substring(RCTestcase.ID_TAG_PREFIX.length(),
+                        x.length())).collect(Collectors.toList());
+        for (ExecutedZephyrTestcase rcTestCase : rcTestCases) {
+            if (actualIds.contains(rcTestCase.getId())) {
+                if (rcTestCase.getExecutionStatus() != actualTestResult) {
+                    log.info(String
+                            .format(" --> Changing execution result of RC test case #%s from '%s' to '%s' "
+                                            + "(Cycle: '%s', Phase: '%s', Name: '%s')\n\n",
+                                    rcTestCase.getId(), rcTestCase
+                                            .getExecutionStatus().toString(),
+                                    actualTestResult.toString(), cycle.get()
+                                            .getName(), phase.getName(),
+                                    rcTestCase.getName()));
+                    rcTestCase.setExecutionStatus(actualTestResult);
+                    if (jenkinsJobUrl.isPresent() && jenkinsJobUrl.get().length() > 0) {
+                        rcTestCase.setExecutionComment(jenkinsJobUrl.get());
+                    }
+                    isAnyTestChanged = true;
+                }
+                isAnyTestFound = true;
+            }
+        }
+        if (isAnyTestChanged) {
+            ((ZephyrDB) storage.get()).syncPhaseResults(phase);
+        } else {
+            if (isAnyTestFound) {
+                log.info(String
+                        .format(" --> Execution result for RC test case(s) # %s has been already set to '%s' and is still the same "
+                                        + "(Cycle: '%s', Phase: '%s')\n\n", actualIds,
+                                actualTestResult.toString(), cycle.get().getName(),
+                                phase.getName()));
+            } else {
+                final String warningMessage = String
+                        .format("It seems like there is no test case(s) # %s in Zephyr cycle '%s', phase '%s'. "
+                                        + "This could slow down the whole RC run. "
+                                        + "Please double check .feature files whether the %s tag is properly set!",
+                                actualIds, cycle.get().getName(), phase.getName(),
+                                RCTestcase.RC_TAG);
+                log.warn(" --> " + warningMessage + "\n\n");
+                final Optional<String> rcNotificationsRecepients = CommonUtils
+                        .getRCNotificationsRecepients(getClass());
+                if (rcNotificationsRecepients.isPresent()) {
+                    final String notificationHeader = String
+                            .format("ACHTUNG! An extra RC test case has been executed in RC test cycle '%s', phase '%s'",
+                                    cycle.get().getName(), phase.getName());
+                    NotificationSender.getInstance().send(
+                            rcNotificationsRecepients.get(),
+                            notificationHeader, warningMessage);
                 }
             }
+        }
+    }
+
+    @Override
+    public void endOfScenarioLifeCycle(Scenario scenario) {
+        try {
+            // TODO: Remove Zephyr after transition period is completed
+            syncZephyrTestResult(scenario);
+            syncTestrailTestResult(scenario);
         } finally {
             recentTestResult = Result.UNDEFINED.toString();
             steps.clear();

@@ -513,19 +513,46 @@ public class CommonUtils {
 		return Boolean.valueOf(getValueFromCommonConfig(c, "initNodeIp"));
 	}
 
-	public static String getZephyrCycleNameFromConfig(Class<?> c)
+	public static Optional<String> getZephyrCycleNameFromConfig(Class<?> c)
 			throws Exception {
-		return getValueFromCommonConfig(c, "zephyrCycleName");
+		return getOptionalValueFromCommonConfig(c, "zephyrCycleName");
 	}
 
-	public static String getZephyrPhaseNameFromConfig(Class<?> c)
+	public static Optional<String> getZephyrPhaseNameFromConfig(Class<?> c)
 			throws Exception {
-		return getValueFromCommonConfig(c, "zephyrPhaseName");
+		return getOptionalValueFromCommonConfig(c, "zephyrPhaseName");
 	}
 
 	public static String getZephyrServerFromConfig(Class<?> c) throws Exception {
 		return getValueFromCommonConfig(c, "zephyrServer");
 	}
+
+	public static String getTestrailServerFromConfig(Class<?> c) throws Exception {
+		return getValueFromCommonConfig(c, "testrailServer");
+	}
+
+    public static String getTestrailUsernameFromConfig(Class<?> c) throws Exception {
+        return getValueFromCommonConfig(c, "testrailUser");
+    }
+
+    public static String getTestrailTokenFromConfig(Class<?> c) throws Exception {
+        return getValueFromCommonConfig(c, "testrailToken");
+    }
+
+    public static Optional<String> getTestrailPlanNameFromConfig(Class<?> c)
+            throws Exception {
+        return getOptionalValueFromCommonConfig(c, "testrailPlanName");
+    }
+
+    public static Optional<String> getTestrailRunNameFromConfig(Class<?> c)
+            throws Exception {
+        return getOptionalValueFromCommonConfig(c, "testrailRunName");
+    }
+
+    public static Optional<String> getTestrailRunConfigNameFromConfig(Class<?> c)
+            throws Exception {
+        return getOptionalValueFromCommonConfig(c, "testrailRunConfigName");
+    }
 
 	public static String generateRandomXdigits(int i) {
 		Random rand = new Random();
