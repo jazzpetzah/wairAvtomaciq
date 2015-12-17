@@ -9,6 +9,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.ws.rs.client.Client;
@@ -17,8 +18,14 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import java.util.Arrays;
+import java.util.Optional;
 
-public class TestrailREST {
+
+/**
+ * http://docs.gurock.com/testrail-api2/start
+ *
+ */
+class TestrailREST {
     private static final Logger log = ZetaLogger.getLog(TestrailREST.class
             .getSimpleName());
 
@@ -70,15 +77,42 @@ public class TestrailREST {
                                 getTestrailToken()));
     }
 
-//    public static JSONObject login(String email, String password)
-//            throws Exception {
-//        Invocation.Builder webResource = buildDefaultRequest("login");
-//        JSONObject requestBody = new JSONObject();
-//        requestBody.put("email", email);
-//        requestBody.put("password", password);
-//        requestBody.put("label", "");
-//        final String output = restHandlers.httpPost(webResource,
-//                requestBody.toString(), new int[] { HttpStatus.SC_OK });
-//        return new JSONObject(output);
-//    }
+    public static JSONArray getProjects() throws Exception {
+        Invocation.Builder webResource = buildRequest("get_projects");
+        final String output = restHandlers.httpGet(webResource, new int[] { HttpStatus.SC_OK });
+        return new JSONArray(output);
+    }
+
+    public static JSONArray getTestPlans(long projectId) throws Exception {
+        Invocation.Builder webResource = buildRequest(String.format("get_plans/%s", projectId));
+        final String output = restHandlers.httpGet(webResource, new int[] { HttpStatus.SC_OK });
+        return new JSONArray(output);
+    }
+
+    public static JSONObject getTestPlan(long testPlanId) throws Exception {
+        Invocation.Builder webResource = buildRequest(String.format("get_plan/%s", testPlanId));
+        final String output = restHandlers.httpGet(webResource, new int[] { HttpStatus.SC_OK });
+        return new JSONObject(output);
+    }
+
+    public static JSONObject addTestCaseResult(long testRunId, long caseId,
+                                               int statusId, Optional<String> comment) throws Exception {
+        Invocation.Builder webResource = buildRequest(String.format("add_result_for_case/%s/%s",
+                testRunId, caseId));
+        final JSONObject requestBody = new JSONObject();
+        requestBody.put("status_id", statusId);
+        if (comment.isPresent()) {
+            requestBody.put("comment", comment.get());
+        }
+        final String output = restHandlers.httpPost(webResource, requestBody.toString(),
+                new int[] { HttpStatus.SC_OK });
+        return new JSONObject(output);
+    }
+
+    public static JSONArray getTestCaseResults(long testRunId, long caseId) throws Exception {
+        Invocation.Builder webResource = buildRequest(String.format("get_results_for_case/%s/%s",
+                testRunId, caseId));
+        final String output = restHandlers.httpGet(webResource, new int[] { HttpStatus.SC_OK });
+        return new JSONArray(output);
+    }
 }

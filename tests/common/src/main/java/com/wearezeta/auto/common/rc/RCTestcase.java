@@ -10,7 +10,8 @@ import org.apache.commons.lang3.StringUtils;
 
 public abstract class RCTestcase {
 	public final static String MAGIC_TAG_PREFIX = "@";
-	public final static String ID_TAG_PREFIX = MAGIC_TAG_PREFIX + "id";
+	public final static String ZEPHYR_ID_TAG_PREFIX = MAGIC_TAG_PREFIX + "id";
+	public final static String TESTRAIL_ID_TAG_PREFIX = MAGIC_TAG_PREFIX + "C";
 	public final static String RC_TAG = MAGIC_TAG_PREFIX + "rc";
 
 	// id can contain more that one value
@@ -63,8 +64,8 @@ public abstract class RCTestcase {
 	public static String extractIdsFromTags(Set<String> tags) {
 		List<String> resultList = new ArrayList<String>();
 		for (String tag : tags) {
-			if (tag.startsWith(ID_TAG_PREFIX)) {
-				resultList.add(tag.substring(ID_TAG_PREFIX.length()));
+			if (tag.startsWith(ZEPHYR_ID_TAG_PREFIX)) {
+				resultList.add(tag.substring(ZEPHYR_ID_TAG_PREFIX.length()));
 			}
 		}
 		if (resultList.size() > 0) {

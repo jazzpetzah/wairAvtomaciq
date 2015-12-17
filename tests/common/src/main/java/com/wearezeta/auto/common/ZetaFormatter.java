@@ -18,7 +18,11 @@ import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
+import com.wearezeta.auto.common.rc.TestcaseResultToTestrailTransformer;
 import com.wearezeta.auto.common.rc.TestcaseResultToZephyrTransformer;
+import com.wearezeta.auto.common.testrail.TestrailRESTWrapper;
+import com.wearezeta.auto.common.testrail.TestrailExecutionStatus;
+import com.wearezeta.auto.common.testrail.TestrailRequestException;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -28,7 +32,6 @@ import com.wearezeta.auto.common.email_notifier.NotificationSender;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.rc.IRCTestcasesStorage;
 import com.wearezeta.auto.common.rc.RCTestcase;
-import com.wearezeta.auto.common.rc.TestcaseResultTransformer;
 import com.wearezeta.auto.common.zephyr.ExecutedZephyrTestcase;
 import com.wearezeta.auto.common.zephyr.ZephyrDB;
 import com.wearezeta.auto.common.zephyr.ZephyrExecutionStatus;
@@ -289,9 +292,9 @@ public class ZetaFormatter implements Formatter, Reporter {
         boolean isAnyTestFound = false;
         final List<String> actualIds = normalizedTags
                 .stream()
-                .filter(x -> x.startsWith(RCTestcase.ID_TAG_PREFIX)
-                        && x.length() > RCTestcase.ID_TAG_PREFIX.length())
-                .map(x -> x.substring(RCTestcase.ID_TAG_PREFIX.length(),
+                .filter(x -> x.startsWith(RCTestcase.ZEPHYR_ID_TAG_PREFIX)
+                        && x.length() > RCTestcase.ZEPHYR_ID_TAG_PREFIX.length())
+                .map(x -> x.substring(RCTestcase.ZEPHYR_ID_TAG_PREFIX.length(),
                         x.length())).collect(Collectors.toList());
         for (ExecutedZephyrTestcase rcTestCase : rcTestCases) {
             if (actualIds.contains(rcTestCase.getId())) {
@@ -393,11 +396,14 @@ public class ZetaFormatter implements Formatter, Reporter {
     }
 
     private void syncTestrailTestResult(Scenario scenario) {
+        Optional<String> testrailProjectName;
         Optional<String> testrailPlanName;
         Optional<String> testrailRunName;
         Optional<String> testrailConfigName;
         Optional<String> jenkinsJobUrl = Optional.empty();
         try {
+            testrailProjectName = CommonUtils
+                    .getTestrailProjectNameFromConfig(getClass());
             testrailPlanName = CommonUtils
                     .getTestrailPlanNameFromConfig(getClass());
             testrailRunName = CommonUtils
@@ -414,7 +420,8 @@ public class ZetaFormatter implements Formatter, Reporter {
         } catch (Exception e1) {
             e1.printStackTrace();
         }
-        if (testrailPlanName.isPresent() && testrailPlanName.get().length() > 0
+        if (testrailProjectName.isPresent() && testrailProjectName.get().length() > 0
+                && testrailPlanName.isPresent() && testrailPlanName.get().length() > 0
                 && testrailRunName.isPresent() && testrailRunName.get().length() > 0
                 && testrailConfigName.isPresent() && testrailConfigName.get().length() > 0) {
             final Set<String> normalizedTags = normalizeTags(scenario
@@ -424,7 +431,8 @@ public class ZetaFormatter implements Formatter, Reporter {
             // return;
             // }
             try {
-                syncCurrentTestResultWithTestrail(normalizedTags, testrailPlanName.get(),
+                syncCurrentTestResultWithTestrail(normalizedTags,
+                        testrailProjectName.get(), testrailPlanName.get(),
                         testrailRunName.get(), testrailConfigName.get(), jenkinsJobUrl);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -432,74 +440,60 @@ public class ZetaFormatter implements Formatter, Reporter {
         }
     }
 
-    private void syncCurrentTestResultWithTestrail(Set<String> normalizedTags,
+    private static Optional<Long> testrailRunId = Optional.empty();
+
+    private void syncCurrentTestResultWithTestrail(Set<String> normalizedTags, String projectName,
                                                    String planName, String runName, String configName,
                                                    Optional<String> jenkinsJobUrl) throws Exception {
-        if (!cycle.isPresent()) {
-            storage = Optional.of(new ZephyrDB(
-                    CommonUtils.getZephyrServerFromConfig(getClass())));
-            cycle = Optional.of(((ZephyrDB) storage.get()).getTestCycle(cycleName));
+        if (!testrailRunId.isPresent()) {
+            final long projectId = TestrailRESTWrapper.getProjectId(projectName);
+            final long planId = TestrailRESTWrapper.getTestPlanId(projectId, planName);
+            testrailRunId = Optional.of(TestrailRESTWrapper.getTestRunId(planId, runName, configName));
         }
-        final ZephyrExecutionStatus actualTestResult = TestcaseResultTransformer
-                .analyzeSteps(steps);
-        final ZephyrTestPhase phase = cycle.get().getPhaseByName(phaseName);
-        final List<ExecutedZephyrTestcase> rcTestCases = phase.getTestcases();
-        boolean isAnyTestChanged = false;
-        boolean isAnyTestFound = false;
+        final TestrailExecutionStatus actualTestResult =
+                new TestcaseResultToTestrailTransformer(steps).transform();
         final List<String> actualIds = normalizedTags
                 .stream()
-                .filter(x -> x.startsWith(RCTestcase.ID_TAG_PREFIX)
-                        && x.length() > RCTestcase.ID_TAG_PREFIX.length())
-                .map(x -> x.substring(RCTestcase.ID_TAG_PREFIX.length(),
+                .filter(x -> x.startsWith(RCTestcase.TESTRAIL_ID_TAG_PREFIX)
+                        && x.length() > RCTestcase.TESTRAIL_ID_TAG_PREFIX.length())
+                .map(x -> x.substring(RCTestcase.TESTRAIL_ID_TAG_PREFIX.length(),
                         x.length())).collect(Collectors.toList());
-        for (ExecutedZephyrTestcase rcTestCase : rcTestCases) {
-            if (actualIds.contains(rcTestCase.getId())) {
-                if (rcTestCase.getExecutionStatus() != actualTestResult) {
-                    log.info(String
-                            .format(" --> Changing execution result of RC test case #%s from '%s' to '%s' "
-                                            + "(Cycle: '%s', Phase: '%s', Name: '%s')\n\n",
-                                    rcTestCase.getId(), rcTestCase
-                                            .getExecutionStatus().toString(),
-                                    actualTestResult.toString(), cycle.get()
-                                            .getName(), phase.getName(),
-                                    rcTestCase.getName()));
-                    rcTestCase.setExecutionStatus(actualTestResult);
-                    if (jenkinsJobUrl.isPresent() && jenkinsJobUrl.get().length() > 0) {
-                        rcTestCase.setExecutionComment(jenkinsJobUrl.get());
+        for (String tcId: actualIds) {
+            TestrailExecutionStatus previousTestResult = TestrailExecutionStatus.Untested;
+            try {
+                previousTestResult =
+                        TestrailRESTWrapper.getCurrectTestResult(testrailRunId.get(), Long.parseLong(tcId));
+            } catch (TestrailRequestException e) {
+                if (e.getReturnCode() == 400) {
+                    // No such test case error
+                    final String warningMessage = String
+                            .format("It seems like there is no test case(s) # %s in Testrail project '%s', plan '%s', run '%s (%s)'. "
+                                            + "This could slow down the whole RC run. "
+                                            + "Please double check .feature files whether the %s tag is properly set!",
+                                    actualIds, projectName, planName, runName, configName,
+                                    RCTestcase.RC_TAG);
+                    log.warn(" --> " + warningMessage + "\n\n");
+                    final Optional<String> rcNotificationsRecepients = CommonUtils
+                            .getRCNotificationsRecepients(getClass());
+                    if (rcNotificationsRecepients.isPresent()) {
+                        final String notificationHeader = String
+                                .format("ACHTUNG! An extra RC test case has been executed in project '%s', test plan '%s', run '%s (%s)'",
+                                        projectName, planName, runName, configName);
+                        NotificationSender.getInstance().send(
+                                rcNotificationsRecepients.get(),
+                                notificationHeader, warningMessage);
                     }
-                    isAnyTestChanged = true;
-                }
-                isAnyTestFound = true;
-            }
-        }
-        if (isAnyTestChanged) {
-            ((ZephyrDB) storage.get()).syncPhaseResults(phase);
-        } else {
-            if (isAnyTestFound) {
-                log.info(String
-                        .format(" --> Execution result for RC test case(s) # %s has been already set to '%s' and is still the same "
-                                        + "(Cycle: '%s', Phase: '%s')\n\n", actualIds,
-                                actualTestResult.toString(), cycle.get().getName(),
-                                phase.getName()));
-            } else {
-                final String warningMessage = String
-                        .format("It seems like there is no test case(s) # %s in Zephyr cycle '%s', phase '%s'. "
-                                        + "This could slow down the whole RC run. "
-                                        + "Please double check .feature files whether the %s tag is properly set!",
-                                actualIds, cycle.get().getName(), phase.getName(),
-                                RCTestcase.RC_TAG);
-                log.warn(" --> " + warningMessage + "\n\n");
-                final Optional<String> rcNotificationsRecepients = CommonUtils
-                        .getRCNotificationsRecepients(getClass());
-                if (rcNotificationsRecepients.isPresent()) {
-                    final String notificationHeader = String
-                            .format("ACHTUNG! An extra RC test case has been executed in RC test cycle '%s', phase '%s'",
-                                    cycle.get().getName(), phase.getName());
-                    NotificationSender.getInstance().send(
-                            rcNotificationsRecepients.get(),
-                            notificationHeader, warningMessage);
+                } else {
+                    throw e;
                 }
             }
+            log.info(String
+                    .format(" --> Changing execution result of RC test case #%s from '%s' to '%s' "
+                                    + "(Project Name: '%s', Plan Name: '%s', Run Name: '%s (%s)')\n\n",
+                            tcId, previousTestResult.toString(), actualTestResult.toString(),
+                            projectName, planName, runName, configName));
+            TestrailRESTWrapper.updateTestResult(testrailRunId.get(), Long.parseLong(tcId),
+                    actualTestResult, jenkinsJobUrl);
         }
     }
 

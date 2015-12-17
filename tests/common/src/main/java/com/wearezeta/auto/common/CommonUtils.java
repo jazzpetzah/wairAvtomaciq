@@ -532,11 +532,16 @@ public class CommonUtils {
 	}
 
     public static String getTestrailUsernameFromConfig(Class<?> c) throws Exception {
-        return getValueFromCommonConfig(c, "testrailUser");
+        return getValueFromConfig(c, "testrailUser");
     }
 
     public static String getTestrailTokenFromConfig(Class<?> c) throws Exception {
-        return getValueFromCommonConfig(c, "testrailToken");
+        return getValueFromConfig(c, "testrailToken");
+    }
+
+    public static Optional<String> getTestrailProjectNameFromConfig(Class<?> c)
+            throws Exception {
+        return getOptionalValueFromCommonConfig(c, "testrailProjectName");
     }
 
     public static Optional<String> getTestrailPlanNameFromConfig(Class<?> c)
@@ -565,5 +570,6 @@ public class CommonUtils {
 			throws Exception {
 		return getValueFromConfig(cls, "platformVersion");
 	}
+
 
 }
