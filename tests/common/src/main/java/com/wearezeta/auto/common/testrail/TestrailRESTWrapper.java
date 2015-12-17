@@ -95,8 +95,7 @@ public class TestrailRESTWrapper {
         if (response.length() == 0) {
             return TestrailExecutionStatus.Untested;
         } else {
-            return TestrailExecutionStatus.getById(
-                    response.getJSONObject(response.length() - 1).getInt("status_id"));
+            return TestrailExecutionStatus.getById(response.getJSONObject(0).getInt("status_id"));
         }
     }
 

@@ -100,8 +100,7 @@ def _get_keyword_class(keyword):
         module_path = os.path.join(current_module_path, module_name)
         if os.path.isfile(module_path):
             with open(module_path, 'r') as f:
-                if f.read().find('class {0}({1})'.format(keyword,
-                                                         CliHandlerBase.__name__)) >= 0:
+                if f.read().find('class {0}({1}'.format(keyword, CliHandlerBase.__name__)) >= 0:
                     mod_name, _ = os.path.splitext(os.path.split(module_path)[-1])
                     module_obj = imp.load_source(mod_name, module_path)
                     _CLASS_CACHE[keyword] = getattr(module_obj, keyword)
