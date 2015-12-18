@@ -43,7 +43,7 @@ class GherkinUtilities(object):
                     for idx, line in enumerate(content.splitlines()):
                         if idx in occurrences:
                             # keep spacing
-                            leading_spaces_count = len(line) - len(line.lstrip())
+                            leading_spaces_count = len(line) - len(line.lstrip(' '))
                             result.append((leading_spaces_count * ' ') + ' '.join(line.split() + tags_to_add))
                         else:
                             result.append(line)
