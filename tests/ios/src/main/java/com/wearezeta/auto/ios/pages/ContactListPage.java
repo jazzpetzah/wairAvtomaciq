@@ -837,4 +837,9 @@ public class ContactListPage extends IOSPage {
 				By.name(IOSLocators.nameSendAnInviteButton));
 	}
 
+	public boolean waitUntilSelfButtonIsDisplayed() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.name(IOSLocators.ContactListPage.nameSelfButton));
+	}
+
 }

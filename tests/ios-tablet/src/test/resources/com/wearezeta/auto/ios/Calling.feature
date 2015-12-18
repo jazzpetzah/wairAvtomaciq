@@ -39,7 +39,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @calling_basic @id2630
+  @calling_basic @id2630 
   Scenario Outline: Verify calling from missed call indicator in conversation [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -109,12 +109,13 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @calling_basic @id2713
+  @calling_basic @id2713 
   Scenario Outline: Verify accepting incoming call [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
@@ -132,6 +133,7 @@ Feature: Calling
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
@@ -486,7 +488,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | firefox     | autocall     | 120     |
 
-  @calling_basic @id2361
+  @calling_basic @id2361 
   Scenario Outline: Verify mute button is absent when you turn from portrait to landscape [PORTRAIT to LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -515,6 +517,7 @@ Feature: Calling
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
@@ -536,6 +539,7 @@ Feature: Calling
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
