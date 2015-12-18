@@ -3,6 +3,9 @@
 import requests
 
 
+TESTRAIL_TAG_MAGIC = 'C'
+
+
 class TestrailUtilities(object):
     @staticmethod
     def _query_testrail(args, action):
@@ -48,25 +51,31 @@ class TestrailUtilities(object):
         return run_id
 
     @classmethod
-    def _get_run_cases(cls, args):
+    def _get_run_cases(cls, args, results_filter):
         run_id = cls._get_test_run_id(args)
-        if args.filter_by_result is None:
+        if results_filter is None:
             case_ids = map(lambda x: x['case_id'],
                            cls._query_testrail(args, 'get_tests/{}'.format(run_id)))
-            return ','.join(map(str, case_ids))
+            return case_ids
         else:
             results_info = cls._query_testrail(args,
                                                'get_results_for_run/{}&status_id={}'.format(run_id,
-                                                                                            args.filter_by_result))
+                                                                                            results_filter))
             result = []
             for result_info in results_info:
                 test_id = result_info['test_id']
                 case_id = cls._query_testrail(args, 'get_test/{}'.format(test_id))['case_id']
                 result.append(case_id)
-            return ','.join(map(str, result))
+            return result
 
     @classmethod
     def _filter_cases_by(cls, cases_info, filter_by):
+        """
+        :param cases_info: list of test cases properties received from get_cases API call
+        :param filter_by: this is a string, which looks like
+         testrail_param_1=testrail_param_1_value,testrail_param_2=testrail_param_2_value,...
+        :return: the list of matching case ids
+        """
         filters = map(lambda x: x.strip(), filter_by.split(','))
         filters_dict = dict(map(lambda x: (x.split('=')[0].strip(),
                                            x.split('=')[1].strip()), filters))
@@ -82,7 +91,7 @@ class TestrailUtilities(object):
         return result
 
     @classmethod
-    def _filter_cases(cls, args):
+    def _filter_cases(cls, args, filter_by):
         projects = filter(lambda x: x['name'] == args.project_name,
                           cls._query_testrail(args, 'get_projects'))
         if not projects:
@@ -93,7 +102,7 @@ class TestrailUtilities(object):
             raise RuntimeError('There is no "{}" suite in Testrail'.format(args.suite_name))
         cases_info = cls._query_testrail(args, 'get_cases/{}&suite_id={}'.
                                          format(projects[0]['id'], suites[0]['id']))
-        if args.filter_by is None:
-            return ','.join(map(lambda x: str(x['id']), cases_info))
+        if filter_by is None:
+            return map(lambda x: x['id'], cases_info)
         else:
-            return ','.join(map(str, cls._filter_cases_by(cases_info, args.filter_by)))
+            return cls._filter_cases_by(cases_info, filter_by)
