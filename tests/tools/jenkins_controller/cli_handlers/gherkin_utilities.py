@@ -42,7 +42,9 @@ class GherkinUtilities(object):
                     result = []
                     for idx, line in enumerate(content.splitlines()):
                         if idx in occurrences:
-                            result.append(' '.join(line.split() + tags_to_add))
+                            # keep spacing
+                            leading_spaces_count = len(line) - len(line.lstrip())
+                            result.append((leading_spaces_count * ' ') + ' '.join(line.split() + tags_to_add))
                         else:
                             result.append(line)
                     with codecs.open(os.path.join(root, fname), 'w', 'utf-8') as f:
