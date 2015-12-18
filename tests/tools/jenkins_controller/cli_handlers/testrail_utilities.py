@@ -18,7 +18,7 @@ class TestrailUtilities(object):
         return response.json()
 
     @staticmethod
-    def _find_run_id(plan_info, run_name, config_name):
+    def _find_run_id(plan_info, run_name, config_name=None):
         if 'entries' in plan_info:
             for entry in plan_info['entries']:
                 if 'runs' in entry:
@@ -51,7 +51,7 @@ class TestrailUtilities(object):
         return run_id
 
     @classmethod
-    def _get_run_cases(cls, args, results_filter):
+    def _get_run_cases(cls, args, results_filter=None):
         run_id = cls._get_test_run_id(args)
         if results_filter is None:
             case_ids = map(lambda x: x['case_id'],
@@ -91,7 +91,7 @@ class TestrailUtilities(object):
         return result
 
     @classmethod
-    def _filter_cases(cls, args, filter_by):
+    def _filter_cases(cls, args, filter_by=None):
         projects = filter(lambda x: x['name'] == args.project_name,
                           cls._query_testrail(args, 'get_projects'))
         if not projects:
