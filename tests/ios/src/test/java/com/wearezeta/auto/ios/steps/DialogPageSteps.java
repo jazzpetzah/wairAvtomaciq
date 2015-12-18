@@ -222,6 +222,7 @@ public class DialogPageSteps {
 
 	@When("^I send the message$")
 	public void WhenISendTheMessage() throws Throwable {
+		message = automationMessage;
 		getDialogPage().inputStringFromKeyboard("\n");
 	}
 

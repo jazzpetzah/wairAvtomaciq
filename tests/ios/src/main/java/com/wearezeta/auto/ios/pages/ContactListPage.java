@@ -312,7 +312,7 @@ public class ContactListPage extends IOSPage {
 
 	public String getFirstConversationName() throws Exception {
 		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.xpath(IOSLocators.xpathFirstChatInChatListTextField), 5)) {
+				By.xpath(IOSLocators.xpathFirstChatInChatListTextField))) {
 			String text = firstChatInChatListTextField.getText();
 			return text;
 		} else
