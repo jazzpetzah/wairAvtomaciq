@@ -9,6 +9,7 @@ public abstract class RCTestcase {
 	public final static String ZEPHYR_ID_TAG_PREFIX = MAGIC_TAG_PREFIX + "id";
 	public final static String TESTRAIL_ID_TAG_PREFIX = MAGIC_TAG_PREFIX + "C";
 	public final static String RC_TAG = MAGIC_TAG_PREFIX + "rc";
+    public final static String RERUN_TAG = MAGIC_TAG_PREFIX + "rerun";
 
 	// id can contain more that one value
 	// multiple values are separated by SPACE character
