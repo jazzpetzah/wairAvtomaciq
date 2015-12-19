@@ -14,16 +14,14 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.Semaphore;
 import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
 import com.wearezeta.auto.common.rc.TestcaseResultToTestrailTransformer;
 import com.wearezeta.auto.common.rc.TestcaseResultToZephyrTransformer;
-import com.wearezeta.auto.common.testrail.TestrailRESTWrapper;
 import com.wearezeta.auto.common.testrail.TestrailExecutionStatus;
-import com.wearezeta.auto.common.testrail.TestrailRequestException;
+import com.wearezeta.auto.common.testrail.TestrailSyncUtilities;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -278,7 +276,7 @@ public class ZetaFormatter implements Formatter, Reporter {
     }
 
     private synchronized void syncCurrentTestResultWithZephyr(Set<String> normalizedTags,
-                                                              String cycleName, String phaseName, Optional<String> jenkinsJobUrl)
+                                                              String cycleName, String phaseName)
             throws Exception {
         if (!cycle.isPresent()) {
             storage = Optional.of(new ZephyrDB(
@@ -363,7 +361,6 @@ public class ZetaFormatter implements Formatter, Reporter {
     private void syncZephyrTestResult(Scenario scenario) {
         Optional<String> zephyrCycleName;
         Optional<String> zephyrPhaseName;
-        Optional<String> jenkinsJobUrl = Optional.empty();
         try {
             zephyrCycleName = CommonUtils
                     .getZephyrCycleNameFromConfig(getClass());
@@ -372,12 +369,6 @@ public class ZetaFormatter implements Formatter, Reporter {
         } catch (Exception e) {
             e.printStackTrace();
             return;
-        }
-        try {
-            jenkinsJobUrl = CommonUtils
-                    .getOptionalValueFromCommonConfig(getClass(), "jenkinsJobUrl");
-        } catch (Exception e1) {
-            e1.printStackTrace();
         }
         if (zephyrCycleName.isPresent() && zephyrCycleName.get().length() > 0
                 && zephyrPhaseName.isPresent() && zephyrPhaseName.get().length() > 0) {
@@ -389,121 +380,20 @@ public class ZetaFormatter implements Formatter, Reporter {
             // }
             try {
                 syncCurrentTestResultWithZephyr(normalizedTags, zephyrCycleName.get(),
-                        zephyrPhaseName.get(), jenkinsJobUrl);
+                        zephyrPhaseName.get());
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void syncTestrailTestResult(Set<String> normalizedTags,
-                                        TestrailExecutionStatus actualTestResult) {
-        Optional<String> testrailProjectName;
-        Optional<String> testrailPlanName;
-        Optional<String> testrailRunName;
-        Optional<String> testrailConfigName;
-        Optional<String> jenkinsJobUrl = Optional.empty();
+    private static Optional<String> jenkinsJobUrl = Optional.empty();
+
+    static {
         try {
-            testrailProjectName = CommonUtils
-                    .getTestrailProjectNameFromConfig(getClass());
-            testrailPlanName = CommonUtils
-                    .getTestrailPlanNameFromConfig(getClass());
-            testrailRunName = CommonUtils
-                    .getTestrailRunNameFromConfig(getClass());
-            testrailConfigName = CommonUtils.
-                    getTestrailRunConfigNameFromConfig(getClass());
+            jenkinsJobUrl = CommonUtils.getOptionalValueFromCommonConfig(ZetaFormatter.class, "jenkinsJobUrl");
         } catch (Exception e) {
             e.printStackTrace();
-            return;
-        }
-        try {
-            jenkinsJobUrl = CommonUtils
-                    .getOptionalValueFromCommonConfig(getClass(), "jenkinsJobUrl");
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
-        if (testrailProjectName.isPresent() && testrailProjectName.get().length() > 0
-                && testrailPlanName.isPresent() && testrailPlanName.get().length() > 0
-                && testrailRunName.isPresent() && testrailRunName.get().length() > 0) {
-            // Commented out due to the request from WebApp team
-            // if (!normalizedTags.contains(RCTestcase.RC_TAG)) {
-            // return;
-            // }
-            try {
-                syncCurrentTestResultWithTestrail(actualTestResult, normalizedTags,
-                        testrailProjectName.get(), testrailPlanName.get(),
-                        testrailRunName.get(), testrailConfigName, jenkinsJobUrl);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private static Optional<Long> testrailRunId = Optional.empty();
-    private static final Semaphore testrailRunIdGuard = new Semaphore(1);
-
-    private void syncCurrentTestResultWithTestrail(TestrailExecutionStatus actualTestResult,
-                                                   Set<String> normalizedTags, String projectName,
-                                                   String planName, String runName, Optional<String> configName,
-                                                   Optional<String> jenkinsJobUrl) throws Exception {
-        try {
-            testrailRunIdGuard.acquire();
-            if (!testrailRunId.isPresent()) {
-                final long projectId = TestrailRESTWrapper.getProjectId(projectName);
-                final long planId = TestrailRESTWrapper.getTestPlanId(projectId, planName);
-                testrailRunId = Optional.of(TestrailRESTWrapper.getTestRunId(planId, runName, configName));
-            }
-        } finally {
-            testrailRunIdGuard.release();
-        }
-        final List<String> actualIds = normalizedTags
-                .stream()
-                .filter(x -> x.startsWith(RCTestcase.TESTRAIL_ID_TAG_PREFIX)
-                        && x.length() > RCTestcase.TESTRAIL_ID_TAG_PREFIX.length())
-                .map(x -> x.substring(RCTestcase.TESTRAIL_ID_TAG_PREFIX.length(),
-                        x.length())).collect(Collectors.toList());
-        if (actualIds.isEmpty()) {
-            log.warn(String.format("Cannot change execution status for a test case (tags: '%s'). "+
-                            "No Testrail ids can be parsed.", normalizedTags));
-        }
-        for (String tcId : actualIds) {
-            TestrailExecutionStatus previousTestResult = TestrailExecutionStatus.Untested;
-            try {
-                previousTestResult =
-                        TestrailRESTWrapper.getCurrentTestResult(testrailRunId.get(), Long.parseLong(tcId));
-            } catch (TestrailRequestException e) {
-                if (e.getReturnCode() == 400) {
-                    // No such test case error
-                    final String warningMessage = String
-                            .format("It seems like there is no test case(s) # %s in "
-                                        + "Testrail project '%s', plan '%s', run '%s (%s)'. "
-                                        + "This could slow down the whole RC run. "
-                                        + "Please double check .feature files whether the %s tag is properly set!",
-                                    actualIds, projectName, planName, runName, configName.orElse("<No Config>"),
-                                    RCTestcase.RC_TAG);
-                    log.warn(" --> " + warningMessage + "\n\n");
-                    final Optional<String> rcNotificationsRecepients = CommonUtils
-                            .getRCNotificationsRecepients(getClass());
-                    if (rcNotificationsRecepients.isPresent()) {
-                        final String notificationHeader = String
-                                .format("ACHTUNG! An extra RC test case has been executed in "
-                                            + "project '%s', test plan '%s', run '%s (%s)'",
-                                        projectName, planName, runName, configName.orElse("<No Config>"));
-                        NotificationSender.getInstance().send(
-                                rcNotificationsRecepients.get(),
-                                notificationHeader, warningMessage);
-                    }
-                } else {
-                    throw e;
-                }
-            }
-            log.info(String
-                    .format(" --> Changing execution result of RC test case #%s from '%s' to '%s' "
-                                    + "(Project Name: '%s', Plan Name: '%s', Run Name: '%s (%s)')\n\n",
-                            tcId, previousTestResult.toString(), actualTestResult.toString(),
-                            projectName, planName, runName, configName.orElse("<No Config>")));
-            TestrailRESTWrapper.updateTestResult(testrailRunId.get(), Long.parseLong(tcId),
-                    actualTestResult, jenkinsJobUrl);
         }
     }
 
@@ -516,93 +406,12 @@ public class ZetaFormatter implements Formatter, Reporter {
             final TestrailExecutionStatus actualTestResult =
                     new TestcaseResultToTestrailTransformer(steps).transform();
             final Set<String> normalizedTags = normalizeTags(scenario.getTags());
-            Runnable syncResultTask = () -> syncTestrailTestResult(normalizedTags, actualTestResult);
-            new Thread(syncResultTask).start();
-            Runnable syncIsAutomatedTask = () -> syncTestrailIsAutomatedState(scenario.getName(), normalizedTags);
-            new Thread(syncIsAutomatedTask).start();
-            Runnable syncIsMutedStateTask = () -> syncTestrailIsMutedState(scenario.getName(), normalizedTags,
-                    actualTestResult);
-            new Thread(syncIsMutedStateTask).start();
+            TestrailSyncUtilities.syncExecutedScenarioWithTestrail(scenario,
+                    actualTestResult, normalizedTags);
         } finally {
             recentTestResult = Result.UNDEFINED.toString();
             steps.clear();
             stepsIterator = Optional.empty();
-        }
-    }
-
-    private void syncTestrailIsAutomatedState(String scenarioName, Set<String> normalizedTags) {
-        try {
-            if (!CommonUtils.getSyncIsAutomated(ZetaFormatter.class)) {
-                return;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
-        final List<String> actualIds = normalizedTags
-                .stream()
-                .filter(x -> x.startsWith(RCTestcase.TESTRAIL_ID_TAG_PREFIX)
-                        && x.length() > RCTestcase.TESTRAIL_ID_TAG_PREFIX.length())
-                .map(x -> x.substring(RCTestcase.TESTRAIL_ID_TAG_PREFIX.length(),
-                        x.length())).collect(Collectors.toList());
-        if (actualIds.isEmpty()) {
-            log.warn(String.format("Cannot change IsAutomated state for test case '%s' (tags: '%s'). "+
-                    "No Testrail ids can be parsed.",
-                    scenarioName, normalizedTags));
-        }
-        for (String caseId : actualIds) {
-            log.info(String.format("Setting IsAutomated property of test case #%s to TRUE",
-                    caseId));
-            try {
-                TestrailRESTWrapper.updateCaseIsAutomated(Long.parseLong(caseId), true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void syncTestrailIsMutedState(String scenarioName, Set<String> normalizedTags,
-                                          TestrailExecutionStatus actualTestResult) {
-        try {
-            if (!CommonUtils.getSyncIsMuted(ZetaFormatter.class)) {
-                return;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
-        final List<String> actualIds = normalizedTags
-                .stream()
-                .filter(x -> x.startsWith(RCTestcase.TESTRAIL_ID_TAG_PREFIX)
-                        && x.length() > RCTestcase.TESTRAIL_ID_TAG_PREFIX.length())
-                .map(x -> x.substring(RCTestcase.TESTRAIL_ID_TAG_PREFIX.length(),
-                        x.length())).collect(Collectors.toList());
-        if (actualIds.isEmpty()) {
-            log.warn(String.format("Cannot change IsMuted state for test case '%s' (tags: '%s'). "+
-                            "No Testrail ids can be parsed.",
-                    scenarioName, normalizedTags));
-        }
-        for (String caseId : actualIds) {
-            switch (actualTestResult) {
-                case Passed:
-                    try {
-                        log.info(String.format("Setting IsMuted property of test case #%s to FALSE",
-                                caseId));
-                        TestrailRESTWrapper.updateCaseIsMuted(Long.parseLong(caseId), false);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case Failed:
-                    try {
-                        log.info(String.format("Setting IsMuted property of test case #%s to TRUE",
-                                caseId));
-                        TestrailRESTWrapper.updateCaseIsMuted(Long.parseLong(caseId), true);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-            }
         }
     }
 
