@@ -21,7 +21,6 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import java.util.concurrent.TimeUnit;
 
 public class CommonUtils {
 	public static final int MAX_PARALLEL_USER_CREATION_TASKS = 25;
@@ -54,22 +53,13 @@ public class CommonUtils {
 		return process.waitFor();
 	}
 
-	public static boolean executeOsCommandWithTimeout(String[] cmd,
-			long timeoutSeconds) throws Exception {
-		Process process = Runtime.getRuntime().exec(cmd);
-		log.debug("Process started for cmdline " + Arrays.toString(cmd));
-		outputErrorStreamToLog(process.getErrorStream());
-		return process.waitFor(timeoutSeconds, TimeUnit.SECONDS);
-	}
-
 	public static String executeOsXCommandWithOutput(String[] cmd)
 			throws Exception {
 		Process process = Runtime.getRuntime().exec(cmd);
 		log.debug("Process started for cmdline " + Arrays.toString(cmd));
 		String output;
 		try (InputStream stream = process.getInputStream()) {
-			BufferedReader br = new BufferedReader(new InputStreamReader(
-					process.getInputStream()));
+			BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 			StringBuilder sb = new StringBuilder("\n");
 			String s;
 			while ((s = br.readLine()) != null) {
@@ -88,7 +78,7 @@ public class CommonUtils {
 		StringBuilder sb = new StringBuilder("\n");
 		String s;
 		while ((s = br.readLine()) != null) {
-			sb.append("\t" + s + "\n");
+			sb.append("\t").append(s).append("\n");
 		}
 		String output = sb.toString();
 		if (!output.trim().isEmpty()) {

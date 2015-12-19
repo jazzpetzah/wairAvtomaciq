@@ -31,8 +31,8 @@
         <testrailPlanName></testrailPlanName>
         <testrailRunName></testrailRunName>
         <testrailRunConfigName></testrailRunConfigName>
-        <syncIsAutomated>false</syncIsAutomated>
-        <syncIsMuted>false</syncIsMuted>
+        <syncIsAutomated>False</syncIsAutomated>
+        <syncIsMuted>False</syncIsMuted>
 	</properties>
 
 	<dependencies>
