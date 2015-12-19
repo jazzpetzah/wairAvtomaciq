@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.Semaphore;
 import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
@@ -439,17 +440,21 @@ public class ZetaFormatter implements Formatter, Reporter {
     }
 
     private static Optional<Long> testrailRunId = Optional.empty();
+    private static final Semaphore testrailRunIdGuard = new Semaphore(1);
 
     private void syncCurrentTestResultWithTestrail(TestrailExecutionStatus actualTestResult,
                                                    Set<String> normalizedTags, String projectName,
                                                    String planName, String runName, Optional<String> configName,
                                                    Optional<String> jenkinsJobUrl) throws Exception {
-        synchronized (testrailRunId) {
+        try {
+            testrailRunIdGuard.acquire();
             if (!testrailRunId.isPresent()) {
                 final long projectId = TestrailRESTWrapper.getProjectId(projectName);
                 final long planId = TestrailRESTWrapper.getTestPlanId(projectId, planName);
                 testrailRunId = Optional.of(TestrailRESTWrapper.getTestRunId(planId, runName, configName));
             }
+        } finally {
+            testrailRunIdGuard.release();
         }
         final List<String> actualIds = normalizedTags
                 .stream()
