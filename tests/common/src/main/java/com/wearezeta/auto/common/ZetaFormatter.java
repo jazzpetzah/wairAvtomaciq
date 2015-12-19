@@ -97,7 +97,7 @@ public class ZetaFormatter implements Formatter, Reporter {
         final StringBuilder result = new StringBuilder();
         result.append("[ ");
         for (Tag tag : tags) {
-            result.append(tag.getName() + " ");
+            result.append(tag.getName()).append(" ");
         }
         result.append("]");
         return result.toString();
@@ -395,7 +395,8 @@ public class ZetaFormatter implements Formatter, Reporter {
         }
     }
 
-    private void syncTestrailTestResult(Scenario scenario) {
+    private void syncTestrailTestResult(Set<String> normalizedTags,
+                                        TestrailExecutionStatus actualTestResult) {
         Optional<String> testrailProjectName;
         Optional<String> testrailPlanName;
         Optional<String> testrailRunName;
@@ -423,14 +424,12 @@ public class ZetaFormatter implements Formatter, Reporter {
         if (testrailProjectName.isPresent() && testrailProjectName.get().length() > 0
                 && testrailPlanName.isPresent() && testrailPlanName.get().length() > 0
                 && testrailRunName.isPresent() && testrailRunName.get().length() > 0) {
-            final Set<String> normalizedTags = normalizeTags(scenario
-                    .getTags());
             // Commented out due to the request from WebApp team
             // if (!normalizedTags.contains(RCTestcase.RC_TAG)) {
             // return;
             // }
             try {
-                syncCurrentTestResultWithTestrail(normalizedTags,
+                syncCurrentTestResultWithTestrail(actualTestResult, normalizedTags,
                         testrailProjectName.get(), testrailPlanName.get(),
                         testrailRunName.get(), testrailConfigName, jenkinsJobUrl);
             } catch (Exception e) {
@@ -441,16 +440,17 @@ public class ZetaFormatter implements Formatter, Reporter {
 
     private static Optional<Long> testrailRunId = Optional.empty();
 
-    private void syncCurrentTestResultWithTestrail(Set<String> normalizedTags, String projectName,
+    private void syncCurrentTestResultWithTestrail(TestrailExecutionStatus actualTestResult,
+                                                   Set<String> normalizedTags, String projectName,
                                                    String planName, String runName, Optional<String> configName,
                                                    Optional<String> jenkinsJobUrl) throws Exception {
-        if (!testrailRunId.isPresent()) {
-            final long projectId = TestrailRESTWrapper.getProjectId(projectName);
-            final long planId = TestrailRESTWrapper.getTestPlanId(projectId, planName);
-            testrailRunId = Optional.of(TestrailRESTWrapper.getTestRunId(planId, runName, configName));
+        synchronized (testrailRunId) {
+            if (!testrailRunId.isPresent()) {
+                final long projectId = TestrailRESTWrapper.getProjectId(projectName);
+                final long planId = TestrailRESTWrapper.getTestPlanId(projectId, planName);
+                testrailRunId = Optional.of(TestrailRESTWrapper.getTestRunId(planId, runName, configName));
+            }
         }
-        final TestrailExecutionStatus actualTestResult =
-                new TestcaseResultToTestrailTransformer(steps).transform();
         final List<String> actualIds = normalizedTags
                 .stream()
                 .filter(x -> x.startsWith(RCTestcase.TESTRAIL_ID_TAG_PREFIX)
@@ -470,9 +470,10 @@ public class ZetaFormatter implements Formatter, Reporter {
                 if (e.getReturnCode() == 400) {
                     // No such test case error
                     final String warningMessage = String
-                            .format("It seems like there is no test case(s) # %s in Testrail project '%s', plan '%s', run '%s (%s)'. "
-                                            + "This could slow down the whole RC run. "
-                                            + "Please double check .feature files whether the %s tag is properly set!",
+                            .format("It seems like there is no test case(s) # %s in "
+                                        + "Testrail project '%s', plan '%s', run '%s (%s)'. "
+                                        + "This could slow down the whole RC run. "
+                                        + "Please double check .feature files whether the %s tag is properly set!",
                                     actualIds, projectName, planName, runName, configName.orElse("<No Config>"),
                                     RCTestcase.RC_TAG);
                     log.warn(" --> " + warningMessage + "\n\n");
@@ -480,7 +481,8 @@ public class ZetaFormatter implements Formatter, Reporter {
                             .getRCNotificationsRecepients(getClass());
                     if (rcNotificationsRecepients.isPresent()) {
                         final String notificationHeader = String
-                                .format("ACHTUNG! An extra RC test case has been executed in project '%s', test plan '%s', run '%s (%s)'",
+                                .format("ACHTUNG! An extra RC test case has been executed in "
+                                            + "project '%s', test plan '%s', run '%s (%s)'",
                                         projectName, planName, runName, configName.orElse("<No Config>"));
                         NotificationSender.getInstance().send(
                                 rcNotificationsRecepients.get(),
@@ -506,9 +508,16 @@ public class ZetaFormatter implements Formatter, Reporter {
             // TODO: Remove Zephyr after transition period is completed
             syncZephyrTestResult(scenario);
 
-            syncTestrailTestResult(scenario);
-            syncTestrailIsAutomatedState(scenario);
-            syncTestrailIsMutedState(scenario);
+            final TestrailExecutionStatus actualTestResult =
+                    new TestcaseResultToTestrailTransformer(steps).transform();
+            final Set<String> normalizedTags = normalizeTags(scenario.getTags());
+            Runnable syncResultTask = () -> syncTestrailTestResult(normalizedTags, actualTestResult);
+            new Thread(syncResultTask).start();
+            Runnable syncIsAutomatedTask = () -> syncTestrailIsAutomatedState(scenario.getName(), normalizedTags);
+            new Thread(syncIsAutomatedTask).start();
+            Runnable syncIsMutedStateTask = () -> syncTestrailIsMutedState(scenario.getName(), normalizedTags,
+                    actualTestResult);
+            new Thread(syncIsMutedStateTask).start();
         } finally {
             recentTestResult = Result.UNDEFINED.toString();
             steps.clear();
@@ -516,7 +525,7 @@ public class ZetaFormatter implements Formatter, Reporter {
         }
     }
 
-    private void syncTestrailIsAutomatedState(Scenario scenario) {
+    private void syncTestrailIsAutomatedState(String scenarioName, Set<String> normalizedTags) {
         try {
             if (!CommonUtils.getSyncIsAutomated(ZetaFormatter.class)) {
                 return;
@@ -525,8 +534,7 @@ public class ZetaFormatter implements Formatter, Reporter {
             e.printStackTrace();
             return;
         }
-        final List<String> actualIds = normalizeTags(scenario
-                .getTags())
+        final List<String> actualIds = normalizedTags
                 .stream()
                 .filter(x -> x.startsWith(RCTestcase.TESTRAIL_ID_TAG_PREFIX)
                         && x.length() > RCTestcase.TESTRAIL_ID_TAG_PREFIX.length())
@@ -535,7 +543,7 @@ public class ZetaFormatter implements Formatter, Reporter {
         if (actualIds.isEmpty()) {
             log.warn(String.format("Cannot change IsAutomated state for test case '%s' (tags: '%s'). "+
                     "No Testrail ids can be parsed.",
-                    scenario.getName(), scenario.getTags()));
+                    scenarioName, normalizedTags));
         }
         for (String caseId : actualIds) {
             log.info(String.format("Setting IsAutomated property of test case #%s to TRUE",
@@ -548,7 +556,8 @@ public class ZetaFormatter implements Formatter, Reporter {
         }
     }
 
-    private void syncTestrailIsMutedState(Scenario scenario) {
+    private void syncTestrailIsMutedState(String scenarioName, Set<String> normalizedTags,
+                                          TestrailExecutionStatus actualTestResult) {
         try {
             if (!CommonUtils.getSyncIsMuted(ZetaFormatter.class)) {
                 return;
@@ -557,19 +566,16 @@ public class ZetaFormatter implements Formatter, Reporter {
             e.printStackTrace();
             return;
         }
-        final List<String> actualIds = normalizeTags(scenario
-                .getTags())
+        final List<String> actualIds = normalizedTags
                 .stream()
                 .filter(x -> x.startsWith(RCTestcase.TESTRAIL_ID_TAG_PREFIX)
                         && x.length() > RCTestcase.TESTRAIL_ID_TAG_PREFIX.length())
                 .map(x -> x.substring(RCTestcase.TESTRAIL_ID_TAG_PREFIX.length(),
                         x.length())).collect(Collectors.toList());
-        final TestrailExecutionStatus actualTestResult =
-                new TestcaseResultToTestrailTransformer(steps).transform();
         if (actualIds.isEmpty()) {
             log.warn(String.format("Cannot change IsMuted state for test case '%s' (tags: '%s'). "+
                             "No Testrail ids can be parsed.",
-                    scenario.getName(), scenario.getTags()));
+                    scenarioName, normalizedTags));
         }
         for (String caseId : actualIds) {
             switch (actualTestResult) {
