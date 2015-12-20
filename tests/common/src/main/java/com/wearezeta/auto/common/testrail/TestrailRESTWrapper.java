@@ -35,12 +35,17 @@ public class TestrailRESTWrapper {
 
     private static boolean isConfigurationEqual(String expectedConfiguration, String actualConfiguration) {
         // Configuration name is comma-separated string
-        final Set<String> normalizedExpectedConfig = new HashSet<>(
+        final Set<String> normalizedExpectedConfig =
                 Arrays.asList(expectedConfiguration.split(",")).stream().map(
-                        String::trim).collect(Collectors.toList()));
-        final Set<String> normalizedActualConfig = new HashSet<>(
+                        String::trim).collect(Collectors.toSet());
+        System.out.print("normalizedExpectedConfig: " + normalizedExpectedConfig);
+        final Set<String> normalizedActualConfig =
                 Arrays.asList(actualConfiguration.split(",")).stream().map(
-                        String::trim).collect(Collectors.toList()));
+                        String::trim).collect(Collectors.toSet());
+        System.out.print("normalizedActualConfig: " + normalizedActualConfig);
+
+        System.out.print("normalizedActualConfig == normalizedExpectedConfig: " +
+                normalizedActualConfig.equals(normalizedActualConfig));
         return normalizedExpectedConfig.equals(normalizedActualConfig);
     }
 
@@ -58,7 +63,8 @@ public class TestrailRESTWrapper {
                 for (int runIdx = 0; runIdx < runs.length(); runIdx++) {
                     if (runs.getJSONObject(runIdx).getString("name").equals(testRunName)) {
                         if (configurationName.isPresent()) {
-                            if (isConfigurationEqual(configurationName.get(),
+                            if (runs.getJSONObject(runIdx).has("config") && isConfigurationEqual(
+                                    configurationName.get(),
                                     runs.getJSONObject(runIdx).getString("config"))) {
                                 return runs.getJSONObject(runIdx).getLong("id");
                             } else {
@@ -70,8 +76,8 @@ public class TestrailRESTWrapper {
                 }
             }
         }
-        throw new IllegalArgumentException(String.format("Test run '%s' cannot be found",
-                testRunName));
+        throw new IllegalArgumentException(String.format("Test run '%s (%s)' cannot be found",
+                testRunName, configurationName.orElse("<No Config>")));
     }
 
     /**
