@@ -17,8 +17,8 @@ class CliHandlerBase(object):
 
     def _build_options(self, parser):
         parser.add_argument('request_type',
-                             help='Jenkins request type. Available types: {0}'.\
-                format(pprint.pformat(get_handler_names())))
+                            help='Jenkins request type. Available types: {0}'.
+                            format(pprint.pformat(get_handler_names())))
 
     def _wait_while_job_in_queue(self, job, timeout):
         timeout = int(timeout)
@@ -105,7 +105,7 @@ def _get_keyword_class(keyword):
                     module_obj = imp.load_source(mod_name, module_path)
                     _CLASS_CACHE[keyword] = getattr(module_obj, keyword)
                     return _CLASS_CACHE[keyword]
-    raise CliHandlerNotFoundError('Cannot find appropriate CLI handler for {0} command'.\
+    raise CliHandlerNotFoundError('Cannot find appropriate CLI handler for {0} command'.
                                   format(keyword))
 
 

@@ -25,7 +25,7 @@ class GherkinUtilities(object):
             for scenario in as_dict['scenarios']:
                 if 'tags' in scenario and scenario['tags'] and 'content' in scenario['tags']:
                     if set(expected_tags).issubset((set(scenario['tags']['content']))):
-                         result.append(scenario['tags']['index'])
+                        result.append(scenario['tags']['index'])
         return result
 
     @classmethod
