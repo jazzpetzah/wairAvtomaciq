@@ -48,11 +48,11 @@ class TestrailREST {
     }
 
     private static void verifyRequestResult(int currentResponseCode,
-                                            int[] acceptableResponseCodes) throws BackendRequestException {
+                                            int[] acceptableResponseCodes) throws TestrailRequestException {
         if (!ArrayUtils.contains(acceptableResponseCodes, currentResponseCode)) {
-            throw new BackendRequestException(
+            throw new TestrailRequestException(
                     String.format(
-                            "Backend request failed. Request return code is: %d. Expected codes are: %s",
+                            "Testrail request failed. Request return code is: %d. Expected codes are: %s",
                             currentResponseCode,
                             Arrays.toString(acceptableResponseCodes)),
                     currentResponseCode);
