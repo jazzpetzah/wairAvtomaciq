@@ -23,13 +23,15 @@ class GherkinUtilities(object):
         as_dict = cls._gherkin_to_dict(path)
         if 'scenarios' in as_dict:
             for scenario in as_dict['scenarios']:
-                if 'tags' in scenario and 'content' in scenario['tags']:
+                if 'tags' in scenario and scenario['tags'] and 'content' in scenario['tags']:
                     if set(expected_tags).issubset((set(scenario['tags']['content']))):
                          result.append(scenario['tags']['index'])
         return result
 
     @classmethod
     def _update_feature_files(cls, root_path, case_ids, tags_to_add):
+        if isinstance(tags_to_add, basestring):
+            tags_to_add = [tags_to_add]
         changed_features = []
         for root, dirs, files in os.walk(root_path):
             for fname in files:
@@ -44,7 +46,8 @@ class GherkinUtilities(object):
                         if idx in occurrences:
                             # keep spacing
                             leading_spaces_count = len(line) - len(line.lstrip(' '))
-                            result.append((leading_spaces_count * ' ') + ' '.join(line.split() + tags_to_add))
+                            result.append((leading_spaces_count * ' ') +
+                                          ' '.join(set(line.split() + tags_to_add)))
                         else:
                             result.append(line)
                     with codecs.open(os.path.join(root, fname), 'w', 'utf-8') as f:
