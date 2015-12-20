@@ -28,7 +28,7 @@ class SyncMutedCasesWithTestrail(CliHandlerBase, TestrailUtilities, GherkinUtili
         parser = self._get_parser()
         args = parser.parse_args()
         case_ids = self._filter_cases(args, 'custom_is_muted=True')
-        return ','.join(self._update_feature_files(args.feature_root,
+        return ','.join(self._update_feature_files(args.features_root,
                                                    map(lambda x: '{}{}'.format(TESTRAIL_TAG_MAGIC, x),
                                                        case_ids), MUTE_TAG))
 
