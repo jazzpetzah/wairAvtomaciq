@@ -103,7 +103,7 @@ public class ZetaFormatter implements Formatter, Reporter {
     public void scenarioOutline(ScenarioOutline arg0) {
     }
 
-    // This will fill all the step names before any 'result' method is called
+    // This will prefill all the step names before any 'result' method is called
     @Override
     public void step(Step arg0) {
         steps.put(arg0, null);
@@ -244,7 +244,7 @@ public class ZetaFormatter implements Formatter, Reporter {
 
     private static Optional<ZetaDriver> getDriver()
             throws Exception {
-        if (lazyDriver.isDone() && !lazyDriver.isCancelled()) {
+        if (lazyDriver != null && lazyDriver.isDone() && !lazyDriver.isCancelled()) {
             return Optional.of((ZetaDriver) lazyDriver.get());
         } else {
             return Optional.empty();
