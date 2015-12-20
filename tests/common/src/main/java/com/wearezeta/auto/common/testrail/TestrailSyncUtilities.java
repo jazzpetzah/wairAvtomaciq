@@ -23,14 +23,14 @@ public class TestrailSyncUtilities {
     private static Optional<String> testrailProjectName = Optional.empty();
     private static Optional<String> testrailPlanName = Optional.empty();
     private static Optional<String> testrailRunName = Optional.empty();
-    private static Optional<String> testrailConfigName = Optional.empty();
+    private static Optional<String> testrailRunConfigName = Optional.empty();
 
     static {
         try {
             testrailProjectName = CommonUtils.getTestrailProjectNameFromConfig(TestrailSyncUtilities.class);
             testrailPlanName = CommonUtils.getTestrailPlanNameFromConfig(TestrailSyncUtilities.class);
             testrailRunName = CommonUtils.getTestrailRunNameFromConfig(TestrailSyncUtilities.class);
-            testrailConfigName = CommonUtils.getTestrailRunConfigNameFromConfig(TestrailSyncUtilities.class);
+            testrailRunConfigName = CommonUtils.getTestrailRunConfigNameFromConfig(TestrailSyncUtilities.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -179,7 +179,7 @@ public class TestrailSyncUtilities {
                                     + "project '%s', test plan '%s', run '%s (%s)'",
                             testrailProjectName.get(),
                             testrailPlanName.get(), testrailRunName.get(),
-                            testrailConfigName.orElse("<No Config>"));
+                            testrailRunConfigName.orElse("<No Config>"));
             sendEmailNotification(notificationHeader, warningMessage);
             return;
         }
@@ -198,7 +198,7 @@ public class TestrailSyncUtilities {
                                             + "Please double check .feature files whether the %s tag is properly set!",
                                     actualIds, testrailProjectName.get(),
                                     testrailPlanName.get(), testrailRunName.get(),
-                                    testrailConfigName.orElse("<No Config>"),
+                                    testrailRunConfigName.orElse("<No Config>"),
                                     RCTestcase.RC_TAG);
                     log.warn(" --> " + warningMessage + "\n\n");
                     if (rcNotificationsRecepients.isPresent()) {
@@ -207,7 +207,7 @@ public class TestrailSyncUtilities {
                                                 + "project '%s', test plan '%s', run '%s (%s)'",
                                         testrailProjectName.get(),
                                         testrailPlanName.get(), testrailRunName.get(),
-                                        testrailConfigName.orElse("<No Config>"));
+                                        testrailRunConfigName.orElse("<No Config>"));
                         NotificationSender.getInstance().send(
                                 rcNotificationsRecepients.get(),
                                 notificationHeader, warningMessage);
@@ -222,7 +222,7 @@ public class TestrailSyncUtilities {
                             actualTestResult.toString(), tcId, previousTestResult.toString(),
                             testrailProjectName.get(),
                             testrailPlanName.get(), testrailRunName.get(),
-                            testrailConfigName.orElse("<No Config>")));
+                            testrailRunConfigName.orElse("<No Config>")));
             TestrailRESTWrapper.updateTestResult(testrailRunId.get(), Long.parseLong(tcId),
                     actualTestResult, jenkinsJobUrl);
         }
@@ -239,7 +239,7 @@ public class TestrailSyncUtilities {
                 final long projectId = TestrailRESTWrapper.getProjectId(testrailProjectName.get());
                 final long planId = TestrailRESTWrapper.getTestPlanId(projectId, testrailPlanName.get());
                 testrailRunId = Optional.of(TestrailRESTWrapper.getTestRunId(planId, testrailRunName.get(),
-                        testrailConfigName));
+                        testrailRunConfigName));
             } catch (Exception e) {
                 e.printStackTrace();
             }
