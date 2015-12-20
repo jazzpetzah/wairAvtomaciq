@@ -1,6 +1,6 @@
 Feature: People View
 
-  @id87 @regression
+  @C402 @id87 @regression
   Scenario Outline: I can access user details page from group chat and see user name, email and photo
     Given There are 3 users where <Name> is me
     Given <Contact1> has an avatar picture from file <Picture>
@@ -21,7 +21,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName   | Picture                      | Contact1NewName   |
       | user1Name | user2Name | user3Name | GroupInfoCheck2 | aqaPictureContact600_800.jpg | aqaPictureContact |
 
-  @id321 @regression @rc @rc42
+  @C685 @id321 @regression @rc @rc42
   Scenario Outline: Leave group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -40,7 +40,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3Name | LeaveGroupChat |
 
-  @id322 @regression @rc @rc42
+  @C686 @id322 @regression @rc @rc42
   Scenario Outline: (CM-691) Remove from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -64,7 +64,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName       | Message     |
       | user1Name | user2Name | user3Name | RemoveFromGroupChat | You removed |
 
-  @id594 @regression @rc
+  @C697 @id594 @regression @rc
   Scenario Outline: (CM-691) Verify correct group info page information
     Given There are 3 users where <Name> is me
     Given <Contact1> has an avatar picture from file <Picture>
@@ -93,7 +93,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName  | Picture                      | Color1       | Color2       | Contact1NewName   | Contact2NewName       |
       | user1Name | user3Name | user2Name | 3                 | GroupInfoCheck | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow | aqaPictureContact | aqaAvatar TestContact |
 
-  @id1507 @regression @rc @rc42
+  @C715 @id1507 @regression @rc @rc42
   Scenario Outline: Verify editing the conversation name
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -113,7 +113,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | OldGroupChatName | NewConversationName |
       | user1Name | user2Name | user3Name | oldGroupChat     | newGroupName        |
 
-  @id2236 @regression
+  @C395 @id2236 @regression
   Scenario Outline: Check interaction with options menu
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -155,7 +155,7 @@ Feature: People View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id1509 @regression @rc
+  @C716 @id1509 @regression @rc
   Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>,<Contact2>
@@ -177,7 +177,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | GroupChat     |
 
-  @id2291 @regression
+  @C396 @id2291 @regression
   Scenario Outline: (CM-691) Check interaction with participants view
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -217,7 +217,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName  | ParticipantNumber |
       | user1Name | user2Name | user3Name | GroupInfoCheck | 3                 |
 
-  @id2292 @regression
+  @C397 @id2292 @regression
   Scenario Outline: Start 1to1 conversation from participants view
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>,<Contact2>

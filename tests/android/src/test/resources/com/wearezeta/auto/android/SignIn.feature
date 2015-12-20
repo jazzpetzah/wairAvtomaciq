@@ -1,6 +1,6 @@
 Feature: Sign In
 
-  @id326 @regression
+  @C382 @id326 @regression
   Scenario Outline: Sign in to Wire by mail
     Given There is 1 user where <Name> is me
     Given I see welcome screen
@@ -14,7 +14,7 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @id3245 @regression
+  @C433 @id3245 @regression
   Scenario Outline: Sign in to Wire by phone
     Given There are 1 users where <Name> is me
     When I sign in using my phone number
@@ -24,7 +24,7 @@ Feature: Sign In
       | Name      |
       | user1Name |
 
-  @id209 @regression
+  @C337 @id209 @regression
   Scenario Outline: (AN-3115) I can change sign in user
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -47,7 +47,7 @@ Feature: Sign In
       | Name      | Name2     |
       | user1Name | user2Name |
 
-  @id1413 @regression @rc
+  @C707 @id1413 @regression @rc
   Scenario Outline: User should be notified if the details he entered on the sign in screen are incorrect
     Given I see welcome screen
     When I switch to email sign in screen
@@ -60,7 +60,7 @@ Feature: Sign In
       | Login | Password  | ErrMessage                          |
       | aaa   | aaabbbccc | Please enter a valid email address. |
 
-  @id52 @regression @rc
+  @C668 @id52 @regression @rc
   Scenario Outline: (CM-623) Verify Sign In progress behaviour while there are problems with internet connectivity
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself

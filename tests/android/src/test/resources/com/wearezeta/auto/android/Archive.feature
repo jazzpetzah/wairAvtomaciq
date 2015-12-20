@@ -1,6 +1,6 @@
 Feature: Archive
 
-  @id1511 @regression
+  @C413 @id1511 @regression
   Scenario Outline: Verify you can archive and unarchive
     # is required because of AA-239 that never be fixed
     Given There are 3 users where <Name> is me
@@ -23,7 +23,7 @@ Feature: Archive
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id1512 @regression @rc @rc42
+  @C718 @id1512 @regression @rc @rc42
   Scenario Outline: Verify you can archive and unarchive group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
