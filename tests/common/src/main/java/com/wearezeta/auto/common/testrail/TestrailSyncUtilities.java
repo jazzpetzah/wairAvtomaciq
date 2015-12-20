@@ -8,6 +8,7 @@ import com.wearezeta.auto.common.rc.RCTestcase;
 import gherkin.formatter.model.Scenario;
 import org.apache.log4j.Logger;
 
+import javax.mail.MessagingException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -66,10 +67,32 @@ public class TestrailSyncUtilities {
         }
     }
 
+    private static Optional<String> rcNotificationsRecepients = Optional.empty();
+
+    static {
+        try {
+            rcNotificationsRecepients = CommonUtils.getRCNotificationsRecepients(TestrailSyncUtilities.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private static Optional<Long> testrailRunId = Optional.empty();
 
+    private static void sendEmailNotification(String subject, String msg) {
+        if (rcNotificationsRecepients.isPresent()) {
+            try {
+                NotificationSender.getInstance().send(
+                        rcNotificationsRecepients.get(),
+                        subject, msg);
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private static void syncTestrailIsMutedState(String scenarioName, Set<String> normalizedTags,
-                                          TestrailExecutionStatus actualTestResult) {
+                                                 TestrailExecutionStatus actualTestResult) {
         final List<String> actualIds = normalizedTags
                 .stream()
                 .filter(x -> x.startsWith(RCTestcase.TESTRAIL_ID_TAG_PREFIX)
@@ -77,9 +100,14 @@ public class TestrailSyncUtilities {
                 .map(x -> x.substring(RCTestcase.TESTRAIL_ID_TAG_PREFIX.length(),
                         x.length())).collect(Collectors.toList());
         if (actualIds.isEmpty()) {
-            log.warn(String.format("Cannot change IsMuted state for the test case '%s' (tags: '%s'). " +
+            final String warningMessage = String.format(
+                    "Cannot change IsMuted state for the test case '%s' (tags: '%s'). " +
                             "No Testrail ids can be parsed.",
-                    scenarioName, normalizedTags));
+                    scenarioName, normalizedTags);
+            log.warn(warningMessage);
+            sendEmailNotification(String.format("No Testrail ids can be parsed from scenario '%s', (tags '%s')",
+                    scenarioName, normalizedTags), warningMessage);
+            return;
         }
         for (String caseId : actualIds) {
             switch (actualTestResult) {
@@ -113,9 +141,15 @@ public class TestrailSyncUtilities {
                 .map(x -> x.substring(RCTestcase.TESTRAIL_ID_TAG_PREFIX.length(),
                         x.length())).collect(Collectors.toList());
         if (actualIds.isEmpty()) {
-            log.warn(String.format("Cannot change IsAutomated state for the test case '%s' (tags: '%s'). " +
+            final String warningMessage = String.format(
+                            "Cannot change IsAutomated state for the test case '%s' (tags: '%s'). " +
                             "No Testrail ids can be parsed.",
-                    scenarioName, normalizedTags));
+                    scenarioName, normalizedTags);
+            log.warn(warningMessage);
+            sendEmailNotification(String
+                    .format("No Testrail ids can be parsed from scenario '%s', (tags '%s')",
+                            scenarioName, normalizedTags), warningMessage);
+            return;
         }
         for (String caseId : actualIds) {
             log.info(String.format("Setting IsAutomated property of test case #%s to TRUE",
@@ -129,30 +163,24 @@ public class TestrailSyncUtilities {
     }
 
     private static void syncCurrentTestResultWithTestrail(TestrailExecutionStatus actualTestResult,
-                                                   Set<String> normalizedTags) throws Exception {
+                                                          Set<String> normalizedTags) throws Exception {
         final List<String> actualIds = normalizedTags
                 .stream()
                 .filter(x -> x.startsWith(RCTestcase.TESTRAIL_ID_TAG_PREFIX)
                         && x.length() > RCTestcase.TESTRAIL_ID_TAG_PREFIX.length())
                 .map(x -> x.substring(RCTestcase.TESTRAIL_ID_TAG_PREFIX.length(),
                         x.length())).collect(Collectors.toList());
-        final Optional<String> rcNotificationsRecepients =
-                CommonUtils.getRCNotificationsRecepients(TestrailSyncUtilities.class);
         if (actualIds.isEmpty()) {
             final String warningMessage = String.format("Cannot change execution status for a test case (tags: '%s'). " +
                     "No Testrail ids can be parsed.", normalizedTags);
             log.warn(warningMessage);
-            if (rcNotificationsRecepients.isPresent()) {
-                final String notificationHeader = String
-                        .format("ACHTUNG! An unknown RC test case has been executed in "
-                                        + "project '%s', test plan '%s', run '%s (%s)'",
-                                testrailProjectName.get(),
-                                testrailPlanName.get(), testrailRunName.get(),
-                                testrailConfigName.orElse("<No Config>"));
-                NotificationSender.getInstance().send(
-                        rcNotificationsRecepients.get(),
-                        notificationHeader, warningMessage);
-            }
+            final String notificationHeader = String
+                    .format("ACHTUNG! An unknown RC test case has been executed in "
+                                    + "project '%s', test plan '%s', run '%s (%s)'",
+                            testrailProjectName.get(),
+                            testrailPlanName.get(), testrailRunName.get(),
+                            testrailConfigName.orElse("<No Config>"));
+            sendEmailNotification(notificationHeader, warningMessage);
             return;
         }
         for (String tcId : actualIds) {
@@ -189,9 +217,9 @@ public class TestrailSyncUtilities {
                 }
             }
             log.info(String
-                    .format(" --> Changing execution result of RC test case #%s from '%s' to '%s' "
-                                    + "(Project Name: '%s', Plan Name: '%s', Run Name: '%s (%s)')\n\n",
-                            tcId, previousTestResult.toString(), actualTestResult.toString(),
+                    .format(" --> Adding execution result '%s' to RC test case #%s (previous result was '%s'). "
+                                    + "Project Name: '%s', Plan Name: '%s', Run Name: '%s (%s)')\n\n",
+                            actualTestResult.toString(), tcId, previousTestResult.toString(),
                             testrailProjectName.get(),
                             testrailPlanName.get(), testrailRunName.get(),
                             testrailConfigName.orElse("<No Config>")));
