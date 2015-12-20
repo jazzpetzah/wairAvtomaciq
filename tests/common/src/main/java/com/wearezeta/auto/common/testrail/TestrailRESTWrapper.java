@@ -38,14 +38,9 @@ public class TestrailRESTWrapper {
         final Set<String> normalizedExpectedConfig =
                 Arrays.asList(expectedConfiguration.split(",")).stream().map(
                         String::trim).collect(Collectors.toSet());
-        System.out.print("normalizedExpectedConfig: " + normalizedExpectedConfig);
         final Set<String> normalizedActualConfig =
                 Arrays.asList(actualConfiguration.split(",")).stream().map(
                         String::trim).collect(Collectors.toSet());
-        System.out.print("normalizedActualConfig: " + normalizedActualConfig);
-
-        System.out.print("normalizedActualConfig == normalizedExpectedConfig: " +
-                normalizedActualConfig.equals(normalizedActualConfig));
         return normalizedExpectedConfig.equals(normalizedActualConfig);
     }
 

@@ -245,25 +245,21 @@ public class TestrailSyncUtilities {
             }
         }
 
-        final Runnable testrailSyncTask = () -> {
-            if (isTestrailRCRun && testrailRunId.isPresent()) {
-                // Commented out due to the request from WebApp team
-                // if (!normalizedTags.contains(RCTestcase.RC_TAG)) {
-                try {
-                    syncCurrentTestResultWithTestrail(actualTestResult, normalizedTags);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        if (isTestrailRCRun && testrailRunId.isPresent()) {
+            // Commented out due to the request from WebApp team
+            // if (!normalizedTags.contains(RCTestcase.RC_TAG)) {
+            try {
+                syncCurrentTestResultWithTestrail(actualTestResult, normalizedTags);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            if (isTestrailMutedSyncEnabled) {
-                syncTestrailIsMutedState(scenario.getName(), normalizedTags,
-                        actualTestResult);
-            }
-            if (isTestrailAutomatedSyncEnabled) {
-                syncTestrailIsAutomatedState(scenario.getName(), normalizedTags);
-            }
-        };
-        new Thread(testrailSyncTask).start();
+        }
+        if (isTestrailMutedSyncEnabled) {
+            syncTestrailIsMutedState(scenario.getName(), normalizedTags,
+                    actualTestResult);
+        }
+        if (isTestrailAutomatedSyncEnabled) {
+            syncTestrailIsAutomatedState(scenario.getName(), normalizedTags);
+        }
     }
-
 }
