@@ -120,4 +120,11 @@ class TestrailREST {
                 new int[] { HttpStatus.SC_OK });
         return new JSONObject(output);
     }
+
+    public static JSONObject getCase(long caseId) throws Exception {
+        Invocation.Builder webResource = buildRequest(String.format("get_case/%s",
+                caseId));
+        final String output = restHandlers.httpGet(webResource, new int[] { HttpStatus.SC_OK });
+        return new JSONObject(output);
+    }
 }
