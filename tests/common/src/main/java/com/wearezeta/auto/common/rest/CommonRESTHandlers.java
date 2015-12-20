@@ -30,7 +30,7 @@ public final class CommonRESTHandlers {
 			.getLog(CommonRESTHandlers.class.getSimpleName());
 	private static final String EMPTY_LOG_RECORD = "<EMPTY>";
 
-	private static final int MAX_SINGLE_ENTITY_LENGTH_IN_LOG = 400;
+	private static final int MAX_SINGLE_ENTITY_LENGTH_IN_LOG = 4000;
 
 	private static String formatLogRecord(Object entity) {
 		String result = EMPTY_LOG_RECORD;
