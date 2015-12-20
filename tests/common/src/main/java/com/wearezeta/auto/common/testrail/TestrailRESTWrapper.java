@@ -92,16 +92,12 @@ public class TestrailRESTWrapper {
 
     public static TestrailExecutionStatus getCurrentTestResult(long testRunId, long caseId)
             throws Exception {
-        try {
-            TestrailREST.getCase(caseId);
-        } catch (TestrailRequestException e) {
-            if (e.getReturnCode() == 400) {
-                // No results have been recorded for this case so far
-                return TestrailExecutionStatus.Untested;
-            }
-        }
         final JSONArray response = TestrailREST.getTestCaseResults(testRunId, caseId);
-        return TestrailExecutionStatus.getById(response.getJSONObject(0).getInt("status_id"));
+        if (response.length() == 0) {
+            return TestrailExecutionStatus.Untested;
+        } else {
+            return TestrailExecutionStatus.getById(response.getJSONObject(0).getInt("status_id"));
+        }
     }
 
     public static void updateCaseIsAutomated(long caseId, boolean newValue) throws Exception {
