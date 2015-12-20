@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @id2281 @regression @rc @rc44
+  @C747 @id2281 @regression @rc @rc44
   Scenario Outline: Send connection request from search by name in landscape
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -23,7 +23,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2280 @regression @rc @rc44
+  @C746 @id2280 @regression @rc @rc44
   Scenario Outline: Send connection request from search by name in portrait
     Given There are 2 users where <Name> is me
     Given I rotate UI to portrait
@@ -46,7 +46,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2245 @regression @rc @rc44
+  @C730 @id2245 @regression @rc @rc44
   Scenario Outline: Accept connection request in landscape mode
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
@@ -64,7 +64,7 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @id2259 @regression @rc @rc44
+  @C740 @id2259 @regression @rc @rc44
   Scenario Outline: (AN-2735) Accept connection request in portrait mode
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
@@ -84,7 +84,7 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @id2852 @regression
+  @C491 @id2852 @regression
   Scenario Outline: (AN-2389) I want to send connection request by selecting unconnected user from a group conversation (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -112,7 +112,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | GroupChatName        |
       | user1Name | user2Name | user3Name | NonConnectedUserChat |
 
-  @id3119 @regression
+  @C519 @id3119 @regression
   Scenario Outline: (AN-2389) I want to send connection request by selecting unconnected user from a group conversation (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -140,7 +140,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | GroupChatName        |
       | user1Name | user2Name | user3Name | NonConnectedUserChat |
 
-  @id3089 @regression @rc
+  @C789 @id3089 @regression @rc
   Scenario Outline: Send connection request to user from search results by email (portrait)
     Given There are 2 users where <Name> is me
     Given I rotate UI to portrait
@@ -163,7 +163,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @id3102 @regression @rc
+  @C790 @id3102 @regression @rc
   Scenario Outline: Send connection request to user from search results by email (landscape)
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -186,7 +186,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @id2915 @regression @rc @rc44
+  @C786 @id2915 @regression @rc @rc44
   Scenario Outline: Connect to someone from PYMK by clicking + (portrait)
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Contact2>
@@ -211,7 +211,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id3117 @regression @rc @rc44
+  @C793 @id3117 @regression @rc @rc44
   Scenario Outline: Connect to someone from PYMK by clicking + (landscape)
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Contact2>
@@ -236,7 +236,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id2892 @regression
+  @C504 @id2892 @regression
   Scenario Outline: Connect to someone from PYMK by tap and typing connect message (portrait)
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Contact2>
@@ -262,7 +262,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id3114 @regression
+  @C517 @id3114 @regression
   Scenario Outline: Connect to someone from PYMK by tap and typing connect message (landscape)
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Contact2>
@@ -288,7 +288,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id2914 @regression @rc
+  @C785 @id2914 @regression @rc
   Scenario Outline: Dismiss PYMK item (portrait)
     Given There are 4 users where <Name> is me
     Given <Contact1> is connected to <Contact2>,<Contact3>
@@ -318,7 +318,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @id3116 @regression @rc
+  @C792 @id3116 @regression @rc
   Scenario Outline: Dismiss PYMK item (landscape)
     Given There are 4 users where <Name> is me
     Given <Contact1> is connected to <Contact2>,<Contact3>
@@ -348,7 +348,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @id2845 @regression
+  @C489 @id2845 @regression
   Scenario Outline: (AN-2735) Ignore a connect request and reconnect later from search (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
@@ -382,7 +382,7 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @id3127 @regression
+  @C522 @id3127 @regression
   Scenario Outline: (AN-2735) Ignore a connect request and reconnect later from search (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
@@ -412,7 +412,7 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @id2844 @regression
+  @C488 @id2844 @regression
   Scenario Outline: (AN-2954) Inbox count increasing/decreasing correctly (portrait)
     Given There are 4 users where <Name> is me
     Given <Contact2> sent connection request to me
@@ -438,7 +438,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | WaitingMess2     | WaitingMess1     |
       | user1Name | user2Name | user3Name | user4Name | 2 people waiting | 1 person waiting |
 
-  @id3118 @regression
+  @C518 @id3118 @regression
   Scenario Outline: Inbox count increasing/decreasing correctly (landscape)
     Given There are 4 users where <Name> is me
     Given <Contact2> sent connection request to me
@@ -464,7 +464,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | WaitingMess2     | WaitingMess1     |
       | user1Name | user2Name | user3Name | user4Name | 2 people waiting | 1 person waiting |
 
-  @id2869 @regression
+  @C499 @id2869 @regression
   Scenario Outline: (AN-2896) I can see a new inbox for connection when receive new connection request (portrait)
     Given There are 2 users where <Name> is me
     Given I rotate UI to portrait
@@ -483,7 +483,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail | WaitingMsg       |
       | user1Name | user2Name | user2Email   | 1 person waiting |
 
-  @id3135 @regression
+  @C526 @id3135 @regression
   Scenario Outline: I can see a new inbox for connection when receive new connection request (landscape)
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -500,7 +500,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail | WaitingMsg       |
       | user1Name | user2Name | user2Email   | 1 person waiting |
 
-  @id2854 @regression
+  @C492 @id2854 @regression
   Scenario Outline: (AN-2897) I want to see that the other person has accepted the connect request in the conversation view (portrait)
     Given There are 2 users where <Name> is me
     Given Myself sent connection request to <Contact>
@@ -519,7 +519,7 @@ Feature: Connect
       | Name      | Contact   | SysMessage             |
       | user1Name | user2Name | Connected to user2Name |
 
-  @id3128 @regression
+  @C523 @id3128 @regression
   Scenario Outline: (AN-2897) I want to see that the other person has accepted the connect request in the conversation view (landscape)
     Given There are 2 users where <Name> is me
     Given Myself sent connection request to <Contact>
@@ -538,7 +538,7 @@ Feature: Connect
       | Name      | Contact   | SysMessage             |
       | user1Name | user2Name | Connected to user2Name |
 
-  @id2855 @regression
+  @C493 @id2855 @regression
   Scenario Outline: I would not know other person has ignored my connection request
     Given There are 2 users where <Name> is me
     Given Myself sent connection request to <Contact>
@@ -557,7 +557,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2846 @regression @rc
+  @C761 @id2846 @regression @rc
   Scenario Outline: I can receive new connection request when app in background
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
