@@ -35,14 +35,18 @@ public class RegistrationSteps {
      * Presses the camera button once to bring up the camera, and again to take
      * a picture
      *
+     * @param shouldPressTwice this will tap camera button twice if exists
+     *
      * @throws Exception
-     * @step. ^I press Camera button twice$
+     * @step. ^I press Camera button( twice|\s*)$
      */
-    @When("^I press Camera button twice$")
-    public void WhenIPressCameraButton() throws Exception {
+    @When("^I press Camera button( twice|\\s*)$")
+    public void WhenIPressCameraButton(String shouldPressTwice) throws Exception {
         getProfilePicturePage().clickCameraButton();
-        Thread.sleep(2000);
-        getProfilePicturePage().clickCameraButton();
+        if (shouldPressTwice != null && shouldPressTwice.contains("twice")) {
+            Thread.sleep(2000);
+            getProfilePicturePage().clickCameraButton();
+        }
     }
 
     /**
@@ -131,5 +135,30 @@ public class RegistrationSteps {
     @And("^I confirm password$")
     public void IConfirmPassword() throws Exception {
         getRegistrationPage().tapContinueButton();
+    }
+
+    /**
+     * Tap the corresponding button to select own picture  during registration instead of the automatic one chosen by
+     * Unsplash
+     *
+     * @throws Exception
+     * @step. ^I select to choose my own picture$
+     */
+    @And("^I select to choose my own picture$")
+    public void ITapOwnPictureButton() throws Exception {
+        getRegistrationPage().tapOwnPictureButton();
+    }
+
+    /**
+     * Select picture picture on the corresponding confirmation alert after I click "choose my own" button
+     * during registration
+     *
+     * @param src either Camera or Gallery
+     * @throws Exception
+     * @step. ^I select (Camera|Gallery) as picture source$
+     */
+    @And("^I select (Camera|Gallery) as picture source$")
+    public void ISelectPictureSource(String src) throws Exception {
+        getRegistrationPage().selectPictureSource(src);
     }
 }

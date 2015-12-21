@@ -40,6 +40,30 @@ public class GroupChatPageSteps {
 				participantNames));
 	}
 
+
+	/**
+	 * Checks for start a conversation message after deletion of content
+	 *
+	 * @param participantNameAliases user names comma separated
+	 * @throws Exception
+	 * @step. ^I see group chat page after deletion with users (.*)$
+	 */
+	@Then("^I see group chat page after deletion with users (.*)$")
+	public void ThenISeeGroupChatPageAfterDeletion(String participantNameAliases)
+			throws Exception {
+		List<String> participantNames = new ArrayList<String>();
+		for (String nameAlias : CommonSteps
+				.splitAliases(participantNameAliases)) {
+			String name = usrMgr.findUserByNameOrNameAlias(nameAlias).getName();
+			if (name.indexOf(" ") != -1) {
+				name = name.substring(0, name.indexOf(" "));
+			}
+			participantNames.add(name);
+		}
+		Assert.assertTrue(getGroupChatPage().areContactsAddedAfterDeleteContent(
+				participantNames));
+	}
+
 	/**
 	 * Verifies that group chat is empty and has only system message
 	 * 

@@ -477,7 +477,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id3900
+  @regression @id3900 @ZIOS-5279
   Scenario Outline: Verify first conversation in the list is highlighted and opened [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -491,7 +491,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3901
+  @staging @id3901 @ZIOS-5279
   Scenario Outline: Verify first conversation in the list is highlighted and opened [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
