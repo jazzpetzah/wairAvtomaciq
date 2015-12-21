@@ -222,6 +222,7 @@ public class DialogPageSteps {
 
 	@When("^I send the message$")
 	public void WhenISendTheMessage() throws Throwable {
+		message = automationMessage;
 		getDialogPage().inputStringFromKeyboard("\n");
 	}
 
@@ -405,7 +406,7 @@ public class DialogPageSteps {
 		for (int i = 0; i < 3; i++) {
 			getDialogPage().swipeRight(1000,
 					DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, 28);
-			if (getDialogPage().waitForCursorInputNotVisible()) {
+			if (getContactListPage().waitUntilSelfButtonIsDisplayed()) {
 				break;
 			}
 		}

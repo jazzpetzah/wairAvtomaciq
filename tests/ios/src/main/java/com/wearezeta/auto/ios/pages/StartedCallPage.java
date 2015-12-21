@@ -40,7 +40,12 @@ public class StartedCallPage extends CallPage {
 
 	public boolean isCallingMessageVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(IOSLocators.StartedCallPage.xpathCallingMessage), 10);
+				By.xpath(IOSLocators.StartedCallPage.xpathCallingMessage));
+	}
+
+	public boolean waitCallingMessageDisappear() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.xpath(IOSLocators.StartedCallPage.xpathCallingMessage));
 	}
 
 	public boolean isIncomingCallMessageVisible(String contact)

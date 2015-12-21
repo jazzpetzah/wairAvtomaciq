@@ -23,8 +23,9 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.41 | 60      |
       | user1Email | user1Password | user1Name | user2Name | chrome:47.0.2526.73 | 60      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:43.0b9      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:43.0        | 60      |
       | user1Email | user1Password | user1Name | user2Name | firefox:42.0        | 60      |
 
   @id0002 @calling_matrix @calling
@@ -73,8 +74,9 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.41 | 60      |
       | user1Email | user1Password | user1Name | user2Name | chrome:47.0.2526.73 | 60      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:43.0b9      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:43.0        | 60      |
       | user1Email | user1Password | user1Name | user2Name | firefox:42.0        | 60      |
 
   @id0004 @calling_matrix @calling
@@ -124,13 +126,14 @@ Feature: Calling_Matrix
     And <Contact1>,<Contact2> verifies to have 1 flows
     And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
     # Stops all waiting instance calls
-    And <Contact1> stops all waiting instances
+         And <Contact1> stops all waiting instances
 
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | WaitBackend         | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:48.0.2564.41 | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:47.0.2526.73 | 60      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:43.0b9      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:43.0        | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:42.0        | 60      |
 
   @id0006 @calling_matrix @calling
@@ -182,12 +185,13 @@ Feature: Calling_Matrix
     And <Contact1>,<Contact2> verifies to have 1 flows
     And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
     # Stops all waiting instance calls
-    And <Contact1> stops all waiting instances
+         And <Contact1> stops all waiting instances
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend             | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:48.0.2564.41 | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:47.0.2526.73 | 60      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:43.0b9      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:43.0        | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:42.0        | 60      |
 
   @id0008 @calling_matrix @calling
@@ -216,13 +220,14 @@ Feature: Calling_Matrix
     And I wait for 10 seconds
     And <Contact2> verifies to have 1 flows
     And <Contact2> verifies that all flows have greater than 0 bytes
-    # Stops all autocall instance calls
-    And <Contact1> stops all calls to <ChatName1>
+         # Stops all autocall instance calls
+         And <Contact1> stops all calls to <ChatName1>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend       | WaitBackend         | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.10 | chrome:48.0.2564.41 | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.10 | chrome:47.0.2526.73 | 60      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.10 | firefox:43.0b9      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.10 | firefox:43.0        | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.10 | firefox:42.0        | 60      |
 
   @id0009 @calling_matrix @calling
@@ -256,8 +261,9 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend       | WaitBackend         | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.09 | chrome:48.0.2564.41 | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.09 | chrome:47.0.2526.73 | 60      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.09 | firefox:43.0b9      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.09 | firefox:43.0        | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.09 | firefox:42.0        | 60      |
 
   @id0010 @calling_matrix @calling

@@ -39,7 +39,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @calling_basic @id2630
+  @calling_basic @id2630 
   Scenario Outline: Verify calling from missed call indicator in conversation [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -109,12 +109,13 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @calling_basic @id2713
+  @calling_basic @id2713 
   Scenario Outline: Verify accepting incoming call [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
@@ -132,6 +133,7 @@ Feature: Calling
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
@@ -205,7 +207,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | webdriver   | 120     |
+      | user1Name | user2Name | firefox     | 120     |
 
   @calling_basic @id2619
   Scenario Outline: In zeta call for more than 15 mins [LANDSCAPE]
@@ -236,7 +238,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | webdriver   | 120     |
+      | user1Name | user2Name | firefox     | 120     |
 
   @calling_basic @id2631
   Scenario Outline: Screenlock device when in the call [PORTRAIT]
@@ -258,7 +260,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | webdriver   | 120     |
+      | user1Name | user2Name | firefox     | 120     |
 
   @calling_basic @id2631
   Scenario Outline: Screenlock device when in the call [LANDSCAPE]
@@ -281,7 +283,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | webdriver   | 120     |
+      | user1Name | user2Name | firefox     | 120     |
 
   @calling_advanced @id2652
   Scenario Outline: 3rd person tries to call me after I initate a call to somebody [PORTRAIT]
@@ -310,7 +312,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | user3Name | webdriver   | autocall     | 120     |
+      | user1Name | user2Name | user3Name | firefox     | autocall     | 120     |
 
   @calling_basic @id2652
   Scenario Outline: 3rd person tries to call me after I initate a call to somebody [LANDSCAPE]
@@ -339,7 +341,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | user3Name | webdriver   | autocall     | 120     |
+      | user1Name | user2Name | user3Name | firefox     | autocall     | 120     |
 
   @calling_basic @id2618
   Scenario Outline: Put app into background after initiating call [PORTRAIT]
@@ -361,7 +363,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | webdriver   | 120     |
+      | user1Name | user2Name | firefox     | 120     |
 
   @calling_basic @id2618
   Scenario Outline: Put app into background after initiating call [LANDSCAPE]
@@ -384,7 +386,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | webdriver   | 120     |
+      | user1Name | user2Name | firefox     | 120     |
 
   @calling_basic @id2627
   Scenario Outline: I want to accept a call through the incoming voice dialogue (Button) [PORTRAIT]
@@ -403,7 +405,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | webdriver   | autocall     | 120     |
+      | user1Name | user2Name | firefox     | autocall     | 120     |
 
   @calling_basic @id2627
   Scenario Outline: I want to accept a call through the incoming voice dialogue (Button) [LANDSCAPE]
@@ -423,7 +425,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | webdriver   | autocall     | 120     |
+      | user1Name | user2Name | firefox     | autocall     | 120     |
 
   @calling_basic @id2624
   Scenario Outline: I want to end the call from the ongoing voice overlay [PORTRAIT]
@@ -453,7 +455,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | webdriver   | autocall     | 120     |
+      | user1Name | user2Name | firefox     | autocall     | 120     |
 
   @calling_basic @id2624
   Scenario Outline: I want to end the call from the ongoing voice overlay [LANDSCAPE]
@@ -484,9 +486,9 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | webdriver   | autocall     | 120     |
+      | user1Name | user2Name | firefox     | autocall     | 120     |
 
-  @calling_basic @id2361
+  @calling_basic @id2361 
   Scenario Outline: Verify mute button is absent when you turn from portrait to landscape [PORTRAIT to LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -515,6 +517,7 @@ Feature: Calling
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
@@ -536,6 +539,7 @@ Feature: Calling
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
