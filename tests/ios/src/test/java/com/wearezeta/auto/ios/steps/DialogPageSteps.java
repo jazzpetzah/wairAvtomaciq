@@ -226,11 +226,6 @@ public class DialogPageSteps {
 		getDialogPage().inputStringFromKeyboard("\n");
 	}
 
-	@When("^I send the message with lower and upper cases$")
-	public void WhenISendTheMessageLowerAndUpper() throws Throwable {
-		getDialogPage().inputStringFromKeyboard("\n");
-	}
-
 	@When("^I swipe up on dialog page to open other user personal page$")
 	public void WhenISwipeUpOnDialogPage() throws Exception {
 		getDialogPage().swipeUp(1000);
