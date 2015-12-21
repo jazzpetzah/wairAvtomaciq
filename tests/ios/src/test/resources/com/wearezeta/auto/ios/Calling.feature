@@ -546,6 +546,7 @@ Feature: Calling
     And I click Remove
     And I see warning message
     And I confirm remove
+    And I click close user profile page button
     Then I see that <Contact2> is not present on group chat info page
     And I exit the group info page
     Then I see <NewNumberOfAvatars> avatars in the group call bar
