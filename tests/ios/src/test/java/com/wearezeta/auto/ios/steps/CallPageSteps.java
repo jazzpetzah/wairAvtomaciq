@@ -91,7 +91,7 @@ public class CallPageSteps {
 	 */
 	@When("^I dont see calling page$")
 	public void IDontSeeCallPage() throws Exception {
-		Assert.assertFalse("Calling bar is visible", getStartedCallPage()
+		Assert.assertTrue("Calling bar is visible", getStartedCallPage()
 				.waitCallingMessageDisappear());
 	}
 

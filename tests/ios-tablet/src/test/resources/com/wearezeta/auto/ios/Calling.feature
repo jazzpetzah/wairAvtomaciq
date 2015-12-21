@@ -39,7 +39,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @calling_basic @id2630 
+  @calling_basic @id2630
   Scenario Outline: Verify calling from missed call indicator in conversation [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -109,7 +109,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @calling_basic @id2713 
+  @calling_basic @id2713
   Scenario Outline: Verify accepting incoming call [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -207,7 +207,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | firefox     | 120     |
+      | user1Name | user2Name | firefox     | 300     |
 
   @calling_basic @id2619
   Scenario Outline: In zeta call for more than 15 mins [LANDSCAPE]
@@ -238,7 +238,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | firefox     | 120     |
+      | user1Name | user2Name | firefox     | 300     |
 
   @calling_basic @id2631
   Scenario Outline: Screenlock device when in the call [PORTRAIT]
@@ -488,7 +488,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | firefox     | autocall     | 120     |
 
-  @calling_basic @id2361 
+  @calling_basic @id2361
   Scenario Outline: Verify mute button is absent when you turn from portrait to landscape [PORTRAIT to LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

@@ -588,7 +588,7 @@ public final class IOSLocators {
 
 		public static final String xpathStartedCallMessageUser = "//UIAStaticText[@name='%s']";
 
-		public static final String xpathCallingMessage = "//UIAStaticText[contains(@name, 'CallStatusLabel')]";
+		public static final String xpathCallingMessage = "//UIAStaticText[contains(@name, 'CallStatusLabel') and @visible='true']";
 
 		public static final String nameCallingUsersAvatar = "CallingUsersImage";
 
