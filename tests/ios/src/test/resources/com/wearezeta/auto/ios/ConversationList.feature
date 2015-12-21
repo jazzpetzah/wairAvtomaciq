@@ -274,7 +274,7 @@ Feature: Conversation List
     And I search for user name <Contact1> and tap on it on People picker page
     And I click open conversation button on People picker page
     Then I see dialog page
-    And I see only 1 message
+    And I see only 0 message
 
     Examples: 
       | Name      | Contact1  | Contact2  | Message | Image       |
