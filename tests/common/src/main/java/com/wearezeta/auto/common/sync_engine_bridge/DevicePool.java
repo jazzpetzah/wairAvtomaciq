@@ -6,7 +6,7 @@ import akka.actor.Props;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
-import com.waz.provision.ActorMessage.TerminateRemotes$;
+import com.waz.provision.ActorMessage.ReleaseRemotes$;
 import com.waz.provision.CoordinatorActor;
 
 import scala.concurrent.duration.FiniteDuration;
@@ -68,7 +68,7 @@ class DevicePool {
 	}
 
 	public synchronized void shutdown() {
-		coordinatorActorRef.tell(TerminateRemotes$.MODULE$, null);
+		coordinatorActorRef.tell(ReleaseRemotes$.MODULE$, null);
 		this.devices = null;
 		this.coordinatorActorRef = null;
 		this.hostProcess = null;
