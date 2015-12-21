@@ -122,6 +122,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I fill in message using script$")
 	public void IFillInMessageUsingScript() throws Exception {
+		message = automationMessage;
 		getDialogPage().fillInMessageUsingScript(automationMessage);
 	}
 
@@ -222,7 +223,6 @@ public class DialogPageSteps {
 
 	@When("^I send the message$")
 	public void WhenISendTheMessage() throws Throwable {
-		message = automationMessage;
 		getDialogPage().inputStringFromKeyboard("\n");
 	}
 
