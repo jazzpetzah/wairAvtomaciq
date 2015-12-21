@@ -242,7 +242,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I input message with lower case and upper case
-    And I send the message
+    And I send the message with lower and upper cases
     Then I see message in the dialog
 
     Examples: 
