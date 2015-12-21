@@ -20,6 +20,13 @@ public class YouAreInvitedPage extends WebPage {
 
 	@FindBy(xpath = ExternalLocators.YouAreInvitedPage.xpathConnectButton)
 	private WebElement connectButton;
+	
+	@FindBy(css = ExternalLocators.YouAreInvitedPage.cssDownloadWireButton)
+	private WebElement downloadButton;
+	
+	@FindBy(css = ExternalLocators.YouAreInvitedPage.cssConnectWireButton)
+	private WebElement connectWireButton;
+
 
 	public YouAreInvitedPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
@@ -53,10 +60,18 @@ public class YouAreInvitedPage extends WebPage {
 		assert DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						getDriver(),
-						By.cssSelector(ExternalLocators.YouAreInvitedPage.cssDownloadWireButton)) : "Download Wire button has not beem show on You are invited page";
+						By.cssSelector(ExternalLocators.YouAreInvitedPage.cssDownloadWireButton)) : "Download Wire button has not been show on You are invited page";
 	}
 
 	public void clickConnectButton() {
 		connectButton.click();
+	}
+	
+	public String getDownloadHref() {
+		return downloadButton.getAttribute("href");
+	}
+	
+	public String getConnectHref() {
+		return connectWireButton.getAttribute("href");
 	}
 }
