@@ -75,16 +75,22 @@ public class StartedCallPage extends CallPage {
 	}
 
 	public boolean isEndCallVisible() throws Exception {
+		DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.name(IOSLocators.StartedCallPage.nameEndCallButton));
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				endCallButton);
 	}
 
 	public boolean isSpeakersVisible() throws Exception {
+		DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.name(IOSLocators.StartedCallPage.nameSpeakersButton));
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				speakersButton);
 	}
 
 	public boolean isMuteCallVisible() throws Exception {
+		DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.name(IOSLocators.StartedCallPage.nameMuteCallButton));
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				muteCallButton);
 	}

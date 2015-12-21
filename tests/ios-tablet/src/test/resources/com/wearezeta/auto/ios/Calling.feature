@@ -179,7 +179,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @calling_basic @id2619
+  @calling_basic @id2619 
   Scenario Outline: In zeta call for more than 15 mins [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -240,7 +240,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | firefox     | 300     |
 
-  @calling_basic @id2631
+  @calling_basic @id2631 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Screenlock device when in the call [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -262,7 +262,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | firefox     | 120     |
 
-  @calling_basic @id2631
+  @calling_basic @id2631 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Screenlock device when in the call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -343,7 +343,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | user3Name | firefox     | autocall     | 120     |
 
-  @calling_basic @id2618
+  @calling_basic @id2618 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Put app into background after initiating call [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -365,7 +365,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | firefox     | 120     |
 
-  @calling_basic @id2618
+  @calling_basic @id2618 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Put app into background after initiating call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -511,7 +511,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | chrome      | autocall     | 60      |
 
-  @calling_basic @id3811
+  @calling_basic @id3811 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Verify putting client to the background during 1-to-1 call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -532,7 +532,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @calling_basic @id3812
+  @calling_basic @id3812 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Verify putting client to the background during 1-to-1 call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
