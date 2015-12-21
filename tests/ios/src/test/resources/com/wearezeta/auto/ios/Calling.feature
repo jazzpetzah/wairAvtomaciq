@@ -153,7 +153,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | firefox     | 30      |
+      | user1Name | user2Name | firefox     | 300     |
 
   @calling_basic @id2296
   Scenario Outline: Screenlock device when in the call
@@ -302,8 +302,8 @@ Feature: Calling
     Then <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
 
     Examples: 
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName      | CallBackend | CallBackend2 |NumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | firefox     | autocall     | 5              |
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName      | CallBackend | CallBackend2 | NumberOfAvatars |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | firefox     | autocall     | 5               |
 
   @regression @id2683
   Scenario Outline: Verify ignoring group call in foreground
@@ -325,7 +325,6 @@ Feature: Calling
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName     | CallBackend | CallBackend2 |
       | user1Name | user2Name | user3Name | IgnoringGROUPCALL | firefox     | autocall     |
-
 
   @regression @rc @id2686
   Scenario Outline: Verify receiving group call during 1-to-1 call (and accepting it)
