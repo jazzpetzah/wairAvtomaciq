@@ -142,20 +142,20 @@ public class PeoplePickerPage extends AndroidPage {
 
     public void selectContact(String contactName) throws Exception {
         final By locator = By.xpath(xpathPeoplePickerContactByName.apply(contactName));
+        this.hideKeyboard();
         assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) :
                 String.format(
                         "The user '%s' has not been found in People Picker",
                         contactName);
-        this.hideKeyboard();
         getDriver().findElement(locator).click();
     }
 
     public void selectGroup(String name) throws Exception {
         final By locator = By.xpath(xpathPeoplePickerGroupByName
                 .apply(name));
+        this.hideKeyboard();
         assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) :
                 String.format("The group '%s' is not present on People Picker page", name);
-        this.hideKeyboard();
         this.getDriver().findElement(locator).click();
     }
 
@@ -170,6 +170,7 @@ public class PeoplePickerPage extends AndroidPage {
 
     public void waitUserPickerFindUser(String contactName) throws Exception {
         final By locator = By.xpath(xpathPeoplePickerContactByName.apply(contactName));
+        this.hideKeyboard();
         assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : String
                 .format("User '%s' does not exist in the People Picker list",
                         contactName);
