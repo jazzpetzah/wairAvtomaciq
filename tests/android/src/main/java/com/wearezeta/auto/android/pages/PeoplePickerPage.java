@@ -146,13 +146,16 @@ public class PeoplePickerPage extends AndroidPage {
                 String.format(
                         "The user '%s' has not been found in People Picker",
                         contactName);
+        this.hideKeyboard();
         getDriver().findElement(locator).click();
     }
 
-    public void selectGroup(String contactName) throws Exception {
+    public void selectGroup(String name) throws Exception {
         final By locator = By.xpath(xpathPeoplePickerGroupByName
-                .apply(contactName));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+                .apply(name));
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) :
+                String.format("The group '%s' is not present on People Picker page", name);
+        this.hideKeyboard();
         this.getDriver().findElement(locator).click();
     }
 
