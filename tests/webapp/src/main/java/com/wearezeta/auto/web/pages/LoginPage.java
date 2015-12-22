@@ -43,6 +43,9 @@ public class LoginPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssPasswordInput)
 	private WebElement passwordInput;
 
+	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssRememberMe)
+	private WebElement rememberMe;
+
 	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssLoginErrorText)
 	private WebElement loginErrorText;
 
@@ -148,5 +151,17 @@ public class LoginPage extends WebPage {
 	public void switchToPhoneNumberLoginPage() throws Exception {
 		DriverUtils.waitUntilElementClickable(getDriver(), phoneSignInButton);
 		phoneSignInButton.click();
+	}
+
+	public void checkRememberMe() {
+		if (!rememberMe.isSelected()) {
+			rememberMe.click();
+		}
+	}
+
+	public void uncheckRememberMe() {
+		if (rememberMe.isSelected()) {
+			rememberMe.click();
+		}
 	}
 }

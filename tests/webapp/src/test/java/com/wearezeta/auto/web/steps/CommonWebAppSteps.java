@@ -825,10 +825,10 @@ public class CommonWebAppSteps {
 	 *            unique name of the device
 	 * @throws Exception
 	 */
-	@When("user (.*) adds a new device (.*)$")
+	@When("user (.*) adds a new device (.*) with label (.*)$")
 	public void UserAddRemoteDeviceToAccount(String userNameAlias,
-			String deviceName) throws Exception {
-		commonSteps.UserAddsRemoteDeviceToAccount(userNameAlias, deviceName);
+			String deviceName, String label) throws Exception {
+		commonSteps.UserAddsRemoteDeviceToAccount(userNameAlias, deviceName, label);
 	}
 
 	/**

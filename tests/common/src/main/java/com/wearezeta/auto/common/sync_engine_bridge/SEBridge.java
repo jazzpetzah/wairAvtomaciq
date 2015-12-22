@@ -83,10 +83,11 @@ public class SEBridge {
 		this.login(user, dstDevice);
 	}
 
-	public void addRemoteDeviceToAccount(ClientUser user, String deviceName)
+	public void addRemoteDeviceToAccount(ClientUser user, String deviceName, String label)
 			throws Exception {
 		IDevice dstDevice = this.getDevicePool().addDevice(user, deviceName);
 		this.login(user, dstDevice);
+		dstDevice.setLabel(label);
 	}
 
 	public void sendImage(ClientUser userFrom, String convId, String path)

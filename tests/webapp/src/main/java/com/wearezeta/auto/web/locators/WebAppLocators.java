@@ -40,6 +40,8 @@ public final class WebAppLocators {
 		public static final String errorMarkedEmailField = "#form-account-login .input-error[data-uie-name='enter-email']";
 
 		public static final String errorMarkedPasswordField = "#form-account-login .input-error[data-uie-name='enter-password']";
+
+		public static final String cssRememberMe = "[data-uie-name='enter-remember-sign-in']";
 	}
 
 	public static final class ContactListPage {

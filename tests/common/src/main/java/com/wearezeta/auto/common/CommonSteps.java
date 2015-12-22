@@ -287,9 +287,9 @@ public final class CommonSteps {
 	}
 
 	public void UserAddsRemoteDeviceToAccount(String userNameAlias,
-			String deviceName) throws Exception {
+			String deviceName, String label) throws Exception {
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(userNameAlias);
-		SEBridge.getInstance().addRemoteDeviceToAccount(user, deviceName);
+		SEBridge.getInstance().addRemoteDeviceToAccount(user, deviceName, label);
 	}
 
 	public void UserPingedConversation(String pingFromUserNameAlias,
