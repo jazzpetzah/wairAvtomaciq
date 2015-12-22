@@ -235,7 +235,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I input more than 200 chars message and send it
-    And I type the message
+    And I fill in message using script
     And I return to the chat list
     When I tap on my name <Name>
 	And I close self profile
@@ -257,7 +257,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I input more than 200 chars message and send it
-    And I type the message
+    And I fill in message using script
 	When I tap on my name <Name>
 	And I close self profile
     And I send the message

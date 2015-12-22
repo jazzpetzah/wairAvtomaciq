@@ -227,7 +227,7 @@ Feature: People View
     Then I see user <Contact2> on People picker page is NOT selected
     And I tap on connected user <Contact2> on People picker page
     And I tap on Search input on People picker page
-    Then I see keyboard
+    #Then I see keyboard
     #And I don't see Add to conversation button
     And I press keyboard Delete button
     Then I see user <Contact2> on People picker page is NOT selected

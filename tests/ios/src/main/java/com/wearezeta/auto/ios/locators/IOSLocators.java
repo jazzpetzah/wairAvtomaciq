@@ -164,6 +164,7 @@ public final class IOSLocators {
 
 	public static final String xpathStartedConversationMessage = "//UIAStaticText[starts-with(@name, 'YOU STARTED A CONVERSATION WITH')]";
 	public static final String xpathAddedToConversationMessage = "//UIAStaticText[starts-with(@name, 'YOU ADDED')]";
+	public static final String xpathStartConversationAfterDelete = "//UIAStaticText[starts-with(@name, 'START A CONVERSATION WITH')]";
 
 	public static final String xpathFormatSpecificMessageContains = "//UIATextView[contains(@name,'%s')]";
 
@@ -410,6 +411,7 @@ public final class IOSLocators {
 	public static final String nameMediaCellPlayButton = "mediaCellButton";
 
 	public static final String xpathMediaConversationCell = "//UIAWindow[@name='ZClientMainWindow']/UIATableView[last()]/UIATableCell[last()]/UIAButton[@name='soundcloud']/following-sibling::UIAButton";
+	public static final String xpathSoundCloudCellPlayButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/UIAButton[2]";
 
 	public static final String xpathYoutubeVimeoConversationCell = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/UIAButton[1]";
 
@@ -586,7 +588,7 @@ public final class IOSLocators {
 
 		public static final String xpathStartedCallMessageUser = "//UIAStaticText[@name='%s']";
 
-		public static final String xpathCallingMessage = "//UIAStaticText[contains(@name, 'CallStatusLabel')]";
+		public static final String xpathCallingMessage = "//UIAStaticText[contains(@name, 'CallStatusLabel') and @visible='true']";
 
 		public static final String nameCallingUsersAvatar = "CallingUsersImage";
 

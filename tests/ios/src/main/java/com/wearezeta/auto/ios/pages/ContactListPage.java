@@ -312,7 +312,7 @@ public class ContactListPage extends IOSPage {
 
 	public String getFirstConversationName() throws Exception {
 		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.xpath(IOSLocators.xpathFirstChatInChatListTextField), 5)) {
+				By.xpath(IOSLocators.xpathFirstChatInChatListTextField))) {
 			String text = firstChatInChatListTextField.getText();
 			return text;
 		} else
@@ -835,6 +835,11 @@ public class ContactListPage extends IOSPage {
 	public boolean isInviteMorePeopleButtonNotVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.name(IOSLocators.nameSendAnInviteButton));
+	}
+
+	public boolean waitUntilSelfButtonIsDisplayed() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.name(IOSLocators.ContactListPage.nameSelfButton));
 	}
 
 }
