@@ -54,19 +54,13 @@ class TestrailUtilities(object):
     def _get_run_cases(cls, args, results_filter=None):
         run_id = cls._get_test_run_id(args)
         if results_filter is None:
-            case_ids = map(lambda x: x['case_id'],
-                           cls._query_testrail(args, 'get_tests/{}'.format(run_id)))
-            return case_ids
+            return map(lambda x: x['case_id'],
+                       cls._query_testrail(args, 'get_tests/{}'.format(run_id)))
         else:
-            results_info = cls._query_testrail(args,
-                                               'get_results_for_run/{}&status_id={}'.format(run_id,
-                                                                                            results_filter))
-            result = []
-            for result_info in results_info:
-                test_id = result_info['test_id']
-                case_id = cls._query_testrail(args, 'get_test/{}'.format(test_id))['case_id']
-                result.append(case_id)
-            return result
+            tests_info = cls._query_testrail(args,
+                                             'get_tests/{}&status_id={}'.format(run_id,
+                                                                                results_filter))
+            return map(lambda x: x['case_id'], tests_info)
 
     @classmethod
     def _filter_cases_by(cls, cases_info, filter_by):
