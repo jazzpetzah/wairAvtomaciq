@@ -456,8 +456,8 @@ Feature: Search
     And I see the participant avatar <Contact2> on Group popover
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Name | user2Name | user3Name | GroupChat     |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @C546 @id3895 @regression
   Scenario Outline: Verify starting a group conversation and a group call with action button (portrait)
