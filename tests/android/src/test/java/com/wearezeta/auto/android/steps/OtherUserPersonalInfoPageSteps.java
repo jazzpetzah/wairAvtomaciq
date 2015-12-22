@@ -102,7 +102,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I press add contact button$")
 	public void WhenIPressAddContactButton() throws Exception {
-		getOtherUserPersonalInfoPage().tapAddContactBtn();
+		getOtherUserPersonalInfoPage().tapLeftActionBtn();
 	}
 
 	/**
@@ -454,7 +454,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@Then("^I click Open Conversation button on connected user page$")
 	public void IClickOpenConversationButton() throws Exception {
-		getOtherUserPersonalInfoPage().tapAddContactBtn();
+		getOtherUserPersonalInfoPage().tapLeftActionBtn();
 	}
 
 	/**

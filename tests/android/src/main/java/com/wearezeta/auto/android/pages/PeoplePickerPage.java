@@ -186,8 +186,8 @@ public class PeoplePickerPage extends AndroidPage {
     }
 
     public void tapCreateConversation() throws Exception {
-        // this.hideKeyboard();
-        assert waitUntilOpenOrCreateConversationButtonIsVisible() : "Create/Open Conversation button is not visible in People Picker";
+        assert waitUntilOpenOrCreateConversationButtonIsVisible() :
+                "Create/Open Conversation button is not visible in People Picker";
         createOrOpenConversation.click();
     }
 
