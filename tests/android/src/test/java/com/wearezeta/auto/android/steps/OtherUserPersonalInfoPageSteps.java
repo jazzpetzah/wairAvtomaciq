@@ -17,8 +17,7 @@ public class OtherUserPersonalInfoPageSteps {
 
 	private OtherUserPersonalInfoPage getOtherUserPersonalInfoPage()
 			throws Exception {
-		return (OtherUserPersonalInfoPage) pagesCollection
-				.getPage(OtherUserPersonalInfoPage.class);
+		return pagesCollection.getPage(OtherUserPersonalInfoPage.class);
 	}
 
 	private final String BG_IMAGE_NAME = "aqaPictureContactBG.png";
@@ -52,7 +51,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I click Remove$")
 	public void WhenIClickRemove() throws Exception {
-		getOtherUserPersonalInfoPage().pressOptionsMenuButton();
+		getOtherUserPersonalInfoPage().tapRightActionButton();
 	}
 
 	/**

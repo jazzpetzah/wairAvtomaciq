@@ -61,10 +61,6 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     @FindBy(id = idUserProfileConfirmationMenu)
     private WebElement confirmMenu;
 
-    public static final String idRightActionButton = "gtv__participants__right__action";
-    @FindBy(id = idRightActionButton)
-    private WebElement rightConversationButton;
-
     private static final String idRenameButton = "ttv__conversation_settings__rename";
     @FindBy(id = idRenameButton)
     private WebElement renameButton;
@@ -90,10 +86,13 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
     private static final String xpathLeftActionButton =
             "//*[@id='fm__footer']//*[@id='gtv__participants__left__action']";
+    @FindBy(xpath = xpathLeftActionButton)
+    private WebElement leftActionButton;
 
-    private static final String idLeftActionLabel = "ttv__participants__left_label";
-    @FindBy(id = idLeftActionLabel)
-    private WebElement addContactLabel;
+    public static final String xpathRightActionButton =
+            "//*[@id='fm__footer']//*[@id='gtv__participants__right__action']";
+    @FindBy(xpath = xpathRightActionButton)
+    private WebElement rightActionButton;
 
     private static final String idParticipantsSubHeader = "ttv__participants__sub_header";
     @FindBy(id = idParticipantsSubHeader)
@@ -108,10 +107,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     }
 
     public void pressOptionsMenuButton() throws Exception {
-        this.getWait().until(
-                ExpectedConditions
-                        .elementToBeClickable(rightConversationButton));
-        rightConversationButton.click();
+        rightActionButton.click();
     }
 
     public boolean isUnblockBtnVisible() throws Exception {
@@ -217,10 +213,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     }
 
     public void tapLeftActionBtn() throws Exception {
-        final By locator = By.xpath(xpathLeftActionButton);
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 2) :
-                "Left action button is not present/visible on the current page";
-        getDriver().findElement(locator).click();
+        leftActionButton.click();
     }
 
     public boolean isBackGroundImageCorrect(String imageName) throws Exception {
@@ -302,5 +295,9 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
         final By locator = By.xpath(xpathConvOptionsMenuItemByName
                 .apply(itemName));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public void tapRightActionButton() {
+        rightActionButton.click();
     }
 }
