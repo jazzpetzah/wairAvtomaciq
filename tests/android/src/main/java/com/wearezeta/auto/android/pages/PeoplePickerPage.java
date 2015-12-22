@@ -38,14 +38,8 @@ public class PeoplePickerPage extends AndroidPage {
                     name);
 
     public static final Function<String, String> xpathPeoplePickerContactByName = name -> String
-            .format("//*[@id='ttv_pickuser__searchuser_name' and @value='%s']",
+            .format("//*[@id='ttv_pickuser__searchuser_name' and @value='%s']/parent::*/parent::*",
                     name);
-
-    private static final String idPickerSearchUsers = "ttv_pickuser__searchuser_name";
-    @FindBy(id = idPickerSearchUsers)
-    private WebElement pickerSearchUser;
-    private static final Function<String, String> xpathPickerUserByName = name -> String
-            .format("//*[@id='%s' and @value='%s']", idPickerSearchUsers, name);
 
     private static final String idTopPeopleRoot = "rv_top_users";
 
@@ -147,11 +141,12 @@ public class PeoplePickerPage extends AndroidPage {
     }
 
     public void selectContact(String contactName) throws Exception {
-        assert DriverUtils.waitUntilElementClickable(getDriver(),
-                pickerSearchUser) : String.format(
-                "The user '%s' has not been found in People Picker",
-                contactName);
-        pickerSearchUser.click();
+        final By locator = By.xpath(xpathPeoplePickerContactByName.apply(contactName));
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) :
+                String.format(
+                        "The user '%s' has not been found in People Picker",
+                        contactName);
+        getDriver().findElement(locator).click();
     }
 
     public void selectGroup(String contactName) throws Exception {
@@ -171,7 +166,7 @@ public class PeoplePickerPage extends AndroidPage {
     }
 
     public void waitUserPickerFindUser(String contactName) throws Exception {
-        final By locator = By.xpath(xpathPickerUserByName.apply(contactName));
+        final By locator = By.xpath(xpathPeoplePickerContactByName.apply(contactName));
         assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : String
                 .format("User '%s' does not exist in the People Picker list",
                         contactName);
