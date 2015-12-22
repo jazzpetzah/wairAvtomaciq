@@ -16,3 +16,5 @@ backendType=${backendType}
 pathToAddressBook=${Root}/${pathToAddressBook}
 perfReportPath=${perfReportPath}
 rcNotificationsRecepients=${rcNotificationsRecepients}
+testrailUser=smoketester+ios@wire.com
+testrailToken=3ss3NdlIsbkVZ/qjARyZ-t42ldIdkAFdZzbPgC3o0

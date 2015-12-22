@@ -37,10 +37,11 @@ Feature: Settings
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
-	And I click on Settings button on personal page
-	And I click on Settings button from the options menu
-	And I click on Change Password button in Settings
-	Then I see reset password page
+    And I click on Settings button on personal page
+    And I click on Settings button from the options menu
+    And I click on Account Info on settings page
+    And I click on Change Password button in Settings
+    Then I see reset password page
 
     Examples: 
       | Name      |

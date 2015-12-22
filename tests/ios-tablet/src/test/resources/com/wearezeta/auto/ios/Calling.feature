@@ -115,6 +115,7 @@ Feature: Calling
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
@@ -132,6 +133,7 @@ Feature: Calling
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
@@ -177,7 +179,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @calling_basic @id2619
+  @calling_basic @id2619 
   Scenario Outline: In zeta call for more than 15 mins [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -205,7 +207,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | webdriver   | 120     |
+      | user1Name | user2Name | firefox     | 300     |
 
   @calling_basic @id2619
   Scenario Outline: In zeta call for more than 15 mins [LANDSCAPE]
@@ -236,9 +238,9 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | webdriver   | 120     |
+      | user1Name | user2Name | firefox     | 300     |
 
-  @calling_basic @id2631
+  @calling_basic @id2631 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Screenlock device when in the call [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -258,9 +260,9 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | webdriver   | 120     |
+      | user1Name | user2Name | firefox     | 120     |
 
-  @calling_basic @id2631
+  @calling_basic @id2631 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Screenlock device when in the call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -281,7 +283,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | webdriver   | 120     |
+      | user1Name | user2Name | firefox     | 120     |
 
   @calling_advanced @id2652
   Scenario Outline: 3rd person tries to call me after I initate a call to somebody [PORTRAIT]
@@ -310,7 +312,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | user3Name | webdriver   | autocall     | 120     |
+      | user1Name | user2Name | user3Name | firefox     | autocall     | 120     |
 
   @calling_basic @id2652
   Scenario Outline: 3rd person tries to call me after I initate a call to somebody [LANDSCAPE]
@@ -333,16 +335,15 @@ Feature: Calling
     And I see mute call, end call buttons
     And <Contact2> stops all calls to me
     And I end started call
-    And I return to the chat list
     And I see missed call indicator in list for contact <Contact2>
     And I tap on contact name <Contact2>
     Then I see missed call from contact <Contact2>
 
     Examples: 
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | user3Name | webdriver   | autocall     | 120     |
+      | user1Name | user2Name | user3Name | firefox     | autocall     | 120     |
 
-  @calling_basic @id2618
+  @calling_basic @id2618 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Put app into background after initiating call [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -362,9 +363,9 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | webdriver   | 120     |
+      | user1Name | user2Name | firefox     | 120     |
 
-  @calling_basic @id2618
+  @calling_basic @id2618 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Put app into background after initiating call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -385,7 +386,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | webdriver   | 120     |
+      | user1Name | user2Name | firefox     | 120     |
 
   @calling_basic @id2627
   Scenario Outline: I want to accept a call through the incoming voice dialogue (Button) [PORTRAIT]
@@ -404,7 +405,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | webdriver   | autocall     | 120     |
+      | user1Name | user2Name | firefox     | autocall     | 120     |
 
   @calling_basic @id2627
   Scenario Outline: I want to accept a call through the incoming voice dialogue (Button) [LANDSCAPE]
@@ -424,7 +425,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | webdriver   | autocall     | 120     |
+      | user1Name | user2Name | firefox     | autocall     | 120     |
 
   @calling_basic @id2624
   Scenario Outline: I want to end the call from the ongoing voice overlay [PORTRAIT]
@@ -454,7 +455,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | webdriver   | autocall     | 120     |
+      | user1Name | user2Name | firefox     | autocall     | 120     |
 
   @calling_basic @id2624
   Scenario Outline: I want to end the call from the ongoing voice overlay [LANDSCAPE]
@@ -485,7 +486,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | webdriver   | autocall     | 120     |
+      | user1Name | user2Name | firefox     | autocall     | 120     |
 
   @calling_basic @id2361
   Scenario Outline: Verify mute button is absent when you turn from portrait to landscape [PORTRAIT to LANDSCAPE]
@@ -510,12 +511,13 @@ Feature: Calling
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | chrome      | autocall     | 60      |
 
-  @calling_basic @id3811
+  @calling_basic @id3811 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Verify putting client to the background during 1-to-1 call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
@@ -530,13 +532,14 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @calling_basic @id3812
+  @calling_basic @id3812 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Verify putting client to the background during 1-to-1 call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call

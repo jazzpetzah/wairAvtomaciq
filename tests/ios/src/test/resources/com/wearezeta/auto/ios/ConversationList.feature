@@ -246,8 +246,8 @@ Feature: Conversation List
     And I see People picker page
     And I tap on Search input on People picker page
     And I search for user name <GroupChatName> and tap on it on People picker page
-    Then I see group chat page with users <Contact1>,<Contact2>
-    And I see only 1 message
+    Then I see group chat page after deletion with users <Contact1>,<Contact2>
+    And I see only 0 message
 
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName | Message | Image       |
@@ -274,7 +274,7 @@ Feature: Conversation List
     And I search for user name <Contact1> and tap on it on People picker page
     And I click open conversation button on People picker page
     Then I see dialog page
-    And I see only 1 message
+    And I see only 0 message
 
     Examples: 
       | Name      | Contact1  | Contact2  | Message | Image       |
@@ -318,7 +318,7 @@ Feature: Conversation List
       | Name      | Contact   | Color  | NewName |
       | user1Name | user2Name | Violet | SILENCE |
 
-  @staging @id3899
+  @staging @id3899 @ZIOS-5279
   Scenario Outline: Verify first conversation in the list is highlighted and opened
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

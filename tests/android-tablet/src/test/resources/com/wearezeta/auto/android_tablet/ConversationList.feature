@@ -1,6 +1,6 @@
 Feature: Conversation List
 
-  @id2246 @regression @rc @rc44
+  @C731 @id2246 @regression @rc @rc44
   Scenario Outline: Mute and unmute conversation from conversation details in landscape mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -34,7 +34,7 @@ Feature: Conversation List
       | Name      | Contact   | ItemSilence | ItemNotify |
       | user1Name | user2Name | SILENCE     | NOTIFY     |
 
-  @id2260 @regression @rc
+  @C741 @id2260 @regression @rc
   Scenario Outline: Mute and unmute conversation from conversation details in portrait mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -73,7 +73,7 @@ Feature: Conversation List
       | Name      | Contact   | ItemSilence | ItemNotify |
       | user1Name | user2Name | SILENCE     | NOTIFY     |
 
-  @id2888 @regression
+  @C503 @id2888 @regression
   Scenario Outline: Mute and unmute conversation from conversations list in portrait mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -96,7 +96,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | ItemSilence | ItemNotify |
       | user1Name | user2Name | user3Name | SILENCE     | NOTIFY     |
 
-  @id3137 @regression
+  @C527 @id3137 @regression
   Scenario Outline: Mute and unmute conversation from conversations list in landscape mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -119,7 +119,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | ItemSilence | ItemNotify |
       | user1Name | user2Name | user3Name | SILENCE     | NOTIFY     |
 
-  @id2881 @regression @rc
+  @C771 @id2881 @regression @rc
   Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -141,7 +141,7 @@ Feature: Conversation List
       | Name      | Contact   | SoundCloudLink                                             |
       | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
-  @id3140 @regression
+  @C652 @id3140 @regression
   Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -162,7 +162,7 @@ Feature: Conversation List
       | Name      | Contact   | SoundCloudLink                                             |
       | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
-  @id4046 @regression @rc @rc44
+  @C823 @id4046 @regression @rc @rc44
   Scenario Outline: Verify I can delete a 1:1 conversation from conversation list (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -193,7 +193,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | DeleteItem | Msg1       | Msg2       |
       | user1Name | user2Name | user3Name | DELETE     | YoMessage1 | YoMessage2 |
 
-  @id4045 @regression
+  @C549 @id4045 @regression
   Scenario Outline: Verify I can delete a group conversation from conversation list (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -225,7 +225,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | Msg1       | Msg2       | DeleteItem |
       | user1Name | user2Name | user3Name | GroupChat     | YoMessage1 | YoMessage2 | DELETE     |
 
-  @id4044 @regression
+  @C548 @id4044 @regression
   Scenario Outline: Verify I can delete a group conversation from conversation list (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -258,7 +258,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | Msg1       | Msg2       | DeleteItem |
       | user1Name | user2Name | user3Name | GroupChat     | YoMessage1 | YoMessage2 | DELETE     |
 
-  @id4054 @regression
+  @C550 @id4054 @regression
   Scenario Outline: Verify I can delete and leave a group conversation from conversation list (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -288,7 +288,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | Message | DeleteItem |
       | user1Name | user2Name | user3Name | DELETELeave   | huhuhu  | DELETE     |
 
-  @id4055 @regression
+  @C551 @id4055 @regression
   Scenario Outline: Verify I can delete and leave a group conversation from conversation list (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -319,7 +319,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | Message | DeleteItem |
       | user1Name | user2Name | user3Name | DELETELeave   | huhuhu  | DELETE     |
 
-  @id4057 @regression
+  @C552 @id4057 @regression
   Scenario Outline: Verify I see picture, ping and call after I delete a group conversation from conversation list (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -361,7 +361,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | Image       | CallBackend | DeleteItem |
       | user1Name | user2Name | user3Name | DELETE        | testing.jpg | autocall    | DELETE     |
 
-  @id4058 @regression
+  @C553 @id4058 @regression
   Scenario Outline: Verify I see picture, ping and call after I delete a group conversation from conversation list (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -402,7 +402,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | Image       | CallBackend | DeleteItem |
       | user1Name | user2Name | user3Name | DELETE        | testing.jpg | autocall    | DELETE     |
 
-  @id4082 @regression
+  @C562 @id4082 @regression
   Scenario Outline: I can mute 1:1 conversation from the conversation list (portrait)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -418,7 +418,7 @@ Feature: Conversation List
       | Name      | Contact1  | SilenceItem |
       | user1Name | user2Name | SILENCE     |
 
-  @id4083 @regression
+  @C563 @id4083 @regression
   Scenario Outline: I can mute 1:1 conversation from the conversation list (landscape)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -434,7 +434,7 @@ Feature: Conversation List
       | Name      | Contact1  | SilenceItem |
       | user1Name | user2Name | SILENCE     |
 
-  @id4080 @regression
+  @C560 @id4080 @regression
   Scenario Outline: I can unmute 1:1 conversation from the conversation list (portrait)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -452,7 +452,7 @@ Feature: Conversation List
       | Name      | Contact1  | NotifyItem |
       | user1Name | user2Name | NOTIFY     |
 
-  @id4081 @regression
+  @C561 @id4081 @regression
   Scenario Outline: I can unmute 1:1 conversation from the conversation list (landscape)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -470,7 +470,7 @@ Feature: Conversation List
       | Name      | Contact1  | NotifyItem |
       | user1Name | user2Name | NOTIFY     |
 
-  @id4076 @regression
+  @C558 @id4076 @regression
   Scenario Outline: I can mute group conversation from the conversation list (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -487,7 +487,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | SilenceItem |
       | user1Name | user2Name | user3Name | SILENCE       | SILENCE     |
 
-  @id4077 @regression
+  @C559 @id4077 @regression
   Scenario Outline: I can mute group conversation from the conversation list (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -504,7 +504,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | SilenceItem |
       | user1Name | user2Name | user3Name | SILENCE       | SILENCE     |
 
-  @id4074 @regression
+  @C556 @id4074 @regression
   Scenario Outline: I can unmute group conversation from the conversation list (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -523,7 +523,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | NotifyItem | GroupChatName |
       | user1Name | user2Name | user3Name | NOTIFY     | NOTIFY        |
 
-  @id4075 @regression
+  @C557 @id4075 @regression
   Scenario Outline: I can unmute group conversation from the conversation list (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -541,7 +541,6 @@ Feature: Conversation List
     Examples:
       | Name      | Contact1  | Contact2  | NotifyItem | GroupChatName |
       | user1Name | user2Name | user3Name | NOTIFY     | NOTIFY        |
-
 
 
 

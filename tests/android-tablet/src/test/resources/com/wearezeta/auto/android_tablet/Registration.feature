@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @id2286 @regression @rc @rc44
+  @C752 @id2286 @regression @rc @rc44
   Scenario Outline: Register new user using front camera in landscape mode
     Given I see welcome screen
     Given I rotate UI to landscape
@@ -15,18 +15,19 @@ Feature: Registration
     Then I see the Confirmation page
     And I see the entered email on the Confirmation page
     And I verify my registration via email
-    And I see the Take Registration Picture page
-    And I tap Camera button on the Take Registration Picture page
+    When I see the Unsplash Picture page
+    And I tap Choose My Own button on Unsplash Picture page
+    And I select Camera picture source on Unsplash Picture page
     And I tap Take Picture button on the Take Registration Picture page
     And I confirm my picture on the Take Registration Picture page
     And I see the conversations list with no conversations
-    And I see my name on Self Profile page
+    Then I see my name on Self Profile page
 
     Examples:
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @id2287 @regression @rc
+  @C753 @id2287 @regression @rc
   Scenario Outline: Register new user using front camera in portrait mode
     Given I see welcome screen
     Given I rotate UI to portrait
@@ -41,18 +42,19 @@ Feature: Registration
     Then I see the Confirmation page
     And I see the entered email on the Confirmation page
     And I verify my registration via email
-    And I see the Take Registration Picture page
-    And I tap Camera button on the Take Registration Picture page
+    When I see the Unsplash Picture page
+    And I tap Choose My Own button on Unsplash Picture page
+    And I select Camera picture source on Unsplash Picture page
     And I tap Take Picture button on the Take Registration Picture page
     And I confirm my picture on the Take Registration Picture page
     And I see the conversations list with no conversations
-    And I see my name on Self Profile page
+    Then I see my name on Self Profile page
 
     Examples:
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @id2821 @regression
+  @C479 @id2821 @regression
   Scenario Outline: Verify automatic email verification is performed (portrait)
     Given I see welcome screen
     Given I rotate UI to portrait
@@ -69,13 +71,13 @@ Feature: Registration
     When I lock the device
     And I verify my registration via email
     And I unlock the device
-    Then I see the Take Registration Picture page
+    Then I see the Unsplash Picture page
 
     Examples:
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @id3105 @regression
+  @C512 @id3105 @regression
   Scenario Outline: (AN-2965) Verify automatic email verification is performed (landscape)
     Given I see welcome screen
     Given I rotate UI to landscape
@@ -92,13 +94,13 @@ Feature: Registration
     When I lock the device
     And I verify my registration via email
     And I unlock the device
-    Then I see the Take Registration Picture page
+    Then I see the Unsplash Picture page
 
     Examples:
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @id2823 @regression
+  @C480 @id2823 @regression
   Scenario Outline: (AN-2841) Verify Sign In progress behaviour while there are probelms with internet connectivity
     Given I see welcome screen
     Given I rotate UI to landscape

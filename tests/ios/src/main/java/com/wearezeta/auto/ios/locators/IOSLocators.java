@@ -126,7 +126,7 @@ public final class IOSLocators {
 
 	public static final String nameCreateConversationButton = "CREATE";
 
-	public static final String nameKeyboardGoButton = "Return";
+	public static final String nameKeyboardEnterButton = "Return";
 
 	public static final String classUIATextView = "UIATextView";
 
@@ -163,6 +163,8 @@ public final class IOSLocators {
 	public static final String xpathLastChatMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/*[last()]";
 
 	public static final String xpathStartedConversationMessage = "//UIAStaticText[starts-with(@name, 'YOU STARTED A CONVERSATION WITH')]";
+	public static final String xpathAddedToConversationMessage = "//UIAStaticText[starts-with(@name, 'YOU ADDED')]";
+	public static final String xpathStartConversationAfterDelete = "//UIAStaticText[starts-with(@name, 'START A CONVERSATION WITH')]";
 
 	public static final String xpathFormatSpecificMessageContains = "//UIATextView[contains(@name,'%s')]";
 
@@ -266,6 +268,10 @@ public final class IOSLocators {
 	public static final String xpathAllSoundAlertsButton = "//UIATableCell[@name='All']";
 
 	public static final String nameSettingsChangePasswordButton = "Change Password";
+
+	public static final String nameSettingsResetPasswordButton = "Reset Password";
+
+	public static final String nameSettingsAccountInfoButton = "Account";
 
 	public static final String xpathChangePasswordPageChangePasswordButton = "//UIAButton[@name='CHANGE PASSWORD']";
 
@@ -405,6 +411,7 @@ public final class IOSLocators {
 	public static final String nameMediaCellPlayButton = "mediaCellButton";
 
 	public static final String xpathMediaConversationCell = "//UIAWindow[@name='ZClientMainWindow']/UIATableView[last()]/UIATableCell[last()]/UIAButton[@name='soundcloud']/following-sibling::UIAButton";
+	public static final String xpathSoundCloudCellPlayButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/UIAButton[2]";
 
 	public static final String xpathYoutubeVimeoConversationCell = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/UIAButton[1]";
 
@@ -541,6 +548,11 @@ public final class IOSLocators {
 	public static final String scriptRegistrationEmailInputPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textFields()[\"RegistrationEmailField\"]";
 	public static final String scriptSearchField = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textViews()[\"textViewSearch\"]";
 
+	public static class ScriptLocator {
+		public static final String scriptGroupChatNameInput = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textViews()[\"ParticipantsView_GroupName\"]";
+		public static final String scriptGroupChatNameInputIpad = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].popover().textViews()[\"ParticipantsView_GroupName\"]";
+		
+	}
 	public static final String nameYouLeftMessage = "YOU LEFT";
 	public static final String nameYouPingedMessage = "YOU PINGED";
 	public static final String nameYouPingedAgainMessage = "YOU PINGED AGAIN";
@@ -576,7 +588,7 @@ public final class IOSLocators {
 
 		public static final String xpathStartedCallMessageUser = "//UIAStaticText[@name='%s']";
 
-		public static final String xpathCallingMessage = "//UIAStaticText[contains(@name, 'CallStatusLabel')]";
+		public static final String xpathCallingMessage = "//UIAStaticText[contains(@name, 'CallStatusLabel') and @visible='true']";
 
 		public static final String nameCallingUsersAvatar = "CallingUsersImage";
 
@@ -784,6 +796,10 @@ public final class IOSLocators {
 		public static final String xpathLibraryLastPicture = "//UIACollectionView/UIACollectionCell[last()]";
 		public static final String xpathConfirmPictureButton = "//UIAButton[@name='OK' and @visible='true']";
 		public static final String xpathCameraLibraryFirstFolder = "//UIATableCell[@name='Moments']";
+	}
+	
+	public final class GroupChatInfoPage {
+		public static final String xpathUserNameLabel = "//UIACollectionView[preceding-sibling::UIATextView[@name='ParticipantsView_GroupName']]/UIACollectionCell/UIAStaticText[last() and @name='%s']";
 	}
 
 }

@@ -1,6 +1,6 @@
 Feature: Self Profile
 
-  @id205 @regression @rc @rc42
+  @C679 @id205 @regression @rc @rc42
   Scenario Outline: Change user picture with gallery image
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -18,7 +18,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @id325 @regression @rc
+  @C689 @id325 @regression @rc
   Scenario Outline: Check contact personal info in one to one conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -33,7 +33,7 @@ Feature: Self Profile
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id328 @regression @rc @rc42
+  @C691 @id328 @regression @rc @rc42
   Scenario Outline: I can change my name
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -50,7 +50,7 @@ Feature: Self Profile
       | Name      | NewName     |
       | user1Name | NewTestName |
 
-  @id201 @regression @rc
+  @C678 @id201 @regression @rc
   Scenario Outline: Change user picture using camera
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -70,7 +70,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @id4066 @regression
+  @C449 @id4066 @regression
   Scenario Outline: Verify theme switch in self profile change its state and synced with settings menu
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -94,7 +94,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @id4069 @regression
+  @C450 @id4069 @regression
   Scenario Outline: Verify I can switch dark/white theme from self profile
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself

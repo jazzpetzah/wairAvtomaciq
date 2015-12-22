@@ -32,6 +32,9 @@ public class GroupChatPage extends DialogPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameYouRenamedConversationMessage)
 	private WebElement yourRenamedMessage;
 
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathStartConversationAfterDelete)
+	private WebElement startConvAfterDeleteMessage;
+
 	public GroupChatPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
@@ -46,9 +49,23 @@ public class GroupChatPage extends DialogPage {
 		return true;
 	}
 
+	public boolean areContactsAddedAfterDeleteContent(List<String> names){
+		final String lastMsg = getStartedtChatMessageAfterDeleteContent();
+		for (String name : names) {
+			if (!lastMsg.toLowerCase().contains(name.toLowerCase())) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private String getStartedtChatMessageAfterDeleteContent() {
+		return startConvAfterDeleteMessage.getText();
+	}
+
 	public boolean areRequired3ContactsAddedToChat(String name1, String name2,
 			String name3) {
-		String lastMessage = getStartedtChatMessage();
+		String lastMessage = getAddedtoChatMessage();
 		boolean flag = lastMessage.contains(name1.toUpperCase())
 				&& lastMessage.contains(name2.toUpperCase())
 				&& lastMessage.contains(name3.toUpperCase());
@@ -115,11 +132,6 @@ public class GroupChatPage extends DialogPage {
 		}
 
 		return result;
-	}
-
-	public boolean waitForContactToDisappear(String contact) throws Exception {
-		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.name(contact));
 	}
 
 	@Override

@@ -362,9 +362,7 @@ Feature: Connect
     And I select contact <Contact3>
     And I see <Contact3> user pending profile page
     And I click on start conversation button on pending profile page
-    And I see accept ignore request alert
     And I click on Ignore button on Pending requests page
-    And I close user profile page to return to dialog page
     And I exit the group info page
     And I return to the chat list
     Then I dont see Pending request link in contact list
@@ -432,13 +430,12 @@ Feature: Connect
     And I unblock user
     Then I see dialog page
     When I navigate back to conversations view
-    And I click close button to dismiss people view
     Then I see user <Contact> in contact list
 
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
-      
+
   @regression @id3902
   Scenario Outline: Verify inbox is highlighted and opened in the list
     Given There are 4 users where <Name> is me
@@ -447,13 +444,13 @@ Feature: Connect
     Given <Contact2> sent connection request to Me
     Given I sign in using my email or phone number
     When I see Contact list with my name <Name>
-	And I see Pending request link in contact list
-	And I click on Pending request link in contact list
+    And I see Pending request link in contact list
+    And I click on Pending request link in contact list
     Then I see Pending request page
     When I swipe right in current window
-	And I see conversation 2 people waiting is selected in list
-	And I swipe left in current window
-	Then I see Pending request page
+    And I see conversation 2 people waiting is selected in list
+    And I swipe left in current window
+    Then I see Pending request page
 
     Examples: 
       | Name      | Contact   | Contact2  | Contact3  |
@@ -473,4 +470,19 @@ Feature: Connect
 
     Examples: 
       | Name      | Contact   | NewName  |
-      | user1Name | user2Name | New Name | 
+      | user1Name | user2Name | New Name |
+
+  @staging @id3226
+  Scenario Outline: Verify connection request is deleted from the inbox of the addresser
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact2>
+    Given <Contact> sent connection request to Me
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I see Pending request link in contact list
+    And <Contact> cancel all outgoing connection requests
+    Then I dont see Pending request link in contact list
+
+    Examples: 
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |

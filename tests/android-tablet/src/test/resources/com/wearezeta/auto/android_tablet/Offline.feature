@@ -1,6 +1,6 @@
 Feature: Offline Mode
 
-  @id2889 @regression @rc
+  @C778 @id2889 @regression @rc
   Scenario Outline: Receive updated content when changing from offline to online
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -28,7 +28,7 @@ Feature: Offline Mode
       | Name      | Contact   | Message1 | Message2  | Picture     |
       | user1Name | user2Name | FirstMsg | SecondMsg | testing.jpg |
 
-  @id2904 @regression @rc
+  @C780 @id2904 @regression @rc
   Scenario Outline: (CM-682) I want to see an unsent indicator when I send message or image during offline
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

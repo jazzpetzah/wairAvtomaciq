@@ -14,7 +14,7 @@ public class Instance {
 	private final String password;
 	private final Call currentCall;
 	private final BackendType backend;
-	private final InstanceType instanceType;
+	private final VersionedInstanceType instanceType;
 	private final String screenshot;
 	private final String name;
 	private final long timeout;
@@ -28,7 +28,7 @@ public class Instance {
 			@JsonProperty("password") String password,
 			@JsonProperty("backend") BackendType backend,
 			@JsonProperty("screenshot") String screenshot,
-			@JsonProperty("instanceType") InstanceType instanceType,
+			@JsonProperty("instanceType") VersionedInstanceType instanceType,
 			@JsonProperty("name") String name,
 			@JsonProperty("timeout") long timeout,
 			@JsonProperty("created") long created) {
@@ -65,7 +65,7 @@ public class Instance {
 		return backend;
 	}
 
-	public InstanceType getInstanceType() {
+	public VersionedInstanceType getInstanceType() {
 		return instanceType;
 	}
 

@@ -827,7 +827,7 @@ public class DialogPageSteps {
         previousConvoViewScreenshot = getDialogPage().getConvoViewScreenshot();
     }
 
-    private final static double MAX_CONVO_VIEW_SIMILARIITY = 0.97;
+    private final static double MAX_CONVO_VIEW_SIMILARIITY = 0.50;
 
     /**
      * Verify that conversation view is different from what was remembered before

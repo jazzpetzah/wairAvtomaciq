@@ -22,7 +22,6 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
-
 public class ContactListPage extends IOSPage {
 
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
@@ -121,8 +120,7 @@ public class ContactListPage extends IOSPage {
 	}
 
 	public PeoplePickerPage openSearch() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.name(IOSLocators.ContactListPage.nameOpenStartUI));
+		DriverUtils.waitUntilElementClickable(getDriver(), openStartUI);
 		openStartUI.click();
 		return new PeoplePickerPage(getLazyDriver());
 	}
@@ -314,7 +312,7 @@ public class ContactListPage extends IOSPage {
 
 	public String getFirstConversationName() throws Exception {
 		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.xpath(IOSLocators.xpathFirstChatInChatListTextField), 5)) {
+				By.xpath(IOSLocators.xpathFirstChatInChatListTextField))) {
 			String text = firstChatInChatListTextField.getText();
 			return text;
 		} else
@@ -386,6 +384,11 @@ public class ContactListPage extends IOSPage {
 	public boolean isPendingRequestInContactList() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathPendingRequest), 5);
+	}
+
+	public boolean pendingRequestInContactListIsNotShown() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.xpath(IOSLocators.xpathPendingRequest));
 	}
 
 	public PendingRequestsPage clickPendingRequest() throws Exception {
@@ -692,9 +695,9 @@ public class ContactListPage extends IOSPage {
 				unreadMessageIndicator,
 				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 
-		if (score <= MIN_ACCEPTABLE_IMAGE_SCORE) {
+		if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
 			log.debug("Overlap Score is " + score
-					+ ". And minimal expected is " + MIN_ACCEPTABLE_IMAGE_SCORE);
+					+ ". And minimal expected is " + MIN_ACCEPTABLE_IMAGE_VALUE);
 			return false;
 
 		}
@@ -832,6 +835,11 @@ public class ContactListPage extends IOSPage {
 	public boolean isInviteMorePeopleButtonNotVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.name(IOSLocators.nameSendAnInviteButton));
+	}
+
+	public boolean waitUntilSelfButtonIsDisplayed() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.name(IOSLocators.ContactListPage.nameSelfButton));
 	}
 
 }

@@ -79,7 +79,7 @@ Feature: Calling
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
-    And I tap on contact I am in a call with <Contact>
+    And I tap on contact name <Contact>
     Then I see mute call, end call and speakers buttons
     And I see started call message for contact <Contact>
 
@@ -153,7 +153,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | firefox     | 30      |
+      | user1Name | user2Name | firefox     | 300     |
 
   @calling_basic @id2296
   Scenario Outline: Screenlock device when in the call
@@ -302,8 +302,8 @@ Feature: Calling
     Then <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
 
     Examples: 
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName      | CallBackend | CallBackend2 |NumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | firefox     | autocall     | 5              |
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName      | CallBackend | CallBackend2 | NumberOfAvatars |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | firefox     | autocall     | 5               |
 
   @regression @id2683
   Scenario Outline: Verify ignoring group call in foreground
@@ -326,7 +326,6 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName     | CallBackend | CallBackend2 |
       | user1Name | user2Name | user3Name | IgnoringGROUPCALL | firefox     | autocall     |
 
-
   @regression @rc @id2686
   Scenario Outline: Verify receiving group call during 1-to-1 call (and accepting it)
     Given There are 5 users where <Name> is me
@@ -340,7 +339,7 @@ Feature: Calling
     When <Contact1> calls me using <CallBackend2>
     And I accept incoming call
     And I wait for 5 seconds
-    And I tap on contact I am in a call with <Contact1>
+    And I tap on contact name <Contact1>
     Then I see mute call, end call and speakers buttons
     When <Contact2> calls <GroupChatName> using <CallBackend2>
     And I see incoming group calling message
@@ -348,7 +347,7 @@ Feature: Calling
     And I see Accept second call alert
     And I press Accept button on alert
     And I swipe right on Dialog page
-    And I tap on contact I am in a call with <GroupChatName>
+    And I tap on group chat with name <GroupChatName>
     Then I see <NumberOfAvatars> avatars in the group call bar
     Then I see mute call, end call and speakers buttons
 
@@ -462,7 +461,7 @@ Feature: Calling
     And I see incoming group calling message
     And I accept incoming call
     And I wait for 3 seconds
-    And I tap on contact I am in a call with <GroupChatName>
+    And I tap on group chat with name <GroupChatName>
     Then I see mute call, end call and speakers buttons
     Then I see <NumberOfAvatars> avatars in the group call bar
     When <Contact5> calls me using <CallBackend2>
@@ -471,7 +470,7 @@ Feature: Calling
     And I see Accept second call alert
     And I press Accept button on alert
     And I swipe right on Dialog page
-    And I tap on contact I am in a call with <Contact5>
+    And I tap on contact name <Contact5>
     Then I see mute call, end call and speakers buttons
     Then I see <NumberOf1on1CallAvatars> avatars in the group call bar
 
@@ -547,7 +546,8 @@ Feature: Calling
     And I click Remove
     And I see warning message
     And I confirm remove
-    Then I see that <Contact2> is not present on group chat page
+    And I click close user profile page button
+    Then I see that <Contact2> is not present on group chat info page
     And I exit the group info page
     Then I see <NewNumberOfAvatars> avatars in the group call bar
 
@@ -584,12 +584,13 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars | Timeout |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | FullGROUPCALL | firefox     | autocall     | 5               | 60      |
 
-  @calling_basic @rc @id880
+  @calling_basic @rc @id880 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Verify putting client to the background during 1-to-1 call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call

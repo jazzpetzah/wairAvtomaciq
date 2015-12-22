@@ -94,6 +94,18 @@ public class GroupChatInfoPage extends IOSPage {
 
 	}
 
+	public void setGroupChatNameByScript(String name) throws Exception {
+		String locator;
+		if (CommonUtils.getDeviceName(this.getClass()).contains("iPhone")) {
+			locator = IOSLocators.ScriptLocator.scriptGroupChatNameInput;
+		} else {
+			locator = IOSLocators.ScriptLocator.scriptGroupChatNameInputIpad;
+		}
+
+		DriverUtils.sendTextToInputByScript(getDriver(), locator, name);
+		clickKeyboardEnterButton();
+	}
+
 	public boolean isNumberOfParticipants(int correctNumber) throws Exception {
 		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathNumberOfParticipantsText));
@@ -268,7 +280,8 @@ public class GroupChatInfoPage extends IOSPage {
 	}
 
 	public void exitGroupInfoPage() throws Exception {
-		DriverUtils.waitUntilElementClickable(getDriver(), exitGroupInfoPageButton);
+		DriverUtils.waitUntilElementClickable(getDriver(),
+				exitGroupInfoPageButton);
 		exitGroupInfoPageButton.click();
 	}
 
@@ -284,10 +297,12 @@ public class GroupChatInfoPage extends IOSPage {
 
 	public OtherUserPersonalInfoPage selectContactByName(String name)
 			throws Exception {
-		DriverUtils.mobileTapByCoordinates(this.getDriver(),getDriver().findElementByXPath(
-				String.format(
-						IOSLocators.xpathPeopleViewCollectionCell,
-						name.toUpperCase())));
+		DriverUtils.mobileTapByCoordinates(
+				this.getDriver(),
+				getDriver().findElementByXPath(
+						String.format(
+								IOSLocators.xpathPeopleViewCollectionCell,
+								name.toUpperCase())));
 
 		return new OtherUserPersonalInfoPage(this.getLazyDriver());
 	}
@@ -350,5 +365,12 @@ public class GroupChatInfoPage extends IOSPage {
 		addDialogContinueButton.click();
 		page = new PeoplePickerPage(this.getLazyDriver());
 		return page;
+	}
+
+	public boolean waitForContactToDisappear(String contact) throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By
+				.xpath(String.format(
+						IOSLocators.GroupChatInfoPage.xpathUserNameLabel,
+						contact)));
 	}
 }

@@ -1,6 +1,6 @@
 Feature: Invitations
 
-  @id4161 @regression @rc
+  @C824 @id4161 @regression @rc
   Scenario Outline: Invitations (Conversations List): I can send an email notification from conversations list
     Given I delete all contacts from Address Book
     Given There is 1 user where <Name> is me
@@ -20,7 +20,7 @@ Feature: Invitations
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @id4162 @regression @rc
+  @C825 @id4162 @regression @rc
   Scenario Outline: Invitations (Registration): I can receive and accept an email notification
     Given There is 1 user where <Name> is me
     Given Myself sends personal invitation to mail <ContactEmail> with message <Message>
@@ -32,7 +32,9 @@ Feature: Invitations
     And I restore the application
     And I input password "<ContactPassword>"
     And I confirm password
-    And I press Camera button twice
+    And I select to choose my own picture
+    And I select Camera as picture source
+    And I press Camera button
     And I confirm selection
     And I add <Contact> to the list of test case users
     And User <Contact> is me without picture
@@ -44,7 +46,7 @@ Feature: Invitations
       | Name      | Contact   | ContactEmail | ContactPassword | Message |
       | user1Name | user2Name | user2Email   | user2Password   | Hello   |
 
-  @id4158 @regression
+  @C460 @id4158 @regression
   Scenario Outline: Invite people button present in the list if user has up to 5 contacts
     Given There are 7 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
@@ -64,7 +66,7 @@ Feature: Invitations
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name |
 
-  @id4157 @regression
+  @C459 @id4157 @regression
   Scenario Outline: Invite people button replaced with actions buttons when connected users selected in search
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -81,7 +83,7 @@ Feature: Invitations
       | Name      | Contact1  |
       | user1Name | user2Name |
       
-  @id4159 @regression
+  @C461 @id4159 @regression
   Scenario Outline: Verify that keyboard is closed when I close invites page
     Given There are 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -98,8 +100,8 @@ Feature: Invitations
       | Name      |
       | user1Name |
 
-  @id4160 @staging
-  Scenario Outline: Verify that swipe do nothing in invites page
+  @C567 @id4160 @regression
+  Scenario Outline: (BUG AN-3141) Verify that swipe do nothing in invites page
     Given There are 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see Contact list with no contacts
@@ -108,7 +110,7 @@ Feature: Invitations
     And I swipe up
     And I take 2nd screenshot
     Then I compare 1st and 2nd screenshots and they are not different
-    When I swipe down
+    When I swipe down from 20%
     And I take 2nd screenshot
     Then I compare 1st and 2nd screenshots and they are not different
     When I swipe right
@@ -122,7 +124,7 @@ Feature: Invitations
       | Name      |
       | user1Name |
 
-  @id4172 @regression @rc
+  @C568 @id4172 @regression @rc
   Scenario Outline: (AN-3118) Sending invite to user which already on Wire create pending connection request
     Given I delete all contacts from Address Book
     Given There are 2 users where <Name> is me

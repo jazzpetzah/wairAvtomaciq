@@ -8,6 +8,7 @@ public final class ExternalLocators {
 		public final static String xpathConnectButton = "//*[@data-ga-action='webapp']";
 		public final static String cssDownloadWireButton = "[data-ga-category='connect'][data-ga-action='download']";
 		public final static String cssConnectWireButton = "[data-ga-category='connect'][data-ga-action='connect']";
+		public final static String cssDownloadWireButton = "[data-ga-category='connect'][data-ga-action='webapp']";
 	}
 
 	public static final class PasswordChangePage {

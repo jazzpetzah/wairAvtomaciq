@@ -16,8 +16,8 @@ Feature: Self Profile
     Then I see changed user picture <Picture>
 
     Examples: 
-      | Name      | Picture                   | Contact   |
-      | user1Name | userpicture_ios_check.png | user2Name |
+      | Name      | Picture                       | Contact   |
+      | user1Name | userpicture_ios_check_new.png | user2Name |
 
   @regression @id1055
   Scenario Outline: Attempt to enter a name with 0 chars
@@ -84,7 +84,7 @@ Feature: Self Profile
     When I tap on my name <Name>
     And I slide my accent color via the colorpicker from <Color1> to <Color2>
     And I close self profile
-    Then I see 5 unread message indicator in list for contact <Contact>
+    Then I see 1 unread message indicator in list for contact <Contact>
 
     Examples: 
       | Name      | Color1 | Color2          | Contact   |

@@ -240,20 +240,15 @@ Feature: Connect
       | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
   @regression @id2359
-  Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (Search) [PORTRAIT]
+  Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given Me sent connection request to <Contact>
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
-    When I open search by taping on it
-    And I see People picker page
-    And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
-    And I tap on user on pending name on People picker page <Contact>
-    And I see <Contact> user pending profile popover on iPad
-    And I click on start conversation button on pending profile page
+    And I see user <Contact> in contact list
+    When I tap on contact name <Contact>
+    And I see Pending Connect to <Contact> message on Dialog page from user <Name>
     Then I see text input in dialog is not allowed
 
     Examples: 
@@ -261,22 +256,16 @@ Feature: Connect
       | user1Name | user2Name | user3Name |
 
   @regression @id3014
-  Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (Search) [LANDSCAPE]
+  Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given Me sent connection request to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
-    When I open search by taping on it
-    And I see People picker page
-    And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
-    And I click hide keyboard button
-    And I tap on user on pending name on People picker page <Contact>
-    And I see <Contact> user pending profile popover on iPad
-    And I click on start conversation button on pending profile page
+    And I see user <Contact> in contact list
+    When I tap on contact name <Contact>
+    And I see Pending Connect to <Contact> message on Dialog page from user <Name>
     Then I see text input in dialog is not allowed
 
     Examples: 
@@ -532,7 +521,8 @@ Feature: Connect
     And I open conversation details
     And I click Cancel request button
     And I confirm Cancel request by click on Yes button
-    And I close self profile
+    And I dismiss popover on iPad
+    And I return to the chat list
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
     And I see user <Contact1> found on People picker page
@@ -559,6 +549,7 @@ Feature: Connect
     And I open conversation details
     And I click Cancel request button
     And I confirm Cancel request by click on Yes button
+    And I dismiss popover on iPad
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
     And I see user <Contact1> found on People picker page
@@ -708,7 +699,7 @@ Feature: Connect
     Examples: 
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
-      
+
   @regression @id3903
   Scenario Outline: Verify inbox is highlighted and opened in the list [PORTRAIT]
     Given There are 4 users where <Name> is me
@@ -717,18 +708,18 @@ Feature: Connect
     Given <Contact2> sent connection request to Me
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
-	And I see Pending request link in contact list
-	And I click on Pending request link in contact list
+    And I see Pending request link in contact list
+    And I click on Pending request link in contact list
     Then I see Pending request page
     When I swipe right in current window
-	And I see conversation 2 people waiting is selected in list
-	And I swipe left in current window
-	Then I see Pending request page
+    And I see conversation 2 people waiting is selected in list
+    And I swipe left in current window
+    Then I see Pending request page
 
     Examples: 
       | Name      | Contact   | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
-      
+
   @regression @id3904
   Scenario Outline: Verify inbox is highlighted and opened in the list [LANDSCAPE]
     Given There are 4 users where <Name> is me
@@ -738,18 +729,18 @@ Feature: Connect
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
-	And I see Pending request link in contact list
-	And I click on Pending request link in contact list
+    And I see Pending request link in contact list
+    And I click on Pending request link in contact list
     Then I see Pending request page
     When I swipe right in current window
-	And I see conversation 2 people waiting is selected in list
+    And I see conversation 2 people waiting is selected in list
 
     Examples: 
       | Name      | Contact   | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
-      
+
   @regression @id3997
-  Scenario Outline: Verify displaying first and last names for the incoming connection request {PORTRAIT}
+  Scenario Outline: Verify displaying first and last names for the incoming connection request [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to Me
     Given User <Contact> changes name to <NewName>
@@ -762,7 +753,7 @@ Feature: Connect
 
     Examples: 
       | Name      | Contact   | NewName  |
-      | user1Name | user2Name | New Name | 
+      | user1Name | user2Name | New Name |
 
   @regression @id3998
   Scenario Outline: Verify displaying first and last names for the incoming connection request [LANDSCAPE]
@@ -779,4 +770,35 @@ Feature: Connect
 
     Examples: 
       | Name      | Contact   | NewName  |
-      | user1Name | user2Name | New Name | 
+      | user1Name | user2Name | New Name |
+
+  @staging @id4001
+  Scenario Outline: Verify connection request is deleted from the inbox of the addresser [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact2>
+    Given <Contact> sent connection request to Me
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I see Pending request link in contact list
+    And <Contact> cancel all outgoing connection requests
+    Then I dont see Pending request link in contact list
+
+    Examples: 
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |
+
+  @staging @id4002
+  Scenario Outline: Verify connection request is deleted from the inbox of the addresser [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact2>
+    Given <Contact> sent connection request to Me
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I see Pending request link in contact list
+    And <Contact> cancel all outgoing connection requests
+    Then I dont see Pending request link in contact list
+
+    Examples: 
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |

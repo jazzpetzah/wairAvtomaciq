@@ -43,7 +43,7 @@ Feature: Sign In
       | WrongMail  | WrongPassword |
       | wrongwrong | wrong         |
 
-  @staging @rc @id1479 @id1403
+  @id1479 @id1403
   Scenario Outline: Verify possibility of reseting password (welcome page)
     Given There is 1 user where <Name> is me
     Given I see sign in screen

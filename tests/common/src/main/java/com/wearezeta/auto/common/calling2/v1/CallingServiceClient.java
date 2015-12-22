@@ -10,10 +10,10 @@ import com.wearezeta.auto.common.calling2.v1.model.Call;
 import com.wearezeta.auto.common.calling2.v1.model.CallStatus;
 import com.wearezeta.auto.common.calling2.v1.model.Instance;
 import com.wearezeta.auto.common.calling2.v1.model.InstanceStatus;
-import com.wearezeta.auto.common.calling2.v1.model.InstanceType;
 import com.wearezeta.auto.common.calling2.v1.model.CallRequest;
 import com.wearezeta.auto.common.calling2.v1.model.InstanceRequest;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
+import com.wearezeta.auto.common.calling2.v1.model.VersionedInstanceType;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 
@@ -30,8 +30,9 @@ public class CallingServiceClient {
 	private final CallResource CALL_RESOURCE = new CallResource(getApiRoot(),
 			API_VERSION, TRACE);
 
-	public Instance startInstance(ClientUser userAs, InstanceType instanceType,
-			String name) throws CallingServiceInstanceException {
+	public Instance startInstance(ClientUser userAs,
+			VersionedInstanceType instanceType, String name)
+			throws CallingServiceInstanceException {
 		InstanceRequest instanceRequest = new InstanceRequest(
 				userAs.getEmail(), userAs.getPassword(), getBackendType(),
 				instanceType, name);
@@ -95,5 +96,10 @@ public class CallingServiceClient {
 	public List<Flow> getFlows(Instance instance)
 			throws CallingServiceInstanceException {
 		return INSTANCE_RESOURCE.getFlows(instance);
+	}
+
+	public String getLog(Instance instance)
+			throws CallingServiceInstanceException {
+		return INSTANCE_RESOURCE.getLog(instance);
 	}
 }
