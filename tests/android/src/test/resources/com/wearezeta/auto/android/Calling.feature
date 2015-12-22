@@ -540,7 +540,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend |
       | user1Name | user2Name | user3Name | GroupCallChat | autocall    |
 
-  @121 @id2649 @calling_basic
+  @C121 @id2649 @calling_basic
   Scenario Outline: Lock device screen after initiating call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
