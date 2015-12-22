@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @id324 @regression @rc
+  @C688 @id324 @regression @rc
   Scenario Outline: Mute conversation from conversation view
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to <Name>
@@ -23,7 +23,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @id1514 @regression
+  @C414 @id1514 @regression
   Scenario Outline: Verify unsilence the conversation from conversation view
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to me
@@ -44,7 +44,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @id316 @regression
+  @C381 @id316 @regression
   Scenario Outline: Send Message to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -60,7 +60,7 @@ Feature: Conversation View
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @id318 @regression @rc @rc42
+  @C682 @id318 @regression @rc @rc42
   Scenario Outline: Send Camera picture to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -78,7 +78,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id1262 @regression @rc @rc42
+  @C700 @id1262 @regression @rc @rc42
   Scenario Outline: Create group conversation from 1:1
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -103,7 +103,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id320 @regression @rc
+  @C684 @id320 @regression @rc
   Scenario Outline: Send message to group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -120,7 +120,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName     | Message |
       | user1Name | user2Name | user3Name | SendMessGroupChat | Yo      |
 
-  @id143 @regression @rc
+  @C671 @id143 @regression @rc
   Scenario Outline: Send Long Message to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -136,7 +136,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id145 @regression
+  @C377 @id145 @regression
   Scenario Outline: Send Upper and Lower case to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -152,7 +152,7 @@ Feature: Conversation View
       | Name      | Contact   | Message  |
       | user1Name | user2Name | aaaaAAAA |
 
-  @id149 @regression
+  @C378 @id149 @regression
   Scenario Outline: Send emoji message to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -168,7 +168,7 @@ Feature: Conversation View
       | Name      | Contact   | Message  |
       | user1Name | user2Name | :) ;) :( |
 
-  @id163 @regression
+  @C379 @id163 @regression
   Scenario Outline: Send existing image from gallery (portrait) in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -187,7 +187,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id162 @regression @rc @rc42
+  @C673 @id162 @regression @rc @rc42
   Scenario Outline: Send existing image from gallery (landscape) in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -206,7 +206,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2078 @regression
+  @C419 @id2078 @regression
   Scenario Outline: I want to exit fullscreen view in landscape (rotations)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -235,7 +235,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id3242 @regression @rc @rc42
+  @C809 @id3242 @regression @rc @rc42
   Scenario Outline: (CM-717) I can send a sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -253,7 +253,7 @@ Feature: Conversation View
       | Name      | Contact1  | NumColors |
       | user1Name | user2Name | 2         |
 
-  @id3243 @regression @rc @rc42
+  @C810 @id3243 @regression @rc @rc42
   Scenario Outline: (CM-717) I can send sketch on image from gallery
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -274,7 +274,7 @@ Feature: Conversation View
       | Name      | Contact1  | NumColors |
       | user1Name | user2Name | 2         |
 
-  @id3244 @regression
+  @C432 @id3244 @regression
   Scenario Outline: I can send sketch on photo
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -294,7 +294,7 @@ Feature: Conversation View
       | Name      | Contact1  | NumColors |
       | user1Name | user2Name | 6         |
 
-  @id2990 @regression @rc @rc42
+  @C787 @id2990 @regression @rc @rc42
   Scenario Outline: I can send giphy image by typing some massage and clicking GIF button
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -315,7 +315,7 @@ Feature: Conversation View
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @id165 @regression @rc
+  @C674 @id165 @regression @rc
   Scenario Outline: Send GIF format pic
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -333,7 +333,7 @@ Feature: Conversation View
       | Name      | Contact   | GifName      |
       | user1Name | user2Name | animated.gif |
 
-  @id159 @regression @rc
+  @C672 @id159 @regression @rc
   Scenario Outline: Send image with non default camera (portrait) in group chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

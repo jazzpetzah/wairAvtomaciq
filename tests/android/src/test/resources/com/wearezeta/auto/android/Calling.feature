@@ -1,6 +1,6 @@
 Feature: Calling
 
-  @id373 @calling_basic @rc
+  @C693 @id373 @calling_basic @rc
   Scenario Outline: Verify missed call indicator in conversations list and system message inside conversation
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -18,7 +18,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @id1503 @calling_basic @rc
+  @C713 @id1503 @calling_basic @rc
   Scenario Outline: Silence an incoming call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -33,7 +33,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @id727 @calling_basic @rc
+  @C698 @id727 @calling_basic @rc
   Scenario Outline: I can start 1:1 call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -50,7 +50,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id814 @calling_basic @rc
+  @C699 @id814 @calling_basic @rc
   Scenario Outline: I can accept incoming 1:1 call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -65,7 +65,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend |
       | user1Name | user2Name | user3Name | autocall    |
 
-  @id1497 @calling_basic @rc
+  @C710 @id1497 @calling_basic @rc
   Scenario Outline: Receive call while Wire is running in the background
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -82,7 +82,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @id1499 @calling_basic @rc
+  @C711 @id1499 @calling_basic @rc
   Scenario Outline: Receive call while mobile in sleeping mode(screen locked)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -99,7 +99,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @id347 @calling_basic
+  @C404 @id347 @calling_basic
   Scenario Outline: Send text, image and knock while in the call with same user
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -131,7 +131,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Message                   | Msg        |
       | user1Name | user2Name | autocall    | simple message in english | YOU PINGED |
 
-  @id2210 @calling_basic @rc @rc42
+  @C721 @id2210 @calling_basic @rc @rc42
   Scenario Outline: Calling bar buttons are clickable and change their states
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -156,7 +156,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName |
       | user1Name | user2Name | autocall    | Speaker        | Mute        |
 
-  @id2212 @calling_basic
+  @C422 @id2212 @calling_basic
   Scenario Outline: Correct calling bar in different places
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -184,7 +184,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend |
       | user1Name | user2Name | user3Name | autocall    |
 
-  @id3239 @calling_basic
+  @C431 @id3239 @calling_basic
   Scenario Outline: Calling bar buttons are clickable and change their states in a group call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -209,7 +209,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName    | SpeakerBtnName | MuteBtnName |
       | user1Name | user2Name | user3Name | ChatForGroupCall | Speaker        | Mute        |
 
-  @id3240 @calling_basic @rc @rc42
+  @C807 @id3240 @calling_basic @rc @rc42
   Scenario Outline: I can start group call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -231,7 +231,7 @@ Feature: Calling
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
 
-  @id3172 @regression @rc @rc42
+  @C804 @id3172 @regression @rc @rc42
   Scenario Outline: I can join group call in foreground
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
@@ -260,7 +260,7 @@ Feature: Calling
       | CallBackend | CallBackend2 | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    | Timeout |
       | chrome      | autocall     | user1Name | user2Name | user3Name | user4Name | user5Name | ChatForGroupCall | 60      |
 
-  @id3174 @calling_basic @rc
+  @C805 @id3174 @calling_basic @rc
   Scenario Outline: I can join group call after I ignored it
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -283,7 +283,7 @@ Feature: Calling
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
 
-  @id3168 @calling_basic @rc
+  @C802 @id3168 @calling_basic @rc
   Scenario Outline: I can join group call after I leave it
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -310,7 +310,7 @@ Feature: Calling
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
 
-  @id3164 @calling_basic
+  @C424 @id3164 @calling_basic
   Scenario Outline: Verify creating the call with a maximum amount of the people
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
@@ -335,7 +335,7 @@ Feature: Calling
       | CallBackend | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | user4Name | user5Name | MaxGroupCallChat |
 
-  @id3165 @calling_basic
+  @C425 @id3165 @calling_basic
   Scenario Outline: Verify impossibility to connect 6th person to the call
     Given There are 6 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
@@ -365,7 +365,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName       | CallBackend |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | MaxGroupCallNegChat | autocall    |
 
-  @id3253 @calling_basic
+  @C434 @id3253 @calling_basic
   Scenario Outline: Verify starting outgoing 1to1 call during group call
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -397,7 +397,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
-  @id3255 @calling_basic
+  @C435 @id3255 @calling_basic
   Scenario Outline: Verify cancel outgoing 1to1 call during group call
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -427,7 +427,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
-  @id3180 @calling_advanced
+  @C427 @id3180 @calling_advanced
   Scenario Outline: Verify receiving 1to1 call during group call and accepting it
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -457,7 +457,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
-  @id3176 @calling_advanced @rc
+  @C806 @id3176 @calling_advanced @rc
   Scenario Outline: (AN-3140) Verify receiving group call during 1to1 call and accepting it
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -487,7 +487,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
-  @id3181 @calling_advanced
+  @C428 @id3181 @calling_advanced
   Scenario Outline: (AN-2578 AN-2816 AN-2864) Verify receiving 1to1 call during group call and ignoring it
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -518,7 +518,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
-  @id3170 @calling_basic @rc @rc42
+  @C803 @id3170 @calling_basic @rc @rc42
   Scenario Outline: Verify accepting group call in background
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -540,7 +540,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend |
       | user1Name | user2Name | user3Name | GroupCallChat | autocall    |
 
-  @id2649 @calling_basic
+  @C121 @id2649 @calling_basic
   Scenario Outline: Lock device screen after initiating call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -560,7 +560,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id1467 @calling_basic @rc @rc42
+  @C708 @id1467 @calling_basic @rc @rc42
   Scenario Outline: Put client into background when in the call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -579,7 +579,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @id369 @calling_advanced
+  @C405 @id369 @calling_advanced
   Scenario Outline: Other user trying to call me while I'm already in zeta call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -599,7 +599,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend |
       | user1Name | user2Name | user3Name | autocall    |
 
-  @id3184 @regression
+  @C429 @id3184 @regression
   Scenario Outline: Verify leaving group conversation during the call
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

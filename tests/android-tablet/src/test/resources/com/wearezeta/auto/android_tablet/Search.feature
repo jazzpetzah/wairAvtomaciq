@@ -1,6 +1,6 @@
 Feature: Search
 
-  @id2249 @regression
+  @C465 @id2249 @regression
   Scenario Outline: (AN-3065) Open/Close Search by different actions in landscape mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -31,7 +31,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2263 @regression
+  @C469 @id2263 @regression
   Scenario Outline: Open/Close Search by different actions in portrait mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -62,7 +62,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2180 @regression
+  @C471 @id2180 @regression
   Scenario Outline: I should able to swipe to conversation when search is opened (portrait only)
     Given There is 1 user where <Name> is me
     Given I rotate UI to portrait
@@ -79,7 +79,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @id2848 @regression
+  @C490 @id2848 @regression
   Scenario Outline: I ignore someone from search and clear my inbox (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
@@ -103,7 +103,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id3130 @regression
+  @C524 @id3130 @regression
   Scenario Outline: I ignore someone from search and clear my inbox (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
@@ -123,7 +123,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2853 @regression @rc
+  @C762 @id2853 @regression @rc
   Scenario Outline: I want to discard the new connect request (sending) by returning to the search results after selecting someone I’m not connected to
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -145,7 +145,7 @@ Feature: Search
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @id3882 @regression @rc @rc44
+  @C819 @id3882 @regression @rc @rc44
   Scenario Outline: Verify opening conversation with action button (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -165,7 +165,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id3891 @regression @rc
+  @C820 @id3891 @regression @rc
   Scenario Outline: Verify opening conversation with action button (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -185,7 +185,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id3885 @regression
+  @C537 @id3885 @regression
   Scenario Outline: Verify starting a new group conversation with action button (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -212,7 +212,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id3894 @regression
+  @C545 @id3894 @regression
   Scenario Outline: Verify starting a new group conversation with action button (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -239,7 +239,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id3884 @regression
+  @C536 @id3884 @regression
   Scenario Outline: Verify sending a photo with action button (landscape)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -260,7 +260,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id3893 @regression
+  @C544 @id3893 @regression
   Scenario Outline: Verify sending a photo with action button (portrait)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -281,7 +281,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id3887 @regression
+  @C539 @id3887 @regression
   Scenario Outline: Verify sharing a photo to a newly created group conversation with action button (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -311,7 +311,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id3896 @regression
+  @C547 @id3896 @regression
   Scenario Outline: Verify sharing a photo to a newly created group conversation with action button (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -341,7 +341,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id3881 @regression
+  @C534 @id3881 @regression
   Scenario Outline: (AN-2894) Verify button Open is changed to Create after checking second person (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -365,7 +365,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id3890 @regression
+  @C542 @id3890 @regression
   Scenario Outline: (AN-2894) Verify button Open is changed to Create after checking second person (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -389,7 +389,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id3883 @regression
+  @C535 @id3883 @regression
   Scenario Outline: Verify starting a call with action button (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -410,7 +410,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id3892 @regression
+  @C543 @id3892 @regression
   Scenario Outline: Verify starting a call with action button (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -431,7 +431,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id3886 @regression
+  @C538 @id3886 @regression
   Scenario Outline: Verify starting a group conversation and a group call with action button (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -459,7 +459,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | GroupChat     |
 
-  @id3895 @regression
+  @C546 @id3895 @regression
   Scenario Outline: Verify starting a group conversation and a group call with action button (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

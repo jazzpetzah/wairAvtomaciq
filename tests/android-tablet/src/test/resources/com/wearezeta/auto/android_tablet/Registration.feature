@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @id2286 @regression @rc @rc44
+  @C752 @id2286 @regression @rc @rc44
   Scenario Outline: Register new user using front camera in landscape mode
     Given I see welcome screen
     Given I rotate UI to landscape
@@ -27,7 +27,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @id2287 @regression @rc
+  @C753 @id2287 @regression @rc
   Scenario Outline: Register new user using front camera in portrait mode
     Given I see welcome screen
     Given I rotate UI to portrait
@@ -54,7 +54,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @id2821 @regression
+  @C479 @id2821 @regression
   Scenario Outline: Verify automatic email verification is performed (portrait)
     Given I see welcome screen
     Given I rotate UI to portrait
@@ -77,7 +77,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @id3105 @regression
+  @C512 @id3105 @regression
   Scenario Outline: (AN-2965) Verify automatic email verification is performed (landscape)
     Given I see welcome screen
     Given I rotate UI to landscape
@@ -100,7 +100,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @id2823 @regression
+  @C480 @id2823 @regression
   Scenario Outline: (AN-2841) Verify Sign In progress behaviour while there are probelms with internet connectivity
     Given I see welcome screen
     Given I rotate UI to landscape

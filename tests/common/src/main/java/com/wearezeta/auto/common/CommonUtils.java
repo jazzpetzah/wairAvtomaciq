@@ -21,7 +21,6 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import java.util.concurrent.TimeUnit;
 
 public class CommonUtils {
 	public static final int MAX_PARALLEL_USER_CREATION_TASKS = 25;
@@ -54,22 +53,13 @@ public class CommonUtils {
 		return process.waitFor();
 	}
 
-	public static boolean executeOsCommandWithTimeout(String[] cmd,
-			long timeoutSeconds) throws Exception {
-		Process process = Runtime.getRuntime().exec(cmd);
-		log.debug("Process started for cmdline " + Arrays.toString(cmd));
-		outputErrorStreamToLog(process.getErrorStream());
-		return process.waitFor(timeoutSeconds, TimeUnit.SECONDS);
-	}
-
 	public static String executeOsXCommandWithOutput(String[] cmd)
 			throws Exception {
 		Process process = Runtime.getRuntime().exec(cmd);
 		log.debug("Process started for cmdline " + Arrays.toString(cmd));
 		String output;
 		try (InputStream stream = process.getInputStream()) {
-			BufferedReader br = new BufferedReader(new InputStreamReader(
-					process.getInputStream()));
+			BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 			StringBuilder sb = new StringBuilder("\n");
 			String s;
 			while ((s = br.readLine()) != null) {
@@ -88,7 +78,7 @@ public class CommonUtils {
 		StringBuilder sb = new StringBuilder("\n");
 		String s;
 		while ((s = br.readLine()) != null) {
-			sb.append("\t" + s + "\n");
+			sb.append("\t").append(s).append("\n");
 		}
 		String output = sb.toString();
 		if (!output.trim().isEmpty()) {
@@ -513,19 +503,59 @@ public class CommonUtils {
 		return Boolean.valueOf(getValueFromCommonConfig(c, "initNodeIp"));
 	}
 
-	public static String getZephyrCycleNameFromConfig(Class<?> c)
+	public static Optional<String> getZephyrCycleNameFromConfig(Class<?> c)
 			throws Exception {
-		return getValueFromCommonConfig(c, "zephyrCycleName");
+		return getOptionalValueFromCommonConfig(c, "zephyrCycleName");
 	}
 
-	public static String getZephyrPhaseNameFromConfig(Class<?> c)
+	public static Optional<String> getZephyrPhaseNameFromConfig(Class<?> c)
 			throws Exception {
-		return getValueFromCommonConfig(c, "zephyrPhaseName");
+		return getOptionalValueFromCommonConfig(c, "zephyrPhaseName");
 	}
 
 	public static String getZephyrServerFromConfig(Class<?> c) throws Exception {
 		return getValueFromCommonConfig(c, "zephyrServer");
 	}
+
+	public static String getTestrailServerUrlFromConfig(Class<?> c) throws Exception {
+		return getValueFromCommonConfig(c, "testrailServerUrl");
+	}
+
+    public static String getTestrailUsernameFromConfig(Class<?> c) throws Exception {
+        return getValueFromConfig(c, "testrailUser");
+    }
+
+    public static String getTestrailTokenFromConfig(Class<?> c) throws Exception {
+        return getValueFromConfig(c, "testrailToken");
+    }
+
+    public static Optional<String> getTestrailProjectNameFromConfig(Class<?> c)
+            throws Exception {
+        return getOptionalValueFromCommonConfig(c, "testrailProjectName");
+    }
+
+    public static Optional<String> getTestrailPlanNameFromConfig(Class<?> c)
+            throws Exception {
+        return getOptionalValueFromCommonConfig(c, "testrailPlanName");
+    }
+
+    public static Optional<String> getTestrailRunNameFromConfig(Class<?> c)
+            throws Exception {
+        return getOptionalValueFromCommonConfig(c, "testrailRunName");
+    }
+
+    public static Optional<String> getTestrailRunConfigNameFromConfig(Class<?> c)
+            throws Exception {
+        return getOptionalValueFromCommonConfig(c, "testrailRunConfigName");
+    }
+
+    public static boolean getSyncIsAutomated(Class<?> c) throws Exception {
+        return getValueFromCommonConfig(c, "syncIsAutomated").toLowerCase().equals("true");
+    }
+
+    public static boolean getSyncIsMuted(Class<?> c) throws Exception {
+        return getValueFromCommonConfig(c, "syncIsMuted").toLowerCase().equals("true");
+    }
 
 	public static String generateRandomXdigits(int i) {
 		Random rand = new Random();

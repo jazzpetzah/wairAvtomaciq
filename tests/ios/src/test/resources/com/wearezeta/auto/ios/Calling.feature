@@ -546,6 +546,7 @@ Feature: Calling
     And I click Remove
     And I see warning message
     And I confirm remove
+    And I click close user profile page button
     Then I see that <Contact2> is not present on group chat info page
     And I exit the group info page
     Then I see <NewNumberOfAvatars> avatars in the group call bar
@@ -583,12 +584,13 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars | Timeout |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | FullGROUPCALL | firefox     | autocall     | 5               | 60      |
 
-  @calling_basic @rc @id880
+  @calling_basic @rc @id880 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Verify putting client to the background during 1-to-1 call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call

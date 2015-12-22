@@ -1,6 +1,6 @@
 Feature: Rotations
 
-  @id2185 @regression
+  @C474 @id2185 @regression
   Scenario Outline: Self profile
     Given There is 1 user where <Name> is me
     Given I rotate UI to portrait
@@ -25,7 +25,7 @@ Feature: Rotations
       | Name      |
       | user1Name |
 
-  @id2186 @regression
+  @C475 @id2186 @regression
   Scenario Outline: (AN-2900) Search (people picker)
     Given There is 1 user where <Name> is me
     Given I rotate UI to portrait
@@ -42,7 +42,7 @@ Feature: Rotations
       | Name      |
       | user1Name |
 
-  @id2187 @regression
+  @C476 @id2187 @regression
   Scenario Outline: Conversation view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -62,7 +62,7 @@ Feature: Rotations
       | Name      | Contact   | Message |
       | user1Name | user2Name | Msg1    |
 
-  @id2186 @regression
+  @C475 @id2186 @regression
   Scenario Outline: (AN-2901) Search (people picker)
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to me
@@ -84,7 +84,7 @@ Feature: Rotations
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id2908 @regression
+  @C510 @id2908 @regression
   Scenario Outline: I want to exit fullscreen view in landscape
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
