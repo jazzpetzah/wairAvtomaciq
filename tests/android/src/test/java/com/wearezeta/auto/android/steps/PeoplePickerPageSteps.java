@@ -20,10 +20,6 @@ public class PeoplePickerPageSteps {
 		return pagesCollection.getPage(PeoplePickerPage.class);
 	}
 
-	private ContactListPage getContactListPage() throws Exception {
-		return pagesCollection.getPage(ContactListPage.class);
-	}
-
 	/**
 	 * Checks to see that the people picker page (search view) is visible
 	 * 
