@@ -34,17 +34,13 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 
     private static final int LOAD_TIMEOUT = 15; // seconds
 
+    private static final String xpathConvoViewOrSelfProfile = String.format("//*[@id='%s' or @id='%s']",
+            TabletSelfProfilePage.idSelfProfileView, TabletConversationViewPage.idRootLocator);
+
     public void verifyConversationsListIsLoaded() throws Exception {
         if (ScreenOrientationHelper.getInstance().fixOrientation(getDriver()) == ScreenOrientation.PORTRAIT) {
-            if (!DriverUtils.waitUntilLocatorAppears(getDriver(),
-                    By.id(TabletSelfProfilePage.idSelfProfileView),
-                    LOAD_TIMEOUT)) {
-                // Try to swipe right if conversation view is shown
-                DriverUtils.swipeByCoordinates(getDriver(), 1000,
-                        30, 50, 90, 50);
-            }
             if (DriverUtils.waitUntilLocatorAppears(getDriver(),
-                    By.id(TabletSelfProfilePage.idSelfProfileView),
+                    By.xpath(xpathConvoViewOrSelfProfile),
                     LOAD_TIMEOUT)) {
                 // FIXME: Workaround for self profile as start page issue
                 int ntry = 1;
