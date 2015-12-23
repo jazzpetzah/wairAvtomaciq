@@ -155,7 +155,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | firefox     | 300     |
 
-  @calling_basic @id2296
+  @calling_basic @id2296 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Screenlock device when in the call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -207,7 +207,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | user3Name | firefox     | autocall     | 120     |
 
-  @calling_basic @id2646
+  @calling_basic @id2646 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Put app into background after initiating call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -338,7 +338,7 @@ Feature: Calling
     And I see Contact list with my name <Name>
     When <Contact1> calls me using <CallBackend2>
     And I accept incoming call
-    And I wait for 5 seconds
+    And I dont see calling page
     And I tap on contact name <Contact1>
     Then I see mute call, end call and speakers buttons
     When <Contact2> calls <GroupChatName> using <CallBackend2>
