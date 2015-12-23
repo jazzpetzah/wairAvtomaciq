@@ -412,7 +412,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id1133
+  @regression @id1133
   Scenario Outline: Verify unblocking from users profile page
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -455,7 +455,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @staging @id3996
+  @regression @id3996
   Scenario Outline: Verify displaying first and last names for the incoming connection request
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to Me
@@ -471,7 +471,7 @@ Feature: Connect
       | Name      | Contact   | NewName  |
       | user1Name | user2Name | New Name |
 
-  @staging @id3226
+  @regression @id3226
   Scenario Outline: Verify connection request is deleted from the inbox of the addresser
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
