@@ -87,6 +87,7 @@ public class SEBridge {
 			throws Exception {
 		IDevice dstDevice = this.getDevicePool().addDevice(user, deviceName);
 		this.login(user, dstDevice);
+		LOG.info("Set label for device " + deviceName + " to " + label);
 		dstDevice.setLabel(label);
 	}
 
