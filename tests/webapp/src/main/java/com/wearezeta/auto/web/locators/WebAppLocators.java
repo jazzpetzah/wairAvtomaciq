@@ -173,9 +173,14 @@ public final class WebAppLocators {
 
 		public static final String xpathSettingsDialogRoot = "//div[@id='self-settings' and contains(@class, 'modal-show')]";
 
-		public static final String xpathSettingsCloseButton = "//div[@id='self-settings']//*[@data-uie-name='do-close']";
+		public static final String cssSettingsCloseButton = "#self-settings [data-uie-name='do-close']";
 
 		public static final String cssSoundAlertsLevel = "[data-uie-name=enter-sound-alerts]";
+
+		public static final String cssDeviceLabels = ".self-settings-device-list device-card .label-xs";
+
+		public static final Function<String, String> xpathDeviceLabel = (name) -> String
+				.format("//device-card//span[contains(text(),'%s')]", name);
 	}
 
 	public static final class SelfProfilePage {
