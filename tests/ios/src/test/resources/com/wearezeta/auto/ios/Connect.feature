@@ -345,7 +345,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @staging @id586
+  @staging @id586 @ZIOS-5335
   Scenario Outline: Verify ignoring a connection request from another person (People view)
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>
