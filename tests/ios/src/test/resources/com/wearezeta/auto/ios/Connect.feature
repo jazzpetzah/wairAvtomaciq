@@ -214,7 +214,9 @@ Feature: Connect
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I press the send an invite button
+    And I press invite others button
     And I press the copy button
+    And I click close Invite list button
     And I click clear button
     And I tap on contact name <Contact>
     And I see dialog page

@@ -245,6 +245,8 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public ContactListPage dismissPeoplePicker() throws Exception {
+		DriverUtils
+				.waitUntilElementClickable(getDriver(), peoplePickerClearBtn);
 		peoplePickerClearBtn.click();
 		return new ContactListPage(this.getLazyDriver());
 	}
