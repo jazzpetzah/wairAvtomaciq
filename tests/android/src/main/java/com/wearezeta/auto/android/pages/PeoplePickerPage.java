@@ -140,22 +140,38 @@ public class PeoplePickerPage extends AndroidPage {
                 By.id(idTopPeopleRoot));
     }
 
-    public void selectContact(String contactName) throws Exception {
-        final By locator = By.xpath(xpathPeoplePickerContactByName.apply(contactName));
+    private static int MAX_SCROLLS = 3;
+
+    private boolean scrollUntilLocatorVisible(By locator) throws Exception {
         this.hideKeyboard();
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) :
-                String.format(
-                        "The user '%s' has not been found in People Picker",
-                        contactName);
+        int ntry = 0;
+        while (ntry < MAX_SCROLLS) {
+            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
+                return true;
+            } else {
+                DriverUtils.swipeElementPointToPoint(getDriver(), content,
+                        500, 50, 90, 50, 10);
+            }
+            ntry++;
+        }
+        return false;
+    }
+
+    public void selectUser(String name) throws Exception {
+        final By locator = By.xpath(xpathPeoplePickerContactByName.apply(name));
+        if (!scrollUntilLocatorVisible(locator)) {
+            throw new IllegalStateException(
+                    String.format("A user '%s' is not present on People Picker page", name));
+        }
         getDriver().findElement(locator).click();
     }
 
     public void selectGroup(String name) throws Exception {
-        final By locator = By.xpath(xpathPeoplePickerGroupByName
-                .apply(name));
-        this.hideKeyboard();
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) :
-                String.format("The group '%s' is not present on People Picker page", name);
+        final By locator = By.xpath(xpathPeoplePickerGroupByName.apply(name));
+        if (!scrollUntilLocatorVisible(locator)) {
+            throw new IllegalStateException(
+                String.format("A group '%s' is not present on People Picker page", name));
+        }
         this.getDriver().findElement(locator).click();
     }
 
@@ -166,14 +182,6 @@ public class PeoplePickerPage extends AndroidPage {
         } catch (ElementNotVisibleException e) {
             return false;
         }
-    }
-
-    public void waitUserPickerFindUser(String contactName) throws Exception {
-        final By locator = By.xpath(xpathPeoplePickerContactByName.apply(contactName));
-        this.hideKeyboard();
-        assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : String
-                .format("User '%s' does not exist in the People Picker list",
-                        contactName);
     }
 
     public void navigateBack() throws Exception {
@@ -201,24 +209,24 @@ public class PeoplePickerPage extends AndroidPage {
         pickerClearBtn.click();
     }
 
-    public boolean isUserVisible(String contact) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.xpath(xpathPeoplePickerContactByName.apply(contact)));
+    public boolean isUserVisible(String name) throws Exception {
+        final By locator = By.xpath(xpathPeoplePickerContactByName.apply(name));
+        return scrollUntilLocatorVisible(locator);
     }
 
-    public boolean isGroupVisible(String contact) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.xpath(xpathPeoplePickerGroupByName.apply(contact)));
+    public boolean isGroupVisible(String name) throws Exception {
+        final By locator = By.xpath(xpathPeoplePickerGroupByName.apply(name));
+        return scrollUntilLocatorVisible(locator);
     }
 
-    public boolean isUserInvisible(String contact) throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-                By.xpath(xpathPeoplePickerContactByName.apply(contact)));
+    public boolean isUserInvisible(String name) throws Exception {
+        return !DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+                By.xpath(xpathPeoplePickerContactByName.apply(name)), 2);
     }
 
-    public boolean isGroupInvisible(String contact) throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-                By.xpath(xpathPeoplePickerGroupByName.apply(contact)));
+    public boolean isGroupInvisible(String name) throws Exception {
+        return !DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+                By.xpath(xpathPeoplePickerGroupByName.apply(name)), 2);
     }
 
     public void doShortSwipeDown() throws Exception {

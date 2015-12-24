@@ -211,7 +211,8 @@ public class PeoplePickerPageSteps {
 			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		} catch (NoSuchUserException e) {
 		}
-		getPeoplePickerPage().waitUserPickerFindUser(contact);
+		Assert.assertTrue(String.format("User '%s' is not visible on People Picker page", contact),
+				getPeoplePickerPage().isUserVisible(contact));
 	}
 
 	/**
@@ -243,7 +244,7 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		getPeoplePickerPage().selectContact(contact);
+		getPeoplePickerPage().selectUser(contact);
 	}
 
 	/**
