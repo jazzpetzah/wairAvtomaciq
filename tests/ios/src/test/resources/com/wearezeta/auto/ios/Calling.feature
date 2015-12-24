@@ -138,22 +138,56 @@ Feature: Calling
     And I press call button
     And I see mute call, end call and speakers buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 300 seconds
+    And I wait for 60 seconds
     And I see mute call, end call and speakers buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 300 seconds
+    And I wait for 60 seconds
     And I see mute call, end call and speakers buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 300 seconds
+    And I wait for 60 seconds
     And I see mute call, end call and speakers buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call and speakers buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call and speakers buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call and speakers buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call and speakers buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call and speakers buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call and speakers buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call and speakers buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call and speakers buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call and speakers buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call and speakers buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call and speakers buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
     And I see mute call, end call and speakers buttons
     And I end started call
     And I dont see calling page
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | firefox     | 300     |
+      | user1Name | user2Name | firefox     | 60      |
 
   @calling_basic @id2296 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Screenlock device when in the call
