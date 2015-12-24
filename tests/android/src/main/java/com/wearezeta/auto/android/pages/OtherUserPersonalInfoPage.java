@@ -66,11 +66,13 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     private WebElement renameButton;
 
     private static final Function<String, String> xpathConvOptionsMenuItemByName = name -> String
-            .format("//*[@id='fl__participant__settings_box']//*[starts-with(@id, 'ttv__settings_box__item') and @value='%s']",
-                    name.toUpperCase());
+            .format("//*[@id='fl__participant__settings_box']"
+                    + "//*[starts-with(@id, 'ttv__settings_box__item') and @value='%s']"
+                    + "/parent::*//*[@id='fl_options_menu_button']", name.toUpperCase());
 
     private static final Function<Integer, String> xpathGroupOptionsMenuItemByIndex = idx -> String
-            .format("(//*[@id='fl__participant__settings_box']//*[starts-with(@id, 'ttv__settings_box__item')])[%d]", idx);
+            .format("(//*[@id='fl__participant__settings_box']//*[starts-with(@id, 'ttv__settings_box__item')])[%d]"
+                            + "/parent::*//*[@id='fl_options_menu_button']", idx);
 
     @FindBy(id = PeoplePickerPage.idParticipantsClose)
     private WebElement closeButton;
@@ -94,6 +96,11 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     @FindBy(xpath = xpathRightActionButton)
     private WebElement rightActionButton;
 
+    public static final String xpathEllipsisButton =
+            "//*[@id='fm__participants__footer']//*[@id='gtv__participants__right__action']";
+    @FindBy(xpath = xpathEllipsisButton)
+    private WebElement ellipsisButton;
+
     private static final String idParticipantsSubHeader = "ttv__participants__sub_header";
     @FindBy(id = idParticipantsSubHeader)
     private WebElement participantsSubHeader;
@@ -107,7 +114,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     }
 
     public void pressOptionsMenuButton() throws Exception {
-        rightActionButton.click();
+        ellipsisButton.click();
     }
 
     public boolean isUnblockBtnVisible() throws Exception {
