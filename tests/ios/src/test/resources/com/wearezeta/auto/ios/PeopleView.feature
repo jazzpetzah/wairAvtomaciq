@@ -244,13 +244,11 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
-    #And I swipe up on dialog page to open other user personal page
     And I open conversation details
     And I see <Contact1> user profile page
     And I press Add button
     And I see People picker page
     And I tap on Search input on People picker page
-    #And I input in People picker search field user name <Contact2>
     And I see user <Contact2> found on People picker page
     And I don't see Add to conversation button
     And I click on connected user <Contact2> avatar on People picker page

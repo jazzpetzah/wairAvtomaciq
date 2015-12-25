@@ -298,15 +298,9 @@ public class PeoplePickerPage extends IOSPage {
 				By.name(IOSLocators.namePeoplePickerAddToConversationButton));
 	}
 
-	public boolean addToConversationNotVisible() {
-		boolean flag;
-		try {
-			addToConversationBtn.click();
-			flag = false;
-		} catch (Exception e) {
-			flag = true;
-		}
-		return flag;
+	public boolean addToConversationNotVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.name(IOSLocators.namePeoplePickerAddToConversationButton));
 	}
 
 	public IOSPage clickOnGoButton(boolean isGroupChat) throws Exception {
