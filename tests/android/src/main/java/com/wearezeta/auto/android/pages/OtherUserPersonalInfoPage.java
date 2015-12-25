@@ -97,7 +97,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     private WebElement rightActionButton;
 
     public static final String xpathEllipsisButton =
-            "//*[@id='fm__participants__footer']//*[@id='gtv__participants__right__action']";
+            "//*[@id='fm__participants__footer' or @id='fm__footer']//*[@id='gtv__participants__right__action']";
     @FindBy(xpath = xpathEllipsisButton)
     private WebElement ellipsisButton;
 
