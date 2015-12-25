@@ -86,7 +86,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     @FindBy(xpath = xpathConfirmBtn)
     private WebElement confirmBtn;
 
-    private static final String xpathLeftActionButton =
+    public static final String xpathLeftActionButton =
             "//*[@id='fm__footer']//*[@id='gtv__participants__left__action']";
     @FindBy(xpath = xpathLeftActionButton)
     private WebElement leftActionButton;

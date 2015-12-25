@@ -3,6 +3,7 @@ package com.wearezeta.auto.android_tablet.pages.popovers;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import com.wearezeta.auto.android.pages.OtherUserPersonalInfoPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -30,8 +31,8 @@ public class ParticipantsPage extends AbstractConversationDetailsPage {
 			.format("//*[@id='ttv__participants__sub_header' and @value='%s']",
 					value);
 
-	private static final String idOpenConversationButton = "gtv__participants__left__action";
-	@FindBy(id = idOpenConversationButton)
+	private static final String xpathOpenConversationButton = OtherUserPersonalInfoPage.xpathLeftActionButton;
+	@FindBy(xpath = xpathOpenConversationButton)
 	private WebElement openConversationButton;
 
 	public ParticipantsPage(Future<ZetaAndroidDriver> lazyDriver,
