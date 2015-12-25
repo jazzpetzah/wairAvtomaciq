@@ -32,7 +32,7 @@ public class PersonalInfoPageSteps {
      */
     @When("^I tap options button$")
     public void WhenITapOptionsButton() throws Exception {
-        getPersonalInfoPage().tapOptionsButton();
+        getPersonalInfoPage().tapEllipsisButton();
     }
 
     /**
@@ -55,7 +55,7 @@ public class PersonalInfoPageSteps {
      */
     @When("^I tap settings button$")
     public void WhenITapSettingsButton() throws Exception {
-        getPersonalInfoPage().tapSettingsButton();
+        getPersonalInfoPage().tapProfileMenuItem("SETTINGS");
     }
 
     /**
@@ -66,7 +66,7 @@ public class PersonalInfoPageSteps {
      */
     @When("^I tap about button$")
     public void WhenITapAboutButton() throws Exception {
-        getPersonalInfoPage().tapAboutButton();
+        getPersonalInfoPage().tapProfileMenuItem("ABOUT");
     }
 
     /**
