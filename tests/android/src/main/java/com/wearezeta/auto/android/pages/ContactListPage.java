@@ -116,10 +116,12 @@ public class ContactListPage extends AndroidPage {
     private WebElement leaveWhileDeleteCheckbox;
 
     private static final Function<String, String> xpathConvoSettingsMenuItemByName = name -> String
-            .format("//*[starts-with(@id, 'ttv__settings_box__item') and @value='%s']",
+            .format("//*[@id='ttv__settings_box__item' and @value='%s']" +
+                    "/parent::*//*[@id='fl_options_menu_button']",
                     name.toUpperCase());
 
-    private static final String xpathSpinnerConversationsListLoadingIndicator = "//*[@id='liv__conversations__loading_indicator']/*";
+    private static final String xpathSpinnerConversationsListLoadingIndicator =
+            "//*[@id='liv__conversations__loading_indicator']/*";
 
     private static final Function<String, String> xpathConversationListEntry = name -> String
             .format("//*[@id='tv_conv_list_topic' and @value='%s']/parent::*//*[@id='civ__list_row']",
