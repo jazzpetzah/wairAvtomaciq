@@ -263,7 +263,12 @@ public class PeoplePickerPage extends IOSPage {
 						By.xpath(String
 								.format(IOSLocators.PeoplePickerPage.xpathSuggestedContactToSwipe,
 										contact)));
-		DriverUtils.swipeRight(this.getDriver(), contactToSwipe, 500, 50, 50);
+		int count = 0;
+		do {
+			DriverUtils.swipeRight(this.getDriver(), contactToSwipe, 500, 50,
+					50);
+			count++;
+		} while (!isHideButtonVisible() || count > 3);
 	}
 
 	public void swipeCompletelyToDismissSuggestedContact(String contact)
@@ -282,7 +287,16 @@ public class PeoplePickerPage extends IOSPage {
 				By.xpath(String.format(
 						IOSLocators.PeoplePickerPage.xpathHideButtonForContact,
 						contact)));
+		DriverUtils
+				.waitUntilElementClickable(getDriver(), hideButtonforContact);
 		hideButtonforContact.click();
+	}
+
+	public boolean isHideButtonVisible() throws Exception {
+		boolean  flag = DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.name(IOSLocators.nameHideSuggestedContactButton));
+		return DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.name(IOSLocators.nameHideSuggestedContactButton));
 	}
 
 	public boolean isSuggestedContactVisible(String contact) throws Exception {
