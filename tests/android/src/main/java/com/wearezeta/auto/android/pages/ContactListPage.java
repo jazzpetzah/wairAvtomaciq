@@ -127,9 +127,6 @@ public class ContactListPage extends AndroidPage {
             .format("//*[@id='tv_conv_list_topic' and @value='%s']/parent::*//*[@id='civ__list_row']",
                     name);
 
-    private static final Function<Integer, String> xpathContactsListOptionsMenuItemByIdx = idx -> String
-            .format("(//*[@id='ttv__settings_box__item'])[%d]", idx);
-
     private static final String idInviteButton = "zb__conversationlist__show_contacts";
     @FindBy(id = idInviteButton)
     private WebElement inviteButton;
@@ -163,7 +160,7 @@ public class ContactListPage extends AndroidPage {
                         final WebElement elem = getDriver()
                                 .findElement(locator);
                         final String name = elem.getText();
-                        if ((name instanceof String) && name.length() > 0) {
+                        if (name != null && name.length() > 0) {
                             if (DriverUtils.waitUntilElementClickable(
                                     getDriver(), elem)) {
                                 return name;
@@ -456,12 +453,6 @@ public class ContactListPage extends AndroidPage {
         final By locator = By.xpath(xpathConvoSettingsMenuItemByName
                 .apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-    }
-
-    public boolean isMenuItemAtCorrectIndex(String name, int position) throws Exception {
-        final By locator = By.xpath(xpathContactsListOptionsMenuItemByIdx.apply(position));
-        String itemName = this.getDriver().findElement(locator).getText();
-        return itemName.equals(name);
     }
 
     public void tapInviteButton() {

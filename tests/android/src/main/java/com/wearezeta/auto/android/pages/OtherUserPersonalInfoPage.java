@@ -20,10 +20,6 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class OtherUserPersonalInfoPage extends AndroidPage {
 
-    @SuppressWarnings("unused")
-    private static final Logger log = ZetaLogger
-            .getLog(OtherUserPersonalInfoPage.class.getSimpleName());
-
     private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.75;
 
     public static final String idConnectRequestUnblock = "zb__connect_request__unblock_button";
@@ -69,10 +65,6 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
             .format("//*[@id='fl__participant__settings_box']"
                     + "//*[starts-with(@id, 'ttv__settings_box__item') and @value='%s']"
                     + "/parent::*//*[@id='fl_options_menu_button']", name.toUpperCase());
-
-    private static final Function<Integer, String> xpathGroupOptionsMenuItemByIndex = idx -> String
-            .format("(//*[@id='fl__participant__settings_box']//*[starts-with(@id, 'ttv__settings_box__item')])[%d]"
-                            + "/parent::*//*[@id='fl_options_menu_button']", idx);
 
     @FindBy(id = PeoplePickerPage.idParticipantsClose)
     private WebElement closeButton;
@@ -291,11 +283,6 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     public boolean isParticipantAvatarVisible(String name) throws Exception {
         final By locator = By.xpath(xpathParticipantAvatarByName.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-    }
-
-    public String getUserProfileMenuItemNameAtIndex(int position) throws Exception {
-        final By locator = By.xpath(xpathGroupOptionsMenuItemByIndex.apply(position));
-        return this.getDriver().findElement(locator).getText();
     }
 
     public boolean isUserProfileMenuItemVisible(String itemName) throws Exception {

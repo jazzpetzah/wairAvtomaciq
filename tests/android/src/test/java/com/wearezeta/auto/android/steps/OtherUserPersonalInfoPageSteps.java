@@ -205,21 +205,20 @@ public class OtherUserPersonalInfoPageSteps {
 		getOtherUserPersonalInfoPage().selectConvoSettingsMenuItem(itemName);
 	}
 
+
 	/**
-	 * Verifys the user profile menu item and its correct position
+	 * Verifys the user profile menu item is visible
 	 *
 	 * @param itemName menu item name
-	 * @param position index position of item in menu
 	 * @throws Exception
-	 * @step. ^I see (.*) button in user profile menu at position (\\d+)$
+	 * @step. ^I see (.*) button in option menu$
 	 */
-	@Then("^I see (.*) button in option menu at position (\\d+)$")
-	public void ISeeButtonInUserProfileMenuAtPosition(String itemName, int position) throws Exception {
+	@Then("^I see (.*) button in option menu$")
+	public void ISeeButtonInUserProfileMenuAtPosition(String itemName) throws Exception {
 		Assert.assertTrue("The user profile menu item is not visible",
 				getOtherUserPersonalInfoPage().isUserProfileMenuItemVisible(itemName));
-		Assert.assertEquals("Menu item is not at correct index", itemName,
-				getOtherUserPersonalInfoPage().getUserProfileMenuItemNameAtIndex(position));
 	}
+
 
 	/**
 	 * Confirms the current user's decision to leave a conversation -outofplace
