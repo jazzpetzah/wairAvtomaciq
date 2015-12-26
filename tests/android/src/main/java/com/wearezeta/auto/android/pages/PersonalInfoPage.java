@@ -129,6 +129,11 @@ public class PersonalInfoPage extends AndroidPage {
         }
     }
 
+    public boolean isProfileMenuItemInvisible(String itemName) throws Exception {
+        final By locator = By.xpath(xpathProfileMenuItem.apply(itemName));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
     public void tapProfileMenuItem(String itemName) throws Exception {
         final By locator = By.xpath(xpathProfileMenuItem.apply(itemName));
         assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) :
