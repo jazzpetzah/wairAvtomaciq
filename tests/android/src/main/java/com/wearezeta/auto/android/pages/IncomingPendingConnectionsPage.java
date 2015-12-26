@@ -47,7 +47,8 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
 	@FindBy(id = PeoplePickerPage.idSendConnectionRequestButton)
 	private WebElement sendConnectionRequestButton;
 
-	private static final String idConnectToCharCounter = "ttv__send_connect_request__connect_button__character_counter";
+	private static final String idConnectToCharCounter =
+            "ttv__send_connect_request__connect_button__character_counter";
 	@FindBy(id = idConnectToCharCounter)
 	private WebElement connectCharCounter;
 
@@ -57,7 +58,7 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
 	private WebElement closeButton;
 
 	private static final Function<String, String> xpathConnectMenuItemByText = text -> String
-			.format("//*[@id='ttv__settings_box__item' and @value='%s']",
+			.format("//*[@id='ttv__settings_box__item' and @value='%s']/parent::*//*[@id='fl_options_menu_button']",
 					text.toUpperCase());
 
 	@FindBy(xpath = OtherUserPersonalInfoPage.xpathRightActionButton)
