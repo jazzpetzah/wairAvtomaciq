@@ -252,7 +252,7 @@ Feature: Calling
       | user1Name | user2Name | autocall    |
 
   @C486 @id2841 @calling_advanced
-  Scenario Outline: (BUG AN-2578) Other wire user trying to call me while I'm already in wire call
+  Scenario Outline: Other wire user trying to call me while I'm already in wire call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to landscape
