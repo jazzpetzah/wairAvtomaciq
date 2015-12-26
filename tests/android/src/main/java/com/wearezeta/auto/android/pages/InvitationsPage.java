@@ -19,10 +19,6 @@ public class InvitationsPage extends AndroidPage {
     @FindBy(id = idInviteMorePeopleContactsBtn)
     private By inviteContactsBtnLocator = By.id(idInviteMorePeopleContactsBtn);
 
-    private static final String idInviteMorePeopleSearchBtn = "zb__pickuser__show_contact_list";
-    @FindBy(id = idInviteMorePeopleSearchBtn)
-    private By inviteSearchBtnLocator = By.id(idInviteMorePeopleSearchBtn);
-
     private static final String idInviteSearchField = "puet_contactlist__searchbox";
     @FindBy(id = idInviteSearchField)
     private WebElement inviteSearchField;
@@ -98,15 +94,6 @@ public class InvitationsPage extends AndroidPage {
     public boolean waitForInviteMorePeopleContactsButtonNotVisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(),
                 inviteContactsBtnLocator);
-    }
-
-    public boolean waitForInviteMorePeopleSearchButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), inviteSearchBtnLocator);
-    }
-
-    public boolean waitForInviteMorePeopleSearchButtonNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-                inviteSearchBtnLocator);
     }
 
     public String getRecentInvitationCode(String email) throws Throwable {
