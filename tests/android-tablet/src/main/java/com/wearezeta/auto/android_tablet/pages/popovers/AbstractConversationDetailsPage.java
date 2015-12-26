@@ -18,8 +18,8 @@ public abstract class AbstractConversationDetailsPage extends
 
 	public final static String idOptionsContainer = "fl__participant__settings_box";
 	public final static Function<String, String> xpathOptionMenuItemByName = itemName -> String
-			.format("//*[@id='%s']//*[@value='%s']/parent::*", idOptionsContainer,
-					itemName.toUpperCase());
+			.format("//*[@id='%s']//*[@value='%s']/parent::*//*[@id='fl_options_menu_button']",
+                    idOptionsContainer, itemName.toUpperCase());
 
 	public final static String xpathAddPeopleButton =
 			"//*[@id='ttv__participants__left_label' and @value='ADD PEOPLE']";
