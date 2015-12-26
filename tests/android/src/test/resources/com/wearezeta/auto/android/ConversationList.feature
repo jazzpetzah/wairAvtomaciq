@@ -217,7 +217,6 @@ Feature: Conversation List
     When I swipe right on a <Contact>
     Then I see ARCHIVE button in conversation settings menu
     And I see BLOCK button in conversation settings menu
-    And I see CANCEL button in conversation settings menu
 
     Examples:
       | Name      | Contact   |
@@ -247,8 +246,7 @@ Feature: Conversation List
     And I see ARCHIVE button in conversation settings menu
     And I see DELETE button in conversation settings menu
     And I see BLOCK button in conversation settings menu
-    Then I see CANCEL button in conversation settings menu
-    And I select CANCEL from conversation settings menu
+    And I press back button
     When I tap on contact name <Contact1>
     And I see dialog page
     And I tap conversation details button
@@ -257,7 +255,6 @@ Feature: Conversation List
     And I see ARCHIVE button in option menu
     And I see DELETE button in option menu
     And I see BLOCK button in option menu
-    And I see CANCEL button in option menu
 
     Examples:
       | Name      | Contact1  |
@@ -275,8 +272,7 @@ Feature: Conversation List
     And I see ARCHIVE button in conversation settings menu
     And I see DELETE button in conversation settings menu
     And I see LEAVE button in conversation settings menu
-    Then I see CANCEL button in conversation settings menu
-    And I select CANCEL from conversation settings menu
+    And I press back button
     When I tap on contact name <GroupChatName>
     And I see dialog page
     And I tap conversation details button
@@ -286,7 +282,6 @@ Feature: Conversation List
     And I see ARCHIVE button in option menu
     And I see DELETE button in option menu
     And I see LEAVE button in option menu
-    And I see CANCEL button in option menu
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
