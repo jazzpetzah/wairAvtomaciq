@@ -239,7 +239,8 @@ public abstract class IOSPage extends BasePage {
 		keyboardEnterBtn.click();
 	}
 
-	public void clickKeyboardReturnButton() {
+	public void clickKeyboardReturnButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), keyboardReturnBtn);
 		keyboardReturnBtn.click();
 	}
 

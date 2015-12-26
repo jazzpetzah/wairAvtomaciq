@@ -194,7 +194,6 @@ Feature: Search
     Given <ContactWithFriends> is connected to <Name>
     Given <ContactWithFriends> is connected to <Friend1>
     Given <ContactWithFriends> is connected to <Friend2>
-    Given <ContactWithFriends> is connected to <Friend3>
     Given I sign in using my email or phone number
     When I see Contact list with my name <Name>
     And I open search by taping on it
@@ -206,8 +205,8 @@ Feature: Search
     Then I do not see suggested contact <Friend1>
 
     Examples: 
-      | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
-      | user1Name | user2Name          | user3Name | user4Name | user5Name |
+      | Name      | ContactWithFriends | Friend1   | Friend2   |
+      | user1Name | user2Name          | user3Name | user4Name |
 
   @regression @rc @id2116
   Scenario Outline: Verify dismissing with one single gesture
