@@ -80,7 +80,7 @@ class GetReportDetails(CliHandlerBase):
         if report_details:
             return '{passed} tests passed out of {all}\n'\
                    '{failed} tests failed out of {all}\n'\
-                   '{skipped} tests were skipped out of {all}\n'.format(**report_details)
+                   '{skipped} tests skipped out of {all}\n'.format(**report_details)
         else:
             return 'The report "{}" does not exist'.format(args.report_path)
 
