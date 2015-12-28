@@ -62,15 +62,16 @@ class GetReportDetails(CliHandlerBase):
         if not os.path.exists(report_path):
             return
         with codecs.open(report_path, 'r', 'utf-8', errors='ignore') as fp:
-            report_dict = json.load(fp)
-        if 'elements' in report_dict and report_dict['elements']:
-            for element in report_dict['elements']:
-                if 'steps' in element and element['steps']:
-                    tc_result = GetReportDetails._parse_test_status(element['steps'])
-                    result[tc_result] += 1
-                else:
-                    result['skipped'] += 1
-                result['all'] += 1
+            report_entries = json.load(fp)
+        for report_entry in report_entries:
+            if 'elements' in report_entry and report_entry['elements']:
+                for element in report_entry['elements']:
+                    if 'steps' in element and element['steps']:
+                        tc_result = GetReportDetails._parse_test_status(element['steps'])
+                        result[tc_result] += 1
+                    else:
+                        result['skipped'] += 1
+                    result['all'] += 1
         return result
 
     def _invoke(self):
