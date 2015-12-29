@@ -5,6 +5,7 @@ Feature: Registration
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
     And I enter user password "<Password>" on Registration page
+    And I accept the Terms of Use
     And I start activation email monitoring
     And I submit registration form
     Then I verify that an envelope icon is shown
@@ -37,8 +38,8 @@ Feature: Registration
     Then <Contact> verifies email is correct on Registration page
     And <Contact> verifies username is correct on Registration page
     And I enter user password "<Password>" on Registration page
+    And I accept the Terms of Use
     And I submit registration form
-    And User <Contact> is Me without avatar
     And I see Self Picture Upload dialog
     And I force carousel mode on Self Picture Upload dialog
     And I select random picture from carousel on Self Picture Upload dialog
@@ -102,6 +103,7 @@ Feature: Registration
     When I enter user name <Name> on Registration page
     And I enter user email <UsedEmail> on Registration page
     And I enter user password "<NewPassword>" on Registration page
+    And I accept the Terms of Use
     And I submit registration form
     Then I see error "Email address already taken" on Verification page
     And I verify that the email field on the registration form is marked as error
@@ -120,6 +122,7 @@ Feature: Registration
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
     And I enter user password "<Password>" on Registration page
+    And I accept the Terms of Use
     And I submit registration form
     Then I verify that the email field on the registration form is marked as error
     And I see error "Sorry. This email address is forbidden." on Verification page
@@ -147,6 +150,7 @@ Feature: Registration
     Given I enter user name <Name> on Registration page
     Given I enter user email <Email> on Registration page
     Given I enter user password "<Password>" on Registration page
+    Given I accept the Terms of Use
     When I submit registration form
     Then I verify that an envelope icon is shown
     And I see email <Email> on Verification page
