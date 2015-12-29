@@ -93,9 +93,6 @@ Feature: Invitations
     And I swipe up
     And I take 2nd screenshot
     Then I compare 1st and 2nd screenshots and they are not different
-    When I swipe down from 20%
-    And I take 2nd screenshot
-    Then I compare 1st and 2nd screenshots and they are not different
     When I swipe right
     And I take 2nd screenshot
     Then I compare 1st and 2nd screenshots and they are not different

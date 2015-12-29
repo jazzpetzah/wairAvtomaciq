@@ -19,11 +19,11 @@ public class InvitationsPage extends AndroidPage {
     @FindBy(id = idInviteMorePeopleContactsBtn)
     private By inviteContactsBtnLocator = By.id(idInviteMorePeopleContactsBtn);
 
-    private static final String idInviteSearchField = "puet_contactlist__searchbox";
+    private static final String idInviteSearchField = "puet_pickuser__searchbox";
     @FindBy(id = idInviteSearchField)
     private WebElement inviteSearchField;
 
-    private static final String idInvitePageCloseBtn = "gtv_contactlist__clearbutton";
+    private static final String idInvitePageCloseBtn = "gtv_pickuser__clearbutton";
     @FindBy(id = idInvitePageCloseBtn)
     private WebElement invitePageCloseBtn;
 
