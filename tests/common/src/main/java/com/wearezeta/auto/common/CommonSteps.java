@@ -286,6 +286,12 @@ public final class CommonSteps {
 		BackendAPIWrappers.acceptAllConnections(userTo);
 	}
 
+	public void UserAddsRemoteDeviceToAccount(String userNameAlias,
+			String deviceName, String label) throws Exception {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(userNameAlias);
+		SEBridge.getInstance().addRemoteDeviceToAccount(user, deviceName, label);
+	}
+
 	public void UserPingedConversation(String pingFromUserNameAlias,
 			String dstConversationName) throws Exception {
 		ClientUser pingFromUser = usrMgr

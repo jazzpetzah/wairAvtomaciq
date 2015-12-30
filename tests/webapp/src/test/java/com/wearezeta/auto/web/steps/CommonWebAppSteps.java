@@ -57,6 +57,7 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+
 import org.openqa.selenium.WebDriverException;
 
 public class CommonWebAppSteps {
@@ -811,6 +812,23 @@ public class CommonWebAppSteps {
 			String userNameAlias) throws Exception {
 		commonSteps
 				.UserXVerifiesSnapshotOfProfilePictureIsDifferent(userNameAlias);
+	}
+
+	/**
+	 * User adds a remote device to his list of devices
+	 *
+	 * @step. user (.*) adds a new device (.*)$
+	 *
+	 * @param userNameAlias
+	 *            user name/alias
+	 * @param deviceName
+	 *            unique name of the device
+	 * @throws Exception
+	 */
+	@When("user (.*) adds a new device (.*) with label (.*)$")
+	public void UserAddRemoteDeviceToAccount(String userNameAlias,
+			String deviceName, String label) throws Exception {
+		commonSteps.UserAddsRemoteDeviceToAccount(userNameAlias, deviceName, label);
 	}
 
 	/**
