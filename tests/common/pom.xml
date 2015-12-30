@@ -135,7 +135,7 @@
 		<dependency>
 			<groupId>com.wearezeta</groupId>
 			<artifactId>zmessaging-actor</artifactId>
-			<version>56.290</version>
+			<version>57.301</version>
 		</dependency>
 
     </dependencies>
