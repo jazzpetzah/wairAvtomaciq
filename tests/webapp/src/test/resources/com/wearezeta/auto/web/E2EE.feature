@@ -1,6 +1,6 @@
 Feature: E2EE
 
-  @regression @c1846
+  @regression @C1846
   Scenario Outline: Remove remote device from device list
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
@@ -32,7 +32,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Device  | Label  |
       | user1Email | user1Password | user1Name | Remote1 | Label1 |
 
-  @regression @c1847
+  @regression @C1847
   Scenario Outline: Login as permanent device after permanent device limit is reached
     Given There is 1 user where <Name> is me
     Given user <Name> adds a new device Device1 with label Label1
@@ -42,13 +42,28 @@ Feature: E2EE
     Given user <Name> adds a new device Device5 with label Label5
     Given user <Name> adds a new device Device6 with label Label6
     Given user <Name> adds a new device Device7 with label Label7
-    Given user <Name> adds a new device Device8 with label Label8
     Given I switch to Sign In page
     Given I enter email "<Email>"
     Given I enter password "<Password>"
     Given I check option to remember me
-    Given I press Sign In button
-    And I wait for 60 seconds
+    When I press Sign In button
+    Then I am informed about the device limit
+    When I click on Sign Out on the device limit page
+    Then I see Sign In page
+    When I enter email "<Email>"
+    And I enter password "<Password>"
+    And I check option to remember me
+    And I press Sign In button
+    Then I am informed about the device limit
+    When I click button to manage devices
+    Then I see 7 devices under managed devices
+    And I see a device named Device1 with label Label1 under managed devices
+    And I see a device named Device2 with label Label2 under managed devices
+    And I see a device named Device3 with label Label3 under managed devices
+    And I see a device named Device4 with label Label4 under managed devices
+    And I see a device named Device5 with label Label5 under managed devices
+    And I see a device named Device6 with label Label6 under managed devices
+    And I see a device named Device7 with label Label7 under managed devices
 
     Examples: 
       | Email      | Password      | Name      |

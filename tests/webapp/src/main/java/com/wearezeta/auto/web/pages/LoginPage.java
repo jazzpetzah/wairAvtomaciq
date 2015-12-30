@@ -46,6 +46,9 @@ public class LoginPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssRememberMe)
 	private WebElement rememberMe;
 
+	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssForgotPassword)
+	private WebElement forgotPasswordButton;
+
 	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssLoginErrorText)
 	private WebElement loginErrorText;
 
@@ -65,8 +68,10 @@ public class LoginPage extends WebPage {
 	}
 
 	public boolean isVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(WebAppLocators.LoginPage.xpathSignInButton));
+		return DriverUtils.waitUntilElementClickable(this.getDriver(),
+				createAccountButton)
+				&& DriverUtils.waitUntilElementClickable(this.getDriver(),
+						forgotPasswordButton);
 	}
 
 	public boolean isSignInButtonDisabled() throws Exception {

@@ -41,7 +41,9 @@ public final class WebAppLocators {
 
 		public static final String errorMarkedPasswordField = "#form-account-login .input-error[data-uie-name='enter-password']";
 
-		public static final String cssRememberMe = "[data-uie-name='enter-remember-sign-in']";
+		public static final String cssRememberMe = "#remember-me label";
+
+		public static final String cssForgotPassword = "[data-uie-name='go-forgot-password']";
 	}
 
 	public static final class ContactListPage {
