@@ -15,8 +15,7 @@ public class IOSPerfReportModel extends PerfReportModel {
 
 	private static final String CONTACT_LIST_LOADED_REGEX = "Contact List load after ([\\d]+)";
 
-	// FIXME: replace with message without mistakes after developers will fix it
-	private static final String CONVERSATION_PAGE_VISIBLE_REGEX = "Conver?sation loaded afth?er ([\\d]+)";
+	private static final String CONVERSATION_PAGE_VISIBLE_REGEX = "Convesation loaded after ([\\d]+)";
 
 	private static final Logger log = ZetaLogger
 			.getLog(IOSPerfReportModel.class.getSimpleName());

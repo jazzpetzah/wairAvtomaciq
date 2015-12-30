@@ -58,7 +58,7 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
 			.format("//*[@id='ttv__settings_box__item' and @value='%s']",
 					text.toUpperCase());
 
-	@FindBy(id = OtherUserPersonalInfoPage.idRightActionButton)
+	@FindBy(xpath = OtherUserPersonalInfoPage.xpathRightActionButton)
 	private WebElement ellipsisButton;
 
 	@FindBy(xpath = xpathConfirmBtn)

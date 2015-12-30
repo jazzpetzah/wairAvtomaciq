@@ -19,23 +19,6 @@ public class PeoplePickerPage extends AndroidPage {
 
     public static final String idParticipantsClose = "gtv__participants__close";
 
-    // numbering starts from 1
-    private static final Function<Integer, String> xpathPYMKItemByIdx = idx -> String
-            .format("(//*[@id='ll__pickuser__sliding_row'])[%d]", idx);
-    private static final Function<Integer, String> xpathPYMKItemByIdxLabel = idx -> String
-            .format("%s//*[@id='ttv_pickuser__recommended_name']",
-                    xpathPYMKItemByIdx.apply(idx));
-    private static final Function<Integer, String> xpathPYMKItemByIdxPlusButton = idx -> String
-            .format("%s//*[@id='gtv__pickuser__recommended__quick_add']",
-                    xpathPYMKItemByIdx.apply(idx));
-    private static final Function<Integer, String> xpathPYMKItemByIdxHideButton = idx -> String
-            .format("%s/parent::*//*[@value='HIDE']",
-                    xpathPYMKItemByIdx.apply(idx));
-
-    private static final Function<String, String> xpathPYMKItemByName = name -> String
-            .format("//*[@id='ll__pickuser__sliding_row' and .//*[@value='%s']]",
-                    name);
-
     public static final String idPickerSearch = "puet_pickuser__searchbox";
 
     public static final String idPeoplePickerClearbtn = "gtv_pickuser__clearbutton";
@@ -55,14 +38,8 @@ public class PeoplePickerPage extends AndroidPage {
                     name);
 
     public static final Function<String, String> xpathPeoplePickerContactByName = name -> String
-            .format("//*[@id='ttv_pickuser__searchuser_name' and @value='%s']",
+            .format("//*[@id='ttv_pickuser__searchuser_name' and @value='%s']/parent::*/parent::*",
                     name);
-
-    private static final String idPickerSearchUsers = "ttv_pickuser__searchuser_name";
-    @FindBy(id = idPickerSearchUsers)
-    private WebElement pickerSearchUser;
-    private static final Function<String, String> xpathPickerUserByName = name -> String
-            .format("//*[@id='%s' and @value='%s']", idPickerSearchUsers, name);
 
     private static final String idTopPeopleRoot = "rv_top_users";
 
@@ -164,17 +141,21 @@ public class PeoplePickerPage extends AndroidPage {
     }
 
     public void selectContact(String contactName) throws Exception {
-        assert DriverUtils.waitUntilElementClickable(getDriver(),
-                pickerSearchUser) : String.format(
-                "The user '%s' has not been found in People Picker",
-                contactName);
-        pickerSearchUser.click();
+        final By locator = By.xpath(xpathPeoplePickerContactByName.apply(contactName));
+        this.hideKeyboard();
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) :
+                String.format(
+                        "The user '%s' has not been found in People Picker",
+                        contactName);
+        getDriver().findElement(locator).click();
     }
 
-    public void selectGroup(String contactName) throws Exception {
+    public void selectGroup(String name) throws Exception {
         final By locator = By.xpath(xpathPeoplePickerGroupByName
-                .apply(contactName));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+                .apply(name));
+        this.hideKeyboard();
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) :
+                String.format("The group '%s' is not present on People Picker page", name);
         this.getDriver().findElement(locator).click();
     }
 
@@ -188,7 +169,8 @@ public class PeoplePickerPage extends AndroidPage {
     }
 
     public void waitUserPickerFindUser(String contactName) throws Exception {
-        final By locator = By.xpath(xpathPickerUserByName.apply(contactName));
+        final By locator = By.xpath(xpathPeoplePickerContactByName.apply(contactName));
+        this.hideKeyboard();
         assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : String
                 .format("User '%s' does not exist in the People Picker list",
                         contactName);
@@ -208,8 +190,8 @@ public class PeoplePickerPage extends AndroidPage {
     }
 
     public void tapCreateConversation() throws Exception {
-        // this.hideKeyboard();
-        assert waitUntilOpenOrCreateConversationButtonIsVisible() : "Create/Open Conversation button is not visible in People Picker";
+        assert waitUntilOpenOrCreateConversationButtonIsVisible() :
+                "Create/Open Conversation button is not visible in People Picker";
         createOrOpenConversation.click();
     }
 
@@ -237,61 +219,6 @@ public class PeoplePickerPage extends AndroidPage {
     public boolean isGroupInvisible(String contact) throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
                 By.xpath(xpathPeoplePickerGroupByName.apply(contact)));
-    }
-
-    // !!! Indexing starts from 1
-
-    public String getPYMKItemName(int index) throws Exception {
-        final By locator = By.xpath(xpathPYMKItemByIdxLabel.apply(index));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-        return getDriver().findElement(locator).getText();
-    }
-
-    public void clickPlusOnPYMKItem(int index) throws Exception {
-        final By locator = By.xpath(xpathPYMKItemByIdxPlusButton.apply(index));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-        this.getDriver().findElement(locator).click();
-    }
-
-    public void longSwipeRigthOnPYMKItem(int index) throws Exception {
-        final By locator = By.xpath(xpathPYMKItemByIdx.apply(index));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-        DriverUtils.swipeRight(getDriver(), getDriver().findElement(locator),
-                1000, 10, 50, 75, 50);
-    }
-
-    public void shortSwipeRigthOnPYMKItem(int index) throws Exception {
-        final By locator = By.xpath(xpathPYMKItemByIdx.apply(index));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-        DriverUtils.swipeRight(getDriver(), getDriver().findElement(locator),
-                1000, 10, 50, 50, 50);
-    }
-
-    public void clickHideButtonOnPYMKItem(int index) throws Exception {
-        final By locator = By.xpath(xpathPYMKItemByIdxHideButton.apply(index));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-        this.getDriver().findElement(locator).click();
-    }
-
-    public boolean isUserInPYMKList(String name) throws Exception {
-        final By locator = By.xpath(xpathPYMKItemByName.apply(name));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-    }
-
-    public boolean waitUntilPYMKItemIsInvisible(String name) throws Exception {
-        final By locator = By.xpath(xpathPYMKItemByName.apply(name));
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
-    }
-
-    public boolean waitUntilPYMKItemIsVisible(int index) throws Exception {
-        final By locator = By.xpath(xpathPYMKItemByIdx.apply(index));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-    }
-
-    public void tapPYMKItem(int index) throws Exception {
-        final By locator = By.xpath(xpathPYMKItemByIdx.apply(index));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : "The first PYMK item is not visible";
-        getDriver().findElement(locator).click();
     }
 
     public void doShortSwipeDown() throws Exception {

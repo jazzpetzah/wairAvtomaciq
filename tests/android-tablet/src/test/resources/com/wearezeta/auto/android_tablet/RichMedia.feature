@@ -1,6 +1,6 @@
 Feature: Rich Media
 
-  @id2830 @regression @rc
+  @C759 @id2830 @regression @rc
   Scenario Outline: Send GIF format pic (portrait)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -21,7 +21,7 @@ Feature: Rich Media
       | Name      | Contact   | GifName      |
       | user1Name | user2Name | animated.gif |
 
-  @id3141 @regression @rc
+  @C796 @id3141 @regression @rc
   Scenario Outline: Send GIF format pic (landscape)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -42,7 +42,7 @@ Feature: Rich Media
       | Name      | Contact   | GifName      |
       | user1Name | user2Name | animated.gif |
 
-  @id2884 @regression @rc
+  @C774 @id2884 @regression @rc
   Scenario Outline: Verify you can play/pause media from the conversation list (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -68,7 +68,7 @@ Feature: Rich Media
       | Name      | Contact   | SoundCloudLink                                             |
       | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
-  @id3144 @regression @rc
+  @C798 @id3144 @regression @rc
   Scenario Outline: Verify you can play/pause media from the conversation list (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -93,7 +93,7 @@ Feature: Rich Media
       | Name      | Contact   | SoundCloudLink                                             |
       | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
-  @id2991 @regression @rc
+  @C788 @id2991 @regression @rc
   Scenario Outline: I can send giphy image by typing some massage and clicking GIF button (portrait)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -119,7 +119,7 @@ Feature: Rich Media
       | Name      | Contact   | Message |
       | user1Name | user2Name | H       |
 
-  @id3142 @regression @rc
+  @C797 @id3142 @regression @rc
   Scenario Outline: I can send giphy image by typing some massage and clicking GIF button (landscape)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -145,7 +145,7 @@ Feature: Rich Media
       | Name      | Contact   | Message |
       | user1Name | user2Name | H       |
 
-  @id2880 @regression
+  @C502 @id2880 @regression
   Scenario Outline: Verify you can play/pause media from the Media Bar in conversation view (portrait only)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

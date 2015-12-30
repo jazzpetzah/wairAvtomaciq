@@ -1,6 +1,6 @@
 Feature: Ping
 
-  @id2253 @regression @rc
+  @C737 @id2253 @regression @rc
   Scenario Outline: (AN-2955) Send ping and ping again to contact in portrait mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -21,7 +21,7 @@ Feature: Ping
       | Name      | Contact   | Message1   | Message2         |
       | user1Name | user2Name | YOU PINGED | YOU PINGED AGAIN |
 
-  @id2239 @regression @rc
+  @C727 @id2239 @regression @rc
   Scenario Outline: (AN-2955) Send ping and ping again to contact in landscape mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -42,7 +42,7 @@ Feature: Ping
       | Name      | Contact   | Message1   | Message2         |
       | user1Name | user2Name | YOU PINGED | YOU PINGED AGAIN |
 
-  @id2863 @regression @rc
+  @C766 @id2863 @regression @rc
   Scenario Outline: Receive "Ping" and "Ping Again" in group conversation (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -63,7 +63,7 @@ Feature: Ping
       | Name      | Contact1  | Contact2  | GroupChatName | PingMessage      | HotPingMessage         |
       | user1Name | user2Name | user3Name | PingChat      | user2Name PINGED | user2Name PINGED AGAIN |
 
-  @id3262 @regression @rc
+  @C812 @id3262 @regression @rc
   Scenario Outline: Receive "Ping" and "Ping Again" in group conversation (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

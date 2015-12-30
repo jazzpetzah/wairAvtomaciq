@@ -153,9 +153,9 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | firefox     | 30      |
+      | user1Name | user2Name | firefox     | 300     |
 
-  @calling_basic @id2296
+  @calling_basic @id2296 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Screenlock device when in the call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -177,7 +177,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | firefox     | 60      |
 
-  @staging @id2645
+  @regression @id2645
   Scenario Outline: 3rd person tries to call me after I initate a call to somebody
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -207,7 +207,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | user3Name | firefox     | autocall     | 120     |
 
-  @calling_basic @id2646
+  @calling_basic @id2646 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Put app into background after initiating call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -302,8 +302,8 @@ Feature: Calling
     Then <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
 
     Examples: 
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName      | CallBackend | CallBackend2 |NumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | firefox     | autocall     | 5              |
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName      | CallBackend | CallBackend2 | NumberOfAvatars |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | firefox     | autocall     | 5               |
 
   @regression @id2683
   Scenario Outline: Verify ignoring group call in foreground
@@ -326,7 +326,6 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName     | CallBackend | CallBackend2 |
       | user1Name | user2Name | user3Name | IgnoringGROUPCALL | firefox     | autocall     |
 
-
   @regression @rc @id2686
   Scenario Outline: Verify receiving group call during 1-to-1 call (and accepting it)
     Given There are 5 users where <Name> is me
@@ -339,7 +338,7 @@ Feature: Calling
     And I see Contact list with my name <Name>
     When <Contact1> calls me using <CallBackend2>
     And I accept incoming call
-    And I wait for 5 seconds
+    And I dont see calling page
     And I tap on contact name <Contact1>
     Then I see mute call, end call and speakers buttons
     When <Contact2> calls <GroupChatName> using <CallBackend2>
@@ -547,6 +546,7 @@ Feature: Calling
     And I click Remove
     And I see warning message
     And I confirm remove
+    And I click close user profile page button
     Then I see that <Contact2> is not present on group chat info page
     And I exit the group info page
     Then I see <NewNumberOfAvatars> avatars in the group call bar
@@ -584,12 +584,13 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars | Timeout |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | FullGROUPCALL | firefox     | autocall     | 5               | 60      |
 
-  @calling_basic @rc @id880
+  @calling_basic @rc @id880 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Verify putting client to the background during 1-to-1 call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call

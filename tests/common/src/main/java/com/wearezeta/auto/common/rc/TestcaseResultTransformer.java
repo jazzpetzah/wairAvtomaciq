@@ -6,12 +6,17 @@ import gherkin.formatter.model.Step;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.wearezeta.auto.common.zephyr.ZephyrExecutionStatus;
 
-public class TestcaseResultAnalyzer {
+public abstract class TestcaseResultTransformer {
 	private static final String GIVEN_KEYWORD = "given";
 
-	private static boolean isPassed(Map<Step, String> testcase) {
+    private Map<Step, String> testcase;
+
+    public TestcaseResultTransformer(Map<Step, String> testcase) {
+        this.testcase = testcase;
+    }
+
+	protected boolean isPassed() {
 		boolean isPending = false;
 		for (Entry<Step, String> entry : testcase.entrySet()) {
 			final String stepResult = entry.getValue();
@@ -31,7 +36,7 @@ public class TestcaseResultAnalyzer {
 		return true;
 	}
 
-	private static boolean isFailed(Map<Step, String> testcase) {
+	protected boolean isFailed() {
 		for (Entry<Step, String> entry : testcase.entrySet()) {
 			final String stepResult = entry.getValue();
 			final Step stepObj = entry.getKey();
@@ -45,7 +50,7 @@ public class TestcaseResultAnalyzer {
 		return false;
 	}
 
-	private static boolean isSkipped(Map<Step, String> testcase) {
+	protected boolean isSkipped() {
 		for (Entry<Step, String> entry : testcase.entrySet()) {
 			final String stepResult = entry.getValue();
 			if (stepResult.equals(Result.SKIPPED.toString())) {
@@ -53,16 +58,5 @@ public class TestcaseResultAnalyzer {
 			}
 		}
 		return true;
-	}
-
-	public static ZephyrExecutionStatus analyzeSteps(Map<Step, String> testcase) {
-		if (isPassed(testcase)) {
-			return ZephyrExecutionStatus.Pass;
-		} else if (isFailed(testcase)) {
-			return ZephyrExecutionStatus.Fail;
-		} else if (isSkipped(testcase)) {
-			return ZephyrExecutionStatus.Blocked;
-		}
-		return ZephyrExecutionStatus.Fail;
 	}
 }

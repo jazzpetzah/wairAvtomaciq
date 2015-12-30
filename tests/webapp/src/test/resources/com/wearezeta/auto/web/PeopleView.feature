@@ -1,6 +1,6 @@
 Feature: People View
 
-  @regression @id1686
+  @C1708 @regression @id1686
   Scenario Outline: Verify you can access proﬁle information for the other participant in a 1to1 conversation
     Given There are 2 users where <Name> is me
     Given User <Contact> changes avatar picture to <Avatar>
@@ -21,7 +21,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact   | Avatar                   |
       | user1Email | user1Password | user1Name | user2Name | userpicture_portrait.jpg |
 
-  @regression @id1692
+  @C1712 @regression @id1692
   Scenario Outline: Leave from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -44,7 +44,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       | Message  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat | YOU LEFT |
 
-  @regression @id1694
+  @C1713 @regression @id1694
   Scenario Outline: Verify you can remove participants from a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -65,7 +65,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       | Message     |
       | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat | YOU REMOVED |
 
-  @regression @id2268
+  @C1777 @regression @id2268
   Scenario Outline: Verify I can see participant profile of user that you requested to connect with in a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <KnownContact>
@@ -93,7 +93,7 @@ Feature: People View
       | Login      | Password      | Name      | KnownContact | UnknownContact | ChatName               | Message   |
       | user1Email | user1Password | user1Name | user2Name    | user3Name      | PeoplePopoverGroupChat | YOU ADDED |
 
-  @regression @id2269
+  @C1778 @regression @id2269
   Scenario Outline: Verify I can see participant profile of user who has requested to connect with you in a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <KnownContact>
@@ -124,7 +124,7 @@ Feature: People View
       | Login      | Password      | Name      | KnownContact | UnknownContact | UnknownContactMail | ChatName               | Message   |
       | user1Email | user1Password | user1Name | user2Name    | user3Name      | user3Email         | PeoplePopoverGroupChat | YOU ADDED |
 
-  @regression @id2270
+  @C1779 @regression @id2270
   Scenario Outline: Verify I can see participant profile of connected user in a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <KnownContact>
@@ -147,7 +147,7 @@ Feature: People View
       | Login      | Password      | Name      | KnownContact | KnownContactMail | UnknownContact | ChatName               | Message   |
       | user1Email | user1Password | user1Name | user2Name    | user2Email       | user3Name      | PeoplePopoverGroupChat | YOU ADDED |
 
-  @regression @id2271
+  @C1780 @regression @id2271
   Scenario Outline: Verify I can see participant profile of user I blocked in a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <KnownContact>
@@ -177,7 +177,7 @@ Feature: People View
       | Login      | Password      | Name      | KnownContact | KnownContactMail | UnknownContact | ChatName               | Message   |
       | user1Email | user1Password | user1Name | user2Name    | user2Email       | user3Name      | PeoplePopoverGroupChat | YOU ADDED |
 
-  @regression @id1703
+  @C1716 @regression @id1703
   Scenario Outline: Verify I can see participant profile of myself in a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <KnownContact>
@@ -203,7 +203,7 @@ Feature: People View
       | Login      | Password      | Name      | Mail       | KnownContact | KnownContactMail | UnknownContact | ChatName               | Message   |
       | user1Email | user1Password | user1Name | user1Email | user2Name    | user2Email       | user3Name      | PeoplePopoverGroupChat | YOU ADDED |
 
-  @regression @id1551
+  @C1693 @regression @id1551
   Scenario Outline: Verify I can ignore connection request in a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <KnownContact>
@@ -229,7 +229,7 @@ Feature: People View
       | Login      | Password      | Name      | KnownContact | UnknownContact | UnknownContactMail | ChatName               | Message   |
       | user1Email | user1Password | user1Name | user2Name    | user3Name      | user3Email         | PeoplePopoverGroupChat | YOU ADDED |
 
-  @regression @id1700
+  @C1715 @regression @id1700
   Scenario Outline: Verify users can properly leave a group conversation on the other end
     Given There are 4 users where <Name> is me
     Given Myself is connected to <KnownContact>
@@ -265,7 +265,7 @@ Feature: People View
       | Login      | Password      | Name      | KnownContact | KnownContactPassword | UnknownContact | UnknownContact2 | ChatName               | MessageLeft |
       | user1Email | user1Password | user1Name | user2Name    | user2Password        | user3Name      | user4Name       | PeoplePopoverGroupChat | LEFT        |
 
-  @smoke @id1687
+  @C1709 @smoke @id1687
   Scenario Outline: Verify you can add participants to the group conversation by searching the user directory
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
@@ -302,7 +302,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName       | Message   |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | AddToGroupChat | YOU ADDED |
 
-  @smoke @id1683
+  @C1707 @smoke @id1683
   Scenario Outline: Verify the name of the group conversation can be edited
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -321,7 +321,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName     | ChatNameEdit   | Message                  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | BaseChatName | EditedCahtName | RENAMED THE CONVERSATION |
 
-  @regression @id1697
+  @C1714 @regression @id1697
   Scenario Outline: Verify the new conversation is created on the other end from 1to1
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -363,7 +363,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | Message                         | Message2                    |
       | user1Email | user1Password | user1Name | user2Name | user3Name | YOU STARTED A CONVERSATION WITH | STARTED A CONVERSATION WITH |
 
-  @regression @id1557
+  @C1697 @regression @id1557
   Scenario Outline: Verify you can unblock someone from a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

@@ -20,10 +20,6 @@ public class PeoplePickerPageSteps {
 		return pagesCollection.getPage(PeoplePickerPage.class);
 	}
 
-	private ContactListPage getContactListPage() throws Exception {
-		return pagesCollection.getPage(ContactListPage.class);
-	}
-
 	/**
 	 * Checks to see that the people picker page (search view) is visible
 	 * 
@@ -302,114 +298,6 @@ public class PeoplePickerPageSteps {
 		getPeoplePickerPage().navigateBack();
 	}
 
-	private String rememberedPYMKItemName = null;
-
-	/**
-	 * Saves the name of the first PYMK item into an internal variable
-	 * 
-	 * @step. ^I remember the name of the first PYMK item$
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I remember the name of the first PYMK item$")
-	public void IRememeberTheNameOfFirstPYMKItem() throws Exception {
-		rememberedPYMKItemName = getPeoplePickerPage().getPYMKItemName(1);
-	}
-
-	/**
-	 * Click + button on the first PYMK item
-	 * 
-	 * @step. ^I click \\+ button on the first PYMK item$
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I click \\+ button on the first PYMK item$")
-	public void IClickPlusButtonOnTheFirstPYMKItem() throws Exception {
-		getPeoplePickerPage().clickPlusOnPYMKItem(1);
-	}
-
-	/**
-	 * Tap the very first item in PYMK list
-	 * 
-	 * @step. ^I tap the first PYMK item$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I tap the first PYMK item$")
-	public void ITapTheFirstPYMKItem() throws Exception {
-		getPeoplePickerPage().tapPYMKItem(1);
-	}
-
-	/**
-	 * Do short or long swipe right the first PYMK entry
-	 * 
-	 * @step. ^I do (short|long) swipe right on the first PYMK item$
-	 * @param swipeType
-	 *            either short or long
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I do (short|long) swipe right on the first PYMK item$")
-	public void IDoShortOrLongSwipeRightOnFirstPYMKItem(String swipeType)
-			throws Exception {
-		if (swipeType.equals("short")) {
-			getPeoplePickerPage().shortSwipeRigthOnPYMKItem(1);
-		} else if (swipeType.equals("long")) {
-			getPeoplePickerPage().longSwipeRigthOnPYMKItem(1);
-		}
-	}
-
-	/**
-	 * Hide random connect by Hide button
-	 * 
-	 * @step. ^I click hide button on the first PYMK item$
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I click hide button on the first PYMK item$")
-	public void IClickHideButtonOnTheFirstPYMKItem() throws Exception {
-		getPeoplePickerPage().clickHideButtonOnPYMKItem(1);
-	}
-
-	/**
-	 * Verify that the previously remembered PYMK item is not visible anymore
-	 * 
-	 * @step. ^I do not see the previously remembered PYMK item$
-	 * @throws Exception
-	 * 
-	 */
-	@Then("^I do not see the previously remembered PYMK item$")
-	public void IDonotSeePreviouslyRememberedPYMKItem() throws Exception {
-		if (rememberedPYMKItemName == null) {
-			throw new IllegalStateException(
-					"Please call the corresponding step to remember PYMK item name first");
-		}
-		Assert.assertTrue(getPeoplePickerPage().waitUntilPYMKItemIsInvisible(
-				rememberedPYMKItemName));
-	}
-
-	/**
-	 * Verify whether the previously remembered PYMK item exists in the
-	 * conversations list
-	 * 
-	 * @step. ^I see contact list with the previously remembered PYMK item$
-	 * 
-	 * @throws Exception
-	 */
-	@Then("^I see contact list with the previously remembered PYMK item$")
-	public void ISeeContactListWithPReviouslyRememberedPYMKItem()
-			throws Exception {
-		if (rememberedPYMKItemName == null) {
-			throw new IllegalStateException(
-					"Please call the corresponding step to remember PYMK item name first");
-		}
-		Assert.assertTrue(String.format(
-				"There is no '%s' conversation in the list",
-				rememberedPYMKItemName),
-				getContactListPage().isContactExists(rememberedPYMKItemName));
-	}
-
 	/**
 	 * Check that user exists in People picker
 	 * 
@@ -427,27 +315,6 @@ public class PeoplePickerPageSteps {
 		Assert.assertTrue(String.format(
 				"User '%s' is not visible in People Picker", contact),
 				getPeoplePickerPage().isUserVisible(contact));
-	}
-
-	/**
-	 * Check that user exists in the PYMK list in People picker
-	 * 
-	 * @step. ^I see recommended user (.*) in [Pp]eople [Pp]icker$
-	 * 
-	 * @param contact
-	 * 
-	 * @throws Throwable
-	 */
-	@Then("^I see recommended user (.*) in [Pp]eople [Pp]icker$")
-	public void ThenISeeRecommendedUserInPeoplePicker(String contact)
-			throws Throwable {
-		try {
-			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		} catch (NoSuchUserException e) {
-		}
-		Assert.assertTrue(String.format(
-				"User '%s' is not visible in recommended list", contact),
-				getPeoplePickerPage().isUserInPYMKList(contact));
 	}
 
 	/**
@@ -503,33 +370,6 @@ public class PeoplePickerPageSteps {
 					"TOP PEOPLE overlay is visible, but it should be hidden",
 					getPeoplePickerPage().waitUntilTopPeopleHeaderInvisible());
 		}
-	}
-
-	private final static long PYMK_VISIBLITY_TIMEOUT_MILLISECONDS = 120 * 1000;
-
-	/**
-	 * Reopen People Picker until PYMK appear on the screen
-	 * 
-	 * @step. ^I keep reopening People Picker until PYMK are visible$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I keep reopening People Picker until PYMK are visible$")
-	public void ReopenPeoplePickerUntilPYMKAppears() throws Exception {
-		final long millisecondsStarted = System.currentTimeMillis();
-		while (!getPeoplePickerPage().waitUntilPYMKItemIsVisible(1)
-				&& System.currentTimeMillis() - millisecondsStarted <= PYMK_VISIBLITY_TIMEOUT_MILLISECONDS) {
-			getPeoplePickerPage().tapClearButton();
-			Thread.sleep(3000);
-			((ContactListPage) pagesCollection.getPage(ContactListPage.class))
-					.tapOnSearchButton();
-			getPeoplePickerPage().hideKeyboard();
-		}
-		getPeoplePickerPage().hideKeyboard();
-		Assert.assertTrue(String.format(
-				"PYMK section has not been shown after %s seconds timeout",
-				PYMK_VISIBLITY_TIMEOUT_MILLISECONDS / 1000),
-				getPeoplePickerPage().waitUntilPYMKItemIsVisible(1));
 	}
 
 	/**

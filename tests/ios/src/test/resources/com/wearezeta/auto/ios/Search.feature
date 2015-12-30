@@ -450,7 +450,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @staging @id2120
+  @regression @id2120
   Scenario Outline: Verify impossibility of dismissing if search isn't empty
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -465,7 +465,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id4118
+  @regression @id4118
   Scenario Outline: Verify action buttons appear after choosing user from search results
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users

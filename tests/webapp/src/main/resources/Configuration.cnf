@@ -20,3 +20,5 @@ extendedLoggingLevel=${extendedLoggingLevel}
 #staging, production, edge
 backendType=${backendType}
 rcNotificationsRecepients=${rcNotificationsRecepients}
+testrailUser=smoketester+webapp@wire.com
+testrailToken=tCzqgGGNbbgAHsm4bYOV-0NAyG4.RwaoX7dOwAvwM

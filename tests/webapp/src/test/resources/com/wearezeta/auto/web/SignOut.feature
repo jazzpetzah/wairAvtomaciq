@@ -1,6 +1,6 @@
 Feature: Sign Out
 
-  @regression @id1790
+  @C1736 @regression @id1790
   Scenario Outline: Switch signed-in user
     Given There are 2 users where <Name> is me
     Given I switch to Sign In page
