@@ -239,12 +239,6 @@ public class CommonAndroidTabletSteps {
                 .getInstance(ListenerType.DEFAULT), loggingProfile);
 
         commonSteps.getUserManager().resetUsers();
-
-        try {
-            SEBridge.getInstance().reset();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     /**

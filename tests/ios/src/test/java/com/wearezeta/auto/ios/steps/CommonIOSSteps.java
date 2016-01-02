@@ -651,12 +651,6 @@ public class CommonIOSSteps {
 		}
 
 		commonSteps.getUserManager().resetUsers();
-
-		try {
-			SEBridge.getInstance().reset();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	public Date getTestStartedDate() {

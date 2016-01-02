@@ -24,7 +24,7 @@ public class SEBridge {
 	static {
 		devicePool = pool.submit(() -> new UserDevicePool(CommonUtils
 				.getBackendType(CommonUtils.class)));
-		Runtime.getRuntime().addShutdownHook(new Thread(() -> shutdown()));
+		Runtime.getRuntime().addShutdownHook(new Thread(SEBridge::shutdown));
 	}
 
 	private SEBridge() {
@@ -45,7 +45,7 @@ public class SEBridge {
 		if (dstDevice.hasLoggedInUser() && !dstDevice.isLoggedInUser(user)) {
 			LOG.info("Logout as user " + user.getName() + " with device "
 					+ dstDevice.name());
-			this.logout(user, dstDevice);
+			this.logout(dstDevice);
 		}
 		if (!dstDevice.isLoggedInUser(user)) {
 			LOG.info("Login as user " + user.getName() + " with device "
@@ -54,7 +54,7 @@ public class SEBridge {
 		}
 	}
 
-	private void logout(ClientUser user, IDevice dstDevice) throws Exception {
+	private void logout(IDevice dstDevice) throws Exception {
 		if (dstDevice.hasLoggedInUser()) {
 			dstDevice.logout();
 		}
@@ -78,11 +78,6 @@ public class SEBridge {
 		getOrAddRandomDevice(userFrom).sendMessage(convId, message);
 	}
 
-	public void addRemoteDeviceToAccount(ClientUser user) throws Exception {
-		IDevice dstDevice = this.getDevicePool().addDevice(user);
-		this.login(user, dstDevice);
-	}
-
 	public void addRemoteDeviceToAccount(ClientUser user, String deviceName, String label)
 			throws Exception {
 		IDevice dstDevice = this.getDevicePool().addDevice(user, deviceName);
@@ -95,10 +90,6 @@ public class SEBridge {
 			throws Exception {
 		verifyPathExists(path);
 		getDevicePool().getRandomDevice(userFrom).sendImage(convId, path);
-	}
-
-	public synchronized void reset() throws Exception {
-		this.getDevicePool().shutdown();
 	}
 
 	private synchronized static void shutdown() {

@@ -804,12 +804,6 @@ public class CommonAndroidSteps {
                 loggingProfile);
 
         commonSteps.getUserManager().resetUsers();
-
-        try {
-            SEBridge.getInstance().reset();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     /**
