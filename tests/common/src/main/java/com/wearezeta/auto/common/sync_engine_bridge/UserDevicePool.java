@@ -59,7 +59,7 @@ public class UserDevicePool {
 		}
 		CopyOnWriteArrayList<IDevice> devices = userDevices.get(user);
 		if (devices == null) {
-			devices = new CopyOnWriteArrayList<IDevice>();
+			devices = new CopyOnWriteArrayList<>();
 		}
 		final Device result = new Device(deviceName, this.hostProcess,
 				ACTOR_DURATION);
@@ -102,9 +102,11 @@ public class UserDevicePool {
 	}
 
 	public synchronized void shutdown() {
-		coordinatorActorRef.tell(ReleaseRemotes$.MODULE$, null);
+		if (this.coordinatorActorRef != null) {
+			coordinatorActorRef.tell(ReleaseRemotes$.MODULE$, null);
+			this.coordinatorActorRef = null;
+		}
 		this.userDevices = null;
-		this.coordinatorActorRef = null;
 		this.hostProcess = null;
 	}
 

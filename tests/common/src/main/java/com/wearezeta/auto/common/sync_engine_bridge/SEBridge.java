@@ -103,7 +103,7 @@ public class SEBridge {
 
 	private synchronized static void shutdown() {
 		if (devicePool != null) {
-			if (devicePool.isDone()) {
+			if (devicePool.isDone() && !devicePool.isCancelled()) {
 				try {
 					devicePool.get().shutdown();
 				} catch (Throwable e) {

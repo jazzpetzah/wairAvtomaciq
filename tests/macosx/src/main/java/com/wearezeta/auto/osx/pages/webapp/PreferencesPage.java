@@ -13,7 +13,7 @@ import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.WebPage;
 
 public class PreferencesPage extends WebPage {
-	@FindBy(how = How.XPATH, using = WebAppLocators.SettingsPage.xpathSettingsCloseButton)
+	@FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssSettingsCloseButton)
 	private WebElement settingsCloseButton;
 
 	public PreferencesPage(Future<ZetaWebAppDriver> lazyDriver)
