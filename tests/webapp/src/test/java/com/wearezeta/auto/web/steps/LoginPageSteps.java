@@ -204,7 +204,7 @@ public class LoginPageSteps {
 	@Given("^I see Sign In page$")
 	public void ISeeSignInPage() throws Exception {
 		Assert.assertTrue(webappPagesCollection.getPage(LoginPage.class)
-				.isVisible());
+				.isSignInFormVisible());
 	}
 
 	/**
