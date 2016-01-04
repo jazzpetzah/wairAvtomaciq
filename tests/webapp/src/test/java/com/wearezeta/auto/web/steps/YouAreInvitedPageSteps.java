@@ -35,6 +35,14 @@ public class YouAreInvitedPageSteps {
 					.waitUntilDownloadWireButtonVisible();
 		}
 	}
+	
+	@Then("^I see You are invited page with agent$")
+	public void ISeeYouAreInvitedPageWithAgent() throws Exception {
+
+			webappPagesCollection.getPage(YouAreInvitedPage.class)
+					.waitUntilDownloadButtonVisible();
+	
+	}
 
 	/**
 	 * Open generic invitation link directly and overwrite User-Agent
@@ -78,4 +86,5 @@ public class YouAreInvitedPageSteps {
 		//String code = "hello";
 		assertThat(webappPagesCollection.getPage(YouAreInvitedPage.class).getConnectHref(), containsString(code));
 	}
+	
 }

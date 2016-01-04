@@ -21,7 +21,7 @@ public class YouAreInvitedPage extends WebPage {
 	@FindBy(xpath = ExternalLocators.YouAreInvitedPage.xpathConnectButton)
 	private WebElement connectButton;
 	
-	@FindBy(css = ExternalLocators.YouAreInvitedPage.cssDownloadWireButton)
+	@FindBy(css = ExternalLocators.YouAreInvitedPage.cssDownloadButton)
 	private WebElement downloadButton;
 	
 	@FindBy(css = ExternalLocators.YouAreInvitedPage.cssConnectWireButton)
@@ -61,6 +61,13 @@ public class YouAreInvitedPage extends WebPage {
 				.waitUntilLocatorIsDisplayed(
 						getDriver(),
 						By.cssSelector(ExternalLocators.YouAreInvitedPage.cssDownloadWireButton)) : "Download Wire button has not been show on You are invited page";
+	}
+	
+	public void waitUntilDownloadButtonVisible() throws Exception {
+		assert DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						getDriver(),
+						By.cssSelector(ExternalLocators.YouAreInvitedPage.cssDownloadButton)) : "Download button has not been show on You are invited page";
 	}
 
 	public void clickConnectButton() {
