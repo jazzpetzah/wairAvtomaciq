@@ -131,7 +131,39 @@ Feature: E2EE
     And I open self profile
     And I click gear button on self profile page
     And I select Settings menu item on self profile page
-    Then I verify that the device id of the current device is still the same
+    Then I verify that the device id of the current device is the same
+    And I see 0 devices in the devices section
+
+    Examples: 
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
+
+  @C2099 @regression
+  Scenario Outline: Verify current browser is set as temporary device
+    Given There is 1 user where <Name> is me
+    Given I switch to Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    When I see Contacts Upload dialog
+    And I close Contacts Upload dialog
+    And I see my avatar on top of Contact list
+    And I open self profile
+    And I click gear button on self profile page
+    And I select Settings menu item on self profile page
+    And I remember the device id of the current device
+    And I click close settings page button
+    And I wait for 2 seconds
+    And I click gear button on self profile page
+    And I select Log out menu item on self profile page
+    And I see Sign In page
+    And I Sign in using login <Email> and password <Password>
+    And I see Contacts Upload dialog
+    And I close Contacts Upload dialog
+    And I see my avatar on top of Contact list
+    And I open self profile
+    And I click gear button on self profile page
+    And I select Settings menu item on self profile page
+    Then I verify that the device id of the current device is not the same
+    And I see 0 devices in the devices section
 
     Examples: 
       | Email      | Password      | Name      |
