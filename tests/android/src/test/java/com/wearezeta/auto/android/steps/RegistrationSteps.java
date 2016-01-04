@@ -161,4 +161,17 @@ public class RegistrationSteps {
     public void ISelectPictureSource(String src) throws Exception {
         getRegistrationPage().selectPictureSource(src);
     }
+
+    /**
+     * Wait for Unsplash screen to appear
+     *
+     * @step. ^I wait until Unsplash screen is visible$
+     *
+     * @throws Exception
+     */
+    @And("^I wait until Unsplash screen is visible$")
+    public void IWaitUnspashScreen() throws Exception {
+        Assert.assertTrue("Unsplash screen is still not visible after timeout",
+                getRegistrationPage().waitUntilUnsplashScreenIsVisible());
+    }
 }

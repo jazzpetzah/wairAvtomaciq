@@ -21,10 +21,10 @@ class GherkinUtilities(object):
         """
         result = []
         as_dict = cls._gherkin_to_dict(path)
-        if 'scenarios' in as_dict:
+        if 'scenarios' in as_dict and as_dict['scenarios']:
             for scenario in as_dict['scenarios']:
                 if 'tags' in scenario and scenario['tags'] and 'content' in scenario['tags']:
-                    if set(expected_tags).issubset((set(scenario['tags']['content']))):
+                    if set(expected_tags) & set(scenario['tags']['content']):
                         result.append(scenario['tags']['index'])
         return result
 

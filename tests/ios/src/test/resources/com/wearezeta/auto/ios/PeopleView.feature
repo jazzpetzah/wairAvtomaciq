@@ -244,13 +244,11 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
-    #And I swipe up on dialog page to open other user personal page
     And I open conversation details
     And I see <Contact1> user profile page
     And I press Add button
     And I see People picker page
     And I tap on Search input on People picker page
-    #And I input in People picker search field user name <Contact2>
     And I see user <Contact2> found on People picker page
     And I don't see Add to conversation button
     And I click on connected user <Contact2> avatar on People picker page
@@ -350,7 +348,7 @@ Feature: People View
       | Name      | Contact   | Color  | NewName |
       | user1Name | user2Name | Violet | SILENCE |
 
-  @staging @id712
+  @regression @id712
   Scenario Outline: Verify you can block a person from profile view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -391,7 +389,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | UnblockFromGroup |
 
-  @staging @id842
+  @regression @id842
   Scenario Outline: Verify displaying only connected users in the search in group chat
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -439,7 +437,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
-  @regression @id3972
+  @regression @id3972 @ZIOS-5247
   Scenario Outline: Verify removing the content and leaving from the group conversation via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -521,7 +519,7 @@ Feature: People View
       | Name      | Contact1  | Message | GroupChatName | Image       |
       | user1Name | user2Name | testing | ForDeletion   | testing.jpg |
 
-  @staging @id3320
+  @regression @id3320
   Scenario Outline: Verify that left conversation is shown in the Archive
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -546,7 +544,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | Message | Image       |
       | user1Name | user2Name | user3Name | TESTCHAT      | testing | testing.jpg |
 
-  @staging @id583
+  @regression @id583
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (People view)
     Given There are 4 users where <Name> is me
     Given <Contact1> is connected to <Contact3>,<Contact2>,<Name>
@@ -565,7 +563,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | TESTCHAT      |
 
-  @staging @id4021
+  @regression @id4021
   Scenario Outline: Verify canceling blocking person from participant list
     Given There are 2 users where <Name> is me
     Given Myself is connected to all other users
@@ -583,7 +581,7 @@ Feature: People View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @staging @id1246
+  @regression @id1246
   Scenario Outline: Verify length limit for group conversation name
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

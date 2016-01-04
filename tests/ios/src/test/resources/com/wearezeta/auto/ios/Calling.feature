@@ -138,24 +138,58 @@ Feature: Calling
     And I press call button
     And I see mute call, end call and speakers buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 300 seconds
+    And I wait for 60 seconds
     And I see mute call, end call and speakers buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 300 seconds
+    And I wait for 60 seconds
     And I see mute call, end call and speakers buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 300 seconds
+    And I wait for 60 seconds
     And I see mute call, end call and speakers buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call and speakers buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call and speakers buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call and speakers buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call and speakers buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call and speakers buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call and speakers buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call and speakers buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call and speakers buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call and speakers buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call and speakers buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call and speakers buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
     And I see mute call, end call and speakers buttons
     And I end started call
     And I dont see calling page
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | firefox     | 300     |
+      | user1Name | user2Name | firefox     | 60      |
 
-  @calling_basic @id2296
+  @calling_basic @id2296 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Screenlock device when in the call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -177,7 +211,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | firefox     | 60      |
 
-  @staging @id2645
+  @regression @id2645
   Scenario Outline: 3rd person tries to call me after I initate a call to somebody
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -207,7 +241,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | user3Name | firefox     | autocall     | 120     |
 
-  @calling_basic @id2646
+  @calling_basic @id2646 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Put app into background after initiating call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -338,7 +372,7 @@ Feature: Calling
     And I see Contact list with my name <Name>
     When <Contact1> calls me using <CallBackend2>
     And I accept incoming call
-    And I wait for 5 seconds
+    And I dont see calling page
     And I tap on contact name <Contact1>
     Then I see mute call, end call and speakers buttons
     When <Contact2> calls <GroupChatName> using <CallBackend2>

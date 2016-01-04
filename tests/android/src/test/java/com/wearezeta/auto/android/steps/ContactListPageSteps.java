@@ -430,18 +430,16 @@ public class ContactListPageSteps {
     /**
      * Verifies that specific items are visible in the conversation settings menu
      *
-     * @param position index position of the menu item
      * @param name     name of item to check in the menu (ARCHIVE, BLOCK, CANCEL,...)
      * @throws Exception
      * @step. ^I see (.*) button in conversation settings menu$
      */
-    @Then("^I see (.*) button in conversation settings menu at position (\\d+)$")
-    public void ISeeButtonInConversationSettingsMenuAtPosition(String name, int position) throws Exception {
+    @Then("^I see (.*) button in conversation settings menu$")
+    public void ISeeButtonInConversationSettingsMenuAtPosition(String name) throws Exception {
         Assert.assertTrue("The converastion settings menu item is not visible",
                 getContactListPage().isConvSettingsMenuItemVisible(name));
-        Assert.assertTrue("Menu item is not at correct index position",
-                getContactListPage().isMenuItemAtCorrectIndex(name, position));
     }
+
 
     /**
      * Tap the Invite Other People button at the bottom of conversations list

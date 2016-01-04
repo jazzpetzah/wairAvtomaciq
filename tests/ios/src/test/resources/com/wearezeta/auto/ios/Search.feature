@@ -194,7 +194,6 @@ Feature: Search
     Given <ContactWithFriends> is connected to <Name>
     Given <ContactWithFriends> is connected to <Friend1>
     Given <ContactWithFriends> is connected to <Friend2>
-    Given <ContactWithFriends> is connected to <Friend3>
     Given I sign in using my email or phone number
     When I see Contact list with my name <Name>
     And I open search by taping on it
@@ -206,8 +205,8 @@ Feature: Search
     Then I do not see suggested contact <Friend1>
 
     Examples: 
-      | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
-      | user1Name | user2Name          | user3Name | user4Name | user5Name |
+      | Name      | ContactWithFriends | Friend1   | Friend2   |
+      | user1Name | user2Name          | user3Name | user4Name |
 
   @regression @rc @id2116
   Scenario Outline: Verify dismissing with one single gesture
@@ -450,7 +449,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @staging @id2120
+  @regression @id2120
   Scenario Outline: Verify impossibility of dismissing if search isn't empty
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -465,7 +464,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id4118
+  @regression @id4118
   Scenario Outline: Verify action buttons appear after choosing user from search results
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users

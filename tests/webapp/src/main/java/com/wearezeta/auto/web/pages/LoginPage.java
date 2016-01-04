@@ -28,6 +28,9 @@ public class LoginPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathCreateAccountButton)
 	private WebElement createAccountButton;
 
+	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathSwitchToRegisterButtons)
+	private WebElement switchToRegisterButton;
+
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathSignInButton)
 	private WebElement signInButton;
 
@@ -42,6 +45,12 @@ public class LoginPage extends WebPage {
 
 	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssPasswordInput)
 	private WebElement passwordInput;
+
+	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssRememberMe)
+	private WebElement rememberMe;
+
+	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssForgotPassword)
+	private WebElement forgotPasswordButton;
 
 	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssLoginErrorText)
 	private WebElement loginErrorText;
@@ -62,8 +71,17 @@ public class LoginPage extends WebPage {
 	}
 
 	public boolean isVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(WebAppLocators.LoginPage.xpathSignInButton));
+		return DriverUtils.waitUntilElementClickable(this.getDriver(),
+				createAccountButton)
+				&& DriverUtils.waitUntilElementClickable(this.getDriver(),
+						forgotPasswordButton);
+	}
+
+	public boolean isSignInFormVisible() throws Exception {
+		return DriverUtils.waitUntilElementClickable(this.getDriver(),
+				switchToRegisterButton)
+				&& DriverUtils.waitUntilElementClickable(this.getDriver(),
+						forgotPasswordButton);
 	}
 
 	public boolean isSignInButtonDisabled() throws Exception {
@@ -148,5 +166,17 @@ public class LoginPage extends WebPage {
 	public void switchToPhoneNumberLoginPage() throws Exception {
 		DriverUtils.waitUntilElementClickable(getDriver(), phoneSignInButton);
 		phoneSignInButton.click();
+	}
+
+	public void checkRememberMe() {
+		if (!rememberMe.isSelected()) {
+			rememberMe.click();
+		}
+	}
+
+	public void uncheckRememberMe() {
+		if (rememberMe.isSelected()) {
+			rememberMe.click();
+		}
 	}
 }

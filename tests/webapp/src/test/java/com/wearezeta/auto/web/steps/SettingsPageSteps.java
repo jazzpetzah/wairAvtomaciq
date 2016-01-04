@@ -1,5 +1,7 @@
 package com.wearezeta.auto.web.steps;
 
+import java.util.List;
+
 import org.junit.Assert;
 
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
@@ -8,6 +10,8 @@ import com.wearezeta.auto.web.pages.SettingsPage.SoundAlertsLevel;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 public class SettingsPageSteps {
 
@@ -72,4 +76,36 @@ public class SettingsPageSteps {
 		webappPagesCollection.getPage(SettingsPage.class).clickCloseButton();
 	}
 
+	/**
+	 * Verify if you see a device in the device list (or not)
+	 * 
+	 * @param donot
+	 *            If not this is set to null
+	 * @param device
+	 *            model and label of the device
+	 * @throws Exception
+	 */
+	@When("I( do not)? see a device named (.*) in the devices section")
+	public void ISeeACertainDeviceInDevicesSection(String donot, String device)
+			throws Exception {
+		List<String> labels = webappPagesCollection.getPage(SettingsPage.class)
+				.getDeviceLabels();
+		if (donot == null) {
+			assertThat(labels, hasItem(device.toUpperCase()));
+		} else {
+			assertThat(labels, not(hasItem(device.toUpperCase())));
+		}
+	}
+
+	/**
+	 * Click on the device
+	 * 
+	 * @param device
+	 *            model and label of the device
+	 * @throws Exception
+	 */
+	@When("I click on the device (.*) in the devices section")
+	public void IClickOnDevice(String device) throws Exception {
+		webappPagesCollection.getPage(SettingsPage.class).clickDevice(device);
+	}
 }

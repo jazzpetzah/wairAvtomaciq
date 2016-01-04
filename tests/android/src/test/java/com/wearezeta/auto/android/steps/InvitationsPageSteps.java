@@ -143,24 +143,6 @@ public class InvitationsPageSteps {
     }
 
     /**
-     * Waits for the invite button to appear or disappear in the search
-     *
-     * @throws Exception
-     * @step. ^I( do not)? see invite more people button (in search)?
-     */
-    @When("^I( do not)? see invite more people button (in search)?$")
-    public void WhenISeeInvitePeopleSearchButton(String shouldNotSee, String inSearch) throws Exception {
-        if (shouldNotSee == null && inSearch != null)
-            Assert.assertTrue("The invite more people button is not visible in search",
-                    getInvitationsPage().waitForInviteMorePeopleSearchButtonVisible());
-        else if (inSearch != null)
-            Assert.assertTrue("The invite more people button is still visible in search",
-                    getInvitationsPage().waitForInviteMorePeopleSearchButtonNotVisible());
-        else
-            Assert.assertTrue("Received unrecognized parameters", false);
-    }
-
-    /**
      * Tap on search field in invites page
      *
      * @throws Exception

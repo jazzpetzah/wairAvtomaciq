@@ -1,6 +1,6 @@
 Feature: Archive
 
-  @regression @id1540
+  @C1686 @regression @id1540
   Scenario Outline: Verify the conversation is unarchived when there are new messages in this conversation (simple message)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -17,7 +17,7 @@ Feature: Archive
       | Email      | Password      | Name      | Contact   | Contact2  | Message |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Hello   |
 
-  @regression @id1537
+  @C1685 @regression @id1537
   Scenario Outline: Verify archived list disappears if there are no more archived conversations
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -37,7 +37,7 @@ Feature: Archive
       | Email      | Password      | Name      | Contact   | Contact2  | Message |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Hello   |
 
-  @regression @id1543
+  @C1689 @regression @id1543
   Scenario Outline: Verify that Ping event cannot unarchive muted conversation automatically
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -73,7 +73,7 @@ Feature: Archive
       | Email      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | autocall    |
 
-  @regression @id1541
+  @C1687 @regression @id1541
   Scenario Outline: Verify the conversation is unarchived when there are new messages in this conversation (Ping message)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -89,7 +89,7 @@ Feature: Archive
       | Email      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @regression @id1542
+  @C1688 @regression @id1542
   Scenario Outline: Verify the conversation is unarchived when there are new calls in this conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

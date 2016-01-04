@@ -39,7 +39,7 @@ public final class CommonCallingSteps2 {
 	private static final String CALL_BACKEND_VERSION_SEPARATOR = ":";
 	private static final String ZCALL_DEFAULT_VERSION = "1.10";
 	private static final String AUTOCALL_DEFAULT_VERSION = "1.10";
-	private static final String FIREFOX_DEFAULT_VERSION = "42.0";
+	private static final String FIREFOX_DEFAULT_VERSION = "43.0.2";
 	private static final String CHROME_DEFAULT_VERSION = "47.0.2526.73";
 
 	// Request timeout of 180 secs is set by callingservice, we add additional

@@ -179,7 +179,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @calling_basic @id2619 
+  @calling_basic @id2619
   Scenario Outline: In zeta call for more than 15 mins [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -193,21 +193,54 @@ Feature: Calling
     And I press call button
     And I see mute call, end call buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 300 seconds
+    And I wait for 60 seconds
     And I see mute call, end call buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 300 seconds
+    And I wait for 60 seconds
     And I see mute call, end call buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 300 seconds
+    And I wait for 60 seconds
     And I see mute call, end call buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call buttons
+    And I wait for 60 seconds
+    And I see mute call, end call buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call buttons
+    And I wait for 60 seconds
+    And I see mute call, end call buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call buttons
     And I end started call
     And I dont see calling page
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | firefox     | 300     |
+      | user1Name | user2Name | firefox     | 60      |
 
   @calling_basic @id2619
   Scenario Outline: In zeta call for more than 15 mins [LANDSCAPE]
@@ -224,15 +257,48 @@ Feature: Calling
     And I press call button
     And I see mute call, end call buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 300 seconds
+    And I wait for 60 seconds
     And I see mute call, end call buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 300 seconds
+    And I wait for 60 seconds
     And I see mute call, end call buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 300 seconds
+    And I wait for 60 seconds
     And I see mute call, end call buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call buttons
+    And I wait for 60 seconds
+    And I see mute call, end call buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call buttons
+    And I wait for 60 seconds
+    And I see mute call, end call buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see mute call, end call buttons
     And I end started call
     And I dont see calling page
 

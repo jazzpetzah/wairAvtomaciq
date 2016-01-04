@@ -231,12 +231,13 @@ public class ContactListPageSteps {
 
 	@Then("^I open archived conversations$")
 	public void IOpenArchivedConversations() throws Exception {
-		Thread.sleep(3000);
-		if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
-			getContactListPage().swipeUp(1000);
-		} else {
-			getContactListPage().swipeUpSimulator();
-		}
+		getContactListPage().swipeUp(1000);
+//		Thread.sleep(3000);
+//		if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
+//			getContactListPage().swipeUp(1000);
+//		} else {
+//			getContactListPage().swipeUpSimulator();
+//		}
 	}
 
 	@When("I see play/pause button next to username (.*) in contact list")

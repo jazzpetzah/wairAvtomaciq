@@ -83,6 +83,7 @@ Feature: Self Profile
     And I remember the value of "Theme" setting
     And I press back button
     And I press back button
+    And I press back button
     And I see personal info page
     When I tap Light Bulb button
     And I tap options button

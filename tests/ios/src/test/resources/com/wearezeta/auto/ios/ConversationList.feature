@@ -373,7 +373,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @staging @id1481
+  @staging @id1481 @ZIOS-5247
   Scenario Outline: Verify removing the content and leaving from the group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -425,7 +425,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
       | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
 
-  @staging @id4005
+  @regression @id4005
   Scenario Outline: Verify deleting the history from kicked out conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -447,7 +447,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | KICKCHAT      |
 
-  @staging @id4017
+  @regression @id4017
   Scenario Outline: Verify canceling blocking person
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -462,7 +462,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @staging @id3317
+  @regression @id3317
   Scenario Outline: Verify blocking person from action menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -501,7 +501,7 @@ Feature: Conversation List
       | Name      | Contact   | Color           | Number |
       | user1Name | user2Name | StrongLimeGreen | 1      |
 
-  @staging @id4103
+  @regression @id4103
   Scenario Outline: Verify 'Invite more people' is hidden after 6 connections
     Given There are <Number> users where <Name> is me
     Given I sign in using my email or phone number

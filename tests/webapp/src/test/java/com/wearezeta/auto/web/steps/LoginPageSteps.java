@@ -183,6 +183,15 @@ public class LoginPageSteps {
 		webappPagesCollection.getPage(LoginPage.class).inputPassword(password);
 	}
 
+	@When("I (un)?check option to remember me")
+	public void ICheckOptionToRememberMe(String uncheck) throws Exception {
+		if (uncheck == null) {
+			webappPagesCollection.getPage(LoginPage.class).checkRememberMe();
+		} else {
+			webappPagesCollection.getPage(LoginPage.class).uncheckRememberMe();
+		}
+	}
+
 	/**
 	 * Verifies whether Sign In page is the current page
 	 * 
@@ -195,7 +204,7 @@ public class LoginPageSteps {
 	@Given("^I see Sign In page$")
 	public void ISeeSignInPage() throws Exception {
 		Assert.assertTrue(webappPagesCollection.getPage(LoginPage.class)
-				.isVisible());
+				.isSignInFormVisible());
 	}
 
 	/**

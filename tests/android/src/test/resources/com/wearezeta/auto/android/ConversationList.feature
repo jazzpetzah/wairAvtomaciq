@@ -215,9 +215,8 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     And I see Contact list with contacts
     When I swipe right on a <Contact>
-    Then I see ARCHIVE button in conversation settings menu at position 1
-    Then I see BLOCK button in conversation settings menu at position 2
-    Then I see CANCEL button in conversation settings menu at position 3
+    Then I see ARCHIVE button in conversation settings menu
+    And I see BLOCK button in conversation settings menu
 
     Examples:
       | Name      | Contact   |
@@ -243,21 +242,19 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     And I see Contact list with contacts
     When I swipe right on a <Contact1>
-    Then I see SILENCE button in conversation settings menu at position 1
-    And I see ARCHIVE button in conversation settings menu at position 2
-    And I see DELETE button in conversation settings menu at position 3
-    And I see BLOCK button in conversation settings menu at position 4
-    Then I see CANCEL button in conversation settings menu at position 5
-    And I select CANCEL from conversation settings menu
+    Then I see SILENCE button in conversation settings menu
+    And I see ARCHIVE button in conversation settings menu
+    And I see DELETE button in conversation settings menu
+    And I see BLOCK button in conversation settings menu
+    And I press back button
     When I tap on contact name <Contact1>
     And I see dialog page
     And I tap conversation details button
     When I press options menu button
-    Then I see SILENCE button in option menu at position 1
-    And I see ARCHIVE button in option menu at position 2
-    And I see DELETE button in option menu at position 3
-    And I see BLOCK button in option menu at position 4
-    Then I see CANCEL button in option menu at position 5
+    Then I see SILENCE button in option menu
+    And I see ARCHIVE button in option menu
+    And I see DELETE button in option menu
+    And I see BLOCK button in option menu
 
     Examples:
       | Name      | Contact1  |
@@ -271,26 +268,24 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     And I see Contact list with contacts
     When I swipe right on a <GroupChatName>
-    Then I see SILENCE button in conversation settings menu at position 1
-    And I see ARCHIVE button in conversation settings menu at position 2
-    And I see DELETE button in conversation settings menu at position 3
-    And I see LEAVE button in conversation settings menu at position 4
-    Then I see CANCEL button in conversation settings menu at position 5
-    And I select CANCEL from conversation settings menu
+    Then I see SILENCE button in conversation settings menu
+    And I see ARCHIVE button in conversation settings menu
+    And I see DELETE button in conversation settings menu
+    And I see LEAVE button in conversation settings menu
+    And I press back button
     When I tap on contact name <GroupChatName>
     And I see dialog page
     And I tap conversation details button
     When I press options menu button
-    Then I see SILENCE button in option menu at position 1
-    And I see RENAME button in option menu at position 2
-    And I see ARCHIVE button in option menu at position 3
-    And I see DELETE button in option menu at position 4
-    And I see LEAVE button in option menu at position 5
-    Then I see CANCEL button in option menu at position 6
+    Then I see SILENCE button in option menu
+    And I see RENAME button in option menu
+    And I see ARCHIVE button in option menu
+    And I see DELETE button in option menu
+    And I see LEAVE button in option menu
 
     Examples:
-      | Name      | Contact1  | Contact2 | GroupChatName |
-      | user1Name | user2Name | user3Name| MenuItems     |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | MenuItems     |
 
   @C565 @id4093 @regression
   Scenario Outline: (AN-2551) Check there is no leave checkbox when you delete conversation where you was dropped
@@ -305,8 +300,8 @@ Feature: Conversation List
     Then I do not see the Leave check box
 
     Examples:
-      | Name      | Contact1  | Contact2 | GroupChatName |
-      | user1Name | user2Name | user3Name| NoLeaveBox    |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | NoLeaveBox    |
 
   @C564 @id4092 @regression
   Scenario Outline: I can open options menu by tap on three dots button
@@ -317,7 +312,7 @@ Feature: Conversation List
     When I short swipe right on a <Contact1>
     And I see three dots option menu button
     And I press the three dots option menu button
-    Then I see SILENCE button in conversation settings menu at position 1
+    Then I see SILENCE button in conversation settings menu
 
     Examples:
       | Name      | Contact1  |

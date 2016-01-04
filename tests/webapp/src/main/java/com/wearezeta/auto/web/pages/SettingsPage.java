@@ -1,7 +1,9 @@
 package com.wearezeta.auto.web.pages;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
@@ -17,11 +19,14 @@ import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class SettingsPage extends WebPage {
-	@FindBy(how = How.XPATH, using = WebAppLocators.SettingsPage.xpathSettingsCloseButton)
+	@FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssSettingsCloseButton)
 	private WebElement settingsCloseButton;
 
 	@FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssSoundAlertsLevel)
 	private WebElement soundAlertsLevel;
+
+	@FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssDeviceLabels)
+	private List<WebElement> deviceLabels;
 
 	public SettingsPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
@@ -33,7 +38,8 @@ public class SettingsPage extends WebPage {
 				By.xpath(xpath));
 	}
 
-	public void clickCloseButton() {
+	public void clickCloseButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), settingsCloseButton);
 		settingsCloseButton.click();
 	}
 
@@ -110,6 +116,17 @@ public class SettingsPage extends WebPage {
 	public SoundAlertsLevel getSoundAlertsLevel() {
 		return SoundAlertsLevel.fromInt(Integer.parseInt(soundAlertsLevel
 				.getAttribute("value")));
+	}
+
+	public List<String> getDeviceLabels() {
+		return deviceLabels.stream().map(w -> w.getText())
+				.collect(Collectors.toList());
+	}
+
+	public void clickDevice(String device) throws Exception {
+		final String locator = WebAppLocators.SettingsPage.xpathDeviceLabel
+				.apply(device);
+		getDriver().findElement(By.xpath(locator)).click();
 	}
 
 }

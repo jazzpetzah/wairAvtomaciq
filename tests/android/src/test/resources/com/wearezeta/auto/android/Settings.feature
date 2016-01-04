@@ -21,12 +21,11 @@ Feature: Settings
     Given There are 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see Contact list with no contacts
-    When I tap on my avatar
+    And I tap on my avatar
     And I tap on my name
     And I see edit name field with my name
-    And I tap options button
-    And I tap about button
-    Then I do not see About page
+    When I tap options button
+    Then I do not see ABOUT item in Options menu
 
     Examples:
       | Name      |

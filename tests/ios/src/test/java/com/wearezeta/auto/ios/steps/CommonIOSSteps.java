@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.ScreenOrientation;

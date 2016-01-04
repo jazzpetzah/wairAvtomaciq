@@ -70,6 +70,11 @@ class Device extends RemoteEntity implements IDevice {
 	}
 
 	@Override
+	public void setLabel(String label) throws Exception {
+		askActor(this.ref(), new ActorMessage.SetDeviceLabel(label));
+	}
+
+	@Override
 	public void sendMessage(String convId, String message) throws Exception {
 		askActor(this.ref(), new ActorMessage.SendText(new RConvId(convId),
 				message));

@@ -325,7 +325,7 @@ Feature: Calling
     When I answer the call from the overlay bar
     Then I do not see join group call overlay
     And I see calling overlay Big bar
-    And I see 5 users take part in call
+    And I see 4 users take part in call
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
     And <Contact3> stops all calls to <GroupChatName>
@@ -386,7 +386,7 @@ Feature: Calling
     And I start new call from answer call alert
     Then I see calling overlay Big bar
     And <Contact3> calls <Name> using <CallBackend>
-    And I see 2 users take part in call
+    And I see 1 user take part in call
     And I navigate back from dialog page
     And I tap on contact name <GroupChatName>
     And I see incoming calling message for contact <Contact3>
@@ -419,7 +419,7 @@ Feature: Calling
     And I navigate back from dialog page
     And I tap on contact name <GroupChatName>
     And I see calling overlay Big bar
-    And I see 3 users take part in call
+    And I see 2 users take part in call
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
 
@@ -446,7 +446,7 @@ Feature: Calling
     And I see end current call alert
     And I start new call from end current call alert
     And I see calling overlay Big bar
-    And I see 2 users take part in call
+    And I see 1 user take part in call
     And I navigate back from dialog page
     And I tap on contact name <GroupChatName>
     And I see incoming calling message for contact <Contact3>
@@ -476,7 +476,7 @@ Feature: Calling
     And I see end current call alert
     And I start new call from end current call alert
     And I see calling overlay Big bar
-    And I see 3 users take part in call
+    And I see 2 users take part in call
     And I navigate back from dialog page
     And I tap on contact name <Contact3>
     And I see incoming calling message for contact <GroupChatName>
@@ -488,7 +488,7 @@ Feature: Calling
       | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
   @C428 @id3181 @calling_advanced
-  Scenario Outline: (AN-2578 AN-2816 AN-2864) Verify receiving 1to1 call during group call and ignoring it
+  Scenario Outline: Verify receiving 1to1 call during group call and ignoring it
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
@@ -507,7 +507,7 @@ Feature: Calling
     And I see incoming calling message for contact <Contact3>
     When I click the ignore call button
     Then I see calling overlay Big bar
-    And I see 3 users take part in call
+    And I see 2 users take part in call
     When I navigate back from dialog page
     And I tap on contact name <Contact3>
     Then I see incoming calling message for contact <GroupChatName>
@@ -532,7 +532,7 @@ Feature: Calling
     And I see a call from <GroupChatName> in the call lock screen
     And I answer the call from the lock screen
     And I see calling overlay Big bar
-    And I see 3 users take part in call
+    And I see 2 users take part in call
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
 

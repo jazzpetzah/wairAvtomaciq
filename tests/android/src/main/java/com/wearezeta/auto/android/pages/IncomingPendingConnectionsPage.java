@@ -47,18 +47,21 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
 	@FindBy(id = PeoplePickerPage.idSendConnectionRequestButton)
 	private WebElement sendConnectionRequestButton;
 
-	private static final String idConnectToCharCounter = "ttv__send_connect_request__connect_button__character_counter";
+	private static final String idConnectToCharCounter =
+            "ttv__send_connect_request__connect_button__character_counter";
 	@FindBy(id = idConnectToCharCounter)
 	private WebElement connectCharCounter;
 
-	@FindBy(id = PeoplePickerPage.idParticipantsClose)
+    private static final String xpathCloseButton =
+            "//*[@id='fl__conversation_list__profile_overlay']//*[@id='gtv__participants__close']";
+    @FindBy(xpath = xpathCloseButton)
 	private WebElement closeButton;
 
 	private static final Function<String, String> xpathConnectMenuItemByText = text -> String
-			.format("//*[@id='ttv__settings_box__item' and @value='%s']",
+			.format("//*[@id='ttv__settings_box__item' and @value='%s']/parent::*//*[@id='fl_options_menu_button']",
 					text.toUpperCase());
 
-	@FindBy(id = OtherUserPersonalInfoPage.idRightActionButton)
+	@FindBy(xpath = OtherUserPersonalInfoPage.xpathRightActionButton)
 	private WebElement ellipsisButton;
 
 	@FindBy(xpath = xpathConfirmBtn)
@@ -136,7 +139,7 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
 						contactName, maxScrolls));
 	}
 
-	public DialogPage pressAcceptConnectButton() throws Exception {
+	public void pressAcceptConnectButton() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				connectAcceptBtn);
 		if (connectAcceptBtn.getLocation().getY() > this.getDriver().manage()
@@ -147,14 +150,12 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
 		} else {
 			connectAcceptBtns.get(1).click();
 		}
-		return new DialogPage(this.getLazyDriver());
 	}
 
-	public ContactListPage pressIgnoreButton() throws Exception {
+	public void pressIgnoreButton() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				connectIgnoreBtn);
 		connectIgnoreBtn.click();
-		return new ContactListPage(this.getLazyDriver());
 	}
 
 	public boolean isIgnoreConnectButtonVisible() throws Exception {
@@ -182,12 +183,11 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
 
 	}
 
-	public ContactListPage pressConnectButton() throws Exception {
+	public void pressConnectButton() throws Exception {
 		this.getWait().until(
 				ExpectedConditions
 						.elementToBeClickable(sendConnectionRequestButton));
 		sendConnectionRequestButton.click();
-		return new ContactListPage(this.getLazyDriver());
 	}
 
 	public void waitUntilIgnoreButtonIsClickable() throws Exception {
@@ -204,9 +204,8 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
 		return Integer.parseInt(connectCharCounter.getText());
 	}
 
-	public PeoplePickerPage clickCloseButton() throws Exception {
+	public void clickCloseButton() throws Exception {
 		closeButton.click();
-		return new PeoplePickerPage(this.getLazyDriver());
 	}
 
 }

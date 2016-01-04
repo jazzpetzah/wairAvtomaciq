@@ -116,17 +116,16 @@ public class ContactListPage extends AndroidPage {
     private WebElement leaveWhileDeleteCheckbox;
 
     private static final Function<String, String> xpathConvoSettingsMenuItemByName = name -> String
-            .format("//*[starts-with(@id, 'ttv__settings_box__item') and @value='%s']",
+            .format("//*[@id='ttv__settings_box__item' and @value='%s']" +
+                    "/parent::*//*[@id='fl_options_menu_button']",
                     name.toUpperCase());
 
-    private static final String xpathSpinnerConversationsListLoadingIndicator = "//*[@id='liv__conversations__loading_indicator']/*";
+    private static final String xpathSpinnerConversationsListLoadingIndicator =
+            "//*[@id='liv__conversations__loading_indicator']/*";
 
     private static final Function<String, String> xpathConversationListEntry = name -> String
             .format("//*[@id='tv_conv_list_topic' and @value='%s']/parent::*//*[@id='civ__list_row']",
                     name);
-
-    private static final Function<Integer, String> xpathContactsListOptionsMenuItemByIdx = idx -> String
-            .format("(//*[@id='ttv__settings_box__item'])[%d]", idx);
 
     private static final String idInviteButton = "zb__conversationlist__show_contacts";
     @FindBy(id = idInviteButton)
@@ -161,7 +160,7 @@ public class ContactListPage extends AndroidPage {
                         final WebElement elem = getDriver()
                                 .findElement(locator);
                         final String name = elem.getText();
-                        if ((name instanceof String) && name.length() > 0) {
+                        if (name != null && name.length() > 0) {
                             if (DriverUtils.waitUntilElementClickable(
                                     getDriver(), elem)) {
                                 return name;
@@ -454,12 +453,6 @@ public class ContactListPage extends AndroidPage {
         final By locator = By.xpath(xpathConvoSettingsMenuItemByName
                 .apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-    }
-
-    public boolean isMenuItemAtCorrectIndex(String name, int position) throws Exception {
-        final By locator = By.xpath(xpathContactsListOptionsMenuItemByIdx.apply(position));
-        String itemName = this.getDriver().findElement(locator).getText();
-        return itemName.equals(name);
     }
 
     public void tapInviteButton() {

@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import com.wearezeta.auto.android.common.logging.LoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionFailedLoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionPassedLoggingProfile;
+import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import gherkin.formatter.model.Result;
 import org.apache.log4j.Logger;

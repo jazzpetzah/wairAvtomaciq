@@ -11,6 +11,7 @@ import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 

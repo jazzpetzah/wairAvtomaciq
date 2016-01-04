@@ -58,12 +58,13 @@ class CliHandlerBase(object):
             try:
                 return self._invoke()
             except Exception as e:
+                exc_info = sys.exc_info()
                 if self._is_exceptions_handled_in_invoke():
-                    raise e
+                    raise exc_info[1], None, exc_info[2]
                 traceback.print_exc()
                 try_num += 1
                 if try_num >= MAX_TRY_COUNT:
-                    raise e
+                    raise exc_info[1], None, exc_info[2]
                 sys.stderr.write('Sleeping a while before retry #{} of {}...\n'.format(try_num, MAX_TRY_COUNT))
                 time.sleep(random.randint(2, 10))
 

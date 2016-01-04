@@ -171,6 +171,19 @@ public class RegistrationPageSteps {
 	}
 
 	/**
+	 * Check terms of use checkbox
+	 * 
+	 * @step. ^I accept the Terms of Use$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I accept the Terms of Use$")
+	public void IAcceptTermsOfUse() throws Exception {
+		webappPagesCollection.getPage(RegistrationPage.class)
+				.acceptTermsOfUse();
+	}
+
+	/**
 	 * Submit registration form
 	 * 
 	 * @step. ^I submit registration form$

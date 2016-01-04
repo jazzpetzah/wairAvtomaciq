@@ -1,10 +1,11 @@
 Feature: Registration
 
-  @smoke @id1936
+  @C1761 @smoke @id1936
   Scenario Outline: Verify new user can be registered
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
     And I enter user password "<Password>" on Registration page
+    And I accept the Terms of Use
     And I start activation email monitoring
     And I submit registration form
     Then I verify that an envelope icon is shown
@@ -28,7 +29,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id4164
+  @C1822 @regression @id4164
   Scenario Outline: Verify I can accept personal invitation
     Given There is 1 user where <Name> is me
     When me sends personal invitation to mail <ContactMail> with message <Message>
@@ -37,8 +38,8 @@ Feature: Registration
     Then <Contact> verifies email is correct on Registration page
     And <Contact> verifies username is correct on Registration page
     And I enter user password "<Password>" on Registration page
+    And I accept the Terms of Use
     And I submit registration form
-    And User <Contact> is Me without avatar
     And I see Self Picture Upload dialog
     And I force carousel mode on Self Picture Upload dialog
     And I select random picture from carousel on Self Picture Upload dialog
@@ -51,7 +52,7 @@ Feature: Registration
       | Login      | Password      | Name      | ContactMail | Contact    | Message |
       | user1Email | user1Password | user1Name | user2Email  | user2Name  | Hello   |
 
-  @smoke @id2064
+  @C1770 @smoke @id2064
   Scenario Outline: Photo selection dialogue - choose picture from library
     Given There is 1 user where <Name> is me without avatar picture
     Given I switch to Sign In page
@@ -73,7 +74,7 @@ Feature: Registration
       | Login      | Password      | Name      | PictureName               |
       | user1Email | user1Password | user1Name | userpicture_landscape.jpg |
 
-  @regression @id2065
+  @C1771 @regression @id2065
   Scenario Outline: Photo selection dialogue - choose picture from carousel
     Given There is 1 user where <Name> is me without avatar picture
     Given I switch to Sign In page
@@ -96,12 +97,13 @@ Feature: Registration
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id1991
+  @C1762 @regression @id1991
   Scenario Outline: I want to be notified if the email address I entered during registration has already been registered
     Given There is 1 user where user1Name is me without avatar picture
     When I enter user name <Name> on Registration page
     And I enter user email <UsedEmail> on Registration page
     And I enter user password "<NewPassword>" on Registration page
+    And I accept the Terms of Use
     And I submit registration form
     Then I see error "Email address already taken" on Verification page
     And I verify that the email field on the registration form is marked as error
@@ -115,11 +117,12 @@ Feature: Registration
       | Name      | UsedEmail  | UnusedEmail | Password      |
       | user1Name | user1Email | user2Email  | user2Password |
 
-  @smoke @id1992
+  @C1763 @smoke @id1992
   Scenario Outline: I want to see an error screen if the registration fails
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
     And I enter user password "<Password>" on Registration page
+    And I accept the Terms of Use
     And I submit registration form
     Then I verify that the email field on the registration form is marked as error
     And I see error "Sorry. This email address is forbidden." on Verification page
@@ -128,7 +131,7 @@ Feature: Registration
       | Name      | Email              | Password      |
       | user1Name | nope@wearezeta.com | user1Password |
 
-  @regression @id2229
+  @C1775 @regression @id2229
   Scenario: Use Gmail contacts import on registration
     Given There is 1 user where user1Name is me without avatar picture
     Given I switch to Sign In page
@@ -142,11 +145,12 @@ Feature: Registration
     And I sign up at Google with email smoketester.wire@gmail.com and password aqa123456!
     Then I see more than 5 suggestions in people picker
 
-  @regression @id2051
+  @C1768 @regression @id2051
   Scenario Outline: Register using already registered but not verified yet email
     Given I enter user name <Name> on Registration page
     Given I enter user email <Email> on Registration page
     Given I enter user password "<Password>" on Registration page
+    Given I accept the Terms of Use
     When I submit registration form
     Then I verify that an envelope icon is shown
     And I see email <Email> on Verification page
@@ -160,7 +164,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id1935
+  @C1760 @regression @id1935
   Scenario Outline: Verify that correct error messages are shown instead of email verification screen if there are some problems with the registration
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page

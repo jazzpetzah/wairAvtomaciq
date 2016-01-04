@@ -214,7 +214,9 @@ Feature: Connect
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I press the send an invite button
+    And I press invite others button
     And I press the copy button
+    And I click close Invite list button
     And I click clear button
     And I tap on contact name <Contact>
     And I see dialog page
@@ -290,7 +292,6 @@ Feature: Connect
     And I click Cancel request button
     Then I see Cancel request confirmation page
     And I confirm Cancel request by click on Yes button
-    #And I see Details button is visible
     Then I dont see conversation <Contact> in contact list
 
     Examples: 
@@ -309,7 +310,7 @@ Feature: Connect
     And I open conversation details
     And I click Cancel request button
     And I confirm Cancel request by click on Yes button
-    #And I see Details button is visible
+    And I return to the chat list
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
     And I see user <Contact1> found on People picker page
@@ -346,7 +347,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @staging @id586
+  @staging @id586 @ZIOS-5335
   Scenario Outline: Verify ignoring a connection request from another person (People view)
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -413,7 +414,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id1133
+  @regression @id1133
   Scenario Outline: Verify unblocking from users profile page
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -456,7 +457,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @staging @id3996
+  @regression @id3996
   Scenario Outline: Verify displaying first and last names for the incoming connection request
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to Me
@@ -472,7 +473,7 @@ Feature: Connect
       | Name      | Contact   | NewName  |
       | user1Name | user2Name | New Name |
 
-  @staging @id3226
+  @regression @id3226
   Scenario Outline: Verify connection request is deleted from the inbox of the addresser
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>

@@ -152,49 +152,6 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C723 @id2214 @regression @rc
-  Scenario Outline: I can dismiss PYMK by Hide button
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given <Contact1> is connected to <Contact2>
-    Given I sign in using my email or phone number
-    Given I see Contact list with contacts
-    When I open search by tap
-    And I see People picker page
-    And I keep reopening People Picker until PYMK are visible
-    And I remember the name of the first PYMK item
-    And I do short swipe right on the first PYMK item
-    And I click hide button on the first PYMK item
-    Then I do not see the previously remembered PYMK item
-    When I press Clear button
-    And I open search by tap
-    Then I do not see the previously remembered PYMK item
-
-    Examples:
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
-
-  @C722 @id2213 @regression @rc @rc42
-  Scenario Outline: (This test should be fixed in PR for the bug) I can dismiss PYMK by swipe
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given <Contact1> is connected to <Contact2>
-    Given I sign in using my email or phone number
-    Given I see Contact list with contacts
-    When I open search by tap
-    And I see People picker page
-    And I keep reopening People Picker until PYMK are visible
-    And I remember the name of the first PYMK item
-    And I do long swipe right on the first PYMK item
-    Then I do not see the previously remembered PYMK item
-    When I press Clear button
-    And I open search by tap
-    Then I do not see the previously remembered PYMK item
-
-    Examples:
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
-
   @C817 @id3867 @regression @rc
   Scenario Outline: Verify action buttons appear after choosing user from search results
     Given There are 2 users where <Name> is me

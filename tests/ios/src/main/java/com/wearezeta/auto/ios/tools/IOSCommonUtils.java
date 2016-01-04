@@ -130,7 +130,7 @@ public class IOSCommonUtils {
 								"-c",
 								"xcrun simctl list devices | grep -v 'unavailable' | grep -i '"
 										+ deviceName
-										+ "' | tail -n 1 | cut -d '(' -f2 | cut -d ')' -f1" })
+										+ " (' | tail -n 1 | cut -d '(' -f2 | cut -d ')' -f1" })
 				.trim();
 	}
 

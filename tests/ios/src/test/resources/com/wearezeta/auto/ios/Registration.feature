@@ -256,7 +256,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id2468
+  @regression @id2468
   Scenario Outline: Verify user is logged in when trying to register with a phone already assigned to the email
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -278,7 +278,7 @@ Feature: Registration
       | Name      | X  |
       | user1Name | 16 |
 
-  @staging @noAcceptAlert @id2742
+  @regression @noAcceptAlert @id2742
   Scenario Outline: Verify notification appearance in case of incorrect code
     Given I see sign in screen
     When I enter phone number for user <Name>

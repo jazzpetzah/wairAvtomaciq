@@ -795,7 +795,7 @@ Feature: Conversation View
       | Name      | Contact1  | Message |
       | user1Name | user2Name | testing |
 
-  @staging @id1158
+  @regression @id1158
   Scenario Outline: Verify possibility to copy image in the conversation view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -816,7 +816,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
       | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
 
-  @staging @id562
+  @regression @id562
   Scenario Outline: Verify downloading images in fullscreen
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -842,7 +842,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
       | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
 
-  @staging @id715
+  @regression @id715
   Scenario Outline: Verify you still receive messages from blocked person in a group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
@@ -877,7 +877,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
       | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
 
-  @staging @id2019
+  @regression @id2019
   Scenario Outline: Verify people icon is changed on avatar with opening keyboard and back
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

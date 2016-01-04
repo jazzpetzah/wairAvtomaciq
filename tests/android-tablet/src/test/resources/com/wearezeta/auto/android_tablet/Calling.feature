@@ -224,7 +224,7 @@ Feature: Calling
     Then I see full screen calling overlay
     When I accept call on full screen calling overlay
     Then I see calling overlay Big bar
-    And I see call participants Myself,<Contact> on the calling overlay
+    And I see call participant <Contact> on the calling overlay
     And <Contact> stops all calls to me
 
     Examples:
@@ -244,7 +244,7 @@ Feature: Calling
     Then I see full screen calling overlay
     When I accept call on full screen calling overlay
     Then I see calling overlay Big bar
-    And I see call participants Myself,<Contact> on the calling overlay
+    And I see call participant <Contact> on the calling overlay
     And <Contact> stops all calls to me
 
     Examples:
@@ -252,7 +252,7 @@ Feature: Calling
       | user1Name | user2Name | autocall    |
 
   @C486 @id2841 @calling_advanced
-  Scenario Outline: (BUG AN-2578) Other wire user trying to call me while I'm already in wire call
+  Scenario Outline: Other wire user trying to call me while I'm already in wire call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to landscape
@@ -263,7 +263,7 @@ Feature: Calling
     When <Contact1> calls me using <CallBackend>
     Then I see calling overlay Big bar
     When I tap <AcceptBtnName> button on the calling overlay
-    And I see call participants Myself,<Contact1> on the calling overlay
+    And I see call participant <Contact1> on the calling overlay
     And <Contact2> calls me using <CallBackend>
     Then I see calling overlay Big bar
     And I see call participant <Contact2> on the calling overlay

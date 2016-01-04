@@ -132,11 +132,11 @@
             <version>5.1.34</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.wearezeta</groupId>
-            <artifactId>zmessaging-actor</artifactId>
-            <version>48-SNAPSHOT</version>
-        </dependency>
+		<dependency>
+			<groupId>com.wearezeta</groupId>
+			<artifactId>zmessaging-actor</artifactId>
+			<version>57.301</version>
+		</dependency>
 
     </dependencies>
 
@@ -181,12 +181,14 @@
             </resource>
         </resources>
     </build>
-    <repositories>
-        <repository>
-            <id>releases</id>
-            <name>Releases</name>
-            <url>http://192.168.10.18:8081/nexus/content/repositories/snapshots/</url>
-            <layout>default</layout>
-        </repository>
-    </repositories>
+
+	<repositories>
+		<repository>
+			<id>releases</id>
+			<name>Releases</name>
+			<url>http://192.168.10.18:8081/nexus/content/repositories/releases/</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
+
 </project>

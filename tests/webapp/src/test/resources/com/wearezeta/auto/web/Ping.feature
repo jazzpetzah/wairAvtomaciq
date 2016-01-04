@@ -1,6 +1,6 @@
 Feature: Ping
 
-  @smoke @id1705
+  @C1717 @smoke @id1705
   Scenario Outline: Send ping in 1on1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -17,7 +17,7 @@ Feature: Ping
       | Login      | Password      | Name      | Contact   | PING   | PING_AGAIN   |
       | user1Email | user1Password | user1Name | user2Name | pinged | pinged again |
 
-  @regression @id1706
+  @C1718 @regression @id1706
   Scenario Outline: Verify you cannot Ping several times in a row
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -35,7 +35,7 @@ Feature: Ping
       | Login      | Password      | Name      | Contact   | PING   | PING_AGAIN   |
       | user1Email | user1Password | user1Name | user2Name | pinged | pinged again |
 
-  @smoke @id1709
+  @C1719 @smoke @id1709
   Scenario Outline: Verify you can see Ping on the other side (group conversation)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
