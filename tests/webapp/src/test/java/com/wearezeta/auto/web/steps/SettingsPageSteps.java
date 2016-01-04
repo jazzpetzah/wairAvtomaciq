@@ -18,6 +18,8 @@ public class SettingsPageSteps {
 	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
 			.getInstance();
 
+	private String currentDeviceId = null;
+
 	/**
 	 * Verifies whether settings dialog is visible
 	 * 
@@ -74,6 +76,33 @@ public class SettingsPageSteps {
 	@When("I click close settings page button")
 	public void IClickCloseSettingsPageButton() throws Exception {
 		webappPagesCollection.getPage(SettingsPage.class).clickCloseButton();
+	}
+
+	/**
+	 * Remember the device id of the current device
+	 * 
+	 * @throws Exception
+	 */
+	@When("I remember the device id of the current device")
+	public void IRememberCurrentDeviceId() throws Exception {
+		currentDeviceId = webappPagesCollection.getPage(SettingsPage.class)
+				.getCurrentDeviceId();
+	}
+
+	/**
+	 * Verify that the device id of the current device is still the same
+	 * 
+	 * @throws Exception
+	 */
+	@When("I verify that the device id of the current device is still the same")
+	public void IVerifyCurrentDeviceId() throws Exception {
+		if (currentDeviceId == null) {
+			throw new RuntimeException(
+					"currentDeviceId was not remembered, please use the according step first");
+		} else {
+			assertThat(webappPagesCollection.getPage(SettingsPage.class)
+					.getCurrentDeviceId(), equalTo(currentDeviceId));
+		}
 	}
 
 	/**

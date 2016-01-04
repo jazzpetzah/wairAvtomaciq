@@ -100,4 +100,39 @@ Feature: E2EE
     Examples: 
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
-     
+
+  @C2098 @regression
+  Scenario Outline: Verify current browser is set as permanent device
+    Given There is 1 user where <Name> is me
+    Given I switch to Sign In page
+    Given I enter email "<Email>"
+    Given I enter password "<Password>"
+    When I check option to remember me
+    And I press Sign In button
+    And I see Contacts Upload dialog
+    And I close Contacts Upload dialog
+    And I see my avatar on top of Contact list
+    And I open self profile
+    And I click gear button on self profile page
+    And I select Settings menu item on self profile page
+    And I remember the device id of the current device
+    And I click close settings page button
+    And I wait for 2 seconds
+    And I click gear button on self profile page
+    And I select Log out menu item on self profile page
+    And I see Sign In page
+    And I enter email "<Email>"
+    And I enter password "<Password>"
+    And I check option to remember me
+    And I press Sign In button
+    And I see Contacts Upload dialog
+    And I close Contacts Upload dialog
+    And I see my avatar on top of Contact list
+    And I open self profile
+    And I click gear button on self profile page
+    And I select Settings menu item on self profile page
+    Then I verify that the device id of the current device is still the same
+
+    Examples: 
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |

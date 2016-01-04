@@ -183,6 +183,8 @@ public final class WebAppLocators {
 
 		public static final Function<String, String> xpathDeviceLabel = (name) -> String
 				.format("//device-card//span[contains(text(),'%s')]", name);
+
+		public static final String cssCurrentDevice = "[data-uie-name='device-card-info-current']";
 	}
 
 	public static final class SelfProfilePage {
