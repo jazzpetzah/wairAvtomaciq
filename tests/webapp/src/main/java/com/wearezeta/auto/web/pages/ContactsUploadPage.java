@@ -24,7 +24,7 @@ public class ContactsUploadPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactsUploadPage.xpathShowSearchButton)
 	private WebElement xpathShowSearchButton;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.ContactsUploadPage.xpathShareContactsButton)
+	@FindBy(how = How.CSS, using = WebAppLocators.ContactsUploadPage.cssShareContactsButton)
 	private WebElement shareContactsButton;
 
 	public ContactsUploadPage(Future<ZetaWebAppDriver> lazyDriver)
@@ -36,7 +36,7 @@ public class ContactsUploadPage extends WebPage {
 		assert DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
-						By.xpath(WebAppLocators.ContactsUploadPage.xpathShareContactsButton),
+						By.cssSelector(WebAppLocators.ContactsUploadPage.cssShareContactsButton),
 						secondsTimeout) : "Contacts upload dialog has not been show within "
 				+ secondsTimeout + "second(s) timeout";
 	}

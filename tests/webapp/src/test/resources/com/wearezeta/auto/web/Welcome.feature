@@ -24,7 +24,7 @@ Feature: Welcome
     When I enter email "<Email>"
     And I enter password "<NewPassword>"
     And I press Sign In button
-    And I see Contacts Upload dialog
+    And I see my avatar on top of Contact list
 
     Examples: 
       | Email      | OldPassword   | Name      | NewPassword | LoginErr                                  |

@@ -8,8 +8,6 @@ Feature: E2EE
     Given I enter password "<Password>"
     Given I check option to remember me
     Given I press Sign In button
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     And I see my avatar on top of Contact list
     When user <Name> adds a new device <Device> with label <Label>
     And I open self profile
@@ -83,8 +81,6 @@ Feature: E2EE
     Given I enter email "<Email>"
     Given I enter password "<Password>"
     When I press Sign In button
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     And I see my avatar on top of Contact list
     And I open self profile
     And I click gear button on self profile page
@@ -109,8 +105,6 @@ Feature: E2EE
     Given I enter password "<Password>"
     When I check option to remember me
     And I press Sign In button
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     And I see my avatar on top of Contact list
     And I open self profile
     And I click gear button on self profile page
@@ -125,8 +119,6 @@ Feature: E2EE
     And I enter password "<Password>"
     And I check option to remember me
     And I press Sign In button
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     And I see my avatar on top of Contact list
     And I open self profile
     And I click gear button on self profile page
@@ -143,8 +135,6 @@ Feature: E2EE
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
-    When I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     And I see my avatar on top of Contact list
     And I open self profile
     And I click gear button on self profile page
@@ -156,8 +146,6 @@ Feature: E2EE
     And I select Log out menu item on self profile page
     And I see Sign In page
     And I Sign in using login <Email> and password <Password>
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     And I see my avatar on top of Contact list
     And I open self profile
     And I click gear button on self profile page

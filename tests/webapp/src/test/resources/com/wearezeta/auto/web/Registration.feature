@@ -16,8 +16,6 @@ Feature: Registration
     And I force carousel mode on Self Picture Upload dialog
     And I select random picture from carousel on Self Picture Upload dialog
     And I confirm picture selection on Self Picture Upload dialog
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     Then I see my avatar on top of Contact list
     When I open self profile
     Then I see user name on self profile page <Name>
@@ -44,8 +42,6 @@ Feature: Registration
     And I force carousel mode on Self Picture Upload dialog
     And I select random picture from carousel on Self Picture Upload dialog
     And I confirm picture selection on Self Picture Upload dialog
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     And I see Contact list with name <Name>
 
     Examples: 
@@ -60,8 +56,6 @@ Feature: Registration
     And I see Self Picture Upload dialog
     And I choose <PictureName> as my self picture on Self Picture Upload dialog
     And I confirm picture selection on Self Picture Upload dialog
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     Then I see my avatar on top of Contact list
     When I open self profile
     And I click gear button on self profile page
@@ -83,8 +77,6 @@ Feature: Registration
     And I force carousel mode on Self Picture Upload dialog
     And I select random picture from carousel on Self Picture Upload dialog
     And I confirm picture selection on Self Picture Upload dialog
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     Then I see my avatar on top of Contact list
     When I open self profile
     And I click gear button on self profile page
@@ -139,7 +131,6 @@ Feature: Registration
     Given I see Self Picture Upload dialog
     Given I force carousel mode on Self Picture Upload dialog
     Given I confirm picture selection on Self Picture Upload dialog
-    When I see Contacts Upload dialog
     And I click button to import Gmail Contacts
     And I see Google login popup
     And I sign up at Google with email smoketester.wire@gmail.com and password aqa123456!

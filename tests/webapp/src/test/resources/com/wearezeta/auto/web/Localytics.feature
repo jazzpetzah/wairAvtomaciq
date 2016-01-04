@@ -79,7 +79,6 @@ Feature: Localytics
     And I force carousel mode on Self Picture Upload dialog
     And I select random picture from carousel on Self Picture Upload dialog
     And I confirm picture selection on Self Picture Upload dialog
-    When I see Contacts Upload dialog
     And I click button to import Gmail Contacts
     And I see Google login popup
     And I sign up at Google with email <GoogleEmail> and password <GooglePassword>

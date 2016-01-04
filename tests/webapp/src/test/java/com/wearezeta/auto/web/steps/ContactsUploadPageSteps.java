@@ -14,18 +14,6 @@ public class ContactsUploadPageSteps {
 			.getInstance();
 
 	/**
-	 * Verify that Contacts Upload dialog is visible
-	 * 
-	 * @step. ^I see Contacts Upload dialog$
-	 * @throws Exception
-	 */
-	@And("^I see Contacts Upload dialog$")
-	public void ISeeContactsUploadDialog() throws Exception {
-		webappPagesCollection.getPage(ContactsUploadPage.class)
-				.waitUntilVisible(VISIBILITY_TIMEOUT);
-	}
-
-	/**
 	 * Verifies whether Google login prompt is visible
 	 * 
 	 * @step. ^I see Google login popup$
@@ -64,17 +52,6 @@ public class ContactsUploadPageSteps {
 	}
 
 	/**
-	 * Close Contacts Upload dialog
-	 * 
-	 * @step. ^I close Contacts Upload dialog$
-	 * 
-	 */
-	@And("^I close Contacts Upload dialog$")
-	public void ICloseContactsUploadDialog() throws Exception {
-		webappPagesCollection.getPage(ContactsUploadPage.class).close();
-	}
-
-	/**
 	 * Click Gmail import button on Contacts Upload dialog
 	 * 
 	 * @step. ^I click button to import Gmail Contacts$
@@ -84,18 +61,5 @@ public class ContactsUploadPageSteps {
 	public void IClickButtonToImportGmailContacts() throws Exception {
 		webappPagesCollection.getPage(ContactsUploadPage.class)
 				.clickShareContactsButton();
-	}
-
-	/**
-	 * Click Show Search button on Contacts Upload dialog
-	 * 
-	 * @step. ^I click Show Search button on Contacts Upload dialog$
-	 * 
-	 * @throws Exception
-	 */
-	@And("^I click Show Search button on Contacts Upload dialog$")
-	public void IClickShowSearchButton() throws Exception {
-		webappPagesCollection.getPage(ContactsUploadPage.class)
-				.clickShowSearchButton();
 	}
 }
