@@ -116,4 +116,8 @@ public class RegistrationPage extends AndroidPage {
                 "Source selection alert is not visible";
         getDriver().findElement(locator).click();
     }
+
+    public boolean waitUntilUnsplashScreenIsVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idChooseMyOwnButton), 60);
+    }
 }

@@ -32,6 +32,7 @@ Feature: Invitations
     And I restore the application
     And I input password "<ContactPassword>"
     And I confirm password
+    And I wait until Unsplash screen is visible
     And I select to choose my own picture
     And I select Camera as picture source
     And I press Camera button
