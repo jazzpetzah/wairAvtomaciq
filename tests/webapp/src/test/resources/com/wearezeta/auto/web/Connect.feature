@@ -74,8 +74,6 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     And I see my avatar on top of Contact list
     And I wait until <Contact> exists in backend search results
     When I open People Picker from Contact List
@@ -115,8 +113,6 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     And I see my avatar on top of Contact list
     And I wait until <Login2> exists in backend search results
     When I open People Picker from Contact List
@@ -160,8 +156,6 @@ Feature: Connect
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I wait until <Login2> exists in backend search results
-    When I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     And I open People Picker from Contact List
     And I type <Login2> in search field of People Picker
     And I see user <Name2> found in People Picker
@@ -371,8 +365,6 @@ Feature: Connect
     Given I switch to Sign In page
     Given I Sign in using login <MyEmail> and password <MyPassword>
     And I see my avatar on top of Contact list
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     When I open conversation with <Contact>
     Then I see CONNECTED TO action for <Contact> in conversation
     Then I see START A CONVERSATION action for <Contact> in conversation
@@ -390,8 +382,6 @@ Feature: Connect
     Given User <Me> has contact <Contact> in address book
     Given I switch to Sign In page
     Given I Sign in using login <MyEmail> and password <MyPassword>
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     And I see my avatar on top of Contact list
     # we need to wait a bit, otherwise backend throws a 429 status
     And I wait for 10 seconds

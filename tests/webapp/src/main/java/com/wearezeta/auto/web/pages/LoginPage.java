@@ -28,6 +28,9 @@ public class LoginPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathCreateAccountButton)
 	private WebElement createAccountButton;
 
+	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathSwitchToRegisterButtons)
+	private WebElement switchToRegisterButton;
+
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathSignInButton)
 	private WebElement signInButton;
 
@@ -70,6 +73,13 @@ public class LoginPage extends WebPage {
 	public boolean isVisible() throws Exception {
 		return DriverUtils.waitUntilElementClickable(this.getDriver(),
 				createAccountButton)
+				&& DriverUtils.waitUntilElementClickable(this.getDriver(),
+						forgotPasswordButton);
+	}
+
+	public boolean isSignInFormVisible() throws Exception {
+		return DriverUtils.waitUntilElementClickable(this.getDriver(),
+				switchToRegisterButton)
 				&& DriverUtils.waitUntilElementClickable(this.getDriver(),
 						forgotPasswordButton);
 	}

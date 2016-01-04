@@ -94,10 +94,8 @@ Feature: Search
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see Contacts Upload dialog
-    And I click Show Search button on Contacts Upload dialog
-    And I see Bring Your Friends button on People Picker page
-    When I click Bring Your Friends button on People Picker page
+    When I see Bring Your Friends button on People Picker page
+    And I click Bring Your Friends button on People Picker page
     Then I see Bring Your Friends popover
     When I click Invite button on Bring Your Friends popover
     And I remember invitation link on Bring Your Friends popover
@@ -117,8 +115,6 @@ Feature: Search
     Given I Sign in using login <Login> and password <Password>
     When I see my avatar on top of Contact list
     And I wait until <Login2> exists in backend search results
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     And I open People Picker from Contact List
     And I type <Login2> in search field of People Picker
     Then I see user <Name2> found in People Picker
@@ -205,8 +201,6 @@ Feature: Search
     Given I Sign in using login <Login> and password <Password>
     When I see my avatar on top of Contact list
     And I wait until <Email2> exists in backend search results
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     And I open People Picker from Contact List
     And I type <Email2> in search field of People Picker
     Then I see user <Name2> found in People Picker

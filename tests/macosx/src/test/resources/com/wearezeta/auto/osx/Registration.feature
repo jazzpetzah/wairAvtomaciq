@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @smoke @id3628
+  @C2322 @smoke @id3628
   Scenario Outline: Verify new user can be registered
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page

@@ -702,4 +702,26 @@ public class RegistrationPageSteps {
 				getRegistrationPage().userNameContainSpaces());
 	}
 
+	/**
+	 * Presses the Choose own picture button on sign up
+	 *
+	 * @throws Exception
+	 * @step. ^I press Choose Own Picture button$
+	 */
+	@When("^I press Choose Own Picture button$")
+	public void IPressChooseOwnPictureButton() throws Exception {
+		getRegistrationPage().clickChooseOwnPicButton();
+	}
+
+	/**
+	 * Presses on Alert Choose Photo button
+	 *
+	 * @throws Exception
+	 * @step. ^I press Choose Photo button$
+	 */
+	@When("^I press Choose Photo button$")
+	public void IPressChoosePhotoButton() throws Exception {
+		getRegistrationPage().clickChoosePhotoButton();
+	}
+
 }

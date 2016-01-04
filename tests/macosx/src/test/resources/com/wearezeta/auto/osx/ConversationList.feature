@@ -1,6 +1,6 @@
 Feature: Conversation List
 
-  @smoke @id3423
+  @C2301 @smoke @id3423
   Scenario Outline: Verify I can block user from conversation list with right click
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -16,7 +16,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id3425
+  @C2302 @smoke @id3425
   Scenario Outline: Verify I can leave group conversation list with right click
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -33,7 +33,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   | Contact2  | ChatName  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat |
 
-  @smoke @id3437
+  @C2307 @smoke @id3437
   Scenario Outline: Mute and unmute 1:1 conversation with right click
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -52,7 +52,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id3438
+  @C2308 @smoke @id3438
   Scenario Outline: Mute and unmute 1:1 conversation with menu bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -69,7 +69,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id3877
+  @C2342 @smoke @id3877
   Scenario Outline: Mute and unmute 1:1 conversation with keyboard shortcut
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -86,7 +86,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id3435
+  @C2305 @smoke @id3435
   Scenario Outline: Mute and unmute group conversation with right click
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -106,7 +106,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   | Contact2  | ChatName  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat |
 
-  @smoke @id3436
+  @C2306 @smoke @id3436
   Scenario Outline: Mute and unmute group conversation with menu bar
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -124,7 +124,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   | Contact2  | ChatName  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat |
 
-  @smoke @id3878
+  @C2343 @smoke @id3878
   Scenario Outline: Mute and unmute group conversation with keyboard shortcut
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -142,7 +142,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   | Contact2  | ChatName  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat |
 
-  @smoke @id3427
+  @C2303 @smoke @id3427
   Scenario Outline: Delete a 1:1 conversation with right click
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -158,7 +158,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id3910
+  @C2350 @smoke @id3910
   Scenario Outline: Delete a 1:1 conversation with menu bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -173,7 +173,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id3429
+  @C2304 @smoke @id3429
   Scenario Outline: Delete a group conversation with right click
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -190,7 +190,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   | Contact2  | ChatName  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat |
 
-  @smoke @id3911
+  @C2351 @smoke @id3911
   Scenario Outline: Delete a group conversation with menu bar
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -206,7 +206,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   | Contact2  | ChatName  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat |
 
-  @smoke @id3336
+  @C2300 @smoke @id3336
   Scenario Outline: Archive a 1:1 conversation with right click
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -222,7 +222,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id3913
+  @C2353 @smoke @id3913
   Scenario Outline: Archive a 1:1 conversation with menu bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -237,7 +237,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id3914
+  @C2354 @smoke @id3914
   Scenario Outline: Archive a 1:1 conversation with keyboard shortcut
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -252,7 +252,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id3912
+  @C2352 @smoke @id3912
   Scenario Outline: Archive a group conversation with right click
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -269,7 +269,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   | Contact2  | ChatName  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat |
 
-  @smoke @id3915
+  @C2355 @smoke @id3915
   Scenario Outline: Archive a group conversation with menu bar
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -285,7 +285,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   | Contact2  | ChatName  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat |
 
-  @smoke @id3916
+  @C2356 @smoke @id3916
   Scenario Outline: Archive a group conversation with keyboard shortcut
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -301,7 +301,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   | Contact2  | ChatName  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat |
 
-  @smoke @id3917
+  @C2357 @smoke @id3917
   Scenario Outline: Verify I can start a conversation with menu bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -315,7 +315,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-   @smoke @id3780
+   @C2332 @smoke @id3780
    Scenario Outline: Verify Start (Search) is opened when you press ⌘ N (Mac)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -329,7 +329,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id3951
+  @C3147 @smoke @id3951
   Scenario Outline: Verify switching to next and previous conversation using shortcuts ⌥ ⌘ ↑ and ⌥ ⌘ ↓
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -350,7 +350,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact1   | Contact2  | Contact3  | ChatName  |
       | user1Email | user1Password | user1Name | user2Name  | user3Name | user4Name | GroupChat |
 
-  @smoke @id3952
+  @C3148 @smoke @id3952
   Scenario Outline: Verify switching to next and previous conversation using menu bar
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -372,13 +372,12 @@ Feature: Conversation List
       | user1Email | user1Password | user1Name | user2Name  | user3Name | user4Name | GroupChat |
 
 
-  @smoke @id3502
+  @C2312 @smoke @id3502
   Scenario Outline: Use Gmail contacts import on registration
     Given There are 1 users where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see Contacts Upload dialog
-    And I click button to import Gmail Contacts
+    When I click button to import Gmail Contacts
     And I see Google login popup
     And I enter email "smoketester.wire@gmail.com" at google login
     And I click next at google login if present

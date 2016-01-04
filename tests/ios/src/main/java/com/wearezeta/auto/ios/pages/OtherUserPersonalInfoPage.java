@@ -169,16 +169,19 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 		confirmRemove.click();
 	}
 
-	public String getNameFieldValue() {
-		if (nameField.size() == 1)
-			return nameField.get(0).getText();
-		else
-			for (WebElement el : nameField) {
-				if (!el.getText().trim().equals("")) {
-					return el.getText();
-				}
-			}
-		return "";
+	public String getNameFieldValue(String user) throws Exception {
+		WebElement name = getDriver().findElement(
+				By.xpath(String.format(
+						IOSLocators.xpathOtherPersonalInfoPageNameField, user)));
+//		if (nameField.size() == 1)
+//			return nameField.get(0).getText();
+//		else
+//			for (WebElement el : nameField) {
+//				if (!el.getText().trim().equals("")) {
+//					return el.getText();
+//				}
+//			}
+		return name.getAttribute("name");
 	}
 
 	public String getEmailFieldValue() throws Exception {

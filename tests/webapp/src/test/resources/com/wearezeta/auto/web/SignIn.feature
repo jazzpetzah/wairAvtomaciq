@@ -9,8 +9,6 @@ Feature: Sign In
     And I enter password "<Password>"
     And I press Sign In button
     Then I am signed in properly
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     And I see my avatar on top of Contact list
 
     Examples: 
@@ -57,8 +55,6 @@ Feature: Sign In
     And I click on sign in button on phone number sign in
     And I enter phone verification code for user <Name>
     Then I am signed in properly
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     And I see my avatar on top of Contact list
 
     Examples: 
@@ -135,7 +131,6 @@ Feature: Sign In
     And I enter password "<Password>"
     And I press Sign In button
     Then I am signed in properly
-    And I see Contacts Upload dialog
     And I click button to import Gmail Contacts
     And I see Google login popup
     When I sign up at Google with email <Gmail> and password <GmailPassword>

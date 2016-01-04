@@ -150,6 +150,7 @@ Feature: Conversation View
   Scenario Outline: Verify you can add maximum+1 number of participants into group conversation
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
+    Given I wait for 20 seconds
     When I see my avatar on top of Contact list
     And I open People Picker from Contact List
     And I type <Contact1> in search field of People Picker

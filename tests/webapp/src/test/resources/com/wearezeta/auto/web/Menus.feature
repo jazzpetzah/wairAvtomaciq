@@ -5,8 +5,6 @@ Feature: Menus
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     And I see my avatar on top of Contact list
     When I open self profile
     And I click gear button on self profile page
@@ -22,8 +20,6 @@ Feature: Menus
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     And I see my avatar on top of Contact list
     When I open self profile
     And I click gear button on self profile page
@@ -36,8 +32,6 @@ Feature: Menus
     And I select Log out menu item on self profile page
     Given I see Sign In page
     Given I Sign in using login <Email> and password <Password>
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     And I see my avatar on top of Contact list
     And I open self profile
     And I click gear button on self profile page
@@ -51,8 +45,6 @@ Feature: Menus
     And I select Log out menu item on self profile page
     Given I see Sign In page
     Given I Sign in using login <Email> and password <Password>
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     And I see my avatar on top of Contact list
     And I open self profile
     And I click gear button on self profile page
