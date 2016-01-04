@@ -1,6 +1,6 @@
 Feature: E2EE
 
-  @regression @C1846
+  @C1846 @regression
   Scenario Outline: Remove remote device from device list
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
@@ -32,7 +32,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Device  | Label  |
       | user1Email | user1Password | user1Name | Remote1 | Label1 |
 
-  @regression @C1847
+  @C1847 @regression
   Scenario Outline: Login as permanent device after permanent device limit is reached
     Given There is 1 user where <Name> is me
     Given user <Name> adds a new device Device1 with label Label1
