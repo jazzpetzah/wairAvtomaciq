@@ -224,7 +224,7 @@ Feature: Calling
     Then I see full screen calling overlay
     When I accept call on full screen calling overlay
     Then I see calling overlay Big bar
-    And I see call participants Myself,<Contact> on the calling overlay
+    And I see call participant <Contact> on the calling overlay
     And <Contact> stops all calls to me
 
     Examples:
@@ -244,7 +244,7 @@ Feature: Calling
     Then I see full screen calling overlay
     When I accept call on full screen calling overlay
     Then I see calling overlay Big bar
-    And I see call participants Myself,<Contact> on the calling overlay
+    And I see call participant <Contact> on the calling overlay
     And <Contact> stops all calls to me
 
     Examples:
@@ -263,7 +263,7 @@ Feature: Calling
     When <Contact1> calls me using <CallBackend>
     Then I see calling overlay Big bar
     When I tap <AcceptBtnName> button on the calling overlay
-    And I see call participants Myself,<Contact1> on the calling overlay
+    And I see call participant <Contact1> on the calling overlay
     And <Contact2> calls me using <CallBackend>
     Then I see calling overlay Big bar
     And I see call participant <Contact2> on the calling overlay
