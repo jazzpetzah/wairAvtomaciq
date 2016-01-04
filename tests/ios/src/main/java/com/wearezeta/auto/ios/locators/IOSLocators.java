@@ -239,7 +239,7 @@ public final class IOSLocators {
 	// public static final String nameOtherPersonalInfoPageEmailField =
 	// "ProfileOtherEmailField";
 
-	public static final String xpathOtherPersonalInfoPageNameField = "//UIAWindow[@name='ZClientMainWindow']/UIAStaticText[3]";
+	public static final String xpathOtherPersonalInfoPageNameField = "//UIAWindow[@name='ZClientMainWindow']/UIAStaticText[4]";
 
 	public static final String xpathOtherPersonalInfoPageEmailField = "//UIAWindow[@name='ZClientMainWindow']/UIATextView[contains(@name, 'WIRE.COM')]";
 
@@ -273,7 +273,7 @@ public final class IOSLocators {
 
 	public static final String nameSettingsAccountInfoButton = "Account";
 
-	public static final String xpathChangePasswordPageChangePasswordButton = "//UIAButton[@name='CHANGE PASSWORD']";
+	public static final String xpathChangePasswordPageChangePasswordButton = "//UIAButton[@name='RESET PASSWORD']";
 
 	public static final String nameOptionsHelpButton = "HELP";
 
@@ -698,6 +698,8 @@ public final class IOSLocators {
 		public static final String nameResendCodeButton = "RESEND";
 		public static final String namePhoneNumberField = "PhoneNumberField";
 		public static final String xpathYourFilledName = "//UIATextField[preceding-sibling::UIAStaticText[@value='What should we call you?' or @value='Create an account']]";
+		public static final String nameChooseOwnPictureButton = "ChooseOwnPictureButton";
+		public static final String nameChoosePhotoButton = "Choose Photo";
 	}
 
 	public final class LoginPage {
