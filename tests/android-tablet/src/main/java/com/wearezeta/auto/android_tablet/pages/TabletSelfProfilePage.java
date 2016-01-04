@@ -24,8 +24,8 @@ public class TabletSelfProfilePage extends AndroidTabletPage {
 			.format("//*[@id='ttv__profile__name' and @value='%s']", content);
 
 	public static final Function<String, String> xpathOptionsMenuItemByName = name -> String
-			.format("//*[@id='fl__profile__settings_box']//*[@value='%s']/parent::*",
-					name.toUpperCase());
+			.format("//*[@id='fl__profile__settings_box']//*[@id='ttv__settings_box__item' and @value='%s']" +
+					"/parent::*//*[@id='fl_options_menu_button']", name.toUpperCase());
 
 	public static final String idOptionsButton = "gtv__profile__settings_button";
 	@FindBy(id = idOptionsButton)
@@ -50,8 +50,7 @@ public class TabletSelfProfilePage extends AndroidTabletPage {
 	public void selectOptionsMenuItem(String itemName) throws Exception {
 		final By locator = By.xpath(xpathOptionsMenuItemByName.apply(itemName));
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
-				.format("The item '%s' is not present in Options menu",
-						itemName);
+				.format("The item '%s' is not present in Options menu", itemName);
 		getDriver().findElement(locator).click();
 	}
 
