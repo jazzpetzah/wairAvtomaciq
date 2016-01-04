@@ -705,22 +705,22 @@ public class RegistrationPageSteps {
 	/**
 	 * Presses the Choose own picture button on sign up
 	 *
-	 * @throws Throwable
-	 * @step. ^I press choose own picture button$
+	 * @throws Exception
+	 * @step. ^I press Choose Own Picture button$
 	 */
-	@When("^I press choose own picture button$")
-	public void IPressChooseOwnPictureButton() throws Throwable {
+	@When("^I press Choose Own Picture button$")
+	public void IPressChooseOwnPictureButton() throws Exception {
 		getRegistrationPage().clickChooseOwnPicButton();
 	}
 
 	/**
 	 * Presses on Alert Choose Photo button
 	 *
-	 * @throws Throwable
+	 * @throws Exception
 	 * @step. ^I press Choose Photo button$
 	 */
 	@When("^I press Choose Photo button$")
-	public void IPressChoosePhotoButton() throws Throwable {
+	public void IPressChoosePhotoButton() throws Exception {
 		getRegistrationPage().clickChoosePhotoButton();
 	}
 

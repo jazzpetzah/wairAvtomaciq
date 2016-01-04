@@ -7,7 +7,7 @@ Feature: Registration
     And I enter activation code
     And I accept terms of service
     And I input name <Name> and hit Enter
-    And I press choose own picture button
+    And I press Choose Own Picture button
     And I press Choose Photo button
     And I choose a picture from camera roll
     Then I see Contact list with my name <Name>

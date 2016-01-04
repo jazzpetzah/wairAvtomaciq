@@ -178,7 +178,7 @@ public class GroupChatInfoPage extends IOSPage {
 			}
 			final OtherUserPersonalInfoPage otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) tapOnParticipant(getParticipantName(participant));
 			participantNameTextFieldValue = otherUserPersonalInfoPage
-					.getNameFieldValue();
+					.getNameFieldValue(user);
 			participantEmailTextFieldValue = otherUserPersonalInfoPage
 					.getEmailFieldValue();
 			Assert.assertTrue(

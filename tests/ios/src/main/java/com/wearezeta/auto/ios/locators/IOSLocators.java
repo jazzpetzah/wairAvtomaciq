@@ -239,7 +239,7 @@ public final class IOSLocators {
 	// public static final String nameOtherPersonalInfoPageEmailField =
 	// "ProfileOtherEmailField";
 
-	public static final String xpathOtherPersonalInfoPageNameField = "//UIAWindow[@name='ZClientMainWindow']/UIAStaticText[4]";
+	public static final String xpathOtherPersonalInfoPageNameField = "//UIAWindow[@name='ZClientMainWindow']/UIAStaticText[@name='%s']";
 
 	public static final String xpathOtherPersonalInfoPageEmailField = "//UIAWindow[@name='ZClientMainWindow']/UIATextView[contains(@name, 'WIRE.COM')]";
 

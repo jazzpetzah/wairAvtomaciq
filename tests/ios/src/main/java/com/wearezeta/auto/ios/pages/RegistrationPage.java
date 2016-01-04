@@ -148,10 +148,10 @@ public class RegistrationPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.Alerts.nameInvalidCode)
 	private WebElement invalidCodeAlert;
 
-	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.nameChooseOwnPictureButton)
+	@FindBy(name = IOSLocators.RegistrationPage.nameChooseOwnPictureButton)
 	private WebElement chooseOwnPictureButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.nameChoosePhotoButton)
+	@FindBy(name = IOSLocators.RegistrationPage.nameChoosePhotoButton)
 	private WebElement choosePhotoButton;
 
 	private String name;
