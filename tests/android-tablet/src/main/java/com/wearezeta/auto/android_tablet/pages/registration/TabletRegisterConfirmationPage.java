@@ -10,7 +10,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class TabletRegisterConfirmationPage extends AndroidTabletPage {
-	public static final Function<String, String> xpathCheckEmailLabelByemail = email -> String
+	public static final Function<String, String> xpathCheckEmailLabelByEmail = email -> String
 			.format("//*[@id='ttv__sign_up__check_email' and contains(@value, '%s')]",
 					email);
 
@@ -23,7 +23,7 @@ public class TabletRegisterConfirmationPage extends AndroidTabletPage {
 
 	public boolean waitUntilVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idResendLink), 20);
+				By.id(idResendLink), 60);
 	}
 
 	public boolean waitUntilInvisible() throws Exception {
@@ -33,7 +33,7 @@ public class TabletRegisterConfirmationPage extends AndroidTabletPage {
 
 	public boolean waitUntilEmailIsVisible(String expectedEmail)
 			throws Exception {
-		final By locator = By.xpath(xpathCheckEmailLabelByemail
+		final By locator = By.xpath(xpathCheckEmailLabelByEmail
 				.apply(expectedEmail));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
