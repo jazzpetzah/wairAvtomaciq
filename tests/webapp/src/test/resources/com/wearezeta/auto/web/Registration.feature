@@ -131,7 +131,7 @@ Feature: Registration
     Given I see Self Picture Upload dialog
     Given I force carousel mode on Self Picture Upload dialog
     Given I confirm picture selection on Self Picture Upload dialog
-    And I click button to import Gmail Contacts
+    When I click button to bring friends from Gmail
     And I see Google login popup
     And I sign up at Google with email smoketester.wire@gmail.com and password aqa123456!
     Then I see more than 5 suggestions in people picker

@@ -10,6 +10,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.ContactListPage;
 import com.wearezeta.auto.web.pages.PeoplePickerPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
+import com.wearezeta.auto.web.pages.external.GoogleLoginPage;
 import com.wearezeta.auto.web.pages.popovers.BringYourFriendsPopoverPage;
 
 import cucumber.api.java.en.And;
@@ -213,6 +214,56 @@ public class PeoplePickerPageSteps {
 	public void IDoNotSeeGmailImportButton() throws Exception {
 		webappPagesCollection.getPage(BringYourFriendsPopoverPage.class)
 				.waitUntilGmailImportButtonIsNotVisible();
+	}
+
+	/**
+	 * Click button to bring friends from Gmail
+	 * 
+	 * @step. ^I click button to bring friends from Gmail$
+	 * 
+	 */
+	@And("^I click button to bring friends from Gmail$")
+	public void IClickButtonToBringFriendsFromGmail() throws Exception {
+		webappPagesCollection.getPage(PeoplePickerPage.class)
+				.clickBringFriendsFromGmailButton();
+	}
+
+	/**
+	 * Verifies whether Google login prompt is visible
+	 * 
+	 * @step. ^I see Google login popup$
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I see Google login popup$")
+	public void ISeeGoogleLoginPopup() throws Exception {
+		webappPagesCollection.getPage(PeoplePickerPage.class)
+				.switchToGooglePopup();
+	}
+
+	/**
+	 * Enter gmail login and password into corresponding window
+	 * 
+	 * @step. ^I sign up at Google with email (.*) and password (.*)$"
+	 * 
+	 * @param email
+	 * @param password
+	 * @throws Exception
+	 */
+	@When("^I sign up at Google with email (.*) and password (.*)$")
+	public void ISignUpAtGoogleWithEmail(String email, String password)
+			throws Exception {
+		GoogleLoginPage googleLoginPage = webappPagesCollection
+				.getPage(GoogleLoginPage.class);
+		// sometimes Google already shows the email
+		googleLoginPage.setEmail(email);
+		// sometimes google shows a next button and you have to enter the
+		// password separately
+		if (googleLoginPage.hasNextButton()) {
+			googleLoginPage.clickNext();
+		}
+		googleLoginPage.setPassword(password);
+		googleLoginPage.clickSignIn();
 	}
 
 	/**

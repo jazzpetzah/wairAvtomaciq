@@ -405,6 +405,8 @@ public final class WebAppLocators {
 
 		public static final String cssMoreButton = "[data-uie-name='item-more']";
 
+		public static final String cssBringFriendsFromGMailButton = ".people-picker-import-buttons";
+
 	}
 
 	public static final class RegistrationPage {
@@ -463,9 +465,6 @@ public final class WebAppLocators {
 
 		public static final String xpathCloseButton = xpathRootDiv
 				+ "//*[@data-uie-name='do-close']";
-
-		//public static final String cssShareContactsButton = "[data-uie-name='do-google-import']";
-		public static final String cssShareContactsButton = ".people-picker-import-buttons";
 
 		public static final String xpathShowSearchButton = xpathRootDiv
 				+ "//*[@data-uie-name='go-search']";

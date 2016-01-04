@@ -2,12 +2,14 @@ package com.wearezeta.auto.web.pages;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -40,6 +42,9 @@ public class PeoplePickerPage extends WebPage {
 
 	@FindBy(css = WebAppLocators.PeoplePickerPage.cssCloseSearchButton)
 	private WebElement closeSearchButton;
+
+	@FindBy(how = How.CSS, using = WebAppLocators.PeoplePickerPage.cssBringFriendsFromGMailButton)
+	private WebElement bringFriendsFromGmailButton;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathBringYourFriendsButton)
 	private WebElement bringYourFriendsButton;
@@ -160,6 +165,29 @@ public class PeoplePickerPage extends WebPage {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				bringYourFriendsButton);
 		bringYourFriendsButton.click();
+	}
+
+	public void clickBringFriendsFromGmailButton() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				bringFriendsFromGmailButton);
+		bringFriendsFromGmailButton.click();
+	}
+
+	public void switchToGooglePopup() throws Exception {
+		WebDriver driver = this.getDriver();
+		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(
+				DriverUtils.getDefaultLookupTimeoutSeconds(), TimeUnit.SECONDS)
+				.pollingEvery(1, TimeUnit.SECONDS);
+		try {
+			wait.until(drv -> {
+				return (drv.getWindowHandles().size() > 1);
+			});
+		} catch (TimeoutException e) {
+			throw new TimeoutException("No Popup for Google was found", e);
+		}
+		Set<String> handles = driver.getWindowHandles();
+		handles.remove(driver.getWindowHandle());
+		driver.switchTo().window(handles.iterator().next());
 	}
 
 	public void clickCallButton() throws Exception {
