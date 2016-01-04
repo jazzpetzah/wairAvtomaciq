@@ -7,11 +7,10 @@ Feature: Registration
     And I enter activation code
     And I accept terms of service
     And I input name <Name> and hit Enter
-    And I press Picture button
+    And I press choose own picture button
+    And I press Choose Photo button
     And I choose a picture from camera roll
-    And I See selected picture
-    And I confirm selection
-    And I see Contact list with my name <Name>
+    Then I see Contact list with my name <Name>
 
     Examples: 
       | Email      | Password      | Name      |
