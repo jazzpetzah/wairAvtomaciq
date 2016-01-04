@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @smoke @id3897
+  @C2344 @smoke @id3897
   Scenario Outline: Verify I can ping a conversation using the menu bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -17,7 +17,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | PING   | PING_AGAIN   |
       | user1Email | user1Password | user1Name | user2Name | pinged | pinged again |
 
-  @smoke @id3781
+  @C2333 @smoke @id3781
   Scenario Outline: Verify you ping in a conversation when you press ⌘ + K (Mac)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -34,7 +34,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | PING   | PING_AGAIN   |
       | user1Email | user1Password | user1Name | user2Name | pinged | pinged again |
 
-  @smoke @id3782
+  @C2334 @smoke @id3782
   Scenario Outline: Verify you start a call in a conversation when you press ⌘ R (Mac)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -49,7 +49,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id3898
+  @C2345 @smoke @id3898
   Scenario Outline: Verify I can call a conversation using the menu bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -64,7 +64,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id3905
+  @C2346 @smoke @id3905
   Scenario Outline: Verify I can ping a group conversation using the menu bar
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -82,7 +82,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  | PING   | PING_AGAIN   |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat | pinged | pinged again |
 
-  @smoke @id3908
+  @C2348 @smoke @id3908
   Scenario Outline: Verify you ping in a group conversation when you press ⌘ + K (Mac)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -100,7 +100,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  | PING   | PING_AGAIN   |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat | pinged | pinged again |
 
-  @smoke @id3909
+  @C2349 @smoke @id3909
   Scenario Outline: Verify you start a call in a group conversation when you press ⌘ T (Mac)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -116,7 +116,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat |
 
-  @smoke @id3907
+  @C2347 @smoke @id3907
   Scenario Outline: Verify I can call a group conversation using the menu bar
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -132,7 +132,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat |
 
-  @smoke @id3919
+  @C2359 @smoke @id3919
   Scenario Outline: Verify I can undo redo using menu bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -151,7 +151,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id3920
+  @C2360 @smoke @id3920
   Scenario Outline: Verify I can undo redo using shortcuts ⌘ Z and ⌘ ⇧ Z
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -170,7 +170,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id3945
+  @C2367 @smoke @id3945
   Scenario Outline: Verify I can select all, cut and paste using menu bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -191,7 +191,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id3946
+  @C2368 @smoke @id3946
   Scenario Outline: Verify I can select all, cut and paste using shortcuts ⌘ A, ⌘ X and ⌘ V
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -212,7 +212,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id3947
+  @C2369 @smoke @id3947
   Scenario Outline: Verify I can select all, copy and paste using menu bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -233,7 +233,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id3948
+  @C2370 @smoke @id3948
   Scenario Outline: Verify I can select all, copy and paste using shortcuts ⌘ A, ⌘ C and ⌘ V
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

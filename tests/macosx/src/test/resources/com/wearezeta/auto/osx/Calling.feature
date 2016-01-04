@@ -1,6 +1,6 @@
 Feature: Calling
 
-  @smoke @id3918
+  @C2358 @smoke @id3918
   Scenario Outline: Verify successful 1:1 call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
