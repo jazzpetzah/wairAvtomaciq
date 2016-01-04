@@ -8,7 +8,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 
 public class ContactsUploadPageSteps {
-	private static final int VISIBILITY_TIMEOUT = 25; // seconds
+	private static final int VISIBILITY_TIMEOUT = 35; // seconds
 
 	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
 			.getInstance();

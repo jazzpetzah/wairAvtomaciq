@@ -25,6 +25,9 @@ public class SettingsPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssSoundAlertsLevel)
 	private WebElement soundAlertsLevel;
 
+	@FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssCurrentDevice)
+	private WebElement currentDevice;
+
 	@FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssDeviceLabels)
 	private List<WebElement> deviceLabels;
 
@@ -127,6 +130,10 @@ public class SettingsPage extends WebPage {
 		final String locator = WebAppLocators.SettingsPage.xpathDeviceLabel
 				.apply(device);
 		getDriver().findElement(By.xpath(locator)).click();
+	}
+
+	public String getCurrentDeviceId() {
+		return currentDevice.getAttribute("data-uie-uid");
 	}
 
 }

@@ -15,15 +15,19 @@ public class DeviceDetailPageSteps {
 			.getInstance();
 
 	/**
-	 * Verify if you see correct label of device in the device details
+	 * Verify if you see correct name and label of device in the device details
 	 * 
+	 * @param name
+	 *            model of the device
 	 * @param label
-	 *            model and label of the device
+	 *            label of the device
 	 * @throws Exception
 	 */
-	@Then("I see a device named (.*) in the device details")
-	public void ISeeACertainDeviceInDevicesSection(String label)
+	@Then("I see a device named (.*) with label (.*) in the device details")
+	public void ISeeACertainDeviceInDevicesSection(String name, String label)
 			throws Exception {
+		assertThat(webappPagesCollection.getPage(DeviceDetailPage.class)
+				.getDeviceLabel(), equalTo(label.toUpperCase()));
 		assertThat(webappPagesCollection.getPage(DeviceDetailPage.class)
 				.getDeviceLabel(), equalTo(label.toUpperCase()));
 	}

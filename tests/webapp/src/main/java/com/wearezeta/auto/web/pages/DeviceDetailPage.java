@@ -9,6 +9,9 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 
 public class DeviceDetailPage extends WebPage {
 
+	@FindBy(css = ".self-settings-device-details header div")
+	WebElement deviceName;
+
 	@FindBy(css = ".self-settings-device-details .device-info .label-xs")
 	WebElement deviceLabel;
 
@@ -24,6 +27,10 @@ public class DeviceDetailPage extends WebPage {
 	public DeviceDetailPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
+	}
+
+	public String getDeviceName() {
+		return deviceName.getText();
 	}
 
 	public String getDeviceLabel() {
