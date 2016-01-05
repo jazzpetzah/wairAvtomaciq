@@ -61,6 +61,9 @@ public class LoginPageSteps {
 		this.IEnterEmail(login);
 		this.IEnterPassword(password);
 		this.IPressSignInButton();
+
+		// Wait until signed in properly
+		this.IAmSignedInProperly();
 	}
 
 	/**

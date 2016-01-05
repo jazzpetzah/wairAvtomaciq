@@ -10,6 +10,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.ContactListPage;
 import com.wearezeta.auto.web.pages.PeoplePickerPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
+import com.wearezeta.auto.web.pages.external.GoogleLoginPage;
 import com.wearezeta.auto.web.pages.popovers.BringYourFriendsPopoverPage;
 
 import cucumber.api.java.en.And;
@@ -190,16 +191,16 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * Verify whether Bring Your Friends button is visible on People Picker page
+	 * Verify whether Invite People button is visible on People Picker page
 	 * 
-	 * @step. ^I see Bring Your Friends button on People Picker page$
+	 * @step. ^I see Invite People button on People Picker page$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I see Bring Your Friends button on People Picker page$")
+	@When("^I see Invite People button on People Picker page$")
 	public void ISeeSendInvitationButton() throws Exception {
 		webappPagesCollection.getPage(PeoplePickerPage.class)
-				.waitUntilBringYourFriendsButtonIsVisible();
+				.waitUntilInvitePeopleButtonIsVisible();
 	}
 
 	/**
@@ -216,16 +217,66 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * Click Bring Your Friends button on People Picker page
+	 * Click button to bring friends from Gmail
 	 * 
-	 * @step. ^I click Bring Your Friends button on People Picker page$
+	 * @step. ^I click button to bring friends from Gmail$
+	 * 
+	 */
+	@And("^I click button to bring friends from Gmail$")
+	public void IClickButtonToBringFriendsFromGmail() throws Exception {
+		webappPagesCollection.getPage(PeoplePickerPage.class)
+				.clickBringFriendsFromGmailButton();
+	}
+
+	/**
+	 * Verifies whether Google login prompt is visible
+	 * 
+	 * @step. ^I see Google login popup$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I click Bring Your Friends button on People Picker page$")
+	@And("^I see Google login popup$")
+	public void ISeeGoogleLoginPopup() throws Exception {
+		webappPagesCollection.getPage(PeoplePickerPage.class)
+				.switchToGooglePopup();
+	}
+
+	/**
+	 * Enter gmail login and password into corresponding window
+	 * 
+	 * @step. ^I sign up at Google with email (.*) and password (.*)$"
+	 * 
+	 * @param email
+	 * @param password
+	 * @throws Exception
+	 */
+	@When("^I sign up at Google with email (.*) and password (.*)$")
+	public void ISignUpAtGoogleWithEmail(String email, String password)
+			throws Exception {
+		GoogleLoginPage googleLoginPage = webappPagesCollection
+				.getPage(GoogleLoginPage.class);
+		// sometimes Google already shows the email
+		googleLoginPage.setEmail(email);
+		// sometimes google shows a next button and you have to enter the
+		// password separately
+		if (googleLoginPage.hasNextButton()) {
+			googleLoginPage.clickNext();
+		}
+		googleLoginPage.setPassword(password);
+		googleLoginPage.clickSignIn();
+	}
+
+	/**
+	 * Click Invite People button on People Picker page
+	 * 
+	 * @step. ^I click Invite People button on People Picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click Invite People button on People Picker page$")
 	public void IClickSendInvitationButton() throws Exception {
 		webappPagesCollection.getPage(PeoplePickerPage.class)
-				.clickBringYourFriendsButton();
+				.clickInvitePeopleButton();
 	}
 
 	/**

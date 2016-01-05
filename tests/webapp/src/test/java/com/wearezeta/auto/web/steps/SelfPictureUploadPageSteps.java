@@ -4,9 +4,9 @@ import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.SelfPictureUploadPage;
 
 import cucumber.api.java.en.And;
+import cucumber.api.java.en.When;
 
 public class SelfPictureUploadPageSteps {
-	private static final int VISIBILITY_TIMEOUT = 10; // seconds
 	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
 			.getInstance();
 
@@ -23,10 +23,10 @@ public class SelfPictureUploadPageSteps {
 			throws Exception {
 		if (shouldNotBeVisible == null) {
 			webappPagesCollection.getPage(SelfPictureUploadPage.class)
-					.waitUntilButtonsAreClickable(VISIBILITY_TIMEOUT);
+					.waitUntilButtonsAreClickable();
 		} else {
 			webappPagesCollection.getPage(SelfPictureUploadPage.class)
-					.waitUntilNotVisible(VISIBILITY_TIMEOUT);
+					.waitUntilNotVisible();
 		}
 	}
 
@@ -59,6 +59,19 @@ public class SelfPictureUploadPageSteps {
 	public void IConfirmPictureSelection() throws Exception {
 		webappPagesCollection.getPage(SelfPictureUploadPage.class)
 				.confirmPictureSelection();
+	}
+
+	/**
+	 * Wait for Self Picture Upload dialog to vanish
+	 * 
+	 * @step. ^I wait for Self Picture Upload dialog to vanish$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I wait for Self Picture Upload dialog to vanish$")
+	public void IWaitForPictureDialogToVanish() throws Exception {
+		webappPagesCollection.getPage(SelfPictureUploadPage.class)
+				.waitUntilNotVisible();
 	}
 
 	/**

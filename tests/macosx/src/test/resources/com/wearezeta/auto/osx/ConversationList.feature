@@ -377,7 +377,7 @@ Feature: Conversation List
     Given There are 1 users where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    When I click button to import Gmail Contacts
+    When I click button to bring friends from Gmail
     And I see Google login popup
     And I enter email "smoketester.wire@gmail.com" at google login
     And I click next at google login if present
@@ -385,7 +385,6 @@ Feature: Conversation List
     And I click sign in at google login
     And I click approve at google login if present
     Then I see more than 5 suggestions in people picker
-
 
     Examples: 
       | Login      | Password      | Name      |

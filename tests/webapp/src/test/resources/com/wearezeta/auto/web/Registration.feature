@@ -16,12 +16,10 @@ Feature: Registration
     And I force carousel mode on Self Picture Upload dialog
     And I select random picture from carousel on Self Picture Upload dialog
     And I confirm picture selection on Self Picture Upload dialog
-    Then I see my avatar on top of Contact list
-    When I open self profile
     Then I see user name on self profile page <Name>
     Then I see user email on self profile page <Email>
     And I click gear button on self profile page
-      And I select Log out menu item on self profile page
+    And I select Log out menu item on self profile page
 
     Examples: 
       | Email      | Password      | Name      |
@@ -56,8 +54,6 @@ Feature: Registration
     And I see Self Picture Upload dialog
     And I choose <PictureName> as my self picture on Self Picture Upload dialog
     And I confirm picture selection on Self Picture Upload dialog
-    Then I see my avatar on top of Contact list
-    When I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see Sign In page
@@ -72,13 +68,12 @@ Feature: Registration
   Scenario Outline: Photo selection dialogue - choose picture from carousel
     Given There is 1 user where <Name> is me without avatar picture
     Given I switch to Sign In page
-    And I Sign in using login <Login> and password <Password>
+    When I Sign in using login <Login> and password <Password>
     And I see Self Picture Upload dialog
     And I force carousel mode on Self Picture Upload dialog
     And I select random picture from carousel on Self Picture Upload dialog
     And I confirm picture selection on Self Picture Upload dialog
-    Then I see my avatar on top of Contact list
-    When I open self profile
+    And I wait for Self Picture Upload dialog to vanish
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see Sign In page
@@ -122,19 +117,6 @@ Feature: Registration
     Examples: 
       | Name      | Email              | Password      |
       | user1Name | nope@wearezeta.com | user1Password |
-
-  @C1775 @regression @id2229
-  Scenario: Use Gmail contacts import on registration
-    Given There is 1 user where user1Name is me without avatar picture
-    Given I switch to Sign In page
-    Given I Sign in using login user1Email and password user1Password
-    Given I see Self Picture Upload dialog
-    Given I force carousel mode on Self Picture Upload dialog
-    Given I confirm picture selection on Self Picture Upload dialog
-    And I click button to import Gmail Contacts
-    And I see Google login popup
-    And I sign up at Google with email smoketester.wire@gmail.com and password aqa123456!
-    Then I see more than 5 suggestions in people picker
 
   @C1768 @regression @id2051
   Scenario Outline: Register using already registered but not verified yet email

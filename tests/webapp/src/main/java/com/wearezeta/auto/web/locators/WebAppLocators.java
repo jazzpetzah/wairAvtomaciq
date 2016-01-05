@@ -383,8 +383,7 @@ public final class WebAppLocators {
 
 		public static final String classNamePeoplePickerVisible = "people-picker-is-visible";
 
-		public static final String xpathBringYourFriendsButton = xpathRoot
-				+ "//*[@id='invite-button']";
+		public static final String cssInvitePeopleButton = "#invite-button";
 
 		public static final Function<String, String> xpathSearchPendingResultByName = (
 				name) -> String
@@ -404,6 +403,8 @@ public final class WebAppLocators {
 		public static final String cssSearchField = "[data-uie-name='enter-users']";
 
 		public static final String cssMoreButton = "[data-uie-name='item-more']";
+
+		public static final String cssBringFriendsFromGMailButton = ".people-picker-import-buttons";
 
 	}
 
@@ -463,9 +464,6 @@ public final class WebAppLocators {
 
 		public static final String xpathCloseButton = xpathRootDiv
 				+ "//*[@data-uie-name='do-close']";
-
-		//public static final String cssShareContactsButton = "[data-uie-name='do-google-import']";
-		public static final String cssShareContactsButton = ".people-picker-import-buttons";
 
 		public static final String xpathShowSearchButton = xpathRootDiv
 				+ "//*[@data-uie-name='go-search']";

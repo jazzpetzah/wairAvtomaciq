@@ -72,11 +72,9 @@ Feature: Connect
   @C1699 @smoke @id1571
   Scenario Outline: Verify sending a connection request to user chosen from search
     Given There are 2 users where <Name> is me
+    Given I wait until <Contact> exists in backend search results
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
-    And I wait until <Contact> exists in backend search results
-    When I open People Picker from Contact List
     And I type <Contact> in search field of People Picker
     And I see user <Contact> found in People Picker
     And I click on not connected user <Contact> found in People Picker
@@ -113,9 +111,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
-    And I wait until <Login2> exists in backend search results
-    When I open People Picker from Contact List
+    When I wait until <Login2> exists in backend search results
     And I type <Login2> in search field of People Picker
     And I see user <Name2> found in People Picker
     And I click on not connected user <Name2> found in People Picker
@@ -154,9 +150,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
     And I wait until <Login2> exists in backend search results
-    And I open People Picker from Contact List
     And I type <Login2> in search field of People Picker
     And I see user <Name2> found in People Picker
     And I click on not connected user <Name2> found in People Picker
