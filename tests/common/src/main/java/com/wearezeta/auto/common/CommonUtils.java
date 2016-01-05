@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.util.*;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -44,6 +45,14 @@ public class CommonUtils {
 		Random rand = new Random();
 		int nextInt = rand.nextInt(100);
 		return nextInt < percent;
+	}
+
+	public static boolean executeOsCommandWithTimeout(String[] cmd,
+			long timeoutSeconds) throws Exception {
+		Process process = Runtime.getRuntime().exec(cmd);
+		log.debug("Process started for cmdline " + Arrays.toString(cmd));
+		outputErrorStreamToLog(process.getErrorStream());
+		return process.waitFor(timeoutSeconds, TimeUnit.SECONDS);
 	}
 
 	public static int executeOsXCommand(String[] cmd) throws Exception {
