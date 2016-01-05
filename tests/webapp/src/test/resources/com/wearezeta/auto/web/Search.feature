@@ -94,7 +94,6 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    When I see my avatar on top of Contact list
     And I wait until <Login2> exists in backend search results
     And I open People Picker from Contact List
     And I type <Login2> in search field of People Picker

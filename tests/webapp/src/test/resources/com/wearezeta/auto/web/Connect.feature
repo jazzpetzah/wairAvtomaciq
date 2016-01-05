@@ -110,8 +110,8 @@ Feature: Connect
   Scenario Outline: Verify 1to1 conversation is successfully created for sender end after connection is accepted
     Given There are 2 users where <Name> is me
     Given I switch to Sign In page
-    Given I Sign in using login <Login> and password <Password>
     When I wait until <Login2> exists in backend search results
+    And I Sign in using login <Login> and password <Password>
     And I type <Login2> in search field of People Picker
     And I see user <Name2> found in People Picker
     And I click on not connected user <Name2> found in People Picker
