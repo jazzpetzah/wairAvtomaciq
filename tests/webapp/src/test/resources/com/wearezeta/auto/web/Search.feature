@@ -201,7 +201,6 @@ Feature: Search
     Given I Sign in using login <Login> and password <Password>
     When I see my avatar on top of Contact list
     And I wait until <Email2> exists in backend search results
-    And I open People Picker from Contact List
     And I type <Email2> in search field of People Picker
     Then I see user <Name2> found in People Picker
 
