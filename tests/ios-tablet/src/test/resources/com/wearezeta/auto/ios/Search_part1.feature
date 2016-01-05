@@ -1,6 +1,6 @@
 Feature: Search
 
-  @regression @rc @id2147
+  @C2783 @regression @rc @id2147
   Scenario Outline: Verify search by email [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given I Sign in on tablet using my email
@@ -15,7 +15,7 @@ Feature: Search
       | Name      | ContactEmail | ContactName |
       | user1Name | user2Email   | user2Name   |
 
-  @regression @id2926
+  @C2788 @regression @id2926
   Scenario Outline: Verify search by email [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -31,7 +31,7 @@ Feature: Search
       | Name      | ContactEmail | ContactName |
       | user1Name | user2Email   | user2Name   |
 
-  @regression @rc @id2148
+  @C2784 @regression @rc @id2148
   Scenario Outline: Verify search by name [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given I Sign in on tablet using my email
@@ -46,7 +46,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id2927
+  @C2789 @regression @id2927
   Scenario Outline: Verify search by name [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -62,7 +62,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id2531 @noAcceptAlert @obsolete
+  @C2831 @staging @id2531 @noAcceptAlert @obsolete
   Scenario Outline: Verify denying address book uploading [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -82,7 +82,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @staging @id2928 @noAcceptAlert @obsolete
+  @C2833 @staging @id2928 @noAcceptAlert @obsolete
   Scenario Outline: Verify denying address book uploading [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -103,7 +103,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @regression @id2656
+  @C2838 @regression @id2656
   Scenario Outline: Start 1:1 chat with users from Top Connections [PORTRAIT]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -126,7 +126,7 @@ Feature: Search
       | Name      | UserCount | Contact   |
       | user1Name | 2         | user2Name |
 
-  @regression @id2929
+  @C2839 @regression @id2929
   Scenario Outline: Start 1:1 chat with users from Top Connections [LANDSCAPE]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -150,7 +150,7 @@ Feature: Search
       | Name      | UserCount | Contact   |
       | user1Name | 2         | user2Name |
 
-  @regression @rc @id2550
+  @C2835 @regression @rc @id2550
   Scenario Outline: Start group chat with users from Top Connections [PORTRAIT]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -175,7 +175,7 @@ Feature: Search
       | Name      | ConvoName    | UserCount | Contact   |
       | user1Name | TopGroupTest | 3         | user2Name |
 
-  @regression @id2930
+  @C2840 @regression @id2930
   Scenario Outline: Start group chat with users from Top Connections [LANDSCAPE]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -202,7 +202,7 @@ Feature: Search
       | Name      | ConvoName    | UserCount | Contact   |
       | user1Name | TopGroupTest | 3         | user2Name |
 
-  @regression @rc @id2342 @id1456
+  @C2456 @C2778 @regression @rc @id2342 @id1456
   Scenario Outline: Verify you can unblock someone from search list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -226,7 +226,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id2931
+  @C2790 @regression @id2931
   Scenario Outline: Verify you can unblock someone from search list [LANDSAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -252,7 +252,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @rc @id2547
+  @C2824 @regression @rc @id2547
   Scenario Outline: Verify dismissing with clicking on Hide [PORTRAIT]
     Given There are 5 users where <Name> is me
     Given <ContactWithFriends> is connected to <Name>
@@ -273,7 +273,7 @@ Feature: Search
       | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
       | user1Name | user2Name          | user3Name | user4Name | user5Name |
 
-  @regression @id2932
+  @C2825 @regression @id2932
   Scenario Outline: Verify dismissing with clicking on Hide [LANDSAPE]
     Given There are 5 users where <Name> is me
     Given <ContactWithFriends> is connected to <Name>
@@ -295,7 +295,7 @@ Feature: Search
       | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
       | user1Name | user2Name          | user3Name | user4Name | user5Name |
 
-  @regression @rc @id2546
+  @C2823 @regression @rc @id2546
   Scenario Outline: Verify dismissing with one single gesture [PORTRAIT]
     Given There are 5 users where <Name> is me
     Given <ContactWithFriends> is connected to <Name>
@@ -316,7 +316,7 @@ Feature: Search
       | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
       | user1Name | user2Name          | user3Name | user4Name | user5Name |
 
-  @regression @id2933
+  @C2826 @regression @id2933
   Scenario Outline: Verify dismissing with one single gesture [LANDSAPE]
     Given There are 5 users where <Name> is me
     Given <ContactWithFriends> is connected to <Name>
@@ -338,7 +338,7 @@ Feature: Search
       | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
       | user1Name | user2Name          | user3Name | user4Name | user5Name |
 
-  @regression @rc @id2118
+  @C2782 @regression @rc @id2118
   Scenario Outline: Verify sending connection request from PYMK [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -357,7 +357,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @id2934
+  @C2791 @regression @id2934
   Scenario Outline: Verify sending connection request from PYMK [LANDSAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -377,7 +377,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @rc @id2149
+  @C2785 @regression @rc @id2149
   Scenario Outline: Verify search by second name (something after space) [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -395,7 +395,7 @@ Feature: Search
       | Name      | Contact   | NewName  | LastName |
       | user1Name | user2Name | NEW NAME | NAME     |
 
-  @regression @id2935
+  @C2792 @regression @id2935
   Scenario Outline: Verify search by second name (something after space) [LANDSAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -414,7 +414,7 @@ Feature: Search
       | Name      | Contact   | NewName  | LastName |
       | user1Name | user2Name | NEW NAME | NAME     |
 
-  @regression @rc @id2150
+  @C2777 @regression @rc @id2150
   Scenario Outline: Verify search by second name (something after space) [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -432,7 +432,7 @@ Feature: Search
       | Name      | Contact   | NewName           | PartName |
       | user1Name | user2Name | Djulieta Carnobat | Djuli    |
 
-  @regression @id2945
+  @C2795 @regression @id2945
   Scenario Outline: Verify search by second name (something after space) [LANDSAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -451,7 +451,7 @@ Feature: Search
       | Name      | Contact   | NewName           | PartName |
       | user1Name | user2Name | Djulieta Carnobat | Djuli    |
 
-  @regression @id2703
+  @C2787 @regression @id2703
   Scenario Outline: Verify search is possible after selection users from Top People [PORTRAIT]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -474,7 +474,7 @@ Feature: Search
       | Name      | UserCount | Contact   | Number |
       | user1Name | 7         | user2Name | 4      |
 
-  @regression @id2936
+  @C2793 @regression @id2936
   Scenario Outline: Verify search is possible after selection users from Top People [LANDSAPE]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users

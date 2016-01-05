@@ -1,6 +1,6 @@
 Feature: Settings
 
-  @regression @rc @id2587
+  @C2889 @regression @rc @id2587
   Scenario Outline: Verify user can access settings [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -14,7 +14,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @regression @id3021
+  @C2905 @regression @id3021
   Scenario Outline: Verify user can access settings [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -29,7 +29,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @regression @id2588
+  @C2890 @regression @id2588
   Scenario Outline: Attempt to open About screen in settings [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -45,7 +45,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @regression @id3022
+  @C2906 @regression @id3022
   Scenario Outline: Attempt to open About screen in settings [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -62,7 +62,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @regression @id2591
+  @C2893 @regression @id2591
   Scenario Outline: Verify reset password page is accessible from settings [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -77,7 +77,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @regression @id3023
+  @C2907 @regression @id3023
   Scenario Outline: Verify reset password page is accessible from settings [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -93,7 +93,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @regression @id2596
+  @C2898 @regression @id2596
   Scenario Outline: Verify default value for sound settings is all [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -109,7 +109,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @regression @id3024
+  @C2908 @regression @id3024
   Scenario Outline: Verify default value for sound settings is all [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -126,7 +126,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @regression @id3019
+  @C2904 @regression @id3019
   Scenario Outline: Verify you can access Help site within the app [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -140,7 +140,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @regression @id3025
+  @C2909 @regression @id3025
   Scenario Outline: Verify you can access Help site within the app [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -155,7 +155,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @staging @rc @id2602
+  @C2903 @staging @rc @id2602
   Scenario Outline: Verify switching on/off chatheads [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given User <Contact2> change avatar picture to <Picture>
@@ -195,7 +195,7 @@ Feature: Settings
       | Name      | Contact   | Contact2  | NewName  | Picture                      |
       | user1Name | user2Name | user3Name | CHATHEAD | aqaPictureContact600_800.jpg |
 
-  @regression @id3084
+  @C2910 @regression @id3084
   Scenario Outline: Verify switching on/off chatheads [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given User <Contact2> change avatar picture to <Picture>
@@ -233,7 +233,7 @@ Feature: Settings
       | Name      | Contact   | Contact2  | NewName  | Picture                      |
       | user1Name | user2Name | user3Name | CHATHEAD | aqaPictureContact600_800.jpg |
 
-  @regression @id2589
+  @C2891 @regression @id2589
   Scenario Outline: Verify about screen contains all the required information [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given User me change accent color to <Color>
@@ -263,7 +263,7 @@ Feature: Settings
       | Name      | Contact   | Color  |
       | user1Name | user2Name | Violet |
 
-  @regression @id3156
+  @C2911 @regression @id3156
   Scenario Outline: Verify about screen contains all the required information [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given User me change accent color to <Color>

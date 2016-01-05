@@ -1,6 +1,6 @@
 Feature: Sign In
 
-  @regression @rc @id2607
+  @C3119 @regression @rc @id2607
   Scenario Outline: Sign in to ZClient [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -14,7 +14,7 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id2925
+  @C3133 @regression @id2925
   Scenario Outline: Sign in to ZClient [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -29,7 +29,7 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id2749 @noAcceptAlert
+  @C3130 @regression @id2749 @noAcceptAlert
   Scenario Outline: Notification if SignIn credentials are wrong [PORTRAIT]
     Given I see sign in screen
     When I press Sign in button
@@ -42,7 +42,7 @@ Feature: Sign In
       | WrongMail  | WrongPassword |
       | wrongwrong | wrong         |
 
-  @regression @id2924 @noAcceptAlert
+  @C3132 @regression @id2924 @noAcceptAlert
   Scenario Outline: Notification if SignIn credentials are wrong [LANDSCAPE]
     Given I see sign in screen
     Given I rotate UI to landscape
@@ -56,7 +56,7 @@ Feature: Sign In
       | WrongMail  | WrongPassword |
       | wrongwrong | wrong         |
 
-  @regression @rc @id2608
+  @C3120 @regression @rc @id2608
   Scenario Outline: Verify possibility of reseting password (welcome page) [PORTRAIT]
     Given I see sign in screen
     And I press Sign in button
@@ -76,7 +76,7 @@ Feature: Sign In
       | Login      | Password      | Name      | NewPassword  |
       | user1Email | user1Password | user1Name | aqa123456789 |
 
-  @regression @id2923
+  @C3131 @regression @id2923
   Scenario Outline: Verify possibility of reseting password (welcome page) [LANDSCAPE]
     Given I see sign in screen
     Given I rotate UI to landscape
@@ -97,7 +97,7 @@ Feature: Sign In
       | Login      | Password      | Name      | NewPassword  |
       | user1Email | user1Password | user1Name | aqa123456789 |
 
-  @regression @id3817
+  @C3135 @regression @id3817
   Scenario Outline: Verify phone sign in when email is assigned [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -114,7 +114,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id3818
+  @C3136 @regression @id3818
   Scenario Outline: Verify phone sign in when email is assigned [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -132,7 +132,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id2726
+  @C3121 @regression @id2726
   Scenario Outline: Verify first time phone sign in when email is not assigned [PORTRAIT]
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
@@ -156,7 +156,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id3787
+  @C3134 @regression @id3787
   Scenario Outline: Verify first time phone sign in when email is not assigned [LANDSCAPE]
     Given There is 1 user where <Name> is me with phone number only
     Given I rotate UI to landscape
@@ -181,7 +181,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id3836 @noAcceptAlert
+  @C3137 @regression @id3836 @noAcceptAlert
   Scenario Outline: Verify impossibility to login with the wrong code [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -198,7 +198,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id3836 @noAcceptAlert
+  @C3137 @regression @id3836 @noAcceptAlert
   Scenario Outline: Verify impossibility to login with the wrong code [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -216,7 +216,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id3839 @noAcceptAlert
+  @C3139 @regression @id3839 @noAcceptAlert
   Scenario Outline: Verify impossibility to resend code within 10 min [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -233,7 +233,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id3840 @noAcceptAlert
+  @C3140 @regression @id3840 @noAcceptAlert
   Scenario Outline: Verify impossibility to resend code within 10 min [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -251,7 +251,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id2733 @noAcceptAlert
+  @C3128 @regression @id2733 @noAcceptAlert
   Scenario Outline: Verify impossibility to login with unregistered phone number [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -266,7 +266,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id3843 @noAcceptAlert
+  @C3141 @regression @id3843 @noAcceptAlert
   Scenario Outline: Verify impossibility to login with unregistered phone number [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -282,7 +282,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id3852
+  @C2861 @regression @id3852
   Scenario Outline: Verify adding email to the contact signed up with phone number [PORTRAIT]
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
@@ -308,7 +308,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id3853
+  @C2862 @regression @id3853
   Scenario Outline: Verify adding email to the contact signed up with phone number [LANDSCAPE]
     Given There is 1 user where <Name> is me with phone number only
     Given I rotate UI to landscape
@@ -335,7 +335,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
       
-  @regression @id3864 @noAcceptAlert
+  @C2867 @regression @id3864 @noAcceptAlert
   Scenario Outline: Verify error message appears in case of registering already taken email [PORTRAIT]
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
@@ -356,7 +356,7 @@ Feature: Sign In
       | Email                     | Password      | Name      |
       | smoketester@wearezeta.com | user1Password | user1Name |
       
-  @regression @id3865 @noAcceptAlert 
+  @C2868 @regression @id3865 @noAcceptAlert
   Scenario Outline: Verify error message appears in case of registering already taken email [LANDSCAPE]
     Given There is 1 user where <Name> is me with phone number only
     Given I rotate UI to landscape
@@ -378,7 +378,7 @@ Feature: Sign In
       | Email                     | Password      | Name      |
       | smoketester@wearezeta.com | user1Password | user1Name |
 
-  @regression @id3858 @noAcceptAlert
+  @C3142 @regression @id3858 @noAcceptAlert
   Scenario Outline: Verify error message appears in case of registering already taken email [PORTRAIT]
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
@@ -399,7 +399,7 @@ Feature: Sign In
       | Email        | Password      | Name      |
       | invalidemail | user1Password | user1Name |
 
-  @regression @id3859 @noAcceptAlert
+  @C3143 @regression @id3859 @noAcceptAlert
   Scenario Outline: Verify error message appears in case of registering already taken email [LANDSCAPE]
     Given There is 1 user where <Name> is me with phone number only
     Given I rotate UI to landscape

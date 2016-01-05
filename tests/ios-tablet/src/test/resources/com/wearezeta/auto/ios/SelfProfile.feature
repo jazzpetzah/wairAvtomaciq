@@ -1,6 +1,6 @@
 Feature: Self Profile
 
-  @regression @id2586
+  @C2882 @regression @id2586
   Scenario Outline: Self profile. Verify max limit in 64 chars [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -21,7 +21,7 @@ Feature: Self Profile
       | Name      | NewUsername                                                          | NewUsername1                                                     | Contact   |
       | user1Name | mynewusernamewithmorethan64characters3424245345345354353452345234535 | mynewusernamewithmorethan64characters342424534534535435345234523 | user2Name |
 
-  @regression @id3157
+  @C2883 @regression @id3157
   Scenario Outline: Self profile. Verify max limit in 64 chars [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -43,7 +43,7 @@ Feature: Self Profile
       | Name      | NewUsername                                                          | NewUsername1                                                     | Contact   |
       | user1Name | mynewusernamewithmorethan64characters3424245345345354353452345234535 | mynewusernamewithmorethan64characters342424534534535435345234523 | user2Name |
 
-  @regression @id2581
+  @C2877 @regression @id2581
   Scenario Outline: I verify I am unable to enter a name using only spaces or more than 80 chars [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -58,7 +58,7 @@ Feature: Self Profile
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id3158
+  @C2884 @regression @id3158
   Scenario Outline: I verify I am unable to enter a name using only spaces or more than 80 chars [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -74,7 +74,7 @@ Feature: Self Profile
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @rc @id2574
+  @C2869 @regression @rc @id2574
   Scenario Outline: Change your profile picture [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -92,7 +92,7 @@ Feature: Self Profile
       | Name      | Picture                   | Contact   |
       | user1Name | userpicture_ios_check.png | user2Name |
 
-  @regression @id3159
+  @C2875 @regression @id3159
   Scenario Outline: Change your profile picture [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -111,7 +111,7 @@ Feature: Self Profile
       | Name      | Picture                             | Contact   |
       | user1Name | userpicture_ios_check_landscape.png | user2Name |
 
-  @regression @rc @id2582
+  @C2878 @regression @rc @id2582
   Scenario Outline: Attempt to enter a name with 0 chars [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -128,7 +128,7 @@ Feature: Self Profile
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id3160
+  @C2885 @regression @id3160
   Scenario Outline: Attempt to enter a name with 0 chars [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -146,7 +146,7 @@ Feature: Self Profile
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id2583
+  @C2879 @regression @id2583
   Scenario Outline: Verify 2 chars limit [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -165,7 +165,7 @@ Feature: Self Profile
       | Name      | username1char | username2chars | Contact   |
       | user1Name | c             | AB             | user2Name |
 
-  @regression @id3161
+  @C2886 @regression @id3161
   Scenario Outline: Verify 2 chars limit [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -185,7 +185,7 @@ Feature: Self Profile
       | Name      | username1char | username2chars | Contact   |
       | user1Name | c             | AB             | user2Name |
 
-  @regression @id3162
+  @C2887 @regression @id3162
   Scenario Outline: Verify name change [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -204,7 +204,7 @@ Feature: Self Profile
       | Name      | NewUsername | Contact   |
       | user1Name | NewName     | user2Name |
 
-  @regression @id3163
+  @C2888 @regression @id3163
   Scenario Outline: Verify name change [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -224,7 +224,7 @@ Feature: Self Profile
       | Name      | NewUsername | Contact   |
       | user1Name | NewName     | user2Name |
 
-  @regression @rc @id2571
+  @C2856 @regression @rc @id2571
   Scenario Outline: Verify changing and applying accent color [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -241,7 +241,7 @@ Feature: Self Profile
       | Name      | NewName           | Color1 | Color2          | Contact   |
       | user1Name | AccentColorChange | Violet | StrongLimeGreen | user2Name |
 
-  @regression @id3191
+  @C2858 @regression @id3191
   Scenario Outline: Verify changing and applying accent color [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -259,7 +259,7 @@ Feature: Self Profile
       | Name      | NewName           | Color1 | Color2          | Contact   |
       | user1Name | AccentColorChange | Violet | StrongLimeGreen | user2Name |
 
-  @regression @id3850
+  @C2860 @regression @id3850
   Scenario Outline: Verify adding phone number to the contact signed up with email [PORTRAIT]
     Given There is 1 users where <Name> is me with email only
     Given I Sign in on tablet using my email
@@ -275,7 +275,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @regression @id3848
+  @C2859 @regression @id3848
   Scenario Outline: Verify adding phone number to the contact signed up with email [LANDSCAPE]
     Given There is 1 users where <Name> is me with email only
     Given I rotate UI to landscape
@@ -292,7 +292,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @regression @noAcceptAlert @id3855
+  @C2863 @regression @noAcceptAlert @id3855
   Scenario Outline: Verify error message appears in case of entering a not valid phone number [PORTRAIT]
     Given There is 1 users where <Name> is me with email only
     Given I Sign in on tablet using my email
@@ -310,7 +310,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @regression @noAcceptAlert @id3856
+  @C2864 @regression @noAcceptAlert @id3856
   Scenario Outline: Verify error message appears in case of entering a not valid phone number [LANDSCAPE]
     Given There is 1 users where <Name> is me with email only
     Given I rotate UI to landscape
@@ -329,7 +329,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @regression @noAcceptAlert @id3861
+  @C2865 @regression @noAcceptAlert @id3861
   Scenario Outline: Verify error message appears in case of registering already taken phone number [PORTRAIT]
     Given There is 1 users where <Name> is me with email only
     Given I Sign in on tablet using my email
@@ -347,7 +347,7 @@ Feature: Self Profile
       | Name      | Number        | Code |
       | user1Name | 8301652248706 | +0   |
       
-  @regression @noAcceptAlert @id3862
+  @C2866 @regression @noAcceptAlert @id3862
   Scenario Outline: Verify error message appears in case of registering already taken phone number [LANDSCAPE]
     Given There is 1 users where <Name> is me with email only
     Given I rotate UI to landscape
@@ -366,7 +366,7 @@ Feature: Self Profile
       | Name      | Number        | Code |
       | user1Name | 8301652248706 | +0   |
 
-  @regression @rc @id3986
+  @C2854 @regression @rc @id3986
   Scenario Outline: Verify theme switcher is not shown on the self profile [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -378,7 +378,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @regression @id3989
+  @C2855 @regression @id3989
   Scenario Outline: Verify theme switcher is not shown on the self profile [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
