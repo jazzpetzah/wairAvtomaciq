@@ -21,9 +21,7 @@ Feature: Self Profile
   Scenario Outline: Verify you can access your profile information
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
-    Given I Sign in using login <Email> and password <Password>
-    And I see my avatar on top of Contact list
-    When I open self profile
+    When I Sign in using login <Email> and password <Password>
     Then I see user name on self profile page <Name>
     And I see user email on self profile page <Email>
     And I see user phone number on self profile page <PhoneNumber>
