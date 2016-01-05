@@ -383,7 +383,7 @@ public final class WebAppLocators {
 
 		public static final String classNamePeoplePickerVisible = "people-picker-is-visible";
 
-		public static final String cssInvitePeopleButton = "#invite-button";
+		public static final String cssBringYourFriendsOrInvitePeopleButton = "#invite-button";
 
 		public static final Function<String, String> xpathSearchPendingResultByName = (
 				name) -> String

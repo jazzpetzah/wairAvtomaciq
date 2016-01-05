@@ -5,8 +5,8 @@ Feature: Bring Your Friends
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    When I see Invite People button on People Picker page
-    And I click Invite People button on People Picker page
+    When I see Bring Your Friends or Invite People button
+    And I click Bring Your Friends or Invite People button
     Then I see Invite People popover
     And I do not see Share Contacts button
     When I remember invitation link on Bring Your Friends popover
@@ -28,8 +28,8 @@ Feature: Bring Your Friends
     When I see my avatar on top of Contact list
     And Myself waits until 1 people in backend top people results
     And I open People Picker from Contact List
-    Then I see Invite People button on People Picker page
-    When I click Invite People button on People Picker page
+    Then I see Bring Your Friends or Invite People button
+    When I click Bring Your Friends or Invite People button
     Then I see Invite People popover
     And I see Share Contacts button
     When I remember invitation link on Bring Your Friends popover
@@ -53,8 +53,8 @@ Feature: Bring Your Friends
     And I see Google login popup
     When I sign up at Google with email <Gmail> and password <GmailPassword>
     Then I see Search is opened
-    And I see Bring Your Friends button on People Picker page
-    When I click Bring Your Friends button on People Picker page
+    And I see Bring Your Friends or Invite People button
+    When I click Bring Your Friends or Invite People button
     Then I remember invitation link on Bring Your Friends popover
     And I do not see Gmail Import button on People Picker page
 
@@ -86,8 +86,8 @@ Feature: Bring Your Friends
     When I see my avatar on top of Contact list
     And Myself waits until 1 people in backend top people results
     And I open People Picker from Contact List
-    Then I see Invite People button on People Picker page
-    When I click Invite People button on People Picker page
+    Then I see Bring Your Friends or Invite People button
+    When I click Bring Your Friends or Invite People button
     Then I see Invite People popover
     And I see Share Contacts button
     When I click Share Contacts button
