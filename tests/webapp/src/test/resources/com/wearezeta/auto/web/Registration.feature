@@ -105,7 +105,7 @@ Feature: Registration
       | user1Name | user1Email | user2Email  | user2Password |
 
   @C1763 @smoke
-  Scenario Outline: I want to see an error screen if the registration fails
+  Scenario Outline: I want to see an error message if the email address is forbidden
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
     And I enter user password "<Password>" on Registration page
@@ -117,6 +117,18 @@ Feature: Registration
     Examples: 
       | Name      | Email              | Password      |
       | user1Name | nope@wearezeta.com | user1Password |
+
+  @C3219 @smoke
+  Scenario Outline: I want to see an error message if Terms of Use are not accepted
+    When I enter user name <Name> on Registration page
+    And I enter user email <Email> on Registration page
+    And I enter user password "<Password>" on Registration page
+    And I submit registration form
+    And I see error "Please accept Wire Terms of Use." on Verification page
+
+    Examples: 
+      | Name      | Email      | Password      |
+      | user1Name | user1Email | user1Password |
 
   @C1768 @regression
   Scenario Outline: Register using already registered but not verified yet email
@@ -138,7 +150,7 @@ Feature: Registration
       | user1Email | user1Password | user1Name |
 
   @C1760 @regression
-  Scenario Outline: Verify that correct error messages are shown instead of email verification screen if there are some problems with the registration
+  Scenario Outline: I want to see an error message if email or password are not valid
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
     And I enter user password "<Password>" on Registration page
