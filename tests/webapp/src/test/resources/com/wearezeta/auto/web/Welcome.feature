@@ -24,7 +24,9 @@ Feature: Welcome
     When I enter email "<Email>"
     And I enter password "<NewPassword>"
     And I press Sign In button
-    And I see my avatar on top of Contact list
+    Then I am signed in properly
+    And I see user name on self profile page <Name>
+    And I see user email on self profile page <Email>
 
     Examples: 
       | Email      | OldPassword   | Name      | NewPassword | LoginErr                                  |
