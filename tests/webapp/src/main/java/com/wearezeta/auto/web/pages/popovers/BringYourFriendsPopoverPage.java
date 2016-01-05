@@ -18,11 +18,11 @@ public class BringYourFriendsPopoverPage extends WebPage {
 	@FindBy(css = PopoverLocators.BringYourFriendsPopover.cssInvitationTextarea)
 	private WebElement invitationTextarea;
 
-	@FindBy(css = PopoverLocators.BringYourFriendsPopover.cssInvitationButton)
-	private WebElement inviteButton;
-
 	@FindBy(css = PopoverLocators.BringYourFriendsPopover.cssShareContactsButton)
 	private WebElement shareContactsButton;
+
+	@FindBy(css = PopoverLocators.BringYourFriendsPopover.cssInvitePeopleButton)
+	private WebElement invitePeopleButton;
 
 	@FindBy(css = PopoverLocators.BringYourFriendsPopover.cssGmailImportButton)
 	private WebElement gmailButton;
@@ -63,10 +63,6 @@ public class BringYourFriendsPopoverPage extends WebPage {
 				By.id(PopoverLocators.BringYourFriendsPopover.idRootLocator));
 	}
 
-	public void clickInviteButton() {
-		inviteButton.click();
-	}
-
 	public void waitUntilGmailImportButtonIsNotVisible() throws Exception {
 		getDriver();
 		assert DriverUtils
@@ -86,5 +82,13 @@ public class BringYourFriendsPopoverPage extends WebPage {
 				.waitUntilLocatorDissapears(
 						getDriver(),
 						By.cssSelector(PopoverLocators.BringYourFriendsPopover.cssShareContactsButton));
+	}
+
+	public void clickShareContactsButton() {
+		shareContactsButton.click();
+	}
+
+	public void clickInvitePeopleButton() {
+		invitePeopleButton.click();
 	}
 }

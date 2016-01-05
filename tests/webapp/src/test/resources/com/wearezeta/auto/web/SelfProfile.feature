@@ -1,6 +1,6 @@
 Feature: Self Profile
 
-  @C1728 @regression @id1743
+  @C1728 @regression
   Scenario Outline: I can change my name
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -17,7 +17,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | NewName     | Contact   |
       | user1Email | user1Password | user1Name | NewUserName | user2Name |
 
-  @C1729 @regression @id1744
+  @C1729 @regression
   Scenario Outline: Verify you can access your profile information
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
@@ -30,7 +30,7 @@ Feature: Self Profile
       | Email      | Password      | Name      | PhoneNumber      |
       | user1Email | user1Password | user1Name | user1PhoneNumber |
 
-  @C1731 @regression @id1753
+  @C1731 @regression
   Scenario Outline: Verify correct accent color showing after sign out and sign in
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
@@ -46,7 +46,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | ColorName    |
       | user1Email | user1Password | user1Name | BrightOrange |
 
-  @C1732 @regression @id1755
+  @C1732 @regression
   Scenario Outline: Verify you can edit your profile picture by dragging a new photo
     Given My browser supports synthetic drag and drop
     Given There is 1 user where <Name> is me
@@ -64,7 +64,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | PictureName              |
       | user1Email | user1Password | user1Name | userpicture_portrait.jpg |
 
-  @C1730 @regression @id1747
+  @C1730 @regression
   Scenario Outline: Verify you can change your accent color
     Given There is 3 users where <Name> is me
     Given User me change accent color to <ColorName>

@@ -1,6 +1,6 @@
 Feature: Conversation List
 
-  @C1690 @smoke @id1545
+  @C1690 @smoke
   Scenario Outline: Archive and unarchive conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -17,7 +17,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C1757 @smoke @id1918
+  @C1757 @smoke
   Scenario Outline: Mute 1on1 conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -32,7 +32,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C1758 @regression @id1919
+  @C1758 @regression
   Scenario Outline: Unmute 1on1 conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -49,7 +49,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C1721 @regression @id1720
+  @C1721 @regression
   Scenario Outline: Verify Ping icon in the conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -65,7 +65,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | ColorName  | Contact   |
       | user1Email | user1Password | user1Name | StrongBlue | user2Name |
 
-  @C1796 @regression @id2998
+  @C1796 @regression
   Scenario Outline: Verify you silence the conversation when you press ⌥⇧⌘S (Mac) or alt + ctrl + S (Win)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -85,7 +85,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C1804 @regression @id3211
+  @C1804 @regression
   Scenario Outline: Verify I can cancel blocking a 1:1 conversation from conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -103,7 +103,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C1807 @regression @id3214
+  @C1807 @regression
   Scenario Outline: Verify I can cancel leaving a group conversation from conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -122,7 +122,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       |
       | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat |
 
-  @C1810 @regression @id3218
+  @C1810 @regression
   Scenario Outline: Verify I can delete a group conversation from conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -156,7 +156,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        | Msg1    | Login2     | Password2     | Message |
       | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat | message | user2Email | user2Password | LEFT    |
 
-  @C1803 @regression @id3210
+  @C1803 @regression
   Scenario Outline: Verify I can block a 1:1 conversation from conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -185,7 +185,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   | Login2     | Password2     | Msg1    | Action |
       | user1Email | user1Password | user1Name | user2Name | user2Email | user2Password | message | LEFT   |
 
-  @C1806 @regression @id3213
+  @C1806 @regression
   Scenario Outline: Verify I can leave a group conversation from conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -220,7 +220,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        | Msg1    | Login2     | Password2     | Action |
       | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat | message | user2Email | user2Password | LEFT   |
 
-  @C1812 @regression @id3222
+  @C1812 @regression
   Scenario Outline: Verify I see picture, ping and call after I delete a group conversation from conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -273,7 +273,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        | Message | Action | PING   | Image                     | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat | hello   | START  | pinged | userpicture_landscape.jpg | autocall    |
 
-  @C1814 @regression @id3257
+  @C1814 @regression
   Scenario Outline: Verify I can delete and leave a group conversation from conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -308,7 +308,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        | Msg1    | Login2     | Password2     | Message |
       | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat | message | user2Email | user2Password | LEFT    |
 
-  @C1811 @regression @id3219
+  @C1811 @regression
   Scenario Outline: Verify I can cancel deleting a group conversation from conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -327,7 +327,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        |
       | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat |
 
-  @C1808 @regression @id3215
+  @C1808 @regression
   Scenario Outline: Verify I can delete a 1:1 conversation from conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -360,7 +360,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact1  | Action | Msg1    | Login2     | Password2     |
       | user1Email | user1Password | user1Name | user2Name | LEFT   | message | user2Email | user2Password |
 
-  @C1809 @regression @id3216
+  @C1809 @regression
   Scenario Outline: Verify I can cancel deleting a 1:1 conversation from conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

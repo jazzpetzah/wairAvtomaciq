@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @C1761 @smoke @id1936
+  @C1761 @smoke
   Scenario Outline: Verify new user can be registered
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
@@ -25,7 +25,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C1822 @regression @id4164
+  @C1822 @regression
   Scenario Outline: Verify I can accept personal invitation
     Given There is 1 user where <Name> is me
     When me sends personal invitation to mail <ContactMail> with message <Message>
@@ -46,7 +46,7 @@ Feature: Registration
       | Login      | Password      | Name      | ContactMail | Contact    | Message |
       | user1Email | user1Password | user1Name | user2Email  | user2Name  | Hello   |
 
-  @C1770 @smoke @id2064
+  @C1770 @smoke
   Scenario Outline: Photo selection dialogue - choose picture from library
     Given There is 1 user where <Name> is me without avatar picture
     Given I switch to Sign In page
@@ -64,7 +64,7 @@ Feature: Registration
       | Login      | Password      | Name      | PictureName               |
       | user1Email | user1Password | user1Name | userpicture_landscape.jpg |
 
-  @C1771 @regression @id2065
+  @C1771 @regression
   Scenario Outline: Photo selection dialogue - choose picture from carousel
     Given There is 1 user where <Name> is me without avatar picture
     Given I switch to Sign In page
@@ -84,7 +84,7 @@ Feature: Registration
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C1762 @regression @id1991
+  @C1762 @regression
   Scenario Outline: I want to be notified if the email address I entered during registration has already been registered
     Given There is 1 user where user1Name is me without avatar picture
     When I enter user name <Name> on Registration page
@@ -104,8 +104,8 @@ Feature: Registration
       | Name      | UsedEmail  | UnusedEmail | Password      |
       | user1Name | user1Email | user2Email  | user2Password |
 
-  @C1763 @smoke @id1992
-  Scenario Outline: I want to see an error screen if the registration fails
+  @C1763 @smoke
+  Scenario Outline: I want to see an error message if the email address is forbidden
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
     And I enter user password "<Password>" on Registration page
@@ -118,7 +118,19 @@ Feature: Registration
       | Name      | Email              | Password      |
       | user1Name | nope@wearezeta.com | user1Password |
 
-  @C1768 @regression @id2051
+  @C3219 @smoke
+  Scenario Outline: I want to see an error message if Terms of Use are not accepted
+    When I enter user name <Name> on Registration page
+    And I enter user email <Email> on Registration page
+    And I enter user password "<Password>" on Registration page
+    And I submit registration form
+    And I see error "Please accept Wire Terms of Use." on Verification page
+
+    Examples: 
+      | Name      | Email      | Password      |
+      | user1Name | user1Email | user1Password |
+
+  @C1768 @regression
   Scenario Outline: Register using already registered but not verified yet email
     Given I enter user name <Name> on Registration page
     Given I enter user email <Email> on Registration page
@@ -137,8 +149,8 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C1760 @regression @id1935
-  Scenario Outline: Verify that correct error messages are shown instead of email verification screen if there are some problems with the registration
+  @C1760 @regression
+  Scenario Outline: I want to see an error message if email or password are not valid
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
     And I enter user password "<Password>" on Registration page

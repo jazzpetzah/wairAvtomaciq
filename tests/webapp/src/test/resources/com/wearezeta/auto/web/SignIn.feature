@@ -1,6 +1,6 @@
 Feature: Sign In
 
-  @C1735 @regression @id1788
+  @C1735 @regression
   Scenario Outline: Sign in to Wire for Web
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
@@ -9,13 +9,12 @@ Feature: Sign In
     And I enter password "<Password>"
     And I press Sign In button
     Then I am signed in properly
-    And I see my avatar on top of Contact list
 
     Examples: 
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C1737 @smoke @id1792
+  @C1737 @smoke
   Scenario Outline: Verify sign in error appearance in case of wrong credentials
     Given There is 1 user where user1Name is me
     Given I switch to sign in page
@@ -30,7 +29,7 @@ Feature: Sign In
       | Email      | Password      | Error                                     |
       | user1Email | wrongPassword | Please verify your details and try again. |
 
-  @C1682 @C1820 @smoke @id4014
+  @C1682 @smoke
   Scenario Outline: Verify sign in button is disabled in case of empty credentials
     Given There is 1 user where user1Name is me
     When I switch to sign in page
@@ -46,7 +45,7 @@ Feature: Sign In
       | Email      | Password      |
       | user1Email | user1Password |
 
-  @C1787 @smoke @id2714
+  @C1787 @smoke
   Scenario Outline: Verify you can sign in with a phone number with correct credentials
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
@@ -55,13 +54,14 @@ Feature: Sign In
     And I click on sign in button on phone number sign in
     And I enter phone verification code for user <Name>
     Then I am signed in properly
-    And I see my avatar on top of Contact list
+    And I see user name on self profile page <Name>
+    And I see user phone number on self profile page <PhoneNumber>
 
     Examples: 
-      | Name      |
-      | user1Name |
+      | Name      | PhoneNumber      |
+      | user1Name | user1PhoneNumber |
 
-  @C1788 @regression @id2715
+  @C1788 @regression
   Scenario Outline: Verify you see correct error message when sign in with incorrect phone number
     Given I switch to sign in page
     When I switch to phone number sign in page
@@ -76,7 +76,7 @@ Feature: Sign In
       | +49         | qwerqwer    | Invalid Phone Number |
       | +49         | !@$!@$      | Invalid Phone Number |
 
-  @C1789 @regression @id2716
+  @C1789 @regression
   Scenario Outline: Verify you see correct error message when sign in with a phone number with incorrect code
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
@@ -90,7 +90,7 @@ Feature: Sign In
       | Name      | Error        |
       | user1Name | Invalid Code |
 
-  @C1786 @regression @id2707
+  @C1786 @regression
   Scenario Outline: Verify you are asked to add an email address after sign in with a phone number
     Given There is 1 user where <Name> is me with phone number only
     Given I switch to sign in page
@@ -122,7 +122,7 @@ Feature: Sign In
       | Name      | EmailOfOtherUser      | PasswordOfOtherUser | ErrorAlready                | InvalidEmail | ErrorInvalidEmail                   | InvalidPassword | ErrorInvalidPassword                          |
       | user1Name | qa1+qa1@wearezeta.com | aqa123456!          | Email address already taken | @example.com | Please enter a valid email address. | 123             | Choose a password with at least 8 characters. |
 
-  @C1848 @regression @id4070
+  @C1848 @regression
   Scenario Outline: Verify Skip for now button is shown when youre adding an email address after sign in with a phone number
     Given There is 1 user where <Name> is me with phone number only
     Given I switch to sign in page
@@ -139,7 +139,7 @@ Feature: Sign In
       | Name      |
       | user1Name |
 
-  @C1849 @regression @id4071
+  @C1849 @regression
   Scenario Outline: Verify you can verify added email later when sign in with a phone number
     Given There is 1 user where <Name> is me with phone number only
     Given I switch to sign in page

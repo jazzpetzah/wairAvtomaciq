@@ -191,16 +191,16 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * Verify whether Invite People button is visible on People Picker page
+	 * Verify whether Bring Your Friends or Invite People button is visible
 	 * 
-	 * @step. ^I see Invite People button on People Picker page$
+	 * @step. ^I see Bring Your Friends or Invite People button$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I see Invite People button on People Picker page$")
+	@When("^I see Bring Your Friends or Invite People button$")
 	public void ISeeSendInvitationButton() throws Exception {
 		webappPagesCollection.getPage(PeoplePickerPage.class)
-				.waitUntilInvitePeopleButtonIsVisible();
+				.waitUntilBringYourFriendsOrInvitePeopleButtonIsVisible();
 	}
 
 	/**
@@ -267,16 +267,16 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * Click Invite People button on People Picker page
+	 * Click Bring Your Friends or Invite People button on People Picker page
 	 * 
-	 * @step. ^I click Invite People button on People Picker page$
+	 * @step. ^I click Bring Your Friends or Invite People button$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I click Invite People button on People Picker page$")
-	public void IClickSendInvitationButton() throws Exception {
+	@When("^I click Bring Your Friends or Invite People button$")
+	public void IClickBringYourFriendsOrInvitePeopleButton() throws Exception {
 		webappPagesCollection.getPage(PeoplePickerPage.class)
-				.clickInvitePeopleButton();
+				.clickBringYourFriendsOrInvitePeopleButton();
 	}
 
 	/**

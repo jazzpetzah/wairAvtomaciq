@@ -55,17 +55,31 @@ public class BringYourFriendsPopoverPageSteps {
 		}
 	}
 
-    /**
-	 * Click Invite button on Bring Your Friends popover
+	/**
+	 * Click Share Contacts button
 	 * 
-	 * @step. ^I click Invite button on Bring Your Friends popover$
+	 * @step. ^I click Share Contacts button$
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I click Invite button on Bring Your Friends popover$")
-	public void IClickInviteButton() throws Exception {
+	@Then("^I click Share Contacts button$")
+	public void IClickShareContactsButton() throws Exception {
 		webappPagesCollection.getPage(BringYourFriendsPopoverPage.class)
-				.clickInviteButton();
+				.clickShareContactsButton();
+	}
+
+	/**
+	 * Click Invite People button in the Bring Your Friends popover (only
+	 * visible when having top people and no Gmail imported before)
+	 * 
+	 * @step. ^I click Invite People button$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I click Invite People button$")
+	public void IClickInvitePeopleButton() throws Exception {
+		webappPagesCollection.getPage(BringYourFriendsPopoverPage.class)
+				.clickInvitePeopleButton();
 	}
 
 	/**
