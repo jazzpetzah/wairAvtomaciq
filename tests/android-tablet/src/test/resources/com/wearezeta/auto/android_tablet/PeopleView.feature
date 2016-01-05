@@ -290,7 +290,7 @@ Feature: People View
     And I tap Show Tools button on conversation view page
     When I tap Show Details button on conversation view page
     Then I see the Group popover
-    And I see the participant avatars <Name>,<Contact1>,<Contact2> on Group popover
+    And I see the participant avatars <Contact1>,<Contact2> on Group popover
     And I see the conversation name "<GroupChatName>" on Group popover
     And I see "<Subheader>" subheader on Group popover
 
@@ -312,7 +312,7 @@ Feature: People View
     And I tap Show Tools button on conversation view page
     When I tap Show Details button on conversation view page
     Then I see the Group popover
-    And I see the participant avatars <Name>,<Contact1>,<Contact2> on Group popover
+    And I see the participant avatars <Contact1>,<Contact2> on Group popover
     And I see the conversation name "<GroupChatName>" on Group popover
     And I see "<Subheader>" subheader on Group popover
 
