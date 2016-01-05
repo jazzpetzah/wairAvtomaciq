@@ -122,28 +122,6 @@ Feature: Sign In
       | Name      | EmailOfOtherUser      | PasswordOfOtherUser | ErrorAlready                | InvalidEmail | ErrorInvalidEmail                   | InvalidPassword | ErrorInvalidPassword                          |
       | user1Name | qa1+qa1@wearezeta.com | aqa123456!          | Email address already taken | @example.com | Please enter a valid email address. | 123             | Choose a password with at least 8 characters. |
 
-  @C1774 @regression @id2227
-  Scenario Outline: Show invitation button when Gmail import on registration has no suggestions
-    Given There is 1 user where <Name> is me
-    Given I switch to sign in page
-    Given I see Sign In page
-    When I enter email "<Email>"
-    And I enter password "<Password>"
-    And I press Sign In button
-    Then I am signed in properly
-    And I click button to bring friends from Gmail
-    And I see Google login popup
-    When I sign up at Google with email <Gmail> and password <GmailPassword>
-    Then I see Search is opened
-    And I see Bring Your Friends button on People Picker page
-    When I click Bring Your Friends button on People Picker page
-    Then I remember invitation link on Bring Your Friends popover
-    And I do not see Gmail Import button on People Picker page
-
-    Examples: 
-      | Email      | Password      | Name      | Gmail                       | GmailPassword |
-      | user1Email | user1Password | user1Name | smoketester.wire2@gmail.com | aqa123456!    |
-
   @C1848 @regression @id4070
   Scenario Outline: Verify Skip for now button is shown when youre adding an email address after sign in with a phone number
     Given There is 1 user where <Name> is me with phone number only

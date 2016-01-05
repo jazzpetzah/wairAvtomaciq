@@ -118,19 +118,6 @@ Feature: Registration
       | Name      | Email              | Password      |
       | user1Name | nope@wearezeta.com | user1Password |
 
-  @C1775 @regression @id2229
-  Scenario: Use Gmail contacts import on registration
-    Given There is 1 user where user1Name is me without avatar picture
-    Given I switch to Sign In page
-    Given I Sign in using login user1Email and password user1Password
-    Given I see Self Picture Upload dialog
-    Given I force carousel mode on Self Picture Upload dialog
-    Given I confirm picture selection on Self Picture Upload dialog
-    When I click button to bring friends from Gmail
-    And I see Google login popup
-    And I sign up at Google with email smoketester.wire@gmail.com and password aqa123456!
-    Then I see more than 5 suggestions in people picker
-
   @C1768 @regression @id2051
   Scenario Outline: Register using already registered but not verified yet email
     Given I enter user name <Name> on Registration page
