@@ -46,8 +46,8 @@ public class PeoplePickerPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.PeoplePickerPage.cssBringFriendsFromGMailButton)
 	private WebElement bringFriendsFromGmailButton;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathBringYourFriendsButton)
-	private WebElement bringYourFriendsButton;
+	@FindBy(how = How.CSS, using = WebAppLocators.PeoplePickerPage.cssInvitePeopleButton)
+	private WebElement invitePeopleButton;
 
 	@FindBy(xpath = "//*[contains(@class,'people-picker-list-suggestions')]//div[@data-uie-name='item-user']")
 	private List<WebElement> suggestions;
@@ -150,21 +150,17 @@ public class PeoplePickerPage extends WebPage {
 						By.className(WebAppLocators.PeoplePickerPage.classNamePeoplePickerVisible));
 	}
 
-	private static final int BUTTON_VISIBILITY_TIMEOUT_SECONDS = 5;
-
-	public void waitUntilBringYourFriendsButtonIsVisible() throws Exception {
+	public void waitUntilInvitePeopleButtonIsVisible() throws Exception {
 		assert DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						getDriver(),
-						By.xpath(WebAppLocators.PeoplePickerPage.xpathBringYourFriendsButton),
-						BUTTON_VISIBILITY_TIMEOUT_SECONDS) : "Bring Your Friends button is not visible after "
-				+ BUTTON_VISIBILITY_TIMEOUT_SECONDS + " seconds timeout";
+						By.cssSelector(WebAppLocators.PeoplePickerPage.cssInvitePeopleButton)) : "Bring Your Friends button is not visible";
 	}
 
-	public void clickBringYourFriendsButton() throws Exception {
+	public void clickInvitePeopleButton() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
-				bringYourFriendsButton);
-		bringYourFriendsButton.click();
+				invitePeopleButton);
+		invitePeopleButton.click();
 	}
 
 	public void clickBringFriendsFromGmailButton() throws Exception {

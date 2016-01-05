@@ -7,23 +7,23 @@ import com.wearezeta.auto.web.pages.popovers.BringYourFriendsPopoverPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-public class SendInvitationPopoverPageSteps {
+public class BringYourFriendsPopoverPageSteps {
 
 	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
 			.getInstance();
 	private String invitationLink = null;
 
 	/**
-	 * Verifies whether Bring Your Friends popover is visible or not
+	 * Verifies whether Invite People popover is visible or not
 	 * 
-	 * @step. ^I( do not)? see Bring Your Friends popover$
+	 * @step. ^I( do not)? see Invite People popover$
 	 * 
 	 * @param shouldNotBeVisible
 	 *            is set to null if "do not" part is not provided
 	 * @throws Exception
 	 */
-	@Then("^I( do not)? see Bring Your Friends popover$")
-	public void ISeeSendInvitationPopover(String shouldNotBeVisible)
+	@Then("^I( do not)? see Invite People popover$")
+	public void ISeeInvitatePeoplePopover(String shouldNotBeVisible)
 			throws Exception {
 		if (shouldNotBeVisible == null) {
 			webappPagesCollection.getPage(BringYourFriendsPopoverPage.class)
@@ -35,6 +35,27 @@ public class SendInvitationPopoverPageSteps {
 	}
 
 	/**
+	 * Verifies whether Share Contacts button is visible or not
+	 * 
+	 * @step. ^I( do not)? see Share Contacts button$
+	 * 
+	 * @param shouldNotBeVisible
+	 *            is set to null if "do not" part is not provided
+	 * @throws Exception
+	 */
+	@Then("^I( do not)? see Share Contacts button$")
+	public void ISeeShareContactsButton(String shouldNotBeVisible)
+			throws Exception {
+		if (shouldNotBeVisible == null) {
+			webappPagesCollection.getPage(BringYourFriendsPopoverPage.class)
+					.isShareContactsButtonVisible();
+		} else {
+			webappPagesCollection.getPage(BringYourFriendsPopoverPage.class)
+					.isShareContactsButtonNotVisible();
+		}
+	}
+
+    /**
 	 * Click Invite button on Bring Your Friends popover
 	 * 
 	 * @step. ^I click Invite button on Bring Your Friends popover$

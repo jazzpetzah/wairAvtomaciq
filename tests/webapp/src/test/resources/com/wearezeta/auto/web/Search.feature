@@ -90,23 +90,44 @@ Feature: Search
       | user1Email | user1Password | user1Name | user2Name |
 
   @C1727 @regression @id1742
-  Scenario Outline: Verify possibility of invitation accepting
+  Scenario Outline: Invite people when you have no contacts
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    When I see Bring Your Friends button on People Picker page
-    And I click Bring Your Friends button on People Picker page
-    Then I see Bring Your Friends popover
-    When I click Invite button on Bring Your Friends popover
-    And I remember invitation link on Bring Your Friends popover
-    Then I do not see Bring Your Friends popover
-    When I navigate to previously remembered invitation link
+    When I see Invite People button on People Picker page
+    And I click Invite People button on People Picker page
+    Then I see Invite People popover
+    And I do not see Share Contacts button
+    When I remember invitation link on Bring Your Friends popover
+    And I navigate to previously remembered invitation link
     Then I see You are invited page
 
-    # We don't go further since invitation flow will be changed soon
     Examples: 
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
+
+  @C3217 @regression @id1742
+  Scenario Outline: Invite people when you have top people or search suggestions
+    Given There is 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User Me sent message <Message> to conversation <Contact>
+    Given User <Contact> sent message <Message> to conversation <Name>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    When I see my avatar on top of Contact list
+    And Myself waits until 1 people in backend top people results
+    And I open People Picker from Contact List
+    Then I see Invite People button on People Picker page
+    When I click Invite People button on People Picker page
+    Then I see Invite People popover
+    And I see Share Contacts button
+    When I remember invitation link on Bring Your Friends popover
+    And I navigate to previously remembered invitation link
+    Then I see You are invited page
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Message |
+      | user1Email | user1Password | user1Name | user2Name | Hello   |
 
   @C1722 @regression @id1721
   Scenario Outline: Verify you can add new user from search results from the other end
