@@ -356,6 +356,7 @@ Feature: People View
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
     And I tap on start dialog button on other user profile page
+    #And I exit the other user group info iPad popover
     Then I see dialog page
     And I type the message
     And I send the message
@@ -760,7 +761,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
-  @regression @id3975 @ZIOS-5063
+  @regression @id3975
   Scenario Outline: Verify removing the content from the group conversation via participant view [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -781,13 +782,13 @@ Feature: People View
     And I input conversation name <GroupChatName> in Search input
     Then I see conversation <GroupChatName> is presented in Search results
     When I tap on conversation <GroupChatName> in search result
-    Then I see group chat page with users <Contact1>,<Contact2>
+    Then I see group chat page after deletion with users <Contact1>,<Contact2>
 
     Examples: 
       | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
       | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
 
-  @staging @id3976 @ZIOS-5063
+  @staging @id3976
   Scenario Outline: Verify removing the content from the group conversation via participant view [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -809,7 +810,7 @@ Feature: People View
     And I input conversation name <GroupChatName> in Search input
     Then I see conversation <GroupChatName> is presented in Search results
     When I tap on conversation <GroupChatName> in search result
-    Then I see group chat page with users <Contact1>,<Contact2>
+    Then I see group chat page after deletion with users <Contact1>,<Contact2>
 
     Examples: 
       | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
