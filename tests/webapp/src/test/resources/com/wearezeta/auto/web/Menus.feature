@@ -1,6 +1,6 @@
 Feature: Menus
 
-  @C1706 @regression @id1648
+  @C1706 @regression
   Scenario Outline: Check Preferences opening
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
@@ -13,7 +13,7 @@ Feature: Menus
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C1773 @smoke @id2190
+  @C1773 @smoke
   Scenario Outline: Verify sound settings are saved after re-login
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page

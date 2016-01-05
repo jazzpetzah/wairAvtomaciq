@@ -1,6 +1,6 @@
 Feature: Search
 
-  @C1711 @smoke @id1691
+  @C1711 @smoke
   Scenario Outline: Start group chat with users from contact list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -23,7 +23,7 @@ Feature: Search
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @C1723 @regression @id1722
+  @C1723 @regression
   Scenario Outline: Verify the new conversation is created on the other end (Search UI source)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -62,7 +62,7 @@ Feature: Search
       | Login      | Password      | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  | Contact2Email | Contact2Password |
       | user1Email | user1Password | user1Name | user2Name | user2Email    | user2Password    | user3Name | user3Email    | user3Password    |
 
-  @C1698 @regression @id1566
+  @C1698 @regression
   Scenario Outline: Verify you can unblock someone from search list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -89,7 +89,7 @@ Feature: Search
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C1722 @regression @id1721
+  @C1722 @regression
   Scenario Outline: Verify you can add new user from search results from the other end
     Given There are 2 users where <Name> is me
     Given I switch to Sign In page
@@ -129,7 +129,7 @@ Feature: Search
       | Login      | Password      | Name      | Name2     | Login2     | Password2     |
       | user1Email | user1Password | user1Name | user2Name | user2Email | user2Password |
 
-  @C1725 @smoke @id1738
+  @C1725 @smoke
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
@@ -151,7 +151,7 @@ Feature: Search
       | Login      | Password      | Name      | Contact1  | Contact2  | Message1 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Message1 |
 
-  @C1724 @smoke @id1729
+  @C1724 @smoke
   Scenario Outline: Verify you can create a group conversation from Top People list
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>, <Contact3>
@@ -174,7 +174,7 @@ Feature: Search
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Message1 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | Message1 |
 
-  @C1802 @smoke @id3207
+  @C1802 @smoke
   Scenario Outline: Verify you can search by email
     Given There are 2 users where <Name> is me
     Given I switch to Sign In page
@@ -188,7 +188,7 @@ Feature: Search
       | Login      | Password      | Name      | Name2     | Email2     |
       | user1Email | user1Password | user1Name | user2Name | user2Email |
 
-  @C1816 @regression @id3321
+  @C1816 @regression
   Scenario Outline: Verify More button is shown in Top People list when you have more than 8 people in Top people
     Given There are 11 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>, <Contact3>, <Contact4>, <Contact5>, <Contact6>, <Contact7>, <Contact8>, <Contact9>, <Contact10>
@@ -215,7 +215,7 @@ Feature: Search
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Contact8  | Contact9   | Contact10  | Message1 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | user9Name | user10Name | user11Name | Message1 |
 
-  @C1818 @staging @id3325
+  @C1818 @staging
   Scenario Outline: Verify I can start a 1:1 call with search ui buttons
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -237,7 +237,7 @@ Feature: Search
       | Login      | Password      | Name      | Contact1  |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C1819 @staging @id3326
+  @C1819 @staging
   Scenario Outline: Verify I can start a group call with search ui buttons
     Given My browser supports calling
     Given There are 3 users where <Name> is me

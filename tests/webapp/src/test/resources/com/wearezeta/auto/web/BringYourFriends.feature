@@ -1,6 +1,6 @@
 Feature: Bring Your Friends
 
-  @C1727 @regression @id1742
+  @C1727 @regression
   Scenario Outline: Invite people when you have no contacts
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
@@ -40,7 +40,7 @@ Feature: Bring Your Friends
       | Login      | Password      | Name      | Contact   | Message |
       | user1Email | user1Password | user1Name | user2Name | Hello   |
 
-  @C1774 @regression @id2227
+  @C1774 @regression
   Scenario Outline: Show invitation button when Gmail import has no suggestions
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
@@ -62,7 +62,7 @@ Feature: Bring Your Friends
       | Email      | Password      | Name      | Gmail                       | GmailPassword |
       | user1Email | user1Password | user1Name | smoketester.wire2@gmail.com | aqa123456!    |
 
-  @C1775 @regression @id2229
+  @C1775 @regression
   Scenario: Use Gmail contacts import from search UI
     Given There is 1 user where user1Name is me without avatar picture
     Given I switch to Sign In page
