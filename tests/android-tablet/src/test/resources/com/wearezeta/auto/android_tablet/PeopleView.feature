@@ -295,8 +295,8 @@ Feature: People View
     And I see "<Subheader>" subheader on Group popover
 
     Examples:
-      | Name      | Contact1  | Contact1Email | Contact2  | GroupChatName | Subheader |
-      | user1Name | user2Name | user2Email    | user3Name | GroupChat     | 3 PEOPLE  |
+      | Name      | Contact1  | Contact2  | GroupChatName | Subheader |
+      | user1Name | user2Name | user3Name | GroupChat     | 2 PEOPLE  |
 
   @C801 @id3154 @regression @rc
   Scenario Outline: I see conversation name, number of participants and their avatars in group pop-over (landscape)
@@ -317,8 +317,8 @@ Feature: People View
     And I see "<Subheader>" subheader on Group popover
 
     Examples:
-      | Name      | Contact1  | Contact1Email | Contact2  | GroupChatName | Subheader |
-      | user1Name | user2Name | user2Email    | user3Name | GroupChat     | 3 PEOPLE  |
+      | Name      | Contact1  | Contact2  | GroupChatName | Subheader |
+      | user1Name | user2Name | user3Name | GroupChat     | 2 PEOPLE  |
 
   @C507 @id2895 @regression
   Scenario Outline: Check interaction with options menu (portrait)
