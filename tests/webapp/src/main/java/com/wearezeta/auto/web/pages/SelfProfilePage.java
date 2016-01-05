@@ -47,6 +47,8 @@ public class SelfProfilePage extends WebPage {
 	}
 
 	public void clickGearButton() throws Exception {
+		// Wait until no modal is shown
+		DriverUtils.waitUntilLocatorDissapears(getDriver(), By.className("modal-show"));
 		DriverUtils.waitUntilElementClickable(this.getDriver(), gearButton);
 		gearButton.click();
 	}
