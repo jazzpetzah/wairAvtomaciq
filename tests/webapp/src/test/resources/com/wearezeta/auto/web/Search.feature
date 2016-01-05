@@ -89,25 +89,6 @@ Feature: Search
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C1727 @regression @id1742
-  Scenario Outline: Verify possibility of invitation accepting
-    Given There is 1 user where <Name> is me
-    Given I switch to Sign In page
-    Given I Sign in using login <Login> and password <Password>
-    When I see Bring Your Friends button on People Picker page
-    And I click Bring Your Friends button on People Picker page
-    Then I see Bring Your Friends popover
-    When I click Invite button on Bring Your Friends popover
-    And I remember invitation link on Bring Your Friends popover
-    Then I do not see Bring Your Friends popover
-    When I navigate to previously remembered invitation link
-    Then I see You are invited page
-
-    # We don't go further since invitation flow will be changed soon
-    Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
-
   @C1722 @regression @id1721
   Scenario Outline: Verify you can add new user from search results from the other end
     Given There are 2 users where <Name> is me
@@ -201,7 +182,6 @@ Feature: Search
     Given I Sign in using login <Login> and password <Password>
     When I see my avatar on top of Contact list
     And I wait until <Email2> exists in backend search results
-    And I open People Picker from Contact List
     And I type <Email2> in search field of People Picker
     Then I see user <Name2> found in People Picker
 

@@ -1,6 +1,6 @@
 Feature: E2EE
 
-  @C1846 @regression
+  @C1846
   Scenario Outline: Remove remote device from device list
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
@@ -30,7 +30,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Device  | Label  |
       | user1Email | user1Password | user1Name | Remote1 | Label1 |
 
-  @C1847 @regression
+  @C1847
   Scenario Outline: Login as permanent device after permanent device limit is reached
     Given There is 1 user where <Name> is me
     Given user <Name> adds a new device Device1 with label Label1
@@ -67,7 +67,7 @@ Feature: E2EE
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C2100 @regression
+  @C2100
   Scenario Outline: Login as temporary device after device limit is reached
     Given There is 1 user where <Name> is me
     Given user <Name> adds a new device Device1 with label Label1
@@ -97,7 +97,7 @@ Feature: E2EE
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C2098 @regression
+  @C2098
   Scenario Outline: Verify current browser is set as permanent device
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
@@ -130,7 +130,7 @@ Feature: E2EE
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C2099 @regression
+  @C2099
   Scenario Outline: Verify current browser is set as temporary device
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page

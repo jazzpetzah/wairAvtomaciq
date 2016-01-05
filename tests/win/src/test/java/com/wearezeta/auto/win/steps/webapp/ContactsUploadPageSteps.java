@@ -19,18 +19,6 @@ public class ContactsUploadPageSteps {
 			.getInstance();
 
 	/**
-	 * Verify that Contacts Upload dialog is visible
-	 * 
-	 * @step. ^I see Contacts Upload dialog$
-	 * @throws Exception
-	 */
-	@And("^I see Contacts Upload dialog$")
-	public void ISeeContactsUploadDialog() throws Exception {
-		webappPagesCollection.getPage(ContactsUploadPage.class)
-				.waitUntilVisible(VISIBILITY_TIMEOUT);
-	}
-
-	/**
 	 * Verifies whether Google login prompt is visible
 	 * 
 	 * @step. ^I see Google login popup$
@@ -146,16 +134,4 @@ public class ContactsUploadPageSteps {
 				.clickShareContactsButton();
 	}
 
-	/**
-	 * Click Show Search button on Contacts Upload dialog
-	 * 
-	 * @step. ^I click Show Search button on Contacts Upload dialog$
-	 * 
-	 * @throws Exception
-	 */
-	@And("^I click Show Search button on Contacts Upload dialog$")
-	public void IClickShowSearchButton() throws Exception {
-		webappPagesCollection.getPage(ContactsUploadPage.class)
-				.clickShowSearchButton();
-	}
 }
