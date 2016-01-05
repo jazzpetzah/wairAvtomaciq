@@ -9,7 +9,6 @@ Feature: Sign In
     And I enter password "<Password>"
     And I press Sign In button
     Then I am signed in properly
-    And I see my avatar on top of Contact list
 
     Examples: 
       | Email      | Password      | Name      |
@@ -55,11 +54,12 @@ Feature: Sign In
     And I click on sign in button on phone number sign in
     And I enter phone verification code for user <Name>
     Then I am signed in properly
-    And I see my avatar on top of Contact list
+    And I see user name on self profile page <Name>
+    And I see user phone number on self profile page <PhoneNumber>
 
     Examples: 
-      | Name      |
-      | user1Name |
+      | Name      | PhoneNumber      |
+      | user1Name | user1PhoneNumber |
 
   @C1788 @regression @id2715
   Scenario Outline: Verify you see correct error message when sign in with incorrect phone number
