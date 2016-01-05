@@ -1,6 +1,6 @@
 Feature: Settings
 
-  @id482 @regression
+  @C1098 @id482 @regression
   Scenario Outline: Verify user can access settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -14,7 +14,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @regression @rc @id729 
+  @C1099 @regression @rc @id729
   Scenario Outline: Attempt to open About screen in settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -31,7 +31,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @regression @id862
+  @C1102 @regression @id862
   Scenario Outline: Verify reset password page is accessible from settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -47,7 +47,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @id1258 @regression
+  @C1107 @id1258 @regression
   Scenario Outline: Verify default value for sound settings is all
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -63,7 +63,7 @@ Feature: Settings
       | Name      |
       | user1Name |
       
-  @regression @id2074
+  @C1109 @regression @id2074
   Scenario Outline: Verify you can access Help site within the app
   	Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -77,7 +77,7 @@ Feature: Settings
       | Name      |
       | user1Name |
       
-  @regression @id2146
+  @C1113 @regression @id2146
   Scenario Outline: Verify switching on/off chatheads
     Given There are 3 users where <Name> is me
     Given User <Contact2> change avatar picture to <Picture>
@@ -117,7 +117,7 @@ Feature: Settings
       | Name      | Contact   | Contact2  | NewName  | Picture                      |
       | user1Name | user2Name | user3Name | CHATHEAD | aqaPictureContact600_800.jpg |
   
-  @regression @id730 @id731
+  @C1100 @C1101 @regression @id730 @id731
   Scenario Outline: Verify about screen contains all the required information
     Given There is 1 user where <Name> is me
     Given User me change accent color to <Color>

@@ -1,6 +1,6 @@
 Feature: People View
 
-  @regression @id1393
+  @C985 @regression @id1393
   Scenario Outline: Start group chat with users from contact list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -27,7 +27,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @id489
+  @C973 @regression @id489
   Scenario Outline: Add user to a group conversation
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -52,7 +52,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | Number | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | 4      | TESTCHAT      |
 
-  @regression @rc @id1389
+  @C3175 @regression @rc @id1389
   Scenario Outline: Leave from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -73,7 +73,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
 
-  @regression @rc @id1390
+  @C3169 @regression @rc @id1390
   Scenario Outline: Remove from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -93,7 +93,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
 
-  @staging @rc @id1396
+  @C3173 @staging @rc @id1396
   Scenario Outline: Verify correct group info page information
     Given There are 3 users where <Name> is me
     Given User <Contact1> change avatar picture to <Picture>
@@ -116,7 +116,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | ParticipantNumber | Picture                      | Color        | Color1       |
       | user1Name | user2Name | user3Name | 3                 | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow |
 
-  @regression @rc @id1406
+  @C3174 @regression @rc @id1406
   Scenario Outline: I can edit the conversation name
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -136,7 +136,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | ChatName | GroupChatName |
       | user1Name | user2Name | user3Name | QAtest   | TESTCHAT      |
 
-  @regression @id531
+  @C974 @regression @id531
   Scenario Outline: I can see the individual user profile if I select someone in participants view
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -152,7 +152,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @rc @id339
+  @C3172 @regression @rc @id339
   Scenario Outline: Tap on participant profiles in group info page participant view
     Given There are 3 users where <Name> is me
     Given <GroupCreator> is connected to me
@@ -170,7 +170,7 @@ Feature: People View
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
       | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
-  @regression @id393 @id2174
+  @C972 @C988 @regression @id393 @id2174
   Scenario Outline: Verify you can start 1:1 conversation from a group conversation profile
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -188,7 +188,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
 
-  @regression @id393
+  @C972 @regression @id393
   Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
     Given There are 3 users where <Name> is me
     Given <GroupCreator> is connected to me
@@ -207,7 +207,7 @@ Feature: People View
       | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
   # broken functionality
-  @regression @id555
+  @C975 @regression @id555
   Scenario Outline: Verify you can add people from 1:1 people view (view functionality)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -236,7 +236,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @rc @id556
+  @C986 @regression @rc @id556
   Scenario Outline: Verify you can add people from 1:1 people view (via keyboard button)
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -264,7 +264,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @staging @id559
+  @C977 @staging @id559
   Scenario Outline: Verify you can add people from 1:1 people view (cancel view)
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -299,7 +299,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @regression @rc @id1462
+  @C3170 @regression @rc @id1462
   Scenario Outline: Verify silence the conversation
     Given There are 2 users where <Name> is me
     Given User <Name> change accent color to <Color>
@@ -323,7 +323,7 @@ Feature: People View
       | Name      | Contact   | Color  | NewName |
       | user1Name | user2Name | Violet | SILENCE |
 
-  @regression @rc @id1335
+  @C3171 @regression @rc @id1335
   Scenario Outline: Verify unsilence the conversation
     Given There are 2 users where <Name> is me
     Given User <Name> change accent color to <Color>
@@ -348,7 +348,7 @@ Feature: People View
       | Name      | Contact   | Color  | NewName |
       | user1Name | user2Name | Violet | SILENCE |
 
-  @regression @id712
+  @C26 @regression @id712
   Scenario Outline: Verify you can block a person from profile view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -368,7 +368,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @id722
+  @C29 @regression @id722
   Scenario Outline: Verify you can unblock someone from a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -389,7 +389,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | UnblockFromGroup |
 
-  @regression @id842
+  @C980 @regression @id842
   Scenario Outline: Verify displaying only connected users in the search in group chat
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -415,7 +415,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user3Name | OnlyConnected |
 
-  @regression @id3957
+  @C1829 @regression @id3957
   Scenario Outline: Verify that deleted conversation via participant view isn't going to archive
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -437,7 +437,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
-  @regression @id3972 @ZIOS-5247
+  @C1831 @regression @id3972 @ZIOS-5247
   Scenario Outline: Verify removing the content and leaving from the group conversation via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -463,7 +463,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
-  @staging @id3971
+  @C1830 @staging @id3971
   Scenario Outline: Verify removing the content from the group conversation via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -490,7 +490,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
       | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
 
-  @staging @id3973
+  @C1832 @staging @id3973
   Scenario Outline: Verify removing the content from 1-to-1 via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -519,7 +519,7 @@ Feature: People View
       | Name      | Contact1  | Message | GroupChatName | Image       |
       | user1Name | user2Name | testing | ForDeletion   | testing.jpg |
 
-  @regression @id3320
+  @C849 @regression @id3320
   Scenario Outline: Verify that left conversation is shown in the Archive
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -544,7 +544,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | Message | Image       |
       | user1Name | user2Name | user3Name | TESTCHAT      | testing | testing.jpg |
 
-  @regression @id583
+  @C42 @regression @id583
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (People view)
     Given There are 4 users where <Name> is me
     Given <Contact1> is connected to <Contact3>,<Contact2>,<Name>
@@ -563,7 +563,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | TESTCHAT      |
 
-  @regression @id4021
+  @C1828 @regression @id4021
   Scenario Outline: Verify canceling blocking person from participant list
     Given There are 2 users where <Name> is me
     Given Myself is connected to all other users
@@ -581,7 +581,7 @@ Feature: People View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @regression @id1246
+  @C984 @regression @id1246
   Scenario Outline: Verify length limit for group conversation name
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

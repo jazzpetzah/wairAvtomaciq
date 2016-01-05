@@ -1,6 +1,6 @@
 Feature: Search
 
-  @regression @id2147
+  @C2783 @regression @id2147
   Scenario Outline: Verify search by email
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -15,7 +15,7 @@ Feature: Search
       | Name      | ContactEmail | ContactName |
       | user1Name | user2Email   | user2Name   |
 
-  @regression @rc @id2148 @id2543
+  @C1036 @C2784 @regression @rc @id2148 @id2543
   Scenario Outline: Verify search by name
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -30,7 +30,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id299 @noAcceptAlert @obsolete
+  @C1060 @regression @id299 @noAcceptAlert @obsolete
   Scenario Outline: Verify denying address book uploading
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -52,7 +52,7 @@ Feature: Search
       | user1Name |
 
   #regression
-  @staging @id311 @deployAddressBook @noAcceptAlert @obsolete
+  @C1061 @staging @id311 @deployAddressBook @noAcceptAlert @obsolete
   Scenario Outline: Verify uploading address book to the server
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -71,7 +71,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @rc @id1394
+  @C3167 @regression @rc @id1394
   Scenario Outline: Start 1:1 chat with users from Top Connections
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -93,7 +93,7 @@ Feature: Search
       | Name      | UserCount | Contact   |
       | user1Name | 4         | user2Name |
 
-  @regression @rc @id1150
+  @C1069 @regression @rc @id1150
   Scenario Outline: Start group chat with users from Top Connections
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -119,7 +119,7 @@ Feature: Search
       | Name      | ConvoName    | UserCount | Contact   |
       | user1Name | TopGroupTest | 4         | user2Name |
 
-  @regression @rc @id1454
+  @C40 @regression @rc @id1454
   Scenario Outline: Verify sending a connection request to user chosen from search
     Given There are 2 users where <Name> is me
     Given User <UnconnectedUser> name starts with <StartLetter>
@@ -165,7 +165,7 @@ Feature: Search
       | Name      | UserCount | Contact   | Number |
       | user1Name | 7         | user2Name | 4      |
 
-  @regression @id1456
+  @C2778 @regression @id1456
   Scenario Outline: Verify you can unblock someone from search list
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -188,7 +188,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @rc @id2117
+  @C1059 @regression @rc @id2117
   Scenario Outline: Verify dismissing with clicking on Hide
     Given There are 5 users where <Name> is me
     Given <ContactWithFriends> is connected to <Name>
@@ -208,7 +208,7 @@ Feature: Search
       | Name      | ContactWithFriends | Friend1   | Friend2   |
       | user1Name | user2Name          | user3Name | user4Name |
 
-  @regression @rc @id2116
+  @C1058 @regression @rc @id2116
   Scenario Outline: Verify dismissing with one single gesture
     Given There are 5 users where <Name> is me
     Given <ContactWithFriends> is connected to <Name>
@@ -229,7 +229,7 @@ Feature: Search
       | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
       | user1Name | user2Name          | user3Name | user4Name | user5Name |
 
-  @regression @id2149
+  @C2785 @regression @id2149
   Scenario Outline: Verify search by second name (something after space)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -247,7 +247,7 @@ Feature: Search
       | Name      | Contact   | NewName  | LastName |
       | user1Name | user2Name | NEW NAME | NAME     |
 
-  @regression @rc @id2540 @id2118
+  @C1033 @C2782 @regression @rc @id2540 @id2118
   Scenario Outline: Verify sending connection request from PYMK
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -266,7 +266,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @rc @id3282
+  @C1049 @regression @rc @id3282
   Scenario Outline: Verify starting a call with action button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -287,7 +287,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @rc @id3286
+  @C1053 @regression @rc @id3286
   Scenario Outline: Verify sharing a photo to a newly created group conversation with action button
     Given There are 4 users where <Name> is me
     Given Myself is connected to all other users
@@ -312,7 +312,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @regression @id3276
+  @C1043 @regression @id3276
   Scenario Outline: Verify action buttons appear after selecting person from Top People
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -329,7 +329,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id3277
+  @C1044 @regression @id3277
   Scenario Outline: Verify action buttons appear after choosing user from search results
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -346,7 +346,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id3280
+  @C1047 @regression @id3280
   Scenario Outline: Verify button Open is changed on Create after checking second person
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -365,7 +365,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @regression @id3278
+  @C1045 @regression @id3278
   Scenario Outline: Verify action buttons disappear by unchecking the avatar
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -384,7 +384,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @regression @id3279
+  @C1046 @regression @id3279
   Scenario Outline: Verify action buttons disappear by deleting token from a search field
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -409,7 +409,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user3Name |
 
-  @regression @id3281
+  @C1048 @regression @id3281
   Scenario Outline: Verify opening conversation with action button
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -428,7 +428,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @regression @id2121
+  @C1055 @regression @id2121
   Scenario Outline: Verify label hiding after dismissing all PYMK
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -449,7 +449,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @regression @id2120
+  @C1054 @regression @id2120
   Scenario Outline: Verify impossibility of dismissing if search isn't empty
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -464,7 +464,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id4118
+  @C1042 @regression @id4118
   Scenario Outline: Verify action buttons appear after choosing user from search results
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users

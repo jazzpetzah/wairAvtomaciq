@@ -1,6 +1,6 @@
 Feature: Sign In
 
-  @regression @rc @id340
+  @C1134 @regression @rc @id340
   Scenario Outline: Sign in to ZClient
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -30,7 +30,7 @@ Feature: Sign In
   #| Login   | Password    | UserA   | UserB       |
   #| aqaUser | aqaPassword | aqaUser | aqaContact1 |
   
-  @regression @rc @id1398 @noAcceptAlert
+  @C1133 @regression @rc @id1398 @noAcceptAlert
   Scenario Outline: Notification if SignIn credentials are wrong
     Given I see sign in screen
     When I press Sign in button
@@ -43,7 +43,7 @@ Feature: Sign In
       | WrongMail  | WrongPassword |
       | wrongwrong | wrong         |
 
-  @id1479 @id1403
+  @C1108 @C1135 @id1479 @id1403
   Scenario Outline: Verify possibility of reseting password (welcome page)
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -64,7 +64,7 @@ Feature: Sign In
       | Login      | Password      | Name      | NewPassword  |
       | user1Email | user1Password | user1Name | aqa123456789 |
 
-  @regression @id2719
+  @C1138 @regression @id2719
   Scenario Outline: Verify phone sign in when email is assigned
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -78,7 +78,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @rc @id2717
+  @C1136 @regression @rc @id2717
   Scenario Outline: Verify first time phone sign in when email is not assigned
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
@@ -99,7 +99,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id3813 @noAcceptAlert
+  @C1145 @staging @id3813 @noAcceptAlert
   Scenario Outline: Verify impossibility to login with the wrong code
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -113,7 +113,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id3838 @noAcceptAlert
+  @C1146 @regression @id3838 @noAcceptAlert
   Scenario Outline: Verify impossibility to resend code within 10 min
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -127,7 +127,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id2724 @noAcceptAlert
+  @C1143 @staging @id2724 @noAcceptAlert
   Scenario Outline: Verify impossibility to login with unregistered phone number
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -139,7 +139,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id3851
+  @C1086 @regression @id3851
   Scenario Outline: Verify first time phone sign in when email is not assigned
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
@@ -162,7 +162,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
       
-  @regression @id3863 @noAcceptAlert
+  @C1089 @regression @id3863 @noAcceptAlert
   Scenario Outline: Verify error message appears in case of registering already taken email
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
@@ -181,7 +181,7 @@ Feature: Sign In
       | Email                     | Password      | Name      |
       | smoketester@wearezeta.com | user1Password | user1Name |
 
-  @regression @id3857 @noAcceptAlert
+  @C1147 @regression @id3857 @noAcceptAlert
   Scenario Outline: Verify error message appears in case of registering already taken email
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen

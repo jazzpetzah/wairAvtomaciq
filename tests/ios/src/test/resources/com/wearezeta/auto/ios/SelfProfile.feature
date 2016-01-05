@@ -1,7 +1,7 @@
 Feature: Self Profile
 
   #smoke
-  @regression @id344
+  @C3211 @regression @id344
   Scenario Outline: Change your profile picture
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -19,7 +19,7 @@ Feature: Self Profile
       | Name      | Picture                       | Contact   |
       | user1Name | userpicture_ios_check_new.png | user2Name |
 
-  @regression @id1055
+  @C1092 @regression @id1055
   Scenario Outline: Attempt to enter a name with 0 chars
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -36,7 +36,7 @@ Feature: Self Profile
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id1056
+  @C1093 @regression @id1056
   Scenario Outline: Attempt to enter a name with 1 char
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -53,7 +53,7 @@ Feature: Self Profile
       | Name      | username | Contact   |
       | user1Name | c        | user2Name |
 
-  @regression @rc @id1463
+  @C1097 @regression @rc @id1463
   Scenario Outline: Verify name change
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -73,7 +73,7 @@ Feature: Self Profile
       | Name      | NewUsername | Contact   |
       | user1Name | New Name    | user2Name |
 
-  @regression @id667
+  @C1083 @regression @id667
   Scenario Outline: Verify changing and applying accent color
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -90,7 +90,7 @@ Feature: Self Profile
       | Name      | Color1 | Color2          | Contact   |
       | user1Name | Violet | StrongLimeGreen | user2Name |
 
-  @regression @id3849 
+  @C1085 @regression @id3849
   Scenario Outline: Verify adding phone number to the contact signed up with email
     Given There is 1 users where <Name> is me with email only
     Given I sign in using my email
@@ -106,7 +106,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @regression @noAcceptAlert @id3854
+  @C1087 @regression @noAcceptAlert @id3854
   Scenario Outline: Verify error message appears in case of entering a not valid phone number
     Given There is 1 users where <Name> is me with email only
     Given I sign in using my email
@@ -124,7 +124,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |      
 
-  @regression @noAcceptAlert @id3860
+  @C1088 @regression @noAcceptAlert @id3860
   Scenario Outline: Verify error message appears in case of registering already taken phone number
     Given There is 1 users where <Name> is me with email only
     Given I sign in using my email
@@ -142,7 +142,7 @@ Feature: Self Profile
       | Name      | Number        | Code |
       | user1Name | 8301652248706 | +0   |
 
-  @regression @id3990
+  @C1081 @regression @id3990
   Scenario Outline: Verify theme switcher is shown on the self profile
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number

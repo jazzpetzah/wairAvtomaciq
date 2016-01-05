@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @regression @rc @id589
+  @C1019 @regression @rc @id589
   Scenario Outline: Register new user using photo album
     Given I see sign in screen
     When I enter phone number for user <Name>
@@ -16,7 +16,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @obsolete @id304
+  @C2760 @obsolete @id304
   Scenario Outline: Attempt to register an email with spaces
     Given I see sign in screen
     When I press Join button
@@ -32,7 +32,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @obsolete @id304
+  @C2760 @obsolete @id304
   Scenario Outline: Attempt to register an email with incorrect format
     Given I see sign in screen
     When I press Join button
@@ -66,7 +66,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @obsolete @id282
+  @C1000 @obsolete @id282
   Scenario Outline: Can return to email page to change email if input incorrectly
     Given I see sign in screen
     When I press Join button
@@ -88,7 +88,7 @@ Feature: Registration
       | Correct    | Password      | Name      | Incorrect           |
       | user1Email | user1Password | user1Name | error@wearezeta.com |
 
-  @obsolete @id528 @id529 @id530
+  @C998 @C1011 @obsolete @id528 @id529 @id530
   Scenario Outline: Register new user using username with maximum characters allowed
     Given I see sign in screen
     When I press Join button
@@ -128,7 +128,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @obsolete @id273 @id301
+  @C996 @obsolete @id273 @id301
   Scenario Outline: Next Button should not be visible on first registration step visit
     Given I see sign in screen
     When I press Join button
@@ -186,7 +186,7 @@ Feature: Registration
       | Email      | Password | Name      |
       | user1Email | 1234567  | user1Name |
 
-  @obsolete @id298
+  @C2759 @obsolete @id298
   Scenario Outline: Can re-send verification email from verification screen
     Given I see sign in screen
     When I press Join button
@@ -255,7 +255,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id2468
+  @C1002 @regression @id2468
   Scenario Outline: Verify user is logged in when trying to register with a phone already assigned to the email
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -277,7 +277,7 @@ Feature: Registration
       | Name      | X  |
       | user1Name | 16 |
 
-  @regression @noAcceptAlert @id2742
+  @C2652 @regression @noAcceptAlert @id2742
   Scenario Outline: Verify notification appearance in case of incorrect code
     Given I see sign in screen
     When I enter phone number for user <Name>
@@ -288,7 +288,7 @@ Feature: Registration
       | Name      |
       | user1Name |
 
-  @staging @id295
+  @C1008 @staging @id295
   Scenario Outline: Verify cutting spaces from the beginning and ending the name
     Given I see sign in screen
     When I enter phone number for user <Name>
