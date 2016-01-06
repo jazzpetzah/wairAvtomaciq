@@ -27,7 +27,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C822 @id4042 @regression
+  @C822 @id4042 @regression @rc
   Scenario Outline: (AN-2969) Verify I can delete a 1:1 conversation from conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

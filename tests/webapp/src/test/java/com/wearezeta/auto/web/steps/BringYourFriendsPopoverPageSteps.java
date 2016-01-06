@@ -7,23 +7,23 @@ import com.wearezeta.auto.web.pages.popovers.BringYourFriendsPopoverPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-public class SendInvitationPopoverPageSteps {
+public class BringYourFriendsPopoverPageSteps {
 
 	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
 			.getInstance();
 	private String invitationLink = null;
 
 	/**
-	 * Verifies whether Bring Your Friends popover is visible or not
+	 * Verifies whether Invite People popover is visible or not
 	 * 
-	 * @step. ^I( do not)? see Bring Your Friends popover$
+	 * @step. ^I( do not)? see Invite People popover$
 	 * 
 	 * @param shouldNotBeVisible
 	 *            is set to null if "do not" part is not provided
 	 * @throws Exception
 	 */
-	@Then("^I( do not)? see Bring Your Friends popover$")
-	public void ISeeSendInvitationPopover(String shouldNotBeVisible)
+	@Then("^I( do not)? see Invite People popover$")
+	public void ISeeInvitatePeoplePopover(String shouldNotBeVisible)
 			throws Exception {
 		if (shouldNotBeVisible == null) {
 			webappPagesCollection.getPage(BringYourFriendsPopoverPage.class)
@@ -35,16 +35,51 @@ public class SendInvitationPopoverPageSteps {
 	}
 
 	/**
-	 * Click Invite button on Bring Your Friends popover
+	 * Verifies whether Share Contacts button is visible or not
 	 * 
-	 * @step. ^I click Invite button on Bring Your Friends popover$
+	 * @step. ^I( do not)? see Share Contacts button$
+	 * 
+	 * @param shouldNotBeVisible
+	 *            is set to null if "do not" part is not provided
+	 * @throws Exception
+	 */
+	@Then("^I( do not)? see Share Contacts button$")
+	public void ISeeShareContactsButton(String shouldNotBeVisible)
+			throws Exception {
+		if (shouldNotBeVisible == null) {
+			webappPagesCollection.getPage(BringYourFriendsPopoverPage.class)
+					.isShareContactsButtonVisible();
+		} else {
+			webappPagesCollection.getPage(BringYourFriendsPopoverPage.class)
+					.isShareContactsButtonNotVisible();
+		}
+	}
+
+	/**
+	 * Click Share Contacts button
+	 * 
+	 * @step. ^I click Share Contacts button$
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I click Invite button on Bring Your Friends popover$")
-	public void IClickInviteButton() throws Exception {
+	@Then("^I click Share Contacts button$")
+	public void IClickShareContactsButton() throws Exception {
 		webappPagesCollection.getPage(BringYourFriendsPopoverPage.class)
-				.clickInviteButton();
+				.clickShareContactsButton();
+	}
+
+	/**
+	 * Click Invite People button in the Bring Your Friends popover (only
+	 * visible when having top people and no Gmail imported before)
+	 * 
+	 * @step. ^I click Invite People button$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I click Invite People button$")
+	public void IClickInvitePeopleButton() throws Exception {
+		webappPagesCollection.getPage(BringYourFriendsPopoverPage.class)
+				.clickInvitePeopleButton();
 	}
 
 	/**

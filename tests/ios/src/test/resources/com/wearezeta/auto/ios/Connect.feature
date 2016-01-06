@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @regression @rc @id2541
+  @C1034 @regression @rc @id2541
   Scenario Outline: Send invitation message to a user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -25,7 +25,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail | Contact2  |
       | user1Name | user2Name | user2Email   | user3Name |
 
-  @regression @rc @id1475
+  @C102 @C3178 @regression @rc @id1475
   Scenario Outline: Get invitation message from user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -46,7 +46,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @rc @id576
+  @C987 @regression @rc @id576
   Scenario Outline: Send connection request to unconnected participant in a group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <GroupCreator>
@@ -66,7 +66,7 @@ Feature: Connect
       | Name      | GroupCreator | GroupChatName | UnconnectedUser |
       | user1Name | user2Name    | TESTCHAT      | user3Name       |
 
-  @regression @id579
+  @C22 @regression @id579
   Scenario Outline: Verify transitions between connection requests (ignoring)
     Given There are 5 users where <Name> is me
     Given <Contact1> sent connection request to me
@@ -93,7 +93,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
-  @regression @id577
+  @C21 @regression @id577
   Scenario Outline: Verify transitions between connection requests (connecting)
     Given There are 5 users where <Name> is me
     Given <Contact1> sent connection request to me
@@ -116,7 +116,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
-  @regression @rc @id1404
+  @C45 @regression @rc @id1404
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (Search)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -140,7 +140,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @id1399
+  @C34 @regression @id1399
   Scenario Outline: Verify you don't receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -174,7 +174,7 @@ Feature: Connect
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @regression @id596
+  @C39 @regression @id596
   Scenario Outline: Verify you cannot send the invitation message twice
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -203,7 +203,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @regression @rc @id2536
+  @C1029 @regression @rc @id2536
   Scenario Outline: Verify you can send an invitation via mail
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -230,7 +230,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id2294
+  @C41 @regression @id2294
   Scenario Outline: Verify sending connection request by clicking instant + button (with search)
     Given There are 2 users where <Name> is me
     Given User <UnconnectedUser> name starts with <StartLetter>
@@ -260,7 +260,7 @@ Feature: Connect
       | user1Name | user2Name       | user2Email   | T           | BrightOrange |
 
   #regression
-  @staging @id2768 @deployAddressBook @noAcceptAlert @obsolete
+  @C3194 @staging @id2768 @deployAddressBook @noAcceptAlert @obsolete
   Scenario Outline: Verify you can see People you may know on Wire after uploading your address book
     Given There are 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -278,7 +278,7 @@ Feature: Connect
       | Name      | Contact1 | Contact2 |
       | user1Name | vb003    | Dorothy  |
 
-  @regression @rc @id3227
+  @C38 @regression @rc @id3227
   Scenario Outline: Verify possibility of disconnecting from conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -298,7 +298,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @id3224
+  @C35 @regression @id3224
   Scenario Outline: Verify sending connection request after disconnecting
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -324,7 +324,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @id3225
+  @C36 @regression @id3225
   Scenario Outline: Verify possibility of disconnecting from Search UI
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
@@ -347,7 +347,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @staging @id586 @ZIOS-5335
+  @C24 @staging @id586 @ZIOS-5335
   Scenario Outline: Verify ignoring a connection request from another person (People view)
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -372,7 +372,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | IGNORECONNECT |
 
-  @regression @id3794
+  @C46 @regression @id3794
   Scenario Outline: Verify common connections are not tappable
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -391,7 +391,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @id1199
+  @C31 @regression @id1199
   Scenario Outline: Verify you can send text messages and images in 1to1 chat to the person who blocked you
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -414,7 +414,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id1133
+  @C30 @regression @id1133
   Scenario Outline: Verify unblocking from users profile page
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -437,7 +437,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id3902
+  @C107 @regression @id3902
   Scenario Outline: Verify inbox is highlighted and opened in the list
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact3>
@@ -457,7 +457,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @regression @id3996
+  @C47 @regression @id3996
   Scenario Outline: Verify displaying first and last names for the incoming connection request
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to Me
@@ -473,7 +473,7 @@ Feature: Connect
       | Name      | Contact   | NewName  |
       | user1Name | user2Name | New Name |
 
-  @regression @id3226
+  @C37 @regression @id3226
   Scenario Outline: Verify connection request is deleted from the inbox of the addresser
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>

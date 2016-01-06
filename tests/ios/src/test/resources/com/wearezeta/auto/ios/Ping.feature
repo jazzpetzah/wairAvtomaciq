@@ -1,6 +1,6 @@
 Feature: Ping
 
-  @regression @rc @id1357
+  @C991 @regression @rc @id1357
   Scenario Outline: Verify you can send Ping in a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -18,7 +18,7 @@ Feature: Ping
       | Name      | Contact1  | Contact2  | Action1 | Action2      | GroupChatName        | Color        |
       | user1Name | user2Name | user3Name | PINGED  | PINGED AGAIN | ReceivePingGroupChat | BrightOrange |
 
-  @regression @id1358
+  @C992 @regression @id1358
   Scenario Outline: Verify you can see Ping on the other side (group conversation)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

@@ -1,6 +1,6 @@
 Feature: Calling
 
-  @calling_basic @id2709 @id2623
+  @C2400 @C2409 @calling_basic @id2709 @id2623
   Scenario Outline: Verify starting and ending outgoing call by same person [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -19,7 +19,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @calling_basic @id2709 @id2623
+  @C2400 @C2409 @calling_basic @id2709 @id2623
   Scenario Outline: Verify starting and ending outgoing call by same person [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -39,7 +39,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @calling_basic @id2630
+  @C2407 @calling_basic @id2630
   Scenario Outline: Verify calling from missed call indicator in conversation [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -58,7 +58,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @calling_basic @id2630
+  @C2407 @calling_basic @id2630
   Scenario Outline: Verify calling from missed call indicator in conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -78,7 +78,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @calling_basic @id2712
+  @C2410 @calling_basic @id2712
   Scenario Outline: Verify ignoring of incoming call [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -93,7 +93,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @calling_basic @id2712
+  @C2410 @calling_basic @id2712
   Scenario Outline: Verify ignoring of incoming call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -109,7 +109,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @calling_basic @id2713
+  @C2411 @calling_basic @id2713
   Scenario Outline: Verify accepting incoming call [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -126,7 +126,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @calling_basic @id2713
+  @C2411 @calling_basic @id2713
   Scenario Outline: Verify accepting incoming call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -144,7 +144,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @calling_basic @id2622
+  @C2399 @calling_basic @id2622
   Scenario Outline: Receiving missed call notification from one user [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -161,7 +161,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @calling_basic @id2622
+  @C2399 @calling_basic @id2622
   Scenario Outline: Receiving missed call notification from one user [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -179,7 +179,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @calling_basic @id2619
+  @C2396 @calling_basic @id2619
   Scenario Outline: In zeta call for more than 15 mins [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -242,7 +242,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | firefox     | 60      |
 
-  @calling_basic @id2619
+  @C2396 @calling_basic @id2619
   Scenario Outline: In zeta call for more than 15 mins [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -306,7 +306,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | firefox     | 300     |
 
-  @calling_basic @id2631 @iOS9KnownIssue-NotOurBug
+  @C2408 @calling_basic @id2631 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Screenlock device when in the call [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -328,7 +328,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | firefox     | 120     |
 
-  @calling_basic @id2631 @iOS9KnownIssue-NotOurBug
+  @C2408 @calling_basic @id2631 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Screenlock device when in the call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -351,7 +351,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | firefox     | 120     |
 
-  @calling_advanced @id2652
+  @C2427 @calling_advanced @id2652
   Scenario Outline: 3rd person tries to call me after I initate a call to somebody [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -380,7 +380,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | user3Name | firefox     | autocall     | 120     |
 
-  @calling_basic @id2652
+  @C2427 @calling_basic @id2652
   Scenario Outline: 3rd person tries to call me after I initate a call to somebody [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -409,7 +409,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | user3Name | firefox     | autocall     | 120     |
 
-  @calling_basic @id2618 @iOS9KnownIssue-NotOurBug
+  @C2395 @calling_basic @id2618 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Put app into background after initiating call [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -431,7 +431,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | firefox     | 120     |
 
-  @calling_basic @id2618 @iOS9KnownIssue-NotOurBug
+  @C2395 @calling_basic @id2618 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Put app into background after initiating call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -454,7 +454,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | firefox     | 120     |
 
-  @calling_basic @id2627
+  @C2404 @calling_basic @id2627
   Scenario Outline: I want to accept a call through the incoming voice dialogue (Button) [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -473,7 +473,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | firefox     | autocall     | 120     |
 
-  @calling_basic @id2627
+  @C2404 @calling_basic @id2627
   Scenario Outline: I want to accept a call through the incoming voice dialogue (Button) [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -493,7 +493,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | firefox     | autocall     | 120     |
 
-  @calling_basic @id2624
+  @C2401 @calling_basic @id2624
   Scenario Outline: I want to end the call from the ongoing voice overlay [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -523,7 +523,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | firefox     | autocall     | 120     |
 
-  @calling_basic @id2624
+  @C2401 @calling_basic @id2624
   Scenario Outline: I want to end the call from the ongoing voice overlay [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -554,7 +554,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | firefox     | autocall     | 120     |
 
-  @calling_basic @id2361
+  @C2503 @calling_basic @id2361
   Scenario Outline: Verify mute button is absent when you turn from portrait to landscape [PORTRAIT to LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -577,7 +577,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | chrome      | autocall     | 60      |
 
-  @calling_basic @id3811 @iOS9KnownIssue-NotOurBug
+  @C2412 @calling_basic @id3811 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Verify putting client to the background during 1-to-1 call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -598,7 +598,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @calling_basic @id3812 @iOS9KnownIssue-NotOurBug
+  @C2413 @calling_basic @id3812 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Verify putting client to the background during 1-to-1 call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

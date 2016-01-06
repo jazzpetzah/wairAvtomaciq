@@ -1,6 +1,6 @@
 Feature: Self Profile
 
-  @C1728 @regression @id1743
+  @C1728 @regression
   Scenario Outline: I can change my name
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -17,15 +17,11 @@ Feature: Self Profile
       | Login      | Password      | Name      | NewName     | Contact   |
       | user1Email | user1Password | user1Name | NewUserName | user2Name |
 
-  @C1729 @regression @id1744
+  @C1729 @regression
   Scenario Outline: Verify you can access your profile information
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
-    Given I Sign in using login <Email> and password <Password>
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
-    And I see my avatar on top of Contact list
-    When I open self profile
+    When I Sign in using login <Email> and password <Password>
     Then I see user name on self profile page <Name>
     And I see user email on self profile page <Email>
     And I see user phone number on self profile page <PhoneNumber>
@@ -34,41 +30,29 @@ Feature: Self Profile
       | Email      | Password      | Name      | PhoneNumber      |
       | user1Email | user1Password | user1Name | user1PhoneNumber |
 
-  @C1731 @regression @id1753
+  @C1731 @regression
   Scenario Outline: Verify correct accent color showing after sign out and sign in
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
-    And I see my avatar on top of Contact list
-    When I open self profile
-    And I set my accent color to <ColorName>
+    When I set my accent color to <ColorName>
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
-    And I see my avatar on top of Contact list
-    When I open self profile
     Then I verify my accent color in color picker is set to <ColorName> color
 
     Examples: 
       | Login      | Password      | Name      | ColorName    |
       | user1Email | user1Password | user1Name | BrightOrange |
 
-  @C1732 @regression @id1755
+  @C1732 @regression
   Scenario Outline: Verify you can edit your profile picture by dragging a new photo
     Given My browser supports synthetic drag and drop
     Given There is 1 user where <Name> is me
     Given Myself take snapshot of current profile picture
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
-    And I see my avatar on top of Contact list
-    When I open self profile
     And I click camera button
     And I see profile picture dialog
     And I drop <PictureName> to profile picture dialog
@@ -80,7 +64,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | PictureName              |
       | user1Email | user1Password | user1Name | userpicture_portrait.jpg |
 
-  @C1730 @regression @id1747
+  @C1730 @regression
   Scenario Outline: Verify you can change your accent color
     Given There is 3 users where <Name> is me
     Given User me change accent color to <ColorName>

@@ -70,31 +70,6 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @C449 @id4066 @regression
-  Scenario Outline: Verify theme switch in self profile change its state and synced with settings menu
-    Given There is 1 user where <Name> is me
-    Given I sign in using my email or phone number
-    Given I see Contact list with no contacts
-    And I tap on my avatar
-    And I see personal info page
-    And I tap options button
-    And I tap settings button
-    And I select "Account" settings menu item
-    And I remember the value of "Theme" setting
-    And I press back button
-    And I press back button
-    And I press back button
-    And I see personal info page
-    When I tap Light Bulb button
-    And I tap options button
-    And I tap settings button
-    And I select "Account" settings menu item
-    Then I verify the value of "Theme" setting is changed
-
-    Examples:
-      | Name      |
-      | user1Name |
-
   @C450 @id4069 @regression
   Scenario Outline: Verify I can switch dark/white theme from self profile
     Given There are 2 users where <Name> is me

@@ -387,8 +387,7 @@ Feature: Conversation List
     Given There are 1 users where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see Contacts Upload dialog
-    And I click button to import Gmail Contacts
+    When I click button to bring friends from Gmail
     And I see Google login popup
     And I enter email "smoketester.wire@gmail.com" at google login
     And I click next at google login if present

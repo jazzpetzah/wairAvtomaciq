@@ -1,6 +1,6 @@
 Feature: Search
 
-  @regression @id3289
+  @C2803 @regression @id3289
   Scenario Outline: Verify starting a call with action button [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -21,7 +21,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id3290
+  @C2804 @regression @id3290
   Scenario Outline: Verify starting a call with action button [LANDSAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -43,7 +43,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id3291
+  @C2805 @regression @id3291
   Scenario Outline: Verify sharing a photo to a newly created group conversation with action button [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to all other users
@@ -68,7 +68,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @regression @id3292
+  @C2806 @regression @id3292
   Scenario Outline: Verify sharing a photo to a newly created group conversation with action button [LANDSAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to all other users
@@ -93,7 +93,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @regression @id3295
+  @C2807 @regression @id3295
   Scenario Outline: Verify action buttons appear after selecting person from Top People [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -110,7 +110,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id3296
+  @C2808 @regression @id3296
   Scenario Outline: Verify action buttons appear after selecting person from Top People [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -128,7 +128,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id3297
+  @C2809 @regression @id3297
   Scenario Outline: Verify action buttons appear after choosing user from search results [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -145,7 +145,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id3298
+  @C2810 @regression @id3298
   Scenario Outline: Verify action buttons appear after choosing user from search results [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -163,7 +163,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id3299
+  @C2811 @regression @id3299
   Scenario Outline: Verify button Open is changed on Create after checking second person [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -182,7 +182,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @regression @id3300
+  @C2812 @regression @id3300
   Scenario Outline: Verify button Open is changed on Create after checking second person [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -202,7 +202,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @regression @id3301
+  @C2813 @regression @id3301
   Scenario Outline: Verify action buttons disappear by unchecking the avatar [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -221,7 +221,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @regression @id3302
+  @C2814 @regression @id3302
   Scenario Outline: Verify action buttons disappear by unchecking the avatar [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -241,7 +241,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @regression @id3819
+  @C2815 @regression @id3819
   Scenario Outline: Verify action buttons disappear by deleting token from a search field [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -266,7 +266,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @regression @id3820
+  @C2816 @regression @id3820
   Scenario Outline: Verify action buttons disappear by deleting token from a search field [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -292,7 +292,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @regression @id3821
+  @C2817 @regression @id3821
   Scenario Outline: Verify opening conversation with action button [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -311,7 +311,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @regression @id3822
+  @C2818 @regression @id3822
   Scenario Outline: Verify opening conversation with action button [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -331,7 +331,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @regression @id2482
+  @C2820 @regression @id2482
   Scenario Outline: Verify label hiding after dismissing all PYMK [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -352,7 +352,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @regression @id3824
+  @C2828 @regression @id3824
   Scenario Outline: Verify label hiding after dismissing all PYMK [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -375,7 +375,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @regression @id2481
+  @C2819 @regression @id2481
   Scenario Outline: Verify impossibility of dismissing if search isn't empty [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given I Sign in on tablet using my email
@@ -390,7 +390,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id3823
+  @C2827 @regression @id3823
   Scenario Outline: Verify impossibility of dismissing if search isn't empty [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -406,7 +406,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id4119
+  @C2801 @staging @id4119
   Scenario Outline: Verify action buttons appear after choosing user from search results [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -436,7 +436,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id4120
+  @C2802 @staging @id4120
   Scenario Outline: Verify action buttons appear after choosing user from search results [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users

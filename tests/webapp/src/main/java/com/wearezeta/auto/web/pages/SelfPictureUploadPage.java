@@ -36,20 +36,17 @@ public class SelfPictureUploadPage extends WebPage {
 		super(lazyDriver);
 	}
 
-	public void waitUntilNotVisible(int secondsTimeout) throws Exception {
+	public void waitUntilNotVisible() throws Exception {
 		assert DriverUtils
 				.waitUntilLocatorDissapears(
 						this.getDriver(),
-						By.xpath(WebAppLocators.SelfPictureUploadPage.xpathSelectPictureButton),
-						secondsTimeout) : "Picture selection dialog button is still visible after "
-				+ secondsTimeout + " second(s) timeout";
+						By.xpath(WebAppLocators.SelfPictureUploadPage.xpathSelectPictureButton)) : "Picture selection dialog button is still visible";
 	}
 
-	public void waitUntilButtonsAreClickable(int secondsTimeout)
+	public void waitUntilButtonsAreClickable()
 			throws Exception {
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
-				selectPictureButton, secondsTimeout) : "Picture selection dialog button was not clickable within "
-				+ secondsTimeout + " second(s) timeout";
+				selectPictureButton) : "Picture selection dialog button was not clickable";
 	}
 
 	public void uploadPicture(String pictureName) throws Exception {

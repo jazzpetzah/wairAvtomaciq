@@ -1,6 +1,6 @@
 Feature: Archive
 
-  @regression @id2325
+  @C2384 @regression @id2325
   Scenario Outline: Verify unarchive by receiving data [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -29,7 +29,7 @@ Feature: Archive
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | autocall    |
 
-  @regression @id3991
+  @C2389 @regression @id3991
   Scenario Outline: Verify unarchive by receiving data [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -59,7 +59,7 @@ Feature: Archive
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | autocall    |
 
-  @staging @id2326 @ZIOS-3884
+  @C2385 @staging @id2326 @ZIOS-3884
   Scenario Outline: Verify unarchiving silenced conversation by ping and call [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -85,7 +85,7 @@ Feature: Archive
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | autocall    |
 
-  @staging @id3992 @ZIOS-3884
+  @C2390 @staging @id3992 @ZIOS-3884
   Scenario Outline: Verify unarchiving silenced conversation by ping and call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -112,7 +112,7 @@ Feature: Archive
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | autocall    |
 
-  @regression @id2328
+  @C2387 @regression @id2328
   Scenario Outline: Verify restoring from archive after adding to conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -131,7 +131,7 @@ Feature: Archive
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | LeaveArchive  |
 
-  @regression @id3994
+  @C2392 @regression @id3994
   Scenario Outline: Verify restoring from archive after adding to conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users

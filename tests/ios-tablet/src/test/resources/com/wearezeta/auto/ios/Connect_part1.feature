@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @regression @id2355
+  @C2484 @regression @id2355
   Scenario Outline: Verify sending a connection request to user chosen from search [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given User <UnconnectedUser> name starts with <StartLetter>
@@ -24,7 +24,7 @@ Feature: Connect
       | Name      | UnconnectedUser | ContactEmail | NumOfMessageChars | StartLetter | Color        |
       | user1Name | user2Name       | user2Email   | 140               | T           | BrightOrange |
 
-  @regression @id3008
+  @C2488 @regression @id3008
   Scenario Outline: Verify sending a connection request to user chosen from search [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given User <UnconnectedUser> name starts with <StartLetter>
@@ -49,7 +49,7 @@ Feature: Connect
       | Name      | UnconnectedUser | ContactEmail | NumOfMessageChars | StartLetter | Color        |
       | user1Name | user2Name       | user2Email   | 140               | T           | BrightOrange |
 
-  @regression @rc @id2119
+  @C2486 @regression @rc @id2119
   Scenario Outline: Verify sending connection request after opening profile by clicking on the name and avatar [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -74,7 +74,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail | Contact2  |
       | user1Name | user2Name | user2Email   | user3Name |
 
-  @regression @id3009
+  @C2489 @regression @id3009
   Scenario Outline: Verify sending connection request after opening profile by clicking on the name and avatar [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -100,7 +100,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail | Contact2  |
       | user1Name | user2Name | user2Email   | user3Name |
 
-  @regression @rc @id2354 @id2610
+  @C2483 @C2487 @regression @rc @id2354 @id2610
   Scenario Outline: Send connection request to unconnected participant in a group chat [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <GroupCreator>
@@ -120,7 +120,7 @@ Feature: Connect
       | Name      | GroupCreator | GroupChatName | UnconnectedUser |
       | user1Name | user2Name    | TESTCHAT      | user3Name       |
 
-  @regression @id3011
+  @C2490 @regression @id3011
   Scenario Outline: Send connection request to unconnected participant in a group chat [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <GroupCreator>
@@ -140,7 +140,7 @@ Feature: Connect
       | Name      | GroupCreator | GroupChatName | UnconnectedUser |
       | user1Name | user2Name    | TESTCHAT      | user3Name       |
 
-  @regression @id2330
+  @C2435 @regression @id2330
   Scenario Outline: Verify transitions between connection requests (ignoring) [PORTRAIT]
     Given There are 5 users where <Name> is me
     Given <Contact1> sent connection request to me
@@ -166,7 +166,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
-  @regression @id3012
+  @C2440 @regression @id3012
   Scenario Outline: Verify transitions between connection requests (ignoring) [LANDSCAPE]
     Given There are 5 users where <Name> is me
     Given <Contact1> sent connection request to me
@@ -193,7 +193,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
-  @regression @id2329
+  @C2434 @regression @id2329
   Scenario Outline: Verify transitions between connection requests (accepting) [PORTRAIT]
     Given There are 5 users where <Name> is me
     Given <Contact1> sent connection request to me
@@ -216,7 +216,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
-  @regression @id3013
+  @C2441 @regression @id3013
   Scenario Outline: Verify transitions between connection requests (accepting) [LANDSCAPE]
     Given There are 5 users where <Name> is me
     Given <Contact1> sent connection request to me
@@ -239,7 +239,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
-  @regression @id2359
+  @C2481 @regression @id2359
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -255,7 +255,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @id3014
+  @C2482 @regression @id3014
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -272,7 +272,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @rc @id2341
+  @C2455 @regression @rc @id2341
   Scenario Outline: Verify you don't receive any messages from blocked person in 1to1 chat [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -305,7 +305,7 @@ Feature: Connect
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @regression @id3015
+  @C2457 @regression @id3015
   Scenario Outline: Verify you don't receive any messages from blocked person in 1to1 chat [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -337,7 +337,7 @@ Feature: Connect
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @regression @id2436
+  @C2485 @regression @id2436
   Scenario Outline: Verify you cannot send the invitation message twice [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given I Sign in on tablet using my email
@@ -366,7 +366,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @regression @id3016
+  @C2491 @regression @id3016
   Scenario Outline: Verify you cannot send the invitation message twice [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -396,7 +396,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @regression @rc @id1492
+  @C2780 @regression @rc @id1492
   Scenario Outline: Verify you can send an invitation via mail [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -423,7 +423,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id3017
+  @C2796 @regression @id3017
   Scenario Outline: Verify you can send an invitation via mail [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -451,7 +451,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id2768 @deployAddressBook @noAcceptAlert @obsolete
+  @C3194 @staging @id2768 @deployAddressBook @noAcceptAlert @obsolete
   Scenario Outline: Verify you can see People you may know on Wire after uploading your address book
     Given There are 1 user where <Name> is me
     Given I Sign in on tablet using my email

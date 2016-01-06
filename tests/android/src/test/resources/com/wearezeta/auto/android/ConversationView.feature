@@ -183,25 +183,6 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C673 @id162 @regression @rc @rc42
-  Scenario Outline: Send existing image from gallery (landscape) in 1:1 chat
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe on text input
-    And I press Add Picture button
-    And I press "Gallery" button
-    When I rotate UI to landscape
-    And I press "Confirm" button
-    Then I see new photo in the dialog
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
   @C419 @id2078 @regression
   Scenario Outline: I want to exit fullscreen view in landscape (rotations)
     Given There are 2 users where <Name> is me

@@ -2,12 +2,14 @@ package com.wearezeta.auto.web.pages;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -41,8 +43,11 @@ public class PeoplePickerPage extends WebPage {
 	@FindBy(css = WebAppLocators.PeoplePickerPage.cssCloseSearchButton)
 	private WebElement closeSearchButton;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathBringYourFriendsButton)
-	private WebElement bringYourFriendsButton;
+	@FindBy(how = How.CSS, using = WebAppLocators.PeoplePickerPage.cssBringFriendsFromGMailButton)
+	private WebElement bringFriendsFromGmailButton;
+
+	@FindBy(how = How.CSS, using = WebAppLocators.PeoplePickerPage.cssBringYourFriendsOrInvitePeopleButton)
+	private WebElement bringYourFirendsOrInvitePeopleButton;
 
 	@FindBy(xpath = "//*[contains(@class,'people-picker-list-suggestions')]//div[@data-uie-name='item-user']")
 	private List<WebElement> suggestions;
@@ -145,21 +150,40 @@ public class PeoplePickerPage extends WebPage {
 						By.className(WebAppLocators.PeoplePickerPage.classNamePeoplePickerVisible));
 	}
 
-	private static final int BUTTON_VISIBILITY_TIMEOUT_SECONDS = 5;
-
-	public void waitUntilBringYourFriendsButtonIsVisible() throws Exception {
+	public void waitUntilBringYourFriendsOrInvitePeopleButtonIsVisible() throws Exception {
 		assert DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						getDriver(),
-						By.xpath(WebAppLocators.PeoplePickerPage.xpathBringYourFriendsButton),
-						BUTTON_VISIBILITY_TIMEOUT_SECONDS) : "Bring Your Friends button is not visible after "
-				+ BUTTON_VISIBILITY_TIMEOUT_SECONDS + " seconds timeout";
+						By.cssSelector(WebAppLocators.PeoplePickerPage.cssBringYourFriendsOrInvitePeopleButton)) : "Bring Your Friends button is not visible";
 	}
 
-	public void clickBringYourFriendsButton() throws Exception {
+	public void clickBringYourFriendsOrInvitePeopleButton() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
-				bringYourFriendsButton);
-		bringYourFriendsButton.click();
+				bringYourFirendsOrInvitePeopleButton);
+		bringYourFirendsOrInvitePeopleButton.click();
+	}
+
+	public void clickBringFriendsFromGmailButton() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				bringFriendsFromGmailButton);
+		bringFriendsFromGmailButton.click();
+	}
+
+	public void switchToGooglePopup() throws Exception {
+		WebDriver driver = this.getDriver();
+		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(
+				DriverUtils.getDefaultLookupTimeoutSeconds(), TimeUnit.SECONDS)
+				.pollingEvery(1, TimeUnit.SECONDS);
+		try {
+			wait.until(drv -> {
+				return (drv.getWindowHandles().size() > 1);
+			});
+		} catch (TimeoutException e) {
+			throw new TimeoutException("No Popup for Google was found", e);
+		}
+		Set<String> handles = driver.getWindowHandles();
+		handles.remove(driver.getWindowHandle());
+		driver.switchTo().window(handles.iterator().next());
 	}
 
 	public void clickCallButton() throws Exception {

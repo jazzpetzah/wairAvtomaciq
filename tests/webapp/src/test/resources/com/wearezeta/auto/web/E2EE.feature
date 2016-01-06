@@ -1,6 +1,6 @@
 Feature: E2EE
 
-  @C1846 @regression
+  @C1846
   Scenario Outline: Remove remote device from device list
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
@@ -8,8 +8,6 @@ Feature: E2EE
     Given I enter password "<Password>"
     Given I check option to remember me
     Given I press Sign In button
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     And I see my avatar on top of Contact list
     When user <Name> adds a new device <Device> with label <Label>
     And I open self profile
@@ -32,7 +30,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Device  | Label  |
       | user1Email | user1Password | user1Name | Remote1 | Label1 |
 
-  @C1847 @regression
+  @C1847
   Scenario Outline: Login as permanent device after permanent device limit is reached
     Given There is 1 user where <Name> is me
     Given user <Name> adds a new device Device1 with label Label1
@@ -69,7 +67,7 @@ Feature: E2EE
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C2100 @regression
+  @C2100
   Scenario Outline: Login as temporary device after device limit is reached
     Given There is 1 user where <Name> is me
     Given user <Name> adds a new device Device1 with label Label1
@@ -83,8 +81,6 @@ Feature: E2EE
     Given I enter email "<Email>"
     Given I enter password "<Password>"
     When I press Sign In button
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     And I see my avatar on top of Contact list
     And I open self profile
     And I click gear button on self profile page
@@ -101,7 +97,7 @@ Feature: E2EE
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C2098 @regression
+  @C2098
   Scenario Outline: Verify current browser is set as permanent device
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
@@ -109,8 +105,6 @@ Feature: E2EE
     Given I enter password "<Password>"
     When I check option to remember me
     And I press Sign In button
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     And I see my avatar on top of Contact list
     And I open self profile
     And I click gear button on self profile page
@@ -125,8 +119,6 @@ Feature: E2EE
     And I enter password "<Password>"
     And I check option to remember me
     And I press Sign In button
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     And I see my avatar on top of Contact list
     And I open self profile
     And I click gear button on self profile page
@@ -138,13 +130,11 @@ Feature: E2EE
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C2099 @regression
+  @C2099
   Scenario Outline: Verify current browser is set as temporary device
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
-    When I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     And I see my avatar on top of Contact list
     And I open self profile
     And I click gear button on self profile page
@@ -156,8 +146,6 @@ Feature: E2EE
     And I select Log out menu item on self profile page
     And I see Sign In page
     And I Sign in using login <Email> and password <Password>
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     And I see my avatar on top of Contact list
     And I open self profile
     And I click gear button on self profile page

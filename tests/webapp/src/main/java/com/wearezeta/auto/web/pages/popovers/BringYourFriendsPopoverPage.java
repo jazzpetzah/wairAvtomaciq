@@ -15,62 +15,80 @@ import com.wearezeta.auto.web.pages.WebPage;
 
 public class BringYourFriendsPopoverPage extends WebPage {
 
-    @FindBy(css = PopoverLocators.BringYourFriendsPopover.cssInvitationTextarea)
-    private WebElement invitationTextarea;
+	@FindBy(css = PopoverLocators.BringYourFriendsPopover.cssInvitationTextarea)
+	private WebElement invitationTextarea;
 
-    @FindBy(css = PopoverLocators.BringYourFriendsPopover.cssInvitationButton)
-    private WebElement inviteButton;
+	@FindBy(css = PopoverLocators.BringYourFriendsPopover.cssShareContactsButton)
+	private WebElement shareContactsButton;
 
-    @FindBy(css = PopoverLocators.BringYourFriendsPopover.cssGmailImportButton)
-    private WebElement gmailButton;
+	@FindBy(css = PopoverLocators.BringYourFriendsPopover.cssInvitePeopleButton)
+	private WebElement invitePeopleButton;
 
-    @FindBy(id = PopoverLocators.BringYourFriendsPopover.idRootLocator)
-    private WebElement root;
+	@FindBy(css = PopoverLocators.BringYourFriendsPopover.cssGmailImportButton)
+	private WebElement gmailButton;
 
-    public BringYourFriendsPopoverPage(Future<ZetaWebAppDriver> lazyDriver)
-            throws Exception {
-        super(lazyDriver);
-    }
+	@FindBy(id = PopoverLocators.BringYourFriendsPopover.idRootLocator)
+	private WebElement root;
 
-    public String getInvitationText() {
-        return invitationTextarea.getAttribute("value");
-    }
+	public BringYourFriendsPopoverPage(Future<ZetaWebAppDriver> lazyDriver)
+			throws Exception {
+		super(lazyDriver);
+	}
 
-    public String parseInvitationLink() {
-        final String invitationText = this.getInvitationText();
-        final String regex = "(https://\\S+)";
-        final Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-        final Matcher urlMatcher = p.matcher(invitationText);
-        if (urlMatcher.find()) {
-            return urlMatcher.group(1);
-        } else {
-            throw new RuntimeException(String.format(
-                    "Invitation link could not be parsed from this text: '%s'",
-                    invitationText));
-        }
-    }
+	public String getInvitationText() {
+		return invitationTextarea.getAttribute("value");
+	}
 
-    public boolean isVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(),
-                By.id(PopoverLocators.BringYourFriendsPopover.idRootLocator));
-    }
+	public String parseInvitationLink() {
+		final String invitationText = this.getInvitationText();
+		final String regex = "(https://\\S+)";
+		final Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+		final Matcher urlMatcher = p.matcher(invitationText);
+		if (urlMatcher.find()) {
+			return urlMatcher.group(1);
+		} else {
+			throw new RuntimeException(String.format(
+					"Invitation link could not be parsed from this text: '%s'",
+					invitationText));
+		}
+	}
 
-    public boolean isNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-                By.id(PopoverLocators.BringYourFriendsPopover.idRootLocator));
-    }
+	public boolean isVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.id(PopoverLocators.BringYourFriendsPopover.idRootLocator));
+	}
 
-    public void clickInviteButton() {
-        inviteButton.click();
-    }
+	public boolean isNotVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.id(PopoverLocators.BringYourFriendsPopover.idRootLocator));
+	}
 
-    public void waitUntilGmailImportButtonIsNotVisible() throws Exception {
-        getDriver();
-        assert DriverUtils
-                .waitUntilLocatorDissapears(
-                        getDriver(),
-                        By.cssSelector(PopoverLocators.BringYourFriendsPopover.cssGmailImportButton)) :
-                "Gmail Import button is not visible after "
-                + this.getDriverInitializationTimeout() + " ms timeout";
-    }
+	public void waitUntilGmailImportButtonIsNotVisible() throws Exception {
+		getDriver();
+		assert DriverUtils
+				.waitUntilLocatorDissapears(
+						getDriver(),
+						By.cssSelector(PopoverLocators.BringYourFriendsPopover.cssGmailImportButton)) : "Gmail Import button is not visible after "
+				+ this.getDriverInitializationTimeout() + " ms timeout";
+	}
+
+	public boolean isShareContactsButtonVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				shareContactsButton);
+	}
+
+	public boolean isShareContactsButtonNotVisible() throws Exception {
+		return DriverUtils
+				.waitUntilLocatorDissapears(
+						getDriver(),
+						By.cssSelector(PopoverLocators.BringYourFriendsPopover.cssShareContactsButton));
+	}
+
+	public void clickShareContactsButton() {
+		shareContactsButton.click();
+	}
+
+	public void clickInvitePeopleButton() {
+		invitePeopleButton.click();
+	}
 }

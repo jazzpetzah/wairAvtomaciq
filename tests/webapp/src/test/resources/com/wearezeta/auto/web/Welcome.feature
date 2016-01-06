@@ -1,6 +1,6 @@
 Feature: Welcome
 
-  @C1734 @regression @id1777
+  @C1734 @regression
   Scenario Outline: Verify possibility of reseting password
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
@@ -24,7 +24,9 @@ Feature: Welcome
     When I enter email "<Email>"
     And I enter password "<NewPassword>"
     And I press Sign In button
-    And I see Contacts Upload dialog
+    Then I am signed in properly
+    And I see user name on self profile page <Name>
+    And I see user email on self profile page <Email>
 
     Examples: 
       | Email      | OldPassword   | Name      | NewPassword | LoginErr                                  |

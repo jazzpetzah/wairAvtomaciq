@@ -1,6 +1,6 @@
 Feature: Conversation List
 
-  @regression @id2378 @id2568
+  @C2523 @C2524 @regression @id2378 @id2568
   Scenario Outline: Verify archive a conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -16,7 +16,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @rc @id2755 @id2377
+  @C2527 @C2530 @regression @rc @id2755 @id2377
   Scenario Outline: Verify archive a conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -33,7 +33,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @id2674
+  @C2525 @regression @id2674
   Scenario Outline: Verify archive a group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -50,7 +50,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | ArchiveGroupChat |
 
-  @regression @id2750
+  @C2528 @regression @id2750
   Scenario Outline: Verify archive a group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -68,7 +68,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | ArchiveGroupChat |
 
-  @regression @id2675
+  @C2526 @regression @id2675
   Scenario Outline: Unarchive conversation [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -85,7 +85,7 @@ Feature: Conversation List
       | Name      | ArchivedUser |
       | user1Name | user2Name    |
 
-  @regression @id2751
+  @C2529 @regression @id2751
   Scenario Outline: Unarchive conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -102,7 +102,7 @@ Feature: Conversation List
       | Name      | ArchivedUser |
       | user1Name | user2Name    |
 
-  @regression @id2753
+  @C2505 @regression @id2753
   Scenario Outline: Verify opening search by tapping on the search field [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -114,7 +114,7 @@ Feature: Conversation List
       | Name      |
       | user1Name |
 
-  @regression @id2754
+  @C2506 @regression @id2754
   Scenario Outline: Verify opening search by tapping on the search field [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -127,7 +127,7 @@ Feature: Conversation List
       | Name      |
       | user1Name |
 
-  @regression @rc @id2369
+  @C2533 @regression @rc @id2369
   Scenario Outline: Verify Ping animation in the conversations list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -144,7 +144,7 @@ Feature: Conversation List
       | Name      | Contact   | NewName | Color        |
       | user1Name | user2Name | PING    | BrightOrange |
 
-  @regression @id2752
+  @C2537 @regression @id2752
   Scenario Outline: Verify Ping animation in the conversations list [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -162,7 +162,7 @@ Feature: Conversation List
       | Name      | Contact   | NewName | Color        |
       | user1Name | user2Name | PING    | BrightOrange |
 
-  @regression @id2367
+  @C2531 @regression @id2367
   Scenario Outline: Verify messages are marked as read with disappearing unread dot [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -181,7 +181,7 @@ Feature: Conversation List
       | Name      | Contact   | NewName    | Color        | Number |
       | user1Name | user2Name | UNREAD DOT | BrightYellow | 2      |
 
-  @regression @id2711
+  @C2536 @regression @id2711
   Scenario Outline: Verify messages are marked as read with disappearing unread dot [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -200,7 +200,7 @@ Feature: Conversation List
       | Name      | Contact   | NewName    | Color        | Number |
       | user1Name | user2Name | UNREAD DOT | BrightYellow | 2      |
 
-  @regression @id2756
+  @C2507 @regression @id2756
   Scenario Outline: Verify conversations are sorted according to most recent activity [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given <Name> is connected to <Contact>,<Contact2>,<Contact3>
@@ -218,7 +218,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact2  | Contact3  | Number | Picture     |
       | user1Name | user2Name | user3name | user4name | 2      | testing.jpg |
 
-  @regression @id2757
+  @C2508 @regression @id2757
   Scenario Outline: Verify conversations are sorted according to most recent activity [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given <Name> is connected to <Contact>,<Contact2>,<Contact3>
@@ -237,7 +237,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact2  | Contact3  | Number | Picture     |
       | user1Name | user2Name | user3name | user4name | 2      | testing.jpg |
 
-  @regression @rc @id2360
+  @C2502 @regression @rc @id2360
   Scenario Outline: Get invitation message from user [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -250,7 +250,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @id3010
+  @C2509 @regression @id3010
   Scenario Outline: Get invitation message from user [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -264,7 +264,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @rc @id2368
+  @C2532 @regression @rc @id2368
   Scenario Outline: Verify missed call indicator appearance in conversation list [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
@@ -285,7 +285,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact1  | Number | Color           | CallBackend |
       | user1Name | user2Name | user3Name | 2      | StrongLimeGreen | autocall    |
 
-  @regression @id2995
+  @C2539 @regression @id2995
   Scenario Outline: Verify missed call indicator appearance in conversation list [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
@@ -307,7 +307,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact1  | Number | Color           | CallBackend |
       | user1Name | user2Name | user3Name | 2      | StrongLimeGreen | autocall    |
 
-  @regression @rc @id2371
+  @C2535 @regression @rc @id2371
   Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
@@ -330,7 +330,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact1  | Color           |
       | user1Name | user2Name | user3Name | StrongLimeGreen |
 
-  @regression @id2942
+  @C2538 @regression @id2942
   Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
@@ -352,7 +352,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact1  | Color           |
       | user1Name | user2Name | user3Name | StrongLimeGreen |
 
-  @regression @rc @id2566
+  @C2504 @regression @rc @id2566
   Scenario Outline: Verify muting ongoing call [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -376,7 +376,7 @@ Feature: Conversation List
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @regression @rc @id2364
+  @C2522 @regression @rc @id2364
   Scenario Outline: Verify play/pause controls can change playing media state - SoundCloud [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -401,7 +401,7 @@ Feature: Conversation List
       | Name      | Contact   | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
-  @regression @id3828
+  @C2559 @regression @id3828
   Scenario Outline: Verify action menu is opened on swipe right on the group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -420,7 +420,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3name | ActionMenuChat |
 
-  @regression @id3827
+  @C2558 @regression @id3827
   Scenario Outline: Verify action menu is opened on swipe right on the group conversation [LANDSCAPE]
     Given I rotate UI to landscape
     Given There are 3 users where <Name> is me
@@ -440,7 +440,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3name | ActionMenuChat |
 
-  @regression @id3831
+  @C2560 @regression @id3831
   Scenario Outline: Verify action menu is opened on swipe right on 1to1 conversation [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -458,7 +458,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id3832
+  @C2561 @regression @id3832
   Scenario Outline: Verify action menu is opened on swipe right on 1to1 conversation [LANDSCAPE]
     Given I rotate UI to landscape
     Given There are 2 users where <Name> is me
@@ -477,7 +477,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id3900 @ZIOS-5279
+  @C2510 @regression @id3900 @ZIOS-5279
   Scenario Outline: Verify first conversation in the list is highlighted and opened [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -491,7 +491,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3901 @ZIOS-5279
+  @C2511 @staging @id3901 @ZIOS-5279
   Scenario Outline: Verify first conversation in the list is highlighted and opened [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -506,7 +506,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id3955
+  @C2544 @regression @id3955
   Scenario Outline: Verify that deleted conversation isn't going to archive [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -525,7 +525,7 @@ Feature: Conversation List
       | Name      | Contact1  | Message |
       | user1Name | user2Name | testing |
 
-  @regression @id3956
+  @C2545 @regression @id3956
   Scenario Outline: Verify that deleted conversation isn't going to archive [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -545,7 +545,7 @@ Feature: Conversation List
       | Name      | Contact1  | Message |
       | user1Name | user2Name | testing |
 
-  @staging @id3961
+  @C2546 @staging @id3961
   Scenario Outline: Verify deleting 1-to-1 conversation from archive [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -566,7 +566,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @staging @id3962
+  @C2547 @staging @id3962
   Scenario Outline: Verify deleting 1-to-1 conversation from archive [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -588,7 +588,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
-  @staging @id3969
+  @C2552 @staging @id3969
   Scenario Outline: Verify posting in a group conversation without content [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -616,7 +616,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
       | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
 
-  @regression @id3970
+  @C2553 @regression @id3970
   Scenario Outline: Verify posting in a group conversation without content [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -645,7 +645,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
       | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
 
-  @regression @id4018
+  @C2542 @regression @id4018
   Scenario Outline: Verify canceling blocking person [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -660,7 +660,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @regression @id4019
+  @C2543 @regression @id4019
   Scenario Outline: Verify canceling blocking person [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -676,7 +676,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @regression @id2324
+  @C2383 @regression @id2324
   Scenario Outline: Verify archiving silenced conversation [PORTAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -700,7 +700,7 @@ Feature: Conversation List
       | Name      | Contact   | Picture     | ConversationType |
       | user1Name | user2Name | testing.jpg | single user      |
 
-  @regression @id3985
+  @C2388 @regression @id3985
   Scenario Outline: Verify archiving silenced conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -725,7 +725,7 @@ Feature: Conversation List
       | Name      | Contact   | Picture     | ConversationType |
       | user1Name | user2Name | testing.jpg | single user      |
 
-  @regression @id3966 @ZIOS-5247
+  @C2550 @regression @id3966 @ZIOS-5247
   Scenario Outline: Verify removing the content and leaving from the group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -749,7 +749,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
-  @regression @id3967 @ZIOS-5247
+  @C2551 @regression @id3967 @ZIOS-5247
   Scenario Outline: Verify removing the content and leaving from the group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -774,7 +774,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
-  @regression @id4006
+  @C2554 @regression @id4006
   Scenario Outline: Verify deleting the history from kicked out conversation [POTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -796,7 +796,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | KICKCHAT      |
 
-  @regression @id4007
+  @C2555 @regression @id4007
   Scenario Outline: Verify deleting the history from kicked out conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -819,7 +819,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | KICKCHAT      |
 
-  @staging @id4015
+  @C2540 @staging @id4015
   Scenario Outline: Verify blocking person from action menu [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -840,7 +840,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id4016
+  @C2541 @staging @id4016
   Scenario Outline: Verify blocking person from action menu [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -862,7 +862,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id4104
+  @C2514 @staging @id4104
   Scenario Outline: Verify 'Invite more people' is hidden after 6 connections [PORTRAIT]
     Given There are <Number> users where <Name> is me
     Given I Sign in on tablet using my email
@@ -877,7 +877,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Number |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | 8      |
 
-  @staging @id4105
+  @C2515 @staging @id4105
   Scenario Outline: Verify 'Invite more people' is hidden after 6 connections [LANDSCAPE]
     Given There are <Number> users where <Name> is me
     Given I rotate UI to landscape
