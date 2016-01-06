@@ -1,6 +1,6 @@
 Feature: Calling_Matrix
 
-  @id0001 @calling_matrix @calling
+  @C0001 @calling_matrix @calling
   Scenario Outline: Verify I can make 1:1 call to <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -28,7 +28,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | firefox:43.0        | 60      |
       | user1Email | user1Password | user1Name | user2Name | firefox:42.0        | 60      |
 
-  @id0002 @calling_matrix @calling
+  @C0002 @calling_matrix @calling
   Scenario Outline: Verify I can make 1:1 call to AVS <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -52,7 +52,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | zcall:1.10  | 60      |
       | user1Email | user1Password | user1Name | user2Name | zcall:1.09  | 60      |
 
-  @id0003 @calling_matrix @calling
+  @C0003 @calling_matrix @calling
   Scenario Outline: Verify I can receive 1:1 call from <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -79,7 +79,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | firefox:43.0        | 60      |
       | user1Email | user1Password | user1Name | user2Name | firefox:42.0        | 60      |
 
-  @id0004 @calling_matrix @calling
+  @C0004 @calling_matrix @calling
   Scenario Outline: Verify I can receive 1:1 call from AVS <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -101,7 +101,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | autocall:1.10 | 60      |
       | user1Email | user1Password | user1Name | user2Name | autocall:1.09 | 60      |
 
-  @id0005 @calling_matrix @calling
+  @C0005 @calling_matrix @calling
   Scenario Outline: Verify I can make group call with multiple <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -136,7 +136,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:43.0        | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:42.0        | 60      |
 
-  @id0006 @calling_matrix @calling
+  @C0006 @calling_matrix @calling
   Scenario Outline: Verify I can make group call with multiple AVS <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -158,7 +158,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:1.10  | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:1.09  | 60      |
 
-  @id0007 @calling_matrix @calling
+  @C0007 @calling_matrix @calling
   Scenario Outline: Verify I can join group call with multiple <Backend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -194,7 +194,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:43.0        | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:42.0        | 60      |
 
-  @id0008 @calling_matrix @calling
+  @C0008 @calling_matrix @calling
   Scenario Outline: Verify I can join group call with AVS <Backend> and <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -230,7 +230,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.10 | firefox:43.0        | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.10 | firefox:42.0        | 60      |
 
-  @id0009 @calling_matrix @calling
+  @C0009 @calling_matrix @calling
   Scenario Outline: Verify I can join group call with AVS <Backend> and <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -266,7 +266,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.09 | firefox:43.0        | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.09 | firefox:42.0        | 60      |
 
-  @id0010 @calling_matrix @calling
+  @C0010 @calling_matrix @calling
   Scenario Outline: Verify I can join group call with AVS <Backend> and <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
