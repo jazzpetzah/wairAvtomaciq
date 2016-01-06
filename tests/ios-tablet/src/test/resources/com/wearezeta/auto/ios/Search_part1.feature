@@ -287,6 +287,7 @@ Feature: Search
     And I see People picker page
     And I re-enter the people picker if CONNECT label is not there
     And I see CONNECT label
+    And I click hide keyboard button
     And I swipe to reveal hide button for suggested contact <Friend1>
     And I tap hide for suggested contact <Friend1>
     Then I do not see suggested contact <Friend1>
