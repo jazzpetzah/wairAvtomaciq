@@ -103,7 +103,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id2429
+  @regression @id2429 @C3221
   Scenario Outline: Verify you can see Ping on the other side - 1:1 conversation [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given User <Contact1> change name to <ContactName>
@@ -115,17 +115,13 @@ Feature: Conversation View
     And User <Contact1> Ping in chat <Name> by BackEnd
     And I wait for 3 seconds
     Then I see User <Contact1> Pinged message in the conversation
-    And I see <Action1> icon in conversation
-    And User <Contact1> HotPing in chat <Name> by BackEnd
-    And I wait for 3 seconds
-    And I see User <Contact1> Pinged Again message in the conversation
-    And I see <Action2> icon in conversation
+    Then I see <Action1> icon in conversation
 
     Examples: 
       | Name      | Contact1  | Action1 | Action2      | Color        | ContactName |
       | user1Name | user2Name | PINGED  | PINGED AGAIN | BrightOrange | OtherUser   |
 
-  @regression @id2429
+  @regression @id2429 @C3222
   Scenario Outline: Verify you can see Ping on the other side - 1:1 conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given User <Contact1> change name to <ContactName>
@@ -138,17 +134,13 @@ Feature: Conversation View
     And User <Contact1> Ping in chat <Name> by BackEnd
     And I wait for 3 seconds
     Then I see User <Contact1> Pinged message in the conversation
-    And I see <Action1> icon in conversation
-    And User <Contact1> HotPing in chat <Name> by BackEnd
-    And I wait for 3 seconds
-    And I see User <Contact1> Pinged Again message in the conversation
-    And I see <Action2> icon in conversation
+    Then I see <Action1> icon in conversation
 
     Examples: 
       | Name      | Contact1  | Action1 | Action2      | Color        | ContactName |
       | user1Name | user2Name | PINGED  | PINGED AGAIN | BrightOrange | OtherUser   |
 
-  @regression @id2427
+  @regression @id2427 @C3223
   Scenario Outline: Verify you can see Ping on the other side - group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -161,17 +153,13 @@ Feature: Conversation View
     And User <Contact1> Ping in chat <GroupChatName> by BackEnd
     And I wait for 3 seconds
     Then I see User <Contact1> Pinged message in the conversation
-    And I see <Action1> icon in conversation
-    And User <Contact1> HotPing in chat <GroupChatName> by BackEnd
-    And I wait for 3 seconds
-    And I see User <Contact1> Pinged Again message in the conversation
-    And I see <Action2> icon in conversation
+    Then I see <Action1> icon in conversation
 
     Examples: 
       | Name      | Contact1  | Contact2  | Action1 | Action2      | GroupChatName        | Color        | ContactName |
       | user1Name | user2Name | user3Name | PINGED  | PINGED AGAIN | ReceivePingGroupChat | BrightOrange | OtherUser   |
 
-  @regression @id2427
+  @regression @id2427 @C3224
   Scenario Outline: Verify you can see Ping on the other side - group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -185,11 +173,7 @@ Feature: Conversation View
     And User <Contact1> Ping in chat <GroupChatName> by BackEnd
     And I wait for 3 seconds
     Then I see User <Contact1> Pinged message in the conversation
-    And I see <Action1> icon in conversation
-    And User <Contact1> HotPing in chat <GroupChatName> by BackEnd
-    And I wait for 3 seconds
-    And I see User <Contact1> Pinged Again message in the conversation
-    And I see <Action2> icon in conversation
+    Then I see <Action1> icon in conversation
 
     Examples: 
       | Name      | Contact1  | Contact2  | Action1 | Action2      | GroupChatName        | Color        | ContactName |
@@ -502,7 +486,7 @@ Feature: Conversation View
       | Name      | Contact   | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
-  @regression @id2404
+  @regression @id2404 @C3225
   Scenario Outline: Verify the Media Bar dissapears after playback finishes - SoundCloud [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
