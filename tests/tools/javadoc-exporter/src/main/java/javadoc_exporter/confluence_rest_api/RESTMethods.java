@@ -67,33 +67,33 @@ class RESTMethods {
                                    int[] acceptableResponseCodes) throws RESTApiError {
         ClientResponse response;
         response = webResource.post(ClientResponse.class, entity);
-        verifyRequestResult(response.getEntity(String.class),
-                response.getStatus(), acceptableResponseCodes);
-        return response.getEntity(String.class);
+        final String responseText = response.getEntity(String.class);
+        verifyRequestResult(responseText, response.getStatus(), acceptableResponseCodes);
+        return responseText;
     }
 
     private static String httpPut(Builder webResource, Object entity,
                                   int[] acceptableResponseCodes) throws RESTApiError {
         ClientResponse response = webResource.put(ClientResponse.class, entity);
-        verifyRequestResult(response.getEntity(String.class),
-                response.getStatus(), acceptableResponseCodes);
-        return response.getEntity(String.class);
+        final String responseText = response.getEntity(String.class);
+        verifyRequestResult(responseText, response.getStatus(), acceptableResponseCodes);
+        return responseText;
     }
 
     private static String httpGet(Builder webResource,
                                   int[] acceptableResponseCodes) throws RESTApiError {
         ClientResponse response = webResource.get(ClientResponse.class);
-        verifyRequestResult(response.getEntity(String.class),
-                response.getStatus(), acceptableResponseCodes);
-        return response.getEntity(String.class);
+        final String responseText = response.getEntity(String.class);
+        verifyRequestResult(responseText, response.getStatus(), acceptableResponseCodes);
+        return responseText;
     }
 
     private static String httpDelete(Builder webResource,
                                      int[] acceptableResponseCodes) throws RESTApiError {
         ClientResponse response = webResource.delete(ClientResponse.class);
-        verifyRequestResult(response.getEntity(String.class),
-                response.getStatus(), acceptableResponseCodes);
-        return response.getEntity(String.class);
+        final String responseText = response.getEntity(String.class);
+        verifyRequestResult(responseText, response.getStatus(), acceptableResponseCodes);
+        return responseText;
     }
 
     private static Builder buildRequestWithAuth(String restAction)
