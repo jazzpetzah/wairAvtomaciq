@@ -12,6 +12,7 @@ Feature: Self Profile
     And I press Camera button
     And I choose a picture from camera roll
     And I press Confirm button
+    And I wait for 5 seconds
     And I return to personal page
     Then I see changed user picture <Picture>
 
