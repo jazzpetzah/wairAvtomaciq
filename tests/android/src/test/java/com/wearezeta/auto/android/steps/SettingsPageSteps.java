@@ -1,6 +1,5 @@
 package com.wearezeta.auto.android.steps;
 
-import com.wearezeta.auto.common.ImageUtil;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.SettingsPage;
@@ -8,8 +7,6 @@ import com.wearezeta.auto.android.pages.SettingsPage;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-
-import java.awt.image.BufferedImage;
 
 public class SettingsPageSteps {
 
