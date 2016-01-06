@@ -139,7 +139,7 @@ Feature: Rich Media
     Then I see the conversation view
     And I see a new picture in the conversation view
     And I scroll to the bottom of the Conversation view
-    And I see the picture in the conversation view is animated
+    # And I see the picture in the conversation view is animated
 
     Examples:
       | Name      | Contact   | Message |
