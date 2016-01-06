@@ -217,6 +217,7 @@ public abstract class AndroidPage extends BasePage {
                     return true;
                 }
             }
+            Thread.sleep(500);
         }
         return false;
     }
@@ -229,6 +230,7 @@ public abstract class AndroidPage extends BasePage {
                 if (this.getDriver().findElement(locator).getSize().width == 0) {
                     return true;
                 }
+                Thread.sleep(500);
             } else {
                 return true;
             }
