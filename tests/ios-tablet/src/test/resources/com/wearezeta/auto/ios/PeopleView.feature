@@ -356,6 +356,7 @@ Feature: People View
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
     And I tap on start dialog button on other user profile page
+    #And I dismiss popover on iPad
     Then I see dialog page
     And I type the message
     And I send the message
@@ -378,6 +379,7 @@ Feature: People View
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
     And I tap on start dialog button on other user profile page
+    #And I dismiss popover on iPad
     Then I see dialog page
     And I type the message
     And I send the message
@@ -781,7 +783,7 @@ Feature: People View
     And I input conversation name <GroupChatName> in Search input
     Then I see conversation <GroupChatName> is presented in Search results
     When I tap on conversation <GroupChatName> in search result
-    Then I see group chat page with users <Contact1>,<Contact2>
+    Then I see group chat page after deletion with users <Contact1>,<Contact2>
 
     Examples: 
       | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
@@ -809,7 +811,7 @@ Feature: People View
     And I input conversation name <GroupChatName> in Search input
     Then I see conversation <GroupChatName> is presented in Search results
     When I tap on conversation <GroupChatName> in search result
-    Then I see group chat page with users <Contact1>,<Contact2>
+    Then I see group chat page after deletion with users <Contact1>,<Contact2>
 
     Examples: 
       | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |

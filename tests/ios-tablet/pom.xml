@@ -28,7 +28,7 @@
 		<iosClientInfoPlist>/Project/builds_info/Info_ios.plist</iosClientInfoPlist>
 		<deviceName>iPad Air</deviceName>
 		<backendType>staging</backendType>
-		<rcNotificationsRecepients>dasha@wire.com,nick@wire.com,sergeii.khyzhniak@wire.com,piotr.iazadji@wire.com</rcNotificationsRecepients>
+		<rcNotificationsRecepients>dasha@wire.com,nick@wire.com,juliane@wire.com,piotr.iazadji@wire.com</rcNotificationsRecepients>
 	</properties>
 
 	<dependencies>

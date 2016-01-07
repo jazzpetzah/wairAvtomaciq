@@ -30,7 +30,7 @@
 		<perfUsersCount>11</perfUsersCount> <!-- The number of contacts for perf test -->
 		<backendType>staging</backendType>
 		<perfReportPath>{user.home}/Documents/performance.json</perfReportPath>
-		<rcNotificationsRecepients>dasha@wire.com,nick@wire.com,sergeii.khyzhniak@wire.com,piotr.iazadji@wire.com</rcNotificationsRecepients>
+		<rcNotificationsRecepients>dasha@wire.com,nick@wire.com,juliane@wire.com,piotr.iazadji@wire.com</rcNotificationsRecepients>
 	</properties>
 
 	<dependencies>

@@ -33,6 +33,9 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameOtherUserProfilePageCloseButton)
 	private WebElement goBackButton;
 
+	@FindBy(name = IOSLocators.nameOtherUserConversationMenu)
+	private WebElement otherUserConversationMenuRightButton;
+
 	public TabletOtherUserInfoPage(Future<ZetaIOSDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -43,8 +46,11 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
 		removeFromGroupChat.click();
 	}
 
-	public String getNameFieldValueOniPadPopover() {
-		return nameFieldPopover.getAttribute("value");
+	public String getNameFieldValueOniPadPopover(String user) throws Exception {
+		WebElement name = getDriver().findElement(
+				By.xpath(String.format(
+						IOSTabletLocators.TabletOtherUserInfoPage.xpathOtherUserNameField, user)));
+		return name.getAttribute("name");
 	}
 
 	public String getEmailFieldValueOniPadPopover() throws Exception {
@@ -90,6 +96,11 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
 	public void clickGoBackButton() throws Exception {
 		DriverUtils.waitUntilElementClickable(getDriver(), goBackButton);
 		goBackButton.click();
+	}
+
+	public void exitOtherUserGroupChatPopover() throws Exception {
+		DriverUtils.mobileTapByCoordinates(getDriver(), otherUserConversationMenuRightButton,
+				50, 50);
 	}
 
 }

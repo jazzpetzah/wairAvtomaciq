@@ -598,7 +598,8 @@ public class RegistrationPage extends IOSPage {
 		chooseOwnPictureButton.click();
 	}
 
-	public void clickChoosePhotoButton() {
+	public void clickChoosePhotoButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(),choosePhotoButton);
 		choosePhotoButton.click();
 	}
 }
