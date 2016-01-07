@@ -204,8 +204,7 @@ Feature: Search
     When I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
     And I see the Group popover
-    Then I see the participant avatar Myself on Group popover
-    And I see the participant avatar <Contact1> on Group popover
+    Then I see the participant avatar <Contact1> on Group popover
     And I see the participant avatar <Contact2> on Group popover
 
     Examples:
@@ -231,8 +230,7 @@ Feature: Search
     When I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
     And I see the Group popover
-    Then I see the participant avatar Myself on Group popover
-    And I see the participant avatar <Contact1> on Group popover
+    Then I see the participant avatar <Contact1> on Group popover
     And I see the participant avatar <Contact2> on Group popover
 
     Examples:
