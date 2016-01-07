@@ -1,6 +1,6 @@
 Feature: Application
 
-  @C2335 @smoke @id3805
+  @C2335 @smoke
   Scenario Outline: Save size and position of window and check for maximum/minimum size
     Given There are 1 users where <Name> is me
     Given I switch to Sign In page
@@ -37,7 +37,7 @@ Feature: Application
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C3144 @smoke @id3995
+  @C3144 @smoke
   Scenario: Verify size of sign in screen window
     When I ensure initial positioning
     Then I verify app width is 400 px and height is 576 px
@@ -47,18 +47,18 @@ Feature: Application
     And I resize the app to the min by hand
     Then I verify app width is 400 px and height is 576 px
 
-  @C2337 @smoke @id3807
+  @C2337 @smoke
   Scenario: I verify the installed app is not too big
     When I verify the app is not bigger than 121 MB
 
-  @C2313 @smoke @id3529
+  @C2313 @smoke
   Scenario: Verify existing About page
     When I click menu bar item "Wire" and menu item "About Wire"
     Then I verify about window is visible
     When I close the about window
     Then I verify about window is not visible
 
-  @C2324 @smoke @id3730
+  @C2324 @smoke
   Scenario Outline: Sign Out
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -72,12 +72,12 @@ Feature: Application
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C3145 @smoke @id3981
+  @C3145 @smoke
   Scenario: Verify I can quit the app using menu bar
     When I click menu bar item "Wire" and menu item "Quit Wire"
     Then I verify app has quit
 
-  @C3146 @smoke @id3982
+  @C3146 @smoke
   Scenario: Verify I can quit the app using shortcut ⌘ Q
     When I type shortcut combination to quit the app
     Then I verify app has quit
