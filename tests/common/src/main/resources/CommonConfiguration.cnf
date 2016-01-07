@@ -12,6 +12,7 @@ mailboxHandlerType=${mailboxHandlerType}
 defaultEmailListenerServiceHost=${defaultEmailListenerServiceHost}
 defaultEmailListenerServicePort=${defaultEmailListenerServicePort}
 makeScreenshots=${makeScreenshots}
+makeScreenshotOnPassedSteps=${makeScreenshotOnPassedSteps}
 initNodeIp=${initNodeIp}
 zephyrCycleName=${zephyrCycleName}
 zephyrPhaseName=${zephyrPhaseName}
