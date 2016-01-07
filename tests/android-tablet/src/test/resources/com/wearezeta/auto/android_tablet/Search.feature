@@ -206,6 +206,7 @@ Feature: Search
     And I see the Group popover
     Then I see the participant avatar <Contact1> on Group popover
     And I see the participant avatar <Contact2> on Group popover
+    And I do not see the participant avatar Myself on Group popover
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -232,6 +233,7 @@ Feature: Search
     And I see the Group popover
     Then I see the participant avatar <Contact1> on Group popover
     And I see the participant avatar <Contact2> on Group popover
+    And I do not see the participant avatar Myself on Group popover
 
     Examples:
       | Name      | Contact1  | Contact2  |
