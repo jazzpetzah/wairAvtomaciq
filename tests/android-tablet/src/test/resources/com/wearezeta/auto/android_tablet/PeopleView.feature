@@ -336,11 +336,6 @@ Feature: People View
     And I see the Group popover
     When I tap Options button on Group popover
     And I see <ItemLeave> menu item on Group popover
-    And I do short swipe down on Group popover
-    Then I do not see <ItemLeave> menu item on Group popover
-    And I see the Group popover
-    When I tap Options button on Group popover
-    And I see <ItemLeave> menu item on Group popover
     And I navigate back
     Then I do not see <ItemLeave> menu item on Group popover
     And I see the Group popover
@@ -362,11 +357,6 @@ Feature: People View
     And I see the conversation view
     And I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
-    And I see the Group popover
-    When I tap Options button on Group popover
-    And I see <ItemLeave> menu item on Group popover
-    And I do short swipe down on Group popover
-    Then I do not see <ItemLeave> menu item on Group popover
     And I see the Group popover
     When I tap Options button on Group popover
     And I see <ItemLeave> menu item on Group popover
