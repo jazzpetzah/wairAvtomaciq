@@ -25,6 +25,18 @@ public class PeoplePickerPageSteps {
 			.getInstance();
 
 	/**
+	 * Verifies the presence of the People Picker
+	 *
+	 * @step. ^I see [Pp]eople [Pp]icker$
+	 *
+	 * @throws Exception
+	 */
+	@When("^I see [Pp]eople [Pp]icker$")
+	public void ISeePeoplePicker() throws Exception {
+		webappPagesCollection.getPage(PeoplePickerPage.class).isVisible();
+	}
+
+	/**
 	 * Selects user from search results in People Picker
 	 * 
 	 * @step. ^I select (.*) from People Picker results$

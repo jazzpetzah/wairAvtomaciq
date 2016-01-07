@@ -376,16 +376,13 @@ Feature: Conversation List
   Scenario Outline: Use Gmail contacts import on registration
     Given There are 1 users where <Name> is me
     Given I switch to Sign In page
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Email> and password <Password>
     When I click button to bring friends from Gmail
     And I see Google login popup
-    And I enter email "smoketester.wire@gmail.com" at google login
-    And I click next at google login if present
-    And I enter password "aqa123456!" at google login
-    And I click sign in at google login
-    And I click approve at google login if present
-    Then I see more than 5 suggestions in people picker
+    And I sign up at Google with email <Gmail> and password <GmailPassword>
+    Then I see Search is opened
+    And I see more than 5 suggestions in people picker
 
     Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Email      | Password      | Name      | Gmail                       | GmailPassword |
+      | user1Email | user1Password | user1Name | smoketester.wire2@gmail.com | aqa123456!    |
