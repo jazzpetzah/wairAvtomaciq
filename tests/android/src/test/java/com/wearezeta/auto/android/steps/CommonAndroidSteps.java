@@ -577,17 +577,18 @@ public class CommonAndroidSteps {
      * @param dstUserNameAlias     The user to receive the message
      * @param isEncrypted          whether the message has to be encrypted
      * @throws Exception
-     * @step. ^Contact (.*) sends? (encrypted |\s*)message (.*)to user (.*)$
+     * @step. ^Contact (.*) sends? (encrypted )?message (.*)to user (.*)$
      */
-    @When("^Contact (.*) sends? (encrypted |\\s*)message (.*)to user (.*)$")
+    @When("^Contact (.*) sends? (encrypted )?message (.*)to user (.*)$")
     public void UserSendMessageToConversation(String msgFromUserNameAlias, String isEncrypted,
                                               String msg, String dstUserNameAlias)
             throws Exception {
-        final String msgToSend = (msg == null || msg.trim().length() == 0) ? CommonUtils.generateRandomString(10) : msg.trim();
-        if (isEncrypted != null && isEncrypted.trim().equals("encrypted")) {
-            commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias, dstUserNameAlias, msgToSend);
-        } else {
+        final String msgToSend = (msg == null || msg.trim().length() == 0) ?
+                CommonUtils.generateRandomString(10) : msg.trim();
+        if (isEncrypted == null) {
             commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstUserNameAlias, msgToSend);
+        } else {
+            commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias, dstUserNameAlias, msgToSend);
         }
     }
 
@@ -632,9 +633,9 @@ public class CommonAndroidSteps {
      * @param dstUserNameAlias     The user to receive the message
      * @param areEncrypted         Whether the messages should be encrypted
      * @throws Exception
-     * @step. ^Contact (.*) sends (\\d+) messages? to user (.*)$
+     * @step. ^Contact (.*) send[s]* (\d+) (encrypted )?messages? to user (.*)$
      */
-    @When("^Contact (.*) send[s]* (\\d+) (encrypted |\\s*)messages? to user (.*)$")
+    @When("^Contact (.*) send[s]* (\\d+) (encrypted )?messages? to user (.*)$")
     public void UserSendXMessagesToConversation(String msgFromUserNameAlias, int count, String areEncrypted,
                                                 String dstUserNameAlias) throws Exception {
         for (int i = 0; i < count; i++) {
