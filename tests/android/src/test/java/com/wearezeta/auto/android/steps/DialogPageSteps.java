@@ -857,4 +857,24 @@ public class DialogPageSteps {
                     similarity >= MAX_CONVO_VIEW_SIMILARIITY);
         }
     }
+
+    /**
+     * Verify whether the corresponding message is present in conversation view X times
+     *
+     * @param isEncrypted whether the message should be encrypted or not
+     * @param msg         the message to check
+     * @param times       the expected count of message repetitions in the convo view
+     * @throws Exception
+     * @step. ^I see (encrypted|non-encrypted) message (.*) (\d+) times? in the conversation view$
+     */
+    @Then("^I see (encrypted|non-encrypted) message (.*) (\\d+) times? in the conversation view$")
+    public void ISeeMessageXTimes(String isEncrypted, String msg, int times) throws Exception {
+        if (isEncrypted.equals("encrypted")) {
+            Assert.assertTrue(String.format("Encrypted message '%s' is not present in the conversation view %s time(s)",
+                    msg, times), getDialogPage().waitForXEncryptedMessages(msg, times));
+        } else {
+            Assert.assertTrue(String.format("Non-encrypted message '%s' is not present in the conversation view %s time(s)",
+                    msg, times), getDialogPage().waitForXNonEncryptedMessages(msg, times));
+        }
+    }
 }
