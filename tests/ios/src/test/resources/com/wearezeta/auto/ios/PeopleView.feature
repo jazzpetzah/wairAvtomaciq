@@ -437,7 +437,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
-  @C1831 @regression @id3972 @ZIOS-5247
+  @C1831 @regression @rc @id3972 @ZIOS-5247
   Scenario Outline: Verify removing the content and leaving from the group conversation via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -490,7 +490,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
       | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
 
-  @C1832 @staging @id3973
+  @C1832 @regression @rc @id3973
   Scenario Outline: Verify removing the content from 1-to-1 via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
