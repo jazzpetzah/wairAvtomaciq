@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @C3182 @C2592 @regression @rc @id855
+  @C3182 @regression @rc @id855
   Scenario Outline: Verify swipe right tutorial appearance
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
