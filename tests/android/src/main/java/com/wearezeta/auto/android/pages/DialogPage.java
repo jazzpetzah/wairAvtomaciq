@@ -42,6 +42,10 @@ public class DialogPage extends AndroidPage {
             .format("//*[@id='ltv__row_conversation__message' and @value='%s']",
                     text);
 
+    private static final Function<String, String> xpathEncryptedConversationMessageByText = text -> String
+            .format("//*[@id='ltv__row_conversation__message' and @value='%s']/parent::*/parent::*" +
+                    "//*[@id='v__row_conversation__e2ee']", text);
+
     private static final Function<String, String> xpathUnsentIndicatorByText = text -> String
             .format("%s/parent::*/parent::*//*[@id='v__row_conversation__error']",
                     xpathConversationMessageByText.apply(text));
@@ -134,7 +138,7 @@ public class DialogPage extends AndroidPage {
     private WebElement backgroundOverlay;
 
     private static final String idStartChatLabel = "ttv__row_conversation__connect_request__chathead_footer__label";
-    private static final Function<String,String> xpathStartChatLabelByPartOfText =
+    private static final Function<String, String> xpathStartChatLabelByPartOfText =
             text -> String.format("//*[@id='%s' and contains(@value, '%s')]", idStartChatLabel, text);
 
     private static final String idConnectRequestChatUserName = "ttv__row_conversation__connect_request__chathead_footer__username";
@@ -295,7 +299,7 @@ public class DialogPage extends AndroidPage {
             Thread.sleep(500);
         } else {
             this.hideKeyboard();
-            if(!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idCursorFrame), 2)) {
+            if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idCursorFrame), 2)) {
                 throw new IllegalStateException("Cursor frame is not visible");
             }
         }
@@ -657,14 +661,24 @@ public class DialogPage extends AndroidPage {
     }
 
     /**
-     * This method will return false if Take Photo button will not be visible after Switch Camera button is clicked
-     *
-     * @return
+     * @return false if Take Photo button will not be visible after Switch Camera button is clicked
      * @throws Exception
      */
     public boolean tapSwitchCameraButton() throws Exception {
         switchCameraButton.click();
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
                 By.xpath(xpathDialogTakePhotoButton));
+    }
+
+    public boolean waitForXEncryptedMessages(String msg, int times) throws Exception {
+        final By locator = By.xpath(xpathEncryptedConversationMessageByText.apply(msg));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) &&
+                getDriver().findElements(locator).size() == times;
+    }
+
+    public boolean waitForXNonEncryptedMessages(String msg, int times) throws Exception {
+        final By locator = By.xpath(xpathConversationMessageByText.apply(msg));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) &&
+                getDriver().findElements(locator).size() == times;
     }
 }
