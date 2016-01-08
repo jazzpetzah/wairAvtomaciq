@@ -226,13 +226,13 @@ public class CommonAndroidSteps {
     public void ISwipeDown() throws Exception {
         pagesCollection.getCommonPage().swipeDownCoordinates(DEFAULT_SWIPE_TIME);
     }
-    
+
     /**
-    * Swipe down from given high %8 to 90% of hight
-    *
-    * @throws Exception
-    * @step. ^I swipe down from\\s(\\d+)%$
-    */
+     * Swipe down from given high %8 to 90% of hight
+     *
+     * @throws Exception
+     * @step. ^I swipe down from\\s(\\d+)%$
+     */
     @When("^I swipe down from\\s(\\d+)%$")
     public void ISwipeDownFrom(int startPercent) throws Exception {
         pagesCollection.getCommonPage().swipeByCoordinates(DEFAULT_SWIPE_TIME, 50, startPercent, 50, 90);
@@ -287,7 +287,7 @@ public class CommonAndroidSteps {
             throw new RuntimeException("Selenium has failed to take the screenshot from current page");
         }
     }
-    
+
     /**
      * Takes 2nd screenshot for comparison
      *
@@ -327,9 +327,9 @@ public class CommonAndroidSteps {
         double score = ImageUtil.getOverlapScore(images.get(0), images.get(1));
         double targetScore = 0.75d;
         if (shouldBeEqual == null)
-            Assert.assertTrue("Screenshots overlap score="+score+", but expected less than " + targetScore, score < targetScore);
+            Assert.assertTrue("Screenshots overlap score=" + score + ", but expected less than " + targetScore, score < targetScore);
         else
-            Assert.assertTrue("Screenshots overlap score="+score+", but expected more than " + targetScore, score >= targetScore);
+            Assert.assertTrue("Screenshots overlap score=" + score + ", but expected more than " + targetScore, score >= targetScore);
     }
 
     /**
@@ -575,14 +575,20 @@ public class CommonAndroidSteps {
      * @param msgFromUserNameAlias the user who sends the message
      * @param msg                  a message to send. Random string will be sent if it is empty
      * @param dstUserNameAlias     The user to receive the message
+     * @param isEncrypted          whether the message has to be encrypted
      * @throws Exception
-     * @step. ^Contact (.*) send message to user (.*)$
+     * @step. ^Contact (.*) sends? (encrypted |\s*)message (.*)to user (.*)$
      */
-    @When("^Contact (.*) send message (.*)to user (.*)$")
-    public void UserSendMessageToConversation(String msgFromUserNameAlias, String msg, String dstUserNameAlias)
+    @When("^Contact (.*) sends? (encrypted |\\s*)message (.*)to user (.*)$")
+    public void UserSendMessageToConversation(String msgFromUserNameAlias, String isEncrypted,
+                                              String msg, String dstUserNameAlias)
             throws Exception {
-        commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstUserNameAlias,
-                (msg == null || msg.trim().length() == 0) ? CommonUtils.generateRandomString(10) : msg.trim());
+        final String msgToSend = (msg == null || msg.trim().length() == 0) ? CommonUtils.generateRandomString(10) : msg.trim();
+        if (isEncrypted != null && isEncrypted.trim().equals("encrypted")) {
+            commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias, dstUserNameAlias, msgToSend);
+        } else {
+            commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstUserNameAlias, msgToSend);
+        }
     }
 
     /**
@@ -624,14 +630,16 @@ public class CommonAndroidSteps {
      * @param msgFromUserNameAlias the user who sends the message
      * @param count                number of messages to send
      * @param dstUserNameAlias     The user to receive the message
+     * @param areEncrypted         Whether the messages should be encrypted
      * @throws Exception
      * @step. ^Contact (.*) sends (\\d+) messages? to user (.*)$
      */
-    @When("^Contact (.*) send[s]* (\\d+) messages? to user (.*)$")
-    public void UserSendXMessagesToConversation(String msgFromUserNameAlias, int count, String dstUserNameAlias)
-            throws Exception {
+    @When("^Contact (.*) send[s]* (\\d+) (encrypted |\\s*)messages? to user (.*)$")
+    public void UserSendXMessagesToConversation(String msgFromUserNameAlias, int count, String areEncrypted,
+                                                String dstUserNameAlias) throws Exception {
         for (int i = 0; i < count; i++) {
-            UserSendMessageToConversation(msgFromUserNameAlias, null, dstUserNameAlias);
+            UserSendMessageToConversation(msgFromUserNameAlias, areEncrypted,
+                    null, dstUserNameAlias);
         }
     }
 
@@ -807,27 +815,19 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * Rotate device to landscape
+     * Rotate device to landscape or portrait
      *
+     * @param direction either landscape or portrait
      * @throws Exception
-     * @step. ^I rotate UI to landscape$
+     * @step. ^I rotate UI to (landscape|portrait)$
      */
-    @When("^I rotate UI to landscape$")
-    public void WhenIRotateUILandscape() throws Exception {
-        pagesCollection.getCommonPage().rotateLandscape();
-        // To let the UI to handle up changes
-        Thread.sleep(1000);
-    }
-
-    /**
-     * Rotate device to portrait
-     *
-     * @throws Exception
-     * @step. ^I rotate UI to portrait$
-     */
-    @When("^I rotate UI to portrait$")
-    public void WhenIRotateUIPortrait() throws Exception {
-        pagesCollection.getCommonPage().rotatePortrait();
+    @When("^I rotate UI to (landscape|portrait)$")
+    public void WhenIRotateUI(String direction) throws Exception {
+        if (direction.equals("landscape")) {
+            pagesCollection.getCommonPage().rotateLandscape();
+        } else {
+            pagesCollection.getCommonPage().rotatePortrait();
+        }
         // To let the UI to handle up changes
         Thread.sleep(1000);
     }
