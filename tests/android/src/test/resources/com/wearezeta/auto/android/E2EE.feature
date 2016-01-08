@@ -6,8 +6,8 @@ Feature: E2EE
     Given <Contact> is connected to Myself
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
-    Given Contact <Contact> sends encrypted message <EncryptedMessage> to user Myself
-    Given Contact <Contact> sends message <SimpleMessage> to user Myself
+    When Contact <Contact> sends encrypted message <EncryptedMessage> to user Myself
+    And Contact <Contact> sends message <SimpleMessage> to user Myself
     And I tap on contact name <Contact>
     Then I see non-encrypted message <SimpleMessage> 1 time in the conversation view
     And I see encrypted message <EncryptedMessage> 1 time in the conversation view
