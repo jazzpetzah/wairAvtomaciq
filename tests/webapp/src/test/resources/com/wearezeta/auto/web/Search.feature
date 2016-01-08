@@ -95,7 +95,7 @@ Feature: Search
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I wait until <Login2> exists in backend search results
-    And I open People Picker from Contact List
+    And I see People Picker
     And I type <Login2> in search field of People Picker
     Then I see user <Name2> found in People Picker
     When I click on not connected user <Name2> found in People Picker
