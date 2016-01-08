@@ -36,7 +36,7 @@ Feature: Localytics
     Given There is 1 user where <Name> is me without avatar picture
     Given I switch to Sign In page
     And I Sign in using login <Login> and password <Password>
-    And I see Self Picture Upload dialog
+    And I see Welcome page
     And I choose <PictureName> as my self picture on Self Picture Upload dialog
     And I confirm picture selection on Self Picture Upload dialog
     And I wait for 5 seconds
@@ -51,7 +51,7 @@ Feature: Localytics
     Given There is 1 user where <Name> is me without avatar picture
     Given I switch to Sign In page
     And I Sign in using login <Login> and password <Password>
-    And I see Self Picture Upload dialog
+    And I see Welcome page
     And I force carousel mode on Self Picture Upload dialog
     And I select random picture from carousel on Self Picture Upload dialog
     And I confirm picture selection on Self Picture Upload dialog
@@ -75,7 +75,7 @@ Feature: Localytics
     Given There is 1 user where <Name> is me without avatar picture
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see Self Picture Upload dialog
+    And I see Welcome page
     And I force carousel mode on Self Picture Upload dialog
     And I select random picture from carousel on Self Picture Upload dialog
     And I confirm picture selection on Self Picture Upload dialog
