@@ -35,30 +35,30 @@ public class WelcomePageSteps {
 	 * already exist on the local file system and should be located in the
 	 * ~/Documents folder
 	 * 
-	 * @step. ^I choose (.*) as my self picture on Self Picture Upload dialog$
+	 * @step. ^I choose (.*) as my self picture on Welcome page$
 	 * 
 	 * @param pictureName
 	 *            existing picture name
 	 * 
 	 * @throws Exception
 	 */
-	@And("^I choose (.*) as my self picture on Self Picture Upload dialog$")
+	@And("^I choose (.*) as my self picture on Welcome page$")
 	public void IUploadMyPicture(String pictureName) throws Exception {
 		webappPagesCollection.getPage(WelcomePage.class)
 				.uploadPicture(pictureName);
 	}
 
 	/**
-	 * Confirm picture upload
+	 * Confirm current picture
 	 * 
-	 * @step. ^I confirm picture selection on Self Picture Upload dialog$
+	 * @step. ^I confirm keeping picture on Welcome page$
 	 * 
 	 * @throws Exception
 	 */
-	@And("^I confirm picture selection on Self Picture Upload dialog$")
-	public void IConfirmPictureSelection() throws Exception {
+	@And("^I confirm keeping picture on Welcome page$")
+	public void IConfirmPicture() throws Exception {
 		webappPagesCollection.getPage(WelcomePage.class)
-				.confirmPictureSelection();
+				.keepPicture();
 	}
 
 	/**
@@ -72,32 +72,5 @@ public class WelcomePageSteps {
 	public void IWaitForPictureDialogToVanish() throws Exception {
 		webappPagesCollection.getPage(WelcomePage.class)
 				.waitUntilNotVisible();
-	}
-
-	/**
-	 * Force Carousel mode on Self Picture Upload dialog
-	 * 
-	 * @step. ^I force carousel mode on Self Picture Upload dialog$
-	 * @throws Exception
-	 * 
-	 */
-	@And("^I force carousel mode on Self Picture Upload dialog$")
-	public void IForceCarouselMode() throws Exception {
-		webappPagesCollection.getPage(WelcomePage.class)
-				.forceCarouselMode();
-	}
-
-	/**
-	 * Select random picture from carousel on Self Picture Upload dialog
-	 * 
-	 * @step. ^I select random picture from carousel on Self Picture Upload
-	 *        dialog$
-	 * 
-	 * @throws Exception
-	 */
-	@And("^I select random picture from carousel on Self Picture Upload dialog$")
-	public void ISelectRandomPictureFromCariouusel() throws Exception {
-		webappPagesCollection.getPage(WelcomePage.class)
-				.selectRandomPictureFromCarousel();
 	}
 }

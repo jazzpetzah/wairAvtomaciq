@@ -37,8 +37,7 @@ Feature: Localytics
     Given I switch to Sign In page
     And I Sign in using login <Login> and password <Password>
     And I see Welcome page
-    And I choose <PictureName> as my self picture on Self Picture Upload dialog
-    And I confirm picture selection on Self Picture Upload dialog
+    And I choose <PictureName> as my self picture on Welcome page
     And I wait for 5 seconds
 
     Examples:
@@ -52,9 +51,7 @@ Feature: Localytics
     Given I switch to Sign In page
     And I Sign in using login <Login> and password <Password>
     And I see Welcome page
-    And I force carousel mode on Self Picture Upload dialog
-    And I select random picture from carousel on Self Picture Upload dialog
-    And I confirm picture selection on Self Picture Upload dialog
+    And I confirm keeping picture on Welcome page
     And I wait for 5 seconds
 
     Examples:
@@ -76,9 +73,7 @@ Feature: Localytics
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see Welcome page
-    And I force carousel mode on Self Picture Upload dialog
-    And I select random picture from carousel on Self Picture Upload dialog
-    And I confirm picture selection on Self Picture Upload dialog
+    And I confirm keeping picture on Welcome page
     And I click button to bring friends from Gmail
     And I see Google login popup
     And I sign up at Google with email <GoogleEmail> and password <GooglePassword>
