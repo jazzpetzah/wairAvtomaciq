@@ -1,48 +1,69 @@
 Feature: Utility
 
-  @id
+  @id	#wip
   Scenario: Verify buttons on invitation page for iphone
     When I use generic invitation link for invitation for iphone
-    #And I wait for 10 seconds
     And I see You are invited page with agent
     Then I see button that sends me to App Store
     And I see button to connect for iphone including invitation code
 
-  @utility
+  @id	#wip
   Scenario: Verify buttons on invitation page for android
     When I use generic invitation link for invitation for android
     And I see You are invited page
     Then I see button that sends me to Play Store
-    And I see button to connect for android including invitation code    
-    
-  @id
-  Scenario Outline: test Verify buttons on invitation page for iphone
-    Given There is 1 user where <Name> is me
-    Given I switch to Sign In page
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contacts Upload dialog
-    And I click Show Search button on Contacts Upload dialog
-    And I see Bring Your Friends button on People Picker page
-    When I click Bring Your Friends button on People Picker page
-    Then I see Bring Your Friends popover
-    When I click Invite button on Bring Your Friends popover
-    And I remember invitation link on Bring Your Friends popover and add an agent
-    Then I do not see Bring Your Friends popover
-    When I navigate to previously remembered invitation link
-    Then I see You are invited page with agent
+    And I see button to connect for android including invitation code
 
-    # We don't go further since invitation flow will be changed soon
-    Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+  @id	#wip
+  Scenario: Verify buttons on invitation page for osx
+    When I use generic invitation link for invitation for <>
+    And I see You are invited page
+    Then I see button that sends me to <>
+    And I see button to connect for osx including invitation code
 
-  @id1
-  Scenario Outline: Verify buttons on download page
+  @id	#wip
+  Scenario: Verify buttons on invitation page for windows
+    When I use generic invitation link for invitation for <>
+    And I see You are invited page
+    Then I see button that sends me to <>
+    And I see button to connect for windows including invitation code
+
+  @utility
+  Scenario: Verify buttons on download page
     When I navigate to download page
-    And I wait 10 seconds
     Then I see button for iOS
     And I see button for Android
     And I see button for OS X
-    #And I see button for Windows
-    And I see button for Web
-    
+    #And I see button for Windows #No download link
+    And I see button for Webapp
+
+  @id	#wip
+  Scenario Outline: Check password reset utility page for iphone
+    Given There is 1 user where <Name> is me
+    Given I switch to sign in page
+    When I click Change Password button
+    Then I see Password Change Request page
+    When I enter email <Email> on Password Change Request page
+    And Myself starts listening for password change confirmation
+    And I click Change Password button on Password Change Request page
+    Then I see Password Change Request Succeeded page
+    When I open Password Change link from the received email for iphone
+    And I wait for 10 seconds
+    Then I see Password Change page
+    When I enter password <NewPassword> on Password Change page
+    And I click Change Password button on Password Change page
+    Then I see Password Change Succeeded page
+    Given I open Sign In page
+    When I see Sign In page
+    When I enter email "<Email>"
+    And I enter password "<OldPassword>"
+    And I press Sign In button
+    Then I see login error "<LoginErr>"
+    When I enter email "<Email>"
+    And I enter password "<NewPassword>"
+    And I press Sign In button
+    And I see Contactlist with name <Name>
+
+    Examples: 
+      | Email      | OldPassword   | Name      | NewPassword | LoginErr                                  | 
+      | user1Email | user1Password | user1Name | aqa654321#  | Please verify your details and try again. | 

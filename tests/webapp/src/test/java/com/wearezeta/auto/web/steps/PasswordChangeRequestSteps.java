@@ -147,4 +147,26 @@ public class PasswordChangeRequestSteps {
 		webappPagesCollection.getPage(PasswordChangePage.class).navigateTo();
 	}
 
+	/**
+	 * Open Password Change link from the received email and add an agent. This step requires
+	 * email listener to be already started before. Otherwise it will throw
+	 * RuntimeException
+	 * 
+	 * @step. ^I open Password Change link from the received email for <agent>$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I open Password Change link from the received email for (.*)$")
+	public void IOpenPasswordChangeLinkFromEmailFor(String agent) throws Exception {
+		if (this.passwordChangeMessage == null) {
+			throw new RuntimeException(
+					"Please call the corresponding step to initialize email listener first");
+		}
+		final PasswordResetMessage wrappedMsg = new PasswordResetMessage(
+				this.passwordChangeMessage.get());
+		String link = wrappedMsg.extractPasswordResetLink() + "/?agent=" + agent;
+		webappPagesCollection.getPage(PasswordChangePage.class).setUrl(link);
+		webappPagesCollection.getPage(PasswordChangePage.class).navigateTo();
+	}
+
 }
