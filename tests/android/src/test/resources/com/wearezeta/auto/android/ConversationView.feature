@@ -175,7 +175,6 @@ Feature: Conversation View
     And I swipe on text input
     And I press Add Picture button
     And I press "Gallery" button
-    And I rotate UI to portrait
     And I press "Confirm" button
     Then I see new photo in the dialog
 
