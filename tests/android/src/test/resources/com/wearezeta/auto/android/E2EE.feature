@@ -30,6 +30,7 @@ Feature: E2EE
     And I see device removal password confirmation dialog
     And I enter <Password> into the device removal password confirmation dialog
     And I tap OK button on the device removal password confirmation dialog
+    And I do not see "<DeviceToRemove>" settings menu item
     And I press Back button 3 times
     When I do not see Manage Devices overlay
     Then I see Contact list with no contacts

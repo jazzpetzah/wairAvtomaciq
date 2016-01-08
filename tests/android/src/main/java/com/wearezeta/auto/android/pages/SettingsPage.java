@@ -74,4 +74,14 @@ public class SettingsPage extends AndroidPage {
     public void tapOKButtonOnPasswordConfirmationDialog() {
         confirmationPasswordOKButton.click();
     }
+
+    public boolean waitUntilMenuItemVisible(String name) throws Exception {
+        final By locator = By.xpath(xpathSettingsMenuItemByText.apply(name));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean waitUntilMenuItemInvisible(String name) throws Exception {
+        final By locator = By.xpath(xpathSettingsMenuItemByText.apply(name));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
 }

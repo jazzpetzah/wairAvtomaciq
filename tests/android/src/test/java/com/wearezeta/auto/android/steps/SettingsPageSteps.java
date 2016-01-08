@@ -45,6 +45,25 @@ public class SettingsPageSteps {
     }
 
     /**
+     * Verify whether the particular settings menu item is visible or not
+     *
+     * @param shouldNotSee equals to null if the corresponding menu item should be visible
+     * @param name         the name of the corresponding menu item
+     * @throws Exception
+     * @step. ^I (do not )?see \"(.*)\" settings menu item$
+     */
+    @When("^I (do not )?see \"(.*)\" settings menu item$")
+    public void ISeeSettingsMenuItem(String shouldNotSee, String name) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("Settings menu item '%s' is not visible", name),
+                    getSettingsPage().waitUntilMenuItemVisible(name));
+        } else {
+            Assert.assertTrue(String.format("Settings menu item '%s' is visible, but should be hidden", name),
+                    getSettingsPage().waitUntilMenuItemInvisible(name));
+        }
+    }
+
+    /**
      * Click the corresponding button on sign out alert to confirm it
      *
      * @throws Exception
@@ -58,9 +77,8 @@ public class SettingsPageSteps {
     /**
      * Verify whether password confirmation dialog is visible
      *
-     * @step. ^I see device removal password confirmation dialog$"
-     *
      * @throws Exception
+     * @step. ^I see device removal password confirmation dialog$"
      */
     @Then("^I see device removal password confirmation dialog$")
     public void ISeePasswordConfirmation() throws Exception {
@@ -71,10 +89,9 @@ public class SettingsPageSteps {
     /**
      * Type the password into the confirmation dialog
      *
-     * @step. ^I enter (.*) into the device removal password confirmation dialog$
-     *
      * @param passwordAlias password string or an alias
      * @throws Exception
+     * @step. ^I enter (.*) into the device removal password confirmation dialog$
      */
     @When("^I enter (.*) into the device removal password confirmation dialog$")
     public void IEnterPassword(String passwordAlias) throws Exception {
@@ -86,9 +103,8 @@ public class SettingsPageSteps {
     /**
      * Tap OK button on the device removal password confirmation dialog
      *
-     * @step. ^I tap OK button on the device removal password confirmation dialog$
-     *
      * @throws Exception
+     * @step. ^I tap OK button on the device removal password confirmation dialog$
      */
     @And("^I tap OK button on the device removal password confirmation dialog$")
     public void ITapOKButtonOnPasswordConfirmationDialog() throws Exception {
