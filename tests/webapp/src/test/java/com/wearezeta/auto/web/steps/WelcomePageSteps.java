@@ -1,31 +1,31 @@
 package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
-import com.wearezeta.auto.web.pages.SelfPictureUploadPage;
+import com.wearezeta.auto.web.pages.WelcomePage;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 
-public class SelfPictureUploadPageSteps {
+public class WelcomePageSteps {
 	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
 			.getInstance();
 
 	/**
-	 * Verify that Self Picture Upload dialog is visible or not
+	 * Verify that Welcome page with Picture upload is visible or not
 	 * 
-	 * @step. ^I( do not)? see Self Picture Upload dialog$
+	 * @step. ^I( do not)? see Welcome page$
 	 * @param shouldNotBeVisible
 	 *            is set to null if "do not" part does not exist
 	 * @throws Exception
 	 */
-	@And("^I( do not)? see Self Picture Upload dialog$")
-	public void ISeeSelfPictureUpload(String shouldNotBeVisible)
+	@And("^I( do not)? see Welcome page$")
+	public void ISeeWelcomePage(String shouldNotBeVisible)
 			throws Exception {
 		if (shouldNotBeVisible == null) {
-			webappPagesCollection.getPage(SelfPictureUploadPage.class)
+			webappPagesCollection.getPage(WelcomePage.class)
 					.waitUntilButtonsAreClickable();
 		} else {
-			webappPagesCollection.getPage(SelfPictureUploadPage.class)
+			webappPagesCollection.getPage(WelcomePage.class)
 					.waitUntilNotVisible();
 		}
 	}
@@ -44,7 +44,7 @@ public class SelfPictureUploadPageSteps {
 	 */
 	@And("^I choose (.*) as my self picture on Self Picture Upload dialog$")
 	public void IUploadMyPicture(String pictureName) throws Exception {
-		webappPagesCollection.getPage(SelfPictureUploadPage.class)
+		webappPagesCollection.getPage(WelcomePage.class)
 				.uploadPicture(pictureName);
 	}
 
@@ -57,7 +57,7 @@ public class SelfPictureUploadPageSteps {
 	 */
 	@And("^I confirm picture selection on Self Picture Upload dialog$")
 	public void IConfirmPictureSelection() throws Exception {
-		webappPagesCollection.getPage(SelfPictureUploadPage.class)
+		webappPagesCollection.getPage(WelcomePage.class)
 				.confirmPictureSelection();
 	}
 
@@ -70,7 +70,7 @@ public class SelfPictureUploadPageSteps {
 	 */
 	@When("^I wait for Self Picture Upload dialog to vanish$")
 	public void IWaitForPictureDialogToVanish() throws Exception {
-		webappPagesCollection.getPage(SelfPictureUploadPage.class)
+		webappPagesCollection.getPage(WelcomePage.class)
 				.waitUntilNotVisible();
 	}
 
@@ -83,7 +83,7 @@ public class SelfPictureUploadPageSteps {
 	 */
 	@And("^I force carousel mode on Self Picture Upload dialog$")
 	public void IForceCarouselMode() throws Exception {
-		webappPagesCollection.getPage(SelfPictureUploadPage.class)
+		webappPagesCollection.getPage(WelcomePage.class)
 				.forceCarouselMode();
 	}
 
@@ -97,7 +97,7 @@ public class SelfPictureUploadPageSteps {
 	 */
 	@And("^I select random picture from carousel on Self Picture Upload dialog$")
 	public void ISelectRandomPictureFromCariouusel() throws Exception {
-		webappPagesCollection.getPage(SelfPictureUploadPage.class)
+		webappPagesCollection.getPage(WelcomePage.class)
 				.selectRandomPictureFromCarousel();
 	}
 }

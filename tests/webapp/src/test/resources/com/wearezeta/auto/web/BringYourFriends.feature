@@ -67,7 +67,7 @@ Feature: Bring Your Friends
     Given There is 1 user where user1Name is me without avatar picture
     Given I switch to Sign In page
     Given I Sign in using login user1Email and password user1Password
-    Given I see Self Picture Upload dialog
+    Given I see Welcome page
     Given I force carousel mode on Self Picture Upload dialog
     Given I confirm picture selection on Self Picture Upload dialog
     When I click button to bring friends from Gmail

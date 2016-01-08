@@ -15,9 +15,9 @@ import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
-public class SelfPictureUploadPage extends WebPage {
-	@FindBy(how = How.CSS, using = WebAppLocators.SelfPictureUploadPage.cssSendPictureInput)
-	private WebElement picturePathInput;
+public class WelcomePage extends WebPage {
+	@FindBy(how = How.CSS, using = WebAppLocators.SelfPictureUploadPage.cssChooseYourOwnInput)
+	private WebElement chooseYourOwnInput;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.SelfPictureUploadPage.xpathConfirmPictureSelectionButton)
 	private WebElement pictureSelectionConfirmButton;
@@ -28,10 +28,10 @@ public class SelfPictureUploadPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.SelfPictureUploadPage.xpathPreviousCarouselImageBtn)
 	private WebElement previousCarouselImageBtn;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.SelfPictureUploadPage.xpathSelectPictureButton)
-	private WebElement selectPictureButton;
+	@FindBy(how = How.CSS, using = WebAppLocators.SelfPictureUploadPage.cssKeepPictureButton)
+	private WebElement keepPictureButton;
 
-	public SelfPictureUploadPage(Future<ZetaWebAppDriver> lazyDriver)
+	public WelcomePage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
 	}
@@ -40,32 +40,32 @@ public class SelfPictureUploadPage extends WebPage {
 		assert DriverUtils
 				.waitUntilLocatorDissapears(
 						this.getDriver(),
-						By.xpath(WebAppLocators.SelfPictureUploadPage.xpathSelectPictureButton)) : "Picture selection dialog button is still visible";
+						By.xpath(WebAppLocators.SelfPictureUploadPage.cssKeepPictureButton)) : "Keep picture button is still visible";
 	}
 
 	public void waitUntilButtonsAreClickable()
 			throws Exception {
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
-				selectPictureButton) : "Picture selection dialog button was not clickable";
+				keepPictureButton) : "Keep picture button was not clickable";
 	}
 
 	public void uploadPicture(String pictureName) throws Exception {
 		final String picturePath = WebCommonUtils
 				.getFullPicturePath(pictureName);
 		final String showPathInputJScript = "$(\""
-				+ WebAppLocators.SelfPictureUploadPage.cssSendPictureInput
+				+ WebAppLocators.SelfPictureUploadPage.cssChooseYourOwnInput
 				+ "\").css({'left': '0', 'opacity': '100', 'z-index': '100'});";
 		this.getDriver().executeScript(showPathInputJScript);
 		assert DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
-						By.cssSelector(WebAppLocators.SelfPictureUploadPage.cssSendPictureInput),
+						By.cssSelector(WebAppLocators.SelfPictureUploadPage.cssChooseYourOwnInput),
 						5);
 		if (WebAppExecutionContext.getBrowser() == Browser.Safari) {
 			WebCommonUtils.sendPictureInSafari(picturePath, this.getDriver()
 					.getNodeIp());
 		} else {
-			picturePathInput.sendKeys(picturePath);
+			chooseYourOwnInput.sendKeys(picturePath);
 		}
 	}
 

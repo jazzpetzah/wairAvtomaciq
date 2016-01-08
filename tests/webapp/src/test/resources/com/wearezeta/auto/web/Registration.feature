@@ -12,7 +12,7 @@ Feature: Registration
     And I see email <Email> on Verification page
     When I activate user by URL
     And User <Name> is Me without avatar
-    And I see Self Picture Upload dialog
+    And I see Welcome page
     And I force carousel mode on Self Picture Upload dialog
     And I select random picture from carousel on Self Picture Upload dialog
     And I confirm picture selection on Self Picture Upload dialog
@@ -36,7 +36,7 @@ Feature: Registration
     And I enter user password "<Password>" on Registration page
     And I accept the Terms of Use
     And I submit registration form
-    And I see Self Picture Upload dialog
+    And I see Welcome page
     And I force carousel mode on Self Picture Upload dialog
     And I select random picture from carousel on Self Picture Upload dialog
     And I confirm picture selection on Self Picture Upload dialog
@@ -51,14 +51,14 @@ Feature: Registration
     Given There is 1 user where <Name> is me without avatar picture
     Given I switch to Sign In page
     And I Sign in using login <Login> and password <Password>
-    And I see Self Picture Upload dialog
+    And I see Welcome page
     And I choose <PictureName> as my self picture on Self Picture Upload dialog
     And I confirm picture selection on Self Picture Upload dialog
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see Sign In page
     When I Sign in using login <Login> and password <Password>
-    Then I do not see Self Picture Upload dialog
+    Then I do not see Welcome page
 
     Examples: 
       | Login      | Password      | Name      | PictureName               |
@@ -69,7 +69,7 @@ Feature: Registration
     Given There is 1 user where <Name> is me without avatar picture
     Given I switch to Sign In page
     When I Sign in using login <Login> and password <Password>
-    And I see Self Picture Upload dialog
+    And I see Welcome page
     And I force carousel mode on Self Picture Upload dialog
     And I select random picture from carousel on Self Picture Upload dialog
     And I confirm picture selection on Self Picture Upload dialog
@@ -78,7 +78,7 @@ Feature: Registration
     And I select Log out menu item on self profile page
     And I see Sign In page
     When I Sign in using login <Login> and password <Password>
-    Then I do not see Self Picture Upload dialog
+    Then I do not see Welcome page
 
     Examples: 
       | Login      | Password      | Name      |
