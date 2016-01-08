@@ -165,7 +165,7 @@ Feature: Search
       | Name      | UserCount | Contact   | Number |
       | user1Name | 7         | user2Name | 4      |
 
-  @C2778 @regression @id1456
+  @C3244 @regression @id1456
   Scenario Outline: Verify you can unblock someone from search list
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
