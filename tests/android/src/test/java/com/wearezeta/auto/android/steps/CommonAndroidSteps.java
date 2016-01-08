@@ -23,6 +23,7 @@ import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -41,6 +42,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
@@ -187,13 +189,26 @@ public class CommonAndroidSteps {
     /**
      * Presses the android back button
      *
-     * @throws IOException
-     * @step. ^I press back button$
+     * @throws Exception
+     * @step. ^I press [Bb]ack button$
      */
-    @When("^I press back button$")
+    @When("^I press [Bb]ack button$")
     public void PressBackButton() throws Exception {
-        commonSteps.WaitForTime(1);
         pagesCollection.getCommonPage().navigateBack();
+    }
+
+    /**
+     * Presses the android back button X times
+     *
+     * @param times how many times to press
+     * @throws Exception
+     * @step. ^I press [Bb]ack button (\\d+) times$
+     */
+    @When("^I press [Bb]ack button (\\d+) times$")
+    public void PressBackButtonXTimes(int times) throws Exception {
+        for (int i = 0; i < times; i++) {
+            pagesCollection.getCommonPage().navigateBack();
+        }
     }
 
     /**
@@ -931,5 +946,47 @@ public class CommonAndroidSteps {
         user2 = usrMgr.findUserByNameOrNameAlias(user2).getName();
         group = usrMgr.replaceAliasesOccurences(group, ClientUsersManager.FindBy.NAME_ALIAS);
         commonSteps.UserXRemoveContactFromGroupChat(user1, user2, group);
+    }
+
+    /**
+     * User adds a remote device to his list of devices
+     *
+     * @param userNameAlias user name/alias
+     * @param deviceName    unique name of the device
+     * @throws Exception
+     * @step. User (.*) adds a new device (.*)$
+     */
+    @When("^User (.*) adds a new device (.*) with label (.*)$")
+    public void UserAddRemoteDeviceToAccount(String userNameAlias,
+                                             String deviceName, String label) throws Exception {
+        commonSteps.UserAddsRemoteDeviceToAccount(userNameAlias, deviceName, label);
+    }
+
+    /**
+     * User adds multiple devices to his list of devices
+     *
+     * @param userNameAlias user name/alias
+     * @param deviceNames   unique name of devices, comma-separated list
+     * @throws Exception
+     * @step. User (.*) adds new devices (.*)
+     */
+    @When("^User (.*) adds new devices (.*)")
+    public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
+        final List<String> names = CommonSteps.splitAliases(deviceNames);
+        for (String name : names) {
+            commonSteps.UserAddsRemoteDeviceToAccount(userNameAlias, name,
+                    CommonUtils.generateRandomString(10));
+        }
+    }
+
+    /**
+     * Press Send button on OnScreen keyboard (the keyboard should be already populated)
+     *
+     * @throws Exception
+     * @step. ^I press Send button$
+     */
+    @And("^I press Send button$")
+    public void IPressSendButton() throws Exception {
+        pagesCollection.getCommonPage().pressKeyboardSendButton();
     }
 }

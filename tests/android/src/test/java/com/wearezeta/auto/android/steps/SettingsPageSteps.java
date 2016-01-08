@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.steps;
 
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.SettingsPage;
@@ -12,6 +13,8 @@ public class SettingsPageSteps {
 
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
             .getInstance();
+
+    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private SettingsPage getSettingsPage() throws Exception {
         return pagesCollection.getPage(SettingsPage.class);
@@ -50,5 +53,45 @@ public class SettingsPageSteps {
     @And("^I confirm sign out$")
     public void IConfirmSignOut() throws Exception {
         getSettingsPage().confirmLogout();
+    }
+
+    /**
+     * Verify whether password confirmation dialog is visible
+     *
+     * @step. ^I see device removal password confirmation dialog$"
+     *
+     * @throws Exception
+     */
+    @Then("^I see device removal password confirmation dialog$")
+    public void ISeePasswordConfirmation() throws Exception {
+        Assert.assertTrue("The password confirmation is not visible",
+                getSettingsPage().waitUntilPasswordConfirmationIsVisible());
+    }
+
+    /**
+     * Type the password into the confirmation dialog
+     *
+     * @step. ^I enter (.*) into the device removal password confirmation dialog$
+     *
+     * @param passwordAlias password string or an alias
+     * @throws Exception
+     */
+    @When("^I enter (.*) into the device removal password confirmation dialog$")
+    public void IEnterPassword(String passwordAlias) throws Exception {
+        final String password = usrMgr.replaceAliasesOccurences(passwordAlias,
+                ClientUsersManager.FindBy.PASSWORD_ALIAS);
+        getSettingsPage().enterConfirmationPassword(password);
+    }
+
+    /**
+     * Tap OK button on the device removal password confirmation dialog
+     *
+     * @step. ^I tap OK button on the device removal password confirmation dialog$
+     *
+     * @throws Exception
+     */
+    @And("^I tap OK button on the device removal password confirmation dialog$")
+    public void ITapOKButtonOnPasswordConfirmationDialog() throws Exception {
+        getSettingsPage().tapOKButtonOnPasswordConfirmationDialog();
     }
 }
