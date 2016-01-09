@@ -42,6 +42,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 
@@ -161,27 +162,16 @@ public class CommonAndroidSteps {
         // closeUpdateAlertIfAppears(drv, locator);
     }
 
-    private void initFirstPage() throws Exception {
+    @Before
+    public void setUp() throws Exception {
+        final Set<String> currentTags = ZetaFormatter.getRecentScenarioTags();
+        if (currentTags.contains("@performance")) {
+            AndroidLogListener.getInstance(ListenerType.PERF).start();
+        }
         AndroidLogListener.getInstance(ListenerType.DEFAULT).start();
         final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), getPath(), this.getClass());
-        pagesCollection.setFirstPage(new WelcomePage(lazyDriver));
         ZetaFormatter.setLazyDriver(lazyDriver);
-    }
-
-    @Before("@performance")
-    public void setUpPerformance() throws Exception {
-        AndroidLogListener.getInstance(ListenerType.PERF).start();
-        try {
-            AndroidCommonUtils.disableHints();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        initFirstPage();
-    }
-
-    @Before("~@performance")
-    public void setUp() throws Exception {
-        initFirstPage();
+        pagesCollection.setFirstPage(new WelcomePage(lazyDriver));
     }
 
     /**

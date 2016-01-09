@@ -3,17 +3,11 @@ package com.wearezeta.auto.common;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
@@ -97,6 +91,7 @@ public class ZetaFormatter implements Formatter, Reporter {
         scenario = arg0.getName();
         log.debug(String.format("\n\nScenario: %s %s", scenario,
                 formatTags(arg0.getTags())));
+        updateRecentScenarioTags(arg0);
     }
 
     @Override
@@ -294,6 +289,7 @@ public class ZetaFormatter implements Formatter, Reporter {
             recentTestResult = Result.UNDEFINED.toString();
             steps.clear();
             stepsIterator = Optional.empty();
+            recentScenarioTags = new LinkedHashSet<>();
         }
     }
 
@@ -321,6 +317,18 @@ public class ZetaFormatter implements Formatter, Reporter {
 
     public static String getRecentTestResult() {
         return recentTestResult;
+    }
+
+    private static Set<String> recentScenarioTags = new LinkedHashSet<>();
+
+    /**
+     *
+     * @return set of scenario tags. Each tag starts with @ character
+     */
+    public static Set<String> getRecentScenarioTags() { return recentScenarioTags; }
+
+    private static void updateRecentScenarioTags(Scenario s) {
+        recentScenarioTags = s.getTags().stream().map(Tag::getName).collect(Collectors.toSet());
     }
 
     public static String getFeature() {

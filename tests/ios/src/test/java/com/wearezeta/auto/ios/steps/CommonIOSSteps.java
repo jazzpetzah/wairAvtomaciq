@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
 import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Future;
 
@@ -100,19 +101,12 @@ public class CommonIOSSteps {
 				.resetDriver(getUrl(), capabilities);
 	}
 
-	@Before("~@noAcceptAlert")
-	public void setUpAcceptAlerts() throws Exception {
-		commonBefore(resetIOSDriver(true));
-	}
-
-	@Before("@noAcceptAlert")
-	public void setUpNoAlerts() throws Exception {
-		commonBefore(resetIOSDriver(false));
-	}
-
-	public void commonBefore(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+	@Before
+	public void setUp() throws Exception {
+        final Set<String> currentTags = ZetaFormatter.getRecentScenarioTags();
+		final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(currentTags.contains("@noAcceptAlert"));
+        ZetaFormatter.setLazyDriver(lazyDriver);
 		pagesCollecton.setFirstPage(new LoginPage(lazyDriver));
-		ZetaFormatter.setLazyDriver(lazyDriver);
 	}
 
 	@When("^I see keyboard$")

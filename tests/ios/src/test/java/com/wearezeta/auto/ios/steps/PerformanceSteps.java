@@ -139,7 +139,7 @@ public class PerformanceSteps {
 	public void IResetApplication() throws Exception {
 		CommonIOSSteps commonSteps = new CommonIOSSteps();
 		commonSteps.tearDown();
-		commonSteps.commonBefore(commonSteps.resetIOSDriver(false, true));
+		commonSteps.setUp();
 		Thread.sleep(60000);
 	}
 	
