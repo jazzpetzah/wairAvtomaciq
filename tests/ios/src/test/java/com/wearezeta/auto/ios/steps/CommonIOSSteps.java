@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.Future;
 
-import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.ScreenOrientation;
@@ -36,8 +35,6 @@ public class CommonIOSSteps {
 	private static final Logger log = ZetaLogger.getLog(CommonIOSSteps.class
 			.getSimpleName());
 
-	private static boolean skipBeforeAfter = false;
-
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 	private static final String DEFAULT_USER_AVATAR = "android_dialog_sendpicture_result.png";
 	private Date testStartedDate = new Date();
@@ -66,14 +63,6 @@ public class CommonIOSSteps {
 	private static String getPath() throws Exception {
 		return CommonUtils
 				.getIosApplicationPathFromConfig(CommonIOSSteps.class);
-	}
-
-	public boolean isSkipBeforeAfter() {
-		return skipBeforeAfter;
-	}
-
-	public void setSkipBeforeAfter(boolean skipBeforeAfter) {
-		CommonIOSSteps.skipBeforeAfter = skipBeforeAfter;
 	}
 
 	public Future<ZetaIOSDriver> resetIOSDriver(boolean enableAutoAcceptAlerts)
@@ -113,17 +102,11 @@ public class CommonIOSSteps {
 
 	@Before("~@noAcceptAlert")
 	public void setUpAcceptAlerts() throws Exception {
-		if (this.isSkipBeforeAfter()) {
-			return;
-		}
 		commonBefore(resetIOSDriver(true));
 	}
 
 	@Before("@noAcceptAlert")
 	public void setUpNoAlerts() throws Exception {
-		if (this.isSkipBeforeAfter()) {
-			return;
-		}
 		commonBefore(resetIOSDriver(false));
 	}
 
