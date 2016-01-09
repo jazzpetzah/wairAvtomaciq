@@ -12,7 +12,7 @@ public class GiphyPageSteps {
 			.getInstance();
 
 	private TabletGiphyPage getGiphyPage() throws Exception {
-		return (TabletGiphyPage) pagesCollection.getPage(TabletGiphyPage.class);
+		return pagesCollection.getPage(TabletGiphyPage.class);
 	}
 
 	/**

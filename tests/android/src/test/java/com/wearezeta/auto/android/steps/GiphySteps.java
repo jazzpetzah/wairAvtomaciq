@@ -12,7 +12,7 @@ public class GiphySteps {
 			.getInstance();
 
 	private GiphyPreviewPage getGiphyPreviewPage() throws Exception {
-		return (GiphyPreviewPage) pagesCollection.getPage(GiphyPreviewPage.class);
+		return pagesCollection.getPage(GiphyPreviewPage.class);
 	}
 
 	/**
@@ -34,7 +34,43 @@ public class GiphySteps {
 	 */
 	@When("^I see giphy preview page$")
 	public void ISeeGiphyPreviewPage() throws Exception {
-		Assert.assertTrue("Gipgy preview page is not shown", getGiphyPreviewPage().isGiphyPreviewShown());
+		Assert.assertTrue("Giphy preview page is not shown", getGiphyPreviewPage().isGiphyPreviewShown());
+	}
+
+	/**
+	 * Clicks the giphy link button to open the grid preview
+	 *
+	 * @step. ^I click on the giphy link button$
+	 *
+	 * @throws Exception
+	 */
+	@When("^I click on the giphy link button$")
+	public void IClickOnTheGifPreview() throws Exception {
+		getGiphyPreviewPage().clickGiphyLinkButton();
+	}
+
+	/**
+	 * Checks to see that the grid preview is visible
+	 *
+	 * @step. ^I see the giphy grid preview$
+	 *
+	 * @throws Exception
+	 */
+	@When("^I see the giphy grid preview$")
+	public void ISeeTheGiphyGridPreview() throws Exception {
+		Assert.assertTrue("Giphy Grid view is not shown", getGiphyPreviewPage().isGiphyGridViewShown());
+	}
+
+	/**
+	 * Selects one of the gifs from the grid preview
+	 *
+	 * @step. ^I select a random gif from the grid preview$
+	 *
+	 * @throws Exception
+	 */
+	@When("^I select a random gif from the grid preview$")
+	public void ISelectARandomGifFromTheGridPreview() throws Exception {
+		getGiphyPreviewPage().clickOnSomeGif();
 	}
 
 	/**
@@ -65,7 +101,7 @@ public class GiphySteps {
 	 * @step. ^I select the first item in giphy grid$
 	 *
 	 * @throws Exception
-     */
+	 */
 	@And("^I select the first item in giphy grid$")
 	public void ISelectTheFirstGridItem() throws Exception {
 		getGiphyPreviewPage().selectFirstGridItem();
