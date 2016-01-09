@@ -42,7 +42,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 
@@ -56,7 +55,7 @@ public class CommonAndroidSteps {
 
     private static final Logger log = ZetaLogger.getLog(CommonAndroidSteps.class.getSimpleName());
 
-    private static ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
+    private static ArrayList<BufferedImage> images = new ArrayList<>();
     private final CommonSteps commonSteps = CommonSteps.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     public static final Platform CURRENT_PLATFORM = Platform.Android;
