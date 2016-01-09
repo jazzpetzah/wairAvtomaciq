@@ -1,7 +1,6 @@
 package com.wearezeta.auto.common.driver;
 
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.concurrent.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -19,7 +18,7 @@ public final class PlatformDrivers {
     private static final Logger log = ZetaLogger.getLog(PlatformDrivers.class
             .getSimpleName());
 
-    private Map<Platform, Future<? extends RemoteWebDriver>> drivers = new ConcurrentHashMap<Platform, Future<? extends RemoteWebDriver>>();
+    private Map<Platform, Future<? extends RemoteWebDriver>> drivers = new ConcurrentHashMap<>();
 
     private static PlatformDrivers instance = null;
 
@@ -35,17 +34,6 @@ public final class PlatformDrivers {
 
     public boolean hasDriver(Platform platform) {
         return this.drivers.containsKey(platform);
-    }
-
-    public Platform getDriverPlatform(Future<? extends RemoteWebDriver> drv) {
-        for (Map.Entry<Platform, Future<? extends RemoteWebDriver>> entry : this.drivers
-                .entrySet()) {
-            if (entry.getValue() == drv) {
-                return entry.getKey();
-            }
-        }
-        throw new NoSuchElementException(
-                "Platform is unknown for the passed driver element");
     }
 
     private final ExecutorService pool = Executors.newFixedThreadPool(Platform
