@@ -14,13 +14,13 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import cucumber.api.PendingException;
+import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
@@ -163,9 +163,8 @@ public class CommonAndroidSteps {
     }
 
     @Before
-    public void setUp() throws Exception {
-        final Set<String> currentTags = ZetaFormatter.getRecentScenarioTags();
-        if (currentTags.contains("@performance")) {
+    public void setUp(Scenario scenario) throws Exception {
+        if (scenario.getSourceTagNames().contains("@performance")) {
             AndroidLogListener.getInstance(ListenerType.PERF).start();
         }
         AndroidLogListener.getInstance(ListenerType.DEFAULT).start();
@@ -768,7 +767,7 @@ public class CommonAndroidSteps {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown(Scenario scenario) throws Exception {
         try {
             AndroidCommonUtils.setAirplaneMode(false);
         } catch (Exception e) {
@@ -796,7 +795,7 @@ public class CommonAndroidSteps {
 
         AndroidLogListener.forceStopAll();
         LoggingProfile loggingProfile = new RegressionPassedLoggingProfile();
-        if (!ZetaFormatter.getRecentTestResult().equals(Result.PASSED.toString())) {
+        if (!scenario.getStatus().equals(Result.PASSED)) {
             loggingProfile = new RegressionFailedLoggingProfile();
         }
         AndroidLogListener.writeDeviceLogsToConsole(AndroidLogListener.getInstance(ListenerType.DEFAULT),

@@ -7,7 +7,6 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
@@ -47,9 +46,7 @@ public class ZetaFormatter implements Formatter, Reporter {
     private long stepStartedTimestamp;
 
     @Override
-    public void background(Background arg0) {
-
-    }
+    public void background(Background arg0) {}
 
     @Override
     public void close() {
@@ -66,9 +63,7 @@ public class ZetaFormatter implements Formatter, Reporter {
     }
 
     @Override
-    public void examples(Examples arg0) {
-
-    }
+    public void examples(Examples arg0) {}
 
     @Override
     public void feature(Feature arg0) {
@@ -91,7 +86,6 @@ public class ZetaFormatter implements Formatter, Reporter {
         scenario = arg0.getName();
         log.debug(String.format("\n\nScenario: %s %s", scenario,
                 formatTags(arg0.getTags())));
-        updateRecentScenarioTags(arg0);
     }
 
     @Override
@@ -111,8 +105,7 @@ public class ZetaFormatter implements Formatter, Reporter {
     }
 
     @Override
-    public void uri(String arg0) {
-    }
+    public void uri(String arg0) {}
 
     @Override
     public void after(Match arg0, Result arg1) {
@@ -191,7 +184,6 @@ public class ZetaFormatter implements Formatter, Reporter {
         final String stepName = currentStep.getName();
         final String stepStatus = arg0.getStatus();
         steps.put(currentStep, stepStatus);
-        updateRecentTestResult();
         final long stepFinishedTimestamp = new Date().getTime();
         boolean isScreenshotingEnabled = true;
         try {
@@ -225,6 +217,7 @@ public class ZetaFormatter implements Formatter, Reporter {
         try {
             final File outputFile = new File(path);
             if (!outputFile.getParentFile().exists()) {
+                //noinspection ResultOfMethodCallIgnored
                 outputFile.getParentFile().mkdirs();
             }
             ImageIO.write(adjustScreenshotSize(screenshot), "png", outputFile);
@@ -286,49 +279,9 @@ public class ZetaFormatter implements Formatter, Reporter {
                     new TestcaseResultToTestrailTransformer(steps).transform(),
                     normalizedTags);
         } finally {
-            recentTestResult = Result.UNDEFINED.toString();
             steps.clear();
             stepsIterator = Optional.empty();
-            recentScenarioTags = new LinkedHashSet<>();
         }
-    }
-
-    private static void updateRecentTestResult() {
-        recentTestResult = Result.UNDEFINED.toString();
-        for (Map.Entry<Step, String> entry : steps.entrySet()) {
-            if (entry.getValue() == null) {
-                continue;
-            }
-            if (entry.getValue().equals(Result.FAILED.toString())) {
-                recentTestResult = Result.FAILED;
-                break;
-            }
-            if (entry.getValue().equals(Result.SKIPPED.toString())) {
-                recentTestResult = Result.SKIPPED.toString();
-                break;
-            }
-        }
-        if (!steps.isEmpty() && recentTestResult.equals(Result.UNDEFINED.toString())) {
-            recentTestResult = Result.PASSED.toString();
-        }
-    }
-
-    private static String recentTestResult = Result.UNDEFINED.toString();
-
-    public static String getRecentTestResult() {
-        return recentTestResult;
-    }
-
-    private static Set<String> recentScenarioTags = new LinkedHashSet<>();
-
-    /**
-     *
-     * @return set of scenario tags. Each tag starts with @ character
-     */
-    public static Set<String> getRecentScenarioTags() { return recentScenarioTags; }
-
-    private static void updateRecentScenarioTags(Scenario s) {
-        recentScenarioTags = s.getTags().stream().map(Tag::getName).collect(Collectors.toSet());
     }
 
     public static String getFeature() {

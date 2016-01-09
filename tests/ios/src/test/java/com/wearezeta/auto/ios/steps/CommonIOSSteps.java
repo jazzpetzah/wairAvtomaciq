@@ -1,11 +1,11 @@
 package com.wearezeta.auto.ios.steps;
 
 import java.util.Date;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.*;
+import cucumber.api.Scenario;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.ScreenOrientation;
@@ -99,9 +99,9 @@ public class CommonIOSSteps {
 	}
 
 	@Before
-	public void setUp() throws Exception {
-        final Set<String> currentTags = ZetaFormatter.getRecentScenarioTags();
-		final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(currentTags.contains("@noAcceptAlert"));
+	public void setUp(Scenario scenario) throws Exception {
+		final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(
+				scenario.getSourceTagNames().contains("@noAcceptAlert"));
         ZetaFormatter.setLazyDriver(lazyDriver);
 		pagesCollecton.setFirstPage(new LoginPage(lazyDriver));
 	}
