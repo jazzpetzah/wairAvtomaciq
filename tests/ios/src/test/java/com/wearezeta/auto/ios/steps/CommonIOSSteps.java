@@ -5,16 +5,12 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.*;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-import com.wearezeta.auto.common.CommonCallingSteps2;
-import com.wearezeta.auto.common.CommonSteps;
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.Platform;
-import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -81,6 +77,7 @@ public class CommonIOSSteps {
 		capabilities.setCapability("deviceName", deviceName);
 		capabilities.setCapability("platformVersion", getPlatformVersion());
 		capabilities.setCapability("sendKeyStrategy", "grouped");
+        capabilities.setCapability("launchTimeout", IOSPage.IOS_DRIVER_INIT_TIMEOUT);
 		final String backendType = CommonUtils.getBackendType(this.getClass());
 		capabilities
 				.setCapability(

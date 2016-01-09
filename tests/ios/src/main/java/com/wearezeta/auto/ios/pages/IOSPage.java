@@ -29,6 +29,8 @@ import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public abstract class IOSPage extends BasePage {
+	public final static long IOS_DRIVER_INIT_TIMEOUT = 1000 * 60 * 3;
+
 	private static final int SWIPE_DELAY = 10 * 1000; // milliseconds
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameMainWindow)
@@ -71,6 +73,10 @@ public abstract class IOSPage extends BasePage {
 	private WebElement keyboardDoneBtn;
 
 	private static String imagesPath = "";
+
+    protected long getDriverInitializationTimeout() {
+        return IOS_DRIVER_INIT_TIMEOUT;
+    }
 
 	public IOSPage(Future<ZetaIOSDriver> driver) throws Exception {
 		super(driver);
