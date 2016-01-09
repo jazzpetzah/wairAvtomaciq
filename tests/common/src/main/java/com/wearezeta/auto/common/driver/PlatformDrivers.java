@@ -110,20 +110,19 @@ public final class PlatformDrivers {
     public synchronized void quitDriver(Platform platform) throws Exception {
         try {
             final Future<? extends RemoteWebDriver> futureDriver = drivers.get(platform);
-            if (futureDriver.isDone() && !futureDriver.isCancelled()) {
-                final RemoteWebDriver driver = futureDriver.get();
-                driver.quit();
-                log.debug(String.format(
-                        "Successfully quit driver instance for platform '%s'",
-                        platform.name()));
-            } else if (!futureDriver.isCancelled() && !futureDriver.isDone()) {
+            if (!futureDriver.isCancelled()) {
                 try {
-                    futureDriver.get(DRIVER_CANCELLATION_TIMEOUT, TimeUnit.MILLISECONDS);
+                    final RemoteWebDriver driver = futureDriver.get(DRIVER_CANCELLATION_TIMEOUT,
+                            TimeUnit.MILLISECONDS);
+                    driver.quit();
+                    log.debug(String.format(
+                            "Successfully quit driver instance for platform '%s'", platform.name()));
                 } catch (Exception e) {
                     e.printStackTrace();
+                    futureDriver.cancel(true);
+                    log.warn(String.format(
+                            "Canceled driver creation for platform '%s'", platform.getName()));
                 }
-                futureDriver.cancel(true);
-                log.warn(String.format("Canceled driver creation for platform '%s'", platform.getName()));
             }
         } finally {
             drivers.remove(platform);
