@@ -8,8 +8,8 @@ import java.util.logging.Level;
 import com.wearezeta.auto.android.common.logging.LoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionFailedLoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionPassedLoggingProfile;
-import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
+import cucumber.api.Scenario;
 import gherkin.formatter.model.Result;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -84,8 +84,7 @@ public class CommonAndroidTabletSteps {
     }
 
     @SuppressWarnings("unchecked")
-    public Future<ZetaAndroidDriver> resetAndroidDriver(String url,
-                                                        String path, boolean isUnicode) throws Exception {
+    public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path) throws Exception {
         final DesiredCapabilities capabilities = new DesiredCapabilities();
         LoggingPreferences object = new LoggingPreferences();
         object.enable("logcat", Level.ALL);
@@ -103,11 +102,6 @@ public class CommonAndroidTabletSteps {
                         .getAndroidWaitActivitiesFromConfig(this.getClass()));
         capabilities.setCapability("applicationName", "selendroid");
         capabilities.setCapability("automationName", "selendroid");
-
-        if (isUnicode) {
-            capabilities.setCapability("unicodeKeyboard", true);
-            capabilities.setCapability("resetKeyboard", true);
-        }
 
         try {
             return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
@@ -189,22 +183,17 @@ public class CommonAndroidTabletSteps {
         // closeUpdateAlertIfAppears(drv, locator);
     }
 
-    private void initFirstPage(boolean isUnicode) throws Exception {
+    @Before
+    public void setUp() throws Exception {
         AndroidLogListener.getInstance(ListenerType.DEFAULT).start();
-        final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(
-                getUrl(), getPath(), isUnicode);
-        pagesCollection.setFirstPage(new TabletWelcomePage(lazyDriver));
+        final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), getPath());
         ZetaFormatter.setLazyDriver(lazyDriver);
+        pagesCollection.setFirstPage(new TabletWelcomePage(lazyDriver));
         screenOrientationHelper.resetOrientation();
     }
 
-    @Before
-    public void setUp() throws Exception {
-        initFirstPage(false);
-    }
-
     @After
-    public void tearDown() throws Exception {
+    public void tearDown(Scenario scenario) throws Exception {
         try {
             AndroidCommonUtils.setAirplaneMode(false);
         } catch (Exception e) {
@@ -232,7 +221,7 @@ public class CommonAndroidTabletSteps {
 
         AndroidLogListener.forceStopAll();
         LoggingProfile loggingProfile = new RegressionPassedLoggingProfile();
-        if (!ZetaFormatter.getRecentTestResult().equals(Result.PASSED.toString())) {
+        if (!scenario.getStatus().equals(Result.PASSED)) {
             loggingProfile = new RegressionFailedLoggingProfile();
         }
         AndroidLogListener.writeDeviceLogsToConsole(AndroidLogListener
