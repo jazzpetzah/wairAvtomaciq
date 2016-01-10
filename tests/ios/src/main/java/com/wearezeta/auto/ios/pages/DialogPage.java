@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 
 import javax.script.ScriptException;
 
+import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -265,7 +266,7 @@ public class DialogPage extends IOSPage {
 	}
 
 	public void multiTapOnCursorInput() throws Exception {
-		DriverUtils.iOSMultiTap(this.getDriver(), conversationInput, 3);
+		DriverUtils.multiTap(this.getDriver(), conversationInput, 3);
 	}
 
 	public void sendStringToInput(String message) throws Exception {
@@ -724,24 +725,22 @@ public class DialogPage extends IOSPage {
 
 		switch (direction) {
 		case "up":
-			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
+			if (!CommonUtils.getIsSimulatorFromConfig(IOSPage.class)) {
 				this.getDriver().swipe(coords.x + elementSize.width / 2,
 						coords.y + elementSize.height / 2,
 						coords.x + elementSize.width / 2, coords.y + 120, 500);
 			} else {
-				DriverUtils.iOSSimulatorSwipeDialogPageUp(CommonUtils
-						.getSwipeScriptPath(IOSPage.class));
+                IOSSimulatorHelper.swipeDialogPageUp();
 			}
 
 			break;
 		case "down":
-			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
+			if (!CommonUtils.getIsSimulatorFromConfig(IOSPage.class)) {
 				this.getDriver().swipe(coords.x + elementSize.width / 2,
 						coords.y + 50, coords.x + elementSize.width / 2,
 						coords.y + elementSize.height - 100, 500);
 			} else {
-				DriverUtils.iOSSimulatorSwipeDialogPageDown(CommonUtils
-						.getSwipeScriptPath(IOSPage.class));
+                IOSSimulatorHelper.swipeDialogPageDown();
 			}
 
 			break;
@@ -1099,13 +1098,13 @@ public class DialogPage extends IOSPage {
 	public void tapOnLink() throws Exception {
 		WebElement tapLink = this.getDriver().findElement(
 				By.xpath(IOSLocators.DialogPage.xpathSimpleMessageLink));
-		DriverUtils.mobileTapByCoordinates(getDriver(), tapLink);
+		DriverUtils.tapByCoordinates(getDriver(), tapLink);
 	}
 
 	public void tapOnLinkWithinAMessage() throws Exception {
 		WebElement tapLink = this.getDriver().findElement(
 				By.xpath(IOSLocators.DialogPage.xpathSimpleMessageLink));
-		DriverUtils.mobileTapByCoordinates(getDriver(), tapLink,
+		DriverUtils.tapByCoordinates(getDriver(), tapLink,
 				-(tapLink.getSize().width / 4), 0);
 	}
 

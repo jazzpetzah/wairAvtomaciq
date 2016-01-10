@@ -447,7 +447,7 @@ public class DriverUtils {
                 SWIPE_Y_DEFAULT_PERCENTAGE_END);
     }
 
-    public static void mobileTapByCoordinates(
+    public static void tapByCoordinates(
             AppiumDriver<? extends WebElement> driver, WebElement element,
             int offsetX, int offsetY) {
         final Point coords = element.getLocation();
@@ -457,62 +457,16 @@ public class DriverUtils {
                 100);
     }
 
-    public static void mobileTapByCoordinates(
+    public static void tapByCoordinates(
             AppiumDriver<? extends WebElement> driver, WebElement element) {
-        mobileTapByCoordinates(driver, element, 0, 0);
+        tapByCoordinates(driver, element, 0, 0);
     }
 
-    public static void iOSSimulatorSwipeDown(String scriptPath)
-            throws Exception {
-        Runtime.getRuntime().exec(
-                "/usr/bin/open -a Terminal " + scriptPath + "Down.py");
-    }
-
-    public static void iOSSimulatorSwipeRight(String scriptPath)
-            throws Exception {
-        Runtime.getRuntime().exec(
-                "/usr/bin/open -a Terminal " + scriptPath + "Right.py");
-    }
-
-    public static void iOSSimulatorSwipeDialogPageDown(String scriptPath)
-            throws Exception {
-        Process process = Runtime.getRuntime()
-                .exec("/usr/bin/open -a Terminal " + scriptPath
-                        + "DialogPageDown.py");
-        InputStream stream = process.getErrorStream();
-        BufferedReader br = new BufferedReader(new InputStreamReader(stream));
-        String s;
-        while ((s = br.readLine()) != null) {
-            log.debug(s);
-        }
-        stream.close();
-        log.debug("Process Code " + process.waitFor());
-    }
-
-    public static void iOSSimulatorSwipeDialogPageUp(String scriptPath)
-            throws Exception {
-        Process process = Runtime.getRuntime().exec(
-                "/usr/bin/open -a Terminal " + scriptPath + "DialogPageUp.py");
-        InputStream stream = process.getErrorStream();
-        BufferedReader br = new BufferedReader(new InputStreamReader(stream));
-        String s;
-        while ((s = br.readLine()) != null) {
-            log.debug(s);
-        }
-        stream.close();
-        log.debug("Process Code " + process.waitFor());
-    }
-
-    public static void iOSSimulatorSwipeUp(String scriptPath) throws Exception {
-        Runtime.getRuntime().exec(
-                "/usr/bin/open -a Terminal " + scriptPath + "Up.py");
-    }
-
-    public static void iOSMultiTap(AppiumDriver<? extends WebElement> driver,
-                                   WebElement element, int tapNumber) {
+    public static void multiTap(AppiumDriver<? extends WebElement> driver,
+                                   WebElement element, int tapCount) {
         final Point coords = element.getLocation();
         final Dimension elementSize = element.getSize();
-        for (int i = 0; i < tapNumber; i++) {
+        for (int i = 0; i < tapCount; i++) {
             driver.tap(1, coords.x + elementSize.width / 2, coords.y + elementSize.height / 2,
                     SINGLE_TAP_DURATION);
         }
@@ -569,8 +523,8 @@ public class DriverUtils {
         return Optional.empty();
     }
 
-    public static void iOSLongTap(AppiumDriver<? extends WebElement> driver,
-                                  WebElement element) {
+    public static void longTap(AppiumDriver<? extends WebElement> driver,
+                               WebElement element) {
         driver.tap(1, element, LONG_TAP_DURATION);
     }
 

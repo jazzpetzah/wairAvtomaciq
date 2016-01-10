@@ -127,7 +127,7 @@ public class IncomingCallPage extends CallPage {
 			clickableGlitch = true;
 		}
 		if (clickableGlitch) {
-			DriverUtils.mobileTapByCoordinates(getDriver(), el);
+			DriverUtils.tapByCoordinates(getDriver(), el);
 		} else {
 			el.click();
 		}

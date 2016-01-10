@@ -290,7 +290,7 @@ public class GroupChatInfoPage extends IOSPage {
 
     public OtherUserPersonalInfoPage selectContactByName(String name)
             throws Exception {
-        DriverUtils.mobileTapByCoordinates(
+        DriverUtils.tapByCoordinates(
                 this.getDriver(),
                 getDriver().findElementByXPath(
                         String.format(

@@ -149,13 +149,13 @@ public class LoginPage extends IOSPage {
 
     public void switchToEmailLogin() throws Exception {
         if (!backButton.getText().equals("REGISTRATION")) {
-            DriverUtils.mobileTapByCoordinates(getDriver(), backButton);
+            DriverUtils.tapByCoordinates(getDriver(), backButton);
         }
         if (!DriverUtils.waitUntilLocatorAppears(getDriver(),
                 By.name(IOSLocators.LoginPage.nameEmailLoginButton))) {
             signIn();
         } else {
-            DriverUtils.mobileTapByCoordinates(getDriver(), emailLoginButton);
+            DriverUtils.tapByCoordinates(getDriver(), emailLoginButton);
         }
     }
 
@@ -348,28 +348,28 @@ public class LoginPage extends IOSPage {
     public void tapEmailFieldToChangePassword(String email) throws Exception {
         DriverUtils.waitUntilElementClickable(getDriver(),
                 safariChangePWEmailField);
-        DriverUtils.mobileTapByCoordinates(getDriver(),
+        DriverUtils.tapByCoordinates(getDriver(),
                 safariChangePWEmailField);
         this.inputStringFromKeyboard(email);
     }
 
     public void tapChangePasswordButtonInWebView() throws Exception {
-        DriverUtils.mobileTapByCoordinates(getDriver(),
+        DriverUtils.tapByCoordinates(getDriver(),
                 changePasswordPageChangePasswordButton);
     }
 
     public void changeURLInBrowser(String URL) throws Exception {
-        DriverUtils.mobileTapByCoordinates(getDriver(), safariURLButton);
+        DriverUtils.tapByCoordinates(getDriver(), safariURLButton);
         this.inputStringFromKeyboard(URL);
 
-        DriverUtils.mobileTapByCoordinates(getDriver(), safariGoButton);
+        DriverUtils.tapByCoordinates(getDriver(), safariGoButton);
     }
 
     public void tapPasswordFieldToChangePassword(String newPassword)
             throws Exception {
         DriverUtils.waitUntilElementClickable(getDriver(),
                 safariEnterNewPasswordField, 5);
-        DriverUtils.mobileTapByCoordinates(getDriver(),
+        DriverUtils.tapByCoordinates(getDriver(),
                 safariEnterNewPasswordField);
         this.inputStringFromKeyboard(newPassword);
     }

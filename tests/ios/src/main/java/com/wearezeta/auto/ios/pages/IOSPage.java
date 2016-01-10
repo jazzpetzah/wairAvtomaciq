@@ -8,6 +8,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -141,15 +142,13 @@ public abstract class IOSPage extends BasePage {
 	}
 
 	public IOSPage swipeDownSimulator() throws Exception {
-		DriverUtils.iOSSimulatorSwipeDown(CommonUtils
-				.getSwipeScriptPath(IOSPage.class));
+		IOSSimulatorHelper.swipeDown();
 		Thread.sleep(SWIPE_DELAY);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
 	public IOSPage swipeUpSimulator() throws Exception {
-		DriverUtils.iOSSimulatorSwipeUp(CommonUtils
-				.getSwipeScriptPath(IOSPage.class));
+		IOSSimulatorHelper.swipeUp();
 		Thread.sleep(SWIPE_DELAY);
 		return returnBySwipe(SwipeDirection.UP);
 	}
@@ -221,7 +220,7 @@ public abstract class IOSPage extends BasePage {
 	public void pasteStringToInput(WebElement element, String text)
 			throws Exception {
 		IOSCommonUtils.copyToSystemClipboard(text);
-		DriverUtils.iOSLongTap(this.getDriver(), element);
+		DriverUtils.longTap(this.getDriver(), element);
 		clickPopupPasteButton();
 	}
 
@@ -381,8 +380,7 @@ public abstract class IOSPage extends BasePage {
 						By.name(IOSLocators.CommonIOSLocators.nameLockScreenMessage),
 						5)) {
 
-			DriverUtils.iOSSimulatorSwipeRight(CommonUtils
-					.getSwipeScriptPath(IOSPage.class));
+			IOSSimulatorHelper.swipeRight();
 			Thread.sleep(SWIPE_DELAY);
 		}
 	}

@@ -278,7 +278,7 @@ public class PersonalInfoPage extends IOSPage {
 	}
 
 	public void changeNameUsingOnlySpaces() throws Exception {
-		DriverUtils.mobileTapByCoordinates(this.getDriver(),
+		DriverUtils.tapByCoordinates(this.getDriver(),
 				profileNameEditField);
 		profileNameEditField.clear();
 		profileNameEditField.sendKeys("  \n");
@@ -312,13 +312,13 @@ public class PersonalInfoPage extends IOSPage {
 	}
 
 	public void enterNameInNamefield(String username) throws Exception {
-		DriverUtils.mobileTapByCoordinates(this.getDriver(),
+		DriverUtils.tapByCoordinates(this.getDriver(),
 				profileNameEditField);
 		profileNameEditField.sendKeys(username);
 	}
 
 	public void pressEnterInNameField() throws Exception {
-		DriverUtils.mobileTapByCoordinates(this.getDriver(),
+		DriverUtils.tapByCoordinates(this.getDriver(),
 				profileNameEditField);
 		profileNameEditField.sendKeys("\n");
 	}

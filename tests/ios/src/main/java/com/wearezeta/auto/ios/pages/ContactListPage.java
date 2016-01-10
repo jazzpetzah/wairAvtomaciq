@@ -177,7 +177,7 @@ public class ContactListPage extends IOSPage {
 			clickableGlitch = true;
 		}
 		if (clickableGlitch) {
-			DriverUtils.mobileTapByCoordinates(getDriver(), el);
+			DriverUtils.tapByCoordinates(getDriver(), el);
 		} else {
 			el.click();
 		}
@@ -566,7 +566,7 @@ public class ContactListPage extends IOSPage {
 				.getDriver()
 				.findElement(
 						By.xpath(IOSLocators.ContactListPage.xpathArchiveConversationButton));
-		DriverUtils.mobileTapByCoordinates(getDriver(), archiveButton);
+		DriverUtils.tapByCoordinates(getDriver(), archiveButton);
 	}
 
 	public void archiveConversation(String conversation) throws Exception {
@@ -803,7 +803,7 @@ public class ContactListPage extends IOSPage {
 				.getDriver()
 				.findElement(
 						By.xpath(IOSLocators.ContactListPage.xpathArchiveConversationButton));
-		DriverUtils.mobileTapByCoordinates(getDriver(), archiveButton);
+		DriverUtils.tapByCoordinates(getDriver(), archiveButton);
 	}
 
 	public void clickLeaveButtonInActionMenu() {
