@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
+import io.appium.java_client.ios.IOSElement;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -188,35 +190,13 @@ public class RegistrationPage extends IOSPage {
                 termOfUsePage);
     }
 
-    private void selectCountryByCode(String code) throws Exception {
-        countryPickerButton.click();
-        boolean result = false;
-        int count = 0;
-        while (!result && count < 10) {
-            WebElement el = null;
-            boolean flag = false;
-            count++;
-            try {
-                el = getDriver().findElementByName(code);
-            } catch (NoSuchElementException ex) {
-                flag = true;
-            }
-            if (!el.isDisplayed() || flag) {
-                List<WebElement> elementsList = countryList.findElements(By
-                        .className("UIATableCell"));
-                WebElement last = elementsList.get(elementsList.size() - 1);
-                getDriver().scrollToExact(last.getText());
-                continue;
-            }
-            el.click();
-            result = true;
-        }
-    }
+    private static final String WIRE_COUNTRY_NAME = "Wirestan";
 
-    public void selectCodeAndInputPhoneNumber(String number, String code)
-            throws Exception {
-        selectCountryByCode(code);
-        inputPhoneNumber(number);
+    public void selectWirestan() throws Exception {
+        countryPickerButton.click();
+        ((IOSElement) getDriver().findElementByXPath(IOSLocators.RegistrationPage.xpathCountryList)).
+                scrollTo(WIRE_COUNTRY_NAME);
+        getDriver().findElementByName(PhoneNumber.WIRE_COUNTRY_PREFIX).click();
     }
 
     public void inputPhoneNumber(String number) throws Exception {

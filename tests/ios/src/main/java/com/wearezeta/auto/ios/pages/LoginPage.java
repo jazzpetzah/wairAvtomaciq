@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Future;
 
+import io.appium.java_client.ios.IOSElement;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -139,11 +140,11 @@ public class LoginPage extends IOSPage {
     }
 
     public Boolean isVisible() throws Exception {
-        return DriverUtils.isElementPresentAndDisplayed(getDriver(), viewPager);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.name(IOSLocators.nameMainWindow));
     }
 
     public void signIn() throws IOException {
-
         signInButton.click();
     }
 
@@ -225,7 +226,8 @@ public class LoginPage extends IOSPage {
 
     public void setLogin(String login) throws Exception {
         DriverUtils.waitUntilElementClickable(getDriver(), loginField);
-        loginField.sendKeys(login);
+        ((IOSElement) getDriver().findElementByName(IOSLocators.nameLoginField)).
+                setValue(login);
     }
 
     public String getPassword() {
@@ -234,7 +236,8 @@ public class LoginPage extends IOSPage {
 
     public void setPassword(String password) throws Exception {
         DriverUtils.waitUntilElementClickable(getDriver(), passwordField);
-        passwordField.sendKeys(password);
+        ((IOSElement) getDriver().findElementByName(IOSLocators.namePasswordField)).
+                setValue(password);
     }
 
     public boolean waitForLogin() throws Exception {

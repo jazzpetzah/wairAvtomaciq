@@ -101,7 +101,7 @@ public class CommonIOSSteps {
 	@Before
 	public void setUp(Scenario scenario) throws Exception {
 		final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(
-				scenario.getSourceTagNames().contains("@noAcceptAlert"));
+				!scenario.getSourceTagNames().contains("@noAcceptAlert"));
         ZetaFormatter.setLazyDriver(lazyDriver);
 		pagesCollecton.setFirstPage(new LoginPage(lazyDriver));
 	}
