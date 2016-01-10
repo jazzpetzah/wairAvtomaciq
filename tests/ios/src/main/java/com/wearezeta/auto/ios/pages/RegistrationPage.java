@@ -203,7 +203,7 @@ public class RegistrationPage extends IOSPage {
 				List<WebElement> elementsList = countryList.findElements(By
 						.className("UIATableCell"));
 				WebElement last = elementsList.get(elementsList.size() - 1);
-				DriverUtils.scrollToElement(getDriver(), last);
+				getDriver().scrollToExact(last.getText());
 				continue;
 			}
 			el.click();

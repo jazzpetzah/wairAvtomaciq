@@ -630,11 +630,6 @@ public class DialogPageSteps {
 				score >= IOSConstants.MIN_IMG_SCORE);
 	}
 
-	@When("I scroll to image in dialog")
-	public void IScrollToIMageInDIalog() throws Throwable {
-		getDialogPage().scrollToImage();
-	}
-
 	@When("^User (.*) Ping in chat (.*) by BackEnd$")
 	public void UserPingInChatByBE(String contact, String conversationName)
 			throws Exception {

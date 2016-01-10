@@ -222,9 +222,8 @@ public class ContactListPage extends IOSPage {
 				WebElement el = contactListNames
 						.get(contactListNames.size() - 1);
 				this.getWait().until(ExpectedConditions.visibilityOf(el));
-				this.getWait().until(
-						ExpectedConditions.elementToBeClickable(el));
-				DriverUtils.scrollToElement(this.getDriver(), el);
+				this.getWait().until(ExpectedConditions.elementToBeClickable(el));
+				this.getDriver().scrollToExact(el.getText());
 			} else {
 				break;
 			}
@@ -247,9 +246,8 @@ public class ContactListPage extends IOSPage {
 				WebElement el = contactListCells
 						.get(contactListCells.size() - 1);
 				this.getWait().until(ExpectedConditions.visibilityOf(el));
-				this.getWait().until(
-						ExpectedConditions.elementToBeClickable(el));
-				DriverUtils.scrollToElement(this.getDriver(), el);
+				this.getWait().until(ExpectedConditions.elementToBeClickable(el));
+				this.getDriver().scrollToExact(el.getText());
 			} else {
 				break;
 			}

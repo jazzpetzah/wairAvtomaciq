@@ -719,14 +719,6 @@ public class DialogPage extends IOSPage {
 
 	}
 
-	public DialogPage scrollToImage() throws Throwable {
-		WebElement el = this.getDriver().findElement(
-				By.xpath(IOSLocators.xpathOtherConversationCellFormat));
-		DriverUtils.scrollToElement(this.getDriver(), el);
-		DialogPage page = new DialogPage(this.getLazyDriver());
-		return page;
-	}
-
 	private static final String TEXT_MESSAGE_PATTERN = "<UIATextView[^>]*value=\"([^\"]*)\"[^>]*>\\s*</UIATextView>";
 	private static final int TIMES_TO_SCROLL = 100;
 
@@ -998,7 +990,7 @@ public class DialogPage extends IOSPage {
 		WebElement el = this.getDriver().findElement(
 				By.xpath(IOSLocators.xpathLastChatMessage));
 		try {
-			DriverUtils.scrollToElement(this.getDriver(), el);
+			this.getDriver().scrollToExact(el.getText());
 		} catch (WebDriverException e) {
 
 		}

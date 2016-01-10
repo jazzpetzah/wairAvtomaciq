@@ -220,14 +220,6 @@ public class DriverUtils {
         }
     }
 
-    public static void scrollToElement(
-            AppiumDriver<? extends WebElement> driver, WebElement element) {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        HashMap<String, String> scrollToObject = new HashMap<String, String>();
-        scrollToObject.put("element", ((RemoteWebElement) element).getId());
-        js.executeScript("mobile: scrollTo", scrollToObject);
-    }
-
     /**
      * Swipes from point inside element given by percent of element size.
      * Default swipe size is 2/3 of window.width, but is end point outsie of
