@@ -617,7 +617,7 @@ public class DialogPage extends IOSPage {
 		int count = 0;
 		boolean mediaContainerShown = mediaContainer.isDisplayed();
 		while (!(mediaContainerShown) & (count < 3)) {
-			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
+			if (!CommonUtils.getIsSimulatorFromConfig(IOSPage.class)) {
 				DriverUtils.swipeUp(this.getDriver(), conversationPage, 500);
 				page = this;
 			} else {
@@ -856,8 +856,7 @@ public class DialogPage extends IOSPage {
 	}
 
 	public void fillInMessageUsingScript(String message) throws Exception {
-		DriverUtils.sendTextToInputByScript(getDriver(),
-				IOSLocators.scriptCursorInputPath, message);
+		conversationInput.sendKeys(message);
 	}
 
 	public void waitLoremIpsumText() throws Exception {

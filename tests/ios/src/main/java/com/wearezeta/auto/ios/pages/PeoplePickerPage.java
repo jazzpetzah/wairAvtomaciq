@@ -208,8 +208,7 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public void sendTextToSeachInput(String text) throws Exception {
-		DriverUtils.sendTextToInputByScript(getDriver(),
-				IOSLocators.scriptSearchField, text);
+		peoplePickerSearch.sendKeys(text);
 	}
 
 	public boolean waitUserPickerFindUser(String user) throws Exception {
@@ -475,10 +474,8 @@ public class PeoplePickerPage extends IOSPage {
 				By.name(IOSLocators.namePeopleYouMayKnowLabel));
 	}
 
-	private void unblockButtonDoubleClick() throws InterruptedException,
-			Exception {
-		DriverUtils
-				.iOSMultiTap(
+	private void unblockButtonDoubleClick() throws Exception {
+		DriverUtils.iOSMultiTap(
 						getDriver(),
 						getDriver().findElement(
 								By.name(IOSLocators.nameUnblockButton)), 2);

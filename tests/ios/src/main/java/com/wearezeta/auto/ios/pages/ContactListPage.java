@@ -412,7 +412,7 @@ public class ContactListPage extends IOSPage {
 	public void dismissTutorial() throws Exception {
 		WebElement tutorialView = this.getDriver().findElement(
 				By.name(IOSLocators.nameTutorialView));
-		DriverUtils.iOS3FingerTap(this.getDriver(), tutorialView, 3);
+		this.getDriver().tap(3, tutorialView, 1);
 	}
 
 	public List<WebElement> GetVisibleContacts() throws Exception {
