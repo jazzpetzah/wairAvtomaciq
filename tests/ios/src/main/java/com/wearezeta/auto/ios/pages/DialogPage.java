@@ -286,14 +286,7 @@ public class DialogPage extends IOSPage {
 		return conversationInput.getText();
 	}
 
-	public void scrollToTheEndOfConversationByTapOnCursorInput()
-			throws Exception {
-		String script = IOSLocators.scriptCursorInputPath + ".tap();";
-		this.getDriver().executeScript(script);
-	}
-
 	public String getConnectionMessage() {
-
 		return connectionMessage.getText();
 	}
 
@@ -867,34 +860,6 @@ public class DialogPage extends IOSPage {
 	public void waitSoundCloudLoad() throws Exception {
 		DriverUtils.waitUntilLocatorAppears(getDriver(),
 				By.name(IOSLocators.DialogPage.nameSoundCloudContainer));
-	}
-
-	public void sendMessagesUsingScript(String[] messages) throws Exception {
-		// swipe down workaround
-		try {
-			Point coords = new Point(0, 0);
-			Dimension elementSize = this.getDriver().manage().window()
-					.getSize();
-			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
-				this.getDriver().swipe(coords.x + elementSize.width / 2,
-						coords.y + 50, coords.x + elementSize.width / 2,
-						coords.y + elementSize.height - 100, 500);
-			} else {
-				DriverUtils.iOSSimulatorSwipeDialogPageDown(CommonUtils
-						.getSwipeScriptPath(IOSPage.class));
-			}
-		} catch (Exception e) {
-		}
-
-		scrollToTheEndOfConversationByTapOnCursorInput();
-		String script = "";
-		for (int i = 0; i < messages.length; i++) {
-			script += String.format(IOSLocators.scriptCursorInputPath
-					+ ".setValue(\"%s\");"
-					+ IOSLocators.scriptKeyboardReturnKeyPath + ".tap();",
-					messages[i]);
-		}
-		this.getDriver().executeScript(script);
 	}
 
 	public void takeCameraPhoto() throws Exception {

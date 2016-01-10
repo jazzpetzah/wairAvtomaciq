@@ -86,55 +86,24 @@ public class ConnectToPage extends IOSPage {
 		if (isPhone) {
 			scriptInputConnectDialogPhone(text);
 		} else {
-			scriptInputConnectDialog(text);
+			inputConnectDialog(text);
 		}
 	}
 
 	private void scriptInputConnectDialogPhone(String text) throws Exception {
 		getWait().until(
 				ExpectedConditions.elementToBeClickable(sendConnectionInput));
-		String script = String.format(
-				IOSLocators.scriptSendConnectionInputPhone
-						+ ".setValue(\"%s\")", text);
-		int maxRetrys = 3;
-		int retryCounter = 0;
-		while (retryCounter < maxRetrys) {
-			try {
-				this.getDriver().executeScript(script);
-				retryCounter = maxRetrys;
-			} catch (WebDriverException ex) {
-				log.debug("Appium execute script fail. " + ex.getMessage());
-				retryCounter++;
-			}
-		}
-		sendConnectionInput.sendKeys(" ");
+		sendConnectionInput.sendKeys(text + " ");
 	}
 
-	private void scriptInputConnectDialog(String text) throws Exception {
-		getWait().until(
-				ExpectedConditions.elementToBeClickable(sendConnectionInput));
-		String script = String.format(IOSLocators.scriptSendConnectionInput
-				+ ".setValue(\"%s\")", text);
-		int maxRetrys = 3;
-		int retryCounter = 0;
-		while (retryCounter < maxRetrys) {
-			try {
-				this.getDriver().executeScript(script);
-				retryCounter = maxRetrys;
-			} catch (WebDriverException ex) {
-				log.debug("Appium execute script fail. " + ex.getMessage());
-				retryCounter++;
-			}
-		}
+	private void inputConnectDialog(String text) throws Exception {
+		getWait().until(ExpectedConditions.elementToBeClickable(sendConnectionInput));
+		sendConnectionInput.sendKeys(text);
 	}
 
 	public boolean isMaxCharactersInMessage() {
 		int messageCharCount = sendConnectionInput.getText().length();
-		if (messageCharCount != MAX_MESSAGE_CHARACTERS) {
-			return false;
-		} else {
-			return true;
-		}
+		return messageCharCount == MAX_MESSAGE_CHARACTERS;
 	}
 
 	public void deleteTextInConnectDialog() {

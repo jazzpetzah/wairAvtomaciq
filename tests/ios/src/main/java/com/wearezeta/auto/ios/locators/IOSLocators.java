@@ -515,8 +515,6 @@ public final class IOSLocators {
 	// ////////////////
 
 	public static final String nameSendConnectionInputField = "SendConnectionRequestMessageView";
-	public static final String scriptSendConnectionInputPhone = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textViews()[\"SendConnectionRequestMessageView\"]";
-	public static final String scriptSendConnectionInput = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].popover().textViews()[\"SendConnectionRequestMessageView\"]";
 
 	// ////////////////
 	// Keyboard
@@ -539,23 +537,9 @@ public final class IOSLocators {
 
 	public static final String nameTutorialView = "ZClientNotificationWindow";
 
-	// Script locators
-	public static final String scriptCursorInputPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textViews()[\"ConversationTextInputField\"]";
-	public static final String scriptKeyboardReturnKeyPath = "target.frontMostApp().keyboard().elements()[\"Return\"]";
-	public static final String scriptRegistrationEmailInputPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textFields()[\"RegistrationEmailField\"]";
-	public static final String scriptSearchField = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textViews()[\"textViewSearch\"]";
-
-	public static class ScriptLocator {
-		public static final String scriptGroupChatNameInput = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textViews()[\"ParticipantsView_GroupName\"]";
-		public static final String scriptGroupChatNameInputIpad = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].popover().textViews()[\"ParticipantsView_GroupName\"]";
-		
-	}
 	public static final String nameYouLeftMessage = "YOU LEFT";
 	public static final String nameYouPingedMessage = "YOU PINGED";
 	public static final String nameYouPingedAgainMessage = "YOU PINGED AGAIN";
-
-	// public static final String xpathOtherUserPingedMessage =
-	// "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[%s]/UIAStaticText[@name=' PINGED']";
 
 	// //////////////////////////
 	// Unblock user locator
@@ -697,7 +681,8 @@ public final class IOSLocators {
 		public static final String xpathYourFilledName = "//UIATextField[preceding-sibling::UIAStaticText[@value='What should we call you?' or @value='Create an account']]";
 		public static final String nameChooseOwnPictureButton = "ChooseOwnPictureButton";
 		public static final String nameChoosePhotoButton = "Choose Photo";
-	}
+        public static final String nameRegistrationEmailInput = "RegistrationEmailField";
+    }
 
 	public final class LoginPage {
 		public static final String namePhoneLoginButton = "RegistrationRightButton";
