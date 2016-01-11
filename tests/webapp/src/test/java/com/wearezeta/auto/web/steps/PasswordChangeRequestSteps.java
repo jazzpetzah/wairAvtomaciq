@@ -164,7 +164,7 @@ public class PasswordChangeRequestSteps {
 		}
 		final PasswordResetMessage wrappedMsg = new PasswordResetMessage(
 				this.passwordChangeMessage.get());
-		String link = wrappedMsg.extractPasswordResetLink() + "/?agent=" + agent;
+		String link = wrappedMsg.extractPasswordResetLink() + "&agent=" + agent;
 		webappPagesCollection.getPage(PasswordChangePage.class).setUrl(link);
 		webappPagesCollection.getPage(PasswordChangePage.class).navigateTo();
 	}

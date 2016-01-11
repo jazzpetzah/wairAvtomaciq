@@ -1,32 +1,32 @@
 Feature: Utility
 
-  @C3262
+  @C3262 @utility
   Scenario: Verify buttons on invitation page for iphone
     When I use generic invitation link for invitation for iphone
     And I see You are invited page with agent
     Then I see button that sends me to App Store
     And I see button to connect for iphone including invitation code
 
-  @C3263
+  @C3263 @utility
   Scenario: Verify buttons on invitation page for android
     When I use generic invitation link for invitation for android
     And I see You are invited page with agent
     Then I see button that sends me to Play Store
     And I see button to connect for android including invitation code
 
-  @C3264
+  @C3264 @utility
   Scenario: Verify buttons on invitation page for osx
     When I use generic invitation link for invitation for osx
     And I see You are invited page
     Then I see 'Open Wire' button
 
-  @C3265
+  @C3265 @utility
   Scenario: Verify buttons on invitation page for windows
     When I use generic invitation link for invitation for windows
     And I see You are invited page
     Then I see 'Open Wire' button
 
-  @C3257
+  @C3257 @utility
   Scenario: Verify buttons on download page
     When I navigate to download page
     Then I see button for iOS
@@ -35,7 +35,7 @@ Feature: Utility
     #And I see button for Windows #No download link
     And I see button for Webapp
 
-  @C3258
+  @C3258 @utility
   Scenario Outline: Check password reset utility page for iphone
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
@@ -45,7 +45,7 @@ Feature: Utility
     And Myself starts listening for password change confirmation
     And I click Change Password button on Password Change Request page
     Then I see Password Change Request Succeeded page
-    When I open Password Change link from the received email
+    When I open Password Change link from the received email for iphone
     And I wait for 10 seconds
     Then I see Password Change page
     When I enter password <NewPassword> on Password Change page

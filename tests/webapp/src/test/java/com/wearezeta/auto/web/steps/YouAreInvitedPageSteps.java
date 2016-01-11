@@ -38,10 +38,13 @@ public class YouAreInvitedPageSteps {
 	
 	@Then("^I see You are invited page with agent$")
 	public void ISeeYouAreInvitedPageWithAgent() throws Exception {
-
+		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
+			webappPagesCollection.getPage(YouAreInvitedPage.class)
+					.waitUntilConnectButtonVisible();
+		} else {
 			webappPagesCollection.getPage(YouAreInvitedPage.class)
 					.waitUntilDownloadButtonVisible();
-	
+		}
 	}
 
 	/**
