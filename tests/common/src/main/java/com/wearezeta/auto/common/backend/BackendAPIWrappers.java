@@ -1044,6 +1044,7 @@ public final class BackendAPIWrappers {
     }
 
     public static List<OtrClient> getOtrClients(ClientUser forUser) throws Exception {
+        tryLoginByUser(forUser);
         final List<OtrClient> result = new ArrayList<>();
         final JSONArray responseList = BackendREST.getClients(receiveAuthToken(forUser));
         for (int clientIdx = 0; clientIdx < responseList.length(); clientIdx++) {
@@ -1053,6 +1054,7 @@ public final class BackendAPIWrappers {
     }
 
     public static void removeOtrClient(ClientUser forUser, OtrClient otrClientInfo) throws Exception {
+        tryLoginByUser(forUser);
         BackendREST.deleteClient(receiveAuthToken(forUser), forUser.getPassword(), otrClientInfo.getId());
     }
 }
