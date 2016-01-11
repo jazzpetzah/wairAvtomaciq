@@ -87,4 +87,11 @@ public class YouAreInvitedPageSteps {
 		assertThat(webappPagesCollection.getPage(YouAreInvitedPage.class).getConnectHref(), containsString(code));
 	}
 	
+	@Then("^I see 'Open Wire' button$")
+	public void ISeeOpenWireButton() throws Exception {
+		//String code = "hello";
+		String url = "https://wire-webapp-staging.zinfra.io/auth/?connect=" + code;
+		assertThat(webappPagesCollection.getPage(YouAreInvitedPage.class).getOpenHref(), equalTo(url));
+	}
+	
 }

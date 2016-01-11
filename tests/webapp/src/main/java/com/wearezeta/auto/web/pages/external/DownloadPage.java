@@ -4,11 +4,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.Future;
 
-//import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-//import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.locators.ExternalLocators;

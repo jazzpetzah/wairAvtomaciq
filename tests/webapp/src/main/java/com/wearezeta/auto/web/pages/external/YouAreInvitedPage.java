@@ -26,6 +26,9 @@ public class YouAreInvitedPage extends WebPage {
 	
 	@FindBy(css = ExternalLocators.YouAreInvitedPage.cssConnectWireButton)
 	private WebElement connectWireButton;
+	
+	@FindBy(css = ExternalLocators.YouAreInvitedPage.cssDownloadWireButton)
+	private WebElement openButton;
 
 
 	public YouAreInvitedPage(Future<ZetaWebAppDriver> lazyDriver)
@@ -80,5 +83,9 @@ public class YouAreInvitedPage extends WebPage {
 	
 	public String getConnectHref() {
 		return connectWireButton.getAttribute("href");
+	}
+	
+	public String getOpenHref() {
+		return openButton.getAttribute("href");
 	}
 }

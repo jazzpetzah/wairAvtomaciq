@@ -1,34 +1,32 @@
 Feature: Utility
 
-  @id	#wip
+  @C3262
   Scenario: Verify buttons on invitation page for iphone
     When I use generic invitation link for invitation for iphone
     And I see You are invited page with agent
     Then I see button that sends me to App Store
     And I see button to connect for iphone including invitation code
 
-  @id	#wip
+  @C3263
   Scenario: Verify buttons on invitation page for android
     When I use generic invitation link for invitation for android
-    And I see You are invited page
+    And I see You are invited page with agent
     Then I see button that sends me to Play Store
     And I see button to connect for android including invitation code
 
-  @id	#wip
+  @C3264
   Scenario: Verify buttons on invitation page for osx
-    When I use generic invitation link for invitation for <>
+    When I use generic invitation link for invitation for osx
     And I see You are invited page
-    Then I see button that sends me to <>
-    And I see button to connect for osx including invitation code
+    Then I see 'Open Wire' button
 
-  @id	#wip
+  @C3265
   Scenario: Verify buttons on invitation page for windows
-    When I use generic invitation link for invitation for <>
+    When I use generic invitation link for invitation for windows
     And I see You are invited page
-    Then I see button that sends me to <>
-    And I see button to connect for windows including invitation code
+    Then I see 'Open Wire' button
 
-  @utility
+  @C3257
   Scenario: Verify buttons on download page
     When I navigate to download page
     Then I see button for iOS
@@ -37,7 +35,7 @@ Feature: Utility
     #And I see button for Windows #No download link
     And I see button for Webapp
 
-  @id	#wip
+  @C3258
   Scenario Outline: Check password reset utility page for iphone
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
@@ -47,7 +45,7 @@ Feature: Utility
     And Myself starts listening for password change confirmation
     And I click Change Password button on Password Change Request page
     Then I see Password Change Request Succeeded page
-    When I open Password Change link from the received email for iphone
+    When I open Password Change link from the received email
     And I wait for 10 seconds
     Then I see Password Change page
     When I enter password <NewPassword> on Password Change page
@@ -62,8 +60,8 @@ Feature: Utility
     When I enter email "<Email>"
     And I enter password "<NewPassword>"
     And I press Sign In button
-    And I see Contactlist with name <Name>
+    And I see Contacts Upload dialog
 
     Examples: 
-      | Email      | OldPassword   | Name      | NewPassword | LoginErr                                  | 
-      | user1Email | user1Password | user1Name | aqa654321#  | Please verify your details and try again. | 
+      | Email      | OldPassword   | Name      | NewPassword | LoginErr                                  |
+      | user1Email | user1Password | user1Name | aqa654321#  | Please verify your details and try again. |
