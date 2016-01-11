@@ -75,16 +75,6 @@ public class ContactListPageSteps {
 		getLoginPage().dismisSettingsWaring();
 	}
 
-	@When("I dismiss tutorial layout")
-	public void IDismissTutorial() throws Exception {
-		boolean tutorialIsVisible = getContactListPage().isTutorialShown();
-		if (tutorialIsVisible) {
-			getContactListPage().dismissTutorial();
-		} else {
-			log.debug("No tutorial is shown");
-		}
-	}
-
 	@When("^I tap on my name (.*)$")
 	public void WhenITapOnMyName(String name) throws Exception {
 		getContactListPage().tapOnMyName();
@@ -182,51 +172,11 @@ public class ContactListPageSteps {
 				CommonSteps.ALIASES_SEPARATOR));
 	}
 
-	@When("^I see the group conversation name changed in the chat list$")
-	public void ISeeGroupNameChangeInChatList() throws Exception {
-		Assert.assertTrue(getContactListPage()
-				.verifyChangedGroupNameInChatList());
-	}
-
-	@Then("^I see (.*) and (.*) chat in contact list$")
-	public void ISeeGroupChatInContactList(String contact1, String contact2)
-			throws Exception {
-		contact1 = usrMgr.findUserByNameOrNameAlias(contact1).getName();
-		contact2 = usrMgr.findUserByNameOrNameAlias(contact2).getName();
-		Assert.assertTrue(getContactListPage()
-				.isGroupChatAvailableInContactList());
-	}
-
-	@Then("^I tap on a group chat with (.*) and (.*)$")
-	public void ITapOnGroupChat(String contact1, String contact2)
-			throws Exception {
-		contact1 = usrMgr.findUserByNameOrNameAlias(contact1).getName();
-		contact2 = usrMgr.findUserByNameOrNameAlias(contact2).getName();
-		getContactListPage().tapOnUnnamedGroupChat(contact1, contact2);
-	}
-
 	@When("^I swipe right on a (.*)$")
 	public void ISwipeRightOnContact(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		getContactListPage().swipeRightConversationToRevealActionButtons(
 				contact);
-	}
-
-	@When("^I click mute conversation$")
-	public void IClickMuteConversation() throws Exception {
-		getContactListPage().muteConversation();
-	}
-
-	@Then("^Contact (.*) is muted$")
-	public void ContactIsMuted(String contact) throws Exception {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertTrue(getContactListPage().isContactMuted(contact));
-	}
-
-	@Then("^Contact (.*) is not muted$")
-	public void ContactIsNotMuted(String contact) throws Exception {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertFalse(getContactListPage().isContactMuted(contact));
 	}
 
 	@Then("^I open archived conversations$")
@@ -246,13 +196,6 @@ public class ContactListPageSteps {
 		String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertTrue("Play pause button is not shown",
 				getContactListPage().isPlayPauseButtonVisible(name));
-	}
-
-	@When("I dont see play/pause button next to username (.*) in contact list")
-	public void IDontSeePlayPauseButtonNextToUserName(String contact)
-			throws Exception {
-		String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertFalse(getContactListPage().isPlayPauseButtonVisible(name));
 	}
 
 	@When("I tap on play/pause button in contact list")
@@ -370,40 +313,6 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Conversation gets silenced by pressing the silence button
-	 * 
-	 * @step. ^I silence conversation (.*)$
-	 * 
-	 * @param conversation
-	 *            conversation name to silence
-	 * @throws Exception
-	 *             if conversation is not found
-	 * 
-	 */
-	@When("^I silence conversation (.*)$")
-	public void ISilenceConversation(String conversation) throws Exception {
-		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
-		getContactListPage().silenceConversation(conversation);
-	}
-
-	/**
-	 * Conversation gets unsilenced by pressing the silence button
-	 * 
-	 * @step. ^I unsilence conversation (.*)$
-	 * 
-	 * @param conversation
-	 *            conversation name to unsilence
-	 * @throws Exception
-	 *             if conversation is not found
-	 * 
-	 */
-	@When("^I unsilence conversation (.*)$")
-	public void IUnSilenceConversation(String conversation) throws Exception {
-		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
-		getContactListPage().unsilenceConversation(conversation);
-	}
-
-	/**
 	 * Verifies, that the conversation is really silenced
 	 * 
 	 * @step. ^I see conversation (.*) is silenced$
@@ -462,24 +371,6 @@ public class ContactListPageSteps {
 				conversation, false);
 		Assert.assertTrue("Conversation is unsilenced", isSilenced);
 
-	}
-
-	/**
-	 * Conversation gets archived by pressing the archive button
-	 * 
-	 * @step. ^I archive conversation (.*)$
-	 * 
-	 * @param conversation
-	 *            conversation name to archive
-	 * @throws Exception
-	 *             if conversation is not found
-	 * 
-	 */
-	@When("^I archive conversation (.*)$")
-	public void IArchiveConversation(String conversation) throws Exception {
-		conversation = usrMgr.replaceAliasesOccurences(conversation,
-				FindBy.NAME_ALIAS);
-		getContactListPage().archiveConversation(conversation);
 	}
 
 	/**
@@ -542,22 +433,6 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Doing a long right swipe to archive the conversation immediately
-	 * 
-	 * @step. ^I long swipe right to archive conversation (.*)$
-	 * @param conversation
-	 *            to archive
-	 * @throws Exception
-	 */
-	@When("^I long swipe right to archive conversation (.*)$")
-	public void ILongSwipeRightToArchiveConversation(String conversation)
-			throws Exception {
-		conversation = usrMgr.replaceAliasesOccurences(conversation,
-				FindBy.NAME_ALIAS);
-		getContactListPage().longSwipeRightOnContact(1000, conversation);
-	}
-
-	/**
 	 * Verify that missed call indicator is seen in conversation list
 	 * 
 	 * @step. ^I see missed call indicator in list for contact (.*)$
@@ -592,22 +467,6 @@ public class ContactListPageSteps {
 				.missedCallIndicatorIsVisible(contact);
 		Assert.assertTrue("No missed call indicator visible.", missedCallSeen);
 
-	}
-
-	/**
-	 * Checks if the self conversation in changed to the new accent color
-	 * 
-	 * @step. I see my names (.*) accent color is changed$
-	 * @param name
-	 *            of yourself to check accent color change
-	 * @throws Exception
-	 */
-	@Then("^I see my names (.*) accent color is changed$")
-	public void ISeeMyNamesAccentColorIsChanged(String name) throws Exception {
-		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		boolean colorIsChanged = getContactListPage()
-				.changeOfAccentColorIsVisible(name);
-		Assert.assertTrue("Color is not changed.", colorIsChanged);
 	}
 
 	/**

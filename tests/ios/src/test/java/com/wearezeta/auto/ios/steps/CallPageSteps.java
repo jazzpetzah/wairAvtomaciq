@@ -122,23 +122,6 @@ public class CallPageSteps {
 	}
 
 	/**
-	 * Verify that incoming calling from User is NOT visible
-	 * 
-	 * @step. ^I dont see incoming calling message from contact (.*)$
-	 * @param contact
-	 *            User name who calls
-	 * @throws Exception
-	 */
-	@When("^I dont see incoming calling message from contact (.*)$")
-	public void IDontSeeIncomingCallingMesage(String contact) throws Exception {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertFalse(
-				"User " + contact + " calling UI is shown",
-				getIncomingCallPage().isUserCallingMessageShown(
-						contact.toUpperCase()));
-	}
-
-	/**
 	 * Click on ignore call button
 	 * 
 	 * @step. ^I ignore incoming call$
@@ -284,22 +267,6 @@ public class CallPageSteps {
 	@Then("^I see group call is Full message$")
 	public void ISeeGroupCallIsFullMessage() throws Throwable {
 		Assert.assertTrue(getIncomingCallPage().isGroupCallFullMessageShown());
-	}
-
-	/**
-	 * Taps the person in list you have a call right now
-	 *
-	 * @param name in list your in call with and want to tap
-	 * @throws Throwable
-	 * @step. ^I tap on contact I am in a call with (.*)$
-	 */
-	@When("^I tap on contact I am in a call with (.*)$")
-	public void ITapOnContactIamInACallWith(String name) throws Throwable {
-
-		name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
-
-		getIncomingCallPage().tapOnNameInCallWith(name);
-
 	}
 
 }
