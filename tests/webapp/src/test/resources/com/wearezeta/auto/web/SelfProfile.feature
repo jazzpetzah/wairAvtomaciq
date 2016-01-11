@@ -46,18 +46,27 @@ Feature: Self Profile
       | Login      | Password      | Name      | ColorName    |
       | user1Email | user1Password | user1Name | BrightOrange |
 
-  @C1732 @regression
+  @C1732 @mute
   Scenario Outline: Verify you can edit your profile picture by dragging a new photo
     Given My browser supports synthetic drag and drop
     Given There is 1 user where <Name> is me
     Given Myself take snapshot of current profile picture
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I click camera button
-    And I see profile picture dialog
-    And I drop <PictureName> to profile picture dialog
-    And I confirm picture selection on profile picture dialog
-    Then I do not see profile picture dialog
+    And I drop picture <PictureName> to self profile
+    Then I verify that current profile picture snapshot of Myself differs from the previous one
+
+    Examples: 
+      | Login      | Password      | Name      | PictureName              |
+      | user1Email | user1Password | user1Name | userpicture_portrait.jpg |
+
+  @C3266 @regression
+  Scenario Outline: Verify you can change your profile picture
+    Given There is 1 user where <Name> is me
+    Given Myself take snapshot of current profile picture
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I upload picture <PictureName> to self profile
     Then I verify that current profile picture snapshot of Myself differs from the previous one
 
     Examples: 
