@@ -442,8 +442,8 @@ public class ContactListPage extends IOSPage {
 
 	@Override
 	public IOSPage swipeDown(int time) throws Exception {
-		Point coords = content.getLocation();
-		Dimension elementSize = content.getSize();
+		Point coords = mainWindow.getLocation();
+		Dimension elementSize = mainWindow.getSize();
 		this.getDriver().swipe(coords.x + elementSize.width / 2,
 				coords.y + 150, coords.x + elementSize.width / 2,
 				coords.y + elementSize.height - 150, time);

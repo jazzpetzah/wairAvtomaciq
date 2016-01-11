@@ -12,7 +12,6 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.ios.locators.IOSLocators;
@@ -27,111 +26,146 @@ public class LoginPage extends IOSPage {
             "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
             "end tell"};
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameMainWindow)
+    private static final String nameMainWindow = "ZClientMainWindow";
+    @FindBy(name = nameMainWindow)
     private WebElement viewPager;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameSignInButton)
+    private static final String nameSignInButton = "I HAVE AN ACCOUNT";
+    @FindBy(name = nameSignInButton)
     private WebElement signInButton;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameLoginButton)
+    private static final String nameLoginButton = "RegistrationConfirmButton";
+    @FindBy(name = nameLoginButton)
     private WebElement confirmSignInButton;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameRegisterButton)
+    private static final String nameRegisterButton = "SignUp";
+    @FindBy(name = nameRegisterButton)
     private WebElement registerButton;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameLoginField)
+    private static final String nameLoginField = "EmailField";
+    @FindBy(name = nameLoginField)
     private WebElement loginField;
 
-    @FindBy(how = How.NAME, using = IOSLocators.namePasswordField)
+    private static final String namePasswordField = "PasswordField";
+    @FindBy(name = namePasswordField)
     private WebElement passwordField;
 
-    @FindBy(how = How.CLASS_NAME, using = IOSLocators.classUIATextView)
+    private static final String classUIATextView = "UIATextView";
+    @FindBy(className = classUIATextView)
     private List<WebElement> userName;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameTermsPrivacyLinks)
+    private static final String nameTermsPrivacyLinks = "TermsPrivacyTextView";
+    @FindBy(name = nameTermsPrivacyLinks)
     private WebElement termsButton;
-
-    @FindBy(how = How.NAME, using = IOSLocators.nameTermsPrivacyLinks)
+    @FindBy(name = nameTermsPrivacyLinks)
     private WebElement privacyButton;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameTermsPrivacyCloseButton)
+    private static final String nameTermsPrivacyCloseButton = "WebViewCloseButton";
+    @FindBy(name = nameTermsPrivacyCloseButton)
     private WebElement termsPrivacyCloseButton;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameErrorMailNotification)
+    private static final String nameErrorMailNotification = "PLEASE PROVIDE A VALID EMAIL ADDRESS";
+    @FindBy(name = nameErrorMailNotification)
     private WebElement errorMailNotification;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameWrongCredentialsNotification)
+    private static final String nameWrongCredentialsNotification = "Please verify your details and try again.";
+    @FindBy(name = nameWrongCredentialsNotification)
     private WebElement wrongCredentialsNotification;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameIgnoreUpdateButton)
+    private static final String nameIgnoreUpdateButton = "Ignore";
+    @FindBy(name = nameIgnoreUpdateButton)
     private WebElement ignoreUpdateButton;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameTermsOfServiceButton)
+    private static final String nameTermsOfServiceButton = "LegalCheckmarkButton";
+    @FindBy(name = nameTermsOfServiceButton)
     private WebElement termsOfServiceButton;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameProfileName)
+    private static final String nameProfileName = "ProfileSelfNameField";
+    @FindBy(name = nameProfileName)
     private WebElement selfProfileName;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameShareButton)
+    private static final String nameShareButton = "SHARE CONTACTS";
+    @FindBy(name = nameShareButton)
     private WebElement shareButton;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameForgotPasswordButton)
+    private static final String nameForgotPasswordButton = "FORGOT PASSWORD?";
+    @FindBy(name = nameForgotPasswordButton)
     private WebElement changePasswordButtonSignIn;
 
-    @FindBy(how = How.XPATH, using = IOSLocators.xpathSafariChangePasswordEmailField)
+    private static final String xpathSafariChangePasswordEmailField = "//UIAApplication[@name='Safari']//UIATextField[@value='Email']";
+    @FindBy(xpath = xpathSafariChangePasswordEmailField)
     private WebElement safariChangePWEmailField;
 
-    @FindBy(how = How.XPATH, using = IOSLocators.xpathSafariURLButton)
+    private static final String xpathSafariURLButton = "//UIAButton[@name='URL']";
+    @FindBy(xpath = xpathSafariURLButton)
     private WebElement safariURLButton;
 
-    @FindBy(how = How.XPATH, using = IOSLocators.xpathSafariGoButton)
+    private static final String xpathSafariGoButton = "//UIAButton[@name='Go']";
+    @FindBy(xpath = xpathSafariGoButton)
     private WebElement safariGoButton;
 
-    @FindBy(how = How.XPATH, using = IOSLocators.xpathSafariEnterNewPasswordField)
+    private static final String xpathSafariEnterNewPasswordField = "//UIASecureTextField[@value='Enter new password']";
+    @FindBy(xpath = xpathSafariEnterNewPasswordField)
     private WebElement safariEnterNewPasswordField;
 
-    @FindBy(how = How.XPATH, using = IOSLocators.xpathChangePasswordPageChangePasswordButton)
+    private static final String xpathChangePasswordPageChangePasswordButton = "//UIAButton[@name='RESET PASSWORD']";
+    @FindBy(xpath = xpathChangePasswordPageChangePasswordButton)
     private WebElement changePasswordPageChangePasswordButton;
 
-    @FindBy(how = How.NAME, using = IOSLocators.LoginPage.namePhoneLoginButton)
+    private static final String namePhoneLoginButton = "RegistrationRightButton";
+    @FindBy(name = namePhoneLoginButton)
     private WebElement phoneLoginButton;
 
-    @FindBy(how = How.NAME, using = IOSLocators.LoginPage.nameEmailLoginButton)
+    private static final String nameEmailLoginButton = "EMAIL SIGN IN";
+    @FindBy(name = nameEmailLoginButton)
     private WebElement emailLoginButton;
 
-    @FindBy(how = How.NAME, using = IOSLocators.LoginPage.nameBackButton)
+    private static final String nameBackButton = "BackToWelcomeButton";
+    @FindBy(name = nameBackButton)
     private WebElement backButton;
 
-    @FindBy(how = How.NAME, using = IOSLocators.LoginPage.nameMaybeLater)
+    private static final String nameMaybeLater = "MAYBE LATER";
+    @FindBy(name = nameMaybeLater)
     private WebElement maybeLater;
 
-    @FindBy(how = How.NAME, using = IOSLocators.LoginPage.nameCountryPickerButton)
+    private static final String nameCountryPickerButton = "CountryPickerButton";
+    @FindBy(name = nameCountryPickerButton)
     private WebElement countryPickerButtton;
 
-    @FindBy(how = How.XPATH, using = IOSLocators.LoginPage.xpathSetEmailPasswordSuggetionLabel)
+    private static final String xpathSetEmailPasswordSuggetionLabel =
+            "//UIAStaticText[contains(@name, 'Add email address and password')]";
+    @FindBy(xpath = xpathSetEmailPasswordSuggetionLabel)
     private WebElement setEmailPasswordSuggetionLabel;
 
-    @FindBy(how = How.NAME, using = IOSLocators.Alerts.nameResentIn10min)
+    public static final String nameResentIn10min =
+            "We already sent you a code via SMS. Tap Resend after 10 minutes to get a new one.";
+    @FindBy(name = nameResentIn10min)
     private WebElement resendIn10minAlert;
 
-    @FindBy(how = How.NAME, using = IOSLocators.Alerts.nameInvalidPhoneNumber)
+    private static final String nameInvalidPhoneNumber = "Please enter a valid phone number";
+    @FindBy(name = nameInvalidPhoneNumber)
     private WebElement invalidPhoneNumberAlert;
 
-    @FindBy(how = How.NAME, using = IOSLocators.Alerts.nameInvalidEmail)
+    private static final String nameInvalidEmail = "Please enter a valid email address";
+    @FindBy(name = nameInvalidEmail)
     private WebElement invalidEmailAlert;
 
-    @FindBy(how = How.NAME, using = IOSLocators.Alerts.nameAlreadyRegisteredNumber)
+    private static final String nameAlreadyRegisteredNumber =
+            "The phone number you provided has already been registered. Please try again.";
+    @FindBy(name = nameAlreadyRegisteredNumber)
     private WebElement alreadyRegisteredNumberAlert;
 
-    @FindBy(how = How.NAME, using = IOSLocators.Alerts.nameAlreadyRegisteredEmail)
+    private static final String nameAlreadyRegisteredEmail = "The email address you provided has already been registered. Please try again.";
+    @FindBy(name = nameAlreadyRegisteredEmail)
     private WebElement alreadyRegisteredEmailAlert;
 
-    @FindBy(how = How.NAME, using = IOSLocators.PeoplePickerPage.nameNotNowButton)
+    private static final String nameNotNowButton = "NOT NOW";
+    @FindBy(name = nameNotNowButton)
     private WebElement notNowPhoneButton;
 
-    private String login;
-
-    private String password;
+    private static final String nameGotItButton = "GOT IT";
+    @FindBy(name = nameGotItButton)
+    private WebElement gotItButton;
 
     public String message;
 
@@ -141,7 +175,7 @@ public class LoginPage extends IOSPage {
 
     public Boolean isVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.name(IOSLocators.nameMainWindow));
+                By.name(nameMainWindow));
     }
 
     public void signIn() throws IOException {
@@ -190,11 +224,13 @@ public class LoginPage extends IOSPage {
     }
 
     public void waitForLoginToFinish() throws Exception {
-
         if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
                 By.name(IOSLocators.nameLoginButton), 40)) {
             throw new AssertionError(
                     "Login button is still visible after the timeout");
+        }
+        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameGotItButton), 2)) {
+            gotItButton.click();
         }
     }
 
@@ -220,18 +256,10 @@ public class LoginPage extends IOSPage {
         return new RegistrationPage(this.getLazyDriver());
     }
 
-    public String getLogin() {
-        return login;
-    }
-
     public void setLogin(String login) throws Exception {
         DriverUtils.waitUntilElementClickable(getDriver(), loginField);
         ((IOSElement) getDriver().findElementByName(IOSLocators.nameLoginField)).
                 setValue(login);
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public void setPassword(String password) throws Exception {
@@ -314,9 +342,8 @@ public class LoginPage extends IOSPage {
         termsPrivacyCloseButton.click();
     }
 
-    public Boolean isTermsPrivacyColseButtonVisible() {
-
-        return (ExpectedConditions.visibilityOf(termsPrivacyCloseButton) != null);
+    public boolean isTermsPrivacyColseButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameTermsPrivacyCloseButton));
     }
 
     public void tapPasswordField() {
@@ -328,22 +355,16 @@ public class LoginPage extends IOSPage {
                 By.name(IOSLocators.nameErrorMailNotification));
     }
 
-    public Boolean errorMailNotificationIsNotShown() {
-        return (ExpectedConditions.visibilityOf(errorMailNotification) == null);
+    public boolean errorMailNotificationIsNotShown() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.name(nameErrorMailNotification));
     }
 
-    public Boolean wrongCredentialsNotificationIsShown() throws Exception {
+    public boolean wrongCredentialsNotificationIsShown() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
                 By.name(IOSLocators.nameWrongCredentialsNotification));
     }
 
-    public void ignoreUpdate() throws Exception {
-        DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-                By.name(IOSLocators.nameIgnoreUpdateButton));
-        ignoreUpdateButton.click();
-    }
-
-    public PersonalInfoPage tapChangePasswordButton() throws Exception {
+      public PersonalInfoPage tapChangePasswordButton() throws Exception {
         changePasswordButtonSignIn.click();
         return new PersonalInfoPage(this.getLazyDriver());
     }
