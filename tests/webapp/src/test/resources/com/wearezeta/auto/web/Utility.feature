@@ -1,13 +1,13 @@
 Feature: Utility
 
-  @C3262 @utility
+  @C3262 
   Scenario: Verify buttons on invitation page for iphone
     When I use generic invitation link for invitation for iphone
     And I see You are invited page with agent
     Then I see button that sends me to App Store
     And I see button to connect for iphone including invitation code
 
-  @C3263 @utility
+  @C3263 
   Scenario: Verify buttons on invitation page for android
     When I use generic invitation link for invitation for android
     And I see You are invited page with agent
@@ -32,7 +32,7 @@ Feature: Utility
     Then I see button for iOS
     And I see button for Android
     And I see button for OS X
-    #And I see button for Windows #No download link
+    And I see button for Windows 
     And I see button for Webapp
 
   @C3258 @utility

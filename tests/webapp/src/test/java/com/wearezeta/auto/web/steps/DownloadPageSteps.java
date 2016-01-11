@@ -48,7 +48,7 @@ public class DownloadPageSteps {
 	
 	@Then("^I see button for Windows$")
 	public void ISeeButtonForWindows() throws Exception {
-		String storeUrl = "";
+		String storeUrl = "https://wire-app.wire.com/win/prod/WireSetup.exe";
 		assertThat(webappPagesCollection.getPage(DownloadPage.class).getWindowsDownloadHref(), equalTo(storeUrl));
 	}
 	
