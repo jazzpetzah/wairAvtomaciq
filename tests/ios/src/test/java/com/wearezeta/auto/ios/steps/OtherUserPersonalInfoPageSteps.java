@@ -32,16 +32,6 @@ public class OtherUserPersonalInfoPageSteps {
 		getOtherUserPersonalInfoPage().addContactToChat();
 	}
 
-	@When("^I press Continue button$")
-	public void WhenIPressContinueButton() throws Exception {
-		getOtherUserPersonalInfoPage().continueToAddUser();
-	}
-
-	@When("^I swipe up on other user profile page$")
-	public void ISwipeUpOnUserProfilePage() throws Exception {
-		getOtherUserPersonalInfoPage().swipeUp(1000);
-	}
-
 	@When("^I click Remove$")
 	public void IClickRemove() throws Exception {
 		getOtherUserPersonalInfoPage().removeFromConversation();
@@ -56,16 +46,6 @@ public class OtherUserPersonalInfoPageSteps {
 	@When("^I confirm remove$")
 	public void IConfirmRemove() throws Throwable {
 		getOtherUserPersonalInfoPage().confirmRemove();
-	}
-
-	@Then("^I see the user profile from (.*)$")
-	public void ISeeTheUserProfileFrom(String contact) throws Throwable {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		boolean isShown = getOtherUserPersonalInfoPage()
-				.isOtherUserProfileEmailVisible(contact);
-		Assert.assertTrue(
-				"I can see the contacts email on the user profile page",
-				isShown);
 	}
 
 	@When("I tap on start dialog button on other user profile page")
@@ -83,11 +63,6 @@ public class OtherUserPersonalInfoPageSteps {
 	@When("^I click close user profile page button$")
 	public void ICloseUserProfileForDialog() throws Exception {
 		getOtherUserPersonalInfoPage().clickCloseUserProfileButton();
-	}
-
-	@When("^I swipe down on other user profile page$")
-	public void ISwipeDownOnUserProfilePage() throws Exception {
-		getOtherUserPersonalInfoPage().swipeDown(1000);
 	}
 
 	/**

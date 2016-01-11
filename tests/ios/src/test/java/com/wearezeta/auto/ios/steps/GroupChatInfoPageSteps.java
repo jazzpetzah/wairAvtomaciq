@@ -30,11 +30,6 @@ public class GroupChatInfoPageSteps {
 		getGroupChatInfoPage().leaveConversation();
 	}
 
-	@When("^I change the conversation name$")
-	public void IChangeConversationName() throws Exception {
-		getGroupChatInfoPage().changeConversationNameToRandom();
-	}
-
 	@When("I change group conversation name to (.*)")
 	public void IChangeConversationNameTo(String name) throws Exception {
 		getGroupChatInfoPage().changeConversationName(name);
@@ -76,13 +71,6 @@ public class GroupChatInfoPageSteps {
 	@When("I see correct conversation name (.*)")
 	public void ISeeCorrectConversationName(String name) throws Exception {
 		Assert.assertEquals(getGroupChatInfoPage().getGroupChatName(), name);
-	}
-
-	@When("^I see the correct number of participants in the title (.*)$")
-	public void IVerifyParticipantNumber(String realNumberOfParticipants)
-			throws Exception {
-		Assert.assertTrue(getGroupChatInfoPage().isNumberOfParticipants(
-				Integer.parseInt(realNumberOfParticipants)));
 	}
 
 	@When("^I tap on (.*) and check email (.*) and name$")
@@ -151,31 +139,9 @@ public class GroupChatInfoPageSteps {
 				actual == number);
 	}
 
-	@When("I swipe down on group chat info page")
-	public void ISwipeUpOnGroupChatInfoPage() throws Exception {
-		getGroupChatInfoPage().swipeDown(500);
-	}
-
-	@When("I close group chat info page")
-	public void ICloseGroupChatInfoPage() throws Exception {
-		getGroupChatInfoPage().closeGroupChatInfoPage();
-	}
-
 	@When("I tap on add button on group chat info page")
 	public void ITapAddButtonOnGroupChatInfoPage() throws Exception {
 		getGroupChatInfoPage().clickOnAddButton();
-	}
-
-	/**
-	 * Verify that share history warning dialog is shown
-	 * 
-	 * @step. I see share history warning
-	 * 
-	 * @throws Exception
-	 */
-	@When("I see share history warning")
-	public void ISeeAddPeopleToGroupChatDialog() throws Exception {
-		Assert.assertTrue(getGroupChatInfoPage().isAddDialogHeaderVisible());
 	}
 
 	/**
