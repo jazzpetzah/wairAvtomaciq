@@ -183,12 +183,18 @@
     </build>
 
 	<repositories>
-		<repository>
-			<id>releases</id>
-			<name>Releases</name>
-			<url>http://192.168.10.44:8081/nexus/content/repositories/releases/</url>
-			<layout>default</layout>
-		</repository>
+        <repository>
+            <id>releases</id>
+            <name>Releases</name>
+            <url>http://192.168.10.18:8081/nexus/content/repositories/releases/</url>
+            <layout>default</layout>
+        </repository>
+        <repository>
+            <id>releases_mirror</id>
+            <name>Releases Mirror</name>
+            <url>http://192.168.178.44:8081/nexus/content/repositories/releases/</url>
+            <layout>default</layout>
+        </repository>
 	</repositories>
 
 </project>
