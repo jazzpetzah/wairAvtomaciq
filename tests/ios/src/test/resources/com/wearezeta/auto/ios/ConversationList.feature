@@ -17,7 +17,7 @@ Feature: Conversation List
       | Name      | ArchivedUser |
       | user1Name | user2Name    |
 
-  @C351 @C352 @C11 @regression @rc @id1332 @id2171 @id2172
+  @C352 @regression @rc @id1332 @id2171 @id2172
   Scenario Outline: Verify archive a conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -114,7 +114,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | ArchiveGroupChat |
 
-  @C349 @C3177 @regression @rc @id1369
+  @C3177 @regression @rc @id1369
   Scenario Outline: Verify Ping animation in the conversations list
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>

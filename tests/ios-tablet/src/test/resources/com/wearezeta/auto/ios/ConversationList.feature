@@ -16,7 +16,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C2527 @C2530 @regression @rc @id2755 @id2377
+  @C2530 @regression @rc @id2755 @id2377
   Scenario Outline: Verify archive a conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
