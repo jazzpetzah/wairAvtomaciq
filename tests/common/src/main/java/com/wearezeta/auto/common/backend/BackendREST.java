@@ -3,10 +3,7 @@ package com.wearezeta.auto.common.backend;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
@@ -17,6 +14,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.glassfish.jersey.client.ClientProperties;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -57,7 +55,12 @@ final class BackendREST {
             BackendREST::verifyRequestResult, MAX_REQUEST_RETRY_COUNT);
 
     private static String backendUrl = null;
-    private static Client client = initClient(new ClientConfig());
+    private static Client client;
+    static {
+        ClientConfig config = new ClientConfig();
+        config.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true);
+        client = initClient(config);
+    }
 
     static {
         log.setLevel(Level.DEBUG);
@@ -701,10 +704,13 @@ final class BackendREST {
         return new JSONArray(output);
     }
 
-    public static void deleteClient(AuthToken token, String clientId) throws Exception {
+    public static void deleteClient(AuthToken token, String password, String clientId) throws Exception {
         Builder webResource = buildDefaultRequestWithAuth(String.format("clients/%s", clientId),
                 MediaType.APPLICATION_JSON, token);
-        restHandlers.httpDelete(webResource, new int[]{HttpStatus.SC_OK, HttpStatus.SC_NO_CONTENT});
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("password", password);
+        restHandlers.httpDelete(webResource, requestBody.toString(),
+                new int[]{HttpStatus.SC_OK, HttpStatus.SC_NO_CONTENT});
     }
 
     public static void setDefaultBackendURL(String url) {
