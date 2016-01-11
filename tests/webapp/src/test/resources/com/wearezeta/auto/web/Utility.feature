@@ -60,7 +60,7 @@ Feature: Utility
     When I enter email "<Email>"
     And I enter password "<NewPassword>"
     And I press Sign In button
-    And I see Contacts Upload dialog
+    Then I am signed in properly
 
     Examples: 
       | Email      | OldPassword   | Name      | NewPassword | LoginErr                                  |
