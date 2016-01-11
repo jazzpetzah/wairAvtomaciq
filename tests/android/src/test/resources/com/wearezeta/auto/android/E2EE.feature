@@ -1,6 +1,6 @@
 Feature: E2EE
 
-  @C3226 @staging
+  @C3226 @rc
   Scenario Outline: Verify you can receive encrypted and non-encrypted messages in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
