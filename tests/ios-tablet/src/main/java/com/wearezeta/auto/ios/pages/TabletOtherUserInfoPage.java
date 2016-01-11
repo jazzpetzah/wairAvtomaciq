@@ -99,7 +99,7 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
 	}
 
 	public void exitOtherUserGroupChatPopover() throws Exception {
-		DriverUtils.mobileTapByCoordinates(getDriver(), otherUserConversationMenuRightButton,
+		DriverUtils.tapByCoordinates(getDriver(), otherUserConversationMenuRightButton,
 				50, 50);
 	}
 

@@ -14,15 +14,16 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import cucumber.api.PendingException;
+import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -41,6 +42,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
@@ -55,7 +57,7 @@ public class CommonAndroidSteps {
 
     private static final Logger log = ZetaLogger.getLog(CommonAndroidSteps.class.getSimpleName());
 
-    private static ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
+    private static ArrayList<BufferedImage> images = new ArrayList<>();
     private final CommonSteps commonSteps = CommonSteps.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     public static final Platform CURRENT_PLATFORM = Platform.Android;
@@ -161,39 +163,40 @@ public class CommonAndroidSteps {
         // closeUpdateAlertIfAppears(drv, locator);
     }
 
-    private void initFirstPage() throws Exception {
+    @Before
+    public void setUp(Scenario scenario) throws Exception {
+        if (scenario.getSourceTagNames().contains("@performance")) {
+            AndroidLogListener.getInstance(ListenerType.PERF).start();
+        }
         AndroidLogListener.getInstance(ListenerType.DEFAULT).start();
         final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), getPath(), this.getClass());
-        pagesCollection.setFirstPage(new WelcomePage(lazyDriver));
         ZetaFormatter.setLazyDriver(lazyDriver);
-    }
-
-    @Before("@performance")
-    public void setUpPerformance() throws Exception {
-        AndroidLogListener.getInstance(ListenerType.PERF).start();
-        try {
-            AndroidCommonUtils.disableHints();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        initFirstPage();
-    }
-
-    @Before("~@performance")
-    public void setUp() throws Exception {
-        initFirstPage();
+        pagesCollection.setFirstPage(new WelcomePage(lazyDriver));
     }
 
     /**
      * Presses the android back button
      *
-     * @throws IOException
-     * @step. ^I press back button$
+     * @throws Exception
+     * @step. ^I press [Bb]ack button$
      */
-    @When("^I press back button$")
+    @When("^I press [Bb]ack button$")
     public void PressBackButton() throws Exception {
-        commonSteps.WaitForTime(1);
         pagesCollection.getCommonPage().navigateBack();
+    }
+
+    /**
+     * Presses the android back button X times
+     *
+     * @param times how many times to press
+     * @throws Exception
+     * @step. ^I press [Bb]ack button (\\d+) times$
+     */
+    @When("^I press [Bb]ack button (\\d+) times$")
+    public void PressBackButtonXTimes(int times) throws Exception {
+        for (int i = 0; i < times; i++) {
+            pagesCollection.getCommonPage().navigateBack();
+        }
     }
 
     /**
@@ -778,7 +781,7 @@ public class CommonAndroidSteps {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown(Scenario scenario) throws Exception {
         try {
             AndroidCommonUtils.setAirplaneMode(false);
         } catch (Exception e) {
@@ -806,7 +809,7 @@ public class CommonAndroidSteps {
 
         AndroidLogListener.forceStopAll();
         LoggingProfile loggingProfile = new RegressionPassedLoggingProfile();
-        if (!ZetaFormatter.getRecentTestResult().equals(Result.PASSED.toString())) {
+        if (!scenario.getStatus().equals(Result.PASSED)) {
             loggingProfile = new RegressionFailedLoggingProfile();
         }
         AndroidLogListener.writeDeviceLogsToConsole(AndroidLogListener.getInstance(ListenerType.DEFAULT),
@@ -932,4 +935,59 @@ public class CommonAndroidSteps {
         group = usrMgr.replaceAliasesOccurences(group, ClientUsersManager.FindBy.NAME_ALIAS);
         commonSteps.UserXRemoveContactFromGroupChat(user1, user2, group);
     }
+
+    /**
+     * User adds a remote device to his list of devices
+     *
+     * @param userNameAlias user name/alias
+     * @param deviceName    unique name of the device
+     * @throws Exception
+     * @step. User (.*) adds a new device (.*)$
+     */
+    @When("^User (.*) adds a new device (.*) with label (.*)$")
+    public void UserAddRemoteDeviceToAccount(String userNameAlias,
+                                             String deviceName, String label) throws Exception {
+        commonSteps.UserAddsRemoteDeviceToAccount(userNameAlias, deviceName, label);
+    }
+
+    /**
+     * User adds multiple devices to his list of devices
+     *
+     * @param userNameAlias user name/alias
+     * @param deviceNames   unique name of devices, comma-separated list
+     * @throws Exception
+     * @step. User (.*) adds new devices (.*)
+     */
+    @When("^User (.*) adds new devices (.*)")
+    public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
+        final List<String> names = CommonSteps.splitAliases(deviceNames);
+        for (String name : names) {
+            commonSteps.UserAddsRemoteDeviceToAccount(userNameAlias, name,
+                    CommonUtils.generateRandomString(10));
+        }
+    }
+
+    /**
+     * Press Send button on OnScreen keyboard (the keyboard should be already populated)
+     *
+     * @throws Exception
+     * @step. ^I press Send button$
+     */
+    @And("^I press Send button$")
+    public void IPressSendButton() throws Exception {
+        pagesCollection.getCommonPage().pressKeyboardSendButton();
+    }
+
+    /**
+     * Remove all registered OTR clients for the particular user
+     *
+     * @param userAs user name/alias
+     * @throws Exception
+     * @step. ^User (.*) removes all his registered OTR clients$
+     */
+    @Given("^User (.*) removes all his registered OTR clients$")
+    public void UserRemovesAllRegisteredOtrClients(String userAs) throws Exception {
+        commonSteps.UserRemovesAllRegisteredOtrClients(userAs);
+    }
+
 }

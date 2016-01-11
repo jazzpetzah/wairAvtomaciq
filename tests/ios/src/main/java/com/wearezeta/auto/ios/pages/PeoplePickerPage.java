@@ -157,8 +157,7 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public void tapOnPeoplePickerClearBtn() throws Exception {
-
-		DriverUtils.mobileTapByCoordinates(getDriver(), peoplePickerClearBtn);
+		DriverUtils.tapByCoordinates(getDriver(), peoplePickerClearBtn);
 	}
 
 	public double checkAvatarClockIcon(String name) throws Exception {
@@ -208,8 +207,7 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public void sendTextToSeachInput(String text) throws Exception {
-		DriverUtils.sendTextToInputByScript(getDriver(),
-				IOSLocators.scriptSearchField, text);
+		peoplePickerSearch.sendKeys(text);
 	}
 
 	public boolean waitUserPickerFindUser(String user) throws Exception {
@@ -380,7 +378,7 @@ public class PeoplePickerPage extends IOSPage {
 		}
 		for (int i = 0; i < el.size(); i++) {
 			if (el.get(i).isDisplayed() && el.get(i).isEnabled()) {
-				DriverUtils.mobileTapByCoordinates(getDriver(), el.get(i));
+				DriverUtils.tapByCoordinates(getDriver(), el.get(i));
 				break;
 			}
 		}
@@ -453,7 +451,7 @@ public class PeoplePickerPage extends IOSPage {
 			throws Exception {
 
 		WebElement el = getDriver().findElement(By.name(contact));
-		DriverUtils.mobileTapByCoordinates(getDriver(), el);
+		DriverUtils.tapByCoordinates(getDriver(), el);
 		return new OtherUserOnPendingProfilePage(this.getLazyDriver());
 	}
 
@@ -475,10 +473,8 @@ public class PeoplePickerPage extends IOSPage {
 				By.name(IOSLocators.namePeopleYouMayKnowLabel));
 	}
 
-	private void unblockButtonDoubleClick() throws InterruptedException,
-			Exception {
-		DriverUtils
-				.iOSMultiTap(
+	private void unblockButtonDoubleClick() throws Exception {
+		DriverUtils.multiTap(
 						getDriver(),
 						getDriver().findElement(
 								By.name(IOSLocators.nameUnblockButton)), 2);

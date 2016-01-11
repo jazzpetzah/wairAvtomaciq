@@ -158,7 +158,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 	}
 
 	public void removeFromConversation() throws Exception {
-		DriverUtils.mobileTapByCoordinates(this.getDriver(), removeFromChat);
+		DriverUtils.tapByCoordinates(this.getDriver(), removeFromChat);
 	}
 
 	public boolean isRemoveFromConversationAlertVisible() {

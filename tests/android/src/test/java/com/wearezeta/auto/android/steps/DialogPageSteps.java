@@ -105,17 +105,6 @@ public class DialogPageSteps {
     }
 
     /**
-     * Sends the message by pressing the keyboard send button
-     *
-     * @throws Exception
-     * @step. ^I send the message$
-     */
-    @When("^I send the message$")
-    public void ISendTheMessage() throws Exception {
-        getDialogPage().pressKeyboardSendButton();
-    }
-
-    /**
      * Swipes the text input area to reveal the different input options
      *
      * @throws Exception

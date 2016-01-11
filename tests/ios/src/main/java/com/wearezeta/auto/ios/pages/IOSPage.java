@@ -8,6 +8,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -29,10 +30,13 @@ import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public abstract class IOSPage extends BasePage {
+	public final static long IOS_DRIVER_INIT_TIMEOUT = 1000 * 60 * 3;
+
 	private static final int SWIPE_DELAY = 10 * 1000; // milliseconds
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameMainWindow)
-	protected WebElement content;
+	protected static final String nameMainWindow = "ZClientMainWindow";
+	@FindBy(name = nameMainWindow)
+	protected WebElement mainWindow;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameEditingItemSelect)
 	private WebElement popupSelect;
@@ -72,6 +76,10 @@ public abstract class IOSPage extends BasePage {
 
 	private static String imagesPath = "";
 
+    protected long getDriverInitializationTimeout() {
+        return IOS_DRIVER_INIT_TIMEOUT;
+    }
+
 	public IOSPage(Future<ZetaIOSDriver> driver) throws Exception {
 		super(driver);
 
@@ -99,63 +107,61 @@ public abstract class IOSPage extends BasePage {
 			throws Exception;
 
 	public IOSPage swipeLeft(int time) throws Exception {
-		DriverUtils.swipeLeft(this.getDriver(), content, time);
+		DriverUtils.swipeLeft(this.getDriver(), mainWindow, time);
 		return returnBySwipe(SwipeDirection.LEFT);
 	}
 
 	public IOSPage swipeLeft(int time, int percentX, int percentY)
 			throws Exception {
-		DriverUtils.swipeLeft(this.getDriver(), content, time, percentX,
+		DriverUtils.swipeLeft(this.getDriver(), mainWindow, time, percentX,
 				percentY);
 		return returnBySwipe(SwipeDirection.LEFT);
 	}
 
 	public IOSPage swipeRight(int time) throws Exception {
-		DriverUtils.swipeRight(this.getDriver(), content, time);
+		DriverUtils.swipeRight(this.getDriver(), mainWindow, time);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 
 	public IOSPage swipeRight(int time, int percentX, int percentY)
 			throws Exception {
-		DriverUtils.swipeRight(this.getDriver(), content, time, percentX,
+		DriverUtils.swipeRight(this.getDriver(), mainWindow, time, percentX,
 				percentY);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 
 	public IOSPage swipeUp(int time) throws Exception {
-		DriverUtils.swipeUp(this.getDriver(), content, time);
+		DriverUtils.swipeUp(this.getDriver(), mainWindow, time);
 		return returnBySwipe(SwipeDirection.UP);
 	}
 
 	public IOSPage swipeUp(int time, int percentX, int percentY)
 			throws Exception {
 		DriverUtils
-				.swipeUp(this.getDriver(), content, time, percentX, percentY);
+				.swipeUp(this.getDriver(), mainWindow, time, percentX, percentY);
 		return returnBySwipe(SwipeDirection.UP);
 	}
 
 	public IOSPage swipeDownSimulator() throws Exception {
-		DriverUtils.iOSSimulatorSwipeDown(CommonUtils
-				.getSwipeScriptPath(IOSPage.class));
+		IOSSimulatorHelper.swipeDown();
 		Thread.sleep(SWIPE_DELAY);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
 	public IOSPage swipeUpSimulator() throws Exception {
-		DriverUtils.iOSSimulatorSwipeUp(CommonUtils
-				.getSwipeScriptPath(IOSPage.class));
+		IOSSimulatorHelper.swipeUp();
 		Thread.sleep(SWIPE_DELAY);
 		return returnBySwipe(SwipeDirection.UP);
 	}
 
 	public IOSPage swipeDown(int time) throws Exception {
-		DriverUtils.swipeDown(this.getDriver(), content, time);
+		DriverUtils.swipeDown(this.getDriver(), mainWindow, time);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
 	public IOSPage swipeDown(int time, int percentX, int percentY)
 			throws Exception {
-		DriverUtils.swipeDown(this.getDriver(), content, time, percentX,
+		DriverUtils.swipeDown(this.getDriver(), mainWindow, time, percentX,
 				percentY);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
@@ -215,7 +221,7 @@ public abstract class IOSPage extends BasePage {
 	public void pasteStringToInput(WebElement element, String text)
 			throws Exception {
 		IOSCommonUtils.copyToSystemClipboard(text);
-		DriverUtils.iOSLongTap(this.getDriver(), element);
+		DriverUtils.longTap(this.getDriver(), element);
 		clickPopupPasteButton();
 	}
 
@@ -375,8 +381,7 @@ public abstract class IOSPage extends BasePage {
 						By.name(IOSLocators.CommonIOSLocators.nameLockScreenMessage),
 						5)) {
 
-			DriverUtils.iOSSimulatorSwipeRight(CommonUtils
-					.getSwipeScriptPath(IOSPage.class));
+			IOSSimulatorHelper.swipeRight();
 			Thread.sleep(SWIPE_DELAY);
 		}
 	}

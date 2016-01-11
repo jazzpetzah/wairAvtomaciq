@@ -13,9 +13,7 @@ Feature: Registration
     When I activate user by URL
     And User <Name> is Me without avatar
     And I see Welcome page
-    And I force carousel mode on Self Picture Upload dialog
-    And I select random picture from carousel on Self Picture Upload dialog
-    And I confirm picture selection on Self Picture Upload dialog
+    And I confirm keeping picture on Welcome page
     Then I see user name on self profile page <Name>
     Then I see user email on self profile page <Email>
     And I click gear button on self profile page
@@ -37,9 +35,7 @@ Feature: Registration
     And I accept the Terms of Use
     And I submit registration form
     And I see Welcome page
-    And I force carousel mode on Self Picture Upload dialog
-    And I select random picture from carousel on Self Picture Upload dialog
-    And I confirm picture selection on Self Picture Upload dialog
+    And I confirm keeping picture on Welcome page
     And I see Contact list with name <Name>
 
     Examples: 
@@ -52,8 +48,7 @@ Feature: Registration
     Given I switch to Sign In page
     And I Sign in using login <Login> and password <Password>
     And I see Welcome page
-    And I choose <PictureName> as my self picture on Self Picture Upload dialog
-    And I confirm picture selection on Self Picture Upload dialog
+    And I choose <PictureName> as my self picture on Welcome page
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see Sign In page
@@ -70,10 +65,8 @@ Feature: Registration
     Given I switch to Sign In page
     When I Sign in using login <Login> and password <Password>
     And I see Welcome page
-    And I force carousel mode on Self Picture Upload dialog
-    And I select random picture from carousel on Self Picture Upload dialog
-    And I confirm picture selection on Self Picture Upload dialog
-    And I wait for Self Picture Upload dialog to vanish
+    And I confirm keeping picture on Welcome page
+    And I am signed in properly
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see Sign In page

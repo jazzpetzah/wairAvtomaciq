@@ -56,9 +56,9 @@ public class VideoPlayerPage extends IOSPage {
 
 	public DialogPage clickVideoDoneButton() throws Exception {
 		DialogPage page = null;
-		DriverUtils.mobileTapByCoordinates(this.getDriver(), videoDoneButton);
+		DriverUtils.tapByCoordinates(this.getDriver(), videoDoneButton);
 		try {
-			DriverUtils.mobileTapByCoordinates(this.getDriver(),
+			DriverUtils.tapByCoordinates(this.getDriver(),
 					videoDoneButton);
 		} catch (WebDriverException e) {
 

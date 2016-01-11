@@ -1,6 +1,5 @@
 package com.wearezeta.auto.web.pages;
 
-import java.util.Random;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
@@ -16,6 +15,9 @@ import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class WelcomePage extends WebPage {
+
+	private static final int TIMEOUT_UNSPLASH = 10; // seconds
+
 	@FindBy(how = How.CSS, using = WebAppLocators.SelfPictureUploadPage.cssChooseYourOwnInput)
 	private WebElement chooseYourOwnInput;
 
@@ -52,49 +54,23 @@ public class WelcomePage extends WebPage {
 	public void uploadPicture(String pictureName) throws Exception {
 		final String picturePath = WebCommonUtils
 				.getFullPicturePath(pictureName);
-		final String showPathInputJScript = "$(\""
-				+ WebAppLocators.SelfPictureUploadPage.cssChooseYourOwnInput
-				+ "\").css({'left': '0', 'opacity': '100', 'z-index': '100'});";
-		this.getDriver().executeScript(showPathInputJScript);
-		assert DriverUtils
-				.waitUntilLocatorIsDisplayed(
-						this.getDriver(),
-						By.cssSelector(WebAppLocators.SelfPictureUploadPage.cssChooseYourOwnInput),
-						5);
 		if (WebAppExecutionContext.getBrowser() == Browser.Safari) {
 			WebCommonUtils.sendPictureInSafari(picturePath, this.getDriver()
 					.getNodeIp());
 		} else {
 			chooseYourOwnInput.sendKeys(picturePath);
+			// manually trigger change event on input
+			this.getDriver().executeScript("e = $.Event('change');$(\""
+						+ WebAppLocators.SelfPictureUploadPage.cssChooseYourOwnInput
+						+ "\").trigger(e);");
 		}
 	}
 
-	public void confirmPictureSelection() throws Exception {
-		assert DriverUtils
-				.waitUntilLocatorIsDisplayed(
-						this.getDriver(),
-						By.xpath(WebAppLocators.SelfPictureUploadPage.xpathConfirmPictureSelectionButton));
-		pictureSelectionConfirmButton.click();
-	}
-
-	public void forceCarouselMode() throws Exception {
-		final String forceCarouselScript = "window.wire.app.view.content.self_profile.show_get_picture();";
-		this.getDriver().executeScript(forceCarouselScript);
-	}
-
-	private static final Random random = new Random();
-
-	private static final int COUNT_OF_CAROUSEL_PICTURES = 5;
-	private static final int CHANGE_PICTURE_TRANSITION_TIMEOUT_SECONDS = 1;
-
-	public void selectRandomPictureFromCarousel() throws InterruptedException {
-		for (int i = 0; i < COUNT_OF_CAROUSEL_PICTURES; i++) {
-			if (random.nextInt(100) < 50) {
-				nextCarouselImageBtn.click();
-			} else {
-				previousCarouselImageBtn.click();
-			}
-			Thread.sleep(CHANGE_PICTURE_TRANSITION_TIMEOUT_SECONDS * 1000);
-		}
+	public void keepPicture() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				keepPictureButton, TIMEOUT_UNSPLASH) : String.format(
+				"Keep picture button not clickable after %s seconds",
+				TIMEOUT_UNSPLASH);
+		keepPictureButton.click();
 	}
 }

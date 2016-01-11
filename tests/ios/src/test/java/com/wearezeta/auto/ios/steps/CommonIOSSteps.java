@@ -4,17 +4,13 @@ import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.Future;
 
-import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
+import com.wearezeta.auto.common.*;
+import cucumber.api.Scenario;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-import com.wearezeta.auto.common.CommonCallingSteps2;
-import com.wearezeta.auto.common.CommonSteps;
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.Platform;
-import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -35,8 +31,6 @@ public class CommonIOSSteps {
 	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(CommonIOSSteps.class
 			.getSimpleName());
-
-	private static boolean skipBeforeAfter = false;
 
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 	private static final String DEFAULT_USER_AVATAR = "android_dialog_sendpicture_result.png";
@@ -68,14 +62,6 @@ public class CommonIOSSteps {
 				.getIosApplicationPathFromConfig(CommonIOSSteps.class);
 	}
 
-	public boolean isSkipBeforeAfter() {
-		return skipBeforeAfter;
-	}
-
-	public void setSkipBeforeAfter(boolean skipBeforeAfter) {
-		CommonIOSSteps.skipBeforeAfter = skipBeforeAfter;
-	}
-
 	public Future<ZetaIOSDriver> resetIOSDriver(boolean enableAutoAcceptAlerts)
 			throws Exception {
 		return resetIOSDriver(enableAutoAcceptAlerts, false);
@@ -91,6 +77,7 @@ public class CommonIOSSteps {
 		capabilities.setCapability("deviceName", deviceName);
 		capabilities.setCapability("platformVersion", getPlatformVersion());
 		capabilities.setCapability("sendKeyStrategy", "grouped");
+        capabilities.setCapability("launchTimeout", IOSPage.IOS_DRIVER_INIT_TIMEOUT);
 		final String backendType = CommonUtils.getBackendType(this.getClass());
 		capabilities
 				.setCapability(
@@ -111,25 +98,12 @@ public class CommonIOSSteps {
 				.resetDriver(getUrl(), capabilities);
 	}
 
-	@Before("~@noAcceptAlert")
-	public void setUpAcceptAlerts() throws Exception {
-		if (this.isSkipBeforeAfter()) {
-			return;
-		}
-		commonBefore(resetIOSDriver(true));
-	}
-
-	@Before("@noAcceptAlert")
-	public void setUpNoAlerts() throws Exception {
-		if (this.isSkipBeforeAfter()) {
-			return;
-		}
-		commonBefore(resetIOSDriver(false));
-	}
-
-	public void commonBefore(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+	@Before
+	public void setUp(Scenario scenario) throws Exception {
+		final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(
+				!scenario.getSourceTagNames().contains("@noAcceptAlert"));
+        ZetaFormatter.setLazyDriver(lazyDriver);
 		pagesCollecton.setFirstPage(new LoginPage(lazyDriver));
-		ZetaFormatter.setLazyDriver(lazyDriver);
 	}
 
 	@When("^I see keyboard$")

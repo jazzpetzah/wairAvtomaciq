@@ -67,7 +67,7 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
 
 	public TabletOtherUserInfoPage selectUserByNameOniPadPopover(String name)
 			throws Exception {
-		DriverUtils.mobileTapByCoordinates(this.getDriver(), getDriver()
+		DriverUtils.tapByCoordinates(this.getDriver(), getDriver()
 				.findElementByName(name.toUpperCase()));
 
 		return new TabletOtherUserInfoPage(this.getLazyDriver());
@@ -78,7 +78,7 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
 	}
 
 	public void exitGroupChatPopover() throws Exception {
-		DriverUtils.mobileTapByCoordinates(getDriver(), conversationMenuButton,
+		DriverUtils.tapByCoordinates(getDriver(), conversationMenuButton,
 				50, 50);
 	}
 

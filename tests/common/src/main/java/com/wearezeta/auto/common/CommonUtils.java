@@ -276,8 +276,8 @@ public class CommonUtils {
 		return (getValueFromConfig(c, "isSimulator").equals("true"));
 	}
 
-	public static String getSwipeScriptPath(Class<?> c) throws Exception {
-		return getValueFromConfig(c, "swipeScriptPath");
+	public static String getSwipeScriptPathPrefix(Class<?> c) throws Exception {
+		return getValueFromConfig(c, "swipeScriptPathPrefix");
 	}
 
 	public static String getWebAppApplicationPathFromConfig(Class<?> c)

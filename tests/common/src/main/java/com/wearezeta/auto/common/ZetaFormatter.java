@@ -3,14 +3,7 @@ package com.wearezeta.auto.common;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -53,9 +46,7 @@ public class ZetaFormatter implements Formatter, Reporter {
     private long stepStartedTimestamp;
 
     @Override
-    public void background(Background arg0) {
-
-    }
+    public void background(Background arg0) {}
 
     @Override
     public void close() {
@@ -72,9 +63,7 @@ public class ZetaFormatter implements Formatter, Reporter {
     }
 
     @Override
-    public void examples(Examples arg0) {
-
-    }
+    public void examples(Examples arg0) {}
 
     @Override
     public void feature(Feature arg0) {
@@ -116,8 +105,7 @@ public class ZetaFormatter implements Formatter, Reporter {
     }
 
     @Override
-    public void uri(String arg0) {
-    }
+    public void uri(String arg0) {}
 
     @Override
     public void after(Match arg0, Result arg1) {
@@ -196,7 +184,6 @@ public class ZetaFormatter implements Formatter, Reporter {
         final String stepName = currentStep.getName();
         final String stepStatus = arg0.getStatus();
         steps.put(currentStep, stepStatus);
-        updateRecentTestResult();
         final long stepFinishedTimestamp = new Date().getTime();
         boolean isScreenshotingEnabled = true;
         try {
@@ -230,6 +217,7 @@ public class ZetaFormatter implements Formatter, Reporter {
         try {
             final File outputFile = new File(path);
             if (!outputFile.getParentFile().exists()) {
+                //noinspection ResultOfMethodCallIgnored
                 outputFile.getParentFile().mkdirs();
             }
             ImageIO.write(adjustScreenshotSize(screenshot), "png", outputFile);
@@ -291,36 +279,9 @@ public class ZetaFormatter implements Formatter, Reporter {
                     new TestcaseResultToTestrailTransformer(steps).transform(),
                     normalizedTags);
         } finally {
-            recentTestResult = Result.UNDEFINED.toString();
             steps.clear();
             stepsIterator = Optional.empty();
         }
-    }
-
-    private static void updateRecentTestResult() {
-        recentTestResult = Result.UNDEFINED.toString();
-        for (Map.Entry<Step, String> entry : steps.entrySet()) {
-            if (entry.getValue() == null) {
-                continue;
-            }
-            if (entry.getValue().equals(Result.FAILED.toString())) {
-                recentTestResult = Result.FAILED;
-                break;
-            }
-            if (entry.getValue().equals(Result.SKIPPED.toString())) {
-                recentTestResult = Result.SKIPPED.toString();
-                break;
-            }
-        }
-        if (!steps.isEmpty() && recentTestResult.equals(Result.UNDEFINED.toString())) {
-            recentTestResult = Result.PASSED.toString();
-        }
-    }
-
-    private static String recentTestResult = Result.UNDEFINED.toString();
-
-    public static String getRecentTestResult() {
-        return recentTestResult;
     }
 
     public static String getFeature() {
