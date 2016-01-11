@@ -92,69 +92,6 @@ public class ConnectToPageSteps {
 				"Hello");
 	}
 
-	/**
-	 * Inputs a message with a certain number of random characters by script on
-	 * iPAD
-	 * 
-	 * @step. I input message in connect dialog with (.*) characters
-	 * 
-	 * @param characters
-	 *            number of characters to input into dialog
-	 * @throws Exception
-	 */
-
-	@When("^I input message in connect dialog with (.*) characters$")
-	public void IInputMessageWithLength(int characters) throws Exception {
-		getConnectToPage().inputCharactersIntoConnectDialogByScript(characters,
-				false);
-	}
-
-	/**
-	 * Inputs a message with a certain number of random characters by script on
-	 * iPhone
-	 * 
-	 * @step. ^I type message in connect dialog with (.*) characters$
-	 * 
-	 * @param characters
-	 *            number of characters to input into dialog
-	 * @throws Exception
-	 */
-
-	@When("^I type message in connect dialog with (.*) characters$")
-	public void IInputMessageWithLengthPhone(int characters) throws Exception {
-		getConnectToPage().inputCharactersIntoConnectDialogByScript(characters,
-				true);
-	}
-
-	/**
-	 * Fill in a message with a certain number of random characters from
-	 * keyboard
-	 * 
-	 * @step. I fill in (.*) characters in connect dialog
-	 * 
-	 * @param characters
-	 *            number of characters to input into dialog
-	 * @throws Exception
-	 */
-
-	@When("^I fill in (.*) characters in connect dialog$")
-	public void IFillInCharsInConnectDialog(int characters) throws Exception {
-		getConnectToPage().fillTextInConnectDialogWithLengh(characters);
-	}
-
-	/**
-	 * Checks that the max amount of characters are present
-	 * 
-	 * @step. I see message with max number of characters
-	 * @throws Exception
-	 * 
-	 */
-
-	@When("^I see message with max number of characters$")
-	public void VerifyMaxCharacterCount() throws Exception {
-		Assert.assertTrue(getConnectToPage().isMaxCharactersInMessage());
-	}
-
 	@When("^I see connection request from (.*)$")
 	public void IReceiveInvitationMessage(String contact) throws Throwable {
 		// Not needed since we auto accept all alerts

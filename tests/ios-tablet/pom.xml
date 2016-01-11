@@ -18,17 +18,14 @@
 		<appPath>/Project/ZClient_ios.app</appPath>
 		<platformVersion>9.1</platformVersion>
 		<isSimulator>true</isSimulator>
-		<driverTimeoutSeconds>30</driverTimeoutSeconds>
-		<pathToUserpic>img/userpicture_landscape.jpg</pathToUserpic>
-		<pathToAddressBook>AddressBook</pathToAddressBook>
-		<iosImagesPath>img/</iosImagesPath>
-		<swipeScriptPath>swipeInWindow</swipeScriptPath>
-		<iosAppiumLogPath>/Project/appium_ios.log</iosAppiumLogPath>
+		<driverTimeoutSeconds>7</driverTimeoutSeconds>
+		<iosImagesPath>${project.basedir}/../tools/img/</iosImagesPath>
+		<swipeScriptPathPrefix>${project.basedir}/../tools/swipeInWindow</swipeScriptPathPrefix>
 		<defaultEmail>smoketester@wire.com</defaultEmail>
 		<iosClientInfoPlist>/Project/builds_info/Info_ios.plist</iosClientInfoPlist>
 		<deviceName>iPad Air</deviceName>
 		<backendType>staging</backendType>
-		<rcNotificationsRecepients>dasha@wire.com,nick@wire.com,sergeii.khyzhniak@wire.com,piotr.iazadji@wire.com</rcNotificationsRecepients>
+		<rcNotificationsRecepients>dasha@wire.com,nick@wire.com,juliane@wire.com,piotr.iazadji@wire.com</rcNotificationsRecepients>
 	</properties>
 
 	<dependencies>

@@ -127,7 +127,7 @@ public class IncomingCallPage extends CallPage {
 			clickableGlitch = true;
 		}
 		if (clickableGlitch) {
-			DriverUtils.mobileTapByCoordinates(getDriver(), el);
+			DriverUtils.tapByCoordinates(getDriver(), el);
 		} else {
 			el.click();
 		}
@@ -153,7 +153,7 @@ public class IncomingCallPage extends CallPage {
 				this.getWait().until(ExpectedConditions.visibilityOf(el));
 				this.getWait().until(
 						ExpectedConditions.elementToBeClickable(el));
-				DriverUtils.scrollToElement(this.getDriver(), el);
+				this.getDriver().scrollToExact(el.getText());
 			} else {
 				break;
 			}

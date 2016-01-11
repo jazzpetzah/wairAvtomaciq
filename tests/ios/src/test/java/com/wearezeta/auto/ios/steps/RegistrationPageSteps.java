@@ -188,10 +188,9 @@ public class RegistrationPageSteps {
 		this.userToRegister.addNameAlias(name);
 
 		this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
-		String number = this.userToRegister.getPhoneNumber().toString();
-		number = number.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, "");
-		getRegistrationPage().selectCodeAndInputPhoneNumber(number,
-				PhoneNumber.WIRE_COUNTRY_PREFIX);
+        getRegistrationPage().selectWirestan();
+		getRegistrationPage().inputPhoneNumber(
+                this.userToRegister.getPhoneNumber().toString().replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""));
 	}
 
 	/**
@@ -206,10 +205,9 @@ public class RegistrationPageSteps {
 	@When("^I input phone number of already registered user (.*)$")
 	public void IInputPhoneNumberOfRegisteredUser(String name) throws Exception {
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
-		String number = user.getPhoneNumber().toString();
-		number = number.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, "");
-		getRegistrationPage().selectCodeAndInputPhoneNumber(number,
-				PhoneNumber.WIRE_COUNTRY_PREFIX);
+        getRegistrationPage().selectWirestan();
+        getRegistrationPage().inputPhoneNumber(
+                user.getPhoneNumber().toString().replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""));
 	}
 
 	/**
@@ -220,7 +218,7 @@ public class RegistrationPageSteps {
 	 * @throws Exception
 	 */
 	@When("^I enter random phone number$")
-	public void IEnterRandomePhoneNumber() throws Exception {
+	public void IEnterRandomPhoneNumber() throws Exception {
 		getRegistrationPage().inputPhoneNumber(
 				CommonUtils.generateRandomXdigits(7));
 	}
@@ -237,8 +235,11 @@ public class RegistrationPageSteps {
 	 */
 	@When("^I input phone number (.*) with code (.*)$")
 	public void IInputPhoneNumber(String number, String code) throws Exception {
-		getRegistrationPage().selectCodeAndInputPhoneNumber(number, code);
-	}
+        getRegistrationPage().selectWirestan();
+        assert code.equals(PhoneNumber.WIRE_COUNTRY_PREFIX) :
+                "Only Wire-compatible phone numbers are supported";
+        getRegistrationPage().inputPhoneNumber(number);
+    }
 
 	/**
 	 * Input in phone number field page an invalid phone number

@@ -112,6 +112,7 @@ Feature: Connect
     Given I switch to Sign In page
     When I wait until <Login2> exists in backend search results
     And I Sign in using login <Login> and password <Password>
+    And I see People Picker
     And I type <Login2> in search field of People Picker
     And I see user <Name2> found in People Picker
     And I click on not connected user <Name2> found in People Picker

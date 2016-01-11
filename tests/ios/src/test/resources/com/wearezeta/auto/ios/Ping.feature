@@ -37,7 +37,7 @@ Feature: Ping
       | Name      | Contact1  | Contact2  | Action1 | Action2      | GroupChatName        | Color        | ContactName |
       | user1Name | user2Name | user3Name | PINGED  | PINGED AGAIN | ReceivePingGroupChat | BrightOrange | OtherUser   |
 
-  @regression @id1356
+  @C3243 @regression @id1356
   Scenario Outline: Verify you can see Ping on the other side (1:1 conversation)
     Given There are 2 users where <Name> is me
     Given User <Contact1> change name to <ContactName>

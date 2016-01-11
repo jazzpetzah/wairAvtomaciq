@@ -12,6 +12,7 @@ Feature: Self Profile
     And I press Camera button
     And I choose a picture from camera roll
     And I press Confirm button
+    And I wait for 5 seconds
     And I return to personal page
     Then I see changed user picture <Picture>
 
@@ -142,7 +143,7 @@ Feature: Self Profile
       | Name      | Number        | Code |
       | user1Name | 8301652248706 | +0   |
 
-  @C1081 @regression @id3990
+  @C1081 @regression @rc @id3990
   Scenario Outline: Verify theme switcher is shown on the self profile
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number

@@ -397,7 +397,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
-  @C846 @staging @id3968
+  @C846 @rc @regression @id3968
   Scenario Outline: Verify posting in a group conversation without content
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -483,7 +483,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C366 @staging @id1075
+  @C366 @regression @rc @id1075
   Scenario Outline: Verify messages are marked as read with disappearing unread dot
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>

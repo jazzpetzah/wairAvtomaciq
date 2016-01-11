@@ -109,29 +109,34 @@ public class MainWirePageSteps {
 	@When("^I verify app is in fullscreen$")
 	public void IVerifyAppFullscreen() throws Exception {
 		int maxHeight;
+		int maxWidth;
 
 		// get Desktop size
 		MainWirePage mainPage = osxPagesCollection.getPage(MainWirePage.class);
 		Dimension desktopSize = mainPage.getDesktopSize();
 		// get Dock position & size
 		Dimension dockSize = mainPage.getDockSize();
-		// calculate fullscreen height
+		// calculate fullscreen height & width
 		if (dockSize.getHeight() > dockSize.getWidth()) {
 			// dock on the left side
 			maxHeight = desktopSize.getHeight() - OSX_TITLEBAR_HEIGHT;
+			maxWidth = desktopSize.getWidth() - dockSize.getWidth();
 		} else {
 			// dock on the bottom
 			maxHeight = desktopSize.getHeight() - dockSize.getHeight()
 					- OSX_TITLEBAR_HEIGHT;
+			maxWidth = desktopSize.getWidth();
 		}
 		// check if height in allowance
 		assertThat("Height", mainPage.getHeight(), greaterThan(maxHeight
 				- DEVIATION_ALLOWANCE_IN_PX));
 		assertThat("Height", mainPage.getHeight(), lessThan(maxHeight
 				+ DEVIATION_ALLOWANCE_IN_PX));
-		// get maximum possible width
-		int maxWidth = MainWirePage.APP_MAX_WIDTH;
-		assertThat("Width", mainPage.getWidth(), equalTo(maxWidth));
+		// check if width in allowance
+		assertThat("Width", mainPage.getWidth(), greaterThan(maxWidth
+				- DEVIATION_ALLOWANCE_IN_PX));
+		assertThat("Width", mainPage.getWidth(), lessThan(maxWidth
+				+ DEVIATION_ALLOWANCE_IN_PX));
 	}
 
 	/**

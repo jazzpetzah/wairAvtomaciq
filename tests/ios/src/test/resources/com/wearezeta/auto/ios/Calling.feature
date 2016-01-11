@@ -19,7 +19,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @C3180 @C2563 @regression @rc @id908
+  @C3180 @regression @rc @id908
   Scenario Outline: Verify starting outgoing call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

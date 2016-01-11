@@ -175,7 +175,6 @@ Feature: Conversation View
     And I swipe on text input
     And I press Add Picture button
     And I press "Gallery" button
-    And I rotate UI to portrait
     And I press "Confirm" button
     Then I see new photo in the dialog
 
@@ -328,3 +327,28 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @C236 @rc
+  Scenario Outline: I can send giphy image from the giphy grid preview
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I tap on text input
+    And I type the message "<Message>"
+    And I click on the GIF button
+    Then I see giphy preview page
+    Then I click on the giphy link button
+    Then I see the giphy grid preview
+    Then I select a random gif from the grid preview
+    Then I see giphy preview page
+    When I click on the giphy send button
+    Then I see dialog page
+    And I see new photo in the dialog
+    And Last message is <Message> · via giphy.com
+
+    Examples:
+      | Name      | Contact   | Message |
+      | user1Name | user2Name | Yo      |

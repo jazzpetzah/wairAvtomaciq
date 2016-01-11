@@ -177,7 +177,7 @@ public class ContactListPage extends IOSPage {
 			clickableGlitch = true;
 		}
 		if (clickableGlitch) {
-			DriverUtils.mobileTapByCoordinates(getDriver(), el);
+			DriverUtils.tapByCoordinates(getDriver(), el);
 		} else {
 			el.click();
 		}
@@ -222,9 +222,8 @@ public class ContactListPage extends IOSPage {
 				WebElement el = contactListNames
 						.get(contactListNames.size() - 1);
 				this.getWait().until(ExpectedConditions.visibilityOf(el));
-				this.getWait().until(
-						ExpectedConditions.elementToBeClickable(el));
-				DriverUtils.scrollToElement(this.getDriver(), el);
+				this.getWait().until(ExpectedConditions.elementToBeClickable(el));
+				this.getDriver().scrollToExact(el.getText());
 			} else {
 				break;
 			}
@@ -247,9 +246,8 @@ public class ContactListPage extends IOSPage {
 				WebElement el = contactListCells
 						.get(contactListCells.size() - 1);
 				this.getWait().until(ExpectedConditions.visibilityOf(el));
-				this.getWait().until(
-						ExpectedConditions.elementToBeClickable(el));
-				DriverUtils.scrollToElement(this.getDriver(), el);
+				this.getWait().until(ExpectedConditions.elementToBeClickable(el));
+				this.getDriver().scrollToExact(el.getText());
 			} else {
 				break;
 			}
@@ -414,7 +412,7 @@ public class ContactListPage extends IOSPage {
 	public void dismissTutorial() throws Exception {
 		WebElement tutorialView = this.getDriver().findElement(
 				By.name(IOSLocators.nameTutorialView));
-		DriverUtils.iOS3FingerTap(this.getDriver(), tutorialView, 3);
+		this.getDriver().tap(3, tutorialView, 1);
 	}
 
 	public List<WebElement> GetVisibleContacts() throws Exception {
@@ -444,8 +442,8 @@ public class ContactListPage extends IOSPage {
 
 	@Override
 	public IOSPage swipeDown(int time) throws Exception {
-		Point coords = content.getLocation();
-		Dimension elementSize = content.getSize();
+		Point coords = mainWindow.getLocation();
+		Dimension elementSize = mainWindow.getSize();
 		this.getDriver().swipe(coords.x + elementSize.width / 2,
 				coords.y + 150, coords.x + elementSize.width / 2,
 				coords.y + elementSize.height - 150, time);
@@ -568,7 +566,7 @@ public class ContactListPage extends IOSPage {
 				.getDriver()
 				.findElement(
 						By.xpath(IOSLocators.ContactListPage.xpathArchiveConversationButton));
-		DriverUtils.mobileTapByCoordinates(getDriver(), archiveButton);
+		DriverUtils.tapByCoordinates(getDriver(), archiveButton);
 	}
 
 	public void archiveConversation(String conversation) throws Exception {
@@ -805,7 +803,7 @@ public class ContactListPage extends IOSPage {
 				.getDriver()
 				.findElement(
 						By.xpath(IOSLocators.ContactListPage.xpathArchiveConversationButton));
-		DriverUtils.mobileTapByCoordinates(getDriver(), archiveButton);
+		DriverUtils.tapByCoordinates(getDriver(), archiveButton);
 	}
 
 	public void clickLeaveButtonInActionMenu() {

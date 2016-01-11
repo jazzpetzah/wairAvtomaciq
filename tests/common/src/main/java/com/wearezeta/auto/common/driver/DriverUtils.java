@@ -8,7 +8,6 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.HashMap;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -18,7 +17,6 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.InvalidElementStateException;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
@@ -30,7 +28,6 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.remote.SessionNotFoundException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
@@ -52,11 +49,11 @@ public class DriverUtils {
 
     /**
      * https://code.google.com/p/selenium/issues/detail?id=1880
-     * <p>
+     * <p/>
      * DO NOT use this method if you want to check whether the element is NOT
      * visible, because it will wait at least "imlicitTimeout" seconds until the
      * actual result is returned. This slows down automated tests!
-     * <p>
+     * <p/>
      * Use "waitUntilLocatorDissapears" method instead. That's quick and does
      * exactly what you need
      *
@@ -218,14 +215,6 @@ public class DriverUtils {
         } finally {
             restoreImplicitWait(driver);
         }
-    }
-
-    public static void scrollToElement(
-            AppiumDriver<? extends WebElement> driver, WebElement element) {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        HashMap<String, String> scrollToObject = new HashMap<String, String>();
-        scrollToObject.put("element", ((RemoteWebElement) element).getId());
-        js.executeScript("mobile: scrollTo", scrollToObject);
     }
 
     /**
@@ -458,138 +447,56 @@ public class DriverUtils {
                 SWIPE_Y_DEFAULT_PERCENTAGE_END);
     }
 
-    public static void androidMultiTap(
-            AppiumDriver<? extends WebElement> driver, WebElement element,
-            int tapNumber, int millisecondsDuration) {
-        for (int i = 0; i < tapNumber; i++) {
-            driver.tap(1, element, millisecondsDuration);
-        }
-    }
-
-    public static void mobileTapByCoordinates(
+    public static void tapByCoordinates(
             AppiumDriver<? extends WebElement> driver, WebElement element,
             int offsetX, int offsetY) {
-        Point coords = element.getLocation();
-        Dimension elementSize = element.getSize();
-
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        HashMap<String, Double> tapObject = new HashMap<String, Double>();
-        double x = (double) ((coords.x + offsetX + elementSize.width) - elementSize.width / 2);
-        tapObject.put("x", x);
-        double y = (double) ((coords.y + offsetY + elementSize.height) - elementSize.height / 2);
-        tapObject.put("y", y);
-        js.executeScript("mobile: tap", tapObject);
+        final Point coords = element.getLocation();
+        final Dimension elementSize = element.getSize();
+        driver.tap(1, (coords.x + offsetX + elementSize.width) - elementSize.width / 2,
+                (coords.y + offsetY + elementSize.height) - elementSize.height / 2,
+                100);
     }
 
-    public static void mobileTapByCoordinates(
+    public static void tapByCoordinates(
             AppiumDriver<? extends WebElement> driver, WebElement element) {
-        mobileTapByCoordinates(driver, element, 0, 0);
+        tapByCoordinates(driver, element, 0, 0);
     }
 
-    public static void iOSSimulatorSwipeDown(String scriptPath)
-            throws Exception {
-        // CommonUtils.executeOsXCommand(new String[]{"/bin/bash", "-c",
-        // "python", scriptPath,"0.65", "0.1", "0.65", "0.7"});
-        Runtime.getRuntime().exec(
-                "/usr/bin/open -a Terminal " + scriptPath + "Down.py");
-    }
-
-    public static void iOSSimulatorSwipeRight(String scriptPath)
-            throws Exception {
-
-        Runtime.getRuntime().exec(
-                "/usr/bin/open -a Terminal " + scriptPath + "Right.py");
-    }
-
-    public static void iOSSimulatorSwipeDialogPageDown(String scriptPath)
-            throws Exception {
-        Process process = Runtime.getRuntime()
-                .exec("/usr/bin/open -a Terminal " + scriptPath
-                        + "DialogPageDown.py");
-        InputStream stream = process.getErrorStream();
-        BufferedReader br = new BufferedReader(new InputStreamReader(stream));
-        String s;
-        while ((s = br.readLine()) != null) {
-            log.debug(s);
+    public static void multiTap(AppiumDriver<? extends WebElement> driver,
+                                   WebElement element, int tapCount) {
+        final Point coords = element.getLocation();
+        final Dimension elementSize = element.getSize();
+        for (int i = 0; i < tapCount; i++) {
+            driver.tap(1, coords.x + elementSize.width / 2, coords.y + elementSize.height / 2,
+                    SINGLE_TAP_DURATION);
         }
-        stream.close();
-        log.debug("Process Code " + process.waitFor());
-    }
-
-    public static void iOSSimulatorSwipeDialogPageUp(String scriptPath)
-            throws Exception {
-        Process process = Runtime.getRuntime().exec(
-                "/usr/bin/open -a Terminal " + scriptPath + "DialogPageUp.py");
-        InputStream stream = process.getErrorStream();
-        BufferedReader br = new BufferedReader(new InputStreamReader(stream));
-        String s;
-        while ((s = br.readLine()) != null) {
-            log.debug(s);
-        }
-        stream.close();
-        log.debug("Process Code " + process.waitFor());
-    }
-
-    public static void iOSSimulatorSwipeUp(String scriptPath) throws Exception {
-        // CommonUtils.executeOsXCommand(new String[]{"/bin/bash", "-c",
-        // "python", scriptPath,"0.65", "0.95", "0.65", "0.7"});
-        Runtime.getRuntime().exec(
-                "/usr/bin/open -a Terminal " + scriptPath + "Up.py");
-    }
-
-    public static void iOSMultiTap(AppiumDriver<? extends WebElement> driver,
-                                   WebElement element, int tapNumber) throws InterruptedException {
-        Point coords = element.getLocation();
-        Dimension elementSize = element.getSize();
-
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        HashMap<String, Double> tapObject = new HashMap<String, Double>();
-        tapObject.put("tapCount", (double) tapNumber);
-        tapObject.put("touchCount", (double) 1);
-        tapObject.put("duration", 0.2);
-        tapObject.put("x", (double) (coords.x + elementSize.width / 2));
-        tapObject.put("y", (double) (coords.y + elementSize.height / 2));
-
-        for (int i = 0; i < tapNumber; i++) {
-            js.executeScript("mobile: tap", tapObject);
-            Thread.sleep(100);
-        }
-    }
-
-    public static void iOS3FingerTap(AppiumDriver<? extends WebElement> driver,
-                                     WebElement element, int fingerNumber) {
-        driver.tap(fingerNumber, element, 1);
     }
 
     public static void addClass(RemoteWebDriver driver, WebElement element,
                                 String cssClass) {
         String addHoverClassScript = "arguments[0].classList.add('" + cssClass
                 + "');";
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript(addHoverClassScript, element);
+        driver.executeScript(addHoverClassScript, element);
     }
 
     public static void addClassToParent(RemoteWebDriver driver,
                                         WebElement element, String cssClass) {
         String addHoverClassScript = "arguments[0].parentNode.classList.add('"
                 + cssClass + "');";
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript(addHoverClassScript, element);
+        driver.executeScript(addHoverClassScript, element);
     }
 
     public static void removeClass(RemoteWebDriver driver, WebElement element,
                                    String cssClass) {
         String script = "arguments[0].classList.remove('" + cssClass + "');";
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript(script, element);
+        driver.executeScript(script, element);
     }
 
     public static void removeClassFromParent(RemoteWebDriver driver,
                                              WebElement element, String cssClass) {
         String script = "arguments[0].parentNode.classList.remove('" + cssClass
                 + "');";
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript(script, element);
+        driver.executeScript(script, element);
     }
 
     public static void turnOffImplicitWait(RemoteWebDriver driver) {
@@ -616,9 +523,9 @@ public class DriverUtils {
         return Optional.empty();
     }
 
-    public static void iOSLongTap(AppiumDriver<? extends WebElement> driver,
-                                  WebElement element) {
-        driver.tap(1, element, 1000);
+    public static void longTap(AppiumDriver<? extends WebElement> driver,
+                               WebElement element) {
+        driver.tap(1, element, LONG_TAP_DURATION);
     }
 
     public static void moveMouserOver(RemoteWebDriver driver, WebElement element) {
@@ -683,29 +590,6 @@ public class DriverUtils {
         driver.tap(1, x, y, SINGLE_TAP_DURATION);
     }
 
-    /**
-     * Taps outside of the element with the offset given in px or in % of screen size
-     */
-    public static void tapOutsideOfTheElement(
-            AppiumDriver<? extends WebElement> driver, WebElement element,
-            int xOffset, int yOffset, boolean usePxOffset) {
-        if (!usePxOffset) {
-            final Point coords = element.getLocation();
-            final Dimension screenSize = driver.manage().window().getSize();
-            final Dimension elementSize = element.getSize();
-            int dstX = 0;
-            int dstY = 0;
-            dstX = coords.getX() + elementSize.getWidth()/2 + screenSize.getWidth() * xOffset / 100;
-            dstY = coords.getY() + elementSize.getHeight()/2 + screenSize.getHeight() * yOffset / 100;
-            dstX = (dstX > screenSize.getWidth()) ? screenSize.getWidth() : dstX;
-            dstY = (dstX > screenSize.getHeight()) ? screenSize.getHeight() : dstY;
-            dstX = (dstX < 0) ? 0 : dstX;
-            dstY = (dstY < 0) ? 0 : dstY;
-            log.info("Tap on " + dstX + ":" + dstY);
-            driver.tap(1, dstX, dstY, SINGLE_TAP_DURATION);
-        } else tapOutsideOfTheElement(driver, element, xOffset, yOffset);
-    }
-    
     public static void tapOutsideOfTheElement(
             AppiumDriver<? extends WebElement> driver, WebElement element,
             int xOffset, int yOffset) {
@@ -732,22 +616,5 @@ public class DriverUtils {
         dstX = (dstX < 0) ? 0 : dstX;
         log.info("Tap on " + dstX + ":" + dstY);
         driver.tap(1, dstX, dstY, SINGLE_TAP_DURATION);
-    }
-
-    public static void sendTextToInputByScript(RemoteWebDriver driver,
-                                               String scriptLocator, String text) {
-        String script = String
-                .format(scriptLocator + ".setValue(\"%s\")", text);
-        int maxRetrys = 3;
-        int retryCounter = 0;
-        while (retryCounter < maxRetrys) {
-            try {
-                driver.executeScript(script);
-                retryCounter = maxRetrys;
-            } catch (WebDriverException ex) {
-                log.debug("Appium execute script fail. " + ex.getMessage());
-                retryCounter++;
-            }
-        }
     }
 }

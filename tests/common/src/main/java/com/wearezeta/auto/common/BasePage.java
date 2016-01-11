@@ -25,6 +25,8 @@ import com.wearezeta.auto.common.locators.ZetaSearchContext;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public abstract class BasePage {
+    private final static long DEFAULT_DRIVER_INIT_TIMEOUT = 1000 * 60 * 3; // milliseconds
+
     private final Future<? extends RemoteWebDriver> lazyDriver;
 
     protected Future<? extends RemoteWebDriver> getLazyDriver() {
@@ -32,9 +34,8 @@ public abstract class BasePage {
     }
 
     protected long getDriverInitializationTimeout() {
-        // Default value in milliseconds
         // Override this in subclasses if necessary
-        return 1000 * 60 * 3;
+        return DEFAULT_DRIVER_INIT_TIMEOUT;
     }
 
     protected RemoteWebDriver getDriver() throws Exception {

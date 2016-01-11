@@ -1,7 +1,12 @@
 package com.wearezeta.auto.ios.steps;
 
 import java.util.Date;
+import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.ZetaFormatter;
+import com.wearezeta.auto.common.driver.PlatformDrivers;
+import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import com.wearezeta.auto.ios.pages.LoginPage;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriverException;
@@ -34,6 +39,8 @@ public class PerformanceSteps {
 	private final PerformanceCommon perfCommon = PerformanceCommon
 			.getInstance();
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+    private final IOSPagesCollection pagesCollecton = IOSPagesCollection
+            .getInstance();
 
 	private static final int DEFAULT_SWIPE_TIME = 500;
 	private static final int MAX_MSGS_IN_CONVO_WINDOW = 50;
@@ -116,15 +123,14 @@ public class PerformanceSteps {
 		log.debug("Conversation page with contact " + destConvoName
 				+ " opened.");
 		ntry = 1;
-		boolean isFailed = true;
 		do {
 			try {
 				getDialogPage().tapOnCursorInput();
+                break;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			isFailed = false;
-		} while (ntry++ <= 3 && isFailed);
+		} while (ntry++ <= 3);
 		getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
 	}
 
@@ -138,9 +144,15 @@ public class PerformanceSteps {
 	@Given("^I restart application$")
 	public void IResetApplication() throws Exception {
 		CommonIOSSteps commonSteps = new CommonIOSSteps();
-		commonSteps.tearDown();
-		commonSteps.commonBefore(commonSteps.resetIOSDriver(false, true));
-		Thread.sleep(60000);
+
+        pagesCollecton.clearAllPages();
+        if (PlatformDrivers.getInstance().hasDriver(CommonIOSSteps.CURRENT_PLATFORM)) {
+            PlatformDrivers.getInstance().quitDriver(CommonIOSSteps.CURRENT_PLATFORM);
+        }
+
+		final Future<ZetaIOSDriver> lazyDriver = commonSteps.resetIOSDriver(true);
+		ZetaFormatter.setLazyDriver(lazyDriver);
+		pagesCollecton.setFirstPage(new LoginPage(lazyDriver));
 	}
 	
 	/**

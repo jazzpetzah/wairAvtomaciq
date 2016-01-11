@@ -142,8 +142,7 @@ public class PeoplePickerPage extends WebPage {
 		searchInput.sendKeys(name);
 	}
 
-	public boolean isVisibleAfterTimeout(int secondsTimeout) throws Exception {
-		Thread.sleep(secondsTimeout * 1000);
+	public boolean isVisible() throws Exception {
 		return DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
@@ -319,4 +318,5 @@ public class PeoplePickerPage extends WebPage {
 	public int getNumberOfTopPeople() {
 		return topPeople.size();
 	}
+
 }
