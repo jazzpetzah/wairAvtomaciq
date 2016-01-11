@@ -63,8 +63,7 @@ public class DriverUtils {
     public static boolean isElementPresentAndDisplayed(RemoteWebDriver driver,
                                                        final WebElement element) {
         try {
-            return (element.isDisplayed() && isElementInScreenRect(driver,
-                    element));
+            return element.isDisplayed() && isElementInScreenRect(driver, element);
         } catch (NoSuchElementException e) {
             return false;
         }
@@ -116,6 +115,10 @@ public class DriverUtils {
                 getDefaultLookupTimeoutSeconds());
     }
 
+    private static boolean isSomeOfElementDimensionsZero(WebElement el) {
+        return el.getSize().getHeight() == 0 || el.getSize().getWidth() == 0;
+    }
+
     public static boolean waitUntilLocatorDissapears(RemoteWebDriver driver,
                                                      final By by, int timeoutSeconds) throws Exception {
         turnOffImplicitWait(driver);
@@ -127,10 +130,8 @@ public class DriverUtils {
             return wait.until(drv -> {
                 try {
                     return (drv.findElements(by).size() == 0)
-                            || (drv.findElements(by).size() > 0 && !drv
-                            .findElement(by).isDisplayed())
-                            || !isElementInScreenRect(driver,
-                            driver.findElement(by));
+                            || !isElementPresentAndDisplayed(driver, drv.findElement(by))
+                            || isSomeOfElementDimensionsZero(drv.findElement(by));
                 } catch (SessionNotFoundException e) {
                     log.debug(e.getMessage());
                     return true;

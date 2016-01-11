@@ -38,3 +38,20 @@ Feature: E2EE
     Examples:
       | Password      | Name      | DeviceToRemove |
       | user1Password | user1Name | Device1        |
+
+  @C3227 @staging @torun
+  Scenario Outline: Verify you can receive encrypted and non-encrypted images in 1:1 chat
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to Myself
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When User <Contact> sends encrypted image <ImageName> to single user conversation Myself
+    And User <Contact> sends image <ImageName> to single user conversation Myself
+    And I tap on contact name <Contact>
+    And I scroll to the bottom of conversation view
+    Then I see non-encrypted image 1 time in the conversation view
+    And I see encrypted image 1 time in the conversation view
+
+    Examples:
+      | Name      | Contact   | ImageName   |
+      | user1Name | user2Name | testing.jpg |

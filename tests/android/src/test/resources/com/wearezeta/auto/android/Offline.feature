@@ -11,7 +11,7 @@ Feature: Offline
     When Contact <Contact> send message <Message1> to user <Name>
     Then Last message is <Message1>
     When I enable Airplane mode on the device
-    And Contact <Contact> sends image <Picture> to single user conversation <Name>
+    And User <Contact> sends image <Picture> to single user conversation <Name>
     Then I do not see new picture in the dialog
     When Contact <Contact> send message <Message2> to user <Name>
     Then Last message is <Message1>

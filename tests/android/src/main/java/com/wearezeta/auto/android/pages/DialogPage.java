@@ -32,6 +32,12 @@ public class DialogPage extends AndroidPage {
     private static final String xpathLastPicture = String.format(
             "(//*[@id='%s'])[last()]", idDialogImages);
 
+    private static final String xpathEncryptedDialogImages = "//*[@id='" + idDialogImages +
+            "']/parent::*/parent::/*//*[@id='v__row_conversation__e2ee']";
+    private static final Function<Integer, String> xpathEncryptedDialogImageByIdx = idx ->
+            String.format("(" + xpathEncryptedDialogImages + ")[%s]", idx);
+
+
     public static final String idAddPicture = "cursor_menu_item_camera";
 
     public static final String idSelfAvatar = "civ__cursor__self_avatar";
@@ -680,5 +686,19 @@ public class DialogPage extends AndroidPage {
         final By locator = By.xpath(xpathConversationMessageByText.apply(msg));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) &&
                 getDriver().findElements(locator).size() == times;
+    }
+
+    public boolean waitForXEncryptedImages(int times) throws Exception {
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idDialogImages)) :
+                "No images are visible in the conversation view";
+        return times == getDriver().findElementsByXPath(xpathEncryptedDialogImages).size();
+    }
+
+    public boolean waitForXNonEncryptedImages(int times) throws Exception {
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idDialogImages)) :
+                "No images are visible in the conversation view";
+        final List<WebElement> allImageBadges = getDriver().findElementsByXPath(xpathEncryptedDialogImages);
+        final List<WebElement> allImages =  getDriver().findElementsById(idDialogImages);
+        return times == (allImages.size() - allImageBadges.size());
     }
 }

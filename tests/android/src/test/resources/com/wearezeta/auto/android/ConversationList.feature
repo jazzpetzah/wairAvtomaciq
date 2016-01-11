@@ -32,7 +32,7 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given All contacts send me a message <SpotifyLink>
-    Given Contact <Contact1> sends image <Image> to single user conversation <Name>
+    Given User <Contact1> sends image <Image> to single user conversation <Name>
     Given All contacts send me a message "<Message>"
     Given I sign in using my email or phone number
     And I see Contact list with contacts
@@ -63,7 +63,7 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given Contact <Contact1> sends image <Image> to group conversation <GroupChatName>
+    Given User <Contact1> sends image <Image> to group conversation <GroupChatName>
     Given User <Contact1> sent message <SpotifyLink> to conversation <GroupChatName>
     Given User <Contact1> sent message "<Message>" to conversation <GroupChatName>
     Given I sign in using my email or phone number
@@ -127,7 +127,7 @@ Feature: Conversation List
     And I select DELETE from conversation settings menu
     And I press DELETE on the confirm alert
     Then I do not see contact list with name <GroupChatName>
-    When Contact <Contact1> sends image <Image> to group conversation <GroupChatName>
+    When User <Contact1> sends image <Image> to group conversation <GroupChatName>
     Then I see contact list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I select DELETE from conversation settings menu

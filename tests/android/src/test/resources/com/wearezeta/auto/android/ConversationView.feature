@@ -295,7 +295,7 @@ Feature: Conversation View
   Scenario Outline: Send GIF format pic
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
-    Given Contact <Contact> sends image <GifName> to single user conversation <Name>
+    Given User <Contact> sends image <GifName> to single user conversation <Name>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
     When I tap on contact name <Contact>

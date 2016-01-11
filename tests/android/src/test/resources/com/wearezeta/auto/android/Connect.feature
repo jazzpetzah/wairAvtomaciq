@@ -422,7 +422,7 @@ Feature: Connect
     And I tap on text input
     And I type the message "<Message>" and send it
     And User <Name> blocks user <Contact>
-    And Contact <Contact> sends image <Picture> to single user conversation <Name>
+    And User <Contact> sends image <Picture> to single user conversation <Name>
     And Contact <Contact> send message to user <Name>
     And Contact <Contact> ping conversation <Name>
     Then Last message is <Message>

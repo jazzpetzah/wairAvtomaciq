@@ -89,7 +89,7 @@ public class SEBridge {
 	public void sendImage(ClientUser userFrom, String convId, String path)
 			throws Exception {
 		verifyPathExists(path);
-		getDevicePool().getRandomDevice(userFrom).sendImage(convId, path);
+		getOrAddRandomDevice(userFrom).sendImage(convId, path);
 	}
 
 	private synchronized static void shutdown() {

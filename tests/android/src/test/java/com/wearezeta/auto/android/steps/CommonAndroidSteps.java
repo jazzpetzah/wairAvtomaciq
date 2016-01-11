@@ -755,6 +755,7 @@ public class CommonAndroidSteps {
     /**
      * Sends an image from one user to a conversation
      *
+     * @param isEncrypted              whether the image has to encrypted
      * @param imageSenderUserNameAlias the user to sending the image
      * @param imageFileName            the file path name of the image to send. The path name is
      *                                 defined relative to the image file defined in
@@ -762,22 +763,21 @@ public class CommonAndroidSteps {
      * @param conversationType         "single user" or "group" conversation.
      * @param dstConversationName      the name of the conversation to send the image to.
      * @throws Exception
-     * @step. ^Contact (.*) sends image (.*) to (.*) conversation (.*)$
+     * @step. ^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)
      */
-    @When("^Contact (.*) sends image (.*) to (.*) conversation (.*)")
-    public void ContactSendImageToConversation(String imageSenderUserNameAlias, String imageFileName,
-                                               String conversationType, String dstConversationName) throws Exception {
-        String imagePath = CommonUtils.getImagesPath(CommonAndroidSteps.class) + imageFileName;
-        Boolean isGroup = null;
-        if (conversationType.equals("single user")) {
-            isGroup = false;
-        } else if (conversationType.equals("group")) {
-            isGroup = true;
+    @When("^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)")
+    public void ContactSendImageToConversation(String imageSenderUserNameAlias, String isEncrypted,
+                                               String imageFileName, String conversationType,
+                                               String dstConversationName) throws Exception {
+        final String imagePath = CommonUtils.getImagesPath(CommonAndroidSteps.class) + imageFileName;
+        final boolean isGroup = conversationType.equals("group");
+        if (isEncrypted == null) {
+            commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,
+                    imagePath, dstConversationName, isGroup);
+        } else {
+            commonSteps.UserSentImageToConversationOtr(imageSenderUserNameAlias,
+                    imagePath, dstConversationName, isGroup);
         }
-        if (isGroup == null) {
-            throw new Exception("Incorrect type of conversation specified (single user | group) expected.");
-        }
-        commonSteps.UserSentImageToConversation(imageSenderUserNameAlias, imagePath, dstConversationName, isGroup);
     }
 
     @After

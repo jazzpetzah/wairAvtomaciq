@@ -866,4 +866,23 @@ public class DialogPageSteps {
                     msg, times), getDialogPage().waitForXNonEncryptedMessages(msg, times));
         }
     }
+
+    /**
+     * Verify whether an image is present in conversation view X times
+     *
+     * @param isEncrypted whether the message should be encrypted or not
+     * @param times       the expected count of message repetitions in the convo view
+     * @throws Exception
+     * @step. ^I see (encrypted|non-encrypted) image (\d+) times? in the conversation view$
+     */
+    @Then("^I see (encrypted|non-encrypted) image (\\d+) times? in the conversation view$")
+    public void ISeeImageXTimes(String isEncrypted, int times) throws Exception {
+        if (isEncrypted.equals("encrypted")) {
+            Assert.assertTrue(String.format("The encrypted image is not present in the conversation view %s time(s)",
+                    times), getDialogPage().waitForXEncryptedImages(times));
+        } else {
+            Assert.assertTrue(String.format("The non-encrypted image is not present in the conversation view %s time(s)",
+                    times), getDialogPage().waitForXNonEncryptedImages(times));
+        }
+    }
 }
