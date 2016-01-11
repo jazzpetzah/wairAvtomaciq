@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.concurrent.Future;
 
+import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
@@ -207,7 +208,8 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public void sendTextToSeachInput(String text) throws Exception {
-		peoplePickerSearch.sendKeys(text);
+		((IOSElement) getDriver().findElementByXPath(IOSLocators.xpathPickerSearch)).setValue(text);
+		//peoplePickerSearch.sendKeys(text);
 	}
 
 	public boolean waitUserPickerFindUser(String user) throws Exception {
