@@ -1043,4 +1043,16 @@ public final class BackendAPIWrappers {
         }
     }
 
+    public static List<OtrClient> getOtrClients(ClientUser forUser) throws Exception {
+        final List<OtrClient> result = new ArrayList<>();
+        final JSONArray responseList = BackendREST.getClients(receiveAuthToken(forUser));
+        for (int clientIdx = 0; clientIdx < responseList.length(); clientIdx++) {
+            result.add(new OtrClient(responseList.getJSONObject(clientIdx)));
+        }
+        return result;
+    }
+
+    public static void removeOtrClient(ClientUser forUser, OtrClient otrClientInfo) throws Exception {
+        BackendREST.deleteClient(receiveAuthToken(forUser), otrClientInfo.getId());
+    }
 }

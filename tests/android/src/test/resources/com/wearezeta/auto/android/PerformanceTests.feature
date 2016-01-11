@@ -5,6 +5,7 @@ Feature: Performance Tests
     Given There are <UsersNumber> shared users with name prefix <UserNamePrefix>
     Given User <Name> is Me
     Given Myself is connected to all other users
+    Given User Myself removes all his registered OTR clients
     Given I receive <MsgsCount> messages from contact <Sender>
     Given I sign in using my email with <LoginTimeout> seconds timeout
     When I start test cycle for <Time> minutes with messages received from <Sender>

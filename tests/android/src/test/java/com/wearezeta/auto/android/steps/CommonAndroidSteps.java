@@ -977,4 +977,17 @@ public class CommonAndroidSteps {
     public void IPressSendButton() throws Exception {
         pagesCollection.getCommonPage().pressKeyboardSendButton();
     }
+
+    /**
+     * Remove all registered OTR clients for the particular user
+     *
+     * @param userAs user name/alias
+     * @throws Exception
+     * @step. ^User (.*) removes all his registered OTR clients$
+     */
+    @Given("^User (.*) removes all his registered OTR clients$")
+    public void UserRemovesAllRegisteredOtrClients(String userAs) throws Exception {
+        commonSteps.UserRemovesAllRegisteredOtrClients(userAs);
+    }
+
 }
