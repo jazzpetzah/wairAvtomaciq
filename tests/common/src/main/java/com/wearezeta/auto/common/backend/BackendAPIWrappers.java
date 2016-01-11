@@ -1053,6 +1053,6 @@ public final class BackendAPIWrappers {
     }
 
     public static void removeOtrClient(ClientUser forUser, OtrClient otrClientInfo) throws Exception {
-        BackendREST.deleteClient(receiveAuthToken(forUser), otrClientInfo.getId());
+        BackendREST.deleteClient(receiveAuthToken(forUser), forUser.getPassword(), otrClientInfo.getId());
     }
 }
