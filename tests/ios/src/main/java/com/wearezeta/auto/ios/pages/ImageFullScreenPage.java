@@ -84,10 +84,6 @@ public class ImageFullScreenPage extends IOSPage {
 		return fullScreenTimeStamp.getText();
 	}
 
-	public void rotateSimulatorLeft() throws ScriptException {
-		cmdVscript(rotateLeftScript);
-	}
-
 	@Override
 	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
 		IOSPage page = null;

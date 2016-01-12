@@ -36,8 +36,6 @@ public class ConnectToPage extends IOSPage {
     private static final Logger log = ZetaLogger.getLog(ConnectToPage.class
             .getSimpleName());
 
-    private String inviteMessage = CommonSteps.CONNECTION_MESSAGE;
-
     public ConnectToPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -48,47 +46,15 @@ public class ConnectToPage extends IOSPage {
         return connectOtherUserButton.isDisplayed();
     }
 
-    public void fillHelloTextInConnectDialog() {
-        sendConnectionInput.sendKeys(inviteMessage);
-    }
-
-    public void deleteTextInConnectDialog() {
-        sendConnectionInput.clear();
-        // additional steps required because clear() does not disable the
-        // connect button
-        sendConnectionInput.sendKeys("a");
-        clickKeyboardDeleteButton();
-    }
-
-    public ContactListPage sendInvitation(String name) throws Exception {
-        ContactListPage page = null;
-        fillHelloTextInConnectDialog();
-        sendConnectButton.click();
-        page = new ContactListPage(this.getLazyDriver());
-        return page;
-    }
-
     @Override
     public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public boolean waitForConnectDialog() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-                By.className(IOSLocators.clasNameConnectDialogLabel));
-    }
-
     public boolean isConnectButtonVisible() throws Exception {
         return DriverUtils.waitUntilElementClickable(getDriver(),
                 connectOtherUserButton, 10);
-    }
-
-    public boolean isConnectButtonVisibleAndDisabled() throws Exception {
-        return (DriverUtils.isElementPresentAndDisplayed(getDriver(),
-                connectOtherUserButton))
-                && !(DriverUtils.waitUntilElementClickable(getDriver(),
-                connectOtherUserButton, 5));
     }
 
     public PeoplePickerPage sendInvitation() throws Exception {
@@ -101,9 +67,4 @@ public class ConnectToPage extends IOSPage {
         }
         return new PeoplePickerPage(this.getLazyDriver());
     }
-
-    public void acceptInvitation() {
-        connectOtherUserButton.click();
-    }
-
 }

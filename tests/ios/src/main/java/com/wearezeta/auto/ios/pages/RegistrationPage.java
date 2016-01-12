@@ -185,11 +185,6 @@ public class RegistrationPage extends IOSPage {
         agreeButton.click();
     }
 
-    public boolean isTermOfUsePageVisible() throws Exception {
-        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-                termOfUsePage);
-    }
-
     private static final String WIRE_COUNTRY_NAME = "Wirestan";
 
     public void selectWirestan() throws Exception {
@@ -241,44 +236,6 @@ public class RegistrationPage extends IOSPage {
                 By.name(IOSLocators.nameTakePhotoHintLabel));
     }
 
-    public boolean isNameLabelVisible() {
-        return yourName.isDisplayed();
-    }
-
-    public void clickCameraButton() {
-        cameraButton.click();
-    }
-
-    public void clickCameraShootButton() {
-        cameraShootButton.click();
-    }
-
-    public void takePhotoByFrontCamera() {
-        clickCameraShootButton();
-    }
-
-    public void clickSwitchCameraButton() {
-        switchCameraButton.click();
-    }
-
-    public void switchToFrontCamera() {
-        clickSwitchCameraButton();
-    }
-
-    public void takePhotoByRearCamera() {
-        switchToRearCamera();
-        clickCameraShootButton();
-    }
-
-    public void switchToRearCamera() {
-        clickSwitchCameraButton();
-    }
-
-    public boolean isSetPicturePageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.name(IOSLocators.RegistrationPage.nameSelectPictureButton));
-    }
-
     public CameraRollPage selectPicture() throws Exception {
         DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                 By.name(IOSLocators.RegistrationPage.nameSelectPictureButton));
@@ -288,33 +245,6 @@ public class RegistrationPage extends IOSPage {
         return new CameraRollPage(this.getLazyDriver());
     }
 
-    public void chooseFirstPhoto() {
-        photoAlbum.click();
-        photos.get(0).click();
-    }
-
-    public void clickVignetteLayer() {
-        vignetteLayer.click();
-    }
-
-    public void dismissVignetteBakground() throws Exception {
-        vignetteLayer.click();
-        this.getDriver().tap(1, vignetteLayer.getLocation().x + 10,
-                vignetteLayer.getLocation().y + 10, 1);
-    }
-
-    public boolean isVignetteOverlayVisible() {
-        return vignetteLayer.isDisplayed();
-    }
-
-    public void tapCloseColorModeButton() {
-        closeColorModeButton.click();
-    }
-
-    public boolean isColorModeVisible() {
-        return closeColorModeButton.isDisplayed();
-    }
-
     public boolean isConfirmationShown() throws Exception {
         return DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(String
                 .format(IOSLocators.xpathConfirmationMessage, getEmail())));
@@ -322,10 +252,6 @@ public class RegistrationPage extends IOSPage {
 
     public void confirmPicture() {
         confirmImageButton.click();
-    }
-
-    public void cancelImageSelection() {
-        cancelImageButton.click();
     }
 
     public void hideKeyboard() throws Exception {
@@ -350,39 +276,8 @@ public class RegistrationPage extends IOSPage {
         createAccountButton.click();
     }
 
-    public void createAccount() {
-        try {
-            if (ExpectedConditions.presenceOfElementLocated(By
-                    .xpath(IOSLocators.xpathYourName)) != null) {
-                yourName.sendKeys(getName() + "\n");
-            }
-        } catch (NoSuchElementException e) {
-        }
-        if (ExpectedConditions.presenceOfElementLocated(By
-                .name(IOSLocators.nameYourEmail)) != null) {
-            yourEmail.sendKeys(getEmail() + "\n");
-        }
-        if (ExpectedConditions.presenceOfElementLocated(By
-                .name(IOSLocators.nameYourPassword)) != null) {
-            yourPassword.sendKeys(getPassword());
-        }
-        createAccountButton.click();
-    }
-
     public void typeEmail() {
         yourEmail.sendKeys(getEmail());
-    }
-
-    public void retypeEmail() {
-        if (ExpectedConditions.presenceOfElementLocated(By
-                .name(IOSLocators.nameYourEmail)) != null) {
-            yourEmail.sendKeys(getEmail());
-        }
-    }
-
-    public void returnToConfirmRegistration() {
-        forwardWelcomeButton.click();
-        createAccountButton.click();
     }
 
     public boolean typeAllInvalidEmails() {
@@ -395,12 +290,6 @@ public class RegistrationPage extends IOSPage {
             yourEmail.clear();
         }
         return true;
-    }
-
-    public void typeInRegistrationData() {
-        yourName.sendKeys(getName() + "\n");
-        yourEmail.sendKeys(getEmail() + "\n");
-        yourPassword.sendKeys(getPassword());
     }
 
     public boolean isCreateAccountEnabled() {
@@ -422,10 +311,6 @@ public class RegistrationPage extends IOSPage {
                 defaultPassFieldValue, yourPassword.getText());
     }
 
-    public void navigateToCreateAccount() {
-        forwardWelcomeButton.click();
-    }
-
     public void typeUsername() throws Exception {
         this.getWait().until(ExpectedConditions.elementToBeClickable(yourName));
         try {
@@ -440,20 +325,12 @@ public class RegistrationPage extends IOSPage {
         return yourFilledName.getText();
     }
 
-    public boolean userNameContainSpaces() {
-        return getUsernameFieldValue().contains(" ");
-    }
-
     public String getEmailFieldValue() {
         return yourEmail.getText();
     }
 
     public boolean isPictureSelected() {
         return confirmImageButton.isDisplayed();
-    }
-
-    public boolean isConfirmationVisible() {
-        return confirmationText.isDisplayed();
     }
 
     public boolean confirmErrorPage() {
@@ -482,10 +359,6 @@ public class RegistrationPage extends IOSPage {
     public Boolean isBackButtonVisible() {
 
         return (ExpectedConditions.visibilityOf(backToWelcomeButton) != null);
-    }
-
-    public void tapForwardButton() {
-        forwardWelcomeButton.click();
     }
 
     public String getName() {
@@ -521,10 +394,6 @@ public class RegistrationPage extends IOSPage {
 
     }
 
-    public String[] getListOfEmails() {
-        return listOfEmails;
-    }
-
     public void setListOfEmails(String[] list) {
         this.listOfEmails = list;
     }
@@ -546,10 +415,6 @@ public class RegistrationPage extends IOSPage {
     public boolean isEmailVerifPromptVisible() throws Exception {
         return DriverUtils.isElementPresentAndDisplayed(getDriver(),
                 emailVerifPrompt);
-    }
-
-    public void reSendActivationCode() throws Exception {
-        DriverUtils.waitUntilElementClickable(getDriver(), reSendButton);
     }
 
     public boolean isInvalidCodeAlertShown() throws Exception {

@@ -94,14 +94,6 @@ public class PendingRequestsPage extends IOSPage {
 		return requesterName.getText().replace(CONNECT_TO, "");
 	}
 
-	public String getRequestMessage() {
-		return pendingMessage.getText();
-	}
-
-	public boolean isAutoMessageCorrect() {
-		return getRequestMessage().equals(autoHelloMessage);
-	}
-
 	@Override
 	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
 
@@ -122,11 +114,6 @@ public class PendingRequestsPage extends IOSPage {
 		}
 		}
 		return page;
-	}
-
-	public boolean isIgnoreButtonDisplayed() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(IOSLocators.namePendingRequestIgnoreButton), 5);
 	}
 
 	public boolean isYouBothKnowDisplayed() throws Exception {

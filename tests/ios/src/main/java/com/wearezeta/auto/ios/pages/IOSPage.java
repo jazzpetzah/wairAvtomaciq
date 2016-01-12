@@ -111,13 +111,6 @@ public abstract class IOSPage extends BasePage {
 		return returnBySwipe(SwipeDirection.LEFT);
 	}
 
-	public IOSPage swipeLeft(int time, int percentX, int percentY)
-			throws Exception {
-		DriverUtils.swipeLeft(this.getDriver(), mainWindow, time, percentX,
-				percentY);
-		return returnBySwipe(SwipeDirection.LEFT);
-	}
-
 	public IOSPage swipeRight(int time) throws Exception {
 		DriverUtils.swipeRight(this.getDriver(), mainWindow, time);
 		return returnBySwipe(SwipeDirection.RIGHT);
@@ -135,23 +128,10 @@ public abstract class IOSPage extends BasePage {
 		return returnBySwipe(SwipeDirection.UP);
 	}
 
-	public IOSPage swipeUp(int time, int percentX, int percentY)
-			throws Exception {
-		DriverUtils
-				.swipeUp(this.getDriver(), mainWindow, time, percentX, percentY);
-		return returnBySwipe(SwipeDirection.UP);
-	}
-
 	public IOSPage swipeDownSimulator() throws Exception {
 		IOSSimulatorHelper.swipeDown();
 		Thread.sleep(SWIPE_DELAY);
 		return returnBySwipe(SwipeDirection.DOWN);
-	}
-
-	public IOSPage swipeUpSimulator() throws Exception {
-		IOSSimulatorHelper.swipeUp();
-		Thread.sleep(SWIPE_DELAY);
-		return returnBySwipe(SwipeDirection.UP);
 	}
 
 	public IOSPage swipeDown(int time) throws Exception {
@@ -159,19 +139,8 @@ public abstract class IOSPage extends BasePage {
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
-	public IOSPage swipeDown(int time, int percentX, int percentY)
-			throws Exception {
-		DriverUtils.swipeDown(this.getDriver(), mainWindow, time, percentX,
-				percentY);
-		return returnBySwipe(SwipeDirection.DOWN);
-	}
-
 	public void smallScrollUp() throws Exception {
 		this.getDriver().swipe(10, 220, 10, 200, 500);
-	}
-
-	public void smallScrollDown() throws Exception {
-		this.getDriver().swipe(20, 300, 20, 400, 500);
 	}
 
 	public static String getImagesPath() {
@@ -218,13 +187,6 @@ public abstract class IOSPage extends BasePage {
 		}
 	}
 
-	public void pasteStringToInput(WebElement element, String text)
-			throws Exception {
-		IOSCommonUtils.copyToSystemClipboard(text);
-		DriverUtils.longTap(this.getDriver(), element);
-		clickPopupPasteButton();
-	}
-
 	public void inputStringFromKeyboard(String returnKey) throws Exception {
 		IOSKeyboard keyboard = IOSKeyboard.getInstance();
 		keyboard.typeString(returnKey, this.getDriver());
@@ -266,10 +228,6 @@ public abstract class IOSPage extends BasePage {
 	public static Object executeScript(String script) throws Exception {
 		return PlatformDrivers.getInstance().getDriver(Platform.iOS).get()
 				.executeScript(script);
-	}
-
-	public boolean isSimulator() throws Exception {
-		return CommonUtils.getIsSimulatorFromConfig(IOSPage.class);
 	}
 
 	public void cmdVscript(String[] scriptString) throws ScriptException {
