@@ -67,7 +67,7 @@ public class CommonIOSSteps {
 		return resetIOSDriver(enableAutoAcceptAlerts, false);
 	}
 
-    private static final int DRIVER_CREATION_RETRIES_COUNT = 2;
+    private static final int DRIVER_CREATION_RETRIES_COUNT = 1;
 
 	@SuppressWarnings("unchecked")
 	public Future<ZetaIOSDriver> resetIOSDriver(boolean enableAutoAcceptAlerts,
