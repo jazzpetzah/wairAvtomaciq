@@ -5,7 +5,7 @@ import org.json.JSONObject;
 import java.util.Optional;
 
 public class OtrClient {
-    private String cookie;
+    private Optional<String> cookie = Optional.empty();
     private String time;
     private Optional<Location> location = Optional.empty();
     private Optional<String> address = Optional.empty();
@@ -23,12 +23,12 @@ public class OtrClient {
         this.type = type;
     }
 
-    public String getCookie() {
+    public Optional<String> getCookie() {
         return cookie;
     }
 
     public void setCookie(String cookie) {
-        this.cookie = cookie;
+        this.cookie = Optional.of(cookie);
     }
 
     public String getTime() {
@@ -126,7 +126,9 @@ public class OtrClient {
     public OtrClient() {}
 
     public OtrClient(JSONObject source) {
-        this.cookie = source.getString("cookie");
+        if (source.has("cookie")) {
+            this.cookie = Optional.of(source.getString("cookie"));
+        }
         this.time = source.getString("time");
         if (source.has("location")) {
             this.location = Optional.of(new Location(source.getJSONObject("location")));
@@ -147,7 +149,9 @@ public class OtrClient {
 
     public JSONObject asJson() {
         final JSONObject result = new JSONObject();
-        result.put("cookie", this.getCookie());
+        if (this.getCookie().isPresent()) {
+            result.put("cookie", this.getCookie().get());
+        }
         result.put("time", this.getTime());
         if (this.getLocation().isPresent()) {
             result.put("location", this.getLocation().get().asJson());
