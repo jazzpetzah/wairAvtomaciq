@@ -11,12 +11,6 @@ public final class IOSLocators {
 
 	public static final String classNameContactListNames = "UIACollectionCell";
 
-	public static final String xpathContactListCells = "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell";
-
-	public static final String xpathFirstContactCell = "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[1]";
-
-	public static final String nameSelfButton = "SelfButton";
-
 	public static final String nameProfileSettingsButton = "SettingsButton";
 
 	public static final String classNameUIAButton = "UIAButton";
@@ -305,8 +299,6 @@ public final class IOSLocators {
 		public static final String namePauseButton = "mediaBarPauseButton";
 		public static final String nameTitle = "playingMediaTitle";
 	}
-	
-	public static final String nameMediaCellPlayButton = "mediaCellButton";
 
 	public static final String xpathMediaConversationCell = "//UIAWindow[@name='ZClientMainWindow']/UIATableView[last()]/UIATableCell[last()]/UIAButton[@name='soundcloud']/following-sibling::UIAButton";
 
@@ -325,8 +317,6 @@ public final class IOSLocators {
 	public static final String nameFullScreenSenderName = "fullScreenSenderName";
 
 	public static final String nameFullScreenTimeStamp = "fullScreenTimeStamp";
-
-	public static final String nameContactListLoadBar = "LoadBar";
 
 	public static final String nameFullScreenSketchButton = "sketchButton";
 
@@ -421,8 +411,6 @@ public final class IOSLocators {
 	// Tutorial
 	// //////////////
 
-	public static final String nameTutorialView = "ZClientNotificationWindow";
-
 	public static final String nameYouLeftMessage = "YOU LEFT";
 	public static final String nameYouPingedMessage = "YOU PINGED";
 
@@ -430,8 +418,6 @@ public final class IOSLocators {
 	// Unblock user locator
 	// //////////////////////////
 	public static final String nameUnblockButton = "UNBLOCK";
-
-	public static final String xpathContactListContainer = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]";
 
 	public static final String nameBlockMenuButton = "BLOCK";
 
@@ -501,7 +487,6 @@ public final class IOSLocators {
 		public static final String nameOpenStartUI = "START A CONVERSATION";
 		public static final String nameSelfButton = "SelfButton";
 		public static final String xpathArchiveConversationButton = "//UIAButton[@name='ARCHIVE' and @visible='true']";
-		public static final String nameMuteCallButton = "MuteVoiceButton";
 		public static final String xpathFormatActionMenuConversationName = "//UIAStaticText[@name='ARCHIVE']/following-sibling::UIAStaticText[@name='%s']";
 		public static final String xpathFormatActionMenuXButton = "//UIAStaticText[@name='ARCHIVE']/following-sibling::UIAButton[@name='%s']";
 		public static final String xpathSpecificContactListCell = "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[@name='%s']";
