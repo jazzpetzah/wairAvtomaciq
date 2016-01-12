@@ -48,11 +48,6 @@ public class GiphyPreviewPage extends AndroidPage {
     @FindBy(id = giphyGridImageId)
     private List<WebElement> giphyGridImages;
 
-
-    private static final String idOpenGiphyCollectionButton = "gtv__giphy_preview__link_button";
-    @FindBy(id = idOpenGiphyCollectionButton)
-    private WebElement openGiphyCollectionButton;
-
     public GiphyPreviewPage(Future<ZetaAndroidDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
@@ -111,9 +106,5 @@ public class GiphyPreviewPage extends AndroidPage {
 
     public void clickGiphyLinkButton() {
         giphyLinkButton.click();
-    }
-
-    public void clickShowGiphyGridButton() {
-        openGiphyCollectionButton.click();
     }
 }
