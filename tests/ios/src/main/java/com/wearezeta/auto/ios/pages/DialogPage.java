@@ -288,10 +288,6 @@ public class DialogPage extends IOSPage {
         }
     }
 
-    public void multiTapOnCursorInput() throws Exception {
-        DriverUtils.multiTap(this.getDriver(), conversationInput, 3);
-    }
-
     public void sendStringToInput(String message) throws Exception {
         waitForCursorInputVisible();
         ((IOSElement)getDriver().findElementByName(nameConversationCursorInput)).setValue(message);
@@ -541,10 +537,6 @@ public class DialogPage extends IOSPage {
         return page;
     }
 
-    public void tapDialogWindow() throws Exception {
-        this.getDriver().tap(1, 1, 1, 500);
-    }
-
     public String getConnectMessageLabel() {
         return connectMessageLabel.getText();
     }
@@ -583,25 +575,6 @@ public class DialogPage extends IOSPage {
     public boolean waitMediabarClose() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(),
                 By.name(IOSLocators.MediaBar.nameTitle));
-    }
-
-    public DialogPage scrollUpToMediaContainer() throws Throwable {
-        DialogPage page = null;
-        int count = 0;
-        boolean mediaContainerShown = mediaContainer.isDisplayed();
-        while (!(mediaContainerShown) & (count < 3)) {
-            if (!CommonUtils.getIsSimulatorFromConfig(IOSPage.class)) {
-                DriverUtils.swipeUp(this.getDriver(), conversationPage, 500);
-                page = this;
-            } else {
-                swipeUpSimulator();
-                page = this;
-            }
-            mediaContainerShown = mediaContainer.isDisplayed();
-            count++;
-        }
-
-        return page;
     }
 
     public ImageFullScreenPage tapImageToOpen() throws Throwable {
@@ -709,17 +682,6 @@ public class DialogPage extends IOSPage {
     public void waitSoundCloudLoad() throws Exception {
         DriverUtils.waitUntilLocatorAppears(getDriver(),
                 By.name(IOSLocators.DialogPage.nameSoundCloudContainer));
-    }
-
-    public void pasteTextToInput(String text) throws Throwable {
-        WebElement el = this.getDriver().findElement(
-                By.name(IOSLocators.nameConversationCursorInput));
-        if (isSimulator()) {
-            cmdVscript(scriptArr);
-            pasteStringToInput(el, text);
-        } else {
-            pasteStringToInput(el, text);
-        }
     }
 
     public double checkPingIcon(String label) throws Exception {

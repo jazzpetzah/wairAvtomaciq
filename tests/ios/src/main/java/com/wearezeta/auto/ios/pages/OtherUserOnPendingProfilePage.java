@@ -87,12 +87,6 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 		return null;
 	}
 
-	public void clickBackButtonToReturnToGroupPageOrPopover() throws Exception {
-		DriverUtils.waitUntilElementClickable(getDriver(),
-				backButtonToGroupPopover);
-		backButtonToGroupPopover.click();
-	}
-
 	public boolean isRemoveFromGroupConversationVisible() {
 		return removePendingPersonFromChat.isDisplayed();
 	}

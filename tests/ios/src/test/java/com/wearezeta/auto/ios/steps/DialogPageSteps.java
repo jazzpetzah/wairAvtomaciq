@@ -61,11 +61,6 @@ public class DialogPageSteps {
 		Assert.assertTrue(getDialogPage().waitForCursorInputVisible());
 	}
 
-	@When("I tap on dialog page")
-	public void ITapOnDialogPage() throws Exception {
-		getDialogPage().tapDialogWindow();
-	}
-
 	@When("^I tap on text input$")
 	public void WhenITapOnTextInput() throws Exception {
 		for (int i = 0; i < 3; i++) {
@@ -126,45 +121,16 @@ public class DialogPageSteps {
 		getDialogPage().fillInMessageUsingScript(automationMessage);
 	}
 
-	@When("I input message from keyboard (.*)")
-	public void IInputMessageFromKeyboard(String message) throws Throwable {
-		getDialogPage().inputStringFromKeyboard(message);
-	}
-
-	@When("I paste long text to input")
-	public void IPasteLongTextToInput() throws Throwable {
-		getDialogPage().pasteTextToInput(IOSConstants.LONG_MESSAGE);
-	}
-
-	@When("^I multi tap on text input$")
-	public void WhenIMultiTapOnTextInput() throws Throwable {
-		getDialogPage().multiTapOnCursorInput();
-	}
-
 	@Then("^I see You Pinged message in the dialog$")
 	public void ISeeHelloMessageFromMeInTheDialog() throws Throwable {
 		String pingmessage = IOSLocators.nameYouPingedMessage;
 		Assert.assertTrue(getDialogPage().isMessageVisible(pingmessage));
 	}
 
-	@Then("^I see You Pinged Again message in the dialog$")
-	public void ISeeHeyMessageFromMeInTheDialog() throws Throwable {
-		String pingagainmessage = IOSLocators.nameYouPingedAgainMessage;
-		Assert.assertTrue(getDialogPage().isMessageVisible(pingagainmessage));
-	}
-
 	@Then("^I see User (.*) Pinged message in the conversation$")
 	public void ISeeUserPingedMessageTheDialog(String user) throws Throwable {
 		String username = usrMgr.findUserByNameOrNameAlias(user).getName();
 		String expectedPingMessage = username.toUpperCase() + " PINGED";
-		Assert.assertTrue(getDialogPage().isMessageVisible(expectedPingMessage)
-				|| getGroupChatPage().isMessageVisible(expectedPingMessage));
-	}
-
-	@Then("^I see User (.*) Pinged Again message in the conversation$")
-	public void ISeeUserHotPingedMessageTheDialog(String user) throws Throwable {
-		String username = usrMgr.findUserByNameOrNameAlias(user).getName();
-		String expectedPingMessage = username.toUpperCase() + " PINGED AGAIN";
 		Assert.assertTrue(getDialogPage().isMessageVisible(expectedPingMessage)
 				|| getGroupChatPage().isMessageVisible(expectedPingMessage));
 	}
@@ -269,14 +235,6 @@ public class DialogPageSteps {
 
 		Assert.assertTrue("Message is different, actual: " + dialogLastMessage
 				+ " expected: " + msg, dialogLastMessage.equals(msg));
-	}
-
-	@Then("^I see last message in the dialog$")
-	public void ThenISeeLastMessageInTheDialog() throws Throwable {
-		String dialogLastMessage = getDialogPage().getLastMessageFromDialog();
-		Assert.assertTrue("Message is different, actual: " + dialogLastMessage
-				+ " expected: " + lastLine,
-				dialogLastMessage.equals((IOSConstants.LONG_MESSAGE).trim()));
 	}
 
 	@When("^I swipe the text input cursor$")
@@ -396,11 +354,6 @@ public class DialogPageSteps {
 		getDialogPage().clickOnVideoContainerFirstTime();
 	}
 
-	@When("I tap on dialog window")
-	public void ITapOnDialogWindow() throws Exception {
-		getDialogPage().tapDialogWindow();
-	}
-
 	@When("I swipe right on Dialog page")
 	public void ISwipeRightOnDialogPage() throws Exception {
 		for (int i = 0; i < 3; i++) {
@@ -501,11 +454,6 @@ public class DialogPageSteps {
 		getDialogPage().tapOnMediaBar();
 	}
 
-	@When("I scroll back to media container")
-	public void IScrollUpOnDialogPage() throws Throwable {
-		getDialogPage().scrollUpToMediaContainer();
-	}
-
 	@Then("I see conversation view is scrolled back to the playing media link (.*)")
 	public void ISeeConversationViewIsScrolledBackToThePlayingMedia(String link)
 			throws Exception {
@@ -540,12 +488,6 @@ public class DialogPageSteps {
 	@When("I try to send message with only spaces")
 	public void ISendMessageWithOnlySpaces() throws Throwable {
 		getDialogPage().sendStringToInput(onlySpacesMessage + "\n");
-	}
-
-	@Then("I see message with only spaces is not send")
-	public void ISeeMessageWithOnlySpacesIsNotSend() throws Exception {
-		Assert.assertFalse(onlySpacesMessage.equals(getDialogPage()
-				.getLastMessageFromDialog()));
 	}
 
 	/**
@@ -600,11 +542,6 @@ public class DialogPageSteps {
 		getDialogPage().scrollToBeginningOfConversation();
 	}
 
-	@When("^I send predefined message (.*)$")
-	public void ISendPredefinedMessage(String message) throws Throwable {
-		getDialogPage().sendStringToInput(message + "\n");
-	}
-
 	@When("^I send using script predefined message (.*)$")
 	public void ISendUsingScriptPredefinedMessage(String message)
 			throws Exception {
@@ -638,17 +575,6 @@ public class DialogPageSteps {
 				FindBy.NAME_ALIAS);
 		pingId = BackendAPIWrappers.sendPingToConversation(yourСontact,
 				conversationName);
-		Thread.sleep(1000);
-	}
-
-	@When("^User (.*) HotPing in chat (.*) by BackEnd$")
-	public void UserHotPingInChatByBE(String contact, String conversationName)
-			throws Exception {
-		ClientUser yourСontact = usrMgr.findUserByNameOrNameAlias(contact);
-		conversationName = usrMgr.replaceAliasesOccurences(conversationName,
-				FindBy.NAME_ALIAS);
-		BackendAPIWrappers.sendHotPingToConversation(yourСontact,
-				conversationName, pingId);
 		Thread.sleep(1000);
 	}
 
@@ -995,19 +921,6 @@ public class DialogPageSteps {
 				.isOpenScetchButtonVisible());
 		Assert.assertFalse("Ping button is visible", getDialogPage()
 				.isPingButtonVisible());
-	}
-
-	/**
-	 * Verify Close button in options is shown
-	 * 
-	 * @step. ^I see Close input options button is visible$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I see Close input options button is visible$")
-	public void ISeeCloseButtonInputOptionsVisible() throws Exception {
-		Assert.assertTrue("Close button is not visible", getDialogPage()
-				.isCloseButtonVisible());
 	}
 
 	/**

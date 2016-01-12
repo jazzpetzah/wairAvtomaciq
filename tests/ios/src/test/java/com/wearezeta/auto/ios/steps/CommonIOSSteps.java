@@ -67,6 +67,8 @@ public class CommonIOSSteps {
 		return resetIOSDriver(enableAutoAcceptAlerts, false);
 	}
 
+    private static final int DRIVER_CREATION_RETRIES_COUNT = 1;
+
 	@SuppressWarnings("unchecked")
 	public Future<ZetaIOSDriver> resetIOSDriver(boolean enableAutoAcceptAlerts,
 			boolean overrideWaitForAppScript) throws Exception {
@@ -95,7 +97,7 @@ public class CommonIOSSteps {
 
 		setTestStartedDate(new Date());
 		return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance()
-				.resetDriver(getUrl(), capabilities);
+				.resetDriver(getUrl(), capabilities, DRIVER_CREATION_RETRIES_COUNT);
 	}
 
 	@Before
@@ -736,5 +738,23 @@ public class CommonIOSSteps {
 			String conversationName) throws Exception {
 		UserSentMessageToConversation(userFromNameAlias,
 				IOSConstants.LONG_MESSAGE, conversationName);
+	}
+
+	/**
+	 * A user adds another user to a group chat
+	 *
+	 * @step. ^User (.*) adds User (.*) to group chat (.*)$
+	 * @param user
+	 *            that adds someone to a chat
+	 * @param userToBeAdded
+	 *            user that gets added by someone
+	 * @param group
+	 *            group chat you get added to
+	 * @throws Throwable
+	 */
+	@When("^User (.*) adds User (.*) to group chat (.*)$")
+	public void UserAddsUserToGroupChat(String user, String userToBeAdded,
+										String group) throws Throwable {
+		commonSteps.UserXAddedContactsToGroupChat(user, userToBeAdded, group);
 	}
 }

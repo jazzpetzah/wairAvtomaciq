@@ -43,7 +43,7 @@ Feature: Registration
       | user1Email | user1Password | user1Name | user2Email  | user2Name  | Hello   |
 
   @C1770 @smoke
-  Scenario Outline: Photo selection dialogue - choose picture from library
+  Scenario Outline: Upload own picture on Welcome page
     Given There is 1 user where <Name> is me without avatar picture
     Given I switch to Sign In page
     And I Sign in using login <Login> and password <Password>
@@ -60,7 +60,7 @@ Feature: Registration
       | user1Email | user1Password | user1Name | userpicture_landscape.jpg |
 
   @C1771 @regression
-  Scenario Outline: Photo selection dialogue - choose picture from carousel
+  Scenario Outline: Keep picture on Welcome page
     Given There is 1 user where <Name> is me without avatar picture
     Given I switch to Sign In page
     When I Sign in using login <Login> and password <Password>

@@ -5,38 +5,38 @@ import org.json.JSONObject;
 import java.util.Optional;
 
 public class OtrClient {
-    private String cookie;
-    private String time;
+    private Optional<String> cookie = Optional.empty();
+    private Optional<String> time = Optional.empty();
     private Optional<Location> location = Optional.empty();
     private Optional<String> address = Optional.empty();
     private Optional<String> model = Optional.empty();
     private String id;
-    private String klass;
+    private Optional<String> klass = Optional.empty();
     private Optional<String> label = Optional.empty();
-    private String type;
+    private Optional<String> type = Optional.empty();
 
-    public String getType() {
+    public Optional<String> getType() {
         return type;
     }
 
     public void setType(String type) {
-        this.type = type;
+        this.type = Optional.of(type);
     }
 
-    public String getCookie() {
+    public Optional<String> getCookie() {
         return cookie;
     }
 
     public void setCookie(String cookie) {
-        this.cookie = cookie;
+        this.cookie = Optional.of(cookie);
     }
 
-    public String getTime() {
+    public Optional<String> getTime() {
         return time;
     }
 
     public void setTime(String time) {
-        this.time = time;
+        this.time = Optional.of(time);
     }
 
     public Optional<Location> getLocation() {
@@ -71,12 +71,12 @@ public class OtrClient {
         this.id = id;
     }
 
-    public String getKlass() {
+    public Optional<String> getKlass() {
         return klass;
     }
 
     public void setKlass(String klass) {
-        this.klass = klass;
+        this.klass = Optional.of(klass);
     }
 
     public Optional<String> getLabel() {
@@ -108,7 +108,8 @@ public class OtrClient {
 
         private double longitude;
 
-        public Location() {}
+        public Location() {
+        }
 
         public Location(JSONObject source) {
             this.latitude = source.getDouble("lat");
@@ -123,11 +124,16 @@ public class OtrClient {
         }
     }
 
-    public OtrClient() {}
+    public OtrClient() {
+    }
 
     public OtrClient(JSONObject source) {
-        this.cookie = source.getString("cookie");
-        this.time = source.getString("time");
+        if (source.has("cookie")) {
+            this.cookie = Optional.of(source.getString("cookie"));
+        }
+        if (source.has("time")) {
+            this.time = Optional.of(source.getString("time"));
+        }
         if (source.has("location")) {
             this.location = Optional.of(new Location(source.getJSONObject("location")));
         }
@@ -138,8 +144,12 @@ public class OtrClient {
             this.model = Optional.of(source.getString("model"));
         }
         this.id = source.getString("id");
-        this.type = source.getString("type");
-        this.klass = source.getString("class");
+        if (source.has("type")) {
+            this.type = Optional.of(source.getString("type"));
+        }
+        if (source.has("klass")) {
+            this.klass = Optional.of(source.getString("class"));
+        }
         if (source.has("label")) {
             this.label = Optional.of(source.getString("label"));
         }
@@ -147,8 +157,12 @@ public class OtrClient {
 
     public JSONObject asJson() {
         final JSONObject result = new JSONObject();
-        result.put("cookie", this.getCookie());
-        result.put("time", this.getTime());
+        if (this.getCookie().isPresent()) {
+            result.put("cookie", this.getCookie().get());
+        }
+        if (this.getTime().isPresent()) {
+            result.put("time", this.getTime().get());
+        }
         if (this.getLocation().isPresent()) {
             result.put("location", this.getLocation().get().asJson());
         }
@@ -159,8 +173,12 @@ public class OtrClient {
             result.put("model", this.getModel().get());
         }
         result.put("id", this.getId());
-        result.put("type", this.getType());
-        result.put("class", this.getKlass());
+        if (this.getType().isPresent()) {
+            result.put("type", this.getType().get());
+        }
+        if (this.getKlass().isPresent()) {
+            result.put("class", this.getKlass().get());
+        }
         if (this.getLabel().isPresent()) {
             result.put("label", this.getLabel().get());
         }

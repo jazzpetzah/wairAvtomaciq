@@ -83,27 +83,4 @@ public class GiphySteps {
 	public void IClickOnTheGiphySendButton() throws Exception {
 		getGiphyPreviewPage().clickSendButton();
 	}
-
-	/**
-	 * Click Show Giphy Grid button
-	 *
-	 * @throws Exception
-	 * @step. ^I click Show giphy grid button$
-	 */
-	@When("^I click Show giphy grid button$")
-	public void IClickShowGiphyGridButton() throws Exception {
-		getGiphyPreviewPage().clickShowGiphyGridButton();
-	}
-
-	/**
-	 * Select the first item from Giphy grid
-	 *
-	 * @step. ^I select the first item in giphy grid$
-	 *
-	 * @throws Exception
-	 */
-	@And("^I select the first item in giphy grid$")
-	public void ISelectTheFirstGridItem() throws Exception {
-		getGiphyPreviewPage().selectFirstGridItem();
-	}
 }

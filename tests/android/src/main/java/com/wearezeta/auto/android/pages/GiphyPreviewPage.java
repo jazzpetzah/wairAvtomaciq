@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android.pages;
 
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -47,14 +48,6 @@ public class GiphyPreviewPage extends AndroidPage {
     @FindBy(id = giphyGridImageId)
     private List<WebElement> giphyGridImages;
 
-
-    private static final String idOpenGiphyCollectionButton = "gtv__giphy_preview__link_button";
-    @FindBy(id = idOpenGiphyCollectionButton)
-    private WebElement openGiphyCollectionButton;
-
-    private static final Function<Integer, String> xpathGiphyPreviewByIndex = idx ->
-            String.format("//*[@id='rv__giphy_image_preview']/*[@id='iv__row_giphy_image'][%d]", idx);
-
     public GiphyPreviewPage(Future<ZetaAndroidDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
@@ -88,7 +81,8 @@ public class GiphyPreviewPage extends AndroidPage {
     }
 
     public void clickOnSomeGif() {
-        int toSelect = 3;
+    	Random ran = new Random();
+    	int toSelect = ran.nextInt(5)+1;
         giphyGridImages.get(toSelect).click();
     }
 
@@ -112,16 +106,5 @@ public class GiphyPreviewPage extends AndroidPage {
 
     public void clickGiphyLinkButton() {
         giphyLinkButton.click();
-    }
-
-    public void clickShowGiphyGridButton() {
-        openGiphyCollectionButton.click();
-    }
-
-    public void selectFirstGridItem() throws Exception {
-        final By locator = By.xpath(xpathGiphyPreviewByIndex.apply(1));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) :
-                "Giphy previews collection is not visible";
-        getDriver().findElement(locator).click();
     }
 }

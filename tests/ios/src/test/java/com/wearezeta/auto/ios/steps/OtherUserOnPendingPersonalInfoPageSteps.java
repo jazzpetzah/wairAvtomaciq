@@ -81,25 +81,13 @@ public class OtherUserOnPendingPersonalInfoPageSteps {
 	}
 
 	/**
-	 * Presses back button to return to group info page or popover
-	 * 
-	 * @step. ^I go back to group info page or popover$
-	 * @throws Throwable
-	 */
-	@When("^I go back to group info page or popover$")
-	public void IGoBackToGroupInfoPageOrPopover() throws Throwable {
-		getOtherUserOnPendingProfilePage()
-				.clickBackButtonToReturnToGroupPageOrPopover();
-	}
-
-	/**
 	 * Verifies that remove from group button is visible on pending user page
 	 * 
 	 * @step. ^I see remove from group conversation button$
 	 * @throws Throwable
 	 */
 	@Then("^I see remove from group conversation button$")
-	public void i_see_remove_from_group_conversation_button() throws Throwable {
+	public void ISeeRemoveFromGroupConversationButton() throws Throwable {
 		getOtherUserOnPendingProfilePage()
 				.isRemoveFromGroupConversationVisible();
 	}

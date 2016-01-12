@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.concurrent.Future;
 
+import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
@@ -52,9 +53,6 @@ public class PeoplePickerPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.namePeoplePickerAddToConversationButton)
 	private WebElement addToConversationBtn;
-
-	// @FindBy(how = How.NAME, using = IOSLocators.nameLaterButton)
-	// private WebElement laterButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameShareButton)
 	private WebElement shareButton;
@@ -127,21 +125,6 @@ public class PeoplePickerPage extends IOSPage {
 		}
 	}
 
-	public void clickLaterButton() throws Exception {
-		for (int i = 0; i < 3; i++) {
-			if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-					By.name(IOSLocators.PeoplePickerPage.nameNotNowButton), 3)) {
-				if (i > 0) {
-					this.minimizeApplication(3);
-				}
-				getWait().until(
-						ExpectedConditions.elementToBeClickable(notNowButton));
-				notNowButton.click();
-				break;
-			}
-		}
-	}
-
 	public Boolean isPeoplePickerPageVisible() throws Exception {
 		boolean result = DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathPickerSearch));
@@ -197,17 +180,15 @@ public class PeoplePickerPage extends IOSPage {
 		try {
 			sendTextToSeachInput(text);
 			clickSpaceKeyboardButton();
-			// peoplePickerSearch.sendKeys(text);
 		} catch (WebDriverException ex) {
 			peoplePickerSearch.clear();
 			sendTextToSeachInput(text);
 			clickSpaceKeyboardButton();
-			// peoplePickerSearch.sendKeys(text);
 		}
 	}
 
 	public void sendTextToSeachInput(String text) throws Exception {
-		peoplePickerSearch.sendKeys(text);
+		((IOSElement) getDriver().findElementByXPath(IOSLocators.xpathPickerSearch)).setValue(text);
 	}
 
 	public boolean waitUserPickerFindUser(String user) throws Exception {
@@ -247,10 +228,6 @@ public class PeoplePickerPage extends IOSPage {
 				.waitUntilElementClickable(getDriver(), peoplePickerClearBtn);
 		peoplePickerClearBtn.click();
 		return new ContactListPage(this.getLazyDriver());
-	}
-
-	public void hidePeoplePickerKeyboard() throws Exception {
-		DriverUtils.swipeUp(this.getDriver(), sendInviteButton, 500, 50, 40);
 	}
 
 	public void swipeToRevealHideSuggestedContact(String contact)
@@ -305,11 +282,6 @@ public class PeoplePickerPage extends IOSPage {
 						contact)), 2);
 	}
 
-	public boolean isAddToConversationBtnVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(IOSLocators.namePeoplePickerAddToConversationButton));
-	}
-
 	public boolean addToConversationNotVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.name(IOSLocators.namePeoplePickerAddToConversationButton));
@@ -322,14 +294,6 @@ public class PeoplePickerPage extends IOSPage {
 		} else {
 			return new DialogPage(this.getLazyDriver());
 		}
-	}
-
-	public GroupChatInfoPage clickOnUserToAddToExistingGroupChat(String name)
-			throws Throwable {
-		GroupChatInfoPage page = null;
-		getDriver().findElement(By.name(name)).click();
-		page = new GroupChatInfoPage(this.getLazyDriver());
-		return page;
 	}
 
 	@Override
@@ -360,15 +324,6 @@ public class PeoplePickerPage extends IOSPage {
 		waitUserPickerFindUser(name);
 		user = getDriver().findElementByName(name);
 		return user;
-	}
-
-	public void clearInputField() {
-		peoplePickerSearch.clear();
-	}
-
-	public boolean isContactsLabelVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(IOSLocators.namePeoplePickerContactsLabel));
 	}
 
 	public void selectUser(String name) throws Exception {
@@ -436,10 +391,6 @@ public class PeoplePickerPage extends IOSPage {
 
 	public void hitDeleteButton() {
 		peoplePickerSearch.sendKeys(Keys.DELETE);
-	}
-
-	public void goIntoConversation() {
-		peoplePickerSearch.sendKeys("\n");
 	}
 
 	public GroupChatPage clickAddToCoversationButton() throws Exception {

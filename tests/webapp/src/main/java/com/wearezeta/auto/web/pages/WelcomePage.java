@@ -16,7 +16,7 @@ import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class WelcomePage extends WebPage {
 
-	private static final int TIMEOUT_UNSPLASH = 10; // seconds
+	private static final int TIMEOUT_UNSPLASH = 15; // seconds
 
 	@FindBy(how = How.CSS, using = WebAppLocators.SelfPictureUploadPage.cssChooseYourOwnInput)
 	private WebElement chooseYourOwnInput;
@@ -45,10 +45,9 @@ public class WelcomePage extends WebPage {
 						By.xpath(WebAppLocators.SelfPictureUploadPage.cssKeepPictureButton)) : "Keep picture button is still visible";
 	}
 
-	public void waitUntilButtonsAreClickable()
-			throws Exception {
+	public void waitUntilButtonsAreClickable() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
-				keepPictureButton) : "Keep picture button was not clickable";
+				keepPictureButton, TIMEOUT_UNSPLASH) : "Keep picture button was not clickable";
 	}
 
 	public void uploadPicture(String pictureName) throws Exception {

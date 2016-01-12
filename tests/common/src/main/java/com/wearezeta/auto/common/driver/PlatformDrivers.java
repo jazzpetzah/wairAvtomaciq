@@ -93,23 +93,20 @@ public final class PlatformDrivers {
                 .getDriverTimeoutFromConfig(PlatformDrivers.class)));
     }
 
-    private static final long DRIVER_CANCELLATION_TIMEOUT = 30000; // milliseconds
+    private static final long DRIVER_CANCELLATION_TIMEOUT = 60; // seconds
 
     public synchronized void quitDriver(Platform platform) throws Exception {
         try {
             final Future<? extends RemoteWebDriver> futureDriver = drivers.get(platform);
             if (!futureDriver.isCancelled()) {
                 try {
-                    final RemoteWebDriver driver = futureDriver.get(DRIVER_CANCELLATION_TIMEOUT,
-                            TimeUnit.MILLISECONDS);
+                    final RemoteWebDriver driver = futureDriver.get(DRIVER_CANCELLATION_TIMEOUT, TimeUnit.SECONDS);
                     driver.quit();
-                    log.debug(String.format(
-                            "Successfully quit driver instance for platform '%s'", platform.name()));
+                    log.debug(String.format("Successfully quit driver instance for platform '%s'", platform.name()));
                 } catch (Exception e) {
                     e.printStackTrace();
                     futureDriver.cancel(true);
-                    log.warn(String.format(
-                            "Canceled driver creation for platform '%s'", platform.getName()));
+                    log.warn(String.format("Canceled driver creation for platform '%s'", platform.getName()));
                 }
             }
         } finally {

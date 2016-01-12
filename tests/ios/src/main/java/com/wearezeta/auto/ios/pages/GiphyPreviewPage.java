@@ -80,11 +80,6 @@ public class GiphyPreviewPage extends IOSPage {
 				giphySendButton);
 	}
 
-	public boolean isNoGifsTextVisible() throws Exception {
-		return DriverUtils
-				.isElementPresentAndDisplayed(getDriver(), noGifsText);
-	}
-
 	public void clickGiphyMoreButton() throws Exception {
 		DriverUtils.waitUntilElementClickable(getDriver(), giphyMoreButton);
 		giphyMoreButton.click();

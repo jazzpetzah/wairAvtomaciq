@@ -74,30 +74,6 @@ public class GroupChatPage extends DialogPage {
                 By.name(IOSLocators.nameConversationCursorInput));
     }
 
-    public boolean isConversationChangedInChat() throws Exception {
-        System.out.println(newGroupConversationNameChangeTextField.getText());
-        final GroupChatInfoPage groupChatInfoPage = new GroupChatInfoPage(
-                this.getLazyDriver());
-        System.out.println(groupChatInfoPage.getConversationName());
-
-        String groupChatName = groupChatInfoPage.getConversationName();
-        return newGroupConversationNameChangeTextField.getText().contains(
-                groupChatName);
-    }
-
-    public boolean isYouHaveLeftVisible() {
-        return youLeft.isDisplayed();
-    }
-
-    public boolean isUserAddedContactVisible(String user, String contact)
-            throws Exception {
-        return this
-                .getDriver()
-                .findElement(
-                        By.name(user.toUpperCase() + " ADDED "
-                                + contact.toUpperCase())).isDisplayed();
-    }
-
     public boolean isYouAddedUserMessageShown(String user) throws Exception {
         String message = String.format(
                 IOSLocators.xpathYouAddetToGroupChatMessage, user.toUpperCase());
@@ -109,26 +85,6 @@ public class GroupChatPage extends DialogPage {
         return getRenamedMessage().equals(
                 String.format(IOSLocators.nameYouRenamedConversationMessage,
                         name));
-    }
-
-    public boolean isMessageShownInGroupChat(String message) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.name(message));
-    }
-
-    public boolean isContactAvailableInChat(String contact) throws Exception {
-        WebElement el = null;
-        boolean result = false;
-
-        try {
-            el = getDriver().findElementByName(contact);
-        } catch (NoSuchElementException ex) {
-            el = null;
-        } finally {
-            result = el != null;
-        }
-
-        return result;
     }
 
     @Override

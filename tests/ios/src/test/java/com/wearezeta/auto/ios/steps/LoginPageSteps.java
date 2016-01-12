@@ -158,23 +158,6 @@ public class LoginPageSteps {
     }
 
     /**
-     * Sends new verification code for specified user and enter previous one
-     *
-     * @param name name of user
-     * @throws Exception
-     * @step. ^I enter verification code for user (.*)$
-     */
-    @When("^I enter previous verification code for user (.*)$")
-    public void IEnterPreviousVerificationCodeForUser(String name)
-            throws Exception {
-        ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
-        String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(user
-                .getPhoneNumber());
-        getRegistrationPage().clickResendCodeButton();
-        getRegistrationPage().inputActivationCode(code);
-    }
-
-    /**
      * Click on RESEND button to send new verification code
      *
      * @throws Exception
@@ -346,30 +329,6 @@ public class LoginPageSteps {
     }
 
     /**
-     * Types email string into the corresponding input field on sign in page
-     *
-     * @param text a string to type
-     * @step. I fill in email input (.*)
-     */
-    @When("I fill in email input (.*)")
-    public void IFillInEmailInput(String text) throws Exception {
-        getLoginPage().setLogin(text);
-    }
-
-    /**
-     * Verifies whether login screen is the current screen
-     *
-     * @throws Exception
-     * @throws AssertionError if current screen is not login screen
-     * @step. ^I see login in screen$
-     */
-    @Then("^I see login in screen$")
-    public void ThenISeeLogInScreen() throws Exception {
-        Assert.assertTrue("I don't see login screen", getLoginPage()
-                .isLoginButtonVisible());
-    }
-
-    /**
      * Tap and holds the "finger" for a while on email input field
      *
      * @throws Exception
@@ -399,19 +358,6 @@ public class LoginPageSteps {
      */
     @When("I click on popup Copy item")
     public void IClickPopupCopy() throws Exception {
-        getLoginPage().clickPopupCopyButton();
-    }
-
-    /**
-     * Copies the content of Email input field into clipboard
-     *
-     * @throws Exception
-     * @step. I copy email input field content
-     */
-    @When("I copy email input field content")
-    public void ICopyEmailInputContent() throws Exception {
-        getLoginPage().tapHoldEmailInput();
-        getLoginPage().clickPopupSelectAllButton();
         getLoginPage().clickPopupCopyButton();
     }
 
@@ -463,29 +409,6 @@ public class LoginPageSteps {
     }
 
     /**
-     * Taps "Privacy Policy" link on Welcome page
-     *
-     * @step. ^I press Privacy Policy link$
-     */
-    @When("^I press Privacy Policy link$")
-    public void IPressPrivacyPolicyLink() throws Throwable {
-        getLoginPage().openPrivacyLink();
-    }
-
-    /**
-     * Verifies whether the current page is "Privacy Info" page
-     *
-     * @throws AssertionError if the current page differs from "Privacy Info" page
-     * @step. ^I see the privacy info page$
-     */
-    @Then("^I see the privacy info page$")
-    public void ISeeThePrivacyInfoPage() throws Throwable {
-        Assert.assertTrue("I don't see privacy policy page", getLoginPage()
-                .isTermsPrivacyColseButtonVisible());
-        // TODO:verify correct content as far as copywrite is in
-    }
-
-    /**
      * Enters given text into email input field and taps password field
      *
      * @param wrongMail text to enter into email input field
@@ -495,32 +418,6 @@ public class LoginPageSteps {
     public void IEnterWrongEmail(String wrongMail) throws Exception {
         getLoginPage().setLogin(wrongMail);
         getLoginPage().tapPasswordField();
-    }
-
-    /**
-     * Verifies whether error message about email field is visible
-     *
-     * @throws Exception
-     * @throws AssertionError if error notification is not visible
-     * @step. ^I see error with email notification$
-     */
-    @Then("^I see error with email notification$")
-    public void ISeeErrorWithEmailNotification() throws Exception {
-        Assert.assertTrue("I don't see error mail notification", getLoginPage()
-                .errorMailNotificationIsShown());
-    }
-
-    /**
-     * Verifies whether error message about email field is NOT visible
-     *
-     * @throws Exception
-     * @throws AssertionError if error notification is visible
-     * @step. ^I see no error notification$
-     */
-    @Then("^I see no error notification$")
-    public void ISeeNoErrorNotification() throws Exception {
-        Assert.assertFalse("I see error mail notification", getLoginPage()
-                .errorMailNotificationIsNotShown());
     }
 
     /**

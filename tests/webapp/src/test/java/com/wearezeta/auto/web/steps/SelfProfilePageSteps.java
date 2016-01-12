@@ -192,4 +192,33 @@ public class SelfProfilePageSteps {
 				avatarColor == expectedColor);
 	}
 
+	/**
+	 * Emulates drop of existing picture into self profile
+	 * 
+	 * @step. ^I drop picture (.*) to self profile$
+	 * 
+	 * @param pictureName
+	 *            the name of existing image in ~/Documents folder
+	 * @throws Exception
+	 */
+	@When("^I drop picture (.*) to self profile$")
+	public void IDropPicture(String pictureName) throws Exception {
+		webappPagesCollection.getPage(SelfProfilePage.class).dropPicture(
+				pictureName);
+	}
+
+	/**
+	 * Emulates upload of existing picture into self profile
+	 * 
+	 * @step. ^I upload picture (.*) to self profile$
+	 * 
+	 * @param pictureName
+	 *            the name of existing image in ~/Documents folder
+	 * @throws Exception
+	 */
+	@When("^I upload picture (.*) to self profile$")
+	public void IUploadPicture(String pictureName) throws Exception {
+		webappPagesCollection.getPage(SelfProfilePage.class).uploadPicture(
+				pictureName);
+	}
 }

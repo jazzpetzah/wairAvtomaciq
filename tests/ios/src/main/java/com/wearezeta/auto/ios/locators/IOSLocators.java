@@ -7,13 +7,9 @@ public final class IOSLocators {
 
 	public static final String namePasswordField = "PasswordField";
 
-	public static final String nameErrorMailNotification = "PLEASE PROVIDE A VALID EMAIL ADDRESS";
-
 	public static final String nameWrongCredentialsNotification = "Please verify your details and try again.";
 
 	public static final String classNameContactListNames = "UIACollectionCell";
-
-	public static final String xpathNameContactList = "//UIACollectionCell/UIAStaticText";
 
 	public static final String xpathContactListCells = "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell";
 
@@ -52,8 +48,6 @@ public final class IOSLocators {
 	public static final String xpathConnectOtherUserButton = "//UIAButton[@name='CONNECT' or @name='OtherUserMetaControllerLeftButton']";
 
 	public static final String nameIgnoreOtherUserButton = "IGNORE";
-
-	public static final String clasNameConnectDialogLabel = "UIATextField";
 
 	public static final String xpathConnectCloseButton = "//UIAApplication[1]/UIAWindow[1]/UIAButton[1]";
 
@@ -145,15 +139,11 @@ public final class IOSLocators {
 
 	public static final String nameOtherUserEmailField = "ProfileOtherEmailField";
 
-	public static final String xpathOtherUserName = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[@value='%s']";
-
 	public static final String nameBackToWelcomeButton = "BackToWelcomeButton";
 
 	public static final String nameForwardWelcomeButton = "ForwardWelcomeButton";
 
 	public static final String nameConversationNameTextField = "ParticipantsView_GroupName";
-
-	public static final String xpathMutedIcon = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[@name='%s']/UIAButton[3]";
 
 	public static final String xpathContactListPlayPauseButton = "//UIACollectionCell[@name='%s']/UIAButton[@name='mediaCellButton']";
 
@@ -435,7 +425,6 @@ public final class IOSLocators {
 
 	public static final String nameYouLeftMessage = "YOU LEFT";
 	public static final String nameYouPingedMessage = "YOU PINGED";
-	public static final String nameYouPingedAgainMessage = "YOU PINGED AGAIN";
 
 	// //////////////////////////
 	// Unblock user locator
@@ -447,8 +436,6 @@ public final class IOSLocators {
 	public static final String nameBlockMenuButton = "BLOCK";
 
 	public final class StartedCallPage {
-
-		public static final String xpathCallingMessageUser = "//UIAStaticText[contains(@name, 'CALLING') and contains(@name, '%s')]";
 
 		public static final String xpathStartedCallMessageUser = "//UIAStaticText[@name='%s']";
 
