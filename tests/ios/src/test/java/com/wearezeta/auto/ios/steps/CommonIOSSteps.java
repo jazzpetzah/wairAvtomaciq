@@ -95,7 +95,7 @@ public class CommonIOSSteps {
 
 		setTestStartedDate(new Date());
 		return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance()
-				.resetDriver(getUrl(), capabilities);
+				.resetDriver(getUrl(), capabilities, 2);
 	}
 
 	@Before
