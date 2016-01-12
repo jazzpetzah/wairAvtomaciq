@@ -67,6 +67,8 @@ public class CommonIOSSteps {
 		return resetIOSDriver(enableAutoAcceptAlerts, false);
 	}
 
+    private static final int DRIVER_CREATION_RETRIES_COUNT = 2;
+
 	@SuppressWarnings("unchecked")
 	public Future<ZetaIOSDriver> resetIOSDriver(boolean enableAutoAcceptAlerts,
 			boolean overrideWaitForAppScript) throws Exception {
@@ -95,7 +97,7 @@ public class CommonIOSSteps {
 
 		setTestStartedDate(new Date());
 		return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance()
-				.resetDriver(getUrl(), capabilities, 2);
+				.resetDriver(getUrl(), capabilities, DRIVER_CREATION_RETRIES_COUNT);
 	}
 
 	@Before
