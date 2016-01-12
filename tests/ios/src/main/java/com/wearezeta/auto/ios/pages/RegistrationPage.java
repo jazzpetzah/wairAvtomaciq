@@ -195,8 +195,12 @@ public class RegistrationPage extends IOSPage {
 
     public void inputPhoneNumber(String number) throws Exception {
         getWait().until(ExpectedConditions.elementToBeClickable(phoneNumber));
-        ((IOSElement) getDriver().findElementByName(IOSLocators.RegistrationPage.namePhoneNumberField)).
-                setValue(number);
+        try {
+            phoneNumberField.sendKeys(number);
+        } catch (WebDriverException ex) {
+            phoneNumberField.clear();
+            phoneNumberField.sendKeys(number);
+        }
         confirmInput.click();
     }
 
@@ -274,9 +278,8 @@ public class RegistrationPage extends IOSPage {
     }
 
     public boolean typeAllInvalidEmails() {
-
-        for (int i = 0; i < listOfEmails.length; i++) {
-            yourEmail.sendKeys(listOfEmails[i] + "\n");
+        for (String email : listOfEmails) {
+            yourEmail.sendKeys(email + "\n");
             if (!provideValidEmailMessage.isDisplayed()) {
                 return false;
             }
@@ -349,9 +352,8 @@ public class RegistrationPage extends IOSPage {
         backToWelcomeButton.click();
     }
 
-    public Boolean isBackButtonVisible() {
-
-        return (ExpectedConditions.visibilityOf(backToWelcomeButton) != null);
+    public Boolean isBackButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(IOSLocators.nameBackToWelcomeButton));
     }
 
     public String getName() {
