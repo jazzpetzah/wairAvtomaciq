@@ -94,16 +94,4 @@ public class GiphySteps {
 	public void IClickShowGiphyGridButton() throws Exception {
 		getGiphyPreviewPage().clickShowGiphyGridButton();
 	}
-
-	/**
-	 * Select the first item from Giphy grid
-	 *
-	 * @step. ^I select the first item in giphy grid$
-	 *
-	 * @throws Exception
-	 */
-	@And("^I select the first item in giphy grid$")
-	public void ISelectTheFirstGridItem() throws Exception {
-		getGiphyPreviewPage().selectFirstGridItem();
-	}
 }
