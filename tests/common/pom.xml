@@ -33,6 +33,7 @@
         <testrailRunConfigName></testrailRunConfigName>
         <syncIsAutomated>False</syncIsAutomated>
         <syncIsMuted>False</syncIsMuted>
+        <zmessaging.actor.version>57.310</zmessaging.actor.version>
     </properties>
 
     <dependencies>
@@ -135,7 +136,7 @@
         <dependency>
             <groupId>com.wearezeta</groupId>
             <artifactId>zmessaging-actor</artifactId>
-            <version>57.310</version>
+            <version>${zmessaging.actor.version}</version>
         </dependency>
 
     </dependencies>
