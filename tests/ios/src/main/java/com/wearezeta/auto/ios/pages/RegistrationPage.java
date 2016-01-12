@@ -190,25 +190,19 @@ public class RegistrationPage extends IOSPage {
     public void selectWirestan() throws Exception {
         countryPickerButton.click();
         ((IOSElement) getDriver().findElementByXPath(IOSLocators.RegistrationPage.xpathCountryList)).
-                scrollTo(WIRE_COUNTRY_NAME);
-        getDriver().findElementByName(PhoneNumber.WIRE_COUNTRY_PREFIX).click();
+                scrollTo(WIRE_COUNTRY_NAME).click();
     }
 
     public void inputPhoneNumber(String number) throws Exception {
         getWait().until(ExpectedConditions.elementToBeClickable(phoneNumber));
-        try {
-            phoneNumberField.sendKeys(number);
-        } catch (WebDriverException ex) {
-            phoneNumberField.clear();
-            phoneNumberField.sendKeys(number);
-        }
+        ((IOSElement) getDriver().findElementByName(IOSLocators.RegistrationPage.namePhoneNumberField)).
+                setValue(number);
         confirmInput.click();
     }
 
     public boolean isVerificationCodePageVisible() throws Exception {
-        boolean flag = DriverUtils.waitUntilLocatorAppears(getDriver(),
+        return DriverUtils.waitUntilLocatorAppears(getDriver(),
                 By.xpath(IOSLocators.RegistrationPage.xpathVerificationPage));
-        return flag;
     }
 
     public void inputActivationCode(String code) throws Exception {
@@ -236,13 +230,12 @@ public class RegistrationPage extends IOSPage {
                 By.name(IOSLocators.nameTakePhotoHintLabel));
     }
 
-    public CameraRollPage selectPicture() throws Exception {
+    public void selectPicture() throws Exception {
         DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                 By.name(IOSLocators.RegistrationPage.nameSelectPictureButton));
         selectPictureButton.click();
         DriverUtils.waitUntilElementClickable(getDriver(), photoButton);
         photoButton.click();
-        return new CameraRollPage(this.getLazyDriver());
     }
 
     public boolean isConfirmationShown() throws Exception {
