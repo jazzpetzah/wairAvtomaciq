@@ -257,16 +257,10 @@ class IOSSimulator(BaseNodeVerifier):
                 sys.stderr.write(msg)
                 self._send_email_notification('"{}" node is broken'.format(self._node.name), msg)
                 result = False
-            client.exec_command('/usr/bin/killall "{}"'.format(IOS_SIMULATOR_EXECUTABLE_NAME))
-            try:
-                _, stdout, _ = client.exec_command('ps axu | grep appium | grep -v grep', timeout=10)
-                if not stdout.read().strip():
-                    sys.stderr.write('Appium instance seems to be crashed. Trying to restart...')
-                    client.exec_command('open -a "{}"'.format(AUTORUN_APPIUM_APP_PATH), timeout=10)
-                    time.sleep(3)
-            except (socket.timeout, paramiko.SSHException) as e:
-                sys.stderr.write('The script has failed to check whether Appium instance is running ({})'.
-                                 format(unicode(e)))
+            if result is True:
+                client.exec_command('/usr/bin/killall "{}"'.format(IOS_SIMULATOR_EXECUTABLE_NAME))
+                sys.stderr.write('Restarting Appium server...')
+                client.exec_command('open -a "{}"'.format(AUTORUN_APPIUM_APP_PATH), timeout=10)
             return result
         finally:
             client.close()

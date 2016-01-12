@@ -93,7 +93,7 @@ public final class PlatformDrivers {
                 .getDriverTimeoutFromConfig(PlatformDrivers.class)));
     }
 
-    private static final long DRIVER_CANCELLATION_TIMEOUT = 60 * 3; // seconds
+    private static final long DRIVER_CANCELLATION_TIMEOUT = 60; // seconds
 
     public synchronized void quitDriver(Platform platform) throws Exception {
         try {
