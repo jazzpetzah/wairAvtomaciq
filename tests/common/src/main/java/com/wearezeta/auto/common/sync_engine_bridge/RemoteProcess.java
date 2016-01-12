@@ -8,6 +8,8 @@ import com.waz.provision.ActorMessage;
 import com.waz.provision.ActorMessage.Echo;
 import com.waz.provision.ActorMessage.WaitUntilRegistered;
 
+import com.wearezeta.auto.common.log.ZetaLogger;
+import org.apache.log4j.Logger;
 import scala.concurrent.duration.FiniteDuration;
 
 import java.io.File;
@@ -17,6 +19,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 class RemoteProcess extends RemoteEntity implements IRemoteProcess {
+
+	private static final Logger LOG = ZetaLogger.getLog(RemoteProcess.class
+			.getSimpleName());
 
 	private final ActorRef coordinatorActorRef;
 
@@ -64,12 +69,14 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
 				.serializedActorPath(coordinatorActorRef);
 		final String[] cmd = { "java", "-jar", getActorsJarLocation(),
 				this.name(), serialized, backendType };
+		LOG.info(String.format("Executing actors using the command line: %s", cmd));
 		final ProcessBuilder pb = new ProcessBuilder(cmd);
 
 		// ! Having a log file is mandatory
 		pb.redirectErrorStream(true);
 		pb.redirectOutput(ProcessBuilder.Redirect.appendTo(new File(
 				getLogPath())));
+		LOG.info(String.format("Actor logs will be redirected to %s", getLogPath()));
 		pb.start();
 	}
 
