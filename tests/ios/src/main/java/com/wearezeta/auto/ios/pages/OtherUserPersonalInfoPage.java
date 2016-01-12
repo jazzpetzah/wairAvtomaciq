@@ -141,20 +141,9 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 		return new PeoplePickerPage(this.getLazyDriver());
 	}
 
-	public boolean isOtherUserProfileEmailVisible(String name) throws Exception {
-		WebElement otherUserEmail = getDriver().findElementByXPath(
-				String.format(IOSLocators.xpathOtherUserName,
-						name.toUpperCase()));
-		return otherUserEmail.isDisplayed();
-	}
-
 	public boolean isOtherUserProfileNameVisible(String name) throws Exception {
 		WebElement otherUserName = getDriver().findElementByName(name);
 		return otherUserName.isEnabled();
-	}
-
-	public void continueToAddUser() {
-		continueButton.click();
 	}
 
 	public void removeFromConversation() throws Exception {
@@ -173,14 +162,6 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 		WebElement name = getDriver().findElement(
 				By.xpath(String.format(
 						IOSLocators.xpathOtherPersonalInfoPageNameField, user)));
-//		if (nameField.size() == 1)
-//			return nameField.get(0).getText();
-//		else
-//			for (WebElement el : nameField) {
-//				if (!el.getText().trim().equals("")) {
-//					return el.getText();
-//				}
-//			}
 		return name.getAttribute("name");
 	}
 

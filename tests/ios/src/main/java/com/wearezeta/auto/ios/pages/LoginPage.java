@@ -208,21 +208,6 @@ public class LoginPage extends IOSPage {
         phoneLoginButton.click();
     }
 
-    public void waitForLaterButton(int time) throws Exception {
-        DriverUtils.waitUntilLocatorAppears(getDriver(),
-                By.name(IOSLocators.nameShareButton), time);
-    }
-
-    public PeoplePickerPage clickLaterButton() throws Exception {
-        if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.name(IOSLocators.nameShareButton))) {
-            shareButton.click();
-            return new PeoplePickerPage(this.getLazyDriver());
-        } else {
-            return null;
-        }
-    }
-
     public void waitForLoginToFinish() throws Exception {
         if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
                 By.name(IOSLocators.nameLoginButton), 40)) {
@@ -266,11 +251,6 @@ public class LoginPage extends IOSPage {
         DriverUtils.waitUntilElementClickable(getDriver(), passwordField);
         ((IOSElement) getDriver().findElementByName(IOSLocators.namePasswordField)).
                 setValue(password);
-    }
-
-    public boolean waitForLogin() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-                By.name(IOSLocators.nameLoginField));
     }
 
     public void dismisSettingsWaring() throws Exception {
@@ -328,13 +308,6 @@ public class LoginPage extends IOSPage {
                 (p.y) + (k.height - 16), 1);
     }
 
-    public void openPrivacyLink() throws Exception {
-        Point p = privacyButton.getLocation();
-        Dimension k = privacyButton.getSize();
-        this.getDriver().tap(1, (p.x) + (k.width / 3), (p.y) + (k.height - 8),
-                1);
-    }
-
     public void closeTermsPrivacyController() throws Exception {
         this.getWait().until(
                 ExpectedConditions
@@ -348,15 +321,6 @@ public class LoginPage extends IOSPage {
 
     public void tapPasswordField() {
         passwordField.click();
-    }
-
-    public Boolean errorMailNotificationIsShown() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.name(IOSLocators.nameErrorMailNotification));
-    }
-
-    public boolean errorMailNotificationIsNotShown() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.name(nameErrorMailNotification));
     }
 
     public boolean wrongCredentialsNotificationIsShown() throws Exception {

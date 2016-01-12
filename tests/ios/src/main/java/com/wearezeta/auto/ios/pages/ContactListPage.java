@@ -79,9 +79,6 @@ public class ContactListPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathContactListContainer)
 	private WebElement contactListContainer;
 
-	// @FindBy(how = How.NAME, using = IOSLocators.nameArchiveButton)
-	// private WebElement archiveButton;
-
 	@FindBy(how = How.NAME, using = IOSLocators.ContactListPage.nameMuteCallButton)
 	private WebElement muteCallButton;
 
@@ -110,29 +107,10 @@ public class ContactListPage extends IOSPage {
 		}
 	}
 
-	public void muteConversation() {
-
-		for (WebElement el : muteButtons) {
-			if (el.isDisplayed()) {
-				el.click();
-			}
-		}
-	}
-
 	public PeoplePickerPage openSearch() throws Exception {
 		DriverUtils.waitUntilElementClickable(getDriver(), openStartUI);
 		openStartUI.click();
 		return new PeoplePickerPage(getLazyDriver());
-	}
-
-	public boolean isContactMuted(String contact) throws Exception {
-		// potential floating bug, the icon is always visible, but simply
-		// changes x coordinate
-		return this
-				.getDriver()
-				.findElementByXPath(
-						String.format(IOSLocators.xpathMutedIcon, contact))
-				.getLocation().x < oldLocation;
 	}
 
 	public boolean isPlayPauseButtonVisible(String contact) throws Exception {
@@ -260,35 +238,10 @@ public class ContactListPage extends IOSPage {
 		return flag;
 	}
 
-	public boolean isGroupChatAvailableInContactList() {
-		boolean flag = false;
-
-		for (WebElement el : contactListNames) {
-			if (el.getAttribute("name").contains(",")) {
-				flag = true;
-				break;
-			}
-		}
-
-		return flag;
-	}
-
 	public IOSPage swipeRightOnContact(String contact) throws Exception {
 		DriverUtils.swipeRight(this.getDriver(),
 				findNameInContactList(contact), CONV_SWIPE_TIME, 90, 50);
 		return returnBySwipe(SwipeDirection.RIGHT);
-	}
-
-	public void swipeRightConversationToRevealArchiveButton(String conversation)
-			throws Exception {
-		int count = 0;
-
-		do {
-			swipeRightOnContact(conversation);
-			count++;
-		} while ((count < 5)
-				&& !isArchiveConversationButtonVisible(conversation));
-
 	}
 
 	public void swipeRightConversationToRevealActionButtons(String conversation)
@@ -301,13 +254,6 @@ public class ContactListPage extends IOSPage {
 		} while ((count < 5) && !isCancelActionButtonVisible());
 	}
 
-	public IOSPage longSwipeRightOnContact(int time, String contact)
-			throws Exception {
-		DriverUtils.swipeRight(this.getDriver(),
-				findNameInContactList(contact), time);
-		return returnBySwipe(SwipeDirection.RIGHT);
-	}
-
 	public String getFirstConversationName() throws Exception {
 		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
 				By.xpath(IOSLocators.xpathFirstChatInChatListTextField))) {
@@ -315,17 +261,6 @@ public class ContactListPage extends IOSPage {
 			return text;
 		} else
 			return null;
-	}
-
-	public boolean verifyChangedGroupNameInChatList() throws Exception {
-		return firstChatInChatListTextField.getText().equals(
-				new GroupChatInfoPage(getLazyDriver()).getConversationName());
-	}
-
-	public GroupChatPage tapOnUnnamedGroupChat(String contact1, String contact2)
-			throws Exception {
-		findChatInContactList(contact1, contact2).click();
-		return new GroupChatPage(this.getLazyDriver());
 	}
 
 	public IOSPage tapOnGroupChat(String chatName) throws Exception {
@@ -338,23 +273,6 @@ public class ContactListPage extends IOSPage {
 				this.getDriver(),
 				By.xpath(IOSLocators.xpathMyUserInContactList));
 		return waitForUser;
-	}
-
-	private WebElement findChatInContactList(String contact1, String contact2) {
-
-		String contact = "";
-		WebElement el = null;
-
-		for (WebElement element : contactListNames) {
-			contact = element.getAttribute("name");
-			if (contact.contains(",") && contact.contains(contact1)
-					&& contact.contains(contact2)) {
-				el = element;
-				break;
-			}
-		}
-
-		return el;
 	}
 
 	@Override
@@ -404,40 +322,9 @@ public class ContactListPage extends IOSPage {
 				By.name(name), 5);
 	}
 
-	public boolean isTutorialShown() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(IOSLocators.nameTutorialView), 10);
-	}
-
-	public void dismissTutorial() throws Exception {
-		WebElement tutorialView = this.getDriver().findElement(
-				By.name(IOSLocators.nameTutorialView));
-		this.getDriver().tap(3, tutorialView, 1);
-	}
-
 	public List<WebElement> GetVisibleContacts() throws Exception {
 		return this.getDriver().findElements(
 				By.className(IOSLocators.classNameContactListNames));
-	}
-
-	public IOSPage tapOnContactByIndex(List<WebElement> contacts, int index)
-			throws Exception {
-		IOSPage page = null;
-		DriverUtils.waitUntilElementClickable(this.getDriver(),
-				contacts.get(index));
-		try {
-			log.debug(contacts.get(index).getAttribute("name"));
-			contacts.get(index).click();
-		} catch (WebDriverException e) {
-			BufferedImage im = DriverUtils.takeFullScreenShot(this.getDriver())
-					.orElseThrow(IllegalStateException::new);
-			ImageUtil.storeImageToFile(im, "/Project/ios_crash.jpg");
-			log.debug("Can't select contact by index " + index
-					+ ". Page source: " + this.getDriver().getPageSource());
-			throw e;
-		}
-		page = new DialogPage(this.getLazyDriver());
-		return page;
 	}
 
 	@Override
@@ -456,16 +343,6 @@ public class ContactListPage extends IOSPage {
 		boolean chatExist = firstChat.contains(name1)
 				&& firstChat.contains(name2) && firstChat.contains(name3);
 		return chatExist;
-	}
-
-	public void silenceConversation(String conversation) throws Exception {
-		WebElement contact = findNameInContactList(conversation);
-		DriverUtils.clickSilenceConversationButton(this.getDriver(), contact);
-	}
-
-	public void unsilenceConversation(String conversation) throws Exception {
-		WebElement contact = findNameInContactList(conversation);
-		DriverUtils.clickSilenceConversationButton(this.getDriver(), contact);
 	}
 
 	public boolean isConversationSilenced(String conversation,
@@ -542,24 +419,6 @@ public class ContactListPage extends IOSPage {
 				cancelActionMenuButton);
 	}
 
-	private boolean isArchiveConversationButtonVisible(String conversation)
-			throws Exception {
-		if (DriverUtils
-				.waitUntilLocatorAppears(
-						getDriver(),
-						By.xpath(IOSLocators.ContactListPage.xpathArchiveConversationButton),
-						3)) {
-			WebElement archiveButton = this
-					.getDriver()
-					.findElement(
-							By.xpath(IOSLocators.ContactListPage.xpathArchiveConversationButton));
-			return DriverUtils.waitUntilElementClickable(getDriver(),
-					archiveButton, 3);
-		} else {
-			return false;
-		}
-	}
-
 	public void clickArchiveConversationButton(String conversation)
 			throws Exception {
 		WebElement archiveButton = this
@@ -567,12 +426,6 @@ public class ContactListPage extends IOSPage {
 				.findElement(
 						By.xpath(IOSLocators.ContactListPage.xpathArchiveConversationButton));
 		DriverUtils.tapByCoordinates(getDriver(), archiveButton);
-	}
-
-	public void archiveConversation(String conversation) throws Exception {
-		WebElement contact = findNameInContactList(conversation);
-		DriverUtils.clickArchiveConversationButton(this.getDriver(), contact);
-		// DriverUtils.mobileTapByCoordinates(getDriver(), archiveButton);
 	}
 
 	public BufferedImage getScreenshotFirstContact() throws Exception {
@@ -700,27 +553,6 @@ public class ContactListPage extends IOSPage {
 
 		}
 		return true;
-	}
-
-	public boolean changeOfAccentColorIsVisible(String name) throws Exception {
-
-		return false; // Needs refactoring, UI have changed
-		// BufferedImage changedAccentColorImage = null;
-		// BufferedImage referenceImage = null;
-		// double score = 0;
-		// WebElement el = this.getDriver().findElementByXPath(
-		// String.format(IOSLocators.xpathSelfName, name));
-		// changedAccentColorImage = getElementScreenshot(el).orElseThrow(
-		// IllegalStateException::new);
-		// referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
-		// + "changedAccentColor.png");
-		// score = ImageUtil.getOverlapScore(referenceImage,
-		// changedAccentColorImage,
-		// ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-		// if (score >= MIN_ACCEPTABLE_IMAGE_ACCENTCOLOR_VALUE) {
-		// return true;
-		// }
-		// return false;
 	}
 
 	public boolean isMuteCallButtonVisible() throws Exception {

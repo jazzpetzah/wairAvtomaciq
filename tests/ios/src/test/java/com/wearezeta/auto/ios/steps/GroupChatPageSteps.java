@@ -111,20 +111,10 @@ public class GroupChatPageSteps {
 		getGroupChatPage().swipeUp(1000);
 	}
 
-	@When("^I see the new conversation name displayed in in conversation$")
-	public void IVerifyConversationNameInChat() throws Exception {
-		Assert.assertTrue(getGroupChatPage().isConversationChangedInChat());
-	}
-
 	@When("I see you renamed conversation to (.*) message shown in Group Chat")
 	public void ISeeYouRenamedMessageInGroupChat(String name) throws Exception {
 		Assert.assertTrue(getGroupChatPage()
 				.isYouRenamedConversationMessageVisible(name));
-	}
-
-	@Then("^I can see (.*) Have Left$")
-	public void ICanSeeYouHaveLeft(String name) throws Exception {
-		Assert.assertTrue(getGroupChatPage().isYouHaveLeftVisible());
 	}
 
 	@Then("I see You Left message in group chat")
@@ -142,25 +132,6 @@ public class GroupChatPageSteps {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertTrue(getGroupChatPage()
 				.isYouAddedUserMessageShown(contact));
-	}
-
-	@When("I swipe down on group chat page")
-	public void ISwipeDownOnGroupChat() throws Throwable {
-		if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
-			getGroupChatPage().swipeDown(500);
-		} else {
-			getGroupChatPage().swipeDownSimulator();
-		}
-	}
-
-	@When("I see message in group chat (.*)")
-	public void ISeeMessageInGroupChat(String message) throws Exception {
-		Assert.assertTrue(getGroupChatPage().isMessageShownInGroupChat(message));
-	}
-
-	@When("I swipe up on group chat page in simulator")
-	public void ISwipeUpInGroupChatWithSimulator() throws Throwable {
-		getGroupChatPage().swipeUpSimulator();
 	}
 
 	@When("I swipe right on group chat page")

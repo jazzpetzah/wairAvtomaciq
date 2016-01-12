@@ -134,7 +134,6 @@ public class PersonalInfoPage extends IOSPage {
 		super(lazyDriver);
 	}
 
-	final String WIRE_WEBSITE_PAGE_VALUE = "Great conversations";
 	final String TERMS_OF_USE_PAGE_VALUE = "PLEASE READ THIS AGREEMENT CAREFULLY; THIS IS A BINDING CONTRACT.";
 	final String PRIVACY_POLICY_PAGE_VALUE = "Our Privacy Commitment";
 	final String ABOUT_LOGO_IMAGE = "about_page_logo.png";
@@ -159,11 +158,6 @@ public class PersonalInfoPage extends IOSPage {
 	public String getUserEmailVaue() {
 		String email = emailField.getText();
 		return email;
-	}
-
-	public boolean isSettingsButtonVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(IOSLocators.nameProfileSettingsButton));
 	}
 
 	public PersonalInfoPage clickOnSettingsButton() {
@@ -264,13 +258,6 @@ public class PersonalInfoPage extends IOSPage {
 		settingsResetPasswordButton.click();
 	}
 
-	public LoginPage clickSignoutButton() throws Exception {
-		LoginPage page;
-		signoutButton.click();
-		page = new LoginPage(this.getLazyDriver());
-		return page;
-	}
-
 	public void tapOnEditNameField() throws Exception {
 		this.getWait().until(
 				ExpectedConditions.elementToBeClickable(profileNameEditField));
@@ -321,26 +308,6 @@ public class PersonalInfoPage extends IOSPage {
 		DriverUtils.tapByCoordinates(this.getDriver(),
 				profileNameEditField);
 		profileNameEditField.sendKeys("\n");
-	}
-
-	public void waitForSettingsButtonAppears() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.name(IOSLocators.nameProfileSettingsButton));
-	}
-
-	public void waitForEmailFieldVisible() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(IOSLocators.xpathEmailField));
-	}
-
-	public void tapOptionsButtonByText(String buttonText) {
-
-		for (WebElement button : optionsButtons) {
-			if (button.getText().equals(buttonText)) {
-				button.click();
-				break;
-			}
-		}
 	}
 
 	public void tapOnPersonalPage() {
@@ -408,10 +375,6 @@ public class PersonalInfoPage extends IOSPage {
 				By.xpath(IOSLocators.xpathSettingsHelpHeader));
 	}
 
-	public void changeAccentColor() {
-		accentColorPicker.click();
-	}
-
 	public void setAccentColor(int ord) throws Exception {
 		tapColorPickerByColorOrder(ord);
 	}
@@ -447,11 +410,6 @@ public class PersonalInfoPage extends IOSPage {
 				By.name(IOSLocators.nameProfileName));
 	}
 
-	public void setAccentColor(String color) throws Exception {
-		setAccentColor(AccentColor.getByName(color).getId());
-
-	}
-
 	public void swipeAccentColor(String currentColor, String destColor)
 			throws Exception {
 		swipeColorPickerFromColorToColor(AccentColor.getByName(currentColor)
@@ -474,11 +432,6 @@ public class PersonalInfoPage extends IOSPage {
 		return DriverUtils.waitUntilLocatorAppears(getDriver(),
 				By.name(IOSLocators.PersonalInfoPage.nameThemeSwitcherButton),
 				5);
-	}
-
-	public void clickThemeSwitcherButton() throws Exception {
-		DriverUtils.waitUntilElementClickable(getDriver(), themeSwitcherButton);
-		themeSwitcherButton.click();
 	}
 
 	public void clickAccountInfoButton() throws Exception {

@@ -26,37 +26,6 @@ public class ConnectToPageSteps {
 				.isConnectToUserDialogVisible());
 	}
 
-	@When("^I input message in connect to dialog$")
-	public void WhenIInputMessageInConnectToDialog() throws Exception {
-		getConnectToPage().fillHelloTextInConnectDialog();
-	}
-
-	/**
-	 * Erases all connection message content
-	 * 
-	 * @step. I delete all connect message content
-	 * @throws Exception
-	 */
-	@When("^I delete all connect message content$")
-	public void IDeleteAllMessageContent() throws Exception {
-		getConnectToPage().deleteTextInConnectDialog();
-	}
-
-	/**
-	 * Verifies connection button is disabled
-	 * 
-	 * @step. I see that connect button is disabled
-	 * @throws Exception
-	 * 
-	 * @throws AssertionError
-	 *             if connection button is visible
-	 */
-	@When("^I see that connect button is disabled$")
-	public void ISeeConnectButtonDisabled() throws Exception {
-		Assert.assertFalse("Connect button is not disabled", getConnectToPage()
-				.isConnectButtonVisibleAndDisabled());
-	}
-
 	@When("I click Connect button on connect to dialog")
 	public void IClickConnectButtonConnectDialog() throws Throwable {
 		// if (getConnectToPage().isKeyboardVisible()) {
@@ -77,34 +46,4 @@ public class ConnectToPageSteps {
 		Assert.assertFalse("Connect dialog still shown", getConnectToPage()
 				.isConnectButtonVisible());
 	}
-
-	@When("^I input message in connect to dialog and click Send button$")
-	public void WhenIInputMessageInConnectDialogAndClickSendButton(String name)
-			throws Throwable {
-		getConnectToPage().sendInvitation(name);
-	}
-
-	@Given("^I have connection request from (.*)$")
-	public void IHaveConnectionRequest(String contact) throws Throwable {
-		BackendAPIWrappers.sendConnectRequest(
-				usrMgr.findUserByNameOrNameAlias(contact),
-				usrMgr.getSelfUserOrThrowError(), "CONNECT TO " + contact,
-				"Hello");
-	}
-
-	@When("^I see connection request from (.*)$")
-	public void IReceiveInvitationMessage(String contact) throws Throwable {
-		// Not needed since we auto accept all alerts
-		ContactListPageSteps clSteps = new ContactListPageSteps();
-		clSteps.ISeeUserNameFirstInContactList(IOSLocators.xpathPendingRequest);
-	}
-
-	@When("^I confirm connection request$")
-	public void IAcceptInvitationMessage() throws Exception {
-		ContactListPageSteps clSteps = new ContactListPageSteps();
-		clSteps.WhenITapOnContactName(IOSLocators.xpathPendingRequest);
-		getConnectToPage().acceptInvitation();
-		// Not needed since we auto accept all alerts
-	}
-
 }

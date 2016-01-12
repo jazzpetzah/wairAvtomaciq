@@ -66,12 +66,6 @@ public class IncomingCallPage extends CallPage {
 						contact)).isDisplayed();
 	}
 
-	public boolean isUserCallingMessageShown(String contact) throws Exception {
-
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.name(IOSLocators.IncomingCallPage.nameCallingMessageUser));
-	}
-
 	public StartedCallPage acceptIncomingCallClick() throws Exception {
 		DriverUtils.waitUntilElementClickable(getDriver(), acceptCallButton);
 		acceptCallButton.click();
@@ -117,49 +111,6 @@ public class IncomingCallPage extends CallPage {
 		return groupCallFullMessage.isDisplayed();
 	}
 
-
-	public void tapOnNameInCallWith(String name) throws Exception {
-		WebElement el = findNameInContactListWhoIsInACall(name);
-		boolean clickableGlitch = false;
-		try {
-			this.getWait().until(ExpectedConditions.elementToBeClickable(el));
-		} catch (org.openqa.selenium.TimeoutException ex) {
-			clickableGlitch = true;
-		}
-		if (clickableGlitch) {
-			DriverUtils.tapByCoordinates(getDriver(), el);
-		} else {
-			el.click();
-		}
-	}
-
-	private WebElement findNameInContactListWhoIsInACall(String name) throws Exception {
-		Boolean flag = true;
-		WebElement contact = null;
-		for (int i = 0; i < 5; i++) {
-			for (WebElement listName : contactListNamesInACall) {
-				if (listName.getText().equals(name) && listName.isDisplayed()) {
-					contact = listName;
-					flag = false;
-					break;
-				}
-			}
-			if (flag) {
-				if (contactListNamesInACall.isEmpty()) {
-					continue;
-				}
-				WebElement el = contactListNamesInACall
-						.get(contactListNamesInACall.size() - 1);
-				this.getWait().until(ExpectedConditions.visibilityOf(el));
-				this.getWait().until(
-						ExpectedConditions.elementToBeClickable(el));
-				this.getDriver().scrollToExact(el.getText());
-			} else {
-				break;
-			}
-		}
-		return contact;
-	}
 }
 
 

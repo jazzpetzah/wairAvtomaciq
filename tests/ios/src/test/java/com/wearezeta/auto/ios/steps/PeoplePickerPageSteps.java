@@ -49,11 +49,6 @@ public class PeoplePickerPageSteps {
 				.isUploadDialogShown());
 	}
 
-	@When("I click Later button on Upload dialog")
-	public void IClickLaterButtonOnUploadDialog() throws Exception {
-		getPeoplePickerPage().clickLaterButton();
-	}
-
 	@When("I click Continue button on Upload dialog")
 	public void IClickContinueButtonOnUploadDialog() throws Exception {
 		getPeoplePickerPage().clickContinueButton();
@@ -93,18 +88,6 @@ public class PeoplePickerPageSteps {
 	@When("^I press maybe later button$")
 	public void IPressMaybeLater() throws Exception {
 		getPeoplePickerPage().clickMaybeLaterButton();
-	}
-
-	/**
-	 * Hides the keyboard on main people picker page
-	 * 
-	 * @step. I hide peoplepicker keyboard
-	 * @throws Exception
-	 */
-
-	@When("I hide peoplepicker keyboard")
-	public void HidePeoplePickerKeyboard() throws Exception {
-		getPeoplePickerPage().hidePeoplePickerKeyboard();
 	}
 
 	/**
@@ -279,11 +262,6 @@ public class PeoplePickerPageSteps {
 		WhenIInputInPeoplePickerSearchFieldUserName(name);
 	}
 
-	@When("I tap go to enter conversation")
-	public void IEnterConversation() throws Exception {
-		getPeoplePickerPage().goIntoConversation();
-	}
-
 	@When("^I see user (.*) found on People picker page$")
 	public void WhenISeeUserFoundOnPeoplePickerPage(String contact)
 			throws Exception {
@@ -419,21 +397,10 @@ public class PeoplePickerPageSteps {
 		getPeoplePickerPage().pickIgnoredUserAndTap(contact);
 	}
 
-	@When("^I see Add to conversation button$")
-	public void WhenISeeAddToConversationButton() throws Exception {
-		Assert.assertTrue("Add to conversation button is not visible",
-				getPeoplePickerPage().isAddToConversationBtnVisible());
-	}
-
 	@When("^I don't see Add to conversation button$")
 	public void WhenIDontSeeAddToConversationButton() throws Exception {
 		Assert.assertTrue("Add to conversation button is visible",
 				getPeoplePickerPage().addToConversationNotVisible());
-	}
-
-	@When("^I click Go button to create 1:1 conversation$")
-	public void WhenIClickOnGoButtonForSingle() throws Exception {
-		getPeoplePickerPage().clickOnGoButton(false);
 	}
 
 	@When("^I click on Go button$")
@@ -511,12 +478,6 @@ public class PeoplePickerPageSteps {
 		getPeoplePickerPage().clickConnectedUserAvatar(name);
 	}
 
-	@When("I see contact list on People picker page")
-	public void ISeeContactListOnPeoplePickerPage() throws Exception {
-		Assert.assertTrue("Contacts label is not shown", getPeoplePickerPage()
-				.isContactsLabelVisible());
-	}
-
 	@When("I see top people list on People picker page")
 	public void ISeeTopPeopleListOnPeoplePickerPage() throws Exception {
 		Assert.assertTrue("Top People label is not shown",
@@ -588,11 +549,6 @@ public class PeoplePickerPageSteps {
 	@When("I press backspace button")
 	public void IPressBackspaceBtn() throws Exception {
 		getPeoplePickerPage().hitDeleteButton();
-	}
-
-	@When("I swipe up on People picker page")
-	public void ISwipeUpPeoplePickerPage() throws Throwable {
-		getPeoplePickerPage().swipeUp(500);
 	}
 
 	@When("^I click on Add to conversation button$")

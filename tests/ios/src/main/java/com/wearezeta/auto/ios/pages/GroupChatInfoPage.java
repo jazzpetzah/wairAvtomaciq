@@ -73,11 +73,6 @@ public class GroupChatInfoPage extends IOSPage {
         return conversationNameTextField.getText();
     }
 
-    public void changeConversationNameToRandom() {
-        conversationName = CommonUtils.generateGUID().substring(0, 15);
-        conversationNameTextField.sendKeys(conversationName + "\n");
-    }
-
     public void changeConversationName(String name) {
         conversationNameTextField.clear();
         int maxRetrys = 3;
@@ -97,20 +92,6 @@ public class GroupChatInfoPage extends IOSPage {
     public void setGroupChatName(String name) throws Exception {
         conversationNameTextField.sendKeys(name);
         clickKeyboardEnterButton();
-    }
-
-    public boolean isNumberOfParticipants(int correctNumber) throws Exception {
-        DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-                By.xpath(IOSLocators.xpathNumberOfParticipantsText));
-        int givenNumberOfParticipants = Integer
-                .parseInt(numberOfParticipantsText.getText().replaceAll("\\D+",
-                        ""));
-        return givenNumberOfParticipants == correctNumber;
-    }
-
-    public GroupChatPage closeGroupChatInfoPage() throws Exception {
-        closeButton.click();
-        return new GroupChatPage(this.getLazyDriver());
     }
 
     public boolean areParticipantAvatarCorrect(String contact) throws Exception {
@@ -338,19 +319,8 @@ public class GroupChatInfoPage extends IOSPage {
         return conversationName;
     }
 
-    public void setConversationName(String newName) {
-        conversationName = newName;
-    }
-
     public void clickOnAddButton() {
         addContactButton.click();
-    }
-
-    public boolean isAddDialogHeaderVisible() throws Exception {
-        boolean flag = DriverUtils.waitUntilLocatorIsDisplayed(
-                this.getDriver(),
-                By.name(IOSLocators.nameAddPeopleDialogHeader));
-        return flag;
     }
 
     public PeoplePickerPage clickOnAddDialogContinueButton() throws Throwable {

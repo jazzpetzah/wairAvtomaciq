@@ -32,9 +32,4 @@ public class VideoPlayerPageSteps {
 	public void ITapPauseButtonOnVideoPlayerPage() throws Exception {
 		getVideoPlayerPage().clickPauseButton();
 	}
-
-	@When("I tap video player page")
-	public void ITapVideoPlayerPage() throws Exception {
-		getVideoPlayerPage().tapVideoPage();
-	}
 }

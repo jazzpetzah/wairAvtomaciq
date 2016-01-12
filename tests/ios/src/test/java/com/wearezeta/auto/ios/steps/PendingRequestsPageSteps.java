@@ -64,18 +64,6 @@ public class PendingRequestsPageSteps {
 	}
 
 	/**
-	 * Verifies that ignore and connect button alert is visible
-	 * 
-	 * @step. ^I see accept ignore request alert$
-	 * @throws Exception
-	 */
-	@When("^I see accept ignore request alert$")
-	public void ISeeAcceptIgnoreRequestAlert() throws Exception {
-		Assert.assertTrue(getPendingRequestsPage().isConnectButtonDisplayed());
-		Assert.assertTrue(getPendingRequestsPage().isIgnoreButtonDisplayed());
-	}
-
-	/**
 	 * Verifies that you both know section is visible
 	 * 
 	 * @step. ^I see YOU BOTH KNOW people section$

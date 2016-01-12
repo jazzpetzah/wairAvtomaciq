@@ -48,14 +48,6 @@ public class StartedCallPage extends CallPage {
 				By.xpath(IOSLocators.StartedCallPage.xpathCallingMessage));
 	}
 
-	public boolean isIncomingCallMessageVisible(String contact)
-			throws Exception {
-		return getDriver().findElementByXPath(
-				String.format(
-						IOSLocators.StartedCallPage.xpathCallingMessageUser,
-						contact)).isDisplayed();
-	}
-
 	public boolean isStartedCallMessageVisible(String contact) throws Exception {
 		return getDriver()
 				.findElementByXPath(
@@ -121,13 +113,6 @@ public class StartedCallPage extends CallPage {
 		}
 
 		return true;
-	}
-
-	public boolean isCallingGroupMessageVisible(String group) throws Exception {
-		return getDriver().findElementByXPath(
-				String.format(
-						IOSLocators.StartedCallPage.xpathCallingMessageUser,
-						group.toUpperCase())).isDisplayed();
 	}
 
 }

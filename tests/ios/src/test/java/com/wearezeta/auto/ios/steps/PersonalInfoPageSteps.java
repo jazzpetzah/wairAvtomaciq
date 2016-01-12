@@ -28,11 +28,6 @@ public class PersonalInfoPageSteps {
 
 	BufferedImage referenceImage;
 
-	@When("^I swipe up for options$")
-	public void WhenISwipeUpForOptions() throws IOException, Throwable {
-		getPersonalInfoPage().swipeUp(500);
-	}
-
 	@When("I tap to edit my name")
 	public void ITapToEditName() throws Exception {
 		getPersonalInfoPage().tapOnEditNameField();
@@ -80,11 +75,6 @@ public class PersonalInfoPageSteps {
 	public void ISeeErrorMessageForMoreCharacters() throws Exception {
 		Assert.assertTrue("Error message is not shown", getPersonalInfoPage()
 				.isTooShortNameErrorMessage());
-	}
-
-	@When("^I press options button (.*)$")
-	public void WhenIPressOptionsButton(String buttonName) throws Throwable {
-		getPersonalInfoPage().tapOptionsButtonByText(buttonName);
 	}
 
 	@When("I click on Settings button on personal page")
@@ -299,11 +289,6 @@ public class PersonalInfoPageSteps {
 				getPersonalInfoPage().isPrivacyPolicyPageVisible());
 	}
 
-	@When("I click Sign out button from personal page")
-	public void IClickSignOutButtonFromPersonalPage() throws Exception {
-		getPersonalInfoPage().clickSignoutButton();
-	}
-
 	@When("^I tap on personal screen$")
 	public void ITapOnPersonalScreen() throws Exception {
 		getPersonalInfoPage().tapOnPersonalPage();
@@ -336,31 +321,6 @@ public class PersonalInfoPageSteps {
 		Assert.assertTrue(
 				"Overlap between two images has no enough score. Expected >= 0.65, current = "
 						+ score, score >= 0.65d);
-	}
-
-	@Then("I see profile image is same as template")
-	public void ThenISeeProfileImageIsSameAsSelected(String filename)
-			throws Exception {
-		BufferedImage profileImage = getPersonalInfoPage().takeScreenshot()
-				.orElseThrow(AssertionError::new);
-		double score = ImageUtil.getOverlapScore(
-				RegistrationPageSteps.basePhoto, profileImage,
-				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-
-		Assert.assertTrue(
-				"Images are differen. Expected score >= 0.75, current = "
-						+ score, score >= 0.75d);
-	}
-
-	@When("I see Personal page")
-	public void ISeePersonalPage() throws Exception {
-		getPersonalInfoPage().waitForSettingsButtonAppears();
-	}
-
-	@When("I see name (.*) on Personal page")
-	public void ISeeMyNameOnPersonalPage(String name) throws Exception {
-		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		Assert.assertTrue(getPersonalInfoPage().getUserNameValue().equals(name));
 	}
 
 	/**
@@ -406,11 +366,6 @@ public class PersonalInfoPageSteps {
 	@When("I attempt to change name using only spaces")
 	public void IEnterNameUsingOnlySpaces() throws Exception {
 		getPersonalInfoPage().changeNameUsingOnlySpaces();
-	}
-
-	@When("I swipe right on the personal page")
-	public void ISwipeRightOnPersonalPage() throws Exception {
-		getPersonalInfoPage().swipeRight(1000);
 	}
 
 	@When("I click on Settings button from the options menu")
@@ -506,35 +461,6 @@ public class PersonalInfoPageSteps {
 	@Then("^I see Support web page$")
 	public void ISeeSupportWebPage() throws Exception {
 		Assert.assertTrue(getPersonalInfoPage().isSupportWebPageVisible());
-	}
-
-	/**
-	 * Changes the accent color by pickick one by coordinates at the color
-	 * picker
-	 * 
-	 * @step. ^I change my accent color via the colorpicker$
-	 * @throws Exception
-	 */
-	@When("^I change my accent color via the colorpicker$")
-	public void IChangeMyAccentColorViaTheColorpicker() throws Exception {
-		getPersonalInfoPage().changeAccentColor();
-	}
-
-	/**
-	 * Changes the accent color by pickick relevant one by coordinates at the
-	 * color picker
-	 * 
-	 * @step. ^I set my accent color via the colorpicker to (.*)$
-	 * 
-	 * @param color
-	 *            should be StrongBlue, StrongLimeGreen, BrightYellow, VividRed,
-	 *            BrightOrange, SoftPink, Violet
-	 * @throws Exception
-	 */
-	@When("^I set my accent color via the colorpicker to (.*)$")
-	public void ISetMyAccentColorViaTheColorpicker(String color)
-			throws Exception {
-		getPersonalInfoPage().setAccentColor(color);
 	}
 
 	/**

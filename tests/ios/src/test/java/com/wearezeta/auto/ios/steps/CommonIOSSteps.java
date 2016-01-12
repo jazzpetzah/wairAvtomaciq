@@ -737,4 +737,22 @@ public class CommonIOSSteps {
 		UserSentMessageToConversation(userFromNameAlias,
 				IOSConstants.LONG_MESSAGE, conversationName);
 	}
+
+	/**
+	 * A user adds another user to a group chat
+	 *
+	 * @step. ^User (.*) adds User (.*) to group chat (.*)$
+	 * @param user
+	 *            that adds someone to a chat
+	 * @param userToBeAdded
+	 *            user that gets added by someone
+	 * @param group
+	 *            group chat you get added to
+	 * @throws Throwable
+	 */
+	@When("^User (.*) adds User (.*) to group chat (.*)$")
+	public void UserAddsUserToGroupChat(String user, String userToBeAdded,
+										String group) throws Throwable {
+		commonSteps.UserXAddedContactsToGroupChat(user, userToBeAdded, group);
+	}
 }
