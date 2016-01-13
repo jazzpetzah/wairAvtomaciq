@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.concurrent.Future;
 
+import io.appium.java_client.ios.IOSElement;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -51,7 +52,7 @@ public class GroupChatInfoPage extends IOSPage {
     private WebElement numberOfParticipantsText;
 
     public static final String xpathAvatarCollectionView =
-            "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]";
+            "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]";
     @FindBy(xpath = xpathAvatarCollectionView)
     private WebElement avatarCollectionView;
 
@@ -90,8 +91,7 @@ public class GroupChatInfoPage extends IOSPage {
 
     public static final String peopleCountTextSubstring = " PEOPLE";
 
-    public static final String xpathParticipantAvatarCell =
-            "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell";
+    public static final String xpathParticipantAvatarCell = xpathAvatarCollectionView + "/UIACollectionCell";
 
     public GroupChatInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -118,7 +118,7 @@ public class GroupChatInfoPage extends IOSPage {
     }
 
     public void setGroupChatName(String name) throws Exception {
-        conversationNameTextField.sendKeys(name);
+        ((IOSElement) getDriver().findElementByName(nameConversationNameTextField)).setValue(name);
         clickKeyboardEnterButton();
     }
 
@@ -132,7 +132,7 @@ public class GroupChatInfoPage extends IOSPage {
             picture = "avatarTest.png";
         }
         List<WebElement> participantAvatars = getCurrentParticipants();
-        BufferedImage avatarIcon = null;
+        BufferedImage avatarIcon;
         boolean flag = false;
         for (WebElement avatar : participantAvatars) {
             avatarIcon = CommonUtils.getElementScreenshot(avatar,
