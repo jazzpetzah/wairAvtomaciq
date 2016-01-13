@@ -755,7 +755,7 @@ public class CommonAndroidSteps {
     /**
      * Sends an image from one user to a conversation
      *
-     * @param isEncrypted              whether the image has to encrypted
+     * @param isEncrypted              whether the image has to be encrypted
      * @param imageSenderUserNameAlias the user to sending the image
      * @param imageFileName            the file path name of the image to send. The path name is
      *                                 defined relative to the image file defined in
