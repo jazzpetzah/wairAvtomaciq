@@ -32,11 +32,8 @@ public class DialogPage extends AndroidPage {
     private static final String xpathLastPicture = String.format(
             "(//*[@id='%s'])[last()]", idDialogImages);
 
-    private static final String xpathEncryptedDialogImages = "//*[@id='" + idDialogImages +
-            "']/parent::*/parent::/*//*[@id='v__row_conversation__e2ee']";
-    private static final Function<Integer, String> xpathEncryptedDialogImageByIdx = idx ->
-            String.format("(" + xpathEncryptedDialogImages + ")[%s]", idx);
-
+    private static final String xpathE2EEDialogImagesBadges = "//*[@id='" + idDialogImages +
+            "']/parent::*/parent::*//*[@id='v__row_conversation__e2ee']";
 
     public static final String idAddPicture = "cursor_menu_item_camera";
 
@@ -667,7 +664,7 @@ public class DialogPage extends AndroidPage {
     }
 
     /**
-     * @return false if Take Photo button will not be visible after Switch Camera button is clicked
+     * @return false if Take Photo button is not visible after Switch Camera button is clicked
      * @throws Exception
      */
     public boolean tapSwitchCameraButton() throws Exception {
@@ -691,14 +688,15 @@ public class DialogPage extends AndroidPage {
     public boolean waitForXEncryptedImages(int times) throws Exception {
         assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idDialogImages)) :
                 "No images are visible in the conversation view";
-        return times == getDriver().findElementsByXPath(xpathEncryptedDialogImages).size();
+        final List<WebElement> allImageBadges = getDriver().findElementsByXPath(xpathE2EEDialogImagesBadges);
+        return times == allImageBadges.stream().filter(WebElement::isDisplayed).count();
     }
 
     public boolean waitForXNonEncryptedImages(int times) throws Exception {
         assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idDialogImages)) :
                 "No images are visible in the conversation view";
-        final List<WebElement> allImageBadges = getDriver().findElementsByXPath(xpathEncryptedDialogImages);
+        final List<WebElement> allImageBadges = getDriver().findElementsByXPath(xpathE2EEDialogImagesBadges);
         final List<WebElement> allImages =  getDriver().findElementsById(idDialogImages);
-        return times == (allImages.size() - allImageBadges.size());
+        return times == (allImages.size() - allImageBadges.stream().filter(WebElement::isDisplayed).count());
     }
 }
