@@ -87,7 +87,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see Contact list with my name <Name>
-    Given User Myself sends 10 encrypted messages to user <Contact>
+    Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -114,7 +114,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see Contact list with my name <Name>
-    Given User Myself sends 10 encrypted messages to user <Contact>
+    Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -137,7 +137,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see Contact list with my name <Name>
-    Given User Myself sends 10 encrypted messages to user <Contact>
+    Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -161,7 +161,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I see Contact list with my name <Name>
-    Given User <Name> sends 10 encrypted messages to user <Contact1>
+    Given User <Name> sends 40 encrypted messages to user <Contact1>
     Given User <Name> sends encrypted message "<SoundCloudLink>" to user <Contact1>
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -410,9 +410,9 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see Contact list with my name <Name>
-    Given User Myself sends 10 encrypted messages to user <Contact1>
+    Given User Myself sends 40 encrypted messages to user <Contact1>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact1>
-    Given User Myself sends 10 encrypted messages to user <Contact2>
+    Given User Myself sends 40 encrypted messages to user <Contact2>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact2>
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -865,7 +865,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see Contact list with my name <Name>
-    Given User Myself sends 10 encrypted messages to user <Contact>
+    Given User Myself sends 40 encrypted messages to user <Contact>
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     When I tap on contact name <Contact>
     And I tap on text input

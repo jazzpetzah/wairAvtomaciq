@@ -121,14 +121,15 @@ public class ContactListPageSteps {
 
     /**
      * Makes a short swipe on teh contact to get the 3 dots for the option menu
-     * @step. ^I short swipe right on a (.*)
+     *
      * @param contact to swipe on
      * @throws Exception
+     * @step. ^I short swipe right on a (.*)
      */
     @When("^I short swipe right on a (.*)$")
     public void IShortSwipeRightOnAUser(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        getContactListPage().swipeShortRightOnConversation(1000,contact);
+        getContactListPage().swipeShortRightOnConversation(1000, contact);
 
     }
 
@@ -194,9 +195,11 @@ public class ContactListPageSteps {
         }
         getContactListPage().verifyContactListIsFullyLoaded();
         if (shouldNotSee == null) {
-            Assert.assertTrue(getContactListPage().isContactExists(userName, 1));
+            Assert.assertTrue(String.format("The conversation '%s' is not visible in the list",
+                    userName), getContactListPage().isContactExists(userName));
         } else {
-            Assert.assertTrue(getContactListPage().waitUntilContactDisappears(
+            Assert.assertTrue(String.format("The conversation '%s' is  visible in the list, but should be hidden",
+                    userName), getContactListPage().waitUntilContactDisappears(
                     userName));
         }
     }
@@ -430,7 +433,7 @@ public class ContactListPageSteps {
     /**
      * Verifies that specific items are visible in the conversation settings menu
      *
-     * @param name     name of item to check in the menu (ARCHIVE, BLOCK, CANCEL,...)
+     * @param name name of item to check in the menu (ARCHIVE, BLOCK, CANCEL,...)
      * @throws Exception
      * @step. ^I see (.*) button in conversation settings menu$
      */
@@ -454,9 +457,10 @@ public class ContactListPageSteps {
 
     /**
      * Verifies if Leave check box is visible or not
-     * @step. ^I( do not)? see the Leave check box$
+     *
      * @param shouldNotSee equals to null if "do not" part does not exist
      * @throws Exception
+     * @step. ^I( do not)? see the Leave check box$
      */
     @Then("^I( do not)? see the Leave check box$")
     public void ISeeTheLeaveCheckBox(String shouldNotSee) throws Exception {

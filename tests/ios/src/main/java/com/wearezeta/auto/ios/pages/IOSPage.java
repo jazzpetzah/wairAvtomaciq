@@ -130,7 +130,8 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void swipeUp(int time) throws Exception {
-        DriverUtils.swipeUp(this.getDriver(), mainWindow, time);
+        DriverUtils.swipeElementPointToPoint(this.getDriver(), mainWindow, time,
+                50, 90, 50, 10);
     }
 
     public void swipeDownSimulator() throws Exception {
@@ -139,7 +140,8 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void swipeDown(int time) throws Exception {
-        DriverUtils.swipeDown(this.getDriver(), mainWindow, time);
+        DriverUtils.swipeElementPointToPoint(this.getDriver(), mainWindow, time,
+                50, 10, 50, 90);
     }
 
     public void smallScrollUp() throws Exception {
@@ -234,12 +236,6 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void cmdVscript(String[] scriptString) throws ScriptException {
-        // final String[] scriptArr = new String[] {
-        // "property thisapp: \"Simulator\"",
-        // "tell application \"System Events\"", " tell process thisapp",
-        // " click menu item \"Paste\" of menu \"Edit\" of menu bar 1",
-        // " end tell", "end tell" };
-
         final String script = StringUtils.join(scriptString, "\n");
         ScriptEngineManager mgr = new ScriptEngineManager();
         ScriptEngine engine = mgr.getEngineByName("AppleScriptEngine");

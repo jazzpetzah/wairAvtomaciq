@@ -183,8 +183,7 @@ public class ContactListPage extends AndroidPage {
     }
 
     public void tapOnName(final String name) throws Exception {
-        findInContactList(name, 5)
-                .orElseThrow(
+        findInContactList(name).orElseThrow(
                         () -> new IllegalStateException(
                                 String.format(
                                         "The conversation '%s' does not exist in the conversations list",
@@ -193,8 +192,7 @@ public class ContactListPage extends AndroidPage {
 
     public void tapOnName(final String name, int maxSwipesInList)
             throws Exception {
-        findInContactList(name, maxSwipesInList)
-                .orElseThrow(
+        findInContactList(name).orElseThrow(
                         () -> new IllegalStateException(
                                 String.format(
                                         "The conversation '%s' does not exist in the conversations list",
@@ -229,18 +227,11 @@ public class ContactListPage extends AndroidPage {
         }
     }
 
-    public Optional<WebElement> findInContactList(String name,
-                                                  int maxSwypesInList) throws Exception {
+    public Optional<WebElement> findInContactList(String name) throws Exception {
         final By nameLocator = By.xpath(xpathContactByName.apply(name));
         if (DriverUtils
                 .waitUntilLocatorIsDisplayed(getDriver(), nameLocator, 1)) {
             return Optional.of(this.getDriver().findElement(nameLocator));
-        } else {
-            if (maxSwypesInList > 0) {
-                maxSwypesInList--;
-                DriverUtils.swipeUp(this.getDriver(), mainControl, 500, 50, 90);
-                return findInContactList(name, maxSwypesInList);
-            }
         }
         return Optional.empty();
     }
@@ -279,7 +270,7 @@ public class ContactListPage extends AndroidPage {
     }
 
     public boolean isContactExists(String name) throws Exception {
-        return findInContactList(name, 0).isPresent();
+        return findInContactList(name).isPresent();
     }
 
     public boolean waitUntilContactDisappears(String name) throws Exception {
@@ -287,12 +278,7 @@ public class ContactListPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameLocator);
     }
 
-    public boolean isContactExists(String name, int cycles) throws Exception {
-        return findInContactList(name, cycles).isPresent();
-    }
-
-    public boolean isPlayPauseMediaButtonVisible(String convoName)
-            throws Exception {
+    public boolean isPlayPauseMediaButtonVisible(String convoName) throws Exception {
         final By locator = By.xpath(xpathPlayPauseButtonByConvoName
                 .apply(convoName));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);

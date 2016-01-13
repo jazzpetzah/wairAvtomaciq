@@ -232,8 +232,6 @@ public class DialogPage extends IOSPage {
 
     public static final String xpathChatheadName = "//UIAElement/following-sibling::UIAStaticText[@name='%s']";
 
-    public static final String xpathChatheadMessage = "//UIAElement/following-sibling::UIAStaticText[@name='%s']";
-
     public static final String xpathImage =
             "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[2]";
 
@@ -507,11 +505,11 @@ public class DialogPage extends IOSPage {
     }
 
     public void swipeDialogPageDown(int time) throws Exception {
-        DriverUtils.swipeDown(this.getDriver(), conversationPage, time);
+        DriverUtils.swipeElementPointToPoint(this.getDriver(), conversationPage, time,
+                50, 30, 50, 95);
     }
 
-    public OtherUserOnPendingProfilePage swipePendingDialogPageUp(int time)
-            throws Throwable {
+    public void swipePendingDialogPageUp(int time) throws Exception {
         WebElement element = this.getDriver().findElement(
                 By.name(nameMainWindow));
 
@@ -521,7 +519,6 @@ public class DialogPage extends IOSPage {
                 coords.y + elementSize.height - TEXT_INPUT_HEIGH,
                 coords.x + elementSize.width / 2, coords.y + TOP_BORDER_WIDTH,
                 time);
-        return new OtherUserOnPendingProfilePage(this.getLazyDriver());
     }
 
     public boolean isYoutubeContainerVisible() throws Exception {
@@ -600,21 +597,18 @@ public class DialogPage extends IOSPage {
         this.getDriver().tap(1, this.getDriver().findElementByName(nameConversationCursorInput), 1000);
     }
 
-    public DialogPage scrollToBeginningOfConversation() throws Exception {
-        DialogPage page = null;
+    public void scrollToBeginningOfConversation() throws Exception {
         int count = 0;
         if (youAddedCell.size() > 0) {
             boolean beginningConversation = youAddedCell.get(0).isDisplayed();
             while (!(beginningConversation) & (count < 5)) {
-                DriverUtils.swipeDown(this.getDriver(), conversationPage,
-                        500);
-                page = this;
+                DriverUtils.swipeElementPointToPoint(this.getDriver(), conversationPage,
+                        500, 50, 10, 50, 90);
                 beginningConversation = youAddedCell.get(0).isDisplayed();
                 count++;
             }
         }
         Assert.assertTrue(youAddedCell.get(0).isDisplayed());
-        return page;
     }
 
     private static final int IMAGE_IN_CONVERSATION_HEIGHT = 510;

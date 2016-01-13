@@ -471,7 +471,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
     Given I see Contact list with my name <Name>
-    Given User Myself sends 10 encrypted messages to user <Contact>
+    Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -492,7 +492,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
     Given I see Contact list with my name <Name>
-    Given User Myself sends 10 encrypted messages to user <Contact>
+    Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
     Then I see dialog page
@@ -619,7 +619,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
     Given I see Contact list with my name <Name>
-    Given User Myself sends 10 encrypted messages to user <Contact>
+    Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -647,7 +647,7 @@ Feature: Conversation View
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see Contact list with my name <Name>
-    Given User Myself sends 10 encrypted messages to user <Contact>
+    Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -673,7 +673,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>
     Given I Sign in on tablet using my email
     Given I see Contact list with my name <Name>
-    Given User Myself sends 10 encrypted messages to user <Contact>
+    Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -695,7 +695,7 @@ Feature: Conversation View
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see Contact list with my name <Name>
-    Given User Myself sends 10 encrypted messages to user <Contact1>
+    Given User Myself sends 40 encrypted messages to user <Contact1>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact1>
     When I tap on contact name <Contact1>
     And I see dialog page
