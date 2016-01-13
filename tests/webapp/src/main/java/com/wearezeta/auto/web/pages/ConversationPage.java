@@ -155,6 +155,16 @@ public class ConversationPage extends WebPage {
 				.collect(Collectors.toList());
 	}
 
+	private static boolean containsAllCaseInsensitive(String text,
+			Set<String> parts) {
+		for (String part : parts) {
+			if (!text.toLowerCase().contains(part.toLowerCase())) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public void waitForMessageHeaderContains(String text) throws Exception {
 		waitForMessageHeaderContains(new HashSet<String>(Arrays.asList(text)));
 	}
@@ -188,15 +198,9 @@ public class ConversationPage extends WebPage {
 				try {
 					lastElements = getTextOfDisplayedElements(locator, driver);
 					for (String element : lastElements) {
-						boolean all = true;
-						for (String expectedText : expectedTexts) {
-							if (!element.toLowerCase().contains(
-									expectedText.toLowerCase())) {
-								all = false;
-							}
-						}
-						if (all)
+						if (containsAllCaseInsensitive(element, expectedTexts)) {
 							return true;
+						}
 					}
 					return false;
 				} catch (Exception e) {
