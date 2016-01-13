@@ -319,7 +319,7 @@ Feature: People View
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName     | ChatNameEdit   | Message                  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | BaseChatName | EditedCahtName | RENAMED THE CONVERSATION |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | BaseChatName | EditedChatName | RENAMED THE CONVERSATION |
 
   @C1714 @regression
   Scenario Outline: Verify the new conversation is created on the other end from 1to1

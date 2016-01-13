@@ -274,8 +274,8 @@ public class ConversationPageSteps {
 	public void ThenISeeActionInConversation(String doNot, String message)
 			throws Exception {
 		if (doNot == null) {
-			Assert.assertTrue(webappPagesCollection.getPage(
-					ConversationPage.class).isActionMessageSent(message));
+			webappPagesCollection.getPage(
+					ConversationPage.class).waitForMessageHeaderContains(message);
 		} else {
 			Assert.assertTrue(webappPagesCollection.getPage(
 					ConversationPage.class).isActionMessageNotSent(message));

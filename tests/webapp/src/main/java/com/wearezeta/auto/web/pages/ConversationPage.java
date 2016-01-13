@@ -1,5 +1,7 @@
 package com.wearezeta.auto.web.pages;
 
+import akka.util.Collections;
+
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -11,7 +13,6 @@ import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 import static com.wearezeta.auto.web.locators.WebAppLocators.Common.TITLE_ATTRIBUTE_LOCATOR;
-
 import cucumber.api.PendingException;
 
 import java.awt.image.BufferedImage;
@@ -19,7 +20,10 @@ import java.util.List;
 import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,10 +31,17 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ConversationPage extends WebPage {
 
@@ -134,6 +145,57 @@ public class ConversationPage extends WebPage {
 		final List<WebElement> actionElements = this.getDriver().findElements(
 				locator);
 		return actionElements.get(actionElements.size() - 1).getText();
+	}
+
+	private static List<String> getTextOfDisplayedElements(By locator, WebDriver driver) throws Exception {
+		final List<WebElement> headers = driver.findElements(locator);
+		return headers.stream().filter(a -> a.isDisplayed()).map(a -> a.getText())
+				.collect(Collectors.toList());
+	}
+
+	public void waitForMessageHeaderContains(String text) throws Exception {
+		final By locator = By
+				.cssSelector(WebAppLocators.ConversationPage.cssMessageHeader);
+		WebDriverWait wait = new WebDriverWait(getDriver(),
+				DriverUtils.getDefaultLookupTimeoutSeconds());
+		wait.until(visibilityOfTextInElementsLocated(locator, text));
+	}
+
+	/**
+	 * An expectation for checking that an element is present on the DOM of a
+	 * page and visible. Visibility means that the element is not only displayed
+	 * but also has a height and width that is greater than 0.
+	 *
+	 * @param locator
+	 *            used to find the element
+	 * @return the WebElement once it is located and visible
+	 */
+	public static ExpectedCondition<Boolean> visibilityOfTextInElementsLocated(
+			final By locator, final String expectedText) {
+		return new ExpectedCondition<Boolean>() {
+			List<String> lastElements = new ArrayList<String>();
+
+			@Override
+			public Boolean apply(WebDriver driver) {
+				try {
+					lastElements = getTextOfDisplayedElements(locator, driver);
+					for (String text : lastElements) {
+						if (text.contains(expectedText)) {
+							return true;
+						}
+					}
+					return false;
+				} catch (Exception e) {
+					return false;
+				}
+			}
+
+			@Override
+			public String toString() {
+				return "visibility of text '" + expectedText + "' in elements "
+						+ lastElements + " located by " + locator;
+			}
+		};
 	}
 
 	public boolean isActionMessageSent(final Set<String> parts)
