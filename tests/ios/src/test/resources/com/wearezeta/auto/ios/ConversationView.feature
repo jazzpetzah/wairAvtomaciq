@@ -10,7 +10,7 @@ Feature: Conversation View
     And I see dialog page
     Then I see TAPORSLIDE text
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -26,7 +26,7 @@ Feature: Conversation View
     And I send the message
     Then I see 1 default message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -43,7 +43,7 @@ Feature: Conversation View
     And I click Ping button
     Then I see You Pinged message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -62,7 +62,7 @@ Feature: Conversation View
     And I press Confirm button
     Then I see new photo in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -77,7 +77,7 @@ Feature: Conversation View
     And I send the message
     Then I see 1 default message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -104,7 +104,7 @@ Feature: Conversation View
     And I stop media in media bar
     Then The media stops playing
 
-    Examples: 
+    Examples:
       | Name      | Contact   | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
@@ -127,7 +127,7 @@ Feature: Conversation View
     And I tap on the media bar
     Then I see conversation view is scrolled back to the playing media link <SoundCloudLink>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | SoundCloudLink                                   |
       | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
 
@@ -151,7 +151,7 @@ Feature: Conversation View
     And I wait 150 seconds for media to stop playing
     Then I dont see media bar on dialog page
 
-    Examples: 
+    Examples:
       | Name      | Contact   | SoundCloudLink                                   |
       | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
 
@@ -174,7 +174,7 @@ Feature: Conversation View
     And I tap on text input to scroll to the end
     Then I dont see media bar on dialog page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
@@ -194,7 +194,7 @@ Feature: Conversation View
     Then I see conversation is scrolled to the end
     And I see 1 default message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -214,7 +214,7 @@ Feature: Conversation View
     And I send the message
     Then I see 1 default message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -229,7 +229,7 @@ Feature: Conversation View
     And I input more than 200 chars message and send it
     Then I see 1 message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -245,7 +245,7 @@ Feature: Conversation View
     And I send the message
     Then I see 1 message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -260,7 +260,7 @@ Feature: Conversation View
     And I send using script predefined message <Text>
     Then I see last message in dialog is expected message <Text>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Text                  |
       | user1Name | user2Name | ÄäÖöÜüß & latin chars |
 
@@ -286,7 +286,7 @@ Feature: Conversation View
     And I send the message
     Then I see last message in dialog is expected message <Text>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact   | Text       |
       | user1Email | user1Password | user1Name | user2Name | TextToCopy |
 
@@ -307,7 +307,7 @@ Feature: Conversation View
     And I send the message
     Then I see 1 message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -324,7 +324,7 @@ Feature: Conversation View
     And I scroll away the keyboard
     And I dont see keyboard
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -354,7 +354,7 @@ Feature: Conversation View
     And I tap close fullscreen page button
     Then I see new photo in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -373,7 +373,7 @@ Feature: Conversation View
     And I click video container for the first time
     And I see video player page is opened
 
-    Examples: 
+    Examples:
       | Name      | Contact   | YouTubeLink                                |
       | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
 
@@ -400,7 +400,7 @@ Feature: Conversation View
     And I stop media in media bar
     Then The media stops playing
 
-    Examples: 
+    Examples:
       | Name      | Contact   | YouTubeLink                                |
       | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
 
@@ -436,7 +436,7 @@ Feature: Conversation View
     And I scroll media out of sight until media bar appears
     Then I see playing media is paused
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | SoundCloudLink                                                                       |
       | user1Name | user2Name | user3Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
@@ -451,7 +451,7 @@ Feature: Conversation View
     And I close the app for <CloseAppTime> seconds
     Then I see title bar in conversation name <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CloseAppTime |
       | user1Name | user2Name | 2            |
 
@@ -462,8 +462,8 @@ Feature: Conversation View
     Given User <Contact> change accent color to <Color>
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
-    And Contact <Contact> sends image <Picture> to single user conversation <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     When I tap on contact name <Contact>
     And I see dialog page
     And I see new photo in the dialog
@@ -473,7 +473,7 @@ Feature: Conversation View
     And I rotate UI to landscape
     Then I see image rotated in fullscreen mode
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Picture     | Color        | NewName          |
       | user1Name | user2Name | testing.jpg | BrightOrange | RotateFullscreen |
 
@@ -492,7 +492,7 @@ Feature: Conversation View
     And I open archived conversations
     Then I see user <Contact> in contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -511,7 +511,7 @@ Feature: Conversation View
     And I wait for 5 seconds
     Then I do not see chathead of contact <Contact2>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Contact2  | NewName  | Picture                      |
       | user1Name | user2Name | user3Name | CHATHEAD | aqaPictureContact600_800.jpg |
 
@@ -539,7 +539,7 @@ Feature: Conversation View
     And I tap on contact name <Contact>
     Then I see media is playing
 
-    Examples: 
+    Examples:
       | Name      | Contact   | SoundCloudLink                                                            |
       | user1Name | user2Name | https://soundcloud.com/isabella-emanuelsson/david-guetta-she-wolf-falling |
 
@@ -554,7 +554,7 @@ Feature: Conversation View
     And I see dialog page
     Then I see 1 default message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -569,7 +569,7 @@ Feature: Conversation View
     And I see dialog page
     Then I see new photo in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Picture     | ConversationType |
       | user1Name | user2Name | testing.jpg | single user      |
 
@@ -587,7 +587,7 @@ Feature: Conversation View
     And I send my sketch
     Then I see new photo in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -612,7 +612,7 @@ Feature: Conversation View
     And I see Close input options button is not visible
     And I see plus button next to text input
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -636,7 +636,7 @@ Feature: Conversation View
     And I click plus button next to text input
     Then I see only Details button. Call, Camera, Sketch, Ping are not shown
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
       | user1Name | user2Name | user3Name | user4Name | ArchiveGroupChat |
 
@@ -645,8 +645,8 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
-    And Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     When I tap on contact name <Contact>
     And I see dialog page
     And I see new photo in the dialog
@@ -657,9 +657,9 @@ Feature: Conversation View
     And I send my sketch
     Then I see new photo in the dialog
 
-    Examples: 
-      | Name      | Contact   | Picture     | ConversationType |
-      | user1Name | user2Name | testing.jpg | single user      |
+    Examples:
+      | Name      | Contact   | Picture     |
+      | user1Name | user2Name | testing.jpg |
 
   @C952 @regression @rc @id3263
   Scenario Outline: Verify drawing on the image from gallery
@@ -679,7 +679,7 @@ Feature: Conversation View
     And I press Confirm button
     Then I see new photo in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -694,7 +694,7 @@ Feature: Conversation View
     And I see dialog page
     Then I see vimeo link <VimeoLink> but NO media player
 
-    Examples: 
+    Examples:
       | Name      | Contact   | VimeoLink                    |
       | user1Name | user2Name | https://vimeo.com/categories |
 
@@ -709,7 +709,7 @@ Feature: Conversation View
     And I see dialog page
     Then I see vimeo link <VimeoLink> and media in dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | VimeoLink                   |
       | user1Name | user2Name | https://vimeo.com/129426512 |
 
@@ -726,7 +726,7 @@ Feature: Conversation View
     And I tap on Link
     Then I see WireWebsitePage
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Link                  |
       | user1Name | user2Name | https://www.wire.com/ |
 
@@ -743,7 +743,7 @@ Feature: Conversation View
     And I tap on Link
     Then I see WireWebsitePage
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | MessageAndLink                  |
       | user1Name | user2Name | Check https://www.wire.com/ out |
 
@@ -766,7 +766,7 @@ Feature: Conversation View
     And I see controller buttons can not be visible
     And I see the default message in input field
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -791,7 +791,7 @@ Feature: Conversation View
     And I send the message
     And I see 1 default message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Message |
       | user1Name | user2Name | testing |
 
@@ -799,9 +799,9 @@ Feature: Conversation View
   Scenario Outline: Verify possibility to copy image in the conversation view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     And I tap on contact name <Contact>
     And I see dialog page
     And I see new photo in the dialog
@@ -812,15 +812,15 @@ Feature: Conversation View
     And I press Confirm button
     Then I see new photo in the dialog
 
-    Examples: 
-      | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
-      | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
+    Examples:
+      | Name      | Contact   | Picture     |
+      | user1Name | user2Name | testing.jpg |
 
   @C911 @regression @id562
   Scenario Outline: Verify downloading images in fullscreen
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
+    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     Given I sign in using my email or phone number
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact>
@@ -838,9 +838,9 @@ Feature: Conversation View
     And I press Confirm button
     Then I verify image in dialog is same as template <Picture>
 
-    Examples: 
-      | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
-      | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
+    Examples:
+      | Login      | Password      | Name      | Contact   | Picture     |
+      | user1Email | user1Password | user1Name | user2Name | testing.jpg |
 
   @C27 @regression @id715
   Scenario Outline: Verify you still receive messages from blocked person in a group chat
@@ -849,33 +849,33 @@ Feature: Conversation View
     Given Myself has group chat <GroupChatName> with <Contact1>, <Contact2>
     Given User <Name> blocks user <Contact1>
     Given User <Contact1> sent message <Message> to conversation <GroupChatName>
-    Given Contact <Contact1> sends image <Picture> to <ConversationType> conversation <GroupChatName>
+    Given User <Contact1> sends encrypted image <Picture> to group conversation <GroupChatName>
     Given I sign in using my email or phone number
     When I see Contact list with my name <Name>
     And I tap on group chat with name <GroupChatName>
     Then I see 3 conversation entries
 
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message                | Picture     | ConversationType |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | Caramba!      | He-hey, do you see it? | testing.jpg | group            |
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | Message                | Picture     |
+      | user1Name | user2Name | user3Name | Caramba!      | He-hey, do you see it? | testing.jpg |
 
   @C884 @staging @id1245
   Scenario Outline: Verify cursor swiping is disabled when you scroll back into a conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
     Given User <Name> sent long message to conversation <Contact>
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    When I tap on contact name <Contact>
     And I tap on text input
     And I scroll to the beginning of the conversation
     And I swipe the text input cursor
     Then I see controller buttons can not be visible
 
-    Examples: 
-      | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
-      | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
+    Examples:
+      | Name      | Contact   | Picture     |
+      | user1Name | user2Name | testing.jpg |
 
   @C886 @regression @id2019
   Scenario Outline: Verify people icon is changed on avatar with opening keyboard and back
@@ -891,6 +891,6 @@ Feature: Conversation View
     And I clear conversation text input
     Then I see plus button next to text input
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |

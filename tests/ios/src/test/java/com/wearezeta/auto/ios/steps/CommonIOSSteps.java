@@ -530,23 +530,20 @@ public class CommonIOSSteps {
         commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
     }
 
-    @When("^Contact (.*) sends image (.*) to (.*) conversation (.*)")
+    @When("^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)")
     public void ContactSendImageToConversation(String imageSenderUserNameAlias,
+                                               String isEncrypted,
                                                String imageFileName, String conversationType,
                                                String dstConversationName) throws Exception {
-        String imagePath = IOSPage.getImagesPath() + imageFileName;
-        Boolean isGroup = null;
-        if (conversationType.equals("single user")) {
-            isGroup = false;
-        } else if (conversationType.equals("group")) {
-            isGroup = true;
+        final String imagePath = IOSPage.getImagesPath() + imageFileName;
+        final boolean isGroup = conversationType.equals("group");
+        if (isEncrypted == null) {
+            commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,
+                    imagePath, dstConversationName, isGroup);
+        } else {
+            commonSteps.UserSentImageToConversationOtr(imageSenderUserNameAlias,
+                    imagePath, dstConversationName, isGroup);
         }
-        if (isGroup == null) {
-            throw new Exception(
-                    "Incorrect type of conversation specified (single user | group) expected.");
-        }
-        commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,
-                imagePath, dstConversationName, isGroup);
     }
 
     @After

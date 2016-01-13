@@ -21,8 +21,8 @@ Feature: Connect
     Then I see <UnconnectedUser> user pending profile popover on iPad
 
     Examples: 
-      | Name      | UnconnectedUser | ContactEmail | NumOfMessageChars | StartLetter | Color        |
-      | user1Name | user2Name       | user2Email   | 140               | T           | BrightOrange |
+      | Name      | UnconnectedUser | StartLetter | Color        |
+      | user1Name | user2Name       | T           | BrightOrange |
 
   @C2488 @regression @id3008
   Scenario Outline: Verify sending a connection request to user chosen from search [LANDSCAPE]
@@ -46,8 +46,8 @@ Feature: Connect
     Then I see <UnconnectedUser> user pending profile popover on iPad
 
     Examples: 
-      | Name      | UnconnectedUser | ContactEmail | NumOfMessageChars | StartLetter | Color        |
-      | user1Name | user2Name       | user2Email   | 140               | T           | BrightOrange |
+      | Name      | UnconnectedUser | StartLetter | Color        |
+      | user1Name | user2Name       | T           | BrightOrange |
 
   @C2486 @regression @rc @id2119
   Scenario Outline: Verify sending connection request after opening profile by clicking on the name and avatar [PORTRAIT]
@@ -279,7 +279,7 @@ Feature: Connect
     Given User <Name> blocks user <Contact>
     Given I Sign in on tablet using my email
     Given I see Contact list with my name <Name>
-    Given Contact <Contact> sends image <Picture> to single user conversation <Name>
+    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     Given Contact <Contact> ping conversation <Name>
     Given User <Contact> sends 1 encrypted message to user Myself
     And I wait for 10 seconds
@@ -313,7 +313,7 @@ Feature: Connect
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see Contact list with my name <Name>
-    Given Contact <Contact> sends image <Picture> to single user conversation <Name>
+    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     Given Contact <Contact> ping conversation <Name>
     Given User <Contact> sends 1 encrypted message to user Myself
     When I wait for 10 seconds
