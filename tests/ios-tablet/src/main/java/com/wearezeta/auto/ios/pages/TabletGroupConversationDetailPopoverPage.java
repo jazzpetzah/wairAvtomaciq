@@ -7,14 +7,11 @@ import java.util.concurrent.Future;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.ios.locators.IOSLocators;
-import com.wearezeta.auto.ios.tablet.locators.IOSTabletLocators;
 
 public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage {
 
@@ -30,30 +27,44 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
 	private final String AQA_PICTURE_CONTACT = "AQAPICTURECONTACT";
 	private final String AQA_AVATAR_CONTACT = "QAAVATAR";
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameConversationMenu)
+	public static final String nameConversationMenu = "metaControllerRightButton";
+	@FindBy(name = nameConversationMenu)
 	private WebElement conversationMenuButton;
 
-	@FindBy(how = How.NAME, using = IOSTabletLocators.TabletGroupConversationDetailPopoverPage.nameRenameButtonEllipsisMenue)
+    public static final String nameRenameButtonEllipsisMenue = "RENAME";
+    @FindBy(name = nameRenameButtonEllipsisMenue)
 	private WebElement renameEllipsesButton;
 
-	@FindBy(how = How.XPATH, using = IOSTabletLocators.TabletGroupConversationDetailPopoverPage.xpathPopoverAvatarCollectionView)
+    public static final String xpathPopoverAvatarCollectionView =
+            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIACollectionView[1]";
+    @FindBy(xpath = xpathPopoverAvatarCollectionView)
 	private WebElement avatarPopoverCollectionView;
 
-	@FindBy(how = How.XPATH, using = IOSTabletLocators.TabletGroupConversationDetailPopoverPage.xpathSilenceButtonEllipsisMenu)
+    public static final String xpathSilenceButtonEllipsisMenu =
+            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIAButton[@name='SILENCE']";
+    @FindBy(xpath = xpathSilenceButtonEllipsisMenu)
 	private WebElement silenceEllipsisButton;
 
-	@FindBy(how = How.XPATH, using = IOSTabletLocators.TabletGroupConversationDetailPopoverPage.xpathNotifyButtonEllipsisMenu)
+    public static final String xpathNotifyButtonEllipsisMenu =
+            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIAButton[@name='NOTIFY']";
+    @FindBy(xpath = xpathNotifyButtonEllipsisMenu)
 	private WebElement notifyEllipsisButton;
 
-	public void openConversationMenuOnPopover() throws Exception {
+    public static final String xpathGroupConvTotalNumber =
+            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIAStaticText[contains(@name,'PEOPLE')]";
+
+    public static final String xpathPopover = "//UIAPopover[@visible='true']";
+
+    public static final String namePeopleCountWord = " PEOPLE";
+
+    public void openConversationMenuOnPopover() throws Exception {
 		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.name(IOSLocators.nameConversationMenu));
+				By.name(nameConversationMenu));
 		conversationMenuButton.click();
 	}
 
 	public boolean waitConversationInfoPopoverToClose() throws Exception {
-		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.xpath(IOSTabletLocators.xpathPopover), 10);
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By.xpath(xpathPopover), 10);
 	}
 	
 	public void dismissPopover() throws Exception {
@@ -84,17 +95,11 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
 
 	public int numberOfPeopleInGroupConversationOniPad() throws Exception {
 		int result = -1;
-		List<WebElement> elements = getDriver()
-				.findElements(
-						By.xpath(IOSTabletLocators.TabletGroupConversationDetailPopoverPage.xpathGroupConvTotalNumber));
+		List<WebElement> elements = getDriver().findElements(By.xpath(xpathGroupConvTotalNumber));
 		for (WebElement element : elements) {
 			String value = element.getText();
-			if (value
-					.contains(IOSTabletLocators.TabletGroupConversationDetailPopoverPage.namePeopleCountWord)) {
-				result = Integer
-						.parseInt(value.substring(
-								0,
-								value.indexOf((IOSTabletLocators.TabletGroupConversationDetailPopoverPage.namePeopleCountWord))));
+			if (value.contains(namePeopleCountWord)) {
+				result = Integer.parseInt(value.substring(0, value.indexOf((namePeopleCountWord))));
 			}
 		}
 		return result;

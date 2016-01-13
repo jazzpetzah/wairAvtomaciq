@@ -6,19 +6,15 @@ import java.text.Normalizer.Form;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.ios.IOSConstants;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.pages.GroupChatPage;
-import com.wearezeta.auto.ios.locators.IOSLocators;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -100,10 +96,11 @@ public class DialogPageSteps {
         getDialogPage().typeConversationMessage(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
     }
 
+    private static final String YOU_PINGED_MESSAGE = "YOU PINGED";
+
     @Then("^I see You Pinged message in the dialog$")
     public void ISeeHelloMessageFromMeInTheDialog() throws Throwable {
-        String pingmessage = IOSLocators.nameYouPingedMessage;
-        Assert.assertTrue(getDialogPage().isMessageVisible(pingmessage));
+        Assert.assertTrue(getDialogPage().isMessageVisible(YOU_PINGED_MESSAGE));
     }
 
     @Then("^I see User (.*) Pinged message in the conversation$")

@@ -3,56 +3,56 @@ package com.wearezeta.auto.ios.pages;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 
-import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class StartedCallPage extends CallPage {
 
-	private static final Logger log = ZetaLogger.getLog(StartedCallPage.class
-			.getSimpleName());
-
 	private final double MIN_ACCEPTABLE_SCORE = 0.9;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.StartedCallPage.xpathCallingMessage)
+    public static final String xpathCallingMessage =
+            "//UIAStaticText[contains(@name, 'CallStatusLabel') and @visible='true']";
+    @FindBy(xpath = xpathCallingMessage)
 	private WebElement callingMessage;
 
-	@FindBy(how = How.NAME, using = IOSLocators.StartedCallPage.nameEndCallButton)
+    public static final String nameEndCallButton = "LeaveCallButton";
+    @FindBy(name = nameEndCallButton)
 	private WebElement endCallButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.StartedCallPage.nameSpeakersButton)
+    public static final String nameSpeakersButton = "CallSpeakerButton";
+    @FindBy(name = nameSpeakersButton)
 	private WebElement speakersButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.StartedCallPage.nameMuteCallButton)
+    public static final String nameMuteCallButton = "CallMuteButton";
+    @FindBy(name = nameMuteCallButton)
 	private WebElement muteCallButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameCallingMessageUser)
+    public static final String nameCallingMessageUser = "CallStatusLabel";
+    @FindBy(name = nameCallingMessageUser)
 	private WebElement callingMessageUser;
 
-	public boolean isCallingMessageVisible() throws Exception {
+    public static final String xpathStartedCallMessageUser = "//UIAStaticText[@name='%s']";
+
+    public boolean isCallingMessageVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(IOSLocators.StartedCallPage.xpathCallingMessage));
+				By.xpath(xpathCallingMessage));
 	}
 
 	public boolean waitCallingMessageDisappear() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.xpath(IOSLocators.StartedCallPage.xpathCallingMessage));
+				By.xpath(xpathCallingMessage));
 	}
 
 	public boolean isStartedCallMessageVisible(String contact) throws Exception {
 		return getDriver()
 				.findElementByXPath(
 						String.format(
-								IOSLocators.StartedCallPage.xpathStartedCallMessageUser,
+								xpathStartedCallMessageUser,
 								contact)).isDisplayed();
 	}
 
@@ -61,22 +61,19 @@ public class StartedCallPage extends CallPage {
 	}
 
 	public boolean isEndCallVisible() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.name(IOSLocators.StartedCallPage.nameEndCallButton));
+		DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(nameEndCallButton));
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				endCallButton);
 	}
 
 	public boolean isSpeakersVisible() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.name(IOSLocators.StartedCallPage.nameSpeakersButton));
+		DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(nameSpeakersButton));
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				speakersButton);
 	}
 
 	public boolean isMuteCallVisible() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.name(IOSLocators.StartedCallPage.nameMuteCallButton));
+		DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(nameMuteCallButton));
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				muteCallButton);
 	}

@@ -5,43 +5,54 @@ import java.util.concurrent.Future;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class OtherUserOnPendingProfilePage extends IOSPage {
 
-	@FindBy(how = How.XPATH, using = IOSLocators.nameOtherUserProfilePageCloseButton)
+	public static final String nameOtherUserProfilePageCloseButton = "OtherUserProfileCloseButton";
+	@FindBy(xpath = nameOtherUserProfilePageCloseButton)
 	private WebElement closePageButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherProfilePageCancelRequestLabel)
+    public static final String xpathOtherProfilePageCancelRequestLabel = "//UIAStaticText[contains(@name, 'CANCEL REQUEST')]";
+    @FindBy(xpath = xpathOtherProfilePageCancelRequestLabel)
 	private WebElement pendingLabel;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameOtherProfilePageStartConversationButton)
+    public static final String nameOtherProfilePageStartConversationButton = "OtherUserMetaControllerLeftButton";
+    @FindBy(name = nameOtherProfilePageStartConversationButton)
 	private WebElement startConversationButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.OtherUserProfilePage.xpathOtherProfileCancelRequestButton)
+    public static final String xpathOtherProfileCancelRequestButton =
+            "//UIAStaticText[contains(@name, 'CANCEL REQUEST')]/preceding-sibling::UIAButton[@name='OtherUserMetaControllerLeftButton']";
+    @FindBy(xpath = xpathOtherProfileCancelRequestButton)
 	private WebElement cancelRequestButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.OtherUserProfilePage.xpathCancelRequestYesButton)
+    public static final String xpathCancelRequestYesButton =
+            "//UIAStaticText[@name='Cancel Request?']/following-sibling::UIAButton[@name='YES']";
+    @FindBy(xpath = xpathCancelRequestYesButton)
 	private WebElement cancelRequestConfirmationYesButton;
-	
-	@FindBy(how = How.NAME, using = IOSLocators.nameExitOtherUserPersonalInfoPageButton)
+
+    public static final String nameExitOtherUserPersonalInfoPageButton = "OtherUserProfileCloseButton";
+    @FindBy(name = nameExitOtherUserPersonalInfoPageButton)
 	private WebElement backButtonToGroupPopover;
-	
-	@FindBy(how = How.NAME, using = IOSLocators.nameRemoveFromConversation)
+
+    public static final String nameRemoveFromConversation = "OtherUserMetaControllerRightButton";
+    @FindBy(name = nameRemoveFromConversation)
 	private WebElement removePendingPersonFromChat;
 
-	public OtherUserOnPendingProfilePage(Future<ZetaIOSDriver> lazyDriver)
+    public static final String nameOtherProfilePageCloseButton = "OtherUserProfileCloseButton";
+
+    public static final String nameCancelRequestConfirmationLabel = "Cancel Request?";
+
+    public OtherUserOnPendingProfilePage(Future<ZetaIOSDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
 	}
 
 	public boolean isClosePageButtonVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.name(IOSLocators.nameOtherProfilePageCloseButton));
+				By.name(nameOtherProfilePageCloseButton));
 	}
 
 	public boolean isCancelRequestButtonVisible() throws Exception {
@@ -56,9 +67,7 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 	public boolean isCancelRequestConfirmationVisible() throws Exception {
 		return DriverUtils
 				.waitUntilLocatorAppears(
-						getDriver(),
-						By.name(IOSLocators.OtherUserProfilePage.nameCancelRequestConfirmationLabel),
-						3);
+						getDriver(), By.name(nameCancelRequestConfirmationLabel), 3);
 	}
 
 	public void clickConfirmCancelRequestButton() {
@@ -67,7 +76,7 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 
 	public boolean isCancelRequestLabelVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(IOSLocators.xpathOtherProfilePageCancelRequestLabel));
+				By.xpath(xpathOtherProfilePageCancelRequestLabel));
 	}
 
 	public void clickStartConversationButton() {

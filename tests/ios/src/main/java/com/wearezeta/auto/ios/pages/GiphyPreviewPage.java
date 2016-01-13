@@ -5,37 +5,42 @@ import java.util.concurrent.Future;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class GiphyPreviewPage extends IOSPage {
-
-	@FindBy(how = How.NAME, using = IOSLocators.GiphyPreviewPage.nameGiphyRefreshButton)
+	public static final String nameGiphyRefreshButton = "leftButton";
+	@FindBy(name = nameGiphyRefreshButton)
 	private WebElement giphyMoreButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.GiphyPreviewPage.nameGiphyLinkButton)
+    public static final String nameGiphyLinkButton = "rightButton";
+    @FindBy(name = nameGiphyLinkButton)
 	private WebElement giphyLinkButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.GiphyPreviewPage.nameGiphyTitleButton)
+    public static final String nameGiphyTitleButton = "centerButton";
+    @FindBy(name = nameGiphyTitleButton)
 	private WebElement giphyTitleButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.GiphyPreviewPage.xpathGithyImage)
+    public static final String xpathGithyImage = "//UIAButton[@name='rejectButton']/preceding-sibling::UIAImage[1]";
+    @FindBy(xpath = xpathGithyImage)
 	private WebElement giphyImage;
 
-	@FindBy(how = How.NAME, using = IOSLocators.GiphyPreviewPage.nameGiphyCancelRequestButton)
+    public static final String nameGiphyCancelRequestButton = "rejectButton";
+    @FindBy(name = nameGiphyCancelRequestButton)
 	private WebElement giphyRejectButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.GiphyPreviewPage.nameGiphySendButton)
+    public static final String nameGiphySendButton = "acceptButton";
+    @FindBy(name = nameGiphySendButton)
 	private WebElement giphySendButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.GiphyPreviewPage.nameNoGifsText)
+    public static final String nameNoGifsText = "OOOPS, NO MORE GIFS";
+    @FindBy(name = nameNoGifsText)
 	private WebElement noGifsText;
 
-	public GiphyPreviewPage(Future<ZetaIOSDriver> driver) throws Exception {
+    public static final String nameGiphyGrid = "giphyCollectionView";
+
+    public GiphyPreviewPage(Future<ZetaIOSDriver> driver) throws Exception {
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}
@@ -61,7 +66,7 @@ public class GiphyPreviewPage extends IOSPage {
 
 	public boolean isGiphyImageVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.xpath(IOSLocators.GiphyPreviewPage.xpathGithyImage));
+				By.xpath(xpathGithyImage));
 	}
 
 	public boolean isGiphyRejectButtonVisible() throws Exception {
@@ -81,7 +86,6 @@ public class GiphyPreviewPage extends IOSPage {
 
 	public boolean isGiphyGridShown() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.name(IOSLocators.GiphyPreviewPage.nameGiphyGrid));
+				By.name(nameGiphyGrid));
 	}
-
 }

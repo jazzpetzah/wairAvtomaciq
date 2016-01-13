@@ -2,35 +2,42 @@ package com.wearezeta.auto.ios.pages;
 
 import java.util.concurrent.Future;
 
-import com.wearezeta.auto.ios.locators.IOSLocators;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class PendingRequestsPage extends IOSPage {
 
-	@FindBy(how = How.NAME, using = IOSLocators.namePendingRequestIgnoreButton)
+	public static final String namePendingRequestIgnoreButton = "IGNORE";
+	@FindBy(name = namePendingRequestIgnoreButton)
 	private WebElement ignoreRequestButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.namePendingRequestConnectButton)
+    public static final String namePendingRequestConnectButton = "CONNECT";
+    @FindBy(name = namePendingRequestConnectButton)
 	private WebElement connectRequestButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathPendingRequesterName)
+    public static final String xpathPendingRequesterName =
+            "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]//UIAStaticText[contains(@name, 'Connect to')]";
+    @FindBy(xpath = xpathPendingRequesterName)
 	private WebElement requesterName;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathPendingRequestMessage)
+    public static final String xpathPendingRequestMessage =
+            "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]//UIAStaticText[3]";
+    @FindBy(xpath = xpathPendingRequestMessage)
 	private WebElement pendingMessage;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathYouBothKnowPeopleIcon)
+    public static final String xpathYouBothKnowPeopleIcon =
+            "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[1]/UIAButton[2]";
+    @FindBy(xpath = xpathYouBothKnowPeopleIcon)
 	private WebElement youBothKnowPeopleIcon;
 
-	public PendingRequestsPage(Future<ZetaIOSDriver> lazyDriver)
+    public static final String nameYouBothKnowHeader = "YOU BOTH KNOW";
+
+    public PendingRequestsPage(Future<ZetaIOSDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
 	}
@@ -40,13 +47,10 @@ public class PendingRequestsPage extends IOSPage {
 		ignoreRequestButton.click();
 	}
 
-	public void clickIgnoreButtonMultiple(int clicks)
-			throws Exception {
+	public void clickIgnoreButtonMultiple(int clicks) throws Exception {
 		for (int i = 0; i < clicks; i++) {
-			DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-					By.name(IOSLocators.namePendingRequestIgnoreButton));
-			DriverUtils.waitUntilElementClickable(getDriver(),
-					ignoreRequestButton);
+			DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.name(namePendingRequestIgnoreButton));
+			DriverUtils.waitUntilElementClickable(getDriver(), ignoreRequestButton);
 			ignoreRequestButton.click();
 		}
 	}
@@ -59,20 +63,16 @@ public class PendingRequestsPage extends IOSPage {
 
 	public void clickConnectButtonMultiple(int clicks) throws Exception {
 		for (int i = 0; i < clicks; i++) {
-			DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-					By.name(IOSLocators.namePendingRequestConnectButton));
-			this.getWait().until(
-					ExpectedConditions
-							.elementToBeClickable(connectRequestButton));
+			DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.name(namePendingRequestConnectButton));
+			this.getWait().until(ExpectedConditions.elementToBeClickable(connectRequestButton));
 			connectRequestButton.click();
-			DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-					By.name(IOSLocators.namePendingRequestConnectButton));
+			DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.name(namePendingRequestConnectButton));
 		}
 	}
 
 	public boolean isConnectButtonDisplayed() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(IOSLocators.namePendingRequestConnectButton), 5);
+				By.name(namePendingRequestConnectButton), 5);
 	}
 
 	public String getRequesterName() {
@@ -81,8 +81,7 @@ public class PendingRequestsPage extends IOSPage {
 	}
 
 	public boolean isYouBothKnowDisplayed() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(IOSLocators.nameYouBothKnowHeader), 5);
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(nameYouBothKnowHeader), 5);
 	}
 
 	public void clickYouBothKnowPeopleIcon() {

@@ -6,47 +6,57 @@ import java.util.concurrent.Future;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.ios.locators.IOSLocators;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class IncomingCallPage extends CallPage {
-
-	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameAcceptCallButton)
+	public static final String nameAcceptCallButton = "AcceptButton";
+	@FindBy(name = nameAcceptCallButton)
 	private WebElement acceptCallButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameEndCallButton)
+    public static final String nameEndCallButton = "LeaveCallButton";
+    @FindBy(name = nameEndCallButton)
 	private WebElement endCallButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.IncomingCallPage.xpathCallingMessage)
+    public static final String xpathCallingMessage =
+            "//UIAStaticText[contains(@value, '%s') and contains(@value, ' IS CALLING')]";
+    @FindBy(xpath = xpathCallingMessage)
 	private WebElement callingMessage;
 
-	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameIgnoreCallButton)
+    public static final String nameIgnoreCallButton = "IgnoreButton";
+    @FindBy(name = nameIgnoreCallButton)
 	private WebElement ignoreCallButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameCallingMessageUser)
+    public static final String nameCallingMessageUser = "CallStatusLabel";
+    @FindBy(name = nameCallingMessageUser)
 	private WebElement callingMessageUser;
 
-	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameJoinCallButton)
+    public static final String nameJoinCallButton = "JOIN CALL";
+    @FindBy(name = nameJoinCallButton)
 	private WebElement joinCallButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameSecondCallAlert)
+    public static final String nameSecondCallAlert = "Answer call?";
+    @FindBy(name = nameSecondCallAlert)
 	private WebElement secondCallAlert;
 
-	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameAnswerCallAlertButton)
+    public static final String nameAnswerCallAlertButton = "Answer";
+    @FindBy(name = nameAnswerCallAlertButton)
 	private WebElement answerCallAlertButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.IncomingCallPage.xpathGroupCallAvatars)
+    public static final String xpathGroupCallAvatars =
+            "//UIAWindow[@name='ZClientNotificationWindow']//UIACollectionCell";
+    @FindBy(xpath = xpathGroupCallAvatars)
 	private List<WebElement> numberOfGroupCallAvatars;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.IncomingCallPage.xpathGroupCallFullMessage)
+    public static final String xpathGroupCallFullMessage =
+            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAAlert[@name='The call is full']";
+    @FindBy(xpath = xpathGroupCallFullMessage)
 	private WebElement groupCallFullMessage;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.IncomingCallPage.xpathUserInCallContactListCell)
+    public static final String xpathUserInCallContactListCell =
+            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText";
+    @FindBy(xpath = xpathUserInCallContactListCell)
 	private List<WebElement> contactListNamesInACall;
 
 	public IncomingCallPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -54,10 +64,8 @@ public class IncomingCallPage extends CallPage {
 	}
 
 	public boolean isCallingMessageVisible(String contact) throws Exception {
-		return getDriver().findElementByXPath(
-				String.format(
-						IOSLocators.IncomingCallPage.xpathCallingMessage,
-						contact)).isDisplayed();
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(String.format(xpathCallingMessage, contact)));
 	}
 
 	public StartedCallPage acceptIncomingCallClick() throws Exception {
@@ -71,13 +79,12 @@ public class IncomingCallPage extends CallPage {
 	}
 
 	public boolean isCallingMessageVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(IOSLocators.IncomingCallPage.xpathCallingMessage), 15);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathCallingMessage), 15);
 	}
 
 	public boolean isGroupCallingMessageVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.name(IOSLocators.IncomingCallPage.nameCallingMessageUser), 15);
+				By.name(nameCallingMessageUser), 15);
 	}
 
 	public boolean isJoinCallBarVisible() {

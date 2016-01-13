@@ -12,512 +12,526 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class PeoplePickerPage extends IOSPage {
+    public static final String xpathPickerSearch = "//UIATextView[@name='textViewSearch' and @visible='true']";
+    @FindBy(xpath = xpathPickerSearch)
+    private WebElement peoplePickerSearch;
+
+    public static final String xpathPickerClearButton = "//*[@name='PeoplePickerClearButton' and @visible='true']";
+    @FindBy(xpath = xpathPickerClearButton)
+    private WebElement peoplePickerClearBtn;
+
+    public static final String classNameContactListNames = "UIACollectionCell";
+    @FindBy(className = classNameContactListNames)
+    private List<WebElement> resultList;
+
+    public static final String xpathUnicUserPickerSearchResult =
+            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell[1]";
+    @FindBy(xpath = xpathUnicUserPickerSearchResult)
+    private WebElement userPickerSearchResult;
+
+    public static final String nameKeyboardEnterButton = "Return";
+    @FindBy(name = nameKeyboardEnterButton)
+    private WebElement goButton;
+
+    public static final String nameCreateConversationButton = "CREATE";
+    @FindBy(name = nameCreateConversationButton)
+    private WebElement createConverstaionButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathPickerSearch)
-	private WebElement peoplePickerSearch;
+    public static final String namePeoplePickerContactsLabel = "CONTACTS";
+    @FindBy(name = namePeoplePickerContactsLabel)
+    private WebElement contactsLabel;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathPickerClearButton)
-	private WebElement peoplePickerClearBtn;
+    public static final String namePeoplePickerOtheraLabel = "OTHERS";
+    @FindBy(name = namePeoplePickerOtheraLabel)
+    private WebElement othersLabel;
 
-	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameContactListNames)
-	private List<WebElement> resultList;
+    public static final String namePeoplePickerTopPeopleLabel = "TOP PEOPLE";
+    @FindBy(name = namePeoplePickerTopPeopleLabel)
+    private WebElement topPeopleLabel;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathUnicUserPickerSearchResult)
-	private WebElement userPickerSearchResult;
+    public static final String namePeoplePickerAddToConversationButton = "ADD TO CONVERSATION";
+    @FindBy(name = namePeoplePickerAddToConversationButton)
+    private WebElement addToConversationBtn;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameKeyboardEnterButton)
-	private WebElement goButton;
+    public static final String nameShareButton = "SHARE CONTACTS";
+    @FindBy(name = nameShareButton)
+    private WebElement shareButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameCreateConversationButton)
-	private WebElement createConverstaionButton;
+    public static final String nameNotNowButton = "NOT NOW";
+    @FindBy(name = nameNotNowButton)
+    private WebElement notNowButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.namePeoplePickerContactsLabel)
-	private WebElement contactsLabel;
+    public static final String nameContinueUploadButton = "SHARE CONTACTS";
+    @FindBy(name = nameContinueUploadButton)
+    private WebElement continueButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.namePeoplePickerOtheraLabel)
-	private WebElement othersLabel;
+    public static final String namePeopleYouMayKnowLabel = "CONNECT";
+    @FindBy(name = namePeopleYouMayKnowLabel)
+    private WebElement peopleYouMayKnowLabel;
 
-	@FindBy(how = How.NAME, using = IOSLocators.NamePeoplePickerTopPeopleLabel)
-	private WebElement topPeopleLabel;
+    public static final String nameUnblockButton = "UNBLOCK";
+    @FindBy(name = nameUnblockButton)
+    private WebElement unblockButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.namePeoplePickerAddToConversationButton)
-	private WebElement addToConversationBtn;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameShareButton)
-	private WebElement shareButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.PeoplePickerPage.nameNotNowButton)
-	private WebElement notNowButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameContinueUploadButton)
-	private WebElement continueButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.namePeopleYouMayKnowLabel)
-	private WebElement peopleYouMayKnowLabel;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameUnblockButton)
-	private WebElement unblockButton;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathPeoplePickerAllTopPeople)
-	private List<WebElement> topPeopleList;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathInviteCopyButton)
-	private WebElement inviteCopyButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameSendAnInviteButton)
-	private WebElement sendInviteButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameInstantConnectButton)
-	private WebElement instantConnectButton;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathSearchResultCell)
-	private WebElement searchResultCell;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathSearchResultCellAvatar)
-	private WebElement searchResultAvatar;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathSearchResultContainer)
-	private WebElement searchResultContainer;
-
-	@FindBy(how = How.NAME, using = IOSLocators.PeoplePickerPage.nameLaterButton)
-	private WebElement maybeLaterButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.PeoplePickerPage.nameOpenConversationButton)
-	private WebElement openConversationButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.PeoplePickerPage.nameCallButton)
-	private WebElement callButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.PeoplePickerPage.nameSendImageButton)
-	private WebElement sendImageButton;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathContactViewCloseButton)
-	private WebElement closeInviteButton;
-
-	private int numberTopSelected = 0;
-
-	public PeoplePickerPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
-		super(lazyDriver);
-	}
-
-	public void clickMaybeLaterButton() {
-		maybeLaterButton.click();
-	}
-
-	public void clickNotNowButton() {
-		notNowButton.click();
-	}
-
-	public void closeShareContactsIfVisible() throws Exception {
-		if (DriverUtils.waitUntilElementClickable(getDriver(), notNowButton, 1)) {
-			clickNotNowButton();
-		}
-	}
-
-	public Boolean isPeoplePickerPageVisible() throws Exception {
-		boolean result = DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(IOSLocators.xpathPickerSearch));
-
-		return result;
-	}
-
-	public void tapOnPeoplePickerSearch() throws Exception {
-		this.getDriver().tap(1, peoplePickerSearch.getLocation().x + 40,
-				peoplePickerSearch.getLocation().y + 30, 1);// workaround for
-															// people picker
-															// activation
-	}
-
-	public void tapOnPeoplePickerClearBtn() throws Exception {
-		DriverUtils.tapByCoordinates(getDriver(), peoplePickerClearBtn);
-	}
-
-	public double checkAvatarClockIcon(String name) throws Exception {
-		String path = null;
-		BufferedImage clockImage = getAvatarClockIconScreenShot(name);
-		path = CommonUtils.getAvatarWithClockIconPathIOS(GroupChatPage.class);
-		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
-		double score = ImageUtil.getOverlapScore(clockImage, templateImage,
-				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
-
-		return score;
-	}
-
-	public BufferedImage getAvatarClockIconScreenShot(String name)
-			throws Exception {
-		int multiply = 1;
-		String device = CommonUtils.getDeviceName(this.getClass());
-		if (device.equalsIgnoreCase("iPhone 6")
-				|| device.equalsIgnoreCase("iPad Air")) {
-			multiply = 2;
-		} else if (device.equalsIgnoreCase("iPhone 6 Plus")) {
-			multiply = 3;
-		}
-
-		int x = multiply * searchResultCell.getLocation().x;
-		int y = multiply * searchResultCell.getLocation().y;
-		int w = multiply
-				* (searchResultCell.getLocation().x + searchResultCell
-						.getSize().width / 4);
-		int h = multiply * searchResultCell.getSize().height;
-		return getScreenshotByCoordinates(x, y, w, h).orElseThrow(
-				IllegalStateException::new);
-	}
-
-	public void fillTextInPeoplePickerSearch(String text) throws Exception {
-		DriverUtils.waitUntilElementClickable(getDriver(), peoplePickerSearch);
-		try {
-			sendTextToSeachInput(text);
-			clickSpaceKeyboardButton();
-		} catch (WebDriverException ex) {
-			peoplePickerSearch.clear();
-			sendTextToSeachInput(text);
-			clickSpaceKeyboardButton();
-		}
-	}
-
-	public void sendTextToSeachInput(String text) throws Exception {
-		((IOSElement) getDriver().findElementByXPath(IOSLocators.xpathPickerSearch)).setValue(text);
-	}
-
-	public boolean waitUserPickerFindUser(String user) throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By
-				.xpath(String.format(
-						IOSLocators.PeoplePickerPage.xpathFormatFoundContact,
-						user)), 5);
-	}
-
-	public ConnectToPage clickOnNotConnectedUser(String name) throws Exception {
-		ConnectToPage page;
-		WebElement foundContact = getDriver().findElement(
-				By.xpath(String.format(
-						IOSLocators.PeoplePickerPage.xpathFormatFoundContact,
-						name)));
-		DriverUtils.waitUntilElementClickable(getDriver(), foundContact);
-		foundContact.click();
-
-		page = new ConnectToPage(this.getLazyDriver());
-		return page;
-	}
-
-	public ConnectToPage pickUserAndTap(String name) throws Exception {
-
-		PickUser(name).click();
-		return new ConnectToPage(this.getLazyDriver());
-	}
-
-	public PendingRequestsPage pickIgnoredUserAndTap(String name)
-			throws Exception {
-		PickUser(name).click();
-		return new PendingRequestsPage(this.getLazyDriver());
-	}
-
-	public ContactListPage dismissPeoplePicker() throws Exception {
-		DriverUtils
-				.waitUntilElementClickable(getDriver(), peoplePickerClearBtn);
-		peoplePickerClearBtn.click();
-		return new ContactListPage(this.getLazyDriver());
-	}
-
-	public void swipeToRevealHideSuggestedContact(String contact)
-			throws Exception {
-		WebElement contactToSwipe = this
-				.getDriver()
-				.findElement(
-						By.xpath(String
-								.format(IOSLocators.PeoplePickerPage.xpathSuggestedContactToSwipe,
-										contact)));
-		int count = 0;
-		do {
-			DriverUtils.swipeRight(this.getDriver(), contactToSwipe, 500, 50,
-					50);
-			count++;
-		} while (!isHideButtonVisible() || count > 3);
-	}
-
-	public void swipeCompletelyToDismissSuggestedContact(String contact)
-			throws Exception {
-		WebElement contactToSwipe = this
-				.getDriver()
-				.findElement(
-						By.xpath(String
-								.format(IOSLocators.PeoplePickerPage.xpathSuggestedContactToSwipe,
-										contact)));
-		DriverUtils.swipeRight(this.getDriver(), contactToSwipe, 1000, 100, 50);
-	}
-
-	public void tapHideSuggestedContact(String contact) throws Exception {
-		WebElement hideButtonforContact = this.getDriver().findElement(
-				By.xpath(String.format(
-						IOSLocators.PeoplePickerPage.xpathHideButtonForContact,
-						contact)));
-		DriverUtils
-				.waitUntilElementClickable(getDriver(), hideButtonforContact);
-		hideButtonforContact.click();
-	}
-
-	public boolean isHideButtonVisible() throws Exception {
-		boolean  flag = DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.name(IOSLocators.nameHideSuggestedContactButton));
-		return DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.name(IOSLocators.nameHideSuggestedContactButton));
-	}
-
-	public boolean isSuggestedContactVisible(String contact) throws Exception {
-
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By
-				.xpath(String.format(
-						IOSLocators.PeoplePickerPage.xpathSuggestedContact,
-						contact)), 2);
-	}
-
-	public boolean addToConversationNotVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.name(IOSLocators.namePeoplePickerAddToConversationButton));
-	}
-
-	public IOSPage clickOnGoButton(boolean isGroupChat) throws Exception {
-		goButton.click();
-		if (numberTopSelected >= 2 || isGroupChat) {
-			return new GroupChatPage(this.getLazyDriver());
-		} else {
-			return new DialogPage(this.getLazyDriver());
-		}
-	}
-
-	private WebElement PickUser(String name) throws Exception {
-		fillTextInPeoplePickerSearch(name);
-		waitUserPickerFindUser(name);
-		return getDriver().findElementByName(name);
-	}
-
-	public void selectUser(String name) throws Exception {
-		List<WebElement> el = getDriver().findElements(By.name(name));
-		if (el.size() == 0) {
-			throw new NoSuchElementException("Element not found");
-		}
-		for (int i = 0; i < el.size(); i++) {
-			if (el.get(i).isDisplayed() && el.get(i).isEnabled()) {
-				DriverUtils.tapByCoordinates(getDriver(), el.get(i));
-				break;
-			}
-		}
-	}
-
-	public void tapNumberOfTopConnections(int numberToTap) throws Exception {
-		numberTopSelected = 0;
-		for (int i = 1; i < numberToTap + 1; i++) {
-			numberTopSelected++;
-			getDriver().findElement(
-					By.xpath(String.format(
-							IOSLocators.xpathPeoplePickerTopConnectionsAvatar,
-							i))).click();
-		}
-	}
-
-	public boolean isCreateConversationButtonVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(IOSLocators.nameCreateConversationButton));
-	}
-
-	public IOSPage clickCreateConversationButton() throws Throwable {
-		createConverstaionButton.click();
-		if (numberTopSelected >= 2) {
-			return new GroupChatPage(this.getLazyDriver());
-		} else {
-			return new DialogPage(this.getLazyDriver());
-		}
-	}
-
-	public boolean isTopPeopleLabelVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(IOSLocators.NamePeoplePickerTopPeopleLabel), 2);
-	}
-
-	public boolean isConnectLabelVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(IOSLocators.namePeopleYouMayKnowLabel));
-	}
-
-	public boolean isUserSelected(String name) throws Exception {
-		WebElement el = getDriver().findElement(
-				By.xpath(String.format(
-						IOSLocators.xpathPeoplePickerSelectedCell, name)));
-		boolean flag = el.getAttribute("value").equals("1");
-		return flag;
-	}
-
-	public void clickConnectedUserAvatar(String name) throws Exception {
-		WebElement el = getDriver().findElement(
-				By.xpath(String.format(
-						IOSLocators.xpathPeoplePickerSelectedCell, name)));
-		el.click();
-	}
-
-	public void hitDeleteButton() {
-		peoplePickerSearch.sendKeys(Keys.DELETE);
-	}
-
-	public GroupChatPage clickAddToCoversationButton() throws Exception {
-		addToConversationBtn.click();
-		return new GroupChatPage(this.getLazyDriver());
-	}
-
-	public OtherUserOnPendingProfilePage clickOnUserOnPending(String contact)
-			throws Exception {
-
-		WebElement el = getDriver().findElement(By.name(contact));
-		DriverUtils.tapByCoordinates(getDriver(), el);
-		return new OtherUserOnPendingProfilePage(this.getLazyDriver());
-	}
-
-	public boolean isUploadDialogShown() throws Exception {
-		boolean isLaterBtnVisible = DriverUtils.waitUntilLocatorIsDisplayed(
-				this.getDriver(), By.name(IOSLocators.nameShareButton), 2);
-		return isLaterBtnVisible;
-	}
-
-	public void clickContinueButton() throws Exception {
-		if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(IOSLocators.nameContinueUploadButton))) {
-			continueButton.click();
-		}
-	}
-
-	public boolean isPeopleYouMayKnowLabelVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(IOSLocators.namePeopleYouMayKnowLabel));
-	}
-
-	private void unblockButtonDoubleClick() throws Exception {
-		DriverUtils.multiTap(
-						getDriver(),
-						getDriver().findElement(
-								By.name(IOSLocators.nameUnblockButton)), 2);
-	}
-
-	public DialogPage unblockUser() throws Exception {
-		unblockButton.click();
-		return new DialogPage(this.getLazyDriver());
-	}
-
-	public DialogPage unblockUserOniPad() throws Exception {
-		// workaround for wierd appium behaviour - popup remains opened after 1
-		// time click
-		unblockButtonDoubleClick();
-		return new DialogPage(this.getLazyDriver());
-	}
-
-	public int getNumberOfSelectedTopPeople() {
-		int selectedPeople = 0;
-		for (WebElement people : topPeopleList) {
-			if (people.getAttribute("value").equals("1")) {
-				selectedPeople++;
-			}
-		}
-		return selectedPeople;
-	}
-
-	public void tapSendInviteButton() {
-		sendInviteButton.click();
-	}
-
-	public void tapSendInviteCopyButton() throws UnsupportedFlavorException,
-			Exception {
-		inviteCopyButton.click();
-	}
-
-	public void pressInstantConnectButton() {
-		instantConnectButton.click();
-	}
-
-	public String getNameOfNuser(int i) throws Exception {
-		return this
-				.getDriver()
-				.findElementByXPath(
-						String.format(
-								IOSLocators.xpathPeoplePickerTopConnectionsName,
-								i)).getAttribute("name");
-	}
-
-	public void tapNumberOfTopConnectionsButNotUser(int numberToTap,
-			String contact) throws Exception {
-		numberTopSelected = 0;
-		for (int i = 1; i < numberToTap + 1; i++) {
-			if (!contact.equals(getNameOfNuser(i).toLowerCase())) {
-				getDriver()
-						.findElement(
-								By.xpath(String
-										.format(IOSLocators.xpathPeoplePickerTopConnectionsAvatar,
-												i))).click();
-				numberTopSelected++;
-			} else {
-				numberToTap++;
-			}
-		}
-
-	}
-
-	public void tapOnTopConnectionAvatarByOrder(int i) throws Exception {
-		getDriver().findElement(
-				By.xpath(String.format(
-						IOSLocators.xpathPeoplePickerTopConnectionsAvatar, i)))
-				.click();
-
-	}
-
-	public boolean isOpenConversationButtonVisible() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(getDriver(), By
-				.name(IOSLocators.PeoplePickerPage.nameOpenConversationButton),
-				5);
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				openConversationButton);
-	}
-
-	public void clickOpenConversationButton() throws Exception {
-		DriverUtils.waitUntilElementClickable(getDriver(),
-				openConversationButton);
-		openConversationButton.click();
-	}
-
-	public boolean isCallButtonVisible() throws Exception {
-		return DriverUtils
-				.isElementPresentAndDisplayed(getDriver(), callButton);
-	}
-
-	public void clickCallButton() throws Exception {
-		DriverUtils.waitUntilElementClickable(getDriver(), callButton);
-		callButton.click();
-	}
-
-	public boolean isSendImageButtonVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				sendImageButton);
-	}
-
-	public void clickSendImageButton() throws Exception {
-		DriverUtils.waitUntilElementClickable(getDriver(), sendImageButton);
-		sendImageButton.click();
-	}
-
-	public void inputTextInSearch(String text) throws Exception {
-		DriverUtils.waitUntilElementClickable(getDriver(), peoplePickerSearch);
-		peoplePickerSearch.sendKeys(text);
-	}
-
-	public void closeInviteList() {
-		closeInviteButton.click();
-
-	}
+    public static final String xpathPeoplePickerAllTopPeople =
+            "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell";
+    @FindBy(xpath = xpathPeoplePickerAllTopPeople)
+    private List<WebElement> topPeopleList;
+
+    public static final String xpathInviteCopyButton = "//UIACollectionCell[@name='Copy']";
+    @FindBy(xpath = xpathInviteCopyButton)
+    private WebElement inviteCopyButton;
+
+    public static final String nameSendAnInviteButton = "INVITE MORE PEOPLE";
+    @FindBy(name = nameSendAnInviteButton)
+    private WebElement sendInviteButton;
+
+    public static final String nameInstantConnectButton = "instantPlusConnectButton";
+    @FindBy(name = nameInstantConnectButton)
+    private WebElement instantConnectButton;
+
+    public static final String xpathSearchResultCell =
+            "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[1]";
+    @FindBy(xpath = xpathSearchResultCell)
+    private WebElement searchResultCell;
+
+    public static final String xpathSearchResultCellAvatar =
+            "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[1]/UIAStaticText";
+    @FindBy(xpath = xpathSearchResultCellAvatar)
+    private WebElement searchResultAvatar;
+
+    public static final String xpathSearchResultContainer =
+            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]";
+    @FindBy(xpath = xpathSearchResultContainer)
+    private WebElement searchResultContainer;
+
+    public static final String nameLaterButton = "MAYBE LATER";
+    @FindBy(name = nameLaterButton)
+    private WebElement maybeLaterButton;
+
+    public static final String nameOpenConversationButton = "OPEN";
+    @FindBy(name = nameOpenConversationButton)
+    private WebElement openConversationButton;
+
+    public static final String nameCallButton = "actionBarCallButton";
+    @FindBy(name = nameCallButton)
+    private WebElement callButton;
+
+    public static final String nameSendImageButton = "actionBarCameraButton";
+    @FindBy(name = nameSendImageButton)
+    private WebElement sendImageButton;
+
+    public static final String xpathContactViewCloseButton = "//*[@name='ContactsViewCloseButton' and @visible='true']";
+    @FindBy(xpath = xpathContactViewCloseButton)
+    private WebElement closeInviteButton;
+
+    public static final String xpathFormatFoundContact = "//UIAStaticText[@name='%s' and @visible='true']";
+
+    public static final String xpathSuggestedContactToSwipe =
+            "//UIACollectionCell[descendant::UIAStaticText[@name='%s']]";
+
+    public static final String xpathHideButtonForContact =
+            "//UIAButton[@name='HIDE'][ancestor::UIACollectionCell[descendant::UIAStaticText[@name='%s']]]";
+
+    public static final String nameHideSuggestedContactButton = "HIDE";
+
+    public static final String xpathSuggestedContact = "//UIACollectionCell/UIAStaticText[@name='%s']";
+
+    public static final String xpathPeoplePickerTopConnectionsAvatar =
+            "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell[%d]";
+
+    public static final String xpathPeoplePickerSelectedCell =
+            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[2]/UIATableCell[@name='%s']";
+
+    public static final String xpathPeoplePickerTopConnectionsName =
+            "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell[%d]/UIAStaticText[last()]";
+
+    private int numberTopSelected = 0;
+
+    public PeoplePickerPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+        super(lazyDriver);
+    }
+
+    public void clickMaybeLaterButton() {
+        maybeLaterButton.click();
+    }
+
+    public void clickNotNowButton() {
+        notNowButton.click();
+    }
+
+    public void closeShareContactsIfVisible() throws Exception {
+        if (DriverUtils.waitUntilElementClickable(getDriver(), notNowButton, 1)) {
+            clickNotNowButton();
+        }
+    }
+
+    public boolean isPeoplePickerPageVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+                By.xpath(xpathPickerSearch));
+    }
+
+    public void tapOnPeoplePickerSearch() throws Exception {
+        this.getDriver().tap(1, peoplePickerSearch.getLocation().x + 40,
+                peoplePickerSearch.getLocation().y + 30, 1);// workaround for
+        // people picker
+        // activation
+    }
+
+    public void tapOnPeoplePickerClearBtn() throws Exception {
+        DriverUtils.tapByCoordinates(getDriver(), peoplePickerClearBtn);
+    }
+
+    public double checkAvatarClockIcon(String name) throws Exception {
+        BufferedImage clockImage = getAvatarClockIconScreenShot(name);
+        String path = CommonUtils.getAvatarWithClockIconPathIOS(GroupChatPage.class);
+        BufferedImage templateImage = ImageUtil.readImageFromFile(path);
+        return ImageUtil.getOverlapScore(clockImage, templateImage,
+                ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
+    }
+
+    public BufferedImage getAvatarClockIconScreenShot(String name) throws Exception {
+        int multiply = 1;
+        String device = CommonUtils.getDeviceName(this.getClass());
+        if (device.equalsIgnoreCase("iPhone 6")
+                || device.equalsIgnoreCase("iPad Air")) {
+            multiply = 2;
+        } else if (device.equalsIgnoreCase("iPhone 6 Plus")) {
+            multiply = 3;
+        }
+
+        int x = multiply * searchResultCell.getLocation().x;
+        int y = multiply * searchResultCell.getLocation().y;
+        int w = multiply
+                * (searchResultCell.getLocation().x + searchResultCell
+                .getSize().width / 4);
+        int h = multiply * searchResultCell.getSize().height;
+        return getScreenshotByCoordinates(x, y, w, h).orElseThrow(
+                IllegalStateException::new);
+    }
+
+    public void fillTextInPeoplePickerSearch(String text) throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), peoplePickerSearch);
+        try {
+            sendTextToSearchInput(text);
+            clickSpaceKeyboardButton();
+        } catch (WebDriverException ex) {
+            peoplePickerSearch.clear();
+            sendTextToSearchInput(text);
+            clickSpaceKeyboardButton();
+        }
+    }
+
+    public void sendTextToSearchInput(String text) throws Exception {
+        ((IOSElement) getDriver().findElementByXPath(xpathPickerSearch)).setValue(text);
+    }
+
+    public boolean waitUserPickerFindUser(String user) throws Exception {
+        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By
+                .xpath(String.format(xpathFormatFoundContact,
+                        user)), 5);
+    }
+
+    public ConnectToPage clickOnNotConnectedUser(String name) throws Exception {
+        ConnectToPage page;
+        WebElement foundContact = getDriver().findElement(
+                By.xpath(String.format(xpathFormatFoundContact,
+                        name)));
+        DriverUtils.waitUntilElementClickable(getDriver(), foundContact);
+        foundContact.click();
+
+        page = new ConnectToPage(this.getLazyDriver());
+        return page;
+    }
+
+    public ConnectToPage pickUserAndTap(String name) throws Exception {
+
+        PickUser(name).click();
+        return new ConnectToPage(this.getLazyDriver());
+    }
+
+    public PendingRequestsPage pickIgnoredUserAndTap(String name)
+            throws Exception {
+        PickUser(name).click();
+        return new PendingRequestsPage(this.getLazyDriver());
+    }
+
+    public ContactListPage dismissPeoplePicker() throws Exception {
+        DriverUtils
+                .waitUntilElementClickable(getDriver(), peoplePickerClearBtn);
+        peoplePickerClearBtn.click();
+        return new ContactListPage(this.getLazyDriver());
+    }
+
+    public void swipeToRevealHideSuggestedContact(String contact)
+            throws Exception {
+        WebElement contactToSwipe = this
+                .getDriver()
+                .findElement(
+                        By.xpath(String
+                                .format(xpathSuggestedContactToSwipe,
+                                        contact)));
+        int count = 0;
+        do {
+            DriverUtils.swipeRight(this.getDriver(), contactToSwipe, 500, 50,
+                    50);
+            count++;
+        } while (!isHideButtonVisible() || count > 3);
+    }
+
+    public void swipeCompletelyToDismissSuggestedContact(String contact)
+            throws Exception {
+        WebElement contactToSwipe = this.getDriver()
+                .findElementByXPath(String.format(xpathSuggestedContactToSwipe, contact));
+        DriverUtils.swipeRight(this.getDriver(), contactToSwipe, 1000, 100, 50);
+    }
+
+    public void tapHideSuggestedContact(String contact) throws Exception {
+        WebElement hideButtonforContact = this.getDriver().findElement(
+                By.xpath(String.format(xpathHideButtonForContact,
+                        contact)));
+        DriverUtils
+                .waitUntilElementClickable(getDriver(), hideButtonforContact);
+        hideButtonforContact.click();
+    }
+
+    public boolean isHideButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.name(nameHideSuggestedContactButton));
+    }
+
+    public boolean isSuggestedContactVisible(String contact) throws Exception {
+
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By
+                .xpath(String.format(xpathSuggestedContact,
+                        contact)), 2);
+    }
+
+    public boolean addToConversationNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+                By.name(namePeoplePickerAddToConversationButton));
+    }
+
+    public IOSPage clickOnGoButton(boolean isGroupChat) throws Exception {
+        goButton.click();
+        if (numberTopSelected >= 2 || isGroupChat) {
+            return new GroupChatPage(this.getLazyDriver());
+        } else {
+            return new DialogPage(this.getLazyDriver());
+        }
+    }
+
+    private WebElement PickUser(String name) throws Exception {
+        fillTextInPeoplePickerSearch(name);
+        waitUserPickerFindUser(name);
+        return getDriver().findElementByName(name);
+    }
+
+    public void selectUser(String name) throws Exception {
+        List<WebElement> elements = getDriver().findElements(By.name(name));
+        if (elements.size() == 0) {
+            throw new NoSuchElementException("Element not found");
+        }
+        for (WebElement el : elements) {
+            if (el.isDisplayed() && el.isEnabled()) {
+                DriverUtils.tapByCoordinates(getDriver(), el);
+                break;
+            }
+        }
+    }
+
+    public void tapNumberOfTopConnections(int numberToTap) throws Exception {
+        numberTopSelected = 0;
+        for (int i = 1; i < numberToTap + 1; i++) {
+            numberTopSelected++;
+            getDriver().findElement(
+                    By.xpath(String.format(xpathPeoplePickerTopConnectionsAvatar,
+                            i))).click();
+        }
+    }
+
+    public boolean isCreateConversationButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+                By.name(nameCreateConversationButton));
+    }
+
+    public IOSPage clickCreateConversationButton() throws Throwable {
+        createConverstaionButton.click();
+        if (numberTopSelected >= 2) {
+            return new GroupChatPage(this.getLazyDriver());
+        } else {
+            return new DialogPage(this.getLazyDriver());
+        }
+    }
+
+    public boolean isTopPeopleLabelVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+                By.name(namePeoplePickerTopPeopleLabel), 2);
+    }
+
+    public boolean isConnectLabelVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+                By.name(namePeopleYouMayKnowLabel));
+    }
+
+    public boolean isUserSelected(String name) throws Exception {
+        WebElement el = getDriver().findElementByXPath(
+                String.format(xpathPeoplePickerSelectedCell, name));
+        return el.getAttribute("value").equals("1");
+    }
+
+    public void clickConnectedUserAvatar(String name) throws Exception {
+        WebElement el = getDriver().findElement(
+                By.xpath(String.format(xpathPeoplePickerSelectedCell, name)));
+        el.click();
+    }
+
+    public void hitDeleteButton() {
+        peoplePickerSearch.sendKeys(Keys.DELETE);
+    }
+
+    public GroupChatPage clickAddToCoversationButton() throws Exception {
+        addToConversationBtn.click();
+        return new GroupChatPage(this.getLazyDriver());
+    }
+
+    public OtherUserOnPendingProfilePage clickOnUserOnPending(String contact)
+            throws Exception {
+
+        WebElement el = getDriver().findElement(By.name(contact));
+        DriverUtils.tapByCoordinates(getDriver(), el);
+        return new OtherUserOnPendingProfilePage(this.getLazyDriver());
+    }
+
+    public boolean isUploadDialogShown() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(nameShareButton), 2);
+    }
+
+    public void clickContinueButton() throws Exception {
+        if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+                By.name(nameContinueUploadButton))) {
+            continueButton.click();
+        }
+    }
+
+    public boolean isPeopleYouMayKnowLabelVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+                By.name(namePeopleYouMayKnowLabel));
+    }
+
+    private void unblockButtonDoubleClick() throws Exception {
+        DriverUtils.multiTap(
+                getDriver(),
+                getDriver().findElement(
+                        By.name(nameUnblockButton)), 2);
+    }
+
+    public DialogPage unblockUser() throws Exception {
+        unblockButton.click();
+        return new DialogPage(this.getLazyDriver());
+    }
+
+    public DialogPage unblockUserOniPad() throws Exception {
+        // workaround for wierd appium behaviour - popup remains opened after 1
+        // time click
+        unblockButtonDoubleClick();
+        return new DialogPage(this.getLazyDriver());
+    }
+
+    public int getNumberOfSelectedTopPeople() {
+        int selectedPeople = 0;
+        for (WebElement people : topPeopleList) {
+            if (people.getAttribute("value").equals("1")) {
+                selectedPeople++;
+            }
+        }
+        return selectedPeople;
+    }
+
+    public void tapSendInviteButton() {
+        sendInviteButton.click();
+    }
+
+    public void tapSendInviteCopyButton() throws Exception {
+        inviteCopyButton.click();
+    }
+
+    public void pressInstantConnectButton() {
+        instantConnectButton.click();
+    }
+
+    public String getNameOfNuser(int i) throws Exception {
+        return this
+                .getDriver()
+                .findElementByXPath(
+                        String.format(xpathPeoplePickerTopConnectionsName,
+                                i)).getAttribute("name");
+    }
+
+    public void tapNumberOfTopConnectionsButNotUser(int numberToTap,
+                                                    String contact) throws Exception {
+        numberTopSelected = 0;
+        for (int i = 1; i < numberToTap + 1; i++) {
+            if (!contact.equals(getNameOfNuser(i).toLowerCase())) {
+                getDriver()
+                        .findElementByXPath(String.format(xpathPeoplePickerTopConnectionsAvatar,
+                                i)).click();
+                numberTopSelected++;
+            } else {
+                numberToTap++;
+            }
+        }
+    }
+
+    public void tapOnTopConnectionAvatarByOrder(int i) throws Exception {
+        getDriver().findElement(
+                By.xpath(String.format(xpathPeoplePickerTopConnectionsAvatar, i))).click();
+    }
+
+    public boolean isOpenConversationButtonVisible() throws Exception {
+        DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(nameOpenConversationButton), 5);
+        return DriverUtils.isElementPresentAndDisplayed(getDriver(), openConversationButton);
+    }
+
+    public void clickOpenConversationButton() throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), openConversationButton);
+        openConversationButton.click();
+    }
+
+    public boolean isCallButtonVisible() throws Exception {
+        return DriverUtils
+                .isElementPresentAndDisplayed(getDriver(), callButton);
+    }
+
+    public void clickCallButton() throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), callButton);
+        callButton.click();
+    }
+
+    public boolean isSendImageButtonVisible() throws Exception {
+        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+                sendImageButton);
+    }
+
+    public void clickSendImageButton() throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), sendImageButton);
+        sendImageButton.click();
+    }
+
+    public void inputTextInSearch(String text) throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), peoplePickerSearch);
+        peoplePickerSearch.sendKeys(text);
+    }
+
+    public void closeInviteList() {
+        closeInviteButton.click();
+
+    }
 }

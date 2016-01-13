@@ -5,22 +5,27 @@ import java.util.concurrent.Future;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class ContactsUiPage extends IOSPage {
 
-	@FindBy(how = How.XPATH, using = IOSLocators.ContactsUIPage.xpathSearchInput)
+	public static final String xpathSearchInput = "//UIATextView[UIAStaticText[@name='SEARCH BY NAME']]";
+	@FindBy(xpath = xpathSearchInput)
 	private WebElement searchInput;
 
-	@FindBy(how = How.NAME, using = IOSLocators.ContactsUIPage.nameInviteOthersButton)
+    public static final String nameInviteOthersButton = "INVITE OTHERS";
+    @FindBy(name = nameInviteOthersButton)
 	private WebElement inviteOthersButton;
 
-	public ContactsUiPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+    public static final String xpathContactOnContactsUIList =
+            "//UIATableCell[@name='%s'][preceding::UIAButton[@name='ContactsViewCloseButton']]";
+
+    public static final String xpathOpenButtonNextToUser =
+            "//UIATableCell[@name='%s'][preceding::UIAButton[@name='ContactsViewCloseButton']]/UIAButton[@name='OPEN']";
+
+    public ContactsUiPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 		// TODO Auto-generated constructor stub
 	}
@@ -45,9 +50,7 @@ public class ContactsUiPage extends IOSPage {
 		return DriverUtils
 				.waitUntilLocatorAppears(
 						getDriver(),
-						By.xpath(String
-								.format(IOSLocators.ContactsUIPage.xpathContactOnContactsUIList,
-										contact)), 5);
+						By.xpath(String.format(xpathContactOnContactsUIList, contact)), 5);
 	}
 
 	public void tapInviteOthersButton() throws Exception {
@@ -62,10 +65,7 @@ public class ContactsUiPage extends IOSPage {
 
 	public void clickOpenButtonNextToUser(String contact) throws Exception {
 		WebElement openButton = getDriver().findElement(
-				By.xpath(String.format(
-						IOSLocators.ContactsUIPage.xpathOpenButtonNextToUser,
-						contact)));
+				By.xpath(String.format(xpathOpenButtonNextToUser, contact)));
 		openButton.click();
-
 	}
 }

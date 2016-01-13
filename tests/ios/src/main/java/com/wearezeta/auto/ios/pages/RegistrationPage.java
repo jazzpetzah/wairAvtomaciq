@@ -1,161 +1,210 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Future;
 
-import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import io.appium.java_client.ios.IOSElement;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 
 public class RegistrationPage extends IOSPage {
-
-    @FindBy(how = How.NAME, using = IOSLocators.nameRegistrationCameraButton)
+    public static final String nameRegistrationCameraButton = "CameraButton";
+    @FindBy(name = nameRegistrationCameraButton)
     private WebElement cameraButton;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameCameraShootButton)
+    public static final String nameCameraShootButton = "CameraShootButton";
+    @FindBy(name = nameCameraShootButton)
     private WebElement cameraShootButton;
 
-    @FindBy(how = How.XPATH, using = IOSLocators.xpathPhotoButton)
+    public static final String xpathPhotoButton = "//UIAWindow[@name='ZClientMainWindow']/UIAButton[5]";
+    @FindBy(xpath = xpathPhotoButton)
     private WebElement photoButton;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameSwitchCameraButton)
+    public static final String nameSwitchCameraButton = "CameraSwitchButton";
+    @FindBy(name = nameSwitchCameraButton)
     private WebElement switchCameraButton;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameCameraFlashButton)
+    public static final String nameCameraFlashButton = "CameraFlashButton";
+    @FindBy(name = nameCameraFlashButton)
     private WebElement cameraFlashButton;
 
-    @FindBy(how = How.XPATH, using = IOSLocators.xpathAlbum)
+    public static final String xpathAlbum =
+            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[1]/UIAStaticText[1]";
+    @FindBy(xpath = xpathAlbum)
     private WebElement photoAlbum;
 
-    @FindBy(how = How.CLASS_NAME, using = IOSLocators.classNamePhotos)
+    public static final String classNamePhotos = "UIACollectionCell";
+    @FindBy(className = classNamePhotos)
     private List<WebElement> photos;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameConfirmImageButton)
+    public static final String nameConfirmImageButton = "OK";
+    @FindBy(name = nameConfirmImageButton)
     private WebElement confirmImageButton;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameCancelImageButton)
+    public static final String nameCancelImageButton = "CANCEL";
+    @FindBy(name = nameCancelImageButton)
     private WebElement cancelImageButton;
 
-    @FindBy(how = How.XPATH, using = IOSLocators.xpathYourName)
+    public static final String xpathYourName =
+            "//UIAWindow[@name='ZClientMainWindow']/UIATextField[@value='YOUR FULL NAME']";
+    @FindBy(xpath = xpathYourName)
     private WebElement yourName;
 
-    @FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathYourFilledName)
+    public static final String xpathYourFilledName =
+            "//UIATextField[preceding-sibling::UIAStaticText[@value='What should we call you?' or @value='Create an account']]";
+    @FindBy(xpath = xpathYourFilledName)
     private WebElement yourFilledName;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameYourEmail)
+    public static final String nameYourEmail = "EmailField";
+    @FindBy(name = nameYourEmail)
     private WebElement yourEmail;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameYourPassword)
+    public static final String nameYourPassword = "PasswordField";
+    @FindBy(name = nameYourPassword)
     private WebElement yourPassword;
 
-    @FindBy(how = How.XPATH, using = IOSLocators.xpathRevealPasswordButton)
+    public static final String xpathRevealPasswordButton =
+            "//UIAApplication[1]/UIAWindow[1]/UIASecureTextField[1]/UIAButton[1]";
+    @FindBy(xpath = xpathRevealPasswordButton)
     private WebElement revealPasswordButton;
 
-    @FindBy(how = How.XPATH, using = IOSLocators.xpathHidePasswordButton)
+    public static final String xpathHidePasswordButton =
+            "//UIAApplication[1]/UIAWindow[1]/UIATextField[1]/UIAButton[1]";
+    @FindBy(xpath = xpathHidePasswordButton)
     private WebElement hidePasswordButton;
 
-    @FindBy(how = How.XPATH, using = IOSLocators.xpathCreateAccountButton)
+    public static final String xpathCreateAccountButton =
+            "//UIASecureTextField[contains(@name, 'PasswordField')]/UIAButton";
+    @FindBy(xpath = xpathCreateAccountButton)
     private WebElement createAccountButton;
 
-    @FindBy(how = How.XPATH, using = IOSLocators.xpathConfirmationMessage)
+    public static final String xpathConfirmationMessage =
+            "//UIAStaticText[contains(@name, 'We sent an email to %s.')]";
+    @FindBy(xpath = xpathConfirmationMessage)
     private WebElement confirmationText;
 
-    @FindBy(how = How.ID, using = IOSLocators.idProvideValidEmailMessage)
+    public static final String idProvideValidEmailMessage = "PLEASE ENTER A VALID EMAIL ADDRESS";
+    @FindBy(id = idProvideValidEmailMessage)
     private WebElement provideValidEmailMessage;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameBackToWelcomeButton)
+    public static final String nameBackToWelcomeButton = "BackToWelcomeButton";
+    @FindBy(name = nameBackToWelcomeButton)
     private WebElement backToWelcomeButton;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameForwardWelcomeButton)
+    public static final String nameForwardWelcomeButton = "ForwardWelcomeButton";
+    @FindBy(name = nameForwardWelcomeButton)
     private WebElement forwardWelcomeButton;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameKeyboardNextButton)
+    public static final String nameKeyboardNextButton = "Next";
+    @FindBy(name = nameKeyboardNextButton)
     private WebElement keyboardNextButton;
 
-    @FindBy(how = How.XPATH, using = IOSLocators.xpathTakePhotoSmile)
+    public static final String xpathTakePhotoSmile = "//UIAApplication[1]/UIAWindow[1]/UIAImage[1]";
+    @FindBy(xpath = xpathTakePhotoSmile)
     private WebElement takePhotoSmile;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameTakePhotoHintLabel)
+    public static final String nameTakePhotoHintLabel = "CHOOSE A PICTURE  AND PICK A COLOR";
+    @FindBy(name = nameTakePhotoHintLabel)
     private WebElement takePhotoHintLabel;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameVignetteOverlay)
+    public static final String nameVignetteOverlay = "••••";
+    @FindBy(name = nameVignetteOverlay)
     private WebElement vignetteLayer;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameErrorPageButton)
+    public static final String nameErrorPageButton = "BACK";
+    @FindBy(name = nameErrorPageButton)
     private WebElement errorPageButton;
 
-    @FindBy(how = How.XPATH, using = IOSLocators.xpathCloseColorModeButton)
+    public static final String xpathCloseColorModeButton =
+            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAButton[4]";
+    @FindBy(xpath = xpathCloseColorModeButton)
     private WebElement closeColorModeButton;
 
-    @FindBy(how = How.XPATH, using = IOSLocators.xpathReSendButton)
+    public static final String xpathReSendButton =
+            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATextView[1]";
+    @FindBy(xpath = xpathReSendButton)
     private WebElement reSendButton;
 
-    @FindBy(how = How.XPATH, using = IOSLocators.xpathEmailVerifPrompt)
+    public static final String xpathEmailVerifPrompt =
+            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[contains(@name, 'We sent an email to ')]";
+    @FindBy(xpath = xpathEmailVerifPrompt)
     private WebElement emailVerifPrompt;
 
-    @FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathPhoneNumber)
+    public static final String xpathPhoneNumber = "//UIAWindow[@name='ZClientMainWindow']/UIATextField[1]";
+    @FindBy(xpath = xpathPhoneNumber)
     private WebElement phoneNumber;
 
-    @FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.namePhoneNumberField)
+    public static final String namePhoneNumberField = "PhoneNumberField";
+    @FindBy(name = namePhoneNumberField)
     private WebElement phoneNumberField;
 
-    @FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathActivationCode)
+    public static final String xpathActivationCode = "//UIAWindow[@name='ZClientMainWindow']/UIATextField[1]";
+    @FindBy(xpath = xpathActivationCode)
     private WebElement activationCode;
 
-    @FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathCountry)
+    public static final String xpathCountry = "//UIAWindow[@name='ZClientMainWindow']/UIAButton[1]";
+    @FindBy(xpath = xpathCountry)
     private WebElement selectCountry;
 
-    @FindBy(how = How.NAME, using = IOSLocators.LoginPage.nameCountryPickerButton)
+    public static final String nameCountryPickerButton = "CountryPickerButton";
+    @FindBy(name = nameCountryPickerButton)
     private WebElement countryPickerButton;
 
-    @FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathCountryList)
+    public static final String xpathCountryList = "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]";
+    @FindBy(xpath = xpathCountryList)
     private WebElement countryList;
 
-    @FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathConfirmPhoneNumber)
+    public static final String xpathConfirmPhoneNumber =
+            "//UIAWindow[@name='ZClientMainWindow']/UIATextField[1]/UIAButton[1]";
+    @FindBy(xpath = xpathConfirmPhoneNumber)
     private WebElement confirmInput;
 
-    @FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.nameAgreeButton)
+    public static final String nameAgreeButton = "I AGREE";
+    @FindBy(name = nameAgreeButton)
     private WebElement agreeButton;
 
-    @FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.nameTermOfUsePage)
+    public static final String nameTermOfUsePage = "By continuing you agree to the Wire Terms of Use.";
+    @FindBy(name = nameTermOfUsePage)
     private WebElement termOfUsePage;
 
-    @FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.nameSelectPictureButton)
+    public static final String nameSelectPictureButton = "SET A PICTURE";
+    @FindBy(name = nameSelectPictureButton)
     private WebElement selectPictureButton;
 
-    @FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.xpathVerificationPage)
+    public static final String xpathVerificationPage =
+            "//UIAStaticText[contains(@name, 'Enter the verification code we sent to')]";
+    @FindBy(xpath = xpathVerificationPage)
     private WebElement verificationPage;
 
-    @FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.nameResendCodeButton)
+    public static final String nameResendCodeButton = "RESEND";
+    @FindBy(name = nameResendCodeButton)
     private WebElement resendCodeButton;
 
-    @FindBy(how = How.NAME, using = IOSLocators.Alerts.nameInvalidCode)
+    public static final String nameInvalidCode = "Please enter a valid code";
+    @FindBy(name = nameInvalidCode)
     private WebElement invalidCodeAlert;
 
-    @FindBy(name = IOSLocators.RegistrationPage.nameChooseOwnPictureButton)
+    public static final String nameChooseOwnPictureButton = "ChooseOwnPictureButton";
+    @FindBy(name = nameChooseOwnPictureButton)
     private WebElement chooseOwnPictureButton;
 
-    @FindBy(name = IOSLocators.RegistrationPage.nameChoosePhotoButton)
+    public static final String nameChoosePhotoButton = "Choose Photo";
+    @FindBy(name = nameChoosePhotoButton)
     private WebElement choosePhotoButton;
 
-    @FindBy(name = IOSLocators.RegistrationPage.nameRegistrationEmailInput)
+    public static final String nameRegistrationEmailInput = "RegistrationEmailField";
+    @FindBy(name = nameRegistrationEmailInput)
     private WebElement registrationEmailInput;
 
     private String name;
@@ -174,8 +223,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void clickAgreeButton() throws Exception {
-        DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.name(IOSLocators.RegistrationPage.nameAgreeButton));
+        DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameAgreeButton));
         agreeButton.click();
     }
 
@@ -183,7 +231,7 @@ public class RegistrationPage extends IOSPage {
 
     public void selectWirestan() throws Exception {
         countryPickerButton.click();
-        ((IOSElement) getDriver().findElementByXPath(IOSLocators.RegistrationPage.xpathCountryList)).
+        ((IOSElement) getDriver().findElementByXPath(xpathCountryList)).
                 scrollTo(WIRE_COUNTRY_NAME).click();
     }
 
@@ -199,8 +247,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public boolean isVerificationCodePageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(),
-                By.xpath(IOSLocators.RegistrationPage.xpathVerificationPage));
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(xpathVerificationPage));
     }
 
     public void inputActivationCode(String code) throws Exception {
@@ -225,12 +272,12 @@ public class RegistrationPage extends IOSPage {
 
     public boolean isTakeOrSelectPhotoLabelVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.name(IOSLocators.nameTakePhotoHintLabel));
+                By.name(nameTakePhotoHintLabel));
     }
 
     public void selectPicture() throws Exception {
         DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.name(IOSLocators.RegistrationPage.nameSelectPictureButton));
+                By.name(nameSelectPictureButton));
         selectPictureButton.click();
         DriverUtils.waitUntilElementClickable(getDriver(), photoButton);
         photoButton.click();
@@ -238,7 +285,7 @@ public class RegistrationPage extends IOSPage {
 
     public boolean isConfirmationShown() throws Exception {
         return DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(String
-                .format(IOSLocators.xpathConfirmationMessage, getEmail())));
+                .format(xpathConfirmationMessage, getEmail())));
     }
 
     public void confirmPicture() {
@@ -262,8 +309,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void clickCreateAccountButton() throws Exception {
-        DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-                By.xpath(IOSLocators.xpathCreateAccountButton));
+        DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.xpath(xpathCreateAccountButton));
         createAccountButton.click();
     }
 
@@ -347,7 +393,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public Boolean isBackButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(IOSLocators.nameBackToWelcomeButton));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameBackToWelcomeButton));
     }
 
     public String getName() {

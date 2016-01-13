@@ -1,43 +1,36 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.io.IOException;
 import java.util.concurrent.Future;
-
-import javax.script.ScriptException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class ImageFullScreenPage extends IOSPage {
-
-	final String[] rotateLeftScript = new String[] {
-			"tell application \"System Events\"",
-			"tell application \"iOS Simulator\" to activate",
-			"tell application \"System Events\" to keystroke (ASCII character 28) using {command down}",
-			"end tell" };
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameImageFullScreenPage)
+	public static final String nameImageFullScreenPage = "fullScreenPage";
+	@FindBy(name = nameImageFullScreenPage)
 	private WebElement imageFullScreen;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameFullScreenCloseButton)
+	public static final String nameFullScreenCloseButton = "fullScreenCloseButton";
+	@FindBy(name = nameFullScreenCloseButton)
 	private WebElement fullScreenCloseButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameFullScreenDownloadButton)
+    public static final String nameFullScreenDownloadButton = "fullScreenDownloadButton";
+    @FindBy(name = nameFullScreenDownloadButton)
 	private WebElement fullScreenDownloadButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameFullScreenSenderName)
+    public static final String nameFullScreenSenderName = "fullScreenSenderName";
+    @FindBy(name = nameFullScreenSenderName)
 	private WebElement fullScreenSenderName;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameFullScreenTimeStamp)
+    public static final String nameFullScreenTimeStamp = "fullScreenTimeStamp";
+    @FindBy(name = nameFullScreenTimeStamp)
 	private WebElement fullScreenTimeStamp;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameFullScreenSketchButton)
+    public static final String nameFullScreenSketchButton = "sketchButton";
+	@FindBy(name = nameFullScreenSketchButton)
 	private WebElement fullScreenSketchButton;
 
 	public ImageFullScreenPage(Future<ZetaIOSDriver> lazyDriver)

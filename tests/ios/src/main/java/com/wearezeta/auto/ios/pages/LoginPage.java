@@ -14,9 +14,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class LoginPage extends IOSPage {
@@ -167,6 +165,8 @@ public class LoginPage extends IOSPage {
     @FindBy(name = nameGotItButton)
     private WebElement gotItButton;
 
+    public static final String nameSelfButton = "SelfButton";
+
     public String message;
 
     public LoginPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -187,7 +187,7 @@ public class LoginPage extends IOSPage {
             DriverUtils.tapByCoordinates(getDriver(), backButton);
         }
         if (!DriverUtils.waitUntilLocatorAppears(getDriver(),
-                By.name(IOSLocators.LoginPage.nameEmailLoginButton))) {
+                By.name(nameEmailLoginButton))) {
             signIn();
         } else {
             DriverUtils.tapByCoordinates(getDriver(), emailLoginButton);
@@ -197,8 +197,7 @@ public class LoginPage extends IOSPage {
     public boolean isPhoneSignInButtonVisible() throws Exception {
         Assert.assertTrue(
                 "iPhone Sign in button is not presented in elements tree",
-                DriverUtils.waitUntilLocatorAppears(getDriver(),
-                        By.name(IOSLocators.LoginPage.namePhoneLoginButton)));
+                DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(namePhoneLoginButton)));
         return DriverUtils.isElementPresentAndDisplayed(getDriver(),
                 phoneLoginButton);
     }
@@ -209,8 +208,7 @@ public class LoginPage extends IOSPage {
     }
 
     public void waitForLoginToFinish() throws Exception {
-        if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-                By.name(IOSLocators.nameLoginButton), 40)) {
+        if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By.name(nameLoginButton), 40)) {
             throw new AssertionError(
                     "Login button is still visible after the timeout");
         }
@@ -234,28 +232,20 @@ public class LoginPage extends IOSPage {
         registerButton.click();
     }
 
-    public RegistrationPage join() throws Exception {
-        termsOfServiceButton.click();
-        registerButton.click();
-
-        return new RegistrationPage(this.getLazyDriver());
-    }
-
     public void setLogin(String login) throws Exception {
         DriverUtils.waitUntilElementClickable(getDriver(), loginField);
-        ((IOSElement) getDriver().findElementByName(IOSLocators.nameLoginField)).
+        ((IOSElement) getDriver().findElementByName(nameLoginField)).
                 setValue(login);
     }
 
     public void setPassword(String password) throws Exception {
         DriverUtils.waitUntilElementClickable(getDriver(), passwordField);
-        ((IOSElement) getDriver().findElementByName(IOSLocators.namePasswordField)).
+        ((IOSElement) getDriver().findElementByName(namePasswordField)).
                 setValue(password);
     }
 
     public void dismisSettingsWaring() throws Exception {
-        if (DriverUtils.waitUntilLocatorAppears(getDriver(),
-                By.name(IOSLocators.LoginPage.nameMaybeLater))) {
+        if (DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(nameMaybeLater))) {
             DriverUtils.waitUntilElementClickable(getDriver(), maybeLater);
             for (int i = 0; i < 3; i++) {
                 try {
@@ -271,14 +261,12 @@ public class LoginPage extends IOSPage {
     }
 
     private boolean mayBeLaterIsNotShown() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-                By.xpath(IOSLocators.LoginPage.nameMaybeLater), 3);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.name(nameMaybeLater), 3);
     }
 
     public Boolean isLoginFinished() throws Exception {
         dismisSettingsWaring();
-        return DriverUtils.waitUntilLocatorAppears(getDriver(),
-                By.name(IOSLocators.ContactListPage.nameSelfButton), 60);
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(nameSelfButton), 60);
     }
 
     public boolean isLoginButtonVisible() throws Exception {
@@ -286,11 +274,8 @@ public class LoginPage extends IOSPage {
     }
 
     public void tapHoldEmailInput() throws Exception {
-        message = getDriver().findElement(By.name(IOSLocators.nameLoginField))
-                .getText();
-        this.getDriver().tap(1,
-                this.getDriver().findElement(
-                        By.name(IOSLocators.nameLoginField)), 1000);
+        message = getDriver().findElement(By.name(nameLoginField)).getText();
+        this.getDriver().tap(1, this.getDriver().findElement(By.name(nameLoginField)), 1000);
     }
 
     public void openTermsLink() throws Exception {
@@ -316,8 +301,7 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean wrongCredentialsNotificationIsShown() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.name(IOSLocators.nameWrongCredentialsNotification));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(nameWrongCredentialsNotification));
     }
 
     public PersonalInfoPage tapChangePasswordButton() throws Exception {
