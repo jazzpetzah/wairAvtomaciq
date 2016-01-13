@@ -107,8 +107,6 @@ Feature: Search
   Scenario Outline: Start 1:1 chat with users from Top Connections [PORTRAIT]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
-    Given Contact <Contact> send message to user <Name>
-    Given Contact <Name> send message to user <Contact>
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I wait for 30 seconds
@@ -130,8 +128,6 @@ Feature: Search
   Scenario Outline: Start 1:1 chat with users from Top Connections [LANDSCAPE]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
-    Given Contact <Contact> send message to user <Name>
-    Given Contact <Name> send message to user <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
@@ -154,8 +150,6 @@ Feature: Search
   Scenario Outline: Start group chat with users from Top Connections [PORTRAIT]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
-    Given Contact <Contact> send message to user <Name>
-    Given Contact <Name> send message to user <Contact>
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I open search by taping on it
@@ -179,8 +173,6 @@ Feature: Search
   Scenario Outline: Start group chat with users from Top Connections [LANDSCAPE]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
-    Given Contact <Contact> send message to user <Name>
-    Given Contact <Name> send message to user <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>

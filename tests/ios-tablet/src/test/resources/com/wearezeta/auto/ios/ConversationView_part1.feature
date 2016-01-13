@@ -38,9 +38,9 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    And Contact <Contact> send message to user <Name>
-    When I tap on contact name <Contact>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
+    And I tap on contact name <Contact>
     And I see dialog page
     Then I see message in the dialog
 
@@ -54,8 +54,8 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    And Contact <Contact> send message to user <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact>
     And I see dialog page
     Then I see message in the dialog

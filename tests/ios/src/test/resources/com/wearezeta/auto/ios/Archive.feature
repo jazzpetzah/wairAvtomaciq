@@ -8,7 +8,7 @@ Feature: Archive
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     And I dont see conversation <ArchivedUser> in contact list
-    When Contact <ArchivedUser> send message to user <Name>
+    Given User <ArchivedUser> sends 1 encrypted message to user Myself
     Then I see first item in contact list named <ArchivedUser>
     When Myself archived conversation with <ArchivedUser>
     And I dont see conversation <ArchivedUser> in contact list
@@ -38,7 +38,7 @@ Feature: Archive
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     And I dont see conversation <ArchivedUser> in contact list
-    When Contact <ArchivedUser> send message to user <Name>
+    Given User <ArchivedUser> sends 1 encrypted message to user Myself
     Then I dont see conversation <ArchivedUser> in contact list
     When Contact <ArchivedUser> sends image <Picture> to single user conversation <Name>
     Then I dont see conversation <ArchivedUser> in contact list

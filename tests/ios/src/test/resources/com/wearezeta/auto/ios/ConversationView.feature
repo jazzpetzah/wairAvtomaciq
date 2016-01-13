@@ -549,7 +549,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
-    And Contact <Contact> send message to user <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact>
     And I see dialog page
     Then I see message in the dialog

@@ -168,9 +168,9 @@ Feature: Conversation List
     Given <Contact> is connected to <Name>
     Given User <Contact> change name to <NewName>
     Given User <Name> change accent color to <Color>
-    Given Contact <Contact> send number <Number> of message to user <Name>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends <Number> encrypted messages to user Myself
     And I remember the state of the first conversation cell
     When I tap on contact name <Contact>
     And I see dialog page
@@ -187,10 +187,10 @@ Feature: Conversation List
     Given <Contact> is connected to <Name>
     Given User <Contact> change name to <NewName>
     Given User <Name> change accent color to <Color>
-    Given Contact <Contact> send number <Number> of message to user <Name>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends <Number> encrypted messages to user Myself
     And I remember the state of the first conversation cell
     When I tap on contact name <Contact>
     And I see dialog page
@@ -204,10 +204,10 @@ Feature: Conversation List
   Scenario Outline: Verify conversations are sorted according to most recent activity [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given <Name> is connected to <Contact>,<Contact2>,<Contact3>
-    Given Contact <Contact> send number <Number> of message to user <Name>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    And Contact <Contact3> send number <Number> of message to user <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends <Number> encrypted messages to user Myself
+    Given User <Contact3> sends <Number> encrypted messages to user Myself
     And I see first item in contact list named <Contact3>
     When Contact <Contact2> ping conversation <Name>
     And I see first item in contact list named <Contact2>
@@ -222,11 +222,11 @@ Feature: Conversation List
   Scenario Outline: Verify conversations are sorted according to most recent activity [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given <Name> is connected to <Contact>,<Contact2>,<Contact3>
-    Given Contact <Contact> send number <Number> of message to user <Name>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    And Contact <Contact3> send number <Number> of message to user <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends <Number> encrypted messages to user Myself
+    Given User <Contact3> sends <Number> encrypted messages to user Myself
     And I see first item in contact list named <Contact3>
     When Contact <Contact2> ping conversation <Name>
     And I see first item in contact list named <Contact2>
@@ -276,9 +276,9 @@ Feature: Conversation List
     And <Contact> stops all calls to me
     And <Contact> verifies that call status to me is changed to destroyed in 60 seconds
     Then I see missed call indicator in list for contact <Contact>
-    When Contact <Contact> send number <Number> of message to user <Name>
+    Given User <Contact> sends <Number> encrypted messages to user Myself
     Then I see missed call indicator in list for contact <Contact>
-    When Contact <Contact1> send number <Number> of message to user <Name>
+    Given User <Contact1> sends <Number> encrypted messages to user Myself
     Then I see missed call indicator got moved down in list for contact <Contact>
 
     Examples: 
@@ -298,9 +298,9 @@ Feature: Conversation List
     And <Contact> stops all calls to me
     And <Contact> verifies that call status to me is changed to DESTROYED in 60 seconds
     Then I see missed call indicator in list for contact <Contact>
-    When Contact <Contact> send number <Number> of message to user <Name>
+    Given User <Contact> sends <Number> encrypted messages to user Myself
     Then I see missed call indicator in list for contact <Contact>
-    When Contact <Contact1> send number <Number> of message to user <Name>
+    Given User <Contact1> sends <Number> encrypted messages to user Myself
     Then I see missed call indicator got moved down in list for contact <Contact>
 
     Examples: 
@@ -319,11 +319,11 @@ Feature: Conversation List
     And I tap on contact name <Contact1>
     And I return to the chat list
     Then I dont see unread message indicator in list for contact <Contact>
-    And Contact <Contact> send number 1 of message to user <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     Then I see 1 unread message indicator in list for contact <Contact>
-    And Contact <Contact> send number 1 of message to user <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     Then I see 5 unread message indicator in list for contact <Contact>
-    And Contact <Contact> send number 8 of message to user <Name>
+    Given User <Contact> sends 8 encrypted messages to user Myself
     Then I see 10 unread message indicator in list for contact <Contact>
 
     Examples: 
@@ -341,11 +341,11 @@ Feature: Conversation List
     When I tap on contact name <Contact>
     And I tap on contact name <Contact1>
     Then I dont see unread message indicator in list for contact <Contact>
-    And Contact <Contact> send number 1 of message to user <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     Then I see 1 unread message indicator in list for contact <Contact>
-    And Contact <Contact> send number 1 of message to user <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     Then I see 5 unread message indicator in list for contact <Contact>
-    And Contact <Contact> send number 8 of message to user <Name>
+    Given User <Contact> sends 8 encrypted message to user Myself
     Then I see 10 unread message indicator in list for contact <Contact>
 
     Examples: 
@@ -687,7 +687,7 @@ Feature: Conversation List
     When I swipe right on a <Contact>
     And I click archive button for conversation <Contact>
     Then I dont see conversation <Contact> in contact list
-    And Contact <Contact> send number 1 of message to user <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     And I dont see conversation <Contact> in contact list
     And Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
     Then I dont see conversation <Contact> in contact list
@@ -712,7 +712,7 @@ Feature: Conversation List
     When I swipe right on a <Contact>
     And I click archive button for conversation <Contact>
     Then I dont see conversation <Contact> in contact list
-    And Contact <Contact> send number 1 of message to user <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     And I dont see conversation <Contact> in contact list
     And Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
     Then I dont see conversation <Contact> in contact list

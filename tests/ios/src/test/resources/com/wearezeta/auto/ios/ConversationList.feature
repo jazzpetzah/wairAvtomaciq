@@ -44,7 +44,7 @@ Feature: Conversation List
     When I swipe right on a <Contact>
     And I press Archive button in action menu in Contact List
     Then I dont see conversation <Contact> in contact list
-    And Contact <Contact> send number 1 of message to user <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     And I dont see conversation <Contact> in contact list
     And Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
     Then I dont see conversation <Contact> in contact list
@@ -68,11 +68,11 @@ Feature: Conversation List
     And I tap on contact name <Contact1>
     And I return to the chat list
     Then I dont see unread message indicator in list for contact <Contact>
-    And Contact <Contact> send number 1 of message to user <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     Then I see 1 unread message indicator in list for contact <Contact>
-    And Contact <Contact> send number 1 of message to user <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     Then I see 5 unread message indicator in list for contact <Contact>
-    And Contact <Contact> send number 8 of message to user <Name>
+    Given User <Contact> sends 8 encrypted messages to user Myself
     Then I see 10 unread message indicator in list for contact <Contact>
 
     Examples: 
@@ -137,7 +137,7 @@ Feature: Conversation List
     Given <Name> is connected to <Contact1>,<Contact2>,<Contact3>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
-    And Contact <Contact3> send number <Number> of message to user <Name>
+    Given User <Contact3> sends <Number> encrypted messages to user Myself
     And I see first item in contact list named <Contact3>
     When Contact <Contact2> ping conversation <Name>
     And I see first item in contact list named <Contact2>
@@ -488,9 +488,9 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Name> change accent color to <Color>
-    Given Contact <Contact> send number <Number> of message to user <Name>
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends <Number> encrypted messages to user Myself
     And I see 1 unread message indicator in list for contact <Contact>
     And I tap on contact name <Contact>
     And I see dialog page

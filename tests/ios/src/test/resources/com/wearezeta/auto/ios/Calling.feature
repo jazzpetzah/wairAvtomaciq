@@ -115,9 +115,9 @@ Feature: Calling
     And I wait for 5 seconds
     And <Contact> stops all calls to me
     Then I see missed call indicator in list for contact <Contact>
-    When Contact <Contact> send number <Number> of message to user <Name>
+    Given User <Contact> sends <Number> encrypted messages to user Myself
     Then I see missed call indicator in list for contact <Contact>
-    When Contact <Contact1> send number <Number> of message to user <Name>
+    Given User <Contact1> sends <Number> encrypted messages to user Myself
     Then I see missed call indicator got moved down in list for contact <Contact>
 
     Examples: 
