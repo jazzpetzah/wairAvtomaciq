@@ -176,9 +176,9 @@ Feature: Search
     And I see user <Contact> found on People picker page
     And I tap on connected user <Contact> on People picker page
     And I unblock user
-    And I type the message
+    And I type the default message
     And I send the message
-    Then I see message in the dialog
+    Then I see 1 default message in the dialog
 
     Examples: 
       | Name      | Contact   |

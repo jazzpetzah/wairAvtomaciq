@@ -38,6 +38,9 @@ public abstract class IOSPage extends BasePage {
 	@FindBy(name = nameMainWindow)
 	protected WebElement mainWindow;
 
+    protected static final String xpathMainWindow =
+            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']";
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameEditingItemSelect)
 	private WebElement popupSelect;
 

@@ -278,10 +278,10 @@ Feature: Connect
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    When Contact <Contact> sends image <Picture> to single user conversation <Name>
-    And Contact <Contact> ping conversation <Name>
-    And Contact <Contact> sends random message to user <Name>
+    Given I see Contact list with my name <Name>
+    Given Contact <Contact> sends image <Picture> to single user conversation <Name>
+    Given Contact <Contact> ping conversation <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     And I wait for 10 seconds
     Then I dont see conversation <Contact> in contact list
     When I open search by taping on it
@@ -293,13 +293,13 @@ Feature: Connect
     And I unblock user on iPad
     And I wait for 5 seconds
     And I see new photo in the dialog
-    And I see message in the dialog
+    And I see 1 default message in the dialog
     And I return to the chat list
     #And I see People picker page
     #And I click close button to dismiss people view
-    And Contact <Contact> sends random message to user <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact>
-    Then I see message in the dialog
+    Then I see 2 default messages in the dialog
 
     Examples: 
       | Name      | Contact   | Picture     |
@@ -312,11 +312,11 @@ Feature: Connect
     Given User <Name> blocks user <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    When Contact <Contact> sends image <Picture> to single user conversation <Name>
-    And Contact <Contact> ping conversation <Name>
-    And Contact <Contact> sends random message to user <Name>
-    And I wait for 10 seconds
+    Given I see Contact list with my name <Name>
+    Given Contact <Contact> sends image <Picture> to single user conversation <Name>
+    Given Contact <Contact> ping conversation <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
+    When I wait for 10 seconds
     Then I dont see conversation <Contact> in contact list
     When I open search by taping on it
     And I see People picker page
@@ -327,11 +327,11 @@ Feature: Connect
     And I unblock user on iPad
     And I wait for 5 seconds
     And I see new photo in the dialog
-    And I see message in the dialog
+    And I see 1 default message in the dialog
     #And I click close button to dismiss people view
-    And Contact <Contact> sends random message to user <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact>
-    Then I see message in the dialog
+    Then I see 2 default messages in the dialog
 
     Examples: 
       | Name      | Contact   | Picture     |

@@ -9,12 +9,12 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I send long message
-    And I type the message and send it
+    And I type the default message and send it
     And I scroll to the beginning of the conversation
     And I see plus button is not shown
     And I tap on text input to scroll to the end
     Then I see conversation is scrolled to the end
-    And I see message in the dialog
+    And I see 1 default message in the dialog
 
     Examples: 
       | Name      | Contact   |
@@ -30,12 +30,12 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I send long message
-    And I type the message and send it
+    And I type the default message and send it
     And I scroll to the beginning of the conversation
     And I see plus button is not shown
     And I tap on text input to scroll to the end
     Then I see conversation is scrolled to the end
-    And I see message in the dialog
+    And I see 1 default message in the dialog
 
     Examples: 
       | Name      | Contact   |
@@ -499,7 +499,7 @@ Feature: Conversation View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I type the message
+    And I type the default message
     And I return to the chat list
     When I tap on contact name <Contact2>
     And I see dialog page
@@ -508,7 +508,7 @@ Feature: Conversation View
 	And I see dialog page
 	Then I see Close input options button is not visible
 	And I see controller buttons can not be visible
-	And I see the message in input field
+	And I see the default message in input field
 
     Examples: 
       | Name      | Contact1   | Contact2  |
@@ -523,14 +523,14 @@ Feature: Conversation View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I type the message
+    And I type the default message
     When I tap on contact name <Contact2>
     And I see dialog page
     And I tap on contact name <Contact1>
     And I see dialog page
     Then I see Close input options button is not visible
     And I see controller buttons can not be visible
-    And I see the message in input field
+    And I see the default message in input field
 
     Examples: 
       | Name      | Contact1  | Contact2  |
@@ -598,9 +598,9 @@ Feature: Conversation View
     And I click open conversation button on People picker page
     Then I see dialog page
     Then I see the only message in dialog is system message CONNECTED TO <Contact1>
-    And I type the message
+    And I type the default message
     And I send the message
-    And I see message in the dialog
+    And I see 1 default message in the dialog
 
     Examples: 
       | Name      | Contact1  | Message |
@@ -625,9 +625,9 @@ Feature: Conversation View
     And I click open conversation button on People picker page
     Then I see dialog page
     Then I see the only message in dialog is system message CONNECTED TO <Contact1>
-    And I type the message
+    And I type the default message
     And I send the message
-    And I see message in the dialog
+    And I see 1 default message in the dialog
 
     Examples: 
       | Name      | Contact1  | Message |
@@ -698,7 +698,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I tap on group chat with name <GroupChatName>
-    Then I see only 3 messages
+    Then I see 3 conversation entries
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message                | Picture     | ConversationType |
@@ -716,7 +716,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I tap on group chat with name <GroupChatName>
-    Then I see only 3 messages
+    Then I see 3 conversation entries
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message                | Picture     | ConversationType |
@@ -768,7 +768,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I see plus button next to text input
-    And I fill in message using script
+    And I type the default message
     And I see plus icon is changed to user avatar icon
     And I clear conversation text input
     Then I see plus button next to text input
@@ -787,7 +787,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I see plus button next to text input
-    And I fill in message using script
+    And I type the default message
     And I see plus icon is changed to user avatar icon
     And I clear conversation text input
     Then I see plus button next to text input

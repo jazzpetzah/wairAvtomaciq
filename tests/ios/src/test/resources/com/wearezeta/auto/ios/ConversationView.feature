@@ -22,9 +22,9 @@ Feature: Conversation View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I type the message
+    And I type the default message
     And I send the message
-    Then I see message in the dialog
+    Then I see 1 default message in the dialog
 
     Examples: 
       | Name      | Contact   |
@@ -73,9 +73,9 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
-    And I type the message
+    And I type the default message
     And I send the message
-    Then I see message in the dialog
+    Then I see 1 default message in the dialog
 
     Examples: 
       | Name      | Contact1  | Contact2  |
@@ -187,12 +187,12 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I send long message
-    And I type the message and send it
+    And I type the default message and send it
     And I scroll to the beginning of the conversation
     And I see plus button is not shown
     And I tap on text input to scroll to the end
     Then I see conversation is scrolled to the end
-    And I see message in the dialog
+    And I see 1 default message in the dialog
 
     Examples: 
       | Name      | Contact   |
@@ -207,12 +207,12 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I input more than 200 chars message and send it
-    And I type the message
+    And I type the default message
     And I return to the chat list
     And I tap on contact name <Contact>
     And I tap on text input
     And I send the message
-    Then I see message in the dialog
+    Then I see 1 default message in the dialog
 
     Examples: 
       | Name      | Contact   |
@@ -227,7 +227,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I input more than 200 chars message and send it
-    Then I see message in the dialog
+    Then I see 1 message in the dialog
 
     Examples: 
       | Name      | Contact   |
@@ -243,7 +243,7 @@ Feature: Conversation View
     And I see dialog page
     And I input message with lower case and upper case
     And I send the message
-    Then I see message in the dialog
+    Then I see 1 message in the dialog
 
     Examples: 
       | Name      | Contact   |
@@ -302,10 +302,10 @@ Feature: Conversation View
     And I see the only message in dialog is system message CONNECTED TO <Contact>
     And I input message with leading empty spaces
     And I send the message
-    And I see message in the dialog
+    And I see 1 message in the dialog
     And I input message with trailing emtpy spaces
     And I send the message
-    Then I see message in the dialog
+    Then I see 1 message in the dialog
 
     Examples: 
       | Name      | Contact   |
@@ -506,7 +506,7 @@ Feature: Conversation View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And Contact <Contact2> sends random message to user <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     Then I see chathead of contact <Contact2>
     And I wait for 5 seconds
     Then I do not see chathead of contact <Contact2>
@@ -552,7 +552,7 @@ Feature: Conversation View
     Given User <Contact> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact>
     And I see dialog page
-    Then I see message in the dialog
+    Then I see 1 default message in the dialog
 
     Examples: 
       | Name      | Contact   |
@@ -755,7 +755,7 @@ Feature: Conversation View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I type the message
+    And I type the default message
     And I return to the chat list
     When I tap on contact name <Contact2>
     And I see dialog page
@@ -764,7 +764,7 @@ Feature: Conversation View
     And I see dialog page
     Then I see Close input options button is not visible
     And I see controller buttons can not be visible
-    And I see the message in input field
+    And I see the default message in input field
 
     Examples: 
       | Name      | Contact1  | Contact2  |
@@ -787,9 +787,9 @@ Feature: Conversation View
     And I search for user name <Contact1> and tap on it on People picker page
     And I click open conversation button on People picker page
     Then I see dialog page
-    And I type the message
+    And I type the default message
     And I send the message
-    And I see message in the dialog
+    And I see 1 default message in the dialog
 
     Examples: 
       | Name      | Contact1  | Message |
@@ -853,7 +853,7 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     When I see Contact list with my name <Name>
     And I tap on group chat with name <GroupChatName>
-    Then I see only 3 messages
+    Then I see 3 conversation entries
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message                | Picture     | ConversationType |
@@ -886,7 +886,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I see plus button next to text input
-    And I fill in message using script
+    And I type the default message
     And I see plus icon is changed to user avatar icon
     And I clear conversation text input
     Then I see plus button next to text input

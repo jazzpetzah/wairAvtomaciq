@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 import javax.script.ScriptException;
 
@@ -17,7 +18,6 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.ScreenOrientation;
 
 import com.wearezeta.auto.common.*;
@@ -210,6 +210,12 @@ public class DialogPage extends IOSPage {
     @FindBy(xpath = xpathUserAvatarNextToInput)
     private WebElement userAvatarNextToInput;
 
+    private static final String xpathAllMessages =
+            xpathMainWindow + "/UIATableView[1]/UIATableCell/UIATextView";
+
+    private static final Function<String, String> xpathMessagesByText = text ->
+            String.format("%s[@value='%s']", xpathAllMessages, text);
+
     private String connectingLabel = "CONNECTING TO %s.";
 
     public DialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -288,11 +294,6 @@ public class DialogPage extends IOSPage {
         }
     }
 
-    public void sendStringToInput(String message) throws Exception {
-        waitForCursorInputVisible();
-        ((IOSElement) getDriver().findElementByName(nameConversationCursorInput)).setValue(message);
-    }
-
     public void clearTextInput() {
         conversationInput.clear();
     }
@@ -302,12 +303,28 @@ public class DialogPage extends IOSPage {
     }
 
     public String getRenamedMessage() {
-
         return youRenamedConversation.getText();
     }
 
     public String getLastMessageFromDialog() {
         return getLastMessage(messagesList);
+    }
+
+    public int getMessagesCount() throws Exception {
+        return getMessagesCount(null);
+    }
+
+    public int getMessagesCount(String expectedMessage) throws Exception {
+        By locator;
+        if (expectedMessage == null) {
+            locator = By.xpath(xpathAllMessages);
+        } else {
+            locator = By.xpath(xpathMessagesByText.apply(expectedMessage));
+        }
+        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator)) {
+            return getDriver().findElements(locator).size();
+        }
+        return 0;
     }
 
     public String getExpectedConnectingLabel(String name) {
@@ -567,9 +584,8 @@ public class DialogPage extends IOSPage {
     }
 
     public boolean isMediaBarDisplayed() throws Exception {
-        boolean flag = DriverUtils.isElementPresentAndDisplayed(getDriver(),
+        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
                 mediabarBarTitle);
-        return flag;
     }
 
     public boolean waitMediabarClose() throws Exception {
@@ -665,19 +681,19 @@ public class DialogPage extends IOSPage {
 
     }
 
-    public void sendMessage(String message) throws Exception {
-        fillInMessageUsingScript(message);
+    public void typeAndSendConversationMessage(String message) throws Exception {
+        typeConversationMessage(message);
         clickKeyboardReturnButton();
     }
 
-    public void fillInMessageUsingScript(String message) throws Exception {
+    public void typeConversationMessage(String message) throws Exception {
+        assert waitForCursorInputVisible() : "Conversation input is not visible after the timeout";
         conversationInput.click();
         try {
             ((IOSElement) getDriver().findElementByName(nameConversationCursorInput)).
                     setValue(message);
         } catch (WebDriverException e) {
-            conversationInput.clear();
-            conversationInput.sendKeys(message);
+            // Ignore silently
         }
     }
 

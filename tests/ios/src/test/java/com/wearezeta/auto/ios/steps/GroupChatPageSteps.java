@@ -75,7 +75,7 @@ public class GroupChatPageSteps {
 	public void ISeeGroupChatPageWithUsersAndOnlySystemMessage(
 			String participantNameAliases) throws Exception {
 		DialogPageSteps dialog = new DialogPageSteps();
-		dialog.ISeeOnlyXAmountOfMessages(1);
+		dialog.ISeeXConvoEntries(1);
 		ThenISeeGroupChatPage(participantNameAliases);
 	}
 

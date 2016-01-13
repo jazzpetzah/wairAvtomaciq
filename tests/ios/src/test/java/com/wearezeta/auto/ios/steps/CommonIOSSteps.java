@@ -39,6 +39,8 @@ public class CommonIOSSteps {
     private final IOSPagesCollection pagesCollecton = IOSPagesCollection
             .getInstance();
 
+    public static final String DEFAULT_AUTOMATION_MESSAGE = "iPhone has stupid spell checker";
+
     static {
         System.setProperty("org.apache.commons.logging.Log",
                 "org.apache.commons.logging.impl.SimpleLog");
@@ -447,10 +449,10 @@ public class CommonIOSSteps {
         for (int i = 0; i < msgsCount; i++) {
             if (areEncrypted == null) {
                 commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
-                        dstUserNameAlias, CommonUtils.generateRandomString(10));
+                        dstUserNameAlias, DEFAULT_AUTOMATION_MESSAGE);
             } else {
                 commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias,
-                        dstUserNameAlias, CommonUtils.generateRandomString(10));
+                        dstUserNameAlias, DEFAULT_AUTOMATION_MESSAGE);
             }
         }
     }

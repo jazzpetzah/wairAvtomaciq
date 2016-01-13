@@ -358,9 +358,9 @@ Feature: People View
     And I tap on start dialog button on other user profile page
     #And I dismiss popover on iPad
     Then I see dialog page
-    And I type the message
+    And I type the default message
     And I send the message
-    Then I see message in the dialog
+    Then I see 1 default message in the dialog
 
     Examples: 
       | Name      | Contact2  | Contact3  | GroupChatName |
@@ -381,9 +381,9 @@ Feature: People View
     And I tap on start dialog button on other user profile page
     #And I dismiss popover on iPad
     Then I see dialog page
-    And I type the message
+    And I type the default message
     And I send the message
-    Then I see message in the dialog
+    Then I see 1 default message in the dialog
 
     Examples: 
       | Name      | Contact2  | Contact3  | GroupChatName |
@@ -829,7 +829,7 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I see only 5 messages
+    And I see 5 conversation entries
     And I open conversation details
     And I press conversation menu button
     And I click delete menu button
@@ -859,7 +859,7 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I see only 5 messages
+    And I see 5 conversation entries
     And I open conversation details
     And I press conversation menu button
     And I click delete menu button
@@ -887,7 +887,7 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
-    And I see only 3 messages
+    And I see 3 conversation entries
     And I open group conversation details
     And I press leave converstation button
     And I see leave conversation alert
@@ -896,7 +896,7 @@ Feature: People View
     And I open archived conversations on iPad
     And I see user <GroupChatName> in contact list
     And I tap on group chat with name <GroupChatName>
-    Then I see only 4 messages
+    Then I see 4 conversation entries
 
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName | Message | Image       |
@@ -914,7 +914,7 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
-    And I see only 3 messages
+    And I see 3 conversation entries
     And I open group conversation details
     And I press leave converstation button
     And I see leave conversation alert
@@ -923,7 +923,7 @@ Feature: People View
     And I open archived conversations on iPad
     And I see user <GroupChatName> in contact list
     And I tap on group chat with name <GroupChatName>
-    Then I see only 4 messages
+    Then I see 4 conversation entries
 
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName | Message      | Image       |

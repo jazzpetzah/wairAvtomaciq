@@ -8,9 +8,9 @@ Feature: Conversation View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I type the message
+    And I type the default message
     And I send the message
-    Then I see message in the dialog
+    Then I see 1 default message in the dialog
 
     Examples: 
       | Name      | Contact   |
@@ -25,9 +25,9 @@ Feature: Conversation View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I type the message
+    And I type the default message
     And I send the message
-    Then I see message in the dialog
+    Then I see 1 default message in the dialog
 
     Examples: 
       | Name      | Contact   |
@@ -42,7 +42,7 @@ Feature: Conversation View
     Given User <Contact> sends 1 encrypted message to user Myself
     And I tap on contact name <Contact>
     And I see dialog page
-    Then I see message in the dialog
+    Then I see 1 default message in the dialog
 
     Examples: 
       | Name      | Contact   |
@@ -58,7 +58,7 @@ Feature: Conversation View
     Given User <Contact> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact>
     And I see dialog page
-    Then I see message in the dialog
+    Then I see 1 default message in the dialog
 
     Examples: 
       | Name      | Contact   |
@@ -219,13 +219,13 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I input more than 200 chars message and send it
-    And I fill in message using script
+    And I type the default message
     And I return to the chat list
     When I tap on my name <Name>
 	And I close self profile
     And I tap on text input
     And I send the message
-    Then I see message in the dialog
+    Then I see 1 default message in the dialog
 
     Examples: 
       | Name      | Contact   |
@@ -241,11 +241,11 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I input more than 200 chars message and send it
-    And I fill in message using script
+    And I type the default message
 	When I tap on my name <Name>
 	And I close self profile
     And I send the message
-    Then I see message in the dialog
+    Then I see 1 message in the dialog
 
     Examples: 
       | Name      | Contact   |
@@ -260,7 +260,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I input more than 200 chars message and send it
-    Then I see message in the dialog
+    Then I see 1 message in the dialog
 
     Examples: 
       | Name      | Contact   |
@@ -276,7 +276,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I input more than 200 chars message and send it
-    Then I see message in the dialog
+    Then I see 1 message in the dialog
 
     Examples: 
       | Name      | Contact   |
@@ -292,7 +292,7 @@ Feature: Conversation View
     And I see dialog page
     And I input message with lower case and upper case
     And I send the message
-    Then I see message in the dialog
+    Then I see 1 message in the dialog
 
     Examples: 
       | Name      | Contact   |
@@ -309,7 +309,7 @@ Feature: Conversation View
     And I see dialog page
     And I input message with lower case and upper case
     And I send the message
-    Then I see message in the dialog
+    Then I see 1 message in the dialog
 
     Examples: 
       | Name      | Contact   |
@@ -411,10 +411,10 @@ Feature: Conversation View
     And I see the only message in dialog is system message CONNECTED TO <Contact>
     And I input message with leading empty spaces
     And I send the message
-    And I see message in the dialog
+    And I see 1 message in the dialog
     And I input message with trailing emtpy spaces
     And I send the message
-    Then I see message in the dialog
+    Then I see 2 messages in the dialog
 
     Examples: 
       | Name      | Contact   |
@@ -433,10 +433,10 @@ Feature: Conversation View
     And I see the only message in dialog is system message CONNECTED TO <Contact>
     And I input message with leading empty spaces
     And I send the message
-    And I see message in the dialog
+    And I see 1 message in the dialog
     And I input message with trailing emtpy spaces
     And I send the message
-    Then I see message in the dialog
+    Then I see 2 messages in the dialog
 
     Examples: 
       | Name      | Contact   |
@@ -587,9 +587,9 @@ Feature: Conversation View
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
-    And I type the message
+    And I type the default message
     And I send the message
-    Then I see message in the dialog
+    Then I see 1 default message in the dialog
 
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -605,9 +605,9 @@ Feature: Conversation View
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
-    And I type the message
+    And I type the default message
     And I send the message
-    Then I see message in the dialog
+    Then I see 1 default message in the dialog
 
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName |

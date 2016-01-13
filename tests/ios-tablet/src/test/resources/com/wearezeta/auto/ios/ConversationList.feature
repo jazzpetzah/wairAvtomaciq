@@ -608,9 +608,9 @@ Feature: Conversation List
     And I see conversation <GroupChatName> is presented in Search results
     And I tap on conversation <GroupChatName> in search result
     Then I see empty group chat page with users <Contact1>,<Contact2> with only system message
-    When I type the message and send it
-    Then I see message in the dialog
-    And I see only 2 messages
+    When I type the default message and send it
+    Then I see 1 default message in the dialog
+    And I see 2 conversation entries
 
     Examples: 
       | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
@@ -637,9 +637,9 @@ Feature: Conversation List
     And I see conversation <GroupChatName> is presented in Search results
     And I tap on conversation <GroupChatName> in search result
     Then I see empty group chat page with users <Contact1>,<Contact2> with only system message
-    When I type the message and send it
-    Then I see message in the dialog
-    And I see only 2 messages
+    When I type the default message and send it
+    Then I see 1 default message in the dialog
+    And I see 2 conversation entries
 
     Examples: 
       | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |

@@ -46,12 +46,11 @@ public class DialogPageSteps {
     private String mediaState;
     public static long sendDate;
     private static final int SWIPE_DURATION = 1000;
-    private static String onlySpacesMessage = "     ";
+    private static final String ONLY_SPACES_MESSAGE = "     ";
     public static long memTime;
     public String pingId;
     private int beforeNumberOfImages = 0;
     final String sendInviteMailContent = "I’m on Wire. Search for %s";
-    final String automationMessage = "iPhone has stupid spell checker";
 
     @When("^I see dialog page$")
     public void WhenISeeDialogPage() throws Exception {
@@ -96,23 +95,9 @@ public class DialogPageSteps {
                 .isCursorInputVisible());
     }
 
-    @When("^I type the message$")
+    @When("^I type the default message$")
     public void WhenITypeTheMessage() throws Exception {
-        // message = CommonUtils.generateGUID().replace('-', 'x');
-        message = automationMessage;
-        getDialogPage().sendStringToInput(message);
-    }
-
-    /**
-     * Fill in message in text input using script
-     *
-     * @throws Exception
-     * @step. ^I fill in message using script$
-     */
-    @When("^I fill in message using script$")
-    public void IFillInMessageUsingScript() throws Exception {
-        message = automationMessage;
-        getDialogPage().fillInMessageUsingScript(automationMessage);
+        getDialogPage().typeConversationMessage(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
     }
 
     @Then("^I see You Pinged message in the dialog$")
@@ -129,11 +114,10 @@ public class DialogPageSteps {
                 || getGroupChatPage().isMessageVisible(expectedPingMessage));
     }
 
-    @When("^I type the message and send it$")
-    public void ITypeTheMessageAndSendIt() throws Throwable {
-        // message = CommonUtils.generateGUID().replace('-', 'x');
-        message = automationMessage;
-        getDialogPage().sendStringToInput(message + "\n");
+    @When("^I type the default message and send it$")
+    public void ITypeTheMessageAndSendIt() throws Exception {
+        getDialogPage().typeAndSendConversationMessage(
+                CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
     }
 
     /**
@@ -198,12 +182,20 @@ public class DialogPageSteps {
         getDialogPage().swipePendingDialogPageUp(500);
     }
 
-    @Then("^I see message in the dialog$")
-    public void ThenISeeMessageInTheDialog() throws Throwable {
-        String dialogLastMessage = getDialogPage().getLastMessageFromDialog();
-        Assert.assertTrue("Message is different, actual: " + dialogLastMessage
-                        + " expected: " + message,
-                dialogLastMessage.equals((message).trim()));
+    @Then("^I see (\\d+) (default )?messages? in the dialog$")
+    public void ThenISeeMessageInTheDialog(String isDefault,
+                                           int expectedCount) throws Exception {
+        int actualCount;
+        if (isDefault == null) {
+            actualCount = getDialogPage().getMessagesCount();
+        } else {
+            actualCount = getDialogPage().getMessagesCount(
+                    CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+        }
+        Assert.assertTrue(
+                String.format("The actual messages count is different " +
+                                "from the expected count: %s != %s",
+                        actualCount, expectedCount), actualCount == expectedCount);
     }
 
     @Then("I see last message in dialog is expected message (.*)")
@@ -307,9 +299,9 @@ public class DialogPageSteps {
 
     @When("I type and send long message and media link (.*)")
     public void ITypeAndSendLongTextAndMediaLink(String link) throws Exception {
-        getDialogPage().sendMessage(IOSConstants.LONG_MESSAGE);
+        getDialogPage().typeAndSendConversationMessage(IOSConstants.LONG_MESSAGE);
         getDialogPage().waitLoremIpsumText();
-        getDialogPage().sendMessage(link);
+        getDialogPage().typeAndSendConversationMessage(link);
         getDialogPage().waitSoundCloudLoad();
     }
 
@@ -352,12 +344,12 @@ public class DialogPageSteps {
 
     @When("I send long message")
     public void ISendLongMessage() throws Exception {
-        getDialogPage().sendMessage(IOSConstants.LONG_MESSAGE);
+        getDialogPage().typeAndSendConversationMessage(IOSConstants.LONG_MESSAGE);
     }
 
     @When("^I post media link (.*)$")
     public void IPostMediaLink(String link) throws Throwable {
-        getDialogPage().sendMessage(link);
+        getDialogPage().typeAndSendConversationMessage(link);
     }
 
     @When("^I tap media link$")
@@ -472,7 +464,7 @@ public class DialogPageSteps {
 
     @When("I try to send message with only spaces")
     public void ISendMessageWithOnlySpaces() throws Throwable {
-        getDialogPage().sendStringToInput(onlySpacesMessage + "\n");
+        getDialogPage().typeAndSendConversationMessage(ONLY_SPACES_MESSAGE);
     }
 
     /**
@@ -483,9 +475,9 @@ public class DialogPageSteps {
      */
     @When("I input message with leading empty spaces")
     public void IInpuMessageWithLeadingEmptySpace() throws Throwable {
-        message = onlySpacesMessage + automationMessage;
-        getDialogPage().sendMessage(message);
-        message = automationMessage;
+        getDialogPage().typeAndSendConversationMessage(
+                ONLY_SPACES_MESSAGE + CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+
     }
 
     /**
@@ -496,23 +488,22 @@ public class DialogPageSteps {
      */
     @When("I input message with trailing emtpy spaces")
     public void IInputMessageWithTrailingEmptySpace() throws Throwable {
-        message = automationMessage + onlySpacesMessage;
-        getDialogPage().sendMessage(message);
-        message = automationMessage;
+        getDialogPage().typeAndSendConversationMessage(
+                CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE + ONLY_SPACES_MESSAGE);
     }
 
     @When("I input message with lower case and upper case")
     public void IInputMessageWithLowerAndUpperCase() throws Throwable {
-        message = CommonUtils.generateRandomString(7).toLowerCase()
+        final String message = CommonUtils.generateRandomString(7).toLowerCase()
                 + CommonUtils.generateRandomString(7).toUpperCase();
-        getDialogPage().sendMessage(message);
+        getDialogPage().typeAndSendConversationMessage(message);
     }
 
     @When("I input more than 200 chars message and send it")
     public void ISend200CharsMessage() throws Exception {
-        message = CommonUtils.generateRandomString(210).toLowerCase()
+        final String message = CommonUtils.generateRandomString(210).toLowerCase()
                 .replace("x", " ");
-        getDialogPage().sendMessage(message);
+        getDialogPage().typeAndSendConversationMessage(message);
     }
 
     @When("I tap and hold on message input")
@@ -528,7 +519,7 @@ public class DialogPageSteps {
     @When("^I send using script predefined message (.*)$")
     public void ISendUsingScriptPredefinedMessage(String message)
             throws Exception {
-        getDialogPage().sendMessage(message);
+        getDialogPage().typeAndSendConversationMessage(message);
     }
 
     /**
@@ -560,8 +551,7 @@ public class DialogPageSteps {
     }
 
     @Then("^I see (.*) icon in conversation$")
-    public void ThenIseeIcon(String iconLabel) throws Exception,
-            InterruptedException {
+    public void ThenIseeIcon(String iconLabel) throws Exception {
         getDialogPage().waitPingAnimation();
         // TODO: detect current page
         double score1 = getDialogPage().checkPingIcon(iconLabel);
@@ -569,15 +559,6 @@ public class DialogPageSteps {
         Assert.assertTrue(
                 "Overlap between two images has not enough score. Expected >= 0.75",
                 score1 >= 0.75d || score2 >= 0.75d);
-    }
-
-    @When("^Contact (.*) sends random message to user (.*)$")
-    public void UserSendsRandomMessageToConversation(
-            String msgFromUserNameAlias, String dstUserNameAlias)
-            throws Exception {
-        message = CommonUtils.generateRandomString(10);
-        CommonSteps.getInstance().UserSentMessageToUser(msgFromUserNameAlias,
-                dstUserNameAlias, message);
     }
 
     /**
@@ -662,9 +643,6 @@ public class DialogPageSteps {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         boolean chatheadIsVisible = getDialogPage().chatheadIsVisible(contact);
         Assert.assertTrue("No Chathead visible.", chatheadIsVisible);
-        boolean chMessageIsVisible = getDialogPage().chatheadMessageIsVisible(
-                message);
-        Assert.assertTrue("No Chathead message visible.", chMessageIsVisible);
         boolean chAvatarImageIsVisible = getDialogPage()
                 .chatheadAvatarImageIsVisible();
         Assert.assertTrue("No Chathead avatar visible.", chAvatarImageIsVisible);
@@ -705,7 +683,7 @@ public class DialogPageSteps {
      */
     @When("^I type tag for giphy preview (.*) and open preview overlay$")
     public void ITypeGiphyTagAndOpenPreview(String message) throws Exception {
-        getDialogPage().sendStringToInput(message);
+        getDialogPage().typeAndSendConversationMessage(message);
         getDialogPage().openGifPreviewPage();
     }
 
@@ -962,14 +940,14 @@ public class DialogPageSteps {
     /**
      * Verifies amount of messages in conversation
      *
-     * @param msgCount expected number of messages
+     * @param expectedCount expected number of messages
      * @throws Exception
-     * @step. ^I see only (.*) messages?$
+     * @step. ^I see (\\d+) conversation (?:entries|entry)$
      */
-    @When("^I see only (.*) messages?$")
-    public void ISeeOnlyXAmountOfMessages(int msgCount) throws Exception {
-        Assert.assertTrue("Wrong amount of messages",
-                msgCount == getDialogPage().getNumberOfMessageEntries());
+    @When("^I see (\\d+) conversation (?:entries|entry)$")
+    public void ISeeXConvoEntries(int expectedCount) throws Exception {
+        Assert.assertEquals("The expected count of conversation entries is not equal to the actual count",
+                expectedCount, getDialogPage().getNumberOfMessageEntries());
     }
 
     /**
@@ -1011,13 +989,12 @@ public class DialogPageSteps {
      * Verify that input field contains expected text message
      *
      * @throws Exception
-     * @step. ^I see the message in input field$
+     * @step. ^I see the default message in input field$
      */
-    @When("^I see the message in input field$")
+    @When("^I see the default message in input field$")
     public void WhenISeeMessageInInputField() throws Exception {
-
         Assert.assertTrue("Input field has incorrect message or empty",
-                message.equals(getDialogPage().getStringFromInput()));
+                CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE.equals(getDialogPage().getStringFromInput()));
     }
 
     /**
@@ -1032,7 +1009,7 @@ public class DialogPageSteps {
     @When("^I see the only message in dialog is system message CONNECTED TO (.*)$")
     public void ISeeLastMessageIsSystem(String username) throws Exception {
         username = usrMgr.findUserByNameOrNameAlias(username).getName();
-        ISeeOnlyXAmountOfMessages(1);
+        ISeeXConvoEntries(1);
         Assert.assertTrue(getDialogPage()
                 .isConnectedToUserStartedConversationLabelVisible(username));
     }
