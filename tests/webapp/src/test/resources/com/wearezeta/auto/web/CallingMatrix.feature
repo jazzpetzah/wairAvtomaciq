@@ -50,7 +50,6 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | zcall:1.10  | 60      |
-      | user1Email | user1Password | user1Name | user2Name | zcall:1.09  | 60      |
 
   @C0003 @calling_matrix @calling
   Scenario Outline: Verify I can receive 1:1 call from <CallBackend>
@@ -99,7 +98,6 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend   | Timeout |
       | user1Email | user1Password | user1Name | user2Name | autocall:1.10 | 60      |
-      | user1Email | user1Password | user1Name | user2Name | autocall:1.09 | 60      |
 
   @C0005 @calling_matrix @calling
   Scenario Outline: Verify I can make group call with multiple <WaitBackend>
@@ -126,7 +124,7 @@ Feature: Calling_Matrix
     And <Contact1>,<Contact2> verifies to have 1 flows
     And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
     # Stops all waiting instance calls
-         And <Contact1> stops all waiting instances
+    And <Contact1> stops all waiting instances
 
 
     Examples: 
@@ -156,7 +154,6 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:1.10  | 60      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:1.09  | 60      |
 
   @C0007 @calling_matrix @calling
   Scenario Outline: Verify I can join group call with multiple <Backend>
@@ -185,7 +182,7 @@ Feature: Calling_Matrix
     And <Contact1>,<Contact2> verifies to have 1 flows
     And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
     # Stops all waiting instance calls
-         And <Contact1> stops all waiting instances
+    And <Contact1> stops all waiting instances
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend             | Timeout |
@@ -220,8 +217,8 @@ Feature: Calling_Matrix
     And I wait for 10 seconds
     And <Contact2> verifies to have 1 flows
     And <Contact2> verifies that all flows have greater than 0 bytes
-         # Stops all autocall instance calls
-         And <Contact1> stops all calls to <ChatName1>
+    # Stops all autocall instance calls
+    And <Contact1> stops all calls to <ChatName1>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend       | WaitBackend         | Timeout |
@@ -229,42 +226,6 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.10 | chrome:47.0.2526.73 | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.10 | firefox:43.0        | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.10 | firefox:42.0        | 60      |
-
-  @C0009 @calling_matrix @calling
-  Scenario Outline: Verify I can join group call with AVS <Backend> and <WaitBackend>
-    Given My browser supports calling
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
-    Given <Contact2> starts waiting instance using <WaitBackend>
-    Given <Contact2> accept next incoming call automatically
-    Given <Contact2> verify that waiting instance status is changed to waiting in <Timeout> seconds
-    Given I switch to Sign In page
-    Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
-    When I open conversation with <ChatName1>
-    And <Contact1> calls <ChatName1> using <Backend>
-    When I accept the incoming call
-    Then <Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
-    Then <Contact1> verify that call status to <ChatName1> is changed to active in <Timeout> seconds
-    And I see the calling bar from users <Contact1>,<Contact2>
-    And I wait for 10 seconds
-    And <Contact2> verify to have 2 flows
-    And <Contact2> verify that all flows have greater than 0 bytes
-    And I end the call
-    And I do not see the calling bar
-    And I wait for 10 seconds
-    And <Contact2> verifies to have 1 flows
-    And <Contact2> verifies that all flows have greater than 0 bytes
-    # Stops all autocall instance calls
-    And <Contact1> stops all calls to <ChatName1>
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend       | WaitBackend         | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.09 | chrome:48.0.2564.41 | 60      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.09 | chrome:47.0.2526.73 | 60      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.09 | firefox:43.0        | 60      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.09 | firefox:42.0        | 60      |
 
   @C0010 @calling_matrix @calling
   Scenario Outline: Verify I can join group call with AVS <Backend> and <WaitBackend>
@@ -291,6 +252,3 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend       | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.10 | zcall:1.10  | 60      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.09 | zcall:1.10  | 60      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.10 | zcall:1.09  | 60      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.09 | zcall:1.09  | 60      |

@@ -147,31 +147,39 @@ public class ConversationPage extends WebPage {
 		return actionElements.get(actionElements.size() - 1).getText();
 	}
 
-	private static List<String> getTextOfDisplayedElements(By locator, WebDriver driver) throws Exception {
+	private static List<String> getTextOfDisplayedElements(By locator,
+			WebDriver driver) throws Exception {
 		final List<WebElement> headers = driver.findElements(locator);
-		return headers.stream().filter(a -> a.isDisplayed()).map(a -> a.getText())
+		return headers.stream().filter(a -> a.isDisplayed())
+				.map(a -> a.getText().replace("\n", ""))
 				.collect(Collectors.toList());
 	}
 
 	public void waitForMessageHeaderContains(String text) throws Exception {
+		waitForMessageHeaderContains(new HashSet<String>(Arrays.asList(text)));
+	}
+
+	public void waitForMessageHeaderContains(Set<String> parts)
+			throws Exception {
 		final By locator = By
 				.cssSelector(WebAppLocators.ConversationPage.cssMessageHeader);
 		WebDriverWait wait = new WebDriverWait(getDriver(),
 				DriverUtils.getDefaultLookupTimeoutSeconds());
-		wait.until(visibilityOfTextInElementsLocated(locator, text));
+		wait.until(visibilityOfTextInElementsLocated(locator, parts));
 	}
 
 	/**
-	 * An expectation for checking that an element is present on the DOM of a
-	 * page and visible. Visibility means that the element is not only displayed
-	 * but also has a height and width that is greater than 0.
+	 * An expectation for checking that a system message is visible that
+	 * contains all strings of the expected strings.
 	 *
 	 * @param locator
 	 *            used to find the element
-	 * @return the WebElement once it is located and visible
+	 * @param expectedTexts
+	 *            the strings that should be found in a certain system message
+	 * @return returns true if found
 	 */
 	public static ExpectedCondition<Boolean> visibilityOfTextInElementsLocated(
-			final By locator, final String expectedText) {
+			final By locator, final Set<String> expectedTexts) {
 		return new ExpectedCondition<Boolean>() {
 			List<String> lastElements = new ArrayList<String>();
 
@@ -179,10 +187,16 @@ public class ConversationPage extends WebPage {
 			public Boolean apply(WebDriver driver) {
 				try {
 					lastElements = getTextOfDisplayedElements(locator, driver);
-					for (String text : lastElements) {
-						if (text.contains(expectedText)) {
-							return true;
+					for (String element : lastElements) {
+						boolean all = true;
+						for (String expectedText : expectedTexts) {
+							if (!element.toLowerCase().contains(
+									expectedText.toLowerCase())) {
+								all = false;
+							}
 						}
+						if (all)
+							return true;
 					}
 					return false;
 				} catch (Exception e) {
@@ -192,8 +206,9 @@ public class ConversationPage extends WebPage {
 
 			@Override
 			public String toString() {
-				return "visibility of text '" + expectedText + "' in elements "
-						+ lastElements + " located by " + locator;
+				return "visibility of text '" + expectedTexts
+						+ "' in elements " + lastElements + " located by "
+						+ locator;
 			}
 		};
 	}

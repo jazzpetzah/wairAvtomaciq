@@ -318,9 +318,8 @@ public class ConversationPageSteps {
 		parts.add(message);
 		parts.addAll(CommonSteps.splitAliases(contacts));
 		if (doNot == null) {
-			assertThat("Check action",
-					webappPagesCollection.getPage(ConversationPage.class)
-							.getLastActionMessage(), containsString(message));
+			webappPagesCollection.getPage(ConversationPage.class)
+					.waitForMessageHeaderContains(parts);
 		} else {
 			assertThat("Check action",
 					webappPagesCollection.getPage(ConversationPage.class)

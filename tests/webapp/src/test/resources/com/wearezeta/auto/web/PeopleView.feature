@@ -59,7 +59,7 @@ Feature: People View
     And I click Remove button on Group Participants popover
     And I confirm remove from group chat on Group Participants popover
     And I open conversation with <ChatName>
-    Then I see <Message> action in conversation
+    Then I see <Message> action for <Contact1> in conversation
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       | Message     |
