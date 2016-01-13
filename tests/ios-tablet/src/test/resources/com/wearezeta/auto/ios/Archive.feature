@@ -12,7 +12,7 @@ Feature: Archive
     Then I see first item in contact list named <ArchivedUser>
     When Myself archived conversation with <ArchivedUser>
     And I dont see conversation <ArchivedUser> in contact list
-    And Contact <ArchivedUser> sends image <Picture> to single user conversation <Name>
+    Given User <ArchivedUser> sends encrypted image <Picture> to single user conversation Myself
     Then I see first item in contact list named <ArchivedUser>
     When Myself archived conversation with <ArchivedUser>
     And I dont see conversation <ArchivedUser> in contact list
@@ -42,7 +42,7 @@ Feature: Archive
     Then I see first item in contact list named <ArchivedUser>
     When Myself archived conversation with <ArchivedUser>
     And I dont see conversation <ArchivedUser> in contact list
-    And Contact <ArchivedUser> sends image <Picture> to single user conversation <Name>
+    Given User <ArchivedUser> sends encrypted image <Picture> to single user conversation Myself
     Then I see first item in contact list named <ArchivedUser>
     When Myself archived conversation with <ArchivedUser>
     And I dont see conversation <ArchivedUser> in contact list
@@ -70,7 +70,7 @@ Feature: Archive
     And I dont see conversation <ArchivedUser> in contact list
     Given User <ArchivedUser> sends 1 encrypted message to user Myself
     Then I dont see conversation <ArchivedUser> in contact list
-    When Contact <ArchivedUser> sends image <Picture> to single user conversation <Name>
+    Given User <ArchivedUser> sends encrypted image <Picture> to single user conversation Myself
     Then I dont see conversation <ArchivedUser> in contact list
     When Contact <ArchivedUser> ping conversation <Name>
     Then I see first item in contact list named <ArchivedUser>
@@ -97,7 +97,7 @@ Feature: Archive
     And I dont see conversation <ArchivedUser> in contact list
     Given User <ArchivedUser> sends 1 encrypted message to user Myself
     Then I dont see conversation <ArchivedUser> in contact list
-    When Contact <ArchivedUser> sends image <Picture> to single user conversation <Name>
+    Given User <ArchivedUser> sends encrypted image <Picture> to single user conversation Myself
     Then I dont see conversation <ArchivedUser> in contact list
     When Contact <ArchivedUser> ping conversation <Name>
     Then I see first item in contact list named <ArchivedUser>

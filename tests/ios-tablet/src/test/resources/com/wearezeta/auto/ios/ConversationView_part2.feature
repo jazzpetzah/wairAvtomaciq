@@ -16,7 +16,7 @@ Feature: Conversation View
     Then I see conversation is scrolled to the end
     And I see 1 default message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -37,7 +37,7 @@ Feature: Conversation View
     Then I see conversation is scrolled to the end
     And I see 1 default message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -67,7 +67,7 @@ Feature: Conversation View
     And I tap close fullscreen page button
     Then I see new photo in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -98,7 +98,7 @@ Feature: Conversation View
     And I tap close fullscreen page button
     Then I see new photo in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -117,7 +117,7 @@ Feature: Conversation View
     And I click video container for the first time
     And I see video player page is opened
 
-    Examples: 
+    Examples:
       | Name      | Contact   | YouTubeLink                                |
       | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
 
@@ -135,7 +135,7 @@ Feature: Conversation View
     And I click video container for the first time
     And I see video player page is opened
 
-    Examples: 
+    Examples:
       | Name      | Contact   | YouTubeLink                                |
       | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
 
@@ -150,7 +150,7 @@ Feature: Conversation View
     And I close the app for <CloseAppTime> seconds
     Then I see title bar in conversation name <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CloseAppTime |
       | user1Name | user2Name | 2            |
 
@@ -166,7 +166,7 @@ Feature: Conversation View
     And I close the app for <CloseAppTime> seconds
     Then I see title bar in conversation name <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CloseAppTime |
       | user1Name | user2Name | 2            |
 
@@ -192,9 +192,9 @@ Feature: Conversation View
     And I rotate UI to landscape
     Then I see image rotated in fullscreen mode
 
-    Examples: 
-      | Name      | Contact   | Picture     | Color        | NewName          |
-      | user1Name | user2Name | testing.jpg | BrightOrange | RotateFullscreen |
+    Examples:
+      | Name      | Contact   | Color        | NewName          |
+      | user1Name | user2Name | BrightOrange | RotateFullscreen |
 
   @C2630 @regression @id3206
   Scenario Outline: Rotate image in fullscreen mode [LANDSCAPE]
@@ -219,9 +219,9 @@ Feature: Conversation View
     And I rotate UI to portrait
     Then I see image rotated to portrait in fullscreen mode
 
-    Examples: 
-      | Name      | Contact   | Picture     | Color        | NewName          |
-      | user1Name | user2Name | testing.jpg | BrightOrange | RotateFullscreen |
+    Examples:
+      | Name      | Contact   | Color        | NewName          |
+      | user1Name | user2Name | BrightOrange | RotateFullscreen |
 
   @C2729 @regression @id2451
   Scenario Outline: Verify archiving conversation from ellipsis menu [PORTRAIT]
@@ -238,7 +238,7 @@ Feature: Conversation View
     And I open archived conversations on iPad
     Then I see user <Contact> in contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -258,7 +258,7 @@ Feature: Conversation View
     And I open archived conversations on iPad
     Then I see user <Contact> in contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -283,7 +283,7 @@ Feature: Conversation View
     And I see Close input options button is not visible
     And I see plus button next to text input
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -309,7 +309,7 @@ Feature: Conversation View
     And I see Close input options button is not visible
     And I see plus button next to text input
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -332,7 +332,7 @@ Feature: Conversation View
     And I click plus button next to text input
     Then I see only Details button. Call, Camera, Sketch, Ping are not shown
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
       | user1Name | user2Name | user3Name | user4Name | ArchiveGroupChat |
 
@@ -355,7 +355,7 @@ Feature: Conversation View
     And I click plus button next to text input
     Then I see only Details button. Call, Camera, Sketch, Ping are not shown
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
       | user1Name | user2Name | user3Name | user4Name | ArchiveGroupChat |
 
@@ -370,7 +370,7 @@ Feature: Conversation View
     And I see dialog page
     Then I see vimeo link <VimeoLink> and media in dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | VimeoLink                   |
       | user1Name | user2Name | https://vimeo.com/129426512 |
 
@@ -386,7 +386,7 @@ Feature: Conversation View
     And I see dialog page
     Then I see vimeo link <VimeoLink> and media in dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | VimeoLink                   |
       | user1Name | user2Name | https://vimeo.com/129426512 |
 
@@ -401,7 +401,7 @@ Feature: Conversation View
     And I see dialog page
     Then I see vimeo link <VimeoLink> but NO media player
 
-    Examples: 
+    Examples:
       | Name      | Contact   | VimeoLink                    |
       | user1Name | user2Name | https://vimeo.com/categories |
 
@@ -417,7 +417,7 @@ Feature: Conversation View
     And I see dialog page
     Then I see vimeo link <VimeoLink> but NO media player
 
-    Examples: 
+    Examples:
       | Name      | Contact   | VimeoLink                    |
       | user1Name | user2Name | https://vimeo.com/categories |
 
@@ -434,7 +434,7 @@ Feature: Conversation View
     And I tap on Link with a message
     Then I see WireWebsitePage
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | MessageAndLink                  |
       | user1Name | user2Name | Check https://www.wire.com/ out |
 
@@ -452,7 +452,7 @@ Feature: Conversation View
     And I tap on Link with a message
     Then I see WireWebsitePage
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | MessageAndLink                  |
       | user1Name | user2Name | Check https://www.wire.com/ out |
 
@@ -469,7 +469,7 @@ Feature: Conversation View
     And I tap on Link
     Then I see WireWebsitePage
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Link                  |
       | user1Name | user2Name | https://www.wire.com/ |
 
@@ -487,10 +487,10 @@ Feature: Conversation View
     And I tap on Link
     Then I see WireWebsitePage
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Link                  |
       | user1Name | user2Name | https://www.wire.com/ |
-      
+
   @C2667 @regression @id3799
   Scenario Outline: Verify input field and action buttons are not shown simultaniously [PORTRAIT]
     Given There are 3 users where <Name> is me
@@ -505,14 +505,14 @@ Feature: Conversation View
     And I see dialog page
     And I return to the chat list
     And I tap on contact name <Contact1>
-	And I see dialog page
-	Then I see Close input options button is not visible
-	And I see controller buttons can not be visible
-	And I see the default message in input field
+    And I see dialog page
+    Then I see Close input options button is not visible
+    And I see controller buttons can not be visible
+    And I see the default message in input field
 
-    Examples: 
-      | Name      | Contact1   | Contact2  |
-      | user1Name | user2Name  | user3Name |
+    Examples:
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @C2668 @regression @id3800
   Scenario Outline: Verify input field and action buttons are not shown simultaniously [LANDSCAPE]
@@ -532,7 +532,7 @@ Feature: Conversation View
     And I see controller buttons can not be visible
     And I see the default message in input field
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -540,7 +540,7 @@ Feature: Conversation View
   Scenario Outline: Verify possibility to copy image in the conversation view [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
+    Given User <Contact> sends encrypted image <Picture> to <ConversationType> conversation <Name>
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact>
@@ -553,18 +553,18 @@ Feature: Conversation View
     And I press Confirm button
     Then I see new photo in the dialog
 
-    Examples: 
-      | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
-      | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
+    Examples:
+      | Name      | Contact   | Picture     | ConversationType |
+      | user1Name | user2Name | testing.jpg | single user      |
 
   @C2587 @regression @id4008
   Scenario Outline: Verify possibility to copy image in the conversation view [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     And I tap on contact name <Contact>
     And I see dialog page
     And I see new photo in the dialog
@@ -576,9 +576,9 @@ Feature: Conversation View
     And I press Confirm button
     Then I see new photo in the dialog
 
-    Examples: 
-      | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
-      | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
+    Examples:
+      | Name      | Contact   | Picture     |
+      | user1Name | user2Name | testing.jpg |
 
   @C2548 @regression @id3964 @ZIOS-5063
   Scenario Outline: Verify posting in a 1-to-1 conversation without content [PORTRAIT]
@@ -602,7 +602,7 @@ Feature: Conversation View
     And I send the message
     And I see 1 default message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Message |
       | user1Name | user2Name | testing |
 
@@ -629,7 +629,7 @@ Feature: Conversation View
     And I send the message
     And I see 1 default message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Message |
       | user1Name | user2Name | testing |
 
@@ -637,10 +637,10 @@ Feature: Conversation View
   Scenario Outline: Verify downloading images in fullscreen [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
+    When I tap on contact name <Contact>
     And I see dialog page
     And I see new photo in the dialog
     And I tap and hold image to open full screen
@@ -655,19 +655,19 @@ Feature: Conversation View
     And I press Confirm button
     Then I verify image in dialog is same as template <Picture>
 
-    Examples: 
-      | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
-      | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
+    Examples:
+      | Name      | Contact   | Picture     | ConversationType |
+      | user1Name | user2Name | testing.jpg | single user      |
 
   @C2631 @regression @id4084
   Scenario Outline: Verify downloading images in fullscreen [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
+    When I tap on contact name <Contact>
     And I see dialog page
     And I see new photo in the dialog
     And I tap and hold image to open full screen
@@ -683,9 +683,9 @@ Feature: Conversation View
     And I scroll to the end of the conversation
     Then I verify image in dialog is same as template <Picture>
 
-    Examples: 
-      | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
-      | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
+    Examples:
+      | Name      | Contact   | Picture     |
+      | user1Name | user2Name | testing.jpg |
 
   @C2448 @regression @id2334
   Scenario Outline: Verify you still receive messages from blocked person in a group chat [PORTRAIT]
@@ -694,15 +694,15 @@ Feature: Conversation View
     Given Myself has group chat <GroupChatName> with <Contact1>, <Contact2>
     Given User <Name> blocks user <Contact1>
     Given User <Contact1> sent message <Message> to conversation <GroupChatName>
-    Given Contact <Contact1> sends image <Picture> to <ConversationType> conversation <GroupChatName>
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I tap on group chat with name <GroupChatName>
+    Given I see Contact list with my name <Name>
+    Given User <Contact1> sends image <Picture> to group conversation <GroupChatName>
+    When I tap on group chat with name <GroupChatName>
     Then I see 3 conversation entries
 
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message                | Picture     | ConversationType |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | Caramba!      | He-hey, do you see it? | testing.jpg | group            |
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | Message                | Picture     |
+      | user1Name | user2Name | user3Name | Caramba!      | He-hey, do you see it? | testing.jpg |
 
   @C2460 @regression @id4085
   Scenario Outline: Verify you still receive messages from blocked person in a group chat [LANDSCAPE]
@@ -711,53 +711,53 @@ Feature: Conversation View
     Given Myself has group chat <GroupChatName> with <Contact1>, <Contact2>
     Given User <Name> blocks user <Contact1>
     Given User <Contact1> sent message <Message> to conversation <GroupChatName>
-    Given Contact <Contact1> sends image <Picture> to <ConversationType> conversation <GroupChatName>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I tap on group chat with name <GroupChatName>
+    Given I see Contact list with my name <Name>
+    Given User <Contact1> sends encrypted image <Picture> to group conversation <GroupChatName>
+    When I tap on group chat with name <GroupChatName>
     Then I see 3 conversation entries
 
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message                | Picture     | ConversationType |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | Caramba!      | He-hey, do you see it? | testing.jpg | group            |
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | Message                | Picture     |
+      | user1Name | user2Name | user3Name | Caramba!      | He-hey, do you see it? | testing.jpg |
 
   @C2589 @staging @id2381
   Scenario Outline: Verify cursor swiping is disabled when you scroll back into a conversation [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
     Given User <Name> sent long message to conversation <Contact>
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    When I tap on contact name <Contact>
     And I tap on text input to scroll to the end
     And I scroll to the beginning of the conversation
     And I swipe the text input cursor
     Then I see controller buttons can not be visible
 
-    Examples: 
-      | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
-      | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
+    Examples:
+      | Name      | Contact   | Picture     |
+      | user1Name | user2Name | testing.jpg |
 
   @C2602 @staging @id4086
   Scenario Outline: Verify cursor swiping is disabled when you scroll back into a conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
     Given User <Name> sent long message to conversation <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    When I tap on contact name <Contact>
     And I tap on text input to scroll to the end
     And I scroll to the beginning of the conversation
     And I swipe the text input cursor
     Then I see controller buttons can not be visible
 
-    Examples: 
-      | Login      | Password      | Name      | Contact   | Picture     | ConversationType |
-      | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user      |
+    Examples:
+      | Name      | Contact   | Picture     |
+      | user1Name | user2Name | testing.jpg |
 
   @C2591 @regression @id2383
   Scenario Outline: Verify people icon is changed on avatar with opening keyboard and back [PORTRAIT]
@@ -773,7 +773,7 @@ Feature: Conversation View
     And I clear conversation text input
     Then I see plus button next to text input
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -792,6 +792,6 @@ Feature: Conversation View
     And I clear conversation text input
     Then I see plus button next to text input
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |

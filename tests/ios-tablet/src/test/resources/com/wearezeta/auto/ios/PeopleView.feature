@@ -768,11 +768,11 @@ Feature: People View
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given User <Name> sent message <Message> to conversation <GroupChatName>
-    Given Contact <Name> sends image <Image> to group conversation <GroupChatName>
     Given Contact <Name> ping conversation <GroupChatName>
     Given User <Contact1> sent message <Message> to conversation <GroupChatName>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends encrypted image <Image> to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button
@@ -795,12 +795,12 @@ Feature: People View
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given User <Name> sent message <Message> to conversation <GroupChatName>
-    Given Contact <Name> sends image <Image> to group conversation <GroupChatName>
     Given Contact <Name> ping conversation <GroupChatName>
     Given User <Contact1> sent message <Message> to conversation <GroupChatName>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends encrypted image <Image> to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button
@@ -822,11 +822,11 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given User <Name> sent message <Message> to conversation <Contact1>
-    Given Contact <Contact1> sends image <Image> to single user conversation <Name>
     Given Contact <Name> ping conversation <Contact1>
     Given User <Contact1> sent message <Message> to conversation <Name>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
     When I tap on contact name <Contact1>
     And I see dialog page
     And I see 5 conversation entries
@@ -851,12 +851,12 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given User <Name> sent message <Message> to conversation <Contact1>
-    Given Contact <Contact1> sends image <Image> to single user conversation <Name>
     Given Contact <Name> ping conversation <Contact1>
     Given User <Contact1> sent message <Message> to conversation <Name>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
     When I tap on contact name <Contact1>
     And I see dialog page
     And I see 5 conversation entries
@@ -882,9 +882,9 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given User <Name> sent message <Message> to conversation <GroupChatName>
-    Given Contact <Contact1> sends image <Image> to group conversation <GroupChatName>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I see 3 conversation entries
@@ -908,10 +908,10 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given User <Name> sent message <Message> to conversation <GroupChatName>
-    Given Contact <Contact1> sends image <Image> to group conversation <GroupChatName>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I see 3 conversation entries
