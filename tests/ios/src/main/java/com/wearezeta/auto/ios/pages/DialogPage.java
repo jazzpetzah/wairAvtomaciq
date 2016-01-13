@@ -139,7 +139,7 @@ public class DialogPage extends IOSPage {
 
     public static final String xpathYoutubeVimeoConversationCell =
             "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']"
-                    +"/UIATableView[1]/UIATableCell[last()]/UIAButton[1]";
+                    + "/UIATableView[1]/UIATableCell[last()]/UIAButton[1]";
     @FindBy(xpath = xpathYoutubeVimeoConversationCell)
     private WebElement youtubeCell;
 
@@ -290,7 +290,7 @@ public class DialogPage extends IOSPage {
 
     public void sendStringToInput(String message) throws Exception {
         waitForCursorInputVisible();
-        ((IOSElement)getDriver().findElementByName(nameConversationCursorInput)).setValue(message);
+        ((IOSElement) getDriver().findElementByName(nameConversationCursorInput)).setValue(message);
     }
 
     public void clearTextInput() {
@@ -665,13 +665,20 @@ public class DialogPage extends IOSPage {
 
     }
 
-    public void sendMessageUsingScript(String message) throws Exception {
+    public void sendMessage(String message) throws Exception {
         fillInMessageUsingScript(message);
         clickKeyboardReturnButton();
     }
 
     public void fillInMessageUsingScript(String message) throws Exception {
-        ((IOSElement)getDriver().findElementByName(nameConversationCursorInput)).setValue(message);
+        conversationInput.click();
+        try {
+            ((IOSElement) getDriver().findElementByName(nameConversationCursorInput)).
+                    setValue(message);
+        } catch (WebDriverException e) {
+            conversationInput.clear();
+            conversationInput.sendKeys(message);
+        }
     }
 
     public void waitLoremIpsumText() throws Exception {

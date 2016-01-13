@@ -6,108 +6,98 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import io.appium.java_client.ios.IOSElement;
-import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.ScreenOrientation;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class ContactListPage extends IOSPage {
-
-    private static final Logger log = ZetaLogger.getLog(ContactListPage.class
-            .getSimpleName());
-
     private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.70;
     private final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.80;
     private final int CONV_SWIPE_TIME = 500;
 
-    @FindBy(how = How.NAME, using = IOSLocators.ContactListPage.nameSelfButton)
+    public static final String nameSelfButton = "SelfButton";
+    @FindBy(name = nameSelfButton)
     private WebElement selfUserButton;
-
 
     private static final String xpathContactListRoot =
             "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]";
+    @FindBy(xpath = xpathContactListRoot)
+    private WebElement contactListContainer;
 
     private static final String xpathNameContactListItems = xpathContactListRoot + "//UIACollectionCell";
 
     private static final Function<String, String> convoListEntryByName = name ->
             String.format("%s[ .//*[@value='%s'] ]", xpathNameContactListItems, name);
+    private static final Function<Integer, String> convoListEntryByIdx = idx ->
+            String.format("%s[%s]", xpathNameContactListItems, idx);
 
-    @FindBy(how = How.XPATH, using = IOSLocators.xpathContactListCells)
-    private List<WebElement> contactListCells;
-
-    @FindBy(how = How.XPATH, using = IOSLocators.xpathFirstContactCell)
-    private WebElement firstContactCell;
-
-    @FindBy(how = How.NAME, using = IOSLocators.nameProfileName)
+    private static final String nameProfileName = "ProfileSelfNameField";
+    @FindBy(name = nameProfileName)
     private WebElement profileName;
 
-    @FindBy(how = How.NAME, using = IOSLocators.ContactListPage.nameOpenStartUI)
+    private static final String nameOpenStartUI = "START A CONVERSATION";
+    @FindBy(name = IOSLocators.ContactListPage.nameOpenStartUI)
     private WebElement openStartUI;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameMuteButton)
+    private static final String nameMuteButton = "ConvCellMuteButton";
+    @FindBy(name = IOSLocators.nameMuteButton)
     private List<WebElement> muteButtons;
 
-    @FindBy(how = How.XPATH, using = IOSLocators.xpathMyUserInContactList)
-    private WebElement myUserNameInContactList;
-
-    @FindBy(how = How.XPATH, using = IOSLocators.xpathFirstChatInChatListTextField)
+    private static final String xpathFirstChatInChatListTextField =
+            xpathContactListRoot + "/UIACollectionCell[1]/UIAStaticText[1]";
+    @FindBy(xpath = xpathFirstChatInChatListTextField)
     private WebElement firstChatInChatListTextField;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameContactListLoadBar)
+    private static final String nameContactListLoadBar = "LoadBar";
+    @FindBy(name = nameContactListLoadBar)
     private WebElement loadBar;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameMediaCellPlayButton)
+    private static final String nameMediaCellPlayButton = "mediaCellButton";
+    @FindBy(name = nameMediaCellPlayButton)
     private WebElement playPauseButton;
 
-    @FindBy(how = How.XPATH, using = IOSLocators.xpathPendingRequest)
+    private static final String xpathPendingRequest = "//UIACollectionCell[contains(@name,' waiting')]/UIAStaticText[1]";
+    @FindBy(xpath = xpathPendingRequest)
     private WebElement pendingRequest;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameTutorialView)
+    private static final String nameTutorialView = "ZClientNotificationWindow";
+    @FindBy(name = nameTutorialView)
     private WebElement tutorialView;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameSelfButton)
-    private WebElement selfButton;
-
-    @FindBy(how = How.XPATH, using = IOSLocators.xpathFirstInContactList)
-    private WebElement firstContactInList;
-
-    @FindBy(how = How.XPATH, using = IOSLocators.xpathContactListContainer)
-    private WebElement contactListContainer;
-
-    @FindBy(how = How.NAME, using = IOSLocators.ContactListPage.nameMuteCallButton)
+    private static final String nameMuteCallButton = "MuteVoiceButton";
+    @FindBy(name = nameMuteCallButton)
     private WebElement muteCallButton;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameLeaveConversationButton)
+    private static final String nameLeaveConversationButton = "LEAVE";
+    @FindBy(name = nameLeaveConversationButton)
     private WebElement leaveActionMenuButton;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameCancelButton)
+    public static final String nameCancelButton = "CANCEL";
+    @FindBy(name = nameCancelButton)
     private WebElement cancelActionMenuButton;
 
-    @FindBy(how = How.NAME, using = IOSLocators.nameSendAnInviteButton)
+    private static final String nameSendAnInviteButton = "INVITE MORE PEOPLE";
+    @FindBy(name = nameSendAnInviteButton)
     private WebElement inviteMorePeopleButton;
 
     public ContactListPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
-    public boolean isMyUserNameDisplayedFirstInContactList(String name)
-            throws Exception {
-        if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.xpath(IOSLocators.xpathMyUserInContactList))) {
-            return myUserNameInContactList.getText().equals(name);
+    public boolean isMyUserNameDisplayedFirstInContactList(String name) throws Exception {
+        final By locator = By.xpath(convoListEntryByIdx.apply(1));
+        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator)) {
+            return getDriver().findElement(locator).getText().equals(name);
         } else {
             return false;
         }
@@ -137,14 +127,12 @@ public class ContactListPage extends IOSPage {
     }
 
     public PersonalInfoPage tapOnMyName() throws Exception {
-        selfButton.click();
-
+        selfUserButton.click();
         return new PersonalInfoPage(this.getLazyDriver());
     }
 
     public String getSelfButtonLabel() {
-        String v = selfUserButton.getAttribute("label").toUpperCase();
-        return v;
+        return selfUserButton.getAttribute("label").toUpperCase();
     }
 
     public boolean isSelfButtonContainingFirstNameLetter(String name) {
@@ -289,78 +277,71 @@ public class ContactListPage extends IOSPage {
     public boolean conversationWithUsersPresented(String name1, String name2,
                                                   String name3) throws Exception {
         String firstChat = getFirstConversationName();
-        boolean chatExist = firstChat.contains(name1)
+        return firstChat.contains(name1)
                 && firstChat.contains(name2) && firstChat.contains(name3);
-        return chatExist;
     }
 
     public boolean isConversationSilenced(String conversation,
                                           boolean isSilenced) throws Exception {
         String deviceType = CommonUtils.getDeviceName(this.getClass());
-        BufferedImage silencedConversation = null;
-
         BufferedImage referenceImage = null;
         WebElement element = findNameInContactList(conversation).orElseThrow(IllegalStateException::new);
-        silencedConversation = CommonUtils.getElementScreenshot(element,
+        BufferedImage silencedConversation = CommonUtils.getElementScreenshot(element,
                 this.getDriver(), CommonUtils.getDeviceName(this.getClass()))
                 .orElseThrow(IllegalStateException::new);
-        if (deviceType.equals("iPhone 6 Plus") && isSilenced) {
-            referenceImage = ImageUtil.readImageFromFile(IOSPage
-                    .getImagesPath() + "silenceiPhone6plus.png");
-        } else if (deviceType.equals("iPhone 6 Plus") && !isSilenced) {
-            referenceImage = ImageUtil.readImageFromFile(IOSPage
-                    .getImagesPath() + "verifyUnsilenceIphone6plus.png");
-        } else if (deviceType.equals("iPhone 6") && isSilenced) {
-            referenceImage = ImageUtil.readImageFromFile(IOSPage
-                    .getImagesPath() + "silenceiPhone6.png");
-        } else if (deviceType.equals("iPhone 6") && !isSilenced) {
-            referenceImage = ImageUtil.readImageFromFile(IOSPage
-                    .getImagesPath() + "verifyUnsilenceTestIphone6.png");
-        } else if (deviceType.equals("iPad Air") && isSilenced) {
-            referenceImage = ImageUtil.readImageFromFile(IOSPage
-                    .getImagesPath()
-                    + "verifySilenceiPadAir_"
-                    + getOrientation().toString() + ".png");
-        } else if (deviceType.equals("iPad Air") && !isSilenced) {
-            referenceImage = ImageUtil.readImageFromFile(IOSPage
-                    .getImagesPath()
-                    + "verifyUnsilenceTestiPadAir_"
-                    + getOrientation().toString() + ".png");
+        switch (deviceType) {
+            case "iPhone 6 Plus":
+                referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath() +
+                        (isSilenced ? "silenceiPhone6plus.png" : "verifyUnsilenceIphone6plus.png"));
+                break;
+            case "iPhone 6":
+                referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath() +
+                        (isSilenced ? "silenceiPhone6.png" : "verifyUnsilenceTestIphone6"));
+                break;
+            case "iPad Air":
+                if (isSilenced) {
+                    referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
+                            + "verifySilenceiPadAir_" + getOrientation().toString() + ".png");
+                } else {
+                    referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
+                            + "verifyUnsilenceTestiPadAir_" + getOrientation().toString() + ".png");
+                }
+                break;
         }
+
         double score = ImageUtil.getOverlapScore(silencedConversation,
                 referenceImage, 0);
-        if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
-            return false;
-        }
-        return true;
+        return score > MIN_ACCEPTABLE_IMAGE_VALUE;
     }
 
     public boolean isConversationSilencedBefore(String conversation)
             throws Exception {
         String deviceType = CommonUtils.getDeviceName(this.getClass());
-        BufferedImage silencedConversation = null;
-        BufferedImage referenceImage = null;
+        BufferedImage referenceImage;
         WebElement element = findNameInContactList(conversation).orElseThrow(IllegalStateException::new);
-        silencedConversation = CommonUtils.getElementScreenshot(element,
+        BufferedImage silencedConversation = CommonUtils.getElementScreenshot(element,
                 this.getDriver(), CommonUtils.getDeviceName(this.getClass()))
                 .orElseThrow(IllegalStateException::new);
-        if (deviceType.equals("iPhone 6 Plus")) {
-            referenceImage = ImageUtil.readImageFromFile(IOSPage
-                    .getImagesPath() + "unsilenceTestiPhone6plus.png");
-        } else if (deviceType.equals("iPhone 6")) {
-            referenceImage = ImageUtil.readImageFromFile(IOSPage
-                    .getImagesPath() + "unsilenceTestiPhone6.png");
-        } else if (deviceType.equals("iPad Air")) {
-            referenceImage = ImageUtil.readImageFromFile(IOSPage
-                    .getImagesPath() + "unsilenceTestiPadAir.png");
+        switch (deviceType) {
+            case "iPhone 6 Plus":
+                referenceImage = ImageUtil.readImageFromFile(IOSPage
+                        .getImagesPath() + "unsilenceTestiPhone6plus.png");
+                break;
+            case "iPhone 6":
+                referenceImage = ImageUtil.readImageFromFile(IOSPage
+                        .getImagesPath() + "unsilenceTestiPhone6.png");
+                break;
+            case "iPad Air":
+                referenceImage = ImageUtil.readImageFromFile(IOSPage
+                        .getImagesPath() + "unsilenceTestiPadAir.png");
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown device type '%s'",
+                        deviceType));
         }
-
         double score = ImageUtil.getOverlapScore(silencedConversation,
                 referenceImage, 0);
-        if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
-            return false;
-        }
-        return true;
+        return score > MIN_ACCEPTABLE_IMAGE_VALUE;
     }
 
     private boolean isCancelActionButtonVisible() throws Exception {
@@ -368,8 +349,7 @@ public class ContactListPage extends IOSPage {
                 cancelActionMenuButton);
     }
 
-    public void clickArchiveConversationButton(String conversation)
-            throws Exception {
+    public void clickArchiveConversationButton() throws Exception {
         WebElement archiveButton = this
                 .getDriver()
                 .findElement(
@@ -380,7 +360,10 @@ public class ContactListPage extends IOSPage {
     public BufferedImage getScreenshotFirstContact() throws Exception {
         // This takes a screenshot of the area to the left of a contact where
         // ping and unread dot notifications are visible
-        WebElement contact = firstContactCell;
+        final By locator = By.xpath(convoListEntryByIdx.apply(1));
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) :
+                "No contacts are visible in the list";
+        WebElement contact = getDriver().findElement(locator);
         return getScreenshotByCoordinates(contact.getLocation().x,
                 contact.getLocation().y + contactListContainer.getLocation().y,
                 contact.getSize().width / 4, contact.getSize().height * 2)
@@ -389,38 +372,26 @@ public class ContactListPage extends IOSPage {
 
     public boolean missedCallIndicatorIsVisible(String conversation)
             throws Exception {
-        BufferedImage missedCallIndicator = null;
-        BufferedImage referenceImage = null;
-        double score = 0;
         WebElement contact = findNameInContactList(conversation).orElseThrow(IllegalStateException::new);
 
-        missedCallIndicator = getElementScreenshot(contact).orElseThrow(
+        BufferedImage missedCallIndicator = getElementScreenshot(contact).orElseThrow(
                 IllegalStateException::new).getSubimage(0, 0,
                 2 * contact.getSize().height, 2 * contact.getSize().height);
 
-        referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
+        BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
                 + "missedCallIndicator.png");
 
-        score = ImageUtil.getOverlapScore(referenceImage, missedCallIndicator,
+        double score = ImageUtil.getOverlapScore(referenceImage, missedCallIndicator,
                 ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-
-        if (score <= MIN_ACCEPTABLE_IMAGE_SCORE) {
-            log.debug("Overlap Score is " + score
-                    + ". And minimal expected is " + MIN_ACCEPTABLE_IMAGE_SCORE);
-            return false;
-
-        }
-        return true;
+        return score > MIN_ACCEPTABLE_IMAGE_SCORE;
     }
 
     public boolean unreadMessageIndicatorIsVisible(int numberOfMessages,
                                                    String conversation) throws Exception {
-        BufferedImage unreadMessageIndicator = null;
         BufferedImage referenceImage = null;
-        double score = 0;
         WebElement contact = findNameInContactList(conversation).orElseThrow(IllegalStateException::new);
 
-        unreadMessageIndicator = getElementScreenshot(contact).orElseThrow(
+        BufferedImage unreadMessageIndicator = getElementScreenshot(contact).orElseThrow(
                 IllegalStateException::new).getSubimage(0, 0,
                 2 * contact.getSize().height, 2 * contact.getSize().height);
 
@@ -491,17 +462,10 @@ public class ContactListPage extends IOSPage {
             }
         }
 
-        score = ImageUtil.getOverlapScore(referenceImage,
+        double score = ImageUtil.getOverlapScore(referenceImage,
                 unreadMessageIndicator,
                 ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-
-        if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
-            log.debug("Overlap Score is " + score
-                    + ". And minimal expected is " + MIN_ACCEPTABLE_IMAGE_VALUE);
-            return false;
-
-        }
-        return true;
+        return score > MIN_ACCEPTABLE_IMAGE_VALUE;
     }
 
     public boolean isMuteCallButtonVisible() throws Exception {
@@ -513,52 +477,26 @@ public class ContactListPage extends IOSPage {
         muteCallButton.click();
     }
 
-    public boolean isPauseButtonVisible() throws IllegalStateException,
-            Exception {
-        BufferedImage pauseMediaButtonIcon = null;
-        BufferedImage referenceImage = null;
-        double score = 0;
-
-        pauseMediaButtonIcon = getElementScreenshot(playPauseButton)
+    public boolean isPauseButtonVisible() throws Exception {
+        BufferedImage pauseMediaButtonIcon = getElementScreenshot(playPauseButton)
                 .orElseThrow(IllegalStateException::new);
-
-        referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
+        BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
                 + "pauseMediaButtonIcon.png");
 
-        score = ImageUtil.getOverlapScore(referenceImage, pauseMediaButtonIcon,
+        double score = ImageUtil.getOverlapScore(referenceImage, pauseMediaButtonIcon,
                 ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-
-        if (score <= MIN_ACCEPTABLE_IMAGE_SCORE) {
-            log.debug("Overlap Score is " + score
-                    + ". And minimal expected is " + MIN_ACCEPTABLE_IMAGE_SCORE);
-            return false;
-        }
-
-        return true;
+        return score > MIN_ACCEPTABLE_IMAGE_SCORE;
     }
 
-    public boolean isPlayButtonVisible() throws IllegalStateException,
-            Exception {
-        BufferedImage playMediaButtonIcon = null;
-        BufferedImage referenceImage = null;
-        double score = 0;
-
-        playMediaButtonIcon = getElementScreenshot(playPauseButton)
+    public boolean isPlayButtonVisible() throws Exception {
+        BufferedImage playMediaButtonIcon = getElementScreenshot(playPauseButton)
                 .orElseThrow(IllegalStateException::new);
-
-        referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
+        BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
                 + "playMediaButtonIcon.png");
 
-        score = ImageUtil.getOverlapScore(referenceImage, playMediaButtonIcon,
+        double score = ImageUtil.getOverlapScore(referenceImage, playMediaButtonIcon,
                 ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-
-        if (score <= MIN_ACCEPTABLE_IMAGE_SCORE) {
-            log.debug("Overlap Score is " + score
-                    + ". And minimal expected is " + MIN_ACCEPTABLE_IMAGE_SCORE);
-            return false;
-        }
-
-        return true;
+        return score > MIN_ACCEPTABLE_IMAGE_SCORE;
     }
 
     public boolean isActionMenuVisibleForConversation(String conversation)

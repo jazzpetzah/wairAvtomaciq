@@ -322,9 +322,9 @@ public class DialogPageSteps {
 
 	@When("I type and send long message and media link (.*)")
 	public void ITypeAndSendLongTextAndMediaLink(String link) throws Exception {
-		getDialogPage().sendMessageUsingScript(IOSConstants.LONG_MESSAGE);
+		getDialogPage().sendMessage(IOSConstants.LONG_MESSAGE);
 		getDialogPage().waitLoremIpsumText();
-		getDialogPage().sendMessageUsingScript(link);
+		getDialogPage().sendMessage(link);
 		getDialogPage().waitSoundCloudLoad();
 	}
 
@@ -367,12 +367,12 @@ public class DialogPageSteps {
 
 	@When("I send long message")
 	public void ISendLongMessage() throws Exception {
-		getDialogPage().sendMessageUsingScript(IOSConstants.LONG_MESSAGE);
+		getDialogPage().sendMessage(IOSConstants.LONG_MESSAGE);
 	}
 
 	@When("^I post media link (.*)$")
 	public void IPostMediaLink(String link) throws Throwable {
-		getDialogPage().sendMessageUsingScript(link);
+		getDialogPage().sendMessage(link);
 	}
 
 	@When("^I tap media link$")
@@ -500,7 +500,7 @@ public class DialogPageSteps {
 	@When("I input message with leading empty spaces")
 	public void IInpuMessageWithLeadingEmptySpace() throws Throwable {
 		message = onlySpacesMessage + automationMessage;
-		getDialogPage().sendMessageUsingScript(message);
+		getDialogPage().sendMessage(message);
 		message = automationMessage;
 	}
 
@@ -514,7 +514,7 @@ public class DialogPageSteps {
 	@When("I input message with trailing emtpy spaces")
 	public void IInputMessageWithTrailingEmptySpace() throws Throwable {
 		message = automationMessage + onlySpacesMessage;
-		getDialogPage().sendMessageUsingScript(message);
+		getDialogPage().sendMessage(message);
 		message = automationMessage;
 	}
 
@@ -522,14 +522,14 @@ public class DialogPageSteps {
 	public void IInputMessageWithLowerAndUpperCase() throws Throwable {
 		message = CommonUtils.generateRandomString(7).toLowerCase()
 				+ CommonUtils.generateRandomString(7).toUpperCase();
-		getDialogPage().sendMessageUsingScript(message);
+		getDialogPage().sendMessage(message);
 	}
 
 	@When("I input more than 200 chars message and send it")
 	public void ISend200CharsMessage() throws Exception {
 		message = CommonUtils.generateRandomString(210).toLowerCase()
 				.replace("x", " ");
-		getDialogPage().sendMessageUsingScript(message);
+		getDialogPage().sendMessage(message);
 	}
 
 	@When("I tap and hold on message input")
@@ -545,7 +545,7 @@ public class DialogPageSteps {
 	@When("^I send using script predefined message (.*)$")
 	public void ISendUsingScriptPredefinedMessage(String message)
 			throws Exception {
-		getDialogPage().sendMessageUsingScript(message);
+		getDialogPage().sendMessage(message);
 	}
 
 	/**
