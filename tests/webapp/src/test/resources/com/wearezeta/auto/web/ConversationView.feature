@@ -291,11 +291,11 @@ Feature: Conversation View
     When I hover ping button
     Then I see correct ping button tooltip
     When I type shortcut combination to ping
-    Then I see ping message <PING>
+    Then I see <PING> action in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | PING   |
-      | user1Email | user1Password | user1Name | user2Name | pinged |
+      | Login      | Password      | Name      | Contact   | PING       |
+      | user1Email | user1Password | user1Name | user2Name | you pinged |
 
   @C1795 @regression
   Scenario Outline: Verify you start a call in a conversation when you press ⌥ ⌘ R (Mac) or alt + ctrl + R (Win)

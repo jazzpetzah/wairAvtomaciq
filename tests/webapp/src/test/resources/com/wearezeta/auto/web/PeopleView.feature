@@ -348,7 +348,7 @@ Feature: People View
     And I see my avatar on top of Contact list
     And I see Contact list with name <Name>,<Contact2>
     And I open conversation with <Name>,<Contact2>
-    And I see user <Name> action <Message2> for <Contact2>,<Contact1> in conversation
+    And I see <Message2> action for <Name>,<Contact2>,You in conversation
     And I open self profile
       And I click gear button on self profile page
       And I select Log out menu item on self profile page
@@ -357,7 +357,7 @@ Feature: People View
     And I Sign in using login <Contact2> and password <Password>
     And I see my avatar on top of Contact list
     And I see Contact list with name <Name>,<Contact1>
-    And I see user <Name> action <Message2> for <Contact2>,<Contact1> in conversation
+    And I see <Message2> action for <Name>,<Contact1>,You in conversation
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Message                         | Message2                    |
