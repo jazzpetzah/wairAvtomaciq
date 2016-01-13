@@ -84,26 +84,6 @@ public class ImageFullScreenPage extends IOSPage {
 		return fullScreenTimeStamp.getText();
 	}
 
-	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
-		IOSPage page = null;
-		switch (direction) {
-		case DOWN: {
-			break;
-		}
-		case UP: {
-			break;
-		}
-		case LEFT: {
-			break;
-		}
-		case RIGHT: {
-			break;
-		}
-		}
-		return page;
-	}
-
 	public void clickSketchButton() {
 		fullScreenSketchButton.click();
 	}

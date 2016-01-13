@@ -276,10 +276,8 @@ public class PersonalInfoPage extends IOSPage {
 		profileNameEditField.sendKeys(name + "\n");
 	}
 
-	public int nameIsMaxChars() {
-		String name = getUserNameValue();
-		int nameLength = name.length();
-		return nameLength;
+	public int getSelfNameLength() {
+		return getUserNameValue().length();
 	}
 
 	public void changeName(String newName) throws Exception {
@@ -323,28 +321,6 @@ public class PersonalInfoPage extends IOSPage {
 		return page;
 	}
 
-	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
-
-		IOSPage page = null;
-		switch (direction) {
-		case DOWN: {
-			break;
-		}
-		case UP: {
-			break;
-		}
-		case LEFT: {
-			break;
-		}
-		case RIGHT: {
-			page = new ContactListPage(this.getLazyDriver());
-			break;
-		}
-		}
-		return page;
-	}
-
 	public void tapOnSettingsButton() {
 		optionsSettingsButton.click();
 	}
@@ -361,8 +337,8 @@ public class PersonalInfoPage extends IOSPage {
 		soundAlertsPage.isDisplayed();
 	}
 
-	public void isDefaultSoundValOne() {
-		allSoundAlertsButton.getAttribute("value").equals("1");
+	public boolean isDefaultSoundValOne() {
+		return allSoundAlertsButton.getAttribute("value").equals("1");
 	}
 
 	public void clickOnHelpButton() throws Exception {
@@ -373,15 +349,6 @@ public class PersonalInfoPage extends IOSPage {
 	public boolean isSupportWebPageVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(getDriver(),
 				By.xpath(IOSLocators.xpathSettingsHelpHeader));
-	}
-
-	public void setAccentColor(int ord) throws Exception {
-		tapColorPickerByColorOrder(ord);
-	}
-
-	private void tapColorPickerByColorOrder(int ord) throws Exception {
-		DriverUtils.tapOnPercentOfElement(getDriver(), accentColorPicker, ord
-				* 2 * COLORS_COUNT - COLORS_COUNT, 50);
 	}
 
 	private void swipeColorPickerFromColorToColor(int startColor, int endColor)

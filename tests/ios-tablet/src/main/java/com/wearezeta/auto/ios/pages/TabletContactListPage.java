@@ -25,18 +25,16 @@ public class TabletContactListPage extends ContactListPage {
 	}
 	
 	@Override
-	public IOSPage swipeDown(int time) throws Exception {
+	public void swipeDown(int time) throws Exception {
 		Point coords = mainWindow.getLocation();
 		Dimension elementSize = mainWindow.getSize();
 		this.getDriver().swipe(coords.x + 50,
 				coords.y + 150, coords.x + 50,
 				coords.y + elementSize.height - 150, time);
-		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
 	@Override
-	public IOSPage swipeUp(int time) throws Exception {
+	public void swipeUp(int time) throws Exception {
 		DriverUtils.swipeUp(this.getDriver(), conversationListPage, time, 50, 70);
-		return returnBySwipe(SwipeDirection.UP);
 	}
 }

@@ -17,7 +17,7 @@ Feature: Conversation List
       | Name      | ArchivedUser |
       | user1Name | user2Name    |
 
-  @C352 @regression @rc @id1332 @id2171 @id2172
+  @C352 @regression @rc @id1332 @id2171 @id2172 @torun
   Scenario Outline: Verify archive a conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -277,8 +277,8 @@ Feature: Conversation List
     And I see 0 conversation entries
 
     Examples:
-      | Name      | Contact1  | Contact2  | Message | Picture     |
-      | user1Name | user2Name | user3Name | testing | testing.jpg |
+      | Name      | Contact1  | Contact2  | Picture     |
+      | user1Name | user2Name | user3Name | testing.jpg |
 
   @C853 @regression @id3319
   Scenario Outline: Verify closing the action menu by clicking on cancel on out of the menu

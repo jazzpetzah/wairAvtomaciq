@@ -200,36 +200,4 @@ public class IOSSimulatorHelper {
         Runtime.getRuntime().exec(
                 "/usr/bin/open -a Terminal " + swipeScriptPathPrefix + "Right.py");
     }
-
-    public static void swipeDialogPageDown() throws Exception {
-        Process process = Runtime.getRuntime()
-                .exec("/usr/bin/open -a Terminal " + swipeScriptPathPrefix
-                        + "DialogPageDown.py");
-        InputStream stream = process.getErrorStream();
-        BufferedReader br = new BufferedReader(new InputStreamReader(stream));
-        String s;
-        while ((s = br.readLine()) != null) {
-            log.debug(s);
-        }
-        stream.close();
-        log.debug("Process Code " + process.waitFor());
-    }
-
-    public static void swipeDialogPageUp() throws Exception {
-        Process process = Runtime.getRuntime().exec(
-                "/usr/bin/open -a Terminal " + swipeScriptPathPrefix + "DialogPageUp.py");
-        InputStream stream = process.getErrorStream();
-        BufferedReader br = new BufferedReader(new InputStreamReader(stream));
-        String s;
-        while ((s = br.readLine()) != null) {
-            log.debug(s);
-        }
-        stream.close();
-        log.debug("Process Code " + process.waitFor());
-    }
-
-    public static void swipeUp() throws Exception {
-        Runtime.getRuntime().exec(
-                "/usr/bin/open -a Terminal " + swipeScriptPathPrefix + "Up.py");
-    }
 }

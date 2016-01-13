@@ -5,14 +5,12 @@ import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
@@ -82,9 +80,7 @@ public class GroupChatPage extends DialogPage {
     }
 
     public boolean isYouRenamedConversationMessageVisible(String name) {
-        return getRenamedMessage().equals(
-                String.format(IOSLocators.nameYouRenamedConversationMessage,
-                        name));
+        return getRenamedMessage().equals(IOSLocators.nameYouRenamedConversationMessage);
     }
 
     @Override
@@ -109,7 +105,7 @@ public class GroupChatPage extends DialogPage {
     }
 
     @Override
-    public IOSPage swipeUp(int time) throws Exception {
+    public void swipeUp(int time) throws Exception {
         WebElement element = getDriver().findElement(
                 By.name(nameMainWindow));
 
@@ -118,30 +114,6 @@ public class GroupChatPage extends DialogPage {
         this.getDriver().swipe(coords.x + elementSize.width / 2,
                 coords.y + elementSize.height - 170,
                 coords.x + elementSize.width / 2, coords.y + 40, time);
-        return returnBySwipe(SwipeDirection.UP);
-    }
-
-    @Override
-    public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
-        IOSPage page = null;
-        switch (direction) {
-            case DOWN: {
-                page = this;
-                break;
-            }
-            case UP: {
-                page = new GroupChatInfoPage(this.getLazyDriver());
-                break;
-            }
-            case LEFT: {
-                break;
-            }
-            case RIGHT: {
-                page = new ContactListPage(this.getLazyDriver());
-                break;
-            }
-        }
-        return page;
     }
 
     public boolean isYouLeftMessageShown() throws Exception {

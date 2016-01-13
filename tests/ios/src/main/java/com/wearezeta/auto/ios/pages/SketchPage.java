@@ -22,12 +22,6 @@ public class SketchPage extends IOSPage{
 		super(driver);
 		// TODO Auto-generated constructor stub
 	}
-
-	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	public void sketchRandomLines() throws Exception {
 		for (int i=0; i<5; i++) {

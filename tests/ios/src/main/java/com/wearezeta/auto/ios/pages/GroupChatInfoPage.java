@@ -292,42 +292,12 @@ public class GroupChatInfoPage extends IOSPage {
                 By.name(IOSLocators.nameLeaveConversationAlert));
     }
 
-    @Override
-    public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
-        IOSPage page = null;
-        switch (direction) {
-            case DOWN: {
-                page = new GroupChatPage(this.getLazyDriver());
-                break;
-            }
-            case UP: {
-                break;
-            }
-            case LEFT: {
-                page = new GroupChatInfoPage(this.getLazyDriver());
-                break;
-            }
-            case RIGHT: {
-                page = new ContactListPage(this.getLazyDriver());
-                break;
-            }
-        }
-        return page;
-    }
-
-    public String getConversationName() {
-        return conversationName;
-    }
-
     public void clickOnAddButton() {
         addContactButton.click();
     }
 
-    public PeoplePickerPage clickOnAddDialogContinueButton() throws Throwable {
-        PeoplePickerPage page = null;
+    public void clickOnAddDialogContinueButton() throws Throwable {
         addDialogContinueButton.click();
-        page = new PeoplePickerPage(this.getLazyDriver());
-        return page;
     }
 
     public boolean waitForContactToDisappear(String contact) throws Exception {

@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.io.IOException;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
@@ -9,7 +8,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
@@ -79,12 +77,6 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 	public boolean isUserNameDisplayed(String name) throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(name), 10);
-	}
-
-	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public boolean isRemoveFromGroupConversationVisible() {

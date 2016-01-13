@@ -296,34 +296,10 @@ public class PeoplePickerPage extends IOSPage {
 		}
 	}
 
-	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
-		IOSPage page = null;
-		switch (direction) {
-		case DOWN: {
-			page = new ContactListPage(this.getLazyDriver());
-			break;
-		}
-		case UP: {
-			page = this;
-			break;
-		}
-		case LEFT: {
-			break;
-		}
-		case RIGHT: {
-			break;
-		}
-		}
-		return page;
-	}
-
 	private WebElement PickUser(String name) throws Exception {
-		WebElement user = null;
 		fillTextInPeoplePickerSearch(name);
 		waitUserPickerFindUser(name);
-		user = getDriver().findElementByName(name);
-		return user;
+		return getDriver().findElementByName(name);
 	}
 
 	public void selectUser(String name) throws Exception {

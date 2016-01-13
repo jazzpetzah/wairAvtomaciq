@@ -173,12 +173,6 @@ public class RegistrationPage extends IOSPage {
         super(lazyDriver);
     }
 
-    @Override
-    public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
     public void clickAgreeButton() throws Exception {
         DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                 By.name(IOSLocators.RegistrationPage.nameAgreeButton));

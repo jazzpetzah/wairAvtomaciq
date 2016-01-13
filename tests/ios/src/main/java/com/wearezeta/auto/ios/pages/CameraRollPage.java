@@ -49,7 +49,7 @@ public class CameraRollPage extends IOSPage {
 		try {
 			clickFirstLibraryFolder();
 		} catch (NoSuchElementException ex) {
-
+			// Ignore silently
 		}
 
 		clickFirstImage();
@@ -77,28 +77,6 @@ public class CameraRollPage extends IOSPage {
 		DriverUtils
 				.waitUntilElementClickable(getDriver(), confirmPictureButton);
 		confirmPictureButton.click();
-	}
-
-	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
-		IOSPage page = null;
-		switch (direction) {
-		case DOWN: {
-			break;
-		}
-		case UP: {
-			break;
-		}
-		case LEFT: {
-			page = new OtherUserPersonalInfoPage(this.getLazyDriver());
-			break;
-		}
-		case RIGHT: {
-			page = new ContactListPage(this.getLazyDriver());
-			break;
-		}
-		}
-		return page;
 	}
 
 	public void clickCameraRollSketchButton() {

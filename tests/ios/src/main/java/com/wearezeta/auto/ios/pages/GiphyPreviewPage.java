@@ -40,12 +40,6 @@ public class GiphyPreviewPage extends IOSPage {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public void tapSendGiphyButton() throws Exception {
 		giphySendButton.click();
 	}

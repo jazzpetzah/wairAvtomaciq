@@ -54,18 +54,14 @@ public class VideoPlayerPage extends IOSPage {
 		videoPlayerMainWindow.click();
 	}
 
-	public DialogPage clickVideoDoneButton() throws Exception {
-		DialogPage page = null;
+	public void clickVideoDoneButton() throws Exception {
 		DriverUtils.tapByCoordinates(this.getDriver(), videoDoneButton);
 		try {
 			DriverUtils.tapByCoordinates(this.getDriver(),
 					videoDoneButton);
 		} catch (WebDriverException e) {
-
+			// ignore silently
 		}
-		page = new DialogPage(this.getLazyDriver());
-		return page;
-
 	}
 
 	public void clickPauseButton() throws Exception {
@@ -76,27 +72,5 @@ public class VideoPlayerPage extends IOSPage {
 			tapVideoPage();
 			videoPauseButton.click();
 		}
-
 	}
-
-	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
-		IOSPage page = null;
-		switch (direction) {
-		case DOWN: {
-			break;
-		}
-		case UP: {
-			break;
-		}
-		case LEFT: {
-			break;
-		}
-		case RIGHT: {
-			break;
-		}
-		}
-		return page;
-	}
-
 }

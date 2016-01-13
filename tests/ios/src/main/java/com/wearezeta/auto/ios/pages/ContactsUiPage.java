@@ -25,12 +25,6 @@ public class ContactsUiPage extends IOSPage {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public boolean isSearchInputVisible() throws Exception {
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				searchInput);
@@ -48,13 +42,12 @@ public class ContactsUiPage extends IOSPage {
 
 	public boolean isContactPresentedInContactsList(String contact)
 			throws Exception {
-		boolean flag = DriverUtils
+		return DriverUtils
 				.waitUntilLocatorAppears(
 						getDriver(),
 						By.xpath(String
 								.format(IOSLocators.ContactsUIPage.xpathContactOnContactsUIList,
 										contact)), 5);
-		return flag;
 	}
 
 	public void tapInviteOthersButton() throws Exception {

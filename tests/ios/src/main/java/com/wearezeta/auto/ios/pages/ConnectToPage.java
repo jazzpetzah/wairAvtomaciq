@@ -46,12 +46,6 @@ public class ConnectToPage extends IOSPage {
         return connectOtherUserButton.isDisplayed();
     }
 
-    @Override
-    public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
     public boolean isConnectButtonVisible() throws Exception {
         return DriverUtils.waitUntilElementClickable(getDriver(),
                 connectOtherUserButton, 10);

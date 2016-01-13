@@ -60,12 +60,6 @@ public class StartedCallPage extends CallPage {
 		super(lazyDriver);
 	}
 
-	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public boolean isEndCallVisible() throws Exception {
 		DriverUtils.waitUntilLocatorAppears(getDriver(),
 				By.name(IOSLocators.StartedCallPage.nameEndCallButton));
@@ -91,28 +85,14 @@ public class StartedCallPage extends CallPage {
 		endCallButton.click();
 	}
 
-	public boolean isMuteCallButtonSelected() throws IllegalStateException,
-			Exception {
-		BufferedImage muteCallButtonIcon = null;
-		BufferedImage referenceImage = null;
-		double score = 0;
-
-		muteCallButtonIcon = getElementScreenshot(muteCallButton).orElseThrow(
+	public boolean isMuteCallButtonSelected() throws Exception {
+		BufferedImage muteCallButtonIcon = getElementScreenshot(muteCallButton).orElseThrow(
 				IllegalStateException::new);
-
-		referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
+		BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
 				+ "selectedMuteCallButton.png");
 
-		score = ImageUtil.getOverlapScore(referenceImage, muteCallButtonIcon,
+		double score = ImageUtil.getOverlapScore(referenceImage, muteCallButtonIcon,
 				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-
-		if (score <= MIN_ACCEPTABLE_SCORE) {
-			log.debug("Overlap Score is " + score
-					+ ". And minimal expected is " + MIN_ACCEPTABLE_SCORE);
-			return false;
-		}
-
-		return true;
+		return score > MIN_ACCEPTABLE_SCORE;
 	}
-
 }

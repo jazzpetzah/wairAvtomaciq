@@ -19,14 +19,12 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.ios.locators.IOSLocators;
-import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSKeyboard;
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public abstract class IOSPage extends BasePage {
@@ -106,40 +104,30 @@ public abstract class IOSPage extends BasePage {
 		super.close();
 	}
 
-	public abstract IOSPage returnBySwipe(SwipeDirection direction)
-			throws Exception;
-
-	public IOSPage swipeLeft(int time) throws Exception {
+	public void swipeLeft(int time) throws Exception {
 		DriverUtils.swipeLeft(this.getDriver(), mainWindow, time);
-		return returnBySwipe(SwipeDirection.LEFT);
 	}
 
-	public IOSPage swipeRight(int time) throws Exception {
+	public void swipeRight(int time) throws Exception {
 		DriverUtils.swipeRight(this.getDriver(), mainWindow, time);
-		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 
-	public IOSPage swipeRight(int time, int percentX, int percentY)
-			throws Exception {
+	public void swipeRight(int time, int percentX, int percentY) throws Exception {
 		DriverUtils.swipeRight(this.getDriver(), mainWindow, time, percentX,
 				percentY);
-		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 
-	public IOSPage swipeUp(int time) throws Exception {
+	public void swipeUp(int time) throws Exception {
 		DriverUtils.swipeUp(this.getDriver(), mainWindow, time);
-		return returnBySwipe(SwipeDirection.UP);
 	}
 
-	public IOSPage swipeDownSimulator() throws Exception {
+	public void swipeDownSimulator() throws Exception {
 		IOSSimulatorHelper.swipeDown();
 		Thread.sleep(SWIPE_DELAY);
-		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
-	public IOSPage swipeDown(int time) throws Exception {
+	public void swipeDown(int time) throws Exception {
 		DriverUtils.swipeDown(this.getDriver(), mainWindow, time);
-		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
 	public void smallScrollUp() throws Exception {

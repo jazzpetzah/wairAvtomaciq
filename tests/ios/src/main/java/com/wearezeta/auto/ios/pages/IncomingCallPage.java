@@ -53,12 +53,6 @@ public class IncomingCallPage extends CallPage {
 		super(lazyDriver);
 	}
 
-	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public boolean isCallingMessageVisible(String contact) throws Exception {
 		return getDriver().findElementByXPath(
 				String.format(

@@ -10,7 +10,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
@@ -177,14 +176,10 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 		return result;
 	}
 
-	public DialogPage clickOnStartDialogButton() throws Throwable {
-		DialogPage page = null;
-		this.getDriver().tap(
-				1,
+	public void clickOnStartDialogButton() throws Throwable {
+		this.getDriver().tap(1,
 				this.getDriver().findElementByName(
 						IOSLocators.nameOtherUserAddContactToChatButton), 1);
-		page = new DialogPage(this.getLazyDriver());
-		return page;
 	}
 
 	public void openConversationMenu() throws Exception {
@@ -217,27 +212,6 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 	public boolean isActionMenuVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(getDriver(),
 				By.xpath(IOSLocators.ConversationActionMenu.xpathActionMenu));
-	}
-
-	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
-		IOSPage page = null;
-		switch (direction) {
-		case DOWN: {
-			page = new DialogPage(this.getLazyDriver());
-			break;
-		}
-		case UP: {
-			return this;
-		}
-		case LEFT: {
-			break;
-		}
-		case RIGHT: {
-			break;
-		}
-		}
-		return page;
 	}
 
 }

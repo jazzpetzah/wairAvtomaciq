@@ -471,7 +471,7 @@ public class DialogPage extends IOSPage {
     }
 
     @Override
-    public IOSPage swipeUp(int time) throws Exception {
+    public void swipeUp(int time) throws Exception {
         WebElement element = this.getDriver().findElement(
                 By.name(nameMainWindow));
 
@@ -481,16 +481,10 @@ public class DialogPage extends IOSPage {
                 coords.y + elementSize.height - TEXT_INPUT_HEIGH,
                 coords.x + elementSize.width / 2, coords.y + TOP_BORDER_WIDTH,
                 time);
-        return returnBySwipe(SwipeDirection.UP);
     }
 
-    public DialogPage swipeDialogPageDown(int time) throws Exception {
-        if (!CommonUtils.getIsSimulatorFromConfig(IOSPage.class)) {
-            DriverUtils.swipeDown(this.getDriver(), conversationPage, time);
-        } else {
-            swipeDownSimulator();
-        }
-        return this;
+    public void swipeDialogPageDown(int time) throws Exception {
+        DriverUtils.swipeDown(this.getDriver(), conversationPage, time);
     }
 
     public OtherUserOnPendingProfilePage swipePendingDialogPageUp(int time)
@@ -505,30 +499,6 @@ public class DialogPage extends IOSPage {
                 coords.x + elementSize.width / 2, coords.y + TOP_BORDER_WIDTH,
                 time);
         return new OtherUserOnPendingProfilePage(this.getLazyDriver());
-    }
-
-    @Override
-    public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
-        IOSPage page = null;
-        switch (direction) {
-            case DOWN: {
-                page = new DialogPage(this.getLazyDriver());
-                break;
-            }
-            case UP: {
-                page = new OtherUserPersonalInfoPage(this.getLazyDriver());
-                break;
-            }
-            case LEFT: {
-                page = new OtherUserPersonalInfoPage(this.getLazyDriver());
-                break;
-            }
-            case RIGHT: {
-                page = new ContactListPage(this.getLazyDriver());
-                break;
-            }
-        }
-        return page;
     }
 
     public boolean isYoutubeContainerVisible() throws Exception {
@@ -593,11 +563,8 @@ public class DialogPage extends IOSPage {
                 By.name(IOSLocators.MediaBar.nameTitle));
     }
 
-    public ImageFullScreenPage tapImageToOpen() throws Throwable {
-        ImageFullScreenPage page = null;
+    public void tapImageToOpen() throws Exception {
         imageCell.click();
-        page = new ImageFullScreenPage(this.getLazyDriver());
-        return page;
     }
 
     public void tapHoldTextInput() throws Exception {
@@ -615,21 +582,15 @@ public class DialogPage extends IOSPage {
                         1000);
     }
 
-    public DialogPage scrollToBeginningOfConversation() throws Throwable,
-            Exception {
+    public DialogPage scrollToBeginningOfConversation() throws Exception {
         DialogPage page = null;
         int count = 0;
         if (youAddedCell.size() > 0) {
             boolean beginningConversation = youAddedCell.get(0).isDisplayed();
             while (!(beginningConversation) & (count < 5)) {
-                if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
-                    DriverUtils.swipeDown(this.getDriver(), conversationPage,
-                            500);
-                    page = this;
-                } else {
-                    swipeDownSimulator();
-                    page = this;
-                }
+                DriverUtils.swipeDown(this.getDriver(), conversationPage,
+                        500);
+                page = this;
                 beginningConversation = youAddedCell.get(0).isDisplayed();
                 count++;
             }
@@ -641,8 +602,7 @@ public class DialogPage extends IOSPage {
     private static final int IMAGE_IN_CONVERSATION_HEIGHT = 510;
     private static final int IMAGE_IN_IPAD_CONVERSATION_HEIGHT = 1020;
 
-    public BufferedImage takeImageScreenshot() throws Throwable {
-
+    public BufferedImage takeImageScreenshot() throws Exception {
         BufferedImage image;
 
         image = getElementScreenshot(imageCell).orElseThrow(

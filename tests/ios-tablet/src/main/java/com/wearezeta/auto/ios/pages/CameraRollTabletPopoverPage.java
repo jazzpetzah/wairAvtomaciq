@@ -56,11 +56,4 @@ public class CameraRollTabletPopoverPage extends CameraRollPage{
 	public void pressConfirmButtoniPad() throws Exception {
 		confirmPictureButton.click();
 	}
-
-
-	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

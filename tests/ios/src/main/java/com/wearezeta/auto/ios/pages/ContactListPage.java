@@ -178,10 +178,9 @@ public class ContactListPage extends IOSPage {
         return findNameInContactList(name).isPresent();
     }
 
-    public IOSPage swipeRightOnContact(String contact) throws Exception {
+    public void swipeRightOnContact(String contact) throws Exception {
         DriverUtils.swipeRight(this.getDriver(),
                 findNameInContactList(contact).orElseThrow(IllegalStateException::new), CONV_SWIPE_TIME, 90, 50);
-        return returnBySwipe(SwipeDirection.RIGHT);
     }
 
     public void swipeRightConversationToRevealActionButtons(String conversation)
@@ -210,28 +209,6 @@ public class ContactListPage extends IOSPage {
     public boolean waitForContactListToLoad() throws Exception {
         return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
                 By.xpath(IOSLocators.xpathMyUserInContactList));
-    }
-
-    @Override
-    public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
-
-        IOSPage page = null;
-        switch (direction) {
-            case DOWN: {
-                page = new PeoplePickerPage(this.getLazyDriver());
-                break;
-            }
-            case UP: {
-                break;
-            }
-            case LEFT: {
-                break;
-            }
-            case RIGHT: {
-                break;
-            }
-        }
-        return page;
     }
 
     public boolean isPendingRequestInContactList() throws Exception {
@@ -265,13 +242,12 @@ public class ContactListPage extends IOSPage {
     }
 
     @Override
-    public IOSPage swipeDown(int time) throws Exception {
+    public void swipeDown(int time) throws Exception {
         Point coords = mainWindow.getLocation();
         Dimension elementSize = mainWindow.getSize();
         this.getDriver().swipe(coords.x + elementSize.width / 2,
                 coords.y + 150, coords.x + elementSize.width / 2,
                 coords.y + elementSize.height - 150, time);
-        return returnBySwipe(SwipeDirection.DOWN);
     }
 
     public boolean conversationWithUsersPresented(String name1, String name2,

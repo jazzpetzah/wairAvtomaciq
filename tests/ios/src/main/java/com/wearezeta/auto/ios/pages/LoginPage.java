@@ -281,22 +281,14 @@ public class LoginPage extends IOSPage {
                 By.name(IOSLocators.ContactListPage.nameSelfButton), 60);
     }
 
-    @Override
-    public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
-        // no need to swipe
-        return null;
-    }
-
-    public Boolean isLoginButtonVisible() {
-
-        return (ExpectedConditions.visibilityOf(signInButton) != null);
+    public boolean isLoginButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameSignInButton));
     }
 
     public void tapHoldEmailInput() throws Exception {
         message = getDriver().findElement(By.name(IOSLocators.nameLoginField))
                 .getText();
-        this.getDriver().tap(
-                1,
+        this.getDriver().tap(1,
                 this.getDriver().findElement(
                         By.name(IOSLocators.nameLoginField)), 1000);
     }
@@ -328,7 +320,7 @@ public class LoginPage extends IOSPage {
                 By.name(IOSLocators.nameWrongCredentialsNotification));
     }
 
-      public PersonalInfoPage tapChangePasswordButton() throws Exception {
+    public PersonalInfoPage tapChangePasswordButton() throws Exception {
         changePasswordButtonSignIn.click();
         return new PersonalInfoPage(this.getLazyDriver());
     }
