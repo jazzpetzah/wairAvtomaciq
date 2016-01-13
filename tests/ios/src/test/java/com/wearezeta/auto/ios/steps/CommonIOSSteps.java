@@ -435,11 +435,10 @@ public class CommonIOSSteps {
         commonSteps.AcceptAllIncomingConnectionRequests(userToNameAlias);
     }
 
-    @When("^Contact (.*) ping conversation (.*)$")
+    @When("^User (.*) pings conversation (.*)$")
     public void UserPingedConversation(String pingFromUserNameAlias,
                                        String dstConversationName) throws Exception {
-        commonSteps.UserPingedConversation(pingFromUserNameAlias,
-                dstConversationName);
+        commonSteps.UserPingedConversation(pingFromUserNameAlias, dstConversationName);
     }
 
     @Given("^User (.*) sends (\\d+) (encrypted )?messages? to (user|group conversation) (.*)$")

@@ -539,17 +539,6 @@ public class DialogPageSteps {
                 score >= IOSConstants.MIN_IMG_SCORE);
     }
 
-    @When("^User (.*) Ping in chat (.*) by BackEnd$")
-    public void UserPingInChatByBE(String contact, String conversationName)
-            throws Exception {
-        ClientUser yourСontact = usrMgr.findUserByNameOrNameAlias(contact);
-        conversationName = usrMgr.replaceAliasesOccurences(conversationName,
-                FindBy.NAME_ALIAS);
-        pingId = BackendAPIWrappers.sendPingToConversation(yourСontact,
-                conversationName);
-        Thread.sleep(1000);
-    }
-
     @Then("^I see (.*) icon in conversation$")
     public void ThenIseeIcon(String iconLabel) throws Exception {
         getDialogPage().waitPingAnimation();

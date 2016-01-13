@@ -134,10 +134,10 @@ Feature: Conversation List
     Given User <Contact> change name to <NewName>
     Given User <Name> change accent color to <Color>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    And I remember the state of the first conversation cell
-    When Contact <Contact> ping conversation <Name>
-    And I wait for 10 seconds
+    Given I see Contact list with my name <Name>
+    Given I remember the state of the first conversation cell
+    Given User <Contact> pings conversation <Name>
+    When I wait for 10 seconds
     Then I see change of state for first conversation cell
 
     Examples:
@@ -152,10 +152,10 @@ Feature: Conversation List
     Given User <Name> change accent color to <Color>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    And I remember the state of the first conversation cell
-    When Contact <Contact> ping conversation <Name>
-    And I wait for 10 seconds
+    Given I see Contact list with my name <Name>
+    Given I remember the state of the first conversation cell
+    Given User <Contact> pings conversation <Name>
+    When I wait for 10 seconds
     Then I see change of state for first conversation cell
 
     Examples:
@@ -209,7 +209,7 @@ Feature: Conversation List
     Given User <Contact> sends <Number> encrypted messages to user Myself
     Given User <Contact3> sends <Number> encrypted messages to user Myself
     And I see first item in contact list named <Contact3>
-    When Contact <Contact2> ping conversation <Name>
+    Given User <Contact2> pings conversation <Name>
     And I see first item in contact list named <Contact2>
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     Then I see first item in contact list named <Contact>
@@ -227,8 +227,8 @@ Feature: Conversation List
     Given I see Contact list with my name <Name>
     Given User <Contact> sends <Number> encrypted messages to user Myself
     Given User <Contact3> sends <Number> encrypted messages to user Myself
-    And I see first item in contact list named <Contact3>
-    When Contact <Contact2> ping conversation <Name>
+    Given I see first item in contact list named <Contact3>
+    Given User <Contact2> pings conversation <Name>
     And I see first item in contact list named <Contact2>
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     Then I see first item in contact list named <Contact>
@@ -593,12 +593,12 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given Contact <Name> ping conversation <GroupChatName>
     Given I Sign in on tablet using my email
     Given I see Contact list with my name <Name>
-    Given User <Name> sends 1 encrypted message to group conversation <GroupChatName>
+    Given User Myself pings conversation <GroupChatName>
+    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
-    Given User <Name> sends encrypted image <Image> to group conversation <GroupChatName>
+    Given User Myself sends encrypted image <Image> to group conversation <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I click delete menu button
     And I confirm delete conversation content
@@ -621,13 +621,13 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given Contact <Name> ping conversation <GroupChatName>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see Contact list with my name <Name>
+    Given User Myself pings conversation <GroupChatName>
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
-    Given User <Name> sends encrypted image <Image> to group conversation <GroupChatName>
+    Given User Myself sends encrypted image <Image> to group conversation <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I click delete menu button
     And I confirm delete conversation content

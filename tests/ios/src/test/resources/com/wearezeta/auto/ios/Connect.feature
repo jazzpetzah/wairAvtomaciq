@@ -146,9 +146,9 @@ Feature: Connect
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
-    And Contact <Contact> ping conversation <Name>
+    Given User <Contact> pings conversation <Name>
     Given User <Contact> sends 1 encrypted message to user Myself
     And I wait for 10 seconds
     Then I dont see conversation <Contact> in contact list

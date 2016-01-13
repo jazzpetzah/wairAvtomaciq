@@ -433,54 +433,6 @@ public final class BackendAPIWrappers {
                 conversationName, ownerUser.getName()));
     }
 
-    public static String[] getConversationsAsStringArray(ClientUser user)
-            throws Exception {
-        JSONArray jsonArray = getConversations(user);
-        ArrayList<String> result = new ArrayList<String>();
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject conversation = (JSONObject) jsonArray.get(i);
-            String name = "null";
-            if (conversation.get("name") instanceof String) {
-                name = conversation.getString("name");
-            }
-            if (name.equals("null") || name.equals(user.getName())) {
-                conversation = (JSONObject) conversation.get("members");
-                JSONArray otherArray = (JSONArray) conversation.get("others");
-                if (otherArray.length() == 1) {
-                    String id = ((JSONObject) otherArray.get(0))
-                            .getString("id");
-                    String contactName = getUserNameByID(id, user);
-                    result.add(contactName);
-                } else {
-                    String contactName = "";
-                    for (int j = 0; j < otherArray.length(); j++) {
-                        String id = ((JSONObject) otherArray.get(j))
-                                .getString("id");
-                        contactName += getUserNameByID(id, user);
-                        if (j < otherArray.length() - 1) {
-                            contactName += ", ";
-                        }
-                    }
-                    result.add(contactName);
-                }
-            } else {
-                result.add(name);
-            }
-        }
-        return (String[]) result.toArray(new String[0]);
-    }
-
-    public static BufferedImage getPictureAssetFromConversation(
-            ClientUser fromUser, ClientUser toUser) throws Exception {
-        return getPictureAssetFromConversation(fromUser, toUser, 0);
-    }
-
-    public static BufferedImage getLastPictureAssetFromConversation(
-            ClientUser fromUser, ClientUser toUser) throws Exception {
-        return getPictureAssetFromConversation(fromUser, toUser,
-                Integer.MAX_VALUE);
-    }
-
     private static BufferedImage getPictureAssetFromConversation(
             ClientUser fromUser, ClientUser toUser, int index) throws Exception {
         BufferedImage result = null;

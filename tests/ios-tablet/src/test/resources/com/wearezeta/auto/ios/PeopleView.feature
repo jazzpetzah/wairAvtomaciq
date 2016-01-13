@@ -767,9 +767,9 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given Contact <Name> ping conversation <GroupChatName>
     Given I Sign in on tablet using my email
     Given I see Contact list with my name <Name>
+    Given User Myself pings conversation <GroupChatName>
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Given User Myself sends encrypted image <Image> to group conversation <GroupChatName>
@@ -794,10 +794,10 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given Contact <Name> ping conversation <GroupChatName>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see Contact list with my name <Name>
+    Given User Myself pings conversation <GroupChatName>
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Given User Myself sends encrypted image <Image> to group conversation <GroupChatName>
@@ -821,9 +821,9 @@ Feature: People View
   Scenario Outline: Verify removing the content from 1-to-1 via participant view [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
-    Given Contact <Name> ping conversation <Contact1>
     Given I Sign in on tablet using my email
     Given I see Contact list with my name <Name>
+    Given User Myself pings conversation <Contact1>
     Given User Myself sends 1 encrypted message to user <Contact1>
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
@@ -850,10 +850,10 @@ Feature: People View
   Scenario Outline: Verify removing the content from 1-to-1 via participant view [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
-    Given Contact <Name> ping conversation <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see Contact list with my name <Name>
+    Given User Myself pings conversation <Contact1>
     Given User Myself sends 1 encrypted message to user <Contact1>
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given User <Contact1> sends encrypted image <Image> to single user conversation Myself

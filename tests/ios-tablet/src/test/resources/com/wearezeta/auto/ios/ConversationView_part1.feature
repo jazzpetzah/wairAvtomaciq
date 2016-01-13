@@ -112,7 +112,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact1>
-    And User <Contact1> Ping in chat <Name> by BackEnd
+    And User <Contact1> pings conversation <Name>
     And I wait for 3 seconds
     Then I see User <Contact1> Pinged message in the conversation
     Then I see <Action1> icon in conversation
@@ -131,7 +131,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact1>
-    And User <Contact1> Ping in chat <Name> by BackEnd
+    And User <Contact1> pings conversation <Name>
     And I wait for 3 seconds
     Then I see User <Contact1> Pinged message in the conversation
     Then I see <Action1> icon in conversation
@@ -150,7 +150,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I tap on group chat with name <GroupChatName>
-    And User <Contact1> Ping in chat <GroupChatName> by BackEnd
+    And User <Contact1> pings conversation <GroupChatName>
     And I wait for 3 seconds
     Then I see User <Contact1> Pinged message in the conversation
     Then I see <Action1> icon in conversation
@@ -170,7 +170,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I tap on group chat with name <GroupChatName>
-    And User <Contact1> Ping in chat <GroupChatName> by BackEnd
+    And User <Contact1> pings conversation <GroupChatName>
     And I wait for 3 seconds
     Then I see User <Contact1> Pinged message in the conversation
     Then I see <Action1> icon in conversation

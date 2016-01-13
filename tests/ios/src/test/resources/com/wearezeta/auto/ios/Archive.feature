@@ -16,7 +16,7 @@ Feature: Archive
     Then I see first item in contact list named <ArchivedUser>
     When Myself archived conversation with <ArchivedUser>
     And I dont see conversation <ArchivedUser> in contact list
-    And Contact <ArchivedUser> ping conversation <Name>
+    And User <ArchivedUser> pings conversation <Name>
     Then I see first item in contact list named <ArchivedUser>
     When Myself archived conversation with <ArchivedUser>
     And I dont see conversation <ArchivedUser> in contact list
@@ -42,7 +42,7 @@ Feature: Archive
     Then I dont see conversation <ArchivedUser> in contact list
     Given User <ArchivedUser> sends encrypted image <Picture> to single user conversation Myself
     Then I dont see conversation <ArchivedUser> in contact list
-    When Contact <ArchivedUser> ping conversation <Name>
+    When User <ArchivedUser> pings conversation <Name>
     Then I see first item in contact list named <ArchivedUser>
     When Myself archived conversation with <ArchivedUser>
     And I dont see conversation <ArchivedUser> in contact list

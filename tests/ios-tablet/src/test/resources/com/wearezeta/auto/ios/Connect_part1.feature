@@ -280,7 +280,7 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see Contact list with my name <Name>
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
-    Given Contact <Contact> ping conversation <Name>
+    Given User <Contact> pings conversation <Name>
     Given User <Contact> sends 1 encrypted message to user Myself
     And I wait for 10 seconds
     Then I dont see conversation <Contact> in contact list
@@ -314,7 +314,7 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see Contact list with my name <Name>
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
-    Given Contact <Contact> ping conversation <Name>
+    Given User <Contact> pings conversation <Name>
     Given User <Contact> sends 1 encrypted message to user Myself
     When I wait for 10 seconds
     Then I dont see conversation <Contact> in contact list
