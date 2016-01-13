@@ -231,11 +231,11 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
-    Given User <Name> sent message <Message> to conversation <GroupChatName>
     Given I sign in using my email or phone number
     Given I see Contact list with my name <Name>
     Given User <Contact1> sends encrypted image <Picture> to group conversation <GroupChatName>
+    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
+    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on contact name <GroupChatName>
     Then I see new photo in the dialog
     When I return to the chat list
@@ -250,18 +250,18 @@ Feature: Conversation List
     And I see 0 conversation entries
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | Message | Picture     |
-      | user1Name | user2Name | user3Name | TESTCHAT      | testing | testing.jpg |
+      | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
+      | user1Name | user2Name | user3Name | TESTCHAT      | testing.jpg |
 
   @C842 @regression @rc @id3318
   Scenario Outline: Verify removing the history from 1-to1 conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given User <Contact1> sent message <Message> to conversation <Name>
-    Given User <Name> sent message <Message> to conversation <Contact1>
     Given I sign in using my email or phone number
     Given I see Contact list with my name <Name>
     Given User <Contact1> sends encrypted image <Picture> to single user conversation Myself
+    Given User <Contact1> sends 1 encrypted message to user <Name>
+    Given User Myself sends 1 encrypted message to user <Contact1>
     When I tap on contact name <Contact1>
     Then I see new photo in the dialog
     When I return to the chat list
@@ -337,10 +337,10 @@ Feature: Conversation List
   Scenario Outline: Verify that deleted conversation isn't going to archive
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Contact1> sent message <Message> to conversation <Name>
-    Given User <Name> sent message <Message> to conversation <Contact1>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact1> sends 1 encrypted message to user <Name>
+    Given User Myself sends 1 encrypted message to user <Contact1>
     When I swipe right on a <Contact1>
     And I click delete menu button
     And I confirm delete conversation content
@@ -349,8 +349,8 @@ Feature: Conversation List
     Then I dont see conversation <Contact1> in contact list
 
     Examples:
-      | Name      | Contact1  | Message |
-      | user1Name | user2Name | testing |
+      | Name      | Contact1  |
+      | user1Name | user2Name |
 
   @C844 @staging @id3960
   Scenario Outline: Verify deleting 1-to-1 conversation from archive
@@ -378,7 +378,7 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Name> sent message <Message> to conversation <GroupChatName>
+    Given User <Name> sends 1 encrypted message to group conversation <GroupChatName>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I swipe right on a <GroupChatName>
@@ -394,20 +394,20 @@ Feature: Conversation List
     Then I dont see conversation <GroupChatName> in contact list
 
     Examples:
-      | Name      | Contact1  | Contact2  | Message | GroupChatName |
-      | user1Name | user2Name | user3Name | testing | ForDeletion   |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | ForDeletion   |
 
   @C846 @rc @regression @id3968
   Scenario Outline: Verify posting in a group conversation without content
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Name> sent message <Message> to conversation <GroupChatName>
     Given Contact <Name> ping conversation <GroupChatName>
-    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
     Given I sign in using my email or phone number
     Given I see Contact list with my name <Name>
+    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     Given User Myself sends encrypted image <Picture> to group conversation <GroupChatName>
+    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I click delete menu button
     And I confirm delete conversation content
@@ -421,8 +421,8 @@ Feature: Conversation List
     Then I see 1 default message in the dialog
 
     Examples:
-      | Name      | Contact1  | Contact2  | Message | GroupChatName | Picture     |
-      | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
+      | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
+      | user1Name | user2Name | user3Name | ForDeletion   | testing.jpg |
 
   @C847 @regression @id4005
   Scenario Outline: Verify deleting the history from kicked out conversation

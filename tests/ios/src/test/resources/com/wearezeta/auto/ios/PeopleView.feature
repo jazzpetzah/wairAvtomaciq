@@ -420,10 +420,10 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
-    Given User <Name> sent message <Message> to conversation <GroupChatName>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
+    Given User Myself sends 1 message to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button
@@ -434,17 +434,17 @@ Feature: People View
     Then I dont see conversation <GroupChatName> in contact list
 
     Examples:
-      | Name      | Contact1  | Contact2  | Message | GroupChatName |
-      | user1Name | user2Name | user3Name | testing | ForDeletion   |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | ForDeletion   |
 
   @C1831 @regression @rc @id3972 @ZIOS-5247
   Scenario Outline: Verify removing the content and leaving from the group conversation via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Name> sent message <Message> to conversation <GroupChatName>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Name> sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button
@@ -468,11 +468,11 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Name> sent message <Message> to conversation <GroupChatName>
     Given Contact <Name> ping conversation <GroupChatName>
-    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
     Given I sign in using my email or phone number
     Given I see Contact list with my name <Name>
+    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
+    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Given User Myself sends encrypted image <Picture> to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
@@ -487,18 +487,18 @@ Feature: People View
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:
-      | Name      | Contact1  | Contact2  | Message | GroupChatName | Picture     |
-      | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
+      | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
+      | user1Name | user2Name | user3Name | ForDeletion   | testing.jpg |
 
   @C1832 @regression @rc @id3973
   Scenario Outline: Verify removing the content from 1-to-1 via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
-    Given User <Name> sent message <Message> to conversation <Contact1>
     Given Contact <Name> ping conversation <Contact1>
-    Given User <Contact1> sent message <Message> to conversation <Name>
     Given I sign in using my email or phone number
     Given I see Contact list with my name <Name>
+    Given User <Name> sens 1 encrypted message to user <Contact1>
+    Given User <Contact1> sends 1 encrypted message to user Myself
     Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -516,18 +516,18 @@ Feature: People View
     Then I see the only message in dialog is system message CONNECTED TO <Contact1>
 
     Examples:
-      | Name      | Contact1  | Message | Image       |
-      | user1Name | user2Name | testing | testing.jpg |
+      | Name      | Contact1  | Image       |
+      | user1Name | user2Name | testing.jpg |
 
   @C849 @regression @id3320
   Scenario Outline: Verify that left conversation is shown in the Archive
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Name> sent message <Message> to conversation <GroupChatName>
     Given I sign in using my email or phone number
     Given I see Contact list with my name <Name>
     Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
+    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I see 3 conversation entries

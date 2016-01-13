@@ -469,10 +469,10 @@ Feature: Conversation View
   Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Name> sent long message to conversation <Contact>
-    Given User <Name> sent message <SoundCloudLink> to conversation <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends 10 encrypted messages to user <Contact>
+    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
     And I see dialog page
     And I scroll to the end of the conversation
@@ -490,10 +490,10 @@ Feature: Conversation View
   Scenario Outline: Verify the Media Bar dissapears after playback finishes - SoundCloud [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Name> sent long message to conversation <Contact>
-    Given User <Name> sent message <SoundCloudLink> to conversation <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends 10 encrypted messages to user <Contact>
+    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
     Then I see dialog page
     And I tap on text input to scroll to the end
@@ -617,10 +617,10 @@ Feature: Conversation View
   Scenario Outline: Play/pause SoundCloud media link from the media bar [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Name> sent long message to conversation <Contact>
-    Given User <Name> sent message <SoundCloudLink> to conversation <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends 10 encrypted messages to user <Contact>
+    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input to scroll to the end
@@ -644,11 +644,11 @@ Feature: Conversation View
   Scenario Outline: Play/pause SoundCloud media link from the media bar [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Name> sent long message to conversation <Contact>
-    Given User <Name> sent message <SoundCloudLink> to conversation <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends 10 encrypted messages to user <Contact>
+    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input to scroll to the end
@@ -671,10 +671,10 @@ Feature: Conversation View
   Scenario Outline: Verify the Media Bar disappears when playing media is back in view - SoundCloud [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Name> sent long message to conversation <Contact1>
-    Given User <Name> sent message <SoundCloudLink> to conversation <Contact1>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends 10 encrypted messages to user <Contact>
+    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact1>
     And I see dialog page
     And I tap on text input to scroll to the end
@@ -692,11 +692,11 @@ Feature: Conversation View
   Scenario Outline: Verify the Media Bar disappears when playing media is back in view - SoundCloud [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Name> sent long message to conversation <Contact1>
-    Given User <Name> sent message <SoundCloudLink> to conversation <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends 10 encrypted messages to user <Contact1>
+    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact1>
     When I tap on contact name <Contact1>
     And I see dialog page
     And I tap on text input to scroll to the end

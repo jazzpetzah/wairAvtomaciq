@@ -442,17 +442,55 @@ public class CommonIOSSteps {
                 dstConversationName);
     }
 
-    @When("^User (.*) sends (\\d+) (encrypted )?messages? to user (.*)$")
-    public void UserSendMessageToConversation(String msgFromUserNameAlias,
+    @Given("^User (.*) sends (\\d+) (encrypted )?messages? to (user|group conversation) (.*)$")
+    public void UserSendXMessagesToConversation(String msgFromUserNameAlias,
                                               int msgsCount, String areEncrypted,
-                                              String dstUserNameAlias) throws Exception {
+                                              String conversationType,
+                                              String conversationName) throws Exception {
         for (int i = 0; i < msgsCount; i++) {
-            if (areEncrypted == null) {
-                commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
-                        dstUserNameAlias, DEFAULT_AUTOMATION_MESSAGE);
+            if (conversationType.equals("user")) {
+                // 1:1 conversation
+                if (areEncrypted == null) {
+                    commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
+                            conversationName, DEFAULT_AUTOMATION_MESSAGE);
+                } else {
+                    commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias,
+                            conversationName, DEFAULT_AUTOMATION_MESSAGE);
+                }
             } else {
-                commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias,
-                        dstUserNameAlias, DEFAULT_AUTOMATION_MESSAGE);
+                // group conversation
+                if (areEncrypted == null) {
+                    commonSteps.UserSentMessageToConversation(msgFromUserNameAlias,
+                            conversationName, DEFAULT_AUTOMATION_MESSAGE);
+                } else {
+                    commonSteps.UserSentOtrMessageToConversation(msgFromUserNameAlias,
+                            conversationName, DEFAULT_AUTOMATION_MESSAGE);
+                }
+            }
+        }
+    }
+
+    @Given("^User (.*) sends (encrypted )?message \"(.*)\" to (user|group conversation) (.*)$")
+    public void UserSentMessageToConversation(String userFromNameAlias,
+                                              String areEncrypted, String msg,
+                                              String conversationType, String conversationName) throws Exception {
+        if (conversationType.equals("user")) {
+            // 1:1 conversation
+            if (areEncrypted == null) {
+                commonSteps.UserSentMessageToConversation(userFromNameAlias,
+                        conversationName, msg);
+            } else {
+                commonSteps.UserSentOtrMessageToConversation(userFromNameAlias,
+                        conversationName, msg);
+            }
+        } else {
+            // group conversation
+            if (areEncrypted == null) {
+                commonSteps.UserSentMessageToConversation(userFromNameAlias,
+                        conversationName, msg);
+            } else {
+                commonSteps.UserSentOtrMessageToConversation(userFromNameAlias,
+                        conversationName, msg);
             }
         }
     }
@@ -530,7 +568,7 @@ public class CommonIOSSteps {
         commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
     }
 
-    @When("^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)")
+    @Given("^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)")
     public void ContactSendImageToConversation(String imageSenderUserNameAlias,
                                                String isEncrypted,
                                                String imageFileName, String conversationType,
@@ -637,37 +675,6 @@ public class CommonIOSSteps {
     @When("^I swipe right in current window$")
     public void ISwipeRightInCurrentWindow() throws Exception {
         pagesCollecton.getCommonPage().swipeRight(1000);
-    }
-
-    /**
-     * Send message to a conversation
-     *
-     * @param userFromNameAlias user who want to mute conversation
-     * @param message           message to send
-     * @param conversationName  the name of existing conversation to send the message to
-     * @throws Exception
-     * @step. ^User (.*) sent message (.*) to conversation (.*)$
-     */
-    @When("^User (.*) sent message (.*) to conversation (.*)$")
-    public void UserSentMessageToConversation(String userFromNameAlias,
-                                              String message, String conversationName) throws Exception {
-        commonSteps.UserSentMessageToConversation(userFromNameAlias,
-                conversationName, message);
-    }
-
-    /**
-     * Send long message to a conversation
-     *
-     * @param userFromNameAlias user who want to mute conversation
-     * @param conversationName  the name of existing conversation to send the message to
-     * @throws Exception
-     * @step. ^User (.*) sent long message to conversation (.*)$
-     */
-    @When("^User (.*) sent long message to conversation (.*)$")
-    public void UserSentLongMessageToConversation(String userFromNameAlias,
-                                                  String conversationName) throws Exception {
-        UserSentMessageToConversation(userFromNameAlias,
-                IOSConstants.LONG_MESSAGE, conversationName);
     }
 
     /**

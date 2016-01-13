@@ -380,10 +380,10 @@ Feature: Conversation List
   Scenario Outline: Verify play/pause controls can change playing media state - SoundCloud [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> sent message <SoundCloudLink> to conversation <Name>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap media link
@@ -510,10 +510,10 @@ Feature: Conversation List
   Scenario Outline: Verify that deleted conversation isn't going to archive [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Contact1> sent message <Message> to conversation <Name>
-    Given User <Name> sent message <Message> to conversation <Contact1>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given User Myself sends 1 encrypted message to user <Contact1>
     When I swipe right on a <Contact1>
     And I click delete menu button
     And I confirm delete conversation content
@@ -522,18 +522,18 @@ Feature: Conversation List
     Then I dont see conversation <Contact1> in contact list
 
     Examples:
-      | Name      | Contact1  | Message |
-      | user1Name | user2Name | testing |
+      | Name      | Contact1  |
+      | user1Name | user2Name |
 
   @C2545 @regression @id3956
   Scenario Outline: Verify that deleted conversation isn't going to archive [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Contact1> sent message <Message> to conversation <Name>
-    Given User <Name> sent message <Message> to conversation <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given User Myself sends 1 encrypted message to user <Contact1>
     When I swipe right on a <Contact1>
     And I click delete menu button
     And I confirm delete conversation content
@@ -542,8 +542,8 @@ Feature: Conversation List
     Then I dont see conversation <Contact1> in contact list
 
     Examples:
-      | Name      | Contact1  | Message |
-      | user1Name | user2Name | testing |
+      | Name      | Contact1  |
+      | user1Name | user2Name |
 
   @C2546 @staging @id3961
   Scenario Outline: Verify deleting 1-to-1 conversation from archive [PORTRAIT]
@@ -585,19 +585,19 @@ Feature: Conversation List
     Then I dont see conversation <Contact1> in contact list
 
     Examples:
-      | Name      | Contact1  | Contact2  | Message | GroupChatName |
-      | user1Name | user2Name | user3Name | testing | ForDeletion   |
+      | Name      | Contact1  |
+      | user1Name | user2Name |
 
   @C2552 @staging @id3969
   Scenario Outline: Verify posting in a group conversation without content [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Name> sent message <Message> to conversation <GroupChatName>
     Given Contact <Name> ping conversation <GroupChatName>
-    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
     Given I Sign in on tablet using my email
     Given I see Contact list with my name <Name>
+    Given User <Name> sends 1 encrypted message to group conversation <GroupChatName>
+    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Name> sends encrypted image <Image> to group conversation <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I click delete menu button
@@ -613,20 +613,20 @@ Feature: Conversation List
     And I see 2 conversation entries
 
     Examples:
-      | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
-      | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
+      | Name      | Contact1  | Contact2  | GroupChatName | Image       |
+      | user1Name | user2Name | user3Name | ForDeletion   | testing.jpg |
 
   @C2553 @regression @id3970
   Scenario Outline: Verify posting in a group conversation without content [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Name> sent message <Message> to conversation <GroupChatName>
     Given Contact <Name> ping conversation <GroupChatName>
-    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see Contact list with my name <Name>
+    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
+    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Name> sends encrypted image <Image> to group conversation <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I click delete menu button
@@ -642,8 +642,8 @@ Feature: Conversation List
     And I see 2 conversation entries
 
     Examples:
-      | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
-      | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
+      | Name      | Contact1  | Contact2  | GroupChatName | Image       |
+      | user1Name | user2Name | user3Name | ForDeletion   | testing.jpg |
 
   @C2542 @regression @id4018
   Scenario Outline: Verify canceling blocking person [PORTRAIT]
@@ -730,9 +730,9 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Name> sent message <Message> to conversation <GroupChatName>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I click delete menu button
     And I select Also Leave option on Delete conversation dialog
@@ -746,18 +746,18 @@ Feature: Conversation List
     Then I dont see conversation <GroupChatName> in contact list
 
     Examples:
-      | Name      | Contact1  | Contact2  | Message | GroupChatName |
-      | user1Name | user2Name | user3Name | testing | ForDeletion   |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | ForDeletion   |
 
   @C2551 @regression @id3967 @ZIOS-5247
   Scenario Outline: Verify removing the content and leaving from the group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Name> sent message <Message> to conversation <GroupChatName>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Name> sends 1 encrypted message to group conversation <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I click delete menu button
     And I select Also Leave option on Delete conversation dialog
@@ -771,8 +771,8 @@ Feature: Conversation List
     Then I dont see conversation <GroupChatName> in contact list
 
     Examples:
-      | Name      | Contact1  | Contact2  | Message | GroupChatName |
-      | user1Name | user2Name | user3Name | testing | ForDeletion   |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | ForDeletion   |
 
   @C2554 @regression @id4006
   Scenario Outline: Verify deleting the history from kicked out conversation [POTRAIT]

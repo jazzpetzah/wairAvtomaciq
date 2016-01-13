@@ -363,9 +363,9 @@ Feature: Conversation View
   Scenario Outline: Verify player is displayed for vimeo links with video IDs [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Name> sent message <VimeoLink> to conversation <Contact1>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends encrypted message "<VimeoLink>" to user <Contact1>
     When I tap on contact name <Contact1>
     And I see dialog page
     Then I see vimeo link <VimeoLink> and media in dialog
@@ -378,10 +378,10 @@ Feature: Conversation View
   Scenario Outline: Verify player is displayed for vimeo links with video IDs [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Name> sent message <VimeoLink> to conversation <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends encrypted message "<VimeoLink>" to user <Contact1>
     When I tap on contact name <Contact1>
     And I see dialog page
     Then I see vimeo link <VimeoLink> and media in dialog
@@ -394,9 +394,9 @@ Feature: Conversation View
   Scenario Outline: Verify player isn't displayed for vimeo links without video IDs [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Name> sent message <VimeoLink> to conversation <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends encrypted message "<VimeoLink>" to user <Contact>
     When I tap on contact name <Contact>
     And I see dialog page
     Then I see vimeo link <VimeoLink> but NO media player
@@ -409,10 +409,10 @@ Feature: Conversation View
   Scenario Outline: Verify player isn't displayed for vimeo links without video IDs [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Name> sent message <VimeoLink> to conversation <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends encrypted message "<VimeoLink>" to user <Contact>
     When I tap on contact name <Contact>
     And I see dialog page
     Then I see vimeo link <VimeoLink> but NO media player
@@ -425,9 +425,9 @@ Feature: Conversation View
   Scenario Outline: Verify sending link and text in one message and opening the link [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Name> sent message <MessageAndLink> to conversation <Contact1>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends encrypted message "<MessageAndLink>" to user <Contact1>
     When I tap on contact name <Contact1>
     And I see dialog page
     And I see Link <MessageAndLink> in dialog
@@ -442,10 +442,10 @@ Feature: Conversation View
   Scenario Outline: Verify sending link and text in one message and opening the link [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Name> sent message <MessageAndLink> to conversation <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends encrypted message "<MessageAndLink>" to user <Contact1>
     When I tap on contact name <Contact1>
     And I see dialog page
     And I see Link <MessageAndLink> in dialog
@@ -460,9 +460,9 @@ Feature: Conversation View
   Scenario Outline: Verify sending link and opening it [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Name> sent message <Link> to conversation <Contact1>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends encrypted message "<Link>" to user <Contact1>
     When I tap on contact name <Contact1>
     And I see dialog page
     And I see Link <Link> in dialog
@@ -477,10 +477,10 @@ Feature: Conversation View
   Scenario Outline: Verify sending link and opening it [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Name> sent message <Link> to conversation <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends encrypted message "<Link>" to user <Contact1>
     When I tap on contact name <Contact1>
     And I see dialog page
     And I see Link <Link> in dialog
@@ -584,9 +584,9 @@ Feature: Conversation View
   Scenario Outline: Verify posting in a 1-to-1 conversation without content [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Name> sent message <Message> to conversation <Contact1>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends 1 encrypted message to user <Contact1>
     When I swipe right on a <Contact1>
     And I click delete menu button
     And I confirm delete conversation content
@@ -603,17 +603,17 @@ Feature: Conversation View
     And I see 1 default message in the dialog
 
     Examples:
-      | Name      | Contact1  | Message |
-      | user1Name | user2Name | testing |
+      | Name      | Contact1  |
+      | user1Name | user2Name |
 
   @C2549 @regression @id3965 @ZIOS-5063
   Scenario Outline: Verify posting in a 1-to-1 conversation without content [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Name> sent message <Message> to conversation <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends 1 encrypted message to user <Contact1>
     When I swipe right on a <Contact1>
     And I click delete menu button
     And I confirm delete conversation content
@@ -630,8 +630,8 @@ Feature: Conversation View
     And I see 1 default message in the dialog
 
     Examples:
-      | Name      | Contact1  | Message |
-      | user1Name | user2Name | testing |
+      | Name      | Contact1  |
+      | user1Name | user2Name |
 
   @C2617 @regression @id2409
   Scenario Outline: Verify downloading images in fullscreen [PORTRAIT]
@@ -693,16 +693,16 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>, <Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>, <Contact2>
     Given User <Name> blocks user <Contact1>
-    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
     Given I Sign in on tablet using my email
     Given I see Contact list with my name <Name>
+    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends image <Picture> to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     Then I see 3 conversation entries
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | Message                | Picture     |
-      | user1Name | user2Name | user3Name | Caramba!      | He-hey, do you see it? | testing.jpg |
+      | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
+      | user1Name | user2Name | user3Name | Caramba!      | testing.jpg |
 
   @C2460 @regression @id4085
   Scenario Outline: Verify you still receive messages from blocked person in a group chat [LANDSCAPE]
@@ -710,17 +710,17 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>, <Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>, <Contact2>
     Given User <Name> blocks user <Contact1>
-    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see Contact list with my name <Name>
+    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends encrypted image <Picture> to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     Then I see 3 conversation entries
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | Message                | Picture     |
-      | user1Name | user2Name | user3Name | Caramba!      | He-hey, do you see it? | testing.jpg |
+      | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
+      | user1Name | user2Name | user3Name | Caramba!      | testing.jpg |
 
   @C2589 @staging @id2381
   Scenario Outline: Verify cursor swiping is disabled when you scroll back into a conversation [PORTRAIT]

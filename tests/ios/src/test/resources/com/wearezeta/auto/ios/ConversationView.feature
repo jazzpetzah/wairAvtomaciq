@@ -85,10 +85,10 @@ Feature: Conversation View
   Scenario Outline: Play/pause SoundCloud media link from the media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Name> sent long message to conversation <Contact>
-    Given User <Name> sent message <SoundCloudLink> to conversation <Contact>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends 10 encrypted messages to user <Contact>
+    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
@@ -112,10 +112,10 @@ Feature: Conversation View
   Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Name> sent long message to conversation <Contact>
-    Given User <Name> sent message <SoundCloudLink> to conversation <Contact>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends 10 encrypted messages to user <Contact>
+    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
@@ -135,10 +135,10 @@ Feature: Conversation View
   Scenario Outline: Verify the Media Bar dissapears after playback finishes - SoundCloud
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Name> sent long message to conversation <Contact>
-    Given User <Name> sent message <SoundCloudLink> to conversation <Contact>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends 10 encrypted messages to user <Contact>
+    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input to scroll to the end
@@ -159,10 +159,10 @@ Feature: Conversation View
   Scenario Outline: Verify the Media Bar disappears when playing media is back in view - SoundCloud
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Name> sent long message to conversation <Contact1>
-    Given User <Name> sent message <SoundCloudLink> to conversation <Contact1>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Name> sends 10 encrypted messages to user <Contact1>
+    Given User <Name> sends encrypted message "<SoundCloudLink>" to user <Contact1>
     When I tap on contact name <Contact1>
     And I see dialog page
     And I tap on text input to scroll to the end
@@ -408,12 +408,12 @@ Feature: Conversation View
   Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation - SoundCloud
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given User <Name> sent long message to conversation <Contact1>
-    Given User <Name> sent message <SoundCloudLink> to conversation <Contact1>
-    Given User <Name> sent long message to conversation <Contact2>
-    Given User <Name> sent message <SoundCloudLink> to conversation <Contact2>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends 10 encrypted messages to user <Contact1>
+    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact1>
+    Given User Myself sends 10 encrypted messages to user <Contact2>
+    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact2>
     When I tap on contact name <Contact1>
     And I see dialog page
     And I tap on text input
@@ -563,15 +563,15 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
-    And Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
     And I see dialog page
     Then I see new photo in the dialog
 
     Examples:
-      | Name      | Contact   | Picture     | ConversationType |
-      | user1Name | user2Name | testing.jpg | single user      |
+      | Name      | Contact   | Picture     |
+      | user1Name | user2Name | testing.jpg |
 
   @C951 @regression @rc @id2976
   Scenario Outline: I can send a sketch
@@ -687,9 +687,9 @@ Feature: Conversation View
   Scenario Outline: Verify player isn't displayed for vimeo links without video IDs
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Name> sent message <VimeoLink> to conversation <Contact>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Name> sends encrypted message "<VimeoLink>" to user <Contact>
     When I tap on contact name <Contact>
     And I see dialog page
     Then I see vimeo link <VimeoLink> but NO media player
@@ -702,9 +702,9 @@ Feature: Conversation View
   Scenario Outline: Verify player is displayed for vimeo links with video IDs
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Name> sent message <VimeoLink> to conversation <Contact1>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Name> sends encrypted message "<VimeoLink>" to user <Contact1>
     When I tap on contact name <Contact1>
     And I see dialog page
     Then I see vimeo link <VimeoLink> and media in dialog
@@ -717,9 +717,9 @@ Feature: Conversation View
   Scenario Outline: Verify sending link and opening it
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Name> sent message <Link> to conversation <Contact1>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Name> sends encrypted message "<Link>" to user <Contact1>
     When I tap on contact name <Contact1>
     And I see dialog page
     And I see Link <Link> in dialog
@@ -734,9 +734,9 @@ Feature: Conversation View
   Scenario Outline: Verify sending link and text in one message and opening the link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Name> sent message <MessageAndLink> to conversation <Contact1>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Name> sends encrypted message "<MessageAndLink>" to user <Contact1>
     When I tap on contact name <Contact1>
     And I see dialog page
     And I see Link <MessageAndLink> in dialog
@@ -774,9 +774,9 @@ Feature: Conversation View
   Scenario Outline: Verify posting in a 1-to-1 conversation without content
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Name> sent message <Message> to conversation <Contact1>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Name> sends 1 encrypted message to user <Contact1>
     When I swipe right on a <Contact1>
     And I click delete menu button
     And I confirm delete conversation content
@@ -792,8 +792,8 @@ Feature: Conversation View
     And I see 1 default message in the dialog
 
     Examples:
-      | Name      | Contact1  | Message |
-      | user1Name | user2Name | testing |
+      | Name      | Contact1  |
+      | user1Name | user2Name |
 
   @C879 @regression @id1158
   Scenario Outline: Verify possibility to copy image in the conversation view
@@ -839,8 +839,8 @@ Feature: Conversation View
     Then I verify image in dialog is same as template <Picture>
 
     Examples:
-      | Login      | Password      | Name      | Contact   | Picture     |
-      | user1Email | user1Password | user1Name | user2Name | testing.jpg |
+      | Name      | Contact   | Picture     |
+      | user1Name | user2Name | testing.jpg |
 
   @C27 @regression @id715
   Scenario Outline: Verify you still receive messages from blocked person in a group chat
@@ -848,24 +848,24 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>, <Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>, <Contact2>
     Given User <Name> blocks user <Contact1>
-    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
-    Given User <Contact1> sends encrypted image <Picture> to group conversation <GroupChatName>
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I tap on group chat with name <GroupChatName>
+    Given I see Contact list with my name <Name>
+    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
+    Given User <Contact1> sends encrypted image <Picture> to group conversation <GroupChatName>
+    When I tap on group chat with name <GroupChatName>
     Then I see 3 conversation entries
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | Message                | Picture     |
-      | user1Name | user2Name | user3Name | Caramba!      | He-hey, do you see it? | testing.jpg |
+      | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
+      | user1Name | user2Name | user3Name | Caramba!      | testing.jpg |
 
   @C884 @staging @id1245
   Scenario Outline: Verify cursor swiping is disabled when you scroll back into a conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Name> sent long message to conversation <Contact>
     Given I sign in using my email or phone number
     Given I see Contact list with my name <Name>
+    Given User Myself sends 10 encrypted messages to user <Contact>
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     When I tap on contact name <Contact>
     And I tap on text input
