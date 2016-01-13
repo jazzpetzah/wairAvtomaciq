@@ -238,6 +238,9 @@ public final class WebAppLocators {
 		// messages (including images, text, missed call notifications, pings)
 		public static final String cssMessage = "[data-uie-name='item-message']";
 
+		// message header contains action description
+		public static String cssMessageHeader = cssMessage + " .message-header";
+
 		public static final String cssLastMessage = "[data-uie-name='item-message']:last-child";
 
 		public static final String cssSecondLastMessage = "[data-uie-name='item-message']:nth-last-child(2)";
