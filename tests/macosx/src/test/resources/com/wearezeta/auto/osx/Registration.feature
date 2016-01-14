@@ -12,8 +12,10 @@ Feature: Registration
     And I see email <Email> on Verification page
     When I activate user by URL
     And User <Name> is Me without avatar
+    Then I see Welcome page
+    When I confirm keeping picture on Welcome page
     Then I see user name on self profile page <Name>
-    Then I see user email on self profile page <Email>
+    And I see user email on self profile page <Email>
 
     Examples: 
       | Email      | Password      | Name      |
