@@ -607,26 +607,6 @@ public class ConversationPageSteps {
 	}
 
 	/**
-	 * Verify that conversation contains missed call from contact
-	 *
-	 * @step. ^I see conversation with missed call from (.*)$
-	 *
-	 * @param contact
-	 *            contact name string
-	 *
-	 * @throws Exception
-	 */
-	@Then("^I see conversation with missed call from (.*)$")
-	public void ThenISeeConversationWithMissedCallFrom(String contact)
-			throws Exception {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName()
-				.toUpperCase();
-		Assert.assertEquals(contact + " CALLED",
-				webappPagesCollection.getPage(ConversationPage.class)
-						.getMissedCallMessage());
-	}
-
-	/**
 	 * Verify that conversation contains my missed call
 	 *
 	 * @step. ^I see conversation with my missed call$
