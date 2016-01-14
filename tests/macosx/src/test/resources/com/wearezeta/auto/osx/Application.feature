@@ -1,7 +1,7 @@
 Feature: Application
 
-  @C2335 @smoke
-  Scenario Outline: Save size and position of window and check for maximum/minimum size
+#  @C2335 @smoke
+  Scenario Outline: Save size and position of window and check for maximum minimum size
     Given There are 1 users where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
