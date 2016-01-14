@@ -63,8 +63,7 @@ public class SEBridge {
 
     private static void verifyPathExists(String path) {
         if (!new File(path).exists()) {
-            throw new IllegalArgumentException(String.format(
-                    "The file %s is not accessible", path));
+            throw new IllegalArgumentException(String.format("The file %s is not accessible", path));
         }
     }
 
@@ -84,7 +83,11 @@ public class SEBridge {
     public void sendImage(ClientUser userFrom, String convId, String path)
             throws Exception {
         verifyPathExists(path);
-        getDevicePool().getRandomDevice(userFrom).sendImage(convId, path);
+        getOrAddRandomDevice(userFrom).sendImage(convId, path);
+    }
+
+    public void sendPing(ClientUser userFrom, String convId) throws Exception {
+        getOrAddRandomDevice(userFrom).sendPing(convId);
     }
 
     private synchronized static void shutdown() {

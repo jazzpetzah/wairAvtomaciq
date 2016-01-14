@@ -123,7 +123,7 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     Given I see Contact list with my name <Name>
     Given I remember the state of the first conversation cell
-    Given User <Contact> pings conversation <Name>
+    Given User <Contact> securely pings conversation <Name>
     When I wait for 10 seconds
     Then I see change of state for first conversation cell
 
@@ -139,7 +139,7 @@ Feature: Conversation List
     And I see Contact list with my name <Name>
     Given User <Contact3> sends <Number> encrypted messages to user Myself
     And I see first item in contact list named <Contact3>
-    Given User <Contact2> pings conversation <Name>
+    Given User <Contact2> securely pings conversation <Name>
     And I see first item in contact list named <Contact2>
     Given User <Contact1> sends encrypted image <Picture> to single user conversation Myself
     Then I see first item in contact list named <Contact1>
@@ -404,7 +404,7 @@ Feature: Conversation List
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see Contact list with my name <Name>
-    Given User Myself pings conversation <GroupChatName>
+    Given User Myself securely pings conversation <GroupChatName>
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     Given User Myself sends encrypted image <Picture> to group conversation <GroupChatName>
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>

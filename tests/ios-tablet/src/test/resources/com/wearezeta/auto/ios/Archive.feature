@@ -16,7 +16,7 @@ Feature: Archive
     Then I see first item in contact list named <ArchivedUser>
     When Myself archived conversation with <ArchivedUser>
     And I dont see conversation <ArchivedUser> in contact list
-    Given User <ArchivedUser> pings conversation <Name>
+    Given User <ArchivedUser> securely pings conversation <Name>
     Then I see first item in contact list named <ArchivedUser>
     When Myself archived conversation with <ArchivedUser>
     And I dont see conversation <ArchivedUser> in contact list
@@ -46,7 +46,7 @@ Feature: Archive
     Then I see first item in contact list named <ArchivedUser>
     When Myself archived conversation with <ArchivedUser>
     And I dont see conversation <ArchivedUser> in contact list
-    Given User <ArchivedUser> pings conversation <Name>
+    Given User <ArchivedUser> securely pings conversation <Name>
     Then I see first item in contact list named <ArchivedUser>
     When Myself archived conversation with <ArchivedUser>
     And I dont see conversation <ArchivedUser> in contact list
@@ -72,7 +72,7 @@ Feature: Archive
     Then I dont see conversation <ArchivedUser> in contact list
     Given User <ArchivedUser> sends encrypted image <Picture> to single user conversation Myself
     Then I dont see conversation <ArchivedUser> in contact list
-    When User <ArchivedUser> pings conversation <Name>
+    When User <ArchivedUser> securely pings conversation <Name>
     Then I see first item in contact list named <ArchivedUser>
     When Myself archived conversation with <ArchivedUser>
     And I dont see conversation <ArchivedUser> in contact list
@@ -99,7 +99,7 @@ Feature: Archive
     Then I dont see conversation <ArchivedUser> in contact list
     Given User <ArchivedUser> sends encrypted image <Picture> to single user conversation Myself
     Then I dont see conversation <ArchivedUser> in contact list
-    When User <ArchivedUser> pings conversation <Name>
+    When User <ArchivedUser> securely pings conversation <Name>
     Then I see first item in contact list named <ArchivedUser>
     When Myself archived conversation with <ArchivedUser>
     And I dont see conversation <ArchivedUser> in contact list

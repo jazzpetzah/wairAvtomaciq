@@ -470,7 +470,7 @@ Feature: People View
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see Contact list with my name <Name>
-    Given User Myself pings conversation <GroupChatName>
+    Given User Myself securely pings conversation <GroupChatName>
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Given User Myself sends encrypted image <Picture> to group conversation <GroupChatName>
@@ -496,7 +496,7 @@ Feature: People View
     Given Myself is connected to all other users
     Given I sign in using my email or phone number
     Given I see Contact list with my name <Name>
-    Given User Myself pings conversation <Contact1>
+    Given User Myself securely pings conversation <Contact1>
     Given User Myself sends 1 encrypted message to user <Contact1>
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given User <Contact1> sends encrypted image <Image> to single user conversation Myself

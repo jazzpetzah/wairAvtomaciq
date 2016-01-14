@@ -435,10 +435,14 @@ public class CommonIOSSteps {
         commonSteps.AcceptAllIncomingConnectionRequests(userToNameAlias);
     }
 
-    @When("^User (.*) pings conversation (.*)$")
-    public void UserPingedConversation(String pingFromUserNameAlias,
+    @Given("^User (.*) (securely )?pings conversation (.*)$")
+    public void UserPingedConversation(String pingFromUserNameAlias, String isSecure,
                                        String dstConversationName) throws Exception {
-        commonSteps.UserPingedConversation(pingFromUserNameAlias, dstConversationName);
+        if (isSecure == null) {
+            commonSteps.UserPingedConversation(pingFromUserNameAlias, dstConversationName);
+        } else {
+            commonSteps.UserPingedConversationOtr(pingFromUserNameAlias, dstConversationName);
+        }
     }
 
     @Given("^User (.*) sends (\\d+) (encrypted )?messages? to (user|group conversation) (.*)$")
@@ -492,13 +496,6 @@ public class CommonIOSSteps {
                         conversationName, msg);
             }
         }
-    }
-
-    @When("^Contact (.*) hotping conversation (.*)$")
-    public void UserHotPingedConversation(String hotPingFromUserNameAlias,
-                                          String dstConversationName) throws Exception {
-        commonSteps.UserHotPingedConversation(hotPingFromUserNameAlias,
-                dstConversationName);
     }
 
     @When("^User (\\w+) change avatar picture to (.*)$")

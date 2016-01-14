@@ -148,7 +148,7 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see Contact list with my name <Name>
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
-    Given User <Contact> pings conversation <Name>
+    Given User <Contact> securely pings conversation <Name>
     Given User <Contact> sends 1 encrypted message to user Myself
     And I wait for 10 seconds
     Then I dont see conversation <Contact> in contact list
