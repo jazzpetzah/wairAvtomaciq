@@ -111,6 +111,12 @@ public class ConversationPage extends WebPage {
 	@FindBy(css = WebAppLocators.ConversationPage.cssLabelOnOutgoingCall)
 	private WebElement labelOnOutgoingCall;
 
+	@FindBy(css = WebAppLocators.ConversationPage.cssConnectedMessageUser)
+	private WebElement connectedMessageUser;
+
+	@FindBy(css = WebAppLocators.ConversationPage.cssConnectedMessageLabel)
+	private WebElement connectedMessageLabel;
+
 	public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -682,5 +688,13 @@ public class ConversationPage extends WebPage {
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
 				joinCallBar) : "Join call bar has not been shown";
 		joinCallBar.click();
+	}
+
+	public Object getConnectedMessageUser() {
+		return connectedMessageUser.getText();
+	}
+
+	public Object getConnectedMessageLabel() {
+		return connectedMessageLabel.getText();
 	}
 }

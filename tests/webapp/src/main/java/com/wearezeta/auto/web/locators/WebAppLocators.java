@@ -323,6 +323,9 @@ public final class WebAppLocators {
 		public static final Function<String, String> cssUserAvatarById = id -> String
 				.format("[user-id='%s'] .user-avatar-border", id);
 
+		public static final String cssConnectedMessageUser = ".message-connected-header";
+
+		public static final String cssConnectedMessageLabel = ".message-connected .label-xs";
 	}
 
 	public static final class ConnectToPage {
