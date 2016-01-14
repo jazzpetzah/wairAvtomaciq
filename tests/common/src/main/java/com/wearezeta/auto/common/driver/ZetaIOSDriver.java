@@ -1,7 +1,6 @@
 package com.wearezeta.auto.common.driver;
 
 import java.net.URL;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
 
@@ -9,7 +8,6 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableMap;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebElement;
 
@@ -46,12 +44,23 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
         this.isSessionLost = isSessionLost;
     }
 
+    private ExecutorService pool;
+
+    private synchronized ExecutorService getPool() {
+        if (this.pool == null) {
+            this.pool = Executors.newFixedThreadPool(1);
+        }
+        return this.pool;
+    }
+
+    private boolean isSessionLostBecause(Throwable e) {
+        return (e instanceof UnreachableBrowserException) || (e instanceof SessionNotFoundException);
+    }
+
     @Override
     protected Response execute(String command) {
         return this.execute(command, ImmutableMap.<String, Object>of());
     }
-
-    private final ExecutorService executor = Executors.newFixedThreadPool(1);
 
     @Override
     public Response execute(String driverCommand, Map<String, ?> parameters) {
@@ -61,13 +70,12 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
             return null;
         }
         final Callable<Response> task = () -> super.execute(driverCommand, parameters);
-        final Future<Response> future = executor.submit(task);
+        final Future<Response> future = getPool().submit(task);
         try {
             return future.get(MAX_COMMAND_DURATION, TimeUnit.SECONDS);
         } catch (Exception e) {
             if (e instanceof ExecutionException) {
-                if ((e.getCause() instanceof UnreachableBrowserException) ||
-                        (e.getCause() instanceof SessionNotFoundException)) {
+                if (isSessionLostBecause(e.getCause())) {
                     setSessionLost(true);
                 }
                 Throwables.propagate(e.getCause());

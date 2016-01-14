@@ -271,7 +271,18 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
     private static final long DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS = 2000;
     private static final String SERVER_SIDE_ERROR_SIGNATURE = "unknown server-side error";
 
-    private final ExecutorService executor = Executors.newFixedThreadPool(1);
+    private ExecutorService pool;
+
+    private synchronized ExecutorService getPool() {
+        if (this.pool == null) {
+            this.pool = Executors.newFixedThreadPool(1);
+        }
+        return this.pool;
+    }
+
+    private boolean isSessionLostBecause(Throwable e) {
+        return (e instanceof UnreachableBrowserException) || (e instanceof SessionNotFoundException);
+    }
 
     /**
      * This is workaround for some Selendroid issues when driver just generates
@@ -289,50 +300,50 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
             return null;
         }
         final Callable<Response> task = () -> super.execute(driverCommand, parameters);
-        final Future<Response> future = executor.submit(task);
+        final Future<Response> future = getPool().submit(task);
         try {
             return future.get(MAX_COMMAND_DURATION, TimeUnit.SECONDS);
         } catch (Exception e) {
             if (e instanceof ExecutionException) {
-                if (e.getCause() instanceof WebDriverException) {
-                    if ((e.getCause() instanceof UnreachableBrowserException) ||
-                            (e.getCause() instanceof SessionNotFoundException)) {
-                        setSessionLost(true);
-                    } else {
-                        if (driverCommand.equals(MobileCommand.HIDE_KEYBOARD)) {
-                            log.debug("The keyboard seems to be already hidden.");
-                            final Response response = new Response();
-                            response.setSessionId(this.getSessionId().toString());
-                            response.setStatus(HttpStatus.SC_OK);
-                            return response;
-                        }
-                        if (e.getCause().getMessage().contains(SERVER_SIDE_ERROR_SIGNATURE)) {
-                            final long millisecondsStarted = System.currentTimeMillis();
-                            while (System.currentTimeMillis() - millisecondsStarted <=
-                                    DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS) {
-                                try {
-                                    Thread.sleep(300);
-                                } catch (InterruptedException e1) {
-                                    Throwables.propagate(e1);
-                                }
-                                try {
-                                    return super.execute(driverCommand, parameters);
-                                } catch (WebDriverException e1) {
-                                    if (!e1.getMessage().contains(SERVER_SIDE_ERROR_SIGNATURE)) {
-                                        throw e1;
-                                    }
-                                }
-                            } // while have time
-                        } // if getMessage contains
-                        log.error(String.format(
-                                "Android driver is still not available after %s seconds timeout. " +
-                                        "The recent webdriver command was '%s'",
-                                DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS / 1000,
-                                driverCommand));
+                if (isSessionLostBecause(e.getCause())) {
+                    setSessionLost(true);
+                } else {
+                    if (driverCommand.equals(MobileCommand.HIDE_KEYBOARD)) {
+                        log.debug("The keyboard seems to be already hidden.");
+                        final Response response = new Response();
+                        response.setSessionId(this.getSessionId().toString());
+                        response.setStatus(HttpStatus.SC_OK);
+                        return response;
                     }
+                    if (e.getCause().getMessage().contains(SERVER_SIDE_ERROR_SIGNATURE)) {
+                        final long millisecondsStarted = System.currentTimeMillis();
+                        while (System.currentTimeMillis() - millisecondsStarted <=
+                                DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS) {
+                            try {
+                                Thread.sleep(300);
+                            } catch (InterruptedException e1) {
+                                Throwables.propagate(e1);
+                            }
+                            try {
+                                return super.execute(driverCommand, parameters);
+                            } catch (WebDriverException e1) {
+                                if (isSessionLostBecause(e1)) {
+                                    setSessionLost(true);
+                                }
+                                if (!e1.getMessage().contains(SERVER_SIDE_ERROR_SIGNATURE)) {
+                                    throw e1;
+                                }
+                            }
+                        } // while have time
+                    } // if getMessage contains
+                    log.error(String.format(
+                            "Android driver is still not available after %s seconds timeout. " +
+                                    "The recent webdriver command was '%s'",
+                            DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS / 1000, driverCommand));
                 }
                 Throwables.propagate(e.getCause());
             } else {
+                // if !(e instanceof ExecutionException)
                 setSessionLost(true);
                 Throwables.propagate(e);
             }
