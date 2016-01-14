@@ -4,6 +4,7 @@ Feature: Self Profile
   Scenario Outline: Change user picture with gallery image
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     When I tap on my avatar
     And I tap on personal info screen
@@ -23,6 +24,7 @@ Feature: Self Profile
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I see dialog page
@@ -37,7 +39,8 @@ Feature: Self Profile
   Scenario Outline: I can change my name
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
-    And I see Contact list with no contacts
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with no contacts
     When I tap on my avatar
     And I see personal info page
     And I tap on my name
@@ -54,6 +57,7 @@ Feature: Self Profile
   Scenario Outline: Change user picture using camera
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     When I tap on my avatar
     # Wait until self profile image is loaded into UI
@@ -75,6 +79,7 @@ Feature: Self Profile
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I see dialog page

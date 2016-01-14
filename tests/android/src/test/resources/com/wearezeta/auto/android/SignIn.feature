@@ -8,6 +8,7 @@ Feature: Sign In
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Log in button
+    And I accept First Time overlay as soon as it is visible
     Then I see Contact list with no contacts
 
     Examples:
@@ -18,6 +19,7 @@ Feature: Sign In
   Scenario Outline: Sign in to Wire by phone
     Given There are 1 users where <Name> is me
     When I sign in using my phone number
+    And I accept First Time overlay as soon as it is visible
     Then I see Contact list with no contacts
 
     Examples:
@@ -28,6 +30,7 @@ Feature: Sign In
   Scenario Outline: (AN-3115) I can change sign in user
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     When I tap on my avatar
     Then I see personal info page
@@ -74,6 +77,7 @@ Feature: Sign In
     When I accept the error message
     And I disable Airplane mode on the device
     And I press Log in button
+    And I accept First Time overlay as soon as it is visible
     Then I see Contact list with contacts
 
     Examples:
