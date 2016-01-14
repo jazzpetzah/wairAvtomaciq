@@ -218,4 +218,38 @@ public class MainWirePage extends OSXPage {
 		robot.keyRelease(KeyEvent.VK_C);
 		robot.keyRelease(KeyEvent.VK_META);
 	}
+
+	public void pressShortCutToMute() throws Exception {
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_ALT);
+		robot.keyPress(KeyEvent.VK_S);
+		robot.keyRelease(KeyEvent.VK_S);
+		robot.keyRelease(KeyEvent.VK_ALT);
+		robot.keyRelease(KeyEvent.VK_META);
+	}
+
+	public void pressShortCutToArchive() throws Exception {
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_D);
+		robot.keyRelease(KeyEvent.VK_D);
+		robot.keyRelease(KeyEvent.VK_META);
+	}
+
+	public void pressShortCutForNextConv() throws Exception {
+		robot.keyPress(KeyEvent.VK_ALT);
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_UP);
+		robot.keyRelease(KeyEvent.VK_UP);
+		robot.keyRelease(KeyEvent.VK_META);
+		robot.keyRelease(KeyEvent.VK_ALT);
+	}
+
+	public void pressShortCutForPrevConv() throws Exception {
+		robot.keyPress(KeyEvent.VK_ALT);
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_DOWN);
+		robot.keyRelease(KeyEvent.VK_DOWN);
+		robot.keyRelease(KeyEvent.VK_META);
+		robot.keyRelease(KeyEvent.VK_ALT);
+	}
 }

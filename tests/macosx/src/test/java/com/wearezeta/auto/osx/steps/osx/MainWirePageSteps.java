@@ -2,7 +2,9 @@ package com.wearezeta.auto.osx.steps.osx;
 
 import com.wearezeta.auto.osx.pages.osx.MainWirePage;
 import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
+import com.wearezeta.auto.web.pages.ContactListPage;
 import com.wearezeta.auto.web.pages.ConversationPage;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -333,4 +335,63 @@ public class MainWirePageSteps {
 				.pressShortCutForCopy();
 	}
 
+	/**
+	 * Types shortcut combination to open preferences
+	 *
+	 * @step. ^I type shortcut combination to open preferences$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to open preferences$")
+	public void ITypeShortcutCombinationToOpenPreference() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutForPreferences();
+	}
+
+	/**
+	 * Types shortcut combination to mute or unmute a conversation
+	 * 
+	 * @step. ^I type shortcut combination to mute or unmute a conversation$
+	 * @throws Exception
+	 */
+	@When("^I type shortcut combination to mute or unmute a conversation$")
+	public void ITypeShortcutCombinationToMuteOrUnmute() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutToMute();
+	}
+
+	/**
+	 * Types shortcut combination to archive a conversation
+	 * 
+	 * @step. ^I type shortcut combination to archive a conversation$
+	 * @throws Exception
+	 */
+	@When("^I type shortcut combination to archive a conversation$")
+	public void ITypeShortcutCombinationToArchive() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutToArchive();
+	}
+
+	/**
+	 * Types shortcut combination for the next conversation
+	 *
+	 * @step. ^I type shortcut combination for next conversation$
+	 * @throws Exception
+	 */
+	@When("^I type shortcut combination for next conversation$")
+	public void ITypeShortcutCombinationForNextConv() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutForNextConv();
+	}
+
+	/**
+	 * Types shortcut combination for the previous conversation
+	 *
+	 * @step. ^I type shortcut combination for previous conversation$
+	 * @throws Exception
+	 */
+	@When("^I type shortcut combination for previous conversation$")
+	public void ITypeShortcutCombinationForPrevConv() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutForPrevConv();
+	}
 }

@@ -9,7 +9,7 @@ import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.osx.pages.webapp.ContactListPage;
+import com.wearezeta.auto.web.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
@@ -35,30 +35,6 @@ public class ContactListPageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	private static final int ARCHIVE_BTN_VISILITY_TIMEOUT = 5; // seconds
-
-	/**
-	 * Opens the right-click menu for a specific conversation
-	 *
-	 * @param name
-	 *            the conversation name to open the context menu for
-	 *
-	 * @step. ^I open context menu of conversation (.*)$
-	 *
-	 * @throws java.lang.Exception
-	 * @throws AssertionError
-	 *             if contact list is not loaded or avatar does not appear at
-	 *             the top of Contact List
-	 */
-	@Given("^I open context menu of conversation (.*)$")
-	public void IOpenContextMenuOfContact(String name) throws Exception {
-		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		ContactListPage contactListPage = webappPagesCollection
-				.getPage(ContactListPage.class);
-		Assert.assertTrue("No contact list loaded.",
-				contactListPage.waitForContactListVisible());
-		contactListPage.openContextMenuForContact(name);
-
-	}
 
 	/**
 	 * Checks that contact list is loaded and waits for profile avatar to be
@@ -724,54 +700,6 @@ public class ContactListPageSteps {
 		// webappPagesCollection
 		// .getPage(ContactListPage.class).getMuteButtonToolTip(),
 		// equalTo(tooltip));
-	}
-
-	/**
-	 * Types shortcut combination to mute or unmute a conversation
-	 * 
-	 * @step. ^I type shortcut combination to mute or unmute a conversation$
-	 * @throws Exception
-	 */
-	@When("^I type shortcut combination to mute or unmute a conversation$")
-	public void ITypeShortcutCombinationToMuteOrUnmute() throws Exception {
-		webappPagesCollection.getPage(ContactListPage.class)
-				.pressShortCutToMute();
-	}
-
-	/**
-	 * Types shortcut combination to archive a conversation
-	 * 
-	 * @step. ^I type shortcut combination to archive a conversation$
-	 * @throws Exception
-	 */
-	@When("^I type shortcut combination to archive a conversation$")
-	public void ITypeShortcutCombinationToArchive() throws Exception {
-		webappPagesCollection.getPage(ContactListPage.class)
-				.pressShortCutToArchive();
-	}
-
-	/**
-	 * Types shortcut combination for the next conversation
-	 *
-	 * @step. ^I type shortcut combination for next conversation$
-	 * @throws Exception
-	 */
-	@When("^I type shortcut combination for next conversation$")
-	public void ITypeShortcutCombinationForNextConv() throws Exception {
-		webappPagesCollection.getPage(ContactListPage.class)
-				.pressShortCutForNextConv();
-	}
-
-	/**
-	 * Types shortcut combination for the previous conversation
-	 *
-	 * @step. ^I type shortcut combination for previous conversation$
-	 * @throws Exception
-	 */
-	@When("^I type shortcut combination for previous conversation$")
-	public void ITypeShortcutCombinationForPrevConv() throws Exception {
-		webappPagesCollection.getPage(ContactListPage.class)
-				.pressShortCutForPrevConv();
 	}
 
 	/**

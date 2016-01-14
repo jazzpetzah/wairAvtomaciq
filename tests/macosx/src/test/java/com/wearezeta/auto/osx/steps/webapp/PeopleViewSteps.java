@@ -4,8 +4,8 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.osx.pages.webapp.GroupPeoplePopoverPage;
-import com.wearezeta.auto.osx.pages.webapp.SingleUserPeoplePopoverPage;
+import com.wearezeta.auto.osx.pages.osx.GroupPeoplePopoverPage;
+import com.wearezeta.auto.osx.pages.osx.SingleUserPeoplePopoverPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.Then;

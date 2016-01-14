@@ -1,29 +1,25 @@
-package com.wearezeta.auto.osx.pages.webapp;
+package com.wearezeta.auto.osx.pages.osx;
 
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.PopoverLocators;
 import com.wearezeta.auto.web.pages.WebPage;
 
-public class GroupPeoplePopoverPage extends WebPage {
-
-	@FindBy(xpath = PopoverLocators.GroupPopover.xpathRootLocator)
+public class SingleUserPeoplePopoverPage extends WebPage {
+	
+	@FindBy(xpath = PopoverLocators.SingleUserPopover.xpathRootLocator)
 	private WebElement rootElement;
 
-	@FindBy(css = PopoverLocators.Shared.cssCreateGroupConversationButton)
-	private WebElement createGroupConversationButton;
+	@FindBy(xpath = PopoverLocators.SingleUserPopover.xpathUserName)
+	private WebElement userName;
 
-	@FindBy(how = How.XPATH, using = PopoverLocators.GroupPopover.ParticipantsListPage.xpathConversationTitle)
-	private WebElement conversationTitle;
-
-	public GroupPeoplePopoverPage(Future<ZetaWebAppDriver> lazyDriver)
+	public SingleUserPeoplePopoverPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
 	}
@@ -42,19 +38,8 @@ public class GroupPeoplePopoverPage extends WebPage {
 				+ " has not been shown";
 	}
 
-	public boolean isAddPeopleMessageShown() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(PopoverLocators.Shared.xpathContinueButton));
+	public String getUserName() {
+		return userName.getText();
 	}
 
-	public boolean isAddToConversationButtonShown() throws Exception {
-		return DriverUtils
-				.waitUntilLocatorIsDisplayed(
-						getDriver(),
-						By.cssSelector(PopoverLocators.Shared.cssCreateGroupConversationButton));
-	}
-
-	public String getConversationTitle() {
-		return conversationTitle.getText();
-	}
 }

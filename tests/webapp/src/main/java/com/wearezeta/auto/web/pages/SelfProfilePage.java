@@ -53,6 +53,11 @@ public class SelfProfilePage extends WebPage {
 		super(lazyDriver);
 	}
 
+	public boolean isSettingsButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.cssSelector(WebAppLocators.SelfProfilePage.cssGearButton));
+	}
+
 	public void clickGearButton() throws Exception {
 		// Wait until no modal is shown
 		DriverUtils.waitUntilLocatorDissapears(getDriver(), By.className("modal-show"));

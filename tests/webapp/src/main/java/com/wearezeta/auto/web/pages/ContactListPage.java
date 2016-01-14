@@ -17,6 +17,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -44,6 +45,9 @@ public class ContactListPage extends WebPage {
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathContactListEntries)
 	private List<WebElement> contactListEntries;
+
+	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathActiveConversationEntry)
+	private WebElement activeConversationEntry;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathArchivedContactListEntries)
 	private List<WebElement> archivedContactListEntries;
@@ -234,6 +238,14 @@ public class ContactListPage extends WebPage {
 		return getDriver().findElement(By.cssSelector(locator));
 	}
 
+	public String getActiveConversationName() throws Exception {
+		return activeConversationEntry.getText();
+	}
+
+	public int getActiveConversationIndex() throws Exception {
+		return getItemIndex(activeConversationEntry.getText());
+	}
+
 	public boolean isMissedCallVisibleForContact(String conversationName)
 			throws Exception {
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
@@ -335,6 +347,21 @@ public class ContactListPage extends WebPage {
 						this.getDriver(),
 						By.xpath(WebAppLocators.ContactListPage.xpathMuteIconByContactName
 								.apply(conversationName)), 5);
+	}
+
+	public boolean isConversationNotMuted(String conversationName)
+			throws Exception {
+		// moving focus from contact - to now show ... button
+		// do nothing (safari workaround)
+		if (WebAppExecutionContext.getBrowser()
+				.isSupportingNativeMouseActions()) {
+			DriverUtils.moveMouserOver(this.getDriver(), selfProfileAvatar);
+		}
+		return DriverUtils
+				.waitUntilLocatorDissapears(
+						this.getDriver(),
+						By.xpath(WebAppLocators.ContactListPage.xpathMuteIconByContactName
+								.apply(conversationName)));
 	}
 
 	public void clickOptionsButtonForContact(String conversationName)
@@ -539,7 +566,7 @@ public class ContactListPage extends WebPage {
 				"There is no '%s' conversation in the list", convoName));
 	}
 
-	public void waitUntilArhiveButtonIsNotVisible(int archiveBtnVisilityTimeout)
+	public void waitUntilArchiveButtonIsNotVisible(int archiveBtnVisilityTimeout)
 			throws Exception {
 		assert DriverUtils
 				.waitUntilLocatorDissapears(
@@ -549,7 +576,7 @@ public class ContactListPage extends WebPage {
 				+ archiveBtnVisilityTimeout + " second(s)";
 	}
 
-	public void waitUntilArhiveButtonIsVisible(int archiveBtnVisilityTimeout)
+	public void waitUntilArchiveButtonIsVisible(int archiveBtnVisilityTimeout)
 			throws Exception {
 		assert DriverUtils
 				.waitUntilLocatorIsDisplayed(
@@ -668,5 +695,21 @@ public class ContactListPage extends WebPage {
 
 	public void clickCancelOnDeleteWarningSingle() {
 		deleteModalCancelButtonSingle.click();
+	}
+
+	// only for Wrapper
+	public void openContextMenuForContact(String name)
+			throws Exception {
+		if (name == null) {
+			throw new Exception(
+					"The name to look for in the conversation list was null");
+		}
+		name = fixDefaultGroupConvoName(name, false, false);
+		final String locator = WebAppLocators.ContactListPage.cssContactListEntryByName
+				.apply(name);
+		DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.cssSelector(locator));
+		WebElement entry = getDriver().findElement(By.cssSelector(locator));
+		new Actions(getDriver()).contextClick(entry).perform();
 	}
 }
