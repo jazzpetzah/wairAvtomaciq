@@ -1,8 +1,11 @@
 package com.wearezeta.auto.common.driver;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.*;
 import java.util.function.Function;
 
+import com.google.common.base.Throwables;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -10,87 +13,84 @@ import org.openqa.selenium.WebElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 final class SessionHelper {
-	private static final Logger log = ZetaLogger.getLog(SessionHelper.class
-			.getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(SessionHelper.class.getSimpleName());
 
-	private boolean isSessionLost = false;
-	@SuppressWarnings("unused")
-	private ZetaDriver wrappedDriver;
+    private static final int MAX_FIND_ELEMENT_COMMAND_DURATION = 60 * 3; // seconds
 
-	public SessionHelper(ZetaDriver wrappedDriver) {
-		this.wrappedDriver = wrappedDriver;
-	}
+    private volatile boolean isSessionLost = false;
+    private ZetaDriver wrappedDriver;
 
-	public static String stackTraceToString(Throwable e) {
-		StringBuilder sb = new StringBuilder();
-		for (StackTraceElement element : e.getStackTrace()) {
-			sb.append("\t at ");
-			sb.append(element.toString());
-			sb.append("\n");
-		}
-		return sb.toString();
-	}
+    public SessionHelper(ZetaDriver wrappedDriver) {
+        this.wrappedDriver = wrappedDriver;
+    }
 
-	public List<WebElement> wrappedFindElements(
-			Function<By, List<WebElement>> f, By by) {
-		List<WebElement> result = null;
-		try {
-			result = f.apply(by);
-		} catch (org.openqa.selenium.remote.UnreachableBrowserException ex) {
-			log.error("Setting isSessionLost=true");
-			log.error(ex.getMessage() + "\n" + stackTraceToString(ex));
-			setSessionLost(true);
-		} catch (org.openqa.selenium.remote.SessionNotFoundException ex) {
-			log.error("Setting isSessionLost=true");
-			log.error(ex.getMessage() + "\n" + stackTraceToString(ex));
-			setSessionLost(true);
-		}
-		return result;
-	}
+    private ExecutorService executor = Executors.newFixedThreadPool(1);
 
-	public WebElement wrappedFindElement(Function<By, WebElement> f, By by) {
-		WebElement result = null;
-		try {
-			result = f.apply(by);
-		} catch (org.openqa.selenium.remote.UnreachableBrowserException ex) {
-			log.error("Setting isSessionLost=true");
-			log.error(ex.getMessage() + "\n" + stackTraceToString(ex));
-			setSessionLost(true);
-		} catch (org.openqa.selenium.remote.SessionNotFoundException ex) {
-			log.error("Setting isSessionLost=true");
-			log.error(ex.getMessage() + "\n" + stackTraceToString(ex));
-			setSessionLost(true);
-		}
-		return result;
-	}
+    public List<WebElement> wrappedFindElements(Function<By, List<WebElement>> f, By by) {
+        if (!isSessionLost) {
+            final Callable<List<WebElement>> task = () -> f.apply(by);
+            final Future<List<WebElement>> future = executor.submit(task);
+            try {
+                return future.get(MAX_FIND_ELEMENT_COMMAND_DURATION, TimeUnit.SECONDS);
+            } catch (Exception e) {
+                setSessionLost(true);
+                Throwables.propagate(e);
+            }
+        }
+        return new ArrayList<>();
+    }
 
-	public static final int SCREENSHOTING_TIMEOUT_SECONDS = 15;
+    public WebElement wrappedFindElement(Function<By, WebElement> f, By by) {
+        if (!isSessionLost) {
+            final Callable<WebElement> task = () -> f.apply(by);
+            final Future<WebElement> future = executor.submit(task);
+            try {
+                return future.get(MAX_FIND_ELEMENT_COMMAND_DURATION, TimeUnit.SECONDS);
+            } catch (Exception e) {
+                setSessionLost(true);
+                Throwables.propagate(e);
+            }
+        }
+        return null;
+    }
 
-	public void wrappedClose(IVoidMethod f) {
-		try {
-			f.call();
-		} catch (org.openqa.selenium.remote.SessionNotFoundException ex) {
-			log.error("Setting isSessionLost=true");
-			log.error(ex.getMessage() + "\n" + stackTraceToString(ex));
-			setSessionLost(true);
-		}
-	}
+    public void wrappedClose(IVoidMethod f) {
+        if (isSessionLost) {
+            return;
+        }
+        try {
+            f.call();
+        } catch (Exception e) {
+            setSessionLost(true);
+            Throwables.propagate(e);
+        }
+    }
 
-	public void wrappedQuit(IVoidMethod f) {
-		try {
-			f.call();
-		} catch (org.openqa.selenium.remote.SessionNotFoundException ex) {
-			log.error("Setting isSessionLost=true");
-			log.error(ex.getMessage() + "\n" + stackTraceToString(ex));
-			setSessionLost(true);
-		}
-	}
+    public void wrappedQuit(IVoidMethod f) {
+        if (isSessionLost) {
+            return;
+        }
+        try {
+            f.call();
+        } catch (Exception e) {
+            setSessionLost(true);
+            Throwables.propagate(e);
+        }
+    }
 
-	public boolean isSessionLost() {
-		return isSessionLost;
-	}
+    public boolean isSessionLost() {
+        return isSessionLost;
+    }
 
-	private void setSessionLost(boolean isSesstionLost) {
-		this.isSessionLost = isSesstionLost;
-	}
+    private void setSessionLost(boolean isSessionLost) {
+        log.info(String.format("Setting isSessionLost to %s", isSessionLost));
+        this.isSessionLost = isSessionLost;
+        if (isSessionLost && this.wrappedDriver instanceof ZetaIOSDriver) {
+            try {
+                AppiumServerTools.reset();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
