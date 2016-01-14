@@ -2,7 +2,9 @@ package com.wearezeta.auto.osx.steps.osx;
 
 import com.wearezeta.auto.osx.pages.osx.MainWirePage;
 import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
+import com.wearezeta.auto.web.pages.ConversationPage;
 
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -256,6 +258,79 @@ public class MainWirePageSteps {
 		MainWirePage mainPage = osxPagesCollection.getPage(MainWirePage.class);
 		assertThat("Width", mainPage.getWidth(), equalTo(width));
 		assertThat("Height", mainPage.getHeight(), equalTo(height));
+	}
+
+
+	/**
+	 * Types shortcut combination to undo
+	 *
+	 * @step. ^I type shortcut combination to undo$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to undo$")
+	public void ITypeShortcutCombinationToUndo() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutForUndo();
+	}
+
+	/**
+	 * Types shortcut combination to redo
+	 *
+	 * @step. ^I type shortcut combination to redo$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to redo$")
+	public void ITypeShortcutCombinationToRedo() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutForRedo();
+	}
+
+	/**
+	 * Types shortcut combination to select all
+	 *
+	 * @step. ^I type shortcut combination to select all$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to select all$")
+	public void ITypeShortcutCombinationToSelectAll() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutForSelectAll();
+	}
+
+	/**
+	 * Types shortcut combination to cut
+	 *
+	 * @step. ^I type shortcut combination to cut$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to cut$")
+	public void ITypeShortcutCombinationToCut() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutForCut();
+	}
+
+	/**
+	 * Types shortcut combination to paste
+	 *
+	 * @step. ^I type shortcut combination to paste$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to paste$")
+	public void ITypeShortcutCombinationToPaste() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutForPaste();
+	}
+
+	/**
+	 * Types shortcut combination to copy
+	 *
+	 * @step. ^I type shortcut combination to copy$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to copy$")
+	public void ITypeShortcutCombinationToCopy() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutForCopy();
 	}
 
 }

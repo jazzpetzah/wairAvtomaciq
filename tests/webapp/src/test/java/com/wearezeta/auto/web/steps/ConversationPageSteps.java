@@ -69,6 +69,30 @@ public class ConversationPageSteps {
 	}
 
 	/**
+	 * Verify that the input text field contains random message
+	 *
+	 */
+	@Then("^I verify that random message was typed$")
+	public void IVerifyThatRandomMessageWasTyped() throws Exception {
+		assertThat("Random message in input field", webappPagesCollection
+				.getPage(ConversationPage.class).getMessageFromInputField(),
+				equalTo(randomMessage));
+	}
+
+	/**
+	 * Verify that the input text field contains message X
+	 *
+	 * @param message
+	 *            the message it should contain
+	 */
+	@Then("^I verify that message \"(.*)\" was typed$")
+	public void IVerifyThatMessageWasTyped(String message) throws Exception {
+		assertThat("Message in input field",
+				webappPagesCollection.getPage(ConversationPage.class)
+						.getMessageFromInputField(), equalTo(message));
+	}
+
+	/**
 	 * Types text message to opened conversation, but does not send it
 	 *
 	 * @step. ^I write message (.*)$

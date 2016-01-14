@@ -1,5 +1,9 @@
 package com.wearezeta.auto.osx.pages.osx;
 
+import static com.wearezeta.auto.osx.common.OSXConstants.Scripts.PASTE_SCRIPT;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
@@ -9,10 +13,13 @@ import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.common.driver.ZetaOSXWebAppDriver;
 import com.wearezeta.auto.osx.locators.OSXLocators;
+
 import java.awt.Robot;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 
@@ -160,5 +167,55 @@ public class MainWirePage extends OSXPage {
 
 	public void clickMaximizeButton() {
 		zoomButton.click();
+	}
+
+	public void pressShortCutForPing() throws Exception {
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_K);
+		robot.keyRelease(KeyEvent.VK_K);
+		robot.keyRelease(KeyEvent.VK_META);
+	}
+
+	public void pressShortCutForUndo() throws Exception {
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_Z);
+		robot.keyRelease(KeyEvent.VK_Z);
+		robot.keyRelease(KeyEvent.VK_META);
+	}
+
+	public void pressShortCutForRedo() throws Exception {
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_SHIFT);
+		robot.keyPress(KeyEvent.VK_Z);
+		robot.keyRelease(KeyEvent.VK_Z);
+		robot.keyRelease(KeyEvent.VK_SHIFT);
+		robot.keyRelease(KeyEvent.VK_META);
+	}
+
+	public void pressShortCutForSelectAll() throws Exception {
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_A);
+		robot.keyRelease(KeyEvent.VK_A);
+		robot.keyRelease(KeyEvent.VK_META);
+	}
+
+	public void pressShortCutForCut() throws Exception {
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_X);
+		robot.keyRelease(KeyEvent.VK_X);
+		robot.keyRelease(KeyEvent.VK_META);
+	}
+
+	public void pressShortCutForPaste() throws Exception {
+		String script = new String(Files.readAllBytes(Paths.get(getClass()
+				.getResource(PASTE_SCRIPT).toURI())));
+		getDriver().executeScript(script);
+	}
+
+	public void pressShortCutForCopy() throws Exception {
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_C);
+		robot.keyRelease(KeyEvent.VK_C);
+		robot.keyRelease(KeyEvent.VK_META);
 	}
 }
