@@ -53,13 +53,10 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     @FindBy(name = nameAlsoLeaveCheckerButton)
 	private WebElement alsoLeaveButton;
 
-    public static final String xpathOtherPersonalInfoPageNameField =
-            "//UIAWindow[@name='ZClientMainWindow']/UIAStaticText[@name='%s']";
-    @FindBy(xpath = xpathOtherPersonalInfoPageNameField)
-	private List<WebElement> nameField;
+    public static final String xpathOtherPersonalInfoPageNameField = xpathMainWindow + "/UIAStaticText[@name='%s']";
 
     public static final String xpathOtherPersonalInfoPageEmailField =
-            "//UIAWindow[@name='ZClientMainWindow']/UIATextView[contains(@name, 'WIRE.COM')]";
+			xpathMainWindow + "/UIATextView[contains(@name, 'WIRE.COM')]";
     @FindBy(xpath = xpathOtherPersonalInfoPageEmailField)
 	private WebElement emailField;
 
@@ -81,8 +78,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     @FindBy(name = nameSilenceConversationButton)
 	private WebElement silenceMenuButton;
 
-    public static final String xpathSilenceConversationButton =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAButton[@name='SILENCE']";
+    public static final String xpathSilenceConversationButton = xpathMainWindow + "/UIAButton[@name='SILENCE']";
     @FindBy(xpath = xpathSilenceConversationButton)
 	private WebElement menuSilenceButton;
 

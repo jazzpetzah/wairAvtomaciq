@@ -294,7 +294,8 @@ public abstract class IOSPage extends BasePage {
                 rotatePortrait();
                 break;
             default:
-                break;
+                throw new IllegalArgumentException(String.format("Unknown orientation '%s'",
+                        orientation));
         }
 
     }
@@ -332,12 +333,7 @@ public abstract class IOSPage extends BasePage {
     public void lockScreen(int seconds) throws Exception {
         this.getDriver().lockScreen(seconds);
         // check if the screen is unlocked
-        if (!DriverUtils
-                .waitUntilLocatorDissapears(
-                        getDriver(),
-                        By.name(nameLockScreenMessage),
-                        5)) {
-
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), By.name(nameLockScreenMessage), 5)) {
             IOSSimulatorHelper.swipeRight();
             Thread.sleep(SWIPE_DELAY);
         }

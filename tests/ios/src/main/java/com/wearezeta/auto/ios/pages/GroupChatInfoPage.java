@@ -46,13 +46,11 @@ public class GroupChatInfoPage extends IOSPage {
     @FindBy(name = nameExitGroupInfoPageButton)
     private WebElement exitGroupInfoPageButton;
 
-    public static final String xpathNumberOfParticipantsText =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[3]";
+    public static final String xpathNumberOfParticipantsText = xpathMainWindow + "/UIAStaticText[3]";
     @FindBy(xpath = xpathNumberOfParticipantsText)
     private WebElement numberOfParticipantsText;
 
-    public static final String xpathAvatarCollectionView =
-            "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]";
+    public static final String xpathAvatarCollectionView = xpathMainWindow + "/UIACollectionView[1]";
     @FindBy(xpath = xpathAvatarCollectionView)
     private WebElement avatarCollectionView;
 
@@ -82,8 +80,7 @@ public class GroupChatInfoPage extends IOSPage {
             "//UIACollectionView[preceding-sibling::UIATextView[@name='ParticipantsView_GroupName']]" +
                     "/UIACollectionCell/UIAStaticText[last() and @name='%s']";
 
-    public static String xpathNumberPeopleText =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[contains(@name, 'PEOPLE')]";
+    public static String xpathNumberPeopleText = xpathMainWindow + "/UIAStaticText[contains(@name, 'PEOPLE')]";
 
     public static final String xpathPeopleViewCollectionCell =
             "//UIAButton[@name='metaControllerCancelButton']/following-sibling::" +

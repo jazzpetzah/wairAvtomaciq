@@ -49,13 +49,11 @@ public class IncomingCallPage extends CallPage {
     @FindBy(xpath = xpathGroupCallAvatars)
 	private List<WebElement> numberOfGroupCallAvatars;
 
-    public static final String xpathGroupCallFullMessage =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAAlert[@name='The call is full']";
+    public static final String xpathGroupCallFullMessage = xpathMainWindow + "/UIAAlert[@name='The call is full']";
     @FindBy(xpath = xpathGroupCallFullMessage)
 	private WebElement groupCallFullMessage;
 
-    public static final String xpathUserInCallContactListCell =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText";
+    public static final String xpathUserInCallContactListCell = xpathMainWindow + "/UIAStaticText";
     @FindBy(xpath = xpathUserInCallContactListCell)
 	private List<WebElement> contactListNamesInACall;
 

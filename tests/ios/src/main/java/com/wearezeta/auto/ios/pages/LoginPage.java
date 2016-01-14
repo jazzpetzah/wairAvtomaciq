@@ -24,7 +24,6 @@ public class LoginPage extends IOSPage {
             "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
             "end tell"};
 
-    private static final String nameMainWindow = "ZClientMainWindow";
     @FindBy(name = nameMainWindow)
     private WebElement viewPager;
 

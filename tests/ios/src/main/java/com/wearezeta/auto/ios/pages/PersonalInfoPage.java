@@ -46,8 +46,7 @@ public class PersonalInfoPage extends IOSPage {
     @FindBy(name = nameSignOutButton)
     private WebElement signoutButton;
 
-    public static final String xpathPersonalInfoPage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']";
-    @FindBy(xpath = xpathPersonalInfoPage)
+    @FindBy(xpath = xpathMainWindow)
     private WebElement personalPage;
 
     public static final String namePictureButton = "CameraLibraryButton";

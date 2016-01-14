@@ -14,7 +14,7 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class GroupChatPage extends DialogPage {
     public static final String xpathNewGroupConversationNameChangeTextField =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[2]/UIATextView[1]";
+            xpathMainWindow + "/UIATableView[1]/UIATableCell[2]/UIATextView[1]";
     @FindBy(xpath = xpathNewGroupConversationNameChangeTextField)
     private WebElement newGroupConversationNameChangeTextField;
 

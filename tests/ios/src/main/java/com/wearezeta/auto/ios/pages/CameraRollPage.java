@@ -24,7 +24,8 @@ public class CameraRollPage extends IOSPage {
     @FindBy(xpath = xpathCameraLibraryFirstFolder)
 	private WebElement cameraLibraryFirstFolder;
 
-    public static final String xpathLibraryFirstPicture = "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell[1]";
+    public static final String xpathLibraryFirstPicture =
+			xpathMainWindow + "/UIACollectionView/UIACollectionCell[1]";
     @FindBy(xpath = xpathLibraryFirstPicture)
 	private WebElement libraryFirstPicture;
 

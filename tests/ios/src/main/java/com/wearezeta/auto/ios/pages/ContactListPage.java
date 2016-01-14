@@ -27,8 +27,7 @@ public class ContactListPage extends IOSPage {
     @FindBy(name = nameSelfButton)
     private WebElement selfUserButton;
 
-    private static final String xpathContactListRoot =
-            "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]";
+    private static final String xpathContactListRoot = xpathMainWindow + "/UIACollectionView[1]";
     @FindBy(xpath = xpathContactListRoot)
     private WebElement contactListContainer;
 
@@ -91,9 +90,9 @@ public class ContactListPage extends IOSPage {
     private static final String xpathContactListPlayPauseButton =
             "//UIACollectionCell[@name='%s']/UIAButton[@name='mediaCellButton']";
     private static final String xpathFirstInContactList =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[1]/UIAStaticText[1]";
+            xpathMainWindow + "/UIACollectionView[1]/UIACollectionCell[1]/UIAStaticText[1]";
     private static final String xpathMyUserInContactList =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[1]/UIAStaticText[1]";
+            xpathMainWindow+ "/UIACollectionView[1]/UIACollectionCell[1]/UIAStaticText[1]";
 
     private static final String xpathArchiveConversationButton =
             "//UIAButton[@name='ARCHIVE' and @visible='true']";
@@ -101,7 +100,7 @@ public class ContactListPage extends IOSPage {
     private static final String classNameContactListNames = "UIACollectionCell";
 
     private static final String xpathSpecificContactListCell =
-            "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[@name='%s']";
+            xpathMainWindow + "/UIACollectionView[1]/UIACollectionCell[@name='%s']";
 
     private static final String xpathFormatActionMenuXButton =
             "//UIAStaticText[@name='ARCHIVE']/following-sibling::UIAButton[@name='%s']";

@@ -27,7 +27,7 @@ public class RegistrationPage extends IOSPage {
     @FindBy(name = nameCameraShootButton)
     private WebElement cameraShootButton;
 
-    public static final String xpathPhotoButton = "//UIAWindow[@name='ZClientMainWindow']/UIAButton[5]";
+    public static final String xpathPhotoButton = xpathMainWindow + "/UIAButton[5]";
     @FindBy(xpath = xpathPhotoButton)
     private WebElement photoButton;
 
@@ -39,8 +39,7 @@ public class RegistrationPage extends IOSPage {
     @FindBy(name = nameCameraFlashButton)
     private WebElement cameraFlashButton;
 
-    public static final String xpathAlbum =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[1]/UIAStaticText[1]";
+    public static final String xpathAlbum = xpathMainWindow + "/UIATableView[1]/UIATableCell[1]/UIAStaticText[1]";
     @FindBy(xpath = xpathAlbum)
     private WebElement photoAlbum;
 
@@ -56,8 +55,7 @@ public class RegistrationPage extends IOSPage {
     @FindBy(name = nameCancelImageButton)
     private WebElement cancelImageButton;
 
-    public static final String xpathYourName =
-            "//UIAWindow[@name='ZClientMainWindow']/UIATextField[@value='YOUR FULL NAME']";
+    public static final String xpathYourName = xpathMainWindow + "/UIATextField[@value='YOUR FULL NAME']";
     @FindBy(xpath = xpathYourName)
     private WebElement yourName;
 
@@ -126,22 +124,20 @@ public class RegistrationPage extends IOSPage {
     @FindBy(name = nameErrorPageButton)
     private WebElement errorPageButton;
 
-    public static final String xpathCloseColorModeButton =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAButton[4]";
+    public static final String xpathCloseColorModeButton = xpathMainWindow + "/UIAButton[4]";
     @FindBy(xpath = xpathCloseColorModeButton)
     private WebElement closeColorModeButton;
 
-    public static final String xpathReSendButton =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATextView[1]";
+    public static final String xpathReSendButton = xpathMainWindow + "/UIATextView[1]";
     @FindBy(xpath = xpathReSendButton)
     private WebElement reSendButton;
 
-    public static final String xpathEmailVerifPrompt =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[contains(@name, 'We sent an email to ')]";
+    public static final String xpathEmailVerifPrompt = xpathMainWindow +
+            "/UIAStaticText[contains(@name, 'We sent an email to ')]";
     @FindBy(xpath = xpathEmailVerifPrompt)
     private WebElement emailVerifPrompt;
 
-    public static final String xpathPhoneNumber = "//UIAWindow[@name='ZClientMainWindow']/UIATextField[1]";
+    public static final String xpathPhoneNumber = xpathMainWindow + "/UIATextField[1]";
     @FindBy(xpath = xpathPhoneNumber)
     private WebElement phoneNumber;
 
@@ -149,11 +145,11 @@ public class RegistrationPage extends IOSPage {
     @FindBy(name = namePhoneNumberField)
     private WebElement phoneNumberField;
 
-    public static final String xpathActivationCode = "//UIAWindow[@name='ZClientMainWindow']/UIATextField[1]";
+    public static final String xpathActivationCode = xpathMainWindow + "/UIATextField[1]";
     @FindBy(xpath = xpathActivationCode)
     private WebElement activationCode;
 
-    public static final String xpathCountry = "//UIAWindow[@name='ZClientMainWindow']/UIAButton[1]";
+    public static final String xpathCountry = xpathMainWindow + "/UIAButton[1]";
     @FindBy(xpath = xpathCountry)
     private WebElement selectCountry;
 
@@ -161,12 +157,11 @@ public class RegistrationPage extends IOSPage {
     @FindBy(name = nameCountryPickerButton)
     private WebElement countryPickerButton;
 
-    public static final String xpathCountryList = "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]";
+    public static final String xpathCountryList = xpathMainWindow + "/UIATableView[1]";
     @FindBy(xpath = xpathCountryList)
     private WebElement countryList;
 
-    public static final String xpathConfirmPhoneNumber =
-            "//UIAWindow[@name='ZClientMainWindow']/UIATextField[1]/UIAButton[1]";
+    public static final String xpathConfirmPhoneNumber = xpathMainWindow + "/UIATextField[1]/UIAButton[1]";
     @FindBy(xpath = xpathConfirmPhoneNumber)
     private WebElement confirmInput;
 
@@ -212,9 +207,6 @@ public class RegistrationPage extends IOSPage {
     private String password;
 
     private String defaultPassFieldValue = "Password";
-
-    @SuppressWarnings("unused")
-    private String confirmMessage = "We sent an email to %s. Check your Inbox and follow the link to verify your address. You won’t be able to use Wire until you do.\n\nDidn’t get the message?\n\nRe-send";
 
     private String[] listOfEmails;
 

@@ -21,17 +21,17 @@ public class PendingRequestsPage extends IOSPage {
 	private WebElement connectRequestButton;
 
     public static final String xpathPendingRequesterName =
-            "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]//UIAStaticText[contains(@name, 'Connect to')]";
+			xpathMainWindow + "/UIATableView[1]//UIAStaticText[contains(@name, 'Connect to')]";
     @FindBy(xpath = xpathPendingRequesterName)
 	private WebElement requesterName;
 
     public static final String xpathPendingRequestMessage =
-            "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]//UIAStaticText[3]";
+			xpathMainWindow + "/UIATableView[1]//UIAStaticText[3]";
     @FindBy(xpath = xpathPendingRequestMessage)
 	private WebElement pendingMessage;
 
     public static final String xpathYouBothKnowPeopleIcon =
-            "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[1]/UIAButton[2]";
+			xpathMainWindow + "/UIATableView[1]/UIATableCell[1]/UIAButton[2]";
     @FindBy(xpath = xpathYouBothKnowPeopleIcon)
 	private WebElement youBothKnowPeopleIcon;
 

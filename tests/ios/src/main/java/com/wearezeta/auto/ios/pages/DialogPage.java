@@ -56,13 +56,12 @@ public class DialogPage extends IOSPage {
     @FindBy(name = nameTextInput)
     private WebElement textInput;
 
-    private static final String xpathPinged =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']" +
-                    "/UIATableView[1]/UIATableCell[last()]/UIAStaticText[contains(@name, 'PINGED')]";
+    private static final String xpathPinged = xpathMainWindow +
+            "/UIATableView[1]/UIATableCell[last()]/UIAStaticText[contains(@name, 'PINGED')]";
     @FindBy(xpath = xpathPinged)
     private WebElement pinged;
 
-    private static final String xpathPingedAgain = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']" +
+    private static final String xpathPingedAgain = xpathMainWindow +
             "/UIATableView[1]/UIATableCell[last()]/UIAStaticText[contains(@name, 'PINGED AGAIN')]";
     @FindBy(xpath = xpathPingedAgain)
     private WebElement pingedAgain;
@@ -95,7 +94,8 @@ public class DialogPage extends IOSPage {
     @FindBy(name = namePendingButton)
     private WebElement pendingButton;
 
-    private static final String xpathLastChatMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/*[last()]";
+    private static final String xpathLastChatMessage =
+            xpathMainWindow + "/UIATableView[1]/UIATableCell[last()]/*[last()]";
     @FindBy(xpath = xpathLastChatMessage)
     private WebElement lastMessage;
 
@@ -115,29 +115,27 @@ public class DialogPage extends IOSPage {
     @FindBy(name = nameCallButton)
     private WebElement callButton;
 
-    public static final String xpathMessageEntries = "//UIAWindow[@name='ZClientMainWindow']/UIATableView/UIATableCell";
+    public static final String xpathMessageEntries = xpathMainWindow + "/UIATableView/UIATableCell";
     @FindBy(xpath = xpathMessageEntries)
     private List<WebElement> messageEntries;
 
     public static final String xpathOtherConversationCellFormat =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]";
+            xpathMainWindow + "/UIATableView[1]/UIATableCell[last()]";
     @FindBy(xpath = xpathOtherConversationCellFormat)
     private WebElement imageCell;
 
     public static final String xpathNameMediaContainer =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]";
+            xpathMainWindow + "/UIATableView[1]/UIATableCell[last()]";
     @FindBy(xpath = xpathNameMediaContainer)
     private WebElement mediaContainer;
 
-    public static final String xpathMediaConversationCell =
-            "//UIAWindow[@name='ZClientMainWindow']" +
-                    "/UIATableView[last()]/UIATableCell[last()]/UIAButton[@name='soundcloud']/following-sibling::UIAButton";
+    public static final String xpathMediaConversationCell = xpathMainWindow +
+            "/UIATableView[last()]/UIATableCell[last()]/UIAButton[@name='soundcloud']/following-sibling::UIAButton";
     @FindBy(xpath = xpathMediaConversationCell)
     private WebElement mediaLinkCell;
 
-    public static final String xpathYoutubeVimeoConversationCell =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']"
-                    + "/UIATableView[1]/UIATableCell[last()]/UIAButton[1]";
+    public static final String xpathYoutubeVimeoConversationCell = xpathMainWindow
+            + "/UIATableView[1]/UIATableCell[last()]/UIAButton[1]";
     @FindBy(xpath = xpathYoutubeVimeoConversationCell)
     private WebElement youtubeCell;
 
@@ -149,7 +147,7 @@ public class DialogPage extends IOSPage {
     @FindBy(name = namePauseButton)
     private WebElement mediabarPauseButton;
 
-    public static final String xpathConversationPage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]";
+    public static final String xpathConversationPage = xpathMainWindow + "/UIATableView[1]";
     @FindBy(xpath = xpathConversationPage)
     private WebElement conversationPage;
 
@@ -167,8 +165,7 @@ public class DialogPage extends IOSPage {
     @FindBy(name = namePingButton)
     private WebElement pingButton;
 
-    public static final String xpathYouAddedMessageCellFormat =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[1]";
+    public static final String xpathYouAddedMessageCellFormat = xpathMainWindow + "/UIATableView[1]/UIATableCell[1]";
     @FindBy(xpath = xpathYouAddedMessageCellFormat)
     private List<WebElement> youAddedCell;
 
@@ -219,8 +216,7 @@ public class DialogPage extends IOSPage {
 
     public static final String nameOtherUserAddContactToChatButton = "OtherUserMetaControllerLeftButton";
 
-    public static final String xpathLastMessageFormat =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[%s]/UIATextView[1]";
+    public static final String xpathLastMessageFormat = xpathMainWindow + "/UIATableView[1]/UIATableCell[%s]/UIATextView[1]";
 
     private String connectingLabel = "CONNECTING TO %s.";
 
@@ -232,11 +228,9 @@ public class DialogPage extends IOSPage {
 
     public static final String xpathChatheadName = "//UIAElement/following-sibling::UIAStaticText[@name='%s']";
 
-    public static final String xpathImage =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[2]";
+    public static final String xpathImage = xpathMainWindow + "/UIATableView[1]/UIATableCell[2]";
 
-    public static final String xpathSimpleMessageLink =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/UIATextView[1]";
+    public static final String xpathSimpleMessageLink = xpathMainWindow + "/UIATableView[1]/UIATableCell[last()]/UIATextView[1]";
 
     public static final String xpathMyNameInDialog = "//UIAStaticText[@name='%s'][last()]";
 

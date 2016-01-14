@@ -32,7 +32,7 @@ public class PeoplePickerPage extends IOSPage {
     private List<WebElement> resultList;
 
     public static final String xpathUnicUserPickerSearchResult =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell[1]";
+            xpathMainWindow + "/UIACollectionView[2]/UIACollectionCell[1]";
     @FindBy(xpath = xpathUnicUserPickerSearchResult)
     private WebElement userPickerSearchResult;
 
@@ -81,7 +81,7 @@ public class PeoplePickerPage extends IOSPage {
     private WebElement unblockButton;
 
     public static final String xpathPeoplePickerAllTopPeople =
-            "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell";
+            xpathMainWindow + "/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell";
     @FindBy(xpath = xpathPeoplePickerAllTopPeople)
     private List<WebElement> topPeopleList;
 
@@ -98,17 +98,16 @@ public class PeoplePickerPage extends IOSPage {
     private WebElement instantConnectButton;
 
     public static final String xpathSearchResultCell =
-            "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[1]";
+            xpathMainWindow + "/UIACollectionView[1]/UIACollectionCell[1]";
     @FindBy(xpath = xpathSearchResultCell)
     private WebElement searchResultCell;
 
     public static final String xpathSearchResultCellAvatar =
-            "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[1]/UIAStaticText";
+            xpathMainWindow + "/UIACollectionView[1]/UIACollectionCell[1]/UIAStaticText";
     @FindBy(xpath = xpathSearchResultCellAvatar)
     private WebElement searchResultAvatar;
 
-    public static final String xpathSearchResultContainer =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]";
+    public static final String xpathSearchResultContainer = xpathMainWindow + "/UIACollectionView[2]";
     @FindBy(xpath = xpathSearchResultContainer)
     private WebElement searchResultContainer;
 
@@ -145,13 +144,13 @@ public class PeoplePickerPage extends IOSPage {
     public static final String xpathSuggestedContact = "//UIACollectionCell/UIAStaticText[@name='%s']";
 
     public static final String xpathPeoplePickerTopConnectionsAvatar =
-            "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell[%d]";
+            xpathMainWindow+ "/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell[%d]";
 
     public static final String xpathPeoplePickerSelectedCell =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[2]/UIATableCell[@name='%s']";
+            xpathMainWindow + "/UIATableView[2]/UIATableCell[@name='%s']";
 
-    public static final String xpathPeoplePickerTopConnectionsName =
-            "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell[%d]/UIAStaticText[last()]";
+    public static final String xpathPeoplePickerTopConnectionsName = xpathMainWindow +
+            "/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell[%d]/UIAStaticText[last()]";
 
     private int numberTopSelected = 0;
 
