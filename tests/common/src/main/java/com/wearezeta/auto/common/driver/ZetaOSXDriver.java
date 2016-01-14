@@ -1,9 +1,7 @@
 package com.wearezeta.auto.common.driver;
 
-import com.wearezeta.auto.common.log.ZetaLogger;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
-import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.remote.RemoteWebElement;
 
@@ -13,59 +11,31 @@ import java.util.stream.Collectors;
 
 public class ZetaOSXDriver extends AppiumDriver<WebElement> implements ZetaDriver {
 
-	@SuppressWarnings("unused")
-	private static final Logger LOG = ZetaLogger.getLog(ZetaOSXDriver.class
-			.getName());
-
 	private static final String AX_POSITION = "AXPosition";
 	private static final String AX_SIZE = "AXSize";
 	private static final String APP_NAME = "Wire";
-	private final SessionHelper sessionHelper;
 
 	public ZetaOSXDriver(URL remoteAddress, Capabilities desiredCapabilities) {
 		super(remoteAddress, desiredCapabilities);
-		sessionHelper = new SessionHelper(this);
 	}
 
-	@Override
-	public List<WebElement> findElements(By by) {
-		return this.sessionHelper.wrappedFindElements(
-				this::wrappedFindElements, by);
-	}
+    @Override
+    public List<WebElement> findElements(By by) {
+        return super.findElements(by).stream().map((e) -> wrapElement(e)).collect(Collectors.toList());
+    }
 
-	@Override
-	public WebElement findElement(By by) {
-		return this.sessionHelper.wrappedFindElement(this::wrappedFindElement,
-				by);
-	}
-
-	protected List<WebElement> wrappedFindElements(By by) {
-		return super.findElements(by).stream().map((e) -> {
-			return wrapElement(e);
-		}).collect(Collectors.toList());
-	}
-
-	protected WebElement wrappedFindElement(By by) {
-		return wrapElement(super.findElement(by));
-	}
+    @Override
+    public WebElement findElement(By by) {
+        return wrapElement(super.findElement(by));
+    }
 
 	private WireRemoteWebElement wrapElement(WebElement element) {
 		return new WireRemoteWebElement(element);
 	}
 
 	@Override
-	public void close() {
-		this.sessionHelper.wrappedClose(super::close);
-	}
-
-	@Override
-	public void quit() {
-		this.sessionHelper.wrappedQuit(super::quit);
-	}
-
-	@Override
 	public boolean isSessionLost() {
-		return this.sessionHelper.isSessionLost();
+		return false;
 	}
 
 	@Override
