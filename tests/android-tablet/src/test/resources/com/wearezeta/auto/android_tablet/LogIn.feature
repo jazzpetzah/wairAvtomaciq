@@ -9,6 +9,7 @@ Feature: Log In
     And I enter login "<Login>"
     And I enter password "<Password>"
     And I tap Sign In button
+    And I accept First Time overlay as soon as it is visible
     And I see the Conversations list with no conversations
     Then I see my name on Self Profile page
 
@@ -25,6 +26,7 @@ Feature: Log In
     And I enter login "<Login>"
     And I enter password "<Password>"
     And I tap Sign In button
+    And I accept First Time overlay as soon as it is visible
     And I see the Conversations list with no conversations
     Then I see my name on Self Profile page
 

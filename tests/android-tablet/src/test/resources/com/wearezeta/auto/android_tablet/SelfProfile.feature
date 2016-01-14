@@ -5,6 +5,7 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with no conversations
     When I tap my avatar on top of conversations list
     And I see my name on Self Profile page
@@ -21,6 +22,7 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with no conversations
     And I see my name on Self Profile page
     And I tap my name field on Self Profile page
@@ -36,6 +38,7 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with no conversations
     When I tap my avatar on top of conversations list
     And I see my name on Self Profile page
@@ -56,6 +59,7 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with no conversations
     And I see my name on Self Profile page
     And I tap in the center of Self Profile page
@@ -75,6 +79,7 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with no conversations
     When I tap my avatar on top of conversations list
     And I see my name on Self Profile page
@@ -95,6 +100,7 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with no conversations
     When I see my name on Self Profile page
     And I tap in the center of Self Profile page

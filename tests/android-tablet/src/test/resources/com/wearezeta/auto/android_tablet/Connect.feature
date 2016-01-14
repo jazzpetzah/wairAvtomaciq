@@ -5,6 +5,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with no conversations
     And I wait until <Contact> exists in backend search results
     When I tap Search input
@@ -28,6 +29,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with no conversations
     And I wait until <Contact> exists in backend search results
     When I tap Search input
@@ -52,6 +54,7 @@ Feature: Connect
     Given <Contact> sent connection request to me
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversation
     And I see the conversation <WaitingMess> in my conversations list
     When I tap the conversation <WaitingMess>
@@ -70,6 +73,7 @@ Feature: Connect
     Given <Contact> sent connection request to me
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversation
     And I see the conversation <WaitingMess> in my conversations list
     When I tap the conversation <WaitingMess>
@@ -92,6 +96,7 @@ Feature: Connect
     Given <Contact1> has group chat <GroupChatName> with Myself,<Contact2>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     And I do not see the conversation <Contact2> in my conversations list
     And I see the conversation <GroupChatName> in my conversations list
@@ -120,6 +125,7 @@ Feature: Connect
     Given <Contact1> has group chat <GroupChatName> with Myself,<Contact2>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     And I do not see the conversation <Contact2> in my conversations list
     And I see the conversation <GroupChatName> in my conversations list
@@ -145,6 +151,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with no conversations
     And I wait until <ContactEmail> exists in backend search results
     When I tap Search input
@@ -168,6 +175,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with no conversations
     And I wait until <ContactEmail> exists in backend search results
     When I tap Search input
@@ -192,6 +200,7 @@ Feature: Connect
     Given <Contact> sent connection request to me
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversation
     And I see the conversation <WaitingMess> in my conversations list
     When I tap the conversation <WaitingMess>
@@ -227,6 +236,7 @@ Feature: Connect
     Given <Contact> sent connection request to me
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversation
     And I see the conversation <WaitingMess> in my conversations list
     When I tap the conversation <WaitingMess>
@@ -258,6 +268,7 @@ Feature: Connect
     Given <Contact1> sent connection request to me
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversation
     And I see the conversation <WaitingMess2> in my conversations list
     When I tap the conversation <WaitingMess2>
@@ -284,6 +295,7 @@ Feature: Connect
     Given <Contact1> sent connection request to me
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversation
     And I see the conversation <WaitingMess2> in my conversations list
     When I tap the conversation <WaitingMess2>
@@ -308,6 +320,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with no conversations
     When <Contact> sent connection request to me
     # Workaround for a bug
@@ -327,6 +340,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with no conversations
     When <Contact> sent connection request to me
     Then I see the conversation <WaitingMsg> in my conversations list
@@ -345,6 +359,7 @@ Feature: Connect
     Given Myself sent connection request to <Contact>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     When I tap the conversation <Contact>
@@ -364,6 +379,7 @@ Feature: Connect
     Given Myself sent connection request to <Contact>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     When I tap the conversation <Contact>
@@ -383,6 +399,7 @@ Feature: Connect
     Given Myself sent connection request to <Contact>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     When I tap the conversation <Contact>
@@ -401,6 +418,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with no conversations
     When I minimize the application
     And <Contact> sent connection request to me

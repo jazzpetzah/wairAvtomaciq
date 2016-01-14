@@ -7,6 +7,7 @@ Feature: Rich Media
     Given Contact <Contact> sends image <GifName> to single user conversation <Name>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
@@ -28,6 +29,7 @@ Feature: Rich Media
     Given Contact <Contact> sends image <GifName> to single user conversation <Name>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
@@ -48,6 +50,7 @@ Feature: Rich Media
     Given <Contact> is connected to me
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I remember the coordinates of conversation item <Contact>
@@ -74,6 +77,7 @@ Feature: Rich Media
     Given <Contact> is connected to me
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I remember the coordinates of conversation item <Contact>
@@ -99,6 +103,7 @@ Feature: Rich Media
     Given Myself is connected to <Contact>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
@@ -125,6 +130,7 @@ Feature: Rich Media
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
@@ -153,6 +159,7 @@ Feature: Rich Media
     Given Contact <Contact> sends <MsgsInConvo> messages to user Myself
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>

@@ -10,7 +10,7 @@ import java.util.concurrent.Future;
 
 public class FirstTimeOverlay extends AndroidPage {
 
-    public static final String idGotItButton = "";
+    public static final String idGotItButton = "zb__first_launch__confirm";
     @FindBy(id = idGotItButton)
     private WebElement gotItButton;
 
