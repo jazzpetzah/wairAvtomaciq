@@ -21,17 +21,6 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
     @FindBy(id = idPickerSearch)
     public WebElement pickerSearch;
 
-    public static final String xpathTopPeopleHeader = "//*[@id='rv_top_users']";
-
-    public static final Function<String, String> xpathTopPeopleAvatarByName = name -> String
-            .format("%s//*[@id='cwtf__startui_top_user' and .//*[@value='%s']]",
-                    xpathTopPeopleHeader, name.toUpperCase());
-
-    private static final Function<String, String> xpathFoundAvatarByName = name -> String
-            .format("//*[@id='ttv_pickuser__searchuser_name' and @value='%s']"
-                            + "/preceding-sibling::*[@id='cv_pickuser__searchuser_chathead']",
-                    name);
-
     public TabletPeoplePickerPage(Future<ZetaAndroidDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
@@ -75,17 +64,17 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
 
     public boolean waitUntilTopPeopleIsVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathTopPeopleHeader));
+                By.xpath(PeoplePickerPage.xpathTopPeopleAvatars));
     }
 
     public void tapTopPeopleAvatar(String name) throws Exception {
-        final By locator = By.xpath(xpathTopPeopleAvatarByName.apply(name));
+        final By locator = By.xpath(PeoplePickerPage.xpathTopPeopleAvatarByName.apply(name));
         getDriver().findElement(locator).click();
     }
 
     public Optional<BufferedImage> takeAvatarScreenshot(String name)
             throws Exception {
-        final By locator = By.xpath(xpathFoundAvatarByName.apply(name));
+        final By locator = By.xpath(PeoplePickerPage.xpathFoundAvatarByName.apply(name));
         assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
                 .format("User avatar for '%s' is not visible", name);
         final WebElement theAvatar = getDriver().findElement(locator);
