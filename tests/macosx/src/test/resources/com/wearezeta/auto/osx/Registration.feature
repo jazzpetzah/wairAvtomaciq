@@ -5,6 +5,7 @@ Feature: Registration
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
     And I enter user password "<Password>" on Registration page
+    And I accept the Terms of Use
     And I start activation email monitoring
     And I submit registration form
     Then I verify that an envelope icon is shown

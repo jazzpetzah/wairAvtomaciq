@@ -1,5 +1,6 @@
 package com.wearezeta.auto.osx.steps.webapp;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -18,9 +19,11 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.osx.pages.webapp.ConversationPage;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
+import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
+import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
+import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
@@ -29,28 +32,27 @@ import cucumber.api.java.en.When;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-
 import org.junit.Assert;
 import org.openqa.selenium.Keys;
 
 public class ConversationPageSteps {
 
-	private static final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.85;
+	private static final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.75;
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
 			.getInstance();
 
 	private static final String TOOLTIP_PING = "Ping";
-	private static final String SHORTCUT_PING_WIN = "(Ctrl + Alt + G)";
-	private static final String SHORTCUT_PING_MAC = "(⌘⌥G)";
+	private static final String SHORTCUT_PING_WIN = "(Ctrl + Alt + K)";
+	private static final String SHORTCUT_PING_MAC = "(⌘⌥K)";
 	private static final String TOOLTIP_CALL = "Call";
-	private static final String SHORTCUT_CALL_WIN = "(Ctrl + Alt + T)";
-	private static final String SHORTCUT_CALL_MAC = "(⌘⌥T)";
+	private static final String SHORTCUT_CALL_WIN = "(Ctrl + Alt + R)";
+	private static final String SHORTCUT_CALL_MAC = "(⌘⌥R)";
 
 	@SuppressWarnings("unused")
-	private static final Logger LOG = ZetaLogger
-			.getLog(ConversationPageSteps.class.getName());
+	private static final Logger log = ZetaLogger
+			.getLog(ConversationPageSteps.class.getSimpleName());
 
 	private String randomMessage;
 
@@ -141,6 +143,59 @@ public class ConversationPageSteps {
 	}
 
 	/**
+	 * Click People button in 1:1 conversation
+	 *
+	 * @step. I click People button in one to one conversation$
+	 *
+	 * @throws Exception
+	 */
+	@When("^I click People button in one to one conversation$")
+	public void WhenIClickPeopleButtonIn1to1() throws Exception {
+		webappPagesCollection.getPage(ConversationPage.class)
+				.clickPeopleButton();
+	}
+
+	/**
+	 * Click People button in a group conversation to close People Popover
+	 *
+	 * @step. ^I close Group Participants popover$
+	 *
+	 * @throws Exception
+	 *             if the popover is not visible
+	 */
+	@When("^I close Group Participants popover$")
+	public void WhenICloseGroupParticipantsPopover() throws Exception {
+		GroupPopoverContainer peoplePopoverPage = webappPagesCollection
+				.getPage(GroupPopoverContainer.class);
+		if (peoplePopoverPage.isVisible()) {
+
+			peoplePopoverPage.waitUntilVisibleOrThrowException();
+			webappPagesCollection.getPage(ConversationPage.class)
+					.clickPeopleButton();
+		}
+	}
+
+	/**
+	 * Click People button in 1:1 conversation to close People Popover
+	 *
+	 * @step. ^I close Single User Profile popover$
+	 *
+	 * @throws Exception
+	 *             if the popover is not visible
+	 */
+	@When("^I close Single User Profile popover$")
+	public void WhenICloseSingleUserPopover() throws Exception {
+		SingleUserPopoverContainer peoplePopoverPage = webappPagesCollection
+				.getPage(SingleUserPopoverContainer.class);
+		if (peoplePopoverPage.isVisible()) {
+
+			peoplePopoverPage.waitUntilVisibleOrThrowException();
+			webappPagesCollection.getPage(ConversationPage.class)
+					.clickPeopleButton();
+		}
+	}
+
+	/**
 	 * Click People button in a group conversation
 	 *
 	 * @step. I click People button in group conversation$
@@ -150,7 +205,7 @@ public class ConversationPageSteps {
 	@When("^I click People button in group conversation$")
 	public void WhenIClickPeopleButtonInGroup() throws Exception {
 		webappPagesCollection.getPage(ConversationPage.class)
-				.clickPeopleButton(true);
+				.clickPeopleButton();
 	}
 
 	/**
@@ -219,8 +274,8 @@ public class ConversationPageSteps {
 	public void ThenISeeActionInConversation(String doNot, String message)
 			throws Exception {
 		if (doNot == null) {
-			Assert.assertTrue(webappPagesCollection.getPage(
-					ConversationPage.class).isActionMessageSent(message));
+			webappPagesCollection.getPage(
+					ConversationPage.class).waitForMessageHeaderContains(message);
 		} else {
 			Assert.assertTrue(webappPagesCollection.getPage(
 					ConversationPage.class).isActionMessageNotSent(message));
@@ -238,6 +293,28 @@ public class ConversationPageSteps {
 	public void ThenISeeCorrectPeopleButtonToolTip() throws Exception {
 		Assert.assertTrue(webappPagesCollection.getPage(ConversationPage.class)
 				.isPeopleButtonToolTipCorrect());
+	}
+
+	@Then("^I see connecting message for (.*) in conversation$")
+	public void ISeeConnectingMessage(String contact) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		assertThat("User name",
+				webappPagesCollection.getPage(ConversationPage.class)
+						.getConnectedMessageUser(), equalTo(contact));
+		assertThat("Label",
+				webappPagesCollection.getPage(ConversationPage.class)
+						.getConnectedMessageLabel(), equalTo("CONNECTING"));
+	}
+
+	@Then("^I see connected message for (.*) in conversation$")
+	public void ISeeConnectedMessage(String contact) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		assertThat("User name",
+				webappPagesCollection.getPage(ConversationPage.class)
+						.getConnectedMessageUser(), equalTo(contact));
+		assertThat("Label",
+				webappPagesCollection.getPage(ConversationPage.class)
+						.getConnectedMessageLabel(), equalTo("CONNECTED"));
 	}
 
 	/**
@@ -263,10 +340,10 @@ public class ConversationPageSteps {
 		parts.add(message);
 		parts.addAll(CommonSteps.splitAliases(contacts));
 		if (doNot == null) {
-			assertThat("Check action",
-					webappPagesCollection.getPage(ConversationPage.class)
-							.getLastActionMessage(), containsString(message));
+			webappPagesCollection.getPage(ConversationPage.class)
+					.waitForMessageHeaderContains(parts);
 		} else {
+			// TODO: replace this check with a nicer one
 			assertThat("Check action",
 					webappPagesCollection.getPage(ConversationPage.class)
 							.getLastActionMessage(),
@@ -275,39 +352,22 @@ public class ConversationPageSteps {
 	}
 
 	/**
-	 * Checks action message (e.g. you left, etc.) appear in conversation
+	 * Add a user to group chat
 	 *
-	 * @step. ^I see (.*) user (.*) action for (.*) in conversation
+	 * @step. ^I add (.*) to group chat$
 	 *
-	 * @throws AssertionError
-	 *             if action message did not appear in conversation
-	 *
-	 * @param message
-	 *            message string
-	 *
-	 * @param user1
-	 *            user who did action string
-	 *
-	 * @param contacts
-	 *            user(s) who was actioned string
-	 *
+	 * @param contact
 	 * @throws Exception
-	 *
 	 */
-	@Then("^I see user (.*) action (.*) for (.*) in conversation$")
-	public void ThenISeeUserActionForContactInConversation(String user1,
-			String message, String contacts) throws Exception {
-		user1 = usrMgr.replaceAliasesOccurences(user1, FindBy.NAME_ALIAS);
-		contacts = usrMgr.replaceAliasesOccurences(contacts, FindBy.NAME_ALIAS);
-		if (contacts.contains(usrMgr.getSelfUserOrThrowError().getName())) {
-			contacts = contacts.replace(usrMgr.getSelfUser().getName(), "you");
-		}
-		Set<String> parts = new HashSet<String>();
-		parts.add(message);
-		parts.add(user1);
-		parts.addAll(CommonSteps.splitAliases(contacts));
-		Assert.assertTrue(webappPagesCollection.getPage(ConversationPage.class)
-				.isActionMessageSent(parts));
+	@When("^I add (.*) to group chat$")
+	public void IAddContactToGroupChat(String contact) throws Exception {
+		WhenIClickPeopleButtonInGroup();
+		GroupPopoverPageSteps cpSteps = new GroupPopoverPageSteps();
+		cpSteps.IClickAddPeopleButton();
+		cpSteps.IClickConfirmAddToChat();
+		cpSteps.ISearchForUser(contact);
+		cpSteps.ISelectUserFromSearchResults(contact);
+		cpSteps.IChooseToCreateGroupConversation();
 	}
 
 	/**
@@ -319,20 +379,6 @@ public class ConversationPageSteps {
 	@When("^I click ping button$")
 	public void IClickPingButton() throws Exception {
 		webappPagesCollection.getPage(ConversationPage.class).clickPingButton();
-	}
-
-	/**
-	 * Verify ping (or ping again) message is visible in conversation
-	 *
-	 * @step. ^I see ping message (.*)$
-	 * @param message
-	 *            pinged/pinged again
-	 * @throws Exception
-	 */
-	@When("^I see ping message (.*)$")
-	public void ISeePingMessage(String message) throws Exception {
-		Assert.assertTrue(webappPagesCollection.getPage(ConversationPage.class)
-				.isPingMessageVisible(message));
 	}
 
 	/**
@@ -486,10 +532,12 @@ public class ConversationPageSteps {
 	@Then("^I see the calling bar from users? (.*)$")
 	public void IWaitForCallingBar(String aliases) throws Exception {
 		final List<String> aliasList = splitAliases(aliases);
+		ConversationPage conversationPage = webappPagesCollection
+				.getPage(ConversationPage.class);
 		for (String alias : aliasList) {
 			final String participantName = usrMgr.findUserByNameOrNameAlias(
 					alias).getName();
-			webappPagesCollection.getPage(ConversationPage.class)
+			conversationPage
 					.waitForCallingBarToBeDisplayedWithName(participantName);
 		}
 	}
@@ -581,26 +629,6 @@ public class ConversationPageSteps {
 	}
 
 	/**
-	 * Verify that conversation contains missed call from contact
-	 *
-	 * @step. ^I see conversation with missed call from (.*)$
-	 *
-	 * @param contact
-	 *            contact name string
-	 *
-	 * @throws Exception
-	 */
-	@Then("^I see conversation with missed call from (.*)$")
-	public void ThenISeeConversationWithMissedCallFrom(String contact)
-			throws Exception {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName()
-				.toUpperCase();
-		Assert.assertEquals(contact + " CALLED",
-				webappPagesCollection.getPage(ConversationPage.class)
-						.getMissedCallMessage());
-	}
-
-	/**
 	 * Verify that conversation contains my missed call
 	 *
 	 * @step. ^I see conversation with my missed call$
@@ -638,19 +666,17 @@ public class ConversationPageSteps {
 	@Then("^I( do not)? see picture (.*) in fullscreen$")
 	public void ISeePictureInFullscreen(String doNot, String pictureName)
 			throws Exception {
+		ConversationPage conversationPage = webappPagesCollection
+				.getPage(ConversationPage.class);
 		if (doNot == null) {
-			Assert.assertTrue(webappPagesCollection.getPage(
-					ConversationPage.class).isPictureInModalDialog());
-			Assert.assertTrue(webappPagesCollection.getPage(
-					ConversationPage.class).isPictureInFullscreen());
+			Assert.assertTrue(conversationPage.isPictureInModalDialog());
+			Assert.assertTrue(conversationPage.isPictureInFullscreen());
 			assertThat("Overlap score of image comparsion",
-					webappPagesCollection.getPage(ConversationPage.class)
+					conversationPage
 							.getOverlapScoreOfFullscreenImage(pictureName),
-					org.hamcrest.Matchers
-							.greaterThan(MIN_ACCEPTABLE_IMAGE_SCORE));
+					greaterThan(MIN_ACCEPTABLE_IMAGE_SCORE));
 		} else {
-			Assert.assertTrue(webappPagesCollection.getPage(
-					ConversationPage.class).isPictureNotInModalDialog());
+			Assert.assertTrue(conversationPage.isPictureNotInModalDialog());
 		}
 	}
 
@@ -701,27 +727,15 @@ public class ConversationPageSteps {
 	}
 
 	/**
-	 * Verify that the input text field contains random message
+	 * Types shortcut combination to open search
 	 *
+	 * @step. ^I type shortcut combination to open search$
+	 * @throws Exception
 	 */
-	@Then("^I verify that random message was typed$")
-	public void IVerifyThatRandomMessageWasTyped() throws Exception {
-		assertThat("Random message in input field", webappPagesCollection
-				.getPage(ConversationPage.class).getMessageFromInputField(),
-				equalTo(randomMessage));
-	}
-
-	/**
-	 * Verify that the input text field contains message X
-	 *
-	 * @param message
-	 *            the message it should contain
-	 */
-	@Then("^I verify that message \"(.*)\" was typed$")
-	public void IVerifyThatMessageWasTyped(String message) throws Exception {
-		assertThat("Message in input field",
-				webappPagesCollection.getPage(ConversationPage.class)
-						.getMessageFromInputField(), equalTo(message));
+	@Then("^I type shortcut combination to open search$")
+	public void ITypeShortcutCombinationToOpenSearch() throws Exception {
+		webappPagesCollection.getPage(ConversationPage.class)
+				.pressShortCutForSearch();
 	}
 
 	/**
@@ -765,78 +779,6 @@ public class ConversationPageSteps {
 		assertThat("Ping button tooltip",
 				webappPagesCollection.getPage(ConversationPage.class)
 						.getPingButtonToolTip(), equalTo(tooltip));
-	}
-
-	/**
-	 * Types shortcut combination to undo
-	 *
-	 * @step. ^I type shortcut combination to undo$
-	 * @throws Exception
-	 */
-	@Then("^I type shortcut combination to undo$")
-	public void ITypeShortcutCombinationToUndo() throws Exception {
-		webappPagesCollection.getPage(ConversationPage.class)
-				.pressShortCutForUndo();
-	}
-
-	/**
-	 * Types shortcut combination to redo
-	 *
-	 * @step. ^I type shortcut combination to redo$
-	 * @throws Exception
-	 */
-	@Then("^I type shortcut combination to redo$")
-	public void ITypeShortcutCombinationToRedo() throws Exception {
-		webappPagesCollection.getPage(ConversationPage.class)
-				.pressShortCutForRedo();
-	}
-
-	/**
-	 * Types shortcut combination to select all
-	 *
-	 * @step. ^I type shortcut combination to select all$
-	 * @throws Exception
-	 */
-	@Then("^I type shortcut combination to select all$")
-	public void ITypeShortcutCombinationToSelectAll() throws Exception {
-		webappPagesCollection.getPage(ConversationPage.class)
-				.pressShortCutForSelectAll();
-	}
-
-	/**
-	 * Types shortcut combination to cut
-	 *
-	 * @step. ^I type shortcut combination to cut$
-	 * @throws Exception
-	 */
-	@Then("^I type shortcut combination to cut$")
-	public void ITypeShortcutCombinationToCut() throws Exception {
-		webappPagesCollection.getPage(ConversationPage.class)
-				.pressShortCutForCut();
-	}
-
-	/**
-	 * Types shortcut combination to paste
-	 *
-	 * @step. ^I type shortcut combination to paste$
-	 * @throws Exception
-	 */
-	@Then("^I type shortcut combination to paste$")
-	public void ITypeShortcutCombinationToPaste() throws Exception {
-		webappPagesCollection.getPage(ConversationPage.class)
-				.pressShortCutForPaste();
-	}
-
-	/**
-	 * Types shortcut combination to copy
-	 *
-	 * @step. ^I type shortcut combination to copy$
-	 * @throws Exception
-	 */
-	@Then("^I type shortcut combination to copy$")
-	public void ITypeShortcutCombinationToCopy() throws Exception {
-		webappPagesCollection.getPage(ConversationPage.class)
-				.pressShortCutForCopy();
 	}
 
 	/**

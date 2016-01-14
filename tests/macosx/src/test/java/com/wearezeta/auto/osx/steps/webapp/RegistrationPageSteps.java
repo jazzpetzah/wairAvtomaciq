@@ -7,7 +7,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -21,31 +20,32 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.UserState;
-import com.wearezeta.auto.osx.pages.webapp.RegistrationPage;
 import com.wearezeta.auto.web.pages.LoginPage;
+import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.Matchers.*;
+
+import org.junit.Assert;
 
 public class RegistrationPageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
 	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
 			.getInstance();
-
-	private static final Logger LOG = ZetaLogger
-			.getLog(RegistrationPageSteps.class.getName());
 
 	private ClientUser userToRegister = null;
 
 	private Future<String> activationMessage;
 
 	public static final int maxCheckCnt = 2;
+
+	private static final Logger LOG = ZetaLogger
+			.getLog(RegistrationPageSteps.class.getName());
 
 	/**
 	 * Enter user name into registration form
@@ -107,6 +107,44 @@ public class RegistrationPageSteps {
 	}
 
 	/**
+	 * Verifies autofilled email of user
+	 *
+	 * @step. ^(.*) verifies email is correct on Registration page$
+	 *
+	 * @param usernameAlias
+	 *            user name/alias
+	 * @throws Exception
+	 */
+	@When("^(.*) verifies email is correct on Registration page$")
+	public void IVerifyEmail(String usernameAlias) throws Exception {
+		String realEmail = usrMgr.findUserByNameOrNameAlias(usernameAlias)
+				.getEmail();
+		Assert.assertEquals("Entered email is wrong", realEmail,
+				webappPagesCollection.getPage(RegistrationPage.class)
+						.getEnteredEmail());
+
+	}
+
+	/**
+	 * Verifies autofilled username of user
+	 *
+	 * @step. ^(.*) verifies username is correct on Registration page$
+	 *
+	 * @param usernameAlias
+	 *            user name/alias
+	 * @throws Exception
+	 */
+	@When("^(.*) verifies username is correct on Registration page$")
+	public void IVerifyUsername(String usernameAlias) throws Exception {
+		String realUsername = usrMgr.findUserByNameOrNameAlias(usernameAlias)
+				.getName();
+		Assert.assertEquals("Entered username is wrong", realUsername,
+				webappPagesCollection.getPage(RegistrationPage.class)
+						.getEnteredName());
+
+	}
+
+	/**
 	 * Enter user password into registration form
 	 * 
 	 * @step. ^I enter user password \"(.*)\" on Registration page$
@@ -117,15 +155,32 @@ public class RegistrationPageSteps {
 	 */
 	@When("^I enter user password \"(.*)\" on Registration page$")
 	public void IEnterPassword(String password) throws Exception {
+
 		try {
-			this.userToRegister.setPassword(usrMgr.findUserByPasswordAlias(
-					password).getPassword());
+			ClientUser user = usrMgr.findUserByPasswordAlias(password);
+			if (this.userToRegister == null) {
+				this.userToRegister = user;
+			}
+			this.userToRegister.setPassword(user.getPassword());
 		} catch (NoSuchUserException e) {
 			this.userToRegister.setPassword(password);
 			this.userToRegister.addPasswordAlias(password);
 		}
 		webappPagesCollection.getPage(RegistrationPage.class).enterPassword(
 				this.userToRegister.getPassword());
+	}
+
+	/**
+	 * Check terms of use checkbox
+	 * 
+	 * @step. ^I accept the Terms of Use$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I accept the Terms of Use$")
+	public void IAcceptTermsOfUse() throws Exception {
+		webappPagesCollection.getPage(RegistrationPage.class)
+				.acceptTermsOfUse();
 	}
 
 	/**
@@ -142,21 +197,53 @@ public class RegistrationPageSteps {
 	}
 
 	/**
-	 * Verifiy whether email address, which is visible on email confirmation
-	 * page is the same as the expected one
+	 * Start monitoring thread for activation email. Please put this step BEFORE
+	 * you submit the registration form
+	 * 
+	 * @step. ^I start activation email monitoring$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I start activation email monitoring$")
+	public void IStartActivationEmailMonitoring() throws Exception {
+		Map<String, String> expectedHeaders = new HashMap<String, String>();
+		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
+		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
+				expectedHeaders, BackendAPIWrappers.ACTIVATION_TIMEOUT);
+	}
+
+	/**
+	 * Verify whether email address, which is visible on email confirmation page
+	 * is the same as the expected one
 	 * 
 	 * @step. ^I see email (.*) on [Vv]erification page$
 	 * 
 	 * @param email
 	 *            expected email/alias
-	 * @throws NoSuchUserException
+	 * @throws Exception
 	 */
 	@Then("^I see email (.*) on [Vv]erification page$")
-	public void ISeeVerificationEmail(String email) throws NoSuchUserException,
-			Exception {
+	public void ISeeVerificationEmail(String email) throws Exception {
 		email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
 		assertThat(webappPagesCollection.getPage(RegistrationPage.class)
 				.getVerificationEmailAddress(), containsString(email));
+	}
+
+	/**
+	 * Verify whether email address, which is visible on email pending page is
+	 * the same as the expected one
+	 * 
+	 * @step. ^I see email (.*) on pending page$
+	 * 
+	 * @param email
+	 *            expected email/alias
+	 * @throws Exception
+	 */
+	@Then("^I see email (.*) on pending page$")
+	public void ISeePendingEmail(String email) throws Exception {
+		email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
+		assertThat(webappPagesCollection.getPage(RegistrationPage.class)
+				.getPendingEmailAddress(), containsString(email));
 	}
 
 	/**
@@ -176,23 +263,23 @@ public class RegistrationPageSteps {
 	}
 
 	/**
-	 * Checks if a red dot is shown inside the email field on the registration
-	 * form
+	 * Checks if a orange line is shown around the email field on the
+	 * registration form
 	 *
-	 * @step. ^I verify that a red dot is shown inside the email field on the
-	 *        registration form$
+	 * @step. ^I verify that the email field on the registration form is( not)?
+	 *        marked as error$
 	 * @throws Exception
 	 */
-	@Then("^I verify that a red dot is( not)? shown inside the email field on the registration form$")
+	@Then("^I verify that the email field on the registration form is( not)? marked as error$")
 	public void ARedDotIsShownOnTheEmailField(String not) throws Exception {
 		if (not == null) {
-			assertThat("Red dot on email field",
-					webappPagesCollection.getPage(RegistrationPage.class)
-							.isEmailFieldMarkedAsError());
+			assertThat("email field marked as error", webappPagesCollection
+					.getPage(RegistrationPage.class)
+					.isEmailFieldMarkedAsError());
 		} else {
-			assertThat("Red dot on email field",
-					webappPagesCollection.getPage(RegistrationPage.class)
-							.isEmailFieldMarkedAsError());
+			assertThat("email field marked as valid", webappPagesCollection
+					.getPage(RegistrationPage.class)
+					.isEmailFieldMarkedAsValid());
 		}
 	}
 
@@ -225,36 +312,6 @@ public class RegistrationPageSteps {
 	}
 
 	/**
-	 * Switch to Sign In page
-	 * 
-	 * @step. ^I switch to [Ss]ign [Ii]n page$
-	 * 
-	 * @throws Exception
-	 */
-	@Given("^I switch to [Ss]ign [Ii]n page$")
-	public void ISwitchToLoginPage() throws Exception {
-		webappPagesCollection.getPage(RegistrationPage.class)
-				.switchToLoginPage();
-	}
-
-
-	/**
-	 * Start monitoring thread for activation email. Please put this step BEFORE
-	 * you submit the registration form
-	 * 
-	 * @step. ^I start activation email monitoring$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I start activation email monitoring$")
-	public void IStartActivationEmailMonitoring() throws Exception {
-		Map<String, String> expectedHeaders = new HashMap<String, String>();
-		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
-				expectedHeaders, BackendAPIWrappers.ACTIVATION_TIMEOUT);
-	}
-
-	/**
 	 * Activates user using browser URL from activation email and sign him in to
 	 * the app if the activation was successful. Don't forget to call the 'I
 	 * start activation email monitoring' step before this one
@@ -275,14 +332,13 @@ public class RegistrationPageSteps {
 			String content = EntityUtils.toString(entity);
 			Pattern p = Pattern.compile("data-url=\"(.*?)\"");
 			Matcher m = p.matcher(content);
-			while(m.find()) {
-			   String activationLink = m.group(1);
-			   LOG.info("Activation link: " + activationLink);
-			   httpGet = new HttpGet(activationLink);
-			   CloseableHttpResponse response = httpclient.execute(httpGet);
-			   LOG.info("Status: " + response.getStatusLine());
+			while (m.find()) {
+				String activationLink = m.group(1);
+				LOG.info("Activation link: " + activationLink);
+				httpGet = new HttpGet(activationLink);
+				httpclient.execute(httpGet);
 			}
-	    }
+		}
 
 		this.userToRegister.setUserState(UserState.Created);
 		// indexes in aliases start from 1
@@ -298,4 +354,29 @@ public class RegistrationPageSteps {
 		webappPagesCollection.getPage(LoginPage.class).waitForLogin();
 	}
 
+	/**
+	 * Switch to Sign In page
+	 * 
+	 * @step. ^I switch to [Ss]ign [Ii]n page$
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I switch to [Ss]ign [Ii]n page$")
+	public void ISwitchToLoginPage() throws Exception {
+		webappPagesCollection.getPage(RegistrationPage.class)
+				.switchToLoginPage();
+	}
+
+	/**
+	 * Clicks on Verify later button on Verification page
+	 * 
+	 * @step. ^I click on Verify later button on Verification page$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I click on Verify later button on Verification page$")
+	public void IClickVerifyLaterButton() throws Exception {
+		webappPagesCollection.getPage(RegistrationPage.class)
+				.clickVerifyLaterButton();
+	}
 }
