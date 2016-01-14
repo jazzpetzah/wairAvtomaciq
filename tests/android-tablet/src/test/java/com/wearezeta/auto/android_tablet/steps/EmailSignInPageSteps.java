@@ -59,8 +59,7 @@ public class EmailSignInPageSteps {
 	 * Enter a text into password field on sign in screen
 	 * 
 	 * @step. ^I enter password \"(.*)\"$
-	 * @param login
-	 *            the string to enter
+	 * @param password the string to enter
 	 * 
 	 * @throws Exception
 	 */

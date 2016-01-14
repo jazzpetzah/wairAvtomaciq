@@ -3,6 +3,7 @@ package com.wearezeta.auto.android.pages.registration;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import com.wearezeta.auto.android.pages.FirstTimeOverlay;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
@@ -109,8 +110,8 @@ public class EmailSignInPage extends AndroidPage {
 			}
 		} while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
 		throw new IllegalStateException(String.format(
-				"Login screen is still visible after %s seconds timeout",
-				timeoutSeconds));
+				"Login screen is still visible after %s seconds timeout", timeoutSeconds));
+
 	}
 
 	public void verifyErrorMessageText(String expectedMsg) throws Exception {

@@ -1,11 +1,12 @@
 Feature: Conversation View
 
-  @C736 @id2252 @regression @rc
+  @C736 @id2252 @regression @rc @torun
   Scenario Outline: Send Message to contact in portrait mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
