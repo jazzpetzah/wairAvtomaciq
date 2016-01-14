@@ -103,7 +103,7 @@ Feature: Search
     And I click Connect button on Connect To popover
     Then I see conversation with <Name2> is selected in conversations list
     And I open conversation with <Name2>
-    And I see CONNECTING TO action for <Name2> in conversation
+    And I see connecting message for <Name2> in conversation
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
@@ -115,6 +115,7 @@ Feature: Search
     And I open the list of incoming connection requests
     When I accept connection request from user <Name>
     Then I see conversation with <Name> is selected in conversations list
+    And I see connected message for <Name> in conversation
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
@@ -124,6 +125,7 @@ Feature: Search
     And I see my avatar on top of Contact list
     And I see Contact list with name <Name2>
     And I open conversation with <Name2>
+    And I see connected message for <Name2> in conversation
 
     Examples: 
       | Login      | Password      | Name      | Name2     | Login2     | Password2     |

@@ -295,6 +295,28 @@ public class ConversationPageSteps {
 				.isPeopleButtonToolTipCorrect());
 	}
 
+	@Then("^I see connecting message for (.*) in conversation$")
+	public void ISeeConnectingMessage(String contact) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		assertThat("User name",
+				webappPagesCollection.getPage(ConversationPage.class)
+						.getConnectedMessageUser(), equalTo(contact));
+		assertThat("Label",
+				webappPagesCollection.getPage(ConversationPage.class)
+						.getConnectedMessageLabel(), equalTo("CONNECTING"));
+	}
+
+	@Then("^I see connected message for (.*) in conversation$")
+	public void ISeeConnectedMessage(String contact) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		assertThat("User name",
+				webappPagesCollection.getPage(ConversationPage.class)
+						.getConnectedMessageUser(), equalTo(contact));
+		assertThat("Label",
+				webappPagesCollection.getPage(ConversationPage.class)
+						.getConnectedMessageLabel(), equalTo("CONNECTED"));
+	}
+
 	/**
 	 * Checks action message (e.g. you left, etc.) appear in conversation
 	 *
