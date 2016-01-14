@@ -33,8 +33,12 @@ final class SessionHelper {
             try {
                 return future.get(MAX_FIND_ELEMENT_COMMAND_DURATION, TimeUnit.SECONDS);
             } catch (Exception e) {
-                setSessionLost(true);
-                Throwables.propagate(e);
+                if (e instanceof ExecutionException) {
+                    Throwables.propagate(e.getCause());
+                } else {
+                    setSessionLost(true);
+                    Throwables.propagate(e);
+                }
             }
         }
         return new ArrayList<>();
@@ -47,8 +51,12 @@ final class SessionHelper {
             try {
                 return future.get(MAX_FIND_ELEMENT_COMMAND_DURATION, TimeUnit.SECONDS);
             } catch (Exception e) {
-                setSessionLost(true);
-                Throwables.propagate(e);
+                if (e instanceof ExecutionException) {
+                    Throwables.propagate(e.getCause());
+                } else {
+                    setSessionLost(true);
+                    Throwables.propagate(e);
+                }
             }
         }
         return null;
