@@ -12,31 +12,31 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class VideoPlayerPage extends IOSPage {
 
-	public static final String xpathVideoMainPage = "//UIAWebView/UIAButton[@name='Home']";
+	private static final String xpathVideoMainPage = "//UIAWebView/UIAButton[@name='Home']";
 	@FindBy(xpath = xpathVideoMainPage)
 	private WebElement videoPlayerMainWindow;
 
-    public static final String nameVideoDoneButton = "Done";
+	private static final String nameVideoDoneButton = "Done";
     @FindBy(name = nameVideoDoneButton)
 	private WebElement videoDoneButton;
 
-    public static final String nameVideoSlider = "Track position";
+	private static final String nameVideoSlider = "Track position";
     @FindBy(name = nameVideoSlider)
 	private WebElement videoSlider;
 
-    public static final String nameVideoFullScreenButton = "Full screen";
+	private static final String nameVideoFullScreenButton = "Full screen";
     @FindBy(name = nameVideoFullScreenButton)
 	private WebElement videoFullScreenButton;
 
-    public static final String nameVideoPreviousButton = "Previous track";
+	private static final String nameVideoPreviousButton = "Previous track";
     @FindBy(name = nameVideoPreviousButton)
 	private WebElement videoPreviousButton;
 
-    public static final String nameVideoPauseButton = "PauseButton";
+	private static final String nameVideoPauseButton = "PauseButton";
     @FindBy(name = nameVideoPauseButton)
 	private WebElement videoPauseButton;
 
-    public static final String nameVideoNextButton = "Next track";
+	private static final String nameVideoNextButton = "Next track";
     @FindBy(name = nameVideoNextButton)
 	private WebElement videoNextButton;
 

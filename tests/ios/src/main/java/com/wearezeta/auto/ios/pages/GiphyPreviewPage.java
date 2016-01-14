@@ -10,23 +10,23 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class GiphyPreviewPage extends IOSPage {
-	public static final String nameGiphyRefreshButton = "leftButton";
+	private static final String nameGiphyRefreshButton = "leftButton";
 	@FindBy(name = nameGiphyRefreshButton)
 	private WebElement giphyMoreButton;
 
-    public static final String nameGiphyLinkButton = "rightButton";
+	private static final String nameGiphyLinkButton = "rightButton";
     @FindBy(name = nameGiphyLinkButton)
 	private WebElement giphyLinkButton;
 
-    public static final String nameGiphyTitleButton = "centerButton";
+	private static final String nameGiphyTitleButton = "centerButton";
     @FindBy(name = nameGiphyTitleButton)
 	private WebElement giphyTitleButton;
 
-    public static final String xpathGithyImage = "//UIAButton[@name='rejectButton']/preceding-sibling::UIAImage[1]";
+	private static final String xpathGithyImage = "//UIAButton[@name='rejectButton']/preceding-sibling::UIAImage[1]";
     @FindBy(xpath = xpathGithyImage)
 	private WebElement giphyImage;
 
-    public static final String nameGiphyCancelRequestButton = "rejectButton";
+	private static final String nameGiphyCancelRequestButton = "rejectButton";
     @FindBy(name = nameGiphyCancelRequestButton)
 	private WebElement giphyRejectButton;
 
@@ -34,11 +34,11 @@ public class GiphyPreviewPage extends IOSPage {
     @FindBy(name = nameGiphySendButton)
 	private WebElement giphySendButton;
 
-    public static final String nameNoGifsText = "OOOPS, NO MORE GIFS";
+	private static final String nameNoGifsText = "OOOPS, NO MORE GIFS";
     @FindBy(name = nameNoGifsText)
 	private WebElement noGifsText;
 
-    public static final String nameGiphyGrid = "giphyCollectionView";
+	private static final String nameGiphyGrid = "giphyCollectionView";
 
     public GiphyPreviewPage(Future<ZetaIOSDriver> driver) throws Exception {
 		super(driver);

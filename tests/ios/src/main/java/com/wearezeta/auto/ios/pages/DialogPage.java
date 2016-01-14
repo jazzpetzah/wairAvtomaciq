@@ -30,11 +30,11 @@ public class DialogPage extends IOSPage {
     private static final Logger log = ZetaLogger.getLog(DialogPage.class
             .getSimpleName());
 
-    public static final String PING_LABEL = "PINGED";
-    public static final String HOT_PING_LABEL = "PINGED AGAIN";
+    private static final String PING_LABEL = "PINGED";
+    private static final String HOT_PING_LABEL = "PINGED AGAIN";
     private static final long PING_ANIMATION_TIME = 3000;
 
-    final String[] scriptArr = new String[]{
+    private static final String[] scriptArr = new String[]{
             "property thisapp: \"Simulator\"",
             "tell application \"System Events\"", " tell process thisapp",
             " click menu item \"Paste\" of menu \"Edit\" of menu bar 1",
@@ -107,65 +107,65 @@ public class DialogPage extends IOSPage {
     @FindBy(xpath = xpathAddedToConversationMessage)
     private WebElement addedToConversationMessage;
 
-    public static final String nameAddPictureButton = "ComposeControllerPictureButton";
+    protected static final String nameAddPictureButton = "ComposeControllerPictureButton";
     @FindBy(name = nameAddPictureButton)
     private WebElement addPictureButton;
 
-    public static final String nameCallButton = "ComposeControllerVoiceButton";
+    private static final String nameCallButton = "ComposeControllerVoiceButton";
     @FindBy(name = nameCallButton)
     private WebElement callButton;
 
-    public static final String xpathMessageEntries = xpathMainWindow + "/UIATableView/UIATableCell";
+    private static final String xpathMessageEntries = xpathMainWindow + "/UIATableView/UIATableCell";
     @FindBy(xpath = xpathMessageEntries)
     private List<WebElement> messageEntries;
 
-    public static final String xpathOtherConversationCellFormat =
+    private static final String xpathOtherConversationCellFormat =
             xpathMainWindow + "/UIATableView[1]/UIATableCell[last()]";
     @FindBy(xpath = xpathOtherConversationCellFormat)
     private WebElement imageCell;
 
-    public static final String xpathNameMediaContainer =
+    private static final String xpathNameMediaContainer =
             xpathMainWindow + "/UIATableView[1]/UIATableCell[last()]";
     @FindBy(xpath = xpathNameMediaContainer)
     private WebElement mediaContainer;
 
-    public static final String xpathMediaConversationCell = xpathMainWindow +
+    private static final String xpathMediaConversationCell = xpathMainWindow +
             "/UIATableView[last()]/UIATableCell[last()]/UIAButton[@name='soundcloud']/following-sibling::UIAButton";
     @FindBy(xpath = xpathMediaConversationCell)
     private WebElement mediaLinkCell;
 
-    public static final String xpathYoutubeVimeoConversationCell = xpathMainWindow
+    private static final String xpathYoutubeVimeoConversationCell = xpathMainWindow
             + "/UIATableView[1]/UIATableCell[last()]/UIAButton[1]";
     @FindBy(xpath = xpathYoutubeVimeoConversationCell)
     private WebElement youtubeCell;
 
-    public static final String namePlayButton = "mediaBarPlayButton";
+    private static final String namePlayButton = "mediaBarPlayButton";
     @FindBy(name = namePlayButton)
     private WebElement mediabarPlayButton;
 
-    public static final String namePauseButton = "mediaBarPauseButton";
+    private static final String namePauseButton = "mediaBarPauseButton";
     @FindBy(name = namePauseButton)
     private WebElement mediabarPauseButton;
 
-    public static final String xpathConversationPage = xpathMainWindow + "/UIATableView[1]";
+    private static final String xpathConversationPage = xpathMainWindow + "/UIATableView[1]";
     @FindBy(xpath = xpathConversationPage)
     private WebElement conversationPage;
 
-    public static final String nameCloseButton = "mediabarCloseButton";
+    private static final String nameCloseButton = "mediabarCloseButton";
     @FindBy(name = nameCloseButton)
     private WebElement mediabarStopCloseButton;
     @FindBy(name = nameCloseButton)
     private WebElement closeButton;
 
-    public static final String nameTitle = "playingMediaTitle";
+    private static final String nameTitle = "playingMediaTitle";
     @FindBy(name = nameTitle)
     private WebElement mediabarBarTitle;
 
-    public static final String namePingButton = "ComposeControllerPingButton";
+    private static final String namePingButton = "ComposeControllerPingButton";
     @FindBy(name = namePingButton)
     private WebElement pingButton;
 
-    public static final String xpathYouAddedMessageCellFormat = xpathMainWindow + "/UIATableView[1]/UIATableCell[1]";
+    private static final String xpathYouAddedMessageCellFormat = xpathMainWindow + "/UIATableView[1]/UIATableCell[1]";
     @FindBy(xpath = xpathYouAddedMessageCellFormat)
     private List<WebElement> youAddedCell;
 
@@ -173,34 +173,34 @@ public class DialogPage extends IOSPage {
     @FindBy(name = nameAddContactToChatButton)
     protected WebElement addInfoPage;
 
-    public static final String xpathDialogTitleBar = "//UIAStaticText[@name='%s']";
+    private static final String xpathDialogTitleBar = "//UIAStaticText[@name='%s']";
 
-    public static final String nameSoundCloudPause = "Pause";
+    private static final String nameSoundCloudPause = "Pause";
     @FindBy(name = nameSoundCloudPause)
     private WebElement soundCloudPause;
 
-    public static final String nameChatheadAvatarImage = "ChatheadAvatarImage";
+    private static final String nameChatheadAvatarImage = "ChatheadAvatarImage";
     @FindBy(name = nameChatheadAvatarImage)
     private WebElement chatheadAvatarImage;
 
-    public static final String nameGifButton = "rightMenuButton";
+    private static final String nameGifButton = "rightMenuButton";
     @FindBy(name = nameGifButton)
     private WebElement openGifPreviewButton;
 
-    public static final String nameCursorSketchButton = "ComposeControllerSketchButton";
+    private static final String nameCursorSketchButton = "ComposeControllerSketchButton";
     @FindBy(name = nameCursorSketchButton)
     private WebElement openSketchButton;
 
-    public static final String xpathGiphyImage =
+    private static final String xpathGiphyImage =
             "//UIATextView[@name='via giphy.com']/following::UIATableCell[@name='ImageCell']";
     @FindBy(xpath = xpathGiphyImage)
     private WebElement giphyImage;
 
-    public static final String nameSoundCloudButton = "soundcloud";
+    private static final String nameSoundCloudButton = "soundcloud";
     @FindBy(name = nameSoundCloudButton)
     private WebElement soundCloudButton;
 
-    public static final String xpathUserAvatarNextToInput =
+    private static final String xpathUserAvatarNextToInput =
             "//UIAImage[following-sibling::UIATextView[@name='ConversationTextInputField'] and @visible='true']";
     @FindBy(xpath = xpathUserAvatarNextToInput)
     private WebElement userAvatarNextToInput;
@@ -214,25 +214,29 @@ public class DialogPage extends IOSPage {
     public static final String xpathFormatMissedCallButtonForContact =
             "//UIATableCell[UIAStaticText[@name='%s CALLED']]/UIAButton[@name='ConversationMissedCallButton']";
 
-    public static final String nameOtherUserAddContactToChatButton = "OtherUserMetaControllerLeftButton";
+    private static final String nameOtherUserAddContactToChatButton = "OtherUserMetaControllerLeftButton";
 
-    public static final String xpathLastMessageFormat = xpathMainWindow + "/UIATableView[1]/UIATableCell[%s]/UIATextView[1]";
+    private static final String xpathLastMessageFormat = xpathMainWindow + "/UIATableView[1]/UIATableCell[%s]/UIATextView[1]";
 
-    private String connectingLabel = "CONNECTING TO %s.";
+    private static final Function<String, String> connectingLabelByReceiverName =
+            name -> String.format("CONNECTING TO %s.", name.toUpperCase());
 
-    public static final String xpathLoremIpsumText = "//UIATextView[contains(@name, 'Lorem ipsum')]";
+    private static final String xpathLoremIpsumText = "//UIATextView[contains(@name, 'Lorem ipsum')]";
 
-    public static final String nameCameraLibraryButton = "cameraLibraryButton";
+    protected static final String nameCameraLibraryButton = "cameraLibraryButton";
 
-    public static final String nameSoundCloudContainer = "Play on SoundCloud";
+    private static final String nameSoundCloudContainer = "Play on SoundCloud";
 
-    public static final String xpathChatheadName = "//UIAElement/following-sibling::UIAStaticText[@name='%s']";
+    private static final Function<String, String> xpathChatheadByName =
+            name-> String.format("//UIAElement/following-sibling::UIAStaticText[@name='%s']", name);
 
-    public static final String xpathImage = xpathMainWindow + "/UIATableView[1]/UIATableCell[2]";
+    private static final String xpathImage = xpathMainWindow + "/UIATableView[1]/UIATableCell[2]";
 
-    public static final String xpathSimpleMessageLink = xpathMainWindow + "/UIATableView[1]/UIATableCell[last()]/UIATextView[1]";
+    private static final String xpathSimpleMessageLink =
+            xpathMainWindow + "/UIATableView[1]/UIATableCell[last()]/UIATextView[1]";
 
-    public static final String xpathMyNameInDialog = "//UIAStaticText[@name='%s'][last()]";
+    private static final Function<String, String> xpathLastItemByNameInDialog =
+            name -> String.format("//UIAStaticText[@name='%s'][last()]", name.toUpperCase());
 
     public static final String xpathConnectedToUserLabel =
             "//UIAStaticText[contains(@name, 'CONNECTED TO %s')]";
@@ -347,7 +351,7 @@ public class DialogPage extends IOSPage {
     }
 
     public String getExpectedConnectingLabel(String name) {
-        return String.format(connectingLabel, name.toUpperCase());
+        return connectingLabelByReceiverName.apply(name);
     }
 
     public void swipeInputCursor() throws Exception {
@@ -743,11 +747,8 @@ public class DialogPage extends IOSPage {
     }
 
     public boolean chatheadIsVisible(String contact) throws Exception {
-
-        List<WebElement> el = this.getDriver()
-                .findElements(
-                        By.xpath(String.format(xpathChatheadName, contact)));
-        for (WebElement element : el) {
+        final By locator = By.xpath(xpathChatheadByName.apply(contact));
+        for (WebElement element : this.getDriver().findElements(locator)) {
             if (DriverUtils.isElementPresentAndDisplayed(getDriver(), element)) {
                 return true;
             }
@@ -772,9 +773,8 @@ public class DialogPage extends IOSPage {
     }
 
     public boolean isMyNameInDialogDisplayed(String name) throws Exception {
-        WebElement el = getDriver().findElementByXPath(
-                String.format(xpathMyNameInDialog, name.toUpperCase()));
-        return DriverUtils.isElementPresentAndDisplayed(getDriver(), el);
+        final By locator = By.xpath(xpathLastItemByNameInDialog.apply(name));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isConnectedToUserStartedConversationLabelVisible(

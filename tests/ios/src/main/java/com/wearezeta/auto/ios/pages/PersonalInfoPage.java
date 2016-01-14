@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.pages;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -16,48 +17,48 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class PersonalInfoPage extends IOSPage {
-    public static final String xpathEmailField =
+    private static final String xpathEmailField =
             "//UIAElement[@name='ProfileSelfNameField']/following-sibling::UIAStaticText[1]";
     @FindBy(xpath = xpathEmailField)
     private WebElement emailField;
 
-    public static final String xpathUserProfileName =
+    private static final String xpathUserProfileName =
             "//UIAApplication[1]/UIAWindow[1]/UIAElement[1]/UIATextView[1]";
     @FindBy(xpath = xpathUserProfileName)
     private WebElement profileNameField;
 
-    public static final String classNameUIAButton = "UIAButton";
+    private static final String classNameUIAButton = "UIAButton";
     @FindBy(className = classNameUIAButton)
     private List<WebElement> optionsButtons;
 
-    public static final String nameProfileSettingsButton = "SettingsButton";
+    private static final String nameProfileSettingsButton = "SettingsButton";
     @FindBy(name = nameProfileSettingsButton)
     private WebElement settingsButton;
 
-    public static final String xpathSettingsAboutButton = "//UIAButton[@name='ABOUT' or @name='About']";
+    private static final String xpathSettingsAboutButton = "//UIAButton[@name='ABOUT' or @name='About']";
     @FindBy(xpath = xpathSettingsAboutButton)
     private WebElement aboutButton;
 
-    public static final String nameTermsOfUseButton = "Terms of Use";
+    private static final String nameTermsOfUseButton = "Terms of Use";
     @FindBy(name = nameTermsOfUseButton)
     private WebElement termsOfUseButton;
 
-    public static final String nameSignOutButton = "SignOutButton";
+    private static final String nameSignOutButton = "SignOutButton";
     @FindBy(name = nameSignOutButton)
     private WebElement signoutButton;
 
     @FindBy(xpath = xpathMainWindow)
     private WebElement personalPage;
 
-    public static final String namePictureButton = "CameraLibraryButton";
+    private static final String namePictureButton = "CameraLibraryButton";
     @FindBy(name = namePictureButton)
     private WebElement pictureButton;
 
-    public static final String xpathProfileNameEditField = "//UIAElement[@name='ProfileSelfNameField']/UIATextView";
+    private static final String xpathProfileNameEditField = "//UIAElement[@name='ProfileSelfNameField']/UIATextView";
     @FindBy(xpath = xpathProfileNameEditField)
     private WebElement profileNameEditField;
 
-    public static final String nameSelfNameTooShortError = "AT LEAST 2 CHARACTERS ";
+    private static final String nameSelfNameTooShortError = "AT LEAST 2 CHARACTERS ";
     @FindBy(name = nameSelfNameTooShortError)
     private WebElement nameTooShortError;
 
@@ -65,63 +66,63 @@ public class PersonalInfoPage extends IOSPage {
     @FindBy(xpath = xpathSettingsPage)
     private WebElement settingsPage;
 
-    public static final String xpathOptionsSettingsButton = "//UIAButton[@name='SETTINGS' or @name='Settings']";
+    private static final String xpathOptionsSettingsButton = "//UIAButton[@name='SETTINGS' or @name='Settings']";
     @FindBy(xpath = xpathOptionsSettingsButton)
     private WebElement optionsSettingsButton;
 
-    public static final String nameSoundAlertsButton = "Alerts";
+    private static final String nameSoundAlertsButton = "Alerts";
     @FindBy(name = nameSoundAlertsButton)
     private WebElement soundAlertsButton;
 
-    public static final String xpathSoundAlertsPage = "//UIANavigationBar[@name='Alerts']";
+    private static final String xpathSoundAlertsPage = "//UIANavigationBar[@name='Alerts']";
     @FindBy(xpath = xpathSoundAlertsPage)
     private WebElement soundAlertsPage;
 
-    public static final String xpathAllSoundAlertsButton = "//UIATableCell[@name='All']";
+    private static final String xpathAllSoundAlertsButton = "//UIATableCell[@name='All']";
     @FindBy(xpath = xpathAllSoundAlertsButton)
     private WebElement allSoundAlertsButton;
 
-    public static final String nameSettingsChangePasswordButton = "Change Password";
+    private static final String nameSettingsChangePasswordButton = "Change Password";
     @FindBy(name = nameSettingsChangePasswordButton)
     private WebElement settingsChangePasswordButton;
 
-    public static final String nameSettingsResetPasswordButton = "Reset Password";
+    private static final String nameSettingsResetPasswordButton = "Reset Password";
     @FindBy(name = nameSettingsResetPasswordButton)
     private WebElement settingsResetPasswordButton;
 
-    public static final String nameSettingsAccountInfoButton = "Account";
+    private static final String nameSettingsAccountInfoButton = "Account";
     @FindBy(name = nameSettingsAccountInfoButton)
     private WebElement settingsAccountInfoButton;
 
-    public static final String nameOptionsHelpButton = "HELP";
+    private static final String nameOptionsHelpButton = "HELP";
     @FindBy(name = nameOptionsHelpButton)
     private WebElement settingsHelpButton;
 
-    public static final String xpathSettingsHelpHeader = "//UIAWebView/UIAStaticText[@name='Support']";
+    private static final String xpathSettingsHelpHeader = "//UIAWebView/UIAStaticText[@name='Support']";
     @FindBy(xpath = xpathSettingsHelpHeader)
     private WebElement supportWebPageHeader;
 
-    public static final String nameAccentColorPicker = "AccentColorPickerView";
+    private static final String nameAccentColorPicker = "AccentColorPickerView";
     @FindBy(name = nameAccentColorPicker)
     private WebElement accentColorPicker;
 
-    public static final String xpathSettingsChatheadSwitch = "//UIASwitch[@name='Message previews']";
+    private static final String xpathSettingsChatheadSwitch = "//UIASwitch[@name='Message previews']";
     @FindBy(xpath = xpathSettingsChatheadSwitch)
     private WebElement settingsChatheadSwitch;
 
-    public static final String nameSettingsBackButton = "Back";
+    private static final String nameSettingsBackButton = "Back";
     @FindBy(name = nameSettingsBackButton)
     private WebElement settingsBackButton;
 
-    public static final String nameSettingsDoneButton = "Done";
+    private static final String nameSettingsDoneButton = "Done";
     @FindBy(name = nameSettingsDoneButton)
     private WebElement settingsDoneButton;
 
-    public static final String nameCloseButton = "CloseButton";
+    private static final String nameCloseButton = "CloseButton";
     @FindBy(name = PersonalInfoPage.nameCloseButton)
     private WebElement closeButton;
 
-    public static final String nameWireWebsiteButton = "wire.com";
+    private static final String nameWireWebsiteButton = "wire.com";
     @FindBy(name = nameWireWebsiteButton)
     private WebElement wireWebsiteButton;
 
@@ -129,51 +130,52 @@ public class PersonalInfoPage extends IOSPage {
     @FindBy(name = namePrivacyPolicyButton)
     private WebElement privacyPolicyButton;
 
-    public static final String xpathBuildNumberText =
+    private static final String xpathBuildNumberText =
             "//UIAApplication/UIAWindow/UIAStaticText[contains(@name, 'Wire Swiss GmbH • version')]";
     @FindBy(xpath = xpathBuildNumberText)
     private WebElement buildNumberText;
 
-    public static final String nameCloseLegalPageButton = "WebViewCloseButton";
+    private static final String nameCloseLegalPageButton = "WebViewCloseButton";
     @FindBy(name = nameCloseLegalPageButton)
     private WebElement closeLegalPageButton;
 
-    public static final String xpathTermsOfUsePageText =
+    private static final String xpathTermsOfUsePageText =
             "//UIAApplication[1]/UIAWindow[2]/UIAScrollView[1]/UIAWebView[1]/UIAStaticText[2]";
     @FindBy(xpath = xpathTermsOfUsePageText)
     private WebElement termsOfUsePageText;
 
-    public static final String xpathPrivacyPolicyPageText =
+    private static final String xpathPrivacyPolicyPageText =
             "//UIAApplication[1]/UIAWindow[2]/UIAScrollView[1]/UIAWebView[1]/UIALink[1]/UIAStaticText[1]";
     @FindBy(xpath = xpathPrivacyPolicyPageText)
     private WebElement privacyPolicyPageText;
 
-    public static final String xpathWireWebsiteUrl = "//UIAElement[@name ='URL']";
+    private static final String xpathWireWebsiteUrl = "//UIAElement[@name ='URL']";
     @FindBy(xpath = xpathWireWebsiteUrl)
     private WebElement wireWebsitePageUrlLabel;
 
-    public static final String xpathAboutPageWireLogo =
+    private static final String xpathAboutPageWireLogo =
             "//UIAApplication/UIAWindow/UIAButton[@name='wire.com']/preceding-sibling::UIAImage[1]";
     @FindBy(xpath = xpathAboutPageWireLogo)
     private WebElement aboutPageWireLogo;
 
-    public static final String nameAboutCloseButton = "aboutCloseButton";
+    private static final String nameAboutCloseButton = "aboutCloseButton";
     @FindBy(name = nameAboutCloseButton)
     private WebElement aboutCloseButton;
 
-    public static final String nameAddPhoneNumberButton = "ADD PHONE NUMBER";
+    private static final String nameAddPhoneNumberButton = "ADD PHONE NUMBER";
     @FindBy(name = nameAddPhoneNumberButton)
     private WebElement addPhoneNumberButton;
 
-    public static final String nameThemeSwitcherButton = "ThemeButton";
+    private static final String nameThemeSwitcherButton = "ThemeButton";
     @FindBy(name = nameThemeSwitcherButton)
     private WebElement themeSwitcherButton;
 
-    public static final String xpathPhoneEmailField =  "//UIAStaticText[contains(@name, '%s')]";
+    private static final Function<String, String> xpathPhoneEmailFieldByValue =
+            value -> String.format("//UIAStaticText[contains(@name, '%s')]", value);
 
-    public static final String nameProfileName = "ProfileSelfNameField";
+    private static final String nameProfileName = "ProfileSelfNameField";
 
-    public static final String xpathChangePasswordPageChangePasswordButton = "//UIAButton[@name='RESET PASSWORD']";
+    private static final String xpathChangePasswordPageChangePasswordButton = "//UIAButton[@name='RESET PASSWORD']";
 
     public PersonalInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -424,8 +426,8 @@ public class PersonalInfoPage extends IOSPage {
 
     public boolean isPhoneNumberAttachedToProfile(String number)
             throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By
-                .xpath(String.format(xpathPhoneEmailField, number)));
+        final By locator = By.xpath(xpathPhoneEmailFieldByValue.apply(number));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isThemeSwitcherButtonVisible() throws Exception {

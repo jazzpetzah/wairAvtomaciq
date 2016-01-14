@@ -12,32 +12,32 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class CameraRollPage extends IOSPage {
 
-	public static final String nameCameraLibraryButton = "cameraLibraryButton";
+    private static final String nameCameraLibraryButton = "cameraLibraryButton";
 	@FindBy(name = nameCameraLibraryButton)
 	private WebElement cameraLibraryButton;
 
-    public static final String nameCameraRollCancel = "Cancel";
+    private static final String nameCameraRollCancel = "Cancel";
     @FindBy(name = nameCameraRollCancel)
 	private WebElement cameraRollCancel;
 
-    public static final String xpathCameraLibraryFirstFolder = "//UIATableCell[@name='Moments']";
+    private static final String xpathCameraLibraryFirstFolder = "//UIATableCell[@name='Moments']";
     @FindBy(xpath = xpathCameraLibraryFirstFolder)
 	private WebElement cameraLibraryFirstFolder;
 
-    public static final String xpathLibraryFirstPicture =
+    private static final String xpathLibraryFirstPicture =
 			xpathMainWindow + "/UIACollectionView/UIACollectionCell[1]";
     @FindBy(xpath = xpathLibraryFirstPicture)
 	private WebElement libraryFirstPicture;
 
-    public static final String xpathLibraryLastPicture = "//UIACollectionView/UIACollectionCell[last()]";
+    private static final String xpathLibraryLastPicture = "//UIACollectionView/UIACollectionCell[last()]";
     @FindBy(xpath = xpathLibraryLastPicture)
 	private WebElement libraryLastPicture;
 
-    public static final String xpathConfirmPictureButton = "//UIAButton[@name='OK' and @visible='true']";
+    private static final String xpathConfirmPictureButton = "//UIAButton[@name='OK' and @visible='true']";
     @FindBy(xpath = xpathConfirmPictureButton)
 	private WebElement confirmPictureButton;
 
-    public static final String nameCameraRollSketchButton = "editNotConfirmedImageButton";
+    private static final String nameCameraRollSketchButton = "editNotConfirmedImageButton";
     @FindBy(name = nameCameraRollSketchButton)
 	private WebElement cameraRollSketchButton;
 

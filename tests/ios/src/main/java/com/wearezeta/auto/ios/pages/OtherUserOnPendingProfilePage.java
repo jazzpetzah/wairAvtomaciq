@@ -11,39 +11,39 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class OtherUserOnPendingProfilePage extends IOSPage {
 
-	public static final String nameOtherUserProfilePageCloseButton = "OtherUserProfileCloseButton";
+	private static final String nameOtherUserProfilePageCloseButton = "OtherUserProfileCloseButton";
 	@FindBy(xpath = nameOtherUserProfilePageCloseButton)
 	private WebElement closePageButton;
 
-    public static final String xpathOtherProfilePageCancelRequestLabel = "//UIAStaticText[contains(@name, 'CANCEL REQUEST')]";
+	private static final String xpathOtherProfilePageCancelRequestLabel = "//UIAStaticText[contains(@name, 'CANCEL REQUEST')]";
     @FindBy(xpath = xpathOtherProfilePageCancelRequestLabel)
 	private WebElement pendingLabel;
 
-    public static final String nameOtherProfilePageStartConversationButton = "OtherUserMetaControllerLeftButton";
+	private static final String nameOtherProfilePageStartConversationButton = "OtherUserMetaControllerLeftButton";
     @FindBy(name = nameOtherProfilePageStartConversationButton)
 	private WebElement startConversationButton;
 
-    public static final String xpathOtherProfileCancelRequestButton =
+	private static final String xpathOtherProfileCancelRequestButton =
             "//UIAStaticText[contains(@name, 'CANCEL REQUEST')]/preceding-sibling::UIAButton[@name='OtherUserMetaControllerLeftButton']";
     @FindBy(xpath = xpathOtherProfileCancelRequestButton)
 	private WebElement cancelRequestButton;
 
-    public static final String xpathCancelRequestYesButton =
+	private static final String xpathCancelRequestYesButton =
             "//UIAStaticText[@name='Cancel Request?']/following-sibling::UIAButton[@name='YES']";
     @FindBy(xpath = xpathCancelRequestYesButton)
 	private WebElement cancelRequestConfirmationYesButton;
 
-    public static final String nameExitOtherUserPersonalInfoPageButton = "OtherUserProfileCloseButton";
+	private static final String nameExitOtherUserPersonalInfoPageButton = "OtherUserProfileCloseButton";
     @FindBy(name = nameExitOtherUserPersonalInfoPageButton)
 	private WebElement backButtonToGroupPopover;
 
-    public static final String nameRemoveFromConversation = "OtherUserMetaControllerRightButton";
+	private static final String nameRemoveFromConversation = "OtherUserMetaControllerRightButton";
     @FindBy(name = nameRemoveFromConversation)
 	private WebElement removePendingPersonFromChat;
 
-    public static final String nameOtherProfilePageCloseButton = "OtherUserProfileCloseButton";
+	private static final String nameOtherProfilePageCloseButton = "OtherUserProfileCloseButton";
 
-    public static final String nameCancelRequestConfirmationLabel = "Cancel Request?";
+	private static final String nameCancelRequestConfirmationLabel = "Cancel Request?";
 
     public OtherUserOnPendingProfilePage(Future<ZetaIOSDriver> lazyDriver)
 			throws Exception {

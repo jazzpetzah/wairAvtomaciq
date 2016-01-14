@@ -598,9 +598,9 @@ public class ContactListPageSteps {
             throws Throwable {
         conversation = usrMgr.replaceAliasesOccurences(conversation,
                 FindBy.NAME_ALIAS);
-        String convIsSelected = getContactListPage()
-                .getSelectedConversationCellValue(conversation);
-        Assert.assertEquals("Converstaion is not selected", "1", convIsSelected);
+        Assert.assertEquals("Converstaion is not selected", "1",
+                getContactListPage().getSelectedConversationCellValue(conversation).
+                        orElseThrow(() -> new IllegalStateException("No conversations are selected in the list")));
     }
 
     /**

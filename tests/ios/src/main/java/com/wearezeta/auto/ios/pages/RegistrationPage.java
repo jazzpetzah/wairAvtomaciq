@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.pages;
 
 import java.util.List;
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 import io.appium.java_client.ios.IOSElement;
 import org.junit.Assert;
@@ -19,43 +20,43 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 
 public class RegistrationPage extends IOSPage {
-    public static final String nameRegistrationCameraButton = "CameraButton";
+    private static final String nameRegistrationCameraButton = "CameraButton";
     @FindBy(name = nameRegistrationCameraButton)
     private WebElement cameraButton;
 
-    public static final String nameCameraShootButton = "CameraShootButton";
+    private static final String nameCameraShootButton = "CameraShootButton";
     @FindBy(name = nameCameraShootButton)
     private WebElement cameraShootButton;
 
-    public static final String xpathPhotoButton = xpathMainWindow + "/UIAButton[5]";
+    private static final String xpathPhotoButton = xpathMainWindow + "/UIAButton[5]";
     @FindBy(xpath = xpathPhotoButton)
     private WebElement photoButton;
 
-    public static final String nameSwitchCameraButton = "CameraSwitchButton";
+    private static final String nameSwitchCameraButton = "CameraSwitchButton";
     @FindBy(name = nameSwitchCameraButton)
     private WebElement switchCameraButton;
 
-    public static final String nameCameraFlashButton = "CameraFlashButton";
+    private static final String nameCameraFlashButton = "CameraFlashButton";
     @FindBy(name = nameCameraFlashButton)
     private WebElement cameraFlashButton;
 
-    public static final String xpathAlbum = xpathMainWindow + "/UIATableView[1]/UIATableCell[1]/UIAStaticText[1]";
+    private static final String xpathAlbum = xpathMainWindow + "/UIATableView[1]/UIATableCell[1]/UIAStaticText[1]";
     @FindBy(xpath = xpathAlbum)
     private WebElement photoAlbum;
 
-    public static final String classNamePhotos = "UIACollectionCell";
+    private static final String classNamePhotos = "UIACollectionCell";
     @FindBy(className = classNamePhotos)
     private List<WebElement> photos;
 
-    public static final String nameConfirmImageButton = "OK";
+    private static final String nameConfirmImageButton = "OK";
     @FindBy(name = nameConfirmImageButton)
     private WebElement confirmImageButton;
 
-    public static final String nameCancelImageButton = "CANCEL";
+    private static final String nameCancelImageButton = "CANCEL";
     @FindBy(name = nameCancelImageButton)
     private WebElement cancelImageButton;
 
-    public static final String xpathYourName = xpathMainWindow + "/UIATextField[@value='YOUR FULL NAME']";
+    private static final String xpathYourName = xpathMainWindow + "/UIATextField[@value='YOUR FULL NAME']";
     @FindBy(xpath = xpathYourName)
     private WebElement yourName;
 
@@ -64,11 +65,11 @@ public class RegistrationPage extends IOSPage {
     @FindBy(xpath = xpathYourFilledName)
     private WebElement yourFilledName;
 
-    public static final String nameYourEmail = "EmailField";
+    private static final String nameYourEmail = "EmailField";
     @FindBy(name = nameYourEmail)
     private WebElement yourEmail;
 
-    public static final String nameYourPassword = "PasswordField";
+    private static final String nameYourPassword = "PasswordField";
     @FindBy(name = nameYourPassword)
     private WebElement yourPassword;
 
@@ -77,38 +78,36 @@ public class RegistrationPage extends IOSPage {
     @FindBy(xpath = xpathRevealPasswordButton)
     private WebElement revealPasswordButton;
 
-    public static final String xpathHidePasswordButton =
+    private static final String xpathHidePasswordButton =
             "//UIAApplication[1]/UIAWindow[1]/UIATextField[1]/UIAButton[1]";
     @FindBy(xpath = xpathHidePasswordButton)
     private WebElement hidePasswordButton;
 
-    public static final String xpathCreateAccountButton =
+    private static final String xpathCreateAccountButton =
             "//UIASecureTextField[contains(@name, 'PasswordField')]/UIAButton";
     @FindBy(xpath = xpathCreateAccountButton)
     private WebElement createAccountButton;
 
-    public static final String xpathConfirmationMessage =
-            "//UIAStaticText[contains(@name, 'We sent an email to %s.')]";
-    @FindBy(xpath = xpathConfirmationMessage)
-    private WebElement confirmationText;
+    private static final Function<String, String> xpathConfirmationByMessage = msg ->
+            String.format("//UIAStaticText[contains(@name, 'We sent an email to %s.')]", msg);
 
-    public static final String idProvideValidEmailMessage = "PLEASE ENTER A VALID EMAIL ADDRESS";
+    private static final String idProvideValidEmailMessage = "PLEASE ENTER A VALID EMAIL ADDRESS";
     @FindBy(id = idProvideValidEmailMessage)
     private WebElement provideValidEmailMessage;
 
-    public static final String nameBackToWelcomeButton = "BackToWelcomeButton";
+    private static final String nameBackToWelcomeButton = "BackToWelcomeButton";
     @FindBy(name = nameBackToWelcomeButton)
     private WebElement backToWelcomeButton;
 
-    public static final String nameForwardWelcomeButton = "ForwardWelcomeButton";
+    private static final String nameForwardWelcomeButton = "ForwardWelcomeButton";
     @FindBy(name = nameForwardWelcomeButton)
     private WebElement forwardWelcomeButton;
 
-    public static final String nameKeyboardNextButton = "Next";
+    private static final String nameKeyboardNextButton = "Next";
     @FindBy(name = nameKeyboardNextButton)
     private WebElement keyboardNextButton;
 
-    public static final String xpathTakePhotoSmile = "//UIAApplication[1]/UIAWindow[1]/UIAImage[1]";
+    private static final String xpathTakePhotoSmile = "//UIAApplication[1]/UIAWindow[1]/UIAImage[1]";
     @FindBy(xpath = xpathTakePhotoSmile)
     private WebElement takePhotoSmile;
 
@@ -120,40 +119,40 @@ public class RegistrationPage extends IOSPage {
     @FindBy(name = nameVignetteOverlay)
     private WebElement vignetteLayer;
 
-    public static final String nameErrorPageButton = "BACK";
+    private static final String nameErrorPageButton = "BACK";
     @FindBy(name = nameErrorPageButton)
     private WebElement errorPageButton;
 
-    public static final String xpathCloseColorModeButton = xpathMainWindow + "/UIAButton[4]";
+    private static final String xpathCloseColorModeButton = xpathMainWindow + "/UIAButton[4]";
     @FindBy(xpath = xpathCloseColorModeButton)
     private WebElement closeColorModeButton;
 
-    public static final String xpathReSendButton = xpathMainWindow + "/UIATextView[1]";
+    private static final String xpathReSendButton = xpathMainWindow + "/UIATextView[1]";
     @FindBy(xpath = xpathReSendButton)
     private WebElement reSendButton;
 
-    public static final String xpathEmailVerifPrompt = xpathMainWindow +
+    private static final String xpathEmailVerifPrompt = xpathMainWindow +
             "/UIAStaticText[contains(@name, 'We sent an email to ')]";
     @FindBy(xpath = xpathEmailVerifPrompt)
     private WebElement emailVerifPrompt;
 
-    public static final String xpathPhoneNumber = xpathMainWindow + "/UIATextField[1]";
+    private static final String xpathPhoneNumber = xpathMainWindow + "/UIATextField[1]";
     @FindBy(xpath = xpathPhoneNumber)
     private WebElement phoneNumber;
 
-    public static final String namePhoneNumberField = "PhoneNumberField";
+    private static final String namePhoneNumberField = "PhoneNumberField";
     @FindBy(name = namePhoneNumberField)
     private WebElement phoneNumberField;
 
-    public static final String xpathActivationCode = xpathMainWindow + "/UIATextField[1]";
+    private static final String xpathActivationCode = xpathMainWindow + "/UIATextField[1]";
     @FindBy(xpath = xpathActivationCode)
     private WebElement activationCode;
 
-    public static final String xpathCountry = xpathMainWindow + "/UIAButton[1]";
+    private static final String xpathCountry = xpathMainWindow + "/UIAButton[1]";
     @FindBy(xpath = xpathCountry)
     private WebElement selectCountry;
 
-    public static final String nameCountryPickerButton = "CountryPickerButton";
+    private static final String nameCountryPickerButton = "CountryPickerButton";
     @FindBy(name = nameCountryPickerButton)
     private WebElement countryPickerButton;
 
@@ -161,44 +160,44 @@ public class RegistrationPage extends IOSPage {
     @FindBy(xpath = xpathCountryList)
     private WebElement countryList;
 
-    public static final String xpathConfirmPhoneNumber = xpathMainWindow + "/UIATextField[1]/UIAButton[1]";
+    private static final String xpathConfirmPhoneNumber = xpathMainWindow + "/UIATextField[1]/UIAButton[1]";
     @FindBy(xpath = xpathConfirmPhoneNumber)
     private WebElement confirmInput;
 
-    public static final String nameAgreeButton = "I AGREE";
+    private static final String nameAgreeButton = "I AGREE";
     @FindBy(name = nameAgreeButton)
     private WebElement agreeButton;
 
-    public static final String nameTermOfUsePage = "By continuing you agree to the Wire Terms of Use.";
+    private static final String nameTermOfUsePage = "By continuing you agree to the Wire Terms of Use.";
     @FindBy(name = nameTermOfUsePage)
     private WebElement termOfUsePage;
 
-    public static final String nameSelectPictureButton = "SET A PICTURE";
+    private static final String nameSelectPictureButton = "SET A PICTURE";
     @FindBy(name = nameSelectPictureButton)
     private WebElement selectPictureButton;
 
-    public static final String xpathVerificationPage =
+    private static final String xpathVerificationPage =
             "//UIAStaticText[contains(@name, 'Enter the verification code we sent to')]";
     @FindBy(xpath = xpathVerificationPage)
     private WebElement verificationPage;
 
-    public static final String nameResendCodeButton = "RESEND";
+    private static final String nameResendCodeButton = "RESEND";
     @FindBy(name = nameResendCodeButton)
     private WebElement resendCodeButton;
 
-    public static final String nameInvalidCode = "Please enter a valid code";
+    private static final String nameInvalidCode = "Please enter a valid code";
     @FindBy(name = nameInvalidCode)
     private WebElement invalidCodeAlert;
 
-    public static final String nameChooseOwnPictureButton = "ChooseOwnPictureButton";
+    private static final String nameChooseOwnPictureButton = "ChooseOwnPictureButton";
     @FindBy(name = nameChooseOwnPictureButton)
     private WebElement chooseOwnPictureButton;
 
-    public static final String nameChoosePhotoButton = "Choose Photo";
+    private static final String nameChoosePhotoButton = "Choose Photo";
     @FindBy(name = nameChoosePhotoButton)
     private WebElement choosePhotoButton;
 
-    public static final String nameRegistrationEmailInput = "RegistrationEmailField";
+    private static final String nameRegistrationEmailInput = "RegistrationEmailField";
     @FindBy(name = nameRegistrationEmailInput)
     private WebElement registrationEmailInput;
 
@@ -206,7 +205,7 @@ public class RegistrationPage extends IOSPage {
     private String email;
     private String password;
 
-    private String defaultPassFieldValue = "Password";
+    private final static String DEFAULT_PASS_FIELD_VALUE = "Password";
 
     private String[] listOfEmails;
 
@@ -276,8 +275,8 @@ public class RegistrationPage extends IOSPage {
     }
 
     public boolean isConfirmationShown() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(String
-                .format(xpathConfirmationMessage, getEmail())));
+        final By locator = By.xpath(xpathConfirmationByMessage.apply(getEmail()));
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
 
     public void confirmPicture() {
@@ -336,7 +335,7 @@ public class RegistrationPage extends IOSPage {
                 yourEmail.getText());
         forwardWelcomeButton.click();
         Assert.assertEquals("Preciously entered email shouln't be shown",
-                defaultPassFieldValue, yourPassword.getText());
+                DEFAULT_PASS_FIELD_VALUE, yourPassword.getText());
     }
 
     public void typeUsername() throws Exception {

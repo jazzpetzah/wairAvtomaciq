@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.pages;
 
 import java.util.List;
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -13,33 +14,34 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class GroupChatPage extends DialogPage {
-    public static final String xpathNewGroupConversationNameChangeTextField =
+    private static final String xpathNewGroupConversationNameChangeTextField =
             xpathMainWindow + "/UIATableView[1]/UIATableCell[2]/UIATextView[1]";
     @FindBy(xpath = xpathNewGroupConversationNameChangeTextField)
     private WebElement newGroupConversationNameChangeTextField;
 
-    public static final String nameYouHaveLeft = "YOU HAVE LEFT";
+    private static final String nameYouHaveLeft = "YOU HAVE LEFT";
     @FindBy(name = nameYouHaveLeft)
     private WebElement youLeft;
 
-    public static final String nameYouLeftMessage = "YOU LEFT";
+    private static final String nameYouLeftMessage = "YOU LEFT";
     @FindBy(name = nameYouLeftMessage)
     private WebElement youLeftMessage;
 
-    public static final String nameYouRenamedConversationMessage = "YOU RENAMED THE CONVERSATION";
+    private static final String nameYouRenamedConversationMessage = "YOU RENAMED THE CONVERSATION";
     @FindBy(name = nameYouRenamedConversationMessage)
     private WebElement yourRenamedMessage;
 
-    public static final String xpathStartConversationAfterDelete =
+    private static final String xpathStartConversationAfterDelete =
             "//UIAStaticText[starts-with(@name, 'START A CONVERSATION WITH')]";
     @FindBy(xpath = xpathStartConversationAfterDelete)
     private WebElement startConvAfterDeleteMessage;
 
-    public static final String xpathYouAddetToGroupChatMessage = "//UIAStaticText[contains(@name, 'YOU ADDED %s')]";
+    private static final Function<String, String> xpathYouAddedToGroupChatMessageByName =
+            name -> String.format("//UIAStaticText[contains(@name, 'YOU ADDED %s')]", name.toUpperCase());
 
-    public static final String nameConversationCursorInput = "ConversationTextInputField";
+    private static final String nameConversationCursorInput = "ConversationTextInputField";
 
-    public static final String namePlusButton = "plusButton";
+    private static final String namePlusButton = "plusButton";
 
     public GroupChatPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -82,9 +84,8 @@ public class GroupChatPage extends DialogPage {
     }
 
     public boolean isYouAddedUserMessageShown(String user) throws Exception {
-        String message = String.format(xpathYouAddetToGroupChatMessage, user.toUpperCase());
-        return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-                By.xpath(message));
+        final By locator = By.xpath(xpathYouAddedToGroupChatMessageByName.apply(user));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
     }
 
     public boolean isYouRenamedConversationMessageVisible(String name) {

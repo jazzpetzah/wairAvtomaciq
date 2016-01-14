@@ -10,8 +10,7 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.driver.DriverUtils;
 
 public class SketchPage extends IOSPage{
-
-	public static final String nameSketchSendButton = "SketchConfirmButton";
+	private static final String nameSketchSendButton = "SketchConfirmButton";
 	@FindBy(name = nameSketchSendButton)
 	private WebElement sendSketchButton;
 

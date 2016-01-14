@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.pages;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 import io.appium.java_client.ios.IOSElement;
 import org.junit.Assert;
@@ -23,72 +24,72 @@ import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 public class GroupChatInfoPage extends IOSPage {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-    private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.80;
+    private static final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.80;
 
-    private final String AQA_PICTURE_CONTACT = "AQAPICTURECONTACT";
-    private final String AQA_AVATAR_CONTACT = "AQAAVATAR";
+    private static final String AQA_PICTURE_CONTACT = "AQAPICTURECONTACT";
+    private static final String AQA_AVATAR_CONTACT = "AQAAVATAR";
 
     private String conversationName = null;
 
-    public static final String nameConversationMenu = "metaControllerRightButton";
+    private static final String nameConversationMenu = "metaControllerRightButton";
     @FindBy(name = nameConversationMenu)
     private WebElement leaveChat;
 
-    public static final String nameLeaveConversationButton = "LEAVE";
+    private static final String nameLeaveConversationButton = "LEAVE";
     @FindBy(name = nameLeaveConversationButton)
     private WebElement leaveChatButton;
 
-    public static final String nameConversationNameTextField = "ParticipantsView_GroupName";
+    private static final String nameConversationNameTextField = "ParticipantsView_GroupName";
     @FindBy(name = nameConversationNameTextField)
     private WebElement conversationNameTextField;
 
-    public static final String nameExitGroupInfoPageButton = "metaControllerCancelButton";
+    private static final String nameExitGroupInfoPageButton = "metaControllerCancelButton";
     @FindBy(name = nameExitGroupInfoPageButton)
     private WebElement exitGroupInfoPageButton;
 
-    public static final String xpathNumberOfParticipantsText = xpathMainWindow + "/UIAStaticText[3]";
+    private static final String xpathNumberOfParticipantsText = xpathMainWindow + "/UIAStaticText[3]";
     @FindBy(xpath = xpathNumberOfParticipantsText)
     private WebElement numberOfParticipantsText;
 
-    public static final String xpathAvatarCollectionView = xpathMainWindow + "/UIACollectionView[1]";
+    private static final String xpathAvatarCollectionView = xpathMainWindow + "/UIACollectionView[1]";
     @FindBy(xpath = xpathAvatarCollectionView)
     private WebElement avatarCollectionView;
 
-    public static final String nameAddContactToChatButton = "metaControllerLeftButton";
+    private static final String nameAddContactToChatButton = "metaControllerLeftButton";
     @FindBy(name = nameAddContactToChatButton)
     private WebElement addContactButton;
 
-    public static final String nameAddPeopleDialogHeader = "Add people and share history?";
+    private static final String nameAddPeopleDialogHeader = "Add people and share history?";
     @FindBy(name = nameAddPeopleDialogHeader)
     private WebElement addDialogHeader;
 
-    public static final String nameAddPeopleCancelButton = "CANCEL";
+    private static final String nameAddPeopleCancelButton = "CANCEL";
     @FindBy(name = nameAddPeopleCancelButton)
     private WebElement addDialogCancelButton;
 
-    public static final String nameAddPeopleContinueButton = "CONTINUE";
+    private static final String nameAddPeopleContinueButton = "CONTINUE";
     @FindBy(name = nameAddPeopleContinueButton)
     private WebElement addDialogContinueButton;
 
-    public static final String nameOtherUserProfilePageCloseButton = "OtherUserProfileCloseButton";
+    private static final String nameOtherUserProfilePageCloseButton = "OtherUserProfileCloseButton";
     @FindBy(name = nameOtherUserProfilePageCloseButton)
     private WebElement closeButton;
 
-    public static final String nameLeaveConversationAlert = "Leave conversation?";
+    private static final String nameLeaveConversationAlert = "Leave conversation?";
 
-    public static final String xpathUserNameLabel =
-            "//UIACollectionView[preceding-sibling::UIATextView[@name='ParticipantsView_GroupName']]" +
-                    "/UIACollectionCell/UIAStaticText[last() and @name='%s']";
+    private static final Function<String,String> xpathUserNameLabelByText = text ->
+            String.format("//UIACollectionView[preceding-sibling::UIATextView[@name='ParticipantsView_GroupName']]" +
+                    "/UIACollectionCell/UIAStaticText[last() and @name='%s']", text);
 
-    public static String xpathNumberPeopleText = xpathMainWindow + "/UIAStaticText[contains(@name, 'PEOPLE')]";
+    private static final String xpathNumberPeopleText = xpathMainWindow + "/UIAStaticText[contains(@name, 'PEOPLE')]";
 
-    public static final String xpathPeopleViewCollectionCell =
-            "//UIAButton[@name='metaControllerCancelButton']/following-sibling::" +
-                    "UIACollectionView/UIACollectionCell/UIAStaticText[@name='%s']";
+    private static final Function<String,String> xpathPeopleViewCollectionCellByName = name ->
+            String.format("//UIAButton[@name='metaControllerCancelButton']/following-sibling::" +
+                    "UIACollectionView/UIACollectionCell/UIAStaticText[@name='%s']", name.toUpperCase());
 
-    public static final String peopleCountTextSubstring = " PEOPLE";
+    private static final String peopleCountTextSubstring = " PEOPLE";
 
-    public static final String xpathParticipantAvatarCell = xpathAvatarCollectionView + "/UIACollectionCell";
+    private static final String xpathParticipantAvatarCell = xpathAvatarCollectionView + "/UIACollectionCell";
 
     public GroupChatInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -228,22 +229,19 @@ public class GroupChatInfoPage extends IOSPage {
                 "No participant was found with the name: " + participantName);
     }
 
-    public boolean isCorrectConversationName(String contact1, String contact2)
-            throws Exception {
+    public boolean isCorrectConversationName(String contact1, String contact2) throws Exception {
         if (conversationNameTextField.getText().equals(conversationName)) {
             return true;
         } else {
             contact1 = usrMgr.findUserByNameOrNameAlias(contact1).getName();
             contact2 = usrMgr.findUserByNameOrNameAlias(contact2).getName();
-            ;
             if (contact1.contains(" ")) {
                 contact1 = contact1.substring(0, contact1.indexOf(" "));
             }
             if (contact2.contains(" ")) {
                 contact2 = contact2.substring(0, contact2.indexOf(" "));
             }
-            String currentConversationName = conversationNameTextField
-                    .getText();
+            String currentConversationName = conversationNameTextField.getText();
             return currentConversationName.contains(contact1)
                     && currentConversationName.contains(contact2)
                     && currentConversationName.contains(", ");
@@ -291,20 +289,14 @@ public class GroupChatInfoPage extends IOSPage {
         leaveChatButton.click();
     }
 
-    public OtherUserPersonalInfoPage selectContactByName(String name)
+    public void selectContactByName(String name)
             throws Exception {
-        DriverUtils.tapByCoordinates(
-                this.getDriver(),
-                getDriver().findElementByXPath(
-                        String.format(xpathPeopleViewCollectionCell, name.toUpperCase())));
-
-        return new OtherUserPersonalInfoPage(this.getLazyDriver());
+        final By locator = By.xpath(xpathPeopleViewCollectionCellByName.apply(name));
+        DriverUtils.tapByCoordinates(this.getDriver(), getDriver().findElement(locator));
     }
 
-    public ConnectToPage selectNotConnectedUser(String name) throws Exception {
+    public void selectNotConnectedUser(String name) throws Exception {
         getDriver().findElementByName(name.toUpperCase()).click();
-
-        return new ConnectToPage(this.getLazyDriver());
     }
 
     public boolean isLeaveConversationAlertVisible() throws Exception {
@@ -321,7 +313,7 @@ public class GroupChatInfoPage extends IOSPage {
     }
 
     public boolean waitForContactToDisappear(String contact) throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By
-                .xpath(String.format(xpathUserNameLabel, contact)));
+        final By locator = By.xpath(xpathUserNameLabelByText.apply(contact));
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
     }
 }

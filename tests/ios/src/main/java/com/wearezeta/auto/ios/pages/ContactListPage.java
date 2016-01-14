@@ -19,11 +19,11 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class ContactListPage extends IOSPage {
-    private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.70;
-    private final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.80;
-    private final int CONV_SWIPE_TIME = 500;
+    private static final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.70;
+    private static final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.80;
+    private static final int CONV_SWIPE_TIME = 500;
 
-    public static final String nameSelfButton = "SelfButton";
+    private static final String nameSelfButton = "SelfButton";
     @FindBy(name = nameSelfButton)
     private WebElement selfUserButton;
 
@@ -87,26 +87,25 @@ public class ContactListPage extends IOSPage {
     @FindBy(name = nameSendAnInviteButton)
     private WebElement inviteMorePeopleButton;
 
-    private static final String xpathContactListPlayPauseButton =
-            "//UIACollectionCell[@name='%s']/UIAButton[@name='mediaCellButton']";
-    private static final String xpathFirstInContactList =
+    private static final Function<String, String> xpathContactListPlayPauseButtonByConvoName = name ->
+            String.format("//UIACollectionCell[@name='%s']/UIAButton[@name='mediaCellButton']", name);
+    private static final String xpathFirstContactListEntry =
             xpathMainWindow + "/UIACollectionView[1]/UIACollectionCell[1]/UIAStaticText[1]";
-    private static final String xpathMyUserInContactList =
-            xpathMainWindow+ "/UIACollectionView[1]/UIACollectionCell[1]/UIAStaticText[1]";
 
-    private static final String xpathArchiveConversationButton =
-            "//UIAButton[@name='ARCHIVE' and @visible='true']";
+    private static final String xpathArchiveConversationButton = "//UIAButton[@name='ARCHIVE' and @visible='true']";
 
     private static final String classNameContactListNames = "UIACollectionCell";
 
-    private static final String xpathSpecificContactListCell =
-            xpathMainWindow + "/UIACollectionView[1]/UIACollectionCell[@name='%s']";
+    private static final Function<String, String> xpathSelectedConversationEntryByName = name ->
+            String.format("%s/UIACollectionView[1]/UIACollectionCell[@name='%s']", xpathMainWindow, name);
 
-    private static final String xpathFormatActionMenuXButton =
-            "//UIAStaticText[@name='ARCHIVE']/following-sibling::UIAButton[@name='%s']";
+    private static final Function<String, String> xpathActionMenuXButtonByName = name ->
+            String.format("//UIAStaticText[@name='ARCHIVE']/following-sibling::UIAButton[@name='%s']",
+                    name.toUpperCase());
 
-    private static final String xpathFormatActionMenuConversationName =
-            "//UIAStaticText[@name='ARCHIVE']/following-sibling::UIAStaticText[@name='%s']";
+    private static final Function<String, String> xpathActionMenuByConversationName = name ->
+            String.format("//UIAStaticText[@name='ARCHIVE']/following-sibling::UIAStaticText[@name='%s']",
+                    name.toUpperCase());
 
 
     public ContactListPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -129,9 +128,8 @@ public class ContactListPage extends IOSPage {
     }
 
     public boolean isPlayPauseButtonVisible(String contact) throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By
-                .xpath(String.format(
-                        xpathContactListPlayPauseButton, contact)));
+        final By locator = By.xpath(xpathContactListPlayPauseButtonByConvoName.apply(contact));
+        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), locator);
     }
 
     public void tapPlayPauseButton() {
@@ -139,9 +137,8 @@ public class ContactListPage extends IOSPage {
     }
 
     public void tapPlayPauseButtonNextTo(String name) throws Exception {
-        WebElement element = this.getDriver().findElement(
-                By.xpath(String.format(xpathContactListPlayPauseButton, name)));
-        element.click();
+        final By locator = By.xpath(xpathContactListPlayPauseButtonByConvoName.apply(name));
+        this.getDriver().findElement(locator).click();
     }
 
     public PersonalInfoPage tapOnMyName() throws Exception {
@@ -163,17 +160,15 @@ public class ContactListPage extends IOSPage {
     }
 
     public String getFirstDialogName() throws Exception {
-        DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-                By.xpath(xpathFirstInContactList));
-        WebElement contact = this.getDriver().findElement(
-                By.xpath(xpathFirstInContactList));
+        DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.xpath(xpathFirstContactListEntry));
+        WebElement contact = this.getDriver().findElement(By.xpath(xpathFirstContactListEntry));
         return contact.getText();
     }
 
     public String getDialogNameByIndex(int index) throws Exception {
         final By locator = By.xpath(convoListEntryByIdx.apply(index));
         assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator) :
-            String.format("Conversation # %s is not visible", index);
+                String.format("Conversation # %s is not visible", index);
         return this.getDriver().findElement(locator).getText();
     }
 
@@ -224,7 +219,7 @@ public class ContactListPage extends IOSPage {
 
     public boolean waitForContactListToLoad() throws Exception {
         return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-                By.xpath(xpathMyUserInContactList));
+                By.xpath(xpathFirstContactListEntry));
     }
 
     public boolean isPendingRequestInContactList() throws Exception {
@@ -493,25 +488,18 @@ public class ContactListPage extends IOSPage {
 
     public boolean isActionMenuVisibleForConversation(String conversation)
             throws Exception {
-        String xpath = String
-                .format(xpathFormatActionMenuConversationName, conversation.toUpperCase());
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpath));
+        final By locator = By.xpath(xpathActionMenuByConversationName.apply(conversation));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isButtonVisibleInActionMenu(String buttonTitle)
             throws Exception {
-        String xpath = String.format(xpathFormatActionMenuXButton,
-                buttonTitle.toUpperCase());
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpath));
+        final By locator = By.xpath(xpathActionMenuXButtonByName.apply(buttonTitle));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public void clickArchiveButtonInActionMenu() throws Exception {
-        WebElement archiveButton = this
-                .getDriver()
-                .findElement(
-                        By.xpath(xpathArchiveConversationButton));
+        WebElement archiveButton = this.getDriver().findElement(By.xpath(xpathArchiveConversationButton));
         DriverUtils.tapByCoordinates(getDriver(), archiveButton);
     }
 
@@ -523,13 +511,13 @@ public class ContactListPage extends IOSPage {
         cancelActionMenuButton.click();
     }
 
-    public String getSelectedConversationCellValue(String conversation)
+    public Optional<String> getSelectedConversationCellValue(String conversation)
             throws Exception {
-        WebElement conversationCell = this
-                .getDriver()
-                .findElement(
-                        By.xpath(String.format(xpathSpecificContactListCell, conversation)));
-        return conversationCell.getAttribute("value");
+        final By locator = By.xpath(xpathSelectedConversationEntryByName.apply(conversation));
+        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator)) {
+            return Optional.of(getDriver().findElement(locator).getAttribute("value"));
+        }
+        return Optional.empty();
     }
 
     public boolean isInviteMorePeopleButtonVisible() throws Exception {

@@ -12,30 +12,30 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class PendingRequestsPage extends IOSPage {
 
-	public static final String namePendingRequestIgnoreButton = "IGNORE";
+	private static final String namePendingRequestIgnoreButton = "IGNORE";
 	@FindBy(name = namePendingRequestIgnoreButton)
 	private WebElement ignoreRequestButton;
 
-    public static final String namePendingRequestConnectButton = "CONNECT";
+	private static final String namePendingRequestConnectButton = "CONNECT";
     @FindBy(name = namePendingRequestConnectButton)
 	private WebElement connectRequestButton;
 
-    public static final String xpathPendingRequesterName =
+	private static final String xpathPendingRequesterName =
 			xpathMainWindow + "/UIATableView[1]//UIAStaticText[contains(@name, 'Connect to')]";
     @FindBy(xpath = xpathPendingRequesterName)
 	private WebElement requesterName;
 
-    public static final String xpathPendingRequestMessage =
+	private static final String xpathPendingRequestMessage =
 			xpathMainWindow + "/UIATableView[1]//UIAStaticText[3]";
     @FindBy(xpath = xpathPendingRequestMessage)
 	private WebElement pendingMessage;
 
-    public static final String xpathYouBothKnowPeopleIcon =
+	private static final String xpathYouBothKnowPeopleIcon =
 			xpathMainWindow + "/UIATableView[1]/UIATableCell[1]/UIAButton[2]";
     @FindBy(xpath = xpathYouBothKnowPeopleIcon)
 	private WebElement youBothKnowPeopleIcon;
 
-    public static final String nameYouBothKnowHeader = "YOU BOTH KNOW";
+	private static final String nameYouBothKnowHeader = "YOU BOTH KNOW";
 
     public PendingRequestsPage(Future<ZetaIOSDriver> lazyDriver)
 			throws Exception {
