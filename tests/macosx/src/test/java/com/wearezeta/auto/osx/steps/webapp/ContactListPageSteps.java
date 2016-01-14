@@ -751,18 +751,6 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Types shortcut combination to open search
-	 *
-	 * @step. ^I type shortcut combination to open search$
-	 * @throws Exception
-	 */
-	@Then("^I type shortcut combination to open search$")
-	public void ITypeShortcutCombinationToOpenSearch() throws Exception {
-		WebappPagesCollection.getInstance().getPage(ContactListPage.class)
-				.pressShortCutToSearch();
-	}
-
-	/**
 	 * Types shortcut combination for the next conversation
 	 *
 	 * @step. ^I type shortcut combination for next conversation$

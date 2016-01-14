@@ -352,25 +352,6 @@ public class ConversationPageSteps {
 	}
 
 	/**
-	 * Add a user to group chat
-	 *
-	 * @step. ^I add (.*) to group chat$
-	 *
-	 * @param contact
-	 * @throws Exception
-	 */
-	@When("^I add (.*) to group chat$")
-	public void IAddContactToGroupChat(String contact) throws Exception {
-		WhenIClickPeopleButtonInGroup();
-		GroupPopoverPageSteps cpSteps = new GroupPopoverPageSteps();
-		cpSteps.IClickAddPeopleButton();
-		cpSteps.IClickConfirmAddToChat();
-		cpSteps.ISearchForUser(contact);
-		cpSteps.ISelectUserFromSearchResults(contact);
-		cpSteps.IChooseToCreateGroupConversation();
-	}
-
-	/**
 	 * Click ping button to send ping and hot ping
 	 *
 	 * @step. ^I click ping button$
