@@ -258,8 +258,7 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void minimizeApplication(int time) throws Exception {
-        this.getDriver().executeScript(
-                "au.backgroundApp(" + Integer.toString(time) + ")");
+        this.getDriver().runAppInBackground(time);
     }
 
     public void dismissAlert() throws Exception {

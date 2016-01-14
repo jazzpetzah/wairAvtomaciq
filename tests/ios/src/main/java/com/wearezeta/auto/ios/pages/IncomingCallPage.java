@@ -21,7 +21,8 @@ public class IncomingCallPage extends CallPage {
     private WebElement endCallButton;
 
     private static final Function<String, String> xpathCallingMessageByName = name ->
-            String.format("//UIAStaticText[contains(@value, '%s') and contains(@value, ' IS CALLING')]", name);
+            String.format("//UIAStaticText[contains(@value, '%s') and contains(@value, ' IS CALLING')]",
+                    name.toUpperCase());
 
     private static final String xpathCallingMessage = "//UIAStaticText[contains(@value, ' IS CALLING')]";
 
