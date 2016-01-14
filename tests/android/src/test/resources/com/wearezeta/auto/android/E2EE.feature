@@ -24,6 +24,7 @@ Feature: E2EE
     # Workaround for AN-3281
     # Given I sign in using my email or phone number
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     When I see Manage Devices overlay
     And I tap Manage Devices button on Manage Devices overlay
     And I select "<DeviceToRemove>" settings menu item
