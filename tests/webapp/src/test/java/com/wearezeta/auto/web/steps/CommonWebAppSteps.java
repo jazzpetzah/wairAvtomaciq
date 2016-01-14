@@ -858,7 +858,7 @@ public class CommonWebAppSteps {
 		if (!logEntries.isEmpty()) {
 			log.debug("BROWSER CONSOLE LOGS:");
 			for (LogEntry logEntry : logEntries) {
-				log.debug(logEntry.getMessage());
+				log.debug(logEntry.getMessage().replaceAll("^.*z\\.", "z\\."));
 			}
 			log.debug("--- END OF LOG ---");
 		}
