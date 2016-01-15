@@ -1,5 +1,8 @@
 package com.wearezeta.auto.common.driver;
 
+import com.google.common.base.Throwables;
+import com.google.common.collect.ImmutableMap;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import org.openqa.selenium.*;
@@ -7,40 +10,100 @@ import org.openqa.selenium.remote.RemoteWebElement;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import org.apache.log4j.Logger;
+import org.openqa.selenium.remote.Response;
+import org.openqa.selenium.remote.SessionNotFoundException;
+import org.openqa.selenium.remote.UnreachableBrowserException;
 
 public class ZetaOSXDriver extends AppiumDriver<WebElement> implements ZetaDriver {
+
+	private static final Logger log = ZetaLogger.getLog(ZetaOSXDriver.class.getSimpleName());
+	private ExecutorService pool;
 
 	private static final String AX_POSITION = "AXPosition";
 	private static final String AX_SIZE = "AXSize";
 	private static final String APP_NAME = "Wire";
+	private volatile boolean isSessionLost = false;
 
 	public ZetaOSXDriver(URL remoteAddress, Capabilities desiredCapabilities) {
 		super(remoteAddress, desiredCapabilities);
 	}
 
-    @Override
-    public List<WebElement> findElements(By by) {
-        return super.findElements(by).stream().map((e) -> wrapElement(e)).collect(Collectors.toList());
-    }
+	@Override
+	public List<WebElement> findElements(By by) {
+		return super.findElements(by).stream().map((e) -> wrapElement(e)).collect(Collectors.toList());
+	}
 
-    @Override
-    public WebElement findElement(By by) {
-        return wrapElement(super.findElement(by));
-    }
+	@Override
+	public WebElement findElement(By by) {
+		return wrapElement(super.findElement(by));
+	}
 
 	private WireRemoteWebElement wrapElement(WebElement element) {
 		return new WireRemoteWebElement(element);
 	}
 
 	@Override
-	public boolean isSessionLost() {
-		return false;
+	public Options manage() {
+		return new ZetaRemoteWebDriverOptions();
 	}
 
 	@Override
-	public Options manage() {
-		return new ZetaRemoteWebDriverOptions();
+	public boolean isSessionLost() {
+		return this.isSessionLost;
+	}
+
+	private void setSessionLost(boolean isSessionLost) {
+		if (isSessionLost != this.isSessionLost) {
+			log.warn(String.format("Changing isSessionLost to %s", isSessionLost));
+			this.isSessionLost = isSessionLost;
+		}
+	}
+
+	@Override
+	protected Response execute(String command) {
+		return this.execute(command, ImmutableMap.<String, Object>of());
+	}
+
+	@Override
+	public Response execute(String driverCommand, Map<String, ?> parameters) {
+		if (this.isSessionLost()) {
+			log.warn(String.format("Driver session is dead. Skipping execution of '%s' command...", driverCommand));
+			return null;
+		}
+		final Callable<Response> task = () -> super.execute(driverCommand, parameters);
+		final Future<Response> future = getPool().submit(task);
+		try {
+			return future.get(MAX_COMMAND_DURATION, TimeUnit.SECONDS);
+		} catch (Exception e) {
+			if (e instanceof ExecutionException) {
+				if ((e.getCause() instanceof UnreachableBrowserException)
+					|| (e.getCause() instanceof SessionNotFoundException)) {
+					setSessionLost(true);
+				}
+				Throwables.propagate(e.getCause());
+			} else {
+				setSessionLost(true);
+				Throwables.propagate(e);
+			}
+		}
+		// This should never happen
+		return super.execute(driverCommand, parameters);
+	}
+
+	private synchronized ExecutorService getPool() {
+		if (this.pool == null) {
+			this.pool = Executors.newSingleThreadExecutor();
+		}
+		return this.pool;
 	}
 
 	@Override
@@ -139,21 +202,21 @@ public class ZetaOSXDriver extends AppiumDriver<WebElement> implements ZetaDrive
 		@Override
 		public Dimension getSize() {
 			final NSPoint elementSize = NSPoint.fromString(this
-					.getAttribute(AX_SIZE));
+				.getAttribute(AX_SIZE));
 			return new Dimension(elementSize.x(), elementSize.y());
 		}
 
 		@Override
 		public Point getLocation() {
 			final NSPoint elementLocation = NSPoint.fromString(this
-					.getAttribute(AX_POSITION));
+				.getAttribute(AX_POSITION));
 			return new Point(elementLocation.x(), elementLocation.y());
 		}
 
 		@Beta
 		@Override
 		public <X> X getScreenshotAs(OutputType<X> outputType)
-				throws WebDriverException {
+			throws WebDriverException {
 			return originalElement.getScreenshotAs(outputType);
 		}
 
@@ -167,7 +230,7 @@ public class ZetaOSXDriver extends AppiumDriver<WebElement> implements ZetaDrive
 	protected class ZetaRemoteWebDriverOptions extends RemoteWebDriverOptions {
 
 		private static final String WINDOW_LOCATOR = "//AXApplication[@AXTitle='"
-				+ APP_NAME + "']//AXWindow";
+			+ APP_NAME + "']//AXWindow";
 
 		@Beta
 		@Override
@@ -189,14 +252,14 @@ public class ZetaOSXDriver extends AppiumDriver<WebElement> implements ZetaDrive
 			@Override
 			public Dimension getSize() {
 				NSPoint windowSize = NSPoint.fromString(window
-						.getAttribute(AX_SIZE));
+					.getAttribute(AX_SIZE));
 				return new Dimension(windowSize.x(), windowSize.y());
 			}
 
 			@Override
 			public Point getPosition() {
 				NSPoint elementLocation = NSPoint.fromString(window
-						.getAttribute(AX_POSITION));
+					.getAttribute(AX_POSITION));
 				return new Point(elementLocation.x(), elementLocation.y());
 			}
 
