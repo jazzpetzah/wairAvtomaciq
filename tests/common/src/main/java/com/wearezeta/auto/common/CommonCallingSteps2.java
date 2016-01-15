@@ -30,6 +30,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import javax.management.InstanceNotFoundException;
 
 public final class CommonCallingSteps2 {
 
@@ -256,7 +257,7 @@ public final class CommonCallingSteps2 {
 					return instance;
 				} catch (CallingServiceInstanceException ex) {
 					LOG.error(String.format(
-						"Could not start instance for callee '%s'",
+						"Could not start instance for user '%s'",
 						userAs.getName()), ex);
 					return null;
 				}
@@ -362,8 +363,8 @@ public final class CommonCallingSteps2 {
 		}
 		throw new TimeoutException(
 			String.format(
-				"Call status has not been changed to '%s' after %s second(s) timeout",
-				expectedStatuses, secondsTimeout));
+				"Call status for instance '%s' has not been changed to '%s' after %s second(s) timeout",
+				instance.getId(), expectedStatuses, secondsTimeout));
 	}
 
 	private static String makeKey(ClientUser from) {
@@ -419,12 +420,12 @@ public final class CommonCallingSteps2 {
 	}
 
 	private synchronized Instance getInstanceByParticipant(ClientUser userAs)
-		throws CallNotFoundException {
+		throws InstanceNotFoundException {
 		final String key = makeKey(userAs);
 		if (instanceMapping.containsKey(key)) {
 			return instanceMapping.get(key);
 		} else {
-			throw new CallNotFoundException(String.format(
+			throw new InstanceNotFoundException(String.format(
 				"Please create an instance for user '%s' first",
 				userAs.getName()));
 		}
@@ -504,8 +505,7 @@ public final class CommonCallingSteps2 {
 	}
 
 	public List<Flow> getFlows(String callerName)
-		throws CallingServiceInstanceException, CallNotFoundException,
-		NoSuchUserException {
+		throws CallingServiceInstanceException, NoSuchUserException, InstanceNotFoundException {
 		ClientUser userAs = usrMgr.findUserByNameOrNameAlias(callerName);
 		LOG.info("Get flows for user " + userAs.getEmail());
 		return client.getFlows(getInstanceByParticipant(userAs));
