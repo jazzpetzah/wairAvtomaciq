@@ -732,18 +732,6 @@ public class ConversationPageSteps {
 	}
 
 	/**
-	 * Types shortcut combination to open search
-	 *
-	 * @step. ^I type shortcut combination to open search$
-	 * @throws Exception
-	 */
-	@Then("^I type shortcut combination to open search$")
-	public void ITypeShortcutCombinationToOpenSearch() throws Exception {
-		webappPagesCollection.getPage(ConversationPage.class)
-				.pressShortCutForSearch();
-	}
-
-	/**
 	 * Hovers ping button
 	 *
 	 * @step. ^I hover ping button$
@@ -752,18 +740,6 @@ public class ConversationPageSteps {
 	@Then("^I hover ping button$")
 	public void IHoverPingButton() throws Exception {
 		webappPagesCollection.getPage(ConversationPage.class).hoverPingButton();
-	}
-
-	/**
-	 * Types shortcut combination to ping
-	 *
-	 * @step. ^I type shortcut combination to ping$
-	 * @throws Exception
-	 */
-	@Then("^I type shortcut combination to ping$")
-	public void ITypeShortcutCombinationToPing() throws Exception {
-		webappPagesCollection.getPage(ConversationPage.class)
-				.pressShortCutForPing();
 	}
 
 	/**
@@ -814,18 +790,6 @@ public class ConversationPageSteps {
 		assertThat("Call button tooltip",
 				webappPagesCollection.getPage(ConversationPage.class)
 						.getCallButtonToolTip(), equalTo(tooltip));
-	}
-
-	/**
-	 * Types shortcut combination to call
-	 *
-	 * @step. ^I type shortcut combination to ping$
-	 * @throws Exception
-	 */
-	@Then("^I type shortcut combination to start a call$")
-	public void ITypeShortcutCombinationToCall() throws Exception {
-		webappPagesCollection.getPage(ConversationPage.class)
-				.pressShortCutForCall();
 	}
 
 	@And("^I click on pending user avatar$")

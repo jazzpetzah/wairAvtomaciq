@@ -394,4 +394,40 @@ public class MainWirePageSteps {
 		osxPagesCollection.getPage(MainWirePage.class)
 				.pressShortCutForPrevConv();
 	}
+
+	/**
+	 * Types shortcut combination to ping
+	 *
+	 * @step. ^I type shortcut combination to ping$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to ping$")
+	public void ITypeShortcutCombinationToPing() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutForPing();
+	}
+
+	/**
+	 * Types shortcut combination to call
+	 *
+	 * @step. ^I type shortcut combination to ping$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to start a call$")
+	public void ITypeShortcutCombinationToCall() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutForCall();
+	}
+
+	/**
+	 * Types shortcut combination to open search
+	 *
+	 * @step. ^I type shortcut combination to open search$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to open search$")
+	public void ITypeShortcutCombinationToOpenSearch() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutForSearch();
+	}
 }
