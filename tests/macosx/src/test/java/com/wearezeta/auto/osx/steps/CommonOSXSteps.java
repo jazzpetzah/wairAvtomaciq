@@ -16,6 +16,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.clearAppData;
+import static com.wearezeta.auto.osx.common.OSXCommonUtils.clearAddressbookPermission;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.getSizeOfAppInMB;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.killAllApps;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.startAppium4Mac;
@@ -181,6 +182,7 @@ public class CommonOSXSteps {
 			startAppium4Mac();
 			killAllApps();
 			clearAppData();
+			clearAddressbookPermission();
 		} catch (Exception e) {
 			LOG.error(e);
 		}
