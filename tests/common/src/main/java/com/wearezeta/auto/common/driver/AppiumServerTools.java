@@ -11,7 +11,7 @@ public class AppiumServerTools {
 
     private static final String EXECUTOR_APP_PATH = "/Applications/AutorunAppium.app";
     private static final int PORT = 4723;
-    private static final int RESTART_TIMEOUT = 15000; // milliseconds
+    private static final int RESTART_TIMEOUT = 10000; // milliseconds
 
     private static boolean waitUntilPortOpened() throws InterruptedException {
         Socket s = null;
@@ -39,9 +39,8 @@ public class AppiumServerTools {
         Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", "killall Simulator"});
 
         log.warn("Trying to restart Appium server on localhost...");
-        Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c",
-                String.format("open -a %s", EXECUTOR_APP_PATH)});
-        Thread.sleep(5000);
+        Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", String.format("open -a %s", EXECUTOR_APP_PATH)});
+        Thread.sleep(RESTART_TIMEOUT);
         log.info(String.format("Waiting %s seconds for Appium port %s to be opened...", RESTART_TIMEOUT / 1000, PORT));
         if (!waitUntilPortOpened()) {
             throw new IllegalStateException(String.format(
