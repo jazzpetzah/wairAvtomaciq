@@ -43,8 +43,7 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
     }
 
     public void tapCloseButton() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(PeoplePickerPage.idPeoplePickerClearbtn));
+        verifyLocatorPresence(By.id(PeoplePickerPage.idPeoplePickerClearbtn), "Close button is not visible");
         closePeoplePickerBtn.click();
     }
 
@@ -56,9 +55,9 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
         final By locator = By
                 .xpath(PeoplePickerPage.xpathPeoplePickerContactByName
                         .apply(item));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
-                .format("The item '%s' is not visible in People Picker search list after the defualt timeout expired",
-                        item);
+        verifyLocatorPresence(locator,
+                String.format("The item '%s' is not visible in People Picker search list after the defualt timeout expired",
+                        item));
         getDriver().findElement(locator).click();
     }
 
@@ -75,8 +74,7 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
     public Optional<BufferedImage> takeAvatarScreenshot(String name)
             throws Exception {
         final By locator = By.xpath(PeoplePickerPage.xpathFoundAvatarByName.apply(name));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
-                .format("User avatar for '%s' is not visible", name);
+        verifyLocatorPresence(locator, String.format("User avatar for '%s' is not visible", name));
         final WebElement theAvatar = getDriver().findElement(locator);
         return this.getElementScreenshot(theAvatar);
     }

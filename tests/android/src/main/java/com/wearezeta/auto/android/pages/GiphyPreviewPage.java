@@ -54,8 +54,7 @@ public class GiphyPreviewPage extends AndroidPage {
     }
 
     public void clickOnGIFButton() throws Exception {
-        assert DriverUtils.waitUntilLocatorAppears(getDriver(),
-                giphyPreviewButtonLocator);
+        verifyLocatorPresence(giphyPreviewButtonLocator, "GIF button is not visible in the cursor input");
         giphyPreviewButton.click();
     }
 
@@ -81,27 +80,30 @@ public class GiphyPreviewPage extends AndroidPage {
     }
 
     public void clickOnSomeGif() {
-    	Random ran = new Random();
-    	int toSelect = ran.nextInt(5)+1;
+        Random ran = new Random();
+        int toSelect = ran.nextInt(5) + 1;
         giphyGridImages.get(toSelect).click();
     }
 
     private static final int GIPHY_LOAD_TIMEOUT_SECONDS = 60;
 
     public void clickSendButton() throws Exception {
-        assert DriverUtils.waitUntilLocatorAppears(getDriver(),
-                giphyLoadingProgressLocator, GIPHY_LOCATOR_TIMEOUT_SECONDS);
+        verifyLocatorPresence(giphyLoadingProgressLocator,
+                "Giphy loading progress has not been shown", GIPHY_LOCATOR_TIMEOUT_SECONDS);
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(),
                 giphyLoadingProgressLocator, GIPHY_LOAD_TIMEOUT_SECONDS)) {
-            log.warn(String
-                    .format("It seems that giphy has not been loaded within %s seconds (the progress bar is still visible)",
+            log.warn(String.format(
+                    "It seems that giphy has not been loaded within %s seconds (the progress bar is still visible)",
                             GIPHY_LOAD_TIMEOUT_SECONDS));
         }
-        assert DriverUtils.waitUntilElementClickable(getDriver(), sendButton);
+        if (!DriverUtils.waitUntilElementClickable(getDriver(), sendButton)) {
+            throw new IllegalStateException("Giphy send button is not clickable");
+        }
         sendButton.click();
         final By giphySendLocator = By.id(sendButtonId);
-        assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
-                giphySendLocator, GIPHY_LOCATOR_TIMEOUT_SECONDS);
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), giphySendLocator, GIPHY_LOCATOR_TIMEOUT_SECONDS)) {
+           throw new IllegalStateException("Giphy loading progress is still visible after the timeout");
+        }
     }
 
     public void clickGiphyLinkButton() {

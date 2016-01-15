@@ -99,20 +99,6 @@ public class RegistrationSteps {
     }
 
     /**
-     * Uses the backend API to activate the registered user and then waits for
-     * the confirmation page to disappear (somehow, locator is not clear...)
-     *
-     * @throws Throwable
-     * @step. ^I verify registration address$
-     */
-    @Then("^I verify registration address$")
-    public void IVerifyRegistrationAddress() throws Throwable {
-        BackendAPIWrappers.activateRegisteredUserByEmail(activationMessage);
-        this.userToRegister.setUserState(UserState.Created);
-        getRegistrationPage().continueRegistration();
-    }
-
-    /**
      * Type a password into the corresponding field on the registration by email invite page
      *
      * @param pwd password or alias

@@ -117,7 +117,7 @@ public class ContactListPage extends AndroidPage {
 
     private static final Function<String, String> xpathConvoSettingsMenuItemByName = name -> String
             .format("//*[@id='ttv__settings_box__item' and @value='%s']" +
-                    "/parent::*//*[@id='fl_options_menu_button']",
+                            "/parent::*//*[@id='fl_options_menu_button']",
                     name.toUpperCase());
 
     private static final String xpathSpinnerConversationsListLoadingIndicator =
@@ -184,10 +184,10 @@ public class ContactListPage extends AndroidPage {
 
     public void tapOnName(final String name) throws Exception {
         findInContactList(name).orElseThrow(
-                        () -> new IllegalStateException(
-                                String.format(
-                                        "The conversation '%s' does not exist in the conversations list",
-                                        name))).click();
+                () -> new IllegalStateException(
+                        String.format(
+                                "The conversation '%s' does not exist in the conversations list",
+                                name))).click();
     }
 
     public void doLongSwipeUp() throws Exception {
@@ -296,17 +296,14 @@ public class ContactListPage extends AndroidPage {
                 loadingItemLocator, CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS);
     }
 
-    public PersonalInfoPage tapOnMyAvatar() throws Exception {
-        assert DriverUtils.waitUntilElementClickable(getDriver(),
-                selfUserAvatar);
+    public void tapOnMyAvatar() throws Exception {
+        verifyLocatorPresence(By.id(idSelfUserAvatar), "Self avatar icon is not visible");
         selfUserAvatar.click();
-        return new PersonalInfoPage(getLazyDriver());
     }
 
-    public PeoplePickerPage tapOnSearchButton() throws Exception {
-        assert DriverUtils.waitUntilElementClickable(getDriver(), searchButton);
+    public void tapOnSearchButton() throws Exception {
+        verifyLocatorPresence(By.id(idSearchButton), "Search button is not visible");
         searchButton.click();
-        return new PeoplePickerPage(getLazyDriver());
     }
 
     public boolean isAnyConversationVisible() throws Exception {
@@ -336,13 +333,9 @@ public class ContactListPage extends AndroidPage {
     }
 
     public void selectConvoSettingsMenuItem(String itemName) throws Exception {
-        final By locator = By.xpath(xpathConvoSettingsMenuItemByName
-                .apply(itemName));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
-                .format("Conversation menu item '%s' could not be found on the current screen",
-                        itemName);
-        //fix for options menu with icons
-        //DriverUtils.tapOutsideOfTheElement(getDriver(), getDriver().findElement(locator), 0, -5, false);
+        final By locator = By.xpath(xpathConvoSettingsMenuItemByName.apply(itemName));
+        verifyLocatorPresence(locator, String
+                .format("Conversation menu item '%s' could not be found on the current screen", itemName));
         getDriver().findElement(locator).click();
     }
 
@@ -374,18 +367,16 @@ public class ContactListPage extends AndroidPage {
             String convoName) throws Exception {
         final By locator = By.xpath(xpathPlayPauseButtonByConvoName
                 .apply(convoName));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
-                .format("PlayPause button is not visible next to the '%s' conversation item",
-                        convoName);
+        verifyLocatorPresence(locator,
+                String.format("PlayPause button is not visible next to the '%s' conversation item", convoName));
         return this.getElementScreenshot(this.getDriver().findElement(locator));
     }
 
     public void tapPlayPauseMediaButton(String convoName) throws Exception {
         final By locator = By.xpath(xpathPlayPauseButtonByConvoName
                 .apply(convoName));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
-                .format("PlayPause button is not visible next to the '%s' conversation item",
-                        convoName);
+        verifyLocatorPresence(locator, String
+                .format("PlayPause button is not visible next to the '%s' conversation item", convoName));
         this.getDriver().findElement(locator).click();
     }
 
@@ -414,11 +405,11 @@ public class ContactListPage extends AndroidPage {
     }
 
     public boolean isLeaveCheckBoxVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),By.id(idLeaveCheckbox));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idLeaveCheckbox));
     }
 
     public boolean isThreeDotButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),By.id(idThreeDotsOptionMenuButton));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idThreeDotsOptionMenuButton));
     }
 
     public void tapThreeDotOptionMenuButton() {

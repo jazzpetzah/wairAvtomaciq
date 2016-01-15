@@ -174,9 +174,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     public void selectConvoSettingsMenuItem(String itemName) throws Exception {
         final By locator = By.xpath(xpathConvOptionsMenuItemByName
                 .apply(itemName));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
-                .format("Conversation menu item '%s' could not be found on the current screen",
-                        itemName);
+        verifyLocatorPresence(locator,
+                String.format("Conversation menu item '%s' could not be found on the current screen", itemName));
         getDriver().findElement(locator).click();
     }
 
@@ -198,17 +197,15 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     }
 
     public boolean isConversationAlertVisible() throws Exception {
-        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-                confirmMenu);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idUserProfileConfirmationMenu));
     }
 
-    public OtherUserPersonalInfoPage pressConfirmBtn() throws Exception {
-        this.getWait().until(
-                ExpectedConditions.elementToBeClickable(confirmBtn));
+    public void pressConfirmBtn() throws Exception {
+        verifyLocatorPresence(By.xpath(xpathConfirmBtn), "Confirmation button is not visible");
         confirmBtn.click();
-        assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
-                By.xpath(xpathConfirmBtn), 3) : "Confirmation button is still visible after 3 seconds timeout";
-        return new OtherUserPersonalInfoPage(this.getLazyDriver());
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), By.xpath(xpathConfirmBtn), 3)) {
+            throw new IllegalStateException("Confirmation button is still visible after 3 seconds timeout");
+        }
     }
 
     public void tapLeftActionBtn() throws Exception {
@@ -221,7 +218,6 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
         String path = CommonUtils.getImagesPath(CommonUtils.class);
         BufferedImage realImage = ImageUtil.readImageFromFile(path + imageName);
         double score = ImageUtil.getOverlapScore(realImage, bgImage);
-        System.out.println(score);
         return (score >= MIN_ACCEPTABLE_IMAGE_VALUE);
     }
 
@@ -260,7 +256,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     }
 
     public void tapCloseButton() throws Exception {
-        assert DriverUtils.waitUntilElementClickable(getDriver(), closeButton);
+        verifyLocatorPresence(By.id(PeoplePickerPage.idParticipantsClose),
+                "Close participants button is not visible");
         final int halfHeight = this.getDriver().manage().window().getSize()
                 .getHeight() / 2;
         int ntry = 1;

@@ -114,8 +114,7 @@ public class PeoplePickerPage extends AndroidPage {
 
     public void tapOnContactInTopPeoples(String name) throws Exception {
         final By locator = By.xpath(xpathTopPeopleAvatarByName.apply(name));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) :
-                String.format("Top People item '%s' is not visible", name);
+        verifyLocatorPresence(locator, String.format("Top People item '%s' is not visible", name));
         this.getDriver().findElement(locator).click();
     }
 
@@ -204,8 +203,7 @@ public class PeoplePickerPage extends AndroidPage {
     }
 
     public void tapClearButton() throws Exception {
-        assert DriverUtils.waitUntilElementClickable(getDriver(),
-                pickerClearBtn);
+        verifyLocatorPresence(By.id(idPeoplePickerClearbtn), "Clear button is not visible");
         pickerClearBtn.click();
     }
 
