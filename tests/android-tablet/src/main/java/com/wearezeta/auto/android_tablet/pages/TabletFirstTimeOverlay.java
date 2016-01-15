@@ -15,8 +15,8 @@ public class TabletFirstTimeOverlay extends AndroidTabletPage {
         return this.getAndroidPageInstance(FirstTimeOverlay.class);
     }
 
-    public boolean isVisible() throws Exception {
-        return getFirstTimeOverlay().isVisible();
+    public boolean isVisible(int timeoutSeconds) throws Exception {
+        return getFirstTimeOverlay().isVisible(timeoutSeconds);
     }
 
     public void tapGotItButton() throws Exception {

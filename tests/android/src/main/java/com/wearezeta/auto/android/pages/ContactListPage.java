@@ -190,41 +190,9 @@ public class ContactListPage extends AndroidPage {
                                         name))).click();
     }
 
-    public void tapOnName(final String name, int maxSwipesInList)
-            throws Exception {
-        findInContactList(name).orElseThrow(
-                        () -> new IllegalStateException(
-                                String.format(
-                                        "The conversation '%s' does not exist in the conversations list",
-                                        name))).click();
-    }
-
     public void doLongSwipeUp() throws Exception {
-        DriverUtils.swipeElementPointToPoint(getDriver(), contactListFrame,
-                1000, 15, 80, 15, -50);
-    }
-
-    public void workaroundConvoListItemsLoad() throws Exception {
-        for (int i = 1; i <= contactListNames.size(); i++) {
-            final By locator = By.xpath(xpathContactByIndex.apply(i));
-            try {
-                if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                        locator, 1)) {
-                    final WebElement elem = getDriver().findElement(locator);
-                    if (DriverUtils.waitUntilElementClickable(getDriver(),
-                            elem, 1)) {
-                        elem.click();
-                        // Wait for animation
-                        Thread.sleep(1000);
-                        DriverUtils
-                                .swipeRightCoordinates(getDriver(), 1000, 50);
-                        return;
-                    }
-                }
-            } catch (WebDriverException e) {
-                e.printStackTrace();
-            }
-        }
+        // FIXME: There is a bug in Android when swipe up does not work if there are no items in the list
+        DriverUtils.swipeElementPointToPoint(getDriver(), contactListFrame, 1000, 15, 30, 15, -80);
     }
 
     public Optional<WebElement> findInContactList(String name) throws Exception {

@@ -23,6 +23,12 @@ public class FirstTimeOverlay extends AndroidPage {
                 By.id(idGotItButton));
     }
 
+    public boolean isVisible(int timeoutSeconds) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.id(idGotItButton), timeoutSeconds);
+    }
+
+
     public boolean isInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(),
                 By.id(idGotItButton));

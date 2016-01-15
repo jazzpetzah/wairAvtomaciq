@@ -53,7 +53,7 @@ public class FirstTimeOverlaySteps {
      */
     @And("^I accept First Time overlay as soon as it is visible$")
     public void IAcceptTheOverLayWhenItIsVisible() throws Exception {
-        if (getFirstTimeOverlay().isVisible()) {
+        if (getFirstTimeOverlay().isVisible(2)) {
             getFirstTimeOverlay().tapGotItButton();
         }
     }
