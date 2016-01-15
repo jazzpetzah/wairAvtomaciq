@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.pages;
 
 import java.util.concurrent.Future;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -34,25 +35,20 @@ public class ConnectToPage extends IOSPage {
         super(lazyDriver);
     }
 
-    public Boolean isConnectToUserDialogVisible() throws Exception {
-        DriverUtils.waitUntilElementClickable(getDriver(),
-                connectOtherUserButton, 5);
-        return connectOtherUserButton.isDisplayed();
+    public boolean isConnectToUserDialogVisible() throws Exception {
+        return isConnectButtonVisible();
     }
 
     public boolean isConnectButtonVisible() throws Exception {
-        return DriverUtils.waitUntilElementClickable(getDriver(),
-                connectOtherUserButton, 10);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathConnectOtherUserButton));
     }
 
-    public PeoplePickerPage sendInvitation() throws Exception {
-        if (DriverUtils.isElementPresentAndDisplayed(getDriver(),
-                connectOtherUserButton)) {
+    public void sendInvitation() throws Exception {
+        if (isConnectButtonVisible()) {
             connectOtherUserButton.click();
         } else if (isKeyboardVisible()) {
             clickKeyboardEnterButton();
             connectOtherUserButton.click();
         }
-        return new PeoplePickerPage(this.getLazyDriver());
     }
 }

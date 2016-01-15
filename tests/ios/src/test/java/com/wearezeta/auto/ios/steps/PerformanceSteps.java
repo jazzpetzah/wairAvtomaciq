@@ -88,7 +88,7 @@ public class PerformanceSteps {
 		final long millisecondsDelay = 20000;
 		int ntry = 1;
 		int visibleContactsSize;
-		while ((visibleContactsSize = getContactListPage().GetVisibleContacts()
+		while ((visibleContactsSize = getContactListPage().getVisibleContacts()
 				.size()) == 0 && ntry <= maxTries) {
 			log.debug("Waiting for contact list. Iteration #" + ntry);
 			Thread.sleep(millisecondsDelay);

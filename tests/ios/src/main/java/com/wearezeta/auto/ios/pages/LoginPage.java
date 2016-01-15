@@ -194,15 +194,11 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean isPhoneSignInButtonVisible() throws Exception {
-        Assert.assertTrue(
-                "iPhone Sign in button is not presented in elements tree",
-                DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(namePhoneLoginButton)));
-        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-                phoneLoginButton);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(namePhoneLoginButton));
     }
 
     public void clickPhoneLogin() throws Exception {
-        DriverUtils.waitUntilElementClickable(getDriver(), phoneLoginButton);
+        assert isPhoneSignInButtonVisible() : "Phone login button is not visible";
         phoneLoginButton.click();
     }
 
@@ -217,9 +213,7 @@ public class LoginPage extends IOSPage {
     }
 
     public void login() throws Exception {
-
         confirmSignInButton.click();
-
         waitForLoginToFinish();
     }
 
@@ -232,13 +226,15 @@ public class LoginPage extends IOSPage {
     }
 
     public void setLogin(String login) throws Exception {
-        DriverUtils.waitUntilElementClickable(getDriver(), loginField);
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameLoginField)) :
+                "Login input field is not visible";
         ((IOSElement) getDriver().findElementByName(nameLoginField)).
                 setValue(login);
     }
 
     public void setPassword(String password) throws Exception {
-        DriverUtils.waitUntilElementClickable(getDriver(), passwordField);
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(namePasswordField)) :
+                "Password input field is not visible";
         ((IOSElement) getDriver().findElementByName(namePasswordField)).
                 setValue(password);
     }
@@ -265,7 +261,7 @@ public class LoginPage extends IOSPage {
 
     public Boolean isLoginFinished() throws Exception {
         dismisSettingsWaring();
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(nameSelfButton), 60);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameSelfButton), 60);
     }
 
     public boolean isLoginButtonVisible() throws Exception {
@@ -285,13 +281,11 @@ public class LoginPage extends IOSPage {
     }
 
     public void closeTermsPrivacyController() throws Exception {
-        this.getWait().until(
-                ExpectedConditions
-                        .elementToBeClickable(termsPrivacyCloseButton));
+        assert isTermsPrivacyCloseButtonVisible() : "Close Terms button is not visible";
         termsPrivacyCloseButton.click();
     }
 
-    public boolean isTermsPrivacyColseButtonVisible() throws Exception {
+    public boolean isTermsPrivacyCloseButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameTermsPrivacyCloseButton));
     }
 
@@ -309,16 +303,14 @@ public class LoginPage extends IOSPage {
     }
 
     public void tapEmailFieldToChangePassword(String email) throws Exception {
-        DriverUtils.waitUntilElementClickable(getDriver(),
-                safariChangePWEmailField);
-        DriverUtils.tapByCoordinates(getDriver(),
-                safariChangePWEmailField);
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathSafariChangePasswordEmailField)) :
+                "Email input field in Safari is not visible";
+        DriverUtils.tapByCoordinates(getDriver(), safariChangePWEmailField);
         this.inputStringFromKeyboard(email);
     }
 
     public void tapChangePasswordButtonInWebView() throws Exception {
-        DriverUtils.tapByCoordinates(getDriver(),
-                changePasswordPageChangePasswordButton);
+        DriverUtils.tapByCoordinates(getDriver(), changePasswordPageChangePasswordButton);
     }
 
     public void changeURLInBrowser(String URL) throws Exception {
@@ -330,10 +322,9 @@ public class LoginPage extends IOSPage {
 
     public void tapPasswordFieldToChangePassword(String newPassword)
             throws Exception {
-        DriverUtils.waitUntilElementClickable(getDriver(),
-                safariEnterNewPasswordField, 5);
-        DriverUtils.tapByCoordinates(getDriver(),
-                safariEnterNewPasswordField);
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(xpathSafariEnterNewPasswordField)) : "Password input field in Safari is not visible";
+        DriverUtils.tapByCoordinates(getDriver(), safariEnterNewPasswordField);
         this.inputStringFromKeyboard(newPassword);
     }
 
@@ -343,43 +334,36 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean isCountryPickerButttonVisible() throws Exception {
-        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-                countryPickerButtton);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameCountryPickerButton));
     }
 
     public boolean isSetEmailPasswordSuggestionVisible() throws Exception {
-        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-                setEmailPasswordSuggetionLabel);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathSetEmailPasswordSuggetionLabel));
     }
 
     public boolean isResendIn10minAlertVisible() throws Exception {
         DriverUtils.waitUntilAlertAppears(getDriver());
-        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-                resendIn10minAlert);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameResentIn10min));
     }
 
     public boolean isInvalidPhoneNumberAlertShown() throws Exception {
         DriverUtils.waitUntilAlertAppears(getDriver());
-        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-                invalidPhoneNumberAlert);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameInvalidPhoneNumber));
     }
 
     public boolean isInvalidEmailAlertShown() throws Exception {
         DriverUtils.waitUntilAlertAppears(getDriver());
-        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-                invalidEmailAlert);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameInvalidEmail));
     }
 
     public boolean isRegisteredNumberAlertShown() throws Exception {
         DriverUtils.waitUntilAlertAppears(getDriver());
-        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-                alreadyRegisteredNumberAlert);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameAlreadyRegisteredNumber));
     }
 
     public boolean isAlreadyRegisteredEmailAlertShown() throws Exception {
         DriverUtils.waitUntilAlertAppears(getDriver());
-        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-                alreadyRegisteredEmailAlert);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameAlreadyRegisteredEmail));
     }
 
     public void clickPhoneNotNow() {

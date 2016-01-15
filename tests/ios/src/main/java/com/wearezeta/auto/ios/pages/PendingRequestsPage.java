@@ -5,87 +5,88 @@ import java.util.concurrent.Future;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class PendingRequestsPage extends IOSPage {
 
-	private static final String namePendingRequestIgnoreButton = "IGNORE";
-	@FindBy(name = namePendingRequestIgnoreButton)
-	private WebElement ignoreRequestButton;
+    private static final String namePendingRequestIgnoreButton = "IGNORE";
+    @FindBy(name = namePendingRequestIgnoreButton)
+    private WebElement ignoreRequestButton;
 
-	private static final String namePendingRequestConnectButton = "CONNECT";
+    private static final String namePendingRequestConnectButton = "CONNECT";
     @FindBy(name = namePendingRequestConnectButton)
-	private WebElement connectRequestButton;
+    private WebElement connectRequestButton;
 
-	private static final String xpathPendingRequesterName =
-			xpathMainWindow + "/UIATableView[1]//UIAStaticText[contains(@name, 'Connect to')]";
+    private static final String xpathPendingRequesterName =
+            xpathMainWindow + "/UIATableView[1]//UIAStaticText[contains(@name, 'Connect to')]";
     @FindBy(xpath = xpathPendingRequesterName)
-	private WebElement requesterName;
+    private WebElement requesterName;
 
-	private static final String xpathPendingRequestMessage =
-			xpathMainWindow + "/UIATableView[1]//UIAStaticText[3]";
+    private static final String xpathPendingRequestMessage =
+            xpathMainWindow + "/UIATableView[1]//UIAStaticText[3]";
     @FindBy(xpath = xpathPendingRequestMessage)
-	private WebElement pendingMessage;
+    private WebElement pendingMessage;
 
-	private static final String xpathYouBothKnowPeopleIcon =
-			xpathMainWindow + "/UIATableView[1]/UIATableCell[1]/UIAButton[2]";
+    private static final String xpathYouBothKnowPeopleIcon =
+            xpathMainWindow + "/UIATableView[1]/UIATableCell[1]/UIAButton[2]";
     @FindBy(xpath = xpathYouBothKnowPeopleIcon)
-	private WebElement youBothKnowPeopleIcon;
+    private WebElement youBothKnowPeopleIcon;
 
-	private static final String nameYouBothKnowHeader = "YOU BOTH KNOW";
+    private static final String nameYouBothKnowHeader = "YOU BOTH KNOW";
 
     public PendingRequestsPage(Future<ZetaIOSDriver> lazyDriver)
-			throws Exception {
-		super(lazyDriver);
-	}
+            throws Exception {
+        super(lazyDriver);
+    }
 
-	public void clickIgnoreButton() throws Exception {
-		DriverUtils.waitUntilElementClickable(getDriver(), ignoreRequestButton);
-		ignoreRequestButton.click();
-	}
+    public void clickIgnoreButton() throws Exception {
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(namePendingRequestIgnoreButton)) :
+                "Ignore button is not visible";
+        ignoreRequestButton.click();
+    }
 
-	public void clickIgnoreButtonMultiple(int clicks) throws Exception {
-		for (int i = 0; i < clicks; i++) {
-			DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.name(namePendingRequestIgnoreButton));
-			DriverUtils.waitUntilElementClickable(getDriver(), ignoreRequestButton);
-			ignoreRequestButton.click();
-		}
-	}
+    public void clickIgnoreButtonMultiple(int clicks) throws Exception {
+        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(namePendingRequestIgnoreButton)) :
+                "Ignore button is not visibl";
+        for (int i = 0; i < clicks; i++) {
+            ignoreRequestButton.click();
+            Thread.sleep(500);
+        }
+    }
 
-	public void clickConnectButton() throws Exception {
-		DriverUtils.waitUntilElementClickable(this.getDriver(),
-				connectRequestButton);
-		connectRequestButton.click();
-	}
+    public void clickConnectButton() throws Exception {
+        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(namePendingRequestConnectButton)) :
+                "Connect button is not visible";
+        connectRequestButton.click();
+    }
 
-	public void clickConnectButtonMultiple(int clicks) throws Exception {
-		for (int i = 0; i < clicks; i++) {
-			DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.name(namePendingRequestConnectButton));
-			this.getWait().until(ExpectedConditions.elementToBeClickable(connectRequestButton));
-			connectRequestButton.click();
-			DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.name(namePendingRequestConnectButton));
-		}
-	}
+    public void clickConnectButtonMultiple(int clicks) throws Exception {
+        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(namePendingRequestConnectButton)) :
+                "Connect button is not visible";
+        for (int i = 0; i < clicks; i++) {
+            connectRequestButton.click();
+            Thread.sleep(500);
+        }
+    }
 
-	public boolean isConnectButtonDisplayed() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(namePendingRequestConnectButton), 5);
-	}
+    public boolean isConnectButtonDisplayed() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+                By.name(namePendingRequestConnectButton), 5);
+    }
 
-	public String getRequesterName() {
-		final String CONNECT_TO = "Connect to ";
-		return requesterName.getText().replace(CONNECT_TO, "");
-	}
+    public String getRequesterName() {
+        final String CONNECT_TO = "Connect to ";
+        return requesterName.getText().replace(CONNECT_TO, "");
+    }
 
-	public boolean isYouBothKnowDisplayed() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(nameYouBothKnowHeader), 5);
-	}
+    public boolean isYouBothKnowDisplayed() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(nameYouBothKnowHeader), 5);
+    }
 
-	public void clickYouBothKnowPeopleIcon() {
-		youBothKnowPeopleIcon.click();
-	}
+    public void clickYouBothKnowPeopleIcon() {
+        youBothKnowPeopleIcon.click();
+    }
 
 }

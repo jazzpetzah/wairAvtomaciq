@@ -173,21 +173,19 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void closeShareContactsIfVisible() throws Exception {
-        if (DriverUtils.waitUntilElementClickable(getDriver(), notNowButton, 1)) {
+        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameNotNowButton), 1)) {
             clickNotNowButton();
         }
     }
 
     public boolean isPeoplePickerPageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-                By.xpath(xpathPickerSearch));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.xpath(xpathPickerSearch));
     }
 
     public void tapOnPeoplePickerSearch() throws Exception {
         this.getDriver().tap(1, peoplePickerSearch.getLocation().x + 40,
-                peoplePickerSearch.getLocation().y + 30, 1);// workaround for
-        // people picker
-        // activation
+                peoplePickerSearch.getLocation().y + 30, 1);
+        // workaround for people picker activation
     }
 
     public void tapOnPeoplePickerClearBtn() throws Exception {
@@ -223,7 +221,8 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void fillTextInPeoplePickerSearch(String text) throws Exception {
-        DriverUtils.waitUntilElementClickable(getDriver(), peoplePickerSearch);
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathPickerSearch)) :
+                "Search UI input is not visible";
         try {
             sendTextToSearchInput(text);
             clickSpaceKeyboardButton();
@@ -254,22 +253,18 @@ public class PeoplePickerPage extends IOSPage {
         }
     }
 
-    public ConnectToPage pickUserAndTap(String name) throws Exception {
-
+    public void pickUserAndTap(String name) throws Exception {
         PickUser(name).click();
-        return new ConnectToPage(this.getLazyDriver());
     }
 
-    public PendingRequestsPage pickIgnoredUserAndTap(String name)
-            throws Exception {
+    public void pickIgnoredUserAndTap(String name) throws Exception {
         PickUser(name).click();
-        return new PendingRequestsPage(this.getLazyDriver());
     }
 
-    public ContactListPage dismissPeoplePicker() throws Exception {
-        DriverUtils.waitUntilElementClickable(getDriver(), peoplePickerClearBtn);
+    public void dismissPeoplePicker() throws Exception {
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(xpathPickerClearButton)) :
+                "Clear button is not visible in the search field";
         peoplePickerClearBtn.click();
-        return new ContactListPage(this.getLazyDriver());
     }
 
     public void swipeToRevealHideSuggestedContact(String contact) throws Exception {
@@ -279,8 +274,7 @@ public class PeoplePickerPage extends IOSPage {
         final WebElement contactToSwipe = this.getDriver().findElement(locator);
         int count = 0;
         do {
-            DriverUtils.swipeRight(this.getDriver(), contactToSwipe, 500, 50,
-                    50);
+            DriverUtils.swipeRight(this.getDriver(), contactToSwipe, 500, 50, 50);
             count++;
         } while (!isHideButtonVisible() || count > 3);
     }
@@ -299,8 +293,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public boolean isHideButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.name(nameHideSuggestedContactButton));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameHideSuggestedContactButton));
     }
 
     public boolean isSuggestedContactVisible(String contact) throws Exception {
@@ -309,8 +302,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public boolean addToConversationNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-                By.name(namePeoplePickerAddToConversationButton));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.name(namePeoplePickerAddToConversationButton));
     }
 
     public IOSPage clickOnGoButton(boolean isGroupChat) throws Exception {
@@ -351,27 +343,19 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public boolean isCreateConversationButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.name(nameCreateConversationButton));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(nameCreateConversationButton));
     }
 
-    public IOSPage clickCreateConversationButton() throws Throwable {
+    public void clickCreateConversationButton() throws Throwable {
         createConverstaionButton.click();
-        if (numberTopSelected >= 2) {
-            return new GroupChatPage(this.getLazyDriver());
-        } else {
-            return new DialogPage(this.getLazyDriver());
-        }
     }
 
     public boolean isTopPeopleLabelVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.name(namePeoplePickerTopPeopleLabel), 2);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(namePeoplePickerTopPeopleLabel), 2);
     }
 
     public boolean isConnectLabelVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.name(namePeopleYouMayKnowLabel));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(namePeopleYouMayKnowLabel));
     }
 
     public boolean isUserSelected(String name) throws Exception {
@@ -388,17 +372,13 @@ public class PeoplePickerPage extends IOSPage {
         peoplePickerSearch.sendKeys(Keys.DELETE);
     }
 
-    public GroupChatPage clickAddToCoversationButton() throws Exception {
+    public void clickAddToCoversationButton() throws Exception {
         addToConversationBtn.click();
-        return new GroupChatPage(this.getLazyDriver());
     }
 
-    public OtherUserOnPendingProfilePage clickOnUserOnPending(String contact)
-            throws Exception {
-
+    public void clickOnUserOnPending(String contact) throws Exception {
         WebElement el = getDriver().findElement(By.name(contact));
         DriverUtils.tapByCoordinates(getDriver(), el);
-        return new OtherUserOnPendingProfilePage(this.getLazyDriver());
     }
 
     public boolean isUploadDialogShown() throws Exception {
@@ -406,34 +386,25 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void clickContinueButton() throws Exception {
-        if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.name(nameContinueUploadButton))) {
+        if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(nameContinueUploadButton))) {
             continueButton.click();
         }
     }
 
     public boolean isPeopleYouMayKnowLabelVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.name(namePeopleYouMayKnowLabel));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(namePeopleYouMayKnowLabel));
     }
 
     private void unblockButtonDoubleClick() throws Exception {
-        DriverUtils.multiTap(
-                getDriver(),
-                getDriver().findElement(
-                        By.name(nameUnblockButton)), 2);
+        DriverUtils.multiTap(getDriver(), getDriver().findElement(By.name(nameUnblockButton)), 2);
     }
 
-    public DialogPage unblockUser() throws Exception {
+    public void unblockUser() throws Exception {
         unblockButton.click();
-        return new DialogPage(this.getLazyDriver());
     }
 
-    public DialogPage unblockUserOniPad() throws Exception {
-        // workaround for wierd appium behaviour - popup remains opened after 1
-        // time click
+    public void unblockUserOniPad() throws Exception {
         unblockButtonDoubleClick();
-        return new DialogPage(this.getLazyDriver());
     }
 
     public int getNumberOfSelectedTopPeople() {
@@ -483,42 +454,40 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public boolean isOpenConversationButtonVisible() throws Exception {
-        DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(nameOpenConversationButton), 5);
-        return DriverUtils.isElementPresentAndDisplayed(getDriver(), openConversationButton);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameOpenConversationButton));
     }
 
     public void clickOpenConversationButton() throws Exception {
-        DriverUtils.waitUntilElementClickable(getDriver(), openConversationButton);
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameOpenConversationButton)) :
+                "Open conversation button is not visible";
         openConversationButton.click();
     }
 
     public boolean isCallButtonVisible() throws Exception {
-        return DriverUtils
-                .isElementPresentAndDisplayed(getDriver(), callButton);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameCallButton));
     }
 
     public void clickCallButton() throws Exception {
-        DriverUtils.waitUntilElementClickable(getDriver(), callButton);
+        assert isCallButtonVisible() : "Call button is not visible";
         callButton.click();
     }
 
     public boolean isSendImageButtonVisible() throws Exception {
-        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-                sendImageButton);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameSendImageButton));
     }
 
     public void clickSendImageButton() throws Exception {
-        DriverUtils.waitUntilElementClickable(getDriver(), sendImageButton);
+        assert isSendImageButtonVisible() : "Send image button is not visible";
         sendImageButton.click();
     }
 
     public void inputTextInSearch(String text) throws Exception {
-        DriverUtils.waitUntilElementClickable(getDriver(), peoplePickerSearch);
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathPickerSearch)) :
+                "Search input is not visible";
         peoplePickerSearch.sendKeys(text);
     }
 
     public void closeInviteList() {
         closeInviteButton.click();
-
     }
 }

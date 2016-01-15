@@ -12,58 +12,56 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class ContactsUiPage extends IOSPage {
 
-	private static final String xpathSearchInput = "//UIATextView[UIAStaticText[@name='SEARCH BY NAME']]";
-	@FindBy(xpath = xpathSearchInput)
-	private WebElement searchInput;
+    private static final String xpathSearchInput = "//UIATextView[UIAStaticText[@name='SEARCH BY NAME']]";
+    @FindBy(xpath = xpathSearchInput)
+    private WebElement searchInput;
 
-	private static final String nameInviteOthersButton = "INVITE OTHERS";
+    private static final String nameInviteOthersButton = "INVITE OTHERS";
     @FindBy(name = nameInviteOthersButton)
-	private WebElement inviteOthersButton;
+    private WebElement inviteOthersButton;
 
-	private static final Function<String, String> xpathConvoCellByName = name ->
+    private static final Function<String, String> xpathConvoCellByName = name ->
             String.format("//UIATableCell[@name='%s'][preceding::UIAButton[@name='ContactsViewCloseButton']]", name);
 
-	private static final Function<String, String> xpathOpenButtonByConvoName = name ->
+    private static final Function<String, String> xpathOpenButtonByConvoName = name ->
             String.format("//UIATableCell[@name='%s']" +
                     "[preceding::UIAButton[@name='ContactsViewCloseButton']]/UIAButton[@name='OPEN']", name);
 
     public ContactsUiPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
-		super(lazyDriver);
-		// TODO Auto-generated constructor stub
-	}
+        super(lazyDriver);
+        // TODO Auto-generated constructor stub
+    }
 
-	public boolean isSearchInputVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathSearchInput));
-	}
+    public boolean isSearchInputVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathSearchInput));
+    }
 
-	private void tapSearchInput() {
-		searchInput.click();
-	}
+    private void tapSearchInput() {
+        searchInput.click();
+    }
 
-	public void inputTextToSearch(String text) throws Exception {
-		DriverUtils.waitUntilElementClickable(getDriver(), searchInput);
-		tapSearchInput();
-		searchInput.sendKeys(text);
-	}
+    public void inputTextToSearch(String text) throws Exception {
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathSearchInput)) :
+                "Search input is not visible";
+        tapSearchInput();
+        searchInput.sendKeys(text);
+    }
 
-	public boolean isContactPresentedInContactsList(String contact)
-			throws Exception {
+    public boolean isContactPresentedInContactsList(String contact)
+            throws Exception {
         final By locator = By.xpath(xpathConvoCellByName.apply(contact));
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 5);
-	}
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 5);
+    }
 
-	public void tapInviteOthersButton() throws Exception {
-		DriverUtils.waitUntilElementClickable(getDriver(), inviteOthersButton);
-		inviteOthersButton.click();
-	}
+    public void tapInviteOthersButton() throws Exception {
+        inviteOthersButton.click();
+    }
 
-	public boolean isInviteOthersButtonVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				inviteOthersButton);
-	}
+    public boolean isInviteOthersButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameInviteOthersButton));}
 
-	public void clickOpenButtonNextToUser(String contact) throws Exception {
+    public void clickOpenButtonNextToUser(String contact) throws Exception {
         final By locator = By.xpath(xpathOpenButtonByConvoName.apply(contact));
-		getDriver().findElement(locator).click();
-	}
+        getDriver().findElement(locator).click();
+    }
 }

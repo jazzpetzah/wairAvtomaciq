@@ -68,10 +68,10 @@ public class IncomingCallPage extends CallPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public StartedCallPage acceptIncomingCallClick() throws Exception {
-        DriverUtils.waitUntilElementClickable(getDriver(), acceptCallButton);
+    public void acceptIncomingCallClick() throws Exception {
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameAcceptCallButton)) :
+                "Accept call button is not visible";
         acceptCallButton.click();
-        return new StartedCallPage(getLazyDriver());
     }
 
     public void ignoreIncomingCallClick() {

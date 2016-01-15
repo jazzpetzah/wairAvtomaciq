@@ -93,7 +93,7 @@ public class GroupChatPage extends DialogPage {
     }
 
     @Override
-    public IOSPage openConversationDetailsClick() throws Exception {
+    public void openConversationDetailsClick() throws Exception {
         for (int i = 0; i < 3; i++) {
             if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(namePlusButton))) {
                 plusButton.click();
@@ -106,8 +106,6 @@ public class GroupChatPage extends DialogPage {
                 swipeUp(1000);
             }
         }
-
-        return new GroupChatInfoPage(this.getLazyDriver());
     }
 
     @Override

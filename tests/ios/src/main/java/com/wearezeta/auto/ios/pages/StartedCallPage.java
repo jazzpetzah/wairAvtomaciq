@@ -60,21 +60,15 @@ public class StartedCallPage extends CallPage {
     }
 
     public boolean isEndCallVisible() throws Exception {
-        DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(nameEndCallButton));
-        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-                endCallButton);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameEndCallButton));
     }
 
     public boolean isSpeakersVisible() throws Exception {
-        DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(nameSpeakersButton));
-        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-                speakersButton);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameSpeakersButton));
     }
 
     public boolean isMuteCallVisible() throws Exception {
-        DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(nameMuteCallButton));
-        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-                muteCallButton);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameMuteCallButton));
     }
 
     public void clickEndCallButton() {

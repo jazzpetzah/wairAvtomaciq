@@ -213,8 +213,7 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public boolean isAboutPageVisible() throws Exception {
-        return DriverUtils.waitUntilElementClickable(getDriver(),
-                termsOfUseButton);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameTermsOfUseButton));
     }
 
     public void clickAboutCloseButton() {
@@ -242,20 +241,20 @@ public class PersonalInfoPage extends IOSPage {
         return (score >= MIN_ACCEPTABLE_IMAGE_VALUE);
     }
 
-    public boolean isWireWebsiteButtonVisible() {
-        return wireWebsiteButton.isDisplayed();
+    public boolean isWireWebsiteButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameWireWebsiteButton));
     }
 
-    public boolean isTermsButtonVisible() {
-        return termsOfUseButton.isDisplayed();
+    public boolean isTermsButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameTermsOfUseButton));
     }
 
-    public boolean isPrivacyPolicyButtonVisible() {
-        return privacyPolicyButton.isDisplayed();
+    public boolean isPrivacyPolicyButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(namePrivacyPolicyButton));
     }
 
-    public boolean isBuildNumberTextVisible() {
-        return buildNumberText.isDisplayed();
+    public boolean isBuildNumberTextVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathBuildNumberText));
     }
 
     public void openTermsOfUsePage() {
@@ -271,7 +270,7 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public boolean isWireWebsitePageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(xpathWireWebsiteUrl));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathWireWebsiteUrl));
     }
 
     public void closeLegalPage() {
@@ -290,7 +289,7 @@ public class PersonalInfoPage extends IOSPage {
 
     public boolean isResetPasswordPageVisible() throws Exception {
         return DriverUtils
-                .waitUntilLocatorAppears(
+                .waitUntilLocatorIsDisplayed(
                         getDriver(), By.xpath(xpathChangePasswordPageChangePasswordButton));
     }
 
@@ -299,14 +298,13 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public void tapOnEditNameField() throws Exception {
-        this.getWait().until(
-                ExpectedConditions.elementToBeClickable(profileNameEditField));
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathProfileNameEditField)) :
+                "Edit name field is not visible";
         profileNameEditField.click();
     }
 
     public void changeNameUsingOnlySpaces() throws Exception {
-        DriverUtils.tapByCoordinates(this.getDriver(),
-                profileNameEditField);
+        DriverUtils.tapByCoordinates(this.getDriver(), profileNameEditField);
         profileNameEditField.clear();
         profileNameEditField.sendKeys("  \n");
     }
@@ -321,8 +319,8 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public void changeName(String newName) throws Exception {
-        DriverUtils
-                .waitUntilElementClickable(getDriver(), profileNameEditField);
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathProfileNameEditField)) :
+                "Edit name field is not visible";
         profileNameEditField.clear();
         profileNameEditField.sendKeys(newName + "\n");
     }
@@ -335,15 +333,13 @@ public class PersonalInfoPage extends IOSPage {
         profileNameEditField.clear();
     }
 
-    public void enterNameInNamefield(String username) throws Exception {
-        DriverUtils.tapByCoordinates(this.getDriver(),
-                profileNameEditField);
+    public void enterNameInNameField(String username) throws Exception {
+        DriverUtils.tapByCoordinates(this.getDriver(), profileNameEditField);
         profileNameEditField.sendKeys(username);
     }
 
     public void pressEnterInNameField() throws Exception {
-        DriverUtils.tapByCoordinates(this.getDriver(),
-                profileNameEditField);
+        DriverUtils.tapByCoordinates(this.getDriver(), profileNameEditField);
         profileNameEditField.sendKeys("\n");
     }
 
@@ -351,29 +347,24 @@ public class PersonalInfoPage extends IOSPage {
         personalPage.click();
     }
 
-    public CameraRollPage pressCameraButton() throws Exception {
-
-        CameraRollPage page;
-        page = new CameraRollPage(this.getLazyDriver());
+    public void pressCameraButton() throws Exception {
         pictureButton.click();
-
-        return page;
     }
 
     public void tapOnSettingsButton() {
         optionsSettingsButton.click();
     }
 
-    public void isSettingsPageVisible() {
-        settingsPage.isDisplayed();
+    public boolean isSettingsPageVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathSettingsPage));
     }
 
     public void enterSoundAlertSettings() {
         soundAlertsButton.click();
     }
 
-    public void isSoundAlertsPageVisible() {
-        soundAlertsPage.isDisplayed();
+    public boolean isSoundAlertsPageVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathSoundAlertsPage));
     }
 
     public boolean isDefaultSoundValOne() {
@@ -381,16 +372,16 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public void clickOnHelpButton() throws Exception {
-        DriverUtils.waitUntilElementClickable(getDriver(), settingsHelpButton);
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameOptionsHelpButton)) :
+                "Help button is not visible in Options";
         settingsHelpButton.click();
     }
 
     public boolean isSupportWebPageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(xpathSettingsHelpHeader));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathSettingsHelpHeader));
     }
 
-    private void swipeColorPickerFromColorToColor(int startColor, int endColor)
-            throws Exception {
+    private void swipeColorPickerFromColorToColor(int startColor, int endColor) throws Exception {
         DriverUtils.swipeElementPointToPoint(getDriver(), accentColorPicker,
                 1000, startColor * 2 * COLORS_COUNT - COLORS_COUNT, 50,
                 endColor * 2 * COLORS_COUNT - COLORS_COUNT, 50);
@@ -405,7 +396,8 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public void pressSettingsDoneButton() throws Exception {
-        DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(nameSettingsDoneButton), 5);
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameSettingsDoneButton)) :
+                "Done button is not present in Settings";
         settingsDoneButton.click();
     }
 
@@ -431,11 +423,12 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public boolean isThemeSwitcherButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(nameThemeSwitcherButton), 5);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameThemeSwitcherButton), 5);
     }
 
     public void clickAccountInfoButton() throws Exception {
-        DriverUtils.waitUntilElementClickable(getDriver(), settingsAccountInfoButton);
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameSettingsAccountInfoButton)) :
+                "Account button is not present in settings";
         settingsAccountInfoButton.click();
     }
 }

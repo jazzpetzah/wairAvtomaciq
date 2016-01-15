@@ -17,12 +17,11 @@ public class CallPageSteps {
             .getInstance();
 
     private StartedCallPage getStartedCallPage() throws Exception {
-        return (StartedCallPage) pagesCollecton.getPage(StartedCallPage.class);
+        return pagesCollecton.getPage(StartedCallPage.class);
     }
 
     private IncomingCallPage getIncomingCallPage() throws Exception {
-        return (IncomingCallPage) pagesCollecton
-                .getPage(IncomingCallPage.class);
+        return pagesCollecton.getPage(IncomingCallPage.class);
     }
 
     /**
@@ -180,11 +179,11 @@ public class CallPageSteps {
     /**
      * Verifies the visibility of the Join Call bar
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I see Join Call bar$
      */
     @Then("^I see Join Call bar$")
-    public void ISeeJoinCallBar() throws Throwable {
+    public void ISeeJoinCallBar() throws Exception {
         boolean joinCallBarIsVisible = getIncomingCallPage()
                 .isJoinCallBarVisible();
         Assert.assertTrue("Join Call bar is not visible", joinCallBarIsVisible);
@@ -193,11 +192,11 @@ public class CallPageSteps {
     /**
      * Verifies that a second call is coming in alert is shown
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I see Accept second call alert$
      */
     @When("^I see Accept second call alert$")
-    public void ISeeAcceptSecondCallAlert() throws Throwable {
+    public void ISeeAcceptSecondCallAlert() throws Exception {
         boolean secondCallAlertIsVisible = getIncomingCallPage()
                 .isSecondCallAlertVisible();
         Assert.assertTrue("Second call Alert is not shown",

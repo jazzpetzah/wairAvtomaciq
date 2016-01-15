@@ -45,13 +45,11 @@ public class VideoPlayerPage extends IOSPage {
 	}
 
 	public void waitForVideoPlayerPage() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.name(nameVideoFullScreenButton));
+		DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(nameVideoFullScreenButton));
 	}
 
 	public boolean isVideoPlayerPageOpened() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(xpathVideoMainPage));
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.xpath(xpathVideoMainPage));
 	}
 
 	public void tapVideoPage() {
@@ -61,8 +59,7 @@ public class VideoPlayerPage extends IOSPage {
 	public void clickVideoDoneButton() throws Exception {
 		DriverUtils.tapByCoordinates(this.getDriver(), videoDoneButton);
 		try {
-			DriverUtils.tapByCoordinates(this.getDriver(),
-					videoDoneButton);
+			DriverUtils.tapByCoordinates(this.getDriver(), videoDoneButton);
 		} catch (WebDriverException e) {
 			// ignore silently
 		}

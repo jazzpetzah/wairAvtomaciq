@@ -5,6 +5,7 @@ import io.appium.java_client.AppiumDriver;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -60,8 +61,7 @@ public class DriverUtils {
     public static boolean isElementPresentAndDisplayed(RemoteWebDriver driver,
                                                        final WebElement element) {
         try {
-            return (element.isDisplayed() && isElementInScreenRect(driver,
-                    element));
+            return (element.isDisplayed() && isElementInScreenRect(driver, element));
         } catch (NoSuchElementException e) {
             return false;
         }
@@ -71,16 +71,15 @@ public class DriverUtils {
                                                  final WebElement el) {
         final Rectangle elementRect = new Rectangle(el.getLocation().x,
                 el.getLocation().y, el.getSize().width, el.getSize().height);
-        final Rectangle screenRect = new Rectangle(0, 0, driver.manage()
-                .window().getSize().width,
+        final Rectangle screenRect = new Rectangle(0, 0,
+                driver.manage().window().getSize().width,
                 driver.manage().window().getSize().height);
         return elementRect.intersects(screenRect);
     }
 
     public static boolean waitUntilLocatorIsDisplayed(RemoteWebDriver driver,
                                                       By by) throws Exception {
-        return waitUntilLocatorIsDisplayed(driver, by,
-                getDefaultLookupTimeoutSeconds());
+        return waitUntilLocatorIsDisplayed(driver, by, getDefaultLookupTimeoutSeconds());
     }
 
     public static boolean waitUntilLocatorIsDisplayed(RemoteWebDriver driver,
@@ -95,9 +94,8 @@ public class DriverUtils {
                     .ignoring(InvalidElementStateException.class);
             try {
                 return wait.until(drv -> {
-                    return (drv.findElements(by).size() > 0)
-                            && isElementPresentAndDisplayed(driver,
-                            drv.findElement(by));
+                    final List<WebElement> foundElements = drv.findElements(by);
+                    return (foundElements.size() > 0) && isElementPresentAndDisplayed(driver, foundElements.get(0));
                 });
             } catch (TimeoutException e) {
                 return false;
@@ -123,11 +121,8 @@ public class DriverUtils {
                     .ignoring(NoSuchElementException.class);
             return wait.until(drv -> {
                 try {
-                    return (drv.findElements(by).size() == 0)
-                            || (drv.findElements(by).size() > 0 && !drv
-                            .findElement(by).isDisplayed())
-                            || !isElementInScreenRect(driver,
-                            driver.findElement(by));
+                    final List<WebElement> foundElements = drv.findElements(by);
+                    return (foundElements.size() == 0) || !isElementPresentAndDisplayed(driver, foundElements.get(0));
                 } catch (SessionNotFoundException e) {
                     log.debug(e.getMessage());
                     return true;
@@ -158,9 +153,7 @@ public class DriverUtils {
                     .ignoring(NoSuchElementException.class)
                     .ignoring(StaleElementReferenceException.class)
                     .ignoring(InvalidElementStateException.class);
-            return wait.until(drv -> {
-                return (drv.findElements(locator).size() > 0);
-            });
+            return wait.until(drv -> drv.findElements(locator).size() > 0);
         } catch (TimeoutException ex) {
             return false;
         } finally {
@@ -366,7 +359,7 @@ public class DriverUtils {
     }
 
     public static void multiTap(AppiumDriver<? extends WebElement> driver,
-                                   WebElement element, int tapCount) {
+                                WebElement element, int tapCount) {
         final Point coords = element.getLocation();
         final Dimension elementSize = element.getSize();
         for (int i = 0; i < tapCount; i++) {

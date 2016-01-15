@@ -16,7 +16,6 @@ public class SketchPage extends IOSPage{
 
 	public SketchPage(Future<ZetaIOSDriver> driver) throws Exception {
 		super(driver);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public void sketchRandomLines() throws Exception {

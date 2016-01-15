@@ -81,7 +81,7 @@ public class PersonalInfoPageSteps {
 
     @When("I see settings page")
     public void ISeeSettingsPage() throws Exception {
-        getPersonalInfoPage().isSettingsPageVisible();
+        Assert.assertTrue("Settings page is not visible", getPersonalInfoPage().isSettingsPageVisible());
     }
 
     @When("I click on About button on personal page")
@@ -321,14 +321,14 @@ public class PersonalInfoPageSteps {
     @When("I attempt to enter (.*) and press return")
     public void EnterUsernameAndPressReturn(String username) throws Exception {
         getPersonalInfoPage().clearNameField();
-        getPersonalInfoPage().enterNameInNamefield(username);
+        getPersonalInfoPage().enterNameInNameField(username);
         getPersonalInfoPage().pressEnterInNameField();
     }
 
     @When("I attempt to enter (.*) and tap the screen")
     public void EnterUsernameAndTapScreen(String username) throws Exception {
         getPersonalInfoPage().clearNameField();
-        getPersonalInfoPage().enterNameInNamefield(username);
+        getPersonalInfoPage().enterNameInNameField(username);
         getPersonalInfoPage().tapOnPersonalPage();
     }
 
@@ -365,7 +365,8 @@ public class PersonalInfoPageSteps {
 
     @When("I see the Sound alerts page")
     public void ISeeSoundAlertsPage() throws Exception {
-        getPersonalInfoPage().isSoundAlertsPageVisible();
+        Assert.assertTrue("Sound alerts page is not visible",
+                getPersonalInfoPage().isSoundAlertsPageVisible());
     }
 
     @When("I verify that all is the default selected value")

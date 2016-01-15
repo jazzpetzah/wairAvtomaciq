@@ -99,14 +99,15 @@ public class GroupChatInfoPage extends IOSPage {
         return conversationNameTextField.getText();
     }
 
-    public void changeConversationName(String name) {
+    public void changeConversationName(String name) throws Exception {
         conversationNameTextField.clear();
         int maxRetrys = 3;
         int retryCounter = 0;
         while (retryCounter < maxRetrys) {
             try {
-                conversationNameTextField.sendKeys(name + "\n");
+                ((IOSElement) getDriver().findElementByName(nameConversationNameTextField)).setValue(name + "\n");
                 retryCounter = maxRetrys;
+                return;
             } catch (WebDriverException ex) {
                 conversationNameTextField.clear();
                 retryCounter++;
@@ -263,19 +264,16 @@ public class GroupChatInfoPage extends IOSPage {
     }
 
     public int numberOfParticipantsAvatars() throws Exception {
-        List<WebElement> elements = getDriver().findElements(
-                By.xpath(xpathParticipantAvatarCell));
-        return elements.size();
+        return getDriver().findElements(By.xpath(xpathParticipantAvatarCell)).size();
     }
 
     public List<WebElement> getCurrentParticipants() {
-        return avatarCollectionView.findElements(By
-                .className("UIACollectionCell"));
+        return avatarCollectionView.findElements(By.className("UIACollectionCell"));
     }
 
     public void exitGroupInfoPage() throws Exception {
-        DriverUtils.waitUntilElementClickable(getDriver(),
-                exitGroupInfoPageButton);
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.name(nameExitGroupInfoPageButton)) : "Close group info button is not visible";
         exitGroupInfoPageButton.click();
     }
 
@@ -300,8 +298,7 @@ public class GroupChatInfoPage extends IOSPage {
     }
 
     public boolean isLeaveConversationAlertVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-                By.name(nameLeaveConversationAlert));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(nameLeaveConversationAlert));
     }
 
     public void clickOnAddButton() {

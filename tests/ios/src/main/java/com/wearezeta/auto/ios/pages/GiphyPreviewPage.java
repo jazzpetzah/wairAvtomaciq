@@ -42,7 +42,6 @@ public class GiphyPreviewPage extends IOSPage {
 
     public GiphyPreviewPage(Future<ZetaIOSDriver> driver) throws Exception {
 		super(driver);
-		// TODO Auto-generated constructor stub
 	}
 
 	public void tapSendGiphyButton() throws Exception {
@@ -50,42 +49,35 @@ public class GiphyPreviewPage extends IOSPage {
 	}
 
 	public boolean isGiphyRefreshButtonVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				giphyMoreButton);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameGiphyRefreshButton));
 	}
 
 	public boolean isGiphyLinkButtonVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				giphyLinkButton);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameGiphyLinkButton));
 	}
 
 	public boolean isGiphyTitleButtonVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				giphyTitleButton);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameGiphyTitleButton));
 	}
 
 	public boolean isGiphyImageVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.xpath(xpathGithyImage));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathGithyImage));
 	}
 
 	public boolean isGiphyRejectButtonVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				giphyRejectButton);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameGiphyCancelRequestButton));
 	}
 
 	public boolean isGiphySendButtonVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				giphySendButton);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameGiphySendButton));
 	}
 
 	public void clickGiphyMoreButton() throws Exception {
-		DriverUtils.waitUntilElementClickable(getDriver(), giphyMoreButton);
+		assert isGiphyRefreshButtonVisible() : "Giphy Refresh button is not visible";
 		giphyMoreButton.click();
 	}
 
 	public boolean isGiphyGridShown() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.name(nameGiphyGrid));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameGiphyGrid));
 	}
 }

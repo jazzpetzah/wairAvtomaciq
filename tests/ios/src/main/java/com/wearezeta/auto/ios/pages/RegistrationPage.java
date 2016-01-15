@@ -9,10 +9,8 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -214,7 +212,8 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void clickAgreeButton() throws Exception {
-        DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameAgreeButton));
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameAgreeButton)) :
+                "Agree button is not visible";
         agreeButton.click();
     }
 
@@ -227,23 +226,19 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void inputPhoneNumber(String number) throws Exception {
-        getWait().until(ExpectedConditions.elementToBeClickable(phoneNumber));
-        try {
-            phoneNumberField.sendKeys(number);
-        } catch (WebDriverException ex) {
-            phoneNumberField.clear();
-            phoneNumberField.sendKeys(number);
-        }
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathPhoneNumber)) :
+                "Phone number input is not visible";
+        phoneNumberField.sendKeys(number);
         confirmInput.click();
     }
 
     public boolean isVerificationCodePageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(xpathVerificationPage));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathVerificationPage));
     }
 
     public void inputActivationCode(String code) throws Exception {
-        getWait()
-                .until(ExpectedConditions.elementToBeClickable(activationCode));
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathActivationCode)) :
+                "Activation code input is not visible";
         activationCode.sendKeys(code);
         confirmInput.click();
     }
@@ -253,12 +248,14 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void clickResendCodeButton() throws Exception {
-        DriverUtils.waitUntilElementClickable(getDriver(), resendCodeButton);
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameResendCodeButton)) :
+                "Resend code button is not visible";
         resendCodeButton.click();
     }
 
-    public boolean isTakePhotoSmileDisplayed() {
-        return takePhotoSmile.isEnabled();
+    public boolean isTakePhotoSmileDisplayed() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathTakePhotoSmile)) &&
+                takePhotoSmile.isEnabled();
     }
 
     public boolean isTakeOrSelectPhotoLabelVisible() throws Exception {
@@ -267,16 +264,17 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void selectPicture() throws Exception {
-        DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.name(nameSelectPictureButton));
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.name(nameSelectPictureButton)) : "Select Picture button is not visible";
         selectPictureButton.click();
-        DriverUtils.waitUntilElementClickable(getDriver(), photoButton);
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(xpathPhotoButton)) : "Take Photo button is not visible";
         photoButton.click();
     }
 
     public boolean isConfirmationShown() throws Exception {
         final By locator = By.xpath(xpathConfirmationByMessage.apply(getEmail()));
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public void confirmPicture() {
@@ -300,7 +298,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void clickCreateAccountButton() throws Exception {
-        DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.xpath(xpathCreateAccountButton));
+        DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.xpath(xpathCreateAccountButton));
         createAccountButton.click();
     }
 
@@ -308,10 +306,10 @@ public class RegistrationPage extends IOSPage {
         yourEmail.sendKeys(getEmail());
     }
 
-    public boolean typeAllInvalidEmails() {
+    public boolean typeAllInvalidEmails() throws Exception {
         for (String email : listOfEmails) {
             yourEmail.sendKeys(email + "\n");
-            if (!provideValidEmailMessage.isDisplayed()) {
+            if (!DriverUtils.isElementPresentAndDisplayed(getDriver(), provideValidEmailMessage)) {
                 return false;
             }
             yourEmail.clear();
@@ -339,13 +337,9 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void typeUsername() throws Exception {
-        this.getWait().until(ExpectedConditions.elementToBeClickable(yourName));
-        try {
-            yourName.sendKeys(getName());
-        } catch (WebDriverException ex) {
-            yourName.clear();
-            yourName.sendKeys(getName());
-        }
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathYourName)) :
+                "Name input is not visible";
+        yourName.sendKeys(getName());
     }
 
     public String getUsernameFieldValue() {
@@ -356,12 +350,12 @@ public class RegistrationPage extends IOSPage {
         return yourEmail.getText();
     }
 
-    public boolean isPictureSelected() {
-        return confirmImageButton.isDisplayed();
+    public boolean isPictureSelected() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameConfirmImageButton));
     }
 
-    public boolean confirmErrorPage() {
-        return errorPageButton.isDisplayed();
+    public boolean confirmErrorPage() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameErrorPageButton));
     }
 
     public void backToEmailPageFromErrorPage() {
@@ -369,21 +363,21 @@ public class RegistrationPage extends IOSPage {
         backToWelcomeButton.click();
     }
 
-    public void navigateToWelcomePage() {
-        while (backToWelcomeButton.isDisplayed()) {
+    public void navigateToWelcomePage() throws Exception {
+        while (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameBackToWelcomeButton), 2)) {
             backToWelcomeButton.click();
         }
     }
 
-    public boolean isNextButtonPresented() {
-        return forwardWelcomeButton.isDisplayed();
+    public boolean isNextButtonPresented() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameForwardWelcomeButton));
     }
 
     public void tapBackButton() {
         backToWelcomeButton.click();
     }
 
-    public Boolean isBackButtonVisible() throws Exception {
+    public boolean isBackButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameBackToWelcomeButton));
     }
 
@@ -432,21 +426,19 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void waitUntilEmailsCountReachesExpectedValue(int expectedMsgsCount,
-                                                         String recipient, int timeoutSeconds) throws Exception {
+                                                         String recipient, int timeoutSeconds)
+            throws Exception {
         IMAPSMailbox mailbox = IMAPSMailbox.getInstance();
-        mailbox.waitUntilMessagesCountReaches(recipient, expectedMsgsCount,
-                timeoutSeconds);
+        mailbox.waitUntilMessagesCountReaches(recipient, expectedMsgsCount, timeoutSeconds);
     }
 
     public boolean isEmailVerifPromptVisible() throws Exception {
-        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-                emailVerifPrompt);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathEmailVerifPrompt));
     }
 
     public boolean isInvalidCodeAlertShown() throws Exception {
         DriverUtils.waitUntilAlertAppears(getDriver());
-        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-                invalidCodeAlert);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameInvalidCode));
     }
 
     public void clickChooseOwnPicButton() {
@@ -454,7 +446,8 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void clickChoosePhotoButton() throws Exception {
-        DriverUtils.waitUntilElementClickable(getDriver(), choosePhotoButton);
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameChoosePhotoButton)) :
+                "Choose photo button is not visible";
         choosePhotoButton.click();
     }
 }
