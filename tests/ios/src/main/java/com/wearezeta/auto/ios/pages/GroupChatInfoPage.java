@@ -272,8 +272,7 @@ public class GroupChatInfoPage extends IOSPage {
     }
 
     public void exitGroupInfoPage() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.name(nameExitGroupInfoPageButton)) : "Close group info button is not visible";
+        verifyLocatorPresence(By.name(nameExitGroupInfoPageButton), "Close group info button is not visible");
         exitGroupInfoPageButton.click();
     }
 

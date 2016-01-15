@@ -28,7 +28,6 @@ public class TabletPeoplePickerPage extends PeoplePickerPage {
     public TabletPeoplePickerPage(Future<ZetaIOSDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
-        // TODO Auto-generated constructor stub
     }
 
     public void pressIntoSearchField() {
@@ -41,9 +40,8 @@ public class TabletPeoplePickerPage extends PeoplePickerPage {
         el.click();
     }
 
-    public GroupChatPage clickAddToConversationButtonOniPadPopover() throws Throwable {
+    public void clickAddToConversationButtonOniPadPopover() throws Throwable {
         addToConversationButtoniPad.click();
-        return new GroupChatPage(this.getLazyDriver());
     }
 
     public void fillTextInTabletPeoplePickerSearchField(String text) {

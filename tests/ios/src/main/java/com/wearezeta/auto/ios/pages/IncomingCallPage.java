@@ -69,8 +69,7 @@ public class IncomingCallPage extends CallPage {
     }
 
     public void acceptIncomingCallClick() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameAcceptCallButton)) :
-                "Accept call button is not visible";
+        verifyLocatorPresence(By.name(nameAcceptCallButton), "Accept call button is not visible");
         acceptCallButton.click();
     }
 

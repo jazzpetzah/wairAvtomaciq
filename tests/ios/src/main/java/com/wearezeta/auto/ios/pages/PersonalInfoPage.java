@@ -298,8 +298,7 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public void tapOnEditNameField() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathProfileNameEditField)) :
-                "Edit name field is not visible";
+        verifyLocatorPresence(By.xpath(xpathProfileNameEditField), "Edit name field is not visible");
         profileNameEditField.click();
     }
 
@@ -319,8 +318,7 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public void changeName(String newName) throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathProfileNameEditField)) :
-                "Edit name field is not visible";
+        verifyLocatorPresence(By.xpath(xpathProfileNameEditField), "Edit name field is not visible");
         profileNameEditField.clear();
         profileNameEditField.sendKeys(newName + "\n");
     }
@@ -372,8 +370,7 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public void clickOnHelpButton() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameOptionsHelpButton)) :
-                "Help button is not visible in Options";
+        verifyLocatorPresence(By.name(nameOptionsHelpButton), "Help button is not visible in Options");
         settingsHelpButton.click();
     }
 
@@ -396,8 +393,7 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public void pressSettingsDoneButton() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameSettingsDoneButton)) :
-                "Done button is not present in Settings";
+        verifyLocatorPresence(By.name(nameSettingsDoneButton), "Done button is not present in Settings");
         settingsDoneButton.click();
     }
 
@@ -427,8 +423,7 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public void clickAccountInfoButton() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameSettingsAccountInfoButton)) :
-                "Account button is not present in settings";
+        verifyLocatorPresence(By.name(nameSettingsAccountInfoButton), "Account button is not present in settings");
         settingsAccountInfoButton.click();
     }
 }

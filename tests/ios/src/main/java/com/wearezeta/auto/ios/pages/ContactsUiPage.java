@@ -41,8 +41,7 @@ public class ContactsUiPage extends IOSPage {
     }
 
     public void inputTextToSearch(String text) throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathSearchInput)) :
-                "Search input is not visible";
+        verifyLocatorPresence(By.xpath(xpathSearchInput));
         tapSearchInput();
         searchInput.sendKeys(text);
     }

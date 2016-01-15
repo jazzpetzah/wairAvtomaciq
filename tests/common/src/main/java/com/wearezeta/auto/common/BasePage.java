@@ -10,6 +10,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
@@ -91,6 +92,18 @@ public abstract class BasePage {
         } else {
             return Optional.empty();
         }
+    }
+
+    protected void verifyLocatorPresence(By locator) throws Exception {
+        DriverUtils.verifyPresence(getDriver(), locator);
+    }
+
+    protected void verifyLocatorPresence(By locator, String message) throws Exception {
+        DriverUtils.verifyPresence(getDriver(), locator, message);
+    }
+
+    protected void verifyLocatorPresence(By locator, String message, int timeoutSeconds) throws Exception {
+        DriverUtils.verifyPresence(getDriver(), locator, message, timeoutSeconds);
     }
 
     public Optional<BufferedImage> getScreenshotByCoordinates(int x, int y,

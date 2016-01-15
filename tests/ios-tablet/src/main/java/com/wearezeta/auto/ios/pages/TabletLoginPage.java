@@ -8,7 +8,6 @@ public class TabletLoginPage extends LoginPage{
 
 	public TabletLoginPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
-		// TODO Auto-generated constructor stub
 	}
 
 }

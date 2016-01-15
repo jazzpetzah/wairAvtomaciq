@@ -119,8 +119,7 @@ public class ContactListPage extends IOSPage {
     }
 
     public void openSearch() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameOpenStartUI)) :
-                "Open Start UI button is not visible";
+        verifyLocatorPresence(By.name(nameOpenStartUI));
         openStartUI.click();
     }
 
@@ -156,15 +155,14 @@ public class ContactListPage extends IOSPage {
     }
 
     public String getFirstDialogName() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.xpath(xpathFirstContactListEntry)) :
-                "No entries are visible in the conversation list";
+        verifyLocatorPresence(By.xpath(xpathFirstContactListEntry),
+                "No entries are visible in the conversation list");
         return this.getDriver().findElement(By.xpath(xpathFirstContactListEntry)).getText();
     }
 
     public String getDialogNameByIndex(int index) throws Exception {
         final By locator = By.xpath(convoListEntryByIdx.apply(index));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator) :
-                String.format("Conversation # %s is not visible", index);
+        verifyLocatorPresence(locator, String.format("Conversation # %s is not visible", index));
         return this.getDriver().findElement(locator).getText();
     }
 
@@ -335,9 +333,8 @@ public class ContactListPage extends IOSPage {
         // This takes a screenshot of the area to the left of a contact where
         // ping and unread dot notifications are visible
         final By locator = By.xpath(convoListEntryByIdx.apply(1));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) :
-                "No contacts are visible in the list";
-        WebElement contact = getDriver().findElement(locator);
+        verifyLocatorPresence(locator, "No contacts are visible in the list");
+        final WebElement contact = getDriver().findElement(locator);
         return getScreenshotByCoordinates(contact.getLocation().x,
                 contact.getLocation().y + contactListContainer.getLocation().y,
                 contact.getSize().width / 4, contact.getSize().height * 2)

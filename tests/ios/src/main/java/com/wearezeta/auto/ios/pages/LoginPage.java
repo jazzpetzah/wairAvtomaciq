@@ -226,15 +226,13 @@ public class LoginPage extends IOSPage {
     }
 
     public void setLogin(String login) throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameLoginField)) :
-                "Login input field is not visible";
+        verifyLocatorPresence(By.name(nameLoginField), "Login input field is not visible");
         ((IOSElement) getDriver().findElementByName(nameLoginField)).
                 setValue(login);
     }
 
     public void setPassword(String password) throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(namePasswordField)) :
-                "Password input field is not visible";
+        verifyLocatorPresence(By.name(namePasswordField), "Password input field is not visible");
         ((IOSElement) getDriver().findElementByName(namePasswordField)).
                 setValue(password);
     }
@@ -303,8 +301,8 @@ public class LoginPage extends IOSPage {
     }
 
     public void tapEmailFieldToChangePassword(String email) throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathSafariChangePasswordEmailField)) :
-                "Email input field in Safari is not visible";
+        verifyLocatorPresence(By.xpath(xpathSafariChangePasswordEmailField),
+                "Email input field in Safari is not visible");
         DriverUtils.tapByCoordinates(getDriver(), safariChangePWEmailField);
         this.inputStringFromKeyboard(email);
     }
@@ -322,8 +320,8 @@ public class LoginPage extends IOSPage {
 
     public void tapPasswordFieldToChangePassword(String newPassword)
             throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathSafariEnterNewPasswordField)) : "Password input field in Safari is not visible";
+        verifyLocatorPresence(By.xpath(xpathSafariEnterNewPasswordField),
+                "Password input field in Safari is not visible");
         DriverUtils.tapByCoordinates(getDriver(), safariEnterNewPasswordField);
         this.inputStringFromKeyboard(newPassword);
     }

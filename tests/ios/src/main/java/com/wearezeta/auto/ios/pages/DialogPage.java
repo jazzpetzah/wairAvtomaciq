@@ -268,8 +268,7 @@ public class DialogPage extends IOSPage {
     }
 
     public void returnToContactList() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameConversationBackButton)) :
-                "Back to list button is not visible";
+        verifyLocatorPresence(By.name(nameConversationBackButton), "Back to list button is not visible");
         conversationBackButton.click();
     }
 
@@ -410,8 +409,7 @@ public class DialogPage extends IOSPage {
     }
 
     private void clickMediaBarCloseButton() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameCloseButton)) :
-                "Close button is not visible on Media bar";
+        verifyLocatorPresence(By.name(nameCloseButton), "Close button is not visible on Media bar");
         mediabarStopCloseButton.click();
     }
 

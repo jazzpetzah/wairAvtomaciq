@@ -42,14 +42,12 @@ public class PendingRequestsPage extends IOSPage {
     }
 
     public void clickIgnoreButton() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(namePendingRequestIgnoreButton)) :
-                "Ignore button is not visible";
+        verifyLocatorPresence(By.name(namePendingRequestIgnoreButton), "Ignore button is not visible");
         ignoreRequestButton.click();
     }
 
     public void clickIgnoreButtonMultiple(int clicks) throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(namePendingRequestIgnoreButton)) :
-                "Ignore button is not visibl";
+        verifyLocatorPresence(By.name(namePendingRequestIgnoreButton), "Ignore button is not visible");
         for (int i = 0; i < clicks; i++) {
             ignoreRequestButton.click();
             Thread.sleep(500);
@@ -57,14 +55,12 @@ public class PendingRequestsPage extends IOSPage {
     }
 
     public void clickConnectButton() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(namePendingRequestConnectButton)) :
-                "Connect button is not visible";
+        verifyLocatorPresence(By.name(namePendingRequestConnectButton), "Connect button is not visible");
         connectRequestButton.click();
     }
 
     public void clickConnectButtonMultiple(int clicks) throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(namePendingRequestConnectButton)) :
-                "Connect button is not visible";
+        verifyLocatorPresence(By.name(namePendingRequestConnectButton), "Connect button is not visible");
         for (int i = 0; i < clicks; i++) {
             connectRequestButton.click();
             Thread.sleep(500);

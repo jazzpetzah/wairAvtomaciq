@@ -44,7 +44,6 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
     public TabletOtherUserInfoPage(Future<ZetaIOSDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
-        // TODO Auto-generated constructor stub
     }
 
     public void removeFromConversationOniPad() throws Exception {
@@ -70,13 +69,11 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
     }
 
     public boolean isConnectLabelVisible() throws Exception {
-        DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(xpathOtherUserConnectLabel), 5);
-        return DriverUtils.isElementPresentAndDisplayed(getDriver(), connectLabel);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathOtherUserConnectLabel));
     }
 
     public boolean isConnectButtonVisible() throws Exception {
-        DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(xpathOtherUserConnectButton), 5);
-        return DriverUtils.isElementPresentAndDisplayed(getDriver(), connectButton);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathOtherUserConnectButton));
     }
 
     public void clickConnectButton() {
@@ -84,13 +81,12 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
     }
 
     public void clickGoBackButton() throws Exception {
-        DriverUtils.waitUntilElementClickable(getDriver(), goBackButton);
+        verifyLocatorPresence(By.name(nameOtherUserProfilePageCloseButton));
         goBackButton.click();
     }
 
     public void exitOtherUserGroupChatPopover() throws Exception {
-        DriverUtils.tapByCoordinates(getDriver(), otherUserConversationMenuRightButton,
-                50, 50);
+        DriverUtils.tapByCoordinates(getDriver(), otherUserConversationMenuRightButton, 50, 50);
     }
 
 }

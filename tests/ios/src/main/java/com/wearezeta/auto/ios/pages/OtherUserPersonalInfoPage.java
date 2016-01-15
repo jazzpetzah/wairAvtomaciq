@@ -126,14 +126,12 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     }
 
     public void clickConfirmDeleteButton() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathConfirmDeleteButton)) :
-                "Confirm button is not visible";
+        verifyLocatorPresence(By.xpath(xpathConfirmDeleteButton), "Confirm button is not visible");
         confirmDeleteButton.click();
     }
 
     public void clickAlsoLeaveButton() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameAlsoLeaveCheckerButton)) :
-                "Also Leave checkbox is not present";
+        verifyLocatorPresence(By.name(nameAlsoLeaveCheckerButton), "'Also Leave' checkbox is not present");
         alsoLeaveButton.click();
     }
 
@@ -142,8 +140,8 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     }
 
     public void clickCloseUserProfileButton() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameExitOtherUserPersonalInfoPageButton)) :
-                "Close profile button is not visible";
+        verifyLocatorPresence(By.name(nameExitOtherUserPersonalInfoPageButton),
+                "Close profile button is not visible");
         exitOtherPersonalInfoPageButton.click();
     }
 

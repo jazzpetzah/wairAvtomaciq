@@ -221,8 +221,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void fillTextInPeoplePickerSearch(String text) throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathPickerSearch)) :
-                "Search UI input is not visible";
+        verifyLocatorPresence(By.xpath(xpathPickerSearch), "Search UI input is not visible");
         try {
             sendTextToSearchInput(text);
             clickSpaceKeyboardButton();
@@ -262,8 +261,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void dismissPeoplePicker() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(xpathPickerClearButton)) :
-                "Clear button is not visible in the search field";
+        verifyLocatorPresence(By.name(xpathPickerClearButton), "Clear button is not visible in the search field");
         peoplePickerClearBtn.click();
     }
 
@@ -287,8 +285,7 @@ public class PeoplePickerPage extends IOSPage {
 
     public void tapHideSuggestedContact(String contact) throws Exception {
         final By locator = By.xpath(xpathHideButtonForContactByName.apply(contact));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) :
-                String.format("Hide button is not visible for '%s'", contact);
+        verifyLocatorPresence(locator, String.format("Hide button is not visible for '%s'", contact));
         this.getDriver().findElement(locator).click();
     }
 
@@ -458,8 +455,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void clickOpenConversationButton() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameOpenConversationButton)) :
-                "Open conversation button is not visible";
+        verifyLocatorPresence(By.name(nameOpenConversationButton), "Open conversation button is not visible");
         openConversationButton.click();
     }
 
@@ -482,8 +478,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void inputTextInSearch(String text) throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathPickerSearch)) :
-                "Search input is not visible";
+        verifyLocatorPresence(By.xpath(xpathPickerSearch), "Search input is not visible");
         peoplePickerSearch.sendKeys(text);
     }
 

@@ -44,8 +44,7 @@ public class ImageFullScreenPage extends IOSPage {
     }
 
     public void clickCloseButton() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameFullScreenCloseButton)) :
-                "Close button is not present in the view";
+        verifyLocatorPresence(By.name(nameFullScreenCloseButton), "Close button is not present in the view");
         fullScreenCloseButton.click();
     }
 

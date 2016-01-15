@@ -17,7 +17,6 @@ public class TabletConversationDetailPopoverPage extends OtherUserPersonalInfoPa
 
     public TabletConversationDetailPopoverPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public void catchShareContactsAlert() throws Exception {
@@ -29,9 +28,7 @@ public class TabletConversationDetailPopoverPage extends OtherUserPersonalInfoPa
 		}
 	}
 
-	public TabletPeoplePickerPage addContactTo1on1Chat() throws Exception {
+	public void addContactTo1on1Chat() throws Exception {
 		addPopOverButton.click();
-		//catchShareContactsAlert();
-		return new TabletPeoplePickerPage(this.getLazyDriver());
 	}
 }

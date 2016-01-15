@@ -21,20 +21,17 @@ public class TabletDialogPage extends DialogPage {
 		super(lazyDriver);
 	}
 	
-	public CameraRollTabletPopoverPage pressAddPictureiPadButton() throws Exception {
+	public void pressAddPictureiPadButton() throws Exception {
 		addPictureButton.click();
-		DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.name(nameCameraLibraryButton));
-		return new CameraRollTabletPopoverPage(this.getLazyDriver());
+		DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(nameCameraLibraryButton));
 	}
 	
-	public TabletConversationDetailPopoverPage pressConversationDetailiPadButton() throws Exception{
+	public void pressConversationDetailiPadButton() throws Exception{
 		openConversationDetails.click();
-		return new TabletConversationDetailPopoverPage(this.getLazyDriver());
 	}
 	
-	public TabletGroupConversationDetailPopoverPage pressGroupConversationDetailiPadButton() throws Exception{
+	public void pressGroupConversationDetailiPadButton() throws Exception{
 		openConversationDetails.click();
-		return new TabletGroupConversationDetailPopoverPage(this.getLazyDriver());
 	}
 	
 }

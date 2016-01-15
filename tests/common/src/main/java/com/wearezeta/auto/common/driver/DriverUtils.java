@@ -485,4 +485,23 @@ public class DriverUtils {
         log.info("Tap on " + dstX + ":" + dstY);
         driver.tap(1, dstX, dstY, SINGLE_TAP_DURATION);
     }
+
+    public static void verifyPresence(RemoteWebDriver driver, By locator, String message, int timeoutSeconds)
+            throws Exception {
+        if (!waitUntilLocatorIsDisplayed(driver, locator, timeoutSeconds)) {
+            throw new IllegalStateException(message);
+        }
+    }
+
+    public static void verifyPresence(RemoteWebDriver driver, By locator, String message) throws Exception {
+        if (!waitUntilLocatorIsDisplayed(driver, locator)) {
+            throw new IllegalStateException(message);
+        }
+    }
+
+    public static void verifyPresence(RemoteWebDriver driver, By locator) throws Exception {
+        if (!waitUntilLocatorIsDisplayed(driver, locator)) {
+            throw new IllegalStateException(String.format("The element '%s' is not visible", locator));
+        }
+    }
 }
