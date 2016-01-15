@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.pages;
 
+import java.io.File;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -14,6 +15,9 @@ import com.google.common.base.Function;
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
+import com.wearezeta.auto.web.common.Browser;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
+import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class SelfProfilePage extends WebPage {
@@ -22,6 +26,9 @@ public class SelfProfilePage extends WebPage {
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathCameraButton)
 	private WebElement cameraButton;
+
+	@FindBy(how = How.CSS, using = WebAppLocators.SelfProfilePage.cssSelectPicture)
+	private WebElement selectPictureInput;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathSelfUserName)
 	private WebElement userName;
@@ -44,6 +51,11 @@ public class SelfProfilePage extends WebPage {
 	public SelfProfilePage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
+	}
+
+	public boolean isSettingsButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.cssSelector(WebAppLocators.SelfProfilePage.cssGearButton));
 	}
 
 	public void clickGearButton() throws Exception {
@@ -147,5 +159,65 @@ public class SelfProfilePage extends WebPage {
 						WebAppLocators.SelfProfilePage.xpathBackgroundAvatarAccentColor);
 		return AccentColor.getByRgba(backgroundAvatarAccentColor
 				.getCssValue("background-color"));
+	}
+
+	public void dropPicture(String pictureName) throws Exception {
+		final String srcPicturePath = WebCommonUtils
+				.getFullPicturePath(pictureName);
+		assert new File(srcPicturePath).exists() : srcPicturePath
+				+ " file should exist on hub file system";
+
+		/*
+		 * The code below allows to upload the picture to the remote mode
+		 * without Selenium interaction This could be useful when we have better
+		 * solution for drag and drop
+		 */
+		// final String dstPicturePathForScp = WebAppConstants.TMP_ROOT + "/"
+		// + pictureName;
+		// WebCommonUtils.putFileOnExecutionNode(this.getDriver().getNodeIp(),
+		// srcPicturePath, dstPicturePathForScp);
+		//
+		// String dstPicturePath = null;
+		// if (WebAppExecutionContext.isCurrentPlatfromWindows()) {
+		// dstPicturePath = WebAppConstants.WINDOWS_TMP_ROOT + "\\"
+		// + pictureName;§
+		// } else {
+		// dstPicturePath = dstPicturePathForScp;
+		// }
+
+		// http://stackoverflow.com/questions/5188240/using-selenium-to-imitate-dragging-a-file-onto-an-upload-element
+		final String inputId = "SelfImageUpload";
+		this.getDriver().executeScript(
+				inputId + " = window.$('<input id=\"" + inputId
+						+ "\"/>').attr({type:'file'}).appendTo('body');");
+		// The file is expected to be uploaded automatically by Webdriver
+		getDriver().findElement(By.id(inputId)).sendKeys(srcPicturePath);
+		this.getDriver().executeScript(
+				"e = $.Event('drop'); e.originalEvent = {dataTransfer : { files : "
+						+ inputId + ".get(0).files } }; $(\""
+						+ WebAppLocators.ProfilePicturePage.cssDropZone
+						+ "\").trigger(e);");
+	}
+
+	public void uploadPicture(String pictureName) throws Exception {
+		final String picturePath = WebCommonUtils
+				.getFullPicturePath(pictureName);
+		if (WebAppExecutionContext.getBrowser() == Browser.Firefox) {
+			this.getDriver()
+					.executeScript(
+							"$(\""
+									+ WebAppLocators.SelfPictureUploadPage.cssChooseYourOwnInput
+									+ "\").css({'left': '0', 'opacity': '100', 'z-index': '100'});");
+		}
+		if (WebAppExecutionContext.getBrowser() == Browser.Safari) {
+			WebCommonUtils.sendPictureInSafari(picturePath, this.getDriver()
+					.getNodeIp());
+		} else {
+			selectPictureInput.sendKeys(picturePath);
+			// manually trigger change event on input
+			this.getDriver().executeScript("e = $.Event('change');$(\""
+						+ WebAppLocators.SelfPictureUploadPage.cssChooseYourOwnInput
+						+ "\").trigger(e);");
+		}
 	}
 }

@@ -2,198 +2,128 @@ package com.wearezeta.auto.ios.pages;
 
 import java.util.List;
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class GroupChatPage extends DialogPage {
-	@FindBy(how = How.NAME, using = IOSLocators.nameMainWindow)
-	private WebElement groupChatWindow;
+    private static final String xpathNewGroupConversationNameChangeTextField =
+            xpathMainWindow + "/UIATableView[1]/UIATableCell[2]/UIATextView[1]";
+    @FindBy(xpath = xpathNewGroupConversationNameChangeTextField)
+    private WebElement newGroupConversationNameChangeTextField;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathNewGroupConversationNameChangeTextField)
-	private WebElement newGroupConversationNameChangeTextField;
+    private static final String nameYouHaveLeft = "YOU HAVE LEFT";
+    @FindBy(name = nameYouHaveLeft)
+    private WebElement youLeft;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameYouHaveLeft)
-	private WebElement youLeft;
+    private static final String nameYouLeftMessage = "YOU LEFT";
+    @FindBy(name = nameYouLeftMessage)
+    private WebElement youLeftMessage;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameYouLeftMessage)
-	private WebElement youLeftMessage;
+    private static final String nameYouRenamedConversationMessage = "YOU RENAMED THE CONVERSATION";
+    @FindBy(name = nameYouRenamedConversationMessage)
+    private WebElement yourRenamedMessage;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameYouRenamedConversationMessage)
-	private WebElement yourRenamedMessage;
+    private static final String xpathStartConversationAfterDelete =
+            "//UIAStaticText[starts-with(@name, 'START A CONVERSATION WITH')]";
+    @FindBy(xpath = xpathStartConversationAfterDelete)
+    private WebElement startConvAfterDeleteMessage;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathStartConversationAfterDelete)
-	private WebElement startConvAfterDeleteMessage;
+    private static final Function<String, String> xpathYouAddedToGroupChatMessageByName =
+            name -> String.format("//UIAStaticText[contains(@name, 'YOU ADDED %s')]", name.toUpperCase());
 
-	public GroupChatPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
-		super(lazyDriver);
-	}
+    private static final String nameConversationCursorInput = "ConversationTextInputField";
 
-	public boolean areRequiredContactsAddedToChat(List<String> names) {
-		final String lastMsg = getStartedtChatMessage();
-		for (String name : names) {
-			if (!lastMsg.toLowerCase().contains(name.toLowerCase())) {
-				return false;
-			}
-		}
-		return true;
-	}
+    private static final String namePlusButton = "plusButton";
 
-	public boolean areContactsAddedAfterDeleteContent(List<String> names){
-		final String lastMsg = getStartedtChatMessageAfterDeleteContent();
-		for (String name : names) {
-			if (!lastMsg.toLowerCase().contains(name.toLowerCase())) {
-				return false;
-			}
-		}
-		return true;
-	}
+    public GroupChatPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+        super(lazyDriver);
+    }
 
-	private String getStartedtChatMessageAfterDeleteContent() {
-		return startConvAfterDeleteMessage.getText();
-	}
+    public boolean areRequiredContactsAddedToChat(List<String> names) {
+        final String lastMsg = getStartedtChatMessage();
+        for (String name : names) {
+            if (!lastMsg.toLowerCase().contains(name.toLowerCase())) {
+                return false;
+            }
+        }
+        return true;
+    }
 
-	public boolean areRequired3ContactsAddedToChat(String name1, String name2,
-			String name3) {
-		String lastMessage = getAddedtoChatMessage();
-		boolean flag = lastMessage.contains(name1.toUpperCase())
-				&& lastMessage.contains(name2.toUpperCase())
-				&& lastMessage.contains(name3.toUpperCase());
-		return flag;
-	}
+    public boolean areContactsAddedAfterDeleteContent(List<String> names) {
+        final String lastMsg = getStartedtChatMessageAfterDeleteContent();
+        for (String name : names) {
+            if (!lastMsg.toLowerCase().contains(name.toLowerCase())) {
+                return false;
+            }
+        }
+        return true;
+    }
 
-	public boolean isGroupChatPageVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.name(IOSLocators.nameConversationCursorInput));
-	}
+    private String getStartedtChatMessageAfterDeleteContent() {
+        return startConvAfterDeleteMessage.getText();
+    }
 
-	public boolean isConversationChangedInChat() throws Exception {
-		System.out.println(newGroupConversationNameChangeTextField.getText());
-		final GroupChatInfoPage groupChatInfoPage = new GroupChatInfoPage(
-				this.getLazyDriver());
-		System.out.println(groupChatInfoPage.getConversationName());
+    public boolean areRequired3ContactsAddedToChat(String name1, String name2,
+                                                   String name3) {
+        String lastMessage = getAddedtoChatMessage();
+        return lastMessage.contains(name1.toUpperCase())
+                && lastMessage.contains(name2.toUpperCase())
+                && lastMessage.contains(name3.toUpperCase());
+    }
 
-		String groupChatName = groupChatInfoPage.getConversationName();
-		return newGroupConversationNameChangeTextField.getText().contains(
-				groupChatName);
-	}
+    public boolean isGroupChatPageVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.name(nameConversationCursorInput));
+    }
 
-	public boolean isYouHaveLeftVisible() {
-		return youLeft.isDisplayed();
-	}
+    public boolean isYouAddedUserMessageShown(String user) throws Exception {
+        final By locator = By.xpath(xpathYouAddedToGroupChatMessageByName.apply(user));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
+    }
 
-	public boolean isUserAddedContactVisible(String user, String contact)
-			throws Exception {
-		return this
-				.getDriver()
-				.findElement(
-						By.name(user.toUpperCase() + " ADDED "
-								+ contact.toUpperCase())).isDisplayed();
-	}
+    public boolean isYouRenamedConversationMessageVisible(String name) {
+        return getRenamedMessage().equals(nameYouRenamedConversationMessage);
+    }
 
-	public boolean isYouAddedUserMessageShown(String user) throws Exception {
-		String message = String.format(
-				IOSLocators.xpathYouAddetToGroupChatMessage, user.toUpperCase());
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(message));
-	}
+    @Override
+    public IOSPage openConversationDetailsClick() throws Exception {
+        for (int i = 0; i < 3; i++) {
+            if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(namePlusButton))) {
+                plusButton.click();
+                openConversationDetails.click();
+                DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.name(nameAddContactToChatButton), 5);
+            }
+            if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(nameAddContactToChatButton))) {
+                break;
+            } else {
+                swipeUp(1000);
+            }
+        }
 
-	public boolean isYouRenamedConversationMessageVisible(String name) {
-		return getRenamedMessage().equals(
-				String.format(IOSLocators.nameYouRenamedConversationMessage,
-						name));
-	}
+        return new GroupChatInfoPage(this.getLazyDriver());
+    }
 
-	public boolean isMessageShownInGroupChat(String message) throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(message));
-	}
+    @Override
+    public void swipeUp(int time) throws Exception {
+        WebElement element = getDriver().findElement(
+                By.name(nameMainWindow));
 
-	public boolean isContactAvailableInChat(String contact) throws Exception {
-		WebElement el = null;
-		boolean result = false;
+        Point coords = element.getLocation();
+        Dimension elementSize = element.getSize();
+        this.getDriver().swipe(coords.x + elementSize.width / 2,
+                coords.y + elementSize.height - 170,
+                coords.x + elementSize.width / 2, coords.y + 40, time);
+    }
 
-		try {
-			el = getDriver().findElementByName(contact);
-		} catch (NoSuchElementException ex) {
-			el = null;
-		} finally {
-			result = el != null;
-		}
-
-		return result;
-	}
-
-	@Override
-	public IOSPage openConversationDetailsClick() throws Exception {
-		for (int i = 0; i < 3; i++) {
-			if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-					By.name(IOSLocators.namePlusButton))) {
-				plusButton.click();
-				openConversationDetails.click();
-				DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-						By.name(IOSLocators.nameAddContactToChatButton), 5);
-			}
-			if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-					By.name(IOSLocators.nameAddContactToChatButton))) {
-				break;
-			} else {
-				swipeUp(1000);
-			}
-		}
-
-		return new GroupChatInfoPage(this.getLazyDriver());
-	}
-
-	@Override
-	public IOSPage swipeUp(int time) throws Exception {
-		WebElement element = getDriver().findElement(
-				By.name(IOSLocators.nameMainWindow));
-
-		Point coords = element.getLocation();
-		Dimension elementSize = element.getSize();
-		this.getDriver().swipe(coords.x + elementSize.width / 2,
-				coords.y + elementSize.height - 170,
-				coords.x + elementSize.width / 2, coords.y + 40, time);
-		return returnBySwipe(SwipeDirection.UP);
-	}
-
-	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
-		IOSPage page = null;
-		switch (direction) {
-		case DOWN: {
-			page = this;
-			break;
-		}
-		case UP: {
-			page = new GroupChatInfoPage(this.getLazyDriver());
-			break;
-		}
-		case LEFT: {
-			break;
-		}
-		case RIGHT: {
-			page = new ContactListPage(this.getLazyDriver());
-			break;
-		}
-		}
-		return page;
-	}
-
-	public boolean isYouLeftMessageShown() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(IOSLocators.nameYouLeftMessage));
-	}
+    public boolean isYouLeftMessageShown() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(nameYouLeftMessage));
+    }
 
 }

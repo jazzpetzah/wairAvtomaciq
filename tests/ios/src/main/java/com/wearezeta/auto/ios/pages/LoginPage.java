@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Future;
 
+import io.appium.java_client.ios.IOSElement;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -11,417 +12,377 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class LoginPage extends IOSPage {
-	final String[] scriptString = new String[] {
-			"tell application \"System Events\"",
-			"tell application \"iOS Simulator\" to activate",
-			"tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
-			"end tell" };
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameMainWindow)
-	private WebElement viewPager;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameSignInButton)
-	private WebElement signInButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameLoginButton)
-	private WebElement confirmSignInButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameRegisterButton)
-	private WebElement registerButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameLoginField)
-	private WebElement loginField;
-
-	@FindBy(how = How.NAME, using = IOSLocators.namePasswordField)
-	private WebElement passwordField;
-
-	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classUIATextView)
-	private List<WebElement> userName;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameTermsPrivacyLinks)
-	private WebElement termsButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameTermsPrivacyLinks)
-	private WebElement privacyButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameTermsPrivacyCloseButton)
-	private WebElement termsPrivacyCloseButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameErrorMailNotification)
-	private WebElement errorMailNotification;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameWrongCredentialsNotification)
-	private WebElement wrongCredentialsNotification;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameIgnoreUpdateButton)
-	private WebElement ignoreUpdateButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameTermsOfServiceButton)
-	private WebElement termsOfServiceButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameProfileName)
-	private WebElement selfProfileName;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameShareButton)
-	private WebElement shareButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameForgotPasswordButton)
-	private WebElement changePasswordButtonSignIn;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathSafariChangePasswordEmailField)
-	private WebElement safariChangePWEmailField;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathSafariURLButton)
-	private WebElement safariURLButton;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathSafariGoButton)
-	private WebElement safariGoButton;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathSafariEnterNewPasswordField)
-	private WebElement safariEnterNewPasswordField;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathChangePasswordPageChangePasswordButton)
-	private WebElement changePasswordPageChangePasswordButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.LoginPage.namePhoneLoginButton)
-	private WebElement phoneLoginButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.LoginPage.nameEmailLoginButton)
-	private WebElement emailLoginButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.LoginPage.nameBackButton)
-	private WebElement backButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.LoginPage.nameMaybeLater)
-	private WebElement maybeLater;
-
-	@FindBy(how = How.NAME, using = IOSLocators.LoginPage.nameCountryPickerButton)
-	private WebElement countryPickerButtton;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.LoginPage.xpathSetEmailPasswordSuggetionLabel)
-	private WebElement setEmailPasswordSuggetionLabel;
-
-	@FindBy(how = How.NAME, using = IOSLocators.Alerts.nameResentIn10min)
-	private WebElement resendIn10minAlert;
-
-	@FindBy(how = How.NAME, using = IOSLocators.Alerts.nameInvalidPhoneNumber)
-	private WebElement invalidPhoneNumberAlert;
-
-	@FindBy(how = How.NAME, using = IOSLocators.Alerts.nameInvalidEmail)
-	private WebElement invalidEmailAlert;
-
-	@FindBy(how = How.NAME, using = IOSLocators.Alerts.nameAlreadyRegisteredNumber)
-	private WebElement alreadyRegisteredNumberAlert;
-
-	@FindBy(how = How.NAME, using = IOSLocators.Alerts.nameAlreadyRegisteredEmail)
-	private WebElement alreadyRegisteredEmailAlert;
-
-	@FindBy(how = How.NAME, using = IOSLocators.PeoplePickerPage.nameNotNowButton)
-	private WebElement notNowPhoneButton;
-
-	private String login;
-
-	private String password;
-
-	public String message;
-
-	public LoginPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
-		super(lazyDriver);
-	}
-
-	public Boolean isVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(), viewPager);
-	}
-
-	public void signIn() throws IOException {
-
-		signInButton.click();
-	}
-
-	public void switchToEmailLogin() throws Exception {
-		if (!backButton.getText().equals("REGISTRATION")) {
-			DriverUtils.mobileTapByCoordinates(getDriver(), backButton);
-		}
-		if (!DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.name(IOSLocators.LoginPage.nameEmailLoginButton))) {
-			signIn();
-		} else {
-			DriverUtils.mobileTapByCoordinates(getDriver(), emailLoginButton);
-		}
-	}
-
-	public boolean isPhoneSignInButtonVisible() throws Exception {
-		Assert.assertTrue(
-				"iPhone Sign in button is not presented in elements tree",
-				DriverUtils.waitUntilLocatorAppears(getDriver(),
-						By.name(IOSLocators.LoginPage.namePhoneLoginButton)));
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				phoneLoginButton);
-	}
-
-	public void clickPhoneLogin() throws Exception {
-		DriverUtils.waitUntilElementClickable(getDriver(), phoneLoginButton);
-		phoneLoginButton.click();
-	}
-
-	public void waitForLaterButton(int time) throws Exception {
-		DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.name(IOSLocators.nameShareButton), time);
-	}
-
-	public PeoplePickerPage clickLaterButton() throws Exception {
-		if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(IOSLocators.nameShareButton))) {
-			shareButton.click();
-			return new PeoplePickerPage(this.getLazyDriver());
-		} else {
-			return null;
-		}
-	}
-
-	public void waitForLoginToFinish() throws Exception {
-
-		if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.name(IOSLocators.nameLoginButton), 40)) {
-			throw new AssertionError(
-					"Login button is still visible after the timeout");
-		}
-	}
-
-	public void login() throws Exception {
-
-		confirmSignInButton.click();
-
-		waitForLoginToFinish();
-	}
-
-	public void clickLoginButton() {
-		confirmSignInButton.click();
-	}
-
-	public void clickJoinButton() {
-		registerButton.click();
-	}
-
-	public RegistrationPage join() throws Exception {
-		termsOfServiceButton.click();
-		registerButton.click();
-
-		return new RegistrationPage(this.getLazyDriver());
-	}
-
-	public String getLogin() {
-		return login;
-	}
-
-	public void setLogin(String login) throws Exception {
-		DriverUtils.waitUntilElementClickable(getDriver(), loginField);
-		DriverUtils.sendTextToInputByScript(getDriver(),
-				IOSLocators.scriptSignInEmailPath, login);
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) throws Exception {
-		DriverUtils.waitUntilElementClickable(getDriver(), passwordField);
-		DriverUtils.sendTextToInputByScript(getDriver(),
-				IOSLocators.scriptSignInPasswordPath, password);
-	}
-
-	public boolean waitForLogin() throws Exception {
-		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.name(IOSLocators.nameLoginField));
-	}
-
-	public void dismisSettingsWaring() throws Exception {
-		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.name(IOSLocators.LoginPage.nameMaybeLater))) {
-			DriverUtils.waitUntilElementClickable(getDriver(), maybeLater);
-			for (int i = 0; i < 3; i++) {
-				try {
-					maybeLater.click();
-				} catch (WebDriverException ex) {
-					// ignore silently
-				}
-				if (mayBeLaterIsNotShown()) {
-					break;
-				}
-			}
-		}
-	}
-
-	private boolean mayBeLaterIsNotShown() throws Exception {
-		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.xpath(IOSLocators.LoginPage.nameMaybeLater), 3);
-	}
-
-	public Boolean isLoginFinished() throws Exception {
-		dismisSettingsWaring();
-		return DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.name(IOSLocators.ContactListPage.nameSelfButton), 60);
-	}
-
-	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
-		// no need to swipe
-		return null;
-	}
-
-	public Boolean isLoginButtonVisible() {
-
-		return (ExpectedConditions.visibilityOf(signInButton) != null);
-	}
-
-	public void tapHoldEmailInput() throws Exception {
-		message = getDriver().findElement(By.name(IOSLocators.nameLoginField))
-				.getText();
-		this.getDriver().tap(
-				1,
-				this.getDriver().findElement(
-						By.name(IOSLocators.nameLoginField)), 1000);
-	}
-
-	public void openTermsLink() throws Exception {
-		Point p = termsButton.getLocation();
-		Dimension k = termsButton.getSize();
-		this.getDriver().tap(1, (p.x) + (k.width - 70),
-				(p.y) + (k.height - 16), 1);
-	}
-
-	public void openPrivacyLink() throws Exception {
-		Point p = privacyButton.getLocation();
-		Dimension k = privacyButton.getSize();
-		this.getDriver().tap(1, (p.x) + (k.width / 3), (p.y) + (k.height - 8),
-				1);
-	}
-
-	public void closeTermsPrivacyController() throws Exception {
-		this.getWait().until(
-				ExpectedConditions
-						.elementToBeClickable(termsPrivacyCloseButton));
-		termsPrivacyCloseButton.click();
-	}
-
-	public Boolean isTermsPrivacyColseButtonVisible() {
-
-		return (ExpectedConditions.visibilityOf(termsPrivacyCloseButton) != null);
-	}
-
-	public void tapPasswordField() {
-		passwordField.click();
-	}
-
-	public Boolean errorMailNotificationIsShown() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(IOSLocators.nameErrorMailNotification));
-	}
-
-	public Boolean errorMailNotificationIsNotShown() {
-		return (ExpectedConditions.visibilityOf(errorMailNotification) == null);
-	}
-
-	public Boolean wrongCredentialsNotificationIsShown() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(IOSLocators.nameWrongCredentialsNotification));
-	}
-
-	public void ignoreUpdate() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.name(IOSLocators.nameIgnoreUpdateButton));
-		ignoreUpdateButton.click();
-	}
-
-	public PersonalInfoPage tapChangePasswordButton() throws Exception {
-		changePasswordButtonSignIn.click();
-		return new PersonalInfoPage(this.getLazyDriver());
-	}
-
-	public void tapEmailFieldToChangePassword(String email) throws Exception {
-		DriverUtils.waitUntilElementClickable(getDriver(),
-				safariChangePWEmailField);
-		DriverUtils.mobileTapByCoordinates(getDriver(),
-				safariChangePWEmailField);
-		this.inputStringFromKeyboard(email);
-	}
-
-	public void tapChangePasswordButtonInWebView() throws Exception {
-		DriverUtils.mobileTapByCoordinates(getDriver(),
-				changePasswordPageChangePasswordButton);
-	}
-
-	public void changeURLInBrowser(String URL) throws Exception {
-		DriverUtils.mobileTapByCoordinates(getDriver(), safariURLButton);
-		this.inputStringFromKeyboard(URL);
-
-		DriverUtils.mobileTapByCoordinates(getDriver(), safariGoButton);
-	}
-
-	public void tapPasswordFieldToChangePassword(String newPassword)
-			throws Exception {
-		DriverUtils.waitUntilElementClickable(getDriver(),
-				safariEnterNewPasswordField, 5);
-		DriverUtils.mobileTapByCoordinates(getDriver(),
-				safariEnterNewPasswordField);
-		this.inputStringFromKeyboard(newPassword);
-	}
-
-	public void pressSimulatorHomeButton() throws Exception {
-		cmdVscript(scriptString);
-		DriverUtils.resetApp(getDriver());
-	}
-
-	public boolean isCountryPickerButttonVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				countryPickerButtton);
-	}
-
-	public boolean isSetEmailPasswordSuggestionVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				setEmailPasswordSuggetionLabel);
-	}
-
-	public boolean isResendIn10minAlertVisible() throws Exception {
-		DriverUtils.waitUntilAlertAppears(getDriver());
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				resendIn10minAlert);
-	}
-
-	public boolean isInvalidPhoneNumberAlertShown() throws Exception {
-		DriverUtils.waitUntilAlertAppears(getDriver());
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				invalidPhoneNumberAlert);
-	}
-
-	public boolean isInvalidEmailAlertShown() throws Exception {
-		DriverUtils.waitUntilAlertAppears(getDriver());
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				invalidEmailAlert);
-	}
-
-	public boolean isRegisteredNumberAlertShown() throws Exception {
-		DriverUtils.waitUntilAlertAppears(getDriver());
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				alreadyRegisteredNumberAlert);
-	}
-
-	public boolean isAlreadyRegisteredEmailAlertShown() throws Exception {
-		DriverUtils.waitUntilAlertAppears(getDriver());
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				alreadyRegisteredEmailAlert);
-	}
-
-	public void clickPhoneNotNow() {
-		notNowPhoneButton.click();
-	}
+    final String[] scriptString = new String[]{
+            "tell application \"System Events\"",
+            "tell application \"iOS Simulator\" to activate",
+            "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
+            "end tell"};
+
+    @FindBy(name = nameMainWindow)
+    private WebElement viewPager;
+
+    private static final String nameSignInButton = "I HAVE AN ACCOUNT";
+    @FindBy(name = nameSignInButton)
+    private WebElement signInButton;
+
+    private static final String nameLoginButton = "RegistrationConfirmButton";
+    @FindBy(name = nameLoginButton)
+    private WebElement confirmSignInButton;
+
+    private static final String nameRegisterButton = "SignUp";
+    @FindBy(name = nameRegisterButton)
+    private WebElement registerButton;
+
+    private static final String nameLoginField = "EmailField";
+    @FindBy(name = nameLoginField)
+    private WebElement loginField;
+
+    private static final String namePasswordField = "PasswordField";
+    @FindBy(name = namePasswordField)
+    private WebElement passwordField;
+
+    private static final String classUIATextView = "UIATextView";
+    @FindBy(className = classUIATextView)
+    private List<WebElement> userName;
+
+    private static final String nameTermsPrivacyLinks = "TermsPrivacyTextView";
+    @FindBy(name = nameTermsPrivacyLinks)
+    private WebElement termsButton;
+    @FindBy(name = nameTermsPrivacyLinks)
+    private WebElement privacyButton;
+
+    private static final String nameTermsPrivacyCloseButton = "WebViewCloseButton";
+    @FindBy(name = nameTermsPrivacyCloseButton)
+    private WebElement termsPrivacyCloseButton;
+
+    private static final String nameErrorMailNotification = "PLEASE PROVIDE A VALID EMAIL ADDRESS";
+    @FindBy(name = nameErrorMailNotification)
+    private WebElement errorMailNotification;
+
+    private static final String nameWrongCredentialsNotification = "Please verify your details and try again.";
+    @FindBy(name = nameWrongCredentialsNotification)
+    private WebElement wrongCredentialsNotification;
+
+    private static final String nameIgnoreUpdateButton = "Ignore";
+    @FindBy(name = nameIgnoreUpdateButton)
+    private WebElement ignoreUpdateButton;
+
+    private static final String nameTermsOfServiceButton = "LegalCheckmarkButton";
+    @FindBy(name = nameTermsOfServiceButton)
+    private WebElement termsOfServiceButton;
+
+    private static final String nameProfileName = "ProfileSelfNameField";
+    @FindBy(name = nameProfileName)
+    private WebElement selfProfileName;
+
+    private static final String nameShareButton = "SHARE CONTACTS";
+    @FindBy(name = nameShareButton)
+    private WebElement shareButton;
+
+    private static final String nameForgotPasswordButton = "FORGOT PASSWORD?";
+    @FindBy(name = nameForgotPasswordButton)
+    private WebElement changePasswordButtonSignIn;
+
+    private static final String xpathSafariChangePasswordEmailField = "//UIAApplication[@name='Safari']//UIATextField[@value='Email']";
+    @FindBy(xpath = xpathSafariChangePasswordEmailField)
+    private WebElement safariChangePWEmailField;
+
+    private static final String xpathSafariURLButton = "//UIAButton[@name='URL']";
+    @FindBy(xpath = xpathSafariURLButton)
+    private WebElement safariURLButton;
+
+    private static final String xpathSafariGoButton = "//UIAButton[@name='Go']";
+    @FindBy(xpath = xpathSafariGoButton)
+    private WebElement safariGoButton;
+
+    private static final String xpathSafariEnterNewPasswordField = "//UIASecureTextField[@value='Enter new password']";
+    @FindBy(xpath = xpathSafariEnterNewPasswordField)
+    private WebElement safariEnterNewPasswordField;
+
+    private static final String xpathChangePasswordPageChangePasswordButton = "//UIAButton[@name='RESET PASSWORD']";
+    @FindBy(xpath = xpathChangePasswordPageChangePasswordButton)
+    private WebElement changePasswordPageChangePasswordButton;
+
+    private static final String namePhoneLoginButton = "RegistrationRightButton";
+    @FindBy(name = namePhoneLoginButton)
+    private WebElement phoneLoginButton;
+
+    private static final String nameEmailLoginButton = "EMAIL SIGN IN";
+    @FindBy(name = nameEmailLoginButton)
+    private WebElement emailLoginButton;
+
+    private static final String nameBackButton = "BackToWelcomeButton";
+    @FindBy(name = nameBackButton)
+    private WebElement backButton;
+
+    private static final String nameMaybeLater = "MAYBE LATER";
+    @FindBy(name = nameMaybeLater)
+    private WebElement maybeLater;
+
+    private static final String nameCountryPickerButton = "CountryPickerButton";
+    @FindBy(name = nameCountryPickerButton)
+    private WebElement countryPickerButtton;
+
+    private static final String xpathSetEmailPasswordSuggetionLabel =
+            "//UIAStaticText[contains(@name, 'Add email address and password')]";
+    @FindBy(xpath = xpathSetEmailPasswordSuggetionLabel)
+    private WebElement setEmailPasswordSuggetionLabel;
+
+    public static final String nameResentIn10min =
+            "We already sent you a code via SMS. Tap Resend after 10 minutes to get a new one.";
+    @FindBy(name = nameResentIn10min)
+    private WebElement resendIn10minAlert;
+
+    private static final String nameInvalidPhoneNumber = "Please enter a valid phone number";
+    @FindBy(name = nameInvalidPhoneNumber)
+    private WebElement invalidPhoneNumberAlert;
+
+    private static final String nameInvalidEmail = "Please enter a valid email address";
+    @FindBy(name = nameInvalidEmail)
+    private WebElement invalidEmailAlert;
+
+    private static final String nameAlreadyRegisteredNumber =
+            "The phone number you provided has already been registered. Please try again.";
+    @FindBy(name = nameAlreadyRegisteredNumber)
+    private WebElement alreadyRegisteredNumberAlert;
+
+    private static final String nameAlreadyRegisteredEmail = "The email address you provided has already been registered. Please try again.";
+    @FindBy(name = nameAlreadyRegisteredEmail)
+    private WebElement alreadyRegisteredEmailAlert;
+
+    private static final String nameNotNowButton = "NOT NOW";
+    @FindBy(name = nameNotNowButton)
+    private WebElement notNowPhoneButton;
+
+    private static final String nameGotItButton = "GOT IT";
+    @FindBy(name = nameGotItButton)
+    private WebElement gotItButton;
+
+    public static final String nameSelfButton = "SelfButton";
+
+    public String message;
+
+    public LoginPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+        super(lazyDriver);
+    }
+
+    public Boolean isVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.name(nameMainWindow));
+    }
+
+    public void signIn() throws IOException {
+        signInButton.click();
+    }
+
+    public void switchToEmailLogin() throws Exception {
+        if (!backButton.getText().equals("REGISTRATION")) {
+            DriverUtils.tapByCoordinates(getDriver(), backButton);
+        }
+        if (!DriverUtils.waitUntilLocatorAppears(getDriver(),
+                By.name(nameEmailLoginButton))) {
+            signIn();
+        } else {
+            DriverUtils.tapByCoordinates(getDriver(), emailLoginButton);
+        }
+    }
+
+    public boolean isPhoneSignInButtonVisible() throws Exception {
+        Assert.assertTrue(
+                "iPhone Sign in button is not presented in elements tree",
+                DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(namePhoneLoginButton)));
+        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+                phoneLoginButton);
+    }
+
+    public void clickPhoneLogin() throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), phoneLoginButton);
+        phoneLoginButton.click();
+    }
+
+    public void waitForLoginToFinish() throws Exception {
+        if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By.name(nameLoginButton), 40)) {
+            throw new AssertionError(
+                    "Login button is still visible after the timeout");
+        }
+        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameGotItButton), 2)) {
+            gotItButton.click();
+        }
+    }
+
+    public void login() throws Exception {
+
+        confirmSignInButton.click();
+
+        waitForLoginToFinish();
+    }
+
+    public void clickLoginButton() {
+        confirmSignInButton.click();
+    }
+
+    public void clickJoinButton() {
+        registerButton.click();
+    }
+
+    public void setLogin(String login) throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), loginField);
+        ((IOSElement) getDriver().findElementByName(nameLoginField)).
+                setValue(login);
+    }
+
+    public void setPassword(String password) throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), passwordField);
+        ((IOSElement) getDriver().findElementByName(namePasswordField)).
+                setValue(password);
+    }
+
+    public void dismisSettingsWaring() throws Exception {
+        if (DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(nameMaybeLater))) {
+            DriverUtils.waitUntilElementClickable(getDriver(), maybeLater);
+            for (int i = 0; i < 3; i++) {
+                try {
+                    maybeLater.click();
+                } catch (WebDriverException ex) {
+                    // ignore silently
+                }
+                if (mayBeLaterIsNotShown()) {
+                    break;
+                }
+            }
+        }
+    }
+
+    private boolean mayBeLaterIsNotShown() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.name(nameMaybeLater), 3);
+    }
+
+    public Boolean isLoginFinished() throws Exception {
+        dismisSettingsWaring();
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(nameSelfButton), 60);
+    }
+
+    public boolean isLoginButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameSignInButton));
+    }
+
+    public void tapHoldEmailInput() throws Exception {
+        message = getDriver().findElement(By.name(nameLoginField)).getText();
+        this.getDriver().tap(1, this.getDriver().findElement(By.name(nameLoginField)), 1000);
+    }
+
+    public void openTermsLink() throws Exception {
+        Point p = termsButton.getLocation();
+        Dimension k = termsButton.getSize();
+        this.getDriver().tap(1, (p.x) + (k.width - 70),
+                (p.y) + (k.height - 16), 1);
+    }
+
+    public void closeTermsPrivacyController() throws Exception {
+        this.getWait().until(
+                ExpectedConditions
+                        .elementToBeClickable(termsPrivacyCloseButton));
+        termsPrivacyCloseButton.click();
+    }
+
+    public boolean isTermsPrivacyColseButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameTermsPrivacyCloseButton));
+    }
+
+    public void tapPasswordField() {
+        passwordField.click();
+    }
+
+    public boolean wrongCredentialsNotificationIsShown() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(nameWrongCredentialsNotification));
+    }
+
+    public PersonalInfoPage tapChangePasswordButton() throws Exception {
+        changePasswordButtonSignIn.click();
+        return new PersonalInfoPage(this.getLazyDriver());
+    }
+
+    public void tapEmailFieldToChangePassword(String email) throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(),
+                safariChangePWEmailField);
+        DriverUtils.tapByCoordinates(getDriver(),
+                safariChangePWEmailField);
+        this.inputStringFromKeyboard(email);
+    }
+
+    public void tapChangePasswordButtonInWebView() throws Exception {
+        DriverUtils.tapByCoordinates(getDriver(),
+                changePasswordPageChangePasswordButton);
+    }
+
+    public void changeURLInBrowser(String URL) throws Exception {
+        DriverUtils.tapByCoordinates(getDriver(), safariURLButton);
+        this.inputStringFromKeyboard(URL);
+
+        DriverUtils.tapByCoordinates(getDriver(), safariGoButton);
+    }
+
+    public void tapPasswordFieldToChangePassword(String newPassword)
+            throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(),
+                safariEnterNewPasswordField, 5);
+        DriverUtils.tapByCoordinates(getDriver(),
+                safariEnterNewPasswordField);
+        this.inputStringFromKeyboard(newPassword);
+    }
+
+    public void pressSimulatorHomeButton() throws Exception {
+        cmdVscript(scriptString);
+        DriverUtils.resetApp(getDriver());
+    }
+
+    public boolean isCountryPickerButttonVisible() throws Exception {
+        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+                countryPickerButtton);
+    }
+
+    public boolean isSetEmailPasswordSuggestionVisible() throws Exception {
+        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+                setEmailPasswordSuggetionLabel);
+    }
+
+    public boolean isResendIn10minAlertVisible() throws Exception {
+        DriverUtils.waitUntilAlertAppears(getDriver());
+        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+                resendIn10minAlert);
+    }
+
+    public boolean isInvalidPhoneNumberAlertShown() throws Exception {
+        DriverUtils.waitUntilAlertAppears(getDriver());
+        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+                invalidPhoneNumberAlert);
+    }
+
+    public boolean isInvalidEmailAlertShown() throws Exception {
+        DriverUtils.waitUntilAlertAppears(getDriver());
+        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+                invalidEmailAlert);
+    }
+
+    public boolean isRegisteredNumberAlertShown() throws Exception {
+        DriverUtils.waitUntilAlertAppears(getDriver());
+        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+                alreadyRegisteredNumberAlert);
+    }
+
+    public boolean isAlreadyRegisteredEmailAlertShown() throws Exception {
+        DriverUtils.waitUntilAlertAppears(getDriver());
+        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+                alreadyRegisteredEmailAlert);
+    }
+
+    public void clickPhoneNotNow() {
+        notNowPhoneButton.click();
+    }
 }

@@ -19,7 +19,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @C3180 @C2563 @regression @rc @id908
+  @C3180 @regression @rc @id908
   Scenario Outline: Verify starting outgoing call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -115,9 +115,9 @@ Feature: Calling
     And I wait for 5 seconds
     And <Contact> stops all calls to me
     Then I see missed call indicator in list for contact <Contact>
-    When Contact <Contact> send number <Number> of message to user <Name>
+    Given User <Contact> sends <Number> encrypted messages to user Myself
     Then I see missed call indicator in list for contact <Contact>
-    When Contact <Contact1> send number <Number> of message to user <Name>
+    Given User <Contact1> sends <Number> encrypted messages to user Myself
     Then I see missed call indicator got moved down in list for contact <Contact>
 
     Examples: 
@@ -638,3 +638,31 @@ Feature: Calling
     Examples: 
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
+
+  @C2061 @staging @id2699
+  Scenario Outline: (Bug ZIOS-5436)Verify adding people to group conversation during the group call (Me gets added)
+    Given There are 5 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Contact1> is connected to <Contact2>,<Contact3>,<Contact4>
+    Given <Contact1> has group chat <GroupChatName> with <Contact2>,<Contact3>,<Contact4>
+    Given <Contact1>,<Contact3>,<Contact4> starts waiting instance using <CallBackend>
+    Given <Contact1> accepts next incoming call automatically
+    Given <Contact3> accepts next incoming call automatically
+    Given <Contact4> accepts next incoming call automatically
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    And <Contact2> calls <GroupChatName> using <CallBackend2>
+    And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact3> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact4> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And User <Contact1> adds User <Name> to group chat <GroupChatName>
+    And I see user <GroupChatName> in contact list
+    When I tap on group chat with name <GroupChatName>
+    And I see Join Call bar
+    And I rejoin call by clicking Join button
+    Then I see mute call, end call and speakers buttons
+    Then I see <NumberOfAvatars> avatars in the group call bar
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | CallBackend2 | NumberOfAvatars | Timeout|
+      | user1Name | user2Name | user3Name | user4Name | user5Name | AddMeGROUPCALL  | chrome      | autocall     | 5               | 60		|

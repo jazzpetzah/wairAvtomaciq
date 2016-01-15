@@ -13,11 +13,11 @@ Feature: Conversation List
     And I return to the chat list
     Then I see first item in contact list named <ArchivedUser>
 
-    Examples: 
+    Examples:
       | Name      | ArchivedUser |
       | user1Name | user2Name    |
 
-  @C351 @C352 @C11 @regression @rc @id1332 @id2171 @id2172
+  @C352 @regression @rc @id1332 @id2171 @id2172
   Scenario Outline: Verify archive a conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -29,7 +29,7 @@ Feature: Conversation List
     And I open archived conversations
     Then I see user <Contact> in contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -44,17 +44,17 @@ Feature: Conversation List
     When I swipe right on a <Contact>
     And I press Archive button in action menu in Contact List
     Then I dont see conversation <Contact> in contact list
-    And Contact <Contact> send number 1 of message to user <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     And I dont see conversation <Contact> in contact list
-    And Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
+    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     Then I dont see conversation <Contact> in contact list
     And I open archived conversations
     And I tap on contact name <Contact>
     And I see dialog page
 
-    Examples: 
-      | Name      | Contact   | Picture     | ConversationType |
-      | user1Name | user2Name | testing.jpg | single user      |
+    Examples:
+      | Name      | Contact   | Picture     |
+      | user1Name | user2Name | testing.jpg |
 
   @C350 @regression @id2153
   Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages
@@ -68,14 +68,14 @@ Feature: Conversation List
     And I tap on contact name <Contact1>
     And I return to the chat list
     Then I dont see unread message indicator in list for contact <Contact>
-    And Contact <Contact> send number 1 of message to user <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     Then I see 1 unread message indicator in list for contact <Contact>
-    And Contact <Contact> send number 1 of message to user <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     Then I see 5 unread message indicator in list for contact <Contact>
-    And Contact <Contact> send number 8 of message to user <Name>
+    Given User <Contact> sends 8 encrypted messages to user Myself
     Then I see 10 unread message indicator in list for contact <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Contact1  | Color           |
       | user1Name | user2Name | user3Name | StrongLimeGreen |
 
@@ -92,7 +92,7 @@ Feature: Conversation List
     And I open archived conversations
     Then I see user <GroupChatName> in contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | ArchiveGroupChat |
 
@@ -110,24 +110,24 @@ Feature: Conversation List
     And I return to the chat list
     Then I see first item in contact list named <GroupChatName>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | ArchiveGroupChat |
 
-  @C349 @C3177 @regression @rc @id1369
+  @C3177 @regression @rc @id1369
   Scenario Outline: Verify Ping animation in the conversations list
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Contact> change name to <NewName>
     Given User <Name> change accent color to <Color>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
-    And I remember the state of the first conversation cell
-    When Contact <Contact> ping conversation <Name>
-    And I wait for 10 seconds
+    Given I see Contact list with my name <Name>
+    Given I remember the state of the first conversation cell
+    Given User <Contact> securely pings conversation <Name>
+    When I wait for 10 seconds
     Then I see change of state for first conversation cell
 
-    Examples: 
+    Examples:
       | Name      | Contact   | NewName | Color        |
       | user1Name | user2Name | PING    | BrightOrange |
 
@@ -137,14 +137,14 @@ Feature: Conversation List
     Given <Name> is connected to <Contact1>,<Contact2>,<Contact3>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
-    And Contact <Contact3> send number <Number> of message to user <Name>
+    Given User <Contact3> sends <Number> encrypted messages to user Myself
     And I see first item in contact list named <Contact3>
-    When Contact <Contact2> ping conversation <Name>
+    Given User <Contact2> securely pings conversation <Name>
     And I see first item in contact list named <Contact2>
-    When Contact <Contact1> sends image <Picture> to single user conversation <Name>
+    Given User <Contact1> sends encrypted image <Picture> to single user conversation Myself
     Then I see first item in contact list named <Contact1>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Number | Picture     |
       | user1Name | user2Name | user3name | user4name | 2      | testing.jpg |
 
@@ -163,7 +163,7 @@ Feature: Conversation List
     And I see Leave button in action menu in Contact List
     And I see Cancel button in action menu in Contact List
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3name | ActionMenuChat |
 
@@ -181,7 +181,7 @@ Feature: Conversation List
     And I see Block button in action menu in Contact List
     And I see Cancel button in action menu in Contact List
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -199,7 +199,7 @@ Feature: Conversation List
     And I open archived conversations
     Then I see user <Contact> in contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -222,7 +222,7 @@ Feature: Conversation List
     And I tap on group chat with name <GroupChatName>
     Then I see You Left message in group chat
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName   |
       | user1Name | user2Name | user3Name | LeaveActionMenu |
 
@@ -231,11 +231,11 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
-    Given Contact <Contact2> sends image <Image> to group conversation <GroupChatName>
-    Given User <Name> sent message <Message> to conversation <GroupChatName>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact1> sends encrypted image <Picture> to group conversation <GroupChatName>
+    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
+    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on contact name <GroupChatName>
     Then I see new photo in the dialog
     When I return to the chat list
@@ -247,21 +247,21 @@ Feature: Conversation List
     And I tap on Search input on People picker page
     And I search for user name <GroupChatName> and tap on it on People picker page
     Then I see group chat page after deletion with users <Contact1>,<Contact2>
-    And I see only 0 message
+    And I see 0 conversation entries
 
-    Examples: 
-      | Name      | Contact1  | Contact2  | GroupChatName | Message | Image       |
-      | user1Name | user2Name | user3Name | TESTCHAT      | testing | testing.jpg |
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
+      | user1Name | user2Name | user3Name | TESTCHAT      | testing.jpg |
 
   @C842 @regression @rc @id3318
   Scenario Outline: Verify removing the history from 1-to1 conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given User <Contact1> sent message <Message> to conversation <Name>
-    Given Contact <Contact1> sends image <Image> to group conversation <Name>
-    Given User <Name> sent message <Message> to conversation <Contact1>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact1> sends encrypted image <Picture> to single user conversation Myself
+    Given User <Contact1> sends 1 encrypted message to user <Name>
+    Given User Myself sends 1 encrypted message to user <Contact1>
     When I tap on contact name <Contact1>
     Then I see new photo in the dialog
     When I return to the chat list
@@ -274,11 +274,11 @@ Feature: Conversation List
     And I search for user name <Contact1> and tap on it on People picker page
     And I click open conversation button on People picker page
     Then I see dialog page
-    And I see only 0 message
+    And I see 0 conversation entries
 
-    Examples: 
-      | Name      | Contact1  | Contact2  | Message | Image       |
-      | user1Name | user2Name | user3Name | testing | testing.jpg |
+    Examples:
+      | Name      | Contact1  | Contact2  | Picture     |
+      | user1Name | user2Name | user3Name | testing.jpg |
 
   @C853 @regression @id3319
   Scenario Outline: Verify closing the action menu by clicking on cancel on out of the menu
@@ -292,7 +292,7 @@ Feature: Conversation List
     And I press Cancel button in action menu in Contact List
     Then I see Contact list with my name <Name>
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -314,7 +314,7 @@ Feature: Conversation List
     And I press menu notify button
     Then I see conversation <Contact> is unsilenced
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Color  | NewName |
       | user1Name | user2Name | Violet | SILENCE |
 
@@ -329,7 +329,7 @@ Feature: Conversation List
     When I swipe left in current window
     Then I see dialog page with contact <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -337,10 +337,10 @@ Feature: Conversation List
   Scenario Outline: Verify that deleted conversation isn't going to archive
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Contact1> sent message <Message> to conversation <Name>
-    Given User <Name> sent message <Message> to conversation <Contact1>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact1> sends 1 encrypted message to user <Name>
+    Given User Myself sends 1 encrypted message to user <Contact1>
     When I swipe right on a <Contact1>
     And I click delete menu button
     And I confirm delete conversation content
@@ -348,9 +348,9 @@ Feature: Conversation List
     And I open archived conversations
     Then I dont see conversation <Contact1> in contact list
 
-    Examples: 
-      | Name      | Contact1  | Message |
-      | user1Name | user2Name | testing |
+    Examples:
+      | Name      | Contact1  |
+      | user1Name | user2Name |
 
   @C844 @staging @id3960
   Scenario Outline: Verify deleting 1-to-1 conversation from archive
@@ -369,7 +369,7 @@ Feature: Conversation List
     And I open archived conversations
     Then I dont see conversation <Contact1> in contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -378,7 +378,7 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Name> sent message <Message> to conversation <GroupChatName>
+    Given User <Name> sends 1 encrypted message to group conversation <GroupChatName>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I swipe right on a <GroupChatName>
@@ -393,21 +393,21 @@ Feature: Conversation List
     And I open archived conversations
     Then I dont see conversation <GroupChatName> in contact list
 
-    Examples: 
-      | Name      | Contact1  | Contact2  | Message | GroupChatName |
-      | user1Name | user2Name | user3Name | testing | ForDeletion   |
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | ForDeletion   |
 
-  @C846 @staging @id3968
+  @C846 @rc @regression @id3968
   Scenario Outline: Verify posting in a group conversation without content
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
-    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Name> sent message <Message> to conversation <GroupChatName>
-    Given Contact <Name> sends image <Image> to group conversation <GroupChatName>
-    Given Contact <Name> ping conversation <GroupChatName>
-    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself securely pings conversation <GroupChatName>
+    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
+    Given User Myself sends encrypted image <Picture> to group conversation <GroupChatName>
+    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I click delete menu button
     And I confirm delete conversation content
@@ -417,13 +417,12 @@ Feature: Conversation List
     And I see conversation <GroupChatName> is presented in Search results
     And I tap on conversation <GroupChatName> in search result
     Then I see empty group chat page with users <Contact1>,<Contact2> with only system message
-    When I type the message and send it
-    Then I see message in the dialog
-    And I see only 2 messages
+    When I type the default message and send it
+    Then I see 1 default message in the dialog
 
-    Examples: 
-      | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
-      | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
+      | user1Name | user2Name | user3Name | ForDeletion   | testing.jpg |
 
   @C847 @regression @id4005
   Scenario Outline: Verify deleting the history from kicked out conversation
@@ -443,7 +442,7 @@ Feature: Conversation List
     And I open archived conversations
     Then I dont see conversation <GroupChatName> in contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | KICKCHAT      |
 
@@ -458,7 +457,7 @@ Feature: Conversation List
     And I click Cancel button
     Then I see conversation action menu
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -479,25 +478,25 @@ Feature: Conversation List
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C366 @staging @id1075
+  @C366 @regression @rc @id1075
   Scenario Outline: Verify messages are marked as read with disappearing unread dot
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Name> change accent color to <Color>
-    Given Contact <Contact> send number <Number> of message to user <Name>
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends <Number> encrypted messages to user Myself
     And I see 1 unread message indicator in list for contact <Contact>
     And I tap on contact name <Contact>
     And I see dialog page
     And I return to the chat list
     Then I dont see unread message indicator in list for contact <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Color           | Number |
       | user1Name | user2Name | StrongLimeGreen | 1      |
 
@@ -512,6 +511,6 @@ Feature: Conversation List
     And Myself is connected to <Contact7>
     Then I DONT see Invite more people button
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Number |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | 8      |

@@ -86,7 +86,7 @@ class NodesCountForLabels(CliHandlerBase):
                 verifier.join(timeout=VERIFICATION_JOB_TIMEOUT)
                 if verifier.is_alive():
                     sys.stderr.write(
-                        'Verifier process for the node "{}" timed out. Assuming the node as broken by default...\n'.\
+                        'Verifier process for the node "{}" timed out. Assuming the node as ready by default...\n'.\
                          format(verifier.node.name))
                     # broken_nodes_queue.put_nowait(verifier.node)
                     verifier.terminate()
@@ -208,6 +208,7 @@ class RealAndroidDevice(BaseNodeVerifier):
 
 IOS_SIMULATOR_BOOT_TIMEOUT = 60 * 2 # seconds
 IOS_SIMULATOR_EXECUTABLE_NAME = 'Simulator'
+AUTORUN_APPIUM_APP_PATH = '/Applications/AutorunAppium.app'
 
 class IOSSimulator(BaseNodeVerifier):
     def _get_installed_simulators(self, ssh_client):
@@ -256,7 +257,10 @@ class IOSSimulator(BaseNodeVerifier):
                 sys.stderr.write(msg)
                 self._send_email_notification('"{}" node is broken'.format(self._node.name), msg)
                 result = False
-            client.exec_command('/usr/bin/killall "{}"'.format(IOS_SIMULATOR_EXECUTABLE_NAME))
+            if result is True:
+                client.exec_command('/usr/bin/killall "{}"'.format(IOS_SIMULATOR_EXECUTABLE_NAME))
+                sys.stderr.write('Restarting Appium server...')
+                client.exec_command('open -a "{}"'.format(AUTORUN_APPIUM_APP_PATH), timeout=10)
             return result
         finally:
             client.close()

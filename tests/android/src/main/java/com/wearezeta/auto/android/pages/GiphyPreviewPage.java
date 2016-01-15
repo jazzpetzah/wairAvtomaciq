@@ -1,5 +1,7 @@
 package com.wearezeta.auto.android.pages;
 
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -13,47 +15,38 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 public class GiphyPreviewPage extends AndroidPage {
     @FindBy(id = giphyPreviewButtonId)
     private WebElement giphyPreviewButton;
-    final By giphyPreviewButtonLocator = By.id(giphyPreviewButtonId);
+    private final By giphyPreviewButtonLocator = By.id(giphyPreviewButtonId);
 
-    public static final String sendButtonId = "ttv__confirmation__confirm";
+    private static final String sendButtonId = "ttv__confirmation__confirm";
     @FindBy(id = sendButtonId)
     private WebElement sendButton;
-    final By giphySendButtonLocator = By.id(sendButtonId);
+    private final By giphySendButtonLocator = By.id(sendButtonId);
 
-    public static final String cancelButtonId = "ttv__confirmation__cancel";
+    private static final String cancelButtonId = "ttv__confirmation__cancel";
     @FindBy(id = cancelButtonId)
     private WebElement cancelButton;
-    final By giphyCancelButtonLocator = By.id(cancelButtonId);
+    private final By giphyCancelButtonLocator = By.id(cancelButtonId);
 
-    public static final String giphyReloadButtonId = "gtv__giphy_preview__reload_button";
+    private static final String giphyReloadButtonId = "gtv__giphy_preview__reload_button";
     @FindBy(id = giphyReloadButtonId)
     private WebElement giphyReloadButton;
-    final By giphyReloadButtonLocator = By.id(giphyReloadButtonId);
 
-    public static final String giphyLinkButtonId = "gtv__giphy_preview__link_button";
+    private static final String giphyLinkButtonId = "gtv__giphy_preview__link_button";
     @FindBy(id = giphyLinkButtonId)
     private WebElement giphyLinkButton;
-    final By giphyLinkButtonLocator = By.id(giphyLinkButtonId);
+    private final By giphyLinkButtonLocator = By.id(giphyLinkButtonId);
 
-    public static final String giphyPreviewTitleId = "ttv__giphy_preview__title";
+    private static final String giphyPreviewTitleId = "ttv__giphy_preview__title";
     @FindBy(id = giphyPreviewTitleId)
     private WebElement giphyPreviewTitle;
-    final By giphyPreviewTitleLocator = By.id(giphyPreviewTitleId);
+    private final By giphyPreviewTitleLocator = By.id(giphyPreviewTitleId);
 
     private static final String xpathGiphyLoadingIndicator = "//*[@id='liv__giphy_preview__loading']/*";
-    final By giphyLoadingProgressLocator = By.xpath(xpathGiphyLoadingIndicator);
+    private final By giphyLoadingProgressLocator = By.xpath(xpathGiphyLoadingIndicator);
 
-    private static final String idOpenGiphyCollectionButton = "gtv__giphy_preview__link_button";
-    @FindBy(id = idOpenGiphyCollectionButton)
-    private WebElement openGiphyCollectionButton;
-
-    private static final Function<Integer, String> xpathGiphyPreviewByIndex = idx ->
-            String.format("//*[@id='rv__giphy_image_preview']/*[@id='iv__row_giphy_image'][%d]", idx);
-
-    @Override
-    protected ZetaAndroidDriver getDriver() throws Exception {
-        return (ZetaAndroidDriver) super.getDriver();
-    }
+    private static final String giphyGridImageId = "iv__row_giphy_image";
+    @FindBy(id = giphyGridImageId)
+    private List<WebElement> giphyGridImages;
 
     public GiphyPreviewPage(Future<ZetaAndroidDriver> lazyDriver)
             throws Exception {
@@ -83,6 +76,16 @@ public class GiphyPreviewPage extends AndroidPage {
                         GIPHY_LOCATOR_TIMEOUT_SECONDS);
     }
 
+    public boolean isGiphyGridViewShown() {
+        return giphyGridImages.size() > 0;
+    }
+
+    public void clickOnSomeGif() {
+    	Random ran = new Random();
+    	int toSelect = ran.nextInt(5)+1;
+        giphyGridImages.get(toSelect).click();
+    }
+
     private static final int GIPHY_LOAD_TIMEOUT_SECONDS = 60;
 
     public void clickSendButton() throws Exception {
@@ -101,14 +104,7 @@ public class GiphyPreviewPage extends AndroidPage {
                 giphySendLocator, GIPHY_LOCATOR_TIMEOUT_SECONDS);
     }
 
-    public void clickShowGiphyGridButton() {
-        openGiphyCollectionButton.click();
-    }
-
-    public void selectFirstGridItem() throws Exception {
-        final By locator = By.xpath(xpathGiphyPreviewByIndex.apply(1));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) :
-                String.format("Giphy previews collection is not visible");
-        getDriver().findElement(locator).click();
+    public void clickGiphyLinkButton() {
+        giphyLinkButton.click();
     }
 }

@@ -221,6 +221,8 @@ public final class WebAppLocators {
 
 		public static final String xpathCameraButton = "//*[@data-uie-name='go-profile-picture-selection']";
 
+		public static final String cssSelectPicture = "[data-uie-name='do-select-picture']";
+
 		public static final String xpathBackgroundAvatarAccentColor = "//div[contains(@class, 'background-accent bg-theme')]";
 	}
 
@@ -235,6 +237,9 @@ public final class WebAppLocators {
 
 		// messages (including images, text, missed call notifications, pings)
 		public static final String cssMessage = "[data-uie-name='item-message']";
+
+		// message header contains action description
+		public static String cssMessageHeader = cssMessage + " .message-header";
 
 		public static final String cssLastMessage = "[data-uie-name='item-message']:last-child";
 
@@ -318,6 +323,9 @@ public final class WebAppLocators {
 		public static final Function<String, String> cssUserAvatarById = id -> String
 				.format("[user-id='%s'] .user-avatar-border", id);
 
+		public static final String cssConnectedMessageUser = ".message-connected-header";
+
+		public static final String cssConnectedMessageLabel = ".message-connected .label-xs";
 	}
 
 	public static final class ConnectToPage {
@@ -443,10 +451,9 @@ public final class WebAppLocators {
 
 		public static final String xpathRootDiv = "//div[@id='self-upload']";
 
-		public static final String xpathSelectPictureButton = xpathRootDiv
-				+ "//*[@data-uie-name='do-select-picture']/following-sibling::span";
+		public static final String cssKeepPictureButton = "[data-uie-name='do-keep-picture']";
 
-		public static final String cssSendPictureInput = "div#self-upload input[data-uie-name=do-select-picture]";
+		public static final String cssChooseYourOwnInput = "[data-uie-name=do-select-picture]";
 
 		public static final String xpathConfirmPictureSelectionButton = xpathRootDiv
 				+ "//*[@data-uie-name='do-set-picture']";

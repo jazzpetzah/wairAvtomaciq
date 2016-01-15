@@ -6,6 +6,7 @@ Feature: Conversation List
     Given <Contact> is connected to me
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
@@ -40,6 +41,7 @@ Feature: Conversation List
     Given <Contact> is connected to me
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
@@ -79,6 +81,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact1> in my conversations list
     When I swipe right the conversations list item <Contact1>
@@ -102,6 +105,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact1> in my conversations list
     When I swipe right the conversations list item <Contact1>
@@ -125,6 +129,7 @@ Feature: Conversation List
     Given <Contact> is connected to me
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
@@ -147,6 +152,7 @@ Feature: Conversation List
     Given <Contact> is connected to me
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
@@ -168,6 +174,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact1> in my conversations list
     And Contact <Contact1> sends message "<Msg1>" to user Myself
@@ -200,6 +207,7 @@ Feature: Conversation List
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
     And Contact <Contact1> sends message "<Msg1>" to conversation <GroupChatName>
@@ -232,6 +240,7 @@ Feature: Conversation List
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
     And Contact <Contact1> sends message "<Msg1>" to conversation <GroupChatName>
@@ -265,6 +274,7 @@ Feature: Conversation List
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     And I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
     When I swipe right the conversations list item <GroupChatName>
@@ -295,6 +305,7 @@ Feature: Conversation List
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     And I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
     When I swipe right the conversations list item <GroupChatName>
@@ -326,6 +337,7 @@ Feature: Conversation List
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     And I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
     When I swipe right the conversations list item <GroupChatName>
@@ -368,6 +380,7 @@ Feature: Conversation List
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     And I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
     When I swipe right the conversations list item <GroupChatName>
@@ -408,7 +421,8 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>
     Given I rotate UI to portrait
     Given I sign in using my email
-    And I see the conversations list with conversations
+    Given I accept First Time overlay as soon as it is visible
+    Given I see the conversations list with conversations
     When I swipe right the conversations list item <Contact1>
     Then I see Conversation Actions overlay
     When I select <SilenceItem> menu item on Conversation Actions overlay
@@ -424,7 +438,8 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>
     Given I rotate UI to landscape
     Given I sign in using my email
-    And I see the conversations list with conversations
+    Given I accept First Time overlay as soon as it is visible
+    Given I see the conversations list with conversations
     When I swipe right the conversations list item <Contact1>
     Then I see Conversation Actions overlay
     When I select <SilenceItem> menu item on Conversation Actions overlay
@@ -441,7 +456,8 @@ Feature: Conversation List
     Given <Contact1> is silenced to user <Name>
     Given I rotate UI to portrait
     Given I sign in using my email
-    And I see the conversations list with conversations
+    Given I accept First Time overlay as soon as it is visible
+    Given I see the conversations list with conversations
     And I see the conversation <Contact1> in my conversations list is silenced
     When I swipe right the conversations list item <Contact1>
     Then I see Conversation Actions overlay
@@ -459,7 +475,8 @@ Feature: Conversation List
     Given <Contact1> is silenced to user <Name>
     Given I rotate UI to landscape
     Given I sign in using my email
-    And I see the conversations list with conversations
+    Given I accept First Time overlay as soon as it is visible
+    Given I see the conversations list with conversations
     And I see the conversation <Contact1> in my conversations list is silenced
     When I swipe right the conversations list item <Contact1>
     Then I see Conversation Actions overlay
@@ -477,7 +494,8 @@ Feature: Conversation List
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to portrait
     Given I sign in using my email
-    And I see the conversations list with conversations
+    Given I accept First Time overlay as soon as it is visible
+    Given I see the conversations list with conversations
     When I swipe right the conversations list item <GroupChatName>
     Then I see Conversation Actions overlay
     When I select <SilenceItem> menu item on Conversation Actions overlay
@@ -494,7 +512,8 @@ Feature: Conversation List
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I sign in using my email
-    And I see the conversations list with conversations
+    Given I accept First Time overlay as soon as it is visible
+    Given I see the conversations list with conversations
     When I swipe right the conversations list item <GroupChatName>
     Then I see Conversation Actions overlay
     When I select <SilenceItem> menu item on Conversation Actions overlay
@@ -512,7 +531,8 @@ Feature: Conversation List
     Given Group <GroupChatName> gets silenced for user <Name>
     Given I rotate UI to portrait
     Given I sign in using my email
-    And I see the conversations list with conversations
+    Given I accept First Time overlay as soon as it is visible
+    Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list is silenced
     When I swipe right the conversations list item <GroupChatName>
     Then I see Conversation Actions overlay
@@ -531,7 +551,8 @@ Feature: Conversation List
     Given Group <GroupChatName> gets silenced for user <Name>
     Given I rotate UI to landscape
     Given I sign in using my email
-    And I see the conversations list with conversations
+    Given I accept First Time overlay as soon as it is visible
+    Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list is silenced
     When I swipe right the conversations list item <GroupChatName>
     Then I see Conversation Actions overlay

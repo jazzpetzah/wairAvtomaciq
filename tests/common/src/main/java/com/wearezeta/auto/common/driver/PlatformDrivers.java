@@ -1,7 +1,6 @@
 package com.wearezeta.auto.common.driver;
 
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.concurrent.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -19,7 +18,7 @@ public final class PlatformDrivers {
     private static final Logger log = ZetaLogger.getLog(PlatformDrivers.class
             .getSimpleName());
 
-    private Map<Platform, Future<? extends RemoteWebDriver>> drivers = new ConcurrentHashMap<Platform, Future<? extends RemoteWebDriver>>();
+    private Map<Platform, Future<? extends RemoteWebDriver>> drivers = new ConcurrentHashMap<>();
 
     private static PlatformDrivers instance = null;
 
@@ -35,17 +34,6 @@ public final class PlatformDrivers {
 
     public boolean hasDriver(Platform platform) {
         return this.drivers.containsKey(platform);
-    }
-
-    public Platform getDriverPlatform(Future<? extends RemoteWebDriver> drv) {
-        for (Map.Entry<Platform, Future<? extends RemoteWebDriver>> entry : this.drivers
-                .entrySet()) {
-            if (entry.getValue() == drv) {
-                return entry.getKey();
-            }
-        }
-        throw new NoSuchElementException(
-                "Platform is unknown for the passed driver element");
     }
 
     private final ExecutorService pool = Executors.newFixedThreadPool(Platform
@@ -105,25 +93,21 @@ public final class PlatformDrivers {
                 .getDriverTimeoutFromConfig(PlatformDrivers.class)));
     }
 
-    private static final long DRIVER_CANCELLATION_TIMEOUT = 30000; // milliseconds
+    private static final long DRIVER_CANCELLATION_TIMEOUT = 60; // seconds
 
     public synchronized void quitDriver(Platform platform) throws Exception {
         try {
             final Future<? extends RemoteWebDriver> futureDriver = drivers.get(platform);
-            if (futureDriver.isDone() && !futureDriver.isCancelled()) {
-                final RemoteWebDriver driver = futureDriver.get();
-                driver.quit();
-                log.debug(String.format(
-                        "Successfully quit driver instance for platform '%s'",
-                        platform.name()));
-            } else if (!futureDriver.isCancelled() && !futureDriver.isDone()) {
+            if (!futureDriver.isCancelled()) {
                 try {
-                    futureDriver.get(DRIVER_CANCELLATION_TIMEOUT, TimeUnit.MILLISECONDS);
+                    final RemoteWebDriver driver = futureDriver.get(DRIVER_CANCELLATION_TIMEOUT, TimeUnit.SECONDS);
+                    driver.quit();
+                    log.debug(String.format("Successfully quit driver instance for platform '%s'", platform.name()));
                 } catch (Exception e) {
                     e.printStackTrace();
+                    futureDriver.cancel(true);
+                    log.warn(String.format("Canceled driver creation for platform '%s'", platform.getName()));
                 }
-                futureDriver.cancel(true);
-                log.warn(String.format("Canceled driver creation for platform '%s'", platform.getName()));
             }
         } finally {
             drivers.remove(platform);

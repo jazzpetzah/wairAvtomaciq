@@ -21,8 +21,8 @@ Feature: Connect
     Then I see <UnconnectedUser> user pending profile popover on iPad
 
     Examples: 
-      | Name      | UnconnectedUser | ContactEmail | NumOfMessageChars | StartLetter | Color        |
-      | user1Name | user2Name       | user2Email   | 140               | T           | BrightOrange |
+      | Name      | UnconnectedUser | StartLetter | Color        |
+      | user1Name | user2Name       | T           | BrightOrange |
 
   @C2488 @regression @id3008
   Scenario Outline: Verify sending a connection request to user chosen from search [LANDSCAPE]
@@ -46,8 +46,8 @@ Feature: Connect
     Then I see <UnconnectedUser> user pending profile popover on iPad
 
     Examples: 
-      | Name      | UnconnectedUser | ContactEmail | NumOfMessageChars | StartLetter | Color        |
-      | user1Name | user2Name       | user2Email   | 140               | T           | BrightOrange |
+      | Name      | UnconnectedUser | StartLetter | Color        |
+      | user1Name | user2Name       | T           | BrightOrange |
 
   @C2486 @regression @rc @id2119
   Scenario Outline: Verify sending connection request after opening profile by clicking on the name and avatar [PORTRAIT]
@@ -100,7 +100,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail | Contact2  |
       | user1Name | user2Name | user2Email   | user3Name |
 
-  @C2483 @C2487 @regression @rc @id2354 @id2610
+  @C2483 @regression @rc @id2354 @id2610
   Scenario Outline: Send connection request to unconnected participant in a group chat [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <GroupCreator>
@@ -278,11 +278,11 @@ Feature: Connect
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    When Contact <Contact> sends image <Picture> to single user conversation <Name>
-    And Contact <Contact> ping conversation <Name>
-    And Contact <Contact> sends random message to user <Name>
-    And I wait for 10 seconds
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    Given User <Contact> securely pings conversation <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
+    When I wait for 10 seconds
     Then I dont see conversation <Contact> in contact list
     When I open search by taping on it
     And I see People picker page
@@ -293,13 +293,13 @@ Feature: Connect
     And I unblock user on iPad
     And I wait for 5 seconds
     And I see new photo in the dialog
-    And I see message in the dialog
+    And I see 1 default message in the dialog
     And I return to the chat list
     #And I see People picker page
     #And I click close button to dismiss people view
-    And Contact <Contact> sends random message to user <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact>
-    Then I see message in the dialog
+    Then I see 2 default messages in the dialog
 
     Examples: 
       | Name      | Contact   | Picture     |
@@ -312,11 +312,11 @@ Feature: Connect
     Given User <Name> blocks user <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    When Contact <Contact> sends image <Picture> to single user conversation <Name>
-    And Contact <Contact> ping conversation <Name>
-    And Contact <Contact> sends random message to user <Name>
-    And I wait for 10 seconds
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    Given User <Contact> securely pings conversation <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
+    When I wait for 10 seconds
     Then I dont see conversation <Contact> in contact list
     When I open search by taping on it
     And I see People picker page
@@ -327,11 +327,11 @@ Feature: Connect
     And I unblock user on iPad
     And I wait for 5 seconds
     And I see new photo in the dialog
-    And I see message in the dialog
+    And I see 1 default message in the dialog
     #And I click close button to dismiss people view
-    And Contact <Contact> sends random message to user <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact>
-    Then I see message in the dialog
+    Then I see 2 default messages in the dialog
 
     Examples: 
       | Name      | Contact   | Picture     |

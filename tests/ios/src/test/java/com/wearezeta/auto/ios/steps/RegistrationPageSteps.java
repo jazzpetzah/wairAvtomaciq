@@ -63,41 +63,6 @@ public class RegistrationPageSteps {
 				.isTakeOrSelectPhotoLabelVisible());
 	}
 
-	@When("^I press Camera button on Registration page$")
-	public void WhenIPressCameraButtonOnRegistrationPage() throws Exception {
-		getRegistrationPage().clickCameraButton();
-	}
-
-	@When("^I take photo by front camera$")
-	public void WhenITakePhotoByFrontCamera() throws Exception {
-		getRegistrationPage().takePhotoByFrontCamera();
-	}
-
-	@When("^I take photo by rear camera$")
-	public void WhenITakePhotoByRearCamera() throws Exception {
-		getRegistrationPage().takePhotoByRearCamera();
-		basePhoto = getRegistrationPage().takeScreenshot().orElseThrow(
-				AssertionError::new);
-		Thread.sleep(3000);
-	}
-
-	@When("^I See photo taken$")
-	public void ISeePhotoTaken() throws Exception {
-		Assert.assertTrue(getRegistrationPage().isPictureSelected());
-	}
-
-	/**
-	 * Verify Set picture page shown
-	 * 
-	 * @step. I see Set Picture page
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I see Set Picture page$")
-	public void ISeeSetPicturePage() throws Exception {
-		getRegistrationPage().isSetPicturePageVisible();
-	}
-
 	@When("^I press Picture button$")
 	public void WhenIPressPictureButton() throws Exception {
 		getRegistrationPage().selectPicture();
@@ -108,11 +73,6 @@ public class RegistrationPageSteps {
 		templateImage = getRegistrationPage().takeScreenshot().orElseThrow(
 				AssertionError::new);
 		Assert.assertTrue(getRegistrationPage().isPictureSelected());
-	}
-
-	@When("I reject selected picture$")
-	public void IRejectSelectedPicture() throws Exception {
-		getRegistrationPage().cancelImageSelection();
 	}
 
 	@When("^I confirm selection$")
@@ -129,46 +89,6 @@ public class RegistrationPageSteps {
 	public void IVerifyBackButton() throws Exception {
 		Assert.assertTrue("I don't see the back button", getRegistrationPage()
 				.isBackButtonVisible());
-	}
-
-	@When("I click Forward Button")
-	public void IClickForwardButton() throws Exception {
-		getRegistrationPage().tapForwardButton();
-	}
-
-	@When("I see Vignette overlay")
-	public void ISeeVignetteOverlay() throws Exception {
-		Assert.assertTrue(getRegistrationPage().isVignetteOverlayVisible());
-	}
-
-	@When("I click Vignette overlay")
-	public void IClickVignetteOverlay() throws Exception {
-		getRegistrationPage().clickVignetteLayer();
-	}
-
-	@When("I dismiss Vignette overlay")
-	public void IDismissVignetteOverlay() throws Exception {
-		getRegistrationPage().dismissVignetteBakground();
-	}
-
-	@When("I don't see Vignette overlay")
-	public void IDontSeeVignetteOverlay() throws Exception {
-		Assert.assertFalse(getRegistrationPage().isVignetteOverlayVisible());
-	}
-
-	@When("I see full color mode")
-	public void ISeeColorMode() throws Exception {
-		Assert.assertTrue(getRegistrationPage().isColorModeVisible());
-	}
-
-	@When("I click close full color mode button")
-	public void IClickCloseColorModeButton() throws Exception {
-		getRegistrationPage().tapCloseColorModeButton();
-	}
-
-	@When("I see Registration name input")
-	public void ISeeRegistrationNameInput() throws Exception {
-		Assert.assertTrue(getRegistrationPage().isNameLabelVisible());
 	}
 
 	/**
@@ -188,10 +108,9 @@ public class RegistrationPageSteps {
 		this.userToRegister.addNameAlias(name);
 
 		this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
-		String number = this.userToRegister.getPhoneNumber().toString();
-		number = number.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, "");
-		getRegistrationPage().selectCodeAndInputPhoneNumber(number,
-				PhoneNumber.WIRE_COUNTRY_PREFIX);
+        getRegistrationPage().selectWirestan();
+		getRegistrationPage().inputPhoneNumber(
+                this.userToRegister.getPhoneNumber().toString().replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""));
 	}
 
 	/**
@@ -206,10 +125,9 @@ public class RegistrationPageSteps {
 	@When("^I input phone number of already registered user (.*)$")
 	public void IInputPhoneNumberOfRegisteredUser(String name) throws Exception {
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
-		String number = user.getPhoneNumber().toString();
-		number = number.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, "");
-		getRegistrationPage().selectCodeAndInputPhoneNumber(number,
-				PhoneNumber.WIRE_COUNTRY_PREFIX);
+        getRegistrationPage().selectWirestan();
+        getRegistrationPage().inputPhoneNumber(
+                user.getPhoneNumber().toString().replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""));
 	}
 
 	/**
@@ -220,7 +138,7 @@ public class RegistrationPageSteps {
 	 * @throws Exception
 	 */
 	@When("^I enter random phone number$")
-	public void IEnterRandomePhoneNumber() throws Exception {
+	public void IEnterRandomPhoneNumber() throws Exception {
 		getRegistrationPage().inputPhoneNumber(
 				CommonUtils.generateRandomXdigits(7));
 	}
@@ -237,8 +155,11 @@ public class RegistrationPageSteps {
 	 */
 	@When("^I input phone number (.*) with code (.*)$")
 	public void IInputPhoneNumber(String number, String code) throws Exception {
-		getRegistrationPage().selectCodeAndInputPhoneNumber(number, code);
-	}
+        getRegistrationPage().selectWirestan();
+        assert code.equals(PhoneNumber.WIRE_COUNTRY_PREFIX) :
+                "Only Wire-compatible phone numbers are supported";
+        getRegistrationPage().inputPhoneNumber(number);
+    }
 
 	/**
 	 * Input in phone number field page an invalid phone number
@@ -274,18 +195,6 @@ public class RegistrationPageSteps {
 	@When("^I accept terms of service$")
 	public void IAcceptTermsOfService() throws Exception {
 		getRegistrationPage().clickAgreeButton();
-	}
-
-	/**
-	 * Verify Term Of Use page shown
-	 * 
-	 * @step. ^I see Term Of Use page$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I see Term Of Use page$")
-	public void ISeeTermOfUsePage() throws Exception {
-		Assert.assertTrue(getRegistrationPage().isTermOfUsePageVisible());
 	}
 
 	/**
@@ -401,29 +310,6 @@ public class RegistrationPageSteps {
 		}
 	}
 
-	/**
-	 * Step that should be used for iOS registration tests before starting
-	 * monitoring email
-	 * 
-	 * @step. ^My user email is (.*)$
-	 * 
-	 * @param email
-	 *            user email
-	 * @throws Exception
-	 */
-	@When("^My user email is (.*)$")
-	public void UserToRegisterEmailSettinTo(String email) throws Exception {
-		try {
-			String realEmail = usrMgr.findUserByEmailOrEmailAlias(email)
-					.getEmail();
-			this.userToRegister.setEmail(realEmail);
-		} catch (NoSuchUserException e) {
-			if (this.userToRegister == null) {
-				this.userToRegister = new ClientUser();
-			}
-		}
-	}
-
 	@When("^I input email (.*) and hit Enter$")
 	public void IInputEmailAndHitEnter(String email) throws Exception {
 		IEnterEmail(email);
@@ -446,11 +332,6 @@ public class RegistrationPageSteps {
 		getRegistrationPage().setEmail(
 				new StringBuilder(this.userToRegister.getEmail()).insert(
 						email.length() - 1, "          ").toString());
-	}
-
-	@When("^I enter an incorrect email (.*)$")
-	public void IEnterIncorrectEmail(String email) throws Exception {
-		getRegistrationPage().setEmail(email);
 	}
 
 	@When("I clear email input field on Registration page")
@@ -510,16 +391,6 @@ public class RegistrationPageSteps {
 		getRegistrationPage().clickCreateAccountButton();
 	}
 
-	@Then("Contact list loads with only my name (.*)")
-	public void ContactListLoadsWithOnlyMyName(String name) throws Throwable {
-		name = this.userToRegister.getName();
-		getContactListPage().waitForContactListToLoad();
-		Assert.assertTrue(
-				"My username is not displayed first",
-				getContactListPage().isMyUserNameDisplayedFirstInContactList(
-						name));
-	}
-
 	@Then("I see Create Account button disabled")
 	public void ISeeCreateAccountButtonDisabled() throws Exception {
 		Assert.assertFalse(getRegistrationPage().isCreateAccountEnabled());
@@ -546,20 +417,6 @@ public class RegistrationPageSteps {
 	@When("^I navigate back to welcome page")
 	public void INavigateToWelcomePage() throws Exception {
 		getRegistrationPage().navigateToWelcomePage();
-	}
-
-	@When("I input user data")
-	public void IInputUserData() throws Exception {
-		getRegistrationPage().typeInRegistrationData();
-	}
-
-	@When("^I submit registration data$")
-	public void ISubmitRegistrationData() throws Exception {
-		Map<String, String> expectedHeaders = new HashMap<String, String>();
-		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
-				expectedHeaders, BackendAPIWrappers.ACTIVATION_TIMEOUT);
-		getRegistrationPage().createAccount();
 	}
 
 	/**
@@ -629,41 +486,6 @@ public class RegistrationPageSteps {
 		Assert.assertFalse(getRegistrationPage().isNextButtonPresented());
 	}
 
-	@When("^I see selected image set as background$")
-	public void ISeeSelectedImageSetAsBackground() throws Throwable {
-		templateImage = getRegistrationPage().takeScreenshot().orElseThrow(
-				AssertionError::new);
-	}
-
-	@When("^I see photo set as background$")
-	public void ISeePhotoSetAsBackground() throws Throwable {
-		referenceImage = getRegistrationPage().takeScreenshot().orElseThrow(
-				AssertionError::new);
-	}
-
-	@Then("^I see photo is set as profile background$")
-	public void ISeePhotoSetAsProfileBackground() throws Throwable {
-		profileImage = getRegistrationPage().takeScreenshot().orElseThrow(
-				AssertionError::new);
-	}
-
-	@Then("I see photo image is correct")
-	public void ISeeProfileImageIsCorrect() {
-		double score = ImageUtil.getOverlapScore(referenceImage, profileImage);
-		Assert.assertTrue(
-				"Images do not look same. Expected score >= 0.75, current = "
-						+ score, score >= 0.75d);
-	}
-
-	@Then("I see background image is replaced")
-	public void ISeeBackgroundImageIsReplaced() {
-		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);
-		System.out.println("SCORE: " + score);
-		Assert.assertTrue(
-				"Images look same. Expected score <= 0.25, current = " + score,
-				score <= 0.25d);
-	}
-
 	/**
 	 * Verifies that the email verification reminder on the login page is
 	 * displayed
@@ -687,19 +509,6 @@ public class RegistrationPageSteps {
 	public void ISeeInvalidEmailAlert() throws Exception {
 		Assert.assertTrue("I don't see invalid code alert",
 				getRegistrationPage().isInvalidCodeAlertShown());
-	}
-
-	/**
-	 * Verifies that spaces in name field are trimmed
-	 * 
-	 * @step. ^I verify name input do not contains spaces$
-	 * 
-	 * @throws Exception
-	 */
-	@Then("^I verify name input do not contains spaces$")
-	public void IVerifyNameDoNotContainSpaces() throws Exception {
-		Assert.assertFalse("Username field contains spaces",
-				getRegistrationPage().userNameContainSpaces());
 	}
 
 	/**

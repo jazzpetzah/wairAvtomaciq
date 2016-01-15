@@ -8,11 +8,11 @@ Feature: Conversation View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I type the message
+    And I type the default message
     And I send the message
-    Then I see message in the dialog
+    Then I see 1 default message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -25,11 +25,11 @@ Feature: Conversation View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I type the message
+    And I type the default message
     And I send the message
-    Then I see message in the dialog
+    Then I see 1 default message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -38,13 +38,13 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    And Contact <Contact> send message to user <Name>
-    When I tap on contact name <Contact>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
+    And I tap on contact name <Contact>
     And I see dialog page
-    Then I see message in the dialog
+    Then I see 1 default message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -54,13 +54,13 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    And Contact <Contact> send message to user <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact>
     And I see dialog page
-    Then I see message in the dialog
+    Then I see 1 default message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -79,7 +79,7 @@ Feature: Conversation View
     And I press Confirm button on iPad popover
     Then I see new photo in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -99,7 +99,7 @@ Feature: Conversation View
     And I press Confirm button on iPad popover
     Then I see new photo in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -110,16 +110,16 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>
     Given User <Contact1> change accent color to <Color>
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact1>
-    And User <Contact1> Ping in chat <Name> by BackEnd
-    And I wait for 3 seconds
+    Given I see Contact list with my name <Name>
+    Given I tap on contact name <Contact1>
+    Given User <Contact1> securely pings conversation <Name>
+    When I wait for 3 seconds
     Then I see User <Contact1> Pinged message in the conversation
-    Then I see <Action1> icon in conversation
+    And I see <Action1> icon in conversation
 
-    Examples: 
-      | Name      | Contact1  | Action1 | Action2      | Color        | ContactName |
-      | user1Name | user2Name | PINGED  | PINGED AGAIN | BrightOrange | OtherUser   |
+    Examples:
+      | Name      | Contact1  | Action1 | Color        | ContactName |
+      | user1Name | user2Name | PINGED  | BrightOrange | OtherUser   |
 
   @C2642 @regression @id2429 @C3222
   Scenario Outline: Verify you can see Ping on the other side - 1:1 conversation [LANDSCAPE]
@@ -129,16 +129,16 @@ Feature: Conversation View
     Given User <Contact1> change accent color to <Color>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact1>
-    And User <Contact1> Ping in chat <Name> by BackEnd
-    And I wait for 3 seconds
+    Given I see Contact list with my name <Name>
+    Given I tap on contact name <Contact1>
+    Given User <Contact1> securely pings conversation <Name>
+    When I wait for 3 seconds
     Then I see User <Contact1> Pinged message in the conversation
-    Then I see <Action1> icon in conversation
+    And I see <Action1> icon in conversation
 
-    Examples: 
-      | Name      | Contact1  | Action1 | Action2      | Color        | ContactName |
-      | user1Name | user2Name | PINGED  | PINGED AGAIN | BrightOrange | OtherUser   |
+    Examples:
+      | Name      | Contact1  | Action1 | Color        | ContactName |
+      | user1Name | user2Name | PINGED  | BrightOrange | OtherUser   |
 
   @C2640 @regression @id2427 @C3223
   Scenario Outline: Verify you can see Ping on the other side - group conversation [PORTRAIT]
@@ -148,16 +148,16 @@ Feature: Conversation View
     Given User <Contact1> change accent color to <Color>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I tap on group chat with name <GroupChatName>
-    And User <Contact1> Ping in chat <GroupChatName> by BackEnd
-    And I wait for 3 seconds
+    Given I see Contact list with my name <Name>
+    Given I tap on group chat with name <GroupChatName>
+    Given User <Contact1> securely pings conversation <GroupChatName>
+    When I wait for 3 seconds
     Then I see User <Contact1> Pinged message in the conversation
-    Then I see <Action1> icon in conversation
+    And I see <Action1> icon in conversation
 
-    Examples: 
-      | Name      | Contact1  | Contact2  | Action1 | Action2      | GroupChatName        | Color        | ContactName |
-      | user1Name | user2Name | user3Name | PINGED  | PINGED AGAIN | ReceivePingGroupChat | BrightOrange | OtherUser   |
+    Examples:
+      | Name      | Contact1  | Contact2  | Action1 | GroupChatName        | Color        | ContactName |
+      | user1Name | user2Name | user3Name | PINGED  | ReceivePingGroupChat | BrightOrange | OtherUser   |
 
   @C2640 @regression @id2427 @C3224
   Scenario Outline: Verify you can see Ping on the other side - group conversation [LANDSCAPE]
@@ -168,29 +168,29 @@ Feature: Conversation View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I tap on group chat with name <GroupChatName>
-    And User <Contact1> Ping in chat <GroupChatName> by BackEnd
-    And I wait for 3 seconds
+    Given I see Contact list with my name <Name>
+    Given I tap on group chat with name <GroupChatName>
+    Given User <Contact1> securely pings conversation <GroupChatName>
+    When I wait for 3 seconds
     Then I see User <Contact1> Pinged message in the conversation
-    Then I see <Action1> icon in conversation
+    And I see <Action1> icon in conversation
 
-    Examples: 
-      | Name      | Contact1  | Contact2  | Action1 | Action2      | GroupChatName        | Color        | ContactName |
-      | user1Name | user2Name | user3Name | PINGED  | PINGED AGAIN | ReceivePingGroupChat | BrightOrange | OtherUser   |
+    Examples:
+      | Name      | Contact1  | Contact2  | Action1 | GroupChatName        | Color        | ContactName |
+      | user1Name | user2Name | user3Name | PINGED  | ReceivePingGroupChat | BrightOrange | OtherUser   |
 
   @C2627 @regression @id2669 @deployPictures
   Scenario Outline: Receive a camera roll picture from user from contact list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    And Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends encrypted image <Picture> to <ConversationType> conversation <Name>
     When I tap on contact name <Contact>
     And I see dialog page
     Then I see new photo in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Picture     | ConversationType |
       | user1Name | user2Name | testing.jpg | single user      |
 
@@ -200,15 +200,15 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    And Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
     And I see dialog page
     Then I see new photo in the dialog
 
-    Examples: 
-      | Name      | Contact   | Picture     | ConversationType |
-      | user1Name | user2Name | testing.jpg | single user      |
+    Examples:
+      | Name      | Contact   | Picture     |
+      | user1Name | user2Name | testing.jpg |
 
   @C2646 @regression @id2736
   Scenario Outline: Send Message to contact after navigating away from chat page [PORTRAIT]
@@ -219,15 +219,15 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I input more than 200 chars message and send it
-    And I fill in message using script
+    And I type the default message
     And I return to the chat list
     When I tap on my name <Name>
-	And I close self profile
+    And I close self profile
     And I tap on text input
     And I send the message
-    Then I see message in the dialog
+    Then I see 1 default message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -241,13 +241,13 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I input more than 200 chars message and send it
-    And I fill in message using script
-	When I tap on my name <Name>
-	And I close self profile
+    And I type the default message
+    When I tap on my name <Name>
+    And I close self profile
     And I send the message
-    Then I see message in the dialog
+    Then I see 1 message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -260,9 +260,9 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I input more than 200 chars message and send it
-    Then I see message in the dialog
+    Then I see 1 message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -276,9 +276,9 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I input more than 200 chars message and send it
-    Then I see message in the dialog
+    Then I see 1 message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -292,9 +292,9 @@ Feature: Conversation View
     And I see dialog page
     And I input message with lower case and upper case
     And I send the message
-    Then I see message in the dialog
+    Then I see 1 message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -309,9 +309,9 @@ Feature: Conversation View
     And I see dialog page
     And I input message with lower case and upper case
     And I send the message
-    Then I see message in the dialog
+    Then I see 1 message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -326,7 +326,7 @@ Feature: Conversation View
     And I send using script predefined message <Text>
     Then I see last message in dialog is expected message <Text>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Text                  |
       | user1Name | user2Name | ÄäÖöÜüß & latin chars |
 
@@ -342,7 +342,7 @@ Feature: Conversation View
     And I send using script predefined message <Text>
     Then I see last message in dialog is expected message <Text>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Text                  |
       | user1Name | user2Name | ÄäÖöÜüß & latin chars |
 
@@ -368,7 +368,7 @@ Feature: Conversation View
     And I send the message
     Then I see last message in dialog is expected message <Text>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact   | Text       |
       | user1Email | user1Password | user1Name | user2Name | TextToCopy |
 
@@ -395,7 +395,7 @@ Feature: Conversation View
     And I send the message
     Then I see last message in dialog is expected message <Text>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact   | Text       |
       | user1Email | user1Password | user1Name | user2Name | TextToCopy |
 
@@ -411,12 +411,12 @@ Feature: Conversation View
     And I see the only message in dialog is system message CONNECTED TO <Contact>
     And I input message with leading empty spaces
     And I send the message
-    And I see message in the dialog
+    And I see 1 message in the dialog
     And I input message with trailing emtpy spaces
     And I send the message
-    Then I see message in the dialog
+    Then I see 2 messages in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -433,12 +433,12 @@ Feature: Conversation View
     And I see the only message in dialog is system message CONNECTED TO <Contact>
     And I input message with leading empty spaces
     And I send the message
-    And I see message in the dialog
+    And I see 1 message in the dialog
     And I input message with trailing emtpy spaces
     And I send the message
-    Then I see message in the dialog
+    Then I see 2 messages in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -461,7 +461,7 @@ Feature: Conversation View
     And I stop media in media bar
     Then The media stops playing
 
-    Examples: 
+    Examples:
       | Name      | Contact   | YouTubeLink                                 |
       | user1Name | user2Name | https://www.youtube.com/watch?v=gywGBuMUiI4 |
 
@@ -469,10 +469,10 @@ Feature: Conversation View
   Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Name> sent long message to conversation <Contact>
-    Given User <Name> sent message <SoundCloudLink> to conversation <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends 40 encrypted messages to user <Contact>
+    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
     And I see dialog page
     And I scroll to the end of the conversation
@@ -482,7 +482,7 @@ Feature: Conversation View
     And I tap on the media bar
     Then I see conversation view is scrolled back to the playing media link <SoundCloudLink>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
@@ -490,10 +490,10 @@ Feature: Conversation View
   Scenario Outline: Verify the Media Bar dissapears after playback finishes - SoundCloud [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Name> sent long message to conversation <Contact>
-    Given User <Name> sent message <SoundCloudLink> to conversation <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends 40 encrypted messages to user <Contact>
+    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
     Then I see dialog page
     And I tap on text input to scroll to the end
@@ -504,7 +504,7 @@ Feature: Conversation View
     And I wait 150 seconds for media to stop playing
     Then I dont see media bar on dialog page
 
-    Examples: 
+    Examples:
       | Name      | Contact   | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
@@ -522,7 +522,7 @@ Feature: Conversation View
     And I send my sketch
     Then I see new photo in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -541,7 +541,7 @@ Feature: Conversation View
     And I send my sketch
     Then I see new photo in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -557,7 +557,7 @@ Feature: Conversation View
     And I click Ping button
     Then I see You Pinged message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -574,7 +574,7 @@ Feature: Conversation View
     And I click Ping button
     Then I see You Pinged message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -587,11 +587,11 @@ Feature: Conversation View
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
-    And I type the message
+    And I type the default message
     And I send the message
-    Then I see message in the dialog
+    Then I see 1 default message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | SimpleGroup   |
 
@@ -605,11 +605,11 @@ Feature: Conversation View
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
-    And I type the message
+    And I type the default message
     And I send the message
-    Then I see message in the dialog
+    Then I see 1 default message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | SimpleGroup   |
 
@@ -617,10 +617,10 @@ Feature: Conversation View
   Scenario Outline: Play/pause SoundCloud media link from the media bar [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Name> sent long message to conversation <Contact>
-    Given User <Name> sent message <SoundCloudLink> to conversation <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends 40 encrypted messages to user <Contact>
+    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input to scroll to the end
@@ -636,7 +636,7 @@ Feature: Conversation View
     And I stop media in media bar
     Then The media stops playing
 
-    Examples: 
+    Examples:
       | Name      | Contact   | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
@@ -644,11 +644,11 @@ Feature: Conversation View
   Scenario Outline: Play/pause SoundCloud media link from the media bar [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Name> sent long message to conversation <Contact>
-    Given User <Name> sent message <SoundCloudLink> to conversation <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends 40 encrypted messages to user <Contact>
+    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input to scroll to the end
@@ -663,7 +663,7 @@ Feature: Conversation View
     And I stop media in media bar
     Then The media stops playing
 
-    Examples: 
+    Examples:
       | Name      | Contact   | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
@@ -671,10 +671,10 @@ Feature: Conversation View
   Scenario Outline: Verify the Media Bar disappears when playing media is back in view - SoundCloud [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Name> sent long message to conversation <Contact1>
-    Given User <Name> sent message <SoundCloudLink> to conversation <Contact1>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends 40 encrypted messages to user <Contact>
+    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact1>
     And I see dialog page
     And I tap on text input to scroll to the end
@@ -684,7 +684,7 @@ Feature: Conversation View
     And I tap on text input to scroll to the end
     Then I dont see media bar on dialog page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
@@ -692,11 +692,11 @@ Feature: Conversation View
   Scenario Outline: Verify the Media Bar disappears when playing media is back in view - SoundCloud [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Name> sent long message to conversation <Contact1>
-    Given User <Name> sent message <SoundCloudLink> to conversation <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends 40 encrypted messages to user <Contact1>
+    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact1>
     When I tap on contact name <Contact1>
     And I see dialog page
     And I tap on text input to scroll to the end
@@ -706,6 +706,6 @@ Feature: Conversation View
     And I tap on text input to scroll to the end
     Then I dont see media bar on dialog page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |

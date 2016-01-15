@@ -6,6 +6,8 @@ import java.util.function.Function;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.*;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 public class SettingsPage extends AndroidPage {
 
@@ -16,6 +18,14 @@ public class SettingsPage extends AndroidPage {
 
     private static final Function<String, String> xpathConfirmBtnByName = name -> String
             .format("//*[starts-with(@id, 'button') and @value='%s']", name);
+
+    private static final String idPasswordConfirmationInput = "acet__remove_otr__password";
+    @FindBy(id = idPasswordConfirmationInput)
+    private WebElement confirmationPasswordInput;
+
+    private static final String xpathConfirmationInputOKButton = "//*[starts-with(@id, 'button') and @value='OK']";
+    @FindBy(xpath = xpathConfirmationInputOKButton)
+    private WebElement confirmationPasswordOKButton;
 
     public SettingsPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -45,15 +55,33 @@ public class SettingsPage extends AndroidPage {
         getDriver().findElement(locator).click();
     }
 
-    public boolean isMenuItemVisible(String name) throws Exception {
-        final By locator = By.xpath(xpathSettingsMenuItemByText.apply(name));
-        return scrollUntilMenuElementVisible(locator, 5);
-    }
-
     public void confirmLogout() throws Exception {
         final By locator = By.xpath(xpathConfirmBtnByName.apply("Log out"));
         assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) :
                 "Log out confirmation is not visible";
         getDriver().findElement(locator).click();
+    }
+
+    public boolean waitUntilPasswordConfirmationIsVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idPasswordConfirmationInput));
+    }
+
+    public void enterConfirmationPassword(String password) {
+        confirmationPasswordInput.click();
+        confirmationPasswordInput.sendKeys(password);
+    }
+
+    public void tapOKButtonOnPasswordConfirmationDialog() {
+        confirmationPasswordOKButton.click();
+    }
+
+    public boolean waitUntilMenuItemVisible(String name) throws Exception {
+        final By locator = By.xpath(xpathSettingsMenuItemByText.apply(name));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean waitUntilMenuItemInvisible(String name) throws Exception {
+        final By locator = By.xpath(xpathSettingsMenuItemByText.apply(name));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 }

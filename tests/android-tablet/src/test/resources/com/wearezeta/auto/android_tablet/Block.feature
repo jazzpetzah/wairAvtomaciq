@@ -9,6 +9,7 @@ Feature: Block
     Given I wait for 60 seconds
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given Contact <Contact> sends message "<Message>" to user Myself
     And I see the Conversations list with no conversations
     And I wait until <Contact> exists in backend search results
@@ -44,6 +45,7 @@ Feature: Block
     Given I wait for 60 seconds
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given Contact <Contact> sends message "<Message>" to user Myself
     And I see the Conversations list with no conversations
     And I wait until <Contact> exists in backend search results
@@ -79,6 +81,7 @@ Feature: Block
     Given I wait for 60 seconds
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     And I see the Conversations list with no conversations
     And I wait until <Contact> exists in backend search results
     When I tap Search input
@@ -105,6 +108,7 @@ Feature: Block
     Given I wait for 60 seconds
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     And I see the Conversations list with no conversations
     And I wait until <Contact> exists in backend search results
     When I tap Search input
@@ -127,13 +131,14 @@ Feature: Block
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given User Myself blocks user <Contact>
-    When Contact <Contact> sends image <Picture> to single user conversation <Name>
-    And Contact <Contact> sends message "<Message>" to user Myself
+    Given Contact <Contact> sends image <Picture> to single user conversation <Name>
+    Given Contact <Contact> sends message "<Message>" to user Myself
     # This is to sync blocked state on the backend
-    And I wait for 60 seconds
-    And I rotate UI to landscape
-    And I sign in using my email
-    Then I see the Conversations list with no conversations
+    Given I wait for 60 seconds
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
+    Given I see the Conversations list with no conversations
     When I tap Search input
     And I see People Picker page
     And I enter "<Contact>" into Search input on People Picker page

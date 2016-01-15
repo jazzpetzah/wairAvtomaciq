@@ -2,19 +2,16 @@
 #Configure before running tests
 iosAppiumUrl=${Url}
 iosApplicationPath=${appPath}
-platformVersion=${platformVersion}
 isSimulator=${isSimulator}
-swipeScriptPath=${Root}/${swipeScriptPath}
-pathToUserpic=${Root}/${pathToUserpic}
+platformVersion=${platformVersion}
+swipeScriptPathPrefix=${swipeScriptPathPrefix}
 driverTimeoutSeconds=${driverTimeoutSeconds}
 pictureResultsPath=${pictureResultsPath}
-iosImagesPath=${Root}/${iosImagesPath}
+iosImagesPath=${iosImagesPath}
 iosClientInfoPlist=${iosClientInfoPlist}
-iosAppiumLogPath=${iosAppiumLogPath}
 defaultEmail=${defaultEmail}
 deviceName=${deviceName}
 backendType=${backendType}
-pathToAddressBook=${Root}/${pathToAddressBook}
 rcNotificationsRecepients=${rcNotificationsRecepients}
 testrailUser=smoketester+ios@wire.com
 testrailToken=3ss3NdlIsbkVZ/qjARyZ-t42ldIdkAFdZzbPgC3o0

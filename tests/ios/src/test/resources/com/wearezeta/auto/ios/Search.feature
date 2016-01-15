@@ -15,7 +15,7 @@ Feature: Search
       | Name      | ContactEmail | ContactName |
       | user1Name | user2Email   | user2Name   |
 
-  @C1036 @C2784 @regression @rc @id2148 @id2543
+  @C1036 @regression @rc @id2148 @id2543
   Scenario Outline: Verify search by name
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -75,8 +75,6 @@ Feature: Search
   Scenario Outline: Start 1:1 chat with users from Top Connections
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
-    Given Contact <Contact> send message to user <Name>
-    Given Contact <Name> send message to user <Contact>
     Given I sign in using my email or phone number
     When I see Contact list with my name <Name>
     And I wait for 30 seconds
@@ -97,8 +95,6 @@ Feature: Search
   Scenario Outline: Start group chat with users from Top Connections
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
-    Given Contact <Contact> send message to user <Name>
-    Given Contact <Name> send message to user <Contact>
     Given I sign in using my email or phone number
     When I see Contact list with my name <Name>
     And I wait for 30 seconds
@@ -165,7 +161,7 @@ Feature: Search
       | Name      | UserCount | Contact   | Number |
       | user1Name | 7         | user2Name | 4      |
 
-  @C2778 @regression @id1456
+  @C3244 @regression @id1456
   Scenario Outline: Verify you can unblock someone from search list
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -180,9 +176,9 @@ Feature: Search
     And I see user <Contact> found on People picker page
     And I tap on connected user <Contact> on People picker page
     And I unblock user
-    And I type the message
+    And I type the default message
     And I send the message
-    Then I see message in the dialog
+    Then I see 1 default message in the dialog
 
     Examples: 
       | Name      | Contact   |
@@ -247,7 +243,7 @@ Feature: Search
       | Name      | Contact   | NewName  | LastName |
       | user1Name | user2Name | NEW NAME | NAME     |
 
-  @C1033 @C2782 @regression @rc @id2540 @id2118
+  @C1033 @regression @rc @id2540 @id2118
   Scenario Outline: Verify sending connection request from PYMK
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>

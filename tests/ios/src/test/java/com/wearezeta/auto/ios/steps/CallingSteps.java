@@ -179,18 +179,4 @@ public class CallingSteps {
 			throws Exception {
 		commonCallingSteps.acceptNextCall(splitAliases(callees));
 	}
-
-	/**
-	 * Close all waiting instances (and incoming calls) for the particular user
-	 *
-	 * @step. (.*) stops? all waiting instances$
-	 *
-	 * @param callee
-	 *            callee name/alias
-	 * @throws Exception
-	 */
-	@When("(.*) stops? all waiting instances$")
-	public void UserXStopsIncomingCalls(String callee) throws Exception {
-		commonCallingSteps.stopWaitingCall(callee);
-	}
 }

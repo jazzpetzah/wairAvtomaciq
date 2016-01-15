@@ -1,12 +1,13 @@
 package com.wearezeta.auto.ios.tools;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.util.Optional;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.google.common.base.Throwables;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
@@ -27,8 +28,6 @@ public class IOSSimulatorHelper {
 			+ "/Library/Application Support/iPhone Simulator/%s";
 
 	private static final String MEDIA_PATH_TEMPLATE = "%s/Media";
-	public static final String PHOTO_DATA_PATH_TEMPLATE = "%s/PhotoData";
-	public static final String PHOTOS_ROOT_TEMPLATE = "%s/DCIM/100APPLE";
 	public static final String SIMCTL = "/Applications/Xcode.app/Contents/Developer/usr/bin/simctl";
 
 	private static final Logger log = ZetaLogger
@@ -181,4 +180,24 @@ public class IOSSimulatorHelper {
 			}
 		}
 	}
+
+    private static String swipeScriptPathPrefix = "";
+    static {
+        try {
+            swipeScriptPathPrefix = CommonUtils
+                    .getSwipeScriptPathPrefix(IOSSimulatorHelper.class);
+        } catch (Exception e) {
+            Throwables.propagate(e);
+        }
+    }
+
+    public static void swipeDown() throws Exception {
+        Runtime.getRuntime().exec(
+                "/usr/bin/open -a Terminal " + swipeScriptPathPrefix + "Down.py");
+    }
+
+    public static void swipeRight() throws Exception {
+        Runtime.getRuntime().exec(
+                "/usr/bin/open -a Terminal " + swipeScriptPathPrefix + "Right.py");
+    }
 }

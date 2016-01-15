@@ -1,39 +1,39 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class ContactsUiPage extends IOSPage {
 
-	@FindBy(how = How.XPATH, using = IOSLocators.ContactsUIPage.xpathSearchInput)
+	private static final String xpathSearchInput = "//UIATextView[UIAStaticText[@name='SEARCH BY NAME']]";
+	@FindBy(xpath = xpathSearchInput)
 	private WebElement searchInput;
 
-	@FindBy(how = How.NAME, using = IOSLocators.ContactsUIPage.nameInviteOthersButton)
+	private static final String nameInviteOthersButton = "INVITE OTHERS";
+    @FindBy(name = nameInviteOthersButton)
 	private WebElement inviteOthersButton;
 
-	public ContactsUiPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+	private static final Function<String, String> xpathConvoCellByName = name ->
+            String.format("//UIATableCell[@name='%s'][preceding::UIAButton[@name='ContactsViewCloseButton']]", name);
+
+	private static final Function<String, String> xpathOpenButtonByConvoName = name ->
+            String.format("//UIATableCell[@name='%s']" +
+                    "[preceding::UIAButton[@name='ContactsViewCloseButton']]/UIAButton[@name='OPEN']", name);
+
+    public ContactsUiPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public boolean isSearchInputVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				searchInput);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathSearchInput));
 	}
 
 	private void tapSearchInput() {
@@ -48,13 +48,8 @@ public class ContactsUiPage extends IOSPage {
 
 	public boolean isContactPresentedInContactsList(String contact)
 			throws Exception {
-		boolean flag = DriverUtils
-				.waitUntilLocatorAppears(
-						getDriver(),
-						By.xpath(String
-								.format(IOSLocators.ContactsUIPage.xpathContactOnContactsUIList,
-										contact)), 5);
-		return flag;
+        final By locator = By.xpath(xpathConvoCellByName.apply(contact));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 5);
 	}
 
 	public void tapInviteOthersButton() throws Exception {
@@ -68,11 +63,7 @@ public class ContactsUiPage extends IOSPage {
 	}
 
 	public void clickOpenButtonNextToUser(String contact) throws Exception {
-		WebElement openButton = getDriver().findElement(
-				By.xpath(String.format(
-						IOSLocators.ContactsUIPage.xpathOpenButtonNextToUser,
-						contact)));
-		openButton.click();
-
+        final By locator = By.xpath(xpathOpenButtonByConvoName.apply(contact));
+		getDriver().findElement(locator).click();
 	}
 }

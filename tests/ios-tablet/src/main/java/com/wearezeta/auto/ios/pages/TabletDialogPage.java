@@ -5,18 +5,16 @@ import java.util.concurrent.Future;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class TabletDialogPage extends DialogPage {
-	
-	@FindBy(how = How.NAME, using = IOSLocators.nameAddPictureButton)
+	@FindBy(name = nameAddPictureButton)
 	private WebElement addPictureButton;
-	
-	@FindBy(how = How.NAME, using = IOSLocators.nameOpenConversationDetails)
+
+	public static final String nameOpenConversationDetails = "ComposeControllerConversationDetailButton";
+	@FindBy(name = nameOpenConversationDetails)
 	protected WebElement openConversationDetails;
 	
 	public TabletDialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -25,8 +23,7 @@ public class TabletDialogPage extends DialogPage {
 	
 	public CameraRollTabletPopoverPage pressAddPictureiPadButton() throws Exception {
 		addPictureButton.click();
-		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.name(IOSLocators.nameCameraLibraryButton));
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.name(nameCameraLibraryButton));
 		return new CameraRollTabletPopoverPage(this.getLazyDriver());
 	}
 	

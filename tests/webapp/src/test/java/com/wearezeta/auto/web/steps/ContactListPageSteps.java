@@ -412,11 +412,11 @@ public class ContactListPageSteps {
 			throws Exception {
 		if (shouldNotBeVisible == null) {
 			webappPagesCollection.getPage(ContactListPage.class)
-					.waitUntilArhiveButtonIsVisible(
+					.waitUntilArchiveButtonIsVisible(
 							ARCHIVE_BTN_VISILITY_TIMEOUT);
 		} else {
 			webappPagesCollection.getPage(ContactListPage.class)
-					.waitUntilArhiveButtonIsNotVisible(
+					.waitUntilArchiveButtonIsNotVisible(
 							ARCHIVE_BTN_VISILITY_TIMEOUT);
 		}
 	}

@@ -133,7 +133,7 @@ Feature: Sign In
     Then I see Skip for now button on add email address dialog
     When I click Skip for now button on add email address dialog
     Then I am signed in properly
-    And I see Self Picture Upload dialog
+    And I see Welcome page
 
     Examples: 
       | Name      |
@@ -154,7 +154,7 @@ Feature: Sign In
     And I verify that an envelope icon is shown
     When I click on Verify later button on Verification page
     Then I am signed in properly
-    And I see Self Picture Upload dialog
+    And I see Welcome page
 
     Examples: 
       | Name      | PasswordOfOtherUser |

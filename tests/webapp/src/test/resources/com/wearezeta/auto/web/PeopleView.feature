@@ -59,7 +59,7 @@ Feature: People View
     And I click Remove button on Group Participants popover
     And I confirm remove from group chat on Group Participants popover
     And I open conversation with <ChatName>
-    Then I see <Message> action in conversation
+    Then I see <Message> action for <Contact1> in conversation
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       | Message     |
@@ -319,7 +319,7 @@ Feature: People View
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName     | ChatNameEdit   | Message                  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | BaseChatName | EditedCahtName | RENAMED THE CONVERSATION |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | BaseChatName | EditedChatName | RENAMED THE CONVERSATION |
 
   @C1714 @regression
   Scenario Outline: Verify the new conversation is created on the other end from 1to1
@@ -348,7 +348,7 @@ Feature: People View
     And I see my avatar on top of Contact list
     And I see Contact list with name <Name>,<Contact2>
     And I open conversation with <Name>,<Contact2>
-    And I see user <Name> action <Message2> for <Contact2>,<Contact1> in conversation
+    And I see <Message2> action for <Name>,<Contact2>,You in conversation
     And I open self profile
       And I click gear button on self profile page
       And I select Log out menu item on self profile page
@@ -357,7 +357,7 @@ Feature: People View
     And I Sign in using login <Contact2> and password <Password>
     And I see my avatar on top of Contact list
     And I see Contact list with name <Name>,<Contact1>
-    And I see user <Name> action <Message2> for <Contact2>,<Contact1> in conversation
+    And I see <Message2> action for <Name>,<Contact1>,You in conversation
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Message                         | Message2                    |

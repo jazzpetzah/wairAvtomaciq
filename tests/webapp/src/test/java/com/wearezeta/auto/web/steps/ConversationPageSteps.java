@@ -69,6 +69,30 @@ public class ConversationPageSteps {
 	}
 
 	/**
+	 * Verify that the input text field contains random message
+	 *
+	 */
+	@Then("^I verify that random message was typed$")
+	public void IVerifyThatRandomMessageWasTyped() throws Exception {
+		assertThat("Random message in input field", webappPagesCollection
+				.getPage(ConversationPage.class).getMessageFromInputField(),
+				equalTo(randomMessage));
+	}
+
+	/**
+	 * Verify that the input text field contains message X
+	 *
+	 * @param message
+	 *            the message it should contain
+	 */
+	@Then("^I verify that message \"(.*)\" was typed$")
+	public void IVerifyThatMessageWasTyped(String message) throws Exception {
+		assertThat("Message in input field",
+				webappPagesCollection.getPage(ConversationPage.class)
+						.getMessageFromInputField(), equalTo(message));
+	}
+
+	/**
 	 * Types text message to opened conversation, but does not send it
 	 *
 	 * @step. ^I write message (.*)$
@@ -274,8 +298,8 @@ public class ConversationPageSteps {
 	public void ThenISeeActionInConversation(String doNot, String message)
 			throws Exception {
 		if (doNot == null) {
-			Assert.assertTrue(webappPagesCollection.getPage(
-					ConversationPage.class).isActionMessageSent(message));
+			webappPagesCollection.getPage(
+					ConversationPage.class).waitForMessageHeaderContains(message);
 		} else {
 			Assert.assertTrue(webappPagesCollection.getPage(
 					ConversationPage.class).isActionMessageNotSent(message));
@@ -293,6 +317,28 @@ public class ConversationPageSteps {
 	public void ThenISeeCorrectPeopleButtonToolTip() throws Exception {
 		Assert.assertTrue(webappPagesCollection.getPage(ConversationPage.class)
 				.isPeopleButtonToolTipCorrect());
+	}
+
+	@Then("^I see connecting message for (.*) in conversation$")
+	public void ISeeConnectingMessage(String contact) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		assertThat("User name",
+				webappPagesCollection.getPage(ConversationPage.class)
+						.getConnectedMessageUser(), equalTo(contact));
+		assertThat("Label",
+				webappPagesCollection.getPage(ConversationPage.class)
+						.getConnectedMessageLabel(), equalTo("CONNECTING"));
+	}
+
+	@Then("^I see connected message for (.*) in conversation$")
+	public void ISeeConnectedMessage(String contact) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		assertThat("User name",
+				webappPagesCollection.getPage(ConversationPage.class)
+						.getConnectedMessageUser(), equalTo(contact));
+		assertThat("Label",
+				webappPagesCollection.getPage(ConversationPage.class)
+						.getConnectedMessageLabel(), equalTo("CONNECTED"));
 	}
 
 	/**
@@ -318,51 +364,15 @@ public class ConversationPageSteps {
 		parts.add(message);
 		parts.addAll(CommonSteps.splitAliases(contacts));
 		if (doNot == null) {
-			assertThat("Check action",
-					webappPagesCollection.getPage(ConversationPage.class)
-							.getLastActionMessage(), containsString(message));
+			webappPagesCollection.getPage(ConversationPage.class)
+					.waitForMessageHeaderContains(parts);
 		} else {
+			// TODO: replace this check with a nicer one
 			assertThat("Check action",
 					webappPagesCollection.getPage(ConversationPage.class)
 							.getLastActionMessage(),
 					not(containsString(message)));
 		}
-	}
-
-	/**
-	 * Checks action message (e.g. you left, etc.) appear in conversation
-	 *
-	 * @step. ^I see (.*) user (.*) action for (.*) in conversation
-	 *
-	 * @throws AssertionError
-	 *             if action message did not appear in conversation
-	 *
-	 * @param message
-	 *            message string
-	 *
-	 * @param user1
-	 *            user who did action string
-	 *
-	 * @param contacts
-	 *            user(s) who was actioned string
-	 *
-	 * @throws Exception
-	 *
-	 */
-	@Then("^I see user (.*) action (.*) for (.*) in conversation$")
-	public void ThenISeeUserActionForContactInConversation(String user1,
-			String message, String contacts) throws Exception {
-		user1 = usrMgr.replaceAliasesOccurences(user1, FindBy.NAME_ALIAS);
-		contacts = usrMgr.replaceAliasesOccurences(contacts, FindBy.NAME_ALIAS);
-		if (contacts.contains(usrMgr.getSelfUserOrThrowError().getName())) {
-			contacts = contacts.replace(usrMgr.getSelfUser().getName(), "you");
-		}
-		Set<String> parts = new HashSet<String>();
-		parts.add(message);
-		parts.add(user1);
-		parts.addAll(CommonSteps.splitAliases(contacts));
-		Assert.assertTrue(webappPagesCollection.getPage(ConversationPage.class)
-				.isActionMessageSent(parts));
 	}
 
 	/**
@@ -393,20 +403,6 @@ public class ConversationPageSteps {
 	@When("^I click ping button$")
 	public void IClickPingButton() throws Exception {
 		webappPagesCollection.getPage(ConversationPage.class).clickPingButton();
-	}
-
-	/**
-	 * Verify ping (or ping again) message is visible in conversation
-	 *
-	 * @step. ^I see ping message (.*)$
-	 * @param message
-	 *            pinged/pinged again
-	 * @throws Exception
-	 */
-	@When("^I see ping message (.*)$")
-	public void ISeePingMessage(String message) throws Exception {
-		Assert.assertTrue(webappPagesCollection.getPage(ConversationPage.class)
-				.isPingMessageVisible(message));
 	}
 
 	/**
@@ -654,26 +650,6 @@ public class ConversationPageSteps {
 	public void IEndTheCall() throws Exception {
 		webappPagesCollection.getPage(ConversationPage.class)
 				.clickEndCallButton();
-	}
-
-	/**
-	 * Verify that conversation contains missed call from contact
-	 *
-	 * @step. ^I see conversation with missed call from (.*)$
-	 *
-	 * @param contact
-	 *            contact name string
-	 *
-	 * @throws Exception
-	 */
-	@Then("^I see conversation with missed call from (.*)$")
-	public void ThenISeeConversationWithMissedCallFrom(String contact)
-			throws Exception {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName()
-				.toUpperCase();
-		Assert.assertEquals(contact + " CALLED",
-				webappPagesCollection.getPage(ConversationPage.class)
-						.getMissedCallMessage());
 	}
 
 	/**

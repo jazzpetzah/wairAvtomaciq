@@ -1,7 +1,5 @@
 package com.wearezeta.auto.common.driver;
 
-import com.wearezeta.auto.common.log.ZetaLogger;
-
 import java.net.URL;
 import java.util.List;
 
@@ -11,12 +9,12 @@ import org.openqa.selenium.WebElement;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import java.util.stream.Collectors;
 
-import org.apache.log4j.Logger;
 import org.openqa.selenium.Beta;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.OutputType;
@@ -26,58 +24,24 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.RemoteWebElement;
 
 public class ZetaWinDriver extends AppiumDriver<WebElement> implements ZetaDriver {
-
-    @SuppressWarnings("unused")
-    private static final Logger LOG = ZetaLogger.getLog(ZetaWinDriver.class
-            .getName());
-
     private static final String APP_NAME = "Wire";
-    private final SessionHelper sessionHelper;
 
     public ZetaWinDriver(URL remoteAddress, Capabilities desiredCapabilities) {
         super(remoteAddress, desiredCapabilities);
-        sessionHelper = new SessionHelper(this);
     }
 
     @Override
     public List<WebElement> findElements(By by) {
-        return this.sessionHelper.wrappedFindElements(
-                this::wrappedFindElements, by);
+        return super.findElements(by).stream().map(e -> wrapElement(e)).collect(Collectors.toList());
     }
 
     @Override
     public WebElement findElement(By by) {
-        return this.sessionHelper.wrappedFindElement(this::wrappedFindElement,
-                by);
-    }
-
-    protected List<WebElement> wrappedFindElements(By by) {
-        return super.findElements(by).stream().map(e -> {
-            return this.wrapElement(e);
-        }).collect(Collectors.toList());
-    }
-
-    protected WebElement wrappedFindElement(By by) {
         return wrapElement(super.findElement(by));
     }
 
     private WireRemoteWebElement wrapElement(WebElement element) {
         return new WireRemoteWebElement(element);
-    }
-
-    @Override
-    public void close() {
-        this.sessionHelper.wrappedClose(super::close);
-    }
-
-    @Override
-    public void quit() {
-        this.sessionHelper.wrappedQuit(super::quit);
-    }
-
-    @Override
-    public boolean isSessionLost() {
-        return this.sessionHelper.isSessionLost();
     }
 
     @Override
@@ -93,6 +57,11 @@ public class ZetaWinDriver extends AppiumDriver<WebElement> implements ZetaDrive
     @Override
     public MobileElement scrollToExact(String text) {
         throw new RuntimeException("Not implemented for OSX");
+    }
+
+    @Override
+    public boolean isSessionLost() {
+        return false;
     }
 
     protected class WireRemoteWebElement extends RemoteWebElement {
@@ -308,6 +277,6 @@ public class ZetaWinDriver extends AppiumDriver<WebElement> implements ZetaDrive
         public int getHeight() {
             return height;
         }
-        
+
     }
 }

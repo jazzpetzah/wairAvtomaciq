@@ -2,132 +2,93 @@ package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
-import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class StartedCallPage extends CallPage {
 
-	private static final Logger log = ZetaLogger.getLog(StartedCallPage.class
-			.getSimpleName());
+    private static final double MIN_ACCEPTABLE_SCORE = 0.9;
 
-	private final double MIN_ACCEPTABLE_SCORE = 0.9;
+    private static final String xpathCallingMessage =
+            "//UIAStaticText[contains(@name, 'CallStatusLabel') and @visible='true']";
+    @FindBy(xpath = xpathCallingMessage)
+    private WebElement callingMessage;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.StartedCallPage.xpathCallingMessage)
-	private WebElement callingMessage;
+    private static final String nameEndCallButton = "LeaveCallButton";
+    @FindBy(name = nameEndCallButton)
+    private WebElement endCallButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.StartedCallPage.nameEndCallButton)
-	private WebElement endCallButton;
+    private static final String nameSpeakersButton = "CallSpeakerButton";
+    @FindBy(name = nameSpeakersButton)
+    private WebElement speakersButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.StartedCallPage.nameSpeakersButton)
-	private WebElement speakersButton;
+    private static final String nameMuteCallButton = "CallMuteButton";
+    @FindBy(name = nameMuteCallButton)
+    private WebElement muteCallButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.StartedCallPage.nameMuteCallButton)
-	private WebElement muteCallButton;
+    private static final String nameCallingMessageUser = "CallStatusLabel";
+    @FindBy(name = nameCallingMessageUser)
+    private WebElement callingMessageUser;
 
-	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameCallingMessageUser)
-	private WebElement callingMessageUser;
+    private static final Function<String, String> xpathStartedCallMessageUserByName = name ->
+            String.format("//UIAStaticText[@name='%s']", name);
 
-	public boolean isCallingMessageVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(IOSLocators.StartedCallPage.xpathCallingMessage));
-	}
+    public boolean isCallingMessageVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(xpathCallingMessage));
+    }
 
-	public boolean waitCallingMessageDisappear() throws Exception {
-		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.xpath(IOSLocators.StartedCallPage.xpathCallingMessage));
-	}
+    public boolean waitCallingMessageDisappear() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+                By.xpath(xpathCallingMessage));
+    }
 
-	public boolean isIncomingCallMessageVisible(String contact)
-			throws Exception {
-		return getDriver().findElementByXPath(
-				String.format(
-						IOSLocators.StartedCallPage.xpathCallingMessageUser,
-						contact)).isDisplayed();
-	}
+    public boolean isStartedCallMessageVisible(String contact) throws Exception {
+        final By locator = By.xpath(xpathStartedCallMessageUserByName.apply(contact));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
 
-	public boolean isStartedCallMessageVisible(String contact) throws Exception {
-		return getDriver()
-				.findElementByXPath(
-						String.format(
-								IOSLocators.StartedCallPage.xpathStartedCallMessageUser,
-								contact)).isDisplayed();
-	}
+    public StartedCallPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+        super(lazyDriver);
+    }
 
-	public StartedCallPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
-		super(lazyDriver);
-	}
+    public boolean isEndCallVisible() throws Exception {
+        DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(nameEndCallButton));
+        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+                endCallButton);
+    }
 
-	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public boolean isSpeakersVisible() throws Exception {
+        DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(nameSpeakersButton));
+        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+                speakersButton);
+    }
 
-	public boolean isEndCallVisible() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.name(IOSLocators.StartedCallPage.nameEndCallButton));
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				endCallButton);
-	}
+    public boolean isMuteCallVisible() throws Exception {
+        DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(nameMuteCallButton));
+        return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+                muteCallButton);
+    }
 
-	public boolean isSpeakersVisible() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.name(IOSLocators.StartedCallPage.nameSpeakersButton));
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				speakersButton);
-	}
+    public void clickEndCallButton() {
+        endCallButton.click();
+    }
 
-	public boolean isMuteCallVisible() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.name(IOSLocators.StartedCallPage.nameMuteCallButton));
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				muteCallButton);
-	}
+    public boolean isMuteCallButtonSelected() throws Exception {
+        BufferedImage muteCallButtonIcon = getElementScreenshot(muteCallButton).orElseThrow(
+                IllegalStateException::new);
+        BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
+                + "selectedMuteCallButton.png");
 
-	public void clickEndCallButton() {
-		endCallButton.click();
-	}
-
-	public boolean isMuteCallButtonSelected() throws IllegalStateException,
-			Exception {
-		BufferedImage muteCallButtonIcon = null;
-		BufferedImage referenceImage = null;
-		double score = 0;
-
-		muteCallButtonIcon = getElementScreenshot(muteCallButton).orElseThrow(
-				IllegalStateException::new);
-
-		referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
-				+ "selectedMuteCallButton.png");
-
-		score = ImageUtil.getOverlapScore(referenceImage, muteCallButtonIcon,
-				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-
-		if (score <= MIN_ACCEPTABLE_SCORE) {
-			log.debug("Overlap Score is " + score
-					+ ". And minimal expected is " + MIN_ACCEPTABLE_SCORE);
-			return false;
-		}
-
-		return true;
-	}
-
-	public boolean isCallingGroupMessageVisible(String group) throws Exception {
-		return getDriver().findElementByXPath(
-				String.format(
-						IOSLocators.StartedCallPage.xpathCallingMessageUser,
-						group.toUpperCase())).isDisplayed();
-	}
-
+        double score = ImageUtil.getOverlapScore(referenceImage, muteCallButtonIcon,
+                ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+        return score > MIN_ACCEPTABLE_SCORE;
+    }
 }

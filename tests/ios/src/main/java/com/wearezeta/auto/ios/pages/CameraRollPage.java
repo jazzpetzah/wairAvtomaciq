@@ -8,31 +8,37 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class CameraRollPage extends IOSPage {
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameCameraLibraryButton)
+    private static final String nameCameraLibraryButton = "cameraLibraryButton";
+	@FindBy(name = nameCameraLibraryButton)
 	private WebElement cameraLibraryButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameCameraRollCancel)
+    private static final String nameCameraRollCancel = "Cancel";
+    @FindBy(name = nameCameraRollCancel)
 	private WebElement cameraRollCancel;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.CameraRollPage.xpathCameraLibraryFirstFolder)
+    private static final String xpathCameraLibraryFirstFolder = "//UIATableCell[@name='Moments']";
+    @FindBy(xpath = xpathCameraLibraryFirstFolder)
 	private WebElement cameraLibraryFirstFolder;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathLibraryFirstPicture)
+    private static final String xpathLibraryFirstPicture =
+			xpathMainWindow + "/UIACollectionView/UIACollectionCell[1]";
+    @FindBy(xpath = xpathLibraryFirstPicture)
 	private WebElement libraryFirstPicture;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.CameraRollPage.xpathLibraryLastPicture)
+    private static final String xpathLibraryLastPicture = "//UIACollectionView/UIACollectionCell[last()]";
+    @FindBy(xpath = xpathLibraryLastPicture)
 	private WebElement libraryLastPicture;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.CameraRollPage.xpathConfirmPictureButton)
+    private static final String xpathConfirmPictureButton = "//UIAButton[@name='OK' and @visible='true']";
+    @FindBy(xpath = xpathConfirmPictureButton)
 	private WebElement confirmPictureButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameCameraRollSketchButton)
+    private static final String nameCameraRollSketchButton = "editNotConfirmedImageButton";
+    @FindBy(name = nameCameraRollSketchButton)
 	private WebElement cameraRollSketchButton;
 
 	public CameraRollPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -41,7 +47,7 @@ public class CameraRollPage extends IOSPage {
 
 	public void pressSelectFromLibraryButton() throws Exception {
 		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.name(IOSLocators.nameCameraLibraryButton));
+				By.name(nameCameraLibraryButton));
 		cameraLibraryButton.click();
 	}
 
@@ -49,7 +55,7 @@ public class CameraRollPage extends IOSPage {
 		try {
 			clickFirstLibraryFolder();
 		} catch (NoSuchElementException ex) {
-
+			// Ignore silently
 		}
 
 		clickFirstImage();
@@ -63,13 +69,13 @@ public class CameraRollPage extends IOSPage {
 
 	public void clickFirstImage() throws Exception {
 		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(IOSLocators.xpathLibraryFirstPicture));
+				By.xpath(xpathLibraryFirstPicture));
 		libraryFirstPicture.click();
 	}
 
 	public void clickLastImage() throws Exception {
 		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(IOSLocators.CameraRollPage.xpathLibraryLastPicture));
+				By.xpath(xpathLibraryLastPicture));
 		libraryLastPicture.click();
 	}
 
@@ -77,28 +83,6 @@ public class CameraRollPage extends IOSPage {
 		DriverUtils
 				.waitUntilElementClickable(getDriver(), confirmPictureButton);
 		confirmPictureButton.click();
-	}
-
-	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
-		IOSPage page = null;
-		switch (direction) {
-		case DOWN: {
-			break;
-		}
-		case UP: {
-			break;
-		}
-		case LEFT: {
-			page = new OtherUserPersonalInfoPage(this.getLazyDriver());
-			break;
-		}
-		case RIGHT: {
-			page = new ContactListPage(this.getLazyDriver());
-			break;
-		}
-		}
-		return page;
 	}
 
 	public void clickCameraRollSketchButton() {

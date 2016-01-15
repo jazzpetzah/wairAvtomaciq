@@ -335,8 +335,8 @@ public class ConversationPageSteps {
 	 */
 	@When("^I see ping message (.*)$")
 	public void ISeePingMessage(String message) throws Exception {
-		Assert.assertTrue(WebappPagesCollection.getInstance()
-				.getPage(ConversationPage.class).isPingMessageVisible(message));
+		WebappPagesCollection.getInstance().getPage(ConversationPage.class)
+				.waitForMessageHeaderContains(message);
 	}
 
 	/**

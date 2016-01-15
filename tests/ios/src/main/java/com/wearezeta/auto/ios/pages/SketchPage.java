@@ -5,28 +5,18 @@ import java.util.concurrent.Future;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.ios.locators.IOSLocators;
-
 
 public class SketchPage extends IOSPage{
-	
-	@FindBy(how = How.NAME, using = IOSLocators.SketchPageElements.nameSketchSendButton)
+	private static final String nameSketchSendButton = "SketchConfirmButton";
+	@FindBy(name = nameSketchSendButton)
 	private WebElement sendSketchButton;
 
 	public SketchPage(Future<ZetaIOSDriver> driver) throws Exception {
 		super(driver);
 		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	public void sketchRandomLines() throws Exception {

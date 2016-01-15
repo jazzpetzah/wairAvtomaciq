@@ -5,18 +5,17 @@ import java.util.concurrent.Future;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.ios.tablet.locators.IOSTabletLocators;
 
 public class TabletPendingUserPopoverPage extends OtherUserOnPendingProfilePage {
-
-	@FindBy(how = How.XPATH, using = IOSTabletLocators.TabletPendingUserPopoverPage.xpathUserName)
+	public static final String xpathUserName = "//UIAPopover/UIAStaticText[contains(@name, '%s')]";
+	@FindBy(xpath = xpathUserName)
 	private WebElement userName;
 
-	@FindBy(how = How.XPATH, using = IOSTabletLocators.TabletPendingUserPopoverPage.xpathConnectButton)
+    public static final String xpathConnectButton = "//UIAPopover/*[@name='CONNECT' and @visible='true']";
+    @FindBy(xpath = xpathConnectButton)
 	private WebElement connectButton;
 
 	public TabletPendingUserPopoverPage(Future<ZetaIOSDriver> lazyDriver)
@@ -26,11 +25,8 @@ public class TabletPendingUserPopoverPage extends OtherUserOnPendingProfilePage 
 	}
 
 	public boolean isUserNameDisplayed(String name) throws Exception {
-		String formatXpath = String.format(
-				IOSTabletLocators.TabletPendingUserPopoverPage.xpathUserName,
-				name);
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(formatXpath), 2);
+		String formatXpath = String.format(xpathUserName, name);
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.xpath(formatXpath), 2);
 	}
 
 	public boolean isConnectButtonDisplayed() throws Exception {

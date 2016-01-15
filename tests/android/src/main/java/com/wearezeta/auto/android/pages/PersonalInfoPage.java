@@ -91,7 +91,7 @@ public class PersonalInfoPage extends AndroidPage {
     }
 
     public void tapOnPage() throws Exception {
-        DriverUtils.androidMultiTap(this.getDriver(), page, 1, 500);
+        this.getDriver().tap(1, page, 500);
     }
 
     public void tapChangePhotoButton() throws Exception {

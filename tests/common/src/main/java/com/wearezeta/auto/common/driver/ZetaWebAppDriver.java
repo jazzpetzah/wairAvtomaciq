@@ -28,7 +28,6 @@ public class ZetaWebAppDriver extends RemoteWebDriver implements ZetaDriver {
 			.getSimpleName());
 
 	private String nodeIp = "127.0.0.1";
-	private SessionHelper sessionHelper;
 
 	public ZetaWebAppDriver(URL remoteAddress, Capabilities desiredCapabilities) {
 		super(remoteAddress, desiredCapabilities);
@@ -45,32 +44,11 @@ public class ZetaWebAppDriver extends RemoteWebDriver implements ZetaDriver {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		sessionHelper = new SessionHelper(this);
-	}
-
-	@Override
-	public List<WebElement> findElements(By by) {
-		return this.sessionHelper.wrappedFindElements(super::findElements, by);
-	}
-
-	@Override
-	public WebElement findElement(By by) {
-		return this.sessionHelper.wrappedFindElement(super::findElement, by);
-	}
-
-	@Override
-	public void close() {
-		this.sessionHelper.wrappedClose(super::close);
-	}
-
-	@Override
-	public void quit() {
-		this.sessionHelper.wrappedQuit(super::quit);
 	}
 
 	@Override
 	public boolean isSessionLost() {
-		return this.sessionHelper.isSessionLost();
+		return false;
 	}
 
 	private String initNodeIp(URL remoteAddress) throws Exception {

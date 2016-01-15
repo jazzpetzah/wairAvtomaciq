@@ -14,15 +14,16 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import cucumber.api.PendingException;
+import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -41,6 +42,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
@@ -55,7 +57,7 @@ public class CommonAndroidSteps {
 
     private static final Logger log = ZetaLogger.getLog(CommonAndroidSteps.class.getSimpleName());
 
-    private static ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
+    private static ArrayList<BufferedImage> images = new ArrayList<>();
     private final CommonSteps commonSteps = CommonSteps.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     public static final Platform CURRENT_PLATFORM = Platform.Android;
@@ -161,39 +163,40 @@ public class CommonAndroidSteps {
         // closeUpdateAlertIfAppears(drv, locator);
     }
 
-    private void initFirstPage() throws Exception {
+    @Before
+    public void setUp(Scenario scenario) throws Exception {
+        if (scenario.getSourceTagNames().contains("@performance")) {
+            AndroidLogListener.getInstance(ListenerType.PERF).start();
+        }
         AndroidLogListener.getInstance(ListenerType.DEFAULT).start();
         final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), getPath(), this.getClass());
-        pagesCollection.setFirstPage(new WelcomePage(lazyDriver));
         ZetaFormatter.setLazyDriver(lazyDriver);
-    }
-
-    @Before("@performance")
-    public void setUpPerformance() throws Exception {
-        AndroidLogListener.getInstance(ListenerType.PERF).start();
-        try {
-            AndroidCommonUtils.disableHints();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        initFirstPage();
-    }
-
-    @Before("~@performance")
-    public void setUp() throws Exception {
-        initFirstPage();
+        pagesCollection.setFirstPage(new WelcomePage(lazyDriver));
     }
 
     /**
      * Presses the android back button
      *
-     * @throws IOException
-     * @step. ^I press back button$
+     * @throws Exception
+     * @step. ^I press [Bb]ack button$
      */
-    @When("^I press back button$")
+    @When("^I press [Bb]ack button$")
     public void PressBackButton() throws Exception {
-        commonSteps.WaitForTime(1);
         pagesCollection.getCommonPage().navigateBack();
+    }
+
+    /**
+     * Presses the android back button X times
+     *
+     * @param times how many times to press
+     * @throws Exception
+     * @step. ^I press [Bb]ack button (\\d+) times$
+     */
+    @When("^I press [Bb]ack button (\\d+) times$")
+    public void PressBackButtonXTimes(int times) throws Exception {
+        for (int i = 0; i < times; i++) {
+            pagesCollection.getCommonPage().navigateBack();
+        }
     }
 
     /**
@@ -226,13 +229,13 @@ public class CommonAndroidSteps {
     public void ISwipeDown() throws Exception {
         pagesCollection.getCommonPage().swipeDownCoordinates(DEFAULT_SWIPE_TIME);
     }
-    
+
     /**
-    * Swipe down from given high %8 to 90% of hight
-    *
-    * @throws Exception
-    * @step. ^I swipe down from\\s(\\d+)%$
-    */
+     * Swipe down from given high %8 to 90% of hight
+     *
+     * @throws Exception
+     * @step. ^I swipe down from\\s(\\d+)%$
+     */
     @When("^I swipe down from\\s(\\d+)%$")
     public void ISwipeDownFrom(int startPercent) throws Exception {
         pagesCollection.getCommonPage().swipeByCoordinates(DEFAULT_SWIPE_TIME, 50, startPercent, 50, 90);
@@ -287,7 +290,7 @@ public class CommonAndroidSteps {
             throw new RuntimeException("Selenium has failed to take the screenshot from current page");
         }
     }
-    
+
     /**
      * Takes 2nd screenshot for comparison
      *
@@ -327,9 +330,9 @@ public class CommonAndroidSteps {
         double score = ImageUtil.getOverlapScore(images.get(0), images.get(1));
         double targetScore = 0.75d;
         if (shouldBeEqual == null)
-            Assert.assertTrue("Screenshots overlap score="+score+", but expected less than " + targetScore, score < targetScore);
+            Assert.assertTrue("Screenshots overlap score=" + score + ", but expected less than " + targetScore, score < targetScore);
         else
-            Assert.assertTrue("Screenshots overlap score="+score+", but expected more than " + targetScore, score >= targetScore);
+            Assert.assertTrue("Screenshots overlap score=" + score + ", but expected more than " + targetScore, score >= targetScore);
     }
 
     /**
@@ -575,14 +578,21 @@ public class CommonAndroidSteps {
      * @param msgFromUserNameAlias the user who sends the message
      * @param msg                  a message to send. Random string will be sent if it is empty
      * @param dstUserNameAlias     The user to receive the message
+     * @param isEncrypted          whether the message has to be encrypted
      * @throws Exception
-     * @step. ^Contact (.*) send message to user (.*)$
+     * @step. ^Contact (.*) sends? (encrypted )?message (.*)to user (.*)$
      */
-    @When("^Contact (.*) send message (.*)to user (.*)$")
-    public void UserSendMessageToConversation(String msgFromUserNameAlias, String msg, String dstUserNameAlias)
+    @When("^Contact (.*) sends? (encrypted )?message (.*)to user (.*)$")
+    public void UserSendMessageToConversation(String msgFromUserNameAlias, String isEncrypted,
+                                              String msg, String dstUserNameAlias)
             throws Exception {
-        commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstUserNameAlias,
-                (msg == null || msg.trim().length() == 0) ? CommonUtils.generateRandomString(10) : msg.trim());
+        final String msgToSend = (msg == null || msg.trim().length() == 0) ?
+                CommonUtils.generateRandomString(10) : msg.trim();
+        if (isEncrypted == null) {
+            commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstUserNameAlias, msgToSend);
+        } else {
+            commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias, dstUserNameAlias, msgToSend);
+        }
     }
 
     /**
@@ -624,14 +634,16 @@ public class CommonAndroidSteps {
      * @param msgFromUserNameAlias the user who sends the message
      * @param count                number of messages to send
      * @param dstUserNameAlias     The user to receive the message
+     * @param areEncrypted         Whether the messages should be encrypted
      * @throws Exception
-     * @step. ^Contact (.*) sends (\\d+) messages? to user (.*)$
+     * @step. ^Contact (.*) send[s]* (\d+) (encrypted )?messages? to user (.*)$
      */
-    @When("^Contact (.*) send[s]* (\\d+) messages? to user (.*)$")
-    public void UserSendXMessagesToConversation(String msgFromUserNameAlias, int count, String dstUserNameAlias)
-            throws Exception {
+    @When("^Contact (.*) send[s]* (\\d+) (encrypted )?messages? to user (.*)$")
+    public void UserSendXMessagesToConversation(String msgFromUserNameAlias, int count, String areEncrypted,
+                                                String dstUserNameAlias) throws Exception {
         for (int i = 0; i < count; i++) {
-            UserSendMessageToConversation(msgFromUserNameAlias, null, dstUserNameAlias);
+            UserSendMessageToConversation(msgFromUserNameAlias, areEncrypted,
+                    null, dstUserNameAlias);
         }
     }
 
@@ -769,7 +781,7 @@ public class CommonAndroidSteps {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown(Scenario scenario) throws Exception {
         try {
             AndroidCommonUtils.setAirplaneMode(false);
         } catch (Exception e) {
@@ -797,7 +809,7 @@ public class CommonAndroidSteps {
 
         AndroidLogListener.forceStopAll();
         LoggingProfile loggingProfile = new RegressionPassedLoggingProfile();
-        if (!ZetaFormatter.getRecentTestResult().equals(Result.PASSED.toString())) {
+        if (!scenario.getStatus().equals(Result.PASSED)) {
             loggingProfile = new RegressionFailedLoggingProfile();
         }
         AndroidLogListener.writeDeviceLogsToConsole(AndroidLogListener.getInstance(ListenerType.DEFAULT),
@@ -807,27 +819,19 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * Rotate device to landscape
+     * Rotate device to landscape or portrait
      *
+     * @param direction either landscape or portrait
      * @throws Exception
-     * @step. ^I rotate UI to landscape$
+     * @step. ^I rotate UI to (landscape|portrait)$
      */
-    @When("^I rotate UI to landscape$")
-    public void WhenIRotateUILandscape() throws Exception {
-        pagesCollection.getCommonPage().rotateLandscape();
-        // To let the UI to handle up changes
-        Thread.sleep(1000);
-    }
-
-    /**
-     * Rotate device to portrait
-     *
-     * @throws Exception
-     * @step. ^I rotate UI to portrait$
-     */
-    @When("^I rotate UI to portrait$")
-    public void WhenIRotateUIPortrait() throws Exception {
-        pagesCollection.getCommonPage().rotatePortrait();
+    @When("^I rotate UI to (landscape|portrait)$")
+    public void WhenIRotateUI(String direction) throws Exception {
+        if (direction.equals("landscape")) {
+            pagesCollection.getCommonPage().rotateLandscape();
+        } else {
+            pagesCollection.getCommonPage().rotatePortrait();
+        }
         // To let the UI to handle up changes
         Thread.sleep(1000);
     }
@@ -931,4 +935,59 @@ public class CommonAndroidSteps {
         group = usrMgr.replaceAliasesOccurences(group, ClientUsersManager.FindBy.NAME_ALIAS);
         commonSteps.UserXRemoveContactFromGroupChat(user1, user2, group);
     }
+
+    /**
+     * User adds a remote device to his list of devices
+     *
+     * @param userNameAlias user name/alias
+     * @param deviceName    unique name of the device
+     * @throws Exception
+     * @step. User (.*) adds a new device (.*)$
+     */
+    @When("^User (.*) adds a new device (.*) with label (.*)$")
+    public void UserAddRemoteDeviceToAccount(String userNameAlias,
+                                             String deviceName, String label) throws Exception {
+        commonSteps.UserAddsRemoteDeviceToAccount(userNameAlias, deviceName, label);
+    }
+
+    /**
+     * User adds multiple devices to his list of devices
+     *
+     * @param userNameAlias user name/alias
+     * @param deviceNames   unique name of devices, comma-separated list
+     * @throws Exception
+     * @step. User (.*) adds new devices (.*)
+     */
+    @When("^User (.*) adds new devices (.*)")
+    public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
+        final List<String> names = CommonSteps.splitAliases(deviceNames);
+        for (String name : names) {
+            commonSteps.UserAddsRemoteDeviceToAccount(userNameAlias, name,
+                    CommonUtils.generateRandomString(10));
+        }
+    }
+
+    /**
+     * Press Send button on OnScreen keyboard (the keyboard should be already populated)
+     *
+     * @throws Exception
+     * @step. ^I press Send button$
+     */
+    @And("^I press Send button$")
+    public void IPressSendButton() throws Exception {
+        pagesCollection.getCommonPage().pressKeyboardSendButton();
+    }
+
+    /**
+     * Remove all registered OTR clients for the particular user
+     *
+     * @param userAs user name/alias
+     * @throws Exception
+     * @step. ^User (.*) removes all his registered OTR clients$
+     */
+    @Given("^User (.*) removes all his registered OTR clients$")
+    public void UserRemovesAllRegisteredOtrClients(String userAs) throws Exception {
+        commonSteps.UserRemovesAllRegisteredOtrClients(userAs);
+    }
+
 }

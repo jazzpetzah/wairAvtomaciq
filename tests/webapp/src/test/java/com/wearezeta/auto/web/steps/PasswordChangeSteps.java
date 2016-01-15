@@ -84,4 +84,12 @@ public class PasswordChangeSteps {
 						PasswordChangeSuccessfullPage.class)
 						.isConfirmationTextVisible(), is(true));
 	}
+	
+	@Then("^I dont see Password Change Succeeded page$")
+	public void IDontSeePasswordChangeSucceeded() throws Exception {
+		assertThat(
+				webappPagesCollection.getPage(
+						PasswordChangeSuccessfullPage.class)
+						.isConfirmationTextVisible(), is(false));
+	}
 }
