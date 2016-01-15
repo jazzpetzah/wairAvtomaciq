@@ -180,8 +180,7 @@ public class DialogPageSteps {
     }
 
     @Then("^I see (\\d+) (default )?messages? in the dialog$")
-    public void ThenISeeMessageInTheDialog(String isDefault,
-                                           int expectedCount) throws Exception {
+    public void ThenISeeMessageInTheDialog(int expectedCount, String isDefault) throws Exception {
         int actualCount;
         if (isDefault == null) {
             actualCount = getDialogPage().getMessagesCount();

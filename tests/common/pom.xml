@@ -22,9 +22,6 @@
         <defaultEmailListenerServicePort>21990</defaultEmailListenerServicePort>
         <makeScreenshots>true</makeScreenshots>
         <initNodeIp>true</initNodeIp>
-        <zephyrCycleName></zephyrCycleName>
-        <zephyrPhaseName></zephyrPhaseName>
-        <zephyrServer>192.168.10.44</zephyrServer>
         <jenkinsJobUrl></jenkinsJobUrl>
         <testrailServerUrl>http://192.168.10.44:29082/testrail</testrailServerUrl>
         <testrailProjectName></testrailProjectName>
@@ -34,6 +31,7 @@
         <syncIsAutomated>False</syncIsAutomated>
         <syncIsMuted>False</syncIsMuted>
         <zmessaging.actor.version>58.320</zmessaging.actor.version>
+        <nativeLibsRoot>${project.basedir}/native_lib</nativeLibsRoot>
     </properties>
 
     <dependencies>
