@@ -75,10 +75,10 @@ public class PasswordChangeRequestSteps {
 				.setEmail(emailOrAlias);
 	}
 	
-	@When("^I enter unregistered email$")
-	public void IEnterUnregisteredEmail() throws Exception {
+	@When("^I enter unregistered email(.*)$")
+	public void IEnterUnregisteredEmail(String unregisteredMail) throws Exception {
 		webappPagesCollection.getPage(PasswordChangeRequestPage.class)
-				.setEmail("smoketester+sm0k3t3st3r@wire.com");
+				.setEmail(unregisteredMail);
 	}
 
 	private static final int PASSWORD_MSG_TIMWOUT_SECONDS = 60;
