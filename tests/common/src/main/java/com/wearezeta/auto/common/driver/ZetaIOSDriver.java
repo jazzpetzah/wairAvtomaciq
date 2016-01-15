@@ -62,8 +62,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
     }
 
     private byte[] getScreenshotAsBytes() {
-        final WindowInfo[] windowInfos = WindowCapture.findWindowsForPID(-1);
-        for (WindowInfo windowInfo : windowInfos) {
+        for (WindowInfo windowInfo : WindowCapture.findWindowsForPID(-1)) {
             if (windowInfo.title.contains("iOS") && windowInfo.ownerName.toLowerCase().equals("simulator")) {
                 return WindowCapture.getWindowSnapshotData(windowInfo.windowNumber, WindowCapture.IMAGE_FORMAT_PNG);
             }
