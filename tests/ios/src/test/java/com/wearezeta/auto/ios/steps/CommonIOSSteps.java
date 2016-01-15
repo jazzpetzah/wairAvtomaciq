@@ -435,7 +435,7 @@ public class CommonIOSSteps {
         commonSteps.AcceptAllIncomingConnectionRequests(userToNameAlias);
     }
 
-    @Given("^User (.*) (securely )?pings conversation (.*)$")
+    @Given("^User (\\w+) (securely )?pings conversation (.*)$")
     public void UserPingedConversation(String pingFromUserNameAlias, String isSecure,
                                        String dstConversationName) throws Exception {
         if (isSecure == null) {
