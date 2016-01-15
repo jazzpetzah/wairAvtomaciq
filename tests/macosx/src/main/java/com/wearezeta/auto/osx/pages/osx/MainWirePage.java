@@ -252,4 +252,18 @@ public class MainWirePage extends OSXPage {
 		robot.keyRelease(KeyEvent.VK_META);
 		robot.keyRelease(KeyEvent.VK_ALT);
 	}
+
+	public void pressShortCutForCall() throws Exception {
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_R);
+		robot.keyRelease(KeyEvent.VK_R);
+		robot.keyRelease(KeyEvent.VK_META);
+	}
+
+    public void pressShortCutForSearch() throws Exception {
+		robot.keyPress(KeyEvent.VK_META);// command key
+		robot.keyPress(KeyEvent.VK_N);
+		robot.keyRelease(KeyEvent.VK_N);
+		robot.keyRelease(KeyEvent.VK_META);
+	}
 }
