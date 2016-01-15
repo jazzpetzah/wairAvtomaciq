@@ -112,27 +112,26 @@ Feature: Calling
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    And I tap on contact name <Contact>
     And I see dialog page
     And <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I answer the call from the overlay bar
     And I see started call message for contact <Contact>
     When I swipe on text input
+    And I press Ping button
+    Then I see Ping message <Msg> in the dialog
+    When I close input options
+    And I tap on text input
+    And I type the message "<Message>" and send it
+    Then I see my message "<Message>" in the dialog
+    When I swipe on text input
     And I press Add Picture button
     And I press "Take Photo" button
     And I press "Confirm" button
     And I scroll to the bottom of conversation view
     Then I see new photo in the dialog
-    When I swipe on text input
-    And I press Ping button
-    Then I see Ping message <Msg> in the dialog
-    # There is some issue in Selendroid - we cannot swipe cursor after the keyboard was hidden once
-    # That is why we send the text after photo and ping and not before
-    When I close input options
-    And I tap on text input
-    And I type the message "<Message>" and send it
-    Then I see my message "<Message>" in the dialog
+
 
     Examples:
       | Name      | Contact   | CallBackend | Message                   | Msg        |
