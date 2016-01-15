@@ -509,6 +509,11 @@ public class CommonUtils {
 		return Boolean.valueOf(getValueFromCommonConfig(c, "makeScreenshots"));
 	}
 
+	public static boolean getMakeScreenshotOnPassedStepsFromConfig(Class<?> c)
+			throws Exception {
+		return Boolean.valueOf(getValueFromCommonConfig(c, "makeScreenshotOnPassedSteps"));
+	}
+
 	public static boolean getInitNoteIpFromConfig(Class<?> c) throws Exception {
 		return Boolean.valueOf(getValueFromCommonConfig(c, "initNodeIp"));
 	}

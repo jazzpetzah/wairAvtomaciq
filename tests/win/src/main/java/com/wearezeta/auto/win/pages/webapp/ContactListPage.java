@@ -44,7 +44,7 @@ public class ContactListPage extends
 		super(lazyDriver);
 	}
 
-	public ContactContextMenuPage openContextMenuForContact(String name)
+	public void openContextMenuForContact(String name)
 			throws Exception {
 		LOG.debug("Looking for contact with name '" + name + "'");
 		if (name == null) {
@@ -58,7 +58,6 @@ public class ContactListPage extends
 				By.cssSelector(locator));
 		WebElement entry = getDriver().findElement(By.cssSelector(locator));
 		new Actions(getDriver()).contextClick(entry).perform();
-		return osxPagesCollection.getPage(ContactContextMenuPage.class);
 	}
 
 	public String getActiveConversationName() throws Exception {
