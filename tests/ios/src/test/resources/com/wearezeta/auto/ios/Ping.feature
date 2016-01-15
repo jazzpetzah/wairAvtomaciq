@@ -26,16 +26,16 @@ Feature: Ping
     Given User <Contact1> change accent color to <Color>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I tap on group chat with name <GroupChatName>
-    And User <Contact1> Ping in chat <GroupChatName> by BackEnd
-    And I wait for 3 seconds
+    Given I see Contact list with my name <Name>
+    Given I tap on group chat with name <GroupChatName>
+    Given User <Contact1> securely pings conversation <GroupChatName>
+    When I wait for 3 seconds
     Then I see User <Contact1> Pinged message in the conversation
     And I see <Action1> icon in conversation
 
     Examples: 
-      | Name      | Contact1  | Contact2  | Action1 | Action2      | GroupChatName        | Color        | ContactName |
-      | user1Name | user2Name | user3Name | PINGED  | PINGED AGAIN | ReceivePingGroupChat | BrightOrange | OtherUser   |
+      | Name      | Contact1  | Contact2  | Action1 | GroupChatName        | Color        | ContactName |
+      | user1Name | user2Name | user3Name | PINGED  | ReceivePingGroupChat | BrightOrange | OtherUser   |
 
   @C3243 @regression @id1356
   Scenario Outline: Verify you can see Ping on the other side (1:1 conversation)
@@ -44,13 +44,13 @@ Feature: Ping
     Given Myself is connected to <Contact1>
     Given User <Contact1> change accent color to <Color>
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact1>
-    And User <Contact1> Ping in chat <Name> by BackEnd
-    And I wait for 3 seconds
+    Given I see Contact list with my name <Name>
+    Given I tap on contact name <Contact1>
+    Given User <Contact1> securely pings conversation <Name>
+    When I wait for 3 seconds
     Then I see User <Contact1> Pinged message in the conversation
     And I see <Action1> icon in conversation
 
     Examples: 
-      | Name      | Contact1  | Action1 | Action2      | Color        | ContactName |
-      | user1Name | user2Name | PINGED  | PINGED AGAIN | BrightOrange | OtherUser   |
+      | Name      | Contact1  | Action1 | Color        | ContactName |
+      | user1Name | user2Name | PINGED  | BrightOrange | OtherUser   |

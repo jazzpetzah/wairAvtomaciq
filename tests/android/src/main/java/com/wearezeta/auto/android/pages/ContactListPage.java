@@ -117,7 +117,7 @@ public class ContactListPage extends AndroidPage {
 
     private static final Function<String, String> xpathConvoSettingsMenuItemByName = name -> String
             .format("//*[@id='ttv__settings_box__item' and @value='%s']" +
-                    "/parent::*//*[@id='fl_options_menu_button']",
+                            "/parent::*//*[@id='fl_options_menu_button']",
                     name.toUpperCase());
 
     private static final String xpathSpinnerConversationsListLoadingIndicator =
@@ -183,64 +183,23 @@ public class ContactListPage extends AndroidPage {
     }
 
     public void tapOnName(final String name) throws Exception {
-        findInContactList(name, 5)
-                .orElseThrow(
-                        () -> new IllegalStateException(
-                                String.format(
-                                        "The conversation '%s' does not exist in the conversations list",
-                                        name))).click();
-    }
-
-    public void tapOnName(final String name, int maxSwipesInList)
-            throws Exception {
-        findInContactList(name, maxSwipesInList)
-                .orElseThrow(
-                        () -> new IllegalStateException(
-                                String.format(
-                                        "The conversation '%s' does not exist in the conversations list",
-                                        name))).click();
+        findInContactList(name).orElseThrow(
+                () -> new IllegalStateException(
+                        String.format(
+                                "The conversation '%s' does not exist in the conversations list",
+                                name))).click();
     }
 
     public void doLongSwipeUp() throws Exception {
-        DriverUtils.swipeElementPointToPoint(getDriver(), contactListFrame,
-                1000, 15, 80, 15, -50);
+        // FIXME: There is a bug in Android when swipe up does not work if there are no items in the list
+        DriverUtils.swipeElementPointToPoint(getDriver(), contactListFrame, 1000, 15, 30, 15, -80);
     }
 
-    public void workaroundConvoListItemsLoad() throws Exception {
-        for (int i = 1; i <= contactListNames.size(); i++) {
-            final By locator = By.xpath(xpathContactByIndex.apply(i));
-            try {
-                if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                        locator, 1)) {
-                    final WebElement elem = getDriver().findElement(locator);
-                    if (DriverUtils.waitUntilElementClickable(getDriver(),
-                            elem, 1)) {
-                        elem.click();
-                        // Wait for animation
-                        Thread.sleep(1000);
-                        DriverUtils
-                                .swipeRightCoordinates(getDriver(), 1000, 50);
-                        return;
-                    }
-                }
-            } catch (WebDriverException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public Optional<WebElement> findInContactList(String name,
-                                                  int maxSwypesInList) throws Exception {
+    public Optional<WebElement> findInContactList(String name) throws Exception {
         final By nameLocator = By.xpath(xpathContactByName.apply(name));
         if (DriverUtils
                 .waitUntilLocatorIsDisplayed(getDriver(), nameLocator, 1)) {
             return Optional.of(this.getDriver().findElement(nameLocator));
-        } else {
-            if (maxSwypesInList > 0) {
-                maxSwypesInList--;
-                DriverUtils.swipeUp(this.getDriver(), mainControl, 500, 50, 90);
-                return findInContactList(name, maxSwypesInList);
-            }
         }
         return Optional.empty();
     }
@@ -279,7 +238,7 @@ public class ContactListPage extends AndroidPage {
     }
 
     public boolean isContactExists(String name) throws Exception {
-        return findInContactList(name, 0).isPresent();
+        return findInContactList(name).isPresent();
     }
 
     public boolean waitUntilContactDisappears(String name) throws Exception {
@@ -287,12 +246,7 @@ public class ContactListPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameLocator);
     }
 
-    public boolean isContactExists(String name, int cycles) throws Exception {
-        return findInContactList(name, cycles).isPresent();
-    }
-
-    public boolean isPlayPauseMediaButtonVisible(String convoName)
-            throws Exception {
+    public boolean isPlayPauseMediaButtonVisible(String convoName) throws Exception {
         final By locator = By.xpath(xpathPlayPauseButtonByConvoName
                 .apply(convoName));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
@@ -342,17 +296,14 @@ public class ContactListPage extends AndroidPage {
                 loadingItemLocator, CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS);
     }
 
-    public PersonalInfoPage tapOnMyAvatar() throws Exception {
-        assert DriverUtils.waitUntilElementClickable(getDriver(),
-                selfUserAvatar);
+    public void tapOnMyAvatar() throws Exception {
+        verifyLocatorPresence(By.id(idSelfUserAvatar), "Self avatar icon is not visible");
         selfUserAvatar.click();
-        return new PersonalInfoPage(getLazyDriver());
     }
 
-    public PeoplePickerPage tapOnSearchButton() throws Exception {
-        assert DriverUtils.waitUntilElementClickable(getDriver(), searchButton);
+    public void tapOnSearchButton() throws Exception {
+        verifyLocatorPresence(By.id(idSearchButton), "Search button is not visible");
         searchButton.click();
-        return new PeoplePickerPage(getLazyDriver());
     }
 
     public boolean isAnyConversationVisible() throws Exception {
@@ -382,13 +333,9 @@ public class ContactListPage extends AndroidPage {
     }
 
     public void selectConvoSettingsMenuItem(String itemName) throws Exception {
-        final By locator = By.xpath(xpathConvoSettingsMenuItemByName
-                .apply(itemName));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
-                .format("Conversation menu item '%s' could not be found on the current screen",
-                        itemName);
-        //fix for options menu with icons
-        //DriverUtils.tapOutsideOfTheElement(getDriver(), getDriver().findElement(locator), 0, -5, false);
+        final By locator = By.xpath(xpathConvoSettingsMenuItemByName.apply(itemName));
+        verifyLocatorPresence(locator, String
+                .format("Conversation menu item '%s' could not be found on the current screen", itemName));
         getDriver().findElement(locator).click();
     }
 
@@ -420,18 +367,16 @@ public class ContactListPage extends AndroidPage {
             String convoName) throws Exception {
         final By locator = By.xpath(xpathPlayPauseButtonByConvoName
                 .apply(convoName));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
-                .format("PlayPause button is not visible next to the '%s' conversation item",
-                        convoName);
+        verifyLocatorPresence(locator,
+                String.format("PlayPause button is not visible next to the '%s' conversation item", convoName));
         return this.getElementScreenshot(this.getDriver().findElement(locator));
     }
 
     public void tapPlayPauseMediaButton(String convoName) throws Exception {
         final By locator = By.xpath(xpathPlayPauseButtonByConvoName
                 .apply(convoName));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
-                .format("PlayPause button is not visible next to the '%s' conversation item",
-                        convoName);
+        verifyLocatorPresence(locator, String
+                .format("PlayPause button is not visible next to the '%s' conversation item", convoName));
         this.getDriver().findElement(locator).click();
     }
 
@@ -460,11 +405,11 @@ public class ContactListPage extends AndroidPage {
     }
 
     public boolean isLeaveCheckBoxVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),By.id(idLeaveCheckbox));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idLeaveCheckbox));
     }
 
     public boolean isThreeDotButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),By.id(idThreeDotsOptionMenuButton));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idThreeDotsOptionMenuButton));
     }
 
     public void tapThreeDotOptionMenuButton() {

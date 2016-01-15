@@ -15,7 +15,7 @@ Feature: Calling
     And I click missed call button to call contact <Contact>
     And I see calling to contact <Contact> message
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
@@ -32,7 +32,7 @@ Feature: Calling
     Then I see mute call, end call and speakers buttons
     And I see calling to contact <Contact> message
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -51,7 +51,7 @@ Feature: Calling
     When I end started call
     Then I dont see calling page
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -66,7 +66,7 @@ Feature: Calling
     And I ignore incoming call
     Then I dont see incoming call page
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
@@ -75,7 +75,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
@@ -83,7 +83,7 @@ Feature: Calling
     Then I see mute call, end call and speakers buttons
     And I see started call message for contact <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
@@ -100,7 +100,7 @@ Feature: Calling
     And I see dialog page
     Then I see missed call from contact <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
@@ -115,12 +115,12 @@ Feature: Calling
     And I wait for 5 seconds
     And <Contact> stops all calls to me
     Then I see missed call indicator in list for contact <Contact>
-    When Contact <Contact> send number <Number> of message to user <Name>
+    Given User <Contact> sends <Number> encrypted messages to user Myself
     Then I see missed call indicator in list for contact <Contact>
-    When Contact <Contact1> send number <Number> of message to user <Name>
+    Given User <Contact1> sends <Number> encrypted messages to user Myself
     Then I see missed call indicator got moved down in list for contact <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Contact1  | Number | Color           | CallBackend |
       | user1Name | user2Name | user3Name | 2      | StrongLimeGreen | autocall    |
 
@@ -185,7 +185,7 @@ Feature: Calling
     And I end started call
     And I dont see calling page
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | firefox     | 60      |
 
@@ -207,12 +207,12 @@ Feature: Calling
     And I see mute call, end call and speakers buttons
     And I end started call
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | firefox     | 60      |
 
-  @C3164 @regression @id2645
-  Scenario Outline: 3rd person tries to call me after I initate a call to somebody
+  @C3164 @regression @id2645 @torun
+  Scenario Outline: 3rd person tries to call me after I initiate a call to somebody
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Contact1> starts waiting instance using <CallBackend>
@@ -237,7 +237,7 @@ Feature: Calling
     And I tap on contact name <Contact2>
     Then I see missed call from contact <Contact2>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | user3Name | firefox     | autocall     | 120     |
 
@@ -258,7 +258,7 @@ Feature: Calling
     Then I close the app for 5 seconds
     And I see mute call, end call and speakers buttons
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | firefox     | 120     |
 
@@ -277,7 +277,7 @@ Feature: Calling
     Then I see mute call, end call and speakers buttons
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | firefox     | autocall     | 120     |
 
@@ -307,7 +307,7 @@ Feature: Calling
     And <Contact> stops all calls to me
     And I dont see calling page
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | firefox     | autocall     | 30      |
 
@@ -335,7 +335,7 @@ Feature: Calling
     Then <Contact2>,<Contact3>,<Contact4> verify to have 4 flows
     Then <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName      | CallBackend | CallBackend2 | NumberOfAvatars |
       | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | firefox     | autocall     | 5               |
 
@@ -356,7 +356,7 @@ Feature: Calling
     Then I dont see incoming call page
     Then I see Join Call bar
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName     | CallBackend | CallBackend2 |
       | user1Name | user2Name | user3Name | IgnoringGROUPCALL | firefox     | autocall     |
 
@@ -385,7 +385,7 @@ Feature: Calling
     Then I see <NumberOfAvatars> avatars in the group call bar
     Then I see mute call, end call and speakers buttons
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars |
       | user1Name | user2Name | user3Name | user4Name | user5Name | GROUPCALL     | firefox     | autocall     | 4               |
 
@@ -414,7 +414,7 @@ Feature: Calling
     Then I see mute call, end call and speakers buttons
     Then I see <NumberOfAvatars> avatars in the group call bar
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | CallBackend2 | ChatName | NumberOfAvatars |
       | user1Name | user2Name | user3Name | user4Name | user5Name | RenameGROUPCALL | firefox     | autocall     | NewName  | 5               |
 
@@ -445,7 +445,7 @@ Feature: Calling
     And I tap on group chat with name <GroupChatName>
     Then I dont see calling page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    | CallBackend | CallBackend2 |
       | user1Name | user2Name | user3Name | user4Name | user5Name | LEAVEINGROUPCALL | firefox     | autocall     |
 
@@ -475,7 +475,7 @@ Feature: Calling
     Then I see mute call, end call and speakers buttons
     Then I see <NumberOfAvatars> avatars in the group call bar
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | CallBackend2 | NumberOfAvatars |
       | user1Name | user2Name | user3Name | user4Name | user5Name | RejoinGROUPCALL | firefox     | autocall     | 5               |
 
@@ -508,7 +508,7 @@ Feature: Calling
     Then I see mute call, end call and speakers buttons
     Then I see <NumberOf1on1CallAvatars> avatars in the group call bar
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars | NumberOf1on1CallAvatars |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | GROUPCALL     | firefox     | autocall     | 5               | 2                       |
 
@@ -526,9 +526,9 @@ Feature: Calling
     Then I see mute call, end call and speakers buttons
     Then I see calling to a group message
 
-    Examples: 
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Contact8  | Contact9   | GroupChatName  | CallBackend | CallBackend2 | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | user9Name | user10Name | StartGROUPCALL | firefox     | autocall     | 5               |
+    Examples:
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Contact8  | Contact9   | GroupChatName  |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | user9Name | user10Name | StartGROUPCALL |
 
   @C2048 @regression @rc @id2684
   Scenario Outline: Verify possibility to join call after 45 seconds of starting it
@@ -551,7 +551,7 @@ Feature: Calling
     Then I see mute call, end call and speakers buttons
     Then I see <NumberOfAvatars> avatars in the group call bar
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars |
       | user1Name | user2Name | user3Name | user4Name | user5Name | WaitGROUPCALL | firefox     | autocall     | 5               |
 
@@ -585,9 +585,9 @@ Feature: Calling
     And I exit the group info page
     Then I see <NewNumberOfAvatars> avatars in the group call bar
 
-    Examples: 
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | CallBackend2 | NumberOfAvatars | NewNumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | RemoveGROUPCALL | firefox     | autocall     | 5               | 4                  |
+    Examples:
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | NumberOfAvatars | NewNumberOfAvatars |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | RemoveGROUPCALL | firefox     | 5               | 4                  |
 
   @C2039 @regression @id2673 @noAcceptAlert
   Scenario Outline: Verify impossibility to connect 6th person to the call
@@ -614,9 +614,9 @@ Feature: Calling
     And I accept incoming call
     Then I see group call is Full message
 
-    Examples: 
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars | Timeout |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | FullGROUPCALL | firefox     | autocall     | 5               | 60      |
+    Examples:
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | CallBackend | CallBackend2 | Timeout |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | FullGROUPCALL | firefox     | autocall     | 60      |
 
   @C2068 @calling_basic @rc @id880 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Verify putting client to the background during 1-to-1 call
@@ -635,7 +635,7 @@ Feature: Calling
     And I see started call message for contact <Contact>
     And <Contact> verifies that call status to me is changed to active in 2 seconds
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
@@ -664,5 +664,5 @@ Feature: Calling
     Then I see <NumberOfAvatars> avatars in the group call bar
 
     Examples:
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | CallBackend2 | NumberOfAvatars | Timeout|
-      | user1Name | user2Name | user3Name | user4Name | user5Name | AddMeGROUPCALL  | chrome      | autocall     | 5               | 60		|
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName  | CallBackend | CallBackend2 | NumberOfAvatars | Timeout |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | AddMeGROUPCALL | chrome      | autocall     | 5               | 60      |

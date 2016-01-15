@@ -53,6 +53,11 @@ public class SelfProfilePage extends WebPage {
 		super(lazyDriver);
 	}
 
+	public boolean isSettingsButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.cssSelector(WebAppLocators.SelfProfilePage.cssGearButton));
+	}
+
 	public void clickGearButton() throws Exception {
 		// Wait until no modal is shown
 		DriverUtils.waitUntilLocatorDissapears(getDriver(), By.className("modal-show"));
@@ -197,6 +202,13 @@ public class SelfProfilePage extends WebPage {
 	public void uploadPicture(String pictureName) throws Exception {
 		final String picturePath = WebCommonUtils
 				.getFullPicturePath(pictureName);
+		if (WebAppExecutionContext.getBrowser() == Browser.Firefox) {
+			this.getDriver()
+					.executeScript(
+							"$(\""
+									+ WebAppLocators.SelfPictureUploadPage.cssChooseYourOwnInput
+									+ "\").css({'left': '0', 'opacity': '100', 'z-index': '100'});");
+		}
 		if (WebAppExecutionContext.getBrowser() == Browser.Safari) {
 			WebCommonUtils.sendPictureInSafari(picturePath, this.getDriver()
 					.getNodeIp());

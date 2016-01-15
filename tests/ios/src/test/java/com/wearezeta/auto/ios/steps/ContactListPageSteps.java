@@ -171,12 +171,6 @@ public class ContactListPageSteps {
     @Then("^I open archived conversations$")
     public void IOpenArchivedConversations() throws Exception {
         getContactListPage().swipeUp(1000);
-//		Thread.sleep(3000);
-//		if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
-//			getContactListPage().swipeUp(1000);
-//		} else {
-//			getContactListPage().swipeUpSimulator();
-//		}
     }
 
     @When("I see play/pause button next to username (.*) in contact list")
@@ -604,9 +598,9 @@ public class ContactListPageSteps {
             throws Throwable {
         conversation = usrMgr.replaceAliasesOccurences(conversation,
                 FindBy.NAME_ALIAS);
-        String convIsSelected = getContactListPage()
-                .getSelectedConversationCellValue(conversation);
-        Assert.assertEquals("Converstaion is not selected", "1", convIsSelected);
+        Assert.assertEquals("Converstaion is not selected", "1",
+                getContactListPage().getSelectedConversationCellValue(conversation).
+                        orElseThrow(() -> new IllegalStateException("No conversations are selected in the list")));
     }
 
     /**

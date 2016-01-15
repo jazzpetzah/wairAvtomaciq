@@ -303,6 +303,25 @@ public final class CommonSteps {
         Thread.sleep(1000);
     }
 
+    public void UserPingedConversationOtr(String pingFromUserNameAlias,
+                                          String dstConversationName) throws Exception {
+        final ClientUser pingFromUser = usrMgr.findUserByNameOrNameAlias(pingFromUserNameAlias);
+        dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
+        final String convId = BackendAPIWrappers.getConversationIdByName(pingFromUser, dstConversationName);
+        SEBridge.getInstance().sendPing(pingFromUser, convId);
+    }
+
+    public void UserHotPingedConversationOtr(String pingFromUserNameAlias,
+                                             String dstConversationName) throws Exception {
+        final ClientUser pingFromUser = usrMgr.findUserByNameOrNameAlias(pingFromUserNameAlias);
+        dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
+        final String convId = BackendAPIWrappers.getConversationIdByName(pingFromUser, dstConversationName);
+        for (int i = 0; i < 2; i++) {
+            SEBridge.getInstance().sendPing(pingFromUser, convId);
+            Thread.sleep(500);
+        }
+    }
+
     public void UserSentMessageToUser(String msgFromUserNameAlias,
                                       String dstUserNameAlias, String message) throws Exception {
         ClientUser msgFromUser = usrMgr

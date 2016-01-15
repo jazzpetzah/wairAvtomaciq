@@ -146,10 +146,10 @@ Feature: Connect
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
-    When Contact <Contact> sends image <Picture> to single user conversation <Name>
-    And Contact <Contact> ping conversation <Name>
-    And Contact <Contact> sends random message to user <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    Given User <Contact> securely pings conversation <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     And I wait for 10 seconds
     Then I dont see conversation <Contact> in contact list
     When I open search by taping on it
@@ -162,13 +162,13 @@ Feature: Connect
     And I wait for 5 seconds
     Then I see User <Contact> Pinged message in the conversation
     And I see new photo in the dialog
-    And I see message in the dialog
+    And I see 1 default message in the dialog
     And I return to the chat list
     #And I see People picker page
     #And I click close button to dismiss people view
-    And Contact <Contact> sends random message to user <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact>
-    Then I see message in the dialog
+    Then I see 2 default messages in the dialog
 
     Examples: 
       | Name      | Contact   | Picture     |
@@ -400,9 +400,9 @@ Feature: Connect
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     Then I see dialog page
-    And I type the message
+    And I type the default message
     When I send the message
-    Then I see message in the dialog
+    Then I see 1 default message in the dialog
     When I swipe the text input cursor
     And I press Add Picture button
     And I press Camera Roll button

@@ -5,6 +5,7 @@ Feature: Search
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     When I tap on contact name <Contact2>
@@ -25,6 +26,7 @@ Feature: Search
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I open search by tap
     And I see People picker page
@@ -41,6 +43,7 @@ Feature: Search
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact2>
     And I navigate back from dialog page
@@ -60,6 +63,7 @@ Feature: Search
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I open search by tap
     And I see People picker page
@@ -75,6 +79,7 @@ Feature: Search
   Scenario Outline: Open Search by tap in search box and close by UI button
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     When I open search by tap
     And I see People picker page
@@ -91,6 +96,7 @@ Feature: Search
     # We need at least 1 user in the convo list, otherwise it will be impossible to swipe
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I open Search by tap
     And I see People picker page
@@ -117,6 +123,7 @@ Feature: Search
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     Given I wait until <Contact2> exists in backend search results
@@ -141,6 +148,7 @@ Feature: Search
     Given Contact <Contact1> send message to user <Name>
     Given Contact <Name> send message to user <Contact1>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I open Search by UI button
     And I wait until Top People list appears
@@ -157,6 +165,7 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     When I open search by tap
@@ -175,6 +184,7 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     When I open search by tap
@@ -195,6 +205,7 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     When I open search by tap
@@ -217,6 +228,7 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     When I open search by tap
@@ -238,6 +250,7 @@ Feature: Search
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     When I open search by tap
@@ -263,6 +276,7 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     When I open search by tap
@@ -282,6 +296,7 @@ Feature: Search
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     Given I wait until <Contact2> exists in backend search results
@@ -307,6 +322,7 @@ Feature: Search
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     When I open search by tap
@@ -331,6 +347,7 @@ Feature: Search
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     When I open search by tap
@@ -357,6 +374,7 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given I wait until <Contact> exists in backend search results
     And I open search by tap

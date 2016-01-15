@@ -14,29 +14,25 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class ProfilePicturePage extends AndroidPage {
 
-	public static final String idDialogTakePhotoButton = "gtv__camera_control__take_a_picture";
-	@FindBy(id = idDialogTakePhotoButton)
-	protected WebElement cameraButton;
+    public static final String idDialogTakePhotoButton = "gtv__camera_control__take_a_picture";
+    @FindBy(id = idDialogTakePhotoButton)
+    protected WebElement cameraButton;
 
-	@FindBy(xpath = DialogPage.xpathConfirmOKButton)
-	protected WebElement confirmButton;
+    @FindBy(xpath = DialogPage.xpathConfirmOKButton)
+    protected WebElement confirmButton;
 
-	public ProfilePicturePage(Future<ZetaAndroidDriver> lazyDriver)
-			throws Exception {
-		super(lazyDriver);
-	}
+    public ProfilePicturePage(Future<ZetaAndroidDriver> lazyDriver)
+            throws Exception {
+        super(lazyDriver);
+    }
 
-	public void clickCameraButton() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
-				cameraButton) : "Camera button is clickable";
-		cameraButton.click();
-	}
+    public void clickCameraButton() throws Exception {
+        verifyLocatorPresence(By.id(idDialogTakePhotoButton), "Camera button is clickable");
+        cameraButton.click();
+    }
 
-	public ContactListPage confirmPicture() throws Exception {
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(DialogPage.xpathConfirmOKButton)) : "Confirm button is not visible";
-		confirmButton.click();
-		return new ContactListPage(this.getLazyDriver());
-	}
-
+    public void confirmPicture() throws Exception {
+        verifyLocatorPresence(By.xpath(DialogPage.xpathConfirmOKButton), "Confirm button is not visible");
+        confirmButton.click();
+    }
 }

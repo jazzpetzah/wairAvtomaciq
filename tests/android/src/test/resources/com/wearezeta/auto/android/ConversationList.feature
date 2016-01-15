@@ -5,7 +5,8 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    And I see Contact list with contacts
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
     And I tap on contact name <Contact1>
     And I see dialog page
     And I scroll to the bottom of conversation view
@@ -35,7 +36,8 @@ Feature: Conversation List
     Given User <Contact1> sends image <Image> to single user conversation <Name>
     Given All contacts send me a message "<Message>"
     Given I sign in using my email or phone number
-    And I see Contact list with contacts
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
     And I tap on contact name <Contact1>
     And I see dialog page
     And I scroll to the bottom of conversation view
@@ -67,6 +69,7 @@ Feature: Conversation List
     Given User <Contact1> sent message <SpotifyLink> to conversation <GroupChatName>
     Given User <Contact1> sent message "<Message>" to conversation <GroupChatName>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
     And I see dialog page
@@ -95,6 +98,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I swipe right on a <GroupChatName>
     And I select DELETE from conversation settings menu
@@ -122,6 +126,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I swipe right on a <GroupChatName>
     And I select DELETE from conversation settings menu
@@ -151,6 +156,7 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I swipe right on a <Contact1>
     And I select SILENCE from conversation settings menu
@@ -166,6 +172,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>
     Given <Contact1> is silenced to user <Name>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And Contact <Contact1> is muted
     And I swipe right on a <Contact1>
@@ -182,6 +189,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I swipe right on a <GroupChatName>
     And I select SILENCE from conversation settings menu
@@ -198,6 +206,7 @@ Feature: Conversation List
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given Group <GroupChatName> gets silenced for user <Name>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And Contact <GroupChatName> is muted
     And I swipe right on a <GroupChatName>
@@ -213,7 +222,8 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given Myself sent connection request to <Contact>
     Given I sign in using my email or phone number
-    And I see Contact list with contacts
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
     When I swipe right on a <Contact>
     Then I see ARCHIVE button in conversation settings menu
     And I see BLOCK button in conversation settings menu
@@ -227,7 +237,8 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to <Name>
     Given I sign in using my email or phone number
-    And I see contact list with name <WaitingMess1>
+    Given I accept First Time overlay as soon as it is visible
+    Given I see contact list with name <WaitingMess1>
     When I swipe right on a <WaitingMess1>
     Then I see contact list with name <WaitingMess1>
 
@@ -240,7 +251,8 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    And I see Contact list with contacts
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
     When I swipe right on a <Contact1>
     Then I see SILENCE button in conversation settings menu
     And I see ARCHIVE button in conversation settings menu
@@ -266,7 +278,8 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    And I see Contact list with contacts
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
     When I swipe right on a <GroupChatName>
     Then I see SILENCE button in conversation settings menu
     And I see ARCHIVE button in conversation settings menu
@@ -294,7 +307,8 @@ Feature: Conversation List
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given <Contact1> removes <Name> from group <GroupChatName>
     Given I sign in using my email or phone number
-    And I see Contact list with contacts
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
     When I swipe right on a <GroupChatName>
     And I select DELETE from conversation settings menu
     Then I do not see the Leave check box
@@ -308,7 +322,8 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    And I see Contact list with contacts
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
     When I short swipe right on a <Contact1>
     And I see three dots option menu button
     And I press the three dots option menu button

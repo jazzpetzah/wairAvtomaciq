@@ -9,7 +9,8 @@ Feature: Lock/Unlock
     Given Contact <Contact1> sends message "<Message1to1>" to user Myself
     Given I rotate UI to portrait
     Given I sign in using my email
-    And I see the conversations list with conversations
+    Given I accept First Time overlay as soon as it is visible
+    Given I see the conversations list with conversations
     When I lock the device
     And I unlock the device
     Then I see the conversation <Contact1> in my conversations list

@@ -4,6 +4,7 @@ Feature: Connect
   Scenario Outline: Send connection request from search
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
     When I open Search by tap
@@ -26,6 +27,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to <Name>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <WaitingMess>
     And I see connect to <Contact> dialog
@@ -40,6 +42,7 @@ Feature: Connect
   Scenario Outline: I can see a new inbox for connection when receive new connection request
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     Given I do not see contact list with name <WaitingMess>
     Given <Contact> sent connection request to <Name>
@@ -58,6 +61,7 @@ Feature: Connect
     Given There are 5 users where <Name> is me
     Given <Contact1> sent connection request to me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given <Contact2> sent connection request to me
     When I wait for 2 seconds
@@ -97,6 +101,7 @@ Feature: Connect
     Given <Contact2> sent connection request to <Name>
     Given <Contact4> sent connection request to <Name>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given <Contact3> sent connection request to <Name>
     When I see contact list with name <WaitingMess1>
@@ -123,6 +128,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I see contact list with name <WaitingMess>
     And I tap on contact name <WaitingMess>
@@ -148,6 +154,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to <Name>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I see contact list with name <WaitingMess>
     And I wait until <Contact> exists in backend search results
@@ -168,6 +175,7 @@ Feature: Connect
   Scenario Outline: I would not know other person has ignored my connection request
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
     When I open Search by tap
@@ -190,6 +198,7 @@ Feature: Connect
   Scenario Outline: I can receive new connection request when app in background
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     When I minimize the application
     And <Contact> sent connection request to Me
@@ -210,6 +219,7 @@ Feature: Connect
   Scenario Outline: I want to see that the other person has accepted the connect request in the conversation view
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
     When I open Search by tap
@@ -235,6 +245,7 @@ Feature: Connect
   Scenario Outline: I want to discard the new connect request (sending) by returning to the search results after selecting someone I’m not connected to
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
     When I open Search by tap
@@ -257,6 +268,7 @@ Feature: Connect
     Given <Contact1> is connected to <Contact2>
     Given <Contact1> has group chat <ChatName> with <Name>, <Contact2>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <ChatName>
     And I tap conversation details button
@@ -279,6 +291,7 @@ Feature: Connect
     # Having the extra user is a workaround for an app bug
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -307,6 +320,7 @@ Feature: Connect
     # Having the extra user is a workaround for an app bug
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I wait until <Contact2> exists in backend search results
     When I open Search by tap
@@ -348,6 +362,7 @@ Feature: Connect
     Given Myself is connected to <Contact1>,<Contact2>
     Given User <Contact1> blocks user Myself
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I see contact list with name <Contact1>
     And I see contact list with name <Contact2>
@@ -369,6 +384,7 @@ Feature: Connect
     Given Myself is connected to <Contact1>,<Contact2>
     Given User <Name> blocks user <Contact1>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact2>
     And I navigate back from dialog page
@@ -393,6 +409,7 @@ Feature: Connect
   Scenario Outline: Impossibility of starting 1:1 conversation with pending user (Search)
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
     When I open Search by tap
@@ -416,6 +433,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I see dialog page

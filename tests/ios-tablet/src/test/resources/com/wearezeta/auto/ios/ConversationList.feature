@@ -12,7 +12,7 @@ Feature: Conversation List
     And I open archived conversations on iPad
     Then I see user <Contact> in contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -29,7 +29,7 @@ Feature: Conversation List
     And I open archived conversations on iPad
     Then I see user <Contact> in contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -46,7 +46,7 @@ Feature: Conversation List
     And I open archived conversations on iPad
     Then I see user <GroupChatName> in contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | ArchiveGroupChat |
 
@@ -64,7 +64,7 @@ Feature: Conversation List
     And I open archived conversations on iPad
     Then I see user <GroupChatName> in contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | ArchiveGroupChat |
 
@@ -81,7 +81,7 @@ Feature: Conversation List
     And I navigate back to conversations view
     Then I see first item in contact list named <ArchivedUser>
 
-    Examples: 
+    Examples:
       | Name      | ArchivedUser |
       | user1Name | user2Name    |
 
@@ -98,7 +98,7 @@ Feature: Conversation List
     And I tap on contact name <ArchivedUser>
     Then I see first item in contact list named <ArchivedUser>
 
-    Examples: 
+    Examples:
       | Name      | ArchivedUser |
       | user1Name | user2Name    |
 
@@ -110,7 +110,7 @@ Feature: Conversation List
     And I open search by taping on it
     And I see People picker page
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -123,7 +123,7 @@ Feature: Conversation List
     And I open search by taping on it
     And I see People picker page
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -134,13 +134,13 @@ Feature: Conversation List
     Given User <Contact> change name to <NewName>
     Given User <Name> change accent color to <Color>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    And I remember the state of the first conversation cell
-    When Contact <Contact> ping conversation <Name>
-    And I wait for 10 seconds
+    Given I see Contact list with my name <Name>
+    Given I remember the state of the first conversation cell
+    Given User <Contact> securely pings conversation <Name>
+    When I wait for 10 seconds
     Then I see change of state for first conversation cell
 
-    Examples: 
+    Examples:
       | Name      | Contact   | NewName | Color        |
       | user1Name | user2Name | PING    | BrightOrange |
 
@@ -152,13 +152,13 @@ Feature: Conversation List
     Given User <Name> change accent color to <Color>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    And I remember the state of the first conversation cell
-    When Contact <Contact> ping conversation <Name>
-    And I wait for 10 seconds
+    Given I see Contact list with my name <Name>
+    Given I remember the state of the first conversation cell
+    Given User <Contact> securely pings conversation <Name>
+    When I wait for 10 seconds
     Then I see change of state for first conversation cell
 
-    Examples: 
+    Examples:
       | Name      | Contact   | NewName | Color        |
       | user1Name | user2Name | PING    | BrightOrange |
 
@@ -168,16 +168,16 @@ Feature: Conversation List
     Given <Contact> is connected to <Name>
     Given User <Contact> change name to <NewName>
     Given User <Name> change accent color to <Color>
-    Given Contact <Contact> send number <Number> of message to user <Name>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends <Number> encrypted messages to user Myself
     And I remember the state of the first conversation cell
     When I tap on contact name <Contact>
     And I see dialog page
     And I return to the chat list
     Then I see change of state for first conversation cell
 
-    Examples: 
+    Examples:
       | Name      | Contact   | NewName    | Color        | Number |
       | user1Name | user2Name | UNREAD DOT | BrightYellow | 2      |
 
@@ -187,16 +187,16 @@ Feature: Conversation List
     Given <Contact> is connected to <Name>
     Given User <Contact> change name to <NewName>
     Given User <Name> change accent color to <Color>
-    Given Contact <Contact> send number <Number> of message to user <Name>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends <Number> encrypted messages to user Myself
     And I remember the state of the first conversation cell
     When I tap on contact name <Contact>
     And I see dialog page
     Then I see change of state for first conversation cell
 
-    Examples: 
+    Examples:
       | Name      | Contact   | NewName    | Color        | Number |
       | user1Name | user2Name | UNREAD DOT | BrightYellow | 2      |
 
@@ -204,17 +204,17 @@ Feature: Conversation List
   Scenario Outline: Verify conversations are sorted according to most recent activity [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given <Name> is connected to <Contact>,<Contact2>,<Contact3>
-    Given Contact <Contact> send number <Number> of message to user <Name>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    And Contact <Contact3> send number <Number> of message to user <Name>
-    And I see first item in contact list named <Contact3>
-    When Contact <Contact2> ping conversation <Name>
-    And I see first item in contact list named <Contact2>
-    When Contact <Contact> sends image <Picture> to single user conversation <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends <Number> encrypted messages to user Myself
+    Given User <Contact3> sends <Number> encrypted messages to user Myself
+    Given I see first item in contact list named <Contact3>
+    Given User <Contact2> securely pings conversation <Name>
+    Then I see first item in contact list named <Contact2>
+    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     Then I see first item in contact list named <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Contact2  | Contact3  | Number | Picture     |
       | user1Name | user2Name | user3name | user4name | 2      | testing.jpg |
 
@@ -222,18 +222,18 @@ Feature: Conversation List
   Scenario Outline: Verify conversations are sorted according to most recent activity [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given <Name> is connected to <Contact>,<Contact2>,<Contact3>
-    Given Contact <Contact> send number <Number> of message to user <Name>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    And Contact <Contact3> send number <Number> of message to user <Name>
-    And I see first item in contact list named <Contact3>
-    When Contact <Contact2> ping conversation <Name>
-    And I see first item in contact list named <Contact2>
-    When Contact <Contact> sends image <Picture> to single user conversation <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends <Number> encrypted messages to user Myself
+    Given User <Contact3> sends <Number> encrypted messages to user Myself
+    Given I see first item in contact list named <Contact3>
+    Given User <Contact2> securely pings conversation <Name>
+    Then I see first item in contact list named <Contact2>
+    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     Then I see first item in contact list named <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Contact2  | Contact3  | Number | Picture     |
       | user1Name | user2Name | user3name | user4name | 2      | testing.jpg |
 
@@ -246,7 +246,7 @@ Feature: Conversation List
     When I see Contact list with my name <Name>
     And I see Pending request link in contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -260,7 +260,7 @@ Feature: Conversation List
     When I see Contact list with my name <Name>
     And I see Pending request link in contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -276,12 +276,12 @@ Feature: Conversation List
     And <Contact> stops all calls to me
     And <Contact> verifies that call status to me is changed to destroyed in 60 seconds
     Then I see missed call indicator in list for contact <Contact>
-    When Contact <Contact> send number <Number> of message to user <Name>
+    Given User <Contact> sends <Number> encrypted messages to user Myself
     Then I see missed call indicator in list for contact <Contact>
-    When Contact <Contact1> send number <Number> of message to user <Name>
+    Given User <Contact1> sends <Number> encrypted messages to user Myself
     Then I see missed call indicator got moved down in list for contact <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Contact1  | Number | Color           | CallBackend |
       | user1Name | user2Name | user3Name | 2      | StrongLimeGreen | autocall    |
 
@@ -298,12 +298,12 @@ Feature: Conversation List
     And <Contact> stops all calls to me
     And <Contact> verifies that call status to me is changed to DESTROYED in 60 seconds
     Then I see missed call indicator in list for contact <Contact>
-    When Contact <Contact> send number <Number> of message to user <Name>
+    Given User <Contact> sends <Number> encrypted messages to user Myself
     Then I see missed call indicator in list for contact <Contact>
-    When Contact <Contact1> send number <Number> of message to user <Name>
+    Given User <Contact1> sends <Number> encrypted messages to user Myself
     Then I see missed call indicator got moved down in list for contact <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Contact1  | Number | Color           | CallBackend |
       | user1Name | user2Name | user3Name | 2      | StrongLimeGreen | autocall    |
 
@@ -319,14 +319,14 @@ Feature: Conversation List
     And I tap on contact name <Contact1>
     And I return to the chat list
     Then I dont see unread message indicator in list for contact <Contact>
-    And Contact <Contact> send number 1 of message to user <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     Then I see 1 unread message indicator in list for contact <Contact>
-    And Contact <Contact> send number 1 of message to user <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     Then I see 5 unread message indicator in list for contact <Contact>
-    And Contact <Contact> send number 8 of message to user <Name>
+    Given User <Contact> sends 8 encrypted messages to user Myself
     Then I see 10 unread message indicator in list for contact <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Contact1  | Color           |
       | user1Name | user2Name | user3Name | StrongLimeGreen |
 
@@ -341,14 +341,14 @@ Feature: Conversation List
     When I tap on contact name <Contact>
     And I tap on contact name <Contact1>
     Then I dont see unread message indicator in list for contact <Contact>
-    And Contact <Contact> send number 1 of message to user <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     Then I see 1 unread message indicator in list for contact <Contact>
-    And Contact <Contact> send number 1 of message to user <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     Then I see 5 unread message indicator in list for contact <Contact>
-    And Contact <Contact> send number 8 of message to user <Name>
+    Given User <Contact> sends 8 encrypted message to user Myself
     Then I see 10 unread message indicator in list for contact <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Contact1  | Color           |
       | user1Name | user2Name | user3Name | StrongLimeGreen |
 
@@ -372,7 +372,7 @@ Feature: Conversation List
     And I swipe left in current window
     And I see mute call button on calling bar is selected
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
@@ -380,10 +380,10 @@ Feature: Conversation List
   Scenario Outline: Verify play/pause controls can change playing media state - SoundCloud [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> sent message <SoundCloudLink> to conversation <Name>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap media link
@@ -397,7 +397,7 @@ Feature: Conversation List
     And I see Pause media button next to user <Contact>
     And I see media is playing
 
-    Examples: 
+    Examples:
       | Name      | Contact   | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
@@ -416,7 +416,7 @@ Feature: Conversation List
     And I see Leave button in action menu in Contact List
     And I see Cancel button in action menu in Contact List
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3name | ActionMenuChat |
 
@@ -436,7 +436,7 @@ Feature: Conversation List
     And I see Leave button in action menu in Contact List
     And I see Cancel button in action menu in Contact List
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3name | ActionMenuChat |
 
@@ -454,7 +454,7 @@ Feature: Conversation List
     And I see Block button in action menu in Contact List
     And I see Cancel button in action menu in Contact List
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -473,7 +473,7 @@ Feature: Conversation List
     And I see Block button in action menu in Contact List
     And I see Cancel button in action menu in Contact List
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -487,7 +487,7 @@ Feature: Conversation List
     Then I see conversation <Contact> is selected in list
     And I see dialog page with contact <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -502,7 +502,7 @@ Feature: Conversation List
     Then I see conversation <Contact> is selected in list
     And I see dialog page with contact <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -510,10 +510,10 @@ Feature: Conversation List
   Scenario Outline: Verify that deleted conversation isn't going to archive [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Contact1> sent message <Message> to conversation <Name>
-    Given User <Name> sent message <Message> to conversation <Contact1>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given User Myself sends 1 encrypted message to user <Contact1>
     When I swipe right on a <Contact1>
     And I click delete menu button
     And I confirm delete conversation content
@@ -521,19 +521,19 @@ Feature: Conversation List
     And I open archived conversations on iPad
     Then I dont see conversation <Contact1> in contact list
 
-    Examples: 
-      | Name      | Contact1  | Message |
-      | user1Name | user2Name | testing |
+    Examples:
+      | Name      | Contact1  |
+      | user1Name | user2Name |
 
   @C2545 @regression @id3956
   Scenario Outline: Verify that deleted conversation isn't going to archive [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Contact1> sent message <Message> to conversation <Name>
-    Given User <Name> sent message <Message> to conversation <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given User Myself sends 1 encrypted message to user <Contact1>
     When I swipe right on a <Contact1>
     And I click delete menu button
     And I confirm delete conversation content
@@ -541,9 +541,9 @@ Feature: Conversation List
     And I open archived conversations on iPad
     Then I dont see conversation <Contact1> in contact list
 
-    Examples: 
-      | Name      | Contact1  | Message |
-      | user1Name | user2Name | testing |
+    Examples:
+      | Name      | Contact1  |
+      | user1Name | user2Name |
 
   @C2546 @staging @id3961
   Scenario Outline: Verify deleting 1-to-1 conversation from archive [PORTRAIT]
@@ -562,7 +562,7 @@ Feature: Conversation List
     And I open archived conversations on iPad
     Then I dont see conversation <Contact1> in contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -584,21 +584,21 @@ Feature: Conversation List
     And I open archived conversations on iPad
     Then I dont see conversation <Contact1> in contact list
 
-    Examples: 
-      | Name      | Contact1  | Contact2  | Message | GroupChatName |
-      | user1Name | user2Name | user3Name | testing | ForDeletion   |
+    Examples:
+      | Name      | Contact1  |
+      | user1Name | user2Name |
 
   @C2552 @staging @id3969
   Scenario Outline: Verify posting in a group conversation without content [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Name> sent message <Message> to conversation <GroupChatName>
-    Given Contact <Name> sends image <Image> to group conversation <GroupChatName>
-    Given Contact <Name> ping conversation <GroupChatName>
-    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself securely pings conversation <GroupChatName>
+    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
+    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
+    Given User Myself sends encrypted image <Image> to group conversation <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I click delete menu button
     And I confirm delete conversation content
@@ -608,26 +608,26 @@ Feature: Conversation List
     And I see conversation <GroupChatName> is presented in Search results
     And I tap on conversation <GroupChatName> in search result
     Then I see empty group chat page with users <Contact1>,<Contact2> with only system message
-    When I type the message and send it
-    Then I see message in the dialog
-    And I see only 2 messages
+    When I type the default message and send it
+    Then I see 1 default message in the dialog
+    And I see 2 conversation entries
 
-    Examples: 
-      | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
-      | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | Image       |
+      | user1Name | user2Name | user3Name | ForDeletion   | testing.jpg |
 
   @C2553 @regression @id3970
   Scenario Outline: Verify posting in a group conversation without content [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Name> sent message <Message> to conversation <GroupChatName>
-    Given Contact <Name> sends image <Image> to group conversation <GroupChatName>
-    Given Contact <Name> ping conversation <GroupChatName>
-    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself securely pings conversation <GroupChatName>
+    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
+    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
+    Given User Myself sends encrypted image <Image> to group conversation <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I click delete menu button
     And I confirm delete conversation content
@@ -637,13 +637,13 @@ Feature: Conversation List
     And I see conversation <GroupChatName> is presented in Search results
     And I tap on conversation <GroupChatName> in search result
     Then I see empty group chat page with users <Contact1>,<Contact2> with only system message
-    When I type the message and send it
-    Then I see message in the dialog
-    And I see only 2 messages
+    When I type the default message and send it
+    Then I see 1 default message in the dialog
+    And I see 2 conversation entries
 
-    Examples: 
-      | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
-      | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | Image       |
+      | user1Name | user2Name | user3Name | ForDeletion   | testing.jpg |
 
   @C2542 @regression @id4018
   Scenario Outline: Verify canceling blocking person [PORTRAIT]
@@ -656,7 +656,7 @@ Feature: Conversation List
     And I click Cancel button
     Then I see conversation action menu
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -672,7 +672,7 @@ Feature: Conversation List
     And I click Cancel button
     Then I see conversation action menu
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -687,18 +687,18 @@ Feature: Conversation List
     When I swipe right on a <Contact>
     And I click archive button for conversation <Contact>
     Then I dont see conversation <Contact> in contact list
-    And Contact <Contact> send number 1 of message to user <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     And I dont see conversation <Contact> in contact list
-    And Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
+    Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     Then I dont see conversation <Contact> in contact list
     And I open archived conversations on iPad
     Then I see user <Contact> in contact list
     And I tap on contact name <Contact>
     And I see new photo in the dialog
 
-    Examples: 
-      | Name      | Contact   | Picture     | ConversationType |
-      | user1Name | user2Name | testing.jpg | single user      |
+    Examples:
+      | Name      | Contact   | Picture     |
+      | user1Name | user2Name | testing.jpg |
 
   @C2388 @regression @id3985
   Scenario Outline: Verify archiving silenced conversation [LANDSCAPE]
@@ -712,27 +712,27 @@ Feature: Conversation List
     When I swipe right on a <Contact>
     And I click archive button for conversation <Contact>
     Then I dont see conversation <Contact> in contact list
-    And Contact <Contact> send number 1 of message to user <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     And I dont see conversation <Contact> in contact list
-    And Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
+    Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     Then I dont see conversation <Contact> in contact list
     And I open archived conversations on iPad
     Then I see user <Contact> in contact list
     And I tap on contact name <Contact>
     And I see new photo in the dialog
 
-    Examples: 
-      | Name      | Contact   | Picture     | ConversationType |
-      | user1Name | user2Name | testing.jpg | single user      |
+    Examples:
+      | Name      | Contact   | Picture     |
+      | user1Name | user2Name | testing.jpg |
 
   @C2550 @regression @id3966 @ZIOS-5247
   Scenario Outline: Verify removing the content and leaving from the group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Name> sent message <Message> to conversation <GroupChatName>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I click delete menu button
     And I select Also Leave option on Delete conversation dialog
@@ -745,19 +745,19 @@ Feature: Conversation List
     And I open archived conversations on iPad
     Then I dont see conversation <GroupChatName> in contact list
 
-    Examples: 
-      | Name      | Contact1  | Contact2  | Message | GroupChatName |
-      | user1Name | user2Name | user3Name | testing | ForDeletion   |
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | ForDeletion   |
 
   @C2551 @regression @id3967 @ZIOS-5247
   Scenario Outline: Verify removing the content and leaving from the group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Name> sent message <Message> to conversation <GroupChatName>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Name> sends 1 encrypted message to group conversation <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I click delete menu button
     And I select Also Leave option on Delete conversation dialog
@@ -770,9 +770,9 @@ Feature: Conversation List
     And I open archived conversations on iPad
     Then I dont see conversation <GroupChatName> in contact list
 
-    Examples: 
-      | Name      | Contact1  | Contact2  | Message | GroupChatName |
-      | user1Name | user2Name | user3Name | testing | ForDeletion   |
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | ForDeletion   |
 
   @C2554 @regression @id4006
   Scenario Outline: Verify deleting the history from kicked out conversation [POTRAIT]
@@ -792,7 +792,7 @@ Feature: Conversation List
     And I open archived conversations on iPad
     Then I dont see conversation <GroupChatName> in contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | KICKCHAT      |
 
@@ -815,7 +815,7 @@ Feature: Conversation List
     And I open archived conversations on iPad
     Then I dont see conversation <GroupChatName> in contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | KICKCHAT      |
 
@@ -835,8 +835,8 @@ Feature: Conversation List
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
-    
-    Examples: 
+
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -858,7 +858,7 @@ Feature: Conversation List
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -873,7 +873,7 @@ Feature: Conversation List
     And Myself is connected to <Contact7>
     Then I DONT see Invite more people button
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Number |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | 8      |
 
@@ -889,6 +889,6 @@ Feature: Conversation List
     And Myself is connected to <Contact7>
     Then I DONT see Invite more people button
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Number |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | 8      |

@@ -1,7 +1,7 @@
 Feature: Application
 
   @C2335 @smoke
-  Scenario Outline: Save size and position of window and check for maximum/minimum size
+  Scenario Outline: Save size and position of window and check for maximum minimum size
     Given There are 1 users where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -59,13 +59,13 @@ Feature: Application
     Then I verify about window is not visible
 
   @C2324 @smoke
-  Scenario Outline: Sign Out
+  Scenario Outline: Log Out
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
-    When I click menu bar item "Wire" and menu item "Sign Out"
+    When I click menu bar item "Wire" and menu item "Log Out"
     Then I see Sign In page
 
     Examples: 

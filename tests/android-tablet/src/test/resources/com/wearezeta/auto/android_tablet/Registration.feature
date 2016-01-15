@@ -113,6 +113,7 @@ Feature: Registration
     When I tap OK button on the error message
     And I disable Airplane mode on the device
     And I tap Sign In button
+    And I accept First Time overlay as soon as it is visible
     Then I see the Conversations list with no conversations
 
     Examples:

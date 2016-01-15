@@ -173,7 +173,7 @@ Feature: Settings
     And I close self profile
     When I tap on contact name <Contact>
     And I see dialog page
-    And Contact <Contact2> sends random message to user <Name>
+    Given User <Contact2> sends 1 encrypted message to user Myself
     Then I do not see chathead of contact <Contact2>
     And I swipe right on Dialog page
     And I tap on my name <Name>
@@ -186,7 +186,7 @@ Feature: Settings
     And I close self profile
     When I tap on contact name <Contact>
     And I see dialog page
-    And Contact <Contact2> sends random message to user <Name>
+    Given User <Contact2> sends 1 encrypted message to user Myself
     Then I see chathead of contact <Contact2>
     And I wait for 5 seconds
     Then I do not see chathead of contact <Contact2>
@@ -214,7 +214,7 @@ Feature: Settings
     And I close self profile
     When I tap on contact name <Contact>
     And I see dialog page
-    And Contact <Contact2> sends random message to user <Name>
+    Given User <Contact2> sends 1 encrypted message to user Myself
     Then I do not see chathead of contact <Contact2>
     And I tap on my name <Name>
     And I click on Settings button on personal page
@@ -226,7 +226,7 @@ Feature: Settings
     And I close self profile
     When I tap on contact name <Contact>
     And I see dialog page
-    And Contact <Contact2> sends random message to user <Name>
+    Given User <Contact2> sends 1 encrypted message to user Myself
     Then I do not see chathead of contact <Contact2>
 
     Examples: 

@@ -44,16 +44,14 @@ public class TabletIncomingConnectionsPage extends AndroidTabletPage {
 	public void acceptIncomingConnectionFrom(String name) throws Exception {
 		final By locator = By.xpath(xpathIncomingRequestAcceptButtonByName
 				.apply(name));
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
-				.format("Accept request button for '%s' is not visible", name);
+		verifyLocatorPresence(locator, String.format("Accept request button for '%s' is not visible", name));
 		getDriver().findElement(locator).click();
 	}
 
 	public void ignoreIncomingConnectionFrom(String name) throws Exception {
 		final By locator = By.xpath(xpathIncomingRequestIgnoreButtonByName
 				.apply(name));
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
-				.format("Ignore request button for '%s' is not visible", name);
+		verifyLocatorPresence(locator, String.format("Ignore request button for '%s' is not visible", name));
 		getDriver().findElement(locator).click();
 	}
 

@@ -14,6 +14,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.external.PasswordChangePage;
 import com.wearezeta.auto.web.pages.external.PasswordChangeRequestPage;
@@ -21,7 +22,6 @@ import com.wearezeta.auto.web.pages.external.PasswordChangeRequestSuccessfullPag
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -38,6 +38,13 @@ public class PasswordChangeRequestSteps {
 
 	private Future<String> passwordChangeMessage = null;
 
+	@When("^I navigate to Password Change Reset page for (.*)")
+	public void INavigateToPasswordChangeResetPageFor(String agent) throws Exception {
+		webappPagesCollection.getPage(PasswordChangePage.class).setUrl(
+				WebAppConstants.STAGING_SITE_ROOT + "/forgot/?agent=" + agent);
+		webappPagesCollection.getPage(PasswordChangePage.class).navigateTo();
+	}
+	
 	/**
 	 * Verifies whether Password Change Request page is visible
 	 * 
@@ -66,6 +73,12 @@ public class PasswordChangeRequestSteps {
 				FindBy.EMAIL_ALIAS);
 		webappPagesCollection.getPage(PasswordChangeRequestPage.class)
 				.setEmail(emailOrAlias);
+	}
+	
+	@When("^I enter unregistered email$")
+	public void IEnterUnregisteredEmail() throws Exception {
+		webappPagesCollection.getPage(PasswordChangeRequestPage.class)
+				.setEmail("smoketester+sm0k3t3st3r@wire.com");
 	}
 
 	private static final int PASSWORD_MSG_TIMWOUT_SECONDS = 60;
@@ -125,6 +138,14 @@ public class PasswordChangeRequestSteps {
 						.isConfirmationTextVisible(), is(true));
 	}
 
+	@Then("^I dont see Password Change Request Succeeded page$")
+	public void IDontSeeRequestSucceededPage() throws Exception {
+		assertThat(
+				webappPagesCollection.getPage(
+						PasswordChangeRequestSuccessfullPage.class)
+						.isConfirmationTextVisible(), is(false));
+	}
+	
 	/**
 	 * Open Password Change link from the received email. This step requires
 	 * email listener to be already started before. Otherwise it will throw
@@ -165,6 +186,19 @@ public class PasswordChangeRequestSteps {
 		final PasswordResetMessage wrappedMsg = new PasswordResetMessage(
 				this.passwordChangeMessage.get());
 		String link = wrappedMsg.extractPasswordResetLink() + "&agent=" + agent;
+		webappPagesCollection.getPage(PasswordChangePage.class).setUrl(link);
+		webappPagesCollection.getPage(PasswordChangePage.class).navigateTo();
+	}
+	
+	@When("^I open Password Change link from the received email with wrong checksum for (.*)$")
+	public void IOpenPasswordChangeLinkFromEmailForWithWrongChecksum(String agent) throws Exception {
+		if (this.passwordChangeMessage == null) {
+			throw new RuntimeException(
+					"Please call the corresponding step to initialize email listener first");
+		}
+		final PasswordResetMessage wrappedMsg = new PasswordResetMessage(
+				this.passwordChangeMessage.get());
+		String link = wrappedMsg.extractPasswordResetLink() + "_WRONG_CHECKSUM_" + "&agent=" + agent;
 		webappPagesCollection.getPage(PasswordChangePage.class).setUrl(link);
 		webappPagesCollection.getPage(PasswordChangePage.class).navigateTo();
 	}

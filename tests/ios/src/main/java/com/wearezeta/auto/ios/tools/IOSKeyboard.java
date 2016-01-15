@@ -13,7 +13,7 @@ public class IOSKeyboard {
 	private static final String TAP_KEYBOARD_BUTTON = "target.frontMostApp().keyboard().elements()[\"%s\"].tap();";
 	private static final KeyboardState UNKNOWN_STATE = new KeyboardStateUnknown();
 	private static final int TAP_DELAY = 500;
-	private List<KeyboardState> CACHED_STATES = new ArrayList<KeyboardState>();
+	private List<KeyboardState> CACHED_STATES = new ArrayList<>();
 	private static final String DEFAULT_RETURN_NAME = "Send";
 	
 	private static final Logger log = ZetaLogger.getLog(IOSKeyboard.class
@@ -22,10 +22,6 @@ public class IOSKeyboard {
 
 	public String getReturnName() {
 		return returnName;
-	}
-
-	public void setReturnName(String returnName) {
-		this.returnName = returnName;
 	}
 
 	private List<KeyboardState> getStatesList() {

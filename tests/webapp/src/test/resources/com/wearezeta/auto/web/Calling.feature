@@ -19,13 +19,13 @@ Feature: Calling
     And I click ping button
     And I send picture <PictureName> to the current conversation
     Then I see random message in conversation
-    And I see ping message <PING>
+    And I see <PING> action in conversation
     And I see sent picture <PictureName> in the conversation view
     And I end the call
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | PING   | PictureName               | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | pinged | userpicture_landscape.jpg | chrome      | 60      |
+      | Login      | Password      | Name      | Contact   | PING       | PictureName               | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | you pinged | userpicture_landscape.jpg | chrome      | 60      |
 
   @C1772 @regression @calling @calling_debug
   Scenario Outline: Verify I can get pinged by callee during call
@@ -42,9 +42,9 @@ Feature: Calling
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the calling bar
     And User <Contact> pinged in the conversation with <Contact>
-    And I see ping message <PING>
+    And I see <PING> action in conversation
     And User <Contact> pinged twice in the conversation with <Contact>
-    And I see ping message <HOTPING>
+    And I see <HOTPING> action in conversation
     And I end the call
 
     Examples: 
@@ -394,11 +394,11 @@ Feature: Calling
     Then I wait for 2 seconds
     And I end the call
     When I open conversation with <Contact>
-    Then I see conversation with my missed call
+    Then I see <Message> action in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact   | Message    |
+      | user1Email | user1Password | user1Name | user2Name | you called |
 
   # This has to work even in browsers, which don't support calling
   @C1766 @regression @calling @calling_debug
@@ -416,11 +416,11 @@ Feature: Calling
     Then I see missed call notification for conversation <Contact1>
     When I open conversation with <Contact1>
     Then I do not see missed call notification for conversation <Contact1>
-    Then I see conversation with missed call from <Contact1>
+    Then I see <MISSED> action for <Contact1> in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | autocall    |
+      | Login      | Password      | Name      | Contact1  | MISSED | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name | called | autocall    |
 
   @C1749 @regression @calling @calling_debug
   Scenario Outline: People trying to call me while I'm not signed in

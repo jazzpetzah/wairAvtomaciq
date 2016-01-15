@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.io.IOException;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
@@ -9,31 +8,36 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class VideoPlayerPage extends IOSPage {
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathVideoMainPage)
+	private static final String xpathVideoMainPage = "//UIAWebView/UIAButton[@name='Home']";
+	@FindBy(xpath = xpathVideoMainPage)
 	private WebElement videoPlayerMainWindow;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameVideoDoneButton)
+	private static final String nameVideoDoneButton = "Done";
+    @FindBy(name = nameVideoDoneButton)
 	private WebElement videoDoneButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameVideoSlider)
+	private static final String nameVideoSlider = "Track position";
+    @FindBy(name = nameVideoSlider)
 	private WebElement videoSlider;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameVideoFullScreenButton)
+	private static final String nameVideoFullScreenButton = "Full screen";
+    @FindBy(name = nameVideoFullScreenButton)
 	private WebElement videoFullScreenButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameVideoPreviousButton)
+	private static final String nameVideoPreviousButton = "Previous track";
+    @FindBy(name = nameVideoPreviousButton)
 	private WebElement videoPreviousButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameVideoPauseButton)
+	private static final String nameVideoPauseButton = "PauseButton";
+    @FindBy(name = nameVideoPauseButton)
 	private WebElement videoPauseButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameVideoNextButton)
+	private static final String nameVideoNextButton = "Next track";
+    @FindBy(name = nameVideoNextButton)
 	private WebElement videoNextButton;
 
 	public VideoPlayerPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -41,62 +45,32 @@ public class VideoPlayerPage extends IOSPage {
 	}
 
 	public void waitForVideoPlayerPage() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.name(IOSLocators.nameVideoFullScreenButton));
+		DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(nameVideoFullScreenButton));
 	}
 
 	public boolean isVideoPlayerPageOpened() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(IOSLocators.xpathVideoMainPage));
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.xpath(xpathVideoMainPage));
 	}
 
 	public void tapVideoPage() {
 		videoPlayerMainWindow.click();
 	}
 
-	public DialogPage clickVideoDoneButton() throws Exception {
-		DialogPage page = null;
+	public void clickVideoDoneButton() throws Exception {
 		DriverUtils.tapByCoordinates(this.getDriver(), videoDoneButton);
 		try {
-			DriverUtils.tapByCoordinates(this.getDriver(),
-					videoDoneButton);
+			DriverUtils.tapByCoordinates(this.getDriver(), videoDoneButton);
 		} catch (WebDriverException e) {
-
+			// ignore silently
 		}
-		page = new DialogPage(this.getLazyDriver());
-		return page;
-
 	}
 
 	public void clickPauseButton() throws Exception {
-		if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(IOSLocators.nameVideoPauseButton))) {
+		if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(nameVideoPauseButton))) {
 			videoPauseButton.click();
 		} else {
 			tapVideoPage();
 			videoPauseButton.click();
 		}
-
 	}
-
-	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
-		IOSPage page = null;
-		switch (direction) {
-		case DOWN: {
-			break;
-		}
-		case UP: {
-			break;
-		}
-		case LEFT: {
-			break;
-		}
-		case RIGHT: {
-			break;
-		}
-		}
-		return page;
-	}
-
 }

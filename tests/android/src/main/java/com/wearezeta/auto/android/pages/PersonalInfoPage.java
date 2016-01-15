@@ -95,32 +95,30 @@ public class PersonalInfoPage extends AndroidPage {
     }
 
     public void tapChangePhotoButton() throws Exception {
-        assert DriverUtils.waitUntilElementClickable(getDriver(),
-                changePhotoBtn);
+        verifyLocatorPresence(By.id(idChangePhotoBtn), "Change Photo button is not visible");
         changePhotoBtn.click();
     }
 
     public void tapTakePhotoButton() throws Exception {
-        assert DriverUtils.waitUntilElementClickable(getDriver(), takePhotoBtn);
+        verifyLocatorPresence(By.id(idTakePhotoButton), "Take Photo button is not visible");
         takePhotoBtn.click();
     }
 
     public void tapGalleryButton() throws Exception {
-        assert DriverUtils.waitUntilElementClickable(getDriver(), galleryBtn);
+        verifyLocatorPresence(By.id(idGalleryBtn), "Open Gallery button is not visible");
         galleryBtn.click();
     }
 
     public void tapConfirmButton() throws Exception {
         this.hideKeyboard();
-        assert DriverUtils.waitUntilElementClickable(getDriver(), confirmBtn);
+        verifyLocatorPresence(By.xpath(DialogPage.xpathConfirmOKButton), "Confirmation button is not visible");
         // Wait for animation
         Thread.sleep(1000);
         confirmBtn.click();
     }
 
     public void tapEllipsisButton() throws Exception {
-        assert DriverUtils
-                .waitUntilElementClickable(getDriver(), ellipsisButton);
+        verifyLocatorPresence(By.xpath(xpathProfileOptionsButton), "Ellipsis button is not visible");
         try {
             ellipsisButton.click();
         } catch (ElementNotVisibleException e) {
@@ -136,8 +134,7 @@ public class PersonalInfoPage extends AndroidPage {
 
     public void tapProfileMenuItem(String itemName) throws Exception {
         final By locator = By.xpath(xpathProfileMenuItem.apply(itemName));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) :
-                String.format("Menu item '%s' is not present on the page", itemName);
+        verifyLocatorPresence(locator, String.format("Menu item '%s' is not present on the page", itemName));
         getDriver().findElement(locator).click();
     }
 
@@ -169,13 +166,11 @@ public class PersonalInfoPage extends AndroidPage {
     }
 
     public boolean isSettingsVisible() throws Exception {
-        return DriverUtils
-                .isElementPresentAndDisplayed(getDriver(), settingBox);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathSettingsBox));
     }
 
     public void pressCloseButton() throws Exception {
-        assert DriverUtils.waitUntilElementClickable(getDriver(),
-                selfProfileClose);
+        verifyLocatorPresence(By.xpath(xpathSelfProfileClose), "Close Self Profile button is not visible");
         selfProfileClose.click();
     }
 

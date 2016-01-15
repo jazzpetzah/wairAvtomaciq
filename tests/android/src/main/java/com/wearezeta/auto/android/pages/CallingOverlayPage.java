@@ -105,8 +105,7 @@ public class CallingOverlayPage extends AndroidPage {
     }
 
     public void ignoreCall() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idIgnoreButton)) : "Ignore button is not visible";
+        verifyLocatorPresence(By.id(idIgnoreButton), "Ignore button is not visible");
         ignoreButton.click();
     }
 
@@ -181,11 +180,9 @@ public class CallingOverlayPage extends AndroidPage {
                 VISIBILITY_TIMEOUT_SECONDS);
     }
 
-    public DialogPage joinGroupCall() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idGroupCallingJoinOverlayContainer)) : "JOIN CALL button is not visible";
+    public void joinGroupCall() throws Exception {
+        verifyLocatorPresence(By.id(idGroupCallingJoinOverlayContainer), "JOIN CALL button is not visible");
         joinGroupCallButton.click();
-        return new DialogPage(getLazyDriver());
     }
 
     public boolean ongoingCallMicrobarIsVisible() throws Exception {

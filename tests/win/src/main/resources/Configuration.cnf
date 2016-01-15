@@ -1,4 +1,4 @@
-#Configuration file for OS X tests
+#Configuration file for Windows tests
 #Configure before running tests
 osxAppiumUrl=${Url}
 osxApplicationPath=${appPath}
@@ -9,3 +9,6 @@ defaultEmail=${defaultEmail}
 defaultImagesPath=${Root}/${defaultImagesPath}
 wireConfigDomain=${wireConfigDomain}
 backendType=${com.wire.environment}
+rcNotificationsRecepients=${rcNotificationsRecepients}
+testrailUser=smoketester+webapp@wire.com
+testrailToken=tCzqgGGNbbgAHsm4bYOV-0NAyG4.RwaoX7dOwAvwM

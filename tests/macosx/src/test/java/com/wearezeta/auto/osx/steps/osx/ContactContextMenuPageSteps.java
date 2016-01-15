@@ -1,10 +1,15 @@
 package com.wearezeta.auto.osx.steps.osx;
 
+import org.junit.Assert;
+
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.osx.pages.osx.ContactContextMenuPage;
 import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
+import com.wearezeta.auto.web.pages.ContactListPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
 public class ContactContextMenuPageSteps {
@@ -17,6 +22,31 @@ public class ContactContextMenuPageSteps {
 
 	@SuppressWarnings("unused")
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
+
+	/**
+	 * Opens the right-click menu for a specific conversation
+	 *
+	 * @param name
+	 *            the conversation name to open the context menu for
+	 *
+	 * @step. ^I open context menu of conversation (.*)$
+	 *
+	 * @throws java.lang.Exception
+	 * @throws AssertionError
+	 *             if contact list is not loaded or avatar does not appear at
+	 *             the top of Contact List
+	 */
+	@Given("^I open context menu of conversation (.*)$")
+	public void IOpenContextMenuOfContact(String name) throws Exception {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		ContactListPage contactListPage = webappPagesCollection
+				.getPage(ContactListPage.class);
+		Assert.assertTrue("No contact list loaded.",
+				contactListPage.waitForContactListVisible());
+		webappPagesCollection.getInstance().getPage(ContactListPage.class)
+				.openContextMenuForContact(name);
+	}
 
 	/**
 	 * Click the block in context menu

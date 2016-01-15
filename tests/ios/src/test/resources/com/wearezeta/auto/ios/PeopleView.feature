@@ -1,7 +1,7 @@
 Feature: People View
 
   @C985 @regression @id1393
-  Scenario Outline: Start group chat with users from contact list
+  Scenario Outline: (ZIOS-5442) Start group chat with users from contact list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
@@ -23,7 +23,7 @@ Feature: People View
     And I wait for 2 seconds
     Then I see group chat page with users <Contact1>,<Contact2>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -48,7 +48,7 @@ Feature: People View
     Then I see that conversation has <Number> people
     Then I see <Number> participants avatars
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Number | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | 4      | TESTCHAT      |
 
@@ -69,7 +69,7 @@ Feature: People View
     And I tap on group chat with name <GroupChatName>
     And I see You Left message in group chat
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
 
@@ -89,7 +89,7 @@ Feature: People View
     And I click close user profile page button
     Then I see that <Contact2> is not present on group chat info page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
 
@@ -112,7 +112,7 @@ Feature: People View
     And I see the correct participant <Contact1> avatar
     And I see the correct participant <Contact2> avatar
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | ParticipantNumber | Picture                      | Color        | Color1       |
       | user1Name | user2Name | user3Name | 3                 | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow |
 
@@ -132,7 +132,7 @@ Feature: People View
     And I return to the chat list
     And I see in contact list group chat named <ChatName>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | ChatName | GroupChatName |
       | user1Name | user2Name | user3Name | QAtest   | TESTCHAT      |
 
@@ -148,7 +148,7 @@ Feature: People View
     And I select contact <Contact2>
     Then I see <Contact2> user profile page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -166,7 +166,7 @@ Feature: People View
     And I tap on <GroupCreator> and check email visible and name
     And I tap on <NonConnectedContact> and check email invisible and name
 
-    Examples: 
+    Examples:
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
       | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
@@ -181,10 +181,10 @@ Feature: People View
     And I open group conversation details
     And I select contact <Contact1>
     And I tap on start dialog button on other user profile page
-    And I type the message and send it
-    Then I see message in the dialog
+    And I type the default message and send it
+    Then I see 1 default message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
 
@@ -202,7 +202,7 @@ Feature: People View
     And I tap on not connected contact <NonConnectedContact>
     Then I see connect to <NonConnectedContact> dialog
 
-    Examples: 
+    Examples:
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
       | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
@@ -232,7 +232,7 @@ Feature: People View
     And I press keyboard Delete button
     Then I see user <Contact2> on People picker page is NOT selected
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -260,7 +260,7 @@ Feature: People View
     And I see Contact list with my name <Name>
     And I see in contact list group chat with <Contact1> <Contact2> <Contact3>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
@@ -295,7 +295,7 @@ Feature: People View
     And I see Contact list with my name <Name>
     And I don't see in contact list group chat with <Contact1> <Contact2> <Contact3>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
@@ -319,7 +319,7 @@ Feature: People View
     And I see Contact list with my name <Name>
     Then I see conversation <Contact> is silenced
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Color  | NewName |
       | user1Name | user2Name | Violet | SILENCE |
 
@@ -344,7 +344,7 @@ Feature: People View
     And I see Contact list with my name <Name>
     Then I see conversation <Contact> is unsilenced
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Color  | NewName |
       | user1Name | user2Name | Violet | SILENCE |
 
@@ -364,7 +364,7 @@ Feature: People View
     Then I dont see conversation <Contact1> in contact list
     Then I see conversation <Contact2> is selected in list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -385,7 +385,7 @@ Feature: People View
     And I return to the chat list
     Then I see conversation <Contact1> is selected in list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | UnblockFromGroup |
 
@@ -411,7 +411,7 @@ Feature: People View
     And I fill in Search field user name <Contact3>
     Then I see that user <Contact3> is NOT found on People picker page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user3Name | OnlyConnected |
 
@@ -420,10 +420,10 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
-    Given User <Name> sent message <Message> to conversation <GroupChatName>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
+    Given User Myself sends 1 message to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button
@@ -433,18 +433,18 @@ Feature: People View
     And I open archived conversations
     Then I dont see conversation <GroupChatName> in contact list
 
-    Examples: 
-      | Name      | Contact1  | Contact2  | Message | GroupChatName |
-      | user1Name | user2Name | user3Name | testing | ForDeletion   |
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | ForDeletion   |
 
   @C1831 @regression @rc @id3972 @ZIOS-5247
   Scenario Outline: Verify removing the content and leaving from the group conversation via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Name> sent message <Message> to conversation <GroupChatName>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Name> sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button
@@ -459,7 +459,7 @@ Feature: People View
     And I open archived conversations
     Then I dont see conversation <GroupChatName> in contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Message | GroupChatName |
       | user1Name | user2Name | user3Name | testing | ForDeletion   |
 
@@ -468,12 +468,12 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Name> sent message <Message> to conversation <GroupChatName>
-    Given Contact <Name> sends image <Image> to group conversation <GroupChatName>
-    Given Contact <Name> ping conversation <GroupChatName>
-    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself securely pings conversation <GroupChatName>
+    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
+    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
+    Given User Myself sends encrypted image <Picture> to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button
@@ -486,23 +486,23 @@ Feature: People View
     When I tap on conversation <GroupChatName> in search result
     Then I see group chat page with users <Contact1>,<Contact2>
 
-    Examples: 
-      | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
-      | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
+      | user1Name | user2Name | user3Name | ForDeletion   | testing.jpg |
 
   @C1832 @regression @rc @id3973
   Scenario Outline: Verify removing the content from 1-to-1 via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
-    Given User <Name> sent message <Message> to conversation <Contact1>
-    Given Contact <Contact1> sends image <Image> to single user conversation <Name>
-    Given Contact <Name> ping conversation <Contact1>
-    Given User <Contact1> sent message <Message> to conversation <Name>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User Myself securely pings conversation <Contact1>
+    Given User Myself sends 1 encrypted message to user <Contact1>
+    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I see only 5 messages
+    And I see 5 conversation entries
     And I open conversation details
     And I press conversation menu button
     And I click delete menu button
@@ -515,22 +515,22 @@ Feature: People View
     And I click open conversation button on People picker page
     Then I see the only message in dialog is system message CONNECTED TO <Contact1>
 
-    Examples: 
-      | Name      | Contact1  | Message | GroupChatName | Image       |
-      | user1Name | user2Name | testing | ForDeletion   | testing.jpg |
+    Examples:
+      | Name      | Contact1  | Image       |
+      | user1Name | user2Name | testing.jpg |
 
   @C849 @regression @id3320
   Scenario Outline: Verify that left conversation is shown in the Archive
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Name> sent message <Message> to conversation <GroupChatName>
-    Given Contact <Contact1> sends image <Image> to group conversation <GroupChatName>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see Contact list with my name <Name>
+    Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
+    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
-    And I see only 3 messages
+    And I see 3 conversation entries
     And I open group conversation details
     And I press leave converstation button
     And I see leave conversation alert
@@ -538,9 +538,9 @@ Feature: People View
     And I open archived conversations
     And I see user <GroupChatName> in contact list
     And I tap on group chat with name <GroupChatName>
-    Then I see only 4 messages
+    Then I see 4 conversation entries
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Message | Image       |
       | user1Name | user2Name | user3Name | TESTCHAT      | testing | testing.jpg |
 
@@ -559,7 +559,7 @@ Feature: People View
     Then I see <Contact3> user pending profile page
     Then I see remove from group conversation button
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | TESTCHAT      |
 
@@ -577,7 +577,7 @@ Feature: People View
     And I click Cancel button
     Then I see conversation action menu
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -595,6 +595,6 @@ Feature: People View
     When I try to change group conversation name to random with length <MaxGroupChatNameLenght>
     Then I see correct conversation name <GroupChatName>
 
-    Examples: 
-      | Name      | Contact1  | Contact2   | GroupChatName | MaxGroupChatNameLenght |
-      | user1Name | user2Name | user3Name  | TESTCHAT      | 65                     |
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | MaxGroupChatNameLenght |
+      | user1Name | user2Name | user3Name | TESTCHAT      | 65                     |

@@ -13,10 +13,6 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class PeoplePickerPage extends AndroidPage {
-
-    private static final Function<String, String> xpathTopConversationContactByName = name -> String
-            .format("//*[@value='%s']", name.toUpperCase());
-
     public static final String idParticipantsClose = "gtv__participants__close";
 
     public static final String idPickerSearch = "puet_pickuser__searchbox";
@@ -34,14 +30,20 @@ public class PeoplePickerPage extends AndroidPage {
     private WebElement quickMenuCallButton;
 
     private static final Function<String, String> xpathPeoplePickerGroupByName = name -> String
-            .format("//*[@id='ttv_pickuser_searchconversation_name' and @value='%s']",
-                    name);
+            .format("//*[@id='ttv_pickuser_searchconversation_name' and @value='%s']", name);
 
     public static final Function<String, String> xpathPeoplePickerContactByName = name -> String
             .format("//*[@id='ttv_pickuser__searchuser_name' and @value='%s']/parent::*/parent::*",
                     name);
 
-    private static final String idTopPeopleRoot = "rv_top_users";
+    public static final String xpathTopPeopleAvatars = "//*[@id='cwtf__startui_top_user']";
+
+    public static final Function<String, String> xpathTopPeopleAvatarByName = name -> String
+            .format("//*[@id='cwtf__startui_top_user' and .//*[@value='%s']]", name.toUpperCase());
+
+    public static final Function<String, String> xpathFoundAvatarByName = name -> String
+            .format("//*[@id='ttv_pickuser__searchuser_name' and @value='%s']"
+                    + "/preceding-sibling::*[@id='cv_pickuser__searchuser_chathead']", name);
 
     @FindBy(id = idPeoplePickerClearbtn)
     private WebElement pickerClearBtn;
@@ -111,9 +113,8 @@ public class PeoplePickerPage extends AndroidPage {
     }
 
     public void tapOnContactInTopPeoples(String name) throws Exception {
-        final By locator = By.xpath(xpathTopConversationContactByName
-                .apply(name));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        final By locator = By.xpath(xpathTopPeopleAvatarByName.apply(name));
+        verifyLocatorPresence(locator, String.format("Top People item '%s' is not visible", name));
         this.getDriver().findElement(locator).click();
     }
 
@@ -127,20 +128,18 @@ public class PeoplePickerPage extends AndroidPage {
     }
 
     public boolean isNoResultsFoundVisible() throws Exception {
-        return DriverUtils.isElementPresentAndDisplayed(getDriver(), noResults);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idNoResultsFound));
     }
 
     public boolean isTopPeopleHeaderVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idTopPeopleRoot));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathTopPeopleAvatars));
     }
 
     public boolean waitUntilTopPeopleHeaderInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-                By.id(idTopPeopleRoot));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.xpath(xpathTopPeopleAvatars));
     }
 
-    private static int MAX_SCROLLS = 3;
+    private static final int MAX_SCROLLS = 3;
 
     private boolean scrollUntilLocatorVisible(By locator) throws Exception {
         this.hideKeyboard();
@@ -170,7 +169,7 @@ public class PeoplePickerPage extends AndroidPage {
         final By locator = By.xpath(xpathPeoplePickerGroupByName.apply(name));
         if (!scrollUntilLocatorVisible(locator)) {
             throw new IllegalStateException(
-                String.format("A group '%s' is not present on People Picker page", name));
+                    String.format("A group '%s' is not present on People Picker page", name));
         }
         this.getDriver().findElement(locator).click();
     }
@@ -204,8 +203,7 @@ public class PeoplePickerPage extends AndroidPage {
     }
 
     public void tapClearButton() throws Exception {
-        assert DriverUtils.waitUntilElementClickable(getDriver(),
-                pickerClearBtn);
+        verifyLocatorPresence(By.id(idPeoplePickerClearbtn), "Clear button is not visible");
         pickerClearBtn.click();
     }
 

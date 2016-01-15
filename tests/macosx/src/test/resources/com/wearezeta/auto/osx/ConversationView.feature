@@ -9,9 +9,9 @@ Feature: Conversation View
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     And I click menu bar item "Conversation" and menu item "Ping"
-    Then I see ping message <PING>
+    Then I see <PING> action in conversation
     And I click menu bar item "Conversation" and menu item "Ping"
-    Then I see ping message <PING_AGAIN>
+    Then I see <PING_AGAIN> action in conversation
 
     Examples: 
       | Login      | Password      | Name      | Contact   | PING   | PING_AGAIN   |
@@ -26,9 +26,9 @@ Feature: Conversation View
     Then I see my avatar on top of Contact list
     When I open conversation with <Contact>
     And I type shortcut combination to ping
-    Then I see ping message <PING>
+    Then I see <PING> action in conversation
     When I type shortcut combination to ping
-    Then I see ping message <PING_AGAIN>
+    Then I see <PING_AGAIN> action in conversation
 
     Examples: 
       | Login      | Password      | Name      | Contact   | PING   | PING_AGAIN   |
@@ -74,9 +74,9 @@ Feature: Conversation View
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     And I click menu bar item "Conversation" and menu item "Ping"
-    Then I see ping message <PING>
+    Then I see <PING> action in conversation
     And I click menu bar item "Conversation" and menu item "Ping"
-    Then I see ping message <PING_AGAIN>
+    Then I see <PING_AGAIN> action in conversation
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  | PING   | PING_AGAIN   |
@@ -92,9 +92,9 @@ Feature: Conversation View
     Then I see my avatar on top of Contact list
     When I open conversation with <ChatName>
     And I type shortcut combination to ping
-    Then I see ping message <PING>
+    Then I see <PING> action in conversation
     When I type shortcut combination to ping
-    Then I see ping message <PING_AGAIN>
+    Then I see <PING_AGAIN> action in conversation
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  | PING   | PING_AGAIN   |

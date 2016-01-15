@@ -201,6 +201,15 @@ public class OSXCommonUtils extends CommonUtils {
 		return executeOsXCommand(commands);
 	}
 
+	public static int clearAddressbookPermission() throws Exception {
+		final String[] commands = new String[] {
+				"/bin/sh",
+				"-c",
+				"tccutil reset AddressBook"};
+		LOG.debug("executing command: " + Arrays.toString(commands));
+		return executeOsXCommand(commands);
+	}
+
 	public static int killAllApps() throws Exception {
 		final String[] commands = new String[] { "/bin/sh", "-c",
 				String.format("killall %s", "Electron") };

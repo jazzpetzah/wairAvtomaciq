@@ -4,10 +4,8 @@ import io.appium.java_client.AppiumDriver;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -63,7 +61,7 @@ public class DriverUtils {
     public static boolean isElementPresentAndDisplayed(RemoteWebDriver driver,
                                                        final WebElement element) {
         try {
-            return element.isDisplayed() && isElementInScreenRect(driver, element);
+            return (element.isDisplayed() && isElementInScreenRect(driver, element));
         } catch (NoSuchElementException e) {
             return false;
         }
@@ -73,16 +71,15 @@ public class DriverUtils {
                                                  final WebElement el) {
         final Rectangle elementRect = new Rectangle(el.getLocation().x,
                 el.getLocation().y, el.getSize().width, el.getSize().height);
-        final Rectangle screenRect = new Rectangle(0, 0, driver.manage()
-                .window().getSize().width,
+        final Rectangle screenRect = new Rectangle(0, 0,
+                driver.manage().window().getSize().width,
                 driver.manage().window().getSize().height);
         return elementRect.intersects(screenRect);
     }
 
     public static boolean waitUntilLocatorIsDisplayed(RemoteWebDriver driver,
                                                       By by) throws Exception {
-        return waitUntilLocatorIsDisplayed(driver, by,
-                getDefaultLookupTimeoutSeconds());
+        return waitUntilLocatorIsDisplayed(driver, by, getDefaultLookupTimeoutSeconds());
     }
 
     public static boolean waitUntilLocatorIsDisplayed(RemoteWebDriver driver,
@@ -97,9 +94,8 @@ public class DriverUtils {
                     .ignoring(InvalidElementStateException.class);
             try {
                 return wait.until(drv -> {
-                    return (drv.findElements(by).size() > 0)
-                            && isElementPresentAndDisplayed(driver,
-                            drv.findElement(by));
+                    final List<WebElement> foundElements = drv.findElements(by);
+                    return (foundElements.size() > 0) && isElementPresentAndDisplayed(driver, foundElements.get(0));
                 });
             } catch (TimeoutException e) {
                 return false;
@@ -115,10 +111,6 @@ public class DriverUtils {
                 getDefaultLookupTimeoutSeconds());
     }
 
-    private static boolean isSomeOfElementDimensionsZero(WebElement el) {
-        return el.getSize().getHeight() == 0 || el.getSize().getWidth() == 0;
-    }
-
     public static boolean waitUntilLocatorDissapears(RemoteWebDriver driver,
                                                      final By by, int timeoutSeconds) throws Exception {
         turnOffImplicitWait(driver);
@@ -129,9 +121,8 @@ public class DriverUtils {
                     .ignoring(NoSuchElementException.class);
             return wait.until(drv -> {
                 try {
-                    return (drv.findElements(by).size() == 0)
-                            || !isElementPresentAndDisplayed(driver, drv.findElement(by))
-                            || isSomeOfElementDimensionsZero(drv.findElement(by));
+                    final List<WebElement> foundElements = drv.findElements(by);
+                    return (foundElements.size() == 0) || !isElementPresentAndDisplayed(driver, foundElements.get(0));
                 } catch (SessionNotFoundException e) {
                     log.debug(e.getMessage());
                     return true;
@@ -162,9 +153,7 @@ public class DriverUtils {
                     .ignoring(NoSuchElementException.class)
                     .ignoring(StaleElementReferenceException.class)
                     .ignoring(InvalidElementStateException.class);
-            return wait.until(drv -> {
-                return (drv.findElements(locator).size() > 0);
-            });
+            return wait.until(drv -> drv.findElements(locator).size() > 0);
         } catch (TimeoutException ex) {
             return false;
         } finally {
@@ -285,44 +274,6 @@ public class DriverUtils {
                 SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, DEFAULT_PERCENTAGE);
     }
 
-    public static void swipeUp(AppiumDriver<? extends WebElement> driver,
-                               WebElement element, int time, int percentX, int percentY) {
-        final Point coords = element.getLocation();
-        final Dimension elementSize = element.getSize();
-
-        final int xOffset = elementSize.width * percentX / 100;
-        final int yOffset = elementSize.height * percentY / 100;
-
-        driver.swipe(coords.x + xOffset, coords.y + yOffset,
-                coords.x + xOffset, coords.y, time);
-    }
-
-    public static final int SWIPE_Y_DEFAULT_PERCENTAGE_VERTICAL = 100;
-
-    public static void swipeUp(AppiumDriver<? extends WebElement> driver,
-                               WebElement element, int time) {
-        swipeUp(driver, element, time, DEFAULT_PERCENTAGE,
-                SWIPE_Y_DEFAULT_PERCENTAGE_VERTICAL);
-    }
-
-    public static void swipeDown(AppiumDriver<? extends WebElement> driver,
-                                 WebElement element, int time, int percentX, int percentY) {
-        final Point coords = element.getLocation();
-        final Dimension elementSize = element.getSize();
-
-        final int xOffset = elementSize.width * percentX / 100;
-        final int yOffset = elementSize.height * percentY / 100;
-
-        driver.swipe(coords.x + xOffset, coords.y, coords.x + xOffset, coords.y
-                + yOffset, time);
-    }
-
-    public static void swipeDown(AppiumDriver<? extends WebElement> driver,
-                                 WebElement element, int time) {
-        swipeDown(driver, element, time, DEFAULT_PERCENTAGE,
-                SWIPE_Y_DEFAULT_PERCENTAGE_VERTICAL);
-    }
-
     public static void swipeElementPointToPoint(
             AppiumDriver<? extends WebElement> driver, WebElement element,
             int time, int startPercentX, int startPercentY, int endPercentX,
@@ -351,7 +302,6 @@ public class DriverUtils {
         final int endY = screenSize.height * endPercentY / 100;
 
         driver.swipe(startX, startY, endX, endY, time);
-
     }
 
     public static final int DEFAULT_SWIPE_DURATION = 1000; // milliseconds
@@ -369,11 +319,6 @@ public class DriverUtils {
     }
 
     public static void genericTap(AppiumDriver<? extends WebElement> driver,
-                                  int time, int percentX, int percentY) {
-        genericTap(driver, time, DEFAULT_FINGERS, percentX, percentY);
-    }
-
-    public static void genericTap(AppiumDriver<? extends WebElement> driver,
                                   int time, int fingers, int percentX, int percentY) {
         final Dimension screenSize = driver.manage().window().getSize();
         final int xCoords = screenSize.width * percentX / 100;
@@ -383,16 +328,6 @@ public class DriverUtils {
 
     public static final int SWIPE_X_DEFAULT_PERCENTAGE_START = 10;
     public static final int SWIPE_X_DEFAULT_PERCENTAGE_END = 90;
-    public static final int SWIPE_Y_DEFAULT_PERCENTAGE_START = 10;
-    public static final int SWIPE_Y_DEFAULT_PERCENTAGE_END = 90;
-
-    public static void swipeRightCoordinates(
-            AppiumDriver<? extends WebElement> driver, int time)
-            throws Exception {
-        swipeByCoordinates(driver, time, SWIPE_X_DEFAULT_PERCENTAGE_START,
-                DEFAULT_PERCENTAGE, SWIPE_X_DEFAULT_PERCENTAGE_END,
-                DEFAULT_PERCENTAGE);
-    }
 
     public static void swipeRightCoordinates(
             AppiumDriver<? extends WebElement> driver, int time, int percentY)
@@ -402,50 +337,10 @@ public class DriverUtils {
     }
 
     public static void swipeLeftCoordinates(
-            AppiumDriver<? extends WebElement> driver, int time)
-            throws Exception {
-        swipeByCoordinates(driver, time, SWIPE_X_DEFAULT_PERCENTAGE_END,
-                DEFAULT_PERCENTAGE, SWIPE_X_DEFAULT_PERCENTAGE_START,
-                DEFAULT_PERCENTAGE);
-    }
-
-    public static void swipeLeftCoordinates(
             AppiumDriver<? extends WebElement> driver, int time, int percentY)
             throws Exception {
         swipeByCoordinates(driver, time, SWIPE_X_DEFAULT_PERCENTAGE_END,
                 percentY, SWIPE_X_DEFAULT_PERCENTAGE_START, percentY);
-    }
-
-    public static void swipeUpCoordinates(
-            AppiumDriver<? extends WebElement> driver, int time)
-            throws Exception {
-        swipeByCoordinates(driver, time, DEFAULT_PERCENTAGE,
-                SWIPE_Y_DEFAULT_PERCENTAGE_END, DEFAULT_PERCENTAGE,
-                SWIPE_Y_DEFAULT_PERCENTAGE_START);
-    }
-
-    public static void swipeUpCoordinates(
-            AppiumDriver<? extends WebElement> driver, int time, int percentX)
-            throws Exception {
-        swipeByCoordinates(driver, time, percentX,
-                SWIPE_Y_DEFAULT_PERCENTAGE_END, percentX,
-                SWIPE_Y_DEFAULT_PERCENTAGE_START);
-    }
-
-    public static void swipeDownCoordinates(
-            AppiumDriver<? extends WebElement> driver, int time)
-            throws Exception {
-        swipeByCoordinates(driver, time, DEFAULT_PERCENTAGE,
-                SWIPE_Y_DEFAULT_PERCENTAGE_START, DEFAULT_PERCENTAGE,
-                SWIPE_Y_DEFAULT_PERCENTAGE_END);
-    }
-
-    public static void swipeDownCoordinates(
-            AppiumDriver<? extends WebElement> driver, int time, int percentX)
-            throws Exception {
-        swipeByCoordinates(driver, time, percentX,
-                SWIPE_Y_DEFAULT_PERCENTAGE_START, percentX,
-                SWIPE_Y_DEFAULT_PERCENTAGE_END);
     }
 
     public static void tapByCoordinates(
@@ -464,7 +359,7 @@ public class DriverUtils {
     }
 
     public static void multiTap(AppiumDriver<? extends WebElement> driver,
-                                   WebElement element, int tapCount) {
+                                WebElement element, int tapCount) {
         final Point coords = element.getLocation();
         final Dimension elementSize = element.getSize();
         for (int i = 0; i < tapCount; i++) {
@@ -524,11 +419,6 @@ public class DriverUtils {
         return Optional.empty();
     }
 
-    public static void longTap(AppiumDriver<? extends WebElement> driver,
-                               WebElement element) {
-        driver.tap(1, element, LONG_TAP_DURATION);
-    }
-
     public static void moveMouserOver(RemoteWebDriver driver, WebElement element) {
         /**
          * Method seems to work for Chrome and FireFox but is not working for
@@ -537,28 +427,6 @@ public class DriverUtils {
         Actions action = new Actions(driver);
         action.moveToElement(element);
         action.perform();
-    }
-
-    /*
-     * This is a work around for pressing the silence button. The ID is not
-     * visible through Appium, thats why it is tapped by its location
-     * coordinates.
-     */
-    public static void clickSilenceConversationButton(
-            AppiumDriver<? extends WebElement> driver, WebElement element) {
-        Point coords = element.getLocation();
-        driver.tap(1, coords.x - (coords.x / 2 - coords.x / 8), coords.y, 1);
-    }
-
-    /*
-     * This is a work around for pressing the archive button. The ID is not
-     * visible through Appium, thats why it is tapped by its location
-     * coordinates.
-     */
-    public static void clickArchiveConversationButton(
-            AppiumDriver<? extends WebElement> driver, WebElement element) {
-        Point coords = element.getLocation();
-        driver.tap(1, coords.x - (coords.x / 2 + coords.x / 8), coords.y, 1);
     }
 
     public static void resetApp(AppiumDriver<? extends WebElement> driver) {
@@ -597,8 +465,7 @@ public class DriverUtils {
         assert xOffset != 0 && yOffset != 0;
         final Point coords = element.getLocation();
         final Dimension size = element.getSize();
-        int dstX = 0;
-        int dstY = 0;
+        int dstX, dstY;
         if (xOffset > 0) {
             dstX = coords.getX() + size.getWidth() + xOffset;
         } else {
@@ -617,5 +484,24 @@ public class DriverUtils {
         dstX = (dstX < 0) ? 0 : dstX;
         log.info("Tap on " + dstX + ":" + dstY);
         driver.tap(1, dstX, dstY, SINGLE_TAP_DURATION);
+    }
+
+    public static void verifyPresence(RemoteWebDriver driver, By locator, String message, int timeoutSeconds)
+            throws Exception {
+        if (!waitUntilLocatorIsDisplayed(driver, locator, timeoutSeconds)) {
+            throw new IllegalStateException(message);
+        }
+    }
+
+    public static void verifyPresence(RemoteWebDriver driver, By locator, String message) throws Exception {
+        if (!waitUntilLocatorIsDisplayed(driver, locator)) {
+            throw new IllegalStateException(message);
+        }
+    }
+
+    public static void verifyPresence(RemoteWebDriver driver, By locator) throws Exception {
+        if (!waitUntilLocatorIsDisplayed(driver, locator)) {
+            throw new IllegalStateException(String.format("The element '%s' is not visible", locator));
+        }
     }
 }

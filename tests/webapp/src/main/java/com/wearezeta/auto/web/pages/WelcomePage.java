@@ -53,15 +53,24 @@ public class WelcomePage extends WebPage {
 	public void uploadPicture(String pictureName) throws Exception {
 		final String picturePath = WebCommonUtils
 				.getFullPicturePath(pictureName);
+		if (WebAppExecutionContext.getBrowser() == Browser.Firefox) {
+			this.getDriver()
+					.executeScript(
+							"$(\""
+									+ WebAppLocators.SelfPictureUploadPage.cssChooseYourOwnInput
+									+ "\").css({'left': '0', 'opacity': '100', 'z-index': '100'});");
+		}
 		if (WebAppExecutionContext.getBrowser() == Browser.Safari) {
 			WebCommonUtils.sendPictureInSafari(picturePath, this.getDriver()
 					.getNodeIp());
 		} else {
 			chooseYourOwnInput.sendKeys(picturePath);
 			// manually trigger change event on input
-			this.getDriver().executeScript("e = $.Event('change');$(\""
-						+ WebAppLocators.SelfPictureUploadPage.cssChooseYourOwnInput
-						+ "\").trigger(e);");
+			this.getDriver()
+					.executeScript(
+							"e = $.Event('change');$(\""
+									+ WebAppLocators.SelfPictureUploadPage.cssChooseYourOwnInput
+									+ "\").trigger(e);");
 		}
 	}
 

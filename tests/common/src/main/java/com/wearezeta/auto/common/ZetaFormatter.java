@@ -11,9 +11,7 @@ import java.util.concurrent.Future;
 import javax.imageio.ImageIO;
 
 import com.wearezeta.auto.common.rc.TestcaseResultToTestrailTransformer;
-import com.wearezeta.auto.common.rc.TestcaseResultToZephyrTransformer;
 import com.wearezeta.auto.common.testrail.TestrailSyncUtilities;
-import com.wearezeta.auto.common.zephyr.*;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -269,11 +267,6 @@ public class ZetaFormatter implements Formatter, Reporter {
     public void endOfScenarioLifeCycle(Scenario scenario) {
         try {
             final Set<String> normalizedTags = normalizeTags(scenario.getTags());
-
-            // TODO: Remove Zephyr after transition period is completed
-            ZephyrSyncUtilities.syncExecutedScenarioWithZephyr(
-                    new TestcaseResultToZephyrTransformer(steps).transform(),
-                    normalizedTags);
 
             TestrailSyncUtilities.syncExecutedScenarioWithTestrail(scenario,
                     new TestcaseResultToTestrailTransformer(steps).transform(),

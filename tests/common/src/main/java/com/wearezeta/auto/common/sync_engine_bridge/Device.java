@@ -92,4 +92,9 @@ class Device extends RemoteEntity implements IDevice {
 		askActor(this.ref(), new ActorMessage.SendImage(new RConvId(convId),
 				path), IMAGE_SENDING_TIMEOUT);
 	}
+
+	@Override
+	public void sendPing(String convId) throws Exception {
+		askActor(this.ref(), new ActorMessage.Knock(new RConvId(convId)));
+	}
 }

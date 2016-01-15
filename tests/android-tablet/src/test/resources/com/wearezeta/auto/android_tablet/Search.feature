@@ -6,6 +6,7 @@ Feature: Search
     Given <Contact> is connected to me
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversation
     When I tap the Search input
     And I see People Picker page
@@ -37,6 +38,7 @@ Feature: Search
     Given <Contact> is connected to me
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversation
     When I tap the Search input
     And I see People Picker page
@@ -67,6 +69,7 @@ Feature: Search
     Given There is 1 user where <Name> is me
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with no conversations
     When I tap the Search input
     And I see People Picker page
@@ -85,6 +88,7 @@ Feature: Search
     Given <Contact> sent connection request to me
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversation
     Given I wait until <Contact> exists in backend search results
     When I tap Search input
@@ -109,6 +113,7 @@ Feature: Search
     Given <Contact> sent connection request to me
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversation
     Given I wait until <Contact> exists in backend search results
     When I tap Search input
@@ -128,6 +133,7 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with no conversations
     And I wait until <ContactEmail> exists in backend search results
     When I tap Search input
@@ -151,6 +157,7 @@ Feature: Search
     Given <Contact> is connected to me
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     And I wait until <Contact> exists in backend search results
     And I tap Search input
@@ -171,6 +178,7 @@ Feature: Search
     Given <Contact> is connected to me
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     And I wait until <Contact> exists in backend search results
     And I tap Search input
@@ -191,6 +199,7 @@ Feature: Search
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     And I tap Search input
     And I see People Picker page
@@ -218,6 +227,7 @@ Feature: Search
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     And I tap Search input
     And I see People Picker page
@@ -245,6 +255,7 @@ Feature: Search
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     And I tap Search input
     And I see People Picker page
@@ -266,6 +277,7 @@ Feature: Search
     Given Myself is connected to <Contact>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     And I tap Search input
     And I see People Picker page
@@ -287,6 +299,7 @@ Feature: Search
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     And I tap Search input
     And I see People Picker page
@@ -317,6 +330,7 @@ Feature: Search
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     And I tap Search input
     And I see People Picker page
@@ -347,6 +361,7 @@ Feature: Search
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     And I tap Search input
     And I see People Picker page
@@ -371,6 +386,7 @@ Feature: Search
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     And I tap Search input
     And I see People Picker page
@@ -395,6 +411,7 @@ Feature: Search
     Given <Contact> is connected to me
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     And I wait until <Contact> exists in backend search results
     And I tap Search input
@@ -416,6 +433,7 @@ Feature: Search
     Given <Contact> is connected to me
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     And I wait until <Contact> exists in backend search results
     And I tap Search input
@@ -437,6 +455,7 @@ Feature: Search
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     And I tap Search input
     And I see People Picker page
@@ -465,6 +484,7 @@ Feature: Search
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     And I tap Search input
     And I see People Picker page

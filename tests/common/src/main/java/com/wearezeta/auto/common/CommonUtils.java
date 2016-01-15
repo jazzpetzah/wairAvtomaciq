@@ -24,6 +24,7 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class CommonUtils {
+
 	public static final int MAX_PARALLEL_USER_CREATION_TASKS = 25;
 
 	private static final String USER_IMAGE = "userpicture_landscape.jpg";
@@ -37,7 +38,7 @@ public class CommonUtils {
 	private static final Random rand = new Random();
 
 	private static final Logger log = ZetaLogger.getLog(CommonUtils.class
-			.getSimpleName());
+		.getSimpleName());
 
 	private static final String TCPBLOCK_PREFIX_PATH = "/usr/local/bin/";
 
@@ -48,7 +49,7 @@ public class CommonUtils {
 	}
 
 	public static boolean executeOsCommandWithTimeout(String[] cmd,
-			long timeoutSeconds) throws Exception {
+		long timeoutSeconds) throws Exception {
 		Process process = Runtime.getRuntime().exec(cmd);
 		log.debug("Process started for cmdline " + Arrays.toString(cmd));
 		outputErrorStreamToLog(process.getErrorStream());
@@ -63,7 +64,7 @@ public class CommonUtils {
 	}
 
 	public static String executeOsXCommandWithOutput(String[] cmd)
-			throws Exception {
+		throws Exception {
 		Process process = Runtime.getRuntime().exec(cmd);
 		log.debug("Process started for cmdline " + Arrays.toString(cmd));
 		String output;
@@ -82,7 +83,7 @@ public class CommonUtils {
 	}
 
 	public static void outputErrorStreamToLog(InputStream stream)
-			throws IOException {
+		throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 		StringBuilder sb = new StringBuilder("\n");
 		String s;
@@ -117,7 +118,7 @@ public class CommonUtils {
 	}
 
 	public static String getAvatarWithClockIconPathIOS(Class<?> c)
-			throws Exception {
+		throws Exception {
 		return getValueFromConfig(c, "iosImagesPath") + IOS_AVATAR_CLOCK_IMAGE;
 	}
 
@@ -131,11 +132,11 @@ public class CommonUtils {
 
 	public static String getMediaBarPauseIconPath(Class<?> c) throws Exception {
 		return getValueFromConfig(c, "defaultImagesPath")
-				+ MEDIABAR_PAUSE_IMAGE;
+			+ MEDIABAR_PAUSE_IMAGE;
 	}
 
 	public static String getPictureResultsPathFromConfig(Class<?> c)
-			throws Exception {
+		throws Exception {
 		return getValueFromConfig(c, "pictureResultsPath");
 	}
 
@@ -143,7 +144,7 @@ public class CommonUtils {
 	private final static Map<String, Optional<String>> cachedConfig = new HashMap<>();
 
 	private static Optional<String> getValueFromConfigFile(Class<?> c,
-			String key, String resourcePath) throws Exception {
+		String key, String resourcePath) throws Exception {
 		final String configKey = String.format("%s:%s", resourcePath, key);
 		if (cachedConfig.containsKey(configKey)) {
 			return cachedConfig.get(configKey);
@@ -158,12 +159,12 @@ public class CommonUtils {
 			try {
 				final ClassLoader classLoader = c.getClassLoader();
 				configFileStream = classLoader
-						.getResourceAsStream(resourcePath);
+					.getResourceAsStream(resourcePath);
 				Properties p = new Properties();
 				p.load(configFileStream);
 				if (p.containsKey(key)) {
 					cachedConfig.put(configKey,
-							Optional.of((String) p.get(key)));
+						Optional.of((String) p.get(key)));
 				} else {
 					cachedConfig.put(configKey, Optional.empty());
 				}
@@ -185,41 +186,41 @@ public class CommonUtils {
 	private static final String PROJECT_CONFIG = "Configuration.cnf";
 
 	public static Optional<String> getOptionalValueFromConfig(Class<?> c,
-			String key) throws Exception {
+		String key) throws Exception {
 		return getValueFromConfigFile(c, key, PROJECT_CONFIG);
 	}
 
 	public static String getValueFromConfig(Class<?> c, String key)
-			throws Exception {
+		throws Exception {
 		final Optional<String> value = getValueFromConfigFile(c, key,
-				PROJECT_CONFIG);
+			PROJECT_CONFIG);
 		if (value.isPresent()) {
 			return value.get();
 		} else {
 			throw new RuntimeException(String.format(
-					"There is no '%s' property in the '%s' configuration file",
-					key, PROJECT_CONFIG));
+				"There is no '%s' property in the '%s' configuration file",
+				key, PROJECT_CONFIG));
 		}
 	}
 
 	private static final String COMMON_CONFIG = "CommonConfiguration.cnf";
 
 	public static Optional<String> getOptionalValueFromCommonConfig(Class<?> c,
-			String key) throws Exception {
+		String key) throws Exception {
 		return getValueFromConfigFile(c, key, COMMON_CONFIG);
 	}
 
 	public static String getValueFromCommonConfig(Class<?> c, String key)
-			throws Exception {
+		throws Exception {
 		final Optional<String> value = getValueFromConfigFile(c, key,
-				COMMON_CONFIG);
+			COMMON_CONFIG);
 		if (value.isPresent()) {
 			return value.get();
 		} else {
 			throw new RuntimeException(
-					String.format(
-							"There is no '%s' property in the '%s' common configuration file",
-							key, COMMON_CONFIG));
+				String.format(
+					"There is no '%s' property in the '%s' common configuration file",
+					key, COMMON_CONFIG));
 		}
 	}
 
@@ -228,43 +229,43 @@ public class CommonUtils {
 	}
 
 	public static String getDefaultEmailServerFromConfig(Class<?> c)
-			throws Exception {
+		throws Exception {
 		return getValueFromCommonConfig(c, "defaultEmailServer");
 	}
 
 	public static String getDriverTimeoutFromConfig(Class<?> c)
-			throws Exception {
+		throws Exception {
 		return getValueFromConfig(c, "driverTimeoutSeconds");
 	}
 
 	public static String getDefaultPasswordFromConfig(Class<?> c)
-			throws Exception {
+		throws Exception {
 		return getValueFromCommonConfig(c, "defaultPassword");
 	}
 
 	public static String getDefaultBackEndUrlFromConfig(Class<?> c)
-			throws Exception {
+		throws Exception {
 		final String currentBackendType = getBackendType(c);
 		switch (currentBackendType.toLowerCase()) {
-		case "edge":
-			return getValueFromCommonConfig(c, "edgeBackendUrl");
-		case "staging":
-		case "benny":
-		case "gregor":
-		case "rene":
-		case "lipis":
-		case "chris":
-			return getValueFromCommonConfig(c, "stagingBackendUrl");
-		case "production":
-			return getValueFromCommonConfig(c, "productionBackendUrl");
-		default:
-			throw new RuntimeException(String.format(
+			case "edge":
+				return getValueFromCommonConfig(c, "edgeBackendUrl");
+			case "staging":
+			case "benny":
+			case "gregor":
+			case "rene":
+			case "lipis":
+			case "chris":
+				return getValueFromCommonConfig(c, "stagingBackendUrl");
+			case "production":
+				return getValueFromCommonConfig(c, "productionBackendUrl");
+			default:
+				throw new RuntimeException(String.format(
 					"Non supported backend type '%s'", currentBackendType));
 		}
 	}
 
 	public static String getAndroidAppiumUrlFromConfig(Class<?> c)
-			throws Exception {
+		throws Exception {
 		return getValueFromConfig(c, "androidAppiumUrl");
 	}
 
@@ -281,58 +282,58 @@ public class CommonUtils {
 	}
 
 	public static String getWebAppApplicationPathFromConfig(Class<?> c)
-			throws Exception {
+		throws Exception {
 		String applicationPath = getValueFromConfig(c, "webappApplicationPath");
 		if (!applicationPath.equals("")) {
 			return applicationPath;
 		} else {
 			final String currentBackendType = getBackendType(c);
 			switch (currentBackendType.toLowerCase()) {
-			case "edge":
-				return getValueFromConfig(c, "webappEdgeApplicationPath");
-			case "staging":
-				return getValueFromConfig(c, "webappStagingApplicationPath");
-			case "production":
-				return getValueFromConfig(c, "webappProductionApplicationPath");
-			case "benny":
-				return getValueFromConfig(c, "webappBennyApplicationPath");
-			case "gregor":
-				return getValueFromConfig(c, "webappGregorApplicationPath");
-			case "rene":
-				return getValueFromConfig(c, "webappReneApplicationPath");
-			case "lipis":
-				return getValueFromConfig(c, "webappLipisApplicationPath");
-			case "chris":
-				return getValueFromConfig(c, "webappChrisApplicationPath");
-			default:
-				throw new RuntimeException(String.format(
+				case "edge":
+					return getValueFromConfig(c, "webappEdgeApplicationPath");
+				case "staging":
+					return getValueFromConfig(c, "webappStagingApplicationPath");
+				case "production":
+					return getValueFromConfig(c, "webappProductionApplicationPath");
+				case "benny":
+					return getValueFromConfig(c, "webappBennyApplicationPath");
+				case "gregor":
+					return getValueFromConfig(c, "webappGregorApplicationPath");
+				case "rene":
+					return getValueFromConfig(c, "webappReneApplicationPath");
+				case "lipis":
+					return getValueFromConfig(c, "webappLipisApplicationPath");
+				case "chris":
+					return getValueFromConfig(c, "webappChrisApplicationPath");
+				default:
+					throw new RuntimeException(String.format(
 						"Non supported backend type '%s'", currentBackendType));
 			}
 		}
 	}
 
 	public static String getAndroidApplicationPathFromConfig(Class<?> c)
-			throws Exception {
+		throws Exception {
 		return getValueFromConfig(c, "androidApplicationPath");
 	}
 
 	public static String getIosApplicationPathFromConfig(Class<?> c)
-			throws Exception {
+		throws Exception {
 		return getValueFromConfig(c, "iosApplicationPath");
 	}
 
 	public static String getAndroidActivityFromConfig(Class<?> c)
-			throws Exception {
+		throws Exception {
 		return getValueFromConfig(c, "activity");
 	}
 
 	public static String getAndroidWaitActivitiesFromConfig(Class<?> c)
-			throws Exception {
+		throws Exception {
 		return getValueFromConfig(c, "waitActivities");
 	}
 
 	public static String getSimulatorImagesPathFromConfig(Class<?> c)
-			throws Exception {
+		throws Exception {
 		return getValueFromConfig(c, "iosImagesPath");
 	}
 
@@ -346,12 +347,12 @@ public class CommonUtils {
 	}
 
 	public static String getUserPicturePathFromConfig(Class<?> c)
-			throws Exception {
+		throws Exception {
 		return getValueFromConfig(c, "pathToUserpic");
 	}
 
 	public static String getUserAddressBookFromConfig(Class<?> c)
-			throws Exception {
+		throws Exception {
 		return getValueFromConfig(c, "pathToAddressBook");
 	}
 
@@ -363,12 +364,12 @@ public class CommonUtils {
 		return RandomStringUtils.randomAlphanumeric(lengh);
 	}
 
-	public static String generateRandomNumericString(int length){
+	public static String generateRandomNumericString(int length) {
 		return RandomStringUtils.randomNumeric(length);
 	}
 
 	private static String generateRandomStringFromTargetStringSetWithLengh(
-			int numberOfCharacters, String characters) {
+		int numberOfCharacters, String characters) {
 		StringBuilder result = new StringBuilder();
 		while (numberOfCharacters > 0) {
 			Random rand = new Random();
@@ -379,9 +380,9 @@ public class CommonUtils {
 	}
 
 	public static String generateRandomStringFromAlphanumericPlusSymbolsWithLengh(
-			int numberOfCharacters) {
+		int numberOfCharacters) {
 		return generateRandomStringFromTargetStringSetWithLengh(
-				numberOfCharacters, ALPHANUMERIC_PLUS_SYMBOLS);
+			numberOfCharacters, ALPHANUMERIC_PLUS_SYMBOLS);
 	}
 
 	public static boolean getIsTabletFromConfig(Class<?> c) throws Exception {
@@ -394,29 +395,29 @@ public class CommonUtils {
 	}
 
 	public static Optional<String> getRCNotificationsRecepients(Class<?> c)
-			throws Exception {
+		throws Exception {
 		return getOptionalValueFromConfig(c, "rcNotificationsRecepients");
 	}
 
 	public static String getJenkinsSuperUserPassword(Class<?> c)
-			throws Exception {
+		throws Exception {
 		return getValueFromCommonConfig(c, "jenkinsSuPassword");
 	}
 
 	public static String getDefaultCallingServiceUrlFromConfig(Class<?> c)
-			throws Exception {
+		throws Exception {
 		return getValueFromCommonConfig(c, "defaultCallingServiceUrl");
 	}
 
 	public static Optional<BufferedImage> getElementScreenshot(
-			WebElement element, AppiumDriver<? extends WebElement> driver)
-			throws Exception {
+		WebElement element, AppiumDriver<? extends WebElement> driver)
+		throws Exception {
 		return getElementScreenshot(element, driver, "iPhone 6");
 	}
 
 	public static Optional<BufferedImage> getElementScreenshot(
-			WebElement element, AppiumDriver<? extends WebElement> driver,
-			String deviceName) throws Exception {
+		WebElement element, AppiumDriver<? extends WebElement> driver,
+		String deviceName) throws Exception {
 		int multiply = 3;
 		if (deviceName.equals("iPhone 6") || deviceName.equals("iPad Air")) {
 			multiply = 2;
@@ -426,27 +427,27 @@ public class CommonUtils {
 		org.openqa.selenium.Point elementLocation = element.getLocation();
 		Dimension elementSize = element.getSize();
 		final Optional<BufferedImage> screenshot = DriverUtils
-				.takeFullScreenShot((ZetaDriver) driver);
+			.takeFullScreenShot((ZetaDriver) driver);
 		if (screenshot.isPresent()) {
 			return Optional.of(screenshot.get()
-					.getSubimage(elementLocation.x * multiply,
-							elementLocation.y * multiply,
-							elementSize.width * multiply,
-							elementSize.height * multiply));
+				.getSubimage(elementLocation.x * multiply,
+					elementLocation.y * multiply,
+					elementSize.width * multiply,
+					elementSize.height * multiply));
 		} else {
 			return Optional.empty();
 		}
 	}
 
 	public static Optional<BufferedImage> getElementScreenshot(
-			WebElement element, ZetaWebAppDriver driver) throws Exception {
+		WebElement element, ZetaWebAppDriver driver) throws Exception {
 		org.openqa.selenium.Point elementLocation = element.getLocation();
 		Dimension elementSize = element.getSize();
 		final Optional<BufferedImage> screenshot = DriverUtils
-				.takeFullScreenShot(driver);
+			.takeFullScreenShot(driver);
 		if (screenshot.isPresent()) {
 			return Optional.of(screenshot.get().getSubimage(elementLocation.x,
-					elementLocation.y, elementSize.width, elementSize.height));
+				elementLocation.y, elementSize.width, elementSize.height));
 		} else {
 			return Optional.empty();
 		}
@@ -454,31 +455,31 @@ public class CommonUtils {
 
 	public static void blockTcpForAppName(String appName) throws Exception {
 		final String blockTcpForAppCmd = "echo "
-				+ getJenkinsSuperUserPassword(CommonUtils.class) + "| sudo -S "
-				+ TCPBLOCK_PREFIX_PATH + "tcpblock -a " + appName;
+			+ getJenkinsSuperUserPassword(CommonUtils.class) + "| sudo -S "
+			+ TCPBLOCK_PREFIX_PATH + "tcpblock -a " + appName;
 		try {
-			executeOsXCommand(new String[] { "/bin/bash", "-c",
-					blockTcpForAppCmd });
-			log.debug(executeOsXCommandWithOutput(new String[] { "/bin/bash",
-					"-c", TCPBLOCK_PREFIX_PATH + "tcpblock -g" }));
+			executeOsXCommand(new String[]{"/bin/bash", "-c",
+				blockTcpForAppCmd});
+			log.debug(executeOsXCommandWithOutput(new String[]{"/bin/bash",
+				"-c", TCPBLOCK_PREFIX_PATH + "tcpblock -g"}));
 		} catch (Exception e) {
 			log.error("TCP connections for " + appName
-					+ " were not blocked. Make sure tcpblock is installed.");
+				+ " were not blocked. Make sure tcpblock is installed.");
 		}
 	}
 
 	public static void enableTcpForAppName(String appName) throws Exception {
 		final String enableTcpForAppCmd = "echo "
-				+ getJenkinsSuperUserPassword(CommonUtils.class) + "| sudo -S "
-				+ TCPBLOCK_PREFIX_PATH + "tcpblock -r " + appName;
+			+ getJenkinsSuperUserPassword(CommonUtils.class) + "| sudo -S "
+			+ TCPBLOCK_PREFIX_PATH + "tcpblock -r " + appName;
 		try {
-			executeOsXCommand(new String[] { "/bin/bash", "-c",
-					enableTcpForAppCmd });
-			log.debug(executeOsXCommandWithOutput(new String[] { "/bin/bash",
-					"-c", TCPBLOCK_PREFIX_PATH + "tcpblock -g" }));
+			executeOsXCommand(new String[]{"/bin/bash", "-c",
+				enableTcpForAppCmd});
+			log.debug(executeOsXCommandWithOutput(new String[]{"/bin/bash",
+				"-c", TCPBLOCK_PREFIX_PATH + "tcpblock -g"}));
 		} catch (Exception e) {
 			log.error("TCP connections for " + appName
-					+ " were not enabled. Make sure tcpblock is installed.");
+				+ " were not enabled. Make sure tcpblock is installed.");
 		}
 	}
 
@@ -494,17 +495,17 @@ public class CommonUtils {
 	}
 
 	public static String getDefaultEmailListenerServiceHostFromConfig(Class<?> c)
-			throws Exception {
+		throws Exception {
 		return getValueFromCommonConfig(c, "defaultEmailListenerServiceHost");
 	}
 
 	public static String getDefaultEmailListenerServicePortFromConfig(Class<?> c)
-			throws Exception {
+		throws Exception {
 		return getValueFromCommonConfig(c, "defaultEmailListenerServicePort");
 	}
 
 	public static boolean getMakeScreenshotsFromConfig(Class<?> c)
-			throws Exception {
+		throws Exception {
 		return Boolean.valueOf(getValueFromCommonConfig(c, "makeScreenshots"));
 	}
 
@@ -512,69 +513,59 @@ public class CommonUtils {
 		return Boolean.valueOf(getValueFromCommonConfig(c, "initNodeIp"));
 	}
 
-	public static Optional<String> getZephyrCycleNameFromConfig(Class<?> c)
-			throws Exception {
-		return getOptionalValueFromCommonConfig(c, "zephyrCycleName");
-	}
-
-	public static Optional<String> getZephyrPhaseNameFromConfig(Class<?> c)
-			throws Exception {
-		return getOptionalValueFromCommonConfig(c, "zephyrPhaseName");
-	}
-
-	public static String getZephyrServerFromConfig(Class<?> c) throws Exception {
-		return getValueFromCommonConfig(c, "zephyrServer");
-	}
-
 	public static String getTestrailServerUrlFromConfig(Class<?> c) throws Exception {
 		return getValueFromCommonConfig(c, "testrailServerUrl");
 	}
 
-    public static String getTestrailUsernameFromConfig(Class<?> c) throws Exception {
-        return getValueFromConfig(c, "testrailUser");
-    }
+	public static String getTestrailUsernameFromConfig(Class<?> c) throws Exception {
+		return getValueFromConfig(c, "testrailUser");
+	}
 
-    public static String getTestrailTokenFromConfig(Class<?> c) throws Exception {
-        return getValueFromConfig(c, "testrailToken");
-    }
+	public static String getTestrailTokenFromConfig(Class<?> c) throws Exception {
+		return getValueFromConfig(c, "testrailToken");
+	}
 
-    public static Optional<String> getTestrailProjectNameFromConfig(Class<?> c)
-            throws Exception {
-        return getOptionalValueFromCommonConfig(c, "testrailProjectName");
-    }
+	public static Optional<String> getTestrailProjectNameFromConfig(Class<?> c)
+		throws Exception {
+		return getOptionalValueFromCommonConfig(c, "testrailProjectName");
+	}
 
-    public static Optional<String> getTestrailPlanNameFromConfig(Class<?> c)
-            throws Exception {
-        return getOptionalValueFromCommonConfig(c, "testrailPlanName");
-    }
+	public static Optional<String> getTestrailPlanNameFromConfig(Class<?> c)
+		throws Exception {
+		return getOptionalValueFromCommonConfig(c, "testrailPlanName");
+	}
 
-    public static Optional<String> getTestrailRunNameFromConfig(Class<?> c)
-            throws Exception {
-        return getOptionalValueFromCommonConfig(c, "testrailRunName");
-    }
+	public static Optional<String> getTestrailRunNameFromConfig(Class<?> c)
+		throws Exception {
+		return getOptionalValueFromCommonConfig(c, "testrailRunName");
+	}
 
-    public static Optional<String> getTestrailRunConfigNameFromConfig(Class<?> c)
-            throws Exception {
-        return getOptionalValueFromCommonConfig(c, "testrailRunConfigName");
-    }
+	public static Optional<String> getTestrailRunConfigNameFromConfig(Class<?> c)
+		throws Exception {
+		return getOptionalValueFromCommonConfig(c, "testrailRunConfigName");
+	}
 
-    public static boolean getSyncIsAutomated(Class<?> c) throws Exception {
-        return getValueFromCommonConfig(c, "syncIsAutomated").toLowerCase().equals("true");
-    }
+	public static String getNativeLibsRootFromConfig(Class<?> c) throws Exception {
+		return getValueFromCommonConfig(c, "nativeLibsRoot");
+	}
 
-    public static boolean getSyncIsMuted(Class<?> c) throws Exception {
-        return getValueFromCommonConfig(c, "syncIsMuted").toLowerCase().equals("true");
-    }
+	public static boolean getSyncIsAutomated(Class<?> c) throws Exception {
+		return getValueFromCommonConfig(c, "syncIsAutomated").toLowerCase().equals("true");
+	}
+
+	public static boolean getSyncIsMuted(Class<?> c) throws Exception {
+		return getValueFromCommonConfig(c, "syncIsMuted").toLowerCase().equals("true");
+	}
 
 	public static String generateRandomXdigits(int i) {
 		Random rand = new Random();
 		long random = (long) (Math.pow(10, i - 1)) * (rand.nextInt(8) + 1)
-				+ (long) rand.nextInt((int) (Math.pow(10, i - 1)));
+			+ (long) rand.nextInt((int) (Math.pow(10, i - 1)));
 		return Long.toString(Math.abs(random));
 	}
 
 	public static String getPlatformVersionFromConfig(Class<?> cls)
-			throws Exception {
+		throws Exception {
 		return getValueFromConfig(cls, "platformVersion");
 	}
 

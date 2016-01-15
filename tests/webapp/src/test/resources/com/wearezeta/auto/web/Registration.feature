@@ -47,13 +47,15 @@ Feature: Registration
     Given There is 1 user where <Name> is me without avatar picture
     Given I switch to Sign In page
     And I Sign in using login <Login> and password <Password>
-    And I see Welcome page
+    When I see Welcome page
+    And Myself take snapshot of current profile picture
     And I choose <PictureName> as my self picture on Welcome page
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see Sign In page
-    When I Sign in using login <Login> and password <Password>
+    And I Sign in using login <Login> and password <Password>
     Then I do not see Welcome page
+    And I verify that current profile picture snapshot of Myself differs from the previous one
 
     Examples: 
       | Login      | Password      | Name      | PictureName               |

@@ -258,7 +258,7 @@ public class DialogPage extends AndroidPage {
     }
 
     public void pressPlusButtonOnDialogPage() throws Exception {
-        assert DriverUtils.waitUntilElementClickable(getDriver(), cursorBtn);
+        verifyLocatorPresence(By.id(idCursorBtn), "Plus cursor button is not visible");
         cursorBtn.click();
     }
 
@@ -311,44 +311,42 @@ public class DialogPage extends AndroidPage {
     }
 
     public void tapAddPictureBtn() throws Exception {
-        assert DriverUtils
-                .waitUntilElementClickable(getDriver(), addPictureBtn);
+        verifyLocatorPresence(By.id(idAddPicture), "Add Picture button is not visible");
         addPictureBtn.click();
     }
 
     public void tapPingBtn() throws Exception {
-        assert DriverUtils.waitUntilElementClickable(getDriver(), pingBtn);
+        verifyLocatorPresence(By.id(idPing), "Ping button is not visible");
         pingBtn.click();
     }
 
     public void tapSketchBtn() throws Exception {
-        assert DriverUtils.waitUntilElementClickable(getDriver(), sketchBtn);
+        verifyLocatorPresence(By.id(idSketch), "Sketch button is not visible");
         sketchBtn.click();
     }
 
     public void tapCallBtn() throws Exception {
-        assert DriverUtils.waitUntilElementClickable(getDriver(), callBtn);
+        verifyLocatorPresence(By.id(idCall), "Call button is not visible");
         callBtn.click();
     }
 
     public void closeInputOptions() throws Exception {
-        assert DriverUtils.waitUntilElementClickable(getDriver(), closeBtn);
+        verifyLocatorPresence(By.id(idCursorCloseButton), "Close cursor button is not visible");
         closeBtn.click();
     }
 
     public void tapMuteBtn() throws Exception {
-        assert DriverUtils.waitUntilElementClickable(getDriver(), muteBtn);
+        verifyLocatorPresence(By.id(idMute), "Mute button is not visible");
         muteBtn.click();
     }
 
     public void tapSpeakerBtn() throws Exception {
-        assert DriverUtils.waitUntilElementClickable(getDriver(), speakerBtn);
+        verifyLocatorPresence(By.id(idSpeaker), "Speaker button is not visible");
         speakerBtn.click();
     }
 
     public void tapCancelCallBtn() throws Exception {
-        assert DriverUtils
-                .waitUntilElementClickable(getDriver(), cancelCallBtn);
+        verifyLocatorPresence(By.id(idCancelCall), "Cancel call button is not visible");
         cancelCallBtn.click();
     }
 
@@ -368,9 +366,10 @@ public class DialogPage extends AndroidPage {
     public BufferedImage getCurrentButtonStateScreenshot(String name)
             throws Exception {
         final WebElement dstButton = getButtonElementByName(name);
-        assert DriverUtils.waitUntilElementClickable(getDriver(), dstButton);
-        return getElementScreenshot(dstButton).orElseThrow(
-                IllegalStateException::new);
+        if (!DriverUtils.waitUntilElementClickable(getDriver(), dstButton)) {
+            throw new IllegalStateException("The button is not clickable");
+        }
+        return getElementScreenshot(dstButton).orElseThrow(IllegalStateException::new);
     }
 
     public void typeAndSendMessage(String message) throws Exception {
@@ -406,14 +405,13 @@ public class DialogPage extends AndroidPage {
 
     public void clickLastImageFromDialog() throws Exception {
         final By locator = By.xpath(xpathLastPicture);
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : "No pictures are visible in the conversation view";
+        verifyLocatorPresence(locator, "No pictures are visible in the conversation view");
         getDriver().findElement(locator).click();
     }
 
     public boolean waitForConversationNameChangedMessage(String expectedName)
             throws Exception {
-        final By locator = By.xpath(xpathNewConversationNameByValue
-                .apply(expectedName));
+        final By locator = By.xpath(xpathNewConversationNameByValue.apply(expectedName));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
@@ -439,26 +437,31 @@ public class DialogPage extends AndroidPage {
 
     public void confirm() throws Exception {
         final By locator = By.xpath(xpathConfirmOKButton);
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-        assert DriverUtils.waitUntilElementClickable(getDriver(), okButton);
+        verifyLocatorPresence(locator, "OK button is not visible");
+        if (!DriverUtils.waitUntilElementClickable(getDriver(), okButton)) {
+            throw new IllegalStateException("OK button is not clickable");
+        }
         okButton.click();
-        assert DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator)) {
+            throw new IllegalStateException("OK button is still present on the screen after being clicked");
+        }
     }
 
     public void tapSketchOnImageButton() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idSketchImagePaintButton)) : "Draw sketch on image button is not visible";
+        verifyLocatorPresence(By.id(idSketchImagePaintButton), "Draw sketch on image button is not visible");
         sketchImagePaintButton.click();
     }
 
     public void takePhoto() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.xpath(xpathDialogTakePhotoButton)) : "Take Photo button is not visible";
-        assert DriverUtils.waitUntilElementClickable(getDriver(),
-                takePhotoButton) : "Take Photo button is not clickable";
+        verifyLocatorPresence(By.xpath(xpathDialogTakePhotoButton), "Take Photo button is not visible");
+        if (!DriverUtils.waitUntilElementClickable(getDriver(), takePhotoButton)) {
+            throw new IllegalStateException("Take Photo button is not clickable");
+        }
         takePhotoButton.click();
-        assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
-                By.xpath(xpathDialogTakePhotoButton)) : "Take Photo button is still visible after being clicked";
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(),
+                By.xpath(xpathDialogTakePhotoButton))) {
+            throw new IllegalStateException("Take Photo button is still visible after being clicked");
+        }
     }
 
     public boolean waitUntilStartChatTitleContains(String expectedText) throws Exception {
@@ -476,8 +479,7 @@ public class DialogPage extends AndroidPage {
     }
 
     public void openGallery() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idGalleryBtn)) : "Gallery button is still not visible";
+        verifyLocatorPresence(By.id(idGalleryBtn), "Gallery button is still not visible");
         galleryBtn.click();
     }
 
@@ -496,10 +498,8 @@ public class DialogPage extends AndroidPage {
         closeImageBtn.click();
     }
 
-    public OtherUserPersonalInfoPage tapConversationDetailsButton()
-            throws Exception {
-        assert DriverUtils.waitUntilElementClickable(getDriver(),
-                participantsButton);
+    public void tapConversationDetailsButton() throws Exception {
+        verifyLocatorPresence(By.id(idParticipantsBtn));
         participantsButton.click();
         final long millisecondsStarted = System.currentTimeMillis();
         final long maxAnimationDurationMillis = 2000;
@@ -508,7 +508,6 @@ public class DialogPage extends AndroidPage {
         } while (participantsButton.getLocation().getY() > 0
                 && System.currentTimeMillis() - millisecondsStarted < maxAnimationDurationMillis);
         assert participantsButton.getLocation().getY() < 0;
-        return new OtherUserPersonalInfoPage(this.getLazyDriver());
     }
 
     public boolean waitForPingMessageWithText(String expectedText)
@@ -525,8 +524,8 @@ public class DialogPage extends AndroidPage {
 
     public boolean isGroupChatDialogContainsNames(List<String> names)
             throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathLastConversationMessage));
+        verifyLocatorPresence(By.xpath(xpathLastConversationMessage),
+                "No messages are visible in the conversation view");
         final String convoText = lastConversationMessage.getText();
         for (String name : names) {
             if (!convoText.toLowerCase().contains(name.toLowerCase())) {
@@ -544,13 +543,13 @@ public class DialogPage extends AndroidPage {
     private static final double MAX_BUTTON_STATE_OVERLAP = 0.5;
 
     public void tapPlayPauseBtn() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idPlayPauseMedia));
-        assert DriverUtils.waitUntilElementClickable(getDriver(), playPauseBtn);
+        verifyLocatorPresence(By.id(idPlayPauseMedia), "Play/Pause button is not visible");
+        if (!DriverUtils.waitUntilElementClickable(getDriver(), playPauseBtn)) {
+            throw new IllegalStateException("Play/Pause button is not clickable");
+        }
         final BufferedImage initialState = getElementScreenshot(playPauseBtn)
                 .orElseThrow(
-                        () -> new AssertionError(
-                                "Failed to get a screenshot of Play/Pause button"));
+                        () -> new IllegalStateException("Failed to get a screenshot of Play/Pause button"));
         playPauseBtn.click();
         Thread.sleep(2000);
         int clickTry = 1;
@@ -599,8 +598,7 @@ public class DialogPage extends AndroidPage {
     }
 
     public void tapPlayPauseMediaBarBtn() throws Exception {
-        assert DriverUtils.waitUntilElementClickable(getDriver(),
-                mediaBarControl);
+        verifyLocatorPresence(By.id(idMediaBarControl), "Media barr PlayPause button is not visible");
         mediaBarControl.click();
     }
 

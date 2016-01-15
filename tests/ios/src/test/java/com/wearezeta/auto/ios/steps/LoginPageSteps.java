@@ -391,7 +391,7 @@ public class LoginPageSteps {
     @Then("^I see the terms info page$")
     public void ISeeTheTermsInfoPage() throws Throwable {
         Assert.assertTrue("I don't see terms of service page", getLoginPage()
-                .isTermsPrivacyColseButtonVisible());
+                .isTermsPrivacyCloseButtonVisible());
         // TODO:verify correct content as far as copywrite is in
     }
 

@@ -100,7 +100,7 @@ Feature: Connect
     And I see Connect To popover
     And I click Connect button on Connect To popover
     Then I see Contact list with name <Contact2>
-    And I see CONNECTING TO action for <Contact2> in conversation
+    And I see connecting message for <Name> in conversation
 
     Examples: 
       | Login      | Password      | Name      | ChatName | Contact1  | Contact2  |
@@ -140,11 +140,11 @@ Feature: Connect
     And I see my avatar on top of Contact list
     Then I see Contact list with name <Name2>
     And I open conversation with <Name2>
-    And I see <Action> action for <Name2> in conversation
+    And I see connected message for <Name2> in conversation
 
     Examples: 
-      | Login      | Login2     | Password      | Password2     | Name      | Name2     | Action       |
-      | user1Email | user2Email | user1Password | user2Password | user1Name | user2Name | CONNECTED TO |
+      | Login      | Login2     | Password      | Password2     | Name      | Name2     |
+      | user1Email | user2Email | user1Password | user2Password | user1Name | user2Name |
 
   @C1694 @regression
   Scenario Outline: Verify 1:1 conversation is not created on the second end after you ignore connection request
@@ -342,7 +342,7 @@ Feature: Connect
     When I make a connection request for user <Contact1> directly from People Picker
     And I close People Picker
     And I open conversation with <Contact1>
-    Then I see CONNECTING TO action for <Contact1> in conversation
+    Then I see connecting message for <Contact1> in conversation
 
     Examples: 
       | Me        | MyEmail    | MyPassword    | Contact1  | Contact2  |

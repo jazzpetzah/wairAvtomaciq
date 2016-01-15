@@ -7,6 +7,7 @@ Feature: Calling
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
@@ -26,6 +27,7 @@ Feature: Calling
     Given <Contact> is connected to me
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
@@ -58,6 +60,7 @@ Feature: Calling
     Given <Contact4> accepts next incoming call automatically
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     When I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
@@ -80,6 +83,7 @@ Feature: Calling
     Given <Contact> is connected to me
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
@@ -105,6 +109,7 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact1> in my conversations list
     And I see the conversation <Contact2> in my conversations list
@@ -130,6 +135,7 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact1> in my conversations list
     And I see the conversation <Contact2> in my conversations list
@@ -153,6 +159,7 @@ Feature: Calling
     Given <Contact> is connected to me
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
@@ -185,6 +192,7 @@ Feature: Calling
     Given <Contact> is connected to me
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
@@ -217,6 +225,7 @@ Feature: Calling
     Given <Contact> is connected to me
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I minimize the application
@@ -237,6 +246,7 @@ Feature: Calling
     Given <Contact> is connected to me
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I lock the device
@@ -257,6 +267,7 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact1> in my conversations list
     And I see the conversation <Contact2> in my conversations list
@@ -280,6 +291,7 @@ Feature: Calling
     Given <Contact> is connected to me
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
@@ -298,6 +310,7 @@ Feature: Calling
     Given <Contact> is connected to me
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>

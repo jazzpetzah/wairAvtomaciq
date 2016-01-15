@@ -6,6 +6,7 @@ Feature: People View
     Given Myself is connected to <Contact>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     When I tap the conversation <Contact>
     And I see the conversation view
@@ -25,6 +26,7 @@ Feature: People View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     When I tap the conversation <Contact>
     And I see the conversation view
@@ -45,6 +47,7 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
@@ -69,6 +72,7 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
@@ -93,6 +97,7 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
@@ -120,6 +125,7 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
@@ -146,6 +152,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the Search input
     And I see People Picker page
@@ -165,6 +172,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the Search input
     And I see People Picker page
@@ -188,6 +196,7 @@ Feature: People View
     Given Contact <Contact1> sends message "<Message>" to user Myself
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
@@ -213,6 +222,7 @@ Feature: People View
     Given Contact <Contact1> sends message "<Message>" to user Myself
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
@@ -237,6 +247,7 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
@@ -260,6 +271,7 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
@@ -283,6 +295,7 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
@@ -305,6 +318,7 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
@@ -327,6 +341,7 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
@@ -351,6 +366,7 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
@@ -376,6 +392,7 @@ Feature: People View
     Given <Contact1> has group chat <GroupChatName> with Myself,<Contact2>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     And I do not see the conversation <Contact2> in my conversations list
     And I see the conversation <GroupChatName> in my conversations list

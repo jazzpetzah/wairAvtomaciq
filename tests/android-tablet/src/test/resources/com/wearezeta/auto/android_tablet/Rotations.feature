@@ -5,7 +5,8 @@ Feature: Rotations
     Given There is 1 user where <Name> is me
     Given I rotate UI to portrait
     Given I sign in using my email
-    And I see the conversations list with no conversations
+    Given I accept First Time overlay as soon as it is visible
+    Given I see the conversations list with no conversations
     When I tap my avatar on top of conversations list
     And I see my name on Self Profile page
     # We try to set the self name to make sure this action is really visible and available
@@ -30,7 +31,8 @@ Feature: Rotations
     Given There is 1 user where <Name> is me
     Given I rotate UI to portrait
     Given I sign in using my email
-    And I see the conversations list with no conversations
+    Given I accept First Time overlay as soon as it is visible
+    Given I see the conversations list with no conversations
     When I tap the Search input
     Then I see People Picker page
     When I rotate UI to landscape
@@ -49,7 +51,8 @@ Feature: Rotations
     Given Contact <Contact> sends message "<Message>" to user Myself
     Given I rotate UI to portrait
     Given I sign in using my email
-    And I see the conversations list with conversations
+    Given I accept First Time overlay as soon as it is visible
+    Given I see the conversations list with conversations
     When I tap the conversation <Contact>
     Then I see the conversation view
     And I see the message "<Message>" in the conversation view
@@ -69,7 +72,8 @@ Feature: Rotations
     Given <Contact2> is connected to <Contact1>
     Given I rotate UI to portrait
     Given I sign in using my email
-    And I see the conversations list with conversations
+    Given I accept First Time overlay as soon as it is visible
+    Given I see the conversations list with conversations
     When I tap the Search input
     And I see People Picker page
     And I enter "<Contact2>" into Search input on People Picker page
@@ -90,6 +94,7 @@ Feature: Rotations
     Given Myself is connected to <Contact>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>

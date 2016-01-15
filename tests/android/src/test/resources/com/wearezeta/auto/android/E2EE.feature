@@ -5,6 +5,7 @@ Feature: E2EE
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When Contact <Contact> sends encrypted message <EncryptedMessage> to user Myself
     And Contact <Contact> sends message <SimpleMessage> to user Myself
@@ -23,6 +24,7 @@ Feature: E2EE
     # Workaround for AN-3281
     # Given I sign in using my email or phone number
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     When I see Manage Devices overlay
     And I tap Manage Devices button on Manage Devices overlay
     And I select "<DeviceToRemove>" settings menu item

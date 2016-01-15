@@ -18,8 +18,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.HasTouchScreen;
 import org.openqa.selenium.interactions.TouchScreen;
 import org.openqa.selenium.interactions.touch.TouchActions;
-import org.openqa.selenium.remote.RemoteTouchScreen;
-import org.openqa.selenium.remote.Response;
+import org.openqa.selenium.remote.*;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -28,18 +27,19 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.concurrent.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements
-        ZetaDriver, HasTouchScreen {
+public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements ZetaDriver, HasTouchScreen {
+
+    private volatile boolean isSessionLost = false;
 
     private static final Logger log = ZetaLogger.getLog(ZetaAndroidDriver.class
             .getSimpleName());
     public static final String ADB_PREFIX = "";
     // "/Applications/android-sdk/platform-tools/";
 
-    private SessionHelper sessionHelper;
     private RemoteTouchScreen touch;
     private String androidOSVersion;
 
@@ -70,7 +70,6 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements
     public ZetaAndroidDriver(URL remoteAddress, Capabilities desiredCapabilities) {
         super(remoteAddress, desiredCapabilities);
         this.touch = new RemoteTouchScreen(getExecuteMethod());
-        sessionHelper = new SessionHelper(this);
         try {
             initOSVersionString();
         } catch (Exception e) {
@@ -79,32 +78,18 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements
     }
 
     @Override
-    public List<WebElement> findElements(By by) {
-        return this.sessionHelper.wrappedFindElements(super::findElements, by);
-    }
-
-    @Override
-    public WebElement findElement(By by) {
-        return this.sessionHelper.wrappedFindElement(super::findElement, by);
-    }
-
-    @Override
-    public void close() {
-        this.sessionHelper.wrappedClose(super::close);
-    }
-
-    @Override
-    public void quit() {
-        this.sessionHelper.wrappedQuit(super::quit);
-    }
-
-    @Override
     public boolean isSessionLost() {
-        return this.sessionHelper.isSessionLost();
+        return this.isSessionLost;
     }
 
-    private static int getNextCoord(double startC, double endC, double current,
-                                    double duration) {
+    private void setSessionLost(boolean isSessionLost) {
+        if (isSessionLost != this.isSessionLost) {
+            log.warn(String.format("Changing isSessionLost to %s", isSessionLost));
+        }
+        this.isSessionLost = isSessionLost;
+    }
+
+    private static int getNextCoord(double startC, double endC, double current, double duration) {
         return (int) Math.round(startC + (endC - startC) / duration * current);
     }
 
@@ -279,6 +264,19 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements
     private static final long DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS = 2000;
     private static final String SERVER_SIDE_ERROR_SIGNATURE = "unknown server-side error";
 
+    private ExecutorService pool;
+
+    private synchronized ExecutorService getPool() {
+        if (this.pool == null) {
+            this.pool = Executors.newFixedThreadPool(1);
+        }
+        return this.pool;
+    }
+
+    private boolean isSessionLostBecause(Throwable e) {
+        return (e instanceof UnreachableBrowserException) || (e instanceof SessionNotFoundException);
+    }
+
     /**
      * This is workaround for some Selendroid issues when driver just generates
      * unknown error when some transition in AUT is currently in progress. Retry
@@ -290,40 +288,62 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements
      */
     @Override
     public Response execute(String driverCommand, Map<String, ?> parameters) {
-        try {
-            return super.execute(driverCommand, parameters);
-        } catch (WebDriverException e) {
-            if (driverCommand.equals(MobileCommand.HIDE_KEYBOARD)) {
-                log.debug("The keyboard seems to be already hidden.");
-                final Response response = new Response();
-                response.setSessionId(this.getSessionId().toString());
-                response.setStatus(HttpStatus.SC_OK);
-                return response;
-            }
-            if (e.getMessage().contains(SERVER_SIDE_ERROR_SIGNATURE)) {
-                final long millisecondsStarted = System.currentTimeMillis();
-                while (System.currentTimeMillis() - millisecondsStarted <= DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS) {
-                    try {
-                        Thread.sleep(300);
-                    } catch (InterruptedException e1) {
-                        Throwables.propagate(e1);
-                    }
-                    try {
-                        return super.execute(driverCommand, parameters);
-                    } catch (WebDriverException e1) {
-                        if (!e.getMessage().contains(
-                                SERVER_SIDE_ERROR_SIGNATURE)) {
-                            throw e1;
-                        }
-                    }
-                } // while have time
-            } // if getMessage contains
-            log.error(String
-                    .format("Android driver is still not available after %s seconds timeout. The recent webdriver command was '%s'",
-                            DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS / 1000,
-                            driverCommand));
-            throw e;
+        if (this.isSessionLost() && !driverCommand.equals(DriverCommand.SCREENSHOT)) {
+            log.warn(String.format("Appium session is dead. Skipping execution of '%s' command...", driverCommand));
+            return null;
         }
+        final Callable<Response> task = () -> super.execute(driverCommand, parameters);
+        final Future<Response> future = getPool().submit(task);
+        try {
+            return future.get(MAX_COMMAND_DURATION, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            if (e instanceof ExecutionException) {
+                if (isSessionLostBecause(e.getCause())) {
+                    setSessionLost(true);
+                } else {
+                    if (driverCommand.equals(MobileCommand.HIDE_KEYBOARD)) {
+                        log.debug("The keyboard seems to be already hidden.");
+                        final Response response = new Response();
+                        response.setSessionId(this.getSessionId().toString());
+                        response.setStatus(HttpStatus.SC_OK);
+                        return response;
+                    }
+                    if (e.getCause().getMessage().contains(SERVER_SIDE_ERROR_SIGNATURE)) {
+                        final long millisecondsStarted = System.currentTimeMillis();
+                        while (System.currentTimeMillis() - millisecondsStarted <=
+                                DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS) {
+                            try {
+                                Thread.sleep(300);
+                            } catch (InterruptedException e1) {
+                                Throwables.propagate(e1);
+                            }
+                            try {
+                                return super.execute(driverCommand, parameters);
+                            } catch (WebDriverException e1) {
+                                if (isSessionLostBecause(e1)) {
+                                    setSessionLost(true);
+                                }
+                                if (!e1.getMessage().contains(SERVER_SIDE_ERROR_SIGNATURE)) {
+                                    throw e1;
+                                }
+                            }
+                        } // while have time
+                    } // if getMessage contains
+                    log.error(String.format(
+                            "Android driver is still not available after %s seconds timeout. " +
+                                    "The recent webdriver command was '%s'",
+                            DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS / 1000, driverCommand));
+                }
+                Throwables.propagate(e.getCause());
+            } else {
+                // if !(e instanceof ExecutionException)
+                setSessionLost(true);
+                Throwables.propagate(e);
+            }
+        }
+
+        // This should never happen
+        return super.execute(driverCommand, parameters);
     }
 
     @Override
