@@ -87,7 +87,7 @@ Feature: Invitations
       | Name      |
       | user1Name |
 
-  @C567 @id4160 @regression
+  @C567 @id4160 @regression @torun
   Scenario Outline: Verify that swipe do nothing in invites page
     Given There are 1 user where <Name> is me
     Given I sign in using my email or phone number
