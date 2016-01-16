@@ -532,10 +532,6 @@ public class CommonUtils {
 		return getOptionalValueFromCommonConfig(c, "testrailRunConfigName");
 	}
 
-	public static String getToolsRootFromConfig(Class<?> c) throws Exception {
-		return getValueFromCommonConfig(c, "toolsRoot");
-	}
-
 	public static boolean getSyncIsAutomated(Class<?> c) throws Exception {
 		return getValueFromCommonConfig(c, "syncIsAutomated").toLowerCase().equals("true");
 	}
@@ -561,17 +557,5 @@ public class CommonUtils {
 
     public static String getIOSAppName(Class<?> cls) throws Exception {
         return getValueFromConfig(cls, "appName");
-    }
-
-
-    public static boolean takeIOSSimulatorScreenshot(String dstPath) {
-        try {
-            final Process simshotProcess = Runtime.getRuntime().exec(
-                    String.format("%s/ios/simshot \"%s\"", getToolsRootFromConfig(CommonUtils.class), dstPath));
-            return simshotProcess.waitFor() == 0;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 }

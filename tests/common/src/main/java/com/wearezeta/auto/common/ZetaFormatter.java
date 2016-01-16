@@ -164,17 +164,11 @@ public class ZetaFormatter implements Formatter, Reporter {
                             feature.replaceAll("\\W+", "_"), scenario
                                     .replaceAll("\\W+", "_"), stepName
                                     .replaceAll("\\W+", "_"));
-            if (driver instanceof ZetaIOSDriver && CommonUtils.getIsSimulatorFromConfig(ZetaFormatter.class)) {
-                if (!CommonUtils.takeIOSSimulatorScreenshot(screenshotPath)) {
-                    log.error("Failed to take iOS simulator screenshot");
-                }
-            } else {
-                final Optional<BufferedImage> screenshot = DriverUtils.takeFullScreenShot(driver);
-                if (!screenshot.isPresent()) {
-                    return;
-                }
-                screenshotSavers.execute(() -> storeScreenshot(screenshot.get(), screenshotPath));
+            final Optional<BufferedImage> screenshot = DriverUtils.takeFullScreenShot(driver);
+            if (!screenshot.isPresent()) {
+                return;
             }
+            screenshotSavers.execute(() -> storeScreenshot(screenshot.get(), screenshotPath));
         } else {
             log.debug(String
                     .format("Selenium driver is not ready yet. Skipping screenshot creation for step '%s'",
