@@ -88,13 +88,11 @@ public class GiphyPreviewPage extends AndroidPage {
     private static final int GIPHY_LOAD_TIMEOUT_SECONDS = 60;
 
     public void clickSendButton() throws Exception {
-        verifyLocatorPresence(giphyLoadingProgressLocator,
-                "Giphy loading progress has not been shown", GIPHY_LOCATOR_TIMEOUT_SECONDS);
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(),
                 giphyLoadingProgressLocator, GIPHY_LOAD_TIMEOUT_SECONDS)) {
             log.warn(String.format(
                     "It seems that giphy has not been loaded within %s seconds (the progress bar is still visible)",
-                            GIPHY_LOAD_TIMEOUT_SECONDS));
+                    GIPHY_LOAD_TIMEOUT_SECONDS));
         }
         if (!DriverUtils.waitUntilElementClickable(getDriver(), sendButton)) {
             throw new IllegalStateException("Giphy send button is not clickable");
@@ -102,7 +100,7 @@ public class GiphyPreviewPage extends AndroidPage {
         sendButton.click();
         final By giphySendLocator = By.id(sendButtonId);
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), giphySendLocator, GIPHY_LOCATOR_TIMEOUT_SECONDS)) {
-           throw new IllegalStateException("Giphy loading progress is still visible after the timeout");
+            throw new IllegalStateException("Giphy loading progress is still visible after the timeout");
         }
     }
 
