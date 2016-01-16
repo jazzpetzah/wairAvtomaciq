@@ -14,7 +14,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C3181 @regression @rc @IPv6 @id330
+  @C3181 @regression @rc @IPv6 @id330 @torun
   Scenario Outline: Send Message to contact
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
