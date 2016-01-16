@@ -165,15 +165,15 @@ public class ZetaFormatter implements Formatter, Reporter {
                                     .replaceAll("\\W+", "_"), stepName
                                     .replaceAll("\\W+", "_"));
             if (driver instanceof ZetaIOSDriver) {
+                if (!CommonUtils.takeIOSSimulatorScreenshot(screenshotPath)) {
+                    log.error("Failed to take iOS simulator screenshot");
+                }
+            } else {
                 final Optional<BufferedImage> screenshot = DriverUtils.takeFullScreenShot(driver);
                 if (!screenshot.isPresent()) {
                     return;
                 }
                 screenshotSavers.execute(() -> storeScreenshot(screenshot.get(), screenshotPath));
-            } else {
-                if (!CommonUtils.takeIOSSimulatorScreenshot(screenshotPath)) {
-                    log.error("Failed to take iOS simulator screenshot");
-                }
             }
         } else {
             log.debug(String
