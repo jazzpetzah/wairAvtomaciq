@@ -164,7 +164,7 @@ public class ZetaFormatter implements Formatter, Reporter {
                             feature.replaceAll("\\W+", "_"), scenario
                                     .replaceAll("\\W+", "_"), stepName
                                     .replaceAll("\\W+", "_"));
-            if (driver instanceof ZetaIOSDriver) {
+            if (driver instanceof ZetaIOSDriver && CommonUtils.getIsSimulatorFromConfig(ZetaFormatter.class)) {
                 if (!CommonUtils.takeIOSSimulatorScreenshot(screenshotPath)) {
                     log.error("Failed to take iOS simulator screenshot");
                 }
