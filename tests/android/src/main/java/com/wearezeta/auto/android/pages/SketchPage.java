@@ -108,15 +108,12 @@ public class SketchPage extends AndroidPage {
 
     public void tapSendButton() throws Exception {
         DriverUtils.tapInTheCenterOfTheElement(getDriver(), sendButton);
-        DriverUtils.waitUntilLocatorDissapears(getDriver(),
-                By.id(idSendButton), 5);
-        if (DriverUtils.isElementPresentAndDisplayed(getDriver(), sendButton)) {
+        DriverUtils.waitUntilLocatorDissapears(getDriver(), By.id(idSendButton), 5);
+        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idSendButton), 1)) {
             try {
-                getDriver().tap(1, sendButton.getLocation().getX(),
-                        sendButton.getLocation().getY(), 1);
+                getDriver().tap(1, sendButton.getLocation().getX(), sendButton.getLocation().getY(), 1);
             } catch (NoSuchElementException e) {
-                log.debug("Can't find send sketch button. Page source: "
-                        + getDriver().getPageSource());
+                log.debug("Can't find send sketch button. Page source: " + getDriver().getPageSource());
             }
         }
     }

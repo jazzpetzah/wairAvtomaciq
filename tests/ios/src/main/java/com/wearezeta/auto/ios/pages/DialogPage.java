@@ -435,7 +435,7 @@ public class DialogPage extends IOSPage {
 
     public void openConversationDetailsClick() throws Exception {
         // FIXME: Understand what this shit is doing (or what it is supposed to do) and refactor it
-        if (DriverUtils.isElementPresentAndDisplayed(getDriver(), openConversationDetails)) {
+        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameOpenConversationDetails))) {
             openConversationDetails.click();
         } else {
             for (int i = 0; i < 3; i++) {

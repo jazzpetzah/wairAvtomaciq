@@ -16,7 +16,6 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.ios.IOSConstants;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
@@ -171,7 +170,7 @@ public class CommonIOSSteps {
      */
     @When("^I click hide keyboard button$")
     public void IClickHideKeyboardBtn() throws Exception {
-        pagesCollecton.getCommonPage().clickHideKeyboarButton();
+        pagesCollecton.getCommonPage().clickHideKeyboardButton();
     }
 
     /**

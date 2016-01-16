@@ -58,8 +58,7 @@ public class DriverUtils {
      * @param element
      * @return
      */
-    public static boolean isElementPresentAndDisplayed(RemoteWebDriver driver,
-                                                       final WebElement element) {
+    public static boolean isElementPresentAndDisplayed(RemoteWebDriver driver, final WebElement element) {
         try {
             return (element.isDisplayed() && isElementInScreenRect(driver, element));
         } catch (NoSuchElementException e) {

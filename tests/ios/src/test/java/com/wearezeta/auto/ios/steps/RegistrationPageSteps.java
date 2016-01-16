@@ -8,8 +8,6 @@ import java.util.concurrent.Future;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.ImageUtil;
-import com.wearezeta.auto.common.LanguageUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -17,520 +15,321 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import com.wearezeta.auto.common.usrmgmt.UserState;
-import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.RegistrationPage;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class RegistrationPageSteps {
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
-			.getInstance();
+    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-	private RegistrationPage getRegistrationPage() throws Exception {
-		return (RegistrationPage) pagesCollecton
-				.getPage(RegistrationPage.class);
-	}
+    private RegistrationPage getRegistrationPage() throws Exception {
+        return pagesCollection.getPage(RegistrationPage.class);
+    }
 
-	private ContactListPage getContactListPage() throws Exception {
-		return (ContactListPage) pagesCollecton.getPage(ContactListPage.class);
-	}
+    private ClientUser userToRegister = null;
 
-	private ClientUser userToRegister = null;
+    private Future<String> activationMessage;
 
-	private Future<String> activationMessage;
+    BufferedImage templateImage;
 
-	public static final int maxCheckCnt = 2;
+    @When("^I press Picture button$")
+    public void WhenIPressPictureButton() throws Exception {
+        getRegistrationPage().selectPicture();
+    }
 
-	boolean generateUsers = false;
-	public static BufferedImage basePhoto;
-	BufferedImage templateImage;
-	BufferedImage referenceImage;
-	BufferedImage profileImage;
+    @When("^I See selected picture$")
+    public void ISeeSelectedPicture() throws Exception {
+        templateImage = getRegistrationPage().takeScreenshot().orElseThrow(
+                AssertionError::new);
+        Assert.assertTrue(getRegistrationPage().isPictureSelected());
+    }
 
-	@Then("I see Take or select photo label and smile")
-	public void ISeeTakeOrSelectPhotoLabel() throws Exception {
-		Assert.assertTrue(getRegistrationPage()
-				.isTakeOrSelectPhotoLabelVisible());
-		Assert.assertTrue(getRegistrationPage().isTakePhotoSmileDisplayed());
-	}
+    @When("^I confirm selection$")
+    public void IConfirmSelection() throws Exception {
+        getRegistrationPage().confirmPicture();
+    }
 
-	@Then("I don't see Take or select photo label and smile")
-	public void IDontSeeTakeOrSelectPhotoLabel() throws Exception {
-		Assert.assertFalse(getRegistrationPage()
-				.isTakeOrSelectPhotoLabelVisible());
-	}
+    /**
+     * Input fake phone number for given user
+     *
+     * @param name User name alias
+     * @throws Exception
+     */
+    @When("^I enter phone number for user (.*)$")
+    public void IEnterPhoneNumber(String name) throws Exception {
+        if (this.userToRegister == null) {
+            this.userToRegister = new ClientUser();
+        }
+        this.userToRegister.setName(name);
+        this.userToRegister.clearNameAliases();
+        this.userToRegister.addNameAlias(name);
 
-	@When("^I press Picture button$")
-	public void WhenIPressPictureButton() throws Exception {
-		getRegistrationPage().selectPicture();
-	}
-
-	@When("^I See selected picture$")
-	public void ISeeSelectedPicture() throws Exception {
-		templateImage = getRegistrationPage().takeScreenshot().orElseThrow(
-				AssertionError::new);
-		Assert.assertTrue(getRegistrationPage().isPictureSelected());
-	}
-
-	@When("^I confirm selection$")
-	public void IConfirmSelection() throws Exception {
-		getRegistrationPage().confirmPicture();
-	}
-
-	@When("I click Back button")
-	public void IClickBackButton() throws Exception {
-		getRegistrationPage().tapBackButton();
-	}
-
-	@When("^I verify back button$")
-	public void IVerifyBackButton() throws Exception {
-		Assert.assertTrue("I don't see the back button", getRegistrationPage()
-				.isBackButtonVisible());
-	}
-
-	/**
-	 * Input fake phone number for given user
-	 * 
-	 * @param name
-	 *            User name alias
-	 * @throws Exception
-	 */
-	@When("^I enter phone number for user (.*)$")
-	public void IEnterPhoneNumber(String name) throws Exception {
-		if (this.userToRegister == null) {
-			this.userToRegister = new ClientUser();
-		}
-		this.userToRegister.setName(name);
-		this.userToRegister.clearNameAliases();
-		this.userToRegister.addNameAlias(name);
-
-		this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
+        this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
         getRegistrationPage().selectWirestan();
-		getRegistrationPage().inputPhoneNumber(
+        getRegistrationPage().inputPhoneNumber(
                 this.userToRegister.getPhoneNumber().toString().replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""));
-	}
+    }
 
-	/**
-	 * Input phone number of allready registered user
-	 * 
-	 * @step. ^I input phone number of already registered user (.*)$
-	 * 
-	 * @param name
-	 *            username
-	 * @throws Exception
-	 */
-	@When("^I input phone number of already registered user (.*)$")
-	public void IInputPhoneNumberOfRegisteredUser(String name) throws Exception {
-		ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
+    /**
+     * Input phone number of allready registered user
+     *
+     * @param name username
+     * @throws Exception
+     * @step. ^I input phone number of already registered user (.*)$
+     */
+    @When("^I input phone number of already registered user (.*)$")
+    public void IInputPhoneNumberOfRegisteredUser(String name) throws Exception {
+        ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
         getRegistrationPage().selectWirestan();
         getRegistrationPage().inputPhoneNumber(
                 user.getPhoneNumber().toString().replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""));
-	}
+    }
 
-	/**
-	 * Input in sign in by phone number page a random phone number
-	 * 
-	 * @step. ^I enter random phone number$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I enter random phone number$")
-	public void IEnterRandomPhoneNumber() throws Exception {
-		getRegistrationPage().inputPhoneNumber(
-				CommonUtils.generateRandomXdigits(7));
-	}
+    /**
+     * Input in sign in by phone number page a random phone number
+     *
+     * @throws Exception
+     * @step. ^I enter random phone number$
+     */
+    @When("^I enter random phone number$")
+    public void IEnterRandomPhoneNumber() throws Exception {
+        getRegistrationPage().inputPhoneNumber(
+                CommonUtils.generateRandomXdigits(7));
+    }
 
-	/**
-	 * Input in phone number field page phone number with code
-	 * 
-	 * @step. ^I input phone number (.*) with code (.*)$
-	 * @param number
-	 *            phone number
-	 * @param code
-	 *            country code
-	 * @throws Exception
-	 */
-	@When("^I input phone number (.*) with code (.*)$")
-	public void IInputPhoneNumber(String number, String code) throws Exception {
+    /**
+     * Input in phone number field page phone number with code
+     *
+     * @param number phone number
+     * @param code   country code
+     * @throws Exception
+     * @step. ^I input phone number (.*) with code (.*)$
+     */
+    @When("^I input phone number (.*) with code (.*)$")
+    public void IInputPhoneNumber(String number, String code) throws Exception {
         getRegistrationPage().selectWirestan();
         assert code.equals(PhoneNumber.WIRE_COUNTRY_PREFIX) :
                 "Only Wire-compatible phone numbers are supported";
         getRegistrationPage().inputPhoneNumber(number);
     }
 
-	/**
-	 * Input in phone number field page an invalid phone number
-	 * 
-	 * @step. ^I enter invalid phone number$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I enter invalid phone number$")
-	public void IEnterInvalidPhoneNumber() throws Exception {
-		getRegistrationPage().inputPhoneNumber(
-				CommonUtils.generateRandomXdigits(11));
-	}
+    /**
+     * Input in phone number field page an invalid phone number
+     *
+     * @throws Exception
+     * @step. ^I enter invalid phone number$
+     */
+    @When("^I enter invalid phone number$")
+    public void IEnterInvalidPhoneNumber() throws Exception {
+        getRegistrationPage().inputPhoneNumber(
+                CommonUtils.generateRandomXdigits(11));
+    }
 
-	/**
-	 * Input in phone number field page a random X digits
-	 * 
-	 * @step. ^I enter (.*) digits phone number
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I enter (.*) digits phone number$")
-	public void IEnterXDigitesPhoneNumber(int x) throws Exception {
-		getRegistrationPage().inputPhoneNumber(
-				CommonUtils.generateRandomXdigits(x));
-	}
+    /**
+     * Input in phone number field page a random X digits
+     *
+     * @throws Exception
+     * @step. ^I enter (.*) digits phone number
+     */
+    @When("^I enter (.*) digits phone number$")
+    public void IEnterXDigitesPhoneNumber(int x) throws Exception {
+        getRegistrationPage().inputPhoneNumber(
+                CommonUtils.generateRandomXdigits(x));
+    }
 
-	/**
-	 * Click on I AGREE button to accept terms of service
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I accept terms of service$")
-	public void IAcceptTermsOfService() throws Exception {
-		getRegistrationPage().clickAgreeButton();
-	}
+    /**
+     * Click on I AGREE button to accept terms of service
+     *
+     * @throws Exception
+     */
+    @When("^I accept terms of service$")
+    public void IAcceptTermsOfService() throws Exception {
+        getRegistrationPage().clickAgreeButton();
+    }
 
-	/**
-	 * Input activation code generated for fake phone number
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I enter activation code$")
-	public void IEnterActivationCode() throws Exception {
-		String code = BackendAPIWrappers
-				.getActivationCodeByPhoneNumber(this.userToRegister
-						.getPhoneNumber());
-		getRegistrationPage().inputActivationCode(code);
-	}
+    /**
+     * Input activation code generated for fake phone number
+     *
+     * @throws Exception
+     */
+    @When("^I enter activation code$")
+    public void IEnterActivationCode() throws Exception {
+        String code = BackendAPIWrappers
+                .getActivationCodeByPhoneNumber(this.userToRegister
+                        .getPhoneNumber());
+        getRegistrationPage().inputActivationCode(code);
+    }
 
-	@When("^I enter name (.*)$")
-	public void IEnterName(String name) throws Exception {
-		try {
-			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
-		} catch (NoSuchUserException e) {
-			if (this.userToRegister == null) {
-				this.userToRegister = new ClientUser();
-			}
-			this.userToRegister.setName(name);
-			this.userToRegister.clearNameAliases();
-			this.userToRegister.addNameAlias(name);
-		}
-		getRegistrationPage().setName(this.userToRegister.getName());
-	}
+    @When("^I enter name (.*)$")
+    public void IEnterName(String name) throws Exception {
+        try {
+            this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
+        } catch (NoSuchUserException e) {
+            if (this.userToRegister == null) {
+                this.userToRegister = new ClientUser();
+            }
+            this.userToRegister.setName(name);
+            this.userToRegister.clearNameAliases();
+            this.userToRegister.addNameAlias(name);
+        }
+        getRegistrationPage().setName(this.userToRegister.getName());
+    }
 
-	@When("^I enter a username which is at most (\\d+) characters long from (\\w+) alphabet$")
-	public void IEnterNameWithCharacterLimit(int charactersLimit,
-			String alphabetName) throws Throwable {
-		String nameToType = LanguageUtils.generateRandomString(charactersLimit,
-				alphabetName).replace('\\', '|');
-		IEnterName(nameToType);
-		getRegistrationPage().inputName();
-	}
+    @When("^I input name (.*) and hit Enter$")
+    public void IInputNameAndHitEnter(String name) throws Exception {
+        IEnterName(name);
+        getRegistrationPage().inputName();
+    }
 
-	@When("^I input name (.*) and hit Enter$")
-	public void IInputNameAndHitEnter(String name) throws Exception {
-		IEnterName(name);
-		getRegistrationPage().inputName();
-	}
+    /**
+     * Fill in name field username with leading and trailing spaces
+     *
+     * @param name username
+     * @throws Exception
+     * @step. ^I fill in name (.*) with leading and trailing spaces and hit
+     * Enter$
+     */
+    @When("^I fill in name (.*) with leading and trailing spaces and hit Enter$")
+    public void IInputNameWithSpacesAndHitEnter(String name) throws Exception {
+        getRegistrationPage().setName("  " + name + "  ");
+        getRegistrationPage().inputName();
+    }
 
-	/**
-	 * Fill in name field username with leading and trailing spaces
-	 * 
-	 * @step. ^I fill in name (.*) with leading and trailing spaces and hit
-	 *        Enter$
-	 * 
-	 * @param name
-	 *            username
-	 * @throws Exception
-	 */
-	@When("^I fill in name (.*) with leading and trailing spaces and hit Enter$")
-	public void IInputNameWithSpacesAndHitEnter(String name) throws Exception {
-		getRegistrationPage().setName("  " + name + "  ");
-		getRegistrationPage().inputName();
-	}
+    /**
+     * Fill in name field username with leading and trailing spaces on iPad
+     *
+     * @param name username
+     * @throws Exception
+     * @step. ^I fill in name (.*) with leading and trailing spaces on iPad
+     */
+    @When("^I fill in name (.*) with leading and trailing spaces on iPad$")
+    public void IInputNameWithSpacesOnIpad(String name) throws Exception {
+        try {
+            this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
+        } catch (NoSuchUserException e) {
+            if (this.userToRegister == null) {
+                this.userToRegister = new ClientUser();
+            }
+            this.userToRegister.setName(name);
+            this.userToRegister.clearNameAliases();
+            this.userToRegister.addNameAlias(name);
+        }
+        getRegistrationPage().setName("  " + userToRegister.getName() + "  ");
+    }
 
-	/**
-	 * Fill in name field username with leading and trailing spaces on iPad
-	 * 
-	 * @step. ^I fill in name (.*) with leading and trailing spaces on iPad
-	 * 
-	 * @param name
-	 *            username
-	 * @throws Exception
-	 */
-	@When("^I fill in name (.*) with leading and trailing spaces on iPad$")
-	public void IInputNameWithSpacesOnIpad(String name) throws Exception {
-		try {
-			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
-		} catch (NoSuchUserException e) {
-			if (this.userToRegister == null) {
-				this.userToRegister = new ClientUser();
-			}
-			this.userToRegister.setName(name);
-			this.userToRegister.clearNameAliases();
-			this.userToRegister.addNameAlias(name);
-		}
-		getRegistrationPage().setName("  " + userToRegister.getName() + "  ");
-	}
+    @When("^I enter email (.*)$")
+    public void IEnterEmail(String email) throws Exception {
+        boolean flag = false;
+        try {
+            String realEmail = usrMgr.findUserByEmailOrEmailAlias(email)
+                    .getEmail();
+            this.userToRegister.setEmail(realEmail);
+        } catch (NoSuchUserException e) {
+            if (this.userToRegister == null) {
+                this.userToRegister = new ClientUser();
+            }
+            flag = true;
+        }
 
-	@Then("^I verify that my username is at most (\\d+) characters long$")
-	public void IVerifyUsernameLength(int charactersLimit) throws Exception {
-		String realUserName = getRegistrationPage().getUsernameFieldValue();
-		int usernameLength = LanguageUtils.getUnicodeStringAsCharList(
-				realUserName).size();
-		Assert.assertTrue(charactersLimit >= usernameLength);
-	}
+        if (flag) {
+            getRegistrationPage().setEmail(email + "\n");
+        } else {
+            getRegistrationPage().setEmail(
+                    this.userToRegister.getEmail() + "\n");
+        }
+    }
 
-	@When("^I enter email (.*)$")
-	public void IEnterEmail(String email) throws Exception {
-		boolean flag = false;
-		try {
-			String realEmail = usrMgr.findUserByEmailOrEmailAlias(email)
-					.getEmail();
-			this.userToRegister.setEmail(realEmail);
-		} catch (NoSuchUserException e) {
-			if (this.userToRegister == null) {
-				this.userToRegister = new ClientUser();
-			}
-			flag = true;
-		}
+    @When("^I enter password (.*)$")
+    public void IEnterPassword(String password) throws Exception {
+        try {
+            this.userToRegister.setPassword(usrMgr.findUserByPasswordAlias(
+                    password).getPassword());
+        } catch (NoSuchUserException e) {
+            this.userToRegister.setPassword(password);
+            this.userToRegister.addPasswordAlias(password);
+        }
+        getRegistrationPage().setPassword(this.userToRegister.getPassword());
+    }
 
-		if (flag) {
-			getRegistrationPage().setEmail(email + "\n");
-		} else {
-			getRegistrationPage().setEmail(
-					this.userToRegister.getEmail() + "\n");
-		}
-	}
+    @When("I click Create Account Button")
+    public void IClickCreateAccountButton() throws Exception {
+        getRegistrationPage().clickCreateAccountButton();
+    }
 
-	@When("^I input email (.*) and hit Enter$")
-	public void IInputEmailAndHitEnter(String email) throws Exception {
-		IEnterEmail(email);
-	}
+    @Then("^I see confirmation page$")
+    public void ISeeConfirmationPage() throws Exception {
+        Assert.assertTrue(getRegistrationPage().isConfirmationShown());
+    }
 
-	@When("^I attempt to enter an email with spaces (.*)$")
-	public void IEnterEmailWithSpaces(String email) throws Exception {
-		try {
-			String realEmail = usrMgr.findUserByEmailOrEmailAlias(email)
-					.getEmail();
-			this.userToRegister.setEmail(realEmail);
-		} catch (NoSuchUserException e) {
-			if (this.userToRegister == null) {
-				this.userToRegister = new ClientUser();
-			}
-			this.userToRegister.setEmail(email);
-		}
-		this.userToRegister.clearEmailAliases();
-		this.userToRegister.addEmailAlias(email);
-		getRegistrationPage().setEmail(
-				new StringBuilder(this.userToRegister.getEmail()).insert(
-						email.length() - 1, "          ").toString());
-	}
+    /**
+     * Start monitoring thread for activation email. Please put this step BEFORE
+     * you submit the registration form
+     *
+     * @throws Exception
+     * @step. ^I start activation email monitoring$
+     */
+    @When("^I start activation email monitoring$")
+    public void IStartActivationEmailMonitoring() throws Exception {
+        Map<String, String> expectedHeaders = new HashMap<String, String>();
+        expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
+        this.activationMessage = IMAPSMailbox.getInstance().getMessage(
+                expectedHeaders, BackendAPIWrappers.ACTIVATION_TIMEOUT);
+    }
 
-	@When("I clear email input field on Registration page")
-	public void IClearEmailInputRegistration() throws Exception {
-		getRegistrationPage().clearEmailInput();
-	}
+    @Then("^I verify registration address$")
+    public void IVerifyRegistrationAddress() throws Exception {
+        BackendAPIWrappers
+                .activateRegisteredUserByEmail(this.activationMessage);
+        userToRegister.setUserState(UserState.Created);
+    }
 
-	@Then("^I verify no spaces are present in email$")
-	public void CheckForSpacesInEmail() throws Exception {
-		String realEmailText = getRegistrationPage().getEmailFieldValue();
-		String initialEmailText = getRegistrationPage().getEmail();
-		Assert.assertTrue(initialEmailText.replace(" ", "").equals(
-				realEmailText));
-	}
+    /**
+     * Verifies that the email verification reminder on the login page is
+     * displayed
+     *
+     * @throws Exception
+     * @step. I see email verification reminder
+     */
+    @Then("^I see email verification reminder$")
+    public void ISeeEmailVerificationReminder() throws Exception {
+        Assert.assertTrue(getRegistrationPage().isEmailVerifPromptVisible());
+    }
 
-	@When("^I attempt to enter emails with known incorrect formats$")
-	public void IEnterEmailWithIncorrectFormat() throws Exception {
-		// current design has basic email requirements: contains single @,
-		// contains a domain name with a dot + domain extension(min 2
-		// characters)
-		String[] listOfInvalidEmails = { "abc.example.com", "abc@example@.com",
-				"example@zeta", "abc@example."/* , "abc@example.c" */};
-		// test fails because minimum 2 character domain extension is not
-		// implemented(allows for only 1)
-		getRegistrationPage().setListOfEmails(listOfInvalidEmails);
-	}
+    /**
+     * Verifies whether the notification invalid code is shown
+     *
+     * @throws Exception
+     * @step. ^I see invalid code alert$
+     */
+    @Then("^I see invalid code alert$")
+    public void ISeeInvalidEmailAlert() throws Exception {
+        Assert.assertTrue("I don't see invalid code alert",
+                getRegistrationPage().isInvalidCodeAlertShown());
+    }
 
-	@Then("^I verify that the app does not let me continue$")
-	public void IVerifyIncorrectFormatMessage() throws Exception {
-		Assert.assertTrue(getRegistrationPage().typeAllInvalidEmails());
-	}
+    /**
+     * Presses the Choose own picture button on sign up
+     *
+     * @throws Exception
+     * @step. ^I press Choose Own Picture button$
+     */
+    @When("^I press Choose Own Picture button$")
+    public void IPressChooseOwnPictureButton() throws Exception {
+        getRegistrationPage().clickChooseOwnPicButton();
+    }
 
-	@When("^I enter password (.*)$")
-	public void IEnterPassword(String password) throws Exception {
-		try {
-			this.userToRegister.setPassword(usrMgr.findUserByPasswordAlias(
-					password).getPassword());
-		} catch (NoSuchUserException e) {
-			this.userToRegister.setPassword(password);
-			this.userToRegister.addPasswordAlias(password);
-		}
-		getRegistrationPage().setPassword(this.userToRegister.getPassword());
-	}
-
-	@When("^I input password (.*) and hit Enter$")
-	public void IInputPasswordAndHitEnter(String password) throws Exception {
-		IEnterPassword(password);
-		Map<String, String> expectedHeaders = new HashMap<String, String>();
-		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
-				expectedHeaders, BackendAPIWrappers.ACTIVATION_TIMEOUT);
-		getRegistrationPage().inputPassword();
-	}
-
-	@When("I click Create Account Button")
-	public void IClickCreateAccountButton() throws Exception {
-		getRegistrationPage().clickCreateAccountButton();
-	}
-
-	@Then("I see Create Account button disabled")
-	public void ISeeCreateAccountButtonDisabled() throws Exception {
-		Assert.assertFalse(getRegistrationPage().isCreateAccountEnabled());
-	}
-
-	@Then("^I navigate throughout the registration pages and see my input$")
-	public void NavigateAndVerifyInput() throws Exception {
-		getRegistrationPage().verifyUserInputIsPresent(
-				this.userToRegister.getName(), this.userToRegister.getEmail());
-	}
-
-	@When("I navigate from password screen back to Welcome screen")
-	public void NaviateFromPassScreenToWelcomeScreen() throws Exception {
-		getRegistrationPage().navigateToWelcomePage();
-	}
-
-	/**
-	 * Navigates from any page in the registration process, back to the welcome
-	 * page
-	 * 
-	 * @step. I navigate back to welcome page
-	 * @throws Exception
-	 */
-	@When("^I navigate back to welcome page")
-	public void INavigateToWelcomePage() throws Exception {
-		getRegistrationPage().navigateToWelcomePage();
-	}
-
-	/**
-	 * Verifies that mailbox contains at least X emails for the current
-	 * recipient
-	 * 
-	 * @step. ^I confirm that inbox contains (\\d+) emails? for current
-	 *        recipient$
-	 * 
-	 * @param expectedCnt
-	 *            expected messages count
-	 * @throws Exception
-	 */
-	@Then("^I confirm that inbox contains (\\d+) emails? for current recipient$")
-	public void VerifyRecipientsCount(int expectedCnt) throws Exception {
-		String expectedRecipient = this.userToRegister.getEmail();
-		getRegistrationPage().waitUntilEmailsCountReachesExpectedValue(
-				expectedCnt, expectedRecipient,
-				BackendAPIWrappers.ACTIVATION_TIMEOUT);
-	}
-
-	@Then("^I resend verification email$")
-	public void IResendVerificationEmail() throws Exception {
-		getRegistrationPage().reSendEmail();
-	}
-
-	@When("^I see error page$")
-	public void ISeeErrorPage() throws Exception {
-		Assert.assertTrue(getRegistrationPage().confirmErrorPage());
-	}
-
-	@Then("^I return to the email page from error page$")
-	public void IReturntoEmailPageFromErrorPage() throws Exception {
-		getRegistrationPage().backToEmailPageFromErrorPage();
-	}
-
-	@Then("^I see confirmation page$")
-	public void ISeeConfirmationPage() throws Exception {
-		Assert.assertTrue(getRegistrationPage().isConfirmationShown());
-	}
-
-	/**
-	 * Start monitoring thread for activation email. Please put this step BEFORE
-	 * you submit the registration form
-	 * 
-	 * @step. ^I start activation email monitoring$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I start activation email monitoring$")
-	public void IStartActivationEmailMonitoring() throws Exception {
-		Map<String, String> expectedHeaders = new HashMap<String, String>();
-		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
-				expectedHeaders, BackendAPIWrappers.ACTIVATION_TIMEOUT);
-	}
-
-	@Then("^I verify registration address$")
-	public void IVerifyRegistrationAddress() throws Exception {
-		BackendAPIWrappers
-				.activateRegisteredUserByEmail(this.activationMessage);
-		userToRegister.setUserState(UserState.Created);
-	}
-
-	@When("I don't see Next button")
-	public void IDontSeeNextButton() throws Exception {
-		Assert.assertFalse(getRegistrationPage().isNextButtonPresented());
-	}
-
-	/**
-	 * Verifies that the email verification reminder on the login page is
-	 * displayed
-	 * 
-	 * @step. I see email verification reminder
-	 * @throws Exception
-	 */
-	@Then("^I see email verification reminder$")
-	public void ISeeEmailVerificationReminder() throws Exception {
-		Assert.assertTrue(getRegistrationPage().isEmailVerifPromptVisible());
-	}
-
-	/**
-	 * Verifies whether the notification invalid code is shown
-	 * 
-	 * @step. ^I see invalid code alert$
-	 * 
-	 * @throws Exception
-	 */
-	@Then("^I see invalid code alert$")
-	public void ISeeInvalidEmailAlert() throws Exception {
-		Assert.assertTrue("I don't see invalid code alert",
-				getRegistrationPage().isInvalidCodeAlertShown());
-	}
-
-	/**
-	 * Presses the Choose own picture button on sign up
-	 *
-	 * @throws Exception
-	 * @step. ^I press Choose Own Picture button$
-	 */
-	@When("^I press Choose Own Picture button$")
-	public void IPressChooseOwnPictureButton() throws Exception {
-		getRegistrationPage().clickChooseOwnPicButton();
-	}
-
-	/**
-	 * Presses on Alert Choose Photo button
-	 *
-	 * @throws Exception
-	 * @step. ^I press Choose Photo button$
-	 */
-	@When("^I press Choose Photo button$")
-	public void IPressChoosePhotoButton() throws Exception {
-		getRegistrationPage().clickChoosePhotoButton();
-	}
+    /**
+     * Presses on Alert Choose Photo button
+     *
+     * @throws Exception
+     * @step. ^I press Choose Photo button$
+     */
+    @When("^I press Choose Photo button$")
+    public void IPressChoosePhotoButton() throws Exception {
+        getRegistrationPage().clickChoosePhotoButton();
+    }
 
 }

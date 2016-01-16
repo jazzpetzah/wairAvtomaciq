@@ -94,18 +94,15 @@ public class PeoplePickerPage extends AndroidPage {
 
     private WebElement findVisiblePickerSearch() throws Exception {
         DriverUtils.waitUntilLocatorAppears(getDriver(), By.id(idPickerSearch));
-        List<WebElement> pickerSearches = getDriver().findElements(
-                By.id(idPickerSearch));
+        List<WebElement> pickerSearches = getDriver().findElements(By.id(idPickerSearch));
         for (WebElement candidate : pickerSearches) {
-            if (DriverUtils
-                    .isElementPresentAndDisplayed(getDriver(), candidate)
+            if (DriverUtils.isElementPresentAndDisplayed(getDriver(), candidate)
                     && candidate.getLocation().getX() >= 0
                     && candidate.getLocation().getY() >= 0) {
                 return candidate;
             }
         }
-        throw new ElementNotVisibleException(
-                "People Picker input is not displayed");
+        throw new ElementNotVisibleException("People Picker input is not displayed");
     }
 
     public void tapPeopleSearch() throws Exception {

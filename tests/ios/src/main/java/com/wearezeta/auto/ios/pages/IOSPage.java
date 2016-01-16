@@ -42,7 +42,7 @@ public abstract class IOSPage extends BasePage {
     private WebElement popupSelect;
 
     protected static final String nameEditingItemSelectAll = "Select All";
-    @FindBy(xpath = nameEditingItemSelectAll)
+    @FindBy(name = nameEditingItemSelectAll)
     private WebElement popupSelectAll;
 
     protected static final String nameEditingItemCopy = "Copy";
@@ -140,8 +140,7 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void swipeDown(int time) throws Exception {
-        DriverUtils.swipeElementPointToPoint(this.getDriver(), mainWindow, time,
-                50, 10, 50, 90);
+        DriverUtils.swipeElementPointToPoint(this.getDriver(), mainWindow, time, 50, 10, 50, 90);
     }
 
     public void smallScrollUp() throws Exception {
@@ -157,17 +156,17 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void clickPopupSelectAllButton() throws Exception {
-        DriverUtils.waitUntilElementClickable(getDriver(), popupSelectAll);
+        verifyLocatorPresence(By.name(nameEditingItemSelectAll), "Select All popup is not visible");
         popupSelectAll.click();
     }
 
     public void clickPopupCopyButton() throws Exception {
-        DriverUtils.waitUntilElementClickable(getDriver(), popupCopy);
+        verifyLocatorPresence(By.name(nameEditingItemCopy), "Copy popup is not viisble");
         popupCopy.click();
     }
 
     public void clickPopupPasteButton() throws Exception {
-        DriverUtils.waitUntilElementClickable(getDriver(), popupPaste);
+        verifyLocatorPresence(By.name(nameEditingItemPaste), "Paste popup is not visible");
         popupPaste.click();
     }
 
@@ -213,11 +212,11 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void clickKeyboardReturnButton() throws Exception {
-        DriverUtils.waitUntilElementClickable(getDriver(), keyboardReturnBtn);
+        verifyLocatorPresence(By.name(nameKeyboardReturnButton), "Keyboard Return button is not visible");
         keyboardReturnBtn.click();
     }
 
-    public void clickHideKeyboarButton() {
+    public void clickHideKeyboardButton() {
         keyboardHideBtn.click();
     }
 
@@ -226,7 +225,7 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void clickDoneKeyboardButton() throws Exception {
-        DriverUtils.waitUntilElementClickable(getDriver(), keyboardDoneBtn);
+        verifyLocatorPresence(By.name(nameDoneButton), "Keyboard Done button is not visible");
         keyboardDoneBtn.click();
     }
 

@@ -5,17 +5,13 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import io.appium.java_client.ios.IOSElement;
-import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 
 public class RegistrationPage extends IOSPage {
     private static final String nameRegistrationCameraButton = "CameraButton";
@@ -203,10 +199,6 @@ public class RegistrationPage extends IOSPage {
     private String email;
     private String password;
 
-    private final static String DEFAULT_PASS_FIELD_VALUE = "Password";
-
-    private String[] listOfEmails;
-
     public RegistrationPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -249,16 +241,6 @@ public class RegistrationPage extends IOSPage {
         resendCodeButton.click();
     }
 
-    public boolean isTakePhotoSmileDisplayed() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathTakePhotoSmile)) &&
-                takePhotoSmile.isEnabled();
-    }
-
-    public boolean isTakeOrSelectPhotoLabelVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.name(nameTakePhotoHintLabel));
-    }
-
     public void selectPicture() throws Exception {
         verifyLocatorPresence(By.name(nameSelectPictureButton), "Select Picture button is not visible");
         selectPictureButton.click();
@@ -283,14 +265,6 @@ public class RegistrationPage extends IOSPage {
         confirmInput.click();
     }
 
-    public void clearEmailInput() throws Exception {
-        registrationEmailInput.clear();
-    }
-
-    public void inputPassword() {
-        yourPassword.sendKeys("\n");
-    }
-
     public void clickCreateAccountButton() throws Exception {
         DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.xpath(xpathCreateAccountButton));
         createAccountButton.click();
@@ -300,78 +274,13 @@ public class RegistrationPage extends IOSPage {
         yourEmail.sendKeys(getEmail());
     }
 
-    public boolean typeAllInvalidEmails() throws Exception {
-        for (String email : listOfEmails) {
-            yourEmail.sendKeys(email + "\n");
-            if (!DriverUtils.isElementPresentAndDisplayed(getDriver(), provideValidEmailMessage)) {
-                return false;
-            }
-            yourEmail.clear();
-        }
-        return true;
-    }
-
-    public boolean isCreateAccountEnabled() {
-        return createAccountButton.isEnabled();
-    }
-
-    // this test skips photo verification
-    public void verifyUserInputIsPresent(String name, String email)
-            throws Exception {
-        new LoginPage(this.getLazyDriver()).clickJoinButton();
-        forwardWelcomeButton.click(); // skip photo
-        Assert.assertEquals("Name is not same as previously entered.", name,
-                yourName.getText());
-        forwardWelcomeButton.click();
-        Assert.assertEquals("Email is not same as previously entered.", email,
-                yourEmail.getText());
-        forwardWelcomeButton.click();
-        Assert.assertEquals("Preciously entered email shouln't be shown",
-                DEFAULT_PASS_FIELD_VALUE, yourPassword.getText());
-    }
-
     public void typeUsername() throws Exception {
         verifyLocatorPresence(By.xpath(xpathYourName), "Name input is not visible");
         yourName.sendKeys(getName());
     }
 
-    public String getUsernameFieldValue() {
-        return yourFilledName.getText();
-    }
-
-    public String getEmailFieldValue() {
-        return yourEmail.getText();
-    }
-
     public boolean isPictureSelected() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameConfirmImageButton));
-    }
-
-    public boolean confirmErrorPage() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameErrorPageButton));
-    }
-
-    public void backToEmailPageFromErrorPage() {
-        backToWelcomeButton.click();
-        backToWelcomeButton.click();
-    }
-
-    public void navigateToWelcomePage() throws Exception {
-        while (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameBackToWelcomeButton), 2)) {
-            backToWelcomeButton.click();
-        }
-    }
-
-    public boolean isNextButtonPresented() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameForwardWelcomeButton));
-    }
-
-    public void tapBackButton() {
-        backToWelcomeButton.click();
-    }
-
-    public boolean isBackButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameBackToWelcomeButton));
     }
 
     public String getName() {
@@ -405,24 +314,6 @@ public class RegistrationPage extends IOSPage {
         this.password = password;
         typePassword();
 
-    }
-
-    public void setListOfEmails(String[] list) {
-        this.listOfEmails = list;
-    }
-
-    public void reSendEmail() throws Exception {
-        Point p = reSendButton.getLocation();
-        Dimension k = reSendButton.getSize();
-        this.getDriver().tap(1, (p.x) + (k.width / 2), (p.y) + (k.height - 5),
-                1);
-    }
-
-    public void waitUntilEmailsCountReachesExpectedValue(int expectedMsgsCount,
-                                                         String recipient, int timeoutSeconds)
-            throws Exception {
-        IMAPSMailbox mailbox = IMAPSMailbox.getInstance();
-        mailbox.waitUntilMessagesCountReaches(recipient, expectedMsgsCount, timeoutSeconds);
     }
 
     public boolean isEmailVerifPromptVisible() throws Exception {
