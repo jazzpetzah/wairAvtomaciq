@@ -121,8 +121,7 @@ Feature: Calling
     When I swipe on text input
     And I press Ping button
     Then I see Ping message <Msg> in the dialog
-    When I close input options
-    And I tap on text input
+    When I tap on text input
     And I type the message "<Message>" and send it
     Then I see my message "<Message>" in the dialog
     When I swipe on text input
