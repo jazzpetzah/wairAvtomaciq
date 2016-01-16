@@ -1,7 +1,7 @@
 Feature: Conversation View
 
   @C2632 @regression @rc @id2419
-  Scenario Outline: Vefiry sending message [PORTRAIT]
+  Scenario Outline: Verify sending message [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
@@ -16,8 +16,8 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id2375
-  Scenario Outline: Vefiry sending message [LANDSCAPE]
+  @C2645 @regression @id2375
+  Scenario Outline: Verify sending message [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
@@ -465,7 +465,7 @@ Feature: Conversation View
       | Name      | Contact   | YouTubeLink                                 |
       | user1Name | user2Name | https://www.youtube.com/watch?v=gywGBuMUiI4 |
 
-  @regression @id2403
+  @C5237 @regression @id2403
   Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
