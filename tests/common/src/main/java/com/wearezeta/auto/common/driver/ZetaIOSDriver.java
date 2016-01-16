@@ -118,8 +118,8 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
     @Override
     public Response execute(String driverCommand, Map<String, ?> parameters) {
         if (this.isSessionLost() && !driverCommand.equals(DriverCommand.SCREENSHOT)) {
-            log.warn(String.format("Appium session is dead. Skipping execution of '%s' command...", driverCommand));
-            return null;
+            throw new IllegalStateException(
+                    String.format("Appium session is dead. Skipping execution of '%s' command...", driverCommand));
         }
         final Callable<Response> task = () -> super.execute(driverCommand, parameters);
         final Future<Response> future = getPool().submit(task);
@@ -132,7 +132,9 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
                 }
                 Throwables.propagate(e.getCause());
             } else {
-                setSessionLost(true);
+                if (e instanceof TimeoutException) {
+                    setSessionLost(true);
+                }
                 Throwables.propagate(e);
             }
         }
