@@ -5,7 +5,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I see dialog page
     #And I swipe up on dialog page to open other user personal page
@@ -33,7 +33,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press Add button
@@ -58,7 +58,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press leave converstation button
@@ -79,7 +79,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select contact <Contact2>
@@ -103,7 +103,7 @@ Feature: People View
     Given User <Contact1> change accent color to <Color1>
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I create group chat with <Contact1> and <Contact2>
     #And I swipe up on group chat page
     And I open group conversation details
@@ -122,7 +122,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I change group conversation name to <ChatName>
@@ -141,7 +141,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I create group chat with <Contact1> and <Contact2>
     #And I swipe up on group chat page
     And I open group conversation details
@@ -159,7 +159,7 @@ Feature: People View
     Given <GroupCreator> is connected to <NonConnectedContact>
     Given <GroupCreator> has group chat <GroupChatName> with Myself,<NonConnectedContact>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     #And I swipe up on group chat page
     And I open group conversation details
@@ -176,7 +176,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select contact <Contact1>
@@ -195,7 +195,7 @@ Feature: People View
     Given <GroupCreator> is connected to <NonConnectedContact>
     Given <GroupCreator> has group chat <GroupChatName> with Myself,<NonConnectedContact>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     And I tap on group chat with name <GroupChatName>
     #And I swipe up on group chat page
     And I open group conversation details
@@ -212,7 +212,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I see dialog page
     #And I swipe up on dialog page to open other user personal page
@@ -241,7 +241,7 @@ Feature: People View
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I see dialog page
     And I open conversation details
@@ -257,7 +257,7 @@ Feature: People View
     And I click on Go button
     And I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
     And I return to the chat list
-    And I see Contact list with my name <Name>
+    And I see conversations list
     And I see in contact list group chat with <Contact1> <Contact2> <Contact3>
 
     Examples:
@@ -269,7 +269,7 @@ Feature: People View
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I see dialog page
     #And I swipe up on dialog page to open other user personal page
@@ -307,7 +307,7 @@ Feature: People View
     Given User <Contact> change accent color to <Color>
     Given User <Contact> change name to <NewName>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I open conversation details
@@ -316,7 +316,7 @@ Feature: People View
     And I click close user profile page button
     And I see dialog page
     And I return to the chat list
-    And I see Contact list with my name <Name>
+    And I see conversations list
     Then I see conversation <Contact> is silenced
 
     Examples:
@@ -331,7 +331,7 @@ Feature: People View
     Given User <Contact> change name to <NewName>
     Given <Name> silenced conversation with <Contact>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     And I see conversation <Contact> got silenced before
     When I tap on contact name <Contact>
     And I see dialog page
@@ -341,7 +341,7 @@ Feature: People View
     And I click close user profile page button
     And I see dialog page
     And I return to the chat list
-    And I see Contact list with my name <Name>
+    And I see conversations list
     Then I see conversation <Contact> is unsilenced
 
     Examples:
@@ -353,7 +353,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I see dialog page
     And I open conversation details
@@ -375,7 +375,7 @@ Feature: People View
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given User <Name> blocks user <Contact1>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select contact <Contact1>
@@ -395,7 +395,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
@@ -421,7 +421,7 @@ Feature: People View
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Given User Myself sends 1 message to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
@@ -443,7 +443,7 @@ Feature: People View
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User <Name> sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
@@ -469,7 +469,7 @@ Feature: People View
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself securely pings conversation <GroupChatName>
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
@@ -495,7 +495,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given I sign in using my email or phone number
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself securely pings conversation <Contact1>
     Given User Myself sends 1 encrypted message to user <Contact1>
     Given User <Contact1> sends 1 encrypted message to user Myself
@@ -525,7 +525,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
@@ -551,7 +551,7 @@ Feature: People View
     Given <Contact1> has group chat <GroupChatName> with <Contact3>,<Contact2>,<Name>
     Given Myself sent connection request to <Contact3>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I open group conversation details
@@ -568,7 +568,7 @@ Feature: People View
     Given There are 2 users where <Name> is me
     Given Myself is connected to all other users
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I see dialog page
     And I open conversation details
@@ -587,7 +587,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I try to change group conversation name to empty

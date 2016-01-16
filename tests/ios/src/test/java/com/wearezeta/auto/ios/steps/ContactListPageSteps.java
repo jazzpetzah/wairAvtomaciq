@@ -33,13 +33,9 @@ public class ContactListPageSteps {
         return pagesCollecton.getPage(PersonalInfoPage.class);
     }
 
-    @Given("^I see Contact list with my name (.*)$")
-    public void GivenISeeContactListWithMyName(String name) throws Throwable {
-
-        boolean loginFinished = getLoginPage().isLoginFinished();
-
-        Assert.assertTrue("Self profile button dind't appear in contact list",
-                loginFinished);
+    @Given("^I see conversations list$")
+    public void GivenISeeConversationsList() throws Exception {
+        Assert.assertTrue("Conversations list is not visible after the timeout", getLoginPage().isLoginFinished());
     }
 
     /**

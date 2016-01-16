@@ -14,7 +14,7 @@ Feature: Registration
     And I press Picture button
     And I choose a picture from camera roll on iPad popover
     And I press Confirm button on iPad popover
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
 
     Examples: 
       | Email      | Password      | Name      |
@@ -35,7 +35,7 @@ Feature: Registration
     And I press Picture button
     And I choose a picture from camera roll on iPad popover
     And I press Confirm button on iPad popover
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
 
     Examples: 
       | Email      | Password      | Name      |
@@ -86,7 +86,7 @@ Feature: Registration
     And I press Picture button
     And I choose a picture from camera roll on iPad popover
     And I press Confirm button on iPad popover
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
     When I tap on my name <Name>
     Then I see user name doesnt contains spaces
 

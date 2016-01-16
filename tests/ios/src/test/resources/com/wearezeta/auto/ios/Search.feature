@@ -4,14 +4,14 @@ Feature: Search
   Scenario Outline: Verify search by email
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
     Then I see user <ContactName> found on People picker page
 
-    Examples: 
+    Examples:
       | Name      | ContactEmail | ContactName |
       | user1Name | user2Email   | user2Name   |
 
@@ -19,14 +19,14 @@ Feature: Search
   Scenario Outline: Verify search by name
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -47,7 +47,7 @@ Feature: Search
     And I scroll up page a bit
     And I dont see Upload contacts dialog
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -67,7 +67,7 @@ Feature: Search
     And I see user <Contact1> found on People picker page
     And I see user <Contact2> found on People picker page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -76,8 +76,8 @@ Feature: Search
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I wait for 30 seconds
+    Given I see conversations list
+    When I wait for 30 seconds
     And I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
@@ -87,17 +87,17 @@ Feature: Search
     And I wait for 2 seconds
     And I see dialog page
 
-    Examples: 
-      | Name      | UserCount | Contact   |
-      | user1Name | 4         | user2Name |
+    Examples:
+      | Name      | UserCount |
+      | user1Name | 4         |
 
   @C1069 @regression @rc @id1150
   Scenario Outline: Start group chat with users from Top Connections
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I wait for 30 seconds
+    Given I see conversations list
+    When I wait for 30 seconds
     And I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
@@ -111,9 +111,9 @@ Feature: Search
     And I return to the chat list
     And I see first item in contact list named <ConvoName>
 
-    Examples: 
-      | Name      | ConvoName    | UserCount | Contact   |
-      | user1Name | TopGroupTest | 4         | user2Name |
+    Examples:
+      | Name      | ConvoName    | UserCount |
+      | user1Name | TopGroupTest | 4         |
 
   @C40 @regression @rc @id1454
   Scenario Outline: Verify sending a connection request to user chosen from search
@@ -121,8 +121,8 @@ Feature: Search
     Given User <UnconnectedUser> name starts with <StartLetter>
     Given User <Name> change accent color to <Color>
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I search for user name <UnconnectedUser> and tap on it on People picker page
@@ -135,17 +135,17 @@ Feature: Search
     And I swipe up on pending dialog page to open other user pending personal page
     And I see <UnconnectedUser> user pending profile page
 
-    Examples: 
-      | Name      | UnconnectedUser | ContactEmail | NumOfMessageChars | StartLetter | Color        |
-      | user1Name | user2Name       | user2Email   | 140               | T           | BrightOrange |
+    Examples:
+      | Name      | UnconnectedUser | StartLetter | Color        |
+      | user1Name | user2Name       | T           | BrightOrange |
 
   @C3220 @regression @id763
   Scenario Outline: I can still search for other people using the search field, regardless of whether I already added people from Top conversations
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I wait for 30 seconds
+    Given I see conversations list
+    When I wait for 30 seconds
     And I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
@@ -157,7 +157,7 @@ Feature: Search
     And I tap on connected user <Contact> on People picker page
     Then I see that <Number> contacts are selected
 
-    Examples: 
+    Examples:
       | Name      | UserCount | Contact   | Number |
       | user1Name | 7         | user2Name | 4      |
 
@@ -167,7 +167,7 @@ Feature: Search
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I dont see conversation <Contact> in contact list
     And I open search by taping on it
     And I see People picker page
@@ -180,7 +180,7 @@ Feature: Search
     And I send the message
     Then I see 1 default message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -191,8 +191,8 @@ Feature: Search
     Given <ContactWithFriends> is connected to <Friend1>
     Given <ContactWithFriends> is connected to <Friend2>
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if CONNECT label is not there
     And I see CONNECT label
@@ -200,7 +200,7 @@ Feature: Search
     And I tap hide for suggested contact <Friend1>
     Then I do not see suggested contact <Friend1>
 
-    Examples: 
+    Examples:
       | Name      | ContactWithFriends | Friend1   | Friend2   |
       | user1Name | user2Name          | user3Name | user4Name |
 
@@ -212,8 +212,8 @@ Feature: Search
     Given <ContactWithFriends> is connected to <Friend2>
     Given <ContactWithFriends> is connected to <Friend3>
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if CONNECT label is not there
     And I see CONNECT label
@@ -221,7 +221,7 @@ Feature: Search
     And I swipe completely to dismiss suggested contact <Friend1>
     Then I do not see suggested contact <Friend1>
 
-    Examples: 
+    Examples:
       | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
       | user1Name | user2Name          | user3Name | user4Name | user5Name |
 
@@ -231,15 +231,15 @@ Feature: Search
     Given <Contact> is connected to <Name>
     Given User <Contact> change name to <NewName>
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I wait until <LastName> exists in backend search results
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <LastName>
     Then I see user <NewName> found on People picker page
 
-    Examples: 
+    Examples:
       | Name      | Contact   | NewName  | LastName |
       | user1Name | user2Name | NEW NAME | NAME     |
 
@@ -249,8 +249,8 @@ Feature: Search
     Given Myself is connected to <Contact1>
     Given <Contact1> is connected to <Contact2>
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if CONNECT label is not there
     And I see CONNECT label
@@ -258,7 +258,7 @@ Feature: Search
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact2>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -267,8 +267,8 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
@@ -279,7 +279,7 @@ Feature: Search
     Then I see mute call, end call and speakers buttons
     And I see calling to contact <Contact> message
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -288,8 +288,8 @@ Feature: Search
     Given There are 4 users where <Name> is me
     Given Myself is connected to all other users
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
@@ -304,7 +304,7 @@ Feature: Search
     When I navigate back to conversations view
     Then I see in contact list group chat with <Contact1> <Contact2> <Contact3>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
@@ -313,15 +313,15 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     When I tap on first 1 top connections
     Then I see action buttons appeared on People picker page
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -330,15 +330,15 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
     When I tap on connected user <Contact> on People picker page
     Then I see action buttons appeared on People picker page
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -347,8 +347,8 @@ Feature: Search
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
@@ -357,7 +357,7 @@ Feature: Search
     When I tap on 2nd top connection contact
     Then I see Create Conversation button on People picker page
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -366,8 +366,8 @@ Feature: Search
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
@@ -376,7 +376,7 @@ Feature: Search
     When I tap on 1st top connection contact
     Then I see action buttons disappeared on People picker page
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -385,8 +385,8 @@ Feature: Search
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
@@ -401,17 +401,17 @@ Feature: Search
     And I press backspace button
     Then I see action buttons disappeared on People picker page
 
-    Examples: 
-      | Name      | Contact   |
-      | user1Name | user3Name |
+    Examples:
+      | Name      |
+      | user1Name |
 
   @C1048 @regression @id3281
   Scenario Outline: Verify opening conversation with action button
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
@@ -420,7 +420,7 @@ Feature: Search
     And I click open conversation action button on People picker page
     Then I see dialog page
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -430,7 +430,7 @@ Feature: Search
     Given Myself is connected to <Contact1>
     Given <Contact1> is connected to <Contact2>,<Contact3>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if CONNECT label is not there
@@ -441,7 +441,7 @@ Feature: Search
     And I tap hide for suggested contact <Contact3>
     Then I dont see CONNECT label
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
@@ -449,14 +449,14 @@ Feature: Search
   Scenario Outline: Verify impossibility of dismissing if search isn't empty
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
     And I swipe completely to dismiss suggested contact <Contact>
     Then I see user <Contact> found on People picker page
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -465,8 +465,8 @@ Feature: Search
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see Invite more people button
@@ -486,6 +486,6 @@ Feature: Search
     And I see action buttons disappeared on People picker page
     Then I see Invite more people button
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |

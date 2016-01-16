@@ -5,7 +5,7 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I swipe right on a <Contact>
     And I click archive button for conversation <Contact>
     Then I dont see conversation <Contact> in contact list
@@ -22,7 +22,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I swipe right on a <Contact>
     And I click archive button for conversation <Contact>
     Then I dont see conversation <Contact> in contact list
@@ -39,7 +39,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
+    Given I see conversations list
     And I swipe right on a <GroupChatName>
     And I click archive button for conversation <GroupChatName>
     Then I dont see conversation <GroupChatName> in contact list
@@ -57,7 +57,7 @@ Feature: Conversation List
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
+    Given I see conversations list
     And I swipe right on a <GroupChatName>
     And I click archive button for conversation <GroupChatName>
     Then I dont see conversation <GroupChatName> in contact list
@@ -73,9 +73,8 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
     Given Myself archived conversation with <ArchivedUser>
-    Given I wait for 30 seconds
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     And I open archived conversations on iPad
     And I tap on contact name <ArchivedUser>
     And I navigate back to conversations view
@@ -90,10 +89,9 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
     Given Myself archived conversation with <ArchivedUser>
-    And I wait for 30 seconds
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     And I open archived conversations on iPad
     And I tap on contact name <ArchivedUser>
     Then I see first item in contact list named <ArchivedUser>
@@ -106,9 +104,9 @@ Feature: Conversation List
   Scenario Outline: Verify opening search by tapping on the search field [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
-    And I see People picker page
+    Given I see conversations list
+    When I open search by taping on it
+    Then I see People picker page
 
     Examples:
       | Name      |
@@ -119,9 +117,9 @@ Feature: Conversation List
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
-    And I see People picker page
+    Given I see conversations list
+    When I open search by taping on it
+    Then I see People picker page
 
     Examples:
       | Name      |
@@ -134,7 +132,7 @@ Feature: Conversation List
     Given User <Contact> change name to <NewName>
     Given User <Name> change accent color to <Color>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given I remember the state of the first conversation cell
     Given User <Contact> securely pings conversation <Name>
     When I wait for 10 seconds
@@ -152,7 +150,7 @@ Feature: Conversation List
     Given User <Name> change accent color to <Color>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given I remember the state of the first conversation cell
     Given User <Contact> securely pings conversation <Name>
     When I wait for 10 seconds
@@ -169,7 +167,7 @@ Feature: Conversation List
     Given User <Contact> change name to <NewName>
     Given User <Name> change accent color to <Color>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User <Contact> sends <Number> encrypted messages to user Myself
     And I remember the state of the first conversation cell
     When I tap on contact name <Contact>
@@ -189,7 +187,7 @@ Feature: Conversation List
     Given User <Name> change accent color to <Color>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User <Contact> sends <Number> encrypted messages to user Myself
     And I remember the state of the first conversation cell
     When I tap on contact name <Contact>
@@ -205,7 +203,7 @@ Feature: Conversation List
     Given There are 4 users where <Name> is me
     Given <Name> is connected to <Contact>,<Contact2>,<Contact3>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User <Contact> sends <Number> encrypted messages to user Myself
     Given User <Contact3> sends <Number> encrypted messages to user Myself
     Given I see first item in contact list named <Contact3>
@@ -224,7 +222,7 @@ Feature: Conversation List
     Given <Name> is connected to <Contact>,<Contact2>,<Contact3>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User <Contact> sends <Number> encrypted messages to user Myself
     Given User <Contact3> sends <Number> encrypted messages to user Myself
     Given I see first item in contact list named <Contact3>
@@ -243,7 +241,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact2>
     Given <Contact> sent connection request to Me
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
+    When I see conversations list
     And I see Pending request link in contact list
 
     Examples:
@@ -257,7 +255,7 @@ Feature: Conversation List
     Given <Contact> sent connection request to Me
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
+    When I see conversations list
     And I see Pending request link in contact list
 
     Examples:
@@ -270,7 +268,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>,<Contact1>
     Given User <Name> change accent color to <Color>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
     And <Contact> stops all calls to me
@@ -292,7 +290,7 @@ Feature: Conversation List
     Given User <Name> change accent color to <Color>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
     And <Contact> stops all calls to me
@@ -313,7 +311,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>,<Contact1>
     Given User <Name> change accent color to <Color>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I tap on contact name <Contact>
     And I return to the chat list
     And I tap on contact name <Contact1>
@@ -337,7 +335,7 @@ Feature: Conversation List
     Given User <Name> change accent color to <Color>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I tap on contact name <Contact>
     And I tap on contact name <Contact1>
     Then I dont see unread message indicator in list for contact <Contact>
@@ -359,7 +357,7 @@ Feature: Conversation List
     Given User <Name> change accent color to BrightOrange
     Given <Contact> starts waiting instance using <CallBackend>
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
+    When I see conversations list
     And I tap on contact name <Contact>
     And I see dialog page
     And <Contact> calls me using <CallBackend>
@@ -382,7 +380,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
     When I tap on contact name <Contact>
     And I see dialog page
@@ -407,7 +405,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I swipe right on a <GroupChatName>
     Then I see conversation <GroupChatName> name in action menu in Contact List
     And I see Silence button in action menu in Contact List
@@ -427,7 +425,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I swipe right on a <GroupChatName>
     Then I see conversation <GroupChatName> name in action menu in Contact List
     And I see Silence button in action menu in Contact List
@@ -445,7 +443,7 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I swipe right on a <Contact>
     Then I see conversation <Contact> name in action menu in Contact List
     And I see Silence button in action menu in Contact List
@@ -464,7 +462,7 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I swipe right on a <Contact>
     Then I see conversation <Contact> name in action menu in Contact List
     And I see Silence button in action menu in Contact List
@@ -483,7 +481,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given User <Name> change accent color to BrightOrange
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
+    When I see conversations list
     Then I see conversation <Contact> is selected in list
     And I see dialog page with contact <Contact>
 
@@ -498,7 +496,7 @@ Feature: Conversation List
     Given User <Name> change accent color to BrightOrange
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
+    When I see conversations list
     Then I see conversation <Contact> is selected in list
     And I see dialog page with contact <Contact>
 
@@ -511,7 +509,7 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given User Myself sends 1 encrypted message to user <Contact1>
     When I swipe right on a <Contact1>
@@ -531,7 +529,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given User Myself sends 1 encrypted message to user <Contact1>
     When I swipe right on a <Contact1>
@@ -550,7 +548,7 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I swipe right on a <Contact1>
     And I press Archive button in action menu in Contact List
     And I dont see conversation <Contact1> in contact list
@@ -572,7 +570,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I swipe right on a <Contact1>
     And I press Archive button in action menu in Contact List
     And I dont see conversation <Contact1> in contact list
@@ -594,7 +592,7 @@ Feature: Conversation List
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself securely pings conversation <GroupChatName>
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
@@ -623,7 +621,7 @@ Feature: Conversation List
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself securely pings conversation <GroupChatName>
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
@@ -650,7 +648,7 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I swipe right on a <Contact1>
     And I press menu Block button
     And I click Cancel button
@@ -666,7 +664,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I swipe right on a <Contact1>
     And I press menu Block button
     And I click Cancel button
@@ -681,7 +679,7 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I swipe right on a <Contact>
     And I press menu silence button
     When I swipe right on a <Contact>
@@ -706,7 +704,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I swipe right on a <Contact>
     And I press menu silence button
     When I swipe right on a <Contact>
@@ -731,7 +729,7 @@ Feature: Conversation List
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I click delete menu button
@@ -756,7 +754,7 @@ Feature: Conversation List
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User <Name> sends 1 encrypted message to group conversation <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I click delete menu button
@@ -781,7 +779,7 @@ Feature: Conversation List
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given <Contact1> removed <Name> from group chat <GroupChatName>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I swipe right on a <GroupChatName>
     And I see Archive button in action menu in Contact List
     And I see Delete button in action menu in Contact List
@@ -804,7 +802,7 @@ Feature: Conversation List
     Given <Contact1> removed <Name> from group chat <GroupChatName>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I swipe right on a <GroupChatName>
     And I see Archive button in action menu in Contact List
     And I see Delete button in action menu in Contact List
@@ -824,7 +822,7 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I swipe right on a <Contact>
     And I press menu Block button
     And I confirm blocking alert
@@ -846,7 +844,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I swipe right on a <Contact>
     And I press menu Block button
     And I confirm blocking alert
@@ -866,7 +864,7 @@ Feature: Conversation List
   Scenario Outline: Verify 'Invite more people' is hidden after 6 connections [PORTRAIT]
     Given There are <Number> users where <Name> is me
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
+    When I see conversations list
     And I see Invite more people button
     And Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>
     And I see Invite more people button
@@ -882,7 +880,7 @@ Feature: Conversation List
     Given There are <Number> users where <Name> is me
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
+    When I see conversations list
     And I see Invite more people button
     And Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>
     And I see Invite more people button

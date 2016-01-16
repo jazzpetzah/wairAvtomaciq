@@ -5,7 +5,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
@@ -31,8 +31,8 @@ Feature: Connect
     Given Myself is connected to <Contact2>
     Given <Contact> sent connection request to Me
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I see Pending request link in contact list
+    Given I see conversations list
+    When I see Pending request link in contact list
     And I click on Pending request link in contact list
     And I see Pending request page
     And I wait for 2 seconds
@@ -53,7 +53,7 @@ Feature: Connect
     Given <GroupCreator> is connected to <UnconnectedUser>
     Given <GroupCreator> has group chat <GroupChatName> with <UnconnectedUser>,Myself
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap on not connected contact <UnconnectedUser>
@@ -74,8 +74,8 @@ Feature: Connect
     Given <Contact3> sent connection request to me
     Given Myself is connected to <Contact4>
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I see Pending request link in contact list
+    Given I see conversations list
+    When I see Pending request link in contact list
     And I click on Pending request link in contact list
     And I see Pending request page
     And I click on Ignore button on Pending requests page <SentRequests> times
@@ -101,8 +101,8 @@ Feature: Connect
     Given <Contact3> sent connection request to me
     Given Myself is connected to <Contact4>
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I see Pending request link in contact list
+    Given I see conversations list
+    When I see Pending request link in contact list
     And I click on Pending request link in contact list
     And I see Pending request page
     And I click on Connect button on Pending requests page <SentRequests> times
@@ -121,7 +121,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
@@ -146,7 +146,7 @@ Feature: Connect
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
     Given I sign in using my email or phone number
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     Given User <Contact> securely pings conversation <Name>
     Given User <Contact> sends 1 encrypted message to user Myself
@@ -178,7 +178,7 @@ Feature: Connect
   Scenario Outline: Verify you cannot send the invitation message twice
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
@@ -208,7 +208,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
@@ -236,7 +236,7 @@ Feature: Connect
     Given User <UnconnectedUser> name starts with <StartLetter>
     Given User <Name> change accent color to <Color>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
@@ -284,7 +284,7 @@ Feature: Connect
     Given Myself is connected to <Contact2>
     Given Me sent connection request to <Contact1>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I see plus button next to text input
     And I click plus button next to text input
@@ -304,7 +304,7 @@ Feature: Connect
     Given Myself is connected to <Contact2>
     Given Me sent connection request to <Contact1>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I click plus button next to text input
     And I open conversation details
@@ -329,8 +329,8 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
@@ -355,7 +355,7 @@ Feature: Connect
     Given <Contact1> is connected to <Contact2>,<Contact3>
     Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>,<Contact3>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     And I see Pending request link in contact list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
@@ -379,7 +379,7 @@ Feature: Connect
     Given <Contact2> sent connection request to me
     Given <Contact1> is connected to <Contact2>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     And I see Pending request link in contact list
     And I click on Pending request link in contact list
     And I see Pending request page
@@ -397,7 +397,7 @@ Feature: Connect
     Given <Contact> is connected to <Name>
     Given User <Contact> blocks user <Name>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact>
     Then I see dialog page
     And I type the default message
@@ -420,7 +420,7 @@ Feature: Connect
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     Then I dont see conversation <Contact> in contact list
     When I open search by taping on it
     And I see People picker page
@@ -444,8 +444,8 @@ Feature: Connect
     Given <Contact> sent connection request to Me
     Given <Contact2> sent connection request to Me
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I see Pending request link in contact list
+    Given I see conversations list
+    When I see Pending request link in contact list
     And I click on Pending request link in contact list
     Then I see Pending request page
     When I swipe right in current window
@@ -463,8 +463,8 @@ Feature: Connect
     Given <Contact> sent connection request to Me
     Given User <Contact> changes name to <NewName>
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I see Pending request link in contact list
+    Given I see conversations list
+    When I see Pending request link in contact list
     And I click on Pending request link in contact list
     And I see Pending request page
     Then I see user <NewName> found on Pending request page
@@ -479,8 +479,8 @@ Feature: Connect
     Given Myself is connected to <Contact2>
     Given <Contact> sent connection request to Me
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I see Pending request link in contact list
+    Given I see conversations list
+    When I see Pending request link in contact list
     And <Contact> cancel all outgoing connection requests
     Then I dont see Pending request link in contact list
 

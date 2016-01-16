@@ -6,7 +6,7 @@ Feature: Archive
     Given Myself is connected to <ArchivedUser>
     Given Myself archived conversation with <ArchivedUser>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     And I dont see conversation <ArchivedUser> in contact list
     Given User <ArchivedUser> sends 1 encrypted message to user Myself
     Then I see first item in contact list named <ArchivedUser>
@@ -36,7 +36,7 @@ Feature: Archive
     Given Myself silenced conversation with <ArchivedUser>
     Given Myself archived conversation with <ArchivedUser>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     And I dont see conversation <ArchivedUser> in contact list
     Given User <ArchivedUser> sends 1 encrypted message to user Myself
     Then I dont see conversation <ArchivedUser> in contact list
@@ -60,9 +60,9 @@ Feature: Archive
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    When I sign in using my email or phone number
-    And I see Contact list with my name <Name>
-    And I swipe right on a <GroupChatName>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I swipe right on a <GroupChatName>
     And I press Leave button in action menu in Contact List
     And I press leave
     Then I dont see conversation <GroupChatName> in contact list

@@ -4,7 +4,7 @@ Feature: Settings
   Scenario Outline: Verify user can access settings [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
@@ -19,7 +19,7 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
@@ -33,7 +33,7 @@ Feature: Settings
   Scenario Outline: Attempt to open About screen in settings [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on About button on personal page
@@ -50,7 +50,7 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on About button on personal page
@@ -66,7 +66,7 @@ Feature: Settings
   Scenario Outline: Verify reset password page is accessible from settings [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
@@ -82,7 +82,7 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
@@ -97,11 +97,11 @@ Feature: Settings
   Scenario Outline: Verify default value for sound settings is all [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    And I tap on my name <Name>
+    Given I see conversations list
+    When I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
-    When I tap on Sound Alerts
+    And I tap on Sound Alerts
     And I see the Sound alerts page
     Then I verify that all is the default selected value
 
@@ -114,7 +114,7 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
@@ -130,7 +130,7 @@ Feature: Settings
   Scenario Outline: Verify you can access Help site within the app [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     And I tap on my name <Name>
     And I click on Settings button on personal page
     When I click on Help button from the options menu
@@ -145,7 +145,7 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on Help button from the options menu
@@ -162,7 +162,7 @@ Feature: Settings
     Given User <Contact2> change name to <NewName>
     Given Myself is connected to <Contact>,<Contact2>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     And I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
@@ -203,7 +203,7 @@ Feature: Settings
     Given Myself is connected to <Contact>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     And I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
@@ -238,7 +238,7 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given User me change accent color to <Color>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on About button on personal page
@@ -269,7 +269,7 @@ Feature: Settings
     Given User me change accent color to <Color>
     Given I Sign in on tablet using my email
     Given I rotate UI to landscape
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on About button on personal page

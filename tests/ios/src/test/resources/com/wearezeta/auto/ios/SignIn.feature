@@ -8,27 +8,11 @@ Feature: Sign In
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Login button
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
 
     Examples:
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
-
-  #Known issue is IOS-989, once it is fixed test should be updated
-  #@staging @id524
-  #Scenario Outline: I can change sign in user on iOS
-  #Given I Sign in using login <Login> and password <Password>
-  #And I see Contact list with my name <UserA>
-  #And I tap on my name <UserA>
-  #And I click on Settings button on personal page
-  #And I click Sign out button from personal page
-  #And I Sign in using login <UserB> and password <Password>
-  #Then I see Personal page
-  #And I see name <UserB> on Personal page
-  #And I see email <UserB> on Personal page
-  #Examples:
-  #| Login   | Password    | UserA   | UserB       |
-  #| aqaUser | aqaPassword | aqaUser | aqaContact1 |
 
   @C1133 @regression @rc @id1398 @noAcceptAlert
   Scenario Outline: Notification if SignIn credentials are wrong
@@ -58,7 +42,7 @@ Feature: Sign In
     And I press Change Password button in browser
     And Return to Wire app
     And I sign in using my email
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
 
     Examples:
       | Login      | Name      | NewPassword  |
@@ -72,7 +56,7 @@ Feature: Sign In
     When I enter phone number for user <Name>
     Then I see verification code page
     When I enter verification code for user <Name>
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
 
     Examples:
       | Name      |
@@ -93,7 +77,7 @@ Feature: Sign In
     When I click DONE keyboard button
     Then I see email verification reminder
     When I verify registration address
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
 
     Examples:
       | Email      | Password      | Name      |
@@ -154,7 +138,7 @@ Feature: Sign In
     And I click DONE keyboard button
     And I see email verification reminder
     And I verify registration address
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
     When I tap on my name <Name>
     Then I see email <Email> on Personal page
 

@@ -5,7 +5,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I see plus button next to text input
     And I click plus button next to text input
@@ -27,7 +27,7 @@ Feature: Connect
     Given Me sent connection request to <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I see plus button next to text input
     And I click plus button next to text input
@@ -46,7 +46,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I click plus button next to text input
     And I open conversation details
@@ -74,7 +74,7 @@ Feature: Connect
     Given Me sent connection request to <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I click plus button next to text input
     And I open conversation details
@@ -100,8 +100,8 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
@@ -124,8 +124,8 @@ Feature: Connect
     Given Me sent connection request to <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
@@ -150,8 +150,8 @@ Feature: Connect
     Given <Contact1> is connected to <Contact2>,<Contact3>
     Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>,<Contact3>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    And I see Pending request link in contact list
+    Given I see conversations list
+    When I see Pending request link in contact list
     And I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I open group conversation details
@@ -176,8 +176,8 @@ Feature: Connect
     Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>,<Contact3>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    And I see Pending request link in contact list
+    Given I see conversations list
+    When I see Pending request link in contact list
     And I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I open group conversation details
@@ -199,8 +199,8 @@ Feature: Connect
     Given <Contact2> sent connection request to me
     Given <Contact1> is connected to <Contact2>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    And I see Pending request link in contact list
+    Given I see conversations list
+    When I see Pending request link in contact list
     And I click on Pending request link in contact list
     And I see Pending request page
     And I see YOU BOTH KNOW people section
@@ -219,8 +219,8 @@ Feature: Connect
     Given <Contact1> is connected to <Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    And I see Pending request link in contact list
+    Given I see conversations list
+    When I see Pending request link in contact list
     And I click on Pending request link in contact list
     And I see Pending request page
     And I see YOU BOTH KNOW people section
@@ -238,8 +238,8 @@ Feature: Connect
     Given <Contact> sent connection request to Me
     Given <Contact2> sent connection request to Me
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I see Pending request link in contact list
+    Given I see conversations list
+    When I see Pending request link in contact list
     And I click on Pending request link in contact list
     Then I see Pending request page
     When I swipe right in current window
@@ -259,8 +259,8 @@ Feature: Connect
     Given <Contact2> sent connection request to Me
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I see Pending request link in contact list
+    Given I see conversations list
+    When I see Pending request link in contact list
     And I click on Pending request link in contact list
     Then I see Pending request page
     When I swipe right in current window
@@ -276,8 +276,8 @@ Feature: Connect
     Given <Contact> sent connection request to Me
     Given User <Contact> changes name to <NewName>
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I see Pending request link in contact list
+    Given I see conversations list
+    When I see Pending request link in contact list
     And I click on Pending request link in contact list
     And I see Pending request page
     Then I see user <NewName> found on Pending request page
@@ -293,8 +293,8 @@ Feature: Connect
     Given User <Contact> changes name to <NewName>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I see Pending request link in contact list
+    Given I see conversations list
+    When I see Pending request link in contact list
     And I click on Pending request link in contact list
     And I see Pending request page
     Then I see user <NewName> found on Pending request page
@@ -309,8 +309,8 @@ Feature: Connect
     Given Myself is connected to <Contact2>
     Given <Contact> sent connection request to Me
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I see Pending request link in contact list
+    Given I see conversations list
+    When I see Pending request link in contact list
     And <Contact> cancel all outgoing connection requests
     Then I dont see Pending request link in contact list
 
@@ -325,8 +325,8 @@ Feature: Connect
     Given <Contact> sent connection request to Me
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I see Pending request link in contact list
+    Given I see conversations list
+    When I see Pending request link in contact list
     And <Contact> cancel all outgoing connection requests
     Then I dont see Pending request link in contact list
 

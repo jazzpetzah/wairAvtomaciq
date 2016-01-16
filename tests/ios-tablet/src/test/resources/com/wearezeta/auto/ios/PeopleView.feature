@@ -5,7 +5,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
@@ -19,7 +19,7 @@ Feature: People View
     And I click on Go button
     Then I see group chat page with users <Contact1>,<Contact2>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -29,7 +29,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
@@ -43,7 +43,7 @@ Feature: People View
     And I click on Go button
     Then I see group chat page with users <Contact1>,<Contact2>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -52,7 +52,7 @@ Feature: People View
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I see dialog page
     And I open conversation details
@@ -66,7 +66,7 @@ Feature: People View
     And I swipe right on group chat page
     Then I see in contact list group chat with <Contact1> <Contact2> <Contact3>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
@@ -76,7 +76,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I see dialog page
     And I open conversation details
@@ -89,7 +89,7 @@ Feature: People View
     And I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
     Then I see in contact list group chat with <Contact1> <Contact2> <Contact3>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
@@ -99,7 +99,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I open group conversation details
@@ -109,7 +109,7 @@ Feature: People View
     And I tap on group chat with name <GroupChatName>
     Then I see You Left message in group chat
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | LeaveGroup    |
 
@@ -120,7 +120,7 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I open group conversation details
@@ -130,7 +130,7 @@ Feature: People View
     And I tap on group chat with name <GroupChatName>
     Then I see You Left message in group chat
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | LeaveGroup    |
 
@@ -140,7 +140,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I open group conversation details
@@ -151,7 +151,7 @@ Feature: People View
     And I click Go back button on user profile popover
     Then I see that <Contact2> is not present on group chat info page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | RemoveGroup   |
 
@@ -162,7 +162,7 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I open group conversation details
@@ -173,7 +173,7 @@ Feature: People View
     And I click Go back button on user profile popover
     Then I see that <Contact2> is not present on group chat info page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | RemoveGroup   |
 
@@ -183,7 +183,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I open group conversation details
@@ -195,7 +195,7 @@ Feature: People View
     And I swipe right on group chat page
     Then I see in contact list group chat named <ChatName>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | ChatName |
       | user1Name | user2Name | user3Name | RenameGroup   | NewName  |
 
@@ -206,7 +206,7 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I open group conversation details
@@ -217,7 +217,7 @@ Feature: People View
     Then I see you renamed conversation to <ChatName> message shown in Group Chat
     Then I see in contact list group chat named <ChatName>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | ChatName |
       | user1Name | user2Name | user3Name | RenameGroup   | NewName  |
 
@@ -232,7 +232,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact2>,<Contact1>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I open group conversation details
@@ -241,7 +241,7 @@ Feature: People View
     Then I see the correct avatar picture for user <Contact1> on iPad
     Then I see the correct avatar picture for user <Contact2> on iPad
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Picture                      | Color        | Color2       | ParticipantsNumber |
       | user1Name | user2Name | user3Name | GroupInfo     | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow | 3                  |
 
@@ -257,7 +257,7 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I open group conversation details
@@ -266,7 +266,7 @@ Feature: People View
     Then I see the correct avatar picture for user <Contact1> on iPad
     Then I see the correct avatar picture for user <Contact2> on iPad
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Picture                      | Color        | Color2       | ParticipantsNumber |
       | user1Name | user2Name | user3Name | GroupInfo     | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow | 3                  |
 
@@ -276,14 +276,14 @@ Feature: People View
     Given Myself is connected to <Contact2>,<ConnectedContact>
     Given Myself has group chat <GroupChatName> with <Contact2>,<ConnectedContact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
     Then I see email and name of user <Contact2> on iPad popover
 
-    Examples: 
+    Examples:
       | Name      | Contact2  | ConnectedContact | GroupChatName   |
       | user1Name | user2Name | user3Name        | SingleInfoGroup |
 
@@ -294,14 +294,14 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact2>,<ConnectedContact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
     Then I see email and name of user <Contact2> on iPad popover
 
-    Examples: 
+    Examples:
       | Name      | Contact2  | ConnectedContact | GroupChatName   |
       | user1Name | user2Name | user3Name        | SingleInfoGroup |
 
@@ -312,7 +312,7 @@ Feature: People View
     Given <GroupCreator> is connected to <NonConnectedContact>
     Given <GroupCreator> has group chat <GroupChatName> with Myself,<NonConnectedContact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I open group conversation details
@@ -320,7 +320,7 @@ Feature: People View
     Then I see Connect label on Other user profile popover
     And I see Connect Button on Other user profile popover
 
-    Examples: 
+    Examples:
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
       | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
@@ -332,7 +332,7 @@ Feature: People View
     Given <GroupCreator> has group chat <GroupChatName> with Myself,<NonConnectedContact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I open group conversation details
@@ -340,7 +340,7 @@ Feature: People View
     Then I see Connect label on Other user profile popover
     And I see Connect Button on Other user profile popover
 
-    Examples: 
+    Examples:
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
       | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
@@ -350,7 +350,7 @@ Feature: People View
     Given Myself is connected to <Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact2>,<Contact3>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I open group conversation details
@@ -362,7 +362,7 @@ Feature: People View
     And I send the message
     Then I see 1 default message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | 1on1FromGroup |
 
@@ -373,7 +373,7 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact2>,<Contact3>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I open group conversation details
@@ -385,7 +385,7 @@ Feature: People View
     And I send the message
     Then I see 1 default message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | 1on1FromGroup |
 
@@ -397,7 +397,7 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given <Name> silenced group conversation with <GroupChatName>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     And I see conversation <GroupChatName> got silenced before
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
@@ -409,7 +409,7 @@ Feature: People View
     And I return to the chat list
     Then I see conversation <GroupChatName> is unsilenced
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Color  | GroupChatName |
       | user1Name | user2Name | user3Name | Violet | SILENCE       |
 
@@ -422,7 +422,7 @@ Feature: People View
     Given <Name> silenced group conversation with <GroupChatName>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     And I see conversation <GroupChatName> got silenced before
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
@@ -433,7 +433,7 @@ Feature: People View
     And I see dialog page
     Then I see conversation <GroupChatName> is unsilenced
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Color  | GroupChatName |
       | user1Name | user2Name | user3Name | Violet | SILENCE       |
 
@@ -444,7 +444,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I open group conversation details
@@ -455,7 +455,7 @@ Feature: People View
     And I return to the chat list
     Then I see conversation <GroupChatName> is silenced
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Color  | GroupChatName |
       | user1Name | user2Name | user3Name | Violet | SILENCE       |
 
@@ -467,7 +467,7 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I open group conversation details
@@ -477,7 +477,7 @@ Feature: People View
     And I see dialog page
     Then I see conversation <GroupChatName> is silenced
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Color  | GroupChatName |
       | user1Name | user2Name | user3Name | Violet | SILENCE       |
 
@@ -487,7 +487,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I open group conversation details
@@ -498,7 +498,7 @@ Feature: People View
     And I open conversation details
     Then I see that number of participants <ParticipantsNumber> is correct on iPad popover
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | ParticipantsNumber |
       | user1Name | user2Name | user3Name | user4Name | AddContact    | 4                  |
 
@@ -509,7 +509,7 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I open group conversation details
@@ -520,7 +520,7 @@ Feature: People View
     And I open conversation details
     Then I see that number of participants <ParticipantsNumber> is correct on iPad popover
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | ParticipantsNumber |
       | user1Name | user2Name | user3Name | user4Name | AddContact    | 4                  |
 
@@ -529,7 +529,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I see dialog page
     And I open conversation details
@@ -540,7 +540,7 @@ Feature: People View
     Then I dont see conversation <Contact1> in contact list
     Then I see conversation <Contact2> is selected in list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -550,7 +550,7 @@ Feature: People View
     Given Myself is connected to all other users
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I see dialog page
     And I open conversation details
@@ -561,7 +561,7 @@ Feature: People View
     Then I dont see conversation <Contact1> in contact list
     Then I see conversation <Contact2> is selected in list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -572,7 +572,7 @@ Feature: People View
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given User <Name> blocks user <Contact1>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select contact <Contact1>
@@ -582,7 +582,7 @@ Feature: People View
     And I return to the chat list
     Then I see conversation <Contact1> is selected in list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | UnblockFromGroup |
 
@@ -594,7 +594,7 @@ Feature: People View
     Given User <Name> blocks user <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select contact <Contact1>
@@ -603,7 +603,7 @@ Feature: People View
     Then I see dialog page
     Then I see conversation <Contact1> is selected in list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | UnblockFromGroup |
 
@@ -613,7 +613,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
@@ -629,7 +629,7 @@ Feature: People View
     And I fill in Search field user name <Contact3>
     Then I see that user <Contact3> is NOT found on People picker page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user3Name | OnlyConnected |
 
@@ -640,7 +640,7 @@ Feature: People View
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
@@ -656,7 +656,7 @@ Feature: People View
     And I fill in Search field user name <Contact3>
     Then I see that user <Contact3> is NOT found on People picker page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user3Name | OnlyConnected |
 
@@ -666,7 +666,7 @@ Feature: People View
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
@@ -679,7 +679,7 @@ Feature: People View
     And I open archived conversations on iPad
     Then I dont see conversation <GroupChatName> in contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
@@ -690,7 +690,7 @@ Feature: People View
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
@@ -703,7 +703,7 @@ Feature: People View
     And I open archived conversations on iPad
     Then I dont see conversation <GroupChatName> in contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
@@ -713,7 +713,7 @@ Feature: People View
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
@@ -730,7 +730,7 @@ Feature: People View
     And I open archived conversations on iPad
     Then I dont see conversation <GroupChatName> in contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
@@ -741,7 +741,7 @@ Feature: People View
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
@@ -758,7 +758,7 @@ Feature: People View
     And I open archived conversations on iPad
     Then I dont see conversation <GroupChatName> in contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
@@ -768,7 +768,7 @@ Feature: People View
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself securely pings conversation <GroupChatName>
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
@@ -785,7 +785,7 @@ Feature: People View
     When I tap on conversation <GroupChatName> in search result
     Then I see group chat page after deletion with users <Contact1>,<Contact2>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Image       |
       | user1Name | user2Name | user3Name | ForDeletion   | testing.jpg |
 
@@ -796,7 +796,7 @@ Feature: People View
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself securely pings conversation <GroupChatName>
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
@@ -813,7 +813,7 @@ Feature: People View
     When I tap on conversation <GroupChatName> in search result
     Then I see group chat page after deletion with users <Contact1>,<Contact2>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
       | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
 
@@ -822,7 +822,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself securely pings conversation <Contact1>
     Given User Myself sends 1 encrypted message to user <Contact1>
     Given User <Contact1> sends 1 encrypted message to user Myself
@@ -842,7 +842,7 @@ Feature: People View
     And I click open conversation button on People picker page
     Then I see the only message in dialog is system message CONNECTED TO <Contact1>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Image       |
       | user1Name | user2Name | testing.jpg |
 
@@ -852,7 +852,7 @@ Feature: People View
     Given Myself is connected to all other users
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself securely pings conversation <Contact1>
     Given User Myself sends 1 encrypted message to user <Contact1>
     Given User <Contact1> sends 1 encrypted message to user Myself
@@ -872,7 +872,7 @@ Feature: People View
     And I click open conversation button on People picker page
     Then I see the only message in dialog is system message CONNECTED TO <Contact1>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Message | GroupChatName | Image       |
       | user1Name | user2Name | testing | ForDeletion   | testing.jpg |
 
@@ -882,7 +882,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
@@ -898,7 +898,7 @@ Feature: People View
     And I tap on group chat with name <GroupChatName>
     Then I see 4 conversation entries
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Message | Image       |
       | user1Name | user2Name | user3Name | TESTCHAT      | hello   | testing.jpg |
 
@@ -909,7 +909,7 @@ Feature: People View
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
@@ -925,9 +925,9 @@ Feature: People View
     And I tap on group chat with name <GroupChatName>
     Then I see 4 conversation entries
 
-    Examples: 
-      | Name      | Contact1  | Contact2  | GroupChatName | Message      | Image       |
-      | user1Name | user2Name | user3Name | TESTCHAT      | hello, iPad! | testing.jpg |
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | Image       |
+      | user1Name | user2Name | user3Name | TESTCHAT      | testing.jpg |
 
   @C2432 @regression @id3999
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (People view) [PORTRAIT]
@@ -936,7 +936,7 @@ Feature: People View
     Given <Contact1> has group chat <GroupChatName> with <Contact3>,<Contact2>,<Name>
     Given Myself sent connection request to <Contact3>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I open group conversation details
@@ -944,7 +944,7 @@ Feature: People View
     Then I see <Contact3> user pending profile popover on iPad
     Then I see remove from group conversation button
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | TESTCHAT      |
 
@@ -956,7 +956,7 @@ Feature: People View
     Given Myself sent connection request to <Contact3>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I open group conversation details
@@ -964,7 +964,7 @@ Feature: People View
     Then I see <Contact3> user pending profile popover on iPad
     Then I see remove from group conversation button
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | TESTCHAT      |
 
@@ -973,7 +973,7 @@ Feature: People View
     Given There are 2 users where <Name> is me
     Given Myself is connected to all other users
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I see dialog page
     And I open conversation details
@@ -982,7 +982,7 @@ Feature: People View
     And I click Cancel button
     Then I see conversation action menu
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -992,7 +992,7 @@ Feature: People View
     Given Myself is connected to all other users
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I see dialog page
     And I open conversation details
@@ -1001,7 +1001,7 @@ Feature: People View
     And I click Cancel button
     Then I see conversation action menu
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -1011,7 +1011,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I try to change group conversation name to empty
@@ -1019,7 +1019,7 @@ Feature: People View
     When I try to change group conversation name to random with length <MaxGroupChatNameLenght>
     Then I see correct conversation name <GroupChatName>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | MaxGroupChatNameLenght |
       | user1Name | user2Name | user3Name | TESTCHAT      | 65                     |
 
@@ -1030,7 +1030,7 @@ Feature: People View
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I try to change group conversation name to empty
@@ -1038,6 +1038,6 @@ Feature: People View
     When I try to change group conversation name to random with length <MaxGroupChatNameLenght>
     Then I see correct conversation name <GroupChatName>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | MaxGroupChatNameLenght |
       | user1Name | user2Name | user3Name | TESTCHAT      | 65                     |

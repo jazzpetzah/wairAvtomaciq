@@ -6,8 +6,8 @@ Feature: Connect
     Given User <UnconnectedUser> name starts with <StartLetter>
     Given User <Name> change accent color to <Color>
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I search for user name <UnconnectedUser> and tap on it on People picker page
@@ -31,8 +31,8 @@ Feature: Connect
     Given User <Name> change accent color to <Color>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I search for user name <UnconnectedUser> and tap on it on People picker page
@@ -54,7 +54,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
@@ -80,7 +80,7 @@ Feature: Connect
     Given Myself is connected to <Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
@@ -107,7 +107,7 @@ Feature: Connect
     Given <GroupCreator> is connected to <UnconnectedUser>
     Given <GroupCreator> has group chat <GroupChatName> with <UnconnectedUser>,Myself
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap on not connected contact <UnconnectedUser>
@@ -128,7 +128,7 @@ Feature: Connect
     Given <GroupCreator> has group chat <GroupChatName> with <UnconnectedUser>,Myself
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap on not connected contact <UnconnectedUser>
@@ -148,8 +148,8 @@ Feature: Connect
     Given <Contact3> sent connection request to me
     Given Myself is connected to <Contact4>
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I see Pending request link in contact list
+    Given I see conversations list
+    When I see Pending request link in contact list
     And I click on Pending request link in contact list
     And I see Pending request page
     And I click on Ignore button on Pending requests page <SentRequests> times
@@ -175,8 +175,8 @@ Feature: Connect
     Given Myself is connected to <Contact4>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I see Pending request link in contact list
+    Given I see conversations list
+    When I see Pending request link in contact list
     And I click on Pending request link in contact list
     And I see Pending request page
     And I click on Ignore button on Pending requests page <SentRequests> times
@@ -201,8 +201,8 @@ Feature: Connect
     Given <Contact3> sent connection request to me
     Given Myself is connected to <Contact4>
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I see Pending request link in contact list
+    Given I see conversations list
+    When I see Pending request link in contact list
     And I click on Pending request link in contact list
     And I see Pending request page
     And I click on Connect button on Pending requests page <SentRequests> times
@@ -225,8 +225,8 @@ Feature: Connect
     Given Myself is connected to <Contact4>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I see Pending request link in contact list
+    Given I see conversations list
+    When I see Pending request link in contact list
     And I click on Pending request link in contact list
     And I see Pending request page
     And I click on Connect button on Pending requests page <SentRequests> times
@@ -245,7 +245,7 @@ Feature: Connect
     Given Myself is connected to <Contact2>
     Given Me sent connection request to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     And I see user <Contact> in contact list
     When I tap on contact name <Contact>
     And I see Pending Connect to <Contact> message on Dialog page from user <Name>
@@ -262,7 +262,7 @@ Feature: Connect
     Given Me sent connection request to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     And I see user <Contact> in contact list
     When I tap on contact name <Contact>
     And I see Pending Connect to <Contact> message on Dialog page from user <Name>
@@ -278,7 +278,7 @@ Feature: Connect
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     Given User <Contact> securely pings conversation <Name>
     Given User <Contact> sends 1 encrypted message to user Myself
@@ -312,7 +312,7 @@ Feature: Connect
     Given User <Name> blocks user <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     Given User <Contact> securely pings conversation <Name>
     Given User <Contact> sends 1 encrypted message to user Myself
@@ -341,7 +341,7 @@ Feature: Connect
   Scenario Outline: Verify you cannot send the invitation message twice [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
@@ -371,7 +371,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
@@ -401,7 +401,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
@@ -429,7 +429,7 @@ Feature: Connect
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
@@ -455,8 +455,8 @@ Feature: Connect
   Scenario Outline: Verify you can see People you may know on Wire after uploading your address book
     Given There are 1 user where <Name> is me
     Given I Sign in on tablet using my email
-    And I dismiss all alerts
-    And I see Contact list with my name <Name>
+    Given I dismiss all alerts
+    Given I see conversations list
     And I open search by taping on it
     And I see Upload contacts dialog
     And I click Continue button on Upload dialog

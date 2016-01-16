@@ -60,6 +60,15 @@ public class CommonIOSSteps {
         return getIosApplicationPathFromConfig(CommonIOSSteps.class);
     }
 
+    private static boolean isUseNativeInstrumentsEnabled() throws Exception {
+        return Boolean.parseBoolean(getIsUseNativeInstrumentsLibFromConfig(
+                CommonIOSSteps.class).orElseGet(() -> "false"));
+    }
+
+    private static String getAppName() throws Exception {
+        return getIOSAppName(CommonIOSSteps.class);
+    }
+
     public Future<ZetaIOSDriver> resetIOSDriver(boolean enableAutoAcceptAlerts)
             throws Exception {
         return resetIOSDriver(enableAutoAcceptAlerts, false);
@@ -71,10 +80,10 @@ public class CommonIOSSteps {
     public Future<ZetaIOSDriver> resetIOSDriver(boolean enableAutoAcceptAlerts,
                                                 boolean overrideWaitForAppScript) throws Exception {
         final DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("nativeInstrumentsLib", Boolean.parseBoolean(
-                getIsUseNativeInstrumentsLibFromConfig(this.getClass()).orElseGet(() -> "false")));
+        capabilities.setCapability("nativeInstrumentsLib", isUseNativeInstrumentsEnabled());
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
         capabilities.setCapability("app", getPath());
+        capabilities.setCapability("appName", getAppName());
         final String deviceName = getDeviceName(this.getClass());
         capabilities.setCapability("deviceName", deviceName);
         capabilities.setCapability("platformVersion", getPlatformVersion());

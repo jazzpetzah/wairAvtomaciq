@@ -5,7 +5,7 @@ Feature: Giphy
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I type tag for giphy preview <GiphyTag> and open preview overlay
@@ -21,7 +21,7 @@ Feature: Giphy
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I type tag for giphy preview <GiphyTag> and open preview overlay
@@ -36,7 +36,7 @@ Feature: Giphy
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I type tag for giphy preview <GiphyTag> and open preview overlay
@@ -56,7 +56,7 @@ Feature: Giphy
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I type tag for giphy preview <GiphyTag> and open preview overlay
@@ -75,7 +75,7 @@ Feature: Giphy
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I type tag for giphy preview <GiphyTag> and open preview overlay
@@ -93,7 +93,7 @@ Feature: Giphy
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I type tag for giphy preview <GiphyTag> and open preview overlay

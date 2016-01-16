@@ -559,4 +559,8 @@ public class CommonUtils {
         return getOptionalValueFromConfig(cls, "useNativeInstrumentsLib");
     }
 
+    public static String getIOSAppName(Class<?> cls) throws Exception {
+        return getValueFromConfig(cls, "appName");
+    }
+
 }

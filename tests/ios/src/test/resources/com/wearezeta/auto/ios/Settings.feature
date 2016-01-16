@@ -4,7 +4,7 @@ Feature: Settings
   Scenario Outline: Verify user can access settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
@@ -18,14 +18,14 @@ Feature: Settings
   Scenario Outline: Attempt to open About screen in settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on About button on personal page
     Then I see About page
     And I close About page
     And I close self profile
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
 
     Examples: 
       | Name      |
@@ -35,7 +35,7 @@ Feature: Settings
   Scenario Outline: Verify reset password page is accessible from settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
@@ -51,8 +51,8 @@ Feature: Settings
   Scenario Outline: Verify default value for sound settings is all
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
-    And I tap on my name <Name>
+    Given I see conversations list
+    When I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
     When I tap on Sound Alerts
@@ -67,7 +67,7 @@ Feature: Settings
   Scenario Outline: Verify you can access Help site within the app
   	Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     And I tap on my name <Name>
     And I click on Settings button on personal page
     When I click on Help button from the options menu
@@ -84,8 +84,8 @@ Feature: Settings
     Given User <Contact2> change name to <NewName>
     Given Myself is connected to <Contact>,<Contact2>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
-    And I tap on my name <Name>
+    Given I see conversations list
+    When I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
     When I tap on Sound Alerts
@@ -122,7 +122,7 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given User me change accent color to <Color>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on About button on personal page

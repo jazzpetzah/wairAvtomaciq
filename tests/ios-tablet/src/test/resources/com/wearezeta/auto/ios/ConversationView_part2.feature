@@ -5,7 +5,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I send long message
@@ -26,7 +26,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I send long message
@@ -46,7 +46,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
@@ -77,7 +77,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
@@ -107,7 +107,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I post media link <YouTubeLink>
@@ -127,7 +127,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I post media link <YouTubeLink>
@@ -144,7 +144,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I close the app for <CloseAppTime> seconds
@@ -160,7 +160,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I close the app for <CloseAppTime> seconds
@@ -177,7 +177,7 @@ Feature: Conversation View
     Given User <Contact> change accent color to <Color>
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
@@ -204,7 +204,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
@@ -228,7 +228,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I open conversation details
@@ -248,7 +248,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I open conversation details
@@ -267,7 +267,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I see dialog page
     And I see plus button next to text input
@@ -293,7 +293,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I see dialog page
     And I see plus button next to text input
@@ -321,7 +321,7 @@ Feature: Conversation View
     Given I leave group chat <GroupChatName>
     Given Me sent connection request to <Contact1>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I see plus button next to text input
     And I click plus button next to text input
@@ -345,7 +345,7 @@ Feature: Conversation View
     Given Me sent connection request to <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I see plus button next to text input
     And I click plus button next to text input
@@ -364,7 +364,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself sends encrypted message "<VimeoLink>" to user <Contact1>
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -380,7 +380,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself sends encrypted message "<VimeoLink>" to user <Contact1>
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -395,7 +395,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself sends encrypted message "<VimeoLink>" to user <Contact>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -411,7 +411,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself sends encrypted message "<VimeoLink>" to user <Contact>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -426,7 +426,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself sends encrypted message "<MessageAndLink>" to user <Contact1>
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -444,7 +444,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself sends encrypted message "<MessageAndLink>" to user <Contact1>
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -461,7 +461,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself sends encrypted message "<Link>" to user <Contact1>
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -479,7 +479,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself sends encrypted message "<Link>" to user <Contact1>
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -496,7 +496,7 @@ Feature: Conversation View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I see dialog page
     And I type the default message
@@ -520,7 +520,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>, <Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I see dialog page
     And I type the default message
@@ -542,8 +542,8 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given User <Contact> sends encrypted image <Picture> to <ConversationType> conversation <Name>
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact>
+    Given I see conversations list
+    When I tap on contact name <Contact>
     And I see dialog page
     And I see new photo in the dialog
     And I longpress on image in the conversation
@@ -563,7 +563,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     And I tap on contact name <Contact>
     And I see dialog page
@@ -585,7 +585,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself sends 1 encrypted message to user <Contact1>
     When I swipe right on a <Contact1>
     And I click delete menu button
@@ -612,7 +612,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself sends 1 encrypted message to user <Contact1>
     When I swipe right on a <Contact1>
     And I click delete menu button
@@ -638,7 +638,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -656,8 +656,8 @@ Feature: Conversation View
     Then I verify image in dialog is same as template <Picture>
 
     Examples:
-      | Name      | Contact   | Picture     | ConversationType |
-      | user1Name | user2Name | testing.jpg | single user      |
+      | Name      | Contact   | Picture     |
+      | user1Name | user2Name | testing.jpg |
 
   @C2631 @regression @id4084
   Scenario Outline: Verify downloading images in fullscreen [LANDSCAPE]
@@ -665,7 +665,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -694,7 +694,7 @@ Feature: Conversation View
     Given Myself has group chat <GroupChatName> with <Contact1>, <Contact2>
     Given User <Name> blocks user <Contact1>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends image <Picture> to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
@@ -712,7 +712,7 @@ Feature: Conversation View
     Given User <Name> blocks user <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends encrypted image <Picture> to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
@@ -726,9 +726,9 @@ Feature: Conversation View
   Scenario Outline: Verify cursor swiping is disabled when you scroll back into a conversation [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Name> sent long message to conversation <Contact>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
+    Given User Myself sends 40 encrypted messages to user <Contact>
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     When I tap on contact name <Contact>
     And I tap on text input to scroll to the end
@@ -744,10 +744,10 @@ Feature: Conversation View
   Scenario Outline: Verify cursor swiping is disabled when you scroll back into a conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Name> sent long message to conversation <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
+    Given User Myself sends 40 encrypted messages to user <Contact>
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     When I tap on contact name <Contact>
     And I tap on text input to scroll to the end
@@ -764,7 +764,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I see plus button next to text input
@@ -783,7 +783,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I see plus button next to text input

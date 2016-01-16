@@ -4,8 +4,8 @@ Feature: Search
   Scenario Outline: Verify search by email [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
@@ -20,8 +20,8 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
@@ -35,8 +35,8 @@ Feature: Search
   Scenario Outline: Verify search by name [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I swipe down contact list on iPad
+    Given I see conversations list
+    When I swipe down contact list on iPad
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
@@ -51,8 +51,8 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I swipe down contact list on iPad
+    Given I see conversations list
+    When I swipe down contact list on iPad
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
@@ -66,9 +66,9 @@ Feature: Search
   Scenario Outline: Verify denying address book uploading [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
-    And I dismiss all alerts
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I dismiss all alerts
+    Given I see conversations list
+    When I open search by taping on it
     And I see Upload contacts dialog
     And I click Continue button on Upload dialog
     And I dismiss alert
@@ -87,9 +87,9 @@ Feature: Search
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I dismiss all alerts
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I dismiss all alerts
+    Given I see conversations list
+    When I open search by taping on it
     And I see Upload contacts dialog
     And I click Continue button on Upload dialog
     And I dismiss alert
@@ -108,9 +108,8 @@ Feature: Search
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I wait for 30 seconds
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
@@ -121,8 +120,8 @@ Feature: Search
     And I see dialog page
 
     Examples: 
-      | Name      | UserCount | Contact   |
-      | user1Name | 2         | user2Name |
+      | Name      | UserCount |
+      | user1Name | 2         |
 
   @C2839 @regression @id2929
   Scenario Outline: Start 1:1 chat with users from Top Connections [LANDSCAPE]
@@ -130,9 +129,8 @@ Feature: Search
     Given Myself is connected to all other users
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I wait for 30 seconds
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
@@ -143,16 +141,16 @@ Feature: Search
     And I see dialog page
 
     Examples: 
-      | Name      | UserCount | Contact   |
-      | user1Name | 2         | user2Name |
+      | Name      | UserCount |
+      | user1Name | 2         |
 
   @C2835 @regression @rc @id2550
   Scenario Outline: Start group chat with users from Top Connections [PORTRAIT]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
@@ -166,8 +164,8 @@ Feature: Search
     Then I see first item in contact list named <ConvoName>
 
     Examples: 
-      | Name      | ConvoName    | UserCount | Contact   |
-      | user1Name | TopGroupTest | 3         | user2Name |
+      | Name      | ConvoName    | UserCount |
+      | user1Name | TopGroupTest | 3         |
 
   @C2840 @regression @id2930
   Scenario Outline: Start group chat with users from Top Connections [LANDSCAPE]
@@ -175,9 +173,8 @@ Feature: Search
     Given Myself is connected to all other users
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    #And I wait for 30 seconds
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
@@ -200,7 +197,7 @@ Feature: Search
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I dont see conversation <Contact> in contact list
     And I wait until <Contact> exists in backend search results
     And I open search by taping on it
@@ -225,7 +222,7 @@ Feature: Search
     Given User <Name> blocks user <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I dont see conversation <Contact> in contact list
     And I wait until <Contact> exists in backend search results
     And I open search by taping on it
@@ -252,8 +249,8 @@ Feature: Search
     Given <ContactWithFriends> is connected to <Friend2>
     Given <ContactWithFriends> is connected to <Friend3>
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if CONNECT label is not there
     And I see CONNECT label
@@ -274,8 +271,8 @@ Feature: Search
     Given <ContactWithFriends> is connected to <Friend3>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if CONNECT label is not there
     And I see CONNECT label
@@ -296,8 +293,8 @@ Feature: Search
     Given <ContactWithFriends> is connected to <Friend2>
     Given <ContactWithFriends> is connected to <Friend3>
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if CONNECT label is not there
     And I see CONNECT label
@@ -318,8 +315,8 @@ Feature: Search
     Given <ContactWithFriends> is connected to <Friend3>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if CONNECT label is not there
     And I see CONNECT label
@@ -337,8 +334,8 @@ Feature: Search
     Given Myself is connected to <Contact1>
     Given <Contact1> is connected to <Contact2>
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if CONNECT label is not there
     And I see CONNECT label
@@ -357,8 +354,8 @@ Feature: Search
     Given <Contact1> is connected to <Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if CONNECT label is not there
     And I see CONNECT label
@@ -376,8 +373,8 @@ Feature: Search
     Given <Contact> is connected to <Name>
     Given User <Contact> change name to <NewName>
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I wait until <LastName> exists in backend search results
     And I see People picker page
     And I tap on Search input on People picker page
@@ -395,8 +392,8 @@ Feature: Search
     Given User <Contact> change name to <NewName>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I wait until <LastName> exists in backend search results
     And I see People picker page
     And I tap on Search input on People picker page
@@ -413,8 +410,8 @@ Feature: Search
     Given <Contact> is connected to <Name>
     Given User <Contact> change name to <NewName>
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I wait until <NewName> exists in backend search results
     And I see People picker page
     And I tap on Search input on People picker page
@@ -432,8 +429,8 @@ Feature: Search
     Given User <Contact> change name to <NewName>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I wait until <NewName> exists in backend search results
     And I see People picker page
     And I tap on Search input on People picker page
@@ -449,9 +446,9 @@ Feature: Search
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I wait until <Contact> exists in backend search results
-    And I open search by taping on it
+    Given I see conversations list
+    Given I wait until <Contact> exists in backend search results
+    When I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
@@ -473,9 +470,9 @@ Feature: Search
     Given Myself is connected to all other users
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I wait until <Contact> exists in backend search results
-    And I open search by taping on it
+    Given I see conversations list
+    Given I wait until <Contact> exists in backend search results
+    When I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page

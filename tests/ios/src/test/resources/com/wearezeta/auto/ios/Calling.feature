@@ -5,7 +5,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
     And <Contact> stops all calls to me
@@ -24,8 +24,8 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact>
+    Given I see conversations list
+    When I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
     And I press call button
@@ -41,8 +41,8 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact>
+    Given I see conversations list
+    When I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
     And I press call button
@@ -60,7 +60,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I ignore incoming call
@@ -75,7 +75,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
@@ -92,7 +92,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
     And <Contact> stops all calls to me
@@ -110,7 +110,7 @@ Feature: Calling
     Given Myself is connected to <Contact>,<Contact1>
     Given User <Name> change accent color to <Color>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
     And <Contact> stops all calls to me
@@ -131,8 +131,8 @@ Feature: Calling
     Given <Contact> starts waiting instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact>
+    Given I see conversations list
+    When I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
     And I press call button
@@ -196,7 +196,7 @@ Feature: Calling
     Given <Contact> starts waiting instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
+    Given I see conversations list
     And I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
@@ -211,13 +211,13 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | firefox     | 60      |
 
-  @C3164 @regression @id2645 @torun
+  @C3164 @regression @id2645
   Scenario Outline: 3rd person tries to call me after I initiate a call to somebody
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Contact1> starts waiting instance using <CallBackend>
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
+    Given I see conversations list
     And I tap on contact name <Contact1>
     And I see dialog page
     And I swipe the text input cursor
@@ -248,7 +248,7 @@ Feature: Calling
     Given <Contact> starts waiting instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
+    Given I see conversations list
     And I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
@@ -268,8 +268,8 @@ Feature: Calling
     Given Myself is connected to <Contact>
     Given <Contact> starts waiting instance using <CallBackend>
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact>
+    Given I see conversations list
+    When I tap on contact name <Contact>
     And I see dialog page
     And <Contact> calls me using <CallBackend2>
     And I see incoming calling message for contact <Contact>
@@ -288,8 +288,8 @@ Feature: Calling
     Given <Contact> starts waiting instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact>
+    Given I see conversations list
+    When I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
     And I press call button
@@ -323,7 +323,7 @@ Feature: Calling
     Given <Contact4> starts waiting instance using <CallBackend>
     Given <Contact4> accepts next incoming call automatically
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And <Contact1> calls <GroupChatName> using <CallBackend2>
@@ -347,7 +347,7 @@ Feature: Calling
     Given <Contact2> starts waiting instance using <CallBackend>
     Given <Contact2> accepts next incoming call automatically
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And <Contact1> calls <GroupChatName> using <CallBackend2>
@@ -369,7 +369,7 @@ Feature: Calling
     Given <Contact3> accepts next incoming call automatically
     Given <Contact4> accepts next incoming call automatically
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When <Contact1> calls me using <CallBackend2>
     And I accept incoming call
     And I dont see calling page
@@ -399,7 +399,7 @@ Feature: Calling
     Given <Contact3> accepts next incoming call automatically
     Given <Contact4> accepts next incoming call automatically
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And <Contact2> calls <GroupChatName> using <CallBackend2>
@@ -430,7 +430,7 @@ Feature: Calling
     Given <Contact4> starts waiting instance using <CallBackend>
     Given <Contact4> accepts next incoming call automatically
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And <Contact1> calls <GroupChatName> using <CallBackend2>
@@ -459,7 +459,7 @@ Feature: Calling
     Given <Contact3> accepts next incoming call automatically
     Given <Contact4> accepts next incoming call automatically
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And <Contact2> calls <GroupChatName> using <CallBackend2>
@@ -490,7 +490,7 @@ Feature: Calling
     Given <Contact3> accepts next incoming call automatically
     Given <Contact4> accepts next incoming call automatically
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When <Contact2> calls <GroupChatName> using <CallBackend2>
     And I see incoming group calling message
     And I accept incoming call
@@ -518,7 +518,7 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I swipe the text input cursor
@@ -540,7 +540,7 @@ Feature: Calling
     Given <Contact3> accepts next incoming call automatically
     Given <Contact4> accepts next incoming call automatically
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     And <Contact2> calls <GroupChatName> using <CallBackend2>
     And I see incoming group calling message
     And I wait for 45 seconds
@@ -566,7 +566,7 @@ Feature: Calling
     Given <Contact3> accepts next incoming call automatically
     Given <Contact4> accepts next incoming call automatically
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I swipe the text input cursor
@@ -600,9 +600,9 @@ Feature: Calling
     Given <Contact3> accepts next incoming call automatically
     Given <Contact4> accepts next incoming call automatically
     Given I sign in using my email or phone number
-    And I dismiss alert
-    And I accept alert
-    And I see Contact list with my name <Name>
+    Given I dismiss alert
+    Given I accept alert
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     When <Contact5> calls <GroupChatName> using <CallBackend2>
@@ -623,7 +623,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     And I tap on contact name <Contact>
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
@@ -650,8 +650,8 @@ Feature: Calling
     Given <Contact3> accepts next incoming call automatically
     Given <Contact4> accepts next incoming call automatically
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
-    And <Contact2> calls <GroupChatName> using <CallBackend2>
+    Given I see conversations list
+    When <Contact2> calls <GroupChatName> using <CallBackend2>
     And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact3> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact4> verifies that waiting instance status is changed to active in <Timeout> seconds

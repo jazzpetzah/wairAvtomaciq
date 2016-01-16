@@ -6,7 +6,7 @@ Feature: ContactsUI
     Given Myself is connected to all other users
     Given User <Name> blocks user <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I dont see conversation <Contact> in contact list
     And I open search by taping on it
     And I press the send an invite button
@@ -25,7 +25,7 @@ Feature: ContactsUI
     Given User <Name> blocks user <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I dont see conversation <Contact> in contact list
     And I open search by taping on it
     And I press the send an invite button
@@ -42,8 +42,8 @@ Feature: ContactsUI
     Given There are 2 users where <Name> is me
     Given Myself is connected to all other users
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I press the send an invite button
     And I see contact <Contact> in ContactsUI page list
     And I click on Open button next to user name <Contact> on ContactsUI
@@ -59,8 +59,8 @@ Feature: ContactsUI
     Given Myself is connected to all other users
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    Given I open search by taping on it
     And I press the send an invite button
     And I see contact <Contact> in ContactsUI page list
     And I click on Open button next to user name <Contact> on ContactsUI

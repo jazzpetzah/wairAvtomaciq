@@ -5,7 +5,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I type the default message
@@ -22,7 +22,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I type the default message
@@ -38,7 +38,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User <Contact> sends 1 encrypted message to user Myself
     And I tap on contact name <Contact>
     And I see dialog page
@@ -54,7 +54,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User <Contact> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact>
     And I see dialog page
@@ -69,7 +69,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
@@ -89,7 +89,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
@@ -110,7 +110,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>
     Given User <Contact1> change accent color to <Color>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given I tap on contact name <Contact1>
     Given User <Contact1> securely pings conversation <Name>
     When I wait for 3 seconds
@@ -129,7 +129,7 @@ Feature: Conversation View
     Given User <Contact1> change accent color to <Color>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given I tap on contact name <Contact1>
     Given User <Contact1> securely pings conversation <Name>
     When I wait for 3 seconds
@@ -148,7 +148,7 @@ Feature: Conversation View
     Given User <Contact1> change accent color to <Color>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given I tap on group chat with name <GroupChatName>
     Given User <Contact1> securely pings conversation <GroupChatName>
     When I wait for 3 seconds
@@ -168,7 +168,7 @@ Feature: Conversation View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given I tap on group chat with name <GroupChatName>
     Given User <Contact1> securely pings conversation <GroupChatName>
     When I wait for 3 seconds
@@ -184,7 +184,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to <ConversationType> conversation <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -200,7 +200,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -215,7 +215,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I input more than 200 chars message and send it
@@ -237,7 +237,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I input more than 200 chars message and send it
@@ -256,7 +256,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I input more than 200 chars message and send it
@@ -272,7 +272,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I input more than 200 chars message and send it
@@ -287,7 +287,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I input message with lower case and upper case
@@ -304,7 +304,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I input message with lower case and upper case
@@ -320,7 +320,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     And I tap on contact name <Contact>
     And I see dialog page
     And I send using script predefined message <Text>
@@ -336,7 +336,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     And I tap on contact name <Contact>
     And I see dialog page
     And I send using script predefined message <Text>
@@ -359,7 +359,7 @@ Feature: Conversation View
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Login button
-    And I see Contact list with my name <Name>
+    And I see conversations list
     And I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
@@ -386,7 +386,7 @@ Feature: Conversation View
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Login button
-    And I see Contact list with my name <Name>
+    And I see conversations list
     And I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
@@ -404,7 +404,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I try to send message with only spaces
@@ -426,7 +426,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I try to send message with only spaces
@@ -447,7 +447,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I type and send long message and media link <YouTubeLink>
@@ -470,7 +470,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
@@ -491,7 +491,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
@@ -513,7 +513,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I see dialog page
     And I swipe the text input cursor
@@ -532,7 +532,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I see dialog page
     And I swipe the text input cursor
@@ -550,7 +550,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
@@ -567,7 +567,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
@@ -584,7 +584,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I type the default message
@@ -602,7 +602,7 @@ Feature: Conversation View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    And I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I type the default message
@@ -618,7 +618,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
@@ -646,7 +646,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
@@ -672,7 +672,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact1>
@@ -694,7 +694,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see Contact list with my name <Name>
+    Given I see conversations list
     Given User Myself sends 40 encrypted messages to user <Contact1>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact1>
     When I tap on contact name <Contact1>

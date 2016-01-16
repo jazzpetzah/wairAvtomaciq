@@ -6,7 +6,7 @@ Feature: Self Profile
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on my name <Name>
     And I tap on personal screen
     And I press Camera button
@@ -25,7 +25,7 @@ Feature: Self Profile
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on my name <Name>
     And I tap to edit my name
     And I attempt to input an empty name and press return
@@ -42,7 +42,7 @@ Feature: Self Profile
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on my name <Name>
     And I tap to edit my name
     And I attempt to enter <username> and press return
@@ -59,14 +59,14 @@ Feature: Self Profile
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on my name <Name>
     And I tap to edit my name
     And I attempt to input an empty name and press return
     And I see error message asking for more characters
     And I change name <Name> to <NewUsername>
     And I close self profile
-    And I see Contact list with my name <NewUsername>
+    And I see conversations list
     And I tap on my name <NewUsername>
     Then I see my new name <NewUsername>
 
@@ -78,10 +78,10 @@ Feature: Self Profile
   Scenario Outline: Verify changing and applying accent color
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> sent long message to conversation <Name>
+    Given User <Contact> sends 40 encrypted messages to user Myself
     Given User <Name> change accent color to <Color1>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on my name <Name>
     And I slide my accent color via the colorpicker from <Color1> to <Color2>
     And I close self profile
@@ -95,8 +95,8 @@ Feature: Self Profile
   Scenario Outline: Verify adding phone number to the contact signed up with email
     Given There is 1 users where <Name> is me with email only
     Given I sign in using my email
-    And I click Not Now to not add phone number
-    And I see Contact list with my name <Name>
+    Given I click Not Now to not add phone number
+    Given I see conversations list
     When I tap on my name <Name>
     And I tap to add my phone number
     And I see country picker button on Sign in screen
@@ -114,7 +114,7 @@ Feature: Self Profile
     And I accept alert
     When I click Not Now to not add phone number
     And I accept alert
-    And I see Contact list with my name <Name>
+    And I see conversations list
     And I tap on my name <Name>
     And I tap to add my phone number
     And I see country picker button on Sign in screen
@@ -132,7 +132,7 @@ Feature: Self Profile
     And I accept alert
     When I click Not Now to not add phone number
     And I accept alert
-    And I see Contact list with my name <Name>
+    And I see conversations list
     And I tap on my name <Name>
     And I tap to add my phone number
     And I see country picker button on Sign in screen
@@ -147,7 +147,7 @@ Feature: Self Profile
   Scenario Outline: Verify theme switcher is shown on the self profile
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on my name <Name>
     Then I see theme switcher button on self profile page
 

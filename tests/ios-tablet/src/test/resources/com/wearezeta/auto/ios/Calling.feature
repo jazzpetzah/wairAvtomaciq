@@ -5,8 +5,8 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact>
+    Given I see conversations list
+    When I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
     And I press call button
@@ -15,7 +15,7 @@ Feature: Calling
     When I end started call
     Then I dont see calling page
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -25,8 +25,8 @@ Feature: Calling
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact>
+    Given I see conversations list
+    When I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
     And I press call button
@@ -35,7 +35,7 @@ Feature: Calling
     When I end started call
     Then I dont see calling page
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -44,7 +44,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
     And <Contact> stops all calls to me
@@ -54,7 +54,7 @@ Feature: Calling
     And I click missed call button to call contact <Contact>
     And I see calling to contact <Contact> message
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
@@ -64,7 +64,7 @@ Feature: Calling
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
     And <Contact> stops all calls to me
@@ -74,7 +74,7 @@ Feature: Calling
     And I click missed call button to call contact <Contact>
     And I see calling to contact <Contact> message
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
@@ -83,13 +83,13 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I ignore incoming call
     Then I dont see incoming call page
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
@@ -99,13 +99,13 @@ Feature: Calling
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I ignore incoming call
     Then I dont see incoming call page
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
@@ -114,7 +114,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     And I tap on contact name <Contact>
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
@@ -122,7 +122,7 @@ Feature: Calling
     Then I see mute call, end call buttons
     And I see started call message for contact <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
@@ -132,7 +132,7 @@ Feature: Calling
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     And I tap on contact name <Contact>
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
@@ -140,7 +140,7 @@ Feature: Calling
     Then I see mute call, end call buttons
     And I see started call message for contact <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
@@ -149,7 +149,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
     And <Contact> stops all calls to me
@@ -157,7 +157,7 @@ Feature: Calling
     And I see dialog page
     Then I see missed call from contact <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
@@ -167,7 +167,7 @@ Feature: Calling
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
     And <Contact> stops all calls to me
@@ -175,7 +175,7 @@ Feature: Calling
     And I see dialog page
     Then I see missed call from contact <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
@@ -186,8 +186,8 @@ Feature: Calling
     Given <Contact> starts waiting instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact>
+    Given I see conversations list
+    When I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
     And I press call button
@@ -238,7 +238,7 @@ Feature: Calling
     And I end started call
     And I dont see calling page
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | firefox     | 60      |
 
@@ -250,8 +250,8 @@ Feature: Calling
     Given <Contact> accepts next incoming call automatically
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact>
+    Given I see conversations list
+    When I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
     And I press call button
@@ -302,7 +302,7 @@ Feature: Calling
     And I end started call
     And I dont see calling page
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | firefox     | 300     |
 
@@ -313,8 +313,8 @@ Feature: Calling
     Given <Contact> starts waiting instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact>
+    Given I see conversations list
+    When I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
     And I press call button
@@ -324,7 +324,7 @@ Feature: Calling
     And I see mute call, end call buttons
     And I end started call
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | firefox     | 120     |
 
@@ -336,8 +336,8 @@ Feature: Calling
     Given <Contact> accepts next incoming call automatically
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact>
+    Given I see conversations list
+    When I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
     And I press call button
@@ -347,7 +347,7 @@ Feature: Calling
     And I see mute call, end call buttons
     And I end started call
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | firefox     | 120     |
 
@@ -357,8 +357,8 @@ Feature: Calling
     Given Myself is connected to all other users
     Given <Contact1> starts waiting instance using <CallBackend>
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact1>
+    Given I see conversations list
+    When I tap on contact name <Contact1>
     And I see dialog page
     And I swipe the text input cursor
     And I press call button
@@ -376,7 +376,7 @@ Feature: Calling
     And I tap on contact name <Contact2>
     Then I see missed call from contact <Contact2>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | user3Name | firefox     | autocall     | 120     |
 
@@ -387,8 +387,8 @@ Feature: Calling
     Given <Contact1> starts waiting instance using <CallBackend>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact1>
+    Given I see conversations list
+    When I tap on contact name <Contact1>
     And I see dialog page
     And I swipe the text input cursor
     And I press call button
@@ -405,7 +405,7 @@ Feature: Calling
     And I tap on contact name <Contact2>
     Then I see missed call from contact <Contact2>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | user3Name | firefox     | autocall     | 120     |
 
@@ -416,8 +416,8 @@ Feature: Calling
     Given <Contact> starts waiting instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact>
+    Given I see conversations list
+    When I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
     And I press call button
@@ -427,7 +427,7 @@ Feature: Calling
     And I see mute call, end call buttons
     And I end started call
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | firefox     | 120     |
 
@@ -439,8 +439,8 @@ Feature: Calling
     Given <Contact> accepts next incoming call automatically
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact>
+    Given I see conversations list
+    When I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
     And I press call button
@@ -450,7 +450,7 @@ Feature: Calling
     And I see mute call, end call buttons
     And I end started call
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | firefox     | 120     |
 
@@ -460,8 +460,8 @@ Feature: Calling
     Given Myself is connected to <Contact>
     Given <Contact> starts waiting instance using <CallBackend>
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact>
+    Given I see conversations list
+    When I tap on contact name <Contact>
     And I see dialog page
     And <Contact> calls me using <CallBackend2>
     And I see incoming calling message for contact <Contact>
@@ -469,7 +469,7 @@ Feature: Calling
     Then I see mute call, end call buttons
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | firefox     | autocall     | 120     |
 
@@ -480,8 +480,8 @@ Feature: Calling
     Given <Contact> starts waiting instance using <CallBackend>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact>
+    Given I see conversations list
+    When I tap on contact name <Contact>
     And I see dialog page
     And <Contact> calls me using <CallBackend2>
     And I see incoming calling message for contact <Contact>
@@ -489,7 +489,7 @@ Feature: Calling
     Then I see mute call, end call buttons
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | firefox     | autocall     | 120     |
 
@@ -500,8 +500,8 @@ Feature: Calling
     Given <Contact> starts waiting instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact>
+    Given I see conversations list
+    When I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
     And I press call button
@@ -519,7 +519,7 @@ Feature: Calling
     And I dont see calling page
     And <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | firefox     | autocall     | 120     |
 
@@ -531,8 +531,8 @@ Feature: Calling
     Given <Contact> accepts next incoming call automatically
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact>
+    Given I see conversations list
+    When I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
     And I press call button
@@ -550,7 +550,7 @@ Feature: Calling
     And I dont see calling page
     And <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | firefox     | autocall     | 120     |
 
@@ -561,8 +561,8 @@ Feature: Calling
     Given <Contact> starts waiting instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
     Given I Sign in on tablet using my email
-    When I see Contact list with my name <Name>
-    And I tap on contact name <Contact>
+    Given I see conversations list
+    When I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
     And I press call button
@@ -573,16 +573,16 @@ Feature: Calling
     And I rotate UI to landscape
     Then I dont see mute call button in conversation list on iPad
 
-    Examples: 
-      | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | chrome      | autocall     | 60      |
+    Examples:
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 60      |
 
   @C2412 @calling_basic @id3811 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Verify putting client to the background during 1-to-1 call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     And I tap on contact name <Contact>
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
@@ -594,7 +594,7 @@ Feature: Calling
     And I see started call message for contact <Contact>
     And <Contact> verifies that call status to me is changed to active in 2 seconds
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
@@ -604,7 +604,7 @@ Feature: Calling
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     And I tap on contact name <Contact>
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
@@ -616,6 +616,6 @@ Feature: Calling
     And I see started call message for contact <Contact>
     And <Contact> verifies that call status to me is changed to active in 2 seconds
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |

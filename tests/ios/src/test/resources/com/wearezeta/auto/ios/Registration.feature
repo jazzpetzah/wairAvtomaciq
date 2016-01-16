@@ -10,7 +10,7 @@ Feature: Registration
     And I press Choose Own Picture button
     And I press Choose Photo button
     And I choose a picture from camera roll
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
 
     Examples:
       | Name      |
@@ -22,7 +22,7 @@ Feature: Registration
     Given I see sign in screen
     When I input phone number of already registered user <Name>
     And I enter verification code for user <Name>
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
 
     Examples:
       | Name      |
@@ -60,7 +60,7 @@ Feature: Registration
     And I choose a picture from camera roll
     And I See selected picture
     And I confirm selection
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
     When I tap on my name <Name>
     Then I see user name doesnt contains spaces
 
@@ -74,7 +74,7 @@ Feature: Registration
     Given I see sign in screen
     When I input phone number of already registered user <Name>
     And I enter verification code for user <Name>
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
 
     Examples:
       | Name      |

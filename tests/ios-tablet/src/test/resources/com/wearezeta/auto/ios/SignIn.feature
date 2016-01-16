@@ -8,9 +8,9 @@ Feature: Sign In
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Login button
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
@@ -23,9 +23,9 @@ Feature: Sign In
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Login button
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
@@ -38,7 +38,7 @@ Feature: Sign In
     And I attempt to press Login button
     Then I see wrong credentials notification
 
-    Examples: 
+    Examples:
       | WrongMail  | WrongPassword |
       | wrongwrong | wrong         |
 
@@ -52,7 +52,7 @@ Feature: Sign In
     And I attempt to press Login button
     Then I see wrong credentials notification
 
-    Examples: 
+    Examples:
       | WrongMail  | WrongPassword |
       | wrongwrong | wrong         |
 
@@ -70,11 +70,11 @@ Feature: Sign In
     And I press Change Password button in browser
     And Return to Wire app
     And I sign in using my email
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
 
-    Examples: 
-      | Login      | Password      | Name      | NewPassword  |
-      | user1Email | user1Password | user1Name | aqa123456789 |
+    Examples:
+      | Login      | NewPassword  |
+      | user1Email | aqa123456789 |
 
   @C3131 @regression @id2923
   Scenario Outline: Verify possibility of reseting password (welcome page) [LANDSCAPE]
@@ -91,11 +91,11 @@ Feature: Sign In
     And I press Change Password button in browser
     And Return to Wire app
     And I sign in using my email
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
 
-    Examples: 
-      | Login      | Password      | Name      | NewPassword  |
-      | user1Email | user1Password | user1Name | aqa123456789 |
+    Examples:
+      | Login      | NewPassword  |
+      | user1Email | aqa123456789 |
 
   @C3135 @regression @id3817
   Scenario Outline: Verify phone sign in when email is assigned [PORTRAIT]
@@ -108,11 +108,11 @@ Feature: Sign In
     When I enter phone number for user <Name>
     Then I see verification code page
     When I enter verification code for user <Name>
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
 
-    Examples: 
-      | Email      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+    Examples:
+      | Name      |
+      | user1Name |
 
   @C3136 @regression @id3818
   Scenario Outline: Verify phone sign in when email is assigned [LANDSCAPE]
@@ -126,11 +126,11 @@ Feature: Sign In
     When I enter phone number for user <Name>
     Then I see verification code page
     When I enter verification code for user <Name>
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
 
-    Examples: 
-      | Email      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+    Examples:
+      | Name      |
+      | user1Name |
 
   @C3121 @regression @id2726
   Scenario Outline: Verify first time phone sign in when email is not assigned [PORTRAIT]
@@ -150,9 +150,9 @@ Feature: Sign In
     When I click DONE keyboard button
     Then I see email verification reminder
     When I verify registration address
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
 
-    Examples: 
+    Examples:
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
@@ -175,9 +175,9 @@ Feature: Sign In
     When I click DONE keyboard button
     Then I see email verification reminder
     When I verify registration address
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
 
-    Examples: 
+    Examples:
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
@@ -194,9 +194,9 @@ Feature: Sign In
     When I enter random verification code
     Then I see wrong credentials notification
 
-    Examples: 
-      | Email      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+    Examples:
+      | Name      |
+      | user1Name |
 
   @C3137 @regression @id3836 @noAcceptAlert
   Scenario Outline: Verify impossibility to login with the wrong code [LANDSCAPE]
@@ -212,9 +212,9 @@ Feature: Sign In
     When I enter random verification code
     Then I see wrong credentials notification
 
-    Examples: 
-      | Email      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+    Examples:
+      | Name      |
+      | user1Name |
 
   @C3139 @regression @id3839 @noAcceptAlert
   Scenario Outline: Verify impossibility to resend code within 10 min [PORTRAIT]
@@ -229,9 +229,9 @@ Feature: Sign In
     When I tap RESEND code button
     Then I see Resend will be possible after 10 min aleart
 
-    Examples: 
-      | Email      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+    Examples:
+      | Name      |
+      | user1Name |
 
   @C3140 @regression @id3840 @noAcceptAlert
   Scenario Outline: Verify impossibility to resend code within 10 min [LANDSCAPE]
@@ -247,9 +247,9 @@ Feature: Sign In
     When I tap RESEND code button
     Then I see Resend will be possible after 10 min aleart
 
-    Examples: 
-      | Email      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+    Examples:
+      | Name      |
+      | user1Name |
 
   @C3128 @regression @id2733 @noAcceptAlert
   Scenario Outline: Verify impossibility to login with unregistered phone number [PORTRAIT]
@@ -262,9 +262,9 @@ Feature: Sign In
     And I enter random phone number
     Then I see invalid phone number alert
 
-    Examples: 
-      | Email      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+    Examples:
+      | Name      |
+      | user1Name |
 
   @C3141 @regression @id3843 @noAcceptAlert
   Scenario Outline: Verify impossibility to login with unregistered phone number [LANDSCAPE]
@@ -278,9 +278,9 @@ Feature: Sign In
     And I enter random phone number
     Then I see invalid phone number alert
 
-    Examples: 
-      | Email      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+    Examples:
+      | Name      |
+      | user1Name |
 
   @C2861 @regression @id3852
   Scenario Outline: Verify adding email to the contact signed up with phone number [PORTRAIT]
@@ -300,11 +300,11 @@ Feature: Sign In
     And I click DONE keyboard button
     And I see email verification reminder
     And I verify registration address
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
     When I tap on my name <Name>
     Then I see email <Email> on Personal page
 
-    Examples: 
+    Examples:
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
@@ -327,14 +327,14 @@ Feature: Sign In
     And I click DONE keyboard button
     And I see email verification reminder
     And I verify registration address
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
     When I tap on my name <Name>
     Then I see email <Email> on Personal page
 
-    Examples: 
+    Examples:
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
-      
+
   @C2867 @regression @id3864 @noAcceptAlert
   Scenario Outline: Verify error message appears in case of registering already taken email [PORTRAIT]
     Given There is 1 user where <Name> is me with phone number only
@@ -352,10 +352,10 @@ Feature: Sign In
     When I click DONE keyboard button
     Then I see already registered email alert
 
-    Examples: 
+    Examples:
       | Email                     | Password      | Name      |
       | smoketester@wearezeta.com | user1Password | user1Name |
-      
+
   @C2868 @regression @id3865 @noAcceptAlert
   Scenario Outline: Verify error message appears in case of registering already taken email [LANDSCAPE]
     Given There is 1 user where <Name> is me with phone number only
@@ -374,7 +374,7 @@ Feature: Sign In
     When I click DONE keyboard button
     Then I see already registered email alert
 
-    Examples: 
+    Examples:
       | Email                     | Password      | Name      |
       | smoketester@wearezeta.com | user1Password | user1Name |
 
@@ -395,7 +395,7 @@ Feature: Sign In
     When I click DONE keyboard button
     Then I see invalid email alert
 
-    Examples: 
+    Examples:
       | Email        | Password      | Name      |
       | invalidemail | user1Password | user1Name |
 
@@ -417,6 +417,6 @@ Feature: Sign In
     When I click DONE keyboard button
     Then I see invalid email alert
 
-    Examples: 
+    Examples:
       | Email        | Password      | Name      |
       | invalidemail | user1Password | user1Name |
