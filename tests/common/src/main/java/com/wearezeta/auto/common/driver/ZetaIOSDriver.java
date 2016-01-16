@@ -12,6 +12,7 @@ import java.util.concurrent.*;
 
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableMap;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
@@ -32,6 +33,11 @@ import static com.wearezeta.auto.common.CommonUtils.getToolsRootFromConfig;
 
 public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
     private static final Logger log = ZetaLogger.getLog(ZetaIOSDriver.class.getSimpleName());
+
+    static {
+        // This is to be able to use the clipboard
+        CommonUtils.defineNoHeadlessEnvironment();
+    }
 
     private volatile boolean isSessionLost = false;
 
