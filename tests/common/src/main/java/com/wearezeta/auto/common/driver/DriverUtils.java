@@ -403,8 +403,7 @@ public class DriverUtils {
         PlatformDrivers.setDefaultImplicitWaitTimeout(driver);
     }
 
-    public static Optional<BufferedImage> takeFullScreenShot(ZetaDriver driver)
-            throws Exception {
+    public static Optional<BufferedImage> takeFullScreenShot(ZetaDriver driver) throws Exception {
         try {
             final byte[] srcImage = ((TakesScreenshot) driver)
                     .getScreenshotAs(OutputType.BYTES);

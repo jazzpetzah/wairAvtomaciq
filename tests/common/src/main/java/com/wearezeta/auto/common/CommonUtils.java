@@ -563,4 +563,15 @@ public class CommonUtils {
         return getValueFromConfig(cls, "appName");
     }
 
+
+    public static boolean takeIOSSimulatorScreenshot(String dstPath) {
+        try {
+            final Process simshotProcess = Runtime.getRuntime().exec(
+                    String.format("%s/ios/simshot \"%s\"", getToolsRootFromConfig(CommonUtils.class), dstPath));
+            return simshotProcess.waitFor() == 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

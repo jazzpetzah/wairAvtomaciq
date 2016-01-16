@@ -4,12 +4,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import javax.imageio.ImageIO;
 
+import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.rc.TestcaseResultToTestrailTransformer;
 import com.wearezeta.auto.common.testrail.TestrailSyncUtilities;
 import org.apache.log4j.Logger;
@@ -44,7 +46,8 @@ public class ZetaFormatter implements Formatter, Reporter {
     private long stepStartedTimestamp;
 
     @Override
-    public void background(Background arg0) {}
+    public void background(Background arg0) {
+    }
 
     @Override
     public void close() {
@@ -61,7 +64,8 @@ public class ZetaFormatter implements Formatter, Reporter {
     }
 
     @Override
-    public void examples(Examples arg0) {}
+    public void examples(Examples arg0) {
+    }
 
     @Override
     public void feature(Feature arg0) {
@@ -103,7 +107,8 @@ public class ZetaFormatter implements Formatter, Reporter {
     }
 
     @Override
-    public void uri(String arg0) {}
+    public void uri(String arg0) {
+    }
 
     @Override
     public void after(Match arg0, Result arg1) {
@@ -159,13 +164,17 @@ public class ZetaFormatter implements Formatter, Reporter {
                             feature.replaceAll("\\W+", "_"), scenario
                                     .replaceAll("\\W+", "_"), stepName
                                     .replaceAll("\\W+", "_"));
-            final Optional<BufferedImage> screenshot = DriverUtils
-                    .takeFullScreenShot(driver);
-            if (!screenshot.isPresent()) {
-                return;
+            if (driver instanceof ZetaIOSDriver) {
+                final Optional<BufferedImage> screenshot = DriverUtils.takeFullScreenShot(driver);
+                if (!screenshot.isPresent()) {
+                    return;
+                }
+                screenshotSavers.execute(() -> storeScreenshot(screenshot.get(), screenshotPath));
+            } else {
+                if (!CommonUtils.takeIOSSimulatorScreenshot(screenshotPath)) {
+                    log.error("Failed to take iOS simulator screenshot");
+                }
             }
-            screenshotSavers.execute(() -> storeScreenshot(screenshot.get(),
-                    screenshotPath));
         } else {
             log.debug(String
                     .format("Selenium driver is not ready yet. Skipping screenshot creation for step '%s'",
@@ -192,23 +201,23 @@ public class ZetaFormatter implements Formatter, Reporter {
         }
         boolean isScreenshotingOnPassedStepsEnabled = true;
         try {
-        	isScreenshotingOnPassedStepsEnabled = CommonUtils
+            isScreenshotingOnPassedStepsEnabled = CommonUtils
                     .getMakeScreenshotOnPassedStepsFromConfig(this.getClass());
         } catch (Exception e) {
             e.printStackTrace();
         }
-		if (isScreenshotingEnabled) {
-			if (!isScreenshotingOnPassedStepsEnabled
-					&& (result.getStatus().equals(Result.PASSED))) {
-				log.debug("Skip screenshot for passed step...");
-			} else {
-				try {
-					takeStepScreenshot(result, stepName);
-				} catch (Exception e) {
-					// Ignore screenshoting exceptions
-					e.printStackTrace();
-				}
-			}
+        if (isScreenshotingEnabled) {
+            if (!isScreenshotingOnPassedStepsEnabled
+                    && (result.getStatus().equals(Result.PASSED))) {
+                log.debug("Skip screenshot for passed step...");
+            } else {
+                try {
+                    takeStepScreenshot(result, stepName);
+                } catch (Exception e) {
+                    // Ignore screenshoting exceptions
+                    e.printStackTrace();
+                }
+            }
             final long screenshotFinishedTimestamp = new Date().getTime();
             log.debug(String
                     .format("%s (status: %s, step duration: %s ms + screenshot duration: %s ms)",
