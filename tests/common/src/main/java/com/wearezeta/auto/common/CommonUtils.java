@@ -532,8 +532,8 @@ public class CommonUtils {
 		return getOptionalValueFromCommonConfig(c, "testrailRunConfigName");
 	}
 
-	public static String getNativeLibsRootFromConfig(Class<?> c) throws Exception {
-		return getValueFromCommonConfig(c, "nativeLibsRoot");
+	public static String getToolsRootFromConfig(Class<?> c) throws Exception {
+		return getValueFromCommonConfig(c, "toolsRoot");
 	}
 
 	public static boolean getSyncIsAutomated(Class<?> c) throws Exception {

@@ -1,6 +1,8 @@
 package com.wearezeta.auto.common.driver;
 
 import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
 import java.awt.image.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -11,8 +13,6 @@ import java.util.concurrent.*;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableMap;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.cristik.cocoa4java.WindowCapture;
-import com.cristik.cocoa4java.WindowInfo;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Capabilities;
@@ -27,6 +27,8 @@ import org.openqa.selenium.remote.SessionNotFoundException;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 
 import javax.imageio.ImageIO;
+
+import static com.wearezeta.auto.common.CommonUtils.getToolsRootFromConfig;
 
 public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
     private static final Logger log = ZetaLogger.getLog(ZetaIOSDriver.class.getSimpleName());
@@ -61,13 +63,34 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
         return result;
     }
 
-    private byte[] getScreenshotAsBytes() {
-        for (WindowInfo windowInfo : WindowCapture.findWindowsForPID(-1)) {
-            if ((windowInfo.title != null && windowInfo.title.contains("iOS")) &&
-                    (windowInfo.ownerName != null && windowInfo.ownerName.toLowerCase().equals("simulator"))) {
-                return WindowCapture.getWindowSnapshotData(windowInfo.windowNumber, WindowCapture.IMAGE_FORMAT_PNG);
-            }
+    private static BufferedImage toBufferedImage(Image img) {
+        if (img instanceof BufferedImage) {
+            return (BufferedImage) img;
         }
+        BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D bGr = bimage.createGraphics();
+        bGr.drawImage(img, 0, 0, null);
+        bGr.dispose();
+        return bimage;
+    }
+
+    private byte[] getScreenshotAsBytes() {
+        try {
+            final Process simshotProcess = Runtime.getRuntime().exec(
+                    getToolsRootFromConfig(this.getClass()) + "/ios/simshot");
+            if (simshotProcess.waitFor() == 0) {
+                final Transferable transferable = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
+                if (transferable != null && transferable.isDataFlavorSupported(DataFlavor.imageFlavor)) {
+                    final Image screenshot = (Image) transferable.getTransferData(DataFlavor.imageFlavor);
+                    ByteArrayOutputStream out = new ByteArrayOutputStream();
+                    ImageIO.write(toBufferedImage(screenshot), "PNG", out);
+                    return out.toByteArray();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return getTemplatePngImage();
     }
 
