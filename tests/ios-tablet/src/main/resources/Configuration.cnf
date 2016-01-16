@@ -3,6 +3,7 @@
 iosAppiumUrl=${Url}
 iosApplicationPath=${appPath}
 isSimulator=${isSimulator}
+useNativeInstrumentsLib=${useNativeInstrumentsLib}
 platformVersion=${platformVersion}
 swipeScriptPathPrefix=${swipeScriptPathPrefix}
 driverTimeoutSeconds=${driverTimeoutSeconds}

@@ -33,7 +33,6 @@ public class CommonUtils {
 	private static final String IOS_AVATAR_CLOCK_IMAGE = "new_avatarclock.png";
 	private static final String MEDIABAR_PLAY_IMAGE = "android_mediabar_play_image_(white).png";
 	private static final String MEDIABAR_PAUSE_IMAGE = "android_mediabar_pause_image_(white).png";
-	private static final String ALPHANUMERIC_PLUS_SYMBOLS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJLMNOPQRSTUVWXYZ1234567890!@#$%^&*()";
 
 	private static final Random rand = new Random();
 
@@ -368,23 +367,6 @@ public class CommonUtils {
 		return RandomStringUtils.randomNumeric(length);
 	}
 
-	private static String generateRandomStringFromTargetStringSetWithLengh(
-		int numberOfCharacters, String characters) {
-		StringBuilder result = new StringBuilder();
-		while (numberOfCharacters > 0) {
-			Random rand = new Random();
-			result.append(characters.charAt(rand.nextInt(characters.length())));
-			numberOfCharacters--;
-		}
-		return result.toString();
-	}
-
-	public static String generateRandomStringFromAlphanumericPlusSymbolsWithLengh(
-		int numberOfCharacters) {
-		return generateRandomStringFromTargetStringSetWithLengh(
-			numberOfCharacters, ALPHANUMERIC_PLUS_SYMBOLS);
-	}
-
 	public static boolean getIsTabletFromConfig(Class<?> c) throws Exception {
 		final Optional<String> value = getOptionalValueFromConfig(c, "isTablet");
 		return value.isPresent() ? Boolean.valueOf(value.get()) : false;
@@ -569,9 +551,12 @@ public class CommonUtils {
 		return Long.toString(Math.abs(random));
 	}
 
-	public static String getPlatformVersionFromConfig(Class<?> cls)
-		throws Exception {
+	public static String getPlatformVersionFromConfig(Class<?> cls) throws Exception {
 		return getValueFromConfig(cls, "platformVersion");
 	}
+
+	public static Optional<String> getIsUseNativeInstrumentsLibFromConfig(Class<?> cls) throws Exception {
+        return getOptionalValueFromConfig(cls, "useNativeInstrumentsLib");
+    }
 
 }

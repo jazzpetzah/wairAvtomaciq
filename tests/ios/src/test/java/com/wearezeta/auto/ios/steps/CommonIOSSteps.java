@@ -26,11 +26,9 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
-public class CommonIOSSteps {
-    @SuppressWarnings("unused")
-    private static final Logger log = ZetaLogger.getLog(CommonIOSSteps.class
-            .getSimpleName());
+import static com.wearezeta.auto.common.CommonUtils.*;
 
+public class CommonIOSSteps {
     private final CommonSteps commonSteps = CommonSteps.getInstance();
     private static final String DEFAULT_USER_AVATAR = "android_dialog_sendpicture_result.png";
     private Date testStartedDate = new Date();
@@ -51,16 +49,15 @@ public class CommonIOSSteps {
     public static final Platform CURRENT_PLATFORM = Platform.iOS;
 
     private static String getPlatformVersion() throws Exception {
-        return CommonUtils.getPlatformVersionFromConfig(CommonIOSSteps.class);
+        return getPlatformVersionFromConfig(CommonIOSSteps.class);
     }
 
     private static String getUrl() throws Exception {
-        return CommonUtils.getIosAppiumUrlFromConfig(CommonIOSSteps.class);
+        return getIosAppiumUrlFromConfig(CommonIOSSteps.class);
     }
 
     private static String getPath() throws Exception {
-        return CommonUtils
-                .getIosApplicationPathFromConfig(CommonIOSSteps.class);
+        return getIosApplicationPathFromConfig(CommonIOSSteps.class);
     }
 
     public Future<ZetaIOSDriver> resetIOSDriver(boolean enableAutoAcceptAlerts)
@@ -74,14 +71,16 @@ public class CommonIOSSteps {
     public Future<ZetaIOSDriver> resetIOSDriver(boolean enableAutoAcceptAlerts,
                                                 boolean overrideWaitForAppScript) throws Exception {
         final DesiredCapabilities capabilities = new DesiredCapabilities();
+        capabilities.setCapability("nativeInstrumentsLib", Boolean.parseBoolean(
+                getIsUseNativeInstrumentsLibFromConfig(this.getClass()).orElseGet(() -> "false")));
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
         capabilities.setCapability("app", getPath());
-        final String deviceName = CommonUtils.getDeviceName(this.getClass());
+        final String deviceName = getDeviceName(this.getClass());
         capabilities.setCapability("deviceName", deviceName);
         capabilities.setCapability("platformVersion", getPlatformVersion());
         capabilities.setCapability("sendKeyStrategy", "grouped");
         capabilities.setCapability("launchTimeout", IOSPage.IOS_DRIVER_INIT_TIMEOUT);
-        final String backendType = CommonUtils.getBackendType(this.getClass());
+        final String backendType = getBackendType(this.getClass());
         capabilities
                 .setCapability(
                         "processArguments",
@@ -500,8 +499,7 @@ public class CommonIOSSteps {
     @When("^User (\\w+) change avatar picture to (.*)$")
     public void IChangeUserAvatarPicture(String userNameAlias, String name)
             throws Exception {
-        final String rootPath = CommonUtils
-                .getSimulatorImagesPathFromConfig(getClass());
+        final String rootPath = getSimulatorImagesPathFromConfig(getClass());
         commonSteps.IChangeUserAvatarPicture(userNameAlias, rootPath
                 + "/"
                 + (name.toLowerCase().equals("default") ? DEFAULT_USER_AVATAR
@@ -592,10 +590,10 @@ public class CommonIOSSteps {
         pagesCollecton.clearAllPages();
         IOSKeyboard.dispose();
 
-        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+        if (getIsSimulatorFromConfig(getClass())) {
             IOSCommonUtils
                     .collectSimulatorLogs(
-                            CommonUtils.getDeviceName(getClass()),
+                            getDeviceName(getClass()),
                             getTestStartedDate());
         }
 

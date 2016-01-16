@@ -17,6 +17,7 @@
         <Url>http://127.0.0.1:4723/wd/hub</Url>
         <appPath>/Project/ZClient_ios.app</appPath>
         <platformVersion>9.1</platformVersion>
+        <useNativeInstrumentsLib>false</useNativeInstrumentsLib>
         <isSimulator>true</isSimulator>
         <driverTimeoutSeconds>7</driverTimeoutSeconds>
         <pictureResultsPath>${user.home}/Downloads/</pictureResultsPath>
