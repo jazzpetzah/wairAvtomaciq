@@ -147,7 +147,7 @@ Feature: Conversation List
       | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
   @C652 @id3140 @regression
-  Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation (landscape)
+  Scenario Outline: (AN-3300) Verify play/pause controls are visible in the list if there is active media item in other conversation (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I rotate UI to landscape

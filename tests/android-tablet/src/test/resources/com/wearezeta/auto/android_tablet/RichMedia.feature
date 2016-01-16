@@ -72,7 +72,7 @@ Feature: Rich Media
       | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
   @C798 @id3144 @regression @rc
-  Scenario Outline: Verify you can play/pause media from the conversation list (landscape)
+  Scenario Outline: (AN-3300) Verify you can play/pause media from the conversation list (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I rotate UI to landscape
