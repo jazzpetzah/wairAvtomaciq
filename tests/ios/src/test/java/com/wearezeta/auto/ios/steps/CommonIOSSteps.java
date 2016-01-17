@@ -210,7 +210,7 @@ public class CommonIOSSteps {
      * @throws Exception
      * @step. ^I close the app for (.*) seconds$
      */
-    @When("^I close the app for (.*) seconds$")
+    @When("^I close the app for (\\d+) seconds$")
     public void ICloseApp(int seconds) throws Exception {
         pagesCollecton.getCommonPage().minimizeApplication(seconds);
     }
@@ -222,7 +222,7 @@ public class CommonIOSSteps {
      * @throws Exception
      * @step.^I lock screen for (.*) seconds$
      */
-    @When("^I lock screen for (.*) seconds$")
+    @When("^I lock screen for (\\d+) seconds$")
     public void ILockScreen(int seconds) throws Exception {
         pagesCollecton.getCommonPage().lockScreen(seconds);
     }

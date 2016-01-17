@@ -69,6 +69,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
             throw new IllegalStateException(
                     String.format("Appium session is dead. Skipping execution of '%s' command...", driverCommand));
         }
+
         final Callable<Response> task = () -> super.execute(driverCommand, parameters);
         final Future<Response> future = getPool().submit(task);
         try {

@@ -3,13 +3,9 @@ package com.wearezeta.auto.ios.pages;
 import java.awt.image.BufferedImage;
 import java.util.Optional;
 import java.util.concurrent.Future;
-
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
+import java.util.concurrent.TimeUnit;
 
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
-import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -234,13 +230,9 @@ public abstract class IOSPage extends BasePage {
                 .executeScript(script);
     }
 
-    public void cmdVscript(String[] scriptString) throws ScriptException {
-        final String script = StringUtils.join(scriptString, "\n");
-        ScriptEngineManager mgr = new ScriptEngineManager();
-        ScriptEngine engine = mgr.getEngineByName("AppleScriptEngine");
-        if (null != engine) {
-            engine.eval(script);
-        }
+    public void cmdVscript(String[] scriptString) throws Exception {
+        CommonUtils.executeUIAppleScript(scriptString).
+                get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);;
     }
 
     public void hideKeyboard() throws Exception {
@@ -256,8 +248,26 @@ public abstract class IOSPage extends BasePage {
         }
     }
 
-    public void minimizeApplication(int time) throws Exception {
-        this.getDriver().runAppInBackground(time);
+
+    public void minimizeApplication(int timeSeconds) throws Exception {
+        assert getDriver() != null : "WebDriver is not ready";
+        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            final String[] doubleClickHomeScript = new String[]{
+                    "tell application \"System Events\"",
+                    "tell application \"Simulator\" to activate",
+                    "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
+                    "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
+                    "end tell"
+            };
+            CommonUtils.executeUIAppleScript(doubleClickHomeScript).
+                    get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+            Thread.sleep(timeSeconds * 1000);
+            CommonUtils.executeUIAppleScript(doubleClickHomeScript).
+                    get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+        } else {
+            // https://discuss.appium.io/t/runappinbackground-does-not-work-for-ios9/6201
+            this.getDriver().runAppInBackground(timeSeconds);
+        }
     }
 
     public void dismissAlert() throws Exception {
@@ -328,12 +338,24 @@ public abstract class IOSPage extends BasePage {
         DriverUtils.genericTap(this.getDriver(), 1, 1);
     }
 
-    public void lockScreen(int seconds) throws Exception {
-        this.getDriver().lockScreen(seconds);
-        // check if the screen is unlocked
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), By.name(nameLockScreenMessage), 5)) {
+    public void lockScreen(int timeSeconds) throws Exception {
+        assert getDriver() != null : "WebDriver is not ready";
+        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            final String[] doLockScript = new String[] {
+                    "tell application \"System Events\"",
+                    "tell application \"Simulator\" to activate",
+                    "tell application \"System Events\" to keystroke \"l\" using {command down}",
+                    "end tell"
+            };
+            CommonUtils.executeUIAppleScript(doLockScript).
+                    get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+            Thread.sleep(timeSeconds * 1000);
+            // this is to show the unlock label
+            CommonUtils.executeUIAppleScript(doLockScript).
+                    get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
             IOSSimulatorHelper.swipeRight();
-            Thread.sleep(SWIPE_DELAY);
+        } else {
+            this.getDriver().lockScreen(timeSeconds);
         }
     }
 }

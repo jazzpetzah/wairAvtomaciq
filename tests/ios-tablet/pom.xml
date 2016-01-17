@@ -23,7 +23,7 @@
         <driverTimeoutSeconds>7</driverTimeoutSeconds>
         <pictureResultsPath>${user.home}/Downloads/</pictureResultsPath>
         <iosImagesPath>${project.basedir}/../tools/img/</iosImagesPath>
-        <swipeScriptPathPrefix>${project.basedir}/../tools/swipeInWindow</swipeScriptPathPrefix>
+        <iOSToolsRoot>${project.basedir}/../tools/ios</iOSToolsRoot>
         <defaultEmail>smoketester@wire.com</defaultEmail>
         <iosClientInfoPlist>/Project/builds_info/Info_ios.plist</iosClientInfoPlist>
         <deviceName>iPad Air</deviceName>

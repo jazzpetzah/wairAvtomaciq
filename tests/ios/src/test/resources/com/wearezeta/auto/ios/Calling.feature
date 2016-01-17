@@ -249,7 +249,7 @@ Feature: Calling
     Given <Contact> accepts next incoming call automatically
     Given I sign in using my email or phone number
     Given I see conversations list
-    And I tap on contact name <Contact>
+    When I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
     And I press call button
