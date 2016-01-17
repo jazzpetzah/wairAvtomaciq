@@ -192,7 +192,7 @@ public class ContactListPage extends AndroidPage {
 
     public void doLongSwipeUp() throws Exception {
         // FIXME: There is a bug in Android when swipe up does not work if there are no items in the list
-        DriverUtils.swipeElementPointToPoint(getDriver(), contactListFrame, 1000, 15, 30, 15, -80);
+        DriverUtils.swipeElementPointToPoint(getDriver(), contactListFrame, 1000, 15, 20, 15, -80);
     }
 
     public Optional<WebElement> findInContactList(String name) throws Exception {
