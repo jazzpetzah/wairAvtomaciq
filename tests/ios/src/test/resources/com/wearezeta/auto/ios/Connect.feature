@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @C1034 @regression @rc @id2541
+  @C1034 @regression @rc @id2541 @ZIOS-5466
   Scenario Outline: Send invitation message to a user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -26,7 +26,7 @@ Feature: Connect
       | user1Name | user2Name | user2Email   | user3Name |
 
   @C102 @C3178 @regression @rc @id1475
-  Scenario Outline: Get invitation message from user
+  Scenario Outline: (ZIOS-5508 Simulator issue)Get invitation message from user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given <Contact> sent connection request to Me

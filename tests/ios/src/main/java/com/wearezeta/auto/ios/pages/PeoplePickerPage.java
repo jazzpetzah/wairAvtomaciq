@@ -261,7 +261,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void dismissPeoplePicker() throws Exception {
-        verifyLocatorPresence(By.name(xpathPickerClearButton), "Clear button is not visible in the search field");
+        verifyLocatorPresence(By.xpath(xpathPickerClearButton), "Clear button is not visible in the search field");
         peoplePickerClearBtn.click();
     }
 
