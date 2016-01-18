@@ -11,7 +11,6 @@ import hudson.tasks.Publisher;
 import hudson.tasks.Recorder;
 import hudson.util.FormValidation;
 import net.masterthought.cucumber.ReportBuilder;
-import org.apache.commons.io.FileUtils;
 import org.apache.tools.ant.DirectoryScanner;
 import org.kohsuke.stapler.AncestorInPath;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -103,13 +102,65 @@ public class CucumberReportPublisher extends Recorder {
             }
             listener.getLogger().println("[CucumberReportPublisher] Generating HTML reports");
 
+            String parsedCoverage = null;
+            String parsedCustomDescription = null;
+            String parsedRealBuildNumber = "";
+            
+            // Parse parameters
+            listener.getLogger().println("given.coverage=" + coverage);
+            listener.getLogger().println("given.customDescription=" + customDescription);
+            listener.getLogger().println("given.realBuildNumber=" + realBuildNumber);
+            listener.getLogger().println("envVars=" + build.getEnvironment(listener));
+            
+            if (build.getEnvironment(listener).get(customDescription) != null)
+                parsedCustomDescription = build.getEnvironment(listener).get(customDescription);
+            else
+                parsedCustomDescription = customDescription;
+            
+            if (build.getEnvironment(listener).get(coverage) != null)
+                parsedCoverage = build.getEnvironment(listener).get(coverage);
+            else
+                parsedCoverage = coverage;
+            
+            String separator = null;
+            String separator2 = null;
+            if (realBuildNumber.contains(".")) {
+                separator = "\\.";
+                separator2 = ".";
+            }
+            if (realBuildNumber.contains(" ")) {
+                separator = " ";
+                separator2 = " ";
+            }
+            
+            if (separator != null) {
+                listener.getLogger().println("Build separator detected, it is '" + separator2 + "'");
+                String[] buildArray = null;
+                buildArray = realBuildNumber.split(separator);
+                for (int i = 0; i < buildArray.length; i++) {
+                    if (build.getEnvironment(listener).get(buildArray[i]) != null)
+                        parsedRealBuildNumber = parsedRealBuildNumber
+                        .concat(build.getEnvironment(listener).get(buildArray[i])).concat(separator2);
+                    else
+                        parsedRealBuildNumber = parsedRealBuildNumber.concat(buildArray[i]).concat(separator2);
+                }
+            parsedRealBuildNumber = parsedRealBuildNumber.substring(0, parsedRealBuildNumber.length() - 1);
+            } else if (build.getEnvironment(listener).get(realBuildNumber) != null)
+                parsedRealBuildNumber = build.getEnvironment(listener).get(realBuildNumber);
+            else
+                parsedRealBuildNumber = realBuildNumber;
+            
+            listener.getLogger().println("parsed.coverage=" + parsedCoverage);
+            listener.getLogger().println("parsed.customDescription=" + parsedCustomDescription);
+            listener.getLogger().println("parsed.realBuildNumber=" + parsedRealBuildNumber);
+            
             try {
                 ReportBuilder reportBuilder = new ReportBuilder(
                         fullPathToJsonFiles(jsonReportFiles, targetBuildDirectory),
                         targetBuildDirectory,
-                        customDescription,
-                        coverage,
-                        realBuildNumber,
+                        parsedCustomDescription,
+                        parsedCoverage,
+                        parsedRealBuildNumber,
                         pluginUrlPath,
                         buildNumber,
                         buildProject,
