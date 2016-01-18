@@ -1,18 +1,15 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Future;
 
 import io.appium.java_client.ios.IOSElement;
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
@@ -21,9 +18,13 @@ public class LoginPage extends IOSPage {
     @FindBy(name = nameMainWindow)
     private WebElement viewPager;
 
-    private static final String nameSignInButton = "I HAVE AN ACCOUNT";
-    @FindBy(name = nameSignInButton)
-    private WebElement signInButton;
+    private static final String nameSwitchToEmailLogin = "I HAVE AN ACCOUNT";
+    @FindBy(name = nameSwitchToEmailLogin)
+    private WebElement switchToEmailLoginButton;
+
+    private static final String nameSwitchToPhoneLogin = "LOG IN BY PHONR";
+    @FindBy(name = nameSwitchToPhoneLogin)
+    private WebElement switchToPhoneLoginButton;
 
     private static final String nameLoginButton = "RegistrationConfirmButton";
     @FindBy(name = nameLoginButton)
@@ -105,7 +106,7 @@ public class LoginPage extends IOSPage {
 
     private static final String namePhoneLoginButton = "RegistrationRightButton";
     @FindBy(name = namePhoneLoginButton)
-    private WebElement phoneLoginButton;
+    private WebElement loginSwitcherButton;
 
     private static final String nameEmailLoginButton = "EMAIL SIGN IN";
     @FindBy(name = nameEmailLoginButton)
@@ -166,40 +167,25 @@ public class LoginPage extends IOSPage {
         super(lazyDriver);
     }
 
-    public Boolean isVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.name(nameMainWindow));
-    }
-
-    public void signIn() throws IOException {
-        signInButton.click();
-    }
-
-    public void switchToEmailLogin() throws Exception {
-        if (!backButton.getText().equals("REGISTRATION")) {
-            DriverUtils.tapByCoordinates(getDriver(), backButton);
-        }
-        if (!DriverUtils.waitUntilLocatorAppears(getDriver(),
-                By.name(nameEmailLoginButton))) {
-            signIn();
-        } else {
-            DriverUtils.tapByCoordinates(getDriver(), emailLoginButton);
-        }
+    public boolean isVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameMainWindow));
     }
 
     public boolean isPhoneSignInButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(namePhoneLoginButton));
     }
 
-    public void clickPhoneLogin() throws Exception {
-        assert isPhoneSignInButtonVisible() : "Phone login button is not visible";
-        phoneLoginButton.click();
+    public void switchToEmailLogin() throws Exception {
+        switchToEmailLoginButton.click();
+    }
+
+    public  void switchToPhoneLogin() throws Exception {
+        switchToPhoneLoginButton.click();
     }
 
     public void waitForLoginToFinish() throws Exception {
         if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By.name(nameLoginButton), 40)) {
-            throw new AssertionError(
-                    "Login button is still visible after the timeout");
+            throw new IllegalStateException("Login button is still visible after the timeout");
         }
         if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameGotItButton), 2)) {
             gotItButton.click();
@@ -208,25 +194,22 @@ public class LoginPage extends IOSPage {
 
     public void login() throws Exception {
         confirmSignInButton.click();
-        waitForLoginToFinish();
     }
 
     public void clickLoginButton() {
         confirmSignInButton.click();
     }
 
-    public void clickJoinButton() {
-        registerButton.click();
+    public boolean isEmailInputFieldInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.name(nameLoginField));
     }
 
     public void setLogin(String login) throws Exception {
-        verifyLocatorPresence(By.name(nameLoginField), "Login input field is not visible");
         ((IOSElement) getDriver().findElementByName(nameLoginField)).
                 setValue(login);
     }
 
     public void setPassword(String password) throws Exception {
-        verifyLocatorPresence(By.name(namePasswordField), "Password input field is not visible");
         ((IOSElement) getDriver().findElementByName(namePasswordField)).
                 setValue(password);
     }
@@ -257,7 +240,7 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean isLoginButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameSignInButton));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameSwitchToEmailLogin));
     }
 
     public void tapHoldEmailInput() throws Exception {
@@ -289,9 +272,8 @@ public class LoginPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(nameWrongCredentialsNotification));
     }
 
-    public PersonalInfoPage tapChangePasswordButton() throws Exception {
+    public void tapChangePasswordButton() throws Exception {
         changePasswordButtonSignIn.click();
-        return new PersonalInfoPage(this.getLazyDriver());
     }
 
     public void tapEmailFieldToChangePassword(String email) throws Exception {

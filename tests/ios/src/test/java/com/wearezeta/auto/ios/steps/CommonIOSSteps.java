@@ -692,4 +692,15 @@ public class CommonIOSSteps {
                                         String group) throws Throwable {
         commonSteps.UserXAddedContactsToGroupChat(user, userToBeAdded, group);
     }
+
+    /**
+     * Returns in Simulator back to Wire App
+     *
+     * @throws Exception
+     * @step. ^I reset Wire app$
+     */
+    @When("^I reset Wire app$")
+    public void ReturnToWireApp() throws Exception {
+        pagesCollecton.getCommonPage().resetApplication();
+    }
 }

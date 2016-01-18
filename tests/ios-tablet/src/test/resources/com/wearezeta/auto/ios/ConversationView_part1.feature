@@ -351,7 +351,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I see sign in screen
-    When I press Sign in button
+    When I tap I HAVE AN ACCOUNT button
     And I have entered login <Text>
     And I tap and hold on Email input
     And I click on popup SelectAll item
@@ -378,7 +378,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I see sign in screen
-    When I press Sign in button
+    When I tap I HAVE AN ACCOUNT button
     And I have entered login <Text>
     And I tap and hold on Email input
     And I click on popup SelectAll item

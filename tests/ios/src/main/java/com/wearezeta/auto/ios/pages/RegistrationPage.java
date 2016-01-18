@@ -208,6 +208,10 @@ public class RegistrationPage extends IOSPage {
         agreeButton.click();
     }
 
+    public boolean isCountryPickerButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameCountryPickerButton), 2);
+    }
+
     private static final String WIRE_COUNTRY_NAME = "Wirestan";
 
     public void selectWirestan() throws Exception {
@@ -217,7 +221,6 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void inputPhoneNumber(String number) throws Exception {
-        verifyLocatorPresence(By.xpath(xpathPhoneNumber), "Phone number input is not visible");
         phoneNumberField.sendKeys(number);
         confirmInput.click();
     }

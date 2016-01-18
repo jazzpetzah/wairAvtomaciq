@@ -9,7 +9,6 @@ import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.email.PasswordResetMessage;
 import com.wearezeta.auto.common.email.WireMessage;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
@@ -50,8 +49,8 @@ public class LoginPageSteps {
      * @step. I see sign in screen
      */
     @Given("I see sign in screen")
-    public void GiveniSeeSignInScreen() throws Exception {
-        Assert.assertNotNull(getLoginPage().isVisible());
+    public void ISeeSignInScreen() throws Exception {
+        Assert.assertTrue("Login page is not visible", getLoginPage().isVisible());
     }
 
     /**
@@ -63,15 +62,13 @@ public class LoginPageSteps {
      */
     @Given("^I sign in using my email$")
     public void GivenISignInUsingEmail() throws Exception {
-        Assert.assertNotNull(getLoginPage().isVisible());
-        getLoginPage().signIn();
+        ISeeSignInScreen();
 
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
         emailLoginSequence(self.getEmail(), self.getPassword());
     }
 
-    private void emailLoginSequence(String login, String password)
-            throws Exception {
+    private void emailLoginSequence(String login, String password) throws Exception {
         try {
             login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
         } catch (NoSuchUserException e) {
@@ -83,21 +80,25 @@ public class LoginPageSteps {
             // Ignore silently
         }
 
+        if (getLoginPage().isEmailInputFieldInvisible()) {
+            getLoginPage().switchToEmailLogin();
+        }
         getLoginPage().setLogin(login);
         getLoginPage().setPassword(password);
         getLoginPage().login();
+        getLoginPage().waitForLoginToFinish();
     }
 
     private void phoneLoginSequence(final PhoneNumber number) throws Exception {
-        getLoginPage().clickPhoneLogin();
+        if (!getRegistrationPage().isCountryPickerButtonVisible()) {
+            getLoginPage().switchToPhoneLogin();
+        }
 
         getRegistrationPage().selectWirestan();
         getRegistrationPage().inputPhoneNumber(
                 number.toString().replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""));
         String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(number);
-
         getRegistrationPage().inputActivationCode(code);
-
         getLoginPage().waitForLoginToFinish();
     }
 
@@ -188,7 +189,7 @@ public class LoginPageSteps {
      */
     @When("I tap on PHONE SIGN IN button")
     public void ITapPhoneSignInButton() throws Exception {
-        getLoginPage().clickPhoneLogin();
+        getLoginPage().switchToPhoneLogin();
     }
 
     /**
@@ -225,6 +226,8 @@ public class LoginPageSteps {
         Assert.assertTrue(getLoginPage().isSetEmailPasswordSuggestionVisible());
     }
 
+    private static final int BY_PHONE_NUMBER_LOGIN_PROBABILITY = 25;
+
     /**
      * Sign in with email/password (20%) or phone number (80%)
      *
@@ -233,43 +236,24 @@ public class LoginPageSteps {
      */
     @Given("^I sign in using my email or phone number$")
     public void GivenISignInUsingEmailOrPhone() throws Exception {
-        Assert.assertNotNull(getLoginPage().isVisible());
-        getLoginPage().signIn();
-
+        Assert.assertTrue("Login page is not visible", getLoginPage().isVisible());
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
-        if (CommonUtils.trueInPercents(80)) {
-            try {
-                phoneLoginSequence(self.getPhoneNumber());
-            } catch (BackendRequestException ex) {
-                getLoginPage().switchToEmailLogin();
-                emailLoginSequence(self.getEmail(), self.getPassword());
-            }
+        if (CommonUtils.trueInPercents(BY_PHONE_NUMBER_LOGIN_PROBABILITY)) {
+            phoneLoginSequence(self.getPhoneNumber());
         } else {
             emailLoginSequence(self.getEmail(), self.getPassword());
         }
     }
 
     /**
-     * Taps Sign In button on the corresponding screen and verifies whether an
-     * account is signed in properly
-     *
-     * @throws Exception
-     * @step. I press Sign in button
-     */
-    @When("I press Sign in button")
-    public void WhenIPressSignInButton() throws Exception {
-        getLoginPage().signIn();
-    }
-
-    /**
      * Tap I HAVE AN ACCOUNT button
      *
      * @throws Exception
-     * @step. I tap I HAVE AN ACCOUNT button
+     * @step. ^I tap I HAVE AN ACCOUNT button$
      */
-    @When("I tap I HAVE AN ACCOUNT button")
+    @When("^I tap I HAVE AN ACCOUNT button$")
     public void ITapHaveAnAccount() throws Exception {
-        WhenIPressSignInButton();
+        getLoginPage().switchToEmailLogin();
     }
 
     /**
@@ -281,6 +265,7 @@ public class LoginPageSteps {
     @When("I press Login button")
     public void WhenIPressSignInButtonAgain() throws Exception {
         getLoginPage().login();
+        getLoginPage().waitForLoginToFinish();
     }
 
     /**
@@ -561,8 +546,7 @@ public class LoginPageSteps {
      */
     @When("^I copy link from email and past it into Safari$")
     public void ICopyLinkFromEmailAndPastItIntoSafari() throws Exception {
-        String link = BackendAPIWrappers
-                .getPasswordResetLink(this.activationMessage);
+        String link = BackendAPIWrappers.getPasswordResetLink(this.activationMessage);
         getLoginPage().changeURLInBrowser(link);
     }
 
@@ -577,17 +561,6 @@ public class LoginPageSteps {
     public void ITypeInNewPassword(String newPassword) throws Exception {
         usrMgr.getSelfUserOrThrowError().setPassword(newPassword);
         getLoginPage().tapPasswordFieldToChangePassword(newPassword);
-    }
-
-    /**
-     * Returns in Simulator back to Wire App
-     *
-     * @throws Exception
-     * @step. ^I reset Wire app$
-     */
-    @When("^I reset Wire app$")
-    public void ReturnToWireApp() throws Exception {
-        getLoginPage().resetApplication();
     }
 
     /**
