@@ -427,10 +427,6 @@ public class DriverUtils {
         action.perform();
     }
 
-    public static void resetApp(AppiumDriver<? extends WebElement> driver) {
-        driver.resetApp();
-    }
-
     // in milliseconds (http://stackoverflow.com/questions/13670094/duration-of-a-single-tap-and-long-tap-in-android)
     private static final int SINGLE_TAP_DURATION = 125;
     private static final int LONG_TAP_DURATION = 500;

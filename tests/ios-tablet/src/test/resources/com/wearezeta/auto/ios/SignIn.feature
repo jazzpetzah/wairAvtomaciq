@@ -68,7 +68,7 @@ Feature: Sign In
     And I copy link from email and past it into Safari
     And I type in new password <NewPassword>
     And I press Change Password button in browser
-    And Return to Wire app
+    And I reset Wire app
     And I sign in using my email
     Then I see conversations list
 
@@ -89,7 +89,7 @@ Feature: Sign In
     And I copy link from email and past it into Safari
     And I type in new password <NewPassword>
     And I press Change Password button in browser
-    And Return to Wire app
+    And I reset Wire app
     And I sign in using my email
     Then I see conversations list
 

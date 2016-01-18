@@ -18,12 +18,6 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class LoginPage extends IOSPage {
-    final String[] scriptString = new String[]{
-            "tell application \"System Events\"",
-            "tell application \"iOS Simulator\" to activate",
-            "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
-            "end tell"};
-
     @FindBy(name = nameMainWindow)
     private WebElement viewPager;
 
@@ -326,12 +320,7 @@ public class LoginPage extends IOSPage {
         this.inputStringFromKeyboard(newPassword);
     }
 
-    public void pressSimulatorHomeButton() throws Exception {
-        cmdVscript(scriptString);
-        DriverUtils.resetApp(getDriver());
-    }
-
-    public boolean isCountryPickerButttonVisible() throws Exception {
+    public boolean isCountryPickerButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameCountryPickerButton));
     }
 
@@ -341,27 +330,27 @@ public class LoginPage extends IOSPage {
 
     public boolean isResendIn10minAlertVisible() throws Exception {
         DriverUtils.waitUntilAlertAppears(getDriver());
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameResentIn10min));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameResentIn10min), 1);
     }
 
     public boolean isInvalidPhoneNumberAlertShown() throws Exception {
         DriverUtils.waitUntilAlertAppears(getDriver());
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameInvalidPhoneNumber));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameInvalidPhoneNumber), 1);
     }
 
     public boolean isInvalidEmailAlertShown() throws Exception {
         DriverUtils.waitUntilAlertAppears(getDriver());
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameInvalidEmail));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameInvalidEmail), 1);
     }
 
     public boolean isRegisteredNumberAlertShown() throws Exception {
         DriverUtils.waitUntilAlertAppears(getDriver());
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameAlreadyRegisteredNumber));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameAlreadyRegisteredNumber), 1);
     }
 
     public boolean isAlreadyRegisteredEmailAlertShown() throws Exception {
         DriverUtils.waitUntilAlertAppears(getDriver());
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameAlreadyRegisteredEmail));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameAlreadyRegisteredEmail), 1);
     }
 
     public void clickPhoneNotNow() {

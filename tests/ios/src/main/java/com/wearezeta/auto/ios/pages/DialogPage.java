@@ -34,12 +34,6 @@ public class DialogPage extends IOSPage {
     private static final String HOT_PING_LABEL = "PINGED AGAIN";
     private static final long PING_ANIMATION_TIME = 3000;
 
-    private static final String[] scriptArr = new String[]{
-            "property thisapp: \"Simulator\"",
-            "tell application \"System Events\"", " tell process thisapp",
-            " click menu item \"Paste\" of menu \"Edit\" of menu bar 1",
-            " end tell", "end tell"};
-
     private static final String xpathConversationWindow = "//UIATableView";
     @FindBy(xpath = xpathConversationWindow)
     private WebElement conversationWindow;
@@ -86,7 +80,7 @@ public class DialogPage extends IOSPage {
     @FindBy(xpath = xpathConnectionMessage)
     private WebElement connectionMessage;
 
-    private static final String nameYouRenamedConversation = "YOU RENAMED THE CONVERSATION";
+    protected static final String nameYouRenamedConversation = "YOU RENAMED THE CONVERSATION";
     @FindBy(name = nameYouRenamedConversation)
     private WebElement youRenamedConversation;
 
@@ -216,8 +210,6 @@ public class DialogPage extends IOSPage {
                     "//UIATableCell[UIAStaticText[@name='%s CALLED']]/UIAButton[@name='ConversationMissedCallButton']",
                     name.toUpperCase());
 
-    private static final String nameOtherUserAddContactToChatButton = "OtherUserMetaControllerLeftButton";
-
     private static final String xpathLastMessageFormat = xpathMainWindow + "/UIATableView[1]/UIATableCell[%s]/UIATextView[1]";
 
     private static final Function<String, String> connectingLabelByReceiverName =
@@ -247,11 +239,15 @@ public class DialogPage extends IOSPage {
         super(lazyDriver);
     }
 
-    public String getStartedtChatMessage() {
+    public String getStartedChatMessage() throws Exception {
+        verifyLocatorPresence(By.xpath(xpathStartedConversationMessage),
+                "Conversation started message is not present in the view");
         return startedConversationMessage.getText();
     }
 
-    public String getAddedtoChatMessage() {
+    public String getAddedToChatMessage() throws Exception {
+        verifyLocatorPresence(By.xpath(xpathStartedConversationMessage),
+                "Added to conversation system message is not visible in the conversation view");
         return startedConversationMessage.getText();
     }
 
@@ -313,10 +309,6 @@ public class DialogPage extends IOSPage {
 
     public String getStringFromInput() throws Exception {
         return conversationInput.getText();
-    }
-
-    public String getRenamedMessage() {
-        return youRenamedConversation.getText();
     }
 
     public String getLastMessageFromDialog() {
@@ -433,33 +425,15 @@ public class DialogPage extends IOSPage {
     private final int TEXT_INPUT_HEIGH = 150;
     private final int TOP_BORDER_WIDTH = 40;
 
-    public void openConversationDetailsClick() throws Exception {
-        // FIXME: Understand what this shit is doing (or what it is supposed to do) and refactor it
+    public void openConversationDetails() throws Exception {
         if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameOpenConversationDetails))) {
             openConversationDetails.click();
+        } else if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(namePlusButton))) {
+            plusButton.click();
+            openConversationDetails.click();
         } else {
-            for (int i = 0; i < 3; i++) {
-                if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(namePlusButton))) {
-                    plusButton.click();
-                    openConversationDetails.click();
-                }
-                if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                        By.name(nameAddContactToChatButton), 2)
-                        || DriverUtils.waitUntilLocatorIsDisplayed(
-                        this.getDriver(),
-                        By.name(nameOtherUserAddContactToChatButton),
-                        2)) {
-                    break;
-                } else {
-                    swipeUp(1000);
-                }
-            }
+            throw new IllegalStateException("Cannot open conversation details from the current view");
         }
-    }
-
-    public void clickConversationDeatailForPendingUser() throws Exception {
-        plusButton.click();
-        openConversationDetails.click();
     }
 
     @Override
@@ -548,12 +522,7 @@ public class DialogPage extends IOSPage {
     }
 
     public void tapHoldTextInput() throws Exception {
-        try {
-            cmdVscript(scriptArr);
-        } catch (ScriptException e) {
-            e.printStackTrace();
-        }
-        this.getDriver().tap(1, this.getDriver().findElementByName(nameConversationCursorInput), 1000);
+        this.getDriver().tap(1, conversationInput, 5000);
     }
 
     public void scrollToBeginningOfConversation() throws Exception {
@@ -567,7 +536,9 @@ public class DialogPage extends IOSPage {
                 count++;
             }
         }
-        Assert.assertTrue(youAddedCell.get(0).isDisplayed());
+        if (!DriverUtils.isElementPresentAndDisplayed(getDriver(), youAddedCell.get(0))) {
+            throw new IllegalStateException("Failed to scroll to the beginning of the conversation");
+        }
     }
 
     private static final int IMAGE_IN_CONVERSATION_HEIGHT = 510;
@@ -793,7 +764,6 @@ public class DialogPage extends IOSPage {
         try {
             this.getDriver().tap(1, this.getDriver().findElementByXPath(xpathImage), 1000);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

@@ -193,10 +193,7 @@ public abstract class IOSPage extends BasePage {
     }
 
     public boolean isKeyboardVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.className(classNameKeyboard), 3)
-                && DriverUtils.waitUntilElementClickable(getDriver(), keyboard,
-                3);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.className(classNameKeyboard), 3);
     }
 
     public void clickKeyboardDeleteButton() {
@@ -230,10 +227,13 @@ public abstract class IOSPage extends BasePage {
                 .executeScript(script);
     }
 
-    public void cmdVscript(String[] scriptString) throws Exception {
-        CommonUtils.executeUIAppleScript(scriptString).
+    public void cmdVscript() throws Exception {
+        CommonUtils.executeUIAppleScript(new String[]{
+                "property thisapp: \"Simulator\"",
+                "tell application \"System Events\"", " tell process thisapp",
+                " click menu item \"Paste\" of menu \"Edit\" of menu bar 1",
+                " end tell", "end tell"}).
                 get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
-        ;
     }
 
     public void hideKeyboard() throws Exception {
@@ -360,5 +360,9 @@ public abstract class IOSPage extends BasePage {
         } else {
             this.getDriver().lockScreen(timeSeconds);
         }
+    }
+
+    public void resetApplication() throws Exception {
+        getDriver().resetApp();
     }
 }

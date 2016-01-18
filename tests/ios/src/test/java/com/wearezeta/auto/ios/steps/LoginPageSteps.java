@@ -200,7 +200,7 @@ public class LoginPageSteps {
     @When("^I see country picker button on Sign in screen$")
     public void ISeeCountryPickerButton() throws Exception {
         Assert.assertTrue("Country picker button is not visible",
-                getLoginPage().isCountryPickerButttonVisible());
+                getLoginPage().isCountryPickerButtonVisible());
     }
 
     /**
@@ -583,11 +583,11 @@ public class LoginPageSteps {
      * Returns in Simulator back to Wire App
      *
      * @throws Exception
-     * @step. ^Return to Wire app$
+     * @step. ^I reset Wire app$
      */
-    @When("^Return to Wire app$")
+    @When("^I reset Wire app$")
     public void ReturnToWireApp() throws Exception {
-        getLoginPage().pressSimulatorHomeButton();
+        getLoginPage().resetApplication();
     }
 
     /**
