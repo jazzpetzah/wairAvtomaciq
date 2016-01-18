@@ -136,22 +136,6 @@ Feature: People View
       | Name      | Contact1  | Contact2  | ChatName | GroupChatName |
       | user1Name | user2Name | user3Name | QAtest   | TESTCHAT      |
 
-  @C974 @regression @id531
-  Scenario Outline: I can see the individual user profile if I select someone in participants view
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I create group chat with <Contact1> and <Contact2>
-    #And I swipe up on group chat page
-    And I open group conversation details
-    And I select contact <Contact2>
-    Then I see <Contact2> user profile page
-
-    Examples:
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
-
   @C3172 @regression @rc @id339
   Scenario Outline: Tap on participant profiles in group info page participant view
     Given There are 3 users where <Name> is me
