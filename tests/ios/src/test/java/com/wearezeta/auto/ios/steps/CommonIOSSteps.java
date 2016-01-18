@@ -133,6 +133,11 @@ public class CommonIOSSteps {
         pagesCollecton.getCommonPage().clickKeyboardDeleteButton();
     }
 
+    @When("^I press keyboard Return button$")
+    public void IPressKeyboardReturnBtn() throws Exception {
+        pagesCollecton.getCommonPage().clickKeyboardEnterButton();
+    }
+
     @When("^I scroll up page a bit$")
     public void IScrollUpPageABit() throws Exception {
         pagesCollecton.getCommonPage().smallScrollUp();

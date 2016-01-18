@@ -151,7 +151,7 @@ public class PeoplePickerPage extends IOSPage {
                     xpathMainWindow, idx);
 
     private static final Function<String, String> xpathPeoplePickerSelectedCellByName = name ->
-            String.format("%s/UIATableView[2]/UIATableCell[@name='%s']", xpathMainWindow, name);
+            String.format("%s/UIATableView[1]/UIATableCell[@name='%s']", xpathMainWindow, name);
 
     private static final Function<Integer, String> xpathPeoplePickerTopConnectionsItemByIdx = idx ->
             String.format(
@@ -224,11 +224,9 @@ public class PeoplePickerPage extends IOSPage {
         verifyLocatorPresence(By.xpath(xpathPickerSearch), "Search UI input is not visible");
         try {
             sendTextToSearchInput(text);
-            clickSpaceKeyboardButton();
         } catch (WebDriverException ex) {
             peoplePickerSearch.clear();
             sendTextToSearchInput(text);
-            clickSpaceKeyboardButton();
         }
     }
 
