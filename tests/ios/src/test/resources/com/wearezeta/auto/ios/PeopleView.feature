@@ -460,8 +460,8 @@ Feature: People View
     Then I dont see conversation <GroupChatName> in contact list
 
     Examples:
-      | Name      | Contact1  | Contact2  | Message | GroupChatName |
-      | user1Name | user2Name | user3Name | testing | ForDeletion   |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | ForDeletion   |
 
   @C1830 @staging @id3971
   Scenario Outline: Verify removing the content from the group conversation via participant view
@@ -479,7 +479,6 @@ Feature: People View
     And I press conversation menu button
     And I click delete menu button
     And I confirm delete conversation content
-    And I return to the chat list
     And I open search by taping on it
     And I input conversation name <GroupChatName> in Search input
     Then I see conversation <GroupChatName> is presented in Search results
@@ -541,8 +540,8 @@ Feature: People View
     Then I see 4 conversation entries
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | Message | Image       |
-      | user1Name | user2Name | user3Name | TESTCHAT      | testing | testing.jpg |
+      | Name      | Contact1  | Contact2  | GroupChatName | Image       |
+      | user1Name | user2Name | user3Name | TESTCHAT      | testing.jpg |
 
   @C42 @regression @id583
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (People view)
