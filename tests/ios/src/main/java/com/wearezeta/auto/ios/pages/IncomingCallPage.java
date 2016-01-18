@@ -69,8 +69,7 @@ public class IncomingCallPage extends CallPage {
     }
 
     public void acceptIncomingCallClick() throws Exception {
-        verifyLocatorPresence(By.name(nameAcceptCallButton), "Accept call button is not visible");
-        acceptCallButton.click();
+        verifyLocatorPresence(By.name(nameAcceptCallButton), "Accept call button is not visible").click();
     }
 
     public void ignoreIncomingCallClick() {

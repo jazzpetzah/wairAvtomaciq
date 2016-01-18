@@ -204,8 +204,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void clickAgreeButton() throws Exception {
-        verifyLocatorPresence(By.name(nameAgreeButton), "Agree button is not visible");
-        agreeButton.click();
+        verifyLocatorPresence(By.name(nameAgreeButton), "Agree button is not visible").click();
     }
 
     public boolean isCountryPickerButtonVisible() throws Exception {
@@ -230,8 +229,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void inputActivationCode(String code) throws Exception {
-        verifyLocatorPresence(By.xpath(xpathActivationCode), "Activation code input is not visible");
-        activationCode.sendKeys(code);
+        verifyLocatorPresence(By.xpath(xpathActivationCode), "Activation code input is not visible").sendKeys(code);
         confirmInput.click();
     }
 
@@ -240,15 +238,12 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void clickResendCodeButton() throws Exception {
-        verifyLocatorPresence(By.name(nameResendCodeButton), "Resend code button is not visible");
-        resendCodeButton.click();
+        verifyLocatorPresence(By.name(nameResendCodeButton), "Resend code button is not visible").click();
     }
 
     public void selectPicture() throws Exception {
-        verifyLocatorPresence(By.name(nameSelectPictureButton), "Select Picture button is not visible");
-        selectPictureButton.click();
-        verifyLocatorPresence(By.xpath(xpathPhotoButton), "Take Photo button is not visible");
-        photoButton.click();
+        verifyLocatorPresence(By.name(nameSelectPictureButton), "Select Picture button is not visible").click();
+        verifyLocatorPresence(By.xpath(xpathPhotoButton), "Take Photo button is not visible").click();
     }
 
     public boolean isConfirmationShown() throws Exception {
@@ -269,8 +264,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void clickCreateAccountButton() throws Exception {
-        DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.xpath(xpathCreateAccountButton));
-        createAccountButton.click();
+        verifyLocatorPresence(By.xpath(xpathCreateAccountButton), "Create Account button is not visible").click();
     }
 
     public void typeEmail() {
@@ -278,8 +272,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void typeUsername() throws Exception {
-        verifyLocatorPresence(By.xpath(xpathYourName), "Name input is not visible");
-        yourName.sendKeys(getName());
+        verifyLocatorPresence(By.xpath(xpathYourName), "Name input is not visible").sendKeys(getName());
     }
 
     public boolean isPictureSelected() throws Exception {
@@ -333,7 +326,6 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void clickChoosePhotoButton() throws Exception {
-        verifyLocatorPresence(By.name(nameChoosePhotoButton), "Choose photo button is not visible");
-        choosePhotoButton.click();
+        verifyLocatorPresence(By.name(nameChoosePhotoButton), "Choose photo button is not visible").click();
     }
 }

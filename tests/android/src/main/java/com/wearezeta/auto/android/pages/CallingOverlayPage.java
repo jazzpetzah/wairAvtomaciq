@@ -105,8 +105,7 @@ public class CallingOverlayPage extends AndroidPage {
     }
 
     public void ignoreCall() throws Exception {
-        verifyLocatorPresence(By.id(idIgnoreButton), "Ignore button is not visible");
-        ignoreButton.click();
+        verifyLocatorPresence(By.id(idIgnoreButton), "Ignore button is not visible").click();
     }
 
     public boolean waitUntilNameAppearsOnCallingBarCaption(String name)
@@ -181,8 +180,8 @@ public class CallingOverlayPage extends AndroidPage {
     }
 
     public void joinGroupCall() throws Exception {
-        verifyLocatorPresence(By.id(idGroupCallingJoinOverlayContainer), "JOIN CALL button is not visible");
-        joinGroupCallButton.click();
+        verifyLocatorPresence(By.id(idGroupCallingJoinOverlayContainer), "JOIN CALL button is not visible").
+                click();
     }
 
     public boolean ongoingCallMicrobarIsVisible() throws Exception {

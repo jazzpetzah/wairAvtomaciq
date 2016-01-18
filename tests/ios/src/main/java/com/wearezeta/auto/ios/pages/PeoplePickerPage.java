@@ -221,7 +221,9 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void fillTextInPeoplePickerSearch(String text) throws Exception {
-        verifyLocatorPresence(By.xpath(xpathPickerSearch), "Search UI input is not visible");
+        // FIXME: Optimize this flow
+        final WebElement peoplePickerSearch = verifyLocatorPresence(By.xpath(xpathPickerSearch),
+                "Search UI input is not visible");
         try {
             sendTextToSearchInput(text);
             clickSpaceKeyboardButton();
@@ -261,8 +263,8 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void dismissPeoplePicker() throws Exception {
-        verifyLocatorPresence(By.xpath(xpathPickerClearButton), "Clear button is not visible in the search field");
-        peoplePickerClearBtn.click();
+        verifyLocatorPresence(By.xpath(xpathPickerClearButton), "Clear button is not visible in the search field").
+                click();
     }
 
     public void swipeToRevealHideSuggestedContact(String contact) throws Exception {
@@ -285,8 +287,7 @@ public class PeoplePickerPage extends IOSPage {
 
     public void tapHideSuggestedContact(String contact) throws Exception {
         final By locator = By.xpath(xpathHideButtonForContactByName.apply(contact));
-        verifyLocatorPresence(locator, String.format("Hide button is not visible for '%s'", contact));
-        this.getDriver().findElement(locator).click();
+        verifyLocatorPresence(locator, String.format("Hide button is not visible for '%s'", contact)).click();
     }
 
     public boolean isHideButtonVisible() throws Exception {
@@ -455,8 +456,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void clickOpenConversationButton() throws Exception {
-        verifyLocatorPresence(By.name(nameOpenConversationButton), "Open conversation button is not visible");
-        openConversationButton.click();
+        verifyLocatorPresence(By.name(nameOpenConversationButton), "Open conversation button is not visible").click();
     }
 
     public boolean isCallButtonVisible() throws Exception {
@@ -464,8 +464,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void clickCallButton() throws Exception {
-        assert isCallButtonVisible() : "Call button is not visible";
-        callButton.click();
+        verifyLocatorPresence(By.name(nameCallButton), "Call button is not visible").click();
     }
 
     public boolean isSendImageButtonVisible() throws Exception {
@@ -473,13 +472,11 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void clickSendImageButton() throws Exception {
-        assert isSendImageButtonVisible() : "Send image button is not visible";
-        sendImageButton.click();
+        verifyLocatorPresence(By.name(nameSendImageButton), "Send image button is not visible").click();
     }
 
     public void inputTextInSearch(String text) throws Exception {
-        verifyLocatorPresence(By.xpath(xpathPickerSearch), "Search input is not visible");
-        peoplePickerSearch.sendKeys(text);
+        verifyLocatorPresence(By.xpath(xpathPickerSearch), "Search input is not visible").sendKeys(text);
     }
 
     public void closeInviteList() {

@@ -94,16 +94,16 @@ public abstract class BasePage {
         }
     }
 
-    protected void verifyLocatorPresence(By locator) throws Exception {
-        DriverUtils.verifyPresence(getDriver(), locator);
+    protected WebElement verifyLocatorPresence(By locator) throws Exception {
+        return DriverUtils.verifyPresence(getDriver(), locator);
     }
 
-    protected void verifyLocatorPresence(By locator, String message) throws Exception {
-        DriverUtils.verifyPresence(getDriver(), locator, message);
+    protected WebElement verifyLocatorPresence(By locator, String message) throws Exception {
+        return DriverUtils.verifyPresence(getDriver(), locator, message);
     }
 
-    protected void verifyLocatorPresence(By locator, String message, int timeoutSeconds) throws Exception {
-        DriverUtils.verifyPresence(getDriver(), locator, message, timeoutSeconds);
+    protected WebElement verifyLocatorPresence(By locator, String message, int timeoutSeconds) throws Exception {
+        return DriverUtils.verifyPresence(getDriver(), locator, message, timeoutSeconds);
     }
 
     public Optional<BufferedImage> getScreenshotByCoordinates(int x, int y,

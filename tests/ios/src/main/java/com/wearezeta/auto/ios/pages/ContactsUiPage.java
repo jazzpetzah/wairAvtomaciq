@@ -36,14 +36,10 @@ public class ContactsUiPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathSearchInput));
     }
 
-    private void tapSearchInput() {
-        searchInput.click();
-    }
-
     public void inputTextToSearch(String text) throws Exception {
-        verifyLocatorPresence(By.xpath(xpathSearchInput));
-        tapSearchInput();
-        searchInput.sendKeys(text);
+        final WebElement input = verifyLocatorPresence(By.xpath(xpathSearchInput));
+        input.click();
+        input.sendKeys(text);
     }
 
     public boolean isContactPresentedInContactsList(String contact)

@@ -27,12 +27,10 @@ public class ProfilePicturePage extends AndroidPage {
     }
 
     public void clickCameraButton() throws Exception {
-        verifyLocatorPresence(By.id(idDialogTakePhotoButton), "Camera button is clickable");
-        cameraButton.click();
+        verifyLocatorPresence(By.id(idDialogTakePhotoButton), "Camera button is clickable").click();
     }
 
     public void confirmPicture() throws Exception {
-        verifyLocatorPresence(By.xpath(DialogPage.xpathConfirmOKButton), "Confirm button is not visible");
-        confirmButton.click();
+        verifyLocatorPresence(By.xpath(DialogPage.xpathConfirmOKButton), "Confirm button is not visible").click();
     }
 }

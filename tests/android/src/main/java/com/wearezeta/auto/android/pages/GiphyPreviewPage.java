@@ -54,8 +54,7 @@ public class GiphyPreviewPage extends AndroidPage {
     }
 
     public void clickOnGIFButton() throws Exception {
-        verifyLocatorPresence(giphyPreviewButtonLocator, "GIF button is not visible in the cursor input");
-        giphyPreviewButton.click();
+        verifyLocatorPresence(giphyPreviewButtonLocator, "GIF button is not visible in the cursor input").click();
     }
 
     private static final int GIPHY_LOCATOR_TIMEOUT_SECONDS = 5;

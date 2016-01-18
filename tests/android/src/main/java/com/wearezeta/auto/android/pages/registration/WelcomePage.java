@@ -59,7 +59,8 @@ public class WelcomePage extends AndroidPage {
     }
 
     public void tapSignInTab() throws Exception {
-        verifyLocatorPresence(By.xpath(xpathSignInTab), "Sign In tab is not visible", 30);
+        final WebElement signInTab = verifyLocatorPresence(By.xpath(xpathSignInTab),
+                "Sign In tab is not visible", 30);
         if (!DriverUtils.waitUntilElementClickable(getDriver(), signInTab)) {
             throw new IllegalStateException("Sign in tab is not clickable");
         }
@@ -71,7 +72,6 @@ public class WelcomePage extends AndroidPage {
     }
 
     public void clickAreaCodeSelector() throws Exception {
-        verifyLocatorPresence(By.id(idAreaCodeSelector), "Area code selector is not visible");
-        areaCodeSelectorButton.click();
+        verifyLocatorPresence(By.id(idAreaCodeSelector), "Area code selector is not visible").click();
     }
 }

@@ -31,20 +31,17 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(PeoplePickerPage.idPeoplePickerClearbtn))
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(PeoplePickerPage.idPeoplePickerClearbtn))
                 && pickerSearch.getLocation().getX() >= 0;
     }
 
     public boolean waitUntilInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-                By.id(PeoplePickerPage.idPeoplePickerClearbtn))
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.id(PeoplePickerPage.idPeoplePickerClearbtn))
                 || pickerSearch.getLocation().getX() < 0;
     }
 
     public void tapCloseButton() throws Exception {
-        verifyLocatorPresence(By.id(PeoplePickerPage.idPeoplePickerClearbtn), "Close button is not visible");
-        closePeoplePickerBtn.click();
+        verifyLocatorPresence(By.id(PeoplePickerPage.idPeoplePickerClearbtn), "Close button is not visible").click();
     }
 
     public void typeTextInPeopleSearch(String searchCriteria) throws Exception {
@@ -57,8 +54,7 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
                         .apply(item));
         verifyLocatorPresence(locator,
                 String.format("The item '%s' is not visible in People Picker search list after the defualt timeout expired",
-                        item));
-        getDriver().findElement(locator).click();
+                        item)).click();
     }
 
     public boolean waitUntilTopPeopleIsVisible() throws Exception {
@@ -74,9 +70,8 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
     public Optional<BufferedImage> takeAvatarScreenshot(String name)
             throws Exception {
         final By locator = By.xpath(PeoplePickerPage.xpathFoundAvatarByName.apply(name));
-        verifyLocatorPresence(locator, String.format("User avatar for '%s' is not visible", name));
-        final WebElement theAvatar = getDriver().findElement(locator);
-        return this.getElementScreenshot(theAvatar);
+        return this.getElementScreenshot(verifyLocatorPresence(locator,
+                String.format("User avatar for '%s' is not visible", name)));
     }
 
     public boolean waitUntilAvatarIsVisible(String name) throws Exception {

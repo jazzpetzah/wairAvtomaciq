@@ -74,8 +74,7 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
     }
 
     public void tapGalleryButton() throws Exception {
-        verifyLocatorPresence(By.id(idGalleryButton), "Open gallery button is not visible");
-        galleryButton.click();
+        verifyLocatorPresence(By.id(idGalleryButton), "Open gallery button is not visible").click();
         isGalleryModeActivated = true;
     }
 

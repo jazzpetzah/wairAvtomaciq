@@ -36,8 +36,7 @@ class SearchPage extends AbstractPopoverPage {
     public void tapAvatarFromSearchResults(String name) throws Exception {
         final By locator = By.xpath(xpathSearchResultsAvatarByName.apply(name));
         verifyLocatorPresence(locator, String
-                .format("The avatar of '%s' has not been shown in search resulst after timeout", name));
-        this.getDriver().findElement(locator).click();
+                .format("The avatar of '%s' has not been shown in search resulst after timeout", name)).click();
     }
 
     public void tapAddToConversationButton() {

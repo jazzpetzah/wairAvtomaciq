@@ -58,9 +58,8 @@ public class GroupChatPage extends DialogPage {
     }
 
     private String getStartedChatMessageAfterDeleteContent() throws Exception {
-        verifyLocatorPresence(By.xpath(xpathStartConversationAfterDelete),
-                "Chat started message is not present in the conversation view after timeout expired");
-        return startConvAfterDeleteMessage.getText();
+        return verifyLocatorPresence(By.xpath(xpathStartConversationAfterDelete),
+                "Chat started message is not present in the conversation view after timeout expired").getText();
     }
 
     public boolean areRequired3ContactsAddedToChat(String name1, String name2, String name3) throws Exception {

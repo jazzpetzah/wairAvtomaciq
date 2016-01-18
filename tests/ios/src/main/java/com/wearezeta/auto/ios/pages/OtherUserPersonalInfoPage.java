@@ -126,13 +126,11 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     }
 
     public void clickConfirmDeleteButton() throws Exception {
-        verifyLocatorPresence(By.xpath(xpathConfirmDeleteButton), "Confirm button is not visible");
-        confirmDeleteButton.click();
+        verifyLocatorPresence(By.xpath(xpathConfirmDeleteButton), "Confirm button is not visible").click();
     }
 
     public void clickAlsoLeaveButton() throws Exception {
-        verifyLocatorPresence(By.name(nameAlsoLeaveCheckerButton), "'Also Leave' checkbox is not present");
-        alsoLeaveButton.click();
+        verifyLocatorPresence(By.name(nameAlsoLeaveCheckerButton), "'Also Leave' checkbox is not present").click();
     }
 
     public void leavePageToGroupInfoPage() throws Exception {
@@ -141,8 +139,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     public void clickCloseUserProfileButton() throws Exception {
         verifyLocatorPresence(By.name(nameExitOtherUserPersonalInfoPageButton),
-                "Close profile button is not visible");
-        exitOtherPersonalInfoPageButton.click();
+                "Close profile button is not visible").click();
     }
 
     public void addContactToChat() throws Exception {

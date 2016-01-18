@@ -49,13 +49,11 @@ public class TabletSelfProfilePage extends AndroidTabletPage {
 
     public void selectOptionsMenuItem(String itemName) throws Exception {
         final By locator = By.xpath(xpathOptionsMenuItemByName.apply(itemName));
-        verifyLocatorPresence(locator, String.format("The item '%s' is not present in Options menu", itemName));
-        getDriver().findElement(locator).click();
+        verifyLocatorPresence(locator, String.format("The item '%s' is not present in Options menu", itemName)).click();
     }
 
     public void tapSelfNameField() throws Exception {
-        verifyLocatorPresence(By.id(idSelfNameInput), "Self name input is not visible");
-        selfNameInput.click();
+        verifyLocatorPresence(By.id(idSelfNameInput), "Self name input is not visible").click();
     }
 
     public void changeSelfNameTo(String newName) throws Exception {
@@ -65,13 +63,11 @@ public class TabletSelfProfilePage extends AndroidTabletPage {
     }
 
     public BufferedImage getScreenshot() throws Exception {
-        return this.getElementScreenshot(selfProfileView).orElseThrow(
-                IllegalStateException::new);
+        return this.getElementScreenshot(selfProfileView).orElseThrow(IllegalStateException::new);
     }
 
     public void tapInTheCenter() throws Exception {
-        DriverUtils.tapInTheCenterOfTheElement(this.getDriver(),
-                selfProfileView);
+        DriverUtils.tapInTheCenterOfTheElement(this.getDriver(), selfProfileView);
     }
 
     public boolean waitUntilOptionsMenuItemVisible(String itemName)

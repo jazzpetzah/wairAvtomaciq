@@ -240,15 +240,13 @@ public class DialogPage extends IOSPage {
     }
 
     public String getStartedChatMessage() throws Exception {
-        verifyLocatorPresence(By.xpath(xpathStartedConversationMessage),
-                "Conversation started message is not present in the view");
-        return startedConversationMessage.getText();
+        return verifyLocatorPresence(By.xpath(xpathStartedConversationMessage),
+                "Conversation started message is not present in the view").getText();
     }
 
     public String getAddedToChatMessage() throws Exception {
-        verifyLocatorPresence(By.xpath(xpathStartedConversationMessage),
-                "Added to conversation system message is not visible in the conversation view");
-        return startedConversationMessage.getText();
+        return verifyLocatorPresence(By.xpath(xpathStartedConversationMessage),
+                "Added to conversation system message is not visible in the conversation view").getText();
     }
 
     public boolean isMessageVisible(String msg) throws Exception {
@@ -264,8 +262,7 @@ public class DialogPage extends IOSPage {
     }
 
     public void returnToContactList() throws Exception {
-        verifyLocatorPresence(By.name(nameConversationBackButton), "Back to list button is not visible");
-        conversationBackButton.click();
+        verifyLocatorPresence(By.name(nameConversationBackButton), "Back to list button is not visible").click();
     }
 
     public void pressCallButton() throws Exception {
@@ -392,8 +389,7 @@ public class DialogPage extends IOSPage {
     }
 
     private void clickMediaBarPlayButton() throws Exception {
-        assert isMediaBarPlayButtonVisible() : "Play button is not visible on media bar";
-        mediabarPlayButton.click();
+        verifyLocatorPresence(By.name(namePlayButton),  "Play button is not visible on media bar").click();
     }
 
     public void playMediaContent() throws Exception {
@@ -401,8 +397,7 @@ public class DialogPage extends IOSPage {
     }
 
     private void clickMediaBarCloseButton() throws Exception {
-        verifyLocatorPresence(By.name(nameCloseButton), "Close button is not visible on Media bar");
-        mediabarStopCloseButton.click();
+        verifyLocatorPresence(By.name(nameCloseButton), "Close button is not visible on Media bar").click();
     }
 
     public void stopMediaContent() throws Exception {

@@ -42,12 +42,12 @@ public class PendingRequestsPage extends IOSPage {
     }
 
     public void clickIgnoreButton() throws Exception {
-        verifyLocatorPresence(By.name(namePendingRequestIgnoreButton), "Ignore button is not visible");
-        ignoreRequestButton.click();
+        verifyLocatorPresence(By.name(namePendingRequestIgnoreButton), "Ignore button is not visible").click();
     }
 
     public void clickIgnoreButtonMultiple(int clicks) throws Exception {
-        verifyLocatorPresence(By.name(namePendingRequestIgnoreButton), "Ignore button is not visible");
+        final WebElement ignoreRequestButton = verifyLocatorPresence(By.name(namePendingRequestIgnoreButton),
+                "Ignore button is not visible");
         for (int i = 0; i < clicks; i++) {
             ignoreRequestButton.click();
             Thread.sleep(500);
@@ -55,12 +55,12 @@ public class PendingRequestsPage extends IOSPage {
     }
 
     public void clickConnectButton() throws Exception {
-        verifyLocatorPresence(By.name(namePendingRequestConnectButton), "Connect button is not visible");
-        connectRequestButton.click();
+        verifyLocatorPresence(By.name(namePendingRequestConnectButton), "Connect button is not visible").click();
     }
 
     public void clickConnectButtonMultiple(int clicks) throws Exception {
-        verifyLocatorPresence(By.name(namePendingRequestConnectButton), "Connect button is not visible");
+        final WebElement connectRequestButton = verifyLocatorPresence(By.name(namePendingRequestConnectButton),
+                "Connect button is not visible");
         for (int i = 0; i < clicks; i++) {
             connectRequestButton.click();
             Thread.sleep(500);

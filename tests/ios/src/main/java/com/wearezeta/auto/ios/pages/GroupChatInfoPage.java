@@ -272,8 +272,7 @@ public class GroupChatInfoPage extends IOSPage {
     }
 
     public void exitGroupInfoPage() throws Exception {
-        verifyLocatorPresence(By.name(nameExitGroupInfoPageButton), "Close group info button is not visible");
-        exitGroupInfoPageButton.click();
+        verifyLocatorPresence(By.name(nameExitGroupInfoPageButton), "Close group info button is not visible").click();
     }
 
     public void leaveConversation() throws InterruptedException {

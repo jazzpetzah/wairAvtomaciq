@@ -152,18 +152,15 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void clickPopupSelectAllButton() throws Exception {
-        verifyLocatorPresence(By.name(nameEditingItemSelectAll), "Select All popup is not visible");
-        popupSelectAll.click();
+        verifyLocatorPresence(By.name(nameEditingItemSelectAll), "Select All popup is not visible").click();
     }
 
     public void clickPopupCopyButton() throws Exception {
-        verifyLocatorPresence(By.name(nameEditingItemCopy), "Copy popup is not viisble");
-        popupCopy.click();
+        verifyLocatorPresence(By.name(nameEditingItemCopy), "Copy popup is not viisble").click();
     }
 
     public void clickPopupPasteButton() throws Exception {
-        verifyLocatorPresence(By.name(nameEditingItemPaste), "Paste popup is not visible");
-        popupPaste.click();
+        verifyLocatorPresence(By.name(nameEditingItemPaste), "Paste popup is not visible").click();
     }
 
     @Override
@@ -205,8 +202,7 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void clickKeyboardReturnButton() throws Exception {
-        verifyLocatorPresence(By.name(nameKeyboardReturnButton), "Keyboard Return button is not visible");
-        keyboardReturnBtn.click();
+        verifyLocatorPresence(By.name(nameKeyboardReturnButton), "Keyboard Return button is not visible").click();
     }
 
     public void clickHideKeyboardButton() {
@@ -218,8 +214,7 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void clickDoneKeyboardButton() throws Exception {
-        verifyLocatorPresence(By.name(nameDoneButton), "Keyboard Done button is not visible");
-        keyboardDoneBtn.click();
+        verifyLocatorPresence(By.name(nameDoneButton), "Keyboard Done button is not visible").click();
     }
 
     public static Object executeScript(String script) throws Exception {

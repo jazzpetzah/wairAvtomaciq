@@ -277,7 +277,7 @@ public class LoginPage extends IOSPage {
     }
 
     public void tapEmailFieldToChangePassword(String email) throws Exception {
-        verifyLocatorPresence(By.xpath(xpathSafariChangePasswordEmailField),
+        final WebElement safariChangePWEmailField = verifyLocatorPresence(By.xpath(xpathSafariChangePasswordEmailField),
                 "Email input field in Safari is not visible");
         DriverUtils.tapByCoordinates(getDriver(), safariChangePWEmailField);
         this.inputStringFromKeyboard(email);
@@ -296,7 +296,7 @@ public class LoginPage extends IOSPage {
 
     public void tapPasswordFieldToChangePassword(String newPassword)
             throws Exception {
-        verifyLocatorPresence(By.xpath(xpathSafariEnterNewPasswordField),
+        final WebElement safariEnterNewPasswordField = verifyLocatorPresence(By.xpath(xpathSafariEnterNewPasswordField),
                 "Password input field in Safari is not visible");
         DriverUtils.tapByCoordinates(getDriver(), safariEnterNewPasswordField);
         this.inputStringFromKeyboard(newPassword);

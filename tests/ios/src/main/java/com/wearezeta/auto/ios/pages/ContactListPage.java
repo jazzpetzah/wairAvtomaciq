@@ -115,8 +115,7 @@ public class ContactListPage extends IOSPage {
     }
 
     public void openSearch() throws Exception {
-        verifyLocatorPresence(By.name(nameOpenStartUI));
-        openStartUI.click();
+        verifyLocatorPresence(By.name(nameOpenStartUI)).click();
     }
 
     public boolean isPlayPauseButtonVisible(String contact) throws Exception {
@@ -151,15 +150,13 @@ public class ContactListPage extends IOSPage {
     }
 
     public String getFirstDialogName() throws Exception {
-        verifyLocatorPresence(By.xpath(xpathFirstContactListEntry),
-                "No entries are visible in the conversation list");
-        return this.getDriver().findElement(By.xpath(xpathFirstContactListEntry)).getText();
+        return verifyLocatorPresence(By.xpath(xpathFirstContactListEntry),
+                "No entries are visible in the conversation list").getText();
     }
 
     public String getDialogNameByIndex(int index) throws Exception {
         final By locator = By.xpath(convoListEntryByIdx.apply(index));
-        verifyLocatorPresence(locator, String.format("Conversation # %s is not visible", index));
-        return this.getDriver().findElement(locator).getText();
+        return verifyLocatorPresence(locator, String.format("Conversation # %s is not visible", index)).getText();
     }
 
     private Optional<WebElement> findNameInContactList(String name) throws Exception {
@@ -330,8 +327,7 @@ public class ContactListPage extends IOSPage {
         // This takes a screenshot of the area to the left of a contact where
         // ping and unread dot notifications are visible
         final By locator = By.xpath(convoListEntryByIdx.apply(1));
-        verifyLocatorPresence(locator, "No contacts are visible in the list");
-        final WebElement contact = getDriver().findElement(locator);
+        final WebElement contact = verifyLocatorPresence(locator, "No contacts are visible in the list");
         return getScreenshotByCoordinates(contact.getLocation().x,
                 contact.getLocation().y + contactListContainer.getLocation().y,
                 contact.getSize().width / 4, contact.getSize().height * 2)

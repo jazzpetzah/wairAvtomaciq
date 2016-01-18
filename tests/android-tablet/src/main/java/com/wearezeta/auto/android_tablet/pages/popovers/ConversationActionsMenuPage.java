@@ -20,7 +20,6 @@ public class ConversationActionsMenuPage extends AbstractPopoverPage {
 
     public void selectMenuItem(String itemName) throws Exception {
         final By locator = By.xpath(xpathActionMenuItemByName.apply(itemName));
-        verifyLocatorPresence(locator, String.format("Actions menu item '%s' is not displayed", itemName));
-        getDriver().findElement(locator).click();
+        verifyLocatorPresence(locator, String.format("Actions menu item '%s' is not displayed", itemName)).click();
     }
 }

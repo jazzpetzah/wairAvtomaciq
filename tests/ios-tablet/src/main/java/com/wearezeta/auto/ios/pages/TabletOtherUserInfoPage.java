@@ -57,15 +57,13 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
     }
 
     public String getEmailFieldValueOniPadPopover() throws Exception {
-        String result = "";
         try {
             DriverUtils.waitUntilLocatorAppears(getDriver(),
                     By.xpath(xpathOtherPersonalInfoPageEmailField));
-            result = emailFieldPopover.getAttribute("value");
+            return emailFieldPopover.getAttribute("value");
         } catch (NoSuchElementException ex) {
-
+            return "";
         }
-        return result;
     }
 
     public boolean isConnectLabelVisible() throws Exception {
@@ -81,8 +79,7 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
     }
 
     public void clickGoBackButton() throws Exception {
-        verifyLocatorPresence(By.name(nameOtherUserProfilePageCloseButton));
-        goBackButton.click();
+        verifyLocatorPresence(By.name(nameOtherUserProfilePageCloseButton)).click();
     }
 
     public void exitOtherUserGroupChatPopover() throws Exception {
