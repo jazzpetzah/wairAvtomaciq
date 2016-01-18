@@ -1,10 +1,11 @@
 Feature: Self Profile
 
-  @id2264 @regression @rc
+  @C744 @id2264 @regression @rc
   Scenario Outline: I can change my name in portrait mode
     Given There is 1 user where <Name> is me
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with no conversations
     When I tap my avatar on top of conversations list
     And I see my name on Self Profile page
@@ -16,11 +17,12 @@ Feature: Self Profile
       | Name      | NewName     |
       | user1Name | NewTestName |
 
-  @id2250 @regression @rc @rc44
+  @C734 @id2250 @regression @rc @rc44
   Scenario Outline: I can change my name in landscape mode
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with no conversations
     And I see my name on Self Profile page
     And I tap my name field on Self Profile page
@@ -31,11 +33,12 @@ Feature: Self Profile
       | Name      | NewName     |
       | user1Name | NewTestName |
 
-  @id2288 @regression @rc @rc44
+  @C754 @id2288 @regression @rc @rc44
   Scenario Outline: Change profile picture using existing from gallery in portrait mode
     Given There is 1 user where <Name> is me
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with no conversations
     When I tap my avatar on top of conversations list
     And I see my name on Self Profile page
@@ -51,11 +54,12 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @id2289 @regression @rc @rc44
+  @C755 @id2289 @regression @rc @rc44
   Scenario Outline: Change profile picture using existing from gallery in landscape mode
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with no conversations
     And I see my name on Self Profile page
     And I tap in the center of Self Profile page
@@ -70,11 +74,12 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @id2833 @regression
+  @C484 @id2833 @regression
   Scenario Outline: User can change profile picture by taking camera picture (portrait)
     Given There is 1 user where <Name> is me
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with no conversations
     When I tap my avatar on top of conversations list
     And I see my name on Self Profile page
@@ -90,11 +95,12 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @id3106 @regression
+  @C513 @id3106 @regression
   Scenario Outline: User can change profile picture by taking camera picture (landscape)
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with no conversations
     When I see my name on Self Profile page
     And I tap in the center of Self Profile page
@@ -108,4 +114,3 @@ Feature: Self Profile
     Examples:
       | Name      |
       | user1Name |
-

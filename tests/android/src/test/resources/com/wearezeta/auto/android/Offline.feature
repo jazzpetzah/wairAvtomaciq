@@ -1,17 +1,18 @@
 Feature: Offline
 
-  @id1515 @regression
+  @C415 @id1515 @regression
   Scenario Outline: Receive updated content when changing from offline to online
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I tap on contact name <Contact>
     And I see dialog page
     When Contact <Contact> send message <Message1> to user <Name>
     Then Last message is <Message1>
     When I enable Airplane mode on the device
-    And Contact <Contact> sends image <Picture> to single user conversation <Name>
+    And User <Contact> sends image <Picture> to single user conversation <Name>
     Then I do not see new picture in the dialog
     When Contact <Contact> send message <Message2> to user <Name>
     Then Last message is <Message1>
@@ -24,11 +25,12 @@ Feature: Offline
       | Name      | Contact   | Message1 | Message2 | Picture     |
       | user1Name | user2Name | Msg1     | Msg2     | testing.jpg |
 
-  @id1516 @regression @rc
+  @C720 @id1516 @regression @rc
   Scenario Outline: I want to see an unsent indicator when I send message or image during offline
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I tap on contact name <Contact>
     And I see dialog page

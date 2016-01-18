@@ -1,9 +1,10 @@
 Feature: Connect
 
-  @id191 @id193 @regression @rc @rc42
+  @C676 @C677 @id191 @id193 @regression @rc @rc42
   Scenario Outline: Send connection request from search
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
     When I open Search by tap
@@ -21,11 +22,12 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id323 @regression @rc @rc42
+  @C687 @id323 @regression @rc @rc42
   Scenario Outline: Accept incoming connection request from conversation list
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to <Name>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <WaitingMess>
     And I see connect to <Contact> dialog
@@ -36,10 +38,11 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @id1411 @regression @rc @rc42
+  @C706 @id1411 @regression @rc @rc42
   Scenario Outline: I can see a new inbox for connection when receive new connection request
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     Given I do not see contact list with name <WaitingMess>
     Given <Contact> sent connection request to <Name>
@@ -53,11 +56,12 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @id539 @id543 @regression
+  @C383 @C386 @id539 @id543 @regression
   Scenario Outline: I can see a inbox count increasing/decreasing correctly + I ignore someone from people picker and clear my inbox
     Given There are 5 users where <Name> is me
     Given <Contact1> sent connection request to me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given <Contact2> sent connection request to me
     When I wait for 2 seconds
@@ -90,13 +94,14 @@ Feature: Connect
       | Name      | Contact1  | WaitingMess1     | Contact2  | WaitingMess2     | Contact3  | Contact4  | WaitingMess3     |
       | user1Name | user2Name | 1 person waiting | user3Name | 2 people waiting | user4Name | user5Name | 3 people waiting |
 
-  @id544 @regression
+  @C387 @id544 @regression
   Scenario Outline: I accept someone from people picker and -1 from inbox as well
     Given There are 5 users where <Name> is me
     Given <Contact1> sent connection request to <Name>
     Given <Contact2> sent connection request to <Name>
     Given <Contact4> sent connection request to <Name>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given <Contact3> sent connection request to <Name>
     When I see contact list with name <WaitingMess1>
@@ -118,11 +123,12 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | WaitingMess1     | WaitingMess2     |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 4 people waiting | 3 people waiting |
 
-  @id540 @regression
+  @C384 @id540 @regression
   Scenario Outline: I can ignore a connect request and reconnect later
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I see contact list with name <WaitingMess>
     And I tap on contact name <WaitingMess>
@@ -143,11 +149,12 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @id542 @regression
+  @C385 @id542 @regression
   Scenario Outline: Accept incoming connection request from search
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to <Name>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I see contact list with name <WaitingMess>
     And I wait until <Contact> exists in backend search results
@@ -164,10 +171,11 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @id547 @regression
+  @C388 @id547 @regression
   Scenario Outline: I would not know other person has ignored my connection request
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
     When I open Search by tap
@@ -186,10 +194,11 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id541 @regression @rc
+  @C694 @id541 @regression @rc
   Scenario Outline: I can receive new connection request when app in background
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     When I minimize the application
     And <Contact> sent connection request to Me
@@ -206,10 +215,11 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @id553 @regression @rc
+  @C696 @id553 @regression @rc
   Scenario Outline: I want to see that the other person has accepted the connect request in the conversation view
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
     When I open Search by tap
@@ -231,10 +241,11 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id552 @regression @rc
+  @C695 @id552 @regression @rc
   Scenario Outline: I want to discard the new connect request (sending) by returning to the search results after selecting someone I’m not connected to
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
     When I open Search by tap
@@ -250,13 +261,14 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id550 @regression
+  @C389 @id550 @regression
   Scenario Outline: (CM-691) I want to initiate a connect request by selecting someone from within a group conversation
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given <Contact1> is connected to <Contact2>
     Given <Contact1> has group chat <ChatName> with <Name>, <Contact2>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <ChatName>
     And I tap conversation details button
@@ -273,12 +285,13 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | ChatName         |
       | user1Name | user2Name | user3Name | ContactGroupChat |
 
-  @id676 @regression
+  @C390 @id676 @regression
   Scenario Outline: I want to block a person from 1:1 conversation
     Given There are 3 users where <Name> is me
     # Having the extra user is a workaround for an app bug
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -301,12 +314,13 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id680 @regression
+  @C391 @id680 @regression
   Scenario Outline: I want to see user has been blocked within the Start UI
     Given There are 3 users where <Name> is me
     # Having the extra user is a workaround for an app bug
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I wait until <Contact2> exists in backend search results
     When I open Search by tap
@@ -341,13 +355,14 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id720 @regression
+  @C392 @id720 @regression
   Scenario Outline: I want to be seen in the search results of someone I blocked
     Given There are 3 users where <Name> is me
     # Having the extra user is a workaround for an app bug
     Given Myself is connected to <Contact1>,<Contact2>
     Given User <Contact1> blocks user Myself
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I see contact list with name <Contact1>
     And I see contact list with name <Contact2>
@@ -362,13 +377,14 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id723 @regression
+  @C407 @id723 @regression
   Scenario Outline: (BUG AN-2721) I want to unblock someone from their Profile view
     Given There are 4 users where <Name> is me
       # Having the extra user is a workaround for an app bug
     Given Myself is connected to <Contact1>,<Contact2>
     Given User <Name> blocks user <Contact1>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact2>
     And I navigate back from dialog page
@@ -389,10 +405,11 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id1405 @regression @rc
+  @C705 @id1405 @regression @rc
   Scenario Outline: Impossibility of starting 1:1 conversation with pending user (Search)
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
     When I open Search by tap
@@ -411,18 +428,19 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id1397 @regression
+  @C409 @id1397 @regression
   Scenario Outline: Verify you do not receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
     And I type the message "<Message>" and send it
     And User <Name> blocks user <Contact>
-    And Contact <Contact> sends image <Picture> to single user conversation <Name>
+    And User <Contact> sends image <Picture> to single user conversation <Name>
     And Contact <Contact> send message to user <Name>
     And Contact <Contact> ping conversation <Name>
     Then Last message is <Message>
@@ -430,48 +448,3 @@ Feature: Connect
     Examples:
       | Name      | Contact   | Message          | Picture     |
       | user1Name | user2Name | Hello my friend! | testing.jpg |
-
-  @id2215 @regression @rc @rc42
-  Scenario Outline: I can connect to someone from PYMK by clicking +
-    Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to <Contact2>
-    Given Myself is connected to <Contact1>
-    Given I sign in using my email or phone number
-    Given I see Contact list with contacts
-    When I open Search by tap
-    And I see People picker page
-    And I keep reopening People Picker until PYMK are visible
-    And I remember the name of the first PYMK item
-    And I click + button on the first PYMK item
-    Then I do not see the previously remembered PYMK item
-    When I press Clear button
-    Then I see contact list with the previously remembered PYMK item
-    When I open Search by tap
-    Then I do not see the previously remembered PYMK item
-
-    Examples:
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
-
-  @id2216 @regression @rc
-  Scenario Outline: I can connect to someone from PYMK by tap and typing connect message
-    Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to <Contact2>
-    Given Myself is connected to <Contact1>
-    Given I sign in using my email or phone number
-    Given I see Contact list with contacts
-    And I open Search by tap
-    And I see People picker page
-    And I keep reopening People Picker until PYMK are visible
-    And I remember the name of the first PYMK item
-    When I tap the first PYMK item
-    And I click Connect button on connect to page
-    And I see People picker page
-    And I press Clear button
-    Then I see contact list with the previously remembered PYMK item
-    When I open Search by tap
-    Then I do not see the previously remembered PYMK item
-
-    Examples:
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |

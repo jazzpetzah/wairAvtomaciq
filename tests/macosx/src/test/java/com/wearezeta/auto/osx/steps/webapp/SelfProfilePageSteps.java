@@ -6,8 +6,8 @@ import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.osx.pages.webapp.PreferencesPage;
-import com.wearezeta.auto.osx.pages.webapp.SelfProfilePage;
+import com.wearezeta.auto.web.pages.SettingsPage;
+import com.wearezeta.auto.web.pages.SelfProfilePage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.And;
@@ -35,19 +35,6 @@ public class SelfProfilePageSteps {
 		Assert.assertTrue("Setting button visible", WebappPagesCollection
 				.getInstance().getPage(SelfProfilePage.class)
 				.isSettingsButtonVisible());
-	}
-
-	/**
-	 * Checks if the camera button in self profile is clickable
-	 * 
-	 * @step. ^the camera button in self profile is clickable$
-	 * @throws Exception
-	 */
-	@And("^the camera button in self profile is clickable$")
-	public void IsCameraButtonClickable() throws Exception {
-		Assert.assertTrue("Camera button clickable", WebappPagesCollection
-				.getInstance().getPage(SelfProfilePage.class)
-				.isCameraButtonClickable());
 	}
 
 	/**
@@ -220,19 +207,8 @@ public class SelfProfilePageSteps {
 	 */
 	@Then("^I see Settings dialog$")
 	public void ISeeSetingsDialog() throws Exception {
-		Assert.assertTrue(webappPagesCollection.getPage(PreferencesPage.class)
+		Assert.assertTrue(webappPagesCollection.getPage(SettingsPage.class)
 				.isVisible());
 	}
 
-	/**
-	 * Types shortcut combination to open preferences
-	 *
-	 * @step. ^I type shortcut combination to open preferences$
-	 * @throws Exception
-	 */
-	@Then("^I type shortcut combination to open preferences$")
-	public void ITypeShortcutCombinationToOpenPreference() throws Exception {
-		WebappPagesCollection.getInstance().getPage(SelfProfilePage.class)
-				.pressShortCutForPreferences();
-	}
 }

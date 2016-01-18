@@ -1,11 +1,12 @@
 Feature: Conversation List
 
-  @id1513 @regression @rc
+  @C719 @id1513 @regression @rc
   Scenario Outline: Verify messages are marked as read as you look at them so that you can know when there is unread content in a conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    And I see Contact list with contacts
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
     And I tap on contact name <Contact1>
     And I see dialog page
     And I scroll to the bottom of conversation view
@@ -27,15 +28,16 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @id4042 @regression
+  @C822 @id4042 @regression @rc
   Scenario Outline: (AN-2969) Verify I can delete a 1:1 conversation from conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given All contacts send me a message <SpotifyLink>
-    Given Contact <Contact1> sends image <Image> to single user conversation <Name>
+    Given User <Contact1> sends image <Image> to single user conversation <Name>
     Given All contacts send me a message "<Message>"
     Given I sign in using my email or phone number
-    And I see Contact list with contacts
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
     And I tap on contact name <Contact1>
     And I see dialog page
     And I scroll to the bottom of conversation view
@@ -58,15 +60,16 @@ Feature: Conversation List
       | Name      | Contact1  | Message    | Image       | SpotifyLink                                           |
       | user1Name | user2Name | Tschuessii | testing.jpg | https://open.spotify.com/track/0p6GeAWS4VCZddxNbBtEss |
 
-  @id4043 @regression
+  @C444 @id4043 @regression
   Scenario Outline: (AN-2875) Verify I can delete a group conversation from conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given Contact <Contact1> sends image <Image> to group conversation <GroupChatName>
+    Given User <Contact1> sends image <Image> to group conversation <GroupChatName>
     Given User <Contact1> sent message <SpotifyLink> to conversation <GroupChatName>
     Given User <Contact1> sent message "<Message>" to conversation <GroupChatName>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
     And I see dialog page
@@ -89,12 +92,13 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | Message    | Image       | SpotifyLink                                           |
       | user1Name | user2Name | user3Name | DELETE        | Tschuessii | testing.jpg | https://open.spotify.com/track/0p6GeAWS4VCZddxNbBtEss |
 
-  @id4053 @regression
+  @C445 @id4053 @regression
   Scenario Outline: Verify I can delete and leave a group conversation from conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I swipe right on a <GroupChatName>
     And I select DELETE from conversation settings menu
@@ -116,18 +120,19 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | Message |
       | user1Name | user2Name | user3Name | DELETELeave   | tututu  |
 
-  @id4056 @regression
+  @C446 @id4056 @regression
   Scenario Outline: Verify I see picture, ping and call after I delete a group conversation from conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I swipe right on a <GroupChatName>
     And I select DELETE from conversation settings menu
     And I press DELETE on the confirm alert
     Then I do not see contact list with name <GroupChatName>
-    When Contact <Contact1> sends image <Image> to group conversation <GroupChatName>
+    When User <Contact1> sends image <Image> to group conversation <GroupChatName>
     Then I see contact list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I select DELETE from conversation settings menu
@@ -146,11 +151,12 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | Image       | CallBackend |
       | user1Name | user2Name | user3Name | DELETE        | testing.jpg | autocall    |
 
-  @id4072 @regression
+  @C451 @id4072 @regression
   Scenario Outline: I can mute 1:1 conversation from the conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I swipe right on a <Contact1>
     And I select SILENCE from conversation settings menu
@@ -160,12 +166,13 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @id4073 @regression
+  @C452 @id4073 @regression
   Scenario Outline: I can unmute 1:1 conversation from the conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given <Contact1> is silenced to user <Name>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And Contact <Contact1> is muted
     And I swipe right on a <Contact1>
@@ -176,12 +183,13 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @id4078 @regression
+  @C453 @id4078 @regression
   Scenario Outline: I can mute group conversation from the conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I swipe right on a <GroupChatName>
     And I select SILENCE from conversation settings menu
@@ -191,13 +199,14 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | MUTE          |
 
-  @id4079 @regression
+  @C454 @id4079 @regression
   Scenario Outline: I can unmute group conversation from the conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given Group <GroupChatName> gets silenced for user <Name>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And Contact <GroupChatName> is muted
     And I swipe right on a <GroupChatName>
@@ -208,27 +217,28 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | UNMUTE        |
 
-  @id4088 @regression
+  @C455 @id4088 @regression
   Scenario Outline: Verify options menu for outgoing connection request
     Given There are 2 users where <Name> is me
     Given Myself sent connection request to <Contact>
     Given I sign in using my email or phone number
-    And I see Contact list with contacts
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
     When I swipe right on a <Contact>
-    Then I see ARCHIVE button in conversation settings menu at position 1
-    Then I see BLOCK button in conversation settings menu at position 2
-    Then I see CANCEL button in conversation settings menu at position 3
+    Then I see ARCHIVE button in conversation settings menu
+    And I see BLOCK button in conversation settings menu
 
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id4089 @regression
+  @C456 @id4089 @regression
   Scenario Outline: Verify there is no options menu for incoming connection requests
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to <Name>
     Given I sign in using my email or phone number
-    And I see contact list with name <WaitingMess1>
+    Given I accept First Time overlay as soon as it is visible
+    Given I see contact list with name <WaitingMess1>
     When I swipe right on a <WaitingMess1>
     Then I see contact list with name <WaitingMess1>
 
@@ -236,88 +246,88 @@ Feature: Conversation List
       | Name      | Contact   | WaitingMess1     |
       | user1Name | user2Name | 1 person waiting |
 
-  @id4090 @regression
+  @C457 @id4090 @regression
   Scenario Outline: Verify that options menu from list is the same as opened from the other user profile
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    And I see Contact list with contacts
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
     When I swipe right on a <Contact1>
-    Then I see SILENCE button in conversation settings menu at position 1
-    And I see ARCHIVE button in conversation settings menu at position 2
-    And I see DELETE button in conversation settings menu at position 3
-    And I see BLOCK button in conversation settings menu at position 4
-    Then I see CANCEL button in conversation settings menu at position 5
-    And I select CANCEL from conversation settings menu
+    Then I see SILENCE button in conversation settings menu
+    And I see ARCHIVE button in conversation settings menu
+    And I see DELETE button in conversation settings menu
+    And I see BLOCK button in conversation settings menu
+    And I press back button
     When I tap on contact name <Contact1>
     And I see dialog page
     And I tap conversation details button
     When I press options menu button
-    Then I see SILENCE button in option menu at position 1
-    And I see ARCHIVE button in option menu at position 2
-    And I see DELETE button in option menu at position 3
-    And I see BLOCK button in option menu at position 4
-    Then I see CANCEL button in option menu at position 5
+    Then I see SILENCE button in option menu
+    And I see ARCHIVE button in option menu
+    And I see DELETE button in option menu
+    And I see BLOCK button in option menu
 
     Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @id4091 @regression
+  @C458 @id4091 @regression
   Scenario Outline: Verify that options menu from list is the same as opened from the participants view
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    And I see Contact list with contacts
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
     When I swipe right on a <GroupChatName>
-    Then I see SILENCE button in conversation settings menu at position 1
-    And I see ARCHIVE button in conversation settings menu at position 2
-    And I see DELETE button in conversation settings menu at position 3
-    And I see LEAVE button in conversation settings menu at position 4
-    Then I see CANCEL button in conversation settings menu at position 5
-    And I select CANCEL from conversation settings menu
+    Then I see SILENCE button in conversation settings menu
+    And I see ARCHIVE button in conversation settings menu
+    And I see DELETE button in conversation settings menu
+    And I see LEAVE button in conversation settings menu
+    And I press back button
     When I tap on contact name <GroupChatName>
     And I see dialog page
     And I tap conversation details button
     When I press options menu button
-    Then I see SILENCE button in option menu at position 1
-    And I see RENAME button in option menu at position 2
-    And I see ARCHIVE button in option menu at position 3
-    And I see DELETE button in option menu at position 4
-    And I see LEAVE button in option menu at position 5
-    Then I see CANCEL button in option menu at position 6
+    Then I see SILENCE button in option menu
+    And I see RENAME button in option menu
+    And I see ARCHIVE button in option menu
+    And I see DELETE button in option menu
+    And I see LEAVE button in option menu
 
     Examples:
-      | Name      | Contact1  | Contact2 | GroupChatName |
-      | user1Name | user2Name | user3Name| MenuItems     |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | MenuItems     |
 
-  @id4093 @regression
+  @C565 @id4093 @regression
   Scenario Outline: (AN-2551) Check there is no leave checkbox when you delete conversation where you was dropped
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given <Contact1> removes <Name> from group <GroupChatName>
     Given I sign in using my email or phone number
-    And I see Contact list with contacts
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
     When I swipe right on a <GroupChatName>
     And I select DELETE from conversation settings menu
     Then I do not see the Leave check box
 
     Examples:
-      | Name      | Contact1  | Contact2 | GroupChatName |
-      | user1Name | user2Name | user3Name| NoLeaveBox    |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | NoLeaveBox    |
 
-  @id4092 @regression
+  @C564 @id4092 @regression
   Scenario Outline: I can open options menu by tap on three dots button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    And I see Contact list with contacts
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
     When I short swipe right on a <Contact1>
     And I see three dots option menu button
     And I press the three dots option menu button
-    Then I see SILENCE button in conversation settings menu at position 1
+    Then I see SILENCE button in conversation settings menu
 
     Examples:
       | Name      | Contact1  |

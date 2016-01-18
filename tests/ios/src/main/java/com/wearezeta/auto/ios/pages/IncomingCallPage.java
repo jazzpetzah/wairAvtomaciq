@@ -2,164 +2,114 @@ package com.wearezeta.auto.ios.pages;
 
 import java.util.List;
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.ios.locators.IOSLocators;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class IncomingCallPage extends CallPage {
+    private static final String nameAcceptCallButton = "AcceptButton";
+    @FindBy(name = nameAcceptCallButton)
+    private WebElement acceptCallButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameAcceptCallButton)
-	private WebElement acceptCallButton;
+    private static final String nameEndCallButton = "LeaveCallButton";
+    @FindBy(name = nameEndCallButton)
+    private WebElement endCallButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameEndCallButton)
-	private WebElement endCallButton;
+    private static final Function<String, String> xpathCallingMessageByName = name ->
+            String.format("//UIAStaticText[contains(@value, '%s') and contains(@value, ' IS CALLING')]",
+                    name.toUpperCase());
 
-	@FindBy(how = How.XPATH, using = IOSLocators.IncomingCallPage.xpathCallingMessage)
-	private WebElement callingMessage;
+    private static final String xpathCallingMessage = "//UIAStaticText[contains(@value, ' IS CALLING')]";
 
-	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameIgnoreCallButton)
-	private WebElement ignoreCallButton;
+    private static final String nameIgnoreCallButton = "IgnoreButton";
+    @FindBy(name = nameIgnoreCallButton)
+    private WebElement ignoreCallButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameCallingMessageUser)
-	private WebElement callingMessageUser;
+    private static final String nameCallingMessageUser = "CallStatusLabel";
+    @FindBy(name = nameCallingMessageUser)
+    private WebElement callingMessageUser;
 
-	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameJoinCallButton)
-	private WebElement joinCallButton;
+    private static final String nameJoinCallButton = "JOIN CALL";
+    @FindBy(name = nameJoinCallButton)
+    private WebElement joinCallButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameSecondCallAlert)
-	private WebElement secondCallAlert;
+    private static final String nameSecondCallAlert = "Answer call?";
+    @FindBy(name = nameSecondCallAlert)
+    private WebElement secondCallAlert;
 
-	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameAnswerCallAlertButton)
-	private WebElement answerCallAlertButton;
+    private static final String nameAnswerCallAlertButton = "Answer";
+    @FindBy(name = nameAnswerCallAlertButton)
+    private WebElement answerCallAlertButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.IncomingCallPage.xpathGroupCallAvatars)
-	private List<WebElement> numberOfGroupCallAvatars;
+    private static final String xpathGroupCallAvatars =
+            "//UIAWindow[@name='ZClientNotificationWindow']//UIACollectionCell";
+    @FindBy(xpath = xpathGroupCallAvatars)
+    private List<WebElement> numberOfGroupCallAvatars;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.IncomingCallPage.xpathGroupCallFullMessage)
-	private WebElement groupCallFullMessage;
+    private static final String xpathGroupCallFullMessage = xpathMainWindow + "/UIAAlert[@name='The call is full']";
+    @FindBy(xpath = xpathGroupCallFullMessage)
+    private WebElement groupCallFullMessage;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.IncomingCallPage.xpathUserInCallContactListCell)
-	private List<WebElement> contactListNamesInACall;
+    private static final String xpathUserInCallContactListCell = xpathMainWindow + "/UIAStaticText";
+    @FindBy(xpath = xpathUserInCallContactListCell)
+    private List<WebElement> contactListNamesInACall;
 
-	public IncomingCallPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
-		super(lazyDriver);
-	}
+    public IncomingCallPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+        super(lazyDriver);
+    }
 
-	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public boolean isCallingMessageVisible(String contact) throws Exception {
+        final By locator = By.xpath(xpathCallingMessageByName.apply(contact));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
 
-	public boolean isCallingMessageVisible(String contact) throws Exception {
-		return getDriver().findElementByXPath(
-				String.format(
-						IOSLocators.IncomingCallPage.xpathCallingMessage,
-						contact)).isDisplayed();
-	}
+    public void acceptIncomingCallClick() throws Exception {
+        verifyLocatorPresence(By.name(nameAcceptCallButton), "Accept call button is not visible");
+        acceptCallButton.click();
+    }
 
-	public boolean isUserCallingMessageShown(String contact) throws Exception {
+    public void ignoreIncomingCallClick() {
+        ignoreCallButton.click();
+    }
 
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.name(IOSLocators.IncomingCallPage.nameCallingMessageUser));
-	}
+    public boolean isCallingMessageInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.xpath(xpathCallingMessage));
+    }
 
-	public StartedCallPage acceptIncomingCallClick() throws Exception {
-		DriverUtils.waitUntilElementClickable(getDriver(), acceptCallButton);
-		acceptCallButton.click();
-		return new StartedCallPage(getLazyDriver());
-	}
+    public boolean isGroupCallingMessageVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(nameCallingMessageUser), 15);
+    }
 
-	public void ignoreIncomingCallClick() {
-		ignoreCallButton.click();
-	}
+    public boolean isJoinCallBarVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameJoinCallButton));
+    }
 
-	public boolean isCallingMessageVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(IOSLocators.IncomingCallPage.xpathCallingMessage), 15);
-	}
+    public boolean isSecondCallAlertVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameSecondCallAlert));
+    }
 
-	public boolean isGroupCallingMessageVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.name(IOSLocators.IncomingCallPage.nameCallingMessageUser), 15);
-	}
+    public void pressAnswerCallAlertButton() {
+        answerCallAlertButton.click();
 
-	public boolean isJoinCallBarVisible() {
-		return joinCallButton.isDisplayed();
-	}
+    }
 
-	public boolean isSecondCallAlertVisible() {
-		return secondCallAlert.isDisplayed();
-	}
+    public int getNumberOfGroupCallAvatar() throws Exception {
+        return numberOfGroupCallAvatars.size();
+    }
 
-	public void pressAnswerCallAlertButton() {
-		answerCallAlertButton.click();
+    public void clickJoinCallButton() {
+        joinCallButton.click();
+    }
 
-	}
+    public boolean isGroupCallFullMessageShown() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(xpathGroupCallFullMessage));
+    }
 
-	public int getNumberOfGroupCallAvatar() throws Exception {
-		return numberOfGroupCallAvatars.size();
-	}
-
-	public void clickJoinCallButton() {
-		joinCallButton.click();
-	}
-
-	public boolean isGroupCallFullMessageShown() {
-		return groupCallFullMessage.isDisplayed();
-	}
-
-
-	public void tapOnNameInCallWith(String name) throws Exception {
-		WebElement el = findNameInContactListWhoIsInACall(name);
-		boolean clickableGlitch = false;
-		try {
-			this.getWait().until(ExpectedConditions.elementToBeClickable(el));
-		} catch (org.openqa.selenium.TimeoutException ex) {
-			clickableGlitch = true;
-		}
-		if (clickableGlitch) {
-			DriverUtils.mobileTapByCoordinates(getDriver(), el);
-		} else {
-			el.click();
-		}
-	}
-
-	private WebElement findNameInContactListWhoIsInACall(String name) throws Exception {
-		Boolean flag = true;
-		WebElement contact = null;
-		for (int i = 0; i < 5; i++) {
-			for (WebElement listName : contactListNamesInACall) {
-				if (listName.getText().equals(name) && listName.isDisplayed()) {
-					contact = listName;
-					flag = false;
-					break;
-				}
-			}
-			if (flag) {
-				if (contactListNamesInACall.isEmpty()) {
-					continue;
-				}
-				WebElement el = contactListNamesInACall
-						.get(contactListNamesInACall.size() - 1);
-				this.getWait().until(ExpectedConditions.visibilityOf(el));
-				this.getWait().until(
-						ExpectedConditions.elementToBeClickable(el));
-				DriverUtils.scrollToElement(this.getDriver(), el);
-			} else {
-				break;
-			}
-		}
-		return contact;
-	}
 }
 
 

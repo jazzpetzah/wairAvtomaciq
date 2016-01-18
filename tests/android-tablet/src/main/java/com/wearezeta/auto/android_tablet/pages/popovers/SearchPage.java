@@ -12,37 +12,36 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 class SearchPage extends AbstractPopoverPage {
-	public final static Function<String, String> xpathSearchResultsAvatarByName = name -> String
-			.format("//*[@id='ttv_pickuser__searchuser_name' and @value='%s']/parent::*",
-					name);
+    public final static Function<String, String> xpathSearchResultsAvatarByName = name -> String
+            .format("//*[@id='ttv_pickuser__searchuser_name' and @value='%s']/parent::*",
+                    name);
 
-	@FindBy(id = PeoplePickerPage.idPickerBtnDone)
-	private WebElement addToConversationButton;
+    @FindBy(id = PeoplePickerPage.idPickerBtnDone)
+    private WebElement addToConversationButton;
 
-	public SearchPage(Future<ZetaAndroidDriver> lazyDriver,
-			AbstractPopoverContainer container) throws Exception {
-		super(lazyDriver, container);
-	}
+    public SearchPage(Future<ZetaAndroidDriver> lazyDriver,
+                      AbstractPopoverContainer container) throws Exception {
+        super(lazyDriver, container);
+    }
 
-	private WebElement getSearchInput() throws Exception {
-		return this.getDriver().findElement(this.getContainer().getLocator())
-				.findElement(By.id(PeoplePickerPage.idPickerSearch));
-	}
+    private WebElement getSearchInput() throws Exception {
+        return this.getDriver().findElement(this.getContainer().getLocator())
+                .findElement(By.id(PeoplePickerPage.idPickerSearch));
+    }
 
-	public void enterSearchText(String text) throws Exception {
-		getSearchInput().sendKeys(text);
-	}
+    public void enterSearchText(String text) throws Exception {
+        getSearchInput().sendKeys(text);
+    }
 
-	public void tapAvatarFromSearchResults(String name) throws Exception {
-		final By locator = By.xpath(xpathSearchResultsAvatarByName.apply(name));
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
-				.format("The avatar of '%s' has not been shown in search resulst after timeout",
-						name);
-		this.getDriver().findElement(locator).click();
-	}
+    public void tapAvatarFromSearchResults(String name) throws Exception {
+        final By locator = By.xpath(xpathSearchResultsAvatarByName.apply(name));
+        verifyLocatorPresence(locator, String
+                .format("The avatar of '%s' has not been shown in search resulst after timeout", name));
+        this.getDriver().findElement(locator).click();
+    }
 
-	public void tapAddToConversationButton() {
-		addToConversationButton.click();
-	}
+    public void tapAddToConversationButton() {
+        addToConversationButton.click();
+    }
 
 }

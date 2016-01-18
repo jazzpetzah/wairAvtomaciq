@@ -1,11 +1,12 @@
 Feature: Notifications
 
-  @id2900 @regression @rc @rc44
+  @C779 @id2900 @regression @rc @rc44
   Scenario Outline: I can open conversation with message from notification
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     When I tap my avatar on top of conversations list

@@ -19,6 +19,7 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
     private static final Logger log = ZetaLogger
             .getLog(LazyDriverInitializer.class.getSimpleName());
 
+
     private String url;
     private DesiredCapabilities capabilities;
     private Platform platform;
@@ -40,11 +41,6 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
 
     @Override
     public RemoteWebDriver call() throws Exception {
-
-        if (Thread.currentThread().isInterrupted()) {
-            return null;
-        }
-
         if (this.beforeInitCallback != null) {
             log.debug("Invoking driver pre-initialization callback...");
             if (!beforeInitCallback.get()) {
@@ -55,14 +51,10 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
         }
         int ntry = 1;
         do {
-            if (Thread.currentThread().isInterrupted()) {
-                return null;
-            }
-
             log.debug(String.format(
                     "Creating driver instance for platform '%s'...",
                     this.platform.name()));
-            RemoteWebDriver platformDriver = null;
+            RemoteWebDriver platformDriver;
             try {
                 switch (this.platform) {
                     case Mac:
@@ -85,13 +77,7 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
                                 .setPosition(new Point(0, 0));
                         break;
                     default:
-                        throw new RuntimeException(String.format(
-                                "Platform '%s' is unknown", this.platform.name()));
-                }
-
-                if (Thread.currentThread().isInterrupted()) {
-                    platformDriver.quit();
-                    return null;
+                        throw new RuntimeException(String.format("Platform '%s' is unknown", this.platform.name()));
                 }
 
                 if (initCompletedCallback != null) {
@@ -100,24 +86,19 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
                     log.debug("Driver post-initialization callback has been successfully invoked");
                 }
 
-                if (Thread.currentThread().isInterrupted()) {
-                    platformDriver.quit();
-                    return null;
-                }
-
-                log.debug(String
-                        .format("Successfully created driver instance for platform '%s'",
-                                this.platform.name()));
+                log.debug(String.format("Successfully created driver instance for platform '%s'",
+                        this.platform.name()));
                 return platformDriver;
             } catch (WebDriverException e) {
-                log.debug(String
-                        .format("Driver initialization failed. Trying to recreate (%d of %d)...",
-                                ntry, this.maxRetryCount));
-                e.printStackTrace();
                 if (ntry >= this.maxRetryCount) {
                     throw e;
-                } else {
-                    ntry++;
+                }
+                ntry++;
+                e.printStackTrace();
+                log.debug(String.format("Driver initialization failed. Trying to recreate (%d of %d)...",
+                        ntry, this.maxRetryCount));
+                if (this.platform == Platform.iOS) {
+                    AppiumServerTools.reset();
                 }
             }
         } while (ntry <= this.maxRetryCount);

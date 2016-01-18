@@ -30,7 +30,7 @@ public abstract class KeyboardState {
 	protected void tapKey(String name){
 		if (name.equals(MORE_SYMBOLS) || name.equals(SHIFT) || name.equals(MORE_LETTERS) || name.equals(MORE_NUMBERS)) {
 			WebElement key = this.driver.findElementByName(name);
-			DriverUtils.mobileTapByCoordinates(driver, key);
+			DriverUtils.tapByCoordinates(driver, key);
 		} else {
 			try {
 				driver.executeScript(String.format(TAP_KEYBOARD_BUTTON, name));

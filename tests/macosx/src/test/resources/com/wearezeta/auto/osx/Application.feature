@@ -1,7 +1,7 @@
 Feature: Application
 
-  @smoke @id3805
-  Scenario Outline: Save size and position of window and check for maximum/minimum size
+  @C2335 @smoke
+  Scenario Outline: Save size and position of window and check for maximum minimum size
     Given There are 1 users where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -37,7 +37,7 @@ Feature: Application
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @smoke @id3995
+  @C3144 @smoke
   Scenario: Verify size of sign in screen window
     When I ensure initial positioning
     Then I verify app width is 400 px and height is 576 px
@@ -47,37 +47,37 @@ Feature: Application
     And I resize the app to the min by hand
     Then I verify app width is 400 px and height is 576 px
 
-  @smoke @id3807
+  @C2337 @smoke
   Scenario: I verify the installed app is not too big
     When I verify the app is not bigger than 121 MB
 
-  @smoke @id3529
+  @C2313 @smoke
   Scenario: Verify existing About page
     When I click menu bar item "Wire" and menu item "About Wire"
     Then I verify about window is visible
     When I close the about window
     Then I verify about window is not visible
 
-  @smoke @id3730
-  Scenario Outline: Sign Out
+  @C2324 @smoke
+  Scenario Outline: Log Out
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
-    When I click menu bar item "Wire" and menu item "Sign Out"
+    When I click menu bar item "Wire" and menu item "Log Out"
     Then I see Sign In page
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id3981
+  @C3145 @smoke
   Scenario: Verify I can quit the app using menu bar
     When I click menu bar item "Wire" and menu item "Quit Wire"
     Then I verify app has quit
 
-  @smoke @id3982
+  @C3146 @smoke
   Scenario: Verify I can quit the app using shortcut ⌘ Q
     When I type shortcut combination to quit the app
     Then I verify app has quit

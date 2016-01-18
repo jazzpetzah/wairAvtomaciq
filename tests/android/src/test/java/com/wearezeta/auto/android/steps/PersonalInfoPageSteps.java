@@ -32,7 +32,7 @@ public class PersonalInfoPageSteps {
      */
     @When("^I tap options button$")
     public void WhenITapOptionsButton() throws Exception {
-        getPersonalInfoPage().tapOptionsButton();
+        getPersonalInfoPage().tapEllipsisButton();
     }
 
     /**
@@ -55,18 +55,30 @@ public class PersonalInfoPageSteps {
      */
     @When("^I tap settings button$")
     public void WhenITapSettingsButton() throws Exception {
-        getPersonalInfoPage().tapSettingsButton();
+        getPersonalInfoPage().tapProfileMenuItem("SETTINGS");
     }
 
     /**
      * Taps the about button in the options menu
      *
      * @throws Exception
-     * @step. ^I swipe right to contact list$
+     * @step. ^I tap about button$
      */
     @When("^I tap about button$")
     public void WhenITapAboutButton() throws Exception {
-        getPersonalInfoPage().tapAboutButton();
+        getPersonalInfoPage().tapProfileMenuItem("ABOUT");
+    }
+
+    /**
+     * Taps the about button in the options menu
+     *
+     * @throws Exception
+     * @step. ^I do not see (.*) item in [Oo]ptions menu$
+     */
+    @When("^I do not see (.*) item in [Oo]ptions menu$")
+    public void IDoNotSeeItemInOptions(String itemName) throws Exception {
+        Assert.assertTrue(String.format("'%s' menu item is visible, but should be hidden",
+                itemName), getPersonalInfoPage().isProfileMenuItemInvisible(itemName));
     }
 
     /**

@@ -5,8 +5,10 @@ Feature: Performance Tests
     Given There are <UsersNumber> shared users with name prefix <UserNamePrefix>
     Given User <Name> is Me
     Given Myself is connected to all other users
+    Given User Myself removes all his registered OTR clients
     Given I receive <MsgsCount> messages from contact <Sender>
     Given I sign in using my email with <LoginTimeout> seconds timeout
+    Given I accept First Time overlay as soon as it is visible
     When I start test cycle for <Time> minutes with messages received from <Sender>
     Then I generate performance report for <UsersNumber> users
 
@@ -21,7 +23,8 @@ Feature: Performance Tests
     Given <Contact> has an avatar picture from file <Picture>
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
-    And I see Contact list with contacts
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
     And <Contact> calls me using <CallBackend>
     And I answer the call from the overlay bar
     Then I see calling overlay Big bar

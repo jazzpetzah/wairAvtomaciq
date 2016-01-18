@@ -9,20 +9,18 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class ConversationActionsMenuPage extends AbstractPopoverPage {
-	private final static Function<String, String> xpathActionMenuItemByName = itemName -> String
-			.format("%s//*[@value='%s']",
-					ConversationActionsOverlay.xpathRootLocator,
-					itemName.toUpperCase());
+    private final static Function<String, String> xpathActionMenuItemByName = itemName -> String
+            .format("%s//*[@value='%s']/parent::*//*[@id='fl_options_menu_button']",
+                    ConversationActionsOverlay.xpathRootLocator, itemName.toUpperCase());
 
-	public ConversationActionsMenuPage(Future<ZetaAndroidDriver> lazyDriver,
-			ConversationActionsOverlay container) throws Exception {
-		super(lazyDriver, container);
-	}
+    public ConversationActionsMenuPage(Future<ZetaAndroidDriver> lazyDriver,
+                                       ConversationActionsOverlay container) throws Exception {
+        super(lazyDriver, container);
+    }
 
-	public void selectMenuItem(String itemName) throws Exception {
-		final By locator = By.xpath(xpathActionMenuItemByName.apply(itemName));
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
-				.format("Actions menu item '%s' is not displayed", itemName);
-		getDriver().findElement(locator).click();
-	}
+    public void selectMenuItem(String itemName) throws Exception {
+        final By locator = By.xpath(xpathActionMenuItemByName.apply(itemName));
+        verifyLocatorPresence(locator, String.format("Actions menu item '%s' is not displayed", itemName));
+        getDriver().findElement(locator).click();
+    }
 }

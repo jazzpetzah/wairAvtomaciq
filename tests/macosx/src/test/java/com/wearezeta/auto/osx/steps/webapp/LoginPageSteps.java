@@ -6,7 +6,7 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.osx.pages.webapp.LoginPage;
+import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.Given;
@@ -181,7 +181,7 @@ public class LoginPageSteps {
 	@Given("^I see Sign In page$")
 	public void ISeeSignInPage() throws Exception {
 		Assert.assertTrue(webappPagesCollection.getPage(LoginPage.class)
-				.isVisible());
+				.isSignInFormVisible());
 	}
 
 	/**

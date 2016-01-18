@@ -9,7 +9,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
-import com.wearezeta.auto.osx.pages.webapp.PhoneNumberLoginPage;
+import com.wearezeta.auto.web.pages.PhoneNumberLoginPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.Then;
@@ -73,19 +73,6 @@ public class PhoneNumberLoginPageSteps {
 	public void ISelectCountryCode(String code) throws Exception {
 		webappPagesCollection.getPage(PhoneNumberLoginPage.class)
 				.enterCountryCode(code);
-	}
-
-	/**
-	 * Click the Forward button after entering the phone number
-	 * 
-	 * @step. ^I click on forward button on phone number sign in$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I click on forward button on phone number sign in$")
-	public void IClickOnForwardButtonOnPhoneNumberSignIn() throws Exception {
-		webappPagesCollection.getPage(PhoneNumberLoginPage.class)
-				.clickForwardButton();
 	}
 
 	/**

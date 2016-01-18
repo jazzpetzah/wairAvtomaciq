@@ -19,9 +19,7 @@ public class RegistrationPage extends AndroidPage {
     @FindBy(id = idSignUpGalleryIcon)
     protected WebElement signUpGalleryIcon;
 
-    private static final String xpathNameField = "("
-            + xpathParentSignUpContainer
-            + "//*[@id='tet__profile__guided'])[1]";
+    private static final String xpathNameField = "(" + xpathParentSignUpContainer + "//*[@id='tet__profile__guided'])[1]";
     @FindBy(xpath = xpathNameField)
     protected WebElement nameField;
 
@@ -72,16 +70,14 @@ public class RegistrationPage extends AndroidPage {
     }
 
     public void setName(String name) throws Exception {
-        assert DriverUtils.isElementPresentAndDisplayed(getDriver(), nameField);
+        verifyLocatorPresence(By.xpath(xpathNameField), "Name field is not visible");
         nameField.sendKeys(name);
-        this.getWait()
-                .until(ExpectedConditions.elementToBeClickable(nextArrow));
+        this.getWait().until(ExpectedConditions.elementToBeClickable(nextArrow));
         nextArrow.click();
     }
 
     public void createAccount() throws Exception {
-        assert DriverUtils
-                .waitUntilElementClickable(getDriver(), createUserBtn);
+        verifyLocatorPresence(By.id(idCreateUserBtn), "Create user button is not visible");
         createUserBtn.click();
     }
 
@@ -90,15 +86,8 @@ public class RegistrationPage extends AndroidPage {
                 By.id(idVerifyEmailBtn));
     }
 
-    public PeoplePickerPage continueRegistration() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(PeoplePickerPage.idPickerSearch));
-        return new PeoplePickerPage(this.getLazyDriver());
-    }
-
     public void enterPassword(String password) throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idInvitationContinueButton)) :
-                "Invitation password input is not visible";
+        verifyLocatorPresence(By.id(idInvitationContinueButton), "Invitation password input is not visible");
         invitationPassword.sendKeys(password);
     }
 
@@ -112,8 +101,11 @@ public class RegistrationPage extends AndroidPage {
 
     public void selectPictureSource(String src) throws Exception {
         final By locator = By.xpath(xpathChoosePictSrcDialogButtonByName.apply(src));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) :
-                "Source selection alert is not visible";
+        verifyLocatorPresence(locator, "Source selection alert is not visible");
         getDriver().findElement(locator).click();
+    }
+
+    public boolean waitUntilUnsplashScreenIsVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idChooseMyOwnButton), 60);
     }
 }

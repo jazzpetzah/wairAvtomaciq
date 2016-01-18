@@ -1,591 +1,336 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
-import org.junit.Assert;
+import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.wearezeta.auto.ios.locators.IOSLocators;
-import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 
 public class RegistrationPage extends IOSPage {
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameRegistrationCameraButton)
-	private WebElement cameraButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameCameraShootButton)
-	private WebElement cameraShootButton;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathPhotoButton)
-	private WebElement photoButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameSwitchCameraButton)
-	private WebElement switchCameraButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameCameraFlashButton)
-	private WebElement cameraFlashButton;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathAlbum)
-	private WebElement photoAlbum;
-
-	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNamePhotos)
-	private List<WebElement> photos;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameConfirmImageButton)
-	private WebElement confirmImageButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameCancelImageButton)
-	private WebElement cancelImageButton;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathYourName)
-	private WebElement yourName;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathYourFilledName)
-	private WebElement yourFilledName;
-	
-	@FindBy(how = How.NAME, using = IOSLocators.nameYourEmail)
-	private WebElement yourEmail;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameYourPassword)
-	private WebElement yourPassword;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathRevealPasswordButton)
-	private WebElement revealPasswordButton;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathHidePasswordButton)
-	private WebElement hidePasswordButton;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathCreateAccountButton)
-	private WebElement createAccountButton;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathConfirmationMessage)
-	private WebElement confirmationText;
-
-	@FindBy(how = How.ID, using = IOSLocators.idProvideValidEmailMessage)
-	private WebElement provideValidEmailMessage;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameBackToWelcomeButton)
-	private WebElement backToWelcomeButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameForwardWelcomeButton)
-	private WebElement forwardWelcomeButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameKeyboardNextButton)
-	private WebElement keyboardNextButton;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathTakePhotoSmile)
-	private WebElement takePhotoSmile;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameTakePhotoHintLabel)
-	private WebElement takePhotoHintLabel;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameVignetteOverlay)
-	private WebElement vignetteLayer;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameErrorPageButton)
-	private WebElement errorPageButton;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathCloseColorModeButton)
-	private WebElement closeColorModeButton;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathReSendButton)
-	private WebElement reSendButton;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathEmailVerifPrompt)
-	private WebElement emailVerifPrompt;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathPhoneNumber)
-	private WebElement phoneNumber;
-
-	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.namePhoneNumberField)
-	private WebElement phoneNumberField;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathActivationCode)
-	private WebElement activationCode;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathCountry)
-	private WebElement selectCountry;
-
-	@FindBy(how = How.NAME, using = IOSLocators.LoginPage.nameCountryPickerButton)
-	private WebElement countryPickerButton;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathCountryList)
-	private WebElement countryList;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathConfirmPhoneNumber)
-	private WebElement confirmInput;
-
-	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.nameAgreeButton)
-	private WebElement agreeButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.nameTermOfUsePage)
-	private WebElement termOfUsePage;
-
-	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.nameSelectPictureButton)
-	private WebElement selectPictureButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.xpathVerificationPage)
-	private WebElement verificationPage;
-
-	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.nameResendCodeButton)
-	private WebElement resendCodeButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.Alerts.nameInvalidCode)
-	private WebElement invalidCodeAlert;
-
-	private String name;
-	private String email;
-	private String password;
-
-	private String defaultPassFieldValue = "Password";
-
-	@SuppressWarnings("unused")
-	private String confirmMessage = "We sent an email to %s. Check your Inbox and follow the link to verify your address. You won’t be able to use Wire until you do.\n\nDidn’t get the message?\n\nRe-send";
-
-	private String[] listOfEmails;
-
-	public RegistrationPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
-		super(lazyDriver);
-	}
-
-	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void clickAgreeButton() throws Exception {
-		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.name(IOSLocators.RegistrationPage.nameAgreeButton));
-		agreeButton.click();
-	}
-
-	public boolean isTermOfUsePageVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				termOfUsePage);
-	}
-
-	private void selectCountryByCode(String code) throws Exception {
-		countryPickerButton.click();
-		boolean result = false;
-		int count = 0;
-		while (!result && count < 10) {
-			WebElement el = null;
-			boolean flag = false;
-			count++;
-			try {
-				el = getDriver().findElementByName(code);
-			} catch (NoSuchElementException ex) {
-				flag = true;
-			}
-			if (!el.isDisplayed() || flag) {
-				List<WebElement> elementsList = countryList.findElements(By
-						.className("UIATableCell"));
-				WebElement last = elementsList.get(elementsList.size() - 1);
-				DriverUtils.scrollToElement(getDriver(), last);
-				continue;
-			}
-			el.click();
-			result = true;
-		}
-	}
-
-	public void selectCodeAndInputPhoneNumber(String number, String code)
-			throws Exception {
-		selectCountryByCode(code);
-		inputPhoneNumber(number);
-	}
-
-	public void inputPhoneNumber(String number) throws Exception {
-		getWait().until(ExpectedConditions.elementToBeClickable(phoneNumber));
-		try {
-			phoneNumberField.sendKeys(number);
-		} catch (WebDriverException ex) {
-			phoneNumberField.clear();
-			phoneNumberField.sendKeys(number);
-		}
-		confirmInput.click();
-	}
-
-	public boolean isVerificationCodePageVisible() throws Exception {
-		boolean flag = DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.xpath(IOSLocators.RegistrationPage.xpathVerificationPage));
-		return flag;
-	}
-
-	public void inputActivationCode(String code) throws Exception {
-		getWait()
-				.until(ExpectedConditions.elementToBeClickable(activationCode));
-		activationCode.sendKeys(code);
-		confirmInput.click();
-	}
-
-	public void inputRandomActivationCode() throws Exception {
-		inputActivationCode(CommonUtils.generateRandomXdigits(6));
-	}
-
-	public void clickResendCodeButton() throws Exception {
-		DriverUtils.waitUntilElementClickable(getDriver(), resendCodeButton);
-		resendCodeButton.click();
-	}
-
-	public boolean isTakePhotoSmileDisplayed() {
-		return takePhotoSmile.isEnabled();
-	}
-
-	public boolean isTakeOrSelectPhotoLabelVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(IOSLocators.nameTakePhotoHintLabel));
-	}
-
-	public boolean isNameLabelVisible() {
-		return yourName.isDisplayed();
-	}
-
-	public void clickCameraButton() {
-		cameraButton.click();
-	}
-
-	public void clickCameraShootButton() {
-		cameraShootButton.click();
-	}
-
-	public void takePhotoByFrontCamera() {
-		clickCameraShootButton();
-	}
-
-	public void clickSwitchCameraButton() {
-		switchCameraButton.click();
-	}
-
-	public void switchToFrontCamera() {
-		clickSwitchCameraButton();
-	}
-
-	public void takePhotoByRearCamera() {
-		switchToRearCamera();
-		clickCameraShootButton();
-	}
-
-	public void switchToRearCamera() {
-		clickSwitchCameraButton();
-	}
-
-	public boolean isSetPicturePageVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.name(IOSLocators.RegistrationPage.nameSelectPictureButton));
-	}
-
-	public CameraRollPage selectPicture() throws Exception {
-		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.name(IOSLocators.RegistrationPage.nameSelectPictureButton));
-		selectPictureButton.click();
-		DriverUtils.waitUntilElementClickable(getDriver(), photoButton);
-		photoButton.click();
-		return new CameraRollPage(this.getLazyDriver());
-	}
-
-	public void chooseFirstPhoto() {
-		photoAlbum.click();
-		photos.get(0).click();
-	}
-
-	public void clickVignetteLayer() {
-		vignetteLayer.click();
-	}
-
-	public void dismissVignetteBakground() throws Exception {
-		vignetteLayer.click();
-		this.getDriver().tap(1, vignetteLayer.getLocation().x + 10,
-				vignetteLayer.getLocation().y + 10, 1);
-	}
-
-	public boolean isVignetteOverlayVisible() {
-		return vignetteLayer.isDisplayed();
-	}
-
-	public void tapCloseColorModeButton() {
-		closeColorModeButton.click();
-	}
-
-	public boolean isColorModeVisible() {
-		return closeColorModeButton.isDisplayed();
-	}
-
-	public boolean isConfirmationShown() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(String
-				.format(IOSLocators.xpathConfirmationMessage, getEmail())));
-	}
-
-	public void confirmPicture() {
-		confirmImageButton.click();
-	}
-
-	public void cancelImageSelection() {
-		cancelImageButton.click();
-	}
-
-	public void hideKeyboard() throws Exception {
-		this.getDriver().hideKeyboard();
-	}
-
-	public void inputName() {
-		confirmInput.click();
-	}
-
-	public void inputEmail() {
-		yourEmail.sendKeys("\n");
-	}
-
-	public void scriptInputEmail(String val) throws Exception {
-		DriverUtils.sendTextToInputByScript(getDriver(),
-				IOSLocators.scriptRegistrationEmailInputPath, val);
-	}
-
-	public void scriptInputAndConfirmEmail(String val) throws Exception {
-		String script = String.format(
-				IOSLocators.scriptRegistrationEmailInputPath
-						+ ".setValue(\"%s\");"
-						+ IOSLocators.scriptKeyboardReturnKeyPath + ".tap();",
-				val);
-		this.getDriver().executeScript(script);
-	}
-
-	public void clearEmailInput() throws Exception {
-		scriptInputEmail("");
-	}
-
-	public void inputPassword() {
-		yourPassword.sendKeys("\n");
-	}
-
-	public void clickCreateAccountButton() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(IOSLocators.xpathCreateAccountButton));
-		createAccountButton.click();
-	}
-
-	public void createAccount() {
-		try {
-			if (ExpectedConditions.presenceOfElementLocated(By
-					.xpath(IOSLocators.xpathYourName)) != null) {
-				yourName.sendKeys(getName() + "\n");
-			}
-		} catch (NoSuchElementException e) {
-		}
-		if (ExpectedConditions.presenceOfElementLocated(By
-				.name(IOSLocators.nameYourEmail)) != null) {
-			yourEmail.sendKeys(getEmail() + "\n");
-		}
-		if (ExpectedConditions.presenceOfElementLocated(By
-				.name(IOSLocators.nameYourPassword)) != null) {
-			yourPassword.sendKeys(getPassword());
-		}
-		createAccountButton.click();
-	}
-
-	public void typeEmail() {
-		yourEmail.sendKeys(getEmail());
-	}
-
-	public void retypeEmail() {
-		if (ExpectedConditions.presenceOfElementLocated(By
-				.name(IOSLocators.nameYourEmail)) != null) {
-			yourEmail.sendKeys(getEmail());
-		}
-	}
-
-	public void returnToConfirmRegistration() {
-		forwardWelcomeButton.click();
-		createAccountButton.click();
-	}
-
-	public boolean typeAllInvalidEmails() {
-
-		for (int i = 0; i < listOfEmails.length; i++) {
-			yourEmail.sendKeys(listOfEmails[i] + "\n");
-			if (!provideValidEmailMessage.isDisplayed()) {
-				return false;
-			}
-			yourEmail.clear();
-		}
-		return true;
-	}
-
-	public void typeInRegistrationData() {
-		yourName.sendKeys(getName() + "\n");
-		yourEmail.sendKeys(getEmail() + "\n");
-		yourPassword.sendKeys(getPassword());
-	}
-
-	public boolean isCreateAccountEnabled() {
-		return createAccountButton.isEnabled();
-	}
-
-	// this test skips photo verification
-	public void verifyUserInputIsPresent(String name, String email)
-			throws Exception {
-		new LoginPage(this.getLazyDriver()).clickJoinButton();
-		forwardWelcomeButton.click(); // skip photo
-		Assert.assertEquals("Name is not same as previously entered.", name,
-				yourName.getText());
-		forwardWelcomeButton.click();
-		Assert.assertEquals("Email is not same as previously entered.", email,
-				yourEmail.getText());
-		forwardWelcomeButton.click();
-		Assert.assertEquals("Preciously entered email shouln't be shown",
-				defaultPassFieldValue, yourPassword.getText());
-	}
-
-	public void navigateToCreateAccount() {
-		forwardWelcomeButton.click();
-	}
-
-	public void typeUsername() throws Exception {
-		this.getWait().until(ExpectedConditions.elementToBeClickable(yourName));
-		try {
-			yourName.sendKeys(getName());
-		} catch (WebDriverException ex) {
-			yourName.clear();
-			yourName.sendKeys(getName());
-		}
-	}
-
-	public String getUsernameFieldValue() {
-		return yourFilledName.getText();
-	}
-
-	public boolean userNameContainSpaces() {
-		return getUsernameFieldValue().contains(" ");
-	}
-
-	public String getEmailFieldValue() {
-		return yourEmail.getText();
-	}
-
-	public boolean isPictureSelected() {
-		return confirmImageButton.isDisplayed();
-	}
-
-	public boolean isConfirmationVisible() {
-		return confirmationText.isDisplayed();
-	}
-
-	public boolean confirmErrorPage() {
-		return errorPageButton.isDisplayed();
-	}
-
-	public void backToEmailPageFromErrorPage() {
-		backToWelcomeButton.click();
-		backToWelcomeButton.click();
-	}
-
-	public void navigateToWelcomePage() {
-		while (backToWelcomeButton.isDisplayed()) {
-			backToWelcomeButton.click();
-		}
-	}
-
-	public boolean isNextButtonPresented() {
-		return forwardWelcomeButton.isDisplayed();
-	}
-
-	public void tapBackButton() {
-		backToWelcomeButton.click();
-	}
-
-	public Boolean isBackButtonVisible() {
-
-		return (ExpectedConditions.visibilityOf(backToWelcomeButton) != null);
-	}
-
-	public void tapForwardButton() {
-		forwardWelcomeButton.click();
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) throws Exception {
-		this.name = name;
-		typeUsername();
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-		typeEmail();
-		this.email = email.replace('\n', ' ').trim();
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	private void typePassword() {
-		yourPassword.sendKeys(getPassword());
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-		typePassword();
-
-	}
-
-	public String[] getListOfEmails() {
-		return listOfEmails;
-	}
-
-	public void setListOfEmails(String[] list) {
-		this.listOfEmails = list;
-	}
-
-	public void reSendEmail() throws Exception {
-		Point p = reSendButton.getLocation();
-		Dimension k = reSendButton.getSize();
-		this.getDriver().tap(1, (p.x) + (k.width / 2), (p.y) + (k.height - 5),
-				1);
-	}
-
-	public void waitUntilEmailsCountReachesExpectedValue(int expectedMsgsCount,
-			String recipient, int timeoutSeconds) throws Exception {
-		IMAPSMailbox mailbox = IMAPSMailbox.getInstance();
-		mailbox.waitUntilMessagesCountReaches(recipient, expectedMsgsCount,
-				timeoutSeconds);
-	}
-
-	public boolean isEmailVerifPromptVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				emailVerifPrompt);
-	}
-
-	public void reSendActivationCode() throws Exception {
-		DriverUtils.waitUntilElementClickable(getDriver(), reSendButton);
-	}
-
-	public boolean isInvalidCodeAlertShown() throws Exception {
-		DriverUtils.waitUntilAlertAppears(getDriver());
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				invalidCodeAlert);
-	}
-
+    private static final String nameRegistrationCameraButton = "CameraButton";
+    @FindBy(name = nameRegistrationCameraButton)
+    private WebElement cameraButton;
+
+    private static final String nameCameraShootButton = "CameraShootButton";
+    @FindBy(name = nameCameraShootButton)
+    private WebElement cameraShootButton;
+
+    private static final String xpathPhotoButton = xpathMainWindow + "/UIAButton[5]";
+    @FindBy(xpath = xpathPhotoButton)
+    private WebElement photoButton;
+
+    private static final String nameSwitchCameraButton = "CameraSwitchButton";
+    @FindBy(name = nameSwitchCameraButton)
+    private WebElement switchCameraButton;
+
+    private static final String nameCameraFlashButton = "CameraFlashButton";
+    @FindBy(name = nameCameraFlashButton)
+    private WebElement cameraFlashButton;
+
+    private static final String xpathAlbum = xpathMainWindow + "/UIATableView[1]/UIATableCell[1]/UIAStaticText[1]";
+    @FindBy(xpath = xpathAlbum)
+    private WebElement photoAlbum;
+
+    private static final String classNamePhotos = "UIACollectionCell";
+    @FindBy(className = classNamePhotos)
+    private List<WebElement> photos;
+
+    private static final String nameConfirmImageButton = "OK";
+    @FindBy(name = nameConfirmImageButton)
+    private WebElement confirmImageButton;
+
+    private static final String nameCancelImageButton = "CANCEL";
+    @FindBy(name = nameCancelImageButton)
+    private WebElement cancelImageButton;
+
+    private static final String xpathYourName = xpathMainWindow + "/UIATextField[@value='YOUR FULL NAME']";
+    @FindBy(xpath = xpathYourName)
+    private WebElement yourName;
+
+    public static final String xpathYourFilledName =
+            "//UIATextField[preceding-sibling::UIAStaticText[@value='What should we call you?' or @value='Create an account']]";
+    @FindBy(xpath = xpathYourFilledName)
+    private WebElement yourFilledName;
+
+    private static final String nameYourEmail = "EmailField";
+    @FindBy(name = nameYourEmail)
+    private WebElement yourEmail;
+
+    private static final String nameYourPassword = "PasswordField";
+    @FindBy(name = nameYourPassword)
+    private WebElement yourPassword;
+
+    public static final String xpathRevealPasswordButton =
+            "//UIAApplication[1]/UIAWindow[1]/UIASecureTextField[1]/UIAButton[1]";
+    @FindBy(xpath = xpathRevealPasswordButton)
+    private WebElement revealPasswordButton;
+
+    private static final String xpathHidePasswordButton =
+            "//UIAApplication[1]/UIAWindow[1]/UIATextField[1]/UIAButton[1]";
+    @FindBy(xpath = xpathHidePasswordButton)
+    private WebElement hidePasswordButton;
+
+    private static final String xpathCreateAccountButton =
+            "//UIASecureTextField[contains(@name, 'PasswordField')]/UIAButton";
+    @FindBy(xpath = xpathCreateAccountButton)
+    private WebElement createAccountButton;
+
+    private static final Function<String, String> xpathConfirmationByMessage = msg ->
+            String.format("//UIAStaticText[contains(@name, 'We sent an email to %s.')]", msg);
+
+    private static final String idProvideValidEmailMessage = "PLEASE ENTER A VALID EMAIL ADDRESS";
+    @FindBy(id = idProvideValidEmailMessage)
+    private WebElement provideValidEmailMessage;
+
+    private static final String nameBackToWelcomeButton = "BackToWelcomeButton";
+    @FindBy(name = nameBackToWelcomeButton)
+    private WebElement backToWelcomeButton;
+
+    private static final String nameForwardWelcomeButton = "ForwardWelcomeButton";
+    @FindBy(name = nameForwardWelcomeButton)
+    private WebElement forwardWelcomeButton;
+
+    private static final String nameKeyboardNextButton = "Next";
+    @FindBy(name = nameKeyboardNextButton)
+    private WebElement keyboardNextButton;
+
+    private static final String xpathTakePhotoSmile = "//UIAApplication[1]/UIAWindow[1]/UIAImage[1]";
+    @FindBy(xpath = xpathTakePhotoSmile)
+    private WebElement takePhotoSmile;
+
+    public static final String nameTakePhotoHintLabel = "CHOOSE A PICTURE  AND PICK A COLOR";
+    @FindBy(name = nameTakePhotoHintLabel)
+    private WebElement takePhotoHintLabel;
+
+    public static final String nameVignetteOverlay = "••••";
+    @FindBy(name = nameVignetteOverlay)
+    private WebElement vignetteLayer;
+
+    private static final String nameErrorPageButton = "BACK";
+    @FindBy(name = nameErrorPageButton)
+    private WebElement errorPageButton;
+
+    private static final String xpathCloseColorModeButton = xpathMainWindow + "/UIAButton[4]";
+    @FindBy(xpath = xpathCloseColorModeButton)
+    private WebElement closeColorModeButton;
+
+    private static final String xpathReSendButton = xpathMainWindow + "/UIATextView[1]";
+    @FindBy(xpath = xpathReSendButton)
+    private WebElement reSendButton;
+
+    private static final String xpathEmailVerifPrompt = xpathMainWindow +
+            "/UIAStaticText[contains(@name, 'We sent an email to ')]";
+    @FindBy(xpath = xpathEmailVerifPrompt)
+    private WebElement emailVerifPrompt;
+
+    private static final String xpathPhoneNumber = xpathMainWindow + "/UIATextField[1]";
+    @FindBy(xpath = xpathPhoneNumber)
+    private WebElement phoneNumber;
+
+    private static final String namePhoneNumberField = "PhoneNumberField";
+    @FindBy(name = namePhoneNumberField)
+    private WebElement phoneNumberField;
+
+    private static final String xpathActivationCode = xpathMainWindow + "/UIATextField[1]";
+    @FindBy(xpath = xpathActivationCode)
+    private WebElement activationCode;
+
+    private static final String xpathCountry = xpathMainWindow + "/UIAButton[1]";
+    @FindBy(xpath = xpathCountry)
+    private WebElement selectCountry;
+
+    private static final String nameCountryPickerButton = "CountryPickerButton";
+    @FindBy(name = nameCountryPickerButton)
+    private WebElement countryPickerButton;
+
+    public static final String xpathCountryList = xpathMainWindow + "/UIATableView[1]";
+    @FindBy(xpath = xpathCountryList)
+    private WebElement countryList;
+
+    private static final String xpathConfirmPhoneNumber = xpathMainWindow + "/UIATextField[1]/UIAButton[1]";
+    @FindBy(xpath = xpathConfirmPhoneNumber)
+    private WebElement confirmInput;
+
+    private static final String nameAgreeButton = "I AGREE";
+    @FindBy(name = nameAgreeButton)
+    private WebElement agreeButton;
+
+    private static final String nameTermOfUsePage = "By continuing you agree to the Wire Terms of Use.";
+    @FindBy(name = nameTermOfUsePage)
+    private WebElement termOfUsePage;
+
+    private static final String nameSelectPictureButton = "SET A PICTURE";
+    @FindBy(name = nameSelectPictureButton)
+    private WebElement selectPictureButton;
+
+    private static final String xpathVerificationPage =
+            "//UIAStaticText[contains(@name, 'Enter the verification code we sent to')]";
+    @FindBy(xpath = xpathVerificationPage)
+    private WebElement verificationPage;
+
+    private static final String nameResendCodeButton = "RESEND";
+    @FindBy(name = nameResendCodeButton)
+    private WebElement resendCodeButton;
+
+    private static final String nameInvalidCode = "Please enter a valid code";
+    @FindBy(name = nameInvalidCode)
+    private WebElement invalidCodeAlert;
+
+    private static final String nameChooseOwnPictureButton = "ChooseOwnPictureButton";
+    @FindBy(name = nameChooseOwnPictureButton)
+    private WebElement chooseOwnPictureButton;
+
+    private static final String nameChoosePhotoButton = "Choose Photo";
+    @FindBy(name = nameChoosePhotoButton)
+    private WebElement choosePhotoButton;
+
+    private static final String nameRegistrationEmailInput = "RegistrationEmailField";
+    @FindBy(name = nameRegistrationEmailInput)
+    private WebElement registrationEmailInput;
+
+    private String name;
+    private String email;
+    private String password;
+
+    public RegistrationPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+        super(lazyDriver);
+    }
+
+    public void clickAgreeButton() throws Exception {
+        verifyLocatorPresence(By.name(nameAgreeButton), "Agree button is not visible");
+        agreeButton.click();
+    }
+
+    private static final String WIRE_COUNTRY_NAME = "Wirestan";
+
+    public void selectWirestan() throws Exception {
+        countryPickerButton.click();
+        ((IOSElement) getDriver().findElementByXPath(xpathCountryList)).
+                scrollTo(WIRE_COUNTRY_NAME).click();
+    }
+
+    public void inputPhoneNumber(String number) throws Exception {
+        verifyLocatorPresence(By.xpath(xpathPhoneNumber), "Phone number input is not visible");
+        phoneNumberField.sendKeys(number);
+        confirmInput.click();
+    }
+
+    public boolean isVerificationCodePageVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathVerificationPage));
+    }
+
+    public void inputActivationCode(String code) throws Exception {
+        verifyLocatorPresence(By.xpath(xpathActivationCode), "Activation code input is not visible");
+        activationCode.sendKeys(code);
+        confirmInput.click();
+    }
+
+    public void inputRandomActivationCode() throws Exception {
+        inputActivationCode(CommonUtils.generateRandomXdigits(6));
+    }
+
+    public void clickResendCodeButton() throws Exception {
+        verifyLocatorPresence(By.name(nameResendCodeButton), "Resend code button is not visible");
+        resendCodeButton.click();
+    }
+
+    public void selectPicture() throws Exception {
+        verifyLocatorPresence(By.name(nameSelectPictureButton), "Select Picture button is not visible");
+        selectPictureButton.click();
+        verifyLocatorPresence(By.xpath(xpathPhotoButton), "Take Photo button is not visible");
+        photoButton.click();
+    }
+
+    public boolean isConfirmationShown() throws Exception {
+        final By locator = By.xpath(xpathConfirmationByMessage.apply(getEmail()));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public void confirmPicture() {
+        confirmImageButton.click();
+    }
+
+    public void hideKeyboard() throws Exception {
+        this.getDriver().hideKeyboard();
+    }
+
+    public void inputName() {
+        confirmInput.click();
+    }
+
+    public void clickCreateAccountButton() throws Exception {
+        DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.xpath(xpathCreateAccountButton));
+        createAccountButton.click();
+    }
+
+    public void typeEmail() {
+        yourEmail.sendKeys(getEmail());
+    }
+
+    public void typeUsername() throws Exception {
+        verifyLocatorPresence(By.xpath(xpathYourName), "Name input is not visible");
+        yourName.sendKeys(getName());
+    }
+
+    public boolean isPictureSelected() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameConfirmImageButton));
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) throws Exception {
+        this.name = name;
+        typeUsername();
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+        typeEmail();
+        this.email = email.replace('\n', ' ').trim();
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    private void typePassword() {
+        yourPassword.sendKeys(getPassword());
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+        typePassword();
+
+    }
+
+    public boolean isEmailVerifPromptVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathEmailVerifPrompt));
+    }
+
+    public boolean isInvalidCodeAlertShown() throws Exception {
+        DriverUtils.waitUntilAlertAppears(getDriver());
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameInvalidCode));
+    }
+
+    public void clickChooseOwnPicButton() {
+        chooseOwnPictureButton.click();
+    }
+
+    public void clickChoosePhotoButton() throws Exception {
+        verifyLocatorPresence(By.name(nameChoosePhotoButton), "Choose photo button is not visible");
+        choosePhotoButton.click();
+    }
 }

@@ -11,8 +11,8 @@ public class LocalyticsSteps {
 	private final static String APP_ID = "905792736c9f17c3464fd4e-60d90c82-d14a-11e4-af66-009c5fda0a25";
 	// TODO: probably, these ids are the same for other platforms
 	// if yes, then it's better to move this stuff to the common config file
-	private final static String API_KEY = "5ecfc1339b7d3ece604da2c-449cfea8-b37b-11e4-acba-009c5fda0a25";
-	private final static String API_SECRET = "720582f28b9c47b8f24e0a0-449d03c0-b37b-11e4-acba-009c5fda0a25";
+	private final static String API_KEY = "a4bdc55844b980c252680fa-71a7f2a2-b896-11e5-ac37-003e57fecdee";
+	private final static String API_SECRET = "eedf438dd35d9ce43ac25ca-71a7f5cc-b896-11e5-ac37-003e57fecdee";
 
 	private static CommonLocalyticsSteps commonSteps = new CommonLocalyticsSteps(
 			APP_ID, new LocalyticsAPIWrappers(API_KEY, API_SECRET));

@@ -1,6 +1,6 @@
 package com.wearezeta.auto.android.steps;
 
-import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.SettingsPage;
@@ -9,12 +9,12 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-import java.awt.image.BufferedImage;
-
 public class SettingsPageSteps {
 
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
             .getInstance();
+
+    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private SettingsPage getSettingsPage() throws Exception {
         return pagesCollection.getPage(SettingsPage.class);
@@ -45,6 +45,25 @@ public class SettingsPageSteps {
     }
 
     /**
+     * Verify whether the particular settings menu item is visible or not
+     *
+     * @param shouldNotSee equals to null if the corresponding menu item should be visible
+     * @param name         the name of the corresponding menu item
+     * @throws Exception
+     * @step. ^I (do not )?see \"(.*)\" settings menu item$
+     */
+    @When("^I (do not )?see \"(.*)\" settings menu item$")
+    public void ISeeSettingsMenuItem(String shouldNotSee, String name) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("Settings menu item '%s' is not visible", name),
+                    getSettingsPage().waitUntilMenuItemVisible(name));
+        } else {
+            Assert.assertTrue(String.format("Settings menu item '%s' is visible, but should be hidden", name),
+                    getSettingsPage().waitUntilMenuItemInvisible(name));
+        }
+    }
+
+    /**
      * Click the corresponding button on sign out alert to confirm it
      *
      * @throws Exception
@@ -55,50 +74,40 @@ public class SettingsPageSteps {
         getSettingsPage().confirmLogout();
     }
 
-    private BufferedImage previousThemeSwitcherState = null;
-
     /**
-     * Store the current value of Theme setting into variable
+     * Verify whether password confirmation dialog is visible
      *
      * @throws Exception
-     * @step. ^I remember the value of "Theme" setting$
+     * @step. ^I see device removal password confirmation dialog$"
      */
-    @And("^I remember the value of \"Theme\" setting$")
-    public void IRememberValueOfThemeSetting() throws Exception {
-        previousThemeSwitcherState = getSettingsPage().getThemeSwitcherState().orElseThrow(
-                IllegalStateException::new);
+    @Then("^I see device removal password confirmation dialog$")
+    public void ISeePasswordConfirmation() throws Exception {
+        Assert.assertTrue("The password confirmation is not visible",
+                getSettingsPage().waitUntilPasswordConfirmationIsVisible());
     }
 
     /**
-     * Verify whether the value of Theme setting has been changed since the list snapshot
+     * Type the password into the confirmation dialog
      *
+     * @param passwordAlias password string or an alias
      * @throws Exception
-     * @step. ^I verify the value of "Theme" setting is changed$
+     * @step. ^I enter (.*) into the device removal password confirmation dialog$
      */
-    @Then("^I verify the value of \"Theme\" setting is changed$")
-    public void IVerifyValueOfThemeSettingIsChanged() throws Exception {
-        if (previousThemeSwitcherState == null) {
-            throw new IllegalStateException("Please remember the previous value of Theme setting first");
-        }
-        final BufferedImage currentThemeSwitcherState = getSettingsPage().getThemeSwitcherState().orElseThrow(
-                IllegalStateException::new);
-        final double similarity = ImageUtil.getOverlapScore(currentThemeSwitcherState, previousThemeSwitcherState,
-                ImageUtil.RESIZE_TO_MAX_SCORE);
-        Assert.assertTrue(String.format(
-                "The current Theme setting value has not been changed since the last snapshot was taken (%.2f >= %.2f)",
-                similarity, 0.97),
-                similarity < 0.97);
+    @When("^I enter (.*) into the device removal password confirmation dialog$")
+    public void IEnterPassword(String passwordAlias) throws Exception {
+        final String password = usrMgr.replaceAliasesOccurences(passwordAlias,
+                ClientUsersManager.FindBy.PASSWORD_ALIAS);
+        getSettingsPage().enterConfirmationPassword(password);
     }
 
     /**
-     * Switch current theme. The chooser itself should be already visible
+     * Tap OK button on the device removal password confirmation dialog
      *
      * @throws Exception
-     * @step. ^I switch color theme in settings$
+     * @step. ^I tap OK button on the device removal password confirmation dialog$
      */
-    @And("^I switch color theme in settings$")
-    public void ISelectUnselectedTheme() throws Exception {
-        getSettingsPage().switchTheme();
+    @And("^I tap OK button on the device removal password confirmation dialog$")
+    public void ITapOKButtonOnPasswordConfirmationDialog() throws Exception {
+        getSettingsPage().tapOKButtonOnPasswordConfirmationDialog();
     }
-
 }

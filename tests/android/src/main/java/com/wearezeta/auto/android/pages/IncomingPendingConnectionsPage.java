@@ -47,18 +47,21 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
 	@FindBy(id = PeoplePickerPage.idSendConnectionRequestButton)
 	private WebElement sendConnectionRequestButton;
 
-	private static final String idConnectToCharCounter = "ttv__send_connect_request__connect_button__character_counter";
+	private static final String idConnectToCharCounter =
+            "ttv__send_connect_request__connect_button__character_counter";
 	@FindBy(id = idConnectToCharCounter)
 	private WebElement connectCharCounter;
 
-	@FindBy(id = PeoplePickerPage.idParticipantsClose)
+    private static final String xpathCloseButton =
+            "//*[@id='fl__conversation_list__profile_overlay']//*[@id='gtv__participants__close']";
+    @FindBy(xpath = xpathCloseButton)
 	private WebElement closeButton;
 
 	private static final Function<String, String> xpathConnectMenuItemByText = text -> String
-			.format("//*[@id='ttv__settings_box__item' and @value='%s']",
+			.format("//*[@id='ttv__settings_box__item' and @value='%s']/parent::*//*[@id='fl_options_menu_button']",
 					text.toUpperCase());
 
-	@FindBy(id = OtherUserPersonalInfoPage.idRightActionButton)
+	@FindBy(xpath = OtherUserPersonalInfoPage.xpathRightActionButton)
 	private WebElement ellipsisButton;
 
 	@FindBy(xpath = xpathConfirmBtn)
@@ -73,13 +76,12 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
 	}
 
 	public void clickBlockBtn() throws Exception {
-		final By blockButtonLocator = By.xpath(xpathConnectMenuItemByText
-				.apply("Block"));
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				blockButtonLocator);
-		final WebElement blockButton = getDriver().findElement(
-				blockButtonLocator);
-		DriverUtils.waitUntilElementClickable(getDriver(), blockButton);
+		final By blockButtonLocator = By.xpath(xpathConnectMenuItemByText.apply("Block"));
+		verifyLocatorPresence(blockButtonLocator, "Block button is not visible");
+		final WebElement blockButton = getDriver().findElement(blockButtonLocator);
+		if(!DriverUtils.waitUntilElementClickable(getDriver(), blockButton)) {
+			throw new IllegalStateException("Block button is not clickable");
+		}
 		blockButton.click();
 	}
 
@@ -136,9 +138,8 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
 						contactName, maxScrolls));
 	}
 
-	public DialogPage pressAcceptConnectButton() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(),
-				connectAcceptBtn);
+	public void pressAcceptConnectButton() throws Exception {
+		verifyLocatorPresence(By.id(idConnectRequestAccept), "Accept button is not visible");
 		if (connectAcceptBtn.getLocation().getY() > this.getDriver().manage()
 				.window().getSize().getHeight() / 2
 				&& connectAcceptBtn.getLocation().getY() < this.getDriver()
@@ -147,30 +148,20 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
 		} else {
 			connectAcceptBtns.get(1).click();
 		}
-		return new DialogPage(this.getLazyDriver());
 	}
 
-	public ContactListPage pressIgnoreButton() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(),
-				connectIgnoreBtn);
+	public void pressIgnoreButton() throws Exception {
+        verifyLocatorPresence(By.id(idConnectRequestIgnore), "Ignore button is not visible");
 		connectIgnoreBtn.click();
-		return new ContactListPage(this.getLazyDriver());
 	}
 
 	public boolean isIgnoreConnectButtonVisible() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(),
-				connectIgnoreBtn, 3);
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				connectIgnoreBtn)
-				&& DriverUtils.isElementPresentAndDisplayed(getDriver(),
-						connectAcceptBtn);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idConnectRequestIgnore));
 	}
 
 	public boolean isPending() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(
-				getDriver(),
-				getDriver().findElement(
-						By.xpath(xpathUserDetailsLeftButton.apply("Pending"))));
+        final By locator = By.xpath(xpathUserDetailsLeftButton.apply("Pending"));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
 	public void pressLeftConnectButton() throws Exception {
@@ -179,20 +170,18 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
 		this.getWait().until(
 				ExpectedConditions.elementToBeClickable(leftConnectBtn));
 		leftConnectBtn.click();
-
 	}
 
-	public ContactListPage pressConnectButton() throws Exception {
-		this.getWait().until(
-				ExpectedConditions
-						.elementToBeClickable(sendConnectionRequestButton));
+	public void pressConnectButton() throws Exception {
+        verifyLocatorPresence(By.id(PeoplePickerPage.idSendConnectionRequestButton),
+                "Connect button is not visible");
 		sendConnectionRequestButton.click();
-		return new ContactListPage(this.getLazyDriver());
 	}
 
 	public void waitUntilIgnoreButtonIsClickable() throws Exception {
-		this.getWait().until(
-				ExpectedConditions.elementToBeClickable(connectIgnoreBtn));
+        if (!DriverUtils.waitUntilElementClickable(getDriver(), connectIgnoreBtn)) {
+            throw new IllegalStateException("Ignore button is not clickable");
+        }
 	}
 
 	public boolean getConnectButtonState() {
@@ -204,9 +193,8 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
 		return Integer.parseInt(connectCharCounter.getText());
 	}
 
-	public PeoplePickerPage clickCloseButton() throws Exception {
+	public void clickCloseButton() throws Exception {
 		closeButton.click();
-		return new PeoplePickerPage(this.getLazyDriver());
 	}
 
 }

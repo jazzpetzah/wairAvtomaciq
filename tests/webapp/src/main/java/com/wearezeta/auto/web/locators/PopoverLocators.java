@@ -54,7 +54,9 @@ public final class PopoverLocators {
 
 		public static final String cssInvitationText = ".invite-link-box .message";
 
-		public static final String cssInvitationButton = "#invite-bubble [data-uie-name='go-share-invite']";
+		public static final String cssShareContactsButton = "#invite-bubble [data-uie-name='go-import-form']";
+
+		public static final String cssInvitePeopleButton = "#invite-bubble [data-uie-name='go-invite-form']";
 
 		public static final String cssGmailImportButton = "#invite-bubble [data-uie-name='go-import-google']";
 	}

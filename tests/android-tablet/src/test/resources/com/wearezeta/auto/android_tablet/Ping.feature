@@ -1,11 +1,12 @@
 Feature: Ping
 
-  @id2253 @regression @rc
+  @C737 @id2253 @regression @rc
   Scenario Outline: (AN-2955) Send ping and ping again to contact in portrait mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
@@ -21,12 +22,13 @@ Feature: Ping
       | Name      | Contact   | Message1   | Message2         |
       | user1Name | user2Name | YOU PINGED | YOU PINGED AGAIN |
 
-  @id2239 @regression @rc
+  @C727 @id2239 @regression @rc
   Scenario Outline: (AN-2955) Send ping and ping again to contact in landscape mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
@@ -42,13 +44,14 @@ Feature: Ping
       | Name      | Contact   | Message1   | Message2         |
       | user1Name | user2Name | YOU PINGED | YOU PINGED AGAIN |
 
-  @id2863 @regression @rc
+  @C766 @id2863 @regression @rc
   Scenario Outline: Receive "Ping" and "Ping Again" in group conversation (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
@@ -63,13 +66,14 @@ Feature: Ping
       | Name      | Contact1  | Contact2  | GroupChatName | PingMessage      | HotPingMessage         |
       | user1Name | user2Name | user3Name | PingChat      | user2Name PINGED | user2Name PINGED AGAIN |
 
-  @id3262 @regression @rc
+  @C812 @id3262 @regression @rc
   Scenario Outline: Receive "Ping" and "Ping Again" in group conversation (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>

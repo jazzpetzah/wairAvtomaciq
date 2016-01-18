@@ -1,11 +1,12 @@
 Feature: Invitations
 
-  @id4161 @regression @rc
+  @C824 @id4161 @regression @rc
   Scenario Outline: Invitations (Conversations List): I can send an email notification from conversations list
     Given I delete all contacts from Address Book
     Given There is 1 user where <Name> is me
     Given I add <Contact> into Address Book
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     And I tap Invite button at the bottom of conversations list
     And I see <Contact> in the invites list
@@ -20,7 +21,7 @@ Feature: Invitations
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @id4162 @regression @rc
+  @C825 @id4162 @regression @rc
   Scenario Outline: Invitations (Registration): I can receive and accept an email notification
     Given There is 1 user where <Name> is me
     Given Myself sends personal invitation to mail <ContactEmail> with message <Message>
@@ -32,6 +33,7 @@ Feature: Invitations
     And I restore the application
     And I input password "<ContactPassword>"
     And I confirm password
+    And I wait until Unsplash screen is visible
     And I select to choose my own picture
     And I select Camera as picture source
     And I press Camera button
@@ -46,11 +48,12 @@ Feature: Invitations
       | Name      | Contact   | ContactEmail | ContactPassword | Message |
       | user1Name | user2Name | user2Email   | user2Password   | Hello   |
 
-  @id4158 @regression
+  @C460 @id4158 @regression
   Scenario Outline: Invite people button present in the list if user has up to 5 contacts
     Given There are 7 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I wait until <Contact6> exists in backend search results
     Then I see invite more people button in contacts list
@@ -65,28 +68,12 @@ Feature: Invitations
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name |
-
-  @id4157 @regression
-  Scenario Outline: Invite people button replaced with actions buttons when connected users selected in search
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given I sign in using my email or phone number
-    Given I see Contact list with contacts
-    When I open search by tap
-    Then I see invite more people button in search
-    When I enter "<Contact1>" into Search input on People Picker page
-    And I tap on user name found on People picker page <Contact1>
-    Then I see action buttons appeared on People picker page
-    And I do not see invite more people button in search
-
-    Examples: 
-      | Name      | Contact1  |
-      | user1Name | user2Name |
       
-  @id4159 @regression
+  @C461 @id4159 @regression
   Scenario Outline: Verify that keyboard is closed when I close invites page
     Given There are 1 user where <Name> is me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     When I take screenshot
     And I tap Invite button at the bottom of conversations list
@@ -100,17 +87,15 @@ Feature: Invitations
       | Name      |
       | user1Name |
 
-  @id4160 @regression
-  Scenario Outline: (BUG AN-3141) Verify that swipe do nothing in invites page
+  @C567 @id4160 @regression
+  Scenario Outline: Verify that swipe do nothing in invites page
     Given There are 1 user where <Name> is me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     When I tap Invite button at the bottom of conversations list
     And I take 1st screenshot
     And I swipe up
-    And I take 2nd screenshot
-    Then I compare 1st and 2nd screenshots and they are not different
-    When I swipe down from 20%
     And I take 2nd screenshot
     Then I compare 1st and 2nd screenshots and they are not different
     When I swipe right
@@ -124,22 +109,21 @@ Feature: Invitations
       | Name      |
       | user1Name |
 
-  @id4172 @regression @rc
-  Scenario Outline: (AN-3118) Sending invite to user which already on Wire create pending connection request
+  @C568 @id4172 @regression @rc
+  Scenario Outline: Sending invite to user which already on Wire create pending connection request
     Given I delete all contacts from Address Book
     Given There are 2 users where <Name> is me
     Given I add <Contact> into Address Book
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     And I tap Invite button at the bottom of conversations list
     And I see <Contact> in the invites list
     And I tap Invite button next to <Contact>
     And I select <ContactEmail> email on invitation sending alert
     And I confirm invitation sending alert
+    And I hide keyboard
     When I press back button
-    # FIXME: workaround for AN-3118
-    And I minimize the application
-    And I restore the application
     Then I see contact list with name <Contact>
     When I tap on contact name <Contact>
     Then I see outgoing pending connection to <Contact>

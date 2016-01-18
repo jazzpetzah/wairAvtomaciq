@@ -1,6 +1,6 @@
 Feature: Sign In
 
-  @regression @rc @id340
+  @C1134 @regression @rc @id340
   Scenario Outline: Sign in to ZClient
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -8,29 +8,13 @@ Feature: Sign In
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Login button
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  #Known issue is IOS-989, once it is fixed test should be updated
-  #@staging @id524
-  #Scenario Outline: I can change sign in user on iOS
-  #Given I Sign in using login <Login> and password <Password>
-  #And I see Contact list with my name <UserA>
-  #And I tap on my name <UserA>
-  #And I click on Settings button on personal page
-  #And I click Sign out button from personal page
-  #And I Sign in using login <UserB> and password <Password>
-  #Then I see Personal page
-  #And I see name <UserB> on Personal page
-  #And I see email <UserB> on Personal page
-  #Examples:
-  #| Login   | Password    | UserA   | UserB       |
-  #| aqaUser | aqaPassword | aqaUser | aqaContact1 |
-  
-  @regression @rc @id1398 @noAcceptAlert
+  @C1133 @regression @rc @id1398 @noAcceptAlert
   Scenario Outline: Notification if SignIn credentials are wrong
     Given I see sign in screen
     When I press Sign in button
@@ -39,11 +23,11 @@ Feature: Sign In
     And I attempt to press Login button
     Then I see wrong credentials notification
 
-    Examples: 
+    Examples:
       | WrongMail  | WrongPassword |
       | wrongwrong | wrong         |
 
-  @id1479 @id1403
+  @C1135 @id1479 @id1403 @regression @rc
   Scenario Outline: Verify possibility of reseting password (welcome page)
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -58,13 +42,13 @@ Feature: Sign In
     And I press Change Password button in browser
     And Return to Wire app
     And I sign in using my email
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
 
-    Examples: 
-      | Login      | Password      | Name      | NewPassword  |
-      | user1Email | user1Password | user1Name | aqa123456789 |
+    Examples:
+      | Login      | Name      | NewPassword  |
+      | user1Email | user1Name | aqa123456789 |
 
-  @regression @id2719
+  @C1138 @regression @id2719
   Scenario Outline: Verify phone sign in when email is assigned
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -72,13 +56,13 @@ Feature: Sign In
     When I enter phone number for user <Name>
     Then I see verification code page
     When I enter verification code for user <Name>
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
 
-    Examples: 
-      | Email      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+    Examples:
+      | Name      |
+      | user1Name |
 
-  @regression @rc @id2717
+  @C1136 @regression @rc @id2717
   Scenario Outline: Verify first time phone sign in when email is not assigned
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
@@ -93,13 +77,13 @@ Feature: Sign In
     When I click DONE keyboard button
     Then I see email verification reminder
     When I verify registration address
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
 
-    Examples: 
+    Examples:
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id3813 @noAcceptAlert
+  @C1145 @staging @id3813 @noAcceptAlert
   Scenario Outline: Verify impossibility to login with the wrong code
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -109,11 +93,11 @@ Feature: Sign In
     When I enter random verification code
     Then I see wrong credentials notification
 
-    Examples: 
-      | Email      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+    Examples:
+      | Name      |
+      | user1Name |
 
-  @regression @id3838 @noAcceptAlert
+  @C1146 @regression @id3838 @noAcceptAlert
   Scenario Outline: Verify impossibility to resend code within 10 min
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -123,11 +107,11 @@ Feature: Sign In
     When I tap RESEND code button
     Then I see Resend will be possible after 10 min aleart
 
-    Examples: 
-      | Email      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+    Examples:
+      | Name      |
+      | user1Name |
 
-  @staging @id2724 @noAcceptAlert
+  @C1143 @staging @id2724 @noAcceptAlert
   Scenario Outline: Verify impossibility to login with unregistered phone number
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -135,11 +119,11 @@ Feature: Sign In
     And I enter random phone number
     Then I see invalid phone number alert
 
-    Examples: 
-      | Email      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+    Examples:
+      | Name      |
+      | user1Name |
 
-  @regression @id3851
+  @C1086 @regression @id3851
   Scenario Outline: Verify first time phone sign in when email is not assigned
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
@@ -154,15 +138,15 @@ Feature: Sign In
     And I click DONE keyboard button
     And I see email verification reminder
     And I verify registration address
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
     When I tap on my name <Name>
     Then I see email <Email> on Personal page
 
-    Examples: 
+    Examples:
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
-      
-  @regression @id3863 @noAcceptAlert
+
+  @C1089 @regression @id3863 @noAcceptAlert
   Scenario Outline: Verify error message appears in case of registering already taken email
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
@@ -177,11 +161,11 @@ Feature: Sign In
     When I click DONE keyboard button
     Then I see already registered email alert
 
-    Examples: 
+    Examples:
       | Email                     | Password      | Name      |
       | smoketester@wearezeta.com | user1Password | user1Name |
 
-  @regression @id3857 @noAcceptAlert
+  @C1147 @regression @id3857 @noAcceptAlert
   Scenario Outline: Verify error message appears in case of registering already taken email
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
@@ -196,6 +180,6 @@ Feature: Sign In
     When I click DONE keyboard button
     Then I see invalid email alert
 
-    Examples: 
+    Examples:
       | Email        | Password      | Name      |
       | invalidemail | user1Password | user1Name |

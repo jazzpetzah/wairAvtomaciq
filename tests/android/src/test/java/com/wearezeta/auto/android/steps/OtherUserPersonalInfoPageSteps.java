@@ -17,8 +17,7 @@ public class OtherUserPersonalInfoPageSteps {
 
 	private OtherUserPersonalInfoPage getOtherUserPersonalInfoPage()
 			throws Exception {
-		return (OtherUserPersonalInfoPage) pagesCollection
-				.getPage(OtherUserPersonalInfoPage.class);
+		return pagesCollection.getPage(OtherUserPersonalInfoPage.class);
 	}
 
 	private final String BG_IMAGE_NAME = "aqaPictureContactBG.png";
@@ -52,7 +51,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I click Remove$")
 	public void WhenIClickRemove() throws Exception {
-		getOtherUserPersonalInfoPage().pressOptionsMenuButton();
+		getOtherUserPersonalInfoPage().tapRightActionButton();
 	}
 
 	/**
@@ -102,7 +101,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I press add contact button$")
 	public void WhenIPressAddContactButton() throws Exception {
-		getOtherUserPersonalInfoPage().tapAddContactBtn();
+		getOtherUserPersonalInfoPage().tapLeftActionBtn();
 	}
 
 	/**
@@ -206,21 +205,20 @@ public class OtherUserPersonalInfoPageSteps {
 		getOtherUserPersonalInfoPage().selectConvoSettingsMenuItem(itemName);
 	}
 
+
 	/**
-	 * Verifys the user profile menu item and its correct position
+	 * Verifys the user profile menu item is visible
 	 *
 	 * @param itemName menu item name
-	 * @param position index position of item in menu
 	 * @throws Exception
-	 * @step. ^I see (.*) button in user profile menu at position (\\d+)$
+	 * @step. ^I see (.*) button in option menu$
 	 */
-	@Then("^I see (.*) button in option menu at position (\\d+)$")
-	public void ISeeButtonInUserProfileMenuAtPosition(String itemName, int position) throws Exception {
+	@Then("^I see (.*) button in option menu$")
+	public void ISeeButtonInUserProfileMenuAtPosition(String itemName) throws Exception {
 		Assert.assertTrue("The user profile menu item is not visible",
 				getOtherUserPersonalInfoPage().isUserProfileMenuItemVisible(itemName));
-		Assert.assertEquals("Menu item is not at correct index", itemName,
-				getOtherUserPersonalInfoPage().getUserProfileMenuItemNameAtIndex(position));
 	}
+
 
 	/**
 	 * Confirms the current user's decision to leave a conversation -outofplace
@@ -454,7 +452,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@Then("^I click Open Conversation button on connected user page$")
 	public void IClickOpenConversationButton() throws Exception {
-		getOtherUserPersonalInfoPage().tapAddContactBtn();
+		getOtherUserPersonalInfoPage().tapLeftActionBtn();
 	}
 
 	/**

@@ -1,12 +1,12 @@
 Feature: ContactsUI
 
-  @staging @id4130
+  @C81 @regression @id4130
   Scenario Outline: Verify blocked users are not displayed in the Contacts UI
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given User <Name> blocks user <Contact>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I dont see conversation <Contact> in contact list
     And I open search by taping on it
     And I press the send an invite button
@@ -18,12 +18,12 @@ Feature: ContactsUI
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id4121
+  @C78 @regression @id4121
   Scenario Outline: Verify opening existing conversation from Contacts UI
     Given There are 2 users where <Name> is me
     Given Myself is connected to all other users
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     And I open search by taping on it
     And I press the send an invite button
     And I see contact <Contact> in ContactsUI page list

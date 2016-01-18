@@ -12,74 +12,71 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class TabletSelfProfilePage extends AndroidTabletPage {
-	public static final String idSelfNameInput = "tet__profile__guided";
-	@FindBy(id = idSelfNameInput)
-	private WebElement selfNameInput;
+    public static final String idSelfNameInput = "tet__profile__guided";
+    @FindBy(id = idSelfNameInput)
+    private WebElement selfNameInput;
 
-	public static final String idSelfProfileView = "ll_self_form";
-	@FindBy(id = idSelfProfileView)
-	private WebElement selfProfileView;
+    public static final String idSelfProfileView = "ll_self_form";
+    @FindBy(id = idSelfProfileView)
+    private WebElement selfProfileView;
 
-	public static final Function<String, String> xpathSelfNameByContent = content -> String
-			.format("//*[@id='ttv__profile__name' and @value='%s']", content);
+    public static final Function<String, String> xpathSelfNameByContent = content -> String
+            .format("//*[@id='ttv__profile__name' and @value='%s']", content);
 
-	public static final Function<String, String> xpathOptionsMenuItemByName = name -> String
-			.format("//*[@id='fl__profile__settings_box']//*[@value='%s']",
-					name.toUpperCase());
+    public static final Function<String, String> xpathOptionsMenuItemByName = name -> String
+            .format("//*[@id='fl__profile__settings_box']//*[@id='ttv__settings_box__item' and @value='%s']" +
+                    "/parent::*//*[@id='fl_options_menu_button']", name.toUpperCase());
 
-	public static final String idOptionsButton = "gtv__profile__settings_button";
-	@FindBy(id = idOptionsButton)
-	private WebElement optionsButton;
+    public static final String idOptionsButton = "gtv__profile__settings_button";
+    @FindBy(id = idOptionsButton)
+    private WebElement optionsButton;
 
-	public TabletSelfProfilePage(Future<ZetaAndroidDriver> lazyDriver)
-			throws Exception {
-		super(lazyDriver);
-	}
+    public TabletSelfProfilePage(Future<ZetaAndroidDriver> lazyDriver)
+            throws Exception {
+        super(lazyDriver);
+    }
 
-	public boolean isNameVisible(String name) throws Exception {
-		final By locator = By.xpath(xpathSelfNameByContent.apply(name));
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-	}
+    public boolean isNameVisible(String name) throws Exception {
+        final By locator = By.xpath(xpathSelfNameByContent.apply(name));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
 
-	public void tapOptionsButton() throws Exception {
-		assert DriverUtils
-				.waitUntilElementClickable(getDriver(), optionsButton);
-		optionsButton.click();
-	}
+    public void tapOptionsButton() throws Exception {
+        assert DriverUtils
+                .waitUntilElementClickable(getDriver(), optionsButton);
+        optionsButton.click();
+    }
 
-	public void selectOptionsMenuItem(String itemName) throws Exception {
-		final By locator = By.xpath(xpathOptionsMenuItemByName.apply(itemName));
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
-				.format("The item '%s' is not present in Options menu",
-						itemName);
-		getDriver().findElement(locator).click();
-	}
+    public void selectOptionsMenuItem(String itemName) throws Exception {
+        final By locator = By.xpath(xpathOptionsMenuItemByName.apply(itemName));
+        verifyLocatorPresence(locator, String.format("The item '%s' is not present in Options menu", itemName));
+        getDriver().findElement(locator).click();
+    }
 
-	public void tapSelfNameField() throws Exception {
-		assert DriverUtils
-				.waitUntilElementClickable(getDriver(), selfNameInput);
-		selfNameInput.click();
-	}
+    public void tapSelfNameField() throws Exception {
+        verifyLocatorPresence(By.id(idSelfNameInput), "Self name input is not visible");
+        selfNameInput.click();
+    }
 
-	public void changeSelfNameTo(String newName) throws Exception {
-		selfNameInput.clear();
-		selfNameInput.sendKeys(newName);
-		this.getDriver().tapSendButton();
-	}
+    public void changeSelfNameTo(String newName) throws Exception {
+        selfNameInput.clear();
+        selfNameInput.sendKeys(newName);
+        this.getDriver().tapSendButton();
+    }
 
-	public BufferedImage getScreenshot() throws Exception {
-		return this.getElementScreenshot(selfProfileView).orElseThrow(
-				IllegalStateException::new);
-	}
+    public BufferedImage getScreenshot() throws Exception {
+        return this.getElementScreenshot(selfProfileView).orElseThrow(
+                IllegalStateException::new);
+    }
 
-	public void tapInTheCenter() throws Exception {
-		DriverUtils.tapInTheCenterOfTheElement(this.getDriver(),
-				selfProfileView);
-	}
+    public void tapInTheCenter() throws Exception {
+        DriverUtils.tapInTheCenterOfTheElement(this.getDriver(),
+                selfProfileView);
+    }
 
-	public boolean waitUntilOptionsMenuItemVisible(String itemName)
-			throws Exception {
-		final By locator = By.xpath(xpathOptionsMenuItemByName.apply(itemName));
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-	}
+    public boolean waitUntilOptionsMenuItemVisible(String itemName)
+            throws Exception {
+        final By locator = By.xpath(xpathOptionsMenuItemByName.apply(itemName));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
 }

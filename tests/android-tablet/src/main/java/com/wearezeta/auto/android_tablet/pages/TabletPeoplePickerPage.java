@@ -21,17 +21,6 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
     @FindBy(id = idPickerSearch)
     public WebElement pickerSearch;
 
-    public static final String xpathTopPeopleHeader = "//*[@id='rv_top_users']";
-
-    public static final Function<String, String> xpathTopPeopleAvatarByName = name -> String
-            .format("%s//*[@id='cwtf__startui_top_user' and .//*[@value='%s']]",
-                    xpathTopPeopleHeader, name.toUpperCase());
-
-    private static final Function<String, String> xpathFoundAvatarByName = name -> String
-            .format("//*[@id='ttv_pickuser__searchuser_name' and @value='%s']"
-                            + "/preceding-sibling::*[@id='cv_pickuser__searchuser_chathead']",
-                    name);
-
     public TabletPeoplePickerPage(Future<ZetaAndroidDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
@@ -54,8 +43,7 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
     }
 
     public void tapCloseButton() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(PeoplePickerPage.idPeoplePickerClearbtn));
+        verifyLocatorPresence(By.id(PeoplePickerPage.idPeoplePickerClearbtn), "Close button is not visible");
         closePeoplePickerBtn.click();
     }
 
@@ -67,27 +55,26 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
         final By locator = By
                 .xpath(PeoplePickerPage.xpathPeoplePickerContactByName
                         .apply(item));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
-                .format("The item '%s' is not visible in People Picker search list after the defualt timeout expired",
-                        item);
+        verifyLocatorPresence(locator,
+                String.format("The item '%s' is not visible in People Picker search list after the defualt timeout expired",
+                        item));
         getDriver().findElement(locator).click();
     }
 
     public boolean waitUntilTopPeopleIsVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathTopPeopleHeader));
+                By.xpath(PeoplePickerPage.xpathTopPeopleAvatars));
     }
 
     public void tapTopPeopleAvatar(String name) throws Exception {
-        final By locator = By.xpath(xpathTopPeopleAvatarByName.apply(name));
+        final By locator = By.xpath(PeoplePickerPage.xpathTopPeopleAvatarByName.apply(name));
         getDriver().findElement(locator).click();
     }
 
     public Optional<BufferedImage> takeAvatarScreenshot(String name)
             throws Exception {
-        final By locator = By.xpath(xpathFoundAvatarByName.apply(name));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
-                .format("User avatar for '%s' is not visible", name);
+        final By locator = By.xpath(PeoplePickerPage.xpathFoundAvatarByName.apply(name));
+        verifyLocatorPresence(locator, String.format("User avatar for '%s' is not visible", name));
         final WebElement theAvatar = getDriver().findElement(locator);
         return this.getElementScreenshot(theAvatar);
     }
@@ -106,34 +93,6 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
 
     public boolean waitUntilGroupAvatarIsInvisible(String name) throws Exception {
         return this.getAndroidPeoplePickerPage().isGroupInvisible(name);
-    }
-
-    public String getFirstPYMKItemName() throws Exception {
-        return getAndroidPeoplePickerPage().getPYMKItemName(1);
-    }
-
-    public void tapPlusButtonOnFirstPYMKItem() throws Exception {
-        getAndroidPeoplePickerPage().clickPlusOnPYMKItem(1);
-    }
-
-    public boolean waitUntilPYMKItemInvisible(String name) throws Exception {
-        return getAndroidPeoplePickerPage().waitUntilPYMKItemIsInvisible(name);
-    }
-
-    public void tapFirstPYMKItem() throws Exception {
-        getAndroidPeoplePickerPage().tapPYMKItem(1);
-    }
-
-    public void shortSwipeRightFirstPYMKItem() throws Exception {
-        getAndroidPeoplePickerPage().shortSwipeRigthOnPYMKItem(1);
-    }
-
-    public void tapHideButtonInFirstPYMKItem() throws Exception {
-        getAndroidPeoplePickerPage().clickHideButtonOnPYMKItem(1);
-    }
-
-    public void longSwipeRightFirstPYMKItem() throws Exception {
-        getAndroidPeoplePickerPage().longSwipeRigthOnPYMKItem(1);
     }
 
     public void doShortSwipeDown() throws Exception {

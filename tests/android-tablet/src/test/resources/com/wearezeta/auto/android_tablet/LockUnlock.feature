@@ -1,6 +1,6 @@
 Feature: Lock/Unlock
 
-  @id2181 @regression
+  @C472 @id2181 @regression
   Scenario Outline: (AN-2898) UI saves its state after device lock/unlock (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -9,7 +9,8 @@ Feature: Lock/Unlock
     Given Contact <Contact1> sends message "<Message1to1>" to user Myself
     Given I rotate UI to portrait
     Given I sign in using my email
-    And I see the conversations list with conversations
+    Given I accept First Time overlay as soon as it is visible
+    Given I see the conversations list with conversations
     When I lock the device
     And I unlock the device
     Then I see the conversation <Contact1> in my conversations list

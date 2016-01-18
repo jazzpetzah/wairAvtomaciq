@@ -13,71 +13,70 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public abstract class AbstractCameraPage extends AndroidTabletPage {
-	@FindBy(xpath = DialogPage.xpathConfirmOKButton)
-	protected WebElement okConfirmButton;
+    @FindBy(xpath = DialogPage.xpathConfirmOKButton)
+    protected WebElement okConfirmButton;
 
-	public static final String idGalleryButton = "gtv__camera_control__pick_from_gallery";
-	@FindBy(id = idGalleryButton)
-	private WebElement galleryButton;
+    public static final String idGalleryButton = "gtv__camera_control__pick_from_gallery";
+    @FindBy(id = idGalleryButton)
+    private WebElement galleryButton;
 
-	public static final String idTakePhotoButton = "gtv__camera_control__take_a_picture";
-	@FindBy(id = idTakePhotoButton)
-	protected WebElement takePhotoButton;
+    public static final String idTakePhotoButton = "gtv__camera_control__take_a_picture";
+    @FindBy(id = idTakePhotoButton)
+    protected WebElement takePhotoButton;
 
-	public AbstractCameraPage(Future<ZetaAndroidDriver> lazyDriver)
-			throws Exception {
-		super(lazyDriver);
-	}
+    public AbstractCameraPage(Future<ZetaAndroidDriver> lazyDriver)
+            throws Exception {
+        super(lazyDriver);
+    }
 
-	protected abstract By getLensButtonLocator();
+    protected abstract By getLensButtonLocator();
 
-	public boolean waitUntilVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				getLensButtonLocator(), 20);
-	}
+    public boolean waitUntilVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                getLensButtonLocator(), 20);
+    }
 
-	public void tapLensButton() throws Exception {
-		this.getDriver().findElement(getLensButtonLocator()).click();
-	}
+    public void tapLensButton() throws Exception {
+        this.getDriver().findElement(getLensButtonLocator()).click();
+    }
 
-	public void tapTakePhotoButton() throws Exception {
-		assert waitUntilTakePhotoButtonVisible() : "Take Photo button is not visible, but it should be";
-		takePhotoButton.click();
-	}
+    public void tapTakePhotoButton() throws Exception {
+        assert waitUntilTakePhotoButtonVisible() : "Take Photo button is not visible, but it should be";
+        takePhotoButton.click();
+    }
 
-	public boolean waitUntilTakePhotoButtonVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idTakePhotoButton));
-	}
+    public boolean waitUntilTakePhotoButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.id(idTakePhotoButton));
+    }
 
-	private boolean isGalleryModeActivated = false;
+    private boolean isGalleryModeActivated = false;
 
-	public void confirmPictureSelection() throws Exception {
-		// Workaround for unexpected orientation change issue
-		if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(DialogPage.xpathConfirmOKButton))) {
-			if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-					getLensButtonLocator(), 2)) {
-				tapLensButton();
-			}
-			if (isGalleryModeActivated) {
-				tapGalleryButton();
-				isGalleryModeActivated = false;
-			} else {
-				tapTakePhotoButton();
-			}
-			assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-					By.xpath(DialogPage.xpathConfirmOKButton), 3) : "Picture selection confirmation has not been shown after the timeout";
-		}
-		okConfirmButton.click();
-		ScreenOrientationHelper.getInstance().fixOrientation(getDriver());
-	}
+    public void confirmPictureSelection() throws Exception {
+        // Workaround for unexpected orientation change issue
+        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(DialogPage.xpathConfirmOKButton))) {
+            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                    getLensButtonLocator(), 2)) {
+                tapLensButton();
+            }
+            if (isGalleryModeActivated) {
+                tapGalleryButton();
+                isGalleryModeActivated = false;
+            } else {
+                tapTakePhotoButton();
+            }
+            verifyLocatorPresence(By.xpath(DialogPage.xpathConfirmOKButton),
+                    "Picture selection confirmation has not been shown after the timeout", 3);
+        }
+        okConfirmButton.click();
+        ScreenOrientationHelper.getInstance().fixOrientation(getDriver());
+    }
 
-	public void tapGalleryButton() throws Exception {
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idGalleryButton));
-		galleryButton.click();
-		isGalleryModeActivated = true;
-	}
+    public void tapGalleryButton() throws Exception {
+        verifyLocatorPresence(By.id(idGalleryButton), "Open gallery button is not visible");
+        galleryButton.click();
+        isGalleryModeActivated = true;
+    }
 
 }

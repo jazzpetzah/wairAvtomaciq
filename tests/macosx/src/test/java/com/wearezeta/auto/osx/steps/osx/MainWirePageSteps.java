@@ -2,7 +2,11 @@ package com.wearezeta.auto.osx.steps.osx;
 
 import com.wearezeta.auto.osx.pages.osx.MainWirePage;
 import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
+import com.wearezeta.auto.web.pages.ContactListPage;
+import com.wearezeta.auto.web.pages.ConversationPage;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -109,29 +113,34 @@ public class MainWirePageSteps {
 	@When("^I verify app is in fullscreen$")
 	public void IVerifyAppFullscreen() throws Exception {
 		int maxHeight;
+		int maxWidth;
 
 		// get Desktop size
 		MainWirePage mainPage = osxPagesCollection.getPage(MainWirePage.class);
 		Dimension desktopSize = mainPage.getDesktopSize();
 		// get Dock position & size
 		Dimension dockSize = mainPage.getDockSize();
-		// calculate fullscreen height
+		// calculate fullscreen height & width
 		if (dockSize.getHeight() > dockSize.getWidth()) {
 			// dock on the left side
 			maxHeight = desktopSize.getHeight() - OSX_TITLEBAR_HEIGHT;
+			maxWidth = desktopSize.getWidth() - dockSize.getWidth();
 		} else {
 			// dock on the bottom
 			maxHeight = desktopSize.getHeight() - dockSize.getHeight()
 					- OSX_TITLEBAR_HEIGHT;
+			maxWidth = desktopSize.getWidth();
 		}
 		// check if height in allowance
 		assertThat("Height", mainPage.getHeight(), greaterThan(maxHeight
 				- DEVIATION_ALLOWANCE_IN_PX));
 		assertThat("Height", mainPage.getHeight(), lessThan(maxHeight
 				+ DEVIATION_ALLOWANCE_IN_PX));
-		// get maximum possible width
-		int maxWidth = MainWirePage.APP_MAX_WIDTH;
-		assertThat("Width", mainPage.getWidth(), equalTo(maxWidth));
+		// check if width in allowance
+		assertThat("Width", mainPage.getWidth(), greaterThan(maxWidth
+				- DEVIATION_ALLOWANCE_IN_PX));
+		assertThat("Width", mainPage.getWidth(), lessThan(maxWidth
+				+ DEVIATION_ALLOWANCE_IN_PX));
 	}
 
 	/**
@@ -253,4 +262,172 @@ public class MainWirePageSteps {
 		assertThat("Height", mainPage.getHeight(), equalTo(height));
 	}
 
+
+	/**
+	 * Types shortcut combination to undo
+	 *
+	 * @step. ^I type shortcut combination to undo$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to undo$")
+	public void ITypeShortcutCombinationToUndo() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutForUndo();
+	}
+
+	/**
+	 * Types shortcut combination to redo
+	 *
+	 * @step. ^I type shortcut combination to redo$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to redo$")
+	public void ITypeShortcutCombinationToRedo() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutForRedo();
+	}
+
+	/**
+	 * Types shortcut combination to select all
+	 *
+	 * @step. ^I type shortcut combination to select all$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to select all$")
+	public void ITypeShortcutCombinationToSelectAll() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutForSelectAll();
+	}
+
+	/**
+	 * Types shortcut combination to cut
+	 *
+	 * @step. ^I type shortcut combination to cut$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to cut$")
+	public void ITypeShortcutCombinationToCut() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutForCut();
+	}
+
+	/**
+	 * Types shortcut combination to paste
+	 *
+	 * @step. ^I type shortcut combination to paste$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to paste$")
+	public void ITypeShortcutCombinationToPaste() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutForPaste();
+	}
+
+	/**
+	 * Types shortcut combination to copy
+	 *
+	 * @step. ^I type shortcut combination to copy$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to copy$")
+	public void ITypeShortcutCombinationToCopy() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutForCopy();
+	}
+
+	/**
+	 * Types shortcut combination to open preferences
+	 *
+	 * @step. ^I type shortcut combination to open preferences$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to open preferences$")
+	public void ITypeShortcutCombinationToOpenPreference() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutForPreferences();
+	}
+
+	/**
+	 * Types shortcut combination to mute or unmute a conversation
+	 * 
+	 * @step. ^I type shortcut combination to mute or unmute a conversation$
+	 * @throws Exception
+	 */
+	@When("^I type shortcut combination to mute or unmute a conversation$")
+	public void ITypeShortcutCombinationToMuteOrUnmute() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutToMute();
+	}
+
+	/**
+	 * Types shortcut combination to archive a conversation
+	 * 
+	 * @step. ^I type shortcut combination to archive a conversation$
+	 * @throws Exception
+	 */
+	@When("^I type shortcut combination to archive a conversation$")
+	public void ITypeShortcutCombinationToArchive() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutToArchive();
+	}
+
+	/**
+	 * Types shortcut combination for the next conversation
+	 *
+	 * @step. ^I type shortcut combination for next conversation$
+	 * @throws Exception
+	 */
+	@When("^I type shortcut combination for next conversation$")
+	public void ITypeShortcutCombinationForNextConv() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutForNextConv();
+	}
+
+	/**
+	 * Types shortcut combination for the previous conversation
+	 *
+	 * @step. ^I type shortcut combination for previous conversation$
+	 * @throws Exception
+	 */
+	@When("^I type shortcut combination for previous conversation$")
+	public void ITypeShortcutCombinationForPrevConv() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutForPrevConv();
+	}
+
+	/**
+	 * Types shortcut combination to ping
+	 *
+	 * @step. ^I type shortcut combination to ping$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to ping$")
+	public void ITypeShortcutCombinationToPing() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutForPing();
+	}
+
+	/**
+	 * Types shortcut combination to call
+	 *
+	 * @step. ^I type shortcut combination to ping$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to start a call$")
+	public void ITypeShortcutCombinationToCall() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutForCall();
+	}
+
+	/**
+	 * Types shortcut combination to open search
+	 *
+	 * @step. ^I type shortcut combination to open search$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to open search$")
+	public void ITypeShortcutCombinationToOpenSearch() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class)
+				.pressShortCutForSearch();
+	}
 }

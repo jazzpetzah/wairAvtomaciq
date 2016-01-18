@@ -70,6 +70,11 @@ class Device extends RemoteEntity implements IDevice {
 	}
 
 	@Override
+	public void setLabel(String label) throws Exception {
+		askActor(this.ref(), new ActorMessage.SetDeviceLabel(label));
+	}
+
+	@Override
 	public void sendMessage(String convId, String message) throws Exception {
 		askActor(this.ref(), new ActorMessage.SendText(new RConvId(convId),
 				message));
@@ -86,5 +91,10 @@ class Device extends RemoteEntity implements IDevice {
 	public void sendImage(String convId, String path) throws Exception {
 		askActor(this.ref(), new ActorMessage.SendImage(new RConvId(convId),
 				path), IMAGE_SENDING_TIMEOUT);
+	}
+
+	@Override
+	public void sendPing(String convId) throws Exception {
+		askActor(this.ref(), new ActorMessage.Knock(new RConvId(convId)));
 	}
 }

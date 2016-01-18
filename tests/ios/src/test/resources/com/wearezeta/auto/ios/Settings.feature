@@ -1,10 +1,10 @@
 Feature: Settings
 
-  @id482 @regression
+  @C1098 @id482 @regression
   Scenario Outline: Verify user can access settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
@@ -14,28 +14,28 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @regression @rc @id729 
+  @C1099 @regression @rc @id729
   Scenario Outline: Attempt to open About screen in settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on About button on personal page
     Then I see About page
     And I close About page
     And I close self profile
-    Then I see Contact list with my name <Name>
+    Then I see conversations list
 
     Examples: 
       | Name      |
       | user1Name |
 
-  @regression @id862
+  @C1102 @regression @id862
   Scenario Outline: Verify reset password page is accessible from settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
@@ -47,12 +47,12 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @id1258 @regression
+  @C1107 @id1258 @regression
   Scenario Outline: Verify default value for sound settings is all
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
-    And I tap on my name <Name>
+    Given I see conversations list
+    When I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
     When I tap on Sound Alerts
@@ -63,11 +63,11 @@ Feature: Settings
       | Name      |
       | user1Name |
       
-  @regression @id2074
+  @C1109 @regression @id2074
   Scenario Outline: Verify you can access Help site within the app
   	Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     And I tap on my name <Name>
     And I click on Settings button on personal page
     When I click on Help button from the options menu
@@ -77,15 +77,15 @@ Feature: Settings
       | Name      |
       | user1Name |
       
-  @regression @id2146
+  @C1113 @regression @id2146
   Scenario Outline: Verify switching on/off chatheads
     Given There are 3 users where <Name> is me
     Given User <Contact2> change avatar picture to <Picture>
     Given User <Contact2> change name to <NewName>
     Given Myself is connected to <Contact>,<Contact2>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
-    And I tap on my name <Name>
+    Given I see conversations list
+    When I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
     When I tap on Sound Alerts
@@ -95,7 +95,7 @@ Feature: Settings
     And I close self profile
     When I tap on contact name <Contact>
     And I see dialog page
-    And Contact <Contact2> sends random message to user <Name>
+    Given User <Contact2> sends 1 encrypted message to user Myself
     Then I do not see chathead of contact <Contact2>
     And I swipe right on Dialog page
     And I tap on my name <Name>
@@ -108,7 +108,7 @@ Feature: Settings
     And I close self profile
     When I tap on contact name <Contact>
     And I see dialog page
-    And Contact <Contact2> sends random message to user <Name>
+    Given User <Contact2> sends 1 encrypted message to user Myself
     Then I see chathead of contact <Contact2> 
     And I wait for 5 seconds
     Then I do not see chathead of contact <Contact2>    
@@ -117,12 +117,12 @@ Feature: Settings
       | Name      | Contact   | Contact2  | NewName  | Picture                      |
       | user1Name | user2Name | user3Name | CHATHEAD | aqaPictureContact600_800.jpg |
   
-  @regression @id730 @id731
+  @C1100 @C1101 @regression @id730 @id731
   Scenario Outline: Verify about screen contains all the required information
     Given There is 1 user where <Name> is me
     Given User me change accent color to <Color>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on my name <Name>
     And I click on Settings button on personal page
     And I click on About button on personal page

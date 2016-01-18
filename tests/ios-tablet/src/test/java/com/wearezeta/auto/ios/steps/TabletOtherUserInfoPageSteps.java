@@ -73,7 +73,7 @@ public class TabletOtherUserInfoPageSteps {
 		String email = usrMgr.findUserByNameOrNameAlias(user).getEmail();
 
 		participantNameTextFieldValue = getTabletOtherUserInfoPage()
-				.getNameFieldValueOniPadPopover();
+				.getNameFieldValueOniPadPopover(user);
 		participantEmailTextFieldValue = getTabletOtherUserInfoPage()
 				.getEmailFieldValueOniPadPopover();
 		Assert.assertTrue("Participant Name is incorrect and/or not displayed",
@@ -133,6 +133,17 @@ public class TabletOtherUserInfoPageSteps {
 	public void IClickGOButtonOnUserProfilePopover()
 			throws Exception {
 		getTabletOtherUserInfoPage().clickGoBackButton();
+	}
+
+	/**
+	 * Closes the single other user view in group popover
+	 *
+	 * @throws Exception
+	 * @step. ^I exit the other user group info iPad popover$
+	 */
+	@When("^I exit the other user group info iPad popover$")
+	public void IExitTheOtherUserGroupInfoiPadPopover() throws Exception {
+		getTabletOtherUserInfoPage().exitOtherUserGroupChatPopover();
 	}
 
 }

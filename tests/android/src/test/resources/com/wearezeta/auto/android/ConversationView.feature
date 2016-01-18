@@ -1,34 +1,32 @@
 Feature: Conversation View
 
-  @id324 @regression @rc
+  @C688 @id324 @regression @rc
   Scenario Outline: Mute conversation from conversation view
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I see dialog page
     And I tap conversation details button
     And I press options menu button
     And I press SILENCE conversation menu button
-    #And I return to group chat page
-    #Some elements seem to be missing (e.g. "X" button) so
-    #Instead of searching for elements, it works perfectly fine (and faster) just to press back 3 times
     And I press back button
     And I press back button
-    #And I navigate back from dialog page
     Then Contact <Contact1> is muted
 
     Examples: 
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @id1514 @regression
+  @C414 @id1514 @regression
   Scenario Outline: Verify unsilence the conversation from conversation view
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to me
     Given <Contact1> is silenced to user <Name>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given Contact <Contact1> is muted
     When I tap on contact name <Contact1>
@@ -44,11 +42,12 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @id316 @regression
+  @C381 @id316 @regression
   Scenario Outline: Send Message to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I see dialog page
@@ -60,11 +59,12 @@ Feature: Conversation View
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @id318 @regression @rc @rc42
+  @C682 @id318 @regression @rc @rc42
   Scenario Outline: Send Camera picture to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I see dialog page
@@ -78,11 +78,12 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id1262 @regression @rc @rc42
+  @C700 @id1262 @regression @rc @rc42
   Scenario Outline: Create group conversation from 1:1
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -103,12 +104,13 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id320 @regression @rc
+  @C684 @id320 @regression @rc
   Scenario Outline: Send message to group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
     And I see dialog page
@@ -120,11 +122,12 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName     | Message |
       | user1Name | user2Name | user3Name | SendMessGroupChat | Yo      |
 
-  @id143 @regression @rc
+  @C671 @id143 @regression @rc
   Scenario Outline: Send Long Message to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I see dialog page
@@ -136,11 +139,12 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id145 @regression
+  @C377 @id145 @regression
   Scenario Outline: Send Upper and Lower case to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I see dialog page
@@ -152,11 +156,12 @@ Feature: Conversation View
       | Name      | Contact   | Message  |
       | user1Name | user2Name | aaaaAAAA |
 
-  @id149 @regression
+  @C378 @id149 @regression
   Scenario Outline: Send emoji message to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I see dialog page
@@ -168,18 +173,18 @@ Feature: Conversation View
       | Name      | Contact   | Message  |
       | user1Name | user2Name | :) ;) :( |
 
-  @id163 @regression
+  @C379 @id163 @regression
   Scenario Outline: Send existing image from gallery (portrait) in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe on text input
     And I press Add Picture button
     And I press "Gallery" button
-    And I rotate UI to portrait
     And I press "Confirm" button
     Then I see new photo in the dialog
 
@@ -187,30 +192,12 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id162 @regression @rc @rc42
-  Scenario Outline: Send existing image from gallery (landscape) in 1:1 chat
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe on text input
-    And I press Add Picture button
-    And I press "Gallery" button
-    When I rotate UI to landscape
-    And I press "Confirm" button
-    Then I see new photo in the dialog
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
-  @id2078 @regression
+  @C419 @id2078 @regression
   Scenario Outline: I want to exit fullscreen view in landscape (rotations)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I see dialog page
@@ -235,11 +222,12 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id3242 @regression @rc @rc42
+  @C809 @id3242 @regression @rc @rc42
   Scenario Outline: (CM-717) I can send a sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -253,11 +241,12 @@ Feature: Conversation View
       | Name      | Contact1  | NumColors |
       | user1Name | user2Name | 2         |
 
-  @id3243 @regression @rc @rc42
+  @C810 @id3243 @regression @rc @rc42
   Scenario Outline: (CM-717) I can send sketch on image from gallery
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -274,11 +263,12 @@ Feature: Conversation View
       | Name      | Contact1  | NumColors |
       | user1Name | user2Name | 2         |
 
-  @id3244 @regression
+  @C432 @id3244 @regression
   Scenario Outline: I can send sketch on photo
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -294,11 +284,12 @@ Feature: Conversation View
       | Name      | Contact1  | NumColors |
       | user1Name | user2Name | 6         |
 
-  @id2990 @regression @rc @rc42
+  @C787 @id2990 @regression @rc @rc42
   Scenario Outline: I can send giphy image by typing some massage and clicking GIF button
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I see dialog page
@@ -315,12 +306,13 @@ Feature: Conversation View
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @id165 @regression @rc
+  @C674 @id165 @regression @rc
   Scenario Outline: Send GIF format pic
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
-    Given Contact <Contact> sends image <GifName> to single user conversation <Name>
+    Given User <Contact> sends image <GifName> to single user conversation <Name>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I scroll to the bottom of conversation view
@@ -333,11 +325,12 @@ Feature: Conversation View
       | Name      | Contact   | GifName      |
       | user1Name | user2Name | animated.gif |
 
-  @id159 @regression @rc
+  @C672 @id159 @regression @rc
   Scenario Outline: Send image with non default camera (portrait) in group chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I see dialog page
@@ -351,3 +344,29 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @C236 @rc @regression
+  Scenario Outline: I can send giphy image from the giphy grid preview
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I tap on text input
+    And I type the message "<Message>"
+    And I click on the GIF button
+    Then I see giphy preview page
+    Then I click on the giphy link button
+    Then I see the giphy grid preview
+    Then I select a random gif from the grid preview
+    Then I see giphy preview page
+    When I click on the giphy send button
+    Then I see dialog page
+    And I see new photo in the dialog
+    And Last message is <Message> · via giphy.com
+
+    Examples:
+      | Name      | Contact   | Message |
+      | user1Name | user2Name | Yo      |

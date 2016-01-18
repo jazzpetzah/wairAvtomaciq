@@ -22,11 +22,16 @@ public class LoginPage extends WebPage {
 	private static final Logger LOG = ZetaLogger.getLog(LoginPage.class
 			.getName());
 
+	private static final int TIMEOUT_SIGNED_IN_PROPERLY = 40; // seconds
+
 	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
 			.getInstance();
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathCreateAccountButton)
 	private WebElement createAccountButton;
+
+	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathSwitchToRegisterButtons)
+	private WebElement switchToRegisterButton;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathSignInButton)
 	private WebElement signInButton;
@@ -42,6 +47,12 @@ public class LoginPage extends WebPage {
 
 	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssPasswordInput)
 	private WebElement passwordInput;
+
+	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssRememberMe)
+	private WebElement rememberMe;
+
+	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssForgotPassword)
+	private WebElement forgotPasswordButton;
 
 	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssLoginErrorText)
 	private WebElement loginErrorText;
@@ -62,8 +73,17 @@ public class LoginPage extends WebPage {
 	}
 
 	public boolean isVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(WebAppLocators.LoginPage.xpathSignInButton));
+		return DriverUtils.waitUntilElementClickable(this.getDriver(),
+				createAccountButton)
+				&& DriverUtils.waitUntilElementClickable(this.getDriver(),
+						forgotPasswordButton);
+	}
+
+	public boolean isSignInFormVisible() throws Exception {
+		return DriverUtils.waitUntilElementClickable(this.getDriver(),
+				switchToRegisterButton)
+				&& DriverUtils.waitUntilElementClickable(this.getDriver(),
+						forgotPasswordButton);
 	}
 
 	public boolean isSignInButtonDisabled() throws Exception {
@@ -107,7 +127,8 @@ public class LoginPage extends WebPage {
 		boolean noSignIn = waitForLoginButtonDisappearance();
 		boolean noSignInSpinner = DriverUtils.waitUntilLocatorDissapears(
 				this.getDriver(),
-				By.className(WebAppLocators.LoginPage.classNameSpinner), 40);
+				By.className(WebAppLocators.LoginPage.classNameSpinner),
+				TIMEOUT_SIGNED_IN_PROPERLY);
 		return noSignIn && noSignInSpinner;
 	}
 
@@ -148,5 +169,17 @@ public class LoginPage extends WebPage {
 	public void switchToPhoneNumberLoginPage() throws Exception {
 		DriverUtils.waitUntilElementClickable(getDriver(), phoneSignInButton);
 		phoneSignInButton.click();
+	}
+
+	public void checkRememberMe() {
+		if (!rememberMe.isSelected()) {
+			rememberMe.click();
+		}
+	}
+
+	public void uncheckRememberMe() {
+		if (rememberMe.isSelected()) {
+			rememberMe.click();
+		}
 	}
 }

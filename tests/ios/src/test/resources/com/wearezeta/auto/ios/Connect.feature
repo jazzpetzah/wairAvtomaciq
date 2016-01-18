@@ -1,11 +1,11 @@
 Feature: Connect
 
-  @regression @rc @id2541
+  @C1034 @regression @rc @id2541
   Scenario Outline: Send invitation message to a user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
@@ -25,14 +25,14 @@ Feature: Connect
       | Name      | Contact   | ContactEmail | Contact2  |
       | user1Name | user2Name | user2Email   | user3Name |
 
-  @regression @rc @id1475
+  @C102 @C3178 @regression @rc @id1475
   Scenario Outline: Get invitation message from user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given <Contact> sent connection request to Me
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I see Pending request link in contact list
+    Given I see conversations list
+    When I see Pending request link in contact list
     And I click on Pending request link in contact list
     And I see Pending request page
     And I wait for 2 seconds
@@ -46,14 +46,14 @@ Feature: Connect
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @rc @id576
+  @C987 @regression @rc @id576
   Scenario Outline: Send connection request to unconnected participant in a group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <GroupCreator>
     Given <GroupCreator> is connected to <UnconnectedUser>
     Given <GroupCreator> has group chat <GroupChatName> with <UnconnectedUser>,Myself
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap on not connected contact <UnconnectedUser>
@@ -66,7 +66,7 @@ Feature: Connect
       | Name      | GroupCreator | GroupChatName | UnconnectedUser |
       | user1Name | user2Name    | TESTCHAT      | user3Name       |
 
-  @regression @id579
+  @C22 @regression @id579
   Scenario Outline: Verify transitions between connection requests (ignoring)
     Given There are 5 users where <Name> is me
     Given <Contact1> sent connection request to me
@@ -74,8 +74,8 @@ Feature: Connect
     Given <Contact3> sent connection request to me
     Given Myself is connected to <Contact4>
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I see Pending request link in contact list
+    Given I see conversations list
+    When I see Pending request link in contact list
     And I click on Pending request link in contact list
     And I see Pending request page
     And I click on Ignore button on Pending requests page <SentRequests> times
@@ -93,7 +93,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
-  @regression @id577
+  @C21 @regression @id577
   Scenario Outline: Verify transitions between connection requests (connecting)
     Given There are 5 users where <Name> is me
     Given <Contact1> sent connection request to me
@@ -101,8 +101,8 @@ Feature: Connect
     Given <Contact3> sent connection request to me
     Given Myself is connected to <Contact4>
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I see Pending request link in contact list
+    Given I see conversations list
+    When I see Pending request link in contact list
     And I click on Pending request link in contact list
     And I see Pending request page
     And I click on Connect button on Pending requests page <SentRequests> times
@@ -116,12 +116,12 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
-  @regression @rc @id1404
+  @C45 @regression @rc @id1404
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (Search)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
@@ -140,16 +140,16 @@ Feature: Connect
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @id1399
+  @C34 @regression @id1399
   Scenario Outline: Verify you don't receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
-    When Contact <Contact> sends image <Picture> to single user conversation <Name>
-    And Contact <Contact> ping conversation <Name>
-    And Contact <Contact> sends random message to user <Name>
+    Given I see conversations list
+    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    Given User <Contact> securely pings conversation <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     And I wait for 10 seconds
     Then I dont see conversation <Contact> in contact list
     When I open search by taping on it
@@ -162,23 +162,23 @@ Feature: Connect
     And I wait for 5 seconds
     Then I see User <Contact> Pinged message in the conversation
     And I see new photo in the dialog
-    And I see message in the dialog
+    And I see 1 default message in the dialog
     And I return to the chat list
     #And I see People picker page
     #And I click close button to dismiss people view
-    And Contact <Contact> sends random message to user <Name>
+    Given User <Contact> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact>
-    Then I see message in the dialog
+    Then I see 2 default messages in the dialog
 
     Examples: 
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @regression @id596
+  @C39 @regression @id596
   Scenario Outline: Verify you cannot send the invitation message twice
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
@@ -203,18 +203,20 @@ Feature: Connect
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @regression @rc @id2536
+  @C1029 @regression @rc @id2536
   Scenario Outline: Verify you can send an invitation via mail
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I press the send an invite button
+    And I press invite others button
     And I press the copy button
+    And I click close Invite list button
     And I click clear button
     And I tap on contact name <Contact>
     And I see dialog page
@@ -228,13 +230,13 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id2294
+  @C41 @regression @id2294
   Scenario Outline: Verify sending connection request by clicking instant + button (with search)
     Given There are 2 users where <Name> is me
     Given User <UnconnectedUser> name starts with <StartLetter>
     Given User <Name> change accent color to <Color>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
@@ -258,7 +260,7 @@ Feature: Connect
       | user1Name | user2Name       | user2Email   | T           | BrightOrange |
 
   #regression
-  @staging @id2768 @deployAddressBook @noAcceptAlert @obsolete
+  @C3194 @staging @id2768 @deployAddressBook @noAcceptAlert @obsolete
   Scenario Outline: Verify you can see People you may know on Wire after uploading your address book
     Given There are 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -276,13 +278,13 @@ Feature: Connect
       | Name      | Contact1 | Contact2 |
       | user1Name | vb003    | Dorothy  |
 
-  @regression @rc @id3227
+  @C38 @regression @rc @id3227
   Scenario Outline: Verify possibility of disconnecting from conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given Me sent connection request to <Contact1>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I see plus button next to text input
     And I click plus button next to text input
@@ -290,26 +292,25 @@ Feature: Connect
     And I click Cancel request button
     Then I see Cancel request confirmation page
     And I confirm Cancel request by click on Yes button
-    #And I see Details button is visible
     Then I dont see conversation <Contact> in contact list
 
     Examples: 
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @id3224
+  @C35 @regression @id3224
   Scenario Outline: Verify sending connection request after disconnecting
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given Me sent connection request to <Contact1>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     And I click plus button next to text input
     And I open conversation details
     And I click Cancel request button
     And I confirm Cancel request by click on Yes button
-    #And I see Details button is visible
+    And I return to the chat list
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
     And I see user <Contact1> found on People picker page
@@ -323,13 +324,13 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @id3225
+  @C36 @regression @id3225
   Scenario Outline: Verify possibility of disconnecting from Search UI
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
-    And I open search by taping on it
+    Given I see conversations list
+    When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
@@ -346,7 +347,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @staging @id586
+  @C24 @staging @id586 @ZIOS-5335
   Scenario Outline: Verify ignoring a connection request from another person (People view)
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -354,7 +355,7 @@ Feature: Connect
     Given <Contact1> is connected to <Contact2>,<Contact3>
     Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>,<Contact3>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     And I see Pending request link in contact list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
@@ -371,14 +372,14 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | IGNORECONNECT |
 
-  @regression @id3794
+  @C46 @regression @id3794
   Scenario Outline: Verify common connections are not tappable
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given <Contact2> sent connection request to me
     Given <Contact1> is connected to <Contact2>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     And I see Pending request link in contact list
     And I click on Pending request link in contact list
     And I see Pending request page
@@ -390,18 +391,18 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @id1199
+  @C31 @regression @id1199
   Scenario Outline: Verify you can send text messages and images in 1to1 chat to the person who blocked you
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Contact> blocks user <Name>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     When I tap on contact name <Contact>
     Then I see dialog page
-    And I type the message
+    And I type the default message
     When I send the message
-    Then I see message in the dialog
+    Then I see 1 default message in the dialog
     When I swipe the text input cursor
     And I press Add Picture button
     And I press Camera Roll button
@@ -413,13 +414,13 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id1133
+  @C30 @regression @id1133
   Scenario Outline: Verify unblocking from users profile page
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
     Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
+    Given I see conversations list
     Then I dont see conversation <Contact> in contact list
     When I open search by taping on it
     And I see People picker page
@@ -436,15 +437,15 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id3902
+  @C107 @regression @id3902
   Scenario Outline: Verify inbox is highlighted and opened in the list
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact3>
     Given <Contact> sent connection request to Me
     Given <Contact2> sent connection request to Me
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I see Pending request link in contact list
+    Given I see conversations list
+    When I see Pending request link in contact list
     And I click on Pending request link in contact list
     Then I see Pending request page
     When I swipe right in current window
@@ -456,14 +457,14 @@ Feature: Connect
       | Name      | Contact   | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @staging @id3996
+  @C47 @regression @id3996
   Scenario Outline: Verify displaying first and last names for the incoming connection request
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to Me
     Given User <Contact> changes name to <NewName>
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I see Pending request link in contact list
+    Given I see conversations list
+    When I see Pending request link in contact list
     And I click on Pending request link in contact list
     And I see Pending request page
     Then I see user <NewName> found on Pending request page
@@ -472,14 +473,14 @@ Feature: Connect
       | Name      | Contact   | NewName  |
       | user1Name | user2Name | New Name |
 
-  @staging @id3226
+  @C37 @regression @id3226
   Scenario Outline: Verify connection request is deleted from the inbox of the addresser
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given <Contact> sent connection request to Me
     Given I sign in using my email or phone number
-    When I see Contact list with my name <Name>
-    And I see Pending request link in contact list
+    Given I see conversations list
+    When I see Pending request link in contact list
     And <Contact> cancel all outgoing connection requests
     Then I dont see Pending request link in contact list
 

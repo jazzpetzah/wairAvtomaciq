@@ -33,6 +33,9 @@ public class RegistrationPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.RegistrationPage.cssPasswordFiled)
 	private WebElement passwordField;
 
+	@FindBy(how = How.CSS, using = WebAppLocators.RegistrationPage.cssTermsOfUseCheckbox)
+	private WebElement termsOfUseCheckbox;
+
 	@FindBy(how = How.CSS, using = WebAppLocators.RegistrationPage.cssCreateButton)
 	private WebElement createAccount;
 
@@ -106,6 +109,10 @@ public class RegistrationPage extends WebPage {
 		passwordField.click();
 		passwordField.clear();
 		passwordField.sendKeys(password);
+	}
+
+	public void acceptTermsOfUse() {
+		termsOfUseCheckbox.click();
 	}
 
 	public void submitRegistration() throws Exception {

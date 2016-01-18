@@ -10,6 +10,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
@@ -25,6 +26,8 @@ import com.wearezeta.auto.common.locators.ZetaSearchContext;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public abstract class BasePage {
+    private final static long DEFAULT_DRIVER_INIT_TIMEOUT = 1000 * 60 * 3; // milliseconds
+
     private final Future<? extends RemoteWebDriver> lazyDriver;
 
     protected Future<? extends RemoteWebDriver> getLazyDriver() {
@@ -32,9 +35,8 @@ public abstract class BasePage {
     }
 
     protected long getDriverInitializationTimeout() {
-        // Default value in milliseconds
         // Override this in subclasses if necessary
-        return 1000 * 60 * 3;
+        return DEFAULT_DRIVER_INIT_TIMEOUT;
     }
 
     protected RemoteWebDriver getDriver() throws Exception {
@@ -90,6 +92,18 @@ public abstract class BasePage {
         } else {
             return Optional.empty();
         }
+    }
+
+    protected void verifyLocatorPresence(By locator) throws Exception {
+        DriverUtils.verifyPresence(getDriver(), locator);
+    }
+
+    protected void verifyLocatorPresence(By locator, String message) throws Exception {
+        DriverUtils.verifyPresence(getDriver(), locator, message);
+    }
+
+    protected void verifyLocatorPresence(By locator, String message, int timeoutSeconds) throws Exception {
+        DriverUtils.verifyPresence(getDriver(), locator, message, timeoutSeconds);
     }
 
     public Optional<BufferedImage> getScreenshotByCoordinates(int x, int y,

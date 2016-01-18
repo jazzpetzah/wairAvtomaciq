@@ -1,12 +1,26 @@
 package com.wearezeta.auto.osx.pages.osx;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
-import java.util.concurrent.Future;
+import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.osx.steps.CommonOSXSteps;
+import com.wearezeta.auto.web.locators.WebAppLocators;
+import com.wearezeta.auto.web.pages.ContactListPage;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
+import java.util.concurrent.Future;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 
+import org.apache.log4j.Logger;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+
 public class ContactContextMenuPage extends OSXPage {
+
+	public static final Logger LOG = ZetaLogger.getLog(ContactContextMenuPage.class
+			.getName());
 
 	private static final int CONTEXT_ARCHIVE_INDEX = 1;
 	private static final int CONTEXT_SILENCE_INDEX = 2;
@@ -62,5 +76,4 @@ public class ContactContextMenuPage extends OSXPage {
 		}
 		robot.keyPress(KeyEvent.VK_ENTER);
 	}
-
 }

@@ -10,6 +10,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.ContactListPage;
 import com.wearezeta.auto.web.pages.PeoplePickerPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
+import com.wearezeta.auto.web.pages.external.GoogleLoginPage;
 import com.wearezeta.auto.web.pages.popovers.BringYourFriendsPopoverPage;
 
 import cucumber.api.java.en.And;
@@ -22,6 +23,18 @@ public class PeoplePickerPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
 			.getInstance();
+
+	/**
+	 * Verifies the presence of the People Picker
+	 *
+	 * @step. ^I see [Pp]eople [Pp]icker$
+	 *
+	 * @throws Exception
+	 */
+	@When("^I see [Pp]eople [Pp]icker$")
+	public void ISeePeoplePicker() throws Exception {
+		webappPagesCollection.getPage(PeoplePickerPage.class).isVisible();
+	}
 
 	/**
 	 * Selects user from search results in People Picker
@@ -190,16 +203,16 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * Verify whether Bring Your Friends button is visible on People Picker page
+	 * Verify whether Bring Your Friends or Invite People button is visible
 	 * 
-	 * @step. ^I see Bring Your Friends button on People Picker page$
+	 * @step. ^I see Bring Your Friends or Invite People button$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I see Bring Your Friends button on People Picker page$")
+	@When("^I see Bring Your Friends or Invite People button$")
 	public void ISeeSendInvitationButton() throws Exception {
 		webappPagesCollection.getPage(PeoplePickerPage.class)
-				.waitUntilBringYourFriendsButtonIsVisible();
+				.waitUntilBringYourFriendsOrInvitePeopleButtonIsVisible();
 	}
 
 	/**
@@ -216,16 +229,66 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * Click Bring Your Friends button on People Picker page
+	 * Click button to bring friends from Gmail
 	 * 
-	 * @step. ^I click Bring Your Friends button on People Picker page$
+	 * @step. ^I click button to bring friends from Gmail$
+	 * 
+	 */
+	@And("^I click button to bring friends from Gmail$")
+	public void IClickButtonToBringFriendsFromGmail() throws Exception {
+		webappPagesCollection.getPage(PeoplePickerPage.class)
+				.clickBringFriendsFromGmailButton();
+	}
+
+	/**
+	 * Verifies whether Google login prompt is visible
+	 * 
+	 * @step. ^I see Google login popup$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I click Bring Your Friends button on People Picker page$")
-	public void IClickSendInvitationButton() throws Exception {
+	@And("^I see Google login popup$")
+	public void ISeeGoogleLoginPopup() throws Exception {
 		webappPagesCollection.getPage(PeoplePickerPage.class)
-				.clickBringYourFriendsButton();
+				.switchToGooglePopup();
+	}
+
+	/**
+	 * Enter gmail login and password into corresponding window
+	 * 
+	 * @step. ^I sign up at Google with email (.*) and password (.*)$"
+	 * 
+	 * @param email
+	 * @param password
+	 * @throws Exception
+	 */
+	@When("^I sign up at Google with email (.*) and password (.*)$")
+	public void ISignUpAtGoogleWithEmail(String email, String password)
+			throws Exception {
+		GoogleLoginPage googleLoginPage = webappPagesCollection
+				.getPage(GoogleLoginPage.class);
+		// sometimes Google already shows the email
+		googleLoginPage.setEmail(email);
+		// sometimes google shows a next button and you have to enter the
+		// password separately
+		if (googleLoginPage.hasNextButton()) {
+			googleLoginPage.clickNext();
+		}
+		googleLoginPage.setPassword(password);
+		googleLoginPage.clickSignIn();
+	}
+
+	/**
+	 * Click Bring Your Friends or Invite People button on People Picker page
+	 * 
+	 * @step. ^I click Bring Your Friends or Invite People button$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click Bring Your Friends or Invite People button$")
+	public void IClickBringYourFriendsOrInvitePeopleButton() throws Exception {
+		webappPagesCollection.getPage(PeoplePickerPage.class)
+				.clickBringYourFriendsOrInvitePeopleButton();
 	}
 
 	/**

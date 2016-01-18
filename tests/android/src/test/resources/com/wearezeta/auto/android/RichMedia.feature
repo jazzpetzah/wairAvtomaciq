@@ -1,34 +1,11 @@
 Feature: Rich Media
 
-  @id3241 @regression @rc
-  Scenario Outline: I can send GIF image from giphy grid
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I tap on text input
-    And I type the message "<Message>"
-    And I click on the GIF button
-    Then I see giphy preview page
-    When I click Show giphy grid button
-    And I select the first item in giphy grid
-    And I see giphy preview page
-    And I click on the giphy send button
-    Then I see dialog page
-    And I see new photo in the dialog
-    And Last message is <Message> · via giphy.com
-
-    Examples:
-      | Name      | Contact   | Message |
-      | user1Name | user2Name | Yo      |
-
-  @id1504 @regression @rc @rc42
+  @C714 @id1504 @regression @rc @rc42
   Scenario Outline: Verify you can play/pause SoundCloud media from the Media Bar in conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -50,11 +27,12 @@ Feature: Rich Media
       | Name      | Contact1  | SoundCloudLink                                              |
       | user1Name | user2Name | https://soundcloud.com/binary_for_breakfast/star-wars-theme |
       
-  @id1510 @regression @rc
+  @C717 @id1510 @regression @rc
   Scenario Outline: Verify conversation list play/pause controls can change playing SoundCloud media state
     Given There are 2 users where <Name> is me
     Given <Name> is connected to <Contact1>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -70,11 +48,12 @@ Feature: Rich Media
       | Name      | Contact1  | SoudCloudLink                                               |
       | user1Name | user2Name | https://soundcloud.com/binary_for_breakfast/star-wars-theme |
       
-  @id1505 @regression
+  @C412 @id1505 @regression
   Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation (SoundCloud)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -96,11 +75,12 @@ Feature: Rich Media
       | Name      | Contact1  | Contact2  | SoundCloudLink                                              |
       | user1Name | user2Name | user3Name | https://soundcloud.com/binary_for_breakfast/star-wars-theme |
       
-  @id170 @regression @rc @rc42
+  @C675 @id170 @regression @rc @rc42
   Scenario Outline: Verify you can send youtube link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I see dialog page

@@ -1,11 +1,12 @@
 Feature: Rotations
 
-  @id2185 @regression
+  @C474 @id2185 @regression
   Scenario Outline: Self profile
     Given There is 1 user where <Name> is me
     Given I rotate UI to portrait
     Given I sign in using my email
-    And I see the conversations list with no conversations
+    Given I accept First Time overlay as soon as it is visible
+    Given I see the conversations list with no conversations
     When I tap my avatar on top of conversations list
     And I see my name on Self Profile page
     # We try to set the self name to make sure this action is really visible and available
@@ -25,12 +26,13 @@ Feature: Rotations
       | Name      |
       | user1Name |
 
-  @id2186 @regression
+  @C475 @id2186 @regression
   Scenario Outline: (AN-2900) Search (people picker)
     Given There is 1 user where <Name> is me
     Given I rotate UI to portrait
     Given I sign in using my email
-    And I see the conversations list with no conversations
+    Given I accept First Time overlay as soon as it is visible
+    Given I see the conversations list with no conversations
     When I tap the Search input
     Then I see People Picker page
     When I rotate UI to landscape
@@ -42,14 +44,15 @@ Feature: Rotations
       | Name      |
       | user1Name |
 
-  @id2187 @regression
+  @C476 @id2187 @regression
   Scenario Outline: Conversation view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given Contact <Contact> sends message "<Message>" to user Myself
     Given I rotate UI to portrait
     Given I sign in using my email
-    And I see the conversations list with conversations
+    Given I accept First Time overlay as soon as it is visible
+    Given I see the conversations list with conversations
     When I tap the conversation <Contact>
     Then I see the conversation view
     And I see the message "<Message>" in the conversation view
@@ -62,14 +65,15 @@ Feature: Rotations
       | Name      | Contact   | Message |
       | user1Name | user2Name | Msg1    |
 
-  @id2186 @regression
+  @C475 @id2186 @regression
   Scenario Outline: (AN-2901) Search (people picker)
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to me
     Given <Contact2> is connected to <Contact1>
     Given I rotate UI to portrait
     Given I sign in using my email
-    And I see the conversations list with conversations
+    Given I accept First Time overlay as soon as it is visible
+    Given I see the conversations list with conversations
     When I tap the Search input
     And I see People Picker page
     And I enter "<Contact2>" into Search input on People Picker page
@@ -84,12 +88,13 @@ Feature: Rotations
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id2908 @regression
+  @C510 @id2908 @regression
   Scenario Outline: I want to exit fullscreen view in landscape
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>

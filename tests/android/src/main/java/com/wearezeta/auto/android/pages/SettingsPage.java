@@ -1,13 +1,13 @@
 package com.wearezeta.auto.android.pages;
 
-import java.awt.image.BufferedImage;
-import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.*;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 public class SettingsPage extends AndroidPage {
 
@@ -16,14 +16,16 @@ public class SettingsPage extends AndroidPage {
     private static final Function<String, String> xpathSettingsMenuItemByText = text -> String
             .format("//*[@id='title' and @value='%s']", text);
 
-    private static final Function<String, String> xpathSettingsMenuItemByPartOfText = text -> String
-            .format("//*[@id='title' and contains(@value, '%s')]", text);
-
-    private static final String xpathThemeSwitch = String
-            .format("%s/parent::*/parent::*//*[@id='switchWidget']", xpathSettingsMenuItemByPartOfText.apply("Theme"));
-
     private static final Function<String, String> xpathConfirmBtnByName = name -> String
             .format("//*[starts-with(@id, 'button') and @value='%s']", name);
+
+    private static final String idPasswordConfirmationInput = "acet__remove_otr__password";
+    @FindBy(id = idPasswordConfirmationInput)
+    private WebElement confirmationPasswordInput;
+
+    private static final String xpathConfirmationInputOKButton = "//*[starts-with(@id, 'button') and @value='OK']";
+    @FindBy(xpath = xpathConfirmationInputOKButton)
+    private WebElement confirmationPasswordOKButton;
 
     public SettingsPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -53,28 +55,32 @@ public class SettingsPage extends AndroidPage {
         getDriver().findElement(locator).click();
     }
 
-    public boolean isMenuItemVisible(String name) throws Exception {
-        final By locator = By.xpath(xpathSettingsMenuItemByText.apply(name));
-        return scrollUntilMenuElementVisible(locator, 5);
-    }
-
     public void confirmLogout() throws Exception {
         final By locator = By.xpath(xpathConfirmBtnByName.apply("Log out"));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) :
-                "Log out confirmation is not visible";
+        verifyLocatorPresence(locator, "Log out confirmation is not visible");
         getDriver().findElement(locator).click();
     }
 
-    public Optional<BufferedImage> getThemeSwitcherState() throws Exception {
-        final By itemLocator = By.xpath(xpathSettingsMenuItemByPartOfText.apply(" Theme"));
-        assert scrollUntilMenuElementVisible(itemLocator, 5) : "Theme menu item is not visible";
-        return this.getElementScreenshot(getDriver().findElement(By.xpath(xpathThemeSwitch)));
+    public boolean waitUntilPasswordConfirmationIsVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idPasswordConfirmationInput));
     }
 
-    public void switchTheme() throws Exception {
-        final By switchLocator = By.xpath(xpathThemeSwitch);
-        assert scrollUntilMenuElementVisible(By.xpath(xpathSettingsMenuItemByPartOfText.apply(" Theme")), 5)
-                : "Theme menu item is not visible";
-        getDriver().findElement(switchLocator).click();
+    public void enterConfirmationPassword(String password) {
+        confirmationPasswordInput.click();
+        confirmationPasswordInput.sendKeys(password);
+    }
+
+    public void tapOKButtonOnPasswordConfirmationDialog() {
+        confirmationPasswordOKButton.click();
+    }
+
+    public boolean waitUntilMenuItemVisible(String name) throws Exception {
+        final By locator = By.xpath(xpathSettingsMenuItemByText.apply(name));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean waitUntilMenuItemInvisible(String name) throws Exception {
+        final By locator = By.xpath(xpathSettingsMenuItemByText.apply(name));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 }

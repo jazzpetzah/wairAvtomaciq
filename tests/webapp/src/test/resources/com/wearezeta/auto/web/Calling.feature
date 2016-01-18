@@ -1,6 +1,6 @@
 Feature: Calling
 
-  @regression @calling @calling_debug @id1860
+  @C1745 @regression @calling @calling_debug
   Scenario Outline: Verify I can send text, image and ping while in the same convo
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -19,15 +19,15 @@ Feature: Calling
     And I click ping button
     And I send picture <PictureName> to the current conversation
     Then I see random message in conversation
-    And I see ping message <PING>
+    And I see <PING> action in conversation
     And I see sent picture <PictureName> in the conversation view
     And I end the call
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | PING   | PictureName               | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | pinged | userpicture_landscape.jpg | chrome      | 60      |
+      | Login      | Password      | Name      | Contact   | PING       | PictureName               | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | you pinged | userpicture_landscape.jpg | chrome      | 60      |
 
-  @regression @calling @calling_debug @id2080
+  @C1772 @regression @calling @calling_debug
   Scenario Outline: Verify I can get pinged by callee during call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -42,16 +42,16 @@ Feature: Calling
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the calling bar
     And User <Contact> pinged in the conversation with <Contact>
-    And I see ping message <PING>
+    And I see <PING> action in conversation
     And User <Contact> pinged twice in the conversation with <Contact>
-    And I see ping message <HOTPING>
+    And I see <HOTPING> action in conversation
     And I end the call
 
     Examples: 
       | Login      | Password      | Name      | Contact   | PING   | HOTPING      | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | pinged | pinged again | chrome      | 60      |
 
-  @regression @calling @calling_debug @id1892
+  @C1753 @regression @calling @calling_debug
   Scenario Outline: Verify the corresponding conversations list item gets sticky on outgoing call
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -79,7 +79,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      | 60      |
 
-  @regression @calling @calling_debug @id1891
+  @C1752 @regression @calling @calling_debug
   Scenario Outline: Verify the corresponding conversations list item gets sticky on incoming call
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -106,7 +106,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | autocall    | 60      |
 
-  @smoke @calling @calling_debug @id2237
+  @C1776 @smoke @calling @calling_debug
   Scenario Outline: Verify I can call a user twice in a row
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -133,7 +133,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
       | user1Email | user1Password | user1Name | user2Name | firefox     | 60      |
 
-  @calling @id1866
+  @C1747 @calling
   Scenario Outline: Verify I can call a user for more than 15 mins
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -198,7 +198,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
 
-  @regression @calling @calling_debug @id1902
+  @C1754 @regression @calling @calling_debug
   Scenario Outline: Verify that current call is terminated if you want to call someone else (as caller)
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -248,7 +248,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      | 60      |
 
-  @smoke @calling @calling_debug @id1839
+  @C1744 @smoke @calling @calling_debug
   Scenario Outline: Verify I can not call in browsers without WebRTC
     Given My browser does not support calling
     Given There are 2 users where <Name> is me
@@ -274,7 +274,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | autocall    | 60      |
 
-  @regression @calling @calling_debug @id3083
+  @C1801 @regression @calling @calling_debug
   Scenario Outline: Verify that current call is terminated if you want to call someone else (as callee)
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -325,7 +325,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | autocall    | chrome      | 60      |
 
-  @staging @calling @group @calling_debug @id3071
+  @staging @calling @group @calling_debug
   Scenario Outline: Verify receiving group call during group call
     Given My browser supports calling
     Given There are 5 users where <Name> is me
@@ -381,7 +381,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | ChatName2 | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GC1       | GC2       | autocall    | chrome      | 60      |
 
-  @regression @calling @calling_debug @id2013
+  @C1765 @regression @calling @calling_debug
   Scenario Outline: Verify I get missed call notification when I call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -394,14 +394,14 @@ Feature: Calling
     Then I wait for 2 seconds
     And I end the call
     When I open conversation with <Contact>
-    Then I see conversation with my missed call
+    Then I see <Message> action in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact   | Message    |
+      | user1Email | user1Password | user1Name | user2Name | you called |
 
   # This has to work even in browsers, which don't support calling
-  @regression @calling @calling_debug @id2014
+  @C1766 @regression @calling @calling_debug
   Scenario Outline: Verify I get missed call notification when someone calls me
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -416,13 +416,13 @@ Feature: Calling
     Then I see missed call notification for conversation <Contact1>
     When I open conversation with <Contact1>
     Then I do not see missed call notification for conversation <Contact1>
-    Then I see conversation with missed call from <Contact1>
+    Then I see <MISSED> action for <Contact1> in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | autocall    |
+      | Login      | Password      | Name      | Contact1  | MISSED | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name | called | autocall    |
 
-  @regression @calling @calling_debug @id1882
+  @C1749 @regression @calling @calling_debug
   Scenario Outline: People trying to call me while I'm not signed in
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -444,7 +444,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | autocall    | 60      |
 
-  @regression @calling @calling_debug @id1906
+  @C1755 @regression @calling @calling_debug
   Scenario Outline: Verify I can make another call while current one is ignored
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -471,7 +471,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | CallWaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | autocall    | chrome          | 60      |
 
-  @regression @calling @calling_debug @id1883
+  @C1750 @regression @calling @calling_debug
   Scenario Outline: Verify I can not see blocked contact trying to call me
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -489,7 +489,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | OtherContact | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name    | autocall    | 60      |
 
-  @regression @calling @calling_debug @id1884
+  @C1751 @regression @calling @calling_debug
   Scenario Outline: Verify I can see muted conversation person trying to call me
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -506,7 +506,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | autocall    | 60      |
 
-  @staging @calling @id1907
+  @staging @calling
   Scenario Outline: Verify call button is not visible in the conversation view while incoming call is in progress
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -527,7 +527,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | autocall    | 60      |
 
-  @staging @calling @id1905
+  @staging @calling
   Scenario Outline: Verify that outgoing call is terminated after within 1 minute timeout if nobody responds
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -545,7 +545,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @regression @calling @group @calling_debug @id3058
+  @C1798 @regression @calling @group @calling_debug
   Scenario Outline: Verify initiator is not a host for the call
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -568,7 +568,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome      | 60      |
 
-  @regression @calling @group @calling_debug @id3064
+  @C1799 @regression @calling @group @calling_debug
   Scenario Outline: Verify accepting group call
     Given My browser supports calling
     Given There are 5 users where <Name> is me
@@ -597,7 +597,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | autocall    | chrome      | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | autocall    | firefox     | 60      |
 
-  @staging @calling @group @calling_debug @id3057
+  @staging @calling @group @calling_debug
   Scenario Outline: Verify impossibility to connect 6th person to the call
     Given My browser supports calling
     Given There are 6 users where <Name> is me
@@ -626,7 +626,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | ChatName              | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | GroupCallConversation | autocall    | chrome      | 60      |
 
-  @regression @calling @group @calling_debug @id3231
+  @C1813 @regression @calling @group @calling_debug
   Scenario Outline: Verify initiating group call
     Given My browser supports calling
     Given There are 5 users where <Name> is me
@@ -649,7 +649,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | chrome      | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | firefox     | 60      |
 
-  @regression @calling @group @calling_debug @id3065
+  @C1800 @regression @calling @group @calling_debug
   Scenario Outline: Verify ignoring group call
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -673,7 +673,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | autocall    | chrome      | 60      |
 
-  @staging @calling @group @calling_debug @id3060
+  @staging @calling @group @calling_debug
   Scenario Outline: Verify leaving and coming back to the call
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -699,7 +699,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome      | 60      |
 
-  @staging @calling @group @calling_debug @id3066
+  @staging @calling @group @calling_debug
   Scenario Outline: Verify possibility to join call after 1 minutes of starting it
     Given My browser supports calling
     Given There are 3 users where <Name> is me

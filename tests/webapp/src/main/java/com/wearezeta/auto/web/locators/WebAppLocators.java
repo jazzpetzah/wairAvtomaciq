@@ -40,6 +40,10 @@ public final class WebAppLocators {
 		public static final String errorMarkedEmailField = "#form-account-login .input-error[data-uie-name='enter-email']";
 
 		public static final String errorMarkedPasswordField = "#form-account-login .input-error[data-uie-name='enter-password']";
+
+		public static final String cssRememberMe = "#remember-me label";
+
+		public static final String cssForgotPassword = "[data-uie-name='go-forgot-password']";
 	}
 
 	public static final class ContactListPage {
@@ -171,9 +175,16 @@ public final class WebAppLocators {
 
 		public static final String xpathSettingsDialogRoot = "//div[@id='self-settings' and contains(@class, 'modal-show')]";
 
-		public static final String xpathSettingsCloseButton = "//div[@id='self-settings']//*[@data-uie-name='do-close']";
+		public static final String cssSettingsCloseButton = "#self-settings [data-uie-name='do-close']";
 
 		public static final String cssSoundAlertsLevel = "[data-uie-name=enter-sound-alerts]";
+
+		public static final String cssDeviceLabels = ".self-settings-device-list device-card .label-xs";
+
+		public static final Function<String, String> xpathDeviceLabel = (name) -> String
+				.format("//device-card//span[contains(text(),'%s')]", name);
+
+		public static final String cssCurrentDevice = "[data-uie-name='device-card-info-current']";
 	}
 
 	public static final class SelfProfilePage {
@@ -210,6 +221,8 @@ public final class WebAppLocators {
 
 		public static final String xpathCameraButton = "//*[@data-uie-name='go-profile-picture-selection']";
 
+		public static final String cssSelectPicture = "[data-uie-name='do-select-picture']";
+
 		public static final String xpathBackgroundAvatarAccentColor = "//div[contains(@class, 'background-accent bg-theme')]";
 	}
 
@@ -224,6 +237,9 @@ public final class WebAppLocators {
 
 		// messages (including images, text, missed call notifications, pings)
 		public static final String cssMessage = "[data-uie-name='item-message']";
+
+		// message header contains action description
+		public static String cssMessageHeader = cssMessage + " .message-header";
 
 		public static final String cssLastMessage = "[data-uie-name='item-message']:last-child";
 
@@ -307,6 +323,9 @@ public final class WebAppLocators {
 		public static final Function<String, String> cssUserAvatarById = id -> String
 				.format("[user-id='%s'] .user-avatar-border", id);
 
+		public static final String cssConnectedMessageUser = ".message-connected-header";
+
+		public static final String cssConnectedMessageLabel = ".message-connected .label-xs";
 	}
 
 	public static final class ConnectToPage {
@@ -372,8 +391,7 @@ public final class WebAppLocators {
 
 		public static final String classNamePeoplePickerVisible = "people-picker-is-visible";
 
-		public static final String xpathBringYourFriendsButton = xpathRoot
-				+ "//*[@id='invite-button']";
+		public static final String cssBringYourFriendsOrInvitePeopleButton = "#invite-button";
 
 		public static final Function<String, String> xpathSearchPendingResultByName = (
 				name) -> String
@@ -393,6 +411,8 @@ public final class WebAppLocators {
 		public static final String cssSearchField = "[data-uie-name='enter-users']";
 
 		public static final String cssMoreButton = "[data-uie-name='item-more']";
+
+		public static final String cssBringFriendsFromGMailButton = ".people-picker-import-buttons";
 
 	}
 
@@ -423,16 +443,17 @@ public final class WebAppLocators {
 		public static final String cssErrorMessages = "#form-account-register [data-uie-name='status-error'] .error";
 
 		public static final String xpathVerifyLaterButton = "//div[@id='posted-later-link']";
+
+		public static final String cssTermsOfUseCheckbox = ".checkbox-terms-of-use span";
 	}
 
 	public static final class SelfPictureUploadPage {
 
 		public static final String xpathRootDiv = "//div[@id='self-upload']";
 
-		public static final String xpathSelectPictureButton = xpathRootDiv
-				+ "//*[@data-uie-name='do-select-picture']/following-sibling::span";
+		public static final String cssKeepPictureButton = "[data-uie-name='do-keep-picture']";
 
-		public static final String cssSendPictureInput = "div#self-upload input[data-uie-name=do-select-picture]";
+		public static final String cssChooseYourOwnInput = "[data-uie-name=do-select-picture]";
 
 		public static final String xpathConfirmPictureSelectionButton = xpathRootDiv
 				+ "//*[@data-uie-name='do-set-picture']";
@@ -450,9 +471,6 @@ public final class WebAppLocators {
 
 		public static final String xpathCloseButton = xpathRootDiv
 				+ "//*[@data-uie-name='do-close']";
-
-		public static final String xpathShareContactsButton = xpathRootDiv
-				+ "//*[@data-uie-name='do-google-import']";
 
 		public static final String xpathShowSearchButton = xpathRootDiv
 				+ "//*[@data-uie-name='go-search']";

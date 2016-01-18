@@ -19,15 +19,11 @@ public class InvitationsPage extends AndroidPage {
     @FindBy(id = idInviteMorePeopleContactsBtn)
     private By inviteContactsBtnLocator = By.id(idInviteMorePeopleContactsBtn);
 
-    private static final String idInviteMorePeopleSearchBtn = "zb__pickuser__show_contact_list";
-    @FindBy(id = idInviteMorePeopleSearchBtn)
-    private By inviteSearchBtnLocator = By.id(idInviteMorePeopleSearchBtn);
-
-    private static final String idInviteSearchField = "puet_contactlist__searchbox";
+    private static final String idInviteSearchField = "puet_pickuser__searchbox";
     @FindBy(id = idInviteSearchField)
     private WebElement inviteSearchField;
 
-    private static final String idInvitePageCloseBtn = "gtv_contactlist__clearbutton";
+    private static final String idInvitePageCloseBtn = "gtv_pickuser__clearbutton";
     @FindBy(id = idInvitePageCloseBtn)
     private WebElement invitePageCloseBtn;
 
@@ -74,8 +70,7 @@ public class InvitationsPage extends AndroidPage {
 
     public void selectEmailOnAlert(String email) throws Exception {
         final By locator = By.xpath(xpathAlertItemByValue.apply(email));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String.format(
-                "Email address '%s' is not visible on the alert", email);
+        verifyLocatorPresence(locator, String.format("Email address '%s' is not visible on the alert", email));
         getDriver().findElement(locator).click();
     }
 
@@ -98,15 +93,6 @@ public class InvitationsPage extends AndroidPage {
     public boolean waitForInviteMorePeopleContactsButtonNotVisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(),
                 inviteContactsBtnLocator);
-    }
-
-    public boolean waitForInviteMorePeopleSearchButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), inviteSearchBtnLocator);
-    }
-
-    public boolean waitForInviteMorePeopleSearchButtonNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-                inviteSearchBtnLocator);
     }
 
     public String getRecentInvitationCode(String email) throws Throwable {

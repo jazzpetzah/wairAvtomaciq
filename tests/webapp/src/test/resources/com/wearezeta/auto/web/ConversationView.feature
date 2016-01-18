@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @smoke @id1626
+  @C1703 @smoke
   Scenario Outline: Send message in 1on1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -16,7 +16,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id1617
+  @C1701 @smoke
   Scenario Outline: Verify you can see image on the second end in a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -43,7 +43,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | Login2     | Password2     | Name2     | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessageGroupChat | user2Email | user2Password | user2Name | userpicture_landscape.jpg |
 
-  @regression @id1628
+  @C1704 @regression
   Scenario Outline: Send message to group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -60,7 +60,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessageGroupChat |
 
-  @regression @id1612
+  @C1700 @regression
   Scenario Outline: Send picture to contact in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -76,7 +76,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |
 
-  @regression @id2319
+  @C1784 @regression
   Scenario Outline: Able to send and play youtube link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -101,7 +101,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Youtubelink1                               | Youtubelink2                                                 | Youtubelink3                          | Youtubelink4                 |
       | user1Email | user1Password | user1Name | user2Name | http://www.youtube.com/watch?v=JOCtdw9FG-s | https://www.youtube.com/watch?v=txqiwrbYGrs&feature=youtu.be | https://www.youtube.com/v/_1w2aASUpWQ | https://youtu.be/QH2-TGUlwu4 |
 
-  @regression @id1934
+  @C1759 @regression
   Scenario Outline: Send Camera picture to group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -117,7 +117,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendPictureGroupChat | userpicture_landscape.jpg |
 
-  @regression @id2011
+  @C1764 @regression
   Scenario Outline: I can see missed messages when rejoining a conversation after leaving it
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -146,10 +146,11 @@ Feature: Conversation View
       | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  | ChatName  | Msg1FromUserA | Msg2FromUserA |
       | user1Name | user2Name | user2Email    | user2Password    | user3Name | GroupChat | Message1      | Message2      |
 
-  @regression @id1688
+  @C1710 @regression
   Scenario Outline: Verify you can add maximum+1 number of participants into group conversation
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
+    Given I wait for 20 seconds
     When I see my avatar on top of Contact list
     And I open People Picker from Contact List
     And I type <Contact1> in search field of People Picker
@@ -182,7 +183,7 @@ Feature: Conversation View
       | Login                       | Password   | Contact1   | Contact2   |
       | smoketester+id1688@wire.com | aqa123456! | perf.200.1 | perf.200.2 |
 
-  @regression @id2279
+  @C1781 @regression
   Scenario Outline: Send a long message containing new lines in 1on1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -202,7 +203,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | ExpectedMessage                   |
       | user1Email | user1Password | user1Name | user2Name | ('a' * 100)('LF' * 10)('b' * 100) |
 
-  @regression @id1624
+  @C1702 @regression
   Scenario Outline: Verify you can see conversation images in fullscreen
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -225,7 +226,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |
 
-  @regression @id2891
+  @C1792 @regression
   Scenario Outline: Verify you can send not-random gif with giphy button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -247,7 +248,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Message | ExpectedMessage     |
       | user1Email | user1Password | user1Name | user2Name | cat     | cat • via giphy.com |
 
-  @regression @id3018
+  @C1797 @regression
   Scenario Outline: Verify that typed-in messages are not lost
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -264,7 +265,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Message                                  |
       | user1Email | user1Password | user1Name | user2Name | All of these Candlejack jokes aren’t fu- |
 
-  @regression @id2992
+  @C1793 @regression
   Scenario Outline: Verify Start (Search) is opened when you press ⌥ ⌘ N (Mac) or alt + ctrl + N (Win)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -279,7 +280,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @regression @id2993
+  @C1794 @regression
   Scenario Outline: Verify you ping in a conversation when you press alt + ctrl + K (Win)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -290,13 +291,13 @@ Feature: Conversation View
     When I hover ping button
     Then I see correct ping button tooltip
     When I type shortcut combination to ping
-    Then I see ping message <PING>
+    Then I see <PING> action in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | PING   |
-      | user1Email | user1Password | user1Name | user2Name | pinged |
+      | Login      | Password      | Name      | Contact   | PING       |
+      | user1Email | user1Password | user1Name | user2Name | you pinged |
 
-  @regression @id2994
+  @C1795 @regression
   Scenario Outline: Verify you start a call in a conversation when you press ⌥ ⌘ R (Mac) or alt + ctrl + R (Win)
     Given My browser supports calling
     Given There are 2 users where <Name> is me

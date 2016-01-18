@@ -99,20 +99,6 @@ public class RegistrationSteps {
     }
 
     /**
-     * Uses the backend API to activate the registered user and then waits for
-     * the confirmation page to disappear (somehow, locator is not clear...)
-     *
-     * @throws Throwable
-     * @step. ^I verify registration address$
-     */
-    @Then("^I verify registration address$")
-    public void IVerifyRegistrationAddress() throws Throwable {
-        BackendAPIWrappers.activateRegisteredUserByEmail(activationMessage);
-        this.userToRegister.setUserState(UserState.Created);
-        getRegistrationPage().continueRegistration();
-    }
-
-    /**
      * Type a password into the corresponding field on the registration by email invite page
      *
      * @param pwd password or alias
@@ -160,5 +146,18 @@ public class RegistrationSteps {
     @And("^I select (Camera|Gallery) as picture source$")
     public void ISelectPictureSource(String src) throws Exception {
         getRegistrationPage().selectPictureSource(src);
+    }
+
+    /**
+     * Wait for Unsplash screen to appear
+     *
+     * @step. ^I wait until Unsplash screen is visible$
+     *
+     * @throws Exception
+     */
+    @And("^I wait until Unsplash screen is visible$")
+    public void IWaitUnspashScreen() throws Exception {
+        Assert.assertTrue("Unsplash screen is still not visible after timeout",
+                getRegistrationPage().waitUntilUnsplashScreenIsVisible());
     }
 }

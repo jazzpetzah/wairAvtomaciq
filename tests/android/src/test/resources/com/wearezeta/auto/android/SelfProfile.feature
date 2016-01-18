@@ -1,9 +1,10 @@
 Feature: Self Profile
 
-  @id205 @regression @rc @rc42
+  @C679 @id205 @regression @rc @rc42
   Scenario Outline: Change user picture with gallery image
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     When I tap on my avatar
     And I tap on personal info screen
@@ -18,11 +19,12 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @id325 @regression @rc
+  @C689 @id325 @regression @rc
   Scenario Outline: Check contact personal info in one to one conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I see dialog page
@@ -33,11 +35,12 @@ Feature: Self Profile
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id328 @regression @rc @rc42
+  @C691 @id328 @regression @rc @rc42
   Scenario Outline: I can change my name
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
-    And I see Contact list with no contacts
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with no contacts
     When I tap on my avatar
     And I see personal info page
     And I tap on my name
@@ -50,10 +53,11 @@ Feature: Self Profile
       | Name      | NewName     |
       | user1Name | NewTestName |
 
-  @id201 @regression @rc
+  @C678 @id201 @regression @rc
   Scenario Outline: Change user picture using camera
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     When I tap on my avatar
     # Wait until self profile image is loaded into UI
@@ -70,35 +74,12 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @id4066 @regression
-  Scenario Outline: Verify theme switch in self profile change its state and synced with settings menu
-    Given There is 1 user where <Name> is me
-    Given I sign in using my email or phone number
-    Given I see Contact list with no contacts
-    And I tap on my avatar
-    And I see personal info page
-    And I tap options button
-    And I tap settings button
-    And I select "Account" settings menu item
-    And I remember the value of "Theme" setting
-    And I press back button
-    And I press back button
-    And I see personal info page
-    When I tap Light Bulb button
-    And I tap options button
-    And I tap settings button
-    And I select "Account" settings menu item
-    Then I verify the value of "Theme" setting is changed
-
-    Examples:
-      | Name      |
-      | user1Name |
-
-  @id4069 @regression
+  @C450 @id4069 @regression
   Scenario Outline: Verify I can switch dark/white theme from self profile
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I see dialog page

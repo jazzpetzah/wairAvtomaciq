@@ -1,6 +1,6 @@
 Feature: Settings
 
-  @smoke @id3943
+  @C2365 @smoke
   Scenario Outline: Open preferences with menu bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -14,7 +14,7 @@ Feature: Settings
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id3944
+  @C2366 @smoke
   Scenario Outline: Open preferences with keyboard shortcut
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -28,7 +28,7 @@ Feature: Settings
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id3953
+  @C3149 @smoke
   Scenario Outline: Verify that the webapp settings button is not shown
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -36,7 +36,6 @@ Feature: Settings
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When I open self profile
-    And the camera button in self profile is clickable
     Then I do not see the settings button on self profile page
 
     Examples: 

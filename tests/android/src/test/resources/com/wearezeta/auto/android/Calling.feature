@@ -5,6 +5,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
@@ -23,6 +24,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
@@ -38,6 +40,7 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I see dialog page
@@ -55,6 +58,7 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When <Contact1> calls me using <CallBackend>
     And I answer the call from the overlay bar
@@ -70,6 +74,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I minimize the application
     And <Contact> calls me using <CallBackend>
@@ -87,6 +92,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I lock the device
     And <Contact> calls me using <CallBackend>
@@ -104,28 +110,27 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    And I tap on contact name <Contact>
     And I see dialog page
     And <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I answer the call from the overlay bar
     And I see started call message for contact <Contact>
     When I swipe on text input
+    And I press Ping button
+    Then I see Ping message <Msg> in the dialog
+    When I tap on text input
+    And I type the message "<Message>" and send it
+    Then I see my message "<Message>" in the dialog
+    When I swipe on text input
     And I press Add Picture button
     And I press "Take Photo" button
     And I press "Confirm" button
     And I scroll to the bottom of conversation view
     Then I see new photo in the dialog
-    When I swipe on text input
-    And I press Ping button
-    Then I see Ping message <Msg> in the dialog
-    # There is some issue in Selendroid - we cannot swipe cursor after the keyboard was hidden once
-    # That is why we send the text after photo and ping and not before
-    When I close input options
-    And I tap on text input
-    And I type the message "<Message>" and send it
-    Then I see my message "<Message>" in the dialog
+
 
     Examples:
       | Name      | Contact   | CallBackend | Message                   | Msg        |
@@ -136,6 +141,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I see dialog page
@@ -161,6 +167,7 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When <Contact1> calls me using <CallBackend>
     And I answer the call from the overlay bar
@@ -190,6 +197,7 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
     And I see dialog page
@@ -215,6 +223,7 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
     And I see dialog page
@@ -243,6 +252,7 @@ Feature: Calling
     Given <Contact4> starts waiting instance using <CallBackend>
     Given <Contact4> accepts next incoming call automatically
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
     And I see dialog page
@@ -268,6 +278,7 @@ Feature: Calling
     Given <Contact2> starts waiting instance using chrome
     Given <Contact2> accepts next incoming call automatically
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
@@ -289,6 +300,7 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
@@ -316,6 +328,7 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
@@ -325,7 +338,7 @@ Feature: Calling
     When I answer the call from the overlay bar
     Then I do not see join group call overlay
     And I see calling overlay Big bar
-    And I see 5 users take part in call
+    And I see 4 users take part in call
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
     And <Contact3> stops all calls to <GroupChatName>
@@ -341,6 +354,7 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
@@ -371,6 +385,7 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
@@ -386,7 +401,7 @@ Feature: Calling
     And I start new call from answer call alert
     Then I see calling overlay Big bar
     And <Contact3> calls <Name> using <CallBackend>
-    And I see 2 users take part in call
+    And I see 1 user take part in call
     And I navigate back from dialog page
     And I tap on contact name <GroupChatName>
     And I see incoming calling message for contact <Contact3>
@@ -403,6 +418,7 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
@@ -419,7 +435,7 @@ Feature: Calling
     And I navigate back from dialog page
     And I tap on contact name <GroupChatName>
     And I see calling overlay Big bar
-    And I see 3 users take part in call
+    And I see 2 users take part in call
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
 
@@ -433,6 +449,7 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
@@ -446,7 +463,7 @@ Feature: Calling
     And I see end current call alert
     And I start new call from end current call alert
     And I see calling overlay Big bar
-    And I see 2 users take part in call
+    And I see 1 user take part in call
     And I navigate back from dialog page
     And I tap on contact name <GroupChatName>
     And I see incoming calling message for contact <Contact3>
@@ -463,6 +480,7 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact3>
     And <Contact3> calls <Name> using <CallBackend>
@@ -476,7 +494,7 @@ Feature: Calling
     And I see end current call alert
     And I start new call from end current call alert
     And I see calling overlay Big bar
-    And I see 3 users take part in call
+    And I see 2 users take part in call
     And I navigate back from dialog page
     And I tap on contact name <Contact3>
     And I see incoming calling message for contact <GroupChatName>
@@ -488,11 +506,12 @@ Feature: Calling
       | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
   @C428 @id3181 @calling_advanced
-  Scenario Outline: (AN-2578 AN-2816 AN-2864) Verify receiving 1to1 call during group call and ignoring it
+  Scenario Outline: Verify receiving 1to1 call during group call and ignoring it
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
@@ -507,7 +526,7 @@ Feature: Calling
     And I see incoming calling message for contact <Contact3>
     When I click the ignore call button
     Then I see calling overlay Big bar
-    And I see 3 users take part in call
+    And I see 2 users take part in call
     When I navigate back from dialog page
     And I tap on contact name <Contact3>
     Then I see incoming calling message for contact <GroupChatName>
@@ -524,6 +543,7 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I minimize the application
     And <Contact1> calls <GroupChatName> using <CallBackend>
@@ -532,7 +552,7 @@ Feature: Calling
     And I see a call from <GroupChatName> in the call lock screen
     And I answer the call from the lock screen
     And I see calling overlay Big bar
-    And I see 3 users take part in call
+    And I see 2 users take part in call
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
 
@@ -540,11 +560,12 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend |
       | user1Name | user2Name | user3Name | GroupCallChat | autocall    |
 
-  C121 @id2649 @calling_basic
+  @C121 @id2649 @calling_basic
   Scenario Outline: Lock device screen after initiating call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I tap on contact name <Contact>
     And I see dialog page
@@ -565,6 +586,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And <Contact> calls me using <CallBackend>
     And I see call overlay
@@ -584,6 +606,7 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I tap on contact name <Contact1>
     And I see dialog page
@@ -605,6 +628,7 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>

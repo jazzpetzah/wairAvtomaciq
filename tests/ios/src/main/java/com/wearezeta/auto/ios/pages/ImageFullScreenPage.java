@@ -1,115 +1,85 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.io.IOException;
 import java.util.concurrent.Future;
 
-import javax.script.ScriptException;
-
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class ImageFullScreenPage extends IOSPage {
+    private static final String nameImageFullScreenPage = "fullScreenPage";
+    @FindBy(name = nameImageFullScreenPage)
+    private WebElement imageFullScreen;
 
-	final String[] rotateLeftScript = new String[] {
-			"tell application \"System Events\"",
-			"tell application \"iOS Simulator\" to activate",
-			"tell application \"System Events\" to keystroke (ASCII character 28) using {command down}",
-			"end tell" };
+    private static final String nameFullScreenCloseButton = "fullScreenCloseButton";
+    @FindBy(name = nameFullScreenCloseButton)
+    private WebElement fullScreenCloseButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameImageFullScreenPage)
-	private WebElement imageFullScreen;
+    private static final String nameFullScreenDownloadButton = "fullScreenDownloadButton";
+    @FindBy(name = nameFullScreenDownloadButton)
+    private WebElement fullScreenDownloadButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameFullScreenCloseButton)
-	private WebElement fullScreenCloseButton;
+    private static final String nameFullScreenSenderName = "fullScreenSenderName";
+    @FindBy(name = nameFullScreenSenderName)
+    private WebElement fullScreenSenderName;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameFullScreenDownloadButton)
-	private WebElement fullScreenDownloadButton;
+    private static final String nameFullScreenTimeStamp = "fullScreenTimeStamp";
+    @FindBy(name = nameFullScreenTimeStamp)
+    private WebElement fullScreenTimeStamp;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameFullScreenSenderName)
-	private WebElement fullScreenSenderName;
+    private static final String nameFullScreenSketchButton = "sketchButton";
+    @FindBy(name = nameFullScreenSketchButton)
+    private WebElement fullScreenSketchButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameFullScreenTimeStamp)
-	private WebElement fullScreenTimeStamp;
+    public ImageFullScreenPage(Future<ZetaIOSDriver> lazyDriver)
+            throws Exception {
+        super(lazyDriver);
+    }
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameFullScreenSketchButton)
-	private WebElement fullScreenSketchButton;
+    public boolean isImageFullScreenShown() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameImageFullScreenPage));
+    }
 
-	public ImageFullScreenPage(Future<ZetaIOSDriver> lazyDriver)
-			throws Exception {
-		super(lazyDriver);
-	}
+    public void clickCloseButton() throws Exception {
+        verifyLocatorPresence(By.name(nameFullScreenCloseButton), "Close button is not present in the view");
+        fullScreenCloseButton.click();
+    }
 
-	public boolean isImageFullScreenShown() {
-		return imageFullScreen.isDisplayed();
-	}
+    public boolean isDownloadButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.name(nameFullScreenDownloadButton));
+    }
 
-	public void clickCloseButton() throws Exception {
-		DriverUtils.waitUntilElementClickable(getDriver(),
-				fullScreenCloseButton);
-		fullScreenCloseButton.click();
-	}
+    public void clickDownloadButton() {
+        fullScreenDownloadButton.click();
+    }
 
-	public boolean isDownloadButtonVisible() {
-		return fullScreenDownloadButton.isDisplayed();
-	}
+    public ImageFullScreenPage tapOnFullScreenPage() {
+        imageFullScreen.click();
+        return this;
+    }
 
-	public void clickDownloadButton() {
-		fullScreenDownloadButton.click();
-	}
+    public boolean isSenderNameVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameFullScreenSenderName));
+    }
 
-	public ImageFullScreenPage tapOnFullScreenPage() {
-		imageFullScreen.click();
-		return this;
-	}
+    public String getSenderName() {
+        return fullScreenSenderName.getText();
+    }
 
-	public boolean isSenderNameVisible() {
-		return fullScreenSenderName.isDisplayed();
-	}
+    public boolean isSentTimeVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameFullScreenTimeStamp));
+    }
 
-	public String getSenderName() {
-		return fullScreenSenderName.getText();
-	}
+    public String getTimeStamp() {
+        return fullScreenTimeStamp.getText();
+    }
 
-	public boolean isSentTimeVisible() {
-		return fullScreenTimeStamp.isDisplayed();
-	}
-
-	public String getTimeStamp() {
-		return fullScreenTimeStamp.getText();
-	}
-
-	public void rotateSimulatorLeft() throws ScriptException {
-		cmdVscript(rotateLeftScript);
-	}
-
-	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws IOException {
-		IOSPage page = null;
-		switch (direction) {
-		case DOWN: {
-			break;
-		}
-		case UP: {
-			break;
-		}
-		case LEFT: {
-			break;
-		}
-		case RIGHT: {
-			break;
-		}
-		}
-		return page;
-	}
-
-	public void clickSketchButton() {
-		fullScreenSketchButton.click();
-	}
+    public void clickSketchButton() {
+        fullScreenSketchButton.click();
+    }
 
 }

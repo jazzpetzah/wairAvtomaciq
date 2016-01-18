@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @smoke @id1910
+  @C1756 @smoke
   Scenario Outline: Accept connection request
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to <Name>
@@ -18,7 +18,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @regression @id1546
+  @C1691 @regression
   Scenario Outline: Verify pending user profiles contain all the info required by spec
     Given There are 2 users where <Name> is me
     Given <UnknownContact> sent connection request to me
@@ -38,7 +38,7 @@ Feature: Connect
       | Login      | Password      | Name      | UnknownContact | UnknownContactMail | Message   |
       | user1Email | user1Password | user1Name | user2Name      | user2Email         | YOU ADDED |
 
-  @regression @id3303
+  @C1815 @regression
   Scenario Outline: Verify pending user profiles contain known people information
     Given There are 11 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
@@ -69,16 +69,12 @@ Feature: Connect
       | Login      | Password      | Name      | UnknownContact1 | UnknownContact2 | UnknownContact3 | UnknownContact4 | UnknownContact5 | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  |
       | user1Email | user1Password | user1Name | user2Name       | user3Name       | user4Name       | user5Name       | user6Name       | user7Name | user8Name | user9Name | user10Name | user11Name |
 
-  @smoke @id1571
+  @C1699 @smoke
   Scenario Outline: Verify sending a connection request to user chosen from search
     Given There are 2 users where <Name> is me
+    Given I wait until <Contact> exists in backend search results
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
-    And I see my avatar on top of Contact list
-    And I wait until <Contact> exists in backend search results
-    When I open People Picker from Contact List
     And I type <Contact> in search field of People Picker
     And I see user <Contact> found in People Picker
     And I click on not connected user <Contact> found in People Picker
@@ -90,7 +86,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @regression @id3322
+  @C1817 @regression
   Scenario Outline: Verify sending a connection request to user from conversation view
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -104,22 +100,19 @@ Feature: Connect
     And I see Connect To popover
     And I click Connect button on Connect To popover
     Then I see Contact list with name <Contact2>
-    And I see CONNECTING TO action for <Contact2> in conversation
+    And I see connecting message for <Contact2> in conversation
 
     Examples: 
       | Login      | Password      | Name      | ChatName | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | id3322   | user2Name | user3Name |
 
-  @smoke @id2043
+  @C1767 @smoke
   Scenario Outline: Verify 1to1 conversation is successfully created for sender end after connection is accepted
     Given There are 2 users where <Name> is me
     Given I switch to Sign In page
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
-    And I see my avatar on top of Contact list
-    And I wait until <Login2> exists in backend search results
-    When I open People Picker from Contact List
+    When I wait until <Login2> exists in backend search results
+    And I Sign in using login <Login> and password <Password>
+    And I see People Picker
     And I type <Login2> in search field of People Picker
     And I see user <Name2> found in People Picker
     And I click on not connected user <Name2> found in People Picker
@@ -147,22 +140,18 @@ Feature: Connect
     And I see my avatar on top of Contact list
     Then I see Contact list with name <Name2>
     And I open conversation with <Name2>
-    And I see <Action> action for <Name2> in conversation
+    And I see connected message for <Name2> in conversation
 
     Examples: 
-      | Login      | Login2     | Password      | Password2     | Name      | Name2     | Action       |
-      | user1Email | user2Email | user1Password | user2Password | user1Name | user2Name | CONNECTED TO |
+      | Login      | Login2     | Password      | Password2     | Name      | Name2     |
+      | user1Email | user2Email | user1Password | user2Password | user1Name | user2Name |
 
-  @regression @id1553
+  @C1694 @regression
   Scenario Outline: Verify 1:1 conversation is not created on the second end after you ignore connection request
     Given There are 2 users where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
     And I wait until <Login2> exists in backend search results
-    When I see Contacts Upload dialog
-    And I close Contacts Upload dialog
-    And I open People Picker from Contact List
     And I type <Login2> in search field of People Picker
     And I see user <Name2> found in People Picker
     And I click on not connected user <Name2> found in People Picker
@@ -194,7 +183,7 @@ Feature: Connect
       | Login      | Login2     | Password      | Password2     | Name      | Name2     |
       | user1Email | user2Email | user1Password | user2Password | user1Name | user2Name |
 
-  @regression @id1554
+  @C1695 @regression
   Scenario Outline: Verify you can block a person from profile view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -214,7 +203,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @regression @id1548
+  @C1692 @regression
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending user (People view)
     Given There are 3 users where <Name> is me
     Given <Contact> is connected to Me,<Contact2>
@@ -236,7 +225,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | Contact2  | ChatName                 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChatWithPendingUser |
 
-  @regression @id1555
+  @C1696 @regression
   Scenario Outline: Verify you still receive messages from blocked person in a group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -277,7 +266,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | Login2     | Password2     | Name2     | ChatName                 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessageGroupChat | user2Email | user2Password | user2Name | GroupChatWithBlockedUser |
 
-  @smoke @id3212
+  @C1805 @smoke
   Scenario Outline: Verify you dont receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <User1> is me
     Given Myself is connected to <User2>
@@ -315,7 +304,7 @@ Feature: Connect
       | User1     | User1Email | User1Password | User2     | User2Email | User2Password | Msg1     | Msg2     | Picture1                  | Picture2                 |
       | user1Name | user1Email | user2Password | user2Name | user2Email | user2Password | Message1 | Message2 | userpicture_landscape.jpg | userpicture_portrait.jpg |
 
-  @regression @id2317
+  @C1782 @regression
   Scenario Outline: Verify you can dismiss user suggestion in PYMK list
     Given There are 3 users where <Me> is me
     # we need to wait a bit, otherwise backend throws a 429 status
@@ -336,7 +325,7 @@ Feature: Connect
       | Me        | MyEmail    | MyPassword    | Contact1  | Contact2  |
       | user1Name | user1Email | user1Password | user2Name | user3Name |
 
-  @smoke @id2318
+  @C1783 @smoke
   Scenario Outline: Verify you can add a user from PYMK list
     Given There are 3 users where <Me> is me
     # we need to wait a bit, otherwise backend throws a 429 status
@@ -353,13 +342,13 @@ Feature: Connect
     When I make a connection request for user <Contact1> directly from People Picker
     And I close People Picker
     And I open conversation with <Contact1>
-    Then I see CONNECTING TO action for <Contact1> in conversation
+    Then I see connecting message for <Contact1> in conversation
 
     Examples: 
       | Me        | MyEmail    | MyPassword    | Contact1  | Contact2  |
       | user1Name | user1Email | user1Password | user2Name | user3Name |
 
-  @legacy @id2548
+  @C1785 @legacy
   Scenario Outline: Verify you get auto-connected to people on sign-in
     Given There is 2 user where <Me> is me
     # we need to wait a bit, otherwise backend throws a 429 status
@@ -371,8 +360,6 @@ Feature: Connect
     Given I switch to Sign In page
     Given I Sign in using login <MyEmail> and password <MyPassword>
     And I see my avatar on top of Contact list
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     When I open conversation with <Contact>
     Then I see CONNECTED TO action for <Contact> in conversation
     Then I see START A CONVERSATION action for <Contact> in conversation
@@ -382,7 +369,7 @@ Feature: Connect
       | Me        | MyEmail    | MyPassword    | Contact   |
       | user1Name | user1Email | user1Password | user2Name |
 
-  @legacy @id2748
+  @legacy
   Scenario Outline: Verify you get auto-connected to people while being logged-in
     Given There is 2 user where <Me> is me
     # we need to wait a bit, otherwise backend throws a 429 status
@@ -390,8 +377,6 @@ Feature: Connect
     Given User <Me> has contact <Contact> in address book
     Given I switch to Sign In page
     Given I Sign in using login <MyEmail> and password <MyPassword>
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     And I see my avatar on top of Contact list
     # we need to wait a bit, otherwise backend throws a 429 status
     And I wait for 10 seconds
@@ -405,7 +390,7 @@ Feature: Connect
       | Me        | MyEmail    | MyPassword    | Contact   |
       | user1Name | user1Email | user1Password | user2Name |
 
-  @regression @id2764
+  @C1790 @regression
   Scenario Outline: I want to cancel a pending request from search
     Given There are 3 users where <Name> is me
     Given I sent connection request to <Contact1>
@@ -441,7 +426,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user1Email    | user1Password    | user3Name |
 
-  @staging @id2766
+  @C1791 @staging
   Scenario Outline: I want to cancel a pending request from 1:1 conversation
     Given There are 3 users where <Name> is me
     Given I sent connection request to <Contact1>

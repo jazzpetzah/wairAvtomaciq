@@ -1,11 +1,12 @@
 Feature: Conversation View
 
-  @id2252 @regression @rc
+  @C736 @id2252 @regression @rc
   Scenario Outline: Send Message to contact in portrait mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
@@ -19,12 +20,13 @@ Feature: Conversation View
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @id2238 @regression @rc @rc44
+  @C726 @id2238 @regression @rc @rc44
   Scenario Outline: Send Message to contact in landscape mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
@@ -39,12 +41,13 @@ Feature: Conversation View
       | user1Name | user2Name | Yo      |
 
 
-  @id2254 @regression @rc
+  @C738 @id2254 @regression @rc
   Scenario Outline: Send Camera picture to contact in portrait mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
@@ -59,12 +62,13 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2240 @regression @rc @rc44
+  @C728 @id2240 @regression @rc @rc44
   Scenario Outline: Send Camera picture to contact in landscape mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
@@ -79,12 +83,13 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2255 @regression
+  @C466 @id2255 @regression
   Scenario Outline: Add people to 1:1 chat in portrait mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact1> in my conversations list
     And I tap the conversation <Contact1>
@@ -105,12 +110,13 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | Action                     |
       | user1Name | user2Name | user3Name | You started a conversation |
 
-  @id2241 @regression
+  @C462 @id2241 @regression
   Scenario Outline: Add people to 1:1 chat in landscape mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact1> in my conversations list
     And I tap the conversation <Contact1>
@@ -131,14 +137,15 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | Action                     |
       | user1Name | user2Name | user3Name | You started a conversation |
 
-  @id2256 @regression
+  @C467 @id2256 @regression
   Scenario Outline: Send message to group chat in portrait mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to portrait
     Given I sign in using my email
-    And I see the conversations list with conversations
+    Given I accept First Time overlay as soon as it is visible
+    Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
@@ -151,14 +158,15 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName     | Message |
       | user1Name | user2Name | user3Name | SendMessGroupChat | Yo      |
 
-  @id2242 @regression
+  @C463 @id2242 @regression
   Scenario Outline: Send message to group chat in landscape mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I sign in using my email
-    And I see the conversations list with conversations
+    Given I accept First Time overlay as soon as it is visible
+    Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
@@ -171,13 +179,14 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName     | Message |
       | user1Name | user2Name | user3Name | SendMessGroupChat | Yo      |
 
-  @id2047 @regression
+  @C470 @id2047 @regression
   Scenario Outline: Check ability to open and close one-to-one pop-over in different ways
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to <Orientation>
     Given I sign in using my email
-    And I see the conversations list with conversations
+    Given I accept First Time overlay as soon as it is visible
+    Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And I see the conversation view
@@ -206,13 +215,14 @@ Feature: Conversation View
       | user1Name | user2Name | landscape   |
       | user1Name | user2Name | portrait    |
 
-  @id2050 @regression
+  @C375 @id2050 @regression
   Scenario Outline: (AN-2494) One-to-one pop-over hidden after rotations
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to portrait
     Given I sign in using my email
-    And I see the conversations list with conversations
+    Given I accept First Time overlay as soon as it is visible
+    Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And I see the conversation view
@@ -234,13 +244,14 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2825 @regression
+  @C482 @id2825 @regression
   Scenario Outline: Send image with camera in group chat (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
@@ -255,13 +266,14 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ChatWithImg   |
 
-  @id2827 @regression
+  @C483 @id2827 @regression
   Scenario Outline: Send image with camera in group chat (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
@@ -276,12 +288,13 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ChatWithImg   |
 
-  @id2828 @regression @rc @rc44
+  @C757 @id2828 @regression @rc @rc44
   Scenario Outline: Send existing image from gallery in 1:1 chat (landscape)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
@@ -296,12 +309,13 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2829 @regression @rc
+  @C758 @id2829 @regression @rc
   Scenario Outline: Send existing image from gallery in 1:1 chat (portrait)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
@@ -316,13 +330,14 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2882 @regression @rc
+  @C772 @id2882 @regression @rc
   Scenario Outline: Verify editing the conversation name (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to portrait
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
@@ -339,13 +354,14 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName | NewGroupChatName |
       | user1Name | user2Name | user3Name | GroupChat     | NewChatName      |
 
-  @id3153 @regression @rc @rc44
+  @C800 @id3153 @regression @rc @rc44
   Scenario Outline: Verify editing the conversation name (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
@@ -362,12 +378,13 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName | NewGroupChatName |
       | user1Name | user2Name | user3Name | GroupChat     | NewChatName      |
 
-  @id3803 @regression @rc @rc44
+  @C815 @id3803 @regression @rc @rc44
   Scenario Outline: Send sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact1> in my conversations list
     And I tap the conversation <Contact1>
@@ -383,12 +400,13 @@ Feature: Conversation View
       | Name      | Contact1  | NumColors |
       | user1Name | user2Name | 6         |
 
-  @id3804 @regression @rc
+  @C816 @id3804 @regression @rc
   Scenario Outline: Send sketch on picture from gallery
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact1> in my conversations list
     And I tap the conversation <Contact1>

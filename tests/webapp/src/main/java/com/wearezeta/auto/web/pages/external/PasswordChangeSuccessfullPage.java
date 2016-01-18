@@ -10,7 +10,7 @@ import com.wearezeta.auto.web.locators.ExternalLocators;
 import com.wearezeta.auto.web.pages.WebPage;
 
 public class PasswordChangeSuccessfullPage extends WebPage {
-	private static final String CONFIRMATION_TEXT = "Password changed";
+	private static final String CONFIRMATION_TEXT = "Password reset";
 
 	public PasswordChangeSuccessfullPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {

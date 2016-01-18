@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.WebElement;
@@ -12,15 +11,10 @@ import org.openqa.selenium.support.*;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class PersonalInfoPage extends AndroidPage {
 
     public static final String xpathParentSelfProfileOverlay = "//*[@id='fl__conversation_list__profile_overlay']";
-
-    @SuppressWarnings("unused")
-    private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class
-            .getSimpleName());
 
     private static final String idBackgroundOverlay = "v_background_dark_overlay";
     @FindBy(id = idBackgroundOverlay)
@@ -35,7 +29,6 @@ public class PersonalInfoPage extends AndroidPage {
     @FindBy(xpath = xpathSettingsBox)
     private WebElement settingBox;
 
-    @SuppressWarnings("unused")
     private static final Function<String, String> xpathEmailFieldByValue = value -> String
             .format(xpathParentSelfProfileOverlay
                     + "//*[@id='ttv__profile__email' and @value='%s']", value);
@@ -43,11 +36,6 @@ public class PersonalInfoPage extends AndroidPage {
     private static final Function<String, String> xpathNameFieldByValue = value -> String
             .format(xpathParentSelfProfileOverlay
                     + "//*[@id='ttv__profile__name' and @value='%s']", value);
-
-    private static final String xpathSettingsBtn = xpathParentSelfProfileOverlay
-            + "//*[@id='ttv__profile__settings_box__settings']";
-    @FindBy(xpath = xpathSettingsBtn)
-    private WebElement settingsButton;
 
     private static final Function<String, String> xpathEditFieldByValue = value -> String
             .format(xpathParentSelfProfileOverlay
@@ -70,7 +58,11 @@ public class PersonalInfoPage extends AndroidPage {
     private static final String xpathProfileOptionsButton = xpathParentSelfProfileOverlay
             + "//*[@id='gtv__profile__settings_button']";
     @FindBy(xpath = xpathProfileOptionsButton)
-    private WebElement optionsButton;
+    private WebElement ellipsisButton;
+
+    private static final Function<String,String> xpathProfileMenuItem = name ->
+            String.format("//*[@id='ttv__settings_box__item' and @value='%s']" +
+                    "/parent::*//*[@id='fl_options_menu_button']", name.toUpperCase());
 
     private static final String xpathAboutButton = xpathParentSelfProfileOverlay
             + "//*[@id='ttv__profile__settings_box__about']";
@@ -99,49 +91,51 @@ public class PersonalInfoPage extends AndroidPage {
     }
 
     public void tapOnPage() throws Exception {
-        DriverUtils.androidMultiTap(this.getDriver(), page, 1, 500);
+        this.getDriver().tap(1, page, 500);
     }
 
     public void tapChangePhotoButton() throws Exception {
-        assert DriverUtils.waitUntilElementClickable(getDriver(),
-                changePhotoBtn);
+        verifyLocatorPresence(By.id(idChangePhotoBtn), "Change Photo button is not visible");
         changePhotoBtn.click();
     }
 
     public void tapTakePhotoButton() throws Exception {
-        assert DriverUtils.waitUntilElementClickable(getDriver(), takePhotoBtn);
+        verifyLocatorPresence(By.id(idTakePhotoButton), "Take Photo button is not visible");
         takePhotoBtn.click();
     }
 
     public void tapGalleryButton() throws Exception {
-        assert DriverUtils.waitUntilElementClickable(getDriver(), galleryBtn);
+        verifyLocatorPresence(By.id(idGalleryBtn), "Open Gallery button is not visible");
         galleryBtn.click();
     }
 
     public void tapConfirmButton() throws Exception {
         this.hideKeyboard();
-        assert DriverUtils.waitUntilElementClickable(getDriver(), confirmBtn);
+        verifyLocatorPresence(By.xpath(DialogPage.xpathConfirmOKButton), "Confirmation button is not visible");
         // Wait for animation
         Thread.sleep(1000);
         confirmBtn.click();
     }
 
-    public void tapOptionsButton() throws Exception {
-        assert DriverUtils
-                .waitUntilElementClickable(getDriver(), optionsButton);
+    public void tapEllipsisButton() throws Exception {
+        verifyLocatorPresence(By.xpath(xpathProfileOptionsButton), "Ellipsis button is not visible");
         try {
-            optionsButton.click();
+            ellipsisButton.click();
         } catch (ElementNotVisibleException e) {
             // pass silently, this throws exception due to some internal
             // Selendroid (or AUT %) ) issue
         }
     }
 
-    public SettingsPage tapSettingsButton() throws Exception {
-        assert DriverUtils.waitUntilElementClickable(getDriver(),
-                settingsButton);
-        settingsButton.click();
-        return new SettingsPage(this.getLazyDriver());
+    public boolean isProfileMenuItemInvisible(String itemName) throws Exception {
+        final By locator = By.xpath(xpathProfileMenuItem.apply(itemName));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
+    public void tapProfileMenuItem(String itemName) throws Exception {
+        final By locator = By.xpath(xpathProfileMenuItem.apply(itemName));
+        verifyLocatorPresence(locator, String.format("Menu item '%s' is not present on the page", itemName));
+        getDriver().findElement(locator).click();
     }
 
     public void tapOnMyName(String name) throws Exception {
@@ -171,27 +165,13 @@ public class PersonalInfoPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
     }
 
-    public AboutPage tapAboutButton() throws Exception {
-        assert DriverUtils.waitUntilElementClickable(getDriver(), aboutButton);
-        aboutButton.click();
-        return new AboutPage(this.getLazyDriver());
-    }
-
     public boolean isSettingsVisible() throws Exception {
-        return DriverUtils
-                .isElementPresentAndDisplayed(getDriver(), settingBox);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathSettingsBox));
     }
 
-    public boolean waitForSettingsDissapear() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-                By.xpath(xpathProfileOptionsButton));
-    }
-
-    public ContactListPage pressCloseButton() throws Exception {
-        assert DriverUtils.waitUntilElementClickable(getDriver(),
-                selfProfileClose);
+    public void pressCloseButton() throws Exception {
+        verifyLocatorPresence(By.xpath(xpathSelfProfileClose), "Close Self Profile button is not visible");
         selfProfileClose.click();
-        return new ContactListPage(getLazyDriver());
     }
 
     public void tapLightBulbButton() {

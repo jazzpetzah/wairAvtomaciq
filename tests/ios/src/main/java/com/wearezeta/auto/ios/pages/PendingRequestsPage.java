@@ -5,137 +5,84 @@ import java.util.concurrent.Future;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class PendingRequestsPage extends IOSPage {
 
-	@FindBy(how = How.NAME, using = IOSLocators.namePendingRequestIgnoreButton)
-	private WebElement ignoreRequestButton;
+    private static final String namePendingRequestIgnoreButton = "IGNORE";
+    @FindBy(name = namePendingRequestIgnoreButton)
+    private WebElement ignoreRequestButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.namePendingRequestConnectButton)
-	private WebElement connectRequestButton;
+    private static final String namePendingRequestConnectButton = "CONNECT";
+    @FindBy(name = namePendingRequestConnectButton)
+    private WebElement connectRequestButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathPendingRequesterName)
-	private WebElement requesterName;
+    private static final String xpathPendingRequesterName =
+            xpathMainWindow + "/UIATableView[1]//UIAStaticText[contains(@name, 'Connect to')]";
+    @FindBy(xpath = xpathPendingRequesterName)
+    private WebElement requesterName;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathPendingRequestMessage)
-	private WebElement pendingMessage;
+    private static final String xpathPendingRequestMessage =
+            xpathMainWindow + "/UIATableView[1]//UIAStaticText[3]";
+    @FindBy(xpath = xpathPendingRequestMessage)
+    private WebElement pendingMessage;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathYouBothKnowPeopleIcon)
-	private WebElement youBothKnowPeopleIcon;
+    private static final String xpathYouBothKnowPeopleIcon =
+            xpathMainWindow + "/UIATableView[1]/UIATableCell[1]/UIAButton[2]";
+    @FindBy(xpath = xpathYouBothKnowPeopleIcon)
+    private WebElement youBothKnowPeopleIcon;
 
-	private String autoHelloMessage = CommonSteps.CONNECTION_MESSAGE;
+    private static final String nameYouBothKnowHeader = "YOU BOTH KNOW";
 
-	public PendingRequestsPage(Future<ZetaIOSDriver> lazyDriver)
-			throws Exception {
-		super(lazyDriver);
-	}
+    public PendingRequestsPage(Future<ZetaIOSDriver> lazyDriver)
+            throws Exception {
+        super(lazyDriver);
+    }
 
-	public void clickIgnoreButton() throws Exception {
-		DriverUtils.waitUntilElementClickable(getDriver(), ignoreRequestButton);
-		ignoreRequestButton.click();
-	}
+    public void clickIgnoreButton() throws Exception {
+        verifyLocatorPresence(By.name(namePendingRequestIgnoreButton), "Ignore button is not visible");
+        ignoreRequestButton.click();
+    }
 
-	public ContactListPage clickIgnoreButtonMultiple(int clicks)
-			throws Exception {
-		ContactListPage page = null;
-		for (int i = 0; i < clicks; i++) {
-			DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-					By.name(IOSLocators.namePendingRequestIgnoreButton));
-			DriverUtils.waitUntilElementClickable(getDriver(),
-					ignoreRequestButton);
-			ignoreRequestButton.click();
+    public void clickIgnoreButtonMultiple(int clicks) throws Exception {
+        verifyLocatorPresence(By.name(namePendingRequestIgnoreButton), "Ignore button is not visible");
+        for (int i = 0; i < clicks; i++) {
+            ignoreRequestButton.click();
+            Thread.sleep(500);
+        }
+    }
 
-		}
-		page = new ContactListPage(this.getLazyDriver());
-		return page;
-	}
+    public void clickConnectButton() throws Exception {
+        verifyLocatorPresence(By.name(namePendingRequestConnectButton), "Connect button is not visible");
+        connectRequestButton.click();
+    }
 
-	public ContactListPage clickConnectButton() throws Exception {
-		ContactListPage page = null;
-		DriverUtils.waitUntilElementClickable(this.getDriver(),
-				connectRequestButton);
-		connectRequestButton.click();
-		page = new ContactListPage(this.getLazyDriver());
-		return page;
-	}
+    public void clickConnectButtonMultiple(int clicks) throws Exception {
+        verifyLocatorPresence(By.name(namePendingRequestConnectButton), "Connect button is not visible");
+        for (int i = 0; i < clicks; i++) {
+            connectRequestButton.click();
+            Thread.sleep(500);
+        }
+    }
 
-	public ContactListPage clickConnectButtonMultiple(int clicks)
-			throws Exception {
-		ContactListPage page = null;
-		for (int i = 0; i < clicks; i++) {
-			DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-					By.name(IOSLocators.namePendingRequestConnectButton));
-			this.getWait().until(
-					ExpectedConditions
-							.elementToBeClickable(connectRequestButton));
-			connectRequestButton.click();
-			DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-					By.name(IOSLocators.namePendingRequestConnectButton));
-		}
-		page = new ContactListPage(this.getLazyDriver());
-		return page;
-	}
+    public boolean isConnectButtonDisplayed() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+                By.name(namePendingRequestConnectButton), 5);
+    }
 
-	public boolean isConnectButtonDisplayed() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(IOSLocators.namePendingRequestConnectButton), 5);
-	}
+    public String getRequesterName() {
+        final String CONNECT_TO = "Connect to ";
+        return requesterName.getText().replace(CONNECT_TO, "");
+    }
 
-	public String getRequesterName() {
-		final String CONNECT_TO = "Connect to ";
-		return requesterName.getText().replace(CONNECT_TO, "");
-	}
+    public boolean isYouBothKnowDisplayed() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(nameYouBothKnowHeader), 5);
+    }
 
-	public String getRequestMessage() {
-		return pendingMessage.getText();
-	}
-
-	public boolean isAutoMessageCorrect() {
-		return getRequestMessage().equals(autoHelloMessage);
-	}
-
-	@Override
-	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
-
-		IOSPage page = null;
-		switch (direction) {
-		case DOWN: {
-			break;
-		}
-		case UP: {
-			break;
-		}
-		case LEFT: {
-			break;
-		}
-		case RIGHT: {
-			page = new ContactListPage(this.getLazyDriver());
-			break;
-		}
-		}
-		return page;
-	}
-
-	public boolean isIgnoreButtonDisplayed() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(IOSLocators.namePendingRequestIgnoreButton), 5);
-	}
-
-	public boolean isYouBothKnowDisplayed() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(IOSLocators.nameYouBothKnowHeader), 5);
-	}
-
-	public void clickYouBothKnowPeopleIcon() {
-		youBothKnowPeopleIcon.click();
-	}
+    public void clickYouBothKnowPeopleIcon() {
+        youBothKnowPeopleIcon.click();
+    }
 
 }

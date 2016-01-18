@@ -48,12 +48,6 @@ public class ImageFullScreenPageSteps {
 				score >= IOSConstants.MIN_IMG_SCORE);
 	}
 
-	@When("I zoom image in fullscreen and see it is zoomed")
-	public void IZoomImageAndVerifyIsZoomed() {
-		// TODO Piotr implement zoom
-		// TODO Piotr compare before and after zoom
-	}
-
 	@When("I tap on fullscreen page")
 	public void ITapFullScreenPage() throws Exception {
 		getImageFullScreenPage().tapOnFullScreenPage();
@@ -85,11 +79,6 @@ public class ImageFullScreenPageSteps {
 	@When("I tap download button on fullscreen page")
 	public void ITapDownloadButtonOnFullscreenPage() throws Exception {
 		getImageFullScreenPage().clickDownloadButton();
-	}
-
-	@When("I verify image is downloaded and is same as original")
-	public void IVerifyDownloadedImageSameOriginal() {
-		// TODO Piotr compare with downloaded image
 	}
 
 	@When("I verify image caption and download button are not shown")

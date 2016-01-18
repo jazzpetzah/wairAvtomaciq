@@ -1,6 +1,6 @@
 Feature: People View
 
-  @smoke @id3921
+  @C2361 @smoke
   Scenario Outline: Verify opening people popover with menu bar in 1:1 conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -16,7 +16,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id3922
+  @C2362 @smoke
   Scenario Outline: Verify opening people popover with menu bar in group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -33,7 +33,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | PeoplePopover |
 
-  @smoke @id3923
+  @C2363 @smoke
   Scenario Outline: Verify adding people to 1:1 conversation with menu bar
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -49,7 +49,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact   | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @smoke @id3924
+  @C2364 @smoke
   Scenario Outline: Verify adding people to group conversation with menu bar
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
