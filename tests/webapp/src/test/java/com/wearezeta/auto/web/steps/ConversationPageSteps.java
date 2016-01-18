@@ -4,9 +4,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,8 +26,6 @@ import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -367,8 +363,8 @@ public class ConversationPageSteps {
 			webappPagesCollection.getPage(ConversationPage.class)
 					.waitForMessageHeaderContains(parts);
 		} else {
-			Assert.assertTrue("Found action in messages", webappPagesCollection.getPage(ConversationPage.class)
-					.waitForVanishOfMessageHeaderContains(parts));
+			assertThat(message + " action for " + contacts, webappPagesCollection.getPage(ConversationPage.class)
+					.waitForNumberOfMessageHeadersContain(parts), equalTo(0));
 		}
 	}
 
@@ -497,9 +493,8 @@ public class ConversationPageSteps {
 	 */
 	@When("^I see only one ping message$")
 	public void ISeeOnlyOnePingMessage() throws Exception {
-		Assert.assertEquals(
-				webappPagesCollection.getPage(ConversationPage.class)
-						.numberOfPingMessagesVisible(), 1);
+		assertThat("PING action", webappPagesCollection.getPage(ConversationPage.class)
+				.waitForNumberOfMessageHeadersContain(Collections.singleton("PING")), equalTo(1));
 	}
 
 	/**

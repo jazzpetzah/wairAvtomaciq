@@ -184,11 +184,11 @@ public class ConversationPage extends WebPage {
 		wait.until(visibilityOfTextInElementsLocated(locator, parts));
 	}
 
-	public boolean waitForVanishOfMessageHeaderContains(Set<String> parts) throws Exception {
+	public int waitForNumberOfMessageHeadersContain(Set<String> parts) throws Exception {
 		final By locator = By
 				.cssSelector(WebAppLocators.ConversationPage.cssMessageHeader);
 		Thread.sleep(DriverUtils.getDefaultLookupTimeoutSeconds() * 1000);
-		return getNumberOfElementsContainingText(locator, parts) > 0 ? false : true;
+		return getNumberOfElementsContainingText(locator, parts);
 	}
 
 	/**
@@ -387,24 +387,6 @@ public class ConversationPage extends WebPage {
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
 				pingButton) : "Ping button has to be clickable";
 		pingButton.click();
-	}
-
-	private static final int PING_MESSAGE_TIMEOUT = 3; // seconds
-
-	public boolean isPingMessageVisible(String message) throws Exception {
-		final By locator = By
-				.cssSelector(WebAppLocators.ConversationPage.cssPingMessage);
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				locator, PING_MESSAGE_TIMEOUT) : "Ping message has not been shown within "
-				+ PING_MESSAGE_TIMEOUT + " second(s) timeout";
-		return pingMessage.getText().toLowerCase()
-				.contains(message.toLowerCase());
-	}
-
-	public int numberOfPingMessagesVisible() throws Exception {
-		return getDriver().findElements(
-				By.cssSelector(WebAppLocators.ConversationPage.cssPingMessage))
-				.size();
 	}
 
 	public boolean isCallButtonVisible() throws Exception {
