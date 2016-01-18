@@ -18,10 +18,10 @@ import static org.junit.Assert.assertThat;
 public class CallingSteps {
 
 	private static final Logger LOG = ZetaLogger.getLog(CallingSteps.class
-			.getName());
+		.getName());
 
 	private final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2
-			.getInstance();
+		.getInstance();
 
 	/**
 	 * Make call to a specific user. You may instantiate more than one incoming
@@ -29,20 +29,17 @@ public class CallingSteps {
 	 *
 	 * @step. (.*) calls (.*) using (.*)$
 	 *
-	 * @param caller
-	 *            caller name/alias
-	 * @param conversationName
-	 *            destination conversation name
-	 * @param callBackend
-	 *            call backend. Available values: 'autocall', 'chrome',
-	 *            'firefox'
+	 * @param caller caller name/alias
+	 * @param conversationName destination conversation name
+	 * @param callBackend call backend. Available values: 'autocall', 'chrome',
+	 * 'firefox'
 	 * @throws Exception
 	 */
 	@When("(.*) calls (.*) using (.*)$")
 	public void UserXCallsToUserYUsingCallBackend(String caller,
-			String conversationName, String callBackend) throws Exception {
+		String conversationName, String callBackend) throws Exception {
 		commonCallingSteps.callToConversation(caller, conversationName,
-				callBackend);
+			callBackend);
 	}
 
 	/**
@@ -50,15 +47,13 @@ public class CallingSteps {
 	 *
 	 * @step. (.*) stops? all calls to (.*)
 	 *
-	 * @param caller
-	 *            caller name/alias
-	 * @param conversationName
-	 *            destination conversation name
+	 * @param caller caller name/alias
+	 * @param conversationName destination conversation name
 	 * @throws Exception
 	 */
 	@When("(.*) stops? all calls to (.*)")
 	public void UserXStopsCallsToUserY(String caller, String conversationName)
-			throws Exception {
+		throws Exception {
 		commonCallingSteps.stopCall(caller, conversationName);
 	}
 
@@ -67,26 +62,23 @@ public class CallingSteps {
 	 * N seconds timeout
 	 *
 	 * @step. (.*) verif(?:ies|y) that call status to (.*) is changed to (.*) in
-	 *        (\\d+) seconds?$
+	 * (\\d+) seconds?$
 	 *
-	 * @param caller
-	 *            caller name/alias
-	 * @param conversationName
-	 *            destination conversation
-	 * @param expectedStatuses
-	 *            comma-separated list of expected call statuses. See
-	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus for
-	 *            more details
-	 * @param timeoutSeconds
-	 *            number of seconds to wait until call status is changed
+	 * @param caller caller name/alias
+	 * @param conversationName destination conversation
+	 * @param expectedStatuses comma-separated list of expected call statuses.
+	 * See com.wearezeta.auto.common.calling2.v1.model.CallStatus for more
+	 * details
+	 * @param timeoutSeconds number of seconds to wait until call status is
+	 * changed
 	 * @throws Exception
 	 */
 	@Then("(.*) verif(?:ies|y) that call status to (.*) is changed to (.*) in (\\d+) seconds?$")
 	public void UserXVerifesCallStatusToUserY(String caller,
-			String conversationName, String expectedStatuses, int timeoutSeconds)
-			throws Exception {
+		String conversationName, String expectedStatuses, int timeoutSeconds)
+		throws Exception {
 		commonCallingSteps.verifyCallingStatus(caller, conversationName,
-				expectedStatuses, timeoutSeconds);
+			expectedStatuses, timeoutSeconds);
 	}
 
 	/**
@@ -94,41 +86,37 @@ public class CallingSteps {
 	 * values after N seconds timeout
 	 *
 	 * @step. (.*) verif(?:ies|y) that waiting instance status is changed to
-	 *        (.*) in * (\\d+) seconds?$
+	 * (.*) in * (\\d+) seconds?$
 	 *
-	 * @param callees
-	 *            comma separated list of callee names/aliases
-	 * @param expectedStatuses
-	 *            comma-separated list of expected call statuses. See
-	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus for
-	 *            more details
-	 * @param timeoutSeconds
-	 *            number of seconds to wait until call status is changed
+	 * @param callees comma separated list of callee names/aliases
+	 * @param expectedStatuses comma-separated list of expected call statuses.
+	 * See com.wearezeta.auto.common.calling2.v1.model.CallStatus for more
+	 * details
+	 * @param timeoutSeconds number of seconds to wait until call status is
+	 * changed
 	 * @throws Exception
 	 */
 	@Then("(.*) verif(?:ies|y) that waiting instance status is changed to (.*) in (\\d+) seconds?$")
 	public void UserXVerifesCallStatusToUserY(String callees,
-			String expectedStatuses, int timeoutSeconds) throws Exception {
+		String expectedStatuses, int timeoutSeconds) throws Exception {
 		commonCallingSteps.verifyAcceptingCallStatus(splitAliases(callees),
-				expectedStatuses, timeoutSeconds);
+			expectedStatuses, timeoutSeconds);
 	}
 
 	/**
 	 * Verify that the instance has X active flows
-	 * 
+	 *
 	 * @step. (.*) verif(?:ies|y) to have (\\d+) flows?$
-	 * @param callees
-	 *            comma separated list of callee names/aliases
-	 * @param numberOfFlows
-	 *            expected number of flows
+	 * @param callees comma separated list of callee names/aliases
+	 * @param numberOfFlows expected number of flows
 	 * @throws Exception
 	 */
 	@Then("(.*) verif(?:ies|y) to have (\\d+) flows?$")
 	public void UserXVerifesHavingXFlows(String callees, int numberOfFlows)
-			throws Exception {
+		throws Exception {
 		for (String callee : splitAliases(callees)) {
 			assertThat(commonCallingSteps.getFlows(callee),
-					hasSize(numberOfFlows));
+				hasSize(numberOfFlows));
 		}
 	}
 
@@ -137,9 +125,8 @@ public class CallingSteps {
 	 * running over the line
 	 *
 	 * @step. (.*) verif(?:ies|y) that all flows have greater than 0 bytes$
-	 * 
-	 * @param callees
-	 *            comma separated list of callee names/aliases
+	 *
+	 * @param callees comma separated list of callee names/aliases
 	 * @throws Exception
 	 */
 	@Then("(.*) verif(?:ies|y) that all flows have greater than 0 bytes$")
@@ -148,7 +135,7 @@ public class CallingSteps {
 			for (Flow flow : commonCallingSteps.getFlows(callee)) {
 				assertThat("incoming bytes", flow.getBytesIn(), greaterThan(0L));
 				assertThat("outgoing bytes", flow.getBytesOut(),
-						greaterThan(0L));
+					greaterThan(0L));
 			}
 		}
 	}
@@ -159,17 +146,16 @@ public class CallingSteps {
 	 *
 	 * @step. (.*) starts? waiting instance using (.*)$
 	 *
-	 * @param callees
-	 *            comma separated callee name/alias
-	 * @param callingServiceBackend
-	 *            available values: 'blender', 'chrome', * 'firefox'
+	 * @param callees comma separated callee name/alias
+	 * @param callingServiceBackend available values: 'blender', 'chrome', *
+	 * 'firefox'
 	 * @throws Exception
 	 */
 	@When("(.*) starts? waiting instance using (.*)$")
 	public void UserXStartsWaitingInstance(String callees,
-			String callingServiceBackend) throws Exception {
+		String callingServiceBackend) throws Exception {
 		commonCallingSteps.startWaitingInstances(splitAliases(callees),
-				callingServiceBackend);
+			callingServiceBackend);
 	}
 
 	/**
@@ -179,13 +165,12 @@ public class CallingSteps {
 	 *
 	 * @step. (.*) accepts? next incoming call automatically$
 	 *
-	 * @param callees
-	 *            comma separated list of callee names/aliases
+	 * @param callees comma separated list of callee names/aliases
 	 * @throws Exception
 	 */
 	@When("(.*) accepts? next incoming call automatically$")
 	public void UserXAcceptsNextIncomingCallAutomatically(String callees)
-			throws Exception {
+		throws Exception {
 		commonCallingSteps.acceptNextCall(splitAliases(callees));
 	}
 
@@ -194,8 +179,7 @@ public class CallingSteps {
 	 *
 	 * @step. (.*) stops? all waiting instances$
 	 *
-	 * @param callee
-	 *            callee name/alias
+	 * @param callee callee name/alias
 	 * @throws Exception
 	 */
 	@When("(.*) stops? all waiting instances$")
@@ -208,21 +192,18 @@ public class CallingSteps {
 	 *
 	 * @step. ^I call (\\d+) times with (.*)
 	 *
-	 * @param times
-	 *            number of consecutive calls
-	 * @param callees
-	 *            participants which will wait for a call
+	 * @param times number of consecutive calls
+	 * @param callees participants which will wait for a call
 	 * @throws java.lang.Throwable
 	 */
-	@Then("^I call (\\d+) times with (.*)")
-	public void ICallXTimes(int times, String callees) throws Throwable {
-		final String MYSELF = "Myself";
+	@Then("^I call (\\d+) times for (\\d+) minutes with (.*)")
+	public void ICallXTimes(int times, int callDurationMinutes, String callees) throws Throwable {
 		final int flowWaitTime = 3;
 		final List<String> calleeList = splitAliases(callees);
 		final CommonSteps commonSteps = CommonSteps.getInstance();
 		final ConversationPageSteps convSteps = new ConversationPageSteps();
 		final CommonCallingSteps2 commonCalling = CommonCallingSteps2
-				.getInstance();
+			.getInstance();
 		final WarningPageSteps warningSteps = new WarningPageSteps();
 		final Map<Integer, Throwable> failures = new HashMap<>();
 		for (int i = 0; i < times; i++) {
@@ -237,20 +218,38 @@ public class CallingSteps {
 						warningSteps.ISeeAnotherCallWarningModal("not");
 					} catch (Throwable e) {
 						warningSteps
-								.IClickButtonInAnotherCallWarningModal("End Call");
+							.IClickButtonInAnotherCallWarningModal("End Call");
 						LOG.error(e.getMessage());
 					}
 					convSteps.ICallUser();
 					for (String callee : calleeList) {
 						UserXVerifesCallStatusToUserY(callee, "active", 60);
 					}
-					commonSteps.WaitForTime(flowWaitTime);
-					for (String callee : calleeList) {
-						UserXVerifesHavingXFlows(callee, calleeList.size());
-						UserXVerifesHavingXFlows(callee);
+					Thread.sleep(flowWaitTime);
+					Map<String, Flow> flows = new HashMap<>();
+					LOG.info((callDurationMinutes * 4) + " checks");
+					for (int j = callDurationMinutes * 4; j > 0; j--) {
+						LOG.info("checking flows   " + j);
+						for (String callee : calleeList) {
+							UserXVerifesHavingXFlows(callee, calleeList.size());
+							for (Flow flow : commonCallingSteps.getFlows(callee)) {
+								Flow oldFlow = flows.get(callee + flow.getRemoteUserId());
+								if (oldFlow != null) {
+									assertThat("incoming bytes", flow.getBytesIn(), greaterThan(oldFlow.getBytesIn()));
+									assertThat("outgoing bytes", flow.getBytesOut(), greaterThan(oldFlow.getBytesOut()));
+								}
+								flows.put(callee + flow.getRemoteUserId(), flow);
+							}
+						}
+						LOG.info("All instances are active");
+						convSteps.IWaitForCallingBar(callees);
+						LOG.info("Waiting for " + (callDurationMinutes * 60 * 1000) / (callDurationMinutes * 4) + "ms ...");
+						Thread.sleep((callDurationMinutes * 60 * 1000) / (callDurationMinutes * 4));
+						LOG.info("!");
 					}
+
 					LOG.info("All instances are active");
-					convSteps.IWaitForCallingBar(MYSELF);
+					convSteps.IWaitForCallingBar(callees);
 					LOG.info("Callingbar is visible");
 					convSteps.IEndTheCall();
 					LOG.info("Terminated call");
@@ -280,10 +279,13 @@ public class CallingSteps {
 					LOG.error("Can not stop call " + i + " " + ex);
 				}
 			}
+			LOG.info("Waiting end...");
+			Thread.sleep(10000);
+			LOG.info("!");
 		}
 
 		LOG.info(failures.size() + " failures happened during " + times
-				+ " calls");
+			+ " calls");
 		failures.forEach((Integer i, Throwable t) -> {
 			LOG.error(i + ": " + t.getMessage());
 		});
@@ -294,6 +296,7 @@ public class CallingSteps {
 			throw entrySet.getValue();
 		}
 		LOG.info(failures.size() + " failures happened during " + times
-				+ " calls");
+			+ " calls");
 	}
+
 }

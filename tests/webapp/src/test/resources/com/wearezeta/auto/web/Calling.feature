@@ -738,7 +738,24 @@ Feature: Calling
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
-    Then I call 100 times with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Then I call 100 times for 1 minutes with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+ 
+    Examples: 
+      | Login      | Password      | Name      | Contact1   | Contact2  | Contact3  | Contact4  | ChatName              | WaitBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name | user4Name | user5Name | GroupCallConversation | chrome      | 60      |
+
+  @calling @group @durational2
+  Scenario Outline: Verify 5 min group call several times
+    Given My browser supports calling
+    Given There are 5 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> starts waiting instance using <WaitBackend>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <ChatName>
+    Then I call 10 times for 5 minutes with <Contact1>,<Contact2>
  
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2  | Contact3  | Contact4  | ChatName              | WaitBackend | Timeout |
