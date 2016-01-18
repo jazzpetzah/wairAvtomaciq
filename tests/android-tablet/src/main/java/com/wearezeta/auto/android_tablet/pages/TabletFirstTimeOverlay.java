@@ -22,4 +22,8 @@ public class TabletFirstTimeOverlay extends AndroidTabletPage {
     public void tapGotItButton() throws Exception {
         getFirstTimeOverlay().tapGotItButton();
     }
+
+    public boolean isInvisible() throws Exception {
+        return getFirstTimeOverlay().isInvisible();
+    }
 }
