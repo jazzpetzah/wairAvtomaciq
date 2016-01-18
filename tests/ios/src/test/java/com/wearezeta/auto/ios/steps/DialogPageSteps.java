@@ -50,7 +50,8 @@ public class DialogPageSteps {
 
     @When("^I see dialog page$")
     public void WhenISeeDialogPage() throws Exception {
-        Assert.assertTrue(getDialogPage().waitForCursorInputVisible());
+        Assert.assertTrue("Cursor input is not visible",
+                getDialogPage().waitForCursorInputVisible());
     }
 
     @When("^I tap on text input$")
@@ -141,18 +142,7 @@ public class DialogPageSteps {
      */
     @When("^I open conversation details$")
     public void IOpenConversationDetails() throws Exception {
-        getDialogPage().openConversationDetailsClick();
-    }
-
-    /**
-     * Click open conversation details button in 1:1 dialog with Pending user
-     *
-     * @throws Exception if other user personal profile page was not created
-     * @step. ^I open pending user conversation details$
-     */
-    @When("^I open pending user conversation details$")
-    public void IOpenPendingConversationDetails() throws Exception {
-        getDialogPage().clickConversationDeatailForPendingUser();
+        getDialogPage().openConversationDetails();
     }
 
     @When("^I send the message$")

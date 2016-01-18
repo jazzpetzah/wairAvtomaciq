@@ -129,12 +129,11 @@ public class ContactListPageSteps {
     }
 
     @When("^I create group chat with (.*) and (.*)$")
-    public void ICreateGroupChat(String contact1, String contact2)
-            throws Exception {
+    public void ICreateGroupChat(String contact1, String contact2) throws Exception {
         WhenITapOnContactName(contact1);
         DialogPageSteps dialogSteps = new DialogPageSteps();
         dialogSteps.WhenISeeDialogPage();
-        dialogSteps.WhenISwipeUpOnDialogPage();
+        dialogSteps.IOpenConversationDetails();
 
         OtherUserPersonalInfoPageSteps infoPageSteps = new OtherUserPersonalInfoPageSteps();
         infoPageSteps.WhenISeeOtherUserProfilePage(contact1);
@@ -142,19 +141,15 @@ public class ContactListPageSteps {
 
         PeoplePickerPageSteps pickerSteps = new PeoplePickerPageSteps();
         pickerSteps.WhenISeePeoplePickerPage();
-        CommonIOSSteps cSteps = new CommonIOSSteps();
-        cSteps.UserWaitsUntilContactExistsInHisSearchResults("I", contact2);
         pickerSteps.WhenITapOnSearchInputOnPeoplePickerPage();
         pickerSteps.WhenIInputInPeoplePickerSearchFieldUserName(contact2);
         pickerSteps.WhenISeeUserFoundOnPeoplePickerPage(contact2);
         pickerSteps.WhenITapOnUserNameFoundOnPeoplePickerPage(contact2);
         pickerSteps.WhenIClickOnAddToConversationButton();
 
-        Thread.sleep(2000); // wait for group chat to appear
         GroupChatPageSteps groupChatSteps = new GroupChatPageSteps();
-        final String[] names = new String[]{contact1, contact2};
-        groupChatSteps.ThenISeeGroupChatPage(StringUtils.join(names,
-                CommonSteps.ALIASES_SEPARATOR));
+        groupChatSteps.ThenISeeGroupChatPage(String.format("%s%s%s",
+                contact1, CommonSteps.ALIASES_SEPARATOR, contact2));
     }
 
     @When("^I swipe right on a (.*)$")

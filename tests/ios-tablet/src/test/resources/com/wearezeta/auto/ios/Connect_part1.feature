@@ -17,7 +17,7 @@ Feature: Connect
     When I click close button to dismiss people view
     Then I see conversation with not connected user <UnconnectedUser>
     When I tap on contact name <UnconnectedUser>
-    And I open pending user conversation details
+    And I open conversation details
     Then I see <UnconnectedUser> user pending profile popover on iPad
 
     Examples: 
@@ -42,7 +42,7 @@ Feature: Connect
     When I click close button to dismiss people view
     Then I see conversation with not connected user <UnconnectedUser>
     When I tap on contact name <UnconnectedUser>
-    And I open pending user conversation details
+    And I open conversation details
     Then I see <UnconnectedUser> user pending profile popover on iPad
 
     Examples: 

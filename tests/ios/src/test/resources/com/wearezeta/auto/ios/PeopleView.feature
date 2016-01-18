@@ -96,16 +96,15 @@ Feature: People View
   @C3173 @staging @rc @id1396
   Scenario Outline: Verify correct group info page information
     Given There are 3 users where <Name> is me
-    Given User <Contact1> change avatar picture to <Picture>
-    Given User <Contact1> change name to AQAPICTURECONTACT
-    Given User <Contact2> change name to AQAAVATAR TestContact
-    Given User <Contact2> change accent color to <Color>
-    Given User <Contact1> change accent color to <Color1>
+    Given User <Contact1> changes avatar picture to <Picture>
+    Given User <Contact1> changes name to AQAPICTURECONTACT
+    Given User <Contact2> changes name to AQAAVATAR
+    Given User <Contact2> changes accent color to <Color>
+    Given User <Contact1> changes accent color to <Color1>
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I create group chat with <Contact1> and <Contact2>
-    #And I swipe up on group chat page
     And I open group conversation details
     Then I see that the conversation name is correct with <Contact1> and <Contact2>
     And I see that conversation has <ParticipantNumber> people
@@ -114,7 +113,7 @@ Feature: People View
 
     Examples:
       | Name      | Contact1  | Contact2  | ParticipantNumber | Picture                      | Color        | Color1       |
-      | user1Name | user2Name | user3Name | 3                 | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow |
+      | user1Name | user2Name | user3Name | 2                 | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow |
 
   @C3174 @regression @rc @id1406
   Scenario Outline: I can edit the conversation name

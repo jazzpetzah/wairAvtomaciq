@@ -47,40 +47,31 @@ public class GroupChatPage extends DialogPage {
         super(lazyDriver);
     }
 
-    public boolean areRequiredContactsAddedToChat(List<String> names) {
-        final String lastMsg = getStartedtChatMessage();
-        for (String name : names) {
-            if (!lastMsg.toLowerCase().contains(name.toLowerCase())) {
-                return false;
-            }
-        }
-        return true;
+    public boolean areRequiredContactsAddedToChat(List<String> names) throws Exception {
+        final String lastMsg = getStartedChatMessage();
+        return names.stream().anyMatch(x -> lastMsg.toLowerCase().contains(x.toLowerCase()));
     }
 
-    public boolean areContactsAddedAfterDeleteContent(List<String> names) {
-        final String lastMsg = getStartedtChatMessageAfterDeleteContent();
-        for (String name : names) {
-            if (!lastMsg.toLowerCase().contains(name.toLowerCase())) {
-                return false;
-            }
-        }
-        return true;
+    public boolean areContactsAddedAfterDeleteContent(List<String> names) throws Exception {
+        final String lastMsg = getStartedChatMessageAfterDeleteContent();
+        return names.stream().anyMatch(x -> lastMsg.toLowerCase().contains(x.toLowerCase()));
     }
 
-    private String getStartedtChatMessageAfterDeleteContent() {
+    private String getStartedChatMessageAfterDeleteContent() throws Exception {
+        verifyLocatorPresence(By.xpath(xpathStartConversationAfterDelete),
+                "Chat started message is not present in the conversation view after timeout expired");
         return startConvAfterDeleteMessage.getText();
     }
 
-    public boolean areRequired3ContactsAddedToChat(String name1, String name2,
-                                                   String name3) {
-        String lastMessage = getAddedtoChatMessage();
+    public boolean areRequired3ContactsAddedToChat(String name1, String name2, String name3) throws Exception {
+        String lastMessage = getAddedToChatMessage();
         return lastMessage.contains(name1.toUpperCase())
                 && lastMessage.contains(name2.toUpperCase())
                 && lastMessage.contains(name3.toUpperCase());
     }
 
     public boolean isGroupChatPageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.name(nameConversationCursorInput));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(nameConversationCursorInput));
     }
 
     public boolean isYouAddedUserMessageShown(String user) throws Exception {
@@ -88,17 +79,16 @@ public class GroupChatPage extends DialogPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
     }
 
-    public boolean isYouRenamedConversationMessageVisible(String name) {
-        return getRenamedMessage().equals(nameYouRenamedConversationMessage);
+    public boolean isYouRenamedConversationMessageVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameYouRenamedConversation));
     }
 
     @Override
-    public void openConversationDetailsClick() throws Exception {
+    public void openConversationDetails() throws Exception {
         for (int i = 0; i < 3; i++) {
             if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(namePlusButton))) {
                 plusButton.click();
                 openConversationDetails.click();
-                DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.name(nameAddContactToChatButton), 5);
             }
             if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(nameAddContactToChatButton))) {
                 break;

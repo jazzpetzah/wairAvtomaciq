@@ -505,7 +505,7 @@ public class CommonIOSSteps {
         }
     }
 
-    @When("^User (\\w+) change avatar picture to (.*)$")
+    @When("^User (\\w+) changes? avatar picture to (.*)$")
     public void IChangeUserAvatarPicture(String userNameAlias, String name)
             throws Exception {
         final String rootPath = getSimulatorImagesPathFromConfig(getClass());
@@ -547,9 +547,8 @@ public class CommonIOSSteps {
         commonSteps.IChangeUserName(userNameAlias, newName);
     }
 
-    @When("^User (\\w+) change accent color to (.*)$")
-    public void IChangeAccentColor(String userNameAlias, String newColor)
-            throws Exception {
+    @When("^User (\\w+) changes? accent color to (.*)$")
+    public void IChangeAccentColor(String userNameAlias, String newColor) throws Exception {
         commonSteps.IChangeUserAccentColor(userNameAlias, newColor);
     }
 

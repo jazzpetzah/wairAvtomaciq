@@ -6,11 +6,7 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import io.appium.java_client.ios.IOSElement;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.ScreenOrientation;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.*;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -168,15 +164,16 @@ public class ContactListPage extends IOSPage {
 
     private Optional<WebElement> findNameInContactList(String name) throws Exception {
         final By locator = By.xpath(convoListEntryByName.apply(name));
-        if (DriverUtils.waitUntilLocatorAppears(getDriver(), locator)) {
-            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
-                return Optional.of(getDriver().findElement(locator));
-            } else {
+        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator)) {
+            return Optional.of(getDriver().findElement(locator));
+        } else {
+            try {
                 return Optional.of(((IOSElement) getDriver().findElementByXPath(xpathContactListRoot)).
                         scrollToExact(name));
+            } catch (WebDriverException e) {
+                return Optional.empty();
             }
         }
-        return Optional.empty();
     }
 
     public boolean isChatInContactList(String name) throws Exception {
