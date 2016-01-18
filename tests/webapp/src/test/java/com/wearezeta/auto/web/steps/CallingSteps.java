@@ -1,7 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.CommonCallingSteps2;
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -190,17 +189,17 @@ public class CallingSteps {
 	/**
 	 * Executes consecutive calls without logging out etc.
 	 *
-	 * @step. ^I call (\\d+) times with (.*)
+	 * @step. ^I call (\\d+) times for (\\d+) minutes with (.*)$
 	 *
+	 * @param callDurationMinutes
 	 * @param times number of consecutive calls
 	 * @param callees participants which will wait for a call
 	 * @throws java.lang.Throwable
 	 */
-	@Then("^I call (\\d+) times for (\\d+) minutes with (.*)")
+	@Then("^I call (\\d+) times for (\\d+) minutes with (.*)$")
 	public void ICallXTimes(int times, int callDurationMinutes, String callees) throws Throwable {
 		final int flowWaitTime = 3;
 		final List<String> calleeList = splitAliases(callees);
-		final CommonSteps commonSteps = CommonSteps.getInstance();
 		final ConversationPageSteps convSteps = new ConversationPageSteps();
 		final CommonCallingSteps2 commonCalling = CommonCallingSteps2
 			.getInstance();
@@ -225,10 +224,11 @@ public class CallingSteps {
 					for (String callee : calleeList) {
 						UserXVerifesCallStatusToUserY(callee, "active", 60);
 					}
-					Thread.sleep(flowWaitTime);
+					Thread.sleep(flowWaitTime * 1000);
 					Map<String, Flow> flows = new HashMap<>();
-					LOG.info((callDurationMinutes * 4) + " checks");
-					for (int j = callDurationMinutes * 4; j > 0; j--) {
+					int totalFlowChecks = callDurationMinutes * 4;
+					LOG.info(totalFlowChecks + " checks");
+					for (int j = totalFlowChecks; j > 0; j--) {
 						LOG.info("checking flows   " + j);
 						for (String callee : calleeList) {
 							UserXVerifesHavingXFlows(callee, calleeList.size());
@@ -243,8 +243,9 @@ public class CallingSteps {
 						}
 						LOG.info("All instances are active");
 						convSteps.IWaitForCallingBar(callees);
-						LOG.info("Waiting for " + (callDurationMinutes * 60 * 1000) / (callDurationMinutes * 4) + "ms ...");
-						Thread.sleep((callDurationMinutes * 60 * 1000) / (callDurationMinutes * 4));
+						long flowCheckInterval = (callDurationMinutes * 60 * 1000) / totalFlowChecks;
+						LOG.info("Waiting for " + flowCheckInterval + "ms ...");
+						Thread.sleep(flowCheckInterval);
 						LOG.info("!");
 					}
 
