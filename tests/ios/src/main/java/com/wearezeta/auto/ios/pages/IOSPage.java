@@ -232,7 +232,8 @@ public abstract class IOSPage extends BasePage {
 
     public void cmdVscript(String[] scriptString) throws Exception {
         CommonUtils.executeUIAppleScript(scriptString).
-                get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);;
+                get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+        ;
     }
 
     public void hideKeyboard() throws Exception {
@@ -341,18 +342,20 @@ public abstract class IOSPage extends BasePage {
     public void lockScreen(int timeSeconds) throws Exception {
         assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            final String[] doLockScript = new String[] {
+            CommonUtils.executeUIAppleScript(new String[]{
                     "tell application \"System Events\"",
                     "tell application \"Simulator\" to activate",
                     "tell application \"System Events\" to keystroke \"l\" using {command down}",
                     "end tell"
-            };
-            CommonUtils.executeUIAppleScript(doLockScript).
-                    get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+            }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
             Thread.sleep(timeSeconds * 1000);
-            // this is to show the unlock label
-            CommonUtils.executeUIAppleScript(doLockScript).
-                    get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+            // this is to show the unlock label if not visible yet
+            CommonUtils.executeUIAppleScript(new String[]{
+                    "tell application \"System Events\"",
+                    "tell application \"Simulator\" to activate",
+                    "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
+                    "end tell"
+            }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
             IOSSimulatorHelper.swipeRight();
         } else {
             this.getDriver().lockScreen(timeSeconds);
