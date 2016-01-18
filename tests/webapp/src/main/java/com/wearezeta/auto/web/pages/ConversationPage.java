@@ -184,6 +184,13 @@ public class ConversationPage extends WebPage {
 		wait.until(visibilityOfTextInElementsLocated(locator, parts));
 	}
 
+	public boolean waitForVanishOfMessageHeaderContains(Set<String> parts) throws Exception {
+		final By locator = By
+				.cssSelector(WebAppLocators.ConversationPage.cssMessageHeader);
+		Thread.sleep(DriverUtils.getDefaultLookupTimeoutSeconds() * 1000);
+		return getNumberOfElementsContainingText(locator, parts) > 0 ? false : true;
+	}
+
 	/**
 	 * An expectation for checking that a system message is visible that
 	 * contains all strings of the expected strings.
@@ -221,6 +228,17 @@ public class ConversationPage extends WebPage {
 						+ locator;
 			}
 		};
+	}
+
+	public int getNumberOfElementsContainingText(final By locator, final Set<String> expectedTexts) throws Exception {
+		int count = 0;
+		List<String> elements = getTextOfDisplayedElements(locator, getDriver());
+		for (String element : elements) {
+			if (containsAllCaseInsensitive(element, expectedTexts)) {
+				count++;
+			}
+		}
+		return count;
 	}
 
 	public boolean isActionMessageSent(final Set<String> parts)
@@ -697,4 +715,5 @@ public class ConversationPage extends WebPage {
 	public Object getConnectedMessageLabel() {
 		return connectedMessageLabel.getText();
 	}
+
 }

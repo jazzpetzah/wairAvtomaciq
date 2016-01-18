@@ -358,7 +358,7 @@ public class ConversationPageSteps {
 	 */
 	@Then("^I( do not)? see (.*) action for (.*) in conversation$")
 	public void ThenISeeActionForContactInConversation(String doNot,
-			String message, String contacts) throws Exception {
+													   String message, String contacts) throws Exception {
 		contacts = usrMgr.replaceAliasesOccurences(contacts, FindBy.NAME_ALIAS);
 		Set<String> parts = new HashSet<String>();
 		parts.add(message);
@@ -367,11 +367,8 @@ public class ConversationPageSteps {
 			webappPagesCollection.getPage(ConversationPage.class)
 					.waitForMessageHeaderContains(parts);
 		} else {
-			// TODO: replace this check with a nicer one
-			assertThat("Check action",
-					webappPagesCollection.getPage(ConversationPage.class)
-							.getLastActionMessage(),
-					not(containsString(message)));
+			Assert.assertTrue("Found action in messages", webappPagesCollection.getPage(ConversationPage.class)
+					.waitForVanishOfMessageHeaderContains(parts));
 		}
 	}
 
