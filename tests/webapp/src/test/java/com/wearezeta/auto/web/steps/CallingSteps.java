@@ -1,15 +1,24 @@
 package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.CommonCallingSteps2;
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
+import com.wearezeta.auto.common.log.ZetaLogger;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.apache.log4j.Logger;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 public class CallingSteps {
+
+	private static final Logger LOG = ZetaLogger.getLog(CallingSteps.class
+			.getName());
 
 	private final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2
 			.getInstance();
@@ -192,5 +201,99 @@ public class CallingSteps {
 	@When("(.*) stops? all waiting instances$")
 	public void UserXStopsIncomingCalls(String callee) throws Exception {
 		commonCallingSteps.stopWaitingCall(callee);
+	}
+
+	/**
+	 * Executes consecutive calls without logging out etc.
+	 *
+	 * @step. ^I call (\\d+) times with (.*)
+	 *
+	 * @param times
+	 *            number of consecutive calls
+	 * @param callees
+	 *            participants which will wait for a call
+	 * @throws java.lang.Throwable
+	 */
+	@Then("^I call (\\d+) times with (.*)")
+	public void ICallXTimes(int times, String callees) throws Throwable {
+		final String MYSELF = "Myself";
+		final int flowWaitTime = 3;
+		final List<String> calleeList = splitAliases(callees);
+		final CommonSteps commonSteps = CommonSteps.getInstance();
+		final ConversationPageSteps convSteps = new ConversationPageSteps();
+		final CommonCallingSteps2 commonCalling = CommonCallingSteps2
+				.getInstance();
+		final WarningPageSteps warningSteps = new WarningPageSteps();
+		final Map<Integer, Throwable> failures = new HashMap<>();
+		for (int i = 0; i < times; i++) {
+			LOG.info("\n\nSTARTING CALL " + i);
+			try {
+				for (String callee : calleeList) {
+					UserXAcceptsNextIncomingCallAutomatically(callee);
+				}
+				LOG.info("All instances are waiting");
+				try {
+					try {
+						warningSteps.ISeeAnotherCallWarningModal("not");
+					} catch (Throwable e) {
+						warningSteps
+								.IClickButtonInAnotherCallWarningModal("End Call");
+						LOG.error(e.getMessage());
+					}
+					convSteps.ICallUser();
+					for (String callee : calleeList) {
+						UserXVerifesCallStatusToUserY(callee, "active", 60);
+					}
+					commonSteps.WaitForTime(flowWaitTime);
+					for (String callee : calleeList) {
+						UserXVerifesHavingXFlows(callee, calleeList.size());
+						UserXVerifesHavingXFlows(callee);
+					}
+					LOG.info("All instances are active");
+					convSteps.IWaitForCallingBar(MYSELF);
+					LOG.info("Callingbar is visible");
+					convSteps.IEndTheCall();
+					LOG.info("Terminated call");
+					convSteps.IDoNotCallingBar();
+					LOG.info("Calling bar is not visible anymore");
+					LOG.info("CALL " + i + " SUCCESSFUL");
+				} catch (Throwable e) {
+					LOG.info("CALL " + i + " FAILED");
+					failures.put(i, e);
+					try {
+						convSteps.IEndTheCall();
+						convSteps.IDoNotCallingBar();
+					} catch (Throwable ex) {
+						LOG.error("Cannot stop call " + i + " " + ex);
+					}
+				}
+				for (String callee : calleeList) {
+					commonCalling.stopWaitingCall(callee);
+				}
+				LOG.info("All instances are stopped");
+			} catch (Throwable e) {
+				LOG.error("Can not stop waiting call " + i + " " + e);
+				try {
+					convSteps.IEndTheCall();
+					convSteps.IDoNotCallingBar();
+				} catch (Throwable ex) {
+					LOG.error("Can not stop call " + i + " " + ex);
+				}
+			}
+		}
+
+		LOG.info(failures.size() + " failures happened during " + times
+				+ " calls");
+		failures.forEach((Integer i, Throwable t) -> {
+			LOG.error(i + ": " + t.getMessage());
+		});
+
+		for (Map.Entry<Integer, Throwable> entrySet : failures.entrySet()) {
+			// will just throw the first exception to indicate failed calls in
+			// test results
+			throw entrySet.getValue();
+		}
+		LOG.info(failures.size() + " failures happened during " + times
+				+ " calls");
 	}
 }

@@ -10,13 +10,4 @@ tests/webapp/bin/*
 tests/webapp/nbactions.xml
 tests/tools/jenkins_controller/.idea
 customBackend.json
-
-#Eclipse stuff
 .classpath
-.settings/
-
-#IDEA stuff
-*.iml
-*.idea/
-out/
-

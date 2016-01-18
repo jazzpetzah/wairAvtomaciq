@@ -1,2 +1,2 @@
-to build - select content from folders “src/main/java” and “src/main/resources” and export to jar (or select cucumber-reports project export it it jar with option “Export all output folders for checked projects”)
+to build - select “src/main/java” and “src/main/resources” folders and export content to jar.
 File name: classes.jar
