@@ -292,7 +292,7 @@ Feature: People View
     And I click close user profile page button
     And I see dialog page
     And I return to the chat list
-    And I see Contact list with my name <Name>
+    And I see conversations list
     And I don't see in contact list group chat with <Contact1> <Contact2> <Contact3>
 
     Examples:
