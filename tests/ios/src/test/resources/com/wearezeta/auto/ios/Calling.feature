@@ -309,7 +309,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | firefox     | autocall     | 30      |
+      | user1Name | user2Name | firefox     | autocall     | 120     |
 
   @C2046 @regression @rc @IPv6 @id2682
   Scenario Outline: Verify accepting group call in foreground
