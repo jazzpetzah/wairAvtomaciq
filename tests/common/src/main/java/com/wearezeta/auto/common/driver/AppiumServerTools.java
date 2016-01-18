@@ -4,12 +4,13 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import org.apache.log4j.Logger;
 
 import java.net.Socket;
+import java.util.concurrent.TimeUnit;
 
 public class AppiumServerTools {
     private static final Logger log = ZetaLogger
             .getLog(AppiumServerTools.class.getSimpleName());
 
-    private static final String EXECUTOR_APP_PATH = "/Applications/AutorunAppium.app";
+    private static final String EXECUTOR_APP = "AutorunAppium";
     private static final int PORT = 4723;
     private static final int RESTART_TIMEOUT = 10000; // milliseconds
 
@@ -36,10 +37,12 @@ public class AppiumServerTools {
     }
 
     public static synchronized void reset() throws Exception {
-        Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", "killall Simulator"});
+        Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "Simulator"}).
+                waitFor(RESTART_TIMEOUT, TimeUnit.MILLISECONDS);
 
         log.warn("Trying to restart Appium server on localhost...");
-        Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", String.format("open -a %s", EXECUTOR_APP_PATH)});
+        Runtime.getRuntime().exec(new String[]{"/usr/bin/open", "-a", EXECUTOR_APP}).
+                waitFor(RESTART_TIMEOUT,TimeUnit.MILLISECONDS);
         Thread.sleep(RESTART_TIMEOUT);
         log.info(String.format("Waiting %s seconds for Appium port %s to be opened...", RESTART_TIMEOUT / 1000, PORT));
         if (!waitUntilPortOpened()) {
