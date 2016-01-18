@@ -384,5 +384,5 @@ Feature: Conversation List
     And I see more than 5 suggestions in people picker
 
     Examples: 
-      | Email      | Password      | Name      | Gmail                       | GmailPassword |
-      | user1Email | user1Password | user1Name | smoketester.wire2@gmail.com | aqa123456!    |
+      | Email      | Password      | Name      | Gmail                      | GmailPassword |
+      | user1Email | user1Password | user1Name | smoketester.wire@gmail.com | aqa123456!    |
