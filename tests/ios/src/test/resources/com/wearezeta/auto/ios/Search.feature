@@ -9,6 +9,7 @@ Feature: Search
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
+    And I press keyboard Return button
     Then I see user <ContactName> found on People picker page
 
     Examples:
@@ -105,7 +106,7 @@ Feature: Search
     Then I tap on first 2 top connections
     And I click Create Conversation button on People picker page
     And I wait for 2 seconds
-    And I swipe up on group chat page
+    And I open group conversation details
     And I change group conversation name to <ConvoName>
     And I exit the group info page
     And I return to the chat list
