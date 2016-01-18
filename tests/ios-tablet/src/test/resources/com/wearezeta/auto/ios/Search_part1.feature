@@ -9,6 +9,7 @@ Feature: Search
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
+    And I press keyboard Return button
     Then I see user <ContactName> found on People picker page
 
     Examples: 
@@ -25,6 +26,7 @@ Feature: Search
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
+    And I press keyboard Return button
     Then I see user <ContactName> found on People picker page
 
     Examples: 
