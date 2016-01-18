@@ -5,7 +5,6 @@ import java.util.function.Function;
 
 import org.openqa.selenium.By;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class ConversationActionsMenuPage extends AbstractPopoverPage {
@@ -20,6 +19,6 @@ public class ConversationActionsMenuPage extends AbstractPopoverPage {
 
     public void selectMenuItem(String itemName) throws Exception {
         final By locator = By.xpath(xpathActionMenuItemByName.apply(itemName));
-        verifyLocatorPresence(locator, String.format("Actions menu item '%s' is not displayed", itemName)).click();
+        getElement(locator, String.format("Actions menu item '%s' is not displayed", itemName)).click();
     }
 }

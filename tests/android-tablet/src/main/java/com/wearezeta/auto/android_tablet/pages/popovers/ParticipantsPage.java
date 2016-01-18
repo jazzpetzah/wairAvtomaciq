@@ -52,7 +52,7 @@ public class ParticipantsPage extends AbstractConversationDetailsPage {
 
 	public void tapParticipantAvatar(String name) throws Exception {
 		final By locator = By.xpath(xpathParticipantAvatarByName.apply(name));
-		verifyLocatorPresence(locator, String.format("The avatar of '%s' is not visible", name)).click();
+		getElement(locator, String.format("The avatar of '%s' is not visible", name)).click();
 	}
 
 	public boolean waitForParticipantAvatarNotVisible(String name)

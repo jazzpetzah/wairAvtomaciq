@@ -7,9 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.android.pages.AndroidPage;
-import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.DialogPage;
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class ProfilePicturePage extends AndroidPage {
@@ -27,10 +25,10 @@ public class ProfilePicturePage extends AndroidPage {
     }
 
     public void clickCameraButton() throws Exception {
-        verifyLocatorPresence(By.id(idDialogTakePhotoButton), "Camera button is clickable").click();
+        getElement(By.id(idDialogTakePhotoButton), "Camera button is clickable").click();
     }
 
     public void confirmPicture() throws Exception {
-        verifyLocatorPresence(By.xpath(DialogPage.xpathConfirmOKButton), "Confirm button is not visible").click();
+        getElement(By.xpath(DialogPage.xpathConfirmOKButton), "Confirm button is not visible").click();
     }
 }

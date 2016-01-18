@@ -122,7 +122,7 @@ public class TabletConversationsListPage extends AndroidTabletPage {
     public void tapConversation(String name) throws Exception {
         final By locator = By.xpath(ContactListPage.xpathContactByName
                 .apply(name));
-        verifyLocatorPresence(locator,
+        getElement(locator,
                 String.format("The conversation '%s' does not exist in the conversations list", name)).click();
     }
 

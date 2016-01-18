@@ -32,7 +32,7 @@ public class GroupChatInfoPageSteps {
 
 	@When("I change group conversation name to (.*)")
 	public void IChangeConversationNameTo(String name) throws Exception {
-		getGroupChatInfoPage().changeConversationName(name);
+		getGroupChatInfoPage().setGroupChatName(name);
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class GroupChatInfoPageSteps {
 	 */
 	@When("^I try to change group conversation name to empty$")
 	public void IChangeConversationNameToEmpty() throws Exception {
-		getGroupChatInfoPage().changeConversationName("");
+		getGroupChatInfoPage().setGroupChatName("");
 	}
 
 	/**

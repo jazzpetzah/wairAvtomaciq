@@ -3,7 +3,6 @@ package com.wearezeta.auto.android_tablet.pages;
 import java.awt.image.BufferedImage;
 import java.util.Optional;
 import java.util.concurrent.Future;
-import java.util.function.Function;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -41,7 +40,7 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
     }
 
     public void tapCloseButton() throws Exception {
-        verifyLocatorPresence(By.id(PeoplePickerPage.idPeoplePickerClearbtn), "Close button is not visible").click();
+        getElement(By.id(PeoplePickerPage.idPeoplePickerClearbtn), "Close button is not visible").click();
     }
 
     public void typeTextInPeopleSearch(String searchCriteria) throws Exception {
@@ -52,7 +51,7 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
         final By locator = By
                 .xpath(PeoplePickerPage.xpathPeoplePickerContactByName
                         .apply(item));
-        verifyLocatorPresence(locator,
+        getElement(locator,
                 String.format("The item '%s' is not visible in People Picker search list after the defualt timeout expired",
                         item)).click();
     }
@@ -70,7 +69,7 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
     public Optional<BufferedImage> takeAvatarScreenshot(String name)
             throws Exception {
         final By locator = By.xpath(PeoplePickerPage.xpathFoundAvatarByName.apply(name));
-        return this.getElementScreenshot(verifyLocatorPresence(locator,
+        return this.getElementScreenshot(getElement(locator,
                 String.format("User avatar for '%s' is not visible", name)));
     }
 

@@ -49,11 +49,11 @@ public class TabletSelfProfilePage extends AndroidTabletPage {
 
     public void selectOptionsMenuItem(String itemName) throws Exception {
         final By locator = By.xpath(xpathOptionsMenuItemByName.apply(itemName));
-        verifyLocatorPresence(locator, String.format("The item '%s' is not present in Options menu", itemName)).click();
+        getElement(locator, String.format("The item '%s' is not present in Options menu", itemName)).click();
     }
 
     public void tapSelfNameField() throws Exception {
-        verifyLocatorPresence(By.id(idSelfNameInput), "Self name input is not visible").click();
+        getElement(By.id(idSelfNameInput), "Self name input is not visible").click();
     }
 
     public void changeSelfNameTo(String newName) throws Exception {

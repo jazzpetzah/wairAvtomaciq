@@ -15,7 +15,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class LoginPage extends IOSPage {
-    @FindBy(name = nameMainWindow)
+    @FindBy(name = nameStrMainWindow)
     private WebElement viewPager;
 
     private static final String nameSwitchToEmailLogin = "I HAVE AN ACCOUNT";
@@ -168,7 +168,7 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean isVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameMainWindow));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameStrMainWindow));
     }
 
     public boolean isPhoneSignInButtonVisible() throws Exception {
@@ -277,7 +277,7 @@ public class LoginPage extends IOSPage {
     }
 
     public void tapEmailFieldToChangePassword(String email) throws Exception {
-        final WebElement safariChangePWEmailField = verifyLocatorPresence(By.xpath(xpathSafariChangePasswordEmailField),
+        final WebElement safariChangePWEmailField = getElement(By.xpath(xpathSafariChangePasswordEmailField),
                 "Email input field in Safari is not visible");
         DriverUtils.tapByCoordinates(getDriver(), safariChangePWEmailField);
         this.inputStringFromKeyboard(email);
@@ -296,7 +296,7 @@ public class LoginPage extends IOSPage {
 
     public void tapPasswordFieldToChangePassword(String newPassword)
             throws Exception {
-        final WebElement safariEnterNewPasswordField = verifyLocatorPresence(By.xpath(xpathSafariEnterNewPasswordField),
+        final WebElement safariEnterNewPasswordField = getElement(By.xpath(xpathSafariEnterNewPasswordField),
                 "Password input field in Safari is not visible");
         DriverUtils.tapByCoordinates(getDriver(), safariEnterNewPasswordField);
         this.inputStringFromKeyboard(newPassword);

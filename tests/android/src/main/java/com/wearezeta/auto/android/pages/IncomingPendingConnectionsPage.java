@@ -78,7 +78,7 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
 
     public void clickBlockBtn() throws Exception {
         final By blockButtonLocator = By.xpath(xpathConnectMenuItemByText.apply("Block"));
-        final WebElement blockButton = verifyLocatorPresence(blockButtonLocator, "Block button is not visible");
+        final WebElement blockButton = getElement(blockButtonLocator, "Block button is not visible");
         if (!DriverUtils.waitUntilElementClickable(getDriver(), blockButton)) {
             throw new IllegalStateException("Block button is not clickable");
         }
@@ -152,7 +152,7 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
     }
 
     public void pressIgnoreButton() throws Exception {
-        verifyLocatorPresence(By.id(idConnectRequestIgnore), "Ignore button is not visible").click();
+        getElement(By.id(idConnectRequestIgnore), "Ignore button is not visible").click();
     }
 
     public boolean isIgnoreConnectButtonVisible() throws Exception {
@@ -165,12 +165,12 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
     }
 
     public void pressLeftConnectButton() throws Exception {
-        verifyLocatorPresence(By.xpath(xpathUserDetailsLeftButton.apply("Connect")),
+        getElement(By.xpath(xpathUserDetailsLeftButton.apply("Connect")),
                 "Connect button is not visible").click();
     }
 
     public void pressConnectButton() throws Exception {
-        verifyLocatorPresence(By.id(PeoplePickerPage.idSendConnectionRequestButton),
+        getElement(By.id(PeoplePickerPage.idSendConnectionRequestButton),
                 "Connect button is not visible").click();
     }
 

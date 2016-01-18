@@ -53,10 +53,10 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     private WebElement alsoLeaveButton;
 
     private static final Function<String, String> xpathOtherPersonalInfoPageNameFieldByName = name ->
-            String.format("%s/UIAStaticText[@name='%s']", xpathMainWindow, name);
+            String.format("%s/UIAStaticText[@name='%s']", xpathStrMainWindow, name);
 
     protected static final String xpathOtherPersonalInfoPageEmailField =
-            xpathMainWindow + "/UIATextView[contains(@name, 'WIRE.COM')]";
+            xpathStrMainWindow + "/UIATextView[contains(@name, 'WIRE.COM')]";
     @FindBy(xpath = xpathOtherPersonalInfoPageEmailField)
     private WebElement emailField;
 
@@ -78,7 +78,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     @FindBy(name = nameSilenceConversationButton)
     private WebElement silenceMenuButton;
 
-    private static final String xpathSilenceConversationButton = xpathMainWindow + "/UIAButton[@name='SILENCE']";
+    private static final String xpathSilenceConversationButton = xpathStrMainWindow + "/UIAButton[@name='SILENCE']";
     @FindBy(xpath = xpathSilenceConversationButton)
     private WebElement menuSilenceButton;
 
@@ -126,11 +126,11 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     }
 
     public void clickConfirmDeleteButton() throws Exception {
-        verifyLocatorPresence(By.xpath(xpathConfirmDeleteButton), "Confirm button is not visible").click();
+        getElement(By.xpath(xpathConfirmDeleteButton), "Confirm button is not visible").click();
     }
 
     public void clickAlsoLeaveButton() throws Exception {
-        verifyLocatorPresence(By.name(nameAlsoLeaveCheckerButton), "'Also Leave' checkbox is not present").click();
+        getElement(By.name(nameAlsoLeaveCheckerButton), "'Also Leave' checkbox is not present").click();
     }
 
     public void leavePageToGroupInfoPage() throws Exception {
@@ -138,7 +138,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     }
 
     public void clickCloseUserProfileButton() throws Exception {
-        verifyLocatorPresence(By.name(nameExitOtherUserPersonalInfoPageButton),
+        getElement(By.name(nameExitOtherUserPersonalInfoPageButton),
                 "Close profile button is not visible").click();
     }
 

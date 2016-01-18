@@ -70,12 +70,12 @@ public class RegistrationPage extends AndroidPage {
     }
 
     public void setName(String name) throws Exception {
-        verifyLocatorPresence(By.xpath(xpathNameField), "Name field is not visible").sendKeys(name);
+        getElement(By.xpath(xpathNameField), "Name field is not visible").sendKeys(name);
         this.getWait().until(ExpectedConditions.elementToBeClickable(nextArrow)).click();
     }
 
     public void createAccount() throws Exception {
-        verifyLocatorPresence(By.id(idCreateUserBtn), "Create user button is not visible").click();
+        getElement(By.id(idCreateUserBtn), "Create user button is not visible").click();
     }
 
     public boolean isConfirmationVisible() throws Exception {
@@ -83,7 +83,7 @@ public class RegistrationPage extends AndroidPage {
     }
 
     public void enterPassword(String password) throws Exception {
-        verifyLocatorPresence(By.id(idInvitationContinueButton), "Invitation password input is not visible").
+        getElement(By.id(idInvitationContinueButton), "Invitation password input is not visible").
                 sendKeys(password);
     }
 
@@ -97,7 +97,7 @@ public class RegistrationPage extends AndroidPage {
 
     public void selectPictureSource(String src) throws Exception {
         final By locator = By.xpath(xpathChoosePictSrcDialogButtonByName.apply(src));
-        verifyLocatorPresence(locator, "Source selection alert is not visible").click();
+        getElement(locator, "Source selection alert is not visible").click();
     }
 
     public boolean waitUntilUnsplashScreenIsVisible() throws Exception {

@@ -4,51 +4,30 @@ import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.*;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class CameraRollPage extends IOSPage {
 
-    private static final String nameCameraLibraryButton = "cameraLibraryButton";
-	@FindBy(name = nameCameraLibraryButton)
-	private WebElement cameraLibraryButton;
+    private static final By nameCameraLibraryButton = By.name("cameraLibraryButton");
 
-    private static final String nameCameraRollCancel = "Cancel";
-    @FindBy(name = nameCameraRollCancel)
-	private WebElement cameraRollCancel;
+    private static final By xpathCameraLibraryFirstFolder = By.xpath("//UIATableCell[@name='Moments']");
 
-    private static final String xpathCameraLibraryFirstFolder = "//UIATableCell[@name='Moments']";
-    @FindBy(xpath = xpathCameraLibraryFirstFolder)
-	private WebElement cameraLibraryFirstFolder;
+    private static final By xpathLibraryFirstPicture = By.xpath(xpathStrMainWindow +
+			"/UIACollectionView/UIACollectionCell[1]");
 
-    private static final String xpathLibraryFirstPicture =
-			xpathMainWindow + "/UIACollectionView/UIACollectionCell[1]";
-    @FindBy(xpath = xpathLibraryFirstPicture)
-	private WebElement libraryFirstPicture;
+    private static final By xpathLibraryLastPicture = By.xpath("//UIACollectionView/UIACollectionCell[last()]");
 
-    private static final String xpathLibraryLastPicture = "//UIACollectionView/UIACollectionCell[last()]";
-    @FindBy(xpath = xpathLibraryLastPicture)
-	private WebElement libraryLastPicture;
+    private static final By xpathConfirmPictureButton = By.xpath("//UIAButton[@name='OK' and @visible='true']");
 
-    private static final String xpathConfirmPictureButton = "//UIAButton[@name='OK' and @visible='true']";
-    @FindBy(xpath = xpathConfirmPictureButton)
-	private WebElement confirmPictureButton;
-
-    private static final String nameCameraRollSketchButton = "editNotConfirmedImageButton";
-    @FindBy(name = nameCameraRollSketchButton)
-	private WebElement cameraRollSketchButton;
+    private static final By nameCameraRollSketchButton = By.name("editNotConfirmedImageButton");
 
 	public CameraRollPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
 
 	public void pressSelectFromLibraryButton() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.name(nameCameraLibraryButton));
-		cameraLibraryButton.click();
+		getElement(nameCameraLibraryButton).click();
 	}
 
 	public void selectImageFromLibrary() throws Exception {
@@ -62,31 +41,23 @@ public class CameraRollPage extends IOSPage {
 	}
 
 	public void clickFirstLibraryFolder() throws Exception {
-		DriverUtils.waitUntilElementClickable(getDriver(),
-				cameraLibraryFirstFolder);
-		cameraLibraryFirstFolder.click();
+		getElement(xpathCameraLibraryFirstFolder).click();
 	}
 
 	public void clickFirstImage() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(xpathLibraryFirstPicture));
-		libraryFirstPicture.click();
+		getElement(xpathLibraryFirstPicture).click();
 	}
 
 	public void clickLastImage() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(xpathLibraryLastPicture));
-		libraryLastPicture.click();
+		getElement(xpathLibraryLastPicture).click();
 	}
 
 	public void pressConfirmButton() throws Exception {
-		DriverUtils
-				.waitUntilElementClickable(getDriver(), confirmPictureButton);
-		confirmPictureButton.click();
+		getElement(xpathConfirmPictureButton).click();
 	}
 
-	public void clickCameraRollSketchButton() {
-		cameraRollSketchButton.click();
+	public void clickCameraRollSketchButton() throws Exception {
+		getElement(nameCameraRollSketchButton).click();
 	}
 
 }

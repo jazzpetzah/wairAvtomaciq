@@ -11,7 +11,6 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.ios.tools.IOSKeyboard;
 import com.wearezeta.auto.common.BasePage;
@@ -26,62 +25,32 @@ public abstract class IOSPage extends BasePage {
 
     private static final int SWIPE_DELAY = 10 * 1000; // milliseconds
 
-    protected static final String nameMainWindow = "ZClientMainWindow";
-    @FindBy(name = nameMainWindow)
-    protected WebElement mainWindow;
+    protected static final String nameStrMainWindow = "ZClientMainWindow";
+    protected static final By nameMainWindow = By.name(nameStrMainWindow);
 
-    protected static final String xpathMainWindow =
+
+    protected static final String xpathStrMainWindow =
             "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']";
 
-    protected static final String nameEditingItemSelect = "Select";
-    @FindBy(name = nameEditingItemSelect)
-    private WebElement popupSelect;
+    protected static final By nameEditingItemSelectAll = By.name("Select All");
 
-    protected static final String nameEditingItemSelectAll = "Select All";
-    @FindBy(name = nameEditingItemSelectAll)
-    private WebElement popupSelectAll;
+    protected static final By nameEditingItemCopy = By.name("Copy");
 
-    protected static final String nameEditingItemCopy = "Copy";
-    @FindBy(name = nameEditingItemCopy)
-    private WebElement popupCopy;
+    protected static final By nameEditingItemPaste = By.name("Paste");
 
-    protected static final String nameEditingItemCut = "Cut";
-    @FindBy(name = nameEditingItemCut)
-    private WebElement popupCut;
+    protected static final By classNameKeyboard = By.className("UIAKeyboard");
 
-    protected static final String nameEditingItemPaste = "Paste";
-    @FindBy(name = nameEditingItemPaste)
-    private WebElement popupPaste;
+    protected static final By nameKeyboardDeleteButton = By.name("delete");
 
-    protected static final String classNameKeyboard = "UIAKeyboard";
-    @FindBy(className = classNameKeyboard)
-    private WebElement keyboard;
+    protected static final By nameKeyboardEnterButton = By.name("Return");
 
-    protected static final String nameKeyboardDeleteButton = "delete";
-    @FindBy(name = nameKeyboardDeleteButton)
-    private WebElement keyboardDeleteBtn;
+    protected static final By nameKeyboardReturnButton = By.name("Send");
 
-    protected static final String nameKeyboardEnterButton = "Return";
-    @FindBy(name = nameKeyboardEnterButton)
-    private WebElement keyboardEnterBtn;
+    protected static final By nameHideKeyboardButton = By.name("Hide keyboard");
 
-    protected static final String nameKeyboardReturnButton = "Send";
-    @FindBy(name = nameKeyboardReturnButton)
-    private WebElement keyboardReturnBtn;
+    protected static final By nameSpaceButton = By.name("space");
 
-    protected static final String nameHideKeyboardButton = "Hide keyboard";
-    @FindBy(name = nameHideKeyboardButton)
-    private WebElement keyboardHideBtn;
-
-    protected static final String nameSpaceButton = "space";
-    @FindBy(name = nameSpaceButton)
-    private WebElement keyboardSpaceBtn;
-
-    protected static final String nameDoneButton = "Done";
-    @FindBy(name = nameDoneButton)
-    private WebElement keyboardDoneBtn;
-
-    protected static final String nameLockScreenMessage = "SlideToUnlock";
+    protected static final By nameDoneButton = By.name("Done");
 
     private static String imagesPath = "";
 
@@ -113,20 +82,20 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void swipeLeft(int time) throws Exception {
-        DriverUtils.swipeLeft(this.getDriver(), mainWindow, time);
+        DriverUtils.swipeLeft(this.getDriver(), getElement(nameMainWindow), time);
     }
 
     public void swipeRight(int time) throws Exception {
-        DriverUtils.swipeRight(this.getDriver(), mainWindow, time);
+        DriverUtils.swipeRight(this.getDriver(), getElement(nameMainWindow), time);
     }
 
     public void swipeRight(int time, int percentX, int percentY) throws Exception {
-        DriverUtils.swipeRight(this.getDriver(), mainWindow, time, percentX,
+        DriverUtils.swipeRight(this.getDriver(), getElement(nameMainWindow), time, percentX,
                 percentY);
     }
 
     public void swipeUp(int time) throws Exception {
-        DriverUtils.swipeElementPointToPoint(this.getDriver(), mainWindow, time,
+        DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(nameMainWindow), time,
                 50, 90, 50, 10);
     }
 
@@ -136,7 +105,7 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void swipeDown(int time) throws Exception {
-        DriverUtils.swipeElementPointToPoint(this.getDriver(), mainWindow, time, 50, 10, 50, 90);
+        DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(nameMainWindow), time, 50, 10, 50, 90);
     }
 
     public void smallScrollUp() throws Exception {
@@ -152,15 +121,15 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void clickPopupSelectAllButton() throws Exception {
-        verifyLocatorPresence(By.name(nameEditingItemSelectAll), "Select All popup is not visible").click();
+        getElement(nameEditingItemSelectAll, "Select All popup is not visible").click();
     }
 
     public void clickPopupCopyButton() throws Exception {
-        verifyLocatorPresence(By.name(nameEditingItemCopy), "Copy popup is not viisble").click();
+        getElement(nameEditingItemCopy, "Copy popup is not viisble").click();
     }
 
     public void clickPopupPasteButton() throws Exception {
-        verifyLocatorPresence(By.name(nameEditingItemPaste), "Paste popup is not visible").click();
+        getElement(nameEditingItemPaste, "Paste popup is not visible").click();
     }
 
     @Override
@@ -190,45 +159,36 @@ public abstract class IOSPage extends BasePage {
     }
 
     public boolean isKeyboardVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.className(classNameKeyboard), 3);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), classNameKeyboard, 3);
     }
 
-    public void clickKeyboardDeleteButton() {
-        keyboardDeleteBtn.click();
+    public void clickKeyboardDeleteButton() throws Exception {
+        getElement(nameKeyboardDeleteButton).click();
     }
 
-    public void clickKeyboardEnterButton() {
-        keyboardEnterBtn.click();
+    public void clickKeyboardEnterButton() throws Exception {
+        getElement(nameKeyboardEnterButton).click();
     }
 
     public void clickKeyboardReturnButton() throws Exception {
-        verifyLocatorPresence(By.name(nameKeyboardReturnButton), "Keyboard Return button is not visible").click();
+        getElement(nameKeyboardReturnButton, "Keyboard Return button is not visible").click();
     }
 
-    public void clickHideKeyboardButton() {
-        keyboardHideBtn.click();
+    public void clickHideKeyboardButton() throws Exception {
+        getElement(nameHideKeyboardButton).click();
     }
 
-    public void clickSpaceKeyboardButton() {
-        keyboardSpaceBtn.click();
+    public void clickSpaceKeyboardButton() throws Exception {
+        getElement(nameSpaceButton).click();
     }
 
     public void clickDoneKeyboardButton() throws Exception {
-        verifyLocatorPresence(By.name(nameDoneButton), "Keyboard Done button is not visible").click();
+        getElement(nameDoneButton, "Keyboard Done button is not visible").click();
     }
 
     public static Object executeScript(String script) throws Exception {
         return PlatformDrivers.getInstance().getDriver(Platform.iOS).get()
                 .executeScript(script);
-    }
-
-    public void cmdVscript() throws Exception {
-        CommonUtils.executeUIAppleScript(new String[]{
-                "property thisapp: \"Simulator\"",
-                "tell application \"System Events\"", " tell process thisapp",
-                " click menu item \"Paste\" of menu \"Edit\" of menu bar 1",
-                " end tell", "end tell"}).
-                get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 
     public void hideKeyboard() throws Exception {

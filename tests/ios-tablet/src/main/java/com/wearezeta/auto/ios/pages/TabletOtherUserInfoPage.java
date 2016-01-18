@@ -79,7 +79,7 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
     }
 
     public void clickGoBackButton() throws Exception {
-        verifyLocatorPresence(By.name(nameOtherUserProfilePageCloseButton)).click();
+        getElement(By.name(nameOtherUserProfilePageCloseButton)).click();
     }
 
     public void exitOtherUserGroupChatPopover() throws Exception {
