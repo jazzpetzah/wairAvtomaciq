@@ -20,6 +20,7 @@ import javax.ws.rs.client.Invocation.Builder;
 import org.glassfish.jersey.client.ClientProperties;
 
 final class RESTMBoxAPI {
+
 	private static final Logger log = ZetaLogger.getLog(RESTMBoxAPI.class
 			.getSimpleName());
 
@@ -49,9 +50,9 @@ final class RESTMBoxAPI {
 		if (!ArrayUtils.contains(acceptableResponseCodes, currentResponseCode)) {
 			throw new RESTMBoxException(
 					String.format(
-							"Mailbox service API request failed. Request return code is: %d. Expected codes are: %s",
+							"Mailbox service API request failed. Request return code is: %d. Expected codes are: %s. Message from service is: %s",
 							currentResponseCode,
-							Arrays.toString(acceptableResponseCodes)),
+							Arrays.toString(acceptableResponseCodes), message),
 					currentResponseCode);
 		}
 	}

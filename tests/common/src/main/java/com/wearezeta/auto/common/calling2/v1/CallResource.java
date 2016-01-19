@@ -95,7 +95,7 @@ public class CallResource {
 		if (!ArrayUtils.contains(acceptableResponseCodes, currentResponseCode)) {
 			throw new BackendRequestException(
 					String.format(
-							"Calling service instance request failed. Request return code is: %d. Expected codes are: %s. Message from service is: %s",
+							"Calling service call request failed. Request return code is: %d. Expected codes are: %s. Message from service is: %s",
 							currentResponseCode,
 							Arrays.toString(acceptableResponseCodes), message),
 					currentResponseCode);

@@ -51,9 +51,9 @@ class TestrailREST {
 		if (!ArrayUtils.contains(acceptableResponseCodes, currentResponseCode)) {
 			throw new TestrailRequestException(
 					String.format(
-							"Testrail request failed. Request return code is: %d. Expected codes are: %s",
+							"Testrail request failed. Request return code is: %d. Expected codes are: %s. Message from service is: %s",
 							currentResponseCode,
-							Arrays.toString(acceptableResponseCodes)),
+							Arrays.toString(acceptableResponseCodes), message),
 					currentResponseCode);
 		}
 	}

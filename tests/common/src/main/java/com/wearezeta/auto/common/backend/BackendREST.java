@@ -56,6 +56,7 @@ final class BackendREST {
 
 	private static String backendUrl = null;
 	private static Client client;
+
 	static {
 		ClientConfig config = new ClientConfig();
 		config.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION,
@@ -106,9 +107,9 @@ final class BackendREST {
 		if (!ArrayUtils.contains(acceptableResponseCodes, currentResponseCode)) {
 			throw new BackendRequestException(
 					String.format(
-							"Backend request failed. Request return code is: %d. Expected codes are: %s",
+							"Backend request failed. Request return code is: %d. Expected codes are: %s. Message from service is: %s",
 							currentResponseCode,
-							Arrays.toString(acceptableResponseCodes)),
+							Arrays.toString(acceptableResponseCodes), message),
 					currentResponseCode);
 		}
 	}
