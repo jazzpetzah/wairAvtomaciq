@@ -85,7 +85,7 @@ public class LoginPageSteps {
         }
         getLoginPage().setLogin(login);
         getLoginPage().setPassword(password);
-        getLoginPage().login();
+        getLoginPage().clickLoginButton();
         getLoginPage().waitForLoginToFinish();
     }
 
@@ -264,7 +264,7 @@ public class LoginPageSteps {
      */
     @When("I press Login button")
     public void WhenIPressSignInButtonAgain() throws Exception {
-        getLoginPage().login();
+        getLoginPage().clickLoginButton();
         getLoginPage().waitForLoginToFinish();
     }
 

@@ -32,7 +32,7 @@ public class TabletLoginPageSteps {
 		getTabletLoginPage().switchToEmailLogin();
 		getTabletLoginPage().setLogin(self.getEmail());
 		getTabletLoginPage().setPassword(self.getPassword());
-		getTabletLoginPage().login();
+		getTabletLoginPage().clickLoginButton();
 		getTabletLoginPage().waitForLoginToFinish();
 	}
 }

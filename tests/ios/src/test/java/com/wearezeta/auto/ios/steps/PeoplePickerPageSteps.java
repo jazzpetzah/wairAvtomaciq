@@ -405,7 +405,7 @@ public class PeoplePickerPageSteps {
 
 	@When("^I click on Go button$")
 	public void WhenIClickOnGoButton() throws Exception {
-		getPeoplePickerPage().clickOnGoButton(true);
+		getPeoplePickerPage().clickOnGoButton();
 	}
 
 	@When("^I click clear button$")
@@ -554,7 +554,7 @@ public class PeoplePickerPageSteps {
 	@When("^I click on Add to conversation button$")
 	public void WhenIClickOnAddToConversationButton() throws Exception {
 		if (getPeoplePickerPage().isKeyboardVisible()) {
-			getPeoplePickerPage().clickOnGoButton(true);
+			getPeoplePickerPage().clickOnGoButton();
 		} else {
 			getPeoplePickerPage().clickAddToCoversationButton();
 		}

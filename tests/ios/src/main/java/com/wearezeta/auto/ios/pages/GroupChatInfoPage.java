@@ -132,7 +132,7 @@ public class GroupChatInfoPage extends IOSPage {
             participantNameTextFieldValue = otherUserPersonalInfoPage
                     .getNameFieldValue(user);
             participantEmailTextFieldValue = otherUserPersonalInfoPage
-                    .getEmailFieldValue();
+                    .getEmailFieldValue().orElseGet(() -> "");
             Assert.assertTrue(
                     "Participant Name is incorrect and/or not displayed",
                     participantNameTextFieldValue.equalsIgnoreCase(user));

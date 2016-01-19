@@ -38,9 +38,6 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
     @FindBy(name = nameOtherUserProfilePageCloseButton)
     private WebElement goBackButton;
 
-    @FindBy(name = nameOtherUserConversationMenu)
-    private WebElement otherUserConversationMenuRightButton;
-
     public TabletOtherUserInfoPage(Future<ZetaIOSDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
@@ -58,8 +55,7 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
 
     public String getEmailFieldValueOniPadPopover() throws Exception {
         try {
-            DriverUtils.waitUntilLocatorAppears(getDriver(),
-                    By.xpath(xpathOtherPersonalInfoPageEmailField));
+            DriverUtils.waitUntilLocatorAppears(getDriver(), xpathOtherPersonalInfoPageEmailField);
             return emailFieldPopover.getAttribute("value");
         } catch (NoSuchElementException ex) {
             return "";
@@ -83,7 +79,7 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
     }
 
     public void exitOtherUserGroupChatPopover() throws Exception {
-        DriverUtils.tapByCoordinates(getDriver(), otherUserConversationMenuRightButton, 50, 50);
+        DriverUtils.tapByCoordinates(getDriver(), getElement(nameOtherUserConversationMenu), 50, 50);
     }
 
 }
