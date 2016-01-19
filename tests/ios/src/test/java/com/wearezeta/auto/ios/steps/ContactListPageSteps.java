@@ -2,7 +2,6 @@ package com.wearezeta.auto.ios.steps;
 
 import java.awt.image.BufferedImage;
 
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 
 import cucumber.api.java.en.*;
@@ -60,7 +59,7 @@ public class ContactListPageSteps {
      */
     @When("^I dismiss settings warning$")
     public void IDismissSettingsWarning() throws Exception {
-        getLoginPage().dismisSettingsWaring();
+        getLoginPage().dismissSettingsWaring();
     }
 
     @When("^I tap on my name (.*)$")

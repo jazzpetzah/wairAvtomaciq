@@ -118,7 +118,7 @@ public class LoginPage extends IOSPage {
         ((IOSElement) getElement(namePasswordField)).setValue(password);
     }
 
-    public void dismisSettingsWaring() throws Exception {
+    public void dismissSettingsWaring() throws Exception {
         final Optional<WebElement> maybeLater = getElementIfDisplayed(nameMaybeLater);
         if (maybeLater.isPresent()) {
             maybeLater.get().click();
@@ -126,7 +126,7 @@ public class LoginPage extends IOSPage {
     }
 
     public Boolean isLoginFinished() throws Exception {
-        dismisSettingsWaring();
+        dismissSettingsWaring();
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameSelfButton), 60);
     }
 

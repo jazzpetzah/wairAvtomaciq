@@ -66,7 +66,7 @@ public class PeoplePickerPage extends IOSPage {
             By.xpath("//*[@name='ContactsViewCloseButton' and @visible='true']");
 
     private static final Function<String, String> xpathStrFoundContactByName =
-            name -> String.format("//UIAStaticText[@name='%s' and @visible='true']", name);
+            name -> String.format("//*[@name='%s' and @visible='true']", name);
 
     private static final Function<String, String> xpathStrSuggestedContactToSwipeByName = name ->
             String.format("//UIACollectionCell[descendant::UIAStaticText[@name='%s']]", name);
@@ -114,8 +114,7 @@ public class PeoplePickerPage extends IOSPage {
     public void tapOnPeoplePickerSearch() throws Exception {
         final WebElement peoplePickerSearch = getElement(xpathPickerSearch);
         this.getDriver().tap(1, peoplePickerSearch.getLocation().x + 40,
-                peoplePickerSearch.getLocation().y + 30, 1);
-        // workaround for people picker activation
+                peoplePickerSearch.getLocation().y + 30, DriverUtils.SINGLE_TAP_DURATION);
     }
 
     public void tapOnPeoplePickerClearBtn() throws Exception {
@@ -151,27 +150,22 @@ public class PeoplePickerPage extends IOSPage {
                 IllegalStateException::new);
     }
 
-	public void fillTextInPeoplePickerSearch(String text) throws Exception {
-		sendTextToSearchInput(text);
-		clickSpaceKeyboardButton();
-	}
+    public void fillTextInPeoplePickerSearch(String text) throws Exception {
+        sendTextToSearchInput(text);
+        clickSpaceKeyboardButton();
+    }
 
     public void sendTextToSearchInput(String text) throws Exception {
-        ((IOSElement) getElement(xpathPickerSearch)).setValue(text);
+        getElement(xpathPickerSearch).sendKeys(text);
     }
 
     public boolean waitUserPickerFindUser(String user) throws Exception {
         final By locator = By.xpath(xpathStrFoundContactByName.apply(user));
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 5);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
     }
 
     public void clickOnNotConnectedUser(String name) throws Exception {
-        if (this.waitUserPickerFindUser(name)) {
-            final By locator = By.xpath(xpathStrFoundContactByName.apply(name));
-            getElement(locator).click();
-        } else {
-            throw new IllegalArgumentException(String.format("'%s' is not present in search results", name));
-        }
+        getElement(By.xpath(xpathStrFoundContactByName.apply(name))).click();
     }
 
     public void pickUserAndTap(String name) throws Exception {

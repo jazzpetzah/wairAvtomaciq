@@ -11,6 +11,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 
+import io.appium.java_client.MobileDriver;
+import io.appium.java_client.ios.IOSDriver;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -60,9 +62,30 @@ public class DriverUtils {
      */
     public static boolean isElementPresentAndDisplayed(RemoteWebDriver driver, final WebElement element) {
         try {
-            return (element.isDisplayed() && isElementInScreenRect(driver, element));
+            boolean result = element.isDisplayed();
+            if (driver instanceof IOSDriver) {
+                return result;
+            } else {
+                return result && isElementInScreenRect(driver, element);
+            }
         } catch (NoSuchElementException e) {
             return false;
+        }
+    }
+
+    private volatile static Optional<Rectangle> cachedScreenSize = Optional.empty();
+
+    private static Rectangle getScreenSize(RemoteWebDriver driver) {
+        Dimension dim;
+        if (driver instanceof MobileDriver) {
+            if (!cachedScreenSize.isPresent()) {
+                dim = driver.manage().window().getSize();
+                cachedScreenSize = Optional.of(new Rectangle(dim.getWidth(), dim.getHeight()));
+            }
+            return cachedScreenSize.get();
+        } else {
+            dim = driver.manage().window().getSize();
+            return new Rectangle(dim.getWidth(), dim.getHeight());
         }
     }
 
@@ -70,10 +93,7 @@ public class DriverUtils {
                                                  final WebElement el) {
         final Rectangle elementRect = new Rectangle(el.getLocation().x,
                 el.getLocation().y, el.getSize().width, el.getSize().height);
-        final Rectangle screenRect = new Rectangle(0, 0,
-                driver.manage().window().getSize().width,
-                driver.manage().window().getSize().height);
-        return elementRect.intersects(screenRect);
+        return elementRect.intersects(getScreenSize(driver));
     }
 
     public static boolean waitUntilLocatorIsDisplayed(RemoteWebDriver driver,
