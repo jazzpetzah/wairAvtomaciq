@@ -76,8 +76,7 @@ public class ContactListPage extends IOSPage {
 
     public boolean isMyUserNameDisplayedFirstInContactList(String name) throws Exception {
         final By locator = By.xpath(convoListEntryByIdx.apply(1));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) &&
-                getDriver().findElement(locator).getText().equals(name);
+        return getElement(locator).getText().equals(name);
     }
 
     public void openSearch() throws Exception {
@@ -95,7 +94,7 @@ public class ContactListPage extends IOSPage {
 
     public void tapPlayPauseButtonNextTo(String name) throws Exception {
         final By locator = By.xpath(xpathContactListPlayPauseButtonByConvoName.apply(name));
-        this.getDriver().findElement(locator).click();
+        getElement(locator).click();
     }
 
     public void tapOnMyName() throws Exception {
@@ -416,14 +415,12 @@ public class ContactListPage extends IOSPage {
         return score > MIN_ACCEPTABLE_IMAGE_SCORE;
     }
 
-    public boolean isActionMenuVisibleForConversation(String conversation)
-            throws Exception {
+    public boolean isActionMenuVisibleForConversation(String conversation) throws Exception {
         final By locator = By.xpath(xpathActionMenuByConversationName.apply(conversation));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean isButtonVisibleInActionMenu(String buttonTitle)
-            throws Exception {
+    public boolean isButtonVisibleInActionMenu(String buttonTitle) throws Exception {
         final By locator = By.xpath(xpathActionMenuXButtonByName.apply(buttonTitle));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
@@ -444,8 +441,9 @@ public class ContactListPage extends IOSPage {
     public Optional<String> getSelectedConversationCellValue(String conversation)
             throws Exception {
         final By locator = By.xpath(xpathSelectedConversationEntryByName.apply(conversation));
-        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator)) {
-            return Optional.of(getDriver().findElement(locator).getAttribute("value"));
+        final Optional<WebElement> cell =  getElementIfDisplayed(locator);
+        if (cell.isPresent()) {
+            return Optional.of(cell.get().getAttribute("value"));
         }
         return Optional.empty();
     }

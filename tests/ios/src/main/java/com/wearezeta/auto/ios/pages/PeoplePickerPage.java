@@ -173,11 +173,9 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void clickOnNotConnectedUser(String name) throws Exception {
-        final By locator = By.xpath(xpathStrFoundContactByName.apply(name));
         if (this.waitUserPickerFindUser(name)) {
-            WebElement foundContact = getDriver().findElement(locator);
-            DriverUtils.waitUntilElementClickable(getDriver(), foundContact);
-            foundContact.click();
+            final By locator = By.xpath(xpathStrFoundContactByName.apply(name));
+            getElement(locator).click();
         } else {
             throw new IllegalArgumentException(String.format("'%s' is not present in search results", name));
         }
@@ -199,7 +197,7 @@ public class PeoplePickerPage extends IOSPage {
         assert this.waitUserPickerFindUser(contact) :
                 String.format("'%s' is not visible in People Picker", contact);
         final By locator = By.xpath(xpathStrSuggestedContactToSwipeByName.apply(contact));
-        final WebElement contactToSwipe = this.getDriver().findElement(locator);
+        final WebElement contactToSwipe = getElement(locator);
         int count = 0;
         do {
             DriverUtils.swipeRight(this.getDriver(), contactToSwipe, 500, 50, 50);
@@ -208,9 +206,9 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void swipeCompletelyToDismissSuggestedContact(String contact) throws Exception {
-        assert this.waitUserPickerFindUser(contact) : String.format("'%s' is not visible in People Picker", contact);
         final By locator = By.xpath(xpathStrSuggestedContactToSwipeByName.apply(contact));
-        DriverUtils.swipeRight(this.getDriver(), getDriver().findElement(locator), 1000, 100, 50);
+        DriverUtils.swipeRight(this.getDriver(),
+                getElement(locator, String.format("'%s' is not visible in People Picker", contact)), 1000, 100, 50);
     }
 
     public void tapHideSuggestedContact(String contact) throws Exception {
@@ -257,7 +255,7 @@ public class PeoplePickerPage extends IOSPage {
     public void tapNumberOfTopConnections(int numberToTap) throws Exception {
         for (int i = 1; i < numberToTap + 1; i++) {
             final By locator = By.xpath(xpathStrPeoplePickerTopConnectionsAvatarByIdx.apply(i));
-            getDriver().findElement(locator).click();
+            getElement(locator).click();
         }
     }
 
@@ -279,12 +277,12 @@ public class PeoplePickerPage extends IOSPage {
 
     public boolean isUserSelected(String name) throws Exception {
         final By locator = By.xpath(xpathStrPeoplePickerSelectedCellByName.apply(name));
-        return getDriver().findElement(locator).getAttribute("value").equals("1");
+        return getElement(locator).getAttribute("value").equals("1");
     }
 
     public void clickConnectedUserAvatar(String name) throws Exception {
         final By locator = By.xpath(xpathStrPeoplePickerSelectedCellByName.apply(name));
-        getDriver().findElement(locator).click();
+        getElement(locator).click();
     }
 
     public void hitDeleteButton() throws Exception {
@@ -348,15 +346,16 @@ public class PeoplePickerPage extends IOSPage {
 
     public String getNameOfNuser(int i) throws Exception {
         final By locator = By.xpath(xpathStrPeoplePickerTopConnectionsItemByIdx.apply(i));
-        return this.getDriver().findElement(locator).getAttribute("name");
+        return getElement(locator).getAttribute("name");
     }
 
     public void tapNumberOfTopConnectionsButNotUser(int numberToTap,
                                                     String contact) throws Exception {
+        // FIXME: Optimize locator
         for (int i = 1; i < numberToTap + 1; i++) {
             if (!contact.equals(getNameOfNuser(i).toLowerCase())) {
                 final By locator = By.xpath(xpathStrPeoplePickerTopConnectionsAvatarByIdx.apply(i));
-                getDriver().findElement(locator).click();
+                getElement(locator).click();
             } else {
                 numberToTap++;
             }
@@ -365,7 +364,7 @@ public class PeoplePickerPage extends IOSPage {
 
     public void tapOnTopConnectionAvatarByOrder(int i) throws Exception {
         final By locator = By.xpath(xpathStrPeoplePickerTopConnectionsAvatarByIdx.apply(i));
-        getDriver().findElement(locator).click();
+        getElement(locator).click();
     }
 
     public boolean isOpenConversationButtonVisible() throws Exception {
