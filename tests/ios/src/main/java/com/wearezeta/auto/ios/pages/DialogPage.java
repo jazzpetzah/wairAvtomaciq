@@ -41,8 +41,6 @@ public class DialogPage extends IOSPage {
 
     private static final By nameOpenConversationDetails = By.name("ComposeControllerConversationDetailButton");
 
-    private static final By classNameDialogMessages = By.className("UIATableCell");
-
     private static final By xpathConnectionMessage =
             By.xpath("//UIAStaticText[contains(@name, 'Let’s connect on Wire.')]");
 
@@ -86,8 +84,6 @@ public class DialogPage extends IOSPage {
 
     private static final By xpathYouAddedMessageCell =
             By.xpath(xpathStrMainWindow + "/UIATableView[1]/UIATableCell[1]");
-
-    public static final By nameAddContactToChatButton = By.name("metaControllerLeftButton");
 
     private static final Function<String, String> xpathStrDialogTitleBar =
             title -> String.format("//UIAStaticText[@name='%s']", title);

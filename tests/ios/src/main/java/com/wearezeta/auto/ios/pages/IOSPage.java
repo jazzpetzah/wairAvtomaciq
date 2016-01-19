@@ -28,7 +28,6 @@ public abstract class IOSPage extends BasePage {
     protected static final String nameStrMainWindow = "ZClientMainWindow";
     protected static final By nameMainWindow = By.name(nameStrMainWindow);
 
-
     protected static final String xpathStrMainWindow =
             "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']";
 
