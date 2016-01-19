@@ -104,10 +104,35 @@ public class DriverUtils {
         }
     }
 
+    public static Optional<WebElement> getElementIfDisplayed(RemoteWebDriver driver, final By by) throws Exception {
+        return getElementIfDisplayed(driver, by, getDefaultLookupTimeoutSeconds());
+    }
+
+    public static Optional<WebElement> getElementIfDisplayed(RemoteWebDriver driver,
+                                                             final By by, int timeoutSeconds) throws Exception {
+        turnOffImplicitWait(driver);
+        try {
+            final long millisecondsStarted = System.currentTimeMillis();
+            do {
+                final List<WebElement> foundElements = driver.findElements(by);
+                try {
+                    if (foundElements.size() > 0 && isElementPresentAndDisplayed(driver, foundElements.get(0))) {
+                        return Optional.of(foundElements.get(0));
+                    }
+                } catch (NoSuchElementException | StaleElementReferenceException | InvalidElementStateException e) {
+                    // Ignore silently
+                }
+                Thread.sleep(100);
+            } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
+            return Optional.empty();
+        } finally {
+            restoreImplicitWait(driver);
+        }
+    }
+
     public static boolean waitUntilLocatorDissapears(RemoteWebDriver driver,
                                                      final By by) throws Exception {
-        return waitUntilLocatorDissapears(driver, by,
-                getDefaultLookupTimeoutSeconds());
+        return waitUntilLocatorDissapears(driver, by, getDefaultLookupTimeoutSeconds());
     }
 
     public static boolean waitUntilLocatorDissapears(RemoteWebDriver driver,
@@ -138,8 +163,7 @@ public class DriverUtils {
 
     public static boolean waitUntilLocatorAppears(RemoteWebDriver driver,
                                                   final By locator) throws Exception {
-        return waitUntilLocatorAppears(driver, locator,
-                getDefaultLookupTimeoutSeconds());
+        return waitUntilLocatorAppears(driver, locator, getDefaultLookupTimeoutSeconds());
     }
 
     public static boolean waitUntilLocatorAppears(RemoteWebDriver driver,
@@ -160,10 +184,35 @@ public class DriverUtils {
         }
     }
 
+    public static Optional<WebElement> getElementIfPresentInDOM(RemoteWebDriver driver, final By by) throws Exception {
+        return getElementIfPresentInDOM(driver, by, getDefaultLookupTimeoutSeconds());
+    }
+
+    public static Optional<WebElement> getElementIfPresentInDOM(RemoteWebDriver driver,
+                                                                final By by, int timeoutSeconds) throws Exception {
+        turnOffImplicitWait(driver);
+        try {
+            final long millisecondsStarted = System.currentTimeMillis();
+            do {
+                final List<WebElement> foundElements = driver.findElements(by);
+                try {
+                    if (foundElements.size() > 0) {
+                        return Optional.of(foundElements.get(0));
+                    }
+                } catch (NoSuchElementException | StaleElementReferenceException | InvalidElementStateException e) {
+                    // Ignore silently
+                }
+                Thread.sleep(100);
+            } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
+            return Optional.empty();
+        } finally {
+            restoreImplicitWait(driver);
+        }
+    }
+
     public static boolean waitUntilElementClickable(RemoteWebDriver driver,
                                                     final WebElement element) throws Exception {
-        return waitUntilElementClickable(driver, element,
-                getDefaultLookupTimeoutSeconds());
+        return waitUntilElementClickable(driver, element, getDefaultLookupTimeoutSeconds());
     }
 
     public static boolean waitUntilElementClickable(RemoteWebDriver driver,
@@ -480,22 +529,19 @@ public class DriverUtils {
         driver.tap(1, dstX, dstY, SINGLE_TAP_DURATION);
     }
 
-    public static void verifyPresence(RemoteWebDriver driver, By locator, String message, int timeoutSeconds)
+    public static WebElement verifyPresence(RemoteWebDriver driver, By locator, String message, int timeoutSeconds)
             throws Exception {
-        if (!waitUntilLocatorIsDisplayed(driver, locator, timeoutSeconds)) {
-            throw new IllegalStateException(message);
-        }
+        return getElementIfDisplayed(driver, locator, timeoutSeconds).orElseThrow(() ->
+                new IllegalStateException(message));
     }
 
-    public static void verifyPresence(RemoteWebDriver driver, By locator, String message) throws Exception {
-        if (!waitUntilLocatorIsDisplayed(driver, locator)) {
-            throw new IllegalStateException(message);
-        }
+    public static WebElement verifyPresence(RemoteWebDriver driver, By locator, String message) throws Exception {
+        return getElementIfDisplayed(driver, locator).orElseThrow(() ->
+                new IllegalStateException(message));
     }
 
-    public static void verifyPresence(RemoteWebDriver driver, By locator) throws Exception {
-        if (!waitUntilLocatorIsDisplayed(driver, locator)) {
-            throw new IllegalStateException(String.format("The element '%s' is not visible", locator));
-        }
+    public static WebElement verifyPresence(RemoteWebDriver driver, By locator) throws Exception {
+        return getElementIfDisplayed(driver, locator).orElseThrow(() ->
+                new IllegalStateException(String.format("The element '%s' is not visible", locator)));
     }
 }

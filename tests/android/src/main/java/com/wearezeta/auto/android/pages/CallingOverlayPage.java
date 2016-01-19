@@ -4,8 +4,6 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -105,8 +103,7 @@ public class CallingOverlayPage extends AndroidPage {
     }
 
     public void ignoreCall() throws Exception {
-        verifyLocatorPresence(By.id(idIgnoreButton), "Ignore button is not visible");
-        ignoreButton.click();
+        getElement(By.id(idIgnoreButton), "Ignore button is not visible").click();
     }
 
     public boolean waitUntilNameAppearsOnCallingBarCaption(String name)
@@ -181,8 +178,8 @@ public class CallingOverlayPage extends AndroidPage {
     }
 
     public void joinGroupCall() throws Exception {
-        verifyLocatorPresence(By.id(idGroupCallingJoinOverlayContainer), "JOIN CALL button is not visible");
-        joinGroupCallButton.click();
+        getElement(By.id(idGroupCallingJoinOverlayContainer), "JOIN CALL button is not visible").
+                click();
     }
 
     public boolean ongoingCallMicrobarIsVisible() throws Exception {

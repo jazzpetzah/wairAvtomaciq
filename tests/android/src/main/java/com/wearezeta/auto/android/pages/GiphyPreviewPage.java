@@ -3,7 +3,6 @@ package com.wearezeta.auto.android.pages;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Future;
-import java.util.function.Function;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -54,8 +53,7 @@ public class GiphyPreviewPage extends AndroidPage {
     }
 
     public void clickOnGIFButton() throws Exception {
-        verifyLocatorPresence(giphyPreviewButtonLocator, "GIF button is not visible in the cursor input");
-        giphyPreviewButton.click();
+        getElement(giphyPreviewButtonLocator, "GIF button is not visible in the cursor input").click();
     }
 
     private static final int GIPHY_LOCATOR_TIMEOUT_SECONDS = 5;

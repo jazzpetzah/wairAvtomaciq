@@ -8,7 +8,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.android.pages.PeoplePickerPage;
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 class SearchPage extends AbstractPopoverPage {
@@ -35,9 +34,8 @@ class SearchPage extends AbstractPopoverPage {
 
     public void tapAvatarFromSearchResults(String name) throws Exception {
         final By locator = By.xpath(xpathSearchResultsAvatarByName.apply(name));
-        verifyLocatorPresence(locator, String
-                .format("The avatar of '%s' has not been shown in search resulst after timeout", name));
-        this.getDriver().findElement(locator).click();
+        getElement(locator, String
+                .format("The avatar of '%s' has not been shown in search resulst after timeout", name)).click();
     }
 
     public void tapAddToConversationButton() {

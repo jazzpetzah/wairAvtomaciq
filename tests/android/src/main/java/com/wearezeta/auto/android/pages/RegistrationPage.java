@@ -70,25 +70,21 @@ public class RegistrationPage extends AndroidPage {
     }
 
     public void setName(String name) throws Exception {
-        verifyLocatorPresence(By.xpath(xpathNameField), "Name field is not visible");
-        nameField.sendKeys(name);
-        this.getWait().until(ExpectedConditions.elementToBeClickable(nextArrow));
-        nextArrow.click();
+        getElement(By.xpath(xpathNameField), "Name field is not visible").sendKeys(name);
+        this.getWait().until(ExpectedConditions.elementToBeClickable(nextArrow)).click();
     }
 
     public void createAccount() throws Exception {
-        verifyLocatorPresence(By.id(idCreateUserBtn), "Create user button is not visible");
-        createUserBtn.click();
+        getElement(By.id(idCreateUserBtn), "Create user button is not visible").click();
     }
 
     public boolean isConfirmationVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idVerifyEmailBtn));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idVerifyEmailBtn));
     }
 
     public void enterPassword(String password) throws Exception {
-        verifyLocatorPresence(By.id(idInvitationContinueButton), "Invitation password input is not visible");
-        invitationPassword.sendKeys(password);
+        getElement(By.id(idInvitationContinueButton), "Invitation password input is not visible").
+                sendKeys(password);
     }
 
     public void tapContinueButton() {
@@ -101,8 +97,7 @@ public class RegistrationPage extends AndroidPage {
 
     public void selectPictureSource(String src) throws Exception {
         final By locator = By.xpath(xpathChoosePictSrcDialogButtonByName.apply(src));
-        verifyLocatorPresence(locator, "Source selection alert is not visible");
-        getDriver().findElement(locator).click();
+        getElement(locator, "Source selection alert is not visible").click();
     }
 
     public boolean waitUntilUnsplashScreenIsVisible() throws Exception {

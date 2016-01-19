@@ -8,40 +8,20 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class GroupChatPage extends DialogPage {
-    private static final String xpathNewGroupConversationNameChangeTextField =
-            xpathMainWindow + "/UIATableView[1]/UIATableCell[2]/UIATextView[1]";
-    @FindBy(xpath = xpathNewGroupConversationNameChangeTextField)
-    private WebElement newGroupConversationNameChangeTextField;
+    private static final By nameYouLeftMessage = By.name("YOU LEFT");
 
-    private static final String nameYouHaveLeft = "YOU HAVE LEFT";
-    @FindBy(name = nameYouHaveLeft)
-    private WebElement youLeft;
+    private static final By xpathStartConversationAfterDelete = By.xpath(
+            "//UIAStaticText[starts-with(@name, 'START A CONVERSATION WITH')]");
 
-    private static final String nameYouLeftMessage = "YOU LEFT";
-    @FindBy(name = nameYouLeftMessage)
-    private WebElement youLeftMessage;
-
-    private static final String nameYouRenamedConversationMessage = "YOU RENAMED THE CONVERSATION";
-    @FindBy(name = nameYouRenamedConversationMessage)
-    private WebElement yourRenamedMessage;
-
-    private static final String xpathStartConversationAfterDelete =
-            "//UIAStaticText[starts-with(@name, 'START A CONVERSATION WITH')]";
-    @FindBy(xpath = xpathStartConversationAfterDelete)
-    private WebElement startConvAfterDeleteMessage;
-
-    private static final Function<String, String> xpathYouAddedToGroupChatMessageByName =
+    private static final Function<String, String> xpathStrYouAddedToGroupChatMessageByName =
             name -> String.format("//UIAStaticText[contains(@name, 'YOU ADDED %s')]", name.toUpperCase());
 
-    private static final String nameConversationCursorInput = "ConversationTextInputField";
-
-    private static final String namePlusButton = "plusButton";
+    private static final By nameConversationCursorInput = By.name("ConversationTextInputField");
 
     public GroupChatPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -58,9 +38,8 @@ public class GroupChatPage extends DialogPage {
     }
 
     private String getStartedChatMessageAfterDeleteContent() throws Exception {
-        verifyLocatorPresence(By.xpath(xpathStartConversationAfterDelete),
-                "Chat started message is not present in the conversation view after timeout expired");
-        return startConvAfterDeleteMessage.getText();
+        return getElement(xpathStartConversationAfterDelete,
+                "Chat started message is not present in the conversation view after timeout expired").getText();
     }
 
     public boolean areRequired3ContactsAddedToChat(String name1, String name2, String name3) throws Exception {
@@ -71,37 +50,22 @@ public class GroupChatPage extends DialogPage {
     }
 
     public boolean isGroupChatPageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(nameConversationCursorInput));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameConversationCursorInput);
     }
 
     public boolean isYouAddedUserMessageShown(String user) throws Exception {
-        final By locator = By.xpath(xpathYouAddedToGroupChatMessageByName.apply(user));
+        final By locator = By.xpath(xpathStrYouAddedToGroupChatMessageByName.apply(user));
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
     }
 
     public boolean isYouRenamedConversationMessageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameYouRenamedConversation));
-    }
-
-    @Override
-    public void openConversationDetails() throws Exception {
-        for (int i = 0; i < 3; i++) {
-            if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(namePlusButton))) {
-                plusButton.click();
-                openConversationDetails.click();
-            }
-            if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(nameAddContactToChatButton))) {
-                break;
-            } else {
-                swipeUp(1000);
-            }
-        }
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),nameYouRenamedConversation);
     }
 
     @Override
     public void swipeUp(int time) throws Exception {
         WebElement element = getDriver().findElement(
-                By.name(nameMainWindow));
+                By.name(nameStrMainWindow));
 
         Point coords = element.getLocation();
         Dimension elementSize = element.getSize();
@@ -111,7 +75,7 @@ public class GroupChatPage extends DialogPage {
     }
 
     public boolean isYouLeftMessageShown() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(nameYouLeftMessage));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameYouLeftMessage);
     }
 
 }

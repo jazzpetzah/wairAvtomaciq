@@ -8,7 +8,6 @@ import java.util.function.Function;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
@@ -47,7 +46,7 @@ public class PersonalInfoPage extends IOSPage {
     @FindBy(name = nameSignOutButton)
     private WebElement signoutButton;
 
-    @FindBy(xpath = xpathMainWindow)
+    @FindBy(xpath = xpathStrMainWindow)
     private WebElement personalPage;
 
     private static final String namePictureButton = "CameraLibraryButton";
@@ -298,8 +297,7 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public void tapOnEditNameField() throws Exception {
-        verifyLocatorPresence(By.xpath(xpathProfileNameEditField), "Edit name field is not visible");
-        profileNameEditField.click();
+        getElement(By.xpath(xpathProfileNameEditField), "Edit name field is not visible").click();
     }
 
     public void changeNameUsingOnlySpaces() throws Exception {
@@ -318,7 +316,8 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public void changeName(String newName) throws Exception {
-        verifyLocatorPresence(By.xpath(xpathProfileNameEditField), "Edit name field is not visible");
+        final WebElement profileNameEditField = getElement(By.xpath(xpathProfileNameEditField),
+                "Edit name field is not visible");
         profileNameEditField.clear();
         profileNameEditField.sendKeys(newName + "\n");
     }
@@ -370,8 +369,7 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public void clickOnHelpButton() throws Exception {
-        verifyLocatorPresence(By.name(nameOptionsHelpButton), "Help button is not visible in Options");
-        settingsHelpButton.click();
+        getElement(By.name(nameOptionsHelpButton), "Help button is not visible in Options").click();
     }
 
     public boolean isSupportWebPageVisible() throws Exception {
@@ -393,8 +391,7 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public void pressSettingsDoneButton() throws Exception {
-        verifyLocatorPresence(By.name(nameSettingsDoneButton), "Done button is not present in Settings");
-        settingsDoneButton.click();
+        getElement(By.name(nameSettingsDoneButton), "Done button is not present in Settings").click();
     }
 
     public boolean waitSelfProfileVisible() throws Exception {
@@ -423,7 +420,7 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public void clickAccountInfoButton() throws Exception {
-        verifyLocatorPresence(By.name(nameSettingsAccountInfoButton), "Account button is not present in settings");
-        settingsAccountInfoButton.click();
+        getElement(By.name(nameSettingsAccountInfoButton), "Account button is not present in settings").
+                click();
     }
 }

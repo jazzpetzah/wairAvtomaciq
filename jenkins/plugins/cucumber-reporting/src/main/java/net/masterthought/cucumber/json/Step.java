@@ -103,6 +103,7 @@ public class Step {
     }
 
     public String getRawName() {
+
         return name;
     }
 
@@ -136,6 +137,8 @@ public class Step {
         } else {
             content = getNameAndDuration();
         }
+        final String finalName = name.substring(0, name.length()-1);
+        content = content.replace(name, finalName);
         return content;
     }
 
@@ -171,6 +174,8 @@ public class Step {
         } else {
             content = getNameAndDuration(feature, scenario);
         }
+        final String finalName = name.substring(0, name.length()-1);
+        content = content.replace(name, finalName);
         return content;
     }
     
@@ -181,7 +186,9 @@ public class Step {
         		+ "<a class=\"step-show-screenshot\" onclick=\"javascript:showHide('scr " + getRawName().replaceAll("\\W+", "_") + "" + screenshotIndex + "', this);\">Show Screenshot</a>"
                 + "<span class=\"step-duration\">" + Util.formatDuration(result.getDuration()) + "</span>"
                 + Util.closeDiv() + getImageTags();
-
+        
+        final String finalName = name.substring(0, name.length()-1);
+        content = content.replace(name, finalName);
         return content;
     }
 
@@ -193,7 +200,9 @@ public class Step {
                 + "<span class=\"step-duration\">" + Util.formatDuration(result.getDuration()) + "</span>"
                 + addScreenshotTags(feature, scenario)
                 + Util.closeDiv() + getImageTags();
-
+        
+        final String finalName = name.substring(0, name.length()-1);
+        content = content.replace(name, finalName);
         return content;
     }
     

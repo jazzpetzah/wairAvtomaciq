@@ -187,7 +187,9 @@ public class DialogPageSteps {
     @Then("I see last message in dialog is expected message (.*)")
     public void ThenISeeLasMessageInTheDialogIsExpected(String msg)
             throws Throwable {
-        String dialogLastMessage = getDialogPage().getLastMessageFromDialog();
+        String dialogLastMessage = getDialogPage().getLastMessageFromDialog().orElseThrow(() ->
+                new AssertionError("No messages are present in the conversation view")
+        );
         if (!Normalizer.isNormalized(dialogLastMessage, Form.NFC)) {
             dialogLastMessage = Normalizer.normalize(dialogLastMessage,
                     Form.NFC);
@@ -301,7 +303,9 @@ public class DialogPageSteps {
         Assert.assertTrue("Media is missing in dialog", getDialogPage()
                 .isYoutubeContainerVisible());
         Assert.assertEquals(link.toLowerCase(), getDialogPage()
-                .getLastMessageFromDialog().toLowerCase());
+                .getLastMessageFromDialog().orElseThrow(() ->
+                        new AssertionError("No messages are present in the conversation view")
+                ).toLowerCase());
     }
 
     @Then("I see media link (.*) and media in dialog")
@@ -309,12 +313,14 @@ public class DialogPageSteps {
         Assert.assertTrue("Media is missing in dialog", getDialogPage()
                 .isMediaContainerVisible());
         Assert.assertEquals(link.toLowerCase(), getDialogPage()
-                .getLastMessageFromDialog().toLowerCase());
+                .getLastMessageFromDialog().orElseThrow(() ->
+                        new AssertionError("No messages are present in the conversation view")
+                ).toLowerCase());
     }
 
     @When("I click video container for the first time")
     public void IPlayVideoFirstTime() throws Exception {
-        getDialogPage().clickOnVideoContainerFirstTime();
+        getDialogPage().clickOnPlayVideoButton();
     }
 
     @When("I swipe right on Dialog page")
@@ -421,7 +427,9 @@ public class DialogPageSteps {
     public void ISeeConversationViewIsScrolledBackToThePlayingMedia(String link)
             throws Exception {
         Assert.assertEquals(link.toLowerCase(), getDialogPage()
-                .getLastMessageFromDialog().toLowerCase());
+                .getLastMessageFromDialog().orElseThrow(() ->
+                        new AssertionError("No messages are present in the conversation view")
+                ).toLowerCase());
         Assert.assertTrue("View did not scroll back", getDialogPage()
                 .isMediaContainerVisible());
     }
@@ -558,7 +566,9 @@ public class DialogPageSteps {
     public void ICheckCopiedContentFrom(String mail) throws Exception {
         mail = usrMgr.findUserByNameOrNameAlias(mail).getEmail();
         final String finalString = String.format(sendInviteMailContent, mail);
-        String lastMessage = getDialogPage().getLastMessageFromDialog();
+        String lastMessage = getDialogPage().getLastMessageFromDialog().orElseThrow(() ->
+                new AssertionError("No messages are present in the conversation view")
+        );
         boolean messageContainsContent = lastMessage.contains(finalString);
         Assert.assertTrue("Mail Invite content is not shown in lastMessage",
                 messageContainsContent);
@@ -894,7 +904,9 @@ public class DialogPageSteps {
         Assert.assertFalse("Media player is shown in dialog", getDialogPage()
                 .isYoutubeContainerVisible());
         Assert.assertEquals(link.toLowerCase(), getDialogPage()
-                .getLastMessageFromDialog().toLowerCase());
+                .getLastMessageFromDialog().orElseThrow(() ->
+                        new AssertionError("No messages are present in the conversation view")
+                ).toLowerCase());
     }
 
     /**
@@ -909,7 +921,9 @@ public class DialogPageSteps {
         Assert.assertTrue("Media is missing in dialog", getDialogPage()
                 .isYoutubeContainerVisible());
         Assert.assertEquals(link.toLowerCase(), getDialogPage()
-                .getLastMessageFromDialog().toLowerCase());
+                .getLastMessageFromDialog().orElseThrow(() ->
+                        new AssertionError("No messages are present in the conversation view")
+                ).toLowerCase());
     }
 
     /**
@@ -935,7 +949,9 @@ public class DialogPageSteps {
     @When("^I see Link (.*) in dialog$")
     public void ISeeLinkInDialog(String link) throws Throwable {
         Assert.assertEquals(link.toLowerCase(), getDialogPage()
-                .getLastMessageFromDialog().toLowerCase());
+                .getLastMessageFromDialog().orElseThrow(() ->
+                        new AssertionError("No messages are present in the conversation view")
+                ).toLowerCase());
     }
 
     /**

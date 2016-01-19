@@ -297,13 +297,11 @@ public class ContactListPage extends AndroidPage {
     }
 
     public void tapOnMyAvatar() throws Exception {
-        verifyLocatorPresence(By.id(idSelfUserAvatar), "Self avatar icon is not visible");
-        selfUserAvatar.click();
+        getElement(By.id(idSelfUserAvatar), "Self avatar icon is not visible").click();
     }
 
     public void tapOnSearchButton() throws Exception {
-        verifyLocatorPresence(By.id(idSearchButton), "Search button is not visible");
-        searchButton.click();
+        getElement(By.id(idSearchButton), "Search button is not visible").click();
     }
 
     public boolean isAnyConversationVisible() throws Exception {
@@ -334,9 +332,8 @@ public class ContactListPage extends AndroidPage {
 
     public void selectConvoSettingsMenuItem(String itemName) throws Exception {
         final By locator = By.xpath(xpathConvoSettingsMenuItemByName.apply(itemName));
-        verifyLocatorPresence(locator, String
-                .format("Conversation menu item '%s' could not be found on the current screen", itemName));
-        getDriver().findElement(locator).click();
+        getElement(locator, String
+                .format("Conversation menu item '%s' could not be found on the current screen", itemName)).click();
     }
 
     public boolean waitUntilMissedCallNotificationVisible(String convoName)
@@ -363,21 +360,18 @@ public class ContactListPage extends AndroidPage {
                 1000, 15, 15, 15, 180);
     }
 
-    public Optional<BufferedImage> getScreenshotOfPlayPauseButtonNextTo(
-            String convoName) throws Exception {
+    public Optional<BufferedImage> getScreenshotOfPlayPauseButtonNextTo(String convoName) throws Exception {
         final By locator = By.xpath(xpathPlayPauseButtonByConvoName
                 .apply(convoName));
-        verifyLocatorPresence(locator,
-                String.format("PlayPause button is not visible next to the '%s' conversation item", convoName));
-        return this.getElementScreenshot(this.getDriver().findElement(locator));
+        return this.getElementScreenshot(getElement(locator,
+                String.format("PlayPause button is not visible next to the '%s' conversation item", convoName)));
     }
 
     public void tapPlayPauseMediaButton(String convoName) throws Exception {
         final By locator = By.xpath(xpathPlayPauseButtonByConvoName
                 .apply(convoName));
-        verifyLocatorPresence(locator, String
-                .format("PlayPause button is not visible next to the '%s' conversation item", convoName));
-        this.getDriver().findElement(locator).click();
+        getElement(locator, String
+                .format("PlayPause button is not visible next to the '%s' conversation item", convoName)).click();
     }
 
     public Optional<BufferedImage> getMessageIndicatorScreenshot(String name)

@@ -4,7 +4,7 @@ Feature: Sign In
   Scenario Outline: Sign in to ZClient
     Given There is 1 user where <Name> is me
     Given I see sign in screen
-    When I press Sign in button
+    When I tap I HAVE AN ACCOUNT button
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Login button
@@ -17,7 +17,7 @@ Feature: Sign In
   @C1133 @regression @rc @id1398 @noAcceptAlert
   Scenario Outline: Notification if SignIn credentials are wrong
     Given I see sign in screen
-    When I press Sign in button
+    When I tap I HAVE AN ACCOUNT button
     And I enter wrong email <WrongMail>
     And I enter wrong password <WrongPassword>
     And I attempt to press Login button
@@ -31,7 +31,7 @@ Feature: Sign In
   Scenario Outline: Verify possibility of reseting password (welcome page)
     Given There is 1 user where <Name> is me
     Given I see sign in screen
-    And I press Sign in button
+    And I tap I HAVE AN ACCOUNT button
     And I click on Change Password button on SignIn
     Then I see reset password page
     And I change URL to staging

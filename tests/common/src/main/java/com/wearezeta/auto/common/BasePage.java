@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.concurrent.Semaphore;
@@ -94,16 +95,28 @@ public abstract class BasePage {
         }
     }
 
-    protected void verifyLocatorPresence(By locator) throws Exception {
-        DriverUtils.verifyPresence(getDriver(), locator);
+    protected List<WebElement> getElements(By locator) throws Exception {
+        return getDriver().findElements(locator);
     }
 
-    protected void verifyLocatorPresence(By locator, String message) throws Exception {
-        DriverUtils.verifyPresence(getDriver(), locator, message);
+    protected WebElement getElement(By locator) throws Exception {
+        return DriverUtils.verifyPresence(getDriver(), locator);
     }
 
-    protected void verifyLocatorPresence(By locator, String message, int timeoutSeconds) throws Exception {
-        DriverUtils.verifyPresence(getDriver(), locator, message, timeoutSeconds);
+    protected Optional<WebElement> getElementIfDisplayed(By locator) throws Exception {
+        return DriverUtils.getElementIfDisplayed(getDriver(), locator);
+    }
+
+    protected WebElement getElement(By locator, String message) throws Exception {
+        return DriverUtils.verifyPresence(getDriver(), locator, message);
+    }
+
+    protected WebElement getElement(By locator, String message, int timeoutSeconds) throws Exception {
+        return DriverUtils.verifyPresence(getDriver(), locator, message, timeoutSeconds);
+    }
+
+    protected Optional<WebElement> getElementIfDisplayed(By locator, int timeoutSeconds) throws Exception {
+        return DriverUtils.getElementIfDisplayed(getDriver(), locator, timeoutSeconds);
     }
 
     public Optional<BufferedImage> getScreenshotByCoordinates(int x, int y,
@@ -131,10 +144,6 @@ public abstract class BasePage {
                 f.set(null, null);
             }
         }
-    }
-
-    public String getPageSource() throws Exception {
-        return this.getDriver().getPageSource();
     }
 
     /**

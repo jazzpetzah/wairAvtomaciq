@@ -20,17 +20,17 @@ public class PendingRequestsPage extends IOSPage {
     private WebElement connectRequestButton;
 
     private static final String xpathPendingRequesterName =
-            xpathMainWindow + "/UIATableView[1]//UIAStaticText[contains(@name, 'Connect to')]";
+            xpathStrMainWindow + "/UIATableView[1]//UIAStaticText[contains(@name, 'Connect to')]";
     @FindBy(xpath = xpathPendingRequesterName)
     private WebElement requesterName;
 
     private static final String xpathPendingRequestMessage =
-            xpathMainWindow + "/UIATableView[1]//UIAStaticText[3]";
+            xpathStrMainWindow + "/UIATableView[1]//UIAStaticText[3]";
     @FindBy(xpath = xpathPendingRequestMessage)
     private WebElement pendingMessage;
 
     private static final String xpathYouBothKnowPeopleIcon =
-            xpathMainWindow + "/UIATableView[1]/UIATableCell[1]/UIAButton[2]";
+            xpathStrMainWindow + "/UIATableView[1]/UIATableCell[1]/UIAButton[2]";
     @FindBy(xpath = xpathYouBothKnowPeopleIcon)
     private WebElement youBothKnowPeopleIcon;
 
@@ -42,12 +42,12 @@ public class PendingRequestsPage extends IOSPage {
     }
 
     public void clickIgnoreButton() throws Exception {
-        verifyLocatorPresence(By.name(namePendingRequestIgnoreButton), "Ignore button is not visible");
-        ignoreRequestButton.click();
+        getElement(By.name(namePendingRequestIgnoreButton), "Ignore button is not visible").click();
     }
 
     public void clickIgnoreButtonMultiple(int clicks) throws Exception {
-        verifyLocatorPresence(By.name(namePendingRequestIgnoreButton), "Ignore button is not visible");
+        final WebElement ignoreRequestButton = getElement(By.name(namePendingRequestIgnoreButton),
+                "Ignore button is not visible");
         for (int i = 0; i < clicks; i++) {
             ignoreRequestButton.click();
             Thread.sleep(500);
@@ -55,12 +55,12 @@ public class PendingRequestsPage extends IOSPage {
     }
 
     public void clickConnectButton() throws Exception {
-        verifyLocatorPresence(By.name(namePendingRequestConnectButton), "Connect button is not visible");
-        connectRequestButton.click();
+        getElement(By.name(namePendingRequestConnectButton), "Connect button is not visible").click();
     }
 
     public void clickConnectButtonMultiple(int clicks) throws Exception {
-        verifyLocatorPresence(By.name(namePendingRequestConnectButton), "Connect button is not visible");
+        final WebElement connectRequestButton = getElement(By.name(namePendingRequestConnectButton),
+                "Connect button is not visible");
         for (int i = 0; i < clicks; i++) {
             connectRequestButton.click();
             Thread.sleep(500);

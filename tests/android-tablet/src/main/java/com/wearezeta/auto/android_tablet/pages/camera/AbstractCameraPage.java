@@ -66,7 +66,7 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
             } else {
                 tapTakePhotoButton();
             }
-            verifyLocatorPresence(By.xpath(DialogPage.xpathConfirmOKButton),
+            getElement(By.xpath(DialogPage.xpathConfirmOKButton),
                     "Picture selection confirmation has not been shown after the timeout", 3);
         }
         okConfirmButton.click();
@@ -74,8 +74,7 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
     }
 
     public void tapGalleryButton() throws Exception {
-        verifyLocatorPresence(By.id(idGalleryButton), "Open gallery button is not visible");
-        galleryButton.click();
+        getElement(By.id(idGalleryButton), "Open gallery button is not visible").click();
         isGalleryModeActivated = true;
     }
 

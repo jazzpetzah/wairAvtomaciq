@@ -55,8 +55,7 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
     public static final String namePeopleCountWord = " PEOPLE";
 
     public void openConversationMenuOnPopover() throws Exception {
-        verifyLocatorPresence(By.name(nameConversationMenu));
-        conversationMenuButton.click();
+        getElement(By.name(nameConversationMenu)).click();
     }
 
     public boolean waitConversationInfoPopoverToClose() throws Exception {

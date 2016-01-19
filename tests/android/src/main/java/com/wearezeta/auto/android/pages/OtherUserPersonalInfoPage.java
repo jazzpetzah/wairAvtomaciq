@@ -5,18 +5,15 @@ import java.util.List;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class OtherUserPersonalInfoPage extends AndroidPage {
 
@@ -174,9 +171,9 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     public void selectConvoSettingsMenuItem(String itemName) throws Exception {
         final By locator = By.xpath(xpathConvOptionsMenuItemByName
                 .apply(itemName));
-        verifyLocatorPresence(locator,
-                String.format("Conversation menu item '%s' could not be found on the current screen", itemName));
-        getDriver().findElement(locator).click();
+        getElement(locator,
+                String.format("Conversation menu item '%s' could not be found on the current screen", itemName)).
+                click();
     }
 
     public boolean isOtherUserNameVisible(String expectedName) throws Exception {
@@ -201,8 +198,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     }
 
     public void pressConfirmBtn() throws Exception {
-        verifyLocatorPresence(By.xpath(xpathConfirmBtn), "Confirmation button is not visible");
-        confirmBtn.click();
+        getElement(By.xpath(xpathConfirmBtn), "Confirmation button is not visible").click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), By.xpath(xpathConfirmBtn), 3)) {
             throw new IllegalStateException("Confirmation button is still visible after 3 seconds timeout");
         }
@@ -256,17 +252,15 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     }
 
     public void tapCloseButton() throws Exception {
-        verifyLocatorPresence(By.id(PeoplePickerPage.idParticipantsClose),
+        final WebElement closeButton = getElement(By.id(PeoplePickerPage.idParticipantsClose),
                 "Close participants button is not visible");
-        final int halfHeight = this.getDriver().manage().window().getSize()
-                .getHeight() / 2;
+        final int halfHeight = this.getDriver().manage().window().getSize().getHeight() / 2;
         int ntry = 1;
         final int maxRetries = 3;
         do {
             closeButton.click();
             ntry++;
-        } while (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(PeoplePickerPage.idParticipantsClose), 1)
+        } while (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(PeoplePickerPage.idParticipantsClose), 1)
                 && closeButton.getLocation().getY() < halfHeight
                 && ntry <= maxRetries);
         if (ntry > maxRetries) {

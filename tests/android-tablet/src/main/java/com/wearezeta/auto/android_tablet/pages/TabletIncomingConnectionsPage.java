@@ -42,17 +42,13 @@ public class TabletIncomingConnectionsPage extends AndroidTabletPage {
 	}
 
 	public void acceptIncomingConnectionFrom(String name) throws Exception {
-		final By locator = By.xpath(xpathIncomingRequestAcceptButtonByName
-				.apply(name));
-		verifyLocatorPresence(locator, String.format("Accept request button for '%s' is not visible", name));
-		getDriver().findElement(locator).click();
+		final By locator = By.xpath(xpathIncomingRequestAcceptButtonByName.apply(name));
+		getElement(locator, String.format("Accept request button for '%s' is not visible", name)).click();
 	}
 
 	public void ignoreIncomingConnectionFrom(String name) throws Exception {
-		final By locator = By.xpath(xpathIncomingRequestIgnoreButtonByName
-				.apply(name));
-		verifyLocatorPresence(locator, String.format("Ignore request button for '%s' is not visible", name));
-		getDriver().findElement(locator).click();
+		final By locator = By.xpath(xpathIncomingRequestIgnoreButtonByName.apply(name));
+		getElement(locator, String.format("Ignore request button for '%s' is not visible", name)).click();
 	}
 
 	public boolean waitUntilEmailVisible(String expectedEmail) throws Exception {

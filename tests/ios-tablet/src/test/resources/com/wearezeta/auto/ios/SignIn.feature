@@ -4,7 +4,7 @@ Feature: Sign In
   Scenario Outline: Sign in to ZClient [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I see sign in screen
-    When I press Sign in button
+    When I tap I HAVE AN ACCOUNT button
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Login button
@@ -19,7 +19,7 @@ Feature: Sign In
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I see sign in screen
-    When I press Sign in button
+    When I tap I HAVE AN ACCOUNT button
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Login button
@@ -32,7 +32,7 @@ Feature: Sign In
   @C3130 @regression @id2749 @noAcceptAlert
   Scenario Outline: Notification if SignIn credentials are wrong [PORTRAIT]
     Given I see sign in screen
-    When I press Sign in button
+    When I tap I HAVE AN ACCOUNT button
     And I enter wrong email <WrongMail>
     And I enter wrong password <WrongPassword>
     And I attempt to press Login button
@@ -46,7 +46,7 @@ Feature: Sign In
   Scenario Outline: Notification if SignIn credentials are wrong [LANDSCAPE]
     Given I see sign in screen
     Given I rotate UI to landscape
-    When I press Sign in button
+    When I tap I HAVE AN ACCOUNT button
     And I enter wrong email <WrongMail>
     And I enter wrong password <WrongPassword>
     And I attempt to press Login button
@@ -59,7 +59,7 @@ Feature: Sign In
   @C3120 @regression @rc @id2608
   Scenario Outline: Verify possibility of reseting password (welcome page) [PORTRAIT]
     Given I see sign in screen
-    And I press Sign in button
+    And I tap I HAVE AN ACCOUNT button
     And I click on Change Password button on SignIn
     Then I see reset password page
     And I change URL to staging
@@ -80,7 +80,7 @@ Feature: Sign In
   Scenario Outline: Verify possibility of reseting password (welcome page) [LANDSCAPE]
     Given I see sign in screen
     Given I rotate UI to landscape
-    And I press Sign in button
+    And I tap I HAVE AN ACCOUNT button
     And I click on Change Password button on SignIn
     Then I see reset password page
     And I change URL to staging

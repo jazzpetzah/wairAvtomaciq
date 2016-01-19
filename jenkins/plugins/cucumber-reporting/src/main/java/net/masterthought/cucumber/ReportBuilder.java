@@ -44,7 +44,7 @@ public class ReportBuilder {
 
     private Map<String, String> customHeader;
 
-    private final String VERSION = "cucumber-reporting-0.0.23";
+    private final String VERSION = "cucumber-reporting-0.0.25";
 
     public ReportBuilder(List<String> jsonReports, File reportDirectory, String customDescription, String coverage, String realBuildNumber, String pluginUrlPath, String buildNumber, String buildProject, boolean skippedFails, boolean undefinedFails, boolean flashCharts, boolean runWithJenkins, boolean artifactsEnabled, String artifactConfig, boolean highCharts) throws Exception {
 
@@ -277,39 +277,25 @@ public class ReportBuilder {
     private HashMap<String, Object> getGeneralParameters() {
         HashMap<String, Object> result = new HashMap<String, Object>();
         
-        if (customDescription != null && !customDescription.isEmpty())
-       	{
-        	if (realBuildNumber != null && !realBuildNumber.isEmpty())
-       			if(customDescription.contains(" "))
-       				realBuildNumber = customDescription.substring(0, customDescription.indexOf(" ")).concat(" build #").concat(realBuildNumber);
-       	       	else
-       	       		realBuildNumber = customDescription.concat(" build #").concat(realBuildNumber);
-       	}
-        else
-        	if (realBuildNumber != null && !realBuildNumber.isEmpty())
-        	{
-        		customDescription = "Feature Overview";
-        		realBuildNumber = "Application build #".concat(realBuildNumber);
-        	}
-        	else 
-        	{
-        		customDescription = "Feature Overview";
-        		realBuildNumber = "";
-        	}
-        
-        if (coverage != null && !coverage.isEmpty())
-        	coverage = "COVERAGE: ".concat(coverage);
-        else
-        	coverage = "";
-        
-        result.put("version", VERSION);
-        result.put("fromJenkins", runWithJenkins);
-        result.put("jenkins_base", pluginUrlPath);
-        result.put("build_project", buildProject);
-        result.put("build_number", buildNumber);
-        result.put("custom_description", customDescription);
-        result.put("coverage", coverage);
-        result.put("real_build_number", realBuildNumber);
-        return result;
+        if (customDescription == null || customDescription.isEmpty())
+            customDescription = "Feature Overview";
+            if (coverage == null || coverage.isEmpty())
+                coverage = "";
+            else
+                coverage = "COVERAGE: ".concat(coverage).replace("Run", "");
+            if (realBuildNumber == null || realBuildNumber.isEmpty())
+                realBuildNumber = "";
+            else
+                realBuildNumber = "BUILD: ".concat(realBuildNumber);
+
+            result.put("version", VERSION);
+            result.put("fromJenkins", runWithJenkins);
+            result.put("jenkins_base", pluginUrlPath);
+            result.put("build_project", buildProject);
+            result.put("build_number", buildNumber);
+            result.put("custom_description", customDescription);
+            result.put("coverage", coverage);
+            result.put("real_build_number", realBuildNumber);
+            return result;
     }
 }

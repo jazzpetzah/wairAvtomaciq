@@ -5,25 +5,20 @@ import java.util.function.Function;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class ContactsUiPage extends IOSPage {
 
-    private static final String xpathSearchInput = "//UIATextView[UIAStaticText[@name='SEARCH BY NAME']]";
-    @FindBy(xpath = xpathSearchInput)
-    private WebElement searchInput;
+    private static final By xpathSearchInput = By.xpath("//UIATextView[UIAStaticText[@name='SEARCH BY NAME']]");
 
-    private static final String nameInviteOthersButton = "INVITE OTHERS";
-    @FindBy(name = nameInviteOthersButton)
-    private WebElement inviteOthersButton;
+    private static final By nameInviteOthersButton = By.name("INVITE OTHERS");
 
-    private static final Function<String, String> xpathConvoCellByName = name ->
+    private static final Function<String, String> xpathStrConvoCellByName = name ->
             String.format("//UIATableCell[@name='%s'][preceding::UIAButton[@name='ContactsViewCloseButton']]", name);
 
-    private static final Function<String, String> xpathOpenButtonByConvoName = name ->
+    private static final Function<String, String> xpathStrOpenButtonByConvoName = name ->
             String.format("//UIATableCell[@name='%s']" +
                     "[preceding::UIAButton[@name='ContactsViewCloseButton']]/UIAButton[@name='OPEN']", name);
 
@@ -33,34 +28,31 @@ public class ContactsUiPage extends IOSPage {
     }
 
     public boolean isSearchInputVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathSearchInput));
-    }
-
-    private void tapSearchInput() {
-        searchInput.click();
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathSearchInput);
     }
 
     public void inputTextToSearch(String text) throws Exception {
-        verifyLocatorPresence(By.xpath(xpathSearchInput));
-        tapSearchInput();
-        searchInput.sendKeys(text);
+        final WebElement input = getElement(xpathSearchInput);
+        input.click();
+        input.sendKeys(text);
     }
 
     public boolean isContactPresentedInContactsList(String contact)
             throws Exception {
-        final By locator = By.xpath(xpathConvoCellByName.apply(contact));
+        final By locator = By.xpath(xpathStrConvoCellByName.apply(contact));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 5);
     }
 
     public void tapInviteOthersButton() throws Exception {
-        inviteOthersButton.click();
+        getElement(nameInviteOthersButton).click();
     }
 
     public boolean isInviteOthersButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameInviteOthersButton));}
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInviteOthersButton);
+    }
 
     public void clickOpenButtonNextToUser(String contact) throws Exception {
-        final By locator = By.xpath(xpathOpenButtonByConvoName.apply(contact));
+        final By locator = By.xpath(xpathStrOpenButtonByConvoName.apply(contact));
         getDriver().findElement(locator).click();
     }
 }

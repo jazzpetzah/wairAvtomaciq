@@ -51,11 +51,11 @@ public class IncomingCallPage extends CallPage {
     @FindBy(xpath = xpathGroupCallAvatars)
     private List<WebElement> numberOfGroupCallAvatars;
 
-    private static final String xpathGroupCallFullMessage = xpathMainWindow + "/UIAAlert[@name='The call is full']";
+    private static final String xpathGroupCallFullMessage = xpathStrMainWindow + "/UIAAlert[@name='The call is full']";
     @FindBy(xpath = xpathGroupCallFullMessage)
     private WebElement groupCallFullMessage;
 
-    private static final String xpathUserInCallContactListCell = xpathMainWindow + "/UIAStaticText";
+    private static final String xpathUserInCallContactListCell = xpathStrMainWindow + "/UIAStaticText";
     @FindBy(xpath = xpathUserInCallContactListCell)
     private List<WebElement> contactListNamesInACall;
 
@@ -69,8 +69,7 @@ public class IncomingCallPage extends CallPage {
     }
 
     public void acceptIncomingCallClick() throws Exception {
-        verifyLocatorPresence(By.name(nameAcceptCallButton), "Accept call button is not visible");
-        acceptCallButton.click();
+        getElement(By.name(nameAcceptCallButton), "Accept call button is not visible").click();
     }
 
     public void ignoreIncomingCallClick() {

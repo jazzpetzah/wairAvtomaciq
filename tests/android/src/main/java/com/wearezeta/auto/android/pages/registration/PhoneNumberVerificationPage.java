@@ -61,7 +61,7 @@ public class PhoneNumberVerificationPage extends AndroidPage {
                 By.id(idCodeOldInput), 15)) {
             codeOldInput.sendKeys(verificationCode);
         } else {
-            verifyLocatorPresence(By.id(idCodeInput), "Verification code input has not been shown in time", 15);
+            getElement(By.id(idCodeInput), "Verification code input has not been shown in time", 15);
         }
     }
 

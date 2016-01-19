@@ -22,7 +22,7 @@ public class RegistrationPage extends IOSPage {
     @FindBy(name = nameCameraShootButton)
     private WebElement cameraShootButton;
 
-    private static final String xpathPhotoButton = xpathMainWindow + "/UIAButton[5]";
+    private static final String xpathPhotoButton = xpathStrMainWindow + "/UIAButton[5]";
     @FindBy(xpath = xpathPhotoButton)
     private WebElement photoButton;
 
@@ -34,7 +34,7 @@ public class RegistrationPage extends IOSPage {
     @FindBy(name = nameCameraFlashButton)
     private WebElement cameraFlashButton;
 
-    private static final String xpathAlbum = xpathMainWindow + "/UIATableView[1]/UIATableCell[1]/UIAStaticText[1]";
+    private static final String xpathAlbum = xpathStrMainWindow + "/UIATableView[1]/UIATableCell[1]/UIAStaticText[1]";
     @FindBy(xpath = xpathAlbum)
     private WebElement photoAlbum;
 
@@ -50,7 +50,7 @@ public class RegistrationPage extends IOSPage {
     @FindBy(name = nameCancelImageButton)
     private WebElement cancelImageButton;
 
-    private static final String xpathYourName = xpathMainWindow + "/UIATextField[@value='YOUR FULL NAME']";
+    private static final String xpathYourName = xpathStrMainWindow + "/UIATextField[@value='YOUR FULL NAME']";
     @FindBy(xpath = xpathYourName)
     private WebElement yourName;
 
@@ -117,20 +117,20 @@ public class RegistrationPage extends IOSPage {
     @FindBy(name = nameErrorPageButton)
     private WebElement errorPageButton;
 
-    private static final String xpathCloseColorModeButton = xpathMainWindow + "/UIAButton[4]";
+    private static final String xpathCloseColorModeButton = xpathStrMainWindow + "/UIAButton[4]";
     @FindBy(xpath = xpathCloseColorModeButton)
     private WebElement closeColorModeButton;
 
-    private static final String xpathReSendButton = xpathMainWindow + "/UIATextView[1]";
+    private static final String xpathReSendButton = xpathStrMainWindow + "/UIATextView[1]";
     @FindBy(xpath = xpathReSendButton)
     private WebElement reSendButton;
 
-    private static final String xpathEmailVerifPrompt = xpathMainWindow +
+    private static final String xpathEmailVerifPrompt = xpathStrMainWindow +
             "/UIAStaticText[contains(@name, 'We sent an email to ')]";
     @FindBy(xpath = xpathEmailVerifPrompt)
     private WebElement emailVerifPrompt;
 
-    private static final String xpathPhoneNumber = xpathMainWindow + "/UIATextField[1]";
+    private static final String xpathPhoneNumber = xpathStrMainWindow + "/UIATextField[1]";
     @FindBy(xpath = xpathPhoneNumber)
     private WebElement phoneNumber;
 
@@ -138,11 +138,11 @@ public class RegistrationPage extends IOSPage {
     @FindBy(name = namePhoneNumberField)
     private WebElement phoneNumberField;
 
-    private static final String xpathActivationCode = xpathMainWindow + "/UIATextField[1]";
+    private static final String xpathActivationCode = xpathStrMainWindow + "/UIATextField[1]";
     @FindBy(xpath = xpathActivationCode)
     private WebElement activationCode;
 
-    private static final String xpathCountry = xpathMainWindow + "/UIAButton[1]";
+    private static final String xpathCountry = xpathStrMainWindow + "/UIAButton[1]";
     @FindBy(xpath = xpathCountry)
     private WebElement selectCountry;
 
@@ -150,11 +150,11 @@ public class RegistrationPage extends IOSPage {
     @FindBy(name = nameCountryPickerButton)
     private WebElement countryPickerButton;
 
-    public static final String xpathCountryList = xpathMainWindow + "/UIATableView[1]";
+    public static final String xpathCountryList = xpathStrMainWindow + "/UIATableView[1]";
     @FindBy(xpath = xpathCountryList)
     private WebElement countryList;
 
-    private static final String xpathConfirmPhoneNumber = xpathMainWindow + "/UIATextField[1]/UIAButton[1]";
+    private static final String xpathConfirmPhoneNumber = xpathStrMainWindow + "/UIATextField[1]/UIAButton[1]";
     @FindBy(xpath = xpathConfirmPhoneNumber)
     private WebElement confirmInput;
 
@@ -204,8 +204,11 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void clickAgreeButton() throws Exception {
-        verifyLocatorPresence(By.name(nameAgreeButton), "Agree button is not visible");
-        agreeButton.click();
+        getElement(By.name(nameAgreeButton), "Agree button is not visible").click();
+    }
+
+    public boolean isCountryPickerButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameCountryPickerButton), 2);
     }
 
     private static final String WIRE_COUNTRY_NAME = "Wirestan";
@@ -217,7 +220,6 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void inputPhoneNumber(String number) throws Exception {
-        verifyLocatorPresence(By.xpath(xpathPhoneNumber), "Phone number input is not visible");
         phoneNumberField.sendKeys(number);
         confirmInput.click();
     }
@@ -227,8 +229,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void inputActivationCode(String code) throws Exception {
-        verifyLocatorPresence(By.xpath(xpathActivationCode), "Activation code input is not visible");
-        activationCode.sendKeys(code);
+        getElement(By.xpath(xpathActivationCode), "Activation code input is not visible").sendKeys(code);
         confirmInput.click();
     }
 
@@ -237,15 +238,12 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void clickResendCodeButton() throws Exception {
-        verifyLocatorPresence(By.name(nameResendCodeButton), "Resend code button is not visible");
-        resendCodeButton.click();
+        getElement(By.name(nameResendCodeButton), "Resend code button is not visible").click();
     }
 
     public void selectPicture() throws Exception {
-        verifyLocatorPresence(By.name(nameSelectPictureButton), "Select Picture button is not visible");
-        selectPictureButton.click();
-        verifyLocatorPresence(By.xpath(xpathPhotoButton), "Take Photo button is not visible");
-        photoButton.click();
+        getElement(By.name(nameSelectPictureButton), "Select Picture button is not visible").click();
+        getElement(By.xpath(xpathPhotoButton), "Take Photo button is not visible").click();
     }
 
     public boolean isConfirmationShown() throws Exception {
@@ -266,8 +264,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void clickCreateAccountButton() throws Exception {
-        DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.xpath(xpathCreateAccountButton));
-        createAccountButton.click();
+        getElement(By.xpath(xpathCreateAccountButton), "Create Account button is not visible").click();
     }
 
     public void typeEmail() {
@@ -275,8 +272,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void typeUsername() throws Exception {
-        verifyLocatorPresence(By.xpath(xpathYourName), "Name input is not visible");
-        yourName.sendKeys(getName());
+        getElement(By.xpath(xpathYourName), "Name input is not visible").sendKeys(getName());
     }
 
     public boolean isPictureSelected() throws Exception {
@@ -330,7 +326,6 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void clickChoosePhotoButton() throws Exception {
-        verifyLocatorPresence(By.name(nameChoosePhotoButton), "Choose photo button is not visible");
-        choosePhotoButton.click();
+        getElement(By.name(nameChoosePhotoButton), "Choose photo button is not visible").click();
     }
 }

@@ -70,8 +70,7 @@ public class InvitationsPage extends AndroidPage {
 
     public void selectEmailOnAlert(String email) throws Exception {
         final By locator = By.xpath(xpathAlertItemByValue.apply(email));
-        verifyLocatorPresence(locator, String.format("Email address '%s' is not visible on the alert", email));
-        getDriver().findElement(locator).click();
+        getElement(locator, String.format("Email address '%s' is not visible on the alert", email)).click();
     }
 
     public void confirmInvitationAlert() {

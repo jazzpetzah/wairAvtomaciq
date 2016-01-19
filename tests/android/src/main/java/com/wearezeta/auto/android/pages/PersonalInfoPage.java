@@ -95,32 +95,29 @@ public class PersonalInfoPage extends AndroidPage {
     }
 
     public void tapChangePhotoButton() throws Exception {
-        verifyLocatorPresence(By.id(idChangePhotoBtn), "Change Photo button is not visible");
-        changePhotoBtn.click();
+        getElement(By.id(idChangePhotoBtn), "Change Photo button is not visible").click();
     }
 
     public void tapTakePhotoButton() throws Exception {
-        verifyLocatorPresence(By.id(idTakePhotoButton), "Take Photo button is not visible");
-        takePhotoBtn.click();
+        getElement(By.id(idTakePhotoButton), "Take Photo button is not visible").click();
     }
 
     public void tapGalleryButton() throws Exception {
-        verifyLocatorPresence(By.id(idGalleryBtn), "Open Gallery button is not visible");
-        galleryBtn.click();
+        getElement(By.id(idGalleryBtn), "Open Gallery button is not visible").click();
     }
 
     public void tapConfirmButton() throws Exception {
         this.hideKeyboard();
-        verifyLocatorPresence(By.xpath(DialogPage.xpathConfirmOKButton), "Confirmation button is not visible");
+        final WebElement confirmBtn = getElement(By.xpath(DialogPage.xpathConfirmOKButton),
+                "Confirmation button is not visible");
         // Wait for animation
         Thread.sleep(1000);
         confirmBtn.click();
     }
 
     public void tapEllipsisButton() throws Exception {
-        verifyLocatorPresence(By.xpath(xpathProfileOptionsButton), "Ellipsis button is not visible");
         try {
-            ellipsisButton.click();
+            getElement(By.xpath(xpathProfileOptionsButton), "Ellipsis button is not visible").click();
         } catch (ElementNotVisibleException e) {
             // pass silently, this throws exception due to some internal
             // Selendroid (or AUT %) ) issue
@@ -134,8 +131,7 @@ public class PersonalInfoPage extends AndroidPage {
 
     public void tapProfileMenuItem(String itemName) throws Exception {
         final By locator = By.xpath(xpathProfileMenuItem.apply(itemName));
-        verifyLocatorPresence(locator, String.format("Menu item '%s' is not present on the page", itemName));
-        getDriver().findElement(locator).click();
+        getElement(locator, String.format("Menu item '%s' is not present on the page", itemName)).click();
     }
 
     public void tapOnMyName(String name) throws Exception {
@@ -170,8 +166,7 @@ public class PersonalInfoPage extends AndroidPage {
     }
 
     public void pressCloseButton() throws Exception {
-        verifyLocatorPresence(By.xpath(xpathSelfProfileClose), "Close Self Profile button is not visible");
-        selfProfileClose.click();
+        getElement(By.xpath(xpathSelfProfileClose), "Close Self Profile button is not visible").click();
     }
 
     public void tapLightBulbButton() {

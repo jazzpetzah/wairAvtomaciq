@@ -9,9 +9,7 @@ import io.appium.java_client.ios.IOSElement;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
@@ -31,93 +29,47 @@ public class GroupChatInfoPage extends IOSPage {
 
     private String conversationName = null;
 
-    private static final String nameConversationMenu = "metaControllerRightButton";
-    @FindBy(name = nameConversationMenu)
-    private WebElement leaveChat;
+    private static final By nameConversationMenu = By.name("metaControllerRightButton");
 
-    private static final String nameLeaveConversationButton = "LEAVE";
-    @FindBy(name = nameLeaveConversationButton)
-    private WebElement leaveChatButton;
+    private static final By nameLeaveConversationButton = By.name("LEAVE");
 
-    private static final String nameConversationNameTextField = "ParticipantsView_GroupName";
-    @FindBy(name = nameConversationNameTextField)
-    private WebElement conversationNameTextField;
+    private static final By nameConversationNameTextField = By.name("ParticipantsView_GroupName");
 
-    private static final String nameExitGroupInfoPageButton = "metaControllerCancelButton";
-    @FindBy(name = nameExitGroupInfoPageButton)
-    private WebElement exitGroupInfoPageButton;
+    private static final By nameExitGroupInfoPageButton = By.name("metaControllerCancelButton");
 
-    private static final String xpathNumberOfParticipantsText = xpathMainWindow + "/UIAStaticText[3]";
-    @FindBy(xpath = xpathNumberOfParticipantsText)
-    private WebElement numberOfParticipantsText;
+    private static final By xpathAvatarCollectionView = By.xpath(xpathStrMainWindow + "/UIACollectionView[1]");
 
-    private static final String xpathAvatarCollectionView = xpathMainWindow + "/UIACollectionView[1]";
-    @FindBy(xpath = xpathAvatarCollectionView)
-    private WebElement avatarCollectionView;
+    private static final By nameAddContactToChatButton = By.name("metaControllerLeftButton");
 
-    private static final String nameAddContactToChatButton = "metaControllerLeftButton";
-    @FindBy(name = nameAddContactToChatButton)
-    private WebElement addContactButton;
+    private static final By nameAddPeopleContinueButton = By.name("CONTINUE");
 
-    private static final String nameAddPeopleDialogHeader = "Add people and share history?";
-    @FindBy(name = nameAddPeopleDialogHeader)
-    private WebElement addDialogHeader;
+    private static final By nameLeaveConversationAlert = By.name("Leave conversation?");
 
-    private static final String nameAddPeopleCancelButton = "CANCEL";
-    @FindBy(name = nameAddPeopleCancelButton)
-    private WebElement addDialogCancelButton;
-
-    private static final String nameAddPeopleContinueButton = "CONTINUE";
-    @FindBy(name = nameAddPeopleContinueButton)
-    private WebElement addDialogContinueButton;
-
-    private static final String nameOtherUserProfilePageCloseButton = "OtherUserProfileCloseButton";
-    @FindBy(name = nameOtherUserProfilePageCloseButton)
-    private WebElement closeButton;
-
-    private static final String nameLeaveConversationAlert = "Leave conversation?";
-
-    private static final Function<String,String> xpathUserNameLabelByText = text ->
+    private static final Function<String,String> xpathStrUserNameLabelByText = text ->
             String.format("//UIACollectionView[preceding-sibling::UIATextView[@name='ParticipantsView_GroupName']]" +
                     "/UIACollectionCell/UIAStaticText[last() and @name='%s']", text);
 
-    private static final String xpathNumberPeopleText = xpathMainWindow + "/UIAStaticText[contains(@name, 'PEOPLE')]";
+    private static final By xpathNumberPeopleText =
+            By.xpath(xpathStrMainWindow + "/UIAStaticText[contains(@name, 'PEOPLE')]");
 
     private static final Function<String,String> xpathPeopleViewCollectionCellByName = name ->
             String.format("//UIAButton[@name='metaControllerCancelButton']/following-sibling::" +
                     "UIACollectionView/UIACollectionCell/UIAStaticText[@name='%s']", name.toUpperCase());
 
-    private static final String peopleCountTextSubstring = " PEOPLE";
+    private static final By xpathParticipantAvatarCell = By.xpath(xpathAvatarCollectionView + "/UIACollectionCell");
 
-    private static final String xpathParticipantAvatarCell = xpathAvatarCollectionView + "/UIACollectionCell";
+    private static final String PEOPLE_COUNT_TEXT_SUBSTRING = " PEOPLE";
 
     public GroupChatInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
-    public String getGroupChatName() {
-        return conversationNameTextField.getText();
-    }
-
-    public void changeConversationName(String name) throws Exception {
-        conversationNameTextField.clear();
-        int maxRetrys = 3;
-        int retryCounter = 0;
-        while (retryCounter < maxRetrys) {
-            try {
-                ((IOSElement) getDriver().findElementByName(nameConversationNameTextField)).setValue(name + "\n");
-                retryCounter = maxRetrys;
-                return;
-            } catch (WebDriverException ex) {
-                conversationNameTextField.clear();
-                retryCounter++;
-            }
-        }
-
+    public String getGroupChatName() throws Exception {
+        return getElement(nameConversationNameTextField).getText();
     }
 
     public void setGroupChatName(String name) throws Exception {
-        ((IOSElement) getDriver().findElementByName(nameConversationNameTextField)).setValue(name);
+        ((IOSElement) getElement(nameConversationNameTextField)).setValue(name);
         clickKeyboardEnterButton();
     }
 
@@ -231,6 +183,7 @@ public class GroupChatInfoPage extends IOSPage {
     }
 
     public boolean isCorrectConversationName(String contact1, String contact2) throws Exception {
+        final WebElement conversationNameTextField = getElement(nameConversationNameTextField);
         if (conversationNameTextField.getText().equals(conversationName)) {
             return true;
         } else {
@@ -250,40 +203,38 @@ public class GroupChatInfoPage extends IOSPage {
     }
 
     public int numberOfPeopleInConversation() throws Exception {
+        // FIXME: Optimize locator
         int result = -1;
-        List<WebElement> elements = getDriver().findElements(
-                By.xpath(xpathNumberPeopleText));
+        List<WebElement> elements = getElements(xpathNumberPeopleText);
         for (WebElement element : elements) {
             String value = element.getText();
-            if (value.contains(peopleCountTextSubstring)) {
-                result = Integer.parseInt(value.substring(0,
-                        value.indexOf(peopleCountTextSubstring)));
+            if (value.contains(PEOPLE_COUNT_TEXT_SUBSTRING)) {
+                return Integer.parseInt(value.substring(0, value.indexOf(PEOPLE_COUNT_TEXT_SUBSTRING)));
             }
         }
         return result;
     }
 
     public int numberOfParticipantsAvatars() throws Exception {
-        return getDriver().findElements(By.xpath(xpathParticipantAvatarCell)).size();
+        return getDriver().findElements(xpathParticipantAvatarCell).size();
     }
 
-    public List<WebElement> getCurrentParticipants() {
-        return avatarCollectionView.findElements(By.className("UIACollectionCell"));
+    public List<WebElement> getCurrentParticipants() throws Exception {
+        // FIXME: Optimize locator
+        return getElement(xpathAvatarCollectionView).findElements(By.className("UIACollectionCell"));
     }
 
     public void exitGroupInfoPage() throws Exception {
-        verifyLocatorPresence(By.name(nameExitGroupInfoPageButton), "Close group info button is not visible");
-        exitGroupInfoPageButton.click();
+        getElement(nameExitGroupInfoPageButton, "Close group info button is not visible").click();
     }
 
-    public void leaveConversation() throws InterruptedException {
-        leaveChat.click();
-        Thread.sleep(2000);
-        leaveChatButton.click();
+    public void leaveConversation() throws Exception {
+        getElement(nameConversationMenu).click();
+        getElement(nameLeaveConversationButton).click();
     }
 
-    public void confirmLeaveConversation() {
-        leaveChatButton.click();
+    public void confirmLeaveConversation() throws Exception {
+        getElement(nameLeaveConversationButton).click();
     }
 
     public void selectContactByName(String name)
@@ -297,19 +248,19 @@ public class GroupChatInfoPage extends IOSPage {
     }
 
     public boolean isLeaveConversationAlertVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(nameLeaveConversationAlert));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameLeaveConversationAlert);
     }
 
-    public void clickOnAddButton() {
-        addContactButton.click();
+    public void clickOnAddButton() throws Exception {
+        getElement(nameAddContactToChatButton).click();
     }
 
     public void clickOnAddDialogContinueButton() throws Throwable {
-        addDialogContinueButton.click();
+        getElement(nameAddPeopleContinueButton).click();
     }
 
     public boolean waitForContactToDisappear(String contact) throws Exception {
-        final By locator = By.xpath(xpathUserNameLabelByText.apply(contact));
+        final By locator = By.xpath(xpathStrUserNameLabelByText.apply(contact));
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
     }
 }

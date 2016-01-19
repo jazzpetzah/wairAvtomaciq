@@ -44,8 +44,7 @@ public class ImageFullScreenPage extends IOSPage {
     }
 
     public void clickCloseButton() throws Exception {
-        verifyLocatorPresence(By.name(nameFullScreenCloseButton), "Close button is not present in the view");
-        fullScreenCloseButton.click();
+        getElement(By.name(nameFullScreenCloseButton), "Close button is not present in the view").click();
     }
 
     public boolean isDownloadButtonVisible() throws Exception {

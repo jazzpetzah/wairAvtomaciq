@@ -9,25 +9,17 @@ import java.util.List;
 public class Runner {
 
     public static void main(String[] args) throws Exception {
-        File rd = new File("/var/www/cucumber/builds/97");
+        File rd = new File("/Project/Screens/reports_test");
         List<String> list = new ArrayList<String>();
-        //        list.add("/Users/kings/.jenkins/jobs/aaaaa/builds/15/cucumber-html-reports/french.json");
-//            list.add("/Users/kings/.jenkins/jobs/aaaaa/builds/15/cucumber-html-reports/co_cucumber.json");
-        //        list.add("/Users/kings/.jenkins/jobs/aaaaa/builds/15/cucumber-html-reports/ccp_cucumber.json");
-        //        list.add("/Users/kings/.jenkins/jobs/aaaaa/builds/15/cucumber-html-reports/ss_cucumber.json");
-        //        list.add("/Users/kings/.jenkins/jobs/cucumber-jvm/builds/7/cucumber-html-reports/cukes.json");
-//            list.add("/Users/kings/.jenkins/jobs/cucumber-jvm/builds/7/cucumber-html-reports/project1.json");
-//            list.add("/Users/kings/.jenkins/jobs/cucumber-jvm/builds/7/cucumber-html-reports/project2.json");
-//            list.add("/Users/kings/.jenkins/jobs/cucumber-jvm/builds/7/cucumber-html-reports/project2.json");
-//            list.add("/Users/kings/.jenkins/jobs/cucumber-jvm/builds/7/cucumber-html-reports/project2.json");
-        // list.add("/Users/kings/dl/integration_cucumber.json");
-        list.add("/opt/polochews/automation.json");
-//        list.add("/Users/kings/development/projects/cucumber-reporting/src/test/resources/net/masterthought/cucumber/project2.json");
-//        list.add("/Users/kings/development/projects/cucumber-reporting/src/test/resources/net/masterthought/cucumber/tags.json");
-//        list.add("/Users/kings/development/projects/cucumber-reporting/src/test/resources/net/masterthought/cucumber/project1.json");
-//        list.add("/Users/kings/development/projects/cucumber-reporting/src/test/resources/net/masterthought/cucumber/chinese.json");
+//        list.add("/Users/kings/.jenkins/jobs/cucumber-jvm/builds/7/cucumber-html-reports/project1.json");
+//        list.add("/Users/kings/.jenkins/jobs/cucumber-jvm/builds/7/cucumber-html-reports/project2.json");
+//        list.add("/Users/kings/.jenkins/jobs/cucumber-jvm/builds/7/cucumber-html-reports/project3.json");
+//        list.add("/Project/Screens/reports_test/report.json");
+//        list.add("/Users/kings/.jenkins/jobs/cucumber-jvm/builds/7/cucumber-html-reports/project4.json");
+//        list.add("/Users/kings/.jenkins/jobs/cucumber-jvm/builds/7/cucumber-html-reports/project5.json");
+//        list.add("/Users/kings/.jenkins/jobs/cucumber-jvm/builds/7/cucumber-html-reports/project6.json");
 
-        ReportBuilder reportBuilder = new ReportBuilder(list, rd, "1", "", "", "", "97", "cucumber-jvm", false, false, true, true, false, "Account has sufficient funds again~the account balance is 300~account~scenario1_psp_auth_request.xml~xml\nAccount has sufficient funds again~the card is valid~card~scenario1_psp_auth_response.xml~xml", false);
+        ReportBuilder reportBuilder = new ReportBuilder(list, rd, "", "", "", "", "1", "cucumber-jvm", false, false, false, true, false, "Account has sufficient funds again~the account balance is 300~account~scenario1_psp_auth_request.xml~xml\nAccount has sufficient funds again~the card is valid~card~scenario1_psp_auth_response.xml~xml", false);
         HashMap<String, String> headers = new HashMap<String, String>();
         headers.put("@TC-V2-1491", "Verify that a visit for none suggestion account is created successfully");
         headers.put("@TC-V2-1275", "Verify that agenda items can be deleted successfully");
@@ -46,8 +38,8 @@ public class Runner {
 
         reportBuilder.setCustomHeader(headers);
         reportBuilder.generateReports();
-        //       boolean result = featureReportGenerator.getBuildStatus();
-        //       System.out.println("status: " + result);
+//               boolean result = featureReportGenerator.getBuildStatus();
+//               System.out.println("status: " + result);
 
     }
 

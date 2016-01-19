@@ -40,8 +40,7 @@ public abstract class AbstractConversationDetailsPage extends
 
     public void selectMenuItem(String itemName) throws Exception {
         final By locator = By.xpath(xpathOptionMenuItemByName.apply(itemName));
-        verifyLocatorPresence(locator, String.format("Options menu item '%s' is not displayed", itemName));
-        getDriver().findElement(locator).click();
+        getElement(locator, String.format("Options menu item '%s' is not displayed", itemName)).click();
     }
 
     public boolean isMenuItemVisible(String itemName) throws Exception {

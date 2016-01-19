@@ -10,6 +10,7 @@ import net.masterthought.cucumber.util.Util;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import static com.googlecode.totallylazy.Option.option;
@@ -26,9 +27,22 @@ public class Element {
 
     }
 
-    public Sequence<Step> getSteps() {
-        return Sequences.sequence(option(steps).getOrElse(new Step[]{})).realise();
-    }
+	protected static Boolean updateStepsIndex = true;
+	public Sequence<Step> getSteps() {
+		if (updateStepsIndex) {
+			LinkedHashMap<String, Integer> stepNames = new LinkedHashMap<String, Integer>();
+		    for (Step step : steps) {
+		    	String oldName = step.getRawName();
+		    	Integer count = stepNames.get(oldName);
+		    	if (count == null)
+		    		count = 0;
+		    	step.setName(oldName + " " + (++count));
+		    	stepNames.put(oldName, count);
+		    	}
+		    }
+		    updateStepsIndex = false;
+		return Sequences.sequence(option(steps).getOrElse(new Step[] {})).realise();
+	}
 
     public Sequence<Tag> getTags() {
         return Sequences.sequence(option(tags).getOrElse(new Tag[]{})).realise();
