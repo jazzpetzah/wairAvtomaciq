@@ -27,19 +27,20 @@ public class Element {
 
     }
 
-	protected static int executionOfGetSteps = 0;
+	protected static Boolean updateStepsIndex = true;
 	public Sequence<Step> getSteps() {
-		LinkedHashMap<String, Integer> stepNames = new LinkedHashMap<String, Integer>();
-		executionOfGetSteps++;
-		for (Step step : steps) {
-			String oldName = step.getRawName();
-			Integer count = stepNames.get(oldName);
-			if (count == null)
-				count = 0;
-			if (executionOfGetSteps == 1)
-				step.setName(oldName + " " + (++count));
-			stepNames.put(oldName, count);
-		}
+		if (updateStepsIndex) {
+			LinkedHashMap<String, Integer> stepNames = new LinkedHashMap<String, Integer>();
+		    for (Step step : steps) {
+		    	String oldName = step.getRawName();
+		    	Integer count = stepNames.get(oldName);
+		    	if (count == null)
+		    		count = 0;
+		    	step.setName(oldName + " " + (++count));
+		    	stepNames.put(oldName, count);
+		    	}
+		    }
+		    updateStepsIndex = false;
 		return Sequences.sequence(option(steps).getOrElse(new Step[] {})).realise();
 	}
 

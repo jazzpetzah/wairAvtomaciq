@@ -138,7 +138,6 @@ public class Step {
             content = getNameAndDuration();
         }
         final String finalName = name.substring(0, name.length()-1);
-        System.out.println("finalName="+finalName);
         content = content.replace(name, finalName);
         return content;
     }
@@ -176,7 +175,6 @@ public class Step {
             content = getNameAndDuration(feature, scenario);
         }
         final String finalName = name.substring(0, name.length()-1);
-        System.out.println("finalName="+finalName);
         content = content.replace(name, finalName);
         return content;
     }
@@ -204,7 +202,6 @@ public class Step {
                 + Util.closeDiv() + getImageTags();
         
         final String finalName = name.substring(0, name.length()-1);
-        System.out.println("finalName="+finalName);
         content = content.replace(name, finalName);
         return content;
     }
