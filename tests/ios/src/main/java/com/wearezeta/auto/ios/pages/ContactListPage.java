@@ -23,7 +23,7 @@ public class ContactListPage extends IOSPage {
     private static final String xpathStrContactListRoot = xpathStrMainWindow + "/UIACollectionView[1]";
     private static final By xpathContactListRoot = By.xpath(xpathStrContactListRoot);
 
-    private static final String xpathStrNameContactListItems = xpathContactListRoot + "//UIACollectionCell";
+    private static final String xpathStrNameContactListItems = xpathStrContactListRoot + "//UIACollectionCell";
 
     private static final Function<String, String> convoListEntryByName = name ->
             String.format("%s[ .//*[@value='%s'] ]", xpathStrNameContactListItems, name);
