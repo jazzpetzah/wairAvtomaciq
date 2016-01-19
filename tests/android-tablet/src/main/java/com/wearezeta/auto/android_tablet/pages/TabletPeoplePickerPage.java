@@ -48,6 +48,7 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
     }
 
     public void tapFoundItem(String item) throws Exception {
+        this.hideKeyboard();
         final By locator = By
                 .xpath(PeoplePickerPage.xpathPeoplePickerContactByName
                         .apply(item));
