@@ -125,6 +125,7 @@ Feature: Connect
     Given I see conversations list
     When I open search by taping on it
     And I see People picker page
+    And I wait until <Contact> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
