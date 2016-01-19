@@ -15,7 +15,7 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 public class LoginPage extends IOSPage {
     private static final By nameSwitchToEmailLogin = By.name("I HAVE AN ACCOUNT");
 
-    private static final By nameSwitchToPhoneLogin = By.name("LOG IN BY PHONR");
+    private static final By nameSwitchToPhoneLogin = By.name("LOG IN BY PHONE");
 
     private static final By nameLoginButton = By.name("RegistrationConfirmButton");
 

@@ -220,7 +220,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void inputPhoneNumber(String number) throws Exception {
-        phoneNumberField.sendKeys(number);
+        getElement(By.name(namePhoneNumberField)).sendKeys(number);
         confirmInput.click();
     }
 
