@@ -90,13 +90,14 @@ public class CallResource {
 	}
 
 	private static void verifyRequestResult(int currentResponseCode,
-			int[] acceptableResponseCodes) throws BackendRequestException {
+			int[] acceptableResponseCodes, String message)
+			throws BackendRequestException {
 		if (!ArrayUtils.contains(acceptableResponseCodes, currentResponseCode)) {
 			throw new BackendRequestException(
 					String.format(
-							"Calling service call request failed. Request return code is: %d. Expected codes are: %s",
+							"Calling service instance request failed. Request return code is: %d. Expected codes are: %s. Message from service is: %s",
 							currentResponseCode,
-							Arrays.toString(acceptableResponseCodes)),
+							Arrays.toString(acceptableResponseCodes), message),
 					currentResponseCode);
 		}
 	}

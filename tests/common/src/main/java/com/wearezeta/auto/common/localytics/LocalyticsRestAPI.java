@@ -27,7 +27,8 @@ final class LocalyticsRestAPI {
 	private static final String QUERY_ENDPOINT = "query";
 
 	private static void verifyRequestResult(int currentResponseCode,
-			int[] acceptableResponseCodes) throws LocalyticsRESTError {
+			int[] acceptableResponseCodes, String message)
+			throws LocalyticsRESTError {
 		if (!ArrayUtils.contains(acceptableResponseCodes, currentResponseCode)) {
 			throw new LocalyticsRESTError(
 					String.format(
