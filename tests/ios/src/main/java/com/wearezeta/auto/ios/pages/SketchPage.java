@@ -3,16 +3,13 @@ package com.wearezeta.auto.ios.pages;
 import java.util.Random;
 import java.util.concurrent.Future;
 
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.driver.DriverUtils;
 
 public class SketchPage extends IOSPage{
-	private static final String nameSketchSendButton = "SketchConfirmButton";
-	@FindBy(name = nameSketchSendButton)
-	private WebElement sendSketchButton;
+	private static final By nameSketchSendButton = By.name("SketchConfirmButton");
 
 	public SketchPage(Future<ZetaIOSDriver> driver) throws Exception {
 		super(driver);
@@ -28,8 +25,8 @@ public class SketchPage extends IOSPage{
 		}
 	}
 	
-	public void sendSketch() {
-		sendSketchButton.click();
+	public void sendSketch() throws Exception {
+		getElement(nameSketchSendButton).click();
 	}
 
 }
