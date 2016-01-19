@@ -6,14 +6,12 @@ import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.*;
 import cucumber.api.Scenario;
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.ios.pages.IOSPage;
@@ -131,6 +129,17 @@ public class CommonIOSSteps {
     public void IPressKeyboardDeleteBtn() throws Exception {
         pagesCollecton.getCommonPage().clickKeyboardDeleteButton();
         pagesCollecton.getCommonPage().clickKeyboardDeleteButton();
+    }
+
+    /**
+     * Presses the return on keyboard
+     *
+     * @throws Exception
+     * @step. ^I press keyboard Return button$
+     */
+    @When("^I press keyboard Return button$")
+    public void IPressKeyboardReturnBtn() throws Exception {
+        pagesCollecton.getCommonPage().clickKeyboardReturnButton();
     }
 
     @When("^I scroll up page a bit$")

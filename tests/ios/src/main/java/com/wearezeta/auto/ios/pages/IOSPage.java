@@ -41,9 +41,9 @@ public abstract class IOSPage extends BasePage {
 
     protected static final By nameKeyboardDeleteButton = By.name("delete");
 
-    protected static final By nameKeyboardEnterButton = By.name("Return");
+    protected static final By nameKeyboardReturnButton = By.name("Return");
 
-    protected static final By nameKeyboardReturnButton = By.name("Send");
+    protected static final By nameKeyboardSendButton = By.name("Send");
 
     protected static final By nameHideKeyboardButton = By.name("Hide keyboard");
 
@@ -165,12 +165,12 @@ public abstract class IOSPage extends BasePage {
         getElement(nameKeyboardDeleteButton).click();
     }
 
-    public void clickKeyboardEnterButton() throws Exception {
-        getElement(nameKeyboardEnterButton).click();
+    public void clickKeyboardReturnButton() throws Exception {
+        getElement(nameKeyboardReturnButton).click();
     }
 
-    public void clickKeyboardReturnButton() throws Exception {
-        getElement(nameKeyboardReturnButton, "Keyboard Return button is not visible").click();
+    public void clickKeyboardSendButton() throws Exception {
+        getElement(nameKeyboardSendButton, "Keyboard Send button is not visible").click();
     }
 
     public void clickHideKeyboardButton() throws Exception {

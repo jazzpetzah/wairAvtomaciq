@@ -116,7 +116,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
-  @C45 @regression @rc @id1404
+  @C45 @regression @rc @id1404 @ZIOS-5466
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (Search)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -242,6 +242,7 @@ Feature: Connect
     And I tap on Search input on People picker page
     Given I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user email <ContactEmail>
+    And I press keyboard Return button
     And I see user <UnconnectedUser> found on People picker page
     And I press the instant connect button
     And I click close button to dismiss people view
@@ -249,6 +250,7 @@ Feature: Connect
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
+    And I press keyboard Return button
     Then I see the user <UnconnectedUser> avatar with a clock
     And I click close button to dismiss people view
     And I see first item in contact list named <UnconnectedUser>

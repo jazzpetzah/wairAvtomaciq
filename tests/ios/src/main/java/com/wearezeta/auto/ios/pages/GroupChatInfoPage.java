@@ -70,7 +70,7 @@ public class GroupChatInfoPage extends IOSPage {
 
     public void setGroupChatName(String name) throws Exception {
         ((IOSElement) getElement(nameConversationNameTextField)).setValue(name);
-        clickKeyboardEnterButton();
+        clickKeyboardReturnButton();
     }
 
     public boolean areParticipantAvatarCorrect(String contact) throws Exception {
