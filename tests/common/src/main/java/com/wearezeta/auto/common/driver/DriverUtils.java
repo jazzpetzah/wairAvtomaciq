@@ -477,8 +477,8 @@ public class DriverUtils {
     }
 
     // in milliseconds (http://stackoverflow.com/questions/13670094/duration-of-a-single-tap-and-long-tap-in-android)
-    private static final int SINGLE_TAP_DURATION = 125;
-    private static final int LONG_TAP_DURATION = 500;
+    public static final int SINGLE_TAP_DURATION = 125;
+    public static final int LONG_TAP_DURATION = 500;
 
 
     public static void tapInTheCenterOfTheElement(

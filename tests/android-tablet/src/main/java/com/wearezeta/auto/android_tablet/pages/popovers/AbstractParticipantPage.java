@@ -3,6 +3,7 @@ package com.wearezeta.auto.android_tablet.pages.popovers;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.android.pages.OtherUserPersonalInfoPage;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -13,17 +14,15 @@ abstract class AbstractParticipantPage extends AbstractPopoverPage {
 	@FindBy(xpath = xpathConfirRemoveButton)
 	private WebElement confirmRemoveButton;
 
-	public static final String xpathRemoveButton = OtherUserPersonalInfoPage.xpathRightActionButton;
-	@FindBy(xpath = xpathRemoveButton)
-	private WebElement removeButton;
+	public static final By xpathRemoveButton = OtherUserPersonalInfoPage.xpathRightActionButton;
 
 	public AbstractParticipantPage(Future<ZetaAndroidDriver> lazyDriver,
 			GroupPopover container) throws Exception {
 		super(lazyDriver, container);
 	}
 
-	public void tapRemoveButton() {
-		removeButton.click();
+	public void tapRemoveButton() throws Exception {
+		getElement(xpathRemoveButton).click();
 	}
 
 	public void tapConfirmRemovalButton() throws Exception {

@@ -31,14 +31,14 @@ public class ParticipantsPage extends AbstractConversationDetailsPage {
 			.format("//*[@id='ttv__participants__sub_header' and @value='%s']",
 					value);
 
-	private static final String xpathOpenConversationButton = OtherUserPersonalInfoPage.xpathLeftActionButton;
-	@FindBy(xpath = xpathOpenConversationButton)
-	private WebElement openConversationButton;
-
 	public ParticipantsPage(Future<ZetaAndroidDriver> lazyDriver,
 			GroupPopover container) throws Exception {
 		super(lazyDriver, container);
 	}
+
+	private OtherUserPersonalInfoPage getOUPIPageInstance() throws Exception {
+        return this.getAndroidPageInstance(OtherUserPersonalInfoPage.class);
+    }
 
 	public void tapConfirmLeaveButton() {
 		confirmLeaveButton.click();
@@ -68,8 +68,8 @@ public class ParticipantsPage extends AbstractConversationDetailsPage {
 		getDriver().tapSendButton();
 	}
 
-	public void tapOpenConversationButton() {
-		openConversationButton.click();
+	public void tapOpenConversationButton() throws Exception {
+        getOUPIPageInstance().tapLeftActionBtn();
 	}
 
 	public boolean waitUntilConversationNameVisible(String expectedName)
