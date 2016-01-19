@@ -71,6 +71,8 @@ Feature: Utility
   @C5233 @utility
   Scenario Outline: Check password reset with unregistered email for all agents
     When I navigate to Password Change Reset page for <Agent>
+    #Workaround fix below
+    And I navigate to Password Change Reset page for <Agent>
     Then I see Password Change Request page
     And I enter unregistered email <UnregisteredMail>
     And I click Change Password button on Password Change Request page
