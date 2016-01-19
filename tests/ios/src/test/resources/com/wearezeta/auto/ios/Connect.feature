@@ -46,7 +46,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C987 @regression @rc @id576
+  @C987 @regression @rc @id576 @ZIOS-5522
   Scenario Outline: Send connection request to unconnected participant in a group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <GroupCreator>
@@ -58,6 +58,7 @@ Feature: Connect
     And I open group conversation details
     And I tap on not connected contact <UnconnectedUser>
     And I click Connect button on connect to dialog
+    And I see Connect dialog is closed
     And I exit the group info page
     And I return to the chat list
     Then I see first item in contact list named <UnconnectedUser>
