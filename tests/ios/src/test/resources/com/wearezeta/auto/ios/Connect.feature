@@ -125,6 +125,7 @@ Feature: Connect
     Given I see conversations list
     When I open search by taping on it
     And I see People picker page
+    And I wait until <Contact> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
@@ -155,6 +156,7 @@ Feature: Connect
     Then I dont see conversation <Contact> in contact list
     When I open search by taping on it
     And I see People picker page
+    And I wait until <Contact> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
@@ -175,7 +177,7 @@ Feature: Connect
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C39 @regression @id596
+  @C39 @regression @id596 @ZIOS-5466
   Scenario Outline: Verify you cannot send the invitation message twice
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number

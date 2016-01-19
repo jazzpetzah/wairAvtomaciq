@@ -11,7 +11,6 @@ import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -152,16 +151,10 @@ public class PeoplePickerPage extends IOSPage {
                 IllegalStateException::new);
     }
 
-    public void fillTextInPeoplePickerSearch(String text) throws Exception {
-        // FIXME: Optimize this flow
-        final WebElement peoplePickerSearch = getElement(xpathPickerSearch, "Search UI input is not visible");
-        try {
-            sendTextToSearchInput(text);
-        } catch (WebDriverException ex) {
-            peoplePickerSearch.clear();
-            sendTextToSearchInput(text);
-        }
-    }
+	public void fillTextInPeoplePickerSearch(String text) throws Exception {
+		sendTextToSearchInput(text);
+		clickSpaceKeyboardButton();
+	}
 
     public void sendTextToSearchInput(String text) throws Exception {
         ((IOSElement) getElement(xpathPickerSearch)).setValue(text);
