@@ -31,7 +31,7 @@ public class ConnectToPage extends IOSPage {
         if (connectOtherUserButton.isPresent()) {
             connectOtherUserButton.get().click();
         } else if (isKeyboardVisible()) {
-            clickKeyboardEnterButton();
+            clickKeyboardReturnButton();
             getElement(xpathConnectOtherUserButton).click();
         }
     }

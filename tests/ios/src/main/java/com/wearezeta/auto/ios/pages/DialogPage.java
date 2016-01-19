@@ -442,7 +442,7 @@ public class DialogPage extends IOSPage {
 
     public void typeAndSendConversationMessage(String message) throws Exception {
         typeConversationMessage(message);
-        clickKeyboardReturnButton();
+        clickKeyboardSendButton();
     }
 
     public void typeConversationMessage(String message) throws Exception {
