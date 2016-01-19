@@ -20,19 +20,20 @@ public class ContactListPage extends IOSPage {
 
     private static final By nameSelfButton = By.name("SelfButton");
 
-    private static final By xpathContactListRoot = By.xpath(xpathStrMainWindow + "/UIACollectionView[1]");
+    private static final String xpathStrContactListRoot = xpathStrMainWindow + "/UIACollectionView[1]";
+    private static final By xpathContactListRoot = By.xpath(xpathStrContactListRoot);
 
-    private static final By xpathNameContactListItems = By.xpath(xpathContactListRoot + "//UIACollectionCell");
+    private static final String xpathStrNameContactListItems = xpathStrContactListRoot + "//UIACollectionCell";
 
     private static final Function<String, String> convoListEntryByName = name ->
-            String.format("%s[ .//*[@value='%s'] ]", xpathNameContactListItems, name);
+            String.format("%s[ .//*[@value='%s'] ]", xpathStrNameContactListItems, name);
     private static final Function<Integer, String> convoListEntryByIdx = idx ->
-            String.format("%s[%s]", xpathNameContactListItems, idx);
+            String.format("%s[%s]", xpathStrNameContactListItems, idx);
 
     private static final By nameOpenStartUI = By.name("START A CONVERSATION");
 
     private static final By xpathFirstChatInChatListTextField = By.xpath(
-            xpathContactListRoot + "/UIACollectionCell[1]/UIAStaticText[1]");
+            xpathStrContactListRoot + "/UIACollectionCell[1]/UIAStaticText[1]");
 
     private static final By nameMediaCellPlayButton = By.name("mediaCellButton");
 
@@ -126,12 +127,12 @@ public class ContactListPage extends IOSPage {
 
     private Optional<WebElement> findNameInContactList(String name) throws Exception {
         final By locator = By.xpath(convoListEntryByName.apply(name));
-        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator)) {
-            return Optional.of(getDriver().findElement(locator));
+        final Optional<WebElement> contactCell = getElementIfDisplayed(locator);
+        if (contactCell.isPresent()) {
+            return contactCell;
         } else {
             try {
-                return Optional.of(((IOSElement) getDriver().findElement(xpathContactListRoot)).
-                        scrollToExact(name));
+                return Optional.of(((IOSElement) getElement(xpathContactListRoot)).scrollToExact(name));
             } catch (WebDriverException e) {
                 return Optional.empty();
             }
