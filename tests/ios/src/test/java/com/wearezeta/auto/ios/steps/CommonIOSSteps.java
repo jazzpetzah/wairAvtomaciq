@@ -131,6 +131,12 @@ public class CommonIOSSteps {
         pagesCollecton.getCommonPage().clickKeyboardDeleteButton();
     }
 
+    /**
+     * Presses the return on keyboard
+     *
+     * @throws Exception
+     * @step. ^I press keyboard Return button$
+     */
     @When("^I press keyboard Return button$")
     public void IPressKeyboardReturnBtn() throws Exception {
         pagesCollecton.getCommonPage().clickKeyboardReturnButton();
