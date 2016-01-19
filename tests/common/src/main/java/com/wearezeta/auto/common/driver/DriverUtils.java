@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 
 import io.appium.java_client.MobileDriver;
-import io.appium.java_client.ios.IOSDriver;
+import io.appium.java_client.android.AndroidDriver;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -63,10 +63,10 @@ public class DriverUtils {
     public static boolean isElementPresentAndDisplayed(RemoteWebDriver driver, final WebElement element) {
         try {
             boolean result = element.isDisplayed();
-            if (driver instanceof IOSDriver) {
-                return result;
-            } else {
+            if (driver instanceof AndroidDriver) {
                 return result && isElementInScreenRect(driver, element);
+            } else {
+                return result;
             }
         } catch (NoSuchElementException e) {
             return false;
