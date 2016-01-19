@@ -1,42 +1,28 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
-    public static final String nameOtherUserMetaControllerRightButtoniPadPopover = "OtherUserMetaControllerRightButton";
-    @FindBy(name = nameOtherUserMetaControllerRightButtoniPadPopover)
-    private WebElement removeFromGroupChat;
+    private static final By nameOtherUserMetaControllerRightButtoniPadPopover =
+            By.name("OtherUserMetaControllerRightButton");
 
-    public static final String xpathOtherUserNameField =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIAStaticText[@name='%s']";
-    @FindBy(xpath = xpathOtherUserNameField)
-    private WebElement nameFieldPopover;
+    private static final Function<String, String> xpathStrOtherUserNameField = name ->
+            String.format("%s/UIAPopover[1]/UIAStaticText[@name='%s']", xpathStrMainWindow, name);
 
-    public static final String xpathOtherUserEmailField =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIATextView[contains(@name, 'WIRE.COM')]";
-    @FindBy(xpath = xpathOtherUserEmailField)
-    private WebElement emailFieldPopover;
+    private static final By xpathOtherUserEmailField = By.xpath(xpathStrMainWindow +
+            "/UIAPopover[1]/UIATextView[contains(@name, 'WIRE.COM')]");
 
-    public static final String xpathOtherUserConnectLabel = "//UIAPopover/UIAStaticText[@name='CONNECT']";
-    @FindBy(xpath = xpathOtherUserConnectLabel)
-    private WebElement connectLabel;
+    private static final By xpathOtherUserConnectLabel = By.xpath("//UIAPopover/UIAStaticText[@name='CONNECT']");
 
-    public static final String xpathOtherUserConnectButton =
-            "//UIAStaticText[@name='CONNECT']/preceding-sibling::UIAButton[@name='OtherUserMetaControllerLeftButton']";
-    @FindBy(xpath = xpathOtherUserConnectButton)
-    private WebElement connectButton;
+    private static final By xpathOtherUserConnectButton = By.xpath(
+            "//UIAStaticText[@name='CONNECT']/preceding-sibling::UIAButton[@name='OtherUserMetaControllerLeftButton']");
 
-    public static final String nameOtherUserProfilePageCloseButton = "OtherUserProfileCloseButton";
-    @FindBy(name = nameOtherUserProfilePageCloseButton)
-    private WebElement goBackButton;
+    private static final By nameOtherUserProfilePageCloseButton = By.name("OtherUserProfileCloseButton");
 
     public TabletOtherUserInfoPage(Future<ZetaIOSDriver> lazyDriver)
             throws Exception {
@@ -44,38 +30,32 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
     }
 
     public void removeFromConversationOniPad() throws Exception {
-        removeFromGroupChat.click();
+        getElement(nameOtherUserMetaControllerRightButtoniPadPopover).click();
     }
 
     public String getNameFieldValueOniPadPopover(String user) throws Exception {
-        WebElement name = getDriver().findElement(
-                By.xpath(String.format(xpathOtherUserNameField, user)));
-        return name.getAttribute("name");
+        return getElement(By.xpath(xpathStrOtherUserNameField.apply(user))).getAttribute("name");
     }
 
     public String getEmailFieldValueOniPadPopover() throws Exception {
-        try {
-            DriverUtils.waitUntilLocatorAppears(getDriver(), xpathOtherPersonalInfoPageEmailField);
-            return emailFieldPopover.getAttribute("value");
-        } catch (NoSuchElementException ex) {
-            return "";
-        }
+        DriverUtils.waitUntilLocatorAppears(getDriver(), xpathOtherPersonalInfoPageEmailField);
+        return getElement(xpathOtherUserEmailField).getAttribute("value");
     }
 
     public boolean isConnectLabelVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathOtherUserConnectLabel));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOtherUserConnectLabel);
     }
 
     public boolean isConnectButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathOtherUserConnectButton));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOtherUserConnectButton);
     }
 
-    public void clickConnectButton() {
-        connectButton.click();
+    public void clickConnectButton() throws Exception {
+        getElement(xpathOtherUserConnectButton).click();
     }
 
     public void clickGoBackButton() throws Exception {
-        getElement(By.name(nameOtherUserProfilePageCloseButton)).click();
+        getElement(nameOtherUserProfilePageCloseButton).click();
     }
 
     public void exitOtherUserGroupChatPopover() throws Exception {

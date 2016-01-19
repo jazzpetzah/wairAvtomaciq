@@ -6,7 +6,6 @@ import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
@@ -14,6 +13,28 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage {
+    private final static String AQA_PICTURE_CONTACT = "AQAPICTURECONTACT";
+    private final static String AQA_AVATAR_CONTACT = "QAAVATAR";
+
+    private static final By nameConversationMenu = By.name("metaControllerRightButton");
+
+    private static final By nameRenameButtonEllipsisMenu = By.name("RENAME");
+
+    private static final By xpathPopoverAvatarCollectionView = By.xpath(xpathStrMainWindow +
+            "]/UIAPopover[1]/UIACollectionView[1]");
+
+    private static final By xpathSilenceButtonEllipsisMenu = By.xpath(xpathStrMainWindow +
+            "/UIAPopover[1]/UIAButton[@name='SILENCE']");
+
+    private static final By xpathNotifyButtonEllipsisMenu = By.xpath(xpathStrMainWindow +
+            "/UIAPopover[1]/UIAButton[@name='NOTIFY']");
+
+    private static final By xpathGroupConvTotalNumber = By.xpath(
+            "/UIAPopover[1]/UIAStaticText[contains(@name,'PEOPLE')]");
+
+    private static final By xpathPopover = By.xpath("//UIAPopover[@visible='true']");
+
+    private static final String NAME_PEOPLE_COUNT_WORD = " PEOPLE";
 
     public TabletGroupConversationDetailPopoverPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -21,45 +42,12 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
 
     private final static double MIN_ACCEPTABLE_IMAGE_VALUE = 0.80;
 
-    private final static String AQA_PICTURE_CONTACT = "AQAPICTURECONTACT";
-    private final static String AQA_AVATAR_CONTACT = "QAAVATAR";
-
-    public static final String nameConversationMenu = "metaControllerRightButton";
-    @FindBy(name = nameConversationMenu)
-    private WebElement conversationMenuButton;
-
-    public static final String nameRenameButtonEllipsisMenue = "RENAME";
-    @FindBy(name = nameRenameButtonEllipsisMenue)
-    private WebElement renameEllipsesButton;
-
-    public static final String xpathPopoverAvatarCollectionView =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIACollectionView[1]";
-    @FindBy(xpath = xpathPopoverAvatarCollectionView)
-    private WebElement avatarPopoverCollectionView;
-
-    public static final String xpathSilenceButtonEllipsisMenu =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIAButton[@name='SILENCE']";
-    @FindBy(xpath = xpathSilenceButtonEllipsisMenu)
-    private WebElement silenceEllipsisButton;
-
-    public static final String xpathNotifyButtonEllipsisMenu =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIAButton[@name='NOTIFY']";
-    @FindBy(xpath = xpathNotifyButtonEllipsisMenu)
-    private WebElement notifyEllipsisButton;
-
-    public static final String xpathGroupConvTotalNumber =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIAStaticText[contains(@name,'PEOPLE')]";
-
-    public static final String xpathPopover = "//UIAPopover[@visible='true']";
-
-    public static final String namePeopleCountWord = " PEOPLE";
-
     public void openConversationMenuOnPopover() throws Exception {
-        getElement(By.name(nameConversationMenu)).click();
+        getElement(nameConversationMenu).click();
     }
 
     public boolean waitConversationInfoPopoverToClose() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By.xpath(xpathPopover), 10);
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), xpathPopover, 10);
     }
 
     public void dismissPopover() throws Exception {
@@ -75,29 +63,28 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
         DriverUtils.tapByCoordinates(this.getDriver(), getDriver().findElementByName(name.toUpperCase()));
     }
 
-    public void pressRenameEllipsesButton() {
-        renameEllipsesButton.click();
+    public void pressRenameEllipsesButton() throws Exception {
+        getElement(nameRenameButtonEllipsisMenu).click();
     }
 
     public void exitGroupChatPopover() throws Exception {
-        DriverUtils.tapByCoordinates(getDriver(), conversationMenuButton,
-                50, 50);
+        DriverUtils.tapByCoordinates(getDriver(), getElement(nameConversationMenu), 50, 50);
     }
 
     public int numberOfPeopleInGroupConversationOniPad() throws Exception {
+        // FIXME: Optimize locators
         int result = -1;
-        List<WebElement> elements = getDriver().findElements(By.xpath(xpathGroupConvTotalNumber));
+        List<WebElement> elements = getElements(xpathGroupConvTotalNumber);
         for (WebElement element : elements) {
             String value = element.getText();
-            if (value.contains(namePeopleCountWord)) {
-                result = Integer.parseInt(value.substring(0, value.indexOf((namePeopleCountWord))));
+            if (value.contains(NAME_PEOPLE_COUNT_WORD)) {
+                result = Integer.parseInt(value.substring(0, value.indexOf((NAME_PEOPLE_COUNT_WORD))));
             }
         }
         return result;
     }
 
-    public boolean areParticipantAvatarCorrectOniPadPopover(String contact)
-            throws IllegalStateException, Throwable {
+    public boolean areParticipantAvatarCorrectOniPadPopover(String contact) throws Exception {
         String name = "", picture = "";
         if (contact.toLowerCase().contains(AQA_PICTURE_CONTACT.toLowerCase())) {
             name = AQA_PICTURE_CONTACT;
@@ -136,17 +123,18 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
         return flag;
     }
 
-    public List<WebElement> getCurrentParticipantsOnPopover() {
-        return avatarPopoverCollectionView.findElements(By
+    public List<WebElement> getCurrentParticipantsOnPopover() throws Exception {
+        // FIXME: Optimize locators
+        return getElement(xpathPopoverAvatarCollectionView).findElements(By
                 .className("UIACollectionCell"));
     }
 
-    public void pressSilenceEllipsisButton() {
-        silenceEllipsisButton.click();
+    public void pressSilenceEllipsisButton() throws Exception {
+        getElement(xpathSilenceButtonEllipsisMenu).click();
     }
 
-    public void pressNotifyEllipsisButton() {
-        notifyEllipsisButton.click();
+    public void pressNotifyEllipsisButton() throws Exception {
+        getElement(xpathNotifyButtonEllipsisMenu).click();
     }
 
 }

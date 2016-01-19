@@ -1,50 +1,42 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class TabletPeoplePickerPage extends PeoplePickerPage {
-    public static final String nameSearchField = "SEARCH BY NAME OR EMAIL";
-    @FindBy(name = nameSearchField)
-    private WebElement searchField;
+    public static final By xpathSearchField = By.xpath(xpathStrMainWindow +
+            "/UIAPopover[1]/UIATextView[@name='textViewSearch']");
 
-    public static final String xpathSearchField =
-            "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIATextView[@name='textViewSearch']";
-    @FindBy(xpath = xpathSearchField)
-    private WebElement pickerSearchField;
+    public static final By namePeoplePickerAddToConversationButton = By.name("ADD TO CONVERSATION");
 
-    public static final String namePeoplePickerAddToConversationButton = "ADD TO CONVERSATION";
-    @FindBy(name = namePeoplePickerAddToConversationButton)
-    private WebElement addToConversationButtoniPad;
-
-    public static final String xpathIPADPeoplePickerResultUserName = "//UIAPopover//UIAStaticText[@name='%s']";
+    public static final Function<String,String> xpathStrIPADPeoplePickerResultUserName = name ->
+            String.format("//UIAPopover//UIAStaticText[@name='%s']", name);
 
     public TabletPeoplePickerPage(Future<ZetaIOSDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
     }
 
-    public void pressIntoSearchField() {
-        pickerSearchField.click();
+    public void pressIntoSearchField() throws Exception {
+        getElement(xpathSearchField).click();
     }
 
     public void selectConnectedUser(String name) throws Exception {
-        WebElement el = getDriver().findElement(
-                By.xpath(String.format(xpathIPADPeoplePickerResultUserName, name)));
-        el.click();
+        getElement(By.xpath(xpathStrIPADPeoplePickerResultUserName.apply(name))).click();
     }
 
-    public void clickAddToConversationButtonOniPadPopover() throws Throwable {
-        addToConversationButtoniPad.click();
+    public void clickAddToConversationButtonOniPadPopover() throws Exception {
+        getElement(namePeoplePickerAddToConversationButton).click();
     }
 
-    public void fillTextInTabletPeoplePickerSearchField(String text) {
+    public void fillTextInTabletPeoplePickerSearchField(String text) throws Exception {
+        final WebElement pickerSearchField = getElement(xpathSearchField);
         try {
             pickerSearchField.sendKeys(text);
         } catch (WebDriverException ex) {
