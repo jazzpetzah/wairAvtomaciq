@@ -258,7 +258,7 @@ public class ContactListPage extends AndroidPage {
     public void verifyContactListIsFullyLoaded() throws Exception {
         Thread.sleep(1000);
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(),
-                By.id(EmailSignInPage.idLoginButton),
+                EmailSignInPage.idLoginButton,
                 CONTACT_LIST_LOAD_TIMEOUT_SECONDS)) {
             throw new IllegalStateException(
                     String.format(

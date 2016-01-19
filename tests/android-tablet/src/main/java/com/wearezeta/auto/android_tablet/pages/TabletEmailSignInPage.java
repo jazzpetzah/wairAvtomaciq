@@ -27,8 +27,7 @@ public class TabletEmailSignInPage extends AndroidTabletPage {
 	}
 
 	public void tapSignInButton() throws Exception {
-		final By loginButtonLocator = By.id(EmailSignInPage.idLoginButton);
-		getDriver().findElement(loginButtonLocator).click();
+		getElement(EmailSignInPage.idLoginButton).click();
 	}
 
 	private static final int VISIBILITY_TIMEOUT_SECONDS = 60;
