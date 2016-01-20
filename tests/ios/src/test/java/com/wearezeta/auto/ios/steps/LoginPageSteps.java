@@ -64,8 +64,6 @@ public class LoginPageSteps {
      */
     @Given("^I sign in using my email$")
     public void GivenISignInUsingEmail() throws Exception {
-        ISeeSignInScreen();
-
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
         emailLoginSequence(self.getEmail(), self.getPassword());
     }
@@ -87,7 +85,7 @@ public class LoginPageSteps {
         }
         getLoginPage().setLogin(login);
         getLoginPage().setPassword(password);
-        getLoginPage().login();
+        getLoginPage().clickLoginButton();
         getLoginPage().waitForLoginToFinish();
     }
 
@@ -238,7 +236,6 @@ public class LoginPageSteps {
      */
     @Given("^I sign in using my email or phone number$")
     public void GivenISignInUsingEmailOrPhone() throws Exception {
-        Assert.assertTrue("Login page is not visible", getLoginPage().isVisible());
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
         if (CommonUtils.trueInPercents(BY_PHONE_NUMBER_LOGIN_PROBABILITY)) {
             phoneLoginSequence(self.getPhoneNumber());
@@ -266,7 +263,7 @@ public class LoginPageSteps {
      */
     @When("I press Login button")
     public void WhenIPressSignInButtonAgain() throws Exception {
-        getLoginPage().login();
+        getLoginPage().clickLoginButton();
         getLoginPage().waitForLoginToFinish();
     }
 

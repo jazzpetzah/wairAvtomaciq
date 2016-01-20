@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.pages.registration;
 
+import java.util.Optional;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
@@ -20,33 +21,17 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class PhoneNumberVerificationPage extends AndroidPage {
 
-    public static final String idCodeOldInput = "et__reg__phone";
-    @FindBy(id = idCodeOldInput)
-    private WebElement codeOldInput;
+    private static final By idCodeOldInput = By.id("et__reg__phone");
 
-    public static final String idCodeInput = "et__reg__code";
-    @FindBy(id = idCodeInput)
-    private WebElement codeInput;
+    private static final By idCodeInput = By.id("et__reg__code");
 
-    public static final String idConfirmButton = "pcb__activate";
-    @FindBy(id = idConfirmButton)
-    private WebElement confirmButton;
+    private static final By idConfirmButton = By.id("pcb__activate");
 
-    public static final String idOkButton = "button3";
-    @FindBy(id = idOkButton)
-    private WebElement okButton;
+    private static final By idOkButton = By.id("button3");
 
-    public static final String idEditPhoneButton = "ll__activation_button__back";
-    @FindBy(id = idEditPhoneButton)
-    private WebElement editPhoneButton;
+    private static final By idEditPhoneButton = By.id("alertTitle");
 
-    public static final String idErrorAlertHeader = "alertTitle";
-    @FindBy(id = idErrorAlertHeader)
-    private WebElement errorAlertHeader;
-
-    public static final String idErrorAlertMessage = "message";
-    @FindBy(id = idErrorAlertMessage)
-    private WebElement errorAlertMessage;
+    private static final By idErrorAlertMessage = By.id("message");
 
     public PhoneNumberVerificationPage(Future<ZetaAndroidDriver> lazyDriver)
             throws Exception {
@@ -54,37 +39,36 @@ public class PhoneNumberVerificationPage extends AndroidPage {
     }
 
     public void inputVerificationCode(String verificationCode) throws Exception {
-        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idCodeInput), 15)) {
-            codeInput.sendKeys(verificationCode);
-        } else if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idCodeOldInput), 15)) {
-            codeOldInput.sendKeys(verificationCode);
+        final Optional<WebElement> codeInput = getElementIfDisplayed(idCodeInput, 15);
+        if (codeInput.isPresent()){
+            codeInput.get().sendKeys(verificationCode);
         } else {
-            getElement(By.id(idCodeInput), "Verification code input has not been shown in time", 15);
+            final Optional<WebElement> oldCodeInput = getElementIfDisplayed(idCodeOldInput, 15);
+            if (oldCodeInput.isPresent()) {
+                oldCodeInput.get().sendKeys(verificationCode);
+            } else{
+                getElement(idCodeInput, "Verification code input has not been shown in time", 1);
+            }
         }
     }
 
-    public AddNamePage clickConfirm() throws Exception {
-        confirmButton.click();
-        return new AddNamePage(this.getLazyDriver());
+    public void clickConfirm() throws Exception {
+        getElement(idConfirmButton).click();
     }
 
     public boolean waitUntilConfirmButtonDissapears() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-                By.id(idConfirmButton), 40);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idConfirmButton, 40);
     }
 
     public boolean isIncorrectCodeErrorNotAppears() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-                By.id(idOkButton));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idOkButton);
     }
 
-    public String getErrorAlertHeader() {
-        return errorAlertHeader.getText();
+    public String getErrorAlertHeader() throws Exception {
+        return getElement(idEditPhoneButton).getText();
     }
 
-    public String getErrorAlertMessage() {
-        return errorAlertMessage.getText();
+    public String getErrorAlertMessage() throws Exception {
+        return getElement(idErrorAlertMessage).getText();
     }
 }

@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.Optional;
 import java.util.concurrent.Future;
 
 public abstract class AndroidPage extends BasePage {
@@ -35,7 +36,7 @@ public abstract class AndroidPage extends BasePage {
 
     protected static final String classNameFrameLayout = "FrameLayout";
 
-    private static final String idChatheadNotification = "va_message_notification_chathead__label_viewanimator";
+    private static final By idChatheadNotification = By.id("va_message_notification_chathead__label_viewanimator");
 
     public static final long DRIVER_INIT_TIMEOUT = 1000 * 60 * 2; // milliseconds
 
@@ -202,18 +203,18 @@ public abstract class AndroidPage extends BasePage {
     }
 
     public void tapChatheadNotification() throws Exception {
-        assert waitUntilChatheadNotificationVisible() : "The chathead notification is not visible";
-        this.getDriver().findElement(By.id(idChatheadNotification)).click();
+        getElement(idChatheadNotification).click();
     }
 
     private static final long CHATHEAD_VISIBILITY_TIMEOUT = 10000; //milliseconds
 
     public boolean waitUntilChatheadNotificationVisible() throws Exception {
-        final By locator = By.id(idChatheadNotification);
+        final By locator = idChatheadNotification;
         final long millisecondsStarted = System.currentTimeMillis();
         while (System.currentTimeMillis() - millisecondsStarted < CHATHEAD_VISIBILITY_TIMEOUT) {
-            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
-                if (this.getDriver().findElement(locator).getSize().width > 0) {
+            final Optional<WebElement> chatheadNotification = getElementIfDisplayed(locator, 1);
+            if (chatheadNotification.isPresent()) {
+                if (chatheadNotification.get().getSize().width > 0) {
                     return true;
                 }
             }
@@ -223,11 +224,12 @@ public abstract class AndroidPage extends BasePage {
     }
 
     public boolean waitUntilChatheadNotificationInvisible() throws Exception {
-        final By locator = By.id(idChatheadNotification);
+        final By locator = idChatheadNotification;
         final long millisecondsStarted = System.currentTimeMillis();
         while (System.currentTimeMillis() - millisecondsStarted < CHATHEAD_VISIBILITY_TIMEOUT) {
-            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
-                if (this.getDriver().findElement(locator).getSize().width == 0) {
+            final Optional<WebElement> chatheadNotification = getElementIfDisplayed(locator, 1);
+            if (chatheadNotification.isPresent()) {
+                if (chatheadNotification.get().getSize().width == 0) {
                     return true;
                 }
                 Thread.sleep(500);

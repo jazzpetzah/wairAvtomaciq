@@ -52,9 +52,6 @@ public class PersonalInfoPage extends AndroidPage {
     @FindBy(id = idGalleryBtn)
     private WebElement galleryBtn;
 
-    @FindBy(xpath = DialogPage.xpathConfirmOKButton)
-    private WebElement confirmBtn;
-
     private static final String xpathProfileOptionsButton = xpathParentSelfProfileOverlay
             + "//*[@id='gtv__profile__settings_button']";
     @FindBy(xpath = xpathProfileOptionsButton)
@@ -108,8 +105,7 @@ public class PersonalInfoPage extends AndroidPage {
 
     public void tapConfirmButton() throws Exception {
         this.hideKeyboard();
-        final WebElement confirmBtn = getElement(By.xpath(DialogPage.xpathConfirmOKButton),
-                "Confirmation button is not visible");
+        final WebElement confirmBtn = getElement(DialogPage.xpathConfirmOKButton, "Confirmation button is not visible");
         // Wait for animation
         Thread.sleep(1000);
         confirmBtn.click();

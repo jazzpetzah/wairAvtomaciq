@@ -1,103 +1,59 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class OtherUserPersonalInfoPage extends IOSPage {
-    private static final String nameOtherUserEmailField = "ProfileOtherEmailField";
-    @FindBy(name = nameOtherUserEmailField)
-    private WebElement otherUserEmail;
 
-    private static final String nameRemoveFromConversation = "OtherUserMetaControllerRightButton";
-    @FindBy(name = nameRemoveFromConversation)
-    private WebElement removeFromChat;
+    private static final By nameRemoveFromConversation = By.name("OtherUserMetaControllerRightButton");
 
-    private static final String nameComfirmRemoveButton = "REMOVE";
-    @FindBy(name = nameComfirmRemoveButton)
-    private WebElement confirmRemove;
+    private static final By nameComfirmRemoveButton = By.name("REMOVE");
 
-    private static final String nameOtherUserAddContactToChatButton = "OtherUserMetaControllerLeftButton";
-    @FindBy(name = nameOtherUserAddContactToChatButton)
-    private WebElement addOtherUserButton;
+    private static final By nameOtherUserAddContactToChatButton = By.name("OtherUserMetaControllerLeftButton");
 
-    private static final String nameContinueButton = "CONTINUE";
-    @FindBy(name = nameContinueButton)
-    private WebElement continueButton;
+    private static final By nameContinueButton = By.name("CONTINUE");
 
-    private static final String nameExitOtherUserPersonalInfoPageButton = "OtherUserProfileCloseButton";
-    @FindBy(name = nameExitOtherUserPersonalInfoPageButton)
-    private WebElement exitOtherPersonalInfoPageButton;
+    private static final By nameExitOtherUserPersonalInfoPageButton = By.name("OtherUserProfileCloseButton");
 
-    private static final String xpathArchiveButton = "//UIAButton[@name='ARCHIVE']";
-    @FindBy(xpath = xpathArchiveButton)
-    private WebElement archiveButton;
+    private static final By xpathArchiveButton = By.xpath("//UIAButton[@name='ARCHIVE']");
 
-    private static final String xpathDeleteConversationButton = "//UIAButton[@name='DELETE' and @visible='true']";
-    @FindBy(xpath = xpathDeleteConversationButton)
-    private WebElement deleteButton;
+    private static final By xpathDeleteConversationButton = By.xpath("//UIAButton[@name='DELETE' and @visible='true']");
 
-    private static final String xpathConfirmDeleteButton =
-            "//UIAButton[@name='CANCEL']/following-sibling::UIAButton[@name='DELETE']";
-    @FindBy(xpath = xpathConfirmDeleteButton)
-    private WebElement confirmDeleteButton;
+    private static final By xpathConfirmDeleteButton = By.xpath(
+            "//UIAButton[@name='CANCEL']/following-sibling::UIAButton[@name='DELETE']");
 
-    private static final String nameAlsoLeaveCheckerButton = "ALSO LEAVE THE CONVERSATION";
-    @FindBy(name = nameAlsoLeaveCheckerButton)
-    private WebElement alsoLeaveButton;
+    private static final By nameAlsoLeaveCheckerButton = By.name("ALSO LEAVE THE CONVERSATION");
 
-    private static final Function<String, String> xpathOtherPersonalInfoPageNameFieldByName = name ->
+    private static final Function<String, String> xpathStrOtherPersonalInfoPageNameFieldByName = name ->
             String.format("%s/UIAStaticText[@name='%s']", xpathStrMainWindow, name);
 
-    protected static final String xpathOtherPersonalInfoPageEmailField =
-            xpathStrMainWindow + "/UIATextView[contains(@name, 'WIRE.COM')]";
-    @FindBy(xpath = xpathOtherPersonalInfoPageEmailField)
-    private WebElement emailField;
+    protected static final By xpathOtherPersonalInfoPageEmailField = By.xpath(
+            xpathStrMainWindow + "/UIATextView[contains(@name, 'WIRE.COM')]");
 
-    private static final String nameAddContactToChatButton = "metaControllerLeftButton";
-    @FindBy(name = nameAddContactToChatButton)
-    private WebElement startDialogButton;
-    @FindBy(name = nameAddContactToChatButton)
-    private WebElement addButton;
+    private static final By nameAddContactToChatButton = By.name("metaControllerLeftButton");
 
-    protected static final String nameOtherUserConversationMenu = "OtherUserMetaControllerRightButton";
-    @FindBy(name = nameOtherUserConversationMenu)
-    private WebElement otherUserConversationMenuButton;
+    protected static final By nameOtherUserConversationMenu = By.name("OtherUserMetaControllerRightButton");
 
-    private static final String nameConversationMenu = "metaControllerRightButton";
-    @FindBy(name = nameConversationMenu)
-    private WebElement conversationMenuButton;
+    private static final By nameConversationMenu = By.name("metaControllerRightButton");
 
-    private static final String nameSilenceConversationButton = "SILENCE";
-    @FindBy(name = nameSilenceConversationButton)
-    private WebElement silenceMenuButton;
+    private static final By xpathSilenceConversationButton =
+            By.xpath(xpathStrMainWindow + "/UIAButton[@name='SILENCE']");
 
-    private static final String xpathSilenceConversationButton = xpathStrMainWindow + "/UIAButton[@name='SILENCE']";
-    @FindBy(xpath = xpathSilenceConversationButton)
-    private WebElement menuSilenceButton;
+    private static final By nameUnsilenceConversationButton = By.name("NOTIFY");
 
-    private static final String nameUnsilenceConversationButton = "NOTIFY";
-    @FindBy(name = nameUnsilenceConversationButton)
-    private WebElement notifyMenuButton;
+    private static final By nameBlockMenuButton = By.name("BLOCK");
 
-    private static final String nameBlockMenuButton = "BLOCK";
-    @FindBy(name = nameBlockMenuButton)
-    private WebElement blockMenuButton;
+    private static final By nameCancelButton = By.name("CANCEL");
 
-    private static final String nameCancelButton = "CANCEL";
-    @FindBy(name = nameCancelButton)
-    private WebElement cancelButton;
-
-    private static final String xpathActionMenu =
-            "//UIAStaticText[following-sibling::UIAButton[@name='CANCEL'] and @visible='true']";
-    @FindBy(xpath = xpathActionMenu)
-    private WebElement actionMenu;
+    private static final By xpathActionMenu = By.xpath(
+            "//UIAStaticText[following-sibling::UIAButton[@name='CANCEL'] and @visible='true']");
 
     public OtherUserPersonalInfoPage(Future<ZetaIOSDriver> lazyDriver)
             throws Exception {
@@ -105,11 +61,9 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     }
 
     public void catchContinueAlert() throws Exception {
-        if (DriverUtils.waitUntilLocatorAppears(getDriver(),
-                By.name(nameContinueButton), 5)) {
-            WebElement el = this.getDriver().findElementByName(nameContinueButton);
-            DriverUtils.waitUntilElementClickable(getDriver(), el);
-            el.click();
+        final Optional<WebElement> el = getElementIfDisplayed(nameContinueButton);
+        if (el.isPresent()) {
+            el.get().click();
         }
     }
 
@@ -117,36 +71,36 @@ public class OtherUserPersonalInfoPage extends IOSPage {
         openConversationMenu();
     }
 
-    public void clickArchiveMenuButton() {
-        archiveButton.click();
+    public void clickArchiveMenuButton() throws Exception {
+        getElement(xpathArchiveButton).click();
     }
 
-    public void clickDeleteMenuButton() {
-        deleteButton.click();
+    public void clickDeleteMenuButton() throws Exception {
+        getElement(xpathDeleteConversationButton).click();
     }
 
     public void clickConfirmDeleteButton() throws Exception {
-        getElement(By.xpath(xpathConfirmDeleteButton), "Confirm button is not visible").click();
+        getElement(xpathConfirmDeleteButton, "Confirm button is not visible").click();
     }
 
     public void clickAlsoLeaveButton() throws Exception {
-        getElement(By.name(nameAlsoLeaveCheckerButton), "'Also Leave' checkbox is not present").click();
+        getElement(nameAlsoLeaveCheckerButton, "'Also Leave' checkbox is not present").click();
     }
 
     public void leavePageToGroupInfoPage() throws Exception {
-        exitOtherPersonalInfoPageButton.click();
+        getElement(nameExitOtherUserPersonalInfoPageButton).click();
     }
 
     public void clickCloseUserProfileButton() throws Exception {
-        getElement(By.name(nameExitOtherUserPersonalInfoPageButton),
-                "Close profile button is not visible").click();
+        getElement(nameExitOtherUserPersonalInfoPageButton, "Close profile button is not visible").click();
     }
 
     public void addContactToChat() throws Exception {
-        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameAddContactToChatButton), 2)) {
-            addButton.click();
+        final Optional<WebElement> addButton = getElementIfDisplayed(nameAddContactToChatButton, 2);
+        if (addButton.isPresent()) {
+            addButton.get().click();
         } else {
-            addOtherUserButton.click();
+            getElement(nameOtherUserAddContactToChatButton).click();
         }
         catchContinueAlert();
     }
@@ -157,63 +111,62 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     }
 
     public void removeFromConversation() throws Exception {
-        DriverUtils.tapByCoordinates(this.getDriver(), removeFromChat);
+        DriverUtils.tapByCoordinates(this.getDriver(), getElement(nameRemoveFromConversation));
     }
 
     public boolean isRemoveFromConversationAlertVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameComfirmRemoveButton));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameComfirmRemoveButton);
     }
 
-    public void confirmRemove() {
-        confirmRemove.click();
+    public void confirmRemove() throws Exception {
+        getElement(nameComfirmRemoveButton).click();
     }
 
     public String getNameFieldValue(String user) throws Exception {
-        final By locator = By.xpath(xpathOtherPersonalInfoPageNameFieldByName.apply(user));
-        return getDriver().findElement(locator).getAttribute("name");
+        final By locator = By.xpath(xpathStrOtherPersonalInfoPageNameFieldByName.apply(user));
+        return getElement(locator).getAttribute("name");
     }
 
-    public String getEmailFieldValue() throws Exception {
-        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathOtherPersonalInfoPageEmailField))) {
-            return emailField.getAttribute("value");
+    public Optional<String> getEmailFieldValue() throws Exception {
+        final Optional<WebElement> emailField = getElementIfDisplayed(xpathOtherPersonalInfoPageEmailField);
+        if (emailField.isPresent()) {
+            return Optional.of(emailField.get().getAttribute("value"));
         } else {
-            return "";
+            return Optional.empty();
         }
     }
 
     public void clickOnStartDialogButton() throws Exception {
-        this.getDriver().tap(1, this.getDriver().findElementByName(nameOtherUserAddContactToChatButton), 1);
+        this.getDriver().tap(1, getElement(nameOtherUserAddContactToChatButton), 1);
     }
 
     public void openConversationMenu() throws Exception {
-        if (DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(nameConversationMenu), 2)) {
-            conversationMenuButton.click();
+        final Optional<WebElement> conversationMenuButton = getElementIfDisplayed(nameConversationMenu, 2);
+        if (conversationMenuButton.isPresent()) {
+            conversationMenuButton.get().click();
         } else {
-            otherUserConversationMenuButton.click();
+            getElement(nameOtherUserConversationMenu).click();
         }
-        Thread.sleep(2000);
     }
 
-    public void clickSilenceMenuButton() throws InterruptedException {
-        menuSilenceButton.click();
+    public void clickSilenceMenuButton() throws Exception {
+        getElement(xpathSilenceConversationButton).click();
     }
 
-    public void clickNotifyMenuButton() throws InterruptedException {
-        notifyMenuButton.click();
-        Thread.sleep(2000);
+    public void clickNotifyMenuButton() throws Exception {
+        getElement(nameUnsilenceConversationButton).click();
     }
 
-    public void clickBlockMenuButton() {
-        blockMenuButton.click();
+    public void clickBlockMenuButton() throws Exception {
+        getElement(nameBlockMenuButton).click();
     }
 
-    public void clickCancelButton() {
-        cancelButton.click();
+    public void clickCancelButton() throws Exception {
+        getElement(nameCancelButton).click();
     }
 
     public boolean isActionMenuVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathActionMenu));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathActionMenu);
     }
 
 }

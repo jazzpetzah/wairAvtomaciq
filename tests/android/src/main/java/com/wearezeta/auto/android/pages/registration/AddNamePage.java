@@ -2,33 +2,26 @@ package com.wearezeta.auto.android.pages.registration;
 
 import java.util.concurrent.Future;
 
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.By;
 
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class AddNamePage extends AndroidPage {
 
-	public static final String idNameInput = "et__reg__name";
-	@FindBy(id = idNameInput)
-	private WebElement nameInput;
+	public static final By idNameInput = By.id("et__reg__name");
 	
-	public static final String idConfirmButton = "pcb__signup";
-	@FindBy(id = idConfirmButton)
-	private WebElement confirmButton;
+	public static final By idConfirmButton = By.id("pcb__signup");
 	
 	public AddNamePage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
 
 	public void inputName(String name) throws Exception {
-		nameInput.sendKeys(name);
+		getElement(idNameInput).sendKeys(name);
 	}
 	
-	public ProfilePicturePage clickConfirm() throws Exception {
-		confirmButton.click();
-		return new ProfilePicturePage(this.getLazyDriver());
+	public void clickConfirm() throws Exception {
+		getElement(idConfirmButton).click();
 	}
-
 }

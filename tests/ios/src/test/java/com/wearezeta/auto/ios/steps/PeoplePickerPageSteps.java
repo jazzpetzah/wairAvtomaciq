@@ -24,12 +24,11 @@ public class PeoplePickerPageSteps {
 			.getInstance();
 
 	private PeoplePickerPage getPeoplePickerPage() throws Exception {
-		return (PeoplePickerPage) pagesCollecton
-				.getPage(PeoplePickerPage.class);
+		return pagesCollecton.getPage(PeoplePickerPage.class);
 	}
 
 	private ContactListPage getСontactListPage() throws Exception {
-		return (ContactListPage) pagesCollecton.getPage(ContactListPage.class);
+		return pagesCollecton.getPage(ContactListPage.class);
 	}
 
 	@When("^I see People picker page$")
@@ -179,7 +178,7 @@ public class PeoplePickerPageSteps {
 				IClickCloseButtonDismissPeopleView();
 				Thread.sleep(5000);
 				getСontactListPage().openSearch();
-				getPeoplePickerPage().closeShareContactsIfVisible();
+				// getPeoplePickerPage().closeShareContactsIfVisible();
 			} else {
 				break;
 			}
@@ -200,7 +199,7 @@ public class PeoplePickerPageSteps {
 				IClickCloseButtonDismissPeopleView();
 				Thread.sleep(5000);
 				getСontactListPage().openSearch();
-				getPeoplePickerPage().closeShareContactsIfVisible();
+				// getPeoplePickerPage().closeShareContactsIfVisible();
 			} else {
 				break;
 			}
@@ -230,7 +229,7 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		getPeoplePickerPage().closeShareContactsIfVisible();
+		// getPeoplePickerPage().closeShareContactsIfVisible();
 		getPeoplePickerPage().fillTextInPeoplePickerSearch(contact);
 	}
 
@@ -242,7 +241,7 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		getPeoplePickerPage().closeShareContactsIfVisible();
+		// getPeoplePickerPage().closeShareContactsIfVisible();
 		getPeoplePickerPage().fillTextInPeoplePickerSearch(email);
 	}
 
@@ -257,21 +256,18 @@ public class PeoplePickerPageSteps {
 	 * @throws Exception
 	 */
 	@When("^I input conversation name (.*) in Search input$")
-	public void IInputConversationNameInSearchInput(String name)
-			throws Exception {
+	public void IInputConversationNameInSearchInput(String name) throws Exception {
 		WhenIInputInPeoplePickerSearchFieldUserName(name);
 	}
 
 	@When("^I see user (.*) found on People picker page$")
-	public void WhenISeeUserFoundOnPeoplePickerPage(String contact)
-			throws Exception {
+	public void WhenISeeUserFoundOnPeoplePickerPage(String contact) throws Exception {
 		try {
 			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		Assert.assertTrue("User: " + contact
-				+ " is not presented on People picker page",
+		Assert.assertTrue(String.format("User '%s'is not presented on People picker page", contact),
 				getPeoplePickerPage().waitUserPickerFindUser(contact));
 	}
 
@@ -286,8 +282,7 @@ public class PeoplePickerPageSteps {
 	 * @throws Exception
 	 */
 	@When("^I see that user (.*) is NOT found on People picker page$")
-	public void WhenISeeUserNotFoundOnPeoplePickerPage(String contact)
-			throws Exception {
+	public void WhenISeeUserNotFoundOnPeoplePickerPage(String contact) throws Exception {
 		try {
 			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		} catch (NoSuchUserException e) {
@@ -405,7 +400,7 @@ public class PeoplePickerPageSteps {
 
 	@When("^I click on Go button$")
 	public void WhenIClickOnGoButton() throws Exception {
-		getPeoplePickerPage().clickOnGoButton(true);
+		getPeoplePickerPage().clickOnGoButton();
 	}
 
 	@When("^I click clear button$")
@@ -554,7 +549,7 @@ public class PeoplePickerPageSteps {
 	@When("^I click on Add to conversation button$")
 	public void WhenIClickOnAddToConversationButton() throws Exception {
 		if (getPeoplePickerPage().isKeyboardVisible()) {
-			getPeoplePickerPage().clickOnGoButton(true);
+			getPeoplePickerPage().clickOnGoButton();
 		} else {
 			getPeoplePickerPage().clickAddToCoversationButton();
 		}

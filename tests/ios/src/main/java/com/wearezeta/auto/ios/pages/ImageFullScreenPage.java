@@ -3,36 +3,22 @@ package com.wearezeta.auto.ios.pages;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class ImageFullScreenPage extends IOSPage {
-    private static final String nameImageFullScreenPage = "fullScreenPage";
-    @FindBy(name = nameImageFullScreenPage)
-    private WebElement imageFullScreen;
+    private static final By nameImageFullScreenPage = By.name("fullScreenPage");
 
-    private static final String nameFullScreenCloseButton = "fullScreenCloseButton";
-    @FindBy(name = nameFullScreenCloseButton)
-    private WebElement fullScreenCloseButton;
+    private static final By nameFullScreenCloseButton = By.name("fullScreenCloseButton");
 
-    private static final String nameFullScreenDownloadButton = "fullScreenDownloadButton";
-    @FindBy(name = nameFullScreenDownloadButton)
-    private WebElement fullScreenDownloadButton;
+    private static final By nameFullScreenDownloadButton = By.name("fullScreenDownloadButton");
 
-    private static final String nameFullScreenSenderName = "fullScreenSenderName";
-    @FindBy(name = nameFullScreenSenderName)
-    private WebElement fullScreenSenderName;
+    private static final By nameFullScreenSenderName = By.name("fullScreenSenderName");
 
-    private static final String nameFullScreenTimeStamp = "fullScreenTimeStamp";
-    @FindBy(name = nameFullScreenTimeStamp)
-    private WebElement fullScreenTimeStamp;
+    private static final By nameFullScreenTimeStamp = By.name("fullScreenTimeStamp");
 
-    private static final String nameFullScreenSketchButton = "sketchButton";
-    @FindBy(name = nameFullScreenSketchButton)
-    private WebElement fullScreenSketchButton;
+    private static final By nameFullScreenSketchButton = By.name("sketchButton");
 
     public ImageFullScreenPage(Future<ZetaIOSDriver> lazyDriver)
             throws Exception {
@@ -40,45 +26,43 @@ public class ImageFullScreenPage extends IOSPage {
     }
 
     public boolean isImageFullScreenShown() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameImageFullScreenPage));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameImageFullScreenPage);
     }
 
     public void clickCloseButton() throws Exception {
-        getElement(By.name(nameFullScreenCloseButton), "Close button is not present in the view").click();
+        getElement(nameFullScreenCloseButton, "Close button is not present in the view").click();
     }
 
     public boolean isDownloadButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.name(nameFullScreenDownloadButton));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameFullScreenDownloadButton);
     }
 
-    public void clickDownloadButton() {
-        fullScreenDownloadButton.click();
+    public void clickDownloadButton() throws Exception {
+        getElement(nameFullScreenDownloadButton).click();
     }
 
-    public ImageFullScreenPage tapOnFullScreenPage() {
-        imageFullScreen.click();
-        return this;
+    public void tapOnFullScreenPage() throws Exception {
+        getElement(nameImageFullScreenPage).click();
     }
 
     public boolean isSenderNameVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameFullScreenSenderName));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameFullScreenSenderName);
     }
 
-    public String getSenderName() {
-        return fullScreenSenderName.getText();
+    public String getSenderName() throws Exception {
+        return getElement(nameFullScreenSenderName).getText();
     }
 
     public boolean isSentTimeVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameFullScreenTimeStamp));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameFullScreenTimeStamp);
     }
 
-    public String getTimeStamp() {
-        return fullScreenTimeStamp.getText();
+    public String getTimeStamp() throws Exception {
+        return getElement(nameFullScreenTimeStamp).getText();
     }
 
-    public void clickSketchButton() {
-        fullScreenSketchButton.click();
+    public void clickSketchButton() throws Exception {
+        getElement(nameFullScreenSketchButton).click();
     }
 
 }

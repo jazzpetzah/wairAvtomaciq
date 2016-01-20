@@ -1,11 +1,10 @@
 package com.wearezeta.auto.win.steps.webapp;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,8 +24,6 @@ import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-
-import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -437,10 +434,9 @@ public class ConversationPageSteps {
 	 */
 	@When("^I see only one ping message$")
 	public void ISeeOnlyOnePingMessage() throws Exception {
-		Assert.assertEquals(
-				WebappPagesCollection.getInstance()
-						.getPage(ConversationPage.class)
-						.numberOfPingMessagesVisible(), 1);
+		assertThat("PING action", WebappPagesCollection
+				.getInstance().getPage(com.wearezeta.auto.web.pages.ConversationPage.class)
+				.waitForNumberOfMessageHeadersContain(Collections.singleton("PING")), equalTo(1));
 	}
 
 	/**

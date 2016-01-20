@@ -62,9 +62,6 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
             .format("//*[@id='ttv__settings_box__item' and @value='%s']/parent::*//*[@id='fl_options_menu_button']",
                     text.toUpperCase());
 
-    @FindBy(xpath = OtherUserPersonalInfoPage.xpathRightActionButton)
-    private WebElement ellipsisButton;
-
     @FindBy(xpath = xpathConfirmBtn)
     private WebElement confirmBtn;
 
@@ -72,8 +69,8 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
         super(lazyDriver);
     }
 
-    public void clickEllipsisButton() {
-        ellipsisButton.click();
+    public void clickEllipsisButton() throws Exception {
+        getElement(OtherUserPersonalInfoPage.xpathRightActionButton).click();
     }
 
     public void clickBlockBtn() throws Exception {
@@ -86,21 +83,11 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
     }
 
     public void clickUnblockBtn() throws Exception {
-        for (String id : new String[]{
-                OtherUserPersonalInfoPage.idConnectRequestUnblock,
-                OtherUserPersonalInfoPage.idSingleUserUnblock}) {
-            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(id),
-                    1)) {
-                getDriver().findElement(By.id(id)).click();
-                return;
-            }
-        }
-        throw new AssertionError("Unblock button is not visible");
+        getElement(OtherUserPersonalInfoPage.xpathUnblockButton).click();
     }
 
     public void pressConfirmBtn() throws Exception {
-        this.getWait().until(
-                ExpectedConditions.elementToBeClickable(confirmBtn));
+        this.getWait().until(ExpectedConditions.elementToBeClickable(confirmBtn));
         confirmBtn.click();
     }
 

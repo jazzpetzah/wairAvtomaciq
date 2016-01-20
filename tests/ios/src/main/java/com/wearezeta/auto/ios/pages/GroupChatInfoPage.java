@@ -132,7 +132,7 @@ public class GroupChatInfoPage extends IOSPage {
             participantNameTextFieldValue = otherUserPersonalInfoPage
                     .getNameFieldValue(user);
             participantEmailTextFieldValue = otherUserPersonalInfoPage
-                    .getEmailFieldValue();
+                    .getEmailFieldValue().orElseGet(() -> "");
             Assert.assertTrue(
                     "Participant Name is incorrect and/or not displayed",
                     participantNameTextFieldValue.equalsIgnoreCase(user));
@@ -240,7 +240,7 @@ public class GroupChatInfoPage extends IOSPage {
     public void selectContactByName(String name)
             throws Exception {
         final By locator = By.xpath(xpathPeopleViewCollectionCellByName.apply(name));
-        DriverUtils.tapByCoordinates(this.getDriver(), getDriver().findElement(locator));
+        DriverUtils.tapByCoordinates(this.getDriver(), getElement(locator));
     }
 
     public void selectNotConnectedUser(String name) throws Exception {

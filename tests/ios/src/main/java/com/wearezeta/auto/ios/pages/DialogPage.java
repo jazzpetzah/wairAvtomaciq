@@ -187,7 +187,7 @@ public class DialogPage extends IOSPage {
 
     public void clickOnCallButtonForContact(String contact) throws Exception {
         final By locator = By.xpath(xpathFormatMissedCallButtonByContact.apply(contact));
-        this.getDriver().findElement(locator).click();
+        getElement(locator).click();
     }
 
     public void tapOnCursorInput() throws Exception {
@@ -534,8 +534,9 @@ public class DialogPage extends IOSPage {
     }
 
     public boolean chatheadIsVisible(String contact) throws Exception {
+        // FIXME: Optimize locator
         final By locator = By.xpath(xpathChatheadByName.apply(contact));
-        for (WebElement element : this.getDriver().findElements(locator)) {
+        for (WebElement element : getElements(locator)) {
             if (DriverUtils.isElementPresentAndDisplayed(getDriver(), element)) {
                 return true;
             }

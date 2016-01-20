@@ -26,7 +26,7 @@ public class DialogPage extends AndroidPage {
     public static final String MEDIA_PLAY = "PLAY";
     public static final String MEDIA_PAUSE = "PAUSE";
 
-    public static final String xpathConfirmOKButton = "//*[@id='ttv__confirmation__confirm' and @value='OK']";
+    public static final By xpathConfirmOKButton = By.xpath("//*[@id='ttv__confirmation__confirm' and @value='OK']");
 
     public static final String idDialogImages = "iv__row_conversation__message_image";
     private static final String xpathLastPicture = String.format(
@@ -102,9 +102,6 @@ public class DialogPage extends AndroidPage {
     private static final String idDialogChangeCameraButton = "gtv__camera__top_control__back_camera";
     @FindBy(id = idDialogChangeCameraButton)
     private WebElement changeCameraButton;
-
-    @FindBy(xpath = xpathConfirmOKButton)
-    private WebElement okButton;
 
     private static final String idSketchImagePaintButton = "gtv__sketch_image_paint_button";
     @FindBy(id = idSketchImagePaintButton)
@@ -426,7 +423,7 @@ public class DialogPage extends AndroidPage {
     }
 
     public void confirm() throws Exception {
-        final By locator = By.xpath(xpathConfirmOKButton);
+        final By locator = xpathConfirmOKButton;
         final WebElement okBtn = getElement(locator, "OK button is not visible");
         if (!DriverUtils.waitUntilElementClickable(getDriver(), okBtn)) {
             throw new IllegalStateException("OK button is not clickable");

@@ -4,37 +4,23 @@ import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class PendingRequestsPage extends IOSPage {
 
-    private static final String namePendingRequestIgnoreButton = "IGNORE";
-    @FindBy(name = namePendingRequestIgnoreButton)
-    private WebElement ignoreRequestButton;
+    private static final By namePendingRequestIgnoreButton = By.name("IGNORE");
 
-    private static final String namePendingRequestConnectButton = "CONNECT";
-    @FindBy(name = namePendingRequestConnectButton)
-    private WebElement connectRequestButton;
+    private static final By namePendingRequestConnectButton = By.name("CONNECT");
 
-    private static final String xpathPendingRequesterName =
-            xpathStrMainWindow + "/UIATableView[1]//UIAStaticText[contains(@name, 'Connect to')]";
-    @FindBy(xpath = xpathPendingRequesterName)
-    private WebElement requesterName;
+    private static final By xpathPendingRequesterName = By.xpath(
+            xpathStrMainWindow + "/UIATableView[1]//UIAStaticText[contains(@name, 'Connect to')]");
 
-    private static final String xpathPendingRequestMessage =
-            xpathStrMainWindow + "/UIATableView[1]//UIAStaticText[3]";
-    @FindBy(xpath = xpathPendingRequestMessage)
-    private WebElement pendingMessage;
+    private static final By xpathYouBothKnowPeopleIcon = By.xpath(
+            xpathStrMainWindow + "/UIATableView[1]/UIATableCell[1]/UIAButton[2]");
 
-    private static final String xpathYouBothKnowPeopleIcon =
-            xpathStrMainWindow + "/UIATableView[1]/UIATableCell[1]/UIAButton[2]";
-    @FindBy(xpath = xpathYouBothKnowPeopleIcon)
-    private WebElement youBothKnowPeopleIcon;
-
-    private static final String nameYouBothKnowHeader = "YOU BOTH KNOW";
+    private static final By nameYouBothKnowHeader = By.name("YOU BOTH KNOW");
 
     public PendingRequestsPage(Future<ZetaIOSDriver> lazyDriver)
             throws Exception {
@@ -42,11 +28,11 @@ public class PendingRequestsPage extends IOSPage {
     }
 
     public void clickIgnoreButton() throws Exception {
-        getElement(By.name(namePendingRequestIgnoreButton), "Ignore button is not visible").click();
+        getElement(namePendingRequestIgnoreButton, "Ignore button is not visible").click();
     }
 
     public void clickIgnoreButtonMultiple(int clicks) throws Exception {
-        final WebElement ignoreRequestButton = getElement(By.name(namePendingRequestIgnoreButton),
+        final WebElement ignoreRequestButton = getElement(namePendingRequestIgnoreButton,
                 "Ignore button is not visible");
         for (int i = 0; i < clicks; i++) {
             ignoreRequestButton.click();
@@ -55,11 +41,11 @@ public class PendingRequestsPage extends IOSPage {
     }
 
     public void clickConnectButton() throws Exception {
-        getElement(By.name(namePendingRequestConnectButton), "Connect button is not visible").click();
+        getElement(namePendingRequestConnectButton, "Connect button is not visible").click();
     }
 
     public void clickConnectButtonMultiple(int clicks) throws Exception {
-        final WebElement connectRequestButton = getElement(By.name(namePendingRequestConnectButton),
+        final WebElement connectRequestButton = getElement(namePendingRequestConnectButton,
                 "Connect button is not visible");
         for (int i = 0; i < clicks; i++) {
             connectRequestButton.click();
@@ -68,21 +54,20 @@ public class PendingRequestsPage extends IOSPage {
     }
 
     public boolean isConnectButtonDisplayed() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.name(namePendingRequestConnectButton), 5);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), namePendingRequestConnectButton, 5);
     }
 
-    public String getRequesterName() {
+    public String getRequesterName() throws Exception {
         final String CONNECT_TO = "Connect to ";
-        return requesterName.getText().replace(CONNECT_TO, "");
+        return getElement(xpathPendingRequesterName).getText().replace(CONNECT_TO, "");
     }
 
     public boolean isYouBothKnowDisplayed() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(nameYouBothKnowHeader), 5);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameYouBothKnowHeader, 5);
     }
 
-    public void clickYouBothKnowPeopleIcon() {
-        youBothKnowPeopleIcon.click();
+    public void clickYouBothKnowPeopleIcon() throws Exception {
+        getElement(xpathYouBothKnowPeopleIcon).click();
     }
 
 }

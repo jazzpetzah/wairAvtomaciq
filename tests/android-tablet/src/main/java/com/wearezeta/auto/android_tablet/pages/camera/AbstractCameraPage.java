@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android_tablet.pages.camera;
 
+import java.util.Optional;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
@@ -13,9 +14,6 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public abstract class AbstractCameraPage extends AndroidTabletPage {
-    @FindBy(xpath = DialogPage.xpathConfirmOKButton)
-    protected WebElement okConfirmButton;
-
     public static final String idGalleryButton = "gtv__camera_control__pick_from_gallery";
     @FindBy(id = idGalleryButton)
     private WebElement galleryButton;
@@ -46,18 +44,18 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilTakePhotoButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idTakePhotoButton));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idTakePhotoButton));
     }
 
     private boolean isGalleryModeActivated = false;
 
     public void confirmPictureSelection() throws Exception {
-        // Workaround for unexpected orientation change issue
-        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(DialogPage.xpathConfirmOKButton))) {
-            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                    getLensButtonLocator(), 2)) {
+        final Optional<WebElement> confirmButton = getElementIfDisplayed(DialogPage.xpathConfirmOKButton);
+        if (confirmButton.isPresent()) {
+            confirmButton.get().click();
+        } else {
+            // Workaround for unexpected orientation change issue
+            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getLensButtonLocator())) {
                 tapLensButton();
             }
             if (isGalleryModeActivated) {
@@ -66,10 +64,9 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
             } else {
                 tapTakePhotoButton();
             }
-            getElement(By.xpath(DialogPage.xpathConfirmOKButton),
-                    "Picture selection confirmation has not been shown after the timeout", 3);
+            getElement(DialogPage.xpathConfirmOKButton,
+                    "Picture selection confirmation has not been shown after the timeout", 5);
         }
-        okConfirmButton.click();
         ScreenOrientationHelper.getInstance().fixOrientation(getDriver());
     }
 

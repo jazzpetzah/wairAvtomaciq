@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
@@ -11,10 +12,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.DefaultElementLocatorFactory;
@@ -97,6 +95,18 @@ public abstract class BasePage {
 
     protected List<WebElement> getElements(By locator) throws Exception {
         return getDriver().findElements(locator);
+    }
+
+    protected List<WebElement> selectVisibleElements(By locator) throws Exception {
+        final List<WebElement> result = new ArrayList<>();
+        if (DriverUtils.waitUntilLocatorAppears(getDriver(), locator)) {
+            for (WebElement el : getDriver().findElements(locator)) {
+                if (DriverUtils.isElementPresentAndDisplayed(getDriver(), el)) {
+                    result.add(el);
+                }
+            }
+        }
+        return result;
     }
 
     protected WebElement getElement(By locator) throws Exception {

@@ -25,13 +25,12 @@ public class ContactListPage extends AndroidPage {
             + LOADING_CONVERSATION_NAME + "')]";
 
     public static final Function<String, String> xpathContactByName = name -> String
-            .format("//*[@id='tv_conv_list_topic' and @value='%s' and @shown='true']",
-                    name);
+            .format("//*[@id='tv_conv_list_topic' and @value='%s' and @shown='true']", name);
 
     public static final Function<Integer, String> xpathContactByIndex = index -> String
             .format("(//*[@id='tv_conv_list_topic'])[%s]", index);
 
-    public static final String xpathLastContact = "(//*[@id='tv_conv_list_topic'])[last()]";
+    public static final By xpathLastContact = By.xpath("(//*[@id='tv_conv_list_topic'])[last()]");
 
     public static final Function<String, String> xpathMutedIconByConvoName = convoName -> String
             .format("%s/parent::*//*[@id='tv_conv_list_voice_muted']",
@@ -196,12 +195,7 @@ public class ContactListPage extends AndroidPage {
     }
 
     public Optional<WebElement> findInContactList(String name) throws Exception {
-        final By nameLocator = By.xpath(xpathContactByName.apply(name));
-        if (DriverUtils
-                .waitUntilLocatorIsDisplayed(getDriver(), nameLocator, 1)) {
-            return Optional.of(this.getDriver().findElement(nameLocator));
-        }
-        return Optional.empty();
+        return getElementIfDisplayed(By.xpath(xpathContactByName.apply(name)));
     }
 
     public void swipeRightOnConversation(int durationMilliseconds, String name)
@@ -258,7 +252,7 @@ public class ContactListPage extends AndroidPage {
     public void verifyContactListIsFullyLoaded() throws Exception {
         Thread.sleep(1000);
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(),
-                By.id(EmailSignInPage.idLoginButton),
+                EmailSignInPage.idLoginButton,
                 CONTACT_LIST_LOAD_TIMEOUT_SECONDS)) {
             throw new IllegalStateException(
                     String.format(
@@ -307,14 +301,13 @@ public class ContactListPage extends AndroidPage {
     public boolean isAnyConversationVisible() throws Exception {
         for (int i = contactListNames.size(); i >= 1; i--) {
             final By locator = By.xpath(xpathContactByIndex.apply(i));
-            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) ||
-                    !getDriver().findElement(locator).getText().equals(LOADING_CONVERSATION_NAME)) {
+            final Optional<WebElement> contactEl = getElementIfDisplayed(locator);
+            if (contactEl.isPresent() && !contactEl.get().getText().equals(LOADING_CONVERSATION_NAME)) {
                 return true;
             }
         }
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathLastContact), CONTACT_LIST_LOAD_TIMEOUT_SECONDS) &&
-                !getDriver().findElement(By.xpath(xpathLastContact)).getText().equals(LOADING_CONVERSATION_NAME);
+        final Optional<WebElement> lastEl = getElementIfDisplayed(xpathLastContact, CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
+        return lastEl.isPresent() && !lastEl.get().getText().equals(LOADING_CONVERSATION_NAME);
     }
 
     public boolean isNoConversationsVisible() throws Exception {

@@ -225,21 +225,13 @@ public class CallingSteps {
 						UserXVerifesCallStatusToUserY(callee, "active", 60);
 					}
 					Thread.sleep(flowWaitTime * 1000);
-					Map<String, Flow> flows = new HashMap<>();
 					int totalFlowChecks = callDurationMinutes * 4;
+					Map<String, Flow> flows = new HashMap<>();
 					LOG.info(totalFlowChecks + " checks");
 					for (int j = totalFlowChecks; j > 0; j--) {
 						LOG.info("checking flows   " + j);
 						for (String callee : calleeList) {
-							UserXVerifesHavingXFlows(callee, calleeList.size());
-							for (Flow flow : commonCallingSteps.getFlows(callee)) {
-								Flow oldFlow = flows.get(callee + flow.getRemoteUserId());
-								if (oldFlow != null) {
-									assertThat("incoming bytes", flow.getBytesIn(), greaterThan(oldFlow.getBytesIn()));
-									assertThat("outgoing bytes", flow.getBytesOut(), greaterThan(oldFlow.getBytesOut()));
-								}
-								flows.put(callee + flow.getRemoteUserId(), flow);
-							}
+							getCheckAndCompareFlows(flows, callee, flowWaitTime);
 						}
 						LOG.info("All instances are active");
 						convSteps.IWaitForCallingBar(callees);
@@ -298,6 +290,18 @@ public class CallingSteps {
 		}
 		LOG.info(failures.size() + " failures happened during " + times
 			+ " calls");
+	}
+
+	private void getCheckAndCompareFlows(Map<String, Flow> flowMap, String callee, int participantSize) throws Exception {
+		UserXVerifesHavingXFlows(callee, participantSize);
+		for (Flow flow : commonCallingSteps.getFlows(callee)) {
+			Flow oldFlow = flowMap.get(callee + flow.getRemoteUserId());
+			if (oldFlow != null) {
+				assertThat("incoming bytes", flow.getBytesIn(), greaterThan(oldFlow.getBytesIn()));
+				assertThat("outgoing bytes", flow.getBytesOut(), greaterThan(oldFlow.getBytesOut()));
+			}
+			flowMap.put(callee + flow.getRemoteUserId(), flow);
+		}
 	}
 
 }

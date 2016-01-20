@@ -11,7 +11,6 @@ import java.util.concurrent.Future;
 
 import javax.imageio.ImageIO;
 
-import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.rc.TestcaseResultToTestrailTransformer;
 import com.wearezeta.auto.common.testrail.TestrailSyncUtilities;
 import org.apache.log4j.Logger;
@@ -190,6 +189,25 @@ public class ZetaFormatter implements Formatter, Reporter {
         }
     }
 
+    private static boolean isScreenshotingEnabled = true;
+    static {
+        try {
+            isScreenshotingEnabled = CommonUtils.getMakeScreenshotsFromConfig(ZetaFormatter.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static boolean isScreenshotingOnPassedStepsEnabled = true;
+    static {
+        try {
+            isScreenshotingOnPassedStepsEnabled =
+                    CommonUtils.getMakeScreenshotOnPassedStepsFromConfig(ZetaFormatter.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void result(Result result) {
         if (!stepsIterator.isPresent()) {
@@ -200,23 +218,8 @@ public class ZetaFormatter implements Formatter, Reporter {
         final String stepStatus = result.getStatus();
         steps.put(currentStep, stepStatus);
         final long stepFinishedTimestamp = new Date().getTime();
-        boolean isScreenshotingEnabled = true;
-        try {
-            isScreenshotingEnabled = CommonUtils
-                    .getMakeScreenshotsFromConfig(this.getClass());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        boolean isScreenshotingOnPassedStepsEnabled = true;
-        try {
-            isScreenshotingOnPassedStepsEnabled = CommonUtils
-                    .getMakeScreenshotOnPassedStepsFromConfig(this.getClass());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         if (isScreenshotingEnabled) {
-            if (!isScreenshotingOnPassedStepsEnabled
-                    && (result.getStatus().equals(Result.PASSED))) {
+            if (!isScreenshotingOnPassedStepsEnabled && (result.getStatus().equals(Result.PASSED))) {
                 log.debug("Skip screenshot for passed step...");
             } else {
                 try {
@@ -229,13 +232,11 @@ public class ZetaFormatter implements Formatter, Reporter {
             final long screenshotFinishedTimestamp = new Date().getTime();
             log.debug(String
                     .format("%s (status: %s, step duration: %s ms + screenshot duration: %s ms)",
-                            stepName, stepStatus, stepFinishedTimestamp
-                                    - stepStartedTimestamp,
+                            stepName, stepStatus, stepFinishedTimestamp - stepStartedTimestamp,
                             screenshotFinishedTimestamp - stepFinishedTimestamp));
         } else {
             log.debug(String.format("%s (status: %s, step duration: %s ms)",
-                    stepName, stepStatus, stepFinishedTimestamp
-                            - stepStartedTimestamp));
+                    stepName, stepStatus, stepFinishedTimestamp - stepStartedTimestamp));
         }
     }
 

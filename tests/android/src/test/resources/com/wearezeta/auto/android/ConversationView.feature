@@ -212,7 +212,6 @@ Feature: Conversation View
     And I rotate UI to portrait
     Then I select last photo in dialog
     And I rotate UI to landscape
-    And I tap on center of screen
     And I press "Image Close" button
     Then I rotate UI to portrait
     And I navigate back from dialog page

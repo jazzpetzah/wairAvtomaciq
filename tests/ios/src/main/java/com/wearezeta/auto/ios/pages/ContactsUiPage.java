@@ -53,6 +53,6 @@ public class ContactsUiPage extends IOSPage {
 
     public void clickOpenButtonNextToUser(String contact) throws Exception {
         final By locator = By.xpath(xpathStrOpenButtonByConvoName.apply(contact));
-        getDriver().findElement(locator).click();
+        getElement(locator).click();
     }
 }

@@ -1,76 +1,57 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.util.Optional;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.*;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class VideoPlayerPage extends IOSPage {
+    private static final By xpathVideoMainPage = By.xpath("//UIAWebView/UIAButton[@name='Home']");
 
-	private static final String xpathVideoMainPage = "//UIAWebView/UIAButton[@name='Home']";
-	@FindBy(xpath = xpathVideoMainPage)
-	private WebElement videoPlayerMainWindow;
+    private static final By nameVideoDoneButton = By.name("Done");
 
-	private static final String nameVideoDoneButton = "Done";
-    @FindBy(name = nameVideoDoneButton)
-	private WebElement videoDoneButton;
+    private static final By nameVideoFullScreenButton = By.name("Full screen");
 
-	private static final String nameVideoSlider = "Track position";
-    @FindBy(name = nameVideoSlider)
-	private WebElement videoSlider;
+    private static final By nameVideoPauseButton = By.name("PauseButton");
 
-	private static final String nameVideoFullScreenButton = "Full screen";
-    @FindBy(name = nameVideoFullScreenButton)
-	private WebElement videoFullScreenButton;
+    public VideoPlayerPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+        super(lazyDriver);
+    }
 
-	private static final String nameVideoPreviousButton = "Previous track";
-    @FindBy(name = nameVideoPreviousButton)
-	private WebElement videoPreviousButton;
+    public void waitForVideoPlayerPage() throws Exception {
+        DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameVideoFullScreenButton);
+    }
 
-	private static final String nameVideoPauseButton = "PauseButton";
-    @FindBy(name = nameVideoPauseButton)
-	private WebElement videoPauseButton;
+    public boolean isVideoPlayerPageOpened() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathVideoMainPage);
+    }
 
-	private static final String nameVideoNextButton = "Next track";
-    @FindBy(name = nameVideoNextButton)
-	private WebElement videoNextButton;
+    public void tapVideoPage() throws Exception {
+        getElement(xpathVideoMainPage).click();
+    }
 
-	public VideoPlayerPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
-		super(lazyDriver);
-	}
+    public void clickVideoDoneButton() throws Exception {
+        final WebElement videoDoneButton = getElement(nameVideoDoneButton);
+        DriverUtils.tapByCoordinates(this.getDriver(), videoDoneButton);
+        try {
+            DriverUtils.tapByCoordinates(this.getDriver(), videoDoneButton);
+        } catch (WebDriverException e) {
+            // ignore silently
+        }
+    }
 
-	public void waitForVideoPlayerPage() throws Exception {
-		DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(nameVideoFullScreenButton));
-	}
-
-	public boolean isVideoPlayerPageOpened() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.xpath(xpathVideoMainPage));
-	}
-
-	public void tapVideoPage() {
-		videoPlayerMainWindow.click();
-	}
-
-	public void clickVideoDoneButton() throws Exception {
-		DriverUtils.tapByCoordinates(this.getDriver(), videoDoneButton);
-		try {
-			DriverUtils.tapByCoordinates(this.getDriver(), videoDoneButton);
-		} catch (WebDriverException e) {
-			// ignore silently
-		}
-	}
-
-	public void clickPauseButton() throws Exception {
-		if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(nameVideoPauseButton))) {
-			videoPauseButton.click();
-		} else {
-			tapVideoPage();
-			videoPauseButton.click();
-		}
-	}
+    public void clickPauseButton() throws Exception {
+        final Optional<WebElement> videoPauseButton = getElementIfDisplayed(nameVideoPauseButton);
+        if (videoPauseButton.isPresent()) {
+            videoPauseButton.get().click();
+        } else {
+            tapVideoPage();
+            getElement(nameVideoPauseButton).click();
+        }
+    }
 }
