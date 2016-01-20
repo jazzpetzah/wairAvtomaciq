@@ -85,11 +85,12 @@ Feature: Self Profile
     When I tap on my name <Name>
     And I slide my accent color via the colorpicker from <Color1> to <Color2>
     And I close self profile
+    And User <Contact> sends encrypted message "<Message>" to user <Name>
     Then I see 1 unread message indicator in list for contact <Contact>
 
     Examples: 
-      | Name      | Color1 | Color2          | Contact   |
-      | user1Name | Violet | StrongLimeGreen | user2Name |
+      | Name      | Color1 | Color2          | Contact   | Message |
+      | user1Name | Violet | StrongLimeGreen | user2Name | hidiho  |
 
   @C1085 @regression @id3849
   Scenario Outline: Verify adding phone number to the contact signed up with email

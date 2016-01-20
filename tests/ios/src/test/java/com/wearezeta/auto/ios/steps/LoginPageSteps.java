@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import org.junit.Assert;
 
 import java.io.IOException;
@@ -21,6 +22,7 @@ import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.RegistrationPage;
 
 import cucumber.api.java.en.*;
+import org.openqa.selenium.By;
 
 /**
  * Contains steps to work with Login/Welcome page
@@ -569,6 +571,7 @@ public class LoginPageSteps {
     @When("^I click Not Now to not add phone number$")
     public void IClickNotNowToNotAddPhoneNumber() throws Throwable {
         getLoginPage().clickPhoneNotNow();
+        getLoginPage().waitForLoginToFinish();
     }
 
 }

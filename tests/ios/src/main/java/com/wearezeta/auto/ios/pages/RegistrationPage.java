@@ -150,9 +150,7 @@ public class RegistrationPage extends IOSPage {
     @FindBy(name = nameCountryPickerButton)
     private WebElement countryPickerButton;
 
-    public static final String xpathCountryList = xpathStrMainWindow + "/UIATableView[1]";
-    @FindBy(xpath = xpathCountryList)
-    private WebElement countryList;
+    private static final By xpathCountryList = By.xpath(xpathStrMainWindow + "/UIATableView[1]");
 
     private static final String xpathConfirmPhoneNumber = xpathStrMainWindow + "/UIATextField[1]/UIAButton[1]";
     @FindBy(xpath = xpathConfirmPhoneNumber)
@@ -213,9 +211,9 @@ public class RegistrationPage extends IOSPage {
 
     private static final String WIRE_COUNTRY_NAME = "Wirestan";
 
-    public void selectWirestan() throws Exception {
+    public void selectWirestan() throws Exception{
         countryPickerButton.click();
-        ((IOSElement) getDriver().findElementByXPath(xpathCountryList)).
+        ((IOSElement) getElement(xpathCountryList)).
                 scrollTo(WIRE_COUNTRY_NAME).click();
     }
 
