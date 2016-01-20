@@ -622,11 +622,14 @@ public class CommonUtils {
         return executeUIShellScript(scriptContent.toArray(asArray));
     }
 
-    public static final String TIME_SERVER = "time-a.nist.gov";
+    private static final String TIME_SERVER = "time-a.nist.gov";
 
-    public static long getPreciseTime() throws Exception {
-        final NTPUDPClient timeClient = new NTPUDPClient();
-        final InetAddress inetAddress = InetAddress.getByName(TIME_SERVER);
-        return new Date(timeClient.getTime(inetAddress).getReturnTime()).getTime();
+    public static Future<Long> getPreciseTime() throws Exception {
+        final Callable<Long> task = () -> {
+            final NTPUDPClient timeClient = new NTPUDPClient();
+            final InetAddress inetAddress = InetAddress.getByName(TIME_SERVER);
+            return new Date(timeClient.getTime(inetAddress).getReturnTime()).getTime();
+        };
+        return Executors.newSingleThreadExecutor().submit(task);
     }
 }

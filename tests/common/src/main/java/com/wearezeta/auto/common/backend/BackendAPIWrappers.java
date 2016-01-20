@@ -27,6 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 // Almost all methods of this class mutate ClientUser
 // argument by performing automatic login (set id and session token attributes)
@@ -64,8 +65,14 @@ public final class BackendAPIWrappers {
                 forUser.getEmail());
         // The MAX_MSG_DELIVERY_OFFSET is necessary because of small
         // time difference between UTC and your local machine
+        long currentTime = new Date().getTime();
+        try {
+            currentTime = CommonUtils.getPreciseTime().get(10, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return mbox.getMessage(expectedHeaders, ACTIVATION_TIMEOUT,
-                CommonUtils.getPreciseTime() - MAX_MSG_DELIVERY_OFFSET);
+                currentTime - MAX_MSG_DELIVERY_OFFSET);
     }
 
     /**
