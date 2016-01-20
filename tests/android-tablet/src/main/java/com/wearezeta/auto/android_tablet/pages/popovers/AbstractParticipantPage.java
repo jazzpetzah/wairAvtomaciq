@@ -4,15 +4,11 @@ import java.util.concurrent.Future;
 
 import com.wearezeta.auto.android.pages.OtherUserPersonalInfoPage;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 abstract class AbstractParticipantPage extends AbstractPopoverPage {
-	public static final String xpathConfirRemoveButton = "//*[@id='confirm' and @value='REMOVE']";
-	@FindBy(xpath = xpathConfirRemoveButton)
-	private WebElement confirmRemoveButton;
+	public static final By xpathConfirRemoveButton = By.xpath("//*[@id='confirm' and @value='REMOVE']");
 
 	public static final By xpathRemoveButton = OtherUserPersonalInfoPage.xpathRightActionButton;
 
@@ -26,6 +22,6 @@ abstract class AbstractParticipantPage extends AbstractPopoverPage {
 	}
 
 	public void tapConfirmRemovalButton() throws Exception {
-		confirmRemoveButton.click();
+		getElement(xpathConfirRemoveButton).click();
 	}
 }

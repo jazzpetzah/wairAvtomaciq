@@ -4,10 +4,8 @@ import com.wearezeta.auto.android.pages.RegistrationPage;
 import com.wearezeta.auto.android_tablet.pages.AndroidTabletPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import org.openqa.selenium.By;
 
 import java.util.concurrent.Future;
-
 
 public class TabletUnsplashPicturePage extends AndroidTabletPage {
     public TabletUnsplashPicturePage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
@@ -19,8 +17,7 @@ public class TabletUnsplashPicturePage extends AndroidTabletPage {
     }
 
     public boolean waitUntilVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(RegistrationPage.idChooseMyOwnButton), 20);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), RegistrationPage.idChooseMyOwnButton, 20);
     }
 
     public void tapChooseMyOwnButton() throws Exception {

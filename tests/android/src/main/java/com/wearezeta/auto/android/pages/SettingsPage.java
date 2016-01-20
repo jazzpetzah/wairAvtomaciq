@@ -7,25 +7,20 @@ import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.*;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 public class SettingsPage extends AndroidPage {
 
-    private static final String xpathSettingsTitle = "//*[@id='action_bar_container' and .//*[@value='Settings']]";
+    private static final By xpathSettingsTitle = By.xpath("//*[@id='action_bar_container' and .//*[@value='Settings']]");
 
-    private static final Function<String, String> xpathSettingsMenuItemByText = text -> String
+    private static final Function<String, String> xpathStrSettingsMenuItemByText = text -> String
             .format("//*[@id='title' and @value='%s']", text);
 
-    private static final Function<String, String> xpathConfirmBtnByName = name -> String
+    private static final Function<String, String> xpathStrConfirmBtnByName = name -> String
             .format("//*[starts-with(@id, 'button') and @value='%s']", name);
 
-    private static final String idPasswordConfirmationInput = "acet__remove_otr__password";
-    @FindBy(id = idPasswordConfirmationInput)
-    private WebElement confirmationPasswordInput;
+    private static final By idPasswordConfirmationInput = By.id("acet__remove_otr__password");
 
-    private static final String xpathConfirmationInputOKButton = "//*[starts-with(@id, 'button') and @value='OK']";
-    @FindBy(xpath = xpathConfirmationInputOKButton)
-    private WebElement confirmationPasswordOKButton;
+    private static final By xpathConfirmationInputOKButton = By.xpath("//*[starts-with(@id, 'button') and @value='OK']");
 
     public SettingsPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -44,42 +39,42 @@ public class SettingsPage extends AndroidPage {
     }
 
     public boolean waitUntilVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathSettingsTitle));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathSettingsTitle);
     }
 
     public void selectMenuItem(String name) throws Exception {
-        final By locator = By.xpath(xpathSettingsMenuItemByText.apply(name));
+        final By locator = By.xpath(xpathStrSettingsMenuItemByText.apply(name));
         assert scrollUntilMenuElementVisible(locator, 5) : String
                 .format("Menu item '%s' is not present", name);
-        getDriver().findElement(locator).click();
+        getElement(locator).click();
     }
 
     public void confirmLogout() throws Exception {
-        final By locator = By.xpath(xpathConfirmBtnByName.apply("Log out"));
+        final By locator = By.xpath(xpathStrConfirmBtnByName.apply("Log out"));
         getElement(locator, "Log out confirmation is not visible").click();
     }
 
     public boolean waitUntilPasswordConfirmationIsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idPasswordConfirmationInput));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idPasswordConfirmationInput);
     }
 
-    public void enterConfirmationPassword(String password) {
+    public void enterConfirmationPassword(String password) throws Exception {
+        final WebElement confirmationPasswordInput = getElement(idPasswordConfirmationInput);
         confirmationPasswordInput.click();
         confirmationPasswordInput.sendKeys(password);
     }
 
-    public void tapOKButtonOnPasswordConfirmationDialog() {
-        confirmationPasswordOKButton.click();
+    public void tapOKButtonOnPasswordConfirmationDialog() throws Exception {
+        getElement(xpathConfirmationInputOKButton).click();
     }
 
     public boolean waitUntilMenuItemVisible(String name) throws Exception {
-        final By locator = By.xpath(xpathSettingsMenuItemByText.apply(name));
+        final By locator = By.xpath(xpathStrSettingsMenuItemByText.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean waitUntilMenuItemInvisible(String name) throws Exception {
-        final By locator = By.xpath(xpathSettingsMenuItemByText.apply(name));
+        final By locator = By.xpath(xpathStrSettingsMenuItemByText.apply(name));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 }

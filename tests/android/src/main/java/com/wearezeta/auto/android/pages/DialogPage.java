@@ -10,7 +10,6 @@ import java.util.function.Function;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
@@ -20,212 +19,97 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class DialogPage extends AndroidPage {
 
-    private static final Logger log = ZetaLogger.getLog(DialogPage.class
-            .getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(DialogPage.class.getSimpleName());
 
     public static final String MEDIA_PLAY = "PLAY";
     public static final String MEDIA_PAUSE = "PAUSE";
 
     public static final By xpathConfirmOKButton = By.xpath("//*[@id='ttv__confirmation__confirm' and @value='OK']");
 
-    public static final String idDialogImages = "iv__row_conversation__message_image";
-    private static final String xpathLastPicture = String.format(
-            "(//*[@id='%s'])[last()]", idDialogImages);
+    public static final String idStrDialogImages = "iv__row_conversation__message_image";
+    public static final By idDialogImages = By.id(idStrDialogImages);
 
-    private static final String xpathE2EEDialogImagesBadges = "//*[@id='" + idDialogImages +
-            "']/parent::*/parent::*//*[@id='v__row_conversation__e2ee']";
+    private static final By xpathLastPicture = By.xpath(String.format("(//*[@id='%s'])[last()]", idStrDialogImages));
 
-    public static final String idAddPicture = "cursor_menu_item_camera";
+    private static final By xpathE2EEDialogImagesBadges = By.xpath("//*[@id='" + idStrDialogImages +
+            "']/parent::*/parent::*//*[@id='v__row_conversation__e2ee']");
 
-    public static final String idSelfAvatar = "civ__cursor__self_avatar";
-    @FindBy(id = idSelfAvatar)
-    private WebElement selfAvatar;
+    public static final By idAddPicture = By.id("cursor_menu_item_camera");
 
-    private static final Function<String, String> xpathConversationMessageByText = text -> String
-            .format("//*[@id='ltv__row_conversation__message' and @value='%s']",
-                    text);
+    private static final Function<String, String> xpathStrConversationMessageByText = text -> String
+            .format("//*[@id='ltv__row_conversation__message' and @value='%s']", text);
 
-    private static final Function<String, String> xpathEncryptedConversationMessageByText = text -> String
+    private static final Function<String, String> xpathStrEncryptedConversationMessageByText = text -> String
             .format("//*[@id='ltv__row_conversation__message' and @value='%s']/parent::*/parent::*" +
                     "//*[@id='v__row_conversation__e2ee']", text);
 
-    private static final Function<String, String> xpathUnsentIndicatorByText = text -> String
+    private static final Function<String, String> xpathStrUnsentIndicatorByText = text -> String
             .format("%s/parent::*/parent::*//*[@id='v__row_conversation__error']",
-                    xpathConversationMessageByText.apply(text));
+                    xpathStrConversationMessageByText.apply(text));
 
-    private static final String xpathUnsentIndicatorForImage = "//*[@id='"
-            + idDialogImages
-            + "']/parent::*/parent::*//*[@id='v__row_conversation__error']";
+    private static final By xpathUnsentIndicatorForImage = By.xpath("//*[@id='"
+            + idStrDialogImages + "']/parent::*/parent::*//*[@id='v__row_conversation__error']");
 
-    @FindBy(id = giphyPreviewButtonId)
-    private WebElement giphyPreviewButton;
+    private static final By idCursorBtn = By.id("typing_indicator_button");
 
-    @FindBy(id = idEditText)
-    private WebElement cursorInput;
+    private static final By idCursorBtnImg = By.id("typing_indicator_imageview");
 
-    @FindBy(id = idCursorArea)
-    private WebElement cursorArea;
+    private static final String idStrMissedCallMesage = "ttv__row_conversation__missed_call";
+    private static final Function<String, String> xpathStrMissedCallMesageByText = text -> String
+            .format("//*[@id='%s' and @value='%s']", idStrMissedCallMesage, text);
 
-    private static final String idCursorBtn = "typing_indicator_button";
-    @FindBy(id = idCursorBtn)
-    private WebElement cursorBtn;
+    private static final By idCursorFrame = By.id("cursor_layout");
 
-    private static final String idCursorBtnImg = "typing_indicator_imageview";
-    @FindBy(id = idCursorBtnImg)
-    private WebElement cursorBtnImg;
+    public static final Function<String, String> xpathStrPingMessageByText = text -> String
+            .format("//*[@id='ttv__row_conversation__ping_message' and @value='%s']", text);
 
-    private static final String idMessage = "ltv__row_conversation__message";
-    @FindBy(id = idMessage)
-    private List<WebElement> messagesList;
+    private static final By xpathDialogTakePhotoButton =
+            By.xpath("//*[@id='gtv__camera_control__take_a_picture' and @shown='true']");
 
-    private static final String idMissedCallMesage = "ttv__row_conversation__missed_call";
+    private static final By idSketchImagePaintButton = By.id("gtv__sketch_image_paint_button");
 
-    private static final Function<String, String> xpathMissedCallMesageByText = text -> String
-            .format("//*[@id='%s' and @value='%s']", idMissedCallMesage, text);
+    private static final By idFullScreenImage = By.id("tiv__single_image_message__image");
 
-    private static final String idCursorFrame = "cursor_layout";
-    @FindBy(id = idCursorFrame)
-    public WebElement cursorFrame;
+    public static final By idParticipantsBtn = By.id("cursor_menu_item_participant");
 
-    public static final Function<String, String> xpathPingMessageByText = text -> String
-            .format("//*[@id='ttv__row_conversation__ping_message' and @value='%s']",
-                    text);
+    private static final String idStrStartChatLabel = "ttv__row_conversation__connect_request__chathead_footer__label";
+    private static final Function<String, String> xpathStrStartChatLabelByPartOfText =
+            text -> String.format("//*[@id='%s' and contains(@value, '%s')]", idStrStartChatLabel, text);
 
-    private static final String idPingIcon = "gtv__knock_icon";
-    @FindBy(id = idPingIcon)
-    private WebElement pingIcon;
+    private static final By idPlayPauseMedia = By.id("gtv__media_play");
 
-    private static final String xpathDialogTakePhotoButton = "//*[@id='gtv__camera_control__take_a_picture' and @shown='true']";
-    @FindBy(xpath = xpathDialogTakePhotoButton)
-    private WebElement takePhotoButton;
+    private static final By idYoutubePlayButton = By.id("gtv__youtube_message__play");
 
-    private static final String idDialogChangeCameraButton = "gtv__camera__top_control__back_camera";
-    @FindBy(id = idDialogChangeCameraButton)
-    private WebElement changeCameraButton;
+    private static final By idMediaBarControl = By.id("gtv__conversation_header__mediabar__control");
 
-    private static final String idSketchImagePaintButton = "gtv__sketch_image_paint_button";
-    @FindBy(id = idSketchImagePaintButton)
-    private WebElement sketchImagePaintButton;
+    private static final By idPing = By.id("cursor_menu_item_ping");
 
-    @FindBy(id = idDialogImages)
-    private WebElement image;
+    private static final By idSketch = By.id("cursor_menu_item_draw");
 
-    private static final String idFullScreenImage = "tiv__single_image_message__image";
-    @FindBy(id = idFullScreenImage)
-    private WebElement fullScreenImage;
+    private static final By idCall = By.id("cursor_menu_item_calling");
 
-    @FindBy(id = idDialogImages)
-    private List<WebElement> imageList;
+    public static final By idCursorCloseButton = By.id("cursor_button_close");
 
-    private static final String idConnectRequestDialog = "connect_request_root";
-    @FindBy(id = idConnectRequestDialog)
-    private WebElement connectRequestDialog;
+    private static final By idMute = By.id("cib__calling__mic_mute");
 
-    public static final String idParticipantsBtn = "cursor_menu_item_participant";
-    @FindBy(id = idParticipantsBtn)
-    private WebElement participantsButton;
+    private static final By idSpeaker = By.id("cib__calling__speaker");
 
-    private static final String idConnectRequestMessage = "contact_request_message";
-    @FindBy(id = idConnectRequestMessage)
-    private WebElement connectRequestMessage;
+    private static final By idCancelCall = By.id("cib__calling__dismiss");
 
-    private static final String idConnectRequestConnectTo = "user_name";
-    @FindBy(id = idConnectRequestConnectTo)
-    private WebElement connectRequestConnectTo;
+    private static final String idStrNewConversationNameMessage = "ttv__row_conversation__new_conversation_name";
+    private static Function<String, String> xpathStrNewConversationNameByValue = value -> String
+            .format("//*[@id='%s' and @value='%s']", idStrNewConversationNameMessage, value);
 
-    private static final String idBackgroundOverlay = "v_background_dark_overlay";
-    @FindBy(id = idBackgroundOverlay)
-    private WebElement backgroundOverlay;
+    private static final By xpathLastConversationMessage =
+            By.xpath("(//*[@id='ltv__row_conversation__message'])[last()]");
 
-    private static final String idStartChatLabel = "ttv__row_conversation__connect_request__chathead_footer__label";
-    private static final Function<String, String> xpathStartChatLabelByPartOfText =
-            text -> String.format("//*[@id='%s' and contains(@value, '%s')]", idStartChatLabel, text);
+    private static final String idStrDialogRoot = "pfac__conversation__list_view_container";
+    private static final By idDialogRoot = By.id(idStrDialogRoot);
+    private static final By xpathDialogContent = By.xpath("//*[@id='" + idStrDialogRoot + "']/*/*/*");
 
-    private static final String idConnectRequestChatUserName = "ttv__row_conversation__connect_request__chathead_footer__username";
-    @FindBy(id = idConnectRequestChatUserName)
-    private WebElement connectRequestChatUserName;
+    public static Function<String, String> xpathStrInputFieldByValue = value -> String.format("//*[@value='%s']", value);
 
-    @FindBy(id = idGalleryBtn)
-    private WebElement galleryBtn;
-
-    @FindBy(id = idSearchHintClose)
-    private WebElement closeHintBtn;
-
-    @FindBy(id = idCloseImageBtn)
-    private WebElement closeImageBtn;
-
-    private static final String idPlayPauseMedia = "gtv__media_play";
-    @FindBy(id = idPlayPauseMedia)
-    private WebElement playPauseBtn;
-
-    private static final String idYoutubePlayButton = "gtv__youtube_message__play";
-    @FindBy(id = idYoutubePlayButton)
-    private WebElement playYoutubeBtn;
-
-    private static final String idMediaBarControl = "gtv__conversation_header__mediabar__control";
-    @FindBy(id = idMediaBarControl)
-    private WebElement mediaBarControl;
-
-    @FindBy(id = idAddPicture)
-    private WebElement addPictureBtn;
-
-    private static final String idPing = "cursor_menu_item_ping";
-    @FindBy(id = idPing)
-    private WebElement pingBtn;
-
-    private static final String idSketch = "cursor_menu_item_draw";
-    @FindBy(id = idSketch)
-    private WebElement sketchBtn;
-
-    private static final String idCall = "cursor_menu_item_calling";
-    @FindBy(id = idCall)
-    private WebElement callBtn;
-
-    public static final String idCursorCloseButton = "cursor_button_close";
-    @FindBy(id = idCursorCloseButton)
-    private WebElement closeBtn;
-
-    private static final String idMute = "cib__calling__mic_mute";
-    @FindBy(id = idMute)
-    private WebElement muteBtn;
-
-    private static final String idSpeaker = "cib__calling__speaker";
-    @FindBy(id = idSpeaker)
-    private WebElement speakerBtn;
-
-    private static final String idCancelCall = "cib__calling__dismiss";
-    @FindBy(id = idCancelCall)
-    private WebElement cancelCallBtn;
-
-    private static final String idNewConversationNameMessage = "ttv__row_conversation__new_conversation_name";
-
-    private static Function<String, String> xpathNewConversationNameByValue = value -> String
-            .format("//*[@id='%s' and @value='%s']",
-                    idNewConversationNameMessage, value);
-
-    private static final String xpathLastConversationMessage = "(//*[@id='ltv__row_conversation__message'])[last()]";
-    @FindBy(xpath = xpathLastConversationMessage)
-    private WebElement lastConversationMessage;
-
-    private static final String idDialogRoot = "pfac__conversation__list_view_container";
-    @FindBy(id = idDialogRoot)
-    private WebElement dialogRoot;
-
-    private static final String xpathDialogContent = "//*[@id='" + idDialogRoot
-            + "']/*/*/*";
-    @FindBy(xpath = xpathDialogContent)
-    private List<WebElement> dialogContentList;
-
-    private static final String idFullScreenImageImage = "tiv__single_image_message__animating_image";
-    @FindBy(id = idFullScreenImageImage)
-    private WebElement fullScreenImageImage;
-
-    public static Function<String, String> xpathInputFieldByValue = value -> String
-            .format("//*[@value='%s']", value);
-
-    private static final String idSwitchCameraButton = "gtv__camera__top_control__back_camera";
-    @FindBy(id = idSwitchCameraButton)
-    private WebElement switchCameraButton;
+    private static final By idSwitchCameraButton = By.id("gtv__camera__top_control__back_camera");
 
     private static final int DEFAULT_SWIPE_TIME = 500;
     private static final int MAX_SWIPE_RETRIES = 5;
@@ -236,39 +120,35 @@ public class DialogPage extends AndroidPage {
     }
 
     public boolean waitForCursorInputVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idCursorArea));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorArea);
     }
 
     public boolean waitForCursorInputNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-                By.id(idCursorArea));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idCursorArea);
     }
 
     public void tapOnCursorInput() throws Exception {
         // FIXME: Scroll to the bottom if cursor input is not visible
-        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idCursorBtnImg), 1)) {
-            cursorFrame.click();
+        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorBtnImg, 1)) {
+            getElement(idCursorFrame).click();
         }
-        cursorArea.click();
+        getElement(idCursorArea).click();
     }
 
     public void pressPlusButtonOnDialogPage() throws Exception {
-        getElement(By.id(idCursorBtn), "Plus cursor button is not visible").click();
+        getElement(idCursorBtn, "Plus cursor button is not visible").click();
     }
 
     public void swipeRightOnCursorInput() throws Exception {
         // FIXME: Workaround for a bug in the app
         scrollToTheBottom();
 
-        final By cursorLocator = By.id(idCursorArea);
+        final WebElement cursorArea = getElement(idCursorArea);
         int ntry = 1;
         do {
             DriverUtils.swipeElementPointToPoint(this.getDriver(), cursorArea,
                     DEFAULT_SWIPE_TIME, 10, 50, 90, 50);
-            final int currentCursorOffset = getDriver()
-                    .findElement(cursorLocator).getLocation().getX();
+            final int currentCursorOffset = cursorArea.getLocation().getX();
             if (currentCursorOffset > getDriver().manage().window().getSize()
                     .getWidth() / 2) {
                 return;
@@ -290,61 +170,59 @@ public class DialogPage extends AndroidPage {
     // NOTE: visible
     public void scrollToTheBottom() throws Exception {
         // Close cursor if it is currently opened
-        final By closeCursorBtn = By.id(DialogPage.idCursorCloseButton);
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(),
-                closeCursorBtn, 1)) {
-            getDriver().findElement(closeCursorBtn).click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), DialogPage.idCursorCloseButton, 1)) {
+            getElement(DialogPage.idCursorCloseButton).click();
             // Wait for animation
             Thread.sleep(500);
         } else {
             this.hideKeyboard();
-            if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idCursorFrame), 2)) {
+            if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorFrame, 2)) {
                 throw new IllegalStateException("Cursor frame is not visible");
             }
         }
-        cursorFrame.click();
+        getElement(idCursorFrame).click();
         this.hideKeyboard();
     }
 
     public void tapAddPictureBtn() throws Exception {
-        getElement(By.id(idAddPicture), "Add Picture button is not visible").click();
+        getElement(idAddPicture, "Add Picture button is not visible").click();
     }
 
     public void tapPingBtn() throws Exception {
-        getElement(By.id(idPing), "Ping button is not visible").click();
+        getElement(idPing, "Ping button is not visible").click();
     }
 
     public void tapSketchBtn() throws Exception {
-        getElement(By.id(idSketch), "Sketch button is not visible").click();
+        getElement(idSketch, "Sketch button is not visible").click();
     }
 
     public void tapCallBtn() throws Exception {
-        getElement(By.id(idCall), "Call button is not visible").click();
+        getElement(idCall, "Call button is not visible").click();
     }
 
     public void closeInputOptions() throws Exception {
-        getElement(By.id(idCursorCloseButton), "Close cursor button is not visible").click();
+        getElement(idCursorCloseButton, "Close cursor button is not visible").click();
     }
 
     public void tapMuteBtn() throws Exception {
-        getElement(By.id(idMute), "Mute button is not visible").click();
+        getElement(idMute, "Mute button is not visible").click();
     }
 
     public void tapSpeakerBtn() throws Exception {
-        getElement(By.id(idSpeaker), "Speaker button is not visible").click();
+        getElement(idSpeaker, "Speaker button is not visible").click();
     }
 
     public void tapCancelCallBtn() throws Exception {
-        getElement(By.id(idCancelCall), "Cancel call button is not visible").click();
+        getElement(idCancelCall, "Cancel call button is not visible").click();
     }
 
-    private WebElement getButtonElementByName(String name) {
+    private WebElement getButtonElementByName(String name) throws Exception {
         final String uppercaseName = name.toUpperCase();
         switch (uppercaseName) {
             case "MUTE":
-                return muteBtn;
+                return getElement(idMute);
             case "SPEAKER":
-                return speakerBtn;
+                return getElement(idSpeaker);
             default:
                 throw new NoSuchElementException(String.format(
                         "Button '%s' is unknown", name));
@@ -362,6 +240,7 @@ public class DialogPage extends AndroidPage {
 
     public void typeAndSendMessage(String message) throws Exception {
         // FIXME: Find a better solution for text autocorrection issues
+        final WebElement cursorInput = getElement(idEditText);
         final int maxTries = 5;
         int ntry = 0;
         do {
@@ -369,7 +248,7 @@ public class DialogPage extends AndroidPage {
             cursorInput.sendKeys(message);
             ntry++;
         } while (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathInputFieldByValue.apply(message)), 2)
+                By.xpath(xpathStrInputFieldByValue.apply(message)), 2)
                 && ntry < maxTries);
         if (ntry >= maxTries) {
             throw new IllegalStateException(
@@ -382,9 +261,9 @@ public class DialogPage extends AndroidPage {
     }
 
     public void typeMessage(String message) throws Exception {
-        cursorInput.sendKeys(message);
+        getElement(idEditText).sendKeys(message);
         if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathInputFieldByValue.apply(message)), 2)) {
+                By.xpath(xpathStrInputFieldByValue.apply(message)), 2)) {
             log.warn(String
                     .format("The message '%s' was autocorrected. This might cause unpredicted test results",
                             message));
@@ -392,34 +271,28 @@ public class DialogPage extends AndroidPage {
     }
 
     public void clickLastImageFromDialog() throws Exception {
-        final By locator = By.xpath(xpathLastPicture);
-        getElement(locator, "No pictures are visible in the conversation view").click();
+        getElement(xpathLastPicture, "No pictures are visible in the conversation view").click();
     }
 
     public boolean waitForConversationNameChangedMessage(String expectedName)
             throws Exception {
-        final By locator = By.xpath(xpathNewConversationNameByValue.apply(expectedName));
+        final By locator = By.xpath(xpathStrNewConversationNameByValue.apply(expectedName));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean waitForMessage(String text) throws Exception {
         scrollToTheBottom();
-        final By locator = By.xpath(xpathConversationMessageByText.apply(text));
+        final By locator = By.xpath(xpathStrConversationMessageByText.apply(text));
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
 
     public boolean waitForUnsentIndicator(String text) throws Exception {
-        final By locator = By.xpath(xpathUnsentIndicatorByText.apply(text));
+        final By locator = By.xpath(xpathStrUnsentIndicatorByText.apply(text));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isImageExists() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-                By.id(idDialogImages));
-    }
-
-    public Optional<BufferedImage> getLastImageInFullScreen() throws Exception {
-        return getElementScreenshot(fullScreenImageImage);
+        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), idDialogImages);
     }
 
     public void confirm() throws Exception {
@@ -435,25 +308,22 @@ public class DialogPage extends AndroidPage {
     }
 
     public void tapSketchOnImageButton() throws Exception {
-        getElement(By.id(idSketchImagePaintButton),
-                "Draw sketch on image button is not visible").click();
+        getElement(idSketchImagePaintButton, "Draw sketch on image button is not visible").click();
     }
 
     public void takePhoto() throws Exception {
-        final WebElement btn = getElement(By.xpath(xpathDialogTakePhotoButton),
-                "Take Photo button is not visible");
+        final WebElement btn = getElement(xpathDialogTakePhotoButton, "Take Photo button is not visible");
         if (!DriverUtils.waitUntilElementClickable(getDriver(), btn)) {
             throw new IllegalStateException("Take Photo button is not clickable");
         }
         btn.click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(),
-                By.xpath(xpathDialogTakePhotoButton))) {
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathDialogTakePhotoButton)) {
             throw new IllegalStateException("Take Photo button is still visible after being clicked");
         }
     }
 
     public boolean waitUntilStartChatTitleContains(String expectedText) throws Exception {
-        final By locator = By.xpath(xpathStartChatLabelByPartOfText.apply(expectedText));
+        final By locator = By.xpath(xpathStrStartChatLabelByPartOfText.apply(expectedText));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
@@ -467,25 +337,22 @@ public class DialogPage extends AndroidPage {
     }
 
     public void openGallery() throws Exception {
-        getElement(By.id(idGalleryBtn), "Gallery button is still not visible").click();
+        getElement(idGalleryBtn, "Gallery button is still not visible").click();
     }
 
     public void closeFullScreenImage() throws Exception {
         // Sometimes X button is opened automatically after some timeout
         final int MAX_TRIES = 4;
         int ntry = 1;
-        while (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idCloseImageBtn), 4)
-                && ntry <= MAX_TRIES) {
+        while (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCloseImageBtn, 4) && ntry <= MAX_TRIES) {
             this.tapOnCenterOfScreen();
             ntry++;
         }
-        assert DriverUtils
-                .waitUntilElementClickable(getDriver(), closeImageBtn);
-        closeImageBtn.click();
+        getElement(idCloseImageBtn).click();
     }
 
     public void tapConversationDetailsButton() throws Exception {
-        final WebElement participantsBtn = getElement(By.id(idParticipantsBtn));
+        final WebElement participantsBtn = getElement(idParticipantsBtn);
         participantsBtn.click();
         final long millisecondsStarted = System.currentTimeMillis();
         final long maxAnimationDurationMillis = 2000;
@@ -498,19 +365,19 @@ public class DialogPage extends AndroidPage {
 
     public boolean waitForPingMessageWithText(String expectedText)
             throws Exception {
-        final By locator = By.xpath(xpathPingMessageByText.apply(expectedText));
+        final By locator = By.xpath(xpathStrPingMessageByText.apply(expectedText));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean waitForPingMessageWithTextDisappears(String expectedText)
             throws Exception {
-        final By locator = By.xpath(xpathPingMessageByText.apply(expectedText));
+        final By locator = By.xpath(xpathStrPingMessageByText.apply(expectedText));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
     public boolean isGroupChatDialogContainsNames(List<String> names)
             throws Exception {
-        final String convoText = getElement(By.xpath(xpathLastConversationMessage),
+        final String convoText = getElement(xpathLastConversationMessage,
                 "No messages are visible in the conversation view").getText();
         for (String name : names) {
             if (!convoText.toLowerCase().contains(name.toLowerCase())) {
@@ -521,14 +388,13 @@ public class DialogPage extends AndroidPage {
     }
 
     public boolean isDialogVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-                By.id(idMessage));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idDialogRoot);
     }
 
     private static final double MAX_BUTTON_STATE_OVERLAP = 0.5;
 
     public void tapPlayPauseBtn() throws Exception {
-        getElement(By.id(idPlayPauseMedia), "Play/Pause button is not visible");
+        final WebElement playPauseBtn = getElement(idPlayPauseMedia, "Play/Pause button is not visible");
         if (!DriverUtils.waitUntilElementClickable(getDriver(), playPauseBtn)) {
             throw new IllegalStateException("Play/Pause button is not clickable");
         }
@@ -558,14 +424,13 @@ public class DialogPage extends AndroidPage {
     }
 
     public boolean waitUntilYoutubePlayButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idYoutubePlayButton));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idYoutubePlayButton);
     }
 
     public double getMediaBarControlIconOverlapScore(String label)
             throws Exception {
         String path = null;
-        BufferedImage mediaImage = getElementScreenshot(mediaBarControl)
+        BufferedImage mediaImage = getElementScreenshot(getElement(idMediaBarControl))
                 .orElseThrow(IllegalStateException::new);
         if (label.equals(MEDIA_PLAY)) {
             path = CommonUtils.getMediaBarPlayIconPath(DialogPage.class);
@@ -578,50 +443,43 @@ public class DialogPage extends AndroidPage {
     }
 
     public BufferedImage getMediaControlButtonScreenshot() throws Exception {
-        return getElementScreenshot(playPauseBtn).orElseThrow(
-                IllegalStateException::new);
+        return getElementScreenshot(getElement(idPlayPauseMedia)).orElseThrow(IllegalStateException::new);
     }
 
     public void tapPlayPauseMediaBarBtn() throws Exception {
-        getElement(By.id(idMediaBarControl), "Media barr PlayPause button is not visible");
-        mediaBarControl.click();
+        getElement(idMediaBarControl, "Media barr PlayPause button is not visible").click();
     }
 
-    private boolean waitUntilMediaBarVisible(int timeoutSeconds)
-            throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idMediaBarControl), timeoutSeconds);
+    private boolean waitUntilMediaBarVisible(int timeoutSeconds) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idMediaBarControl, timeoutSeconds);
     }
 
     public boolean waitUntilMissedCallMessageIsVisible(String expectedMessage)
             throws Exception {
-        final By locator = By.xpath(xpathMissedCallMesageByText
+        final By locator = By.xpath(xpathStrMissedCallMesageByText
                 .apply(expectedMessage));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public String getLastMessageFromDialog() {
-        return lastConversationMessage.getText();
+    public String getLastMessageFromDialog() throws Exception {
+        return getElement(xpathLastConversationMessage).getText();
     }
 
-    public Optional<BufferedImage> getRecentPictureScreenshot()
-            throws Exception {
-        return this.getElementScreenshot(image);
+    public Optional<BufferedImage> getRecentPictureScreenshot() throws Exception {
+        return this.getElementScreenshot(getElement(idDialogImages));
     }
 
     public Optional<BufferedImage> getPreviewPictureScreenshot()
             throws Exception {
-        return this.getElementScreenshot(fullScreenImage);
+        return this.getElementScreenshot(getElement(idFullScreenImage));
     }
 
     public boolean isImageInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-                By.id(idDialogImages));
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idDialogImages);
     }
 
     public boolean waitForAPictureWithUnsentIndicator() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.xpath(xpathUnsentIndicatorForImage));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathUnsentIndicatorForImage);
     }
 
     public boolean scrollUpUntilMediaBarVisible(final int maxScrollRetries)
@@ -637,13 +495,12 @@ public class DialogPage extends AndroidPage {
         return false;
     }
 
-    public int getCurrentNumberOfItemsInDialog() {
-        return dialogContentList.size();
+    public int getCurrentNumberOfItemsInDialog() throws Exception {
+        return selectVisibleElements(xpathDialogContent).size();
     }
 
     public BufferedImage getConvoViewScreenshot() throws Exception {
-        return this.getElementScreenshot(dialogRoot).orElseThrow(
-                IllegalStateException::new);
+        return this.getElementScreenshot(getElement(idDialogRoot)).orElseThrow(IllegalStateException::new);
     }
 
     /**
@@ -651,35 +508,30 @@ public class DialogPage extends AndroidPage {
      * @throws Exception
      */
     public boolean tapSwitchCameraButton() throws Exception {
-        switchCameraButton.click();
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.xpath(xpathDialogTakePhotoButton));
+        getElement(idSwitchCameraButton).click();
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathDialogTakePhotoButton);
     }
 
     public boolean waitForXEncryptedMessages(String msg, int times) throws Exception {
-        final By locator = By.xpath(xpathEncryptedConversationMessageByText.apply(msg));
+        final By locator = By.xpath(xpathStrEncryptedConversationMessageByText.apply(msg));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) &&
                 getDriver().findElements(locator).size() == times;
     }
 
     public boolean waitForXNonEncryptedMessages(String msg, int times) throws Exception {
-        final By locator = By.xpath(xpathConversationMessageByText.apply(msg));
+        final By locator = By.xpath(xpathStrConversationMessageByText.apply(msg));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) &&
                 getDriver().findElements(locator).size() == times;
     }
 
     public boolean waitForXEncryptedImages(int times) throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idDialogImages)) :
-                "No images are visible in the conversation view";
-        final List<WebElement> allImageBadges = getDriver().findElementsByXPath(xpathE2EEDialogImagesBadges);
+        final List<WebElement> allImageBadges = selectVisibleElements(xpathE2EEDialogImagesBadges);
         return times == allImageBadges.stream().filter(WebElement::isDisplayed).count();
     }
 
     public boolean waitForXNonEncryptedImages(int times) throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idDialogImages)) :
-                "No images are visible in the conversation view";
-        final List<WebElement> allImageBadges = getDriver().findElementsByXPath(xpathE2EEDialogImagesBadges);
-        final List<WebElement> allImages =  getDriver().findElementsById(idDialogImages);
+        final List<WebElement> allImages = selectVisibleElements(idDialogImages);
+        final List<WebElement> allImageBadges = selectVisibleElements(xpathE2EEDialogImagesBadges);
         return times == (allImages.size() - allImageBadges.stream().filter(WebElement::isDisplayed).count());
     }
 }

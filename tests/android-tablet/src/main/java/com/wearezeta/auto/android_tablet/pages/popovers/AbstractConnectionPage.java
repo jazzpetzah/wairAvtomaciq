@@ -4,20 +4,15 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 abstract class AbstractConnectionPage extends AbstractPopoverPage {
-	public static final Function<String, String> xpathNameByValue = value -> String
-			.format("//*[@id='%s']//*[@value='%s']",
-					OutgoingConnectionPopover.idRootLocator, value);
+	public static final Function<String, String> xpathStrNameByValue = value -> String
+			.format("//*[@id='%s']//*[@value='%s']", OutgoingConnectionPopover.idRootLocator, value);
 
-	public static final String idCloseButton = "gtv__participants__close";
-	@FindBy(id = idCloseButton)
-	private WebElement closeButton;
+	public static final By idCloseButton = By.id("gtv__participants__close");
 
 	public AbstractConnectionPage(Future<ZetaAndroidDriver> lazyDriver,
 			AbstractPopoverContainer container) throws Exception {
@@ -26,11 +21,11 @@ abstract class AbstractConnectionPage extends AbstractPopoverPage {
 
 	public boolean isNameVisible(String name) throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(xpathNameByValue.apply(name)));
+				By.xpath(xpathStrNameByValue.apply(name)));
 	}
 
-	public void tapCloseButton() {
-		closeButton.click();
+	public void tapCloseButton() throws Exception {
+		getElement(idCloseButton).click();
 	}
 
 }

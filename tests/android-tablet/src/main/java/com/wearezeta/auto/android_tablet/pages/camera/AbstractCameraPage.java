@@ -5,7 +5,6 @@ import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
@@ -14,13 +13,9 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public abstract class AbstractCameraPage extends AndroidTabletPage {
-    public static final String idGalleryButton = "gtv__camera_control__pick_from_gallery";
-    @FindBy(id = idGalleryButton)
-    private WebElement galleryButton;
+    public static final By idGalleryButton = By.id("gtv__camera_control__pick_from_gallery");
 
-    public static final String idTakePhotoButton = "gtv__camera_control__take_a_picture";
-    @FindBy(id = idTakePhotoButton)
-    protected WebElement takePhotoButton;
+    public static final By idTakePhotoButton = By.id("gtv__camera_control__take_a_picture");
 
     public AbstractCameraPage(Future<ZetaAndroidDriver> lazyDriver)
             throws Exception {
@@ -39,12 +34,11 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
     }
 
     public void tapTakePhotoButton() throws Exception {
-        assert waitUntilTakePhotoButtonVisible() : "Take Photo button is not visible, but it should be";
-        takePhotoButton.click();
+        getElement(idTakePhotoButton).click();
     }
 
     public boolean waitUntilTakePhotoButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idTakePhotoButton));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idTakePhotoButton);
     }
 
     private boolean isGalleryModeActivated = false;
@@ -71,7 +65,7 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
     }
 
     public void tapGalleryButton() throws Exception {
-        getElement(By.id(idGalleryButton), "Open gallery button is not visible").click();
+        getElement(idGalleryButton, "Open gallery button is not visible").click();
         isGalleryModeActivated = true;
     }
 

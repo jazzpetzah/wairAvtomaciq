@@ -25,7 +25,7 @@ public class SingleUserPopover extends AbstractPopoverContainer {
 		return By.id(idRootLocator);
 	}
 
-	public void tapOptionsButton() {
+	public void tapOptionsButton() throws Exception {
 		this.singleConnectedUserDetalsPage.tapOptionsButton();
 	}
 
@@ -49,7 +49,7 @@ public class SingleUserPopover extends AbstractPopoverContainer {
 				.waitUntilUserEmailVisible(expectedEmail);
 	}
 
-	public void tapAddPeopleButton() {
+	public void tapAddPeopleButton() throws Exception {
 		this.singleConnectedUserDetalsPage.tapAddPeopleButton();
 	}
 
@@ -61,7 +61,7 @@ public class SingleUserPopover extends AbstractPopoverContainer {
 		this.searchPage.tapAvatarFromSearchResults(name);
 	}
 
-	public void tapAddToConversationButton() {
+	public void tapAddToConversationButton() throws Exception {
 		this.searchPage.tapAddToConversationButton();
 	}
 

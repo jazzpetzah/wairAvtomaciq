@@ -4,8 +4,6 @@ import java.awt.image.BufferedImage;
 import java.util.Optional;
 import java.util.concurrent.Future;
 
-import org.openqa.selenium.By;
-
 import com.wearezeta.auto.android.pages.CallingOverlayPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -46,17 +44,15 @@ public class TabletCallingOverlayPage extends AndroidTabletPage {
 	}
 
 	public Optional<BufferedImage> getMuteButtonScreenshot() throws Exception {
-		return this.getElementScreenshot(getCallingOverlayPage().muteMicButton);
+		return this.getElementScreenshot(getElement(CallingOverlayPage.idCallingMicMute));
 	}
 
 	public boolean waitUntilSpeakerButtonVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(CallingOverlayPage.idCallingSpeaker));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), CallingOverlayPage.idCallingSpeaker);
 	}
 
 	public boolean waitUntilSpeakerButtonInvisible() throws Exception {
-		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.id(CallingOverlayPage.idCallingSpeaker));
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(), CallingOverlayPage.idCallingSpeaker);
 	}
 
 	public void tapDismissButton() throws Exception {

@@ -7,7 +7,6 @@ import java.util.function.Function;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
@@ -50,12 +49,6 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
             .format("//*[@id='fl__participant__settings_box']"
                     + "//*[starts-with(@id, 'ttv__settings_box__item') and @value='%s']"
                     + "/parent::*//*[@id='fl_options_menu_button']", name.toUpperCase());
-
-    @FindBy(id = idPager)
-    private WebElement backGround;
-
-    @FindBy(xpath = xpathConfirmBtn)
-    private WebElement confirmBtn;
 
     public static final By xpathLeftActionButton =
             By.xpath("//*[contains(@id, '__left__action') and starts-with(@id, 'gtv__') and @shown='true']");
@@ -119,7 +112,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     }
 
     private static By[] getParticipantPageLocators() {
-        return new By[]{By.id(PeoplePickerPage.idParticipantsClose),
+        return new By[]{PeoplePickerPage.idParticipantsClose,
                 idParticipantsSubHeader, idParticipantsHeader};
     }
 
@@ -170,8 +163,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     }
 
     public void pressConfirmBtn() throws Exception {
-        getElement(By.xpath(xpathConfirmBtn), "Confirmation button is not visible").click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), By.xpath(xpathConfirmBtn), 3)) {
+        getElement(xpathConfirmBtn, "Confirmation button is not visible").click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathConfirmBtn, 3)) {
             throw new IllegalStateException("Confirmation button is still visible after 3 seconds timeout");
         }
     }
@@ -187,7 +180,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     }
 
     public boolean isBackGroundImageCorrect(String imageName) throws Exception {
-        final BufferedImage bgImage = getElementScreenshot(backGround)
+        final BufferedImage bgImage = getElementScreenshot(getElement(idPager))
                 .orElseThrow(IllegalStateException::new);
         String path = CommonUtils.getImagesPath(CommonUtils.class);
         BufferedImage realImage = ImageUtil.readImageFromFile(path + imageName);
@@ -227,7 +220,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     }
 
     public void tapCloseButton() throws Exception {
-        final WebElement closeButton = getElement(By.id(PeoplePickerPage.idParticipantsClose),
+        final WebElement closeButton = getElement(PeoplePickerPage.idParticipantsClose,
                 "Close participants button is not visible");
         final int halfHeight = this.getDriver().manage().window().getSize().getHeight() / 2;
         int ntry = 1;
@@ -235,7 +228,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
         do {
             closeButton.click();
             ntry++;
-        } while (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(PeoplePickerPage.idParticipantsClose), 1)
+        } while (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), PeoplePickerPage.idParticipantsClose, 1)
                 && closeButton.getLocation().getY() < halfHeight
                 && ntry <= maxRetries);
         if (ntry > maxRetries) {

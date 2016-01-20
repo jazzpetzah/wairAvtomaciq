@@ -22,7 +22,7 @@ public class BlockedConnectionPopover extends AbstractPopoverContainer {
 		return By.id(idRootLocator);
 	}
 
-	public void tapUnblockButton() {
+	public void tapUnblockButton() throws Exception {
 		this.blockedConnectionPage.tapUnblockButton();
 	}
 }

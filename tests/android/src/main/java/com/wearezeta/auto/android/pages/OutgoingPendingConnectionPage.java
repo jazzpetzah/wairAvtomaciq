@@ -8,16 +8,10 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 public class OutgoingPendingConnectionPage extends AndroidPage {
-    private static final String idPageRoot = "fl__pending_connect_request";
+    private static final By idPageRoot = By.id("fl__pending_connect_request");
 
-    private static final Function<String, String> xpathNameByText = text -> String
-            .format("//*[@id='taet__participants__header' and @value='%s']",
-                    text);
-
-    @SuppressWarnings("unused")
-    private static final Function<String, String> xpathFirstMessageByText = text -> String
-            .format("//*[@id='ttv__connect_request__first_message' and @value='%s']",
-                    text);
+    private static final Function<String, String> xpathStrNameByText = text -> String
+            .format("//*[@id='taet__participants__header' and @value='%s']", text);
 
     public OutgoingPendingConnectionPage(
             Future<ZetaAndroidDriver> lazyDriver) throws Exception {
@@ -25,12 +19,11 @@ public class OutgoingPendingConnectionPage extends AndroidPage {
     }
 
     public boolean waitUntilVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idPageRoot));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idPageRoot);
     }
 
     public boolean waitUntilNameVisible(String expectedName) throws Exception {
-        final By locator = By.xpath(xpathNameByText.apply(expectedName));
+        final By locator = By.xpath(xpathStrNameByText.apply(expectedName));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 }

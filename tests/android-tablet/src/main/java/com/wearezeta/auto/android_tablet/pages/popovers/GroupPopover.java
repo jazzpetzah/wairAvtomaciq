@@ -31,11 +31,11 @@ public class GroupPopover extends AbstractPopoverContainer {
 		this.participantsPage.selectMenuItem(itemName);
 	}
 
-	public void tapConfirmLeaveButton() {
+	public void tapConfirmLeaveButton() throws Exception {
 		this.participantsPage.tapConfirmLeaveButton();
 	}
 
-	public void tapOptionsButton() {
+	public void tapOptionsButton() throws Exception {
 		this.participantsPage.tapOptionsButton();
 	}
 

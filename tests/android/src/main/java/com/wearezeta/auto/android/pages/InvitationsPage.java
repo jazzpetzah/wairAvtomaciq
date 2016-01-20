@@ -5,8 +5,6 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 import java.awt.image.BufferedImage;
 import java.util.Optional;
@@ -15,66 +13,58 @@ import java.util.function.Function;
 
 public class InvitationsPage extends AndroidPage {
 
-    private static final String idInviteMorePeopleContactsBtn = "zb__conversationlist__show_contacts";
-    @FindBy(id = idInviteMorePeopleContactsBtn)
-    private By inviteContactsBtnLocator = By.id(idInviteMorePeopleContactsBtn);
+    private static final By idInviteMorePeopleContactsBtn = By.id("zb__conversationlist__show_contacts");
 
-    private static final String idInviteSearchField = "puet_pickuser__searchbox";
-    @FindBy(id = idInviteSearchField)
-    private WebElement inviteSearchField;
+    private static final By idInviteSearchField = By.id("puet_pickuser__searchbox");
 
-    private static final String idInvitePageCloseBtn = "gtv_pickuser__clearbutton";
-    @FindBy(id = idInvitePageCloseBtn)
-    private WebElement invitePageCloseBtn;
+    private static final By idInvitePageCloseBtn = By.id("gtv_pickuser__clearbutton");
 
-    private static final Function<String, String> xpathUserToInviteByName = name
+    private static final Function<String, String> xpathStrUserToInviteByName = name
             -> String.format("//*[@id='ttv__contactlist__user__name' and @value='%s']", name);
 
-    private static final Function<String, String> xpathInviteButtonByUserName = name
+    private static final Function<String, String> xpathStrInviteButtonByUserName = name
             -> String.format("%s/parent::*/*[@id='zb__contactlist__user_selected_button']",
-            xpathUserToInviteByName.apply(name));
+            xpathStrUserToInviteByName.apply(name));
 
-    private static final Function<String, String> xpathAvatarByUserName = name
+    private static final Function<String, String> xpathStrAvatarByUserName = name
             -> String.format("%s/parent::*/*[@id='cv__contactlist__user__chathead']",
-            xpathUserToInviteByName.apply(name));
+            xpathStrUserToInviteByName.apply(name));
 
-    private static final Function<String, String> xpathAlertItemByValue = value
+    private static final Function<String, String> xpathStrAlertItemByValue = value
             -> String.format("//*[starts-with(@id,'text') and @value='%s']", value);
 
-    private static final String xpathAlertOK = "//*[starts-with(@id,'button') and @value='OK']";
-    @FindBy(xpath = xpathAlertOK)
-    private WebElement alertOKButton;
+    private static final By xpathAlertOK = By.xpath("//*[starts-with(@id,'button') and @value='OK']");
 
     public InvitationsPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
     public boolean waitUntilUserNameIsVisible(String name) throws Exception {
-        final By locator = By.xpath(xpathUserToInviteByName.apply(name));
+        final By locator = By.xpath(xpathStrUserToInviteByName.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public Optional<BufferedImage> getAvatarScreenshot(String name) throws Exception {
-        final By locator = By.xpath(xpathAvatarByUserName.apply(name));
+        final By locator = By.xpath(xpathStrAvatarByUserName.apply(name));
         assert waitUntilUserNameIsVisible(name) : String.format(
                 "User '%s' is not visible in the invites list", name);
-        return this.getElementScreenshot(getDriver().findElement(locator));
+        return this.getElementScreenshot(getElement(locator));
     }
 
     public void tapInviteButtonFor(String name) throws Exception {
-        final By locator = By.xpath(xpathInviteButtonByUserName.apply(name));
+        final By locator = By.xpath(xpathStrInviteButtonByUserName.apply(name));
         assert waitUntilUserNameIsVisible(name) : String.format(
                 "User '%s' is not visible in the invites list", name);
-        getDriver().findElement(locator).click();
+        getElement(locator).click();
     }
 
     public void selectEmailOnAlert(String email) throws Exception {
-        final By locator = By.xpath(xpathAlertItemByValue.apply(email));
+        final By locator = By.xpath(xpathStrAlertItemByValue.apply(email));
         getElement(locator, String.format("Email address '%s' is not visible on the alert", email)).click();
     }
 
-    public void confirmInvitationAlert() {
-        alertOKButton.click();
+    public void confirmInvitationAlert() throws Exception {
+        getElement(xpathAlertOK).click();
     }
 
     public boolean isInvitationMessageReceivedBy(String email) throws Throwable {
@@ -86,12 +76,11 @@ public class InvitationsPage extends AndroidPage {
     }
 
     public boolean waitForInviteMorePeopleContactsButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), inviteContactsBtnLocator);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idInviteMorePeopleContactsBtn);
     }
 
     public boolean waitForInviteMorePeopleContactsButtonNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-                inviteContactsBtnLocator);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idInviteMorePeopleContactsBtn);
     }
 
     public String getRecentInvitationCode(String email) throws Throwable {
@@ -104,15 +93,15 @@ public class InvitationsPage extends AndroidPage {
     }
 
     public void tapOnInviteSearchField() throws Exception {
-        inviteSearchField.click();
+        getElement(idInviteSearchField).click();
     }
 
     public void tapOnInvitePageCloseBtn() throws Exception {
-        invitePageCloseBtn.click();
+        getElement(idInvitePageCloseBtn).click();
     }
 
     public boolean waitUntilUserNameIsInvisible(String name) throws Exception {
-        final By locator = By.xpath(xpathUserToInviteByName.apply(name));
+        final By locator = By.xpath(xpathStrUserToInviteByName.apply(name));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 }
