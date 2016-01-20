@@ -49,7 +49,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
-    And I open conversation details
+    And I swipe the text input cursor
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll on iPad popover
@@ -80,7 +80,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
-    And I open conversation details
+    And I swipe the text input cursor
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll on iPad popover
@@ -180,7 +180,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
-    And I open conversation details
+    And I swipe the text input cursor
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll on iPad popover
@@ -207,7 +207,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
-    And I open conversation details
+    And I swipe the text input cursor
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll on iPad popover
@@ -271,7 +271,7 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I see dialog page
     And I see plus button next to text input
-    And I open conversation details
+    And I swipe the text input cursor
     Then I see Buttons: Details, Call, Camera, Sketch, Ping
     And I see plus button is not shown
     And I swipe left on options buttons
@@ -297,7 +297,7 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I see dialog page
     And I see plus button next to text input
-    And I open conversation details
+    And I swipe the text input cursor
     Then I see Buttons: Details, Call, Camera, Sketch, Ping
     And I see plus button is not shown
     And I swipe left on options buttons
@@ -648,7 +648,7 @@ Feature: Conversation View
     And I see download button shown on fullscreen page
     And I tap download button on fullscreen page
     And I tap close fullscreen page button
-    And I open conversation details
+    And I swipe the text input cursor
     And I press Add Picture button
     And I press Camera Roll button
     And I choose last picture from camera roll
@@ -675,7 +675,7 @@ Feature: Conversation View
     And I see download button shown on fullscreen page
     And I tap download button on fullscreen page
     And I tap close fullscreen page button
-    And I open conversation details
+    And I swipe the text input cursor
     And I press Add Picture button
     And I press Camera Roll button
     And I choose last picture from camera roll
@@ -733,7 +733,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I tap on text input to scroll to the end
     And I scroll to the beginning of the conversation
-    And I open conversation details
+    And I swipe the text input cursor
     Then I see controller buttons can not be visible
 
     Examples:
@@ -752,7 +752,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I tap on text input to scroll to the end
     And I scroll to the beginning of the conversation
-    And I open conversation details
+    And I swipe the text input cursor
     Then I see controller buttons can not be visible
 
     Examples:

@@ -203,6 +203,16 @@ public class DialogPageSteps {
                 + " expected: " + msg, dialogLastMessage.equals(msg));
     }
 
+    @When("^I swipe the text input cursor$")
+    public void ISwipeTheTextInputCursor() throws Throwable {
+        for (int i = 0; i < 3; i++) {
+            getDialogPage().swipeInputCursor();
+            if (getDialogPage().isPingButtonVisible()) {
+                break;
+            }
+        }
+    }
+
     /**
      * Swipe left on text input to close options buttons
      *

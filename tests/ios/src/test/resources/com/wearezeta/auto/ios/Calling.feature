@@ -19,7 +19,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @C3180 @regression @rc @id908 @torun
+  @C3180 @regression @rc @id908
   Scenario Outline: Verify starting outgoing call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -27,7 +27,7 @@ Feature: Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
-    And I open conversation details
+    And I swipe the text input cursor
     And I press call button
     Then I see mute call, end call and speakers buttons
     And I see calling to contact <Contact> message
@@ -44,7 +44,7 @@ Feature: Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
-    And I open conversation details
+    And I swipe the text input cursor
     And I press call button
     Then I see mute call, end call and speakers buttons
     And I see calling to contact <Contact> message
@@ -134,7 +134,7 @@ Feature: Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
-    And I open conversation details
+    And I swipe the text input cursor
     And I press call button
     And I see mute call, end call and speakers buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -199,7 +199,7 @@ Feature: Calling
     Given I see conversations list
     And I tap on contact name <Contact>
     And I see dialog page
-    And I open conversation details
+    And I swipe the text input cursor
     And I press call button
     And I see mute call, end call and speakers buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -220,7 +220,7 @@ Feature: Calling
     Given I see conversations list
     And I tap on contact name <Contact1>
     And I see dialog page
-    And I open conversation details
+    And I swipe the text input cursor
     And I press call button
     And I see mute call, end call and speakers buttons
     And I wait for 5 seconds
@@ -251,7 +251,7 @@ Feature: Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
-    And I open conversation details
+    And I swipe the text input cursor
     And I press call button
     And I see mute call, end call and speakers buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -291,7 +291,7 @@ Feature: Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
-    And I open conversation details
+    And I swipe the text input cursor
     And I press call button
     And I see mute call, end call and speakers buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -521,7 +521,7 @@ Feature: Calling
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
-    And I open group conversation details
+    And I swipe the text input cursor
     And I press call button
     Then I see mute call, end call and speakers buttons
     Then I see calling to a group message
@@ -569,7 +569,7 @@ Feature: Calling
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
-    And I open group conversation details
+    And I swipe the text input cursor
     And I press call button
     And I wait for 5 seconds
     And I see mute call, end call and speakers buttons
