@@ -183,10 +183,6 @@ public class ContactListPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.name(name), 5);
     }
 
-    public List<WebElement> getVisibleContacts() throws Exception {
-        return this.getDriver().findElements(classNameContactListNames);
-    }
-
     @Override
     public void swipeDown(int time) throws Exception {
         Point coords = getElement(nameMainWindow).getLocation();
@@ -196,15 +192,13 @@ public class ContactListPage extends IOSPage {
                 coords.y + elementSize.height - 150, time);
     }
 
-    public boolean conversationWithUsersPresented(String name1, String name2,
-                                                  String name3) throws Exception {
+    public boolean conversationWithUsersPresented(String name1, String name2, String name3) throws Exception {
         String firstChat = getFirstConversationName();
         return firstChat.contains(name1)
                 && firstChat.contains(name2) && firstChat.contains(name3);
     }
 
-    public boolean isConversationSilenced(String conversation,
-                                          boolean isSilenced) throws Exception {
+    public boolean isConversationSilenced(String conversation, boolean isSilenced) throws Exception {
         String deviceType = CommonUtils.getDeviceName(this.getClass());
         BufferedImage referenceImage = null;
         WebElement element = findNameInContactList(conversation).orElseThrow(IllegalStateException::new);
