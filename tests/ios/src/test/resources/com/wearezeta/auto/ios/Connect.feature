@@ -408,7 +408,7 @@ Feature: Connect
     And I type the default message
     When I send the message
     Then I see 1 default message in the dialog
-    When I swipe the text input cursor
+    When I open conversation details
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll
