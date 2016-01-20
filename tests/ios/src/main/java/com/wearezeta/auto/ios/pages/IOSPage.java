@@ -207,18 +207,15 @@ public abstract class IOSPage extends BasePage {
     public void minimizeApplication(int timeSeconds) throws Exception {
         assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            final String[] doubleClickHomeScript = new String[]{
+            CommonUtils.executeUIAppleScript(new String[]{
                     "tell application \"System Events\"",
                     "tell application \"Simulator\" to activate",
                     "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
                     "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
-                    "end tell"
-            };
-            CommonUtils.executeUIAppleScript(doubleClickHomeScript).
-                    get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+                    "end tell"}).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
             Thread.sleep(timeSeconds * 1000);
-            CommonUtils.executeUIAppleScript(doubleClickHomeScript).
-                    get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+            final Dimension screenSize = getDriver().manage().window().getSize();
+            getDriver().tap(1, screenSize.getWidth() / 3, screenSize.getHeight() / 2, DriverUtils.SINGLE_TAP_DURATION);
         } else {
             // https://discuss.appium.io/t/runappinbackground-does-not-work-for-ios9/6201
             this.getDriver().runAppInBackground(timeSeconds);
