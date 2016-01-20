@@ -46,6 +46,7 @@ Feature: E2EE
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When User <Contact> sends encrypted image <ImageName> to single user conversation Myself
     And User <Contact> sends image <ImageName> to single user conversation Myself
