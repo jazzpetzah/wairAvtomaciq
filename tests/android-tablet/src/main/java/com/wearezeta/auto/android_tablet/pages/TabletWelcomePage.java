@@ -4,20 +4,14 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class TabletWelcomePage extends AndroidTabletPage {
-    public final static String idRegisterButton = "zb__welcome__create_account";
-    @FindBy(id = idRegisterButton)
-    private WebElement registerButton;
+    public final static By idRegisterButton = By.id("zb__welcome__create_account");
 
-    public static final String idHaveAccountButton = "zb__welcome__sign_in";
-    @FindBy(id = idHaveAccountButton)
-    protected WebElement haveAccountButton;
+    public static final By idHaveAccountButton = By.id("zb__welcome__sign_in");
 
     private final static Function<String, String> xpathLinkByText = text -> String
             .format("//*[@value='%s']", text);
@@ -29,18 +23,15 @@ public class TabletWelcomePage extends AndroidTabletPage {
 
     public boolean waitForInitialScreen() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(TabletWelcomePage.idHaveAccountButton), 30);
+                idHaveAccountButton, 30);
     }
 
     public void tapSignInButton() throws Exception {
-        assert waitForInitialScreen() : "SIGN IN button is not visible after timeout";
-        assert DriverUtils.waitUntilElementClickable(getDriver(),
-                haveAccountButton) : "SIGN IN button is not clickable after timeout";
-        haveAccountButton.click();
+        getElement(idHaveAccountButton, "LOG IN button is not clickable after timeout").click();
     }
 
     public void tapRegisterButton() throws Exception {
-        registerButton.click();
+        getElement(idRegisterButton).click();
     }
 
     public boolean waitUntilLinkVisible(String linkText) throws Exception {
@@ -49,7 +40,6 @@ public class TabletWelcomePage extends AndroidTabletPage {
     }
 
     public void tapLink(String linkText) throws Exception {
-        final By locator = By.xpath(xpathLinkByText.apply(linkText));
-        getDriver().findElement(locator).click();
+        getElement(By.xpath(xpathLinkByText.apply(linkText))).click();
     }
 }
