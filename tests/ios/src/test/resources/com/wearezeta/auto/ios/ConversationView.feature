@@ -21,7 +21,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I type the default message
     And I send the message
     Then I see 1 default message in the dialog
