@@ -404,11 +404,10 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    Then I see dialog page
     And I type the default message
     When I send the message
     Then I see 1 default message in the dialog
-    When I swipe the text input cursor
+    When I click plus button next to text input
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll

@@ -26,8 +26,7 @@ Feature: Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press call button
     Then I see mute call, end call and speakers buttons
     And I see calling to contact <Contact> message
@@ -43,8 +42,7 @@ Feature: Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press call button
     Then I see mute call, end call and speakers buttons
     And I see calling to contact <Contact> message
@@ -133,8 +131,7 @@ Feature: Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press call button
     And I see mute call, end call and speakers buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -198,8 +195,7 @@ Feature: Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     And I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press call button
     And I see mute call, end call and speakers buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -219,8 +215,7 @@ Feature: Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     And I tap on contact name <Contact1>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press call button
     And I see mute call, end call and speakers buttons
     And I wait for 5 seconds
@@ -250,8 +245,7 @@ Feature: Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press call button
     And I see mute call, end call and speakers buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -290,8 +284,7 @@ Feature: Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press call button
     And I see mute call, end call and speakers buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -520,8 +513,7 @@ Feature: Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press call button
     Then I see mute call, end call and speakers buttons
     Then I see calling to a group message
@@ -568,8 +560,7 @@ Feature: Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press call button
     And I wait for 5 seconds
     And I see mute call, end call and speakers buttons

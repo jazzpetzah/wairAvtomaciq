@@ -231,10 +231,6 @@ public class DialogPage extends IOSPage {
         return nameStrConnectingLabelByReceiverName.apply(name);
     }
 
-    public void swipeInputCursor() throws Exception {
-        DriverUtils.swipeRight(this.getDriver(), getElement(nameConversationCursorInput), 1000);
-    }
-
     public void swipeLeftOptionsButtons() throws Exception {
         final WebElement conversationInput = getElement(nameConversationCursorInput);
         int inputMiddle = conversationInput.getLocation().y

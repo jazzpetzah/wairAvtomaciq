@@ -4,12 +4,14 @@ import io.appium.java_client.AppiumDriver;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.InetAddress;
 import java.security.MessageDigest;
 import java.util.*;
 import java.util.concurrent.*;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.net.ntp.NTPUDPClient;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
@@ -618,5 +620,16 @@ public class CommonUtils {
         }
         String[] asArray = new String[scriptContent.size()];
         return executeUIShellScript(scriptContent.toArray(asArray));
+    }
+
+    private static final String TIME_SERVER = "time-a.nist.gov";
+
+    public static Future<Long> getPreciseTime() throws Exception {
+        final Callable<Long> task = () -> {
+            final NTPUDPClient timeClient = new NTPUDPClient();
+            final InetAddress inetAddress = InetAddress.getByName(TIME_SERVER);
+            return new Date(timeClient.getTime(inetAddress).getReturnTime()).getTime();
+        };
+        return Executors.newSingleThreadExecutor().submit(task);
     }
 }

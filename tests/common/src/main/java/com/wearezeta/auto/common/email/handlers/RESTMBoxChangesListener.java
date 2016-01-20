@@ -41,7 +41,7 @@ class RESTMBoxChangesListener extends AbstractMBoxChangesListener {
 						log.debug("\tMessage accepted by timestamp");
 						return deliveredRawMessage;
 					} else {
-						log.error("\t!!! Message rejected because it is outdated. Please check your local time (should be in sync with world time)!");
+						log.error("\t!!! Message rejected because it is outdated");
 					}
 				}
 			}

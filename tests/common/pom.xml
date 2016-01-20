@@ -132,6 +132,12 @@
         </dependency>
 
         <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>3.3</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.wearezeta</groupId>
             <artifactId>zmessaging-actor</artifactId>
             <version>${zmessaging.actor.version}</version>

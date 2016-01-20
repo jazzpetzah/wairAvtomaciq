@@ -7,8 +7,7 @@ Feature: Calling
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press call button
     Then I see mute call, end call buttons
     And I see calling to contact <Contact> message
@@ -27,8 +26,7 @@ Feature: Calling
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press call button
     Then I see mute call, end call buttons
     And I see calling to contact <Contact> message
@@ -188,8 +186,7 @@ Feature: Calling
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press call button
     And I see mute call, end call buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -252,8 +249,7 @@ Feature: Calling
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press call button
     And I see mute call, end call buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -315,8 +311,7 @@ Feature: Calling
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press call button
     And I see mute call, end call buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -338,8 +333,7 @@ Feature: Calling
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press call button
     And I see mute call, end call buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -359,8 +353,7 @@ Feature: Calling
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press call button
     And I see mute call, end call buttons
     And <Contact2> calls me using <CallBackend2>
@@ -389,8 +382,7 @@ Feature: Calling
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press call button
     And I see mute call, end call buttons
     And <Contact2> calls me using <CallBackend2>
@@ -418,8 +410,7 @@ Feature: Calling
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press call button
     And I see mute call, end call buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -441,8 +432,7 @@ Feature: Calling
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press call button
     And I see mute call, end call buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -502,8 +492,7 @@ Feature: Calling
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press call button
     And I see mute call, end call buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -533,8 +522,7 @@ Feature: Calling
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press call button
     And I see mute call, end call buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -563,8 +551,7 @@ Feature: Calling
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press call button
     And I see mute call, end call buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds

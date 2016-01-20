@@ -8,7 +8,6 @@ import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import org.apache.log4j.Logger;
-import org.junit.Assert;
 import org.openqa.selenium.WebDriverException;
 
 import com.wearezeta.auto.ios.pages.ContactListPage;
@@ -46,11 +45,11 @@ public class PerformanceSteps {
 	private static final int MAX_MSGS_IN_CONVO_WINDOW = 50;
 
 	private DialogPage getDialogPage() throws Exception {
-		return (DialogPage) pagesCollection.getPage(DialogPage.class);
+		return pagesCollection.getPage(DialogPage.class);
 	}
 
 	private ContactListPage getContactListPage() throws Exception {
-		return (ContactListPage) pagesCollection.getPage(ContactListPage.class);
+		return pagesCollection.getPage(ContactListPage.class);
 	}
 
 	/**
@@ -80,23 +79,6 @@ public class PerformanceSteps {
 			throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		perfCommon.sendMultipleMessagesIntoConversation(contact, msgsCount);
-	}
-
-	private void waitUntilConversationsListIsFullyLoaded(int retries)
-			throws Exception {
-		final int maxTries = retries;
-		final long millisecondsDelay = 20000;
-		int ntry = 1;
-		int visibleContactsSize;
-		while ((visibleContactsSize = getContactListPage().getVisibleContacts()
-				.size()) == 0 && ntry <= maxTries) {
-			log.debug("Waiting for contact list. Iteration #" + ntry);
-			Thread.sleep(millisecondsDelay);
-			ntry++;
-		}
-		Assert.assertTrue(
-				"No conversations are visible in the conversations list, but some are expected",
-				visibleContactsSize > 0);
 	}
 
 	private void visitConversationWhenAvailable(final String destConvoName)
@@ -163,7 +145,7 @@ public class PerformanceSteps {
 	 */
 	@When("^I wait for contact list loaded$")
 	public void IWaitForContactListLoaded() throws Exception {
-		waitUntilConversationsListIsFullyLoaded(50);
+		getContactListPage().waitForContactListToLoad();
 	}
 
 	/**
@@ -186,7 +168,7 @@ public class PerformanceSteps {
 			GroupChatPageSteps steps = new GroupChatPageSteps();
 			steps.IReturnToChatList();
 		}
-		waitUntilConversationsListIsFullyLoaded(10);
+		getContactListPage().waitForContactListToLoad();
 		final String destConvoName = usrMgr.findUserByNameOrNameAlias(
 				fromContact).getName();
 		String firstConvoName = getContactListPage().getFirstDialogName();

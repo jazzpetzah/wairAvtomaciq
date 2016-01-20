@@ -54,7 +54,7 @@ class JavaXMBoxChangesListener extends AbstractMBoxChangesListener implements
 					result.add(msg);
 					log.debug("\tMessage accepted by timestamp");
 				} else {
-					log.error("\t!!! Message rejected because it is outdated. Please check your local time (should be in sync with world time)!");
+					log.error("\t!!! Message rejected because it is outdated");
 				}
 			} catch (MessagingException e) {
 				e.printStackTrace();
