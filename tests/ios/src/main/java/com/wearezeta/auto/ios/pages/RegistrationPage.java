@@ -39,7 +39,7 @@ public class RegistrationPage extends IOSPage {
 
     public static final By xpathCountryList = By.xpath(xpathStrMainWindow + "/UIATableView[1]");
 
-    private static final By xpathConfirmButton = By.xpath(xpathStrMainWindow + "/UIATextField[1]/UIAButton[1]");
+    private static final By nameConfirmButton = By.name("RegistrationConfirmButton");
 
     private static final By nameAgreeButton = By.name("I AGREE");
 
@@ -81,7 +81,7 @@ public class RegistrationPage extends IOSPage {
 
     public void inputPhoneNumber(String number) throws Exception {
         getElement(namePhoneNumberField).sendKeys(number);
-        getElement(xpathConfirmButton).click();
+        getElement(nameConfirmButton).click();
     }
 
     public boolean isVerificationCodePageVisible() throws Exception {
@@ -90,7 +90,7 @@ public class RegistrationPage extends IOSPage {
 
     public void inputActivationCode(String code) throws Exception {
         getElement(xpathActivationCode, "Activation code input is not visible").sendKeys(code);
-        getElement(xpathConfirmButton).click();
+        getElement(nameConfirmButton).click();
     }
 
     public void inputRandomActivationCode() throws Exception {
@@ -120,7 +120,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void inputName() throws Exception {
-        getElement(xpathConfirmButton).click();
+        getElement(nameConfirmButton).click();
     }
 
     public void clickCreateAccountButton() throws Exception {
