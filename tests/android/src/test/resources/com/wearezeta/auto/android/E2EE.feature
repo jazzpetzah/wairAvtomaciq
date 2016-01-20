@@ -41,7 +41,7 @@ Feature: E2EE
       | Password      | Name      | DeviceToRemove |
       | user1Password | user1Name | Device1        |
 
-  @C3227 @staging
+  @C3227 @rc @regression
   Scenario Outline: Verify you can receive encrypted and non-encrypted images in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
