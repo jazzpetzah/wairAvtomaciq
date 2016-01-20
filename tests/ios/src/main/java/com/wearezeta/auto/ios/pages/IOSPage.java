@@ -324,7 +324,7 @@ public abstract class IOSPage extends BasePage {
     @Override
     protected WebElement getElement(By locator) throws Exception {
         try {
-            return DriverUtils.verifyPresence(getDriver(), locator);
+            return super.getElement(locator);
         } catch (Exception e) {
             log.debug(getDriver().getPageSource());
             throw e;
@@ -334,7 +334,7 @@ public abstract class IOSPage extends BasePage {
     @Override
     protected WebElement getElement(By locator, String message) throws Exception {
         try {
-            return DriverUtils.verifyPresence(getDriver(), locator, message);
+            return super.getElement(locator, message);
         } catch (Exception e) {
             log.debug(getDriver().getPageSource());
             throw e;
@@ -344,7 +344,7 @@ public abstract class IOSPage extends BasePage {
     @Override
     protected WebElement getElement(By locator, String message, int timeoutSeconds) throws Exception {
         try {
-            return DriverUtils.verifyPresence(getDriver(), locator, message, timeoutSeconds);
+            return super.getElement(locator, message, timeoutSeconds);
         } catch (Exception e) {
             log.debug(getDriver().getPageSource());
             throw e;
