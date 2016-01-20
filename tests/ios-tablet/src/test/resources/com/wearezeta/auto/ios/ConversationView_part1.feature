@@ -71,8 +71,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press Add Picture button on iPad
     And I press Camera Roll button on iPad
     And I choose a picture from camera roll on iPad popover
@@ -91,8 +90,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press Add Picture button on iPad
     And I press Camera Roll button on iPad
     And I choose a picture from camera roll on iPad popover
@@ -515,8 +513,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I tap on sketch button in cursor
     And I draw a random sketch
     And I send my sketch
@@ -534,8 +531,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I tap on sketch button in cursor
     And I draw a random sketch
     And I send my sketch
@@ -552,8 +548,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I click Ping button
     Then I see You Pinged message in the dialog
 
@@ -569,8 +564,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I click Ping button
     Then I see You Pinged message in the dialog
 

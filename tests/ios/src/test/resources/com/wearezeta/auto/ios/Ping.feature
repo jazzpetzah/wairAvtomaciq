@@ -9,7 +9,7 @@ Feature: Ping
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I click Ping button
     Then I see You Pinged message in the dialog
     And I see <Action1> icon in conversation

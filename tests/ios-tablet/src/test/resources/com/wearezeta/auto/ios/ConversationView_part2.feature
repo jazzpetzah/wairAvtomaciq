@@ -48,8 +48,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll on iPad popover
@@ -79,8 +78,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll on iPad popover
@@ -179,8 +177,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll on iPad popover
@@ -206,8 +203,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll on iPad popover
@@ -269,9 +265,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
-    And I see plus button next to text input
-    And I swipe the text input cursor
+    And I click plus button next to text input
     Then I see Buttons: Details, Call, Camera, Sketch, Ping
     And I see plus button is not shown
     And I swipe left on options buttons
@@ -295,9 +289,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
-    And I see plus button next to text input
-    And I swipe the text input cursor
+    And I click plus button next to text input
     Then I see Buttons: Details, Call, Camera, Sketch, Ping
     And I see plus button is not shown
     And I swipe left on options buttons
@@ -641,14 +633,13 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
-    And I see dialog page
     And I see new photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I see download button shown on fullscreen page
     And I tap download button on fullscreen page
     And I tap close fullscreen page button
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press Add Picture button
     And I press Camera Roll button
     And I choose last picture from camera roll
@@ -668,14 +659,13 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
-    And I see dialog page
     And I see new photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I see download button shown on fullscreen page
     And I tap download button on fullscreen page
     And I tap close fullscreen page button
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press Add Picture button
     And I press Camera Roll button
     And I choose last picture from camera roll
@@ -733,7 +723,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I tap on text input to scroll to the end
     And I scroll to the beginning of the conversation
-    And I swipe the text input cursor
+    And I click plus button next to text input
     Then I see controller buttons can not be visible
 
     Examples:
@@ -752,7 +742,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I tap on text input to scroll to the end
     And I scroll to the beginning of the conversation
-    And I swipe the text input cursor
+    And I click plus button next to text input
     Then I see controller buttons can not be visible
 
     Examples:
