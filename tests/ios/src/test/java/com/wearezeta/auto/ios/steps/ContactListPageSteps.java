@@ -337,16 +337,12 @@ public class ContactListPageSteps {
     /**
      * Click on archive button for a conversation
      *
-     * @param conversation conversation name to archive
      * @throws Exception if conversation is not found
-     * @step. ^I click archive button for conversation (.*)$
+     * @step. ^I click archive button for conversation$
      */
-    @When("^I click archive button for conversation (.*)$")
-    public void IClickArchiveConversationButton(String conversation)
+    @When("^I click archive button for conversation$")
+    public void IClickArchiveConversationButton()
             throws Exception {
-        conversation = usrMgr.replaceAliasesOccurences(conversation,
-                FindBy.NAME_ALIAS);
-        // TODO: select button by conversation name
         getContactListPage().clickArchiveConversationButton();
     }
 
