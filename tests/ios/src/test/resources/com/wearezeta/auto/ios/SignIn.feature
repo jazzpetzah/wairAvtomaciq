@@ -70,8 +70,7 @@ Feature: Sign In
     When I enter phone number for user <Name>
     Then I see verification code page
     When I enter verification code for user <Name>
-    Then I see set email/password suggesstion page
-    When I have entered login <Email>
+    And I have entered login <Email>
     And I start activation email monitoring
     And I have entered password <Password>
     When I click DONE keyboard button
