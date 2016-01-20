@@ -557,6 +557,15 @@ public class CommonUtils {
         return getValueFromConfig(cls, "appName");
     }
 
+    private static final int SCREENSHOT_TIMEOUT_SECONDS = 5;
+
+    public static void takeIOSSimulatorScreenshot(String screenshotPath) throws Exception {
+        executeUIShellScript(new String[]{
+                String.format("mkdir -p $(dirname \"%s\")", screenshotPath),
+                String.format("%s/simshot \"%s\"", getIOSToolsRoot(CommonUtils.class), screenshotPath)
+        }).get(SCREENSHOT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+    }
+
     private static class UIScriptExecutionMonitor implements Callable<Void> {
         private File flag;
         private File script;
@@ -603,7 +612,7 @@ public class CommonUtils {
         Runtime.getRuntime().exec(new String[]{"chmod", "u+x",
                 result.getCanonicalPath()}).waitFor();
         Runtime.getRuntime().exec(new String[]{"/usr/bin/open", "-a", "Terminal",
-                result.getCanonicalPath()}).waitFor();
+                result.getCanonicalPath(), "-g"}).waitFor();
         return Executors.newSingleThreadExecutor().submit(
                 new UIScriptExecutionMonitor(executionFlag, result));
     }

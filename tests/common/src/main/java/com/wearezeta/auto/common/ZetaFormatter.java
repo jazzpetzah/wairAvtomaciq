@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 
 import com.wearezeta.auto.common.rc.TestcaseResultToTestrailTransformer;
 import com.wearezeta.auto.common.testrail.TestrailSyncUtilities;
+import io.appium.java_client.ios.IOSDriver;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -177,11 +178,20 @@ public class ZetaFormatter implements Formatter, Reporter {
                             feature.replaceAll("\\W+", "_"), scenario
                                     .replaceAll("\\W+", "_"), stepName
                                     .replaceAll("\\W+", "_"));
-            final Optional<BufferedImage> screenshot = DriverUtils.takeFullScreenShot(driver);
-            if (!screenshot.isPresent()) {
-                return;
+            if (driver instanceof IOSDriver && CommonUtils.getIsSimulatorFromConfig(ZetaFormatter.class)) {
+                try {
+                    CommonUtils.takeIOSSimulatorScreenshot(screenshotPath);
+                } catch (Exception e) {
+                    log.error("Failed to take iOS simulator screenshot:");
+                    e.printStackTrace();
+                }
+            } else {
+                final Optional<BufferedImage> screenshot = DriverUtils.takeFullScreenShot(driver);
+                if (!screenshot.isPresent()) {
+                    return;
+                }
+                screenshotSavers.execute(() -> storeScreenshot(screenshot.get(), screenshotPath));
             }
-            screenshotSavers.execute(() -> storeScreenshot(screenshot.get(), screenshotPath));
         } else {
             log.debug(String
                     .format("Selenium driver is not ready yet. Skipping screenshot creation for step '%s'",
@@ -190,6 +200,7 @@ public class ZetaFormatter implements Formatter, Reporter {
     }
 
     private static boolean isScreenshotingEnabled = true;
+
     static {
         try {
             isScreenshotingEnabled = CommonUtils.getMakeScreenshotsFromConfig(ZetaFormatter.class);
@@ -199,6 +210,7 @@ public class ZetaFormatter implements Formatter, Reporter {
     }
 
     private static boolean isScreenshotingOnPassedStepsEnabled = true;
+
     static {
         try {
             isScreenshotingOnPassedStepsEnabled =
@@ -220,7 +232,7 @@ public class ZetaFormatter implements Formatter, Reporter {
         final long stepFinishedTimestamp = new Date().getTime();
         if (isScreenshotingEnabled) {
             if (!isScreenshotingOnPassedStepsEnabled && (result.getStatus().equals(Result.PASSED))) {
-                log.debug("Skip screenshot for passed step...");
+                log.debug("Skip screenshot for passed step....");
             } else {
                 try {
                     takeStepScreenshot(result, stepName);
