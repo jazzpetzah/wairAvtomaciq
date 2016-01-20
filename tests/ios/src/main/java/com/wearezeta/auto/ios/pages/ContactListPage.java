@@ -25,11 +25,11 @@ public class ContactListPage extends IOSPage {
 
     private static final String xpathStrNameContactListItems = xpathStrContactListRoot + "//UIACollectionCell";
 
-    private static final Function<String, String> convoListEntryByName = name ->
+    private static final Function<String, String> xpathStrConvoListEntryByName = name ->
             String.format("%s[ .//*[@value='%s'] ]", xpathStrNameContactListItems, name);
-    private static final Function<Integer, String> convoListEntryByIdx = idx ->
+    private static final Function<Integer, String> xpathStrConvoListEntryByIdx = idx ->
             String.format("(%s)[%s]", xpathStrNameContactListItems, idx);
-    private static final Function<Integer, String> convoListEntryNameByIdx = idx ->
+    private static final Function<Integer, String> xpathStrConvoListEntryNameByIdx = idx ->
             String.format("(%s)[%s]/UIAStaticText", xpathStrNameContactListItems, idx);
 
     private static final By nameOpenStartUI = By.name("START A CONVERSATION");
@@ -72,7 +72,7 @@ public class ContactListPage extends IOSPage {
     }
 
     public boolean isMyUserNameDisplayedFirstInContactList(String name) throws Exception {
-        final By locator = By.xpath(convoListEntryByIdx.apply(1));
+        final By locator = By.xpath(xpathStrConvoListEntryByIdx.apply(1));
         return getElement(locator).getText().equals(name);
     }
 
@@ -116,12 +116,12 @@ public class ContactListPage extends IOSPage {
     }
 
     public String getDialogNameByIndex(int index) throws Exception {
-        final By locator = By.xpath(convoListEntryNameByIdx.apply(index));
+        final By locator = By.xpath(xpathStrConvoListEntryNameByIdx.apply(index));
         return getElement(locator, String.format("Conversation # %s is not visible", index)).getText();
     }
 
     private Optional<WebElement> findNameInContactList(String name) throws Exception {
-        final By locator = By.xpath(convoListEntryByName.apply(name));
+        final By locator = By.xpath(xpathStrConvoListEntryByName.apply(name));
         final Optional<WebElement> contactCell = getElementIfDisplayed(locator);
         if (contactCell.isPresent()) {
             return contactCell;
@@ -160,7 +160,7 @@ public class ContactListPage extends IOSPage {
     }
 
     public boolean waitForContactListToLoad() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.xpath(convoListEntryByIdx.apply(1)));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.xpath(xpathStrConvoListEntryByIdx.apply(1)));
     }
 
     public boolean isPendingRequestInContactList() throws Exception {
@@ -278,7 +278,7 @@ public class ContactListPage extends IOSPage {
     public BufferedImage getScreenshotFirstContact() throws Exception {
         // This takes a screenshot of the area to the left of a contact where
         // ping and unread dot notifications are visible
-        final By locator = By.xpath(convoListEntryByIdx.apply(1));
+        final By locator = By.xpath(xpathStrConvoListEntryByIdx.apply(1));
         final WebElement contact = getElement(locator, "No contacts are visible in the list");
         return getScreenshotByCoordinates(contact.getLocation().x,
                 contact.getLocation().y + getElement(xpathContactListRoot).getLocation().y,
