@@ -94,6 +94,7 @@ Feature: Invitations
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     When I tap Invite button at the bottom of conversations list
+    And I hide keyboard
     And I take 1st screenshot
     And I swipe up
     And I take 2nd screenshot

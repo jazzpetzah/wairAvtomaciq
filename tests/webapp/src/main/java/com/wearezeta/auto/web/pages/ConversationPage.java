@@ -164,7 +164,7 @@ public class ConversationPage extends WebPage {
 	private static boolean containsAllCaseInsensitive(String text,
 			Set<String> parts) {
 		for (String part : parts) {
-			if (!text.toLowerCase().contains(part.toLowerCase())) {
+			if (!text.replaceAll(" +", " ").toLowerCase().contains(part.toLowerCase())) {
 				return false;
 			}
 		}
