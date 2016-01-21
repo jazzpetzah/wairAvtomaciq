@@ -209,6 +209,7 @@ class RealAndroidDevice(BaseNodeVerifier):
 
 IOS_SIMULATOR_BOOT_TIMEOUT = 60 * 2 # seconds
 IOS_SIMULATOR_EXECUTABLE_NAME = 'Simulator'
+IOS_SIMULATOR_AGENT_NAME = 'launchd_sim'
 AUTORUN_APPIUM_APP_PATH = '/Applications/AutorunAppium.app'
 
 class IOSSimulator(BaseNodeVerifier):
@@ -262,7 +263,8 @@ class IOSSimulator(BaseNodeVerifier):
                            password=self._verification_kwargs['node_password'])
             simulator_name = self._verification_kwargs['ios_simulator_name']
 
-            client.exec_command('/usr/bin/killall "{}"'.format(IOS_SIMULATOR_EXECUTABLE_NAME))
+            client.exec_command('/usr/bin/killall -9 {}'.format(IOS_SIMULATOR_EXECUTABLE_NAME))
+            client.exec_command('/usr/bin/killall -9 {}'.format(IOS_SIMULATOR_AGENT_NAME))
             time.sleep(1)
 
             available_simulators = self._get_installed_simulators(client)
@@ -275,8 +277,8 @@ class IOSSimulator(BaseNodeVerifier):
                 msg = 'There is no "{}" simulator available. The list of available simulators for the node "{}":\n{}\n'.\
                                  format(simulator_name, self._node.name, pformat(available_simulators))
                 sys.stderr.write(msg)
-                self._send_email_notification('Non-existing simulator name "{}" has been provided'.\
-                                              format(simulator_name), msg)
+                self._send_email_notification('Non-existing simulator name "{}" has been provided'.format(simulator_name),
+                                              msg)
                 return False
             if result is True:
                 sys.stderr.write('Adjusting simulator scale...')
