@@ -5,11 +5,9 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.Future;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -17,17 +15,11 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class SketchPage extends AndroidPage {
 
-    private static final String idCanvas = "dcv__canvas";
-    @FindBy(id = idCanvas)
-    private WebElement canvas;
+    private static final By idCanvas = By.id("dcv__canvas");
 
-    private static final String idColorPicker = "cpdl__color_layout";
-    @FindBy(id = idColorPicker)
-    private WebElement colorPicker;
+    private static final By idColorPicker = By.id("cpdl__color_layout");
 
-    private static final String idSendButton = "tv__send_button";
-    @FindBy(id = idSendButton)
-    private WebElement sendButton;
+    private static final By idSendButton = By.id("tv__send_button");
 
     // Colors should be in the order they appear in the color picker
     public static final String[] colors = {"white", "black", "blue", "green",
@@ -51,13 +43,7 @@ public class SketchPage extends AndroidPage {
 
     public void setColor(int colorIndex) throws Exception {
         this.selectedColorIndex = colorIndex;
-        selectColorFromChooser(colorPicker);
-    }
-
-    public void setColor(String color) throws Exception {
-        color = color.toLowerCase().trim();
-        this.selectedColorIndex = ArrayUtils.indexOf(colors, color);
-        selectColorFromChooser(colorPicker);
+        selectColorFromChooser(getElement(idColorPicker));
     }
 
     private void selectColorFromChooser(WebElement colorPicker)
@@ -89,7 +75,7 @@ public class SketchPage extends AndroidPage {
         if (getDriver().getOSVersionString().compareTo("4.3") < 0) {
             swipeDuration = 1500;
         }
-        DriverUtils.swipeElementPointToPoint(this.getDriver(), canvas,
+        DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(idCanvas),
                 swipeDuration, percentStartX, percentStartY, percentEndX,
                 percentEndY);
     }
@@ -107,11 +93,12 @@ public class SketchPage extends AndroidPage {
     }
 
     public void tapSendButton() throws Exception {
+        final WebElement sendButton = getElement(idSendButton);
         DriverUtils.tapInTheCenterOfTheElement(getDriver(), sendButton);
-        DriverUtils.waitUntilLocatorDissapears(getDriver(), By.id(idSendButton), 5);
-        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idSendButton), 1)) {
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), idSendButton, 5)) {
             try {
-                getDriver().tap(1, sendButton.getLocation().getX(), sendButton.getLocation().getY(), 1);
+                getDriver().tap(1, sendButton.getLocation().getX(), sendButton.getLocation().getY(),
+                        DriverUtils.SINGLE_TAP_DURATION);
             } catch (NoSuchElementException e) {
                 log.debug("Can't find send sketch button. Page source: " + getDriver().getPageSource());
             }
@@ -119,6 +106,6 @@ public class SketchPage extends AndroidPage {
     }
 
     public Optional<BufferedImage> getCanvasScreenshot() throws Exception {
-        return this.getElementScreenshot(canvas);
+        return this.getElementScreenshot(getElement(idCanvas));
     }
 }

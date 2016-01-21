@@ -2,10 +2,8 @@ package com.wearezeta.auto.ios.steps;
 
 import java.awt.datatransfer.UnsupportedFlavorException;
 
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -17,19 +15,15 @@ import cucumber.api.java.en.When;
 
 public class PeoplePickerPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	private static final Logger log = ZetaLogger
-			.getLog(PeoplePickerPageSteps.class.getSimpleName());
 
-	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
-			.getInstance();
+	private final IOSPagesCollection pagesCollecton = IOSPagesCollection.getInstance();
 
 	private PeoplePickerPage getPeoplePickerPage() throws Exception {
-		return (PeoplePickerPage) pagesCollecton
-				.getPage(PeoplePickerPage.class);
+		return pagesCollecton.getPage(PeoplePickerPage.class);
 	}
 
 	private ContactListPage getСontactListPage() throws Exception {
-		return (ContactListPage) pagesCollecton.getPage(ContactListPage.class);
+		return pagesCollecton.getPage(ContactListPage.class);
 	}
 
 	@When("^I see People picker page$")
@@ -91,81 +85,6 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * Swipes a suggested contact half-way to reveal HIDE button
-	 * 
-	 * @step. I swipe to reveal hide button for suggested contact (.*)
-	 * @param contact
-	 *            name of suggested contact to swipe
-	 * @throws Exception
-	 */
-
-	@When("I swipe to reveal hide button for suggested contact (.*)")
-	public void SwipeToRevealHideButton(String contact) throws Exception {
-		try {
-			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		} catch (NoSuchUserException e) {
-			log.debug("No user found. " + e);
-		}
-		getPeoplePickerPage().swipeToRevealHideSuggestedContact(contact);
-	}
-
-	/**
-	 * Swipes a suggested contact away completely to dismiss
-	 * 
-	 * @step. I swipe completely to dismiss suggested contact (.*)
-	 * @param contact
-	 *            name of suggested contact to swipe
-	 * @throws Exception
-	 */
-
-	@When("I swipe completely to dismiss suggested contact (.*)")
-	public void SwipeCompletelyToDismiss(String contact) throws Exception {
-		try {
-			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		getPeoplePickerPage().swipeCompletelyToDismissSuggestedContact(contact);
-	}
-
-	/**
-	 * Taps the hide button for a suggested contact
-	 * 
-	 * @step. I tap hide for suggested contact
-	 * @throws Exception
-	 */
-
-	@When("I tap hide for suggested contact (.*)")
-	public void ITapHideSuggestedContact(String contact) throws Exception {
-		try {
-			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		} catch (NoSuchUserException e) {
-			log.debug("No user found. " + e);
-		}
-		getPeoplePickerPage().tapHideSuggestedContact(contact);
-	}
-
-	/**
-	 * Verifies that a user's name is not present in suggested contacts
-	 * 
-	 * @step. I do not see suggested contact (.*)
-	 * @param contact
-	 *            name of suggested contact to check
-	 * @throws Exception
-	 */
-
-	@Then("I do not see suggested contact (.*)")
-	public void IDoNotSeeSuggestedContact(String contact) throws Exception {
-		try {
-			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		Assert.assertFalse("Suggested contact is still visible",
-				getPeoplePickerPage().isSuggestedContactVisible(contact));
-	}
-
-	/**
 	 * A workaround for top people not loading immediately
 	 * 
 	 * @step. I re-enter the people picker if top people list is not there
@@ -179,7 +98,6 @@ public class PeoplePickerPageSteps {
 				IClickCloseButtonDismissPeopleView();
 				Thread.sleep(5000);
 				getСontactListPage().openSearch();
-				getPeoplePickerPage().closeShareContactsIfVisible();
 			} else {
 				break;
 			}
@@ -200,7 +118,7 @@ public class PeoplePickerPageSteps {
 				IClickCloseButtonDismissPeopleView();
 				Thread.sleep(5000);
 				getСontactListPage().openSearch();
-				getPeoplePickerPage().closeShareContactsIfVisible();
+				// getPeoplePickerPage().closeShareContactsIfVisible();
 			} else {
 				break;
 			}
@@ -230,7 +148,7 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		getPeoplePickerPage().closeShareContactsIfVisible();
+		// getPeoplePickerPage().closeShareContactsIfVisible();
 		getPeoplePickerPage().fillTextInPeoplePickerSearch(contact);
 	}
 
@@ -242,7 +160,7 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		getPeoplePickerPage().closeShareContactsIfVisible();
+		// getPeoplePickerPage().closeShareContactsIfVisible();
 		getPeoplePickerPage().fillTextInPeoplePickerSearch(email);
 	}
 
@@ -257,22 +175,19 @@ public class PeoplePickerPageSteps {
 	 * @throws Exception
 	 */
 	@When("^I input conversation name (.*) in Search input$")
-	public void IInputConversationNameInSearchInput(String name)
-			throws Exception {
+	public void IInputConversationNameInSearchInput(String name) throws Exception {
 		WhenIInputInPeoplePickerSearchFieldUserName(name);
 	}
 
 	@When("^I see user (.*) found on People picker page$")
-	public void WhenISeeUserFoundOnPeoplePickerPage(String contact)
-			throws Exception {
+	public void WhenISeeUserFoundOnPeoplePickerPage(String contact) throws Exception {
 		try {
 			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		Assert.assertTrue("User: " + contact
-				+ " is not presented on People picker page",
-				getPeoplePickerPage().waitUserPickerFindUser(contact));
+		Assert.assertTrue(String.format("User '%s'is not presented on People picker page", contact),
+				getPeoplePickerPage().getSearchResultsElement(contact).isPresent());
 	}
 
 	/**
@@ -286,16 +201,14 @@ public class PeoplePickerPageSteps {
 	 * @throws Exception
 	 */
 	@When("^I see that user (.*) is NOT found on People picker page$")
-	public void WhenISeeUserNotFoundOnPeoplePickerPage(String contact)
-			throws Exception {
+	public void WhenISeeUserNotFoundOnPeoplePickerPage(String contact) throws Exception {
 		try {
 			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		Assert.assertFalse("User: " + contact
-				+ " is presented on People picker page", getPeoplePickerPage()
-				.waitUserPickerFindUser(contact));
+				+ " is presented on People picker page", getPeoplePickerPage().isElementNotFoundInSearch(contact));
 	}
 
 	/**
@@ -311,8 +224,7 @@ public class PeoplePickerPageSteps {
 	public void ISeeConversationIsNotFoundInSearchResult(String name)
 			throws Exception {
 		Assert.assertFalse("Conversation: " + name
-				+ " is presented in Search results", getPeoplePickerPage()
-				.waitUserPickerFindUser(name));
+				+ " is presented in Search results", getPeoplePickerPage().isElementNotFoundInSearch(name));
 	}
 
 	/**
@@ -329,7 +241,7 @@ public class PeoplePickerPageSteps {
 			throws Exception {
 		Assert.assertTrue("Conversation: " + name
 				+ " is not presented in Search results", getPeoplePickerPage()
-				.waitUserPickerFindUser(name));
+				.getSearchResultsElement(name).isPresent());
 	}
 
 	@When("^I tap on NOT connected user name on People picker page (.*)$")
@@ -350,11 +262,11 @@ public class PeoplePickerPageSteps {
 		getPeoplePickerPage().clickOnUserOnPending(contact);
 	}
 
-	@When("^I search for user name (.*) and tap on it on People picker page$")
-	public void WhenISearchForUserNameAndTapOnItOnPeoplePickerPage(
-			String contact) throws Throwable {
+	@When("^I search for (?:ignored|\\s*)user name (.*) and tap on it on People picker page$")
+	public void WhenISearchForUserNameAndTapOnItOnPeoplePickerPage(String contact) throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		getPeoplePickerPage().pickUserAndTap(contact);
+		getPeoplePickerPage().fillTextInPeoplePickerSearch(contact);
+        getPeoplePickerPage().selectElementInSearchResults(contact);
 	}
 
 	/**
@@ -388,13 +300,6 @@ public class PeoplePickerPageSteps {
 		double score = getPeoplePickerPage().checkAvatarClockIcon(name);
 		Assert.assertFalse("Avatar icon still has a clock - overlap score is: "
 				+ score, score < 0.50);
-	}
-
-	@When("^I search for ignored user name (.*) and tap on it$")
-	public void WhenISearchForIgnoredUserNameAndTapOnItOnPeoplePickerPage(
-			String contact) throws Throwable {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		getPeoplePickerPage().pickIgnoredUserAndTap(contact);
 	}
 
 	@When("^I don't see Add to conversation button$")
@@ -487,7 +392,7 @@ public class PeoplePickerPageSteps {
 	@When("I tap on connected user (.*) on People picker page")
 	public void ISelectUserOnPeoplePickerPage(String name) throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		getPeoplePickerPage().selectUser(name);
+		getPeoplePickerPage().selectElementInSearchResults(name);
 	}
 
 	/**

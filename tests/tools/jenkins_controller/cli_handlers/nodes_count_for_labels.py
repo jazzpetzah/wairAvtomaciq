@@ -7,10 +7,11 @@ from pprint import pformat
 import random
 import re
 import smtplib
-import socket
 import sys
 import time
+import tempfile
 import traceback
+import os
 import xml.etree.ElementTree as ET
 
 from cli_handlers.cli_handler_base import CliHandlerBase
@@ -208,7 +209,8 @@ class RealAndroidDevice(BaseNodeVerifier):
 
 IOS_SIMULATOR_BOOT_TIMEOUT = 60 * 2 # seconds
 IOS_SIMULATOR_EXECUTABLE_NAME = 'Simulator'
-AUTORUN_APPIUM_APP_PATH = '/Applications/AutorunAppium.app'
+IOS_SIMULATOR_AGENT_NAME = 'launchd_sim'
+AUTORUN_APPIUM_APP = 'AutorunAppium'
 
 class IOSSimulator(BaseNodeVerifier):
     def _get_installed_simulators(self, ssh_client):
@@ -219,6 +221,35 @@ class IOSSimulator(BaseNodeVerifier):
             for match in matches:
                 result[match[0].strip()] = match[1].strip()
         return result
+
+    def _adjust_simulator_size(self, ssh_client, scale_factor):
+        """
+        :param ssh_client:
+        :param scale_factor: 1 to 5, where 1 is 100% and 5 is 25%
+        :return:
+        """
+        simulator_size_setter_script = \
+        """#!/bin/bash
+        /usr/bin/osascript -e "tell application \\"System Events\\"" \\
+                    -e "tell application \\"Simulator\\" to activate" \\
+                    -e "tell application \\"System Events\\" to keystroke \\"{}\\" using {{command down}}" \\
+                    -e "tell application \\"System Events\\" to keystroke \\"q\\" using {{command down}}" \\
+                    -e "end tell"
+        """.format(scale_factor)
+        _, path = tempfile.mkstemp(suffix=".sh")
+        try:
+            with open(path, 'w') as f:
+                f.write(simulator_size_setter_script)
+            sftp = ssh_client.open_sftp()
+            try:
+                dst_path = '/tmp/simscale.sh'
+                sftp.put(path, dst_path)
+            finally:
+                sftp.close()
+            ssh_client.exec_command('/bin/chmod u+x ' + dst_path)
+            ssh_client.exec_command('/usr/bin/open -a Terminal ' + dst_path)
+        finally:
+            os.unlink(path)
 
     def _is_verification_passed(self):
         result = super(IOSSimulator, self)._is_verification_passed()
@@ -232,7 +263,8 @@ class IOSSimulator(BaseNodeVerifier):
                            password=self._verification_kwargs['node_password'])
             simulator_name = self._verification_kwargs['ios_simulator_name']
 
-            client.exec_command('/usr/bin/killall "{}"'.format(IOS_SIMULATOR_EXECUTABLE_NAME))
+            client.exec_command('/usr/bin/killall -9 {}'.format(IOS_SIMULATOR_EXECUTABLE_NAME))
+            client.exec_command('/usr/bin/killall -9 {}'.format(IOS_SIMULATOR_AGENT_NAME))
             time.sleep(1)
 
             available_simulators = self._get_installed_simulators(client)
@@ -245,22 +277,14 @@ class IOSSimulator(BaseNodeVerifier):
                 msg = 'There is no "{}" simulator available. The list of available simulators for the node "{}":\n{}\n'.\
                                  format(simulator_name, self._node.name, pformat(available_simulators))
                 sys.stderr.write(msg)
-                self._send_email_notification('Non-existing simulator name "{}" has been provided'.\
-                                              format(simulator_name), msg)
+                self._send_email_notification('Non-existing simulator name "{}" has been provided'.format(simulator_name),
+                                              msg)
                 return False
-            try:
-                client.exec_command('/usr/bin/xcrun instruments -w "{}"'.format(simulator_name),
-                                    timeout=IOS_SIMULATOR_BOOT_TIMEOUT)
-            except (socket.timeout, paramiko.SSHException) as e:
-                msg = 'The "{}" simulator is still booting after {} seconds timeout.\n'.\
-                                 format(simulator_name, IOS_SIMULATOR_BOOT_TIMEOUT)
-                sys.stderr.write(msg)
-                self._send_email_notification('"{}" node is broken'.format(self._node.name), msg)
-                result = False
             if result is True:
-                client.exec_command('/usr/bin/killall "{}"'.format(IOS_SIMULATOR_EXECUTABLE_NAME))
                 sys.stderr.write('Restarting Appium server...')
-                client.exec_command('open -a "{}"'.format(AUTORUN_APPIUM_APP_PATH), timeout=10)
+                client.exec_command('/usr/bin/open -a {}'.format(AUTORUN_APPIUM_APP), timeout=10)
+                sys.stderr.write('Adjusting simulator scale...')
+                self._adjust_simulator_size(client, 3 if simulator_name.lower().find('iphone') >= 0 else 4)
             return result
         finally:
             client.close()

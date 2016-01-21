@@ -25,15 +25,14 @@ public class ContactListPage extends IOSPage {
 
     private static final String xpathStrNameContactListItems = xpathStrContactListRoot + "//UIACollectionCell";
 
-    private static final Function<String, String> convoListEntryByName = name ->
+    private static final Function<String, String> xpathStrConvoListEntryByName = name ->
             String.format("%s[ .//*[@value='%s'] ]", xpathStrNameContactListItems, name);
-    private static final Function<Integer, String> convoListEntryByIdx = idx ->
-            String.format("%s[%s]", xpathStrNameContactListItems, idx);
+    private static final Function<Integer, String> xpathStrConvoListEntryByIdx = idx ->
+            String.format("(%s)[%s]", xpathStrNameContactListItems, idx);
+    private static final Function<Integer, String> xpathStrConvoListEntryNameByIdx = idx ->
+            String.format("(%s)[%s]/UIAStaticText", xpathStrNameContactListItems, idx);
 
     private static final By nameOpenStartUI = By.name("START A CONVERSATION");
-
-    private static final By xpathFirstChatInChatListTextField = By.xpath(
-            xpathStrContactListRoot + "/UIACollectionCell[1]/UIAStaticText[1]");
 
     private static final By nameMediaCellPlayButton = By.name("mediaCellButton");
 
@@ -48,24 +47,20 @@ public class ContactListPage extends IOSPage {
 
     private static final By nameSendAnInviteButton = By.name("INVITE MORE PEOPLE");
 
-    private static final Function<String, String> xpathContactListPlayPauseButtonByConvoName = name ->
+    private static final Function<String, String> xpathStrContactListPlayPauseButtonByConvoName = name ->
             String.format("//UIACollectionCell[@name='%s']/UIAButton[@name='mediaCellButton']", name);
-    private static final By xpathFirstContactListEntry =
-            By.name(xpathStrMainWindow + "/UIACollectionView[1]/UIACollectionCell[1]/UIAStaticText[1]");
 
     private static final By xpathArchiveConversationButton =
             By.xpath("//UIAButton[@name='ARCHIVE' and @visible='true']");
 
-    private static final By classNameContactListNames = By.className("UIACollectionCell");
-
-    private static final Function<String, String> xpathSelectedConversationEntryByName = name ->
+    private static final Function<String, String> xpathStrSelectedConversationEntryByName = name ->
             String.format("%s/UIACollectionView[1]/UIACollectionCell[@name='%s']", xpathStrMainWindow, name);
 
-    private static final Function<String, String> xpathActionMenuXButtonByName = name ->
+    private static final Function<String, String> xpathStrActionMenuXButtonByName = name ->
             String.format("//UIAStaticText[@name='ARCHIVE']/following-sibling::UIAButton[@name='%s']",
                     name.toUpperCase());
 
-    private static final Function<String, String> xpathActionMenuByConversationName = name ->
+    private static final Function<String, String> xpathStrActionMenuByConversationName = name ->
             String.format("//UIAStaticText[@name='ARCHIVE']/following-sibling::UIAStaticText[@name='%s']",
                     name.toUpperCase());
 
@@ -75,7 +70,7 @@ public class ContactListPage extends IOSPage {
     }
 
     public boolean isMyUserNameDisplayedFirstInContactList(String name) throws Exception {
-        final By locator = By.xpath(convoListEntryByIdx.apply(1));
+        final By locator = By.xpath(xpathStrConvoListEntryByIdx.apply(1));
         return getElement(locator).getText().equals(name);
     }
 
@@ -84,7 +79,7 @@ public class ContactListPage extends IOSPage {
     }
 
     public boolean isPlayPauseButtonVisible(String contact) throws Exception {
-        final By locator = By.xpath(xpathContactListPlayPauseButtonByConvoName.apply(contact));
+        final By locator = By.xpath(xpathStrContactListPlayPauseButtonByConvoName.apply(contact));
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
     }
 
@@ -93,7 +88,7 @@ public class ContactListPage extends IOSPage {
     }
 
     public void tapPlayPauseButtonNextTo(String name) throws Exception {
-        final By locator = By.xpath(xpathContactListPlayPauseButtonByConvoName.apply(name));
+        final By locator = By.xpath(xpathStrContactListPlayPauseButtonByConvoName.apply(name));
         getElement(locator).click();
     }
 
@@ -115,17 +110,16 @@ public class ContactListPage extends IOSPage {
     }
 
     public String getFirstDialogName() throws Exception {
-        return getElement(xpathFirstContactListEntry,
-                "No entries are visible in the conversation list").getText();
+        return getDialogNameByIndex(1);
     }
 
     public String getDialogNameByIndex(int index) throws Exception {
-        final By locator = By.xpath(convoListEntryByIdx.apply(index));
+        final By locator = By.xpath(xpathStrConvoListEntryNameByIdx.apply(index));
         return getElement(locator, String.format("Conversation # %s is not visible", index)).getText();
     }
 
     private Optional<WebElement> findNameInContactList(String name) throws Exception {
-        final By locator = By.xpath(convoListEntryByName.apply(name));
+        final By locator = By.xpath(xpathStrConvoListEntryByName.apply(name));
         final Optional<WebElement> contactCell = getElementIfDisplayed(locator);
         if (contactCell.isPresent()) {
             return contactCell;
@@ -147,10 +141,8 @@ public class ContactListPage extends IOSPage {
                 findNameInContactList(contact).orElseThrow(IllegalStateException::new), CONV_SWIPE_TIME, 90, 50);
     }
 
-    public void swipeRightConversationToRevealActionButtons(String conversation)
-            throws Exception {
+    public void swipeRightConversationToRevealActionButtons(String conversation) throws Exception {
         int count = 0;
-
         do {
             swipeRightOnContact(conversation);
             count++;
@@ -158,8 +150,7 @@ public class ContactListPage extends IOSPage {
     }
 
     public String getFirstConversationName() throws Exception {
-        return getElement(xpathFirstChatInChatListTextField, "No entries are detected in the conversations list").
-                getText();
+        return getDialogNameByIndex(1);
     }
 
     public void tapOnGroupChat(String chatName) throws Exception {
@@ -167,7 +158,7 @@ public class ContactListPage extends IOSPage {
     }
 
     public boolean waitForContactListToLoad() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathFirstContactListEntry);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.xpath(xpathStrConvoListEntryByIdx.apply(1)));
     }
 
     public boolean isPendingRequestInContactList() throws Exception {
@@ -190,10 +181,6 @@ public class ContactListPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.name(name), 5);
     }
 
-    public List<WebElement> getVisibleContacts() throws Exception {
-        return this.getDriver().findElements(classNameContactListNames);
-    }
-
     @Override
     public void swipeDown(int time) throws Exception {
         Point coords = getElement(nameMainWindow).getLocation();
@@ -203,15 +190,13 @@ public class ContactListPage extends IOSPage {
                 coords.y + elementSize.height - 150, time);
     }
 
-    public boolean conversationWithUsersPresented(String name1, String name2,
-                                                  String name3) throws Exception {
+    public boolean conversationWithUsersPresented(String name1, String name2, String name3) throws Exception {
         String firstChat = getFirstConversationName();
         return firstChat.contains(name1)
                 && firstChat.contains(name2) && firstChat.contains(name3);
     }
 
-    public boolean isConversationSilenced(String conversation,
-                                          boolean isSilenced) throws Exception {
+    public boolean isConversationSilenced(String conversation, boolean isSilenced) throws Exception {
         String deviceType = CommonUtils.getDeviceName(this.getClass());
         BufferedImage referenceImage = null;
         WebElement element = findNameInContactList(conversation).orElseThrow(IllegalStateException::new);
@@ -285,7 +270,7 @@ public class ContactListPage extends IOSPage {
     public BufferedImage getScreenshotFirstContact() throws Exception {
         // This takes a screenshot of the area to the left of a contact where
         // ping and unread dot notifications are visible
-        final By locator = By.xpath(convoListEntryByIdx.apply(1));
+        final By locator = By.xpath(xpathStrConvoListEntryByIdx.apply(1));
         final WebElement contact = getElement(locator, "No contacts are visible in the list");
         return getScreenshotByCoordinates(contact.getLocation().x,
                 contact.getLocation().y + getElement(xpathContactListRoot).getLocation().y,
@@ -416,12 +401,12 @@ public class ContactListPage extends IOSPage {
     }
 
     public boolean isActionMenuVisibleForConversation(String conversation) throws Exception {
-        final By locator = By.xpath(xpathActionMenuByConversationName.apply(conversation));
+        final By locator = By.xpath(xpathStrActionMenuByConversationName.apply(conversation));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isButtonVisibleInActionMenu(String buttonTitle) throws Exception {
-        final By locator = By.xpath(xpathActionMenuXButtonByName.apply(buttonTitle));
+        final By locator = By.xpath(xpathStrActionMenuXButtonByName.apply(buttonTitle));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
@@ -440,7 +425,7 @@ public class ContactListPage extends IOSPage {
 
     public Optional<String> getSelectedConversationCellValue(String conversation)
             throws Exception {
-        final By locator = By.xpath(xpathSelectedConversationEntryByName.apply(conversation));
+        final By locator = By.xpath(xpathStrSelectedConversationEntryByName.apply(conversation));
         final Optional<WebElement> cell =  getElementIfDisplayed(locator);
         if (cell.isPresent()) {
             return Optional.of(cell.get().getAttribute("value"));

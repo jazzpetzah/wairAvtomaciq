@@ -104,9 +104,12 @@ public class DialogPage extends IOSPage {
 
     private static final By xpathAllMessages = By.xpath(
             xpathStrMainWindow + "/UIATableView[1]/UIATableCell/UIATextView");
+    
+    private static final String xpathStrAllMessages =
+            xpathStrMainWindow + "/UIATableView[1]/UIATableCell/UIATextView";
 
     private static final Function<String, String> xpathMessagesByText = text ->
-            String.format("%s[@value='%s']", xpathAllMessages, text);
+            String.format("%s[@value='%s']", xpathStrAllMessages, text);
 
     public static final Function<String, String> xpathFormatMissedCallButtonByContact = name ->
             String.format(
@@ -130,8 +133,8 @@ public class DialogPage extends IOSPage {
 
     private static final By xpathImage = By.xpath(xpathStrMainWindow + "/UIATableView[1]/UIATableCell[2]");
 
-    private static final String xpathSimpleMessageLink =
-            xpathStrMainWindow + "/UIATableView[1]/UIATableCell[last()]/UIATextView[1]";
+    private static final By xpathSimpleMessageLink = By.xpath(
+            xpathStrMainWindow + "/UIATableView[1]/UIATableCell[last()]/UIATextView[1]");
 
     private static final Function<String, String> xpathStrLastItemByNameInDialog =
             name -> String.format("//UIAStaticText[@name='%s'][last()]", name.toUpperCase());
@@ -229,10 +232,6 @@ public class DialogPage extends IOSPage {
 
     public String getExpectedConnectingLabel(String name) {
         return nameStrConnectingLabelByReceiverName.apply(name);
-    }
-
-    public void swipeInputCursor() throws Exception {
-        DriverUtils.swipeRight(this.getDriver(), getElement(nameConversationCursorInput), 1000);
     }
 
     public void swipeLeftOptionsButtons() throws Exception {
@@ -373,13 +372,6 @@ public class DialogPage extends IOSPage {
         return getElement(xpathConnectionMessage).getText();
     }
 
-    public long getSendTime() {
-        long currentTime;
-        Date date = new Date();
-        currentTime = date.getTime();
-        return currentTime;
-    }
-
     public boolean isMediaBarDisplayed() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameTitle);
     }
@@ -397,7 +389,7 @@ public class DialogPage extends IOSPage {
     }
 
     public void scrollToBeginningOfConversation() throws Exception {
-        // FXIME: this has to be refactored
+        // FIXME: this has to be refactored
         int count = 0;
         final List<WebElement> youAddedCell = getElements(xpathYouAddedMessageCell);
         if (youAddedCell.size() > 0) {
@@ -534,14 +526,8 @@ public class DialogPage extends IOSPage {
     }
 
     public boolean chatheadIsVisible(String contact) throws Exception {
-        // FIXME: Optimize locator
         final By locator = By.xpath(xpathChatheadByName.apply(contact));
-        for (WebElement element : getElements(locator)) {
-            if (DriverUtils.isElementPresentAndDisplayed(getDriver(), element)) {
-                return true;
-            }
-        }
-        return false;
+        return selectVisibleElements(locator).size() > 0;
     }
 
     public boolean chatheadAvatarImageIsVisible() throws Exception {
@@ -615,14 +601,12 @@ public class DialogPage extends IOSPage {
     }
 
     public void tapOnLink() throws Exception {
-        WebElement tapLink = this.getDriver().findElementByXPath(xpathSimpleMessageLink);
-        DriverUtils.tapByCoordinates(getDriver(), tapLink);
+        DriverUtils.tapByCoordinates(getDriver(), getElement(xpathSimpleMessageLink));
     }
 
     public void tapOnLinkWithinAMessage() throws Exception {
-        WebElement tapLink = this.getDriver().findElementByXPath(xpathSimpleMessageLink);
-        DriverUtils.tapByCoordinates(getDriver(), tapLink,
-                -(tapLink.getSize().width / 4), 0);
+        final WebElement tapLink = getElement(xpathSimpleMessageLink);
+        DriverUtils.tapByCoordinates(getDriver(), tapLink, -(tapLink.getSize().width / 4), 0);
     }
 
     public boolean isTherePossibilityControllerButtonsToBeDisplayed() throws Exception {
@@ -633,7 +617,7 @@ public class DialogPage extends IOSPage {
 
     public void tapHoldImage() {
         try {
-            this.getDriver().tap(1, this.getDriver().findElement(xpathImage), 1000);
+            this.getDriver().tap(1, getElement(xpathImage), 1000);
         } catch (Exception e) {
             e.printStackTrace();
         }

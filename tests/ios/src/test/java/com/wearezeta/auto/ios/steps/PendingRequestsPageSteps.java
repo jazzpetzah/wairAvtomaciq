@@ -18,18 +18,17 @@ public class PendingRequestsPageSteps {
 	}
 
 	@When("^I click on Ignore button on Pending requests page$")
-	public void IClickOnIgnoreButtonPendingRequests() throws Throwable {
+	public void IClickOnIgnoreButtonPendingRequests() throws Exception {
 		getPendingRequestsPage().clickIgnoreButton();
 	}
 
 	@When("^I click on Ignore button on Pending requests page (.*) times$")
-	public void IClickOnIgnoreButtonPendingRequests(int numberOfIgnores)
-			throws Throwable {
+	public void IClickOnIgnoreButtonPendingRequests(int numberOfIgnores) throws Exception {
 		getPendingRequestsPage().clickIgnoreButtonMultiple(numberOfIgnores);
 	}
 
 	@When("I click Connect button on Pending request page")
-	public void IClickOnConnectButtonPendingRequest() throws Throwable {
+	public void IClickOnConnectButtonPendingRequest() throws Exception {
 		getPendingRequestsPage().clickConnectButton();
 	}
 
@@ -45,8 +44,7 @@ public class PendingRequestsPageSteps {
 	 *             if connect button is not visible
 	 */
 	@When("^I click on Connect button on Pending requests page (.*) times$")
-	public void IClickOnConnectButtonPendingRequests(int numberOfConnects)
-			throws Throwable {
+	public void IClickOnConnectButtonPendingRequests(int numberOfConnects) throws Exception {
 		getPendingRequestsPage().clickConnectButtonMultiple(numberOfConnects);
 	}
 
@@ -59,8 +57,8 @@ public class PendingRequestsPageSteps {
 	@When("I see Hello connect message from user (.*) on Pending request page")
 	public void ISeeHelloConnectMessageFrom(String user) throws Exception {
 		user = usrMgr.findUserByNameOrNameAlias(user).getName();
-		Assert.assertEquals(user, getPendingRequestsPage().getRequesterName());
-		// Assert.assertTrue(getPendingRequestsPage().isAutoMessageCorrect());
+		Assert.assertTrue(String.format("Connect To message is not visible for user '%s'", user),
+				getPendingRequestsPage().isConnectToNameExist(user));
 	}
 
 	/**
@@ -84,19 +82,4 @@ public class PendingRequestsPageSteps {
 	public void IClickPersonInYOUBOTHKNOWSection() throws Exception {
 		getPendingRequestsPage().clickYouBothKnowPeopleIcon();
 	}
-
-	/**
-	 * Verify that name and surname exists on the page
-	 * 
-	 * @step. ^I see user (.*) found on Pending request page$
-	 * @throws Exception
-	 */
-	@When("^I see user (.*) found on Pending request page$")
-	public void WhenISeeUserFoundOnPendingRequestPage(String contact)
-			throws Exception {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertEquals(contact, getPendingRequestsPage()
-				.getRequesterName());
-	}
-
 }

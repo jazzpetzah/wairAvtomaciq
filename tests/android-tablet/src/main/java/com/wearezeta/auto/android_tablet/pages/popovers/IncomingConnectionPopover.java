@@ -31,11 +31,11 @@ public class IncomingConnectionPopover extends AbstractPopoverContainer {
 		this.incomingConnectionPage.tapAcceptButton();
 	}
 
-	public void tapCloseButton() {
+	public void tapCloseButton() throws Exception {
 		this.incomingConnectionPage.tapCloseButton();
 	}
 
-	public void tapIgnoreButton() {
+	public void tapIgnoreButton() throws Exception {
 		this.incomingConnectionPage.tapIgnoreButton();
 	}
 }

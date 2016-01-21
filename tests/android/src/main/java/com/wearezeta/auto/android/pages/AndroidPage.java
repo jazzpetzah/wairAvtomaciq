@@ -3,48 +3,38 @@ package com.wearezeta.auto.android.pages;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
-import org.openqa.selenium.support.FindBy;
 
+import java.util.Optional;
 import java.util.concurrent.Future;
 
 public abstract class AndroidPage extends BasePage {
 
-    protected static final String giphyPreviewButtonId = "cursor_button_giphy";
+    protected static final By idGiphyPreviewButton = By.id("cursor_button_giphy");
 
-    protected static final String xpathConfirmBtn = "(//*[@id='confirm'])[last()]";
+    protected static final By xpathConfirmBtn = By.xpath("(//*[@id='confirm'])[last()]");
 
-    protected static final String idEditText = "cursor_edit_text";
+    protected static final By idEditText = By.id("cursor_edit_text");
 
-    protected static final String idCursorArea = "caret";
+    protected static final By idCursorArea = By.id("caret");
 
-    protected static final String idGalleryBtn = "gtv__camera_control__pick_from_gallery";
+    protected static final By idGalleryBtn = By.id("gtv__camera_control__pick_from_gallery");
 
-    protected static final String idCloseImageBtn = "gtv__single_image_message__close";
+    protected static final By idCloseImageBtn = By.id("gtv__single_image_message__close");
 
-    protected static final String idSearchHintClose = "zb__search_hint__close_button";
+    public static final By xpathDismissUpdateButton = By.xpath("//*[@value='Dismiss']");
 
-    protected static final String idConversationSendOption = "tv_conv_list_topic";
-
-    public static final String xpathDismissUpdateButton = "//*[@value='Dismiss']";
-
-    protected static final String classNameFrameLayout = "FrameLayout";
-
-    private static final String idChatheadNotification = "va_message_notification_chathead__label_viewanimator";
+    private static final By idChatheadNotification = By.id("va_message_notification_chathead__label_viewanimator");
 
     public static final long DRIVER_INIT_TIMEOUT = 1000 * 60 * 2; // milliseconds
 
-    protected static final Logger log = ZetaLogger.getLog(CommonUtils.class
-            .getSimpleName());
+    protected static final Logger log = ZetaLogger.getLog(CommonUtils.class.getSimpleName());
 
-    protected static final String idPager = "conversation_pager";
-    @FindBy(id = idPager)
-    private WebElement content;
+    protected static final By idPager = By.id("conversation_pager");
 
     @Override
     protected ZetaAndroidDriver getDriver() throws Exception {
@@ -202,18 +192,18 @@ public abstract class AndroidPage extends BasePage {
     }
 
     public void tapChatheadNotification() throws Exception {
-        assert waitUntilChatheadNotificationVisible() : "The chathead notification is not visible";
-        this.getDriver().findElement(By.id(idChatheadNotification)).click();
+        getElement(idChatheadNotification).click();
     }
 
     private static final long CHATHEAD_VISIBILITY_TIMEOUT = 10000; //milliseconds
 
     public boolean waitUntilChatheadNotificationVisible() throws Exception {
-        final By locator = By.id(idChatheadNotification);
+        final By locator = idChatheadNotification;
         final long millisecondsStarted = System.currentTimeMillis();
         while (System.currentTimeMillis() - millisecondsStarted < CHATHEAD_VISIBILITY_TIMEOUT) {
-            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
-                if (this.getDriver().findElement(locator).getSize().width > 0) {
+            final Optional<WebElement> chatheadNotification = getElementIfDisplayed(locator, 1);
+            if (chatheadNotification.isPresent()) {
+                if (chatheadNotification.get().getSize().width > 0) {
                     return true;
                 }
             }
@@ -223,11 +213,12 @@ public abstract class AndroidPage extends BasePage {
     }
 
     public boolean waitUntilChatheadNotificationInvisible() throws Exception {
-        final By locator = By.id(idChatheadNotification);
+        final By locator = idChatheadNotification;
         final long millisecondsStarted = System.currentTimeMillis();
         while (System.currentTimeMillis() - millisecondsStarted < CHATHEAD_VISIBILITY_TIMEOUT) {
-            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
-                if (this.getDriver().findElement(locator).getSize().width == 0) {
+            final Optional<WebElement> chatheadNotification = getElementIfDisplayed(locator, 1);
+            if (chatheadNotification.isPresent()) {
+                if (chatheadNotification.get().getSize().width == 0) {
                     return true;
                 }
                 Thread.sleep(500);

@@ -294,7 +294,6 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I tap conversation details button
     And I press options menu button
     And I press BLOCK conversation menu button
@@ -303,7 +302,6 @@ Feature: Connect
     And I wait until <Contact1> exists in backend search results
     And I wait until <Contact1> is blocked in backend search results
     And I open Search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact1>" into Search input on People Picker page
     And I see user <Contact1> found on People picker page
@@ -341,7 +339,6 @@ Feature: Connect
     Then I do not see contact list with name <Contact2>
     And I wait until <Contact2> exists in backend search results
     And I open Search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact2>" into Search input on People Picker page
     And I see user <Contact2> found on People picker page
@@ -436,7 +433,6 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I see dialog page
     And I tap on text input
     And I type the message "<Message>" and send it
     And User <Name> blocks user <Contact>

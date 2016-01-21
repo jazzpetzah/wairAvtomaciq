@@ -21,7 +21,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I type the default message
     And I send the message
     Then I see 1 default message in the dialog
@@ -38,8 +37,7 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I click Ping button
     Then I see You Pinged message in the dialog
 
@@ -54,8 +52,7 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll
@@ -335,8 +332,7 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll
@@ -580,8 +576,7 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I tap on sketch button in cursor
     And I draw a random sketch
     And I send my sketch
@@ -598,9 +593,7 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
-    And I see plus button next to text input
-    And I swipe the text input cursor
+    And I click plus button next to text input
     Then I see Buttons: Details, Call, Camera, Sketch, Ping
     And I see plus button is not shown
     And I swipe left on options buttons
@@ -668,8 +661,7 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll
@@ -824,14 +816,13 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I see new photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I see download button shown on fullscreen page
     And I tap download button on fullscreen page
     And I tap close fullscreen page button
-    And I swipe the text input cursor
+    And I click plus button next to text input
     And I press Add Picture button
     And I press Camera Roll button
     And I choose last picture from camera roll
@@ -870,7 +861,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I tap on text input
     And I scroll to the beginning of the conversation
-    And I swipe the text input cursor
+    And I click plus button next to text input
     Then I see controller buttons can not be visible
 
     Examples:

@@ -1,7 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
 import java.awt.image.BufferedImage;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
@@ -9,8 +8,6 @@ import java.util.function.Function;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.*;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -21,123 +18,63 @@ public class ContactListPage extends AndroidPage {
 
     private static final String LOADING_CONVERSATION_NAME = "…";
 
-    private static final String xpathLoadingContactListItem = "//*[@id='tv_conv_list_topic' and contains(@value, '"
-            + LOADING_CONVERSATION_NAME + "')]";
+    private static final By xpathLoadingContactListItem = By.xpath("//*[@id='tv_conv_list_topic' and contains(@value, '"
+            + LOADING_CONVERSATION_NAME + "')]");
 
-    public static final Function<String, String> xpathContactByName = name -> String
-            .format("//*[@id='tv_conv_list_topic' and @value='%s' and @shown='true']",
-                    name);
+    public static final Function<String, String> xpathStrContactByName = name -> String
+            .format("//*[@id='tv_conv_list_topic' and @value='%s' and @shown='true']", name);
 
-    public static final Function<Integer, String> xpathContactByIndex = index -> String
+    public static final Function<Integer, String> xpathStrContactByIndex = index -> String
             .format("(//*[@id='tv_conv_list_topic'])[%s]", index);
 
-    public static final String xpathLastContact = "(//*[@id='tv_conv_list_topic'])[last()]";
+    public static final By xpathLastContact = By.xpath("(//*[@id='tv_conv_list_topic'])[last()]");
 
-    public static final Function<String, String> xpathMutedIconByConvoName = convoName -> String
+    public static final Function<String, String> xpathStrMutedIconByConvoName = convoName -> String
             .format("%s/parent::*//*[@id='tv_conv_list_voice_muted']",
-                    xpathContactByName.apply(convoName));
+                    xpathStrContactByName.apply(convoName));
 
-    private static final Function<String, String> xpathPlayPauseButtonByConvoName = convoName -> String
+    private static final Function<String, String> xpathStrPlayPauseButtonByConvoName = convoName -> String
             .format("%s/parent::*//*[@id='tv_conv_list_media_player']",
-                    xpathContactByName.apply(convoName));
+                    xpathStrContactByName.apply(convoName));
 
-    private static final Function<String, String> xpathMissedCallNotificationByConvoName = convoName -> String
+    private static final Function<String, String> xpathStrMissedCallNotificationByConvoName = convoName -> String
             .format("%s/parent::*//*[@id='sci__list__missed_call']",
-                    xpathContactByName.apply(convoName));
+                    xpathStrContactByName.apply(convoName));
 
-    @FindBy(id = PeoplePickerPage.idPeoplePickerClearbtn)
-    private WebElement pickerClearBtn;
+    private static final By idConversationListFrame = By.id("pfac__conversation_list");
 
-    private static final String idConversationListFrame = "pfac__conversation_list";
-    @FindBy(id = idConversationListFrame)
-    private WebElement contactListFrame;
+    private static final String idStrContactListNames = "tv_conv_list_topic";
+    private static final By idContactListNames = By.id(idStrContactListNames);
 
-    private static final String idMissedCallIcon = "sci__list__missed_call";
-    @FindBy(id = idMissedCallIcon)
-    private WebElement missedCallIcon;
-
-    private static final String idContactListNames = "tv_conv_list_topic";
-    @FindBy(id = idContactListNames)
-    private List<WebElement> contactListNames;
-
-    private static final String xpathNonEmptyContacts = "//*[@id='"
-            + idContactListNames
+    private static final String xpathStrNonEmptyContacts = "//*[@id='"
+            + idStrContactListNames
             + "' and @value and string-length(@value) > 0 and not(starts-with(@value, '…'))]";
-    private static final Function<Integer, String> xpathNonEmptyContactByIdx = idx -> String
-            .format("(%s)[%d]", xpathNonEmptyContacts, idx);
+    private static final Function<Integer, String> xpathStrNonEmptyContactByIdx = idx -> String
+            .format("(%s)[%d]", xpathStrNonEmptyContacts, idx);
 
-    @FindBy(id = idEditText)
-    private WebElement cursorInput;
+    public static final By idSelfUserAvatar = By.id("civ__searchbox__self_user_avatar");
 
-    @FindBy(how = How.CLASS_NAME, using = classNameFrameLayout)
-    private List<WebElement> frameLayout;
+    private static final By xpathConfirmDeleteConversationButton = By.xpath("//*[@id='confirm' and @value='DELETE']");
 
-    @FindBy(id = PeoplePickerPage.idPickerSearch)
-    private WebElement searchBox;
+    private static final By idSearchButton = By.id("gtv_pickuser__searchbutton");
 
-    public static final String idSelfUserAvatar = "civ__searchbox__self_user_avatar";
-    @FindBy(id = idSelfUserAvatar)
-    protected WebElement selfUserAvatar;
+    private static final By idLeaveCheckbox = By.id("gtv__checkbox_icon");
 
-    public static final String idConfirmCancelButton = "cancel";
-    @FindBy(id = idConfirmCancelButton)
-    private List<WebElement> laterBtn;
-
-    private static final String xpathConfirmDeleteConversationButton = "//*[@id='confirm' and @value='DELETE']";
-    @FindBy(xpath = xpathConfirmDeleteConversationButton)
-    private WebElement deleteConfirmAlertButton;
-
-    private static final String idConfirmCancelButtonPicker = "zb__confirm_dialog__cancel_button";
-    @FindBy(id = idConfirmCancelButtonPicker)
-    private List<WebElement> laterBtnPicker;
-
-    private static final String idConvList = "pv__conv_list";
-    @FindBy(id = idConvList)
-    private WebElement convList;
-
-    @FindBy(id = idPager)
-    private WebElement mainControl;
-
-    @FindBy(id = IncomingPendingConnectionsPage.idConnectToHeader)
-    private WebElement connectToHeader;
-
-    @FindBy(id = idSearchHintClose)
-    private WebElement closeHintBtn;
-
-    @FindBy(id = idConversationSendOption)
-    private WebElement conversationShareOption;
-
-    private static final String idSearchButton = "gtv_pickuser__searchbutton";
-    @FindBy(id = idSearchButton)
-    private WebElement searchButton;
-
-    private static final String idLeaveCheckbox = "gtv__checkbox_icon";
-    @FindBy(id = idLeaveCheckbox)
-    private WebElement leaveWhileDeleteCheckbox;
-
-    private static final Function<String, String> xpathConvoSettingsMenuItemByName = name -> String
+    private static final Function<String, String> xpathStrConvoSettingsMenuItemByName = name -> String
             .format("//*[@id='ttv__settings_box__item' and @value='%s']" +
-                            "/parent::*//*[@id='fl_options_menu_button']",
-                    name.toUpperCase());
+                            "/parent::*//*[@id='fl_options_menu_button']", name.toUpperCase());
 
     private static final String xpathSpinnerConversationsListLoadingIndicator =
             "//*[@id='liv__conversations__loading_indicator']/*";
 
     private static final Function<String, String> xpathConversationListEntry = name -> String
-            .format("//*[@id='tv_conv_list_topic' and @value='%s']/parent::*//*[@id='civ__list_row']",
-                    name);
+            .format("//*[@id='tv_conv_list_topic' and @value='%s']/parent::*//*[@id='civ__list_row']", name);
 
-    private static final String idInviteButton = "zb__conversationlist__show_contacts";
-    @FindBy(id = idInviteButton)
-    private WebElement inviteButton;
+    private static final By idInviteButton = By.id("zb__conversationlist__show_contacts");
 
-    private static final String idThreeDotsOptionMenuButton = "v__row_conversation__menu_indicator__second_dot";
-    @FindBy(id = idThreeDotsOptionMenuButton)
-    private WebElement threeDotOptionMenuButton;
+    private static final By idThreeDotsOptionMenuButton = By.id("v__row_conversation__menu_indicator__second_dot");
 
-
-    private static final Logger log = ZetaLogger.getLog(ContactListPage.class
-            .getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(ContactListPage.class.getSimpleName());
 
     public ContactListPage(Future<ZetaAndroidDriver> lazyDriver)
             throws Exception {
@@ -151,9 +88,9 @@ public class ContactListPage extends AndroidPage {
         do {
             try {
                 final int itemsCount = getDriver().findElements(
-                        By.xpath(xpathNonEmptyContacts)).size();
+                        By.xpath(xpathStrNonEmptyContacts)).size();
                 for (int i = 1; i <= itemsCount; i++) {
-                    final By locator = By.xpath(xpathNonEmptyContactByIdx
+                    final By locator = By.xpath(xpathStrNonEmptyContactByIdx
                             .apply(i));
                     if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                             locator, 1)) {
@@ -192,21 +129,16 @@ public class ContactListPage extends AndroidPage {
 
     public void doLongSwipeUp() throws Exception {
         // FIXME: There is a bug in Android when swipe up does not work if there are no items in the list
-        DriverUtils.swipeElementPointToPoint(getDriver(), contactListFrame, 1000, 15, 20, 15, -80);
+        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idConversationListFrame), 1000, 15, 20, 15, -80);
     }
 
     public Optional<WebElement> findInContactList(String name) throws Exception {
-        final By nameLocator = By.xpath(xpathContactByName.apply(name));
-        if (DriverUtils
-                .waitUntilLocatorIsDisplayed(getDriver(), nameLocator, 1)) {
-            return Optional.of(this.getDriver().findElement(nameLocator));
-        }
-        return Optional.empty();
+        return getElementIfDisplayed(By.xpath(xpathStrContactByName.apply(name)));
     }
 
     public void swipeRightOnConversation(int durationMilliseconds, String name)
             throws Exception {
-        final By locator = By.xpath(xpathContactByName.apply(name));
+        final By locator = By.xpath(xpathStrContactByName.apply(name));
         DriverUtils.swipeRight(this.getDriver(),
                 this.getDriver().findElement(locator), durationMilliseconds,
                 20, 50, 90, 50);
@@ -214,27 +146,26 @@ public class ContactListPage extends AndroidPage {
 
     public void swipeShortRightOnConversation(int durationMilliseconds, String name)
             throws Exception {
-        final By locator = By.xpath(xpathContactByName.apply(name));
+        final By locator = By.xpath(xpathStrContactByName.apply(name));
         DriverUtils.swipeRight(this.getDriver(),
                 this.getDriver().findElement(locator), durationMilliseconds,
                 20, 50, 50, 50);
     }
 
     public boolean isContactMuted(String name) throws Exception {
-        final By locator = By.xpath(xpathMutedIconByConvoName.apply(name));
+        final By locator = By.xpath(xpathStrMutedIconByConvoName.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
                 locator);
     }
 
     public boolean waitUntilContactNotMuted(String name) throws Exception {
-        final By locator = By.xpath(xpathMutedIconByConvoName.apply(name));
+        final By locator = By.xpath(xpathStrMutedIconByConvoName.apply(name));
         return DriverUtils
                 .waitUntilLocatorDissapears(this.getDriver(), locator);
     }
 
-    public PeoplePickerPage tapOnSearchBox() throws Exception {
-        searchBox.click();
-        return new PeoplePickerPage(this.getLazyDriver());
+    public void tapOnSearchBox() throws Exception {
+        getElement(PeoplePickerPage.xpathPickerSearch).click();
     }
 
     public boolean isContactExists(String name) throws Exception {
@@ -242,12 +173,12 @@ public class ContactListPage extends AndroidPage {
     }
 
     public boolean waitUntilContactDisappears(String name) throws Exception {
-        final By nameLocator = By.xpath(xpathContactByName.apply(name));
+        final By nameLocator = By.xpath(xpathStrContactByName.apply(name));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameLocator);
     }
 
     public boolean isPlayPauseMediaButtonVisible(String convoName) throws Exception {
-        final By locator = By.xpath(xpathPlayPauseButtonByConvoName
+        final By locator = By.xpath(xpathStrPlayPauseButtonByConvoName
                 .apply(convoName));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
@@ -258,7 +189,7 @@ public class ContactListPage extends AndroidPage {
     public void verifyContactListIsFullyLoaded() throws Exception {
         Thread.sleep(1000);
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(),
-                By.id(EmailSignInPage.idLoginButton),
+                EmailSignInPage.idLoginButton,
                 CONTACT_LIST_LOAD_TIMEOUT_SECONDS)) {
             throw new IllegalStateException(
                     String.format(
@@ -266,9 +197,8 @@ public class ContactListPage extends AndroidPage {
                             CONTACT_LIST_LOAD_TIMEOUT_SECONDS));
         }
 
-        final By selfAvatarLocator = By.id(idSelfUserAvatar);
         if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                selfAvatarLocator, 5)) {
+                idSelfUserAvatar, 5)) {
             log.warn("Self avatar is not detected on top of conversations list");
         }
 
@@ -291,38 +221,36 @@ public class ContactListPage extends AndroidPage {
     }
 
     private boolean waitUntilConversationsInfoIsLoaded() throws Exception {
-        final By loadingItemLocator = By.xpath(xpathLoadingContactListItem);
         return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-                loadingItemLocator, CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS);
+                xpathLoadingContactListItem, CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS);
     }
 
     public void tapOnMyAvatar() throws Exception {
-        getElement(By.id(idSelfUserAvatar), "Self avatar icon is not visible").click();
+        getElement(idSelfUserAvatar, "Self avatar icon is not visible").click();
     }
 
     public void tapOnSearchButton() throws Exception {
-        getElement(By.id(idSearchButton), "Search button is not visible").click();
+        getElement(idSearchButton, "Search button is not visible").click();
     }
 
     public boolean isAnyConversationVisible() throws Exception {
-        for (int i = contactListNames.size(); i >= 1; i--) {
-            final By locator = By.xpath(xpathContactByIndex.apply(i));
-            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) ||
-                    !getDriver().findElement(locator).getText().equals(LOADING_CONVERSATION_NAME)) {
+        for (int i = getElements(idContactListNames).size(); i >= 1; i--) {
+            final By locator = By.xpath(xpathStrContactByIndex.apply(i));
+            final Optional<WebElement> contactEl = getElementIfDisplayed(locator);
+            if (contactEl.isPresent() && !contactEl.get().getText().equals(LOADING_CONVERSATION_NAME)) {
                 return true;
             }
         }
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathLastContact), CONTACT_LIST_LOAD_TIMEOUT_SECONDS) &&
-                !getDriver().findElement(By.xpath(xpathLastContact)).getText().equals(LOADING_CONVERSATION_NAME);
+        final Optional<WebElement> lastEl = getElementIfDisplayed(xpathLastContact, CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
+        return lastEl.isPresent() && !lastEl.get().getText().equals(LOADING_CONVERSATION_NAME);
     }
 
     public boolean isNoConversationsVisible() throws Exception {
         Assert.assertTrue(
                 "Conversations list frame is not visible",
-                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idConversationListFrame)));
-        for (int i = contactListNames.size(); i >= 1; i--) {
-            final By locator = By.xpath(xpathContactByIndex.apply(i));
+                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idConversationListFrame));
+        for (int i = getElements(idContactListNames).size(); i >= 1; i--) {
+            final By locator = By.xpath(xpathStrContactByIndex.apply(i));
             if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator)) {
                 return false;
             }
@@ -331,44 +259,42 @@ public class ContactListPage extends AndroidPage {
     }
 
     public void selectConvoSettingsMenuItem(String itemName) throws Exception {
-        final By locator = By.xpath(xpathConvoSettingsMenuItemByName.apply(itemName));
+        final By locator = By.xpath(xpathStrConvoSettingsMenuItemByName.apply(itemName));
         getElement(locator, String
                 .format("Conversation menu item '%s' could not be found on the current screen", itemName)).click();
     }
 
     public boolean waitUntilMissedCallNotificationVisible(String convoName)
             throws Exception {
-        final By locator = By.xpath(xpathMissedCallNotificationByConvoName
+        final By locator = By.xpath(xpathStrMissedCallNotificationByConvoName
                 .apply(convoName));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean waitUntilMissedCallNotificationInvisible(String convoName)
             throws Exception {
-        final By locator = By.xpath(xpathMissedCallNotificationByConvoName
+        final By locator = By.xpath(xpathStrMissedCallNotificationByConvoName
                 .apply(convoName));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
     public void doShortSwipeDown() throws Exception {
-        DriverUtils.swipeElementPointToPoint(getDriver(), contactListFrame,
-                500, 15, 15, 15, 20);
+        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idConversationListFrame), 500, 15, 15, 15, 20);
     }
 
     public void doLongSwipeDown() throws Exception {
-        DriverUtils.swipeElementPointToPoint(getDriver(), contactListFrame,
-                1000, 15, 15, 15, 180);
+        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idConversationListFrame), 1000, 15, 15, 15, 180);
     }
 
     public Optional<BufferedImage> getScreenshotOfPlayPauseButtonNextTo(String convoName) throws Exception {
-        final By locator = By.xpath(xpathPlayPauseButtonByConvoName
+        final By locator = By.xpath(xpathStrPlayPauseButtonByConvoName
                 .apply(convoName));
         return this.getElementScreenshot(getElement(locator,
                 String.format("PlayPause button is not visible next to the '%s' conversation item", convoName)));
     }
 
     public void tapPlayPauseMediaButton(String convoName) throws Exception {
-        final By locator = By.xpath(xpathPlayPauseButtonByConvoName
+        final By locator = By.xpath(xpathStrPlayPauseButtonByConvoName
                 .apply(convoName));
         getElement(locator, String
                 .format("PlayPause button is not visible next to the '%s' conversation item", convoName)).click();
@@ -380,33 +306,33 @@ public class ContactListPage extends AndroidPage {
         return this.getElementScreenshot(this.getDriver().findElement(locator));
     }
 
-    public void confirmDeleteConversationAlert() {
-        deleteConfirmAlertButton.click();
+    public void confirmDeleteConversationAlert() throws Exception {
+        getElement(xpathConfirmDeleteConversationButton).click();
     }
 
-    public void checkLeaveWhileDeleteCheckbox() {
-        leaveWhileDeleteCheckbox.click();
+    public void checkLeaveWhileDeleteCheckbox() throws Exception {
+        getElement(idLeaveCheckbox).click();
     }
 
     public boolean isConvSettingsMenuItemVisible(String name) throws Exception {
-        final By locator = By.xpath(xpathConvoSettingsMenuItemByName
+        final By locator = By.xpath(xpathStrConvoSettingsMenuItemByName
                 .apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public void tapInviteButton() {
-        inviteButton.click();
+    public void tapInviteButton() throws Exception {
+        getElement(idInviteButton).click();
     }
 
     public boolean isLeaveCheckBoxVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idLeaveCheckbox));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idLeaveCheckbox);
     }
 
     public boolean isThreeDotButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idThreeDotsOptionMenuButton));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idThreeDotsOptionMenuButton);
     }
 
-    public void tapThreeDotOptionMenuButton() {
-        threeDotOptionMenuButton.click();
+    public void tapThreeDotOptionMenuButton() throws Exception {
+        getElement(idThreeDotsOptionMenuButton).click();
     }
 }

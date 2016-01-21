@@ -7,8 +7,6 @@ import java.util.function.Function;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
@@ -17,16 +15,15 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class OtherUserPersonalInfoPage extends AndroidPage {
 
-    private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.75;
+    private static final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.75;
 
-    public static final String idConnectRequestUnblock = "zb__connect_request__unblock_button";
-    public static final String idSingleUserUnblock = "zb__single_user_participants__unblock_button";
+    public static final By xpathUnblockButton = By.xpath("//*[contains(@id, '__unblock_button') and @shown='true']");
 
-    private static final Function<String, String> xpathPartcipantNameByText = text -> String
+    private static final Function<String, String> xpathParticipantNameByText = text -> String
             .format("//*[@id='ttv__participants__header' and @value='%s']",
                     text);
 
-    private static final Function<String, String> xpathPartcipantEmailByText = text -> String
+    private static final Function<String, String> xpathParticipantEmailByText = text -> String
             .format("//*[@id='ttv__participants__sub_header' and @value='%s']",
                     text);
 
@@ -42,75 +39,46 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
             .format("//*[@id='cv__group__adapter' and ./parent::*/*[@value='%s']]",
                     name.split("\\s+")[0]);
 
-    private static final String idParticipantsHeader = "ttv__participants__header";
-    @FindBy(id = idParticipantsHeader)
-    private WebElement groupChatName;
+    private static final By idParticipantsHeader = By.id("ttv__participants__header");
 
-    private static final String idParticipantsHeaderEditable = "taet__participants__header__editable";
-    @FindBy(id = idParticipantsHeaderEditable)
-    private WebElement groupChatNameEditable;
+    private static final By idParticipantsHeaderEditable = By.id("taet__participants__header__editable");
 
-    private static final String idUserProfileConfirmationMenu = "user_profile_confirmation_menu";
-    @FindBy(id = idUserProfileConfirmationMenu)
-    private WebElement confirmMenu;
-
-    private static final String idRenameButton = "ttv__conversation_settings__rename";
-    @FindBy(id = idRenameButton)
-    private WebElement renameButton;
+    private static final By idUserProfileConfirmationMenu = By.id("user_profile_confirmation_menu");
 
     private static final Function<String, String> xpathConvOptionsMenuItemByName = name -> String
             .format("//*[@id='fl__participant__settings_box']"
                     + "//*[starts-with(@id, 'ttv__settings_box__item') and @value='%s']"
                     + "/parent::*//*[@id='fl_options_menu_button']", name.toUpperCase());
 
-    @FindBy(id = PeoplePickerPage.idParticipantsClose)
-    private WebElement closeButton;
+    public static final By xpathLeftActionButton =
+            By.xpath("//*[contains(@id, '__left__action') and starts-with(@id, 'gtv__') and @shown='true']");
 
-    @FindBy(how = How.CLASS_NAME, using = classNameFrameLayout)
-    private WebElement frameLayout;
+    public static final By xpathRightActionButton =
+            By.xpath("//*[contains(@id, '__right__action') and starts-with(@id, 'gtv__') and @shown='true']");
 
-    @FindBy(id = idPager)
-    private WebElement backGround;
-
-    @FindBy(xpath = xpathConfirmBtn)
-    private WebElement confirmBtn;
-
-    public static final String xpathLeftActionButton =
-            "//*[@id='fm__footer']//*[@id='gtv__participants__left__action']";
-    @FindBy(xpath = xpathLeftActionButton)
-    private WebElement leftActionButton;
-
-    public static final String xpathRightActionButton =
-            "//*[@id='fm__footer']//*[@id='gtv__participants__right__action']";
-    @FindBy(xpath = xpathRightActionButton)
-    private WebElement rightActionButton;
-
-    public static final String xpathEllipsisButton =
-            "//*[@id='fm__participants__footer' or @id='fm__footer']//*[@id='gtv__participants__right__action']";
-    @FindBy(xpath = xpathEllipsisButton)
-    private WebElement ellipsisButton;
-
-    private static final String idParticipantsSubHeader = "ttv__participants__sub_header";
-    @FindBy(id = idParticipantsSubHeader)
-    private WebElement participantsSubHeader;
-
-    @FindBy(id = IncomingPendingConnectionsPage.idConnectToHeader)
-    private List<WebElement> connectToHeader;
+    private static final By idParticipantsSubHeader = By.id("ttv__participants__sub_header");
 
     public OtherUserPersonalInfoPage(Future<ZetaAndroidDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
     }
 
+    public void tapRightActionButton() throws Exception {
+        final List<WebElement> visibleButtons = selectVisibleElements(xpathRightActionButton);
+        if (visibleButtons.isEmpty()) {
+            throw new IllegalStateException("Cannot locate right action button");
+        }
+        this.getDriver().tap(1, visibleButtons.get(0).getLocation().getX() + visibleButtons.get(0).getSize().width / 2,
+                visibleButtons.get(0).getLocation().getY() + visibleButtons.get(0).getSize().height / 2,
+                DriverUtils.SINGLE_TAP_DURATION);
+    }
+
     public void pressOptionsMenuButton() throws Exception {
-        ellipsisButton.click();
+        tapRightActionButton();
     }
 
     public boolean isUnblockBtnVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idSingleUserUnblock), 5)
-                || DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idConnectRequestUnblock), 5);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathUnblockButton);
     }
 
     private static By[] getOneToOneOptionsMenuLocators() {
@@ -144,8 +112,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     }
 
     private static By[] getParticipantPageLocators() {
-        return new By[]{By.id(PeoplePickerPage.idParticipantsClose),
-                By.id(idParticipantsSubHeader), By.id(idParticipantsHeader)};
+        return new By[]{PeoplePickerPage.idParticipantsClose,
+                idParticipantsSubHeader, idParticipantsHeader};
     }
 
     public boolean isParticipatPageUIContentNotVisible() throws Exception {
@@ -169,8 +137,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     }
 
     public void selectConvoSettingsMenuItem(String itemName) throws Exception {
-        final By locator = By.xpath(xpathConvOptionsMenuItemByName
-                .apply(itemName));
+        final By locator = By.xpath(xpathConvOptionsMenuItemByName.apply(itemName));
         getElement(locator,
                 String.format("Conversation menu item '%s' could not be found on the current screen", itemName)).
                 click();
@@ -178,38 +145,42 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
     public boolean isOtherUserNameVisible(String expectedName) throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathPartcipantNameByText.apply(expectedName)), 1)
+                By.xpath(xpathParticipantNameByText.apply(expectedName)), 1)
                 || DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By
-                .xpath(xpathSingleParticipantNameByText
-                        .apply(expectedName)), 1);
+                .xpath(xpathSingleParticipantNameByText.apply(expectedName)), 1);
     }
 
     public boolean isOtherUserMailVisible(String expectedEmail)
             throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathPartcipantEmailByText.apply(expectedEmail)), 1)
+                By.xpath(xpathParticipantEmailByText.apply(expectedEmail)), 1)
                 || DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By
-                .xpath(xpathSingleParticipantEmailByText
-                        .apply(expectedEmail)), 1);
+                .xpath(xpathSingleParticipantEmailByText.apply(expectedEmail)), 1);
     }
 
     public boolean isConversationAlertVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idUserProfileConfirmationMenu));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idUserProfileConfirmationMenu);
     }
 
     public void pressConfirmBtn() throws Exception {
-        getElement(By.xpath(xpathConfirmBtn), "Confirmation button is not visible").click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), By.xpath(xpathConfirmBtn), 3)) {
+        getElement(xpathConfirmBtn, "Confirmation button is not visible").click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathConfirmBtn, 3)) {
             throw new IllegalStateException("Confirmation button is still visible after 3 seconds timeout");
         }
     }
 
     public void tapLeftActionBtn() throws Exception {
-        leftActionButton.click();
+        final List<WebElement> visibleButtons = selectVisibleElements(xpathLeftActionButton);
+        if (visibleButtons.isEmpty()) {
+                throw new IllegalStateException("Cannot locate left action button");
+        }
+        this.getDriver().tap(1, visibleButtons.get(0).getLocation().getX() + visibleButtons.get(0).getSize().width / 2,
+                visibleButtons.get(0).getLocation().getY() + visibleButtons.get(0).getSize().height / 2,
+                DriverUtils.SINGLE_TAP_DURATION);
     }
 
     public boolean isBackGroundImageCorrect(String imageName) throws Exception {
-        final BufferedImage bgImage = getElementScreenshot(backGround)
+        final BufferedImage bgImage = getElementScreenshot(getElement(idPager))
                 .orElseThrow(IllegalStateException::new);
         String path = CommonUtils.getImagesPath(CommonUtils.class);
         BufferedImage realImage = ImageUtil.readImageFromFile(path + imageName);
@@ -222,11 +193,12 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public void tapOnParticipantsHeader() {
-        groupChatName.click();
+    public void tapOnParticipantsHeader() throws Exception {
+        getElement(idParticipantsHeader).click();
     }
 
     public void renameGroupChat(String chatName) throws Exception {
+        final WebElement groupChatNameEditable = getElement(idParticipantsHeaderEditable);
         groupChatNameEditable.clear();
         groupChatNameEditable.sendKeys(chatName);
         this.pressKeyboardSendButton();
@@ -235,24 +207,20 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     public void tapOnParticipant(String name) throws Exception {
         // Wait for animation
         Thread.sleep(1000);
-        final By nameLocator = By.xpath(xpathParticipantAvatarByName
-                .apply(name));
-        assert DriverUtils
-                .waitUntilLocatorIsDisplayed(getDriver(), nameLocator) : String
-                .format("The avatar of '%s' is not visible", name);
-        this.getDriver().findElement(nameLocator).click();
+        final By nameLocator = By.xpath(xpathParticipantAvatarByName.apply(name));
+        getElement(nameLocator, String.format("The avatar of '%s' is not visible", name)).click();
     }
 
-    public String getSubHeader() {
-        return participantsSubHeader.getText();
+    public String getSubHeader() throws Exception {
+        return getElement(idParticipantsSubHeader).getText();
     }
 
     public String getConversationName() throws Exception {
-        return groupChatName.getText();
+        return getElement(idParticipantsHeader).getText();
     }
 
     public void tapCloseButton() throws Exception {
-        final WebElement closeButton = getElement(By.id(PeoplePickerPage.idParticipantsClose),
+        final WebElement closeButton = getElement(PeoplePickerPage.idParticipantsClose,
                 "Close participants button is not visible");
         final int halfHeight = this.getDriver().manage().window().getSize().getHeight() / 2;
         int ntry = 1;
@@ -260,7 +228,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
         do {
             closeButton.click();
             ntry++;
-        } while (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(PeoplePickerPage.idParticipantsClose), 1)
+        } while (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), PeoplePickerPage.idParticipantsClose, 1)
                 && closeButton.getLocation().getY() < halfHeight
                 && ntry <= maxRetries);
         if (ntry > maxRetries) {
@@ -280,9 +248,5 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
         final By locator = By.xpath(xpathConvOptionsMenuItemByName
                 .apply(itemName));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-    }
-
-    public void tapRightActionButton() {
-        rightActionButton.click();
     }
 }

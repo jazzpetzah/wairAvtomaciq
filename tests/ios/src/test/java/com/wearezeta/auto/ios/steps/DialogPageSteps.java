@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.steps;
 
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -203,16 +204,6 @@ public class DialogPageSteps {
                 + " expected: " + msg, dialogLastMessage.equals(msg));
     }
 
-    @When("^I swipe the text input cursor$")
-    public void ISwipeTheTextInputCursor() throws Throwable {
-        for (int i = 0; i < 3; i++) {
-            getDialogPage().swipeInputCursor();
-            if (getDialogPage().isPingButtonVisible()) {
-                break;
-            }
-        }
-    }
-
     /**
      * Swipe left on text input to close options buttons
      *
@@ -295,7 +286,7 @@ public class DialogPageSteps {
 
     @When("^I memorize message send time$")
     public void IMemorizeMessageSendTime() throws Exception {
-        sendDate = getDialogPage().getSendTime();
+        sendDate = new Date().getTime();
     }
 
     @Then("I see youtube link (.*) and media in dialog")

@@ -1,268 +1,201 @@
 package com.wearezeta.auto.android.pages;
 
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class CallingOverlayPage extends AndroidPage {
-    private static final String idCallingContainer = "rv__calling__container";
-    @FindBy(id = idCallingContainer)
-    private WebElement callingContainer;
+    private static final String idStrCallingContainer = "rv__calling__container";
+    private static final By idCallingContainer = By.id(idStrCallingContainer);
 
-    private static final String idCallingOverlay = "fl__calling__overlay";
+    private static final By idCallingOverlay = By.id("fl__calling__overlay");
 
-    private static final String idGroupCallingJoinOverlayContainer = "ll__group_call__not_joined_container";
-    @FindBy(id = idGroupCallingJoinOverlayContainer)
-    private WebElement joinGroupCallButton;
+    private static final By idGroupCallingJoinOverlayContainer = By.id("ll__group_call__not_joined_container");
 
-    private static final String idIgnoreButton = "cib__calling_mute";
-    @FindBy(id = idIgnoreButton)
-    private WebElement ignoreButton;
+    private static final By idIgnoreButton = By.id("cib__calling_mute");
 
-    private static final String idAcceptButton = "gtv__calling__accept";
-    @FindBy(id = idAcceptButton)
-    private WebElement acceptButton;
+    private static final By idAcceptButton = By.id("gtv__calling__accept");
 
-    private static final String idJoinButton = "ttv__group_call__not_joined_text";
+    private static final String idStrJoinButton = "ttv__group_call__not_joined_text";
     private static final Function<String, String> xpathJoinButton = name -> String
             .format("//*[@id='%s' and contains(@value, '%s') and @shown='true']",
-                    idJoinButton, name.toUpperCase());
+                    idStrJoinButton, name.toUpperCase());
 
-    private static final String idCallMessage = "ttv__calling__message";
-
+    private static final String idStrCallMessage = "ttv__calling__message";
     private static final Function<String, String> xpathCallingBarCaptionByName = name -> String
-            .format("//*[@id='%s' and contains(@value, '%s')]", idCallMessage,
+            .format("//*[@id='%s' and contains(@value, '%s')]", idStrCallMessage,
                     name.toUpperCase());
 
     private static final Function<String, String> xpathCallingBarAvatarByName = name -> String
-            .format("//*[@id='%s']//*[@value='%s' or @value='%s']", idCallingContainer, name, name.toUpperCase());
+            .format("//*[@id='%s']//*[@value='%s' or @value='%s']", idStrCallingContainer, name, name.toUpperCase());
 
-    private static final String idCallingDismiss = "cib__calling__dismiss";
-    @FindBy(id = idCallingDismiss)
-    private WebElement dismissButton;
+    private static final By idCallingDismiss = By.id("cib__calling__dismiss");
 
-    public static final String idCallingSpeaker = "cib__calling__speaker";
-    @FindBy(id = idCallingSpeaker)
-    public WebElement speakerButton;
+    public static final By idCallingSpeaker = By.id("cib__calling__speaker");
 
-    private static final String idCallingMicMute = "cib__calling__mic_mute";
-    @FindBy(id = idCallingMicMute)
-    public WebElement muteMicButton;
+    public static final By idCallingMicMute = By.id("cib__calling__mic_mute");
 
-    private static final String xpathGroupCallParticipantChathead = "//*[@id='rv__calling__container']/*";
+    private static final By xpathGroupCallParticipantChathead = By.xpath("//*[@id='rv__calling__container']/*");
 
-    private static final String xpathGroupCallIsFullAlertTitle = "//DialogTitle[@id='alertTitle' and @value='The call is full']";
+    private static final By xpathGroupCallIsFullAlertTitle =
+            By.xpath("//DialogTitle[@id='alertTitle' and @value='The call is full']");
 
-    private static final String idGroupCallIsFullOKButton = "button3";
-    @FindBy(id = idGroupCallIsFullOKButton)
-    private WebElement groupCallIsFullOKButton;
+    private static final By idGroupCallIsFullOKButton = By.id("button3");
 
-    private static final String xpathAnswerCallAlertTitle = "//DialogTitle[@id='alertTitle' and @value='Answer call?']";
+    private static final By xpathAnswerCallAlertTitle =
+            By.xpath("//DialogTitle[@id='alertTitle' and @value='Answer call?']");
 
-    private static final String idAnswerCallCancelButton = "button2";
-    @FindBy(id = idAnswerCallCancelButton)
-    private WebElement answerCallCancelButton;
+    private static final By idAnswerCallCancelButton = By.id("button2");
 
-    private static final String idAnswerCallContinueButton = "button1";
-    @FindBy(id = idAnswerCallContinueButton)
-    private WebElement answerCallContinueButton;
+    private static final By idAnswerCallContinueButton = By.id("button1");
 
-    private static final String xpathEndCurrentCallAlertTitle = "//*[@value='Hang up current call?']";
+    private static final By xpathEndCurrentCallAlertTitle = By.xpath("//*[@value='Hang up current call?']");
 
-    private static final String idEndCurrentCallCancelButton = "button2";
-    @FindBy(id = idEndCurrentCallCancelButton)
-    private WebElement endCurrentCallCancelButton;
+    private static final By idEndCurrentCallCancelButton = By.id("button2");
 
-    private static final String idEndCurrentCallContinueButton = "button1";
-    @FindBy(id = idEndCurrentCallContinueButton)
-    private WebElement endCurrentCallContinueButton;
+    private static final By idEndCurrentCallContinueButton = By.id("button1");
 
-    public CallingOverlayPage(Future<ZetaAndroidDriver> lazyDriver)
-            throws Exception {
+    public CallingOverlayPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
     private static final int VISIBILITY_TIMEOUT_SECONDS = 20;
 
     public boolean waitUntilVisible() throws Exception {
-        final By locator = By.id(idCallingContainer);
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator,
-                VISIBILITY_TIMEOUT_SECONDS);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCallingContainer, VISIBILITY_TIMEOUT_SECONDS);
     }
 
     public boolean waitUntilNotVisible() throws Exception {
-        final By locator = By.id(idCallingContainer);
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idCallingContainer);
     }
 
     public void ignoreCall() throws Exception {
-        getElement(By.id(idIgnoreButton), "Ignore button is not visible").click();
+        getElement(idIgnoreButton, "Ignore button is not visible").click();
     }
 
-    public boolean waitUntilNameAppearsOnCallingBarCaption(String name)
-            throws Exception {
+    public boolean waitUntilNameAppearsOnCallingBarCaption(String name) throws Exception {
         final By locator = By.xpath(xpathCallingBarCaptionByName.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean waitUntilNameAppearsOnCallingBarAvatar(String name)
-            throws Exception {
+    public boolean waitUntilNameAppearsOnCallingBarAvatar(String name) throws Exception {
         final By locator = By.xpath(xpathCallingBarAvatarByName.apply(name));
         // isDisplayed sometimes does not work properly here
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
 
-    public DialogPage acceptCall() throws Exception {
-        boolean acceptButtonVisible = DriverUtils.waitUntilLocatorIsDisplayed(
-                getDriver(), By.id(idAcceptButton));
-        boolean joinGroupCallVisible = true;
-        if (acceptButtonVisible) {
-            acceptButton.click();
+    public void acceptCall() throws Exception {
+        final Optional<WebElement> acceptButton = getElementIfDisplayed(idAcceptButton);
+        if (acceptButton.isPresent()) {
+            acceptButton.get().click();
         } else {
-            joinGroupCallVisible = DriverUtils.waitUntilLocatorIsDisplayed(
-                    getDriver(), By.id(idGroupCallingJoinOverlayContainer));
-            if (joinGroupCallVisible) {
-                joinGroupCallButton.click();
-            }
+            final Optional<WebElement> joinGroupCallButton =
+                    getElementIfDisplayed(idGroupCallingJoinOverlayContainer, 1);
+            joinGroupCallButton.orElseThrow(() -> new IllegalStateException("No Accept or JOIN CALL button visible")).
+                    click();
         }
-        assert acceptButtonVisible || joinGroupCallVisible : "No Accept or JOIN CALL button visible";
-        return new DialogPage(getLazyDriver());
     }
 
     public boolean callingDismissIsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idCallingDismiss));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCallingDismiss);
     }
 
     public boolean callingSpeakerIsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idCallingSpeaker));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCallingSpeaker);
     }
 
     public boolean callingMicMuteIsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idCallingMicMute));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCallingMicMute);
     }
 
     public boolean waitUntilGroupCallJoinVisible() throws Exception {
-        final By locator = By.id(idGroupCallingJoinOverlayContainer);
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator,
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idGroupCallingJoinOverlayContainer,
                 VISIBILITY_TIMEOUT_SECONDS);
     }
 
     public boolean waitUntilGroupCallJoinNotVisible() throws Exception {
-        final By locator = By.id(idGroupCallingJoinOverlayContainer);
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator,
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idGroupCallingJoinOverlayContainer,
                 VISIBILITY_TIMEOUT_SECONDS);
     }
 
-    public boolean waitUntilJoinGroupCallButtonVisible(String name)
-            throws Exception {
+    public boolean waitUntilJoinGroupCallButtonVisible(String name) throws Exception {
         final By locator = By.xpath(xpathJoinButton.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator,
                 VISIBILITY_TIMEOUT_SECONDS);
     }
 
-    public boolean waitUntilJoinGroupCallButtonNotVisible(String name)
-            throws Exception {
+    public boolean waitUntilJoinGroupCallButtonNotVisible(String name) throws Exception {
         final By locator = By.xpath(xpathJoinButton.apply(name));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator,
                 VISIBILITY_TIMEOUT_SECONDS);
     }
 
     public void joinGroupCall() throws Exception {
-        getElement(By.id(idGroupCallingJoinOverlayContainer), "JOIN CALL button is not visible").
-                click();
+        getElement(idGroupCallingJoinOverlayContainer, "JOIN CALL button is not visible").click();
     }
 
     public boolean ongoingCallMicrobarIsVisible() throws Exception {
         // FIXME: Find a better way to detect microbar visibility
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idCallingOverlay));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCallingOverlay);
     }
 
     public boolean ongoingCallMinibarIsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.id(idCallingOverlay))
-                && DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathGroupCallParticipantChathead));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCallingOverlay)
+                && DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathGroupCallParticipantChathead);
     }
 
     public int numberOfParticipantsInGroupCall() throws Exception {
-        final By searchCriteria = By.xpath(xpathGroupCallParticipantChathead);
-        if (DriverUtils.waitUntilLocatorAppears(getDriver(), searchCriteria, 5)) {
-            int ntry = 1;
-            final int maxRetries = 3;
-            do {
-                try {
-                    return getDriver().findElements(searchCriteria).size();
-                } catch (WebDriverException e) {
-                    e.printStackTrace();
-                    Thread.sleep(1500);
-                    ntry++;
-                }
-            } while (ntry <= maxRetries);
-        }
-        return 0;
+        return selectVisibleElements(xpathGroupCallParticipantChathead).size();
     }
 
     public boolean isGroupCallFullAlertVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathGroupCallIsFullAlertTitle));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathGroupCallIsFullAlertTitle);
     }
 
-    public DialogPage closeGroupCallFullAlert() throws Exception {
-        groupCallIsFullOKButton.click();
-        return new DialogPage(getLazyDriver());
+    public void closeGroupCallFullAlert() throws Exception {
+        getElement(idGroupCallIsFullOKButton).click();
     }
 
     public boolean isAnswerCallAlertVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathAnswerCallAlertTitle));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathAnswerCallAlertTitle);
     }
 
-    public DialogPage answerCallContinue() throws Exception {
-        answerCallContinueButton.click();
-        return new DialogPage(getLazyDriver());
+    public void answerCallContinue() throws Exception {
+        getElement(idAnswerCallContinueButton).click();
     }
 
-    public DialogPage answerCallCancel() throws Exception {
-        answerCallCancelButton.click();
-        return new DialogPage(getLazyDriver());
+    public void answerCallCancel() throws Exception {
+        getElement(idAnswerCallCancelButton).click();
     }
 
     public boolean isEndCurrentCallAlertVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathEndCurrentCallAlertTitle));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathEndCurrentCallAlertTitle);
     }
 
-    public DialogPage endCurrentCallContinue() throws Exception {
-        endCurrentCallContinueButton.click();
-        return new DialogPage(getLazyDriver());
+    public void endCurrentCallContinue() throws Exception {
+        getElement(idEndCurrentCallContinueButton).click();
     }
 
-    public DialogPage endCurrentCallCancel() throws Exception {
-        endCurrentCallCancelButton.click();
-        return new DialogPage(getLazyDriver());
+    public void endCurrentCallCancel() throws Exception {
+        getElement(idEndCurrentCallCancelButton).click();
     }
 
-    public void tapMuteMicButton() {
-        muteMicButton.click();
+    public void tapMuteMicButton() throws Exception {
+        getElement(idCallingMicMute).click();
     }
 
-    public void tapSpeakerButton() {
-        speakerButton.click();
+    public void tapSpeakerButton() throws Exception {
+        getElement(idCallingSpeaker).click();
     }
 
-    public void tapDismissButton() {
-        dismissButton.click();
+    public void tapDismissButton() throws Exception {
+        getElement(idCallingDismiss).click();
     }
 
     public boolean ongoingCallMinibarIsInvisible() throws Exception {

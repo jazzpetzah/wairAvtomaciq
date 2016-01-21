@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -14,8 +15,8 @@ public class PendingRequestsPage extends IOSPage {
 
     private static final By namePendingRequestConnectButton = By.name("CONNECT");
 
-    private static final By xpathPendingRequesterName = By.xpath(
-            xpathStrMainWindow + "/UIATableView[1]//UIAStaticText[contains(@name, 'Connect to')]");
+    private static final Function<String, String> xpathStrPendingRequesterByName = name ->
+            String.format("//UIAStaticText[contains(@name, 'Connect to') and contains(@name, '%s)]", name);
 
     private static final By xpathYouBothKnowPeopleIcon = By.xpath(
             xpathStrMainWindow + "/UIATableView[1]/UIATableCell[1]/UIAButton[2]");
@@ -57,9 +58,9 @@ public class PendingRequestsPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), namePendingRequestConnectButton, 5);
     }
 
-    public String getRequesterName() throws Exception {
-        final String CONNECT_TO = "Connect to ";
-        return getElement(xpathPendingRequesterName).getText().replace(CONNECT_TO, "");
+    public boolean isConnectToNameExist(String expectedName) throws Exception {
+        final By locator = By.xpath(xpathStrPendingRequesterByName.apply(expectedName));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isYouBothKnowDisplayed() throws Exception {

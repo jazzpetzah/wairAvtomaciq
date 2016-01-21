@@ -2,11 +2,9 @@ package com.wearezeta.auto.android.pages.registration;
 
 import java.util.concurrent.Future;
 
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.By;
 
 import com.wearezeta.auto.android.pages.AndroidPage;
-import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 /**
@@ -19,18 +17,15 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class AddPhoneNumberPage extends AndroidPage {
 
-	public static final String idNotNowButton = "ttv__not_now";
-	@FindBy(id = idNotNowButton)
-	private WebElement notNowButton;
+	public static final By idNotNowButton = By.id("ttv__not_now");
 
 	public AddPhoneNumberPage(Future<ZetaAndroidDriver> lazyDriver)
 		throws Exception {
 		super(lazyDriver);
 	}
 	
-	public ContactListPage notNowButtonClick() throws Exception {
-		notNowButton.click();
-		return new ContactListPage(this.getLazyDriver());
+	public void notNowButtonClick() throws Exception {
+		getElement(idNotNowButton).click();
 	}
 
 }

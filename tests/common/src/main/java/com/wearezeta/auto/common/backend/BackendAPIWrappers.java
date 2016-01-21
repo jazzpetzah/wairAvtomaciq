@@ -1,6 +1,7 @@
 package com.wearezeta.auto.common.backend;
 
 import com.wearezeta.auto.common.CommonSteps;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.email.ActivationMessage;
 import com.wearezeta.auto.common.email.InvitationMessage;
 import com.wearezeta.auto.common.email.MessagingUtils;
@@ -26,6 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 // Almost all methods of this class mutate ClientUser
 // argument by performing automatic login (set id and session token attributes)
@@ -40,17 +42,15 @@ public final class BackendAPIWrappers {
     private static final int PHONE_NUMBER_ALREADY_REGISTERED_ERROR = 409;
     private static final int MAX_BACKEND_RETRIES = 5;
 
-    private static final long MAX_MSG_DELIVERY_OFFSET = 10000; // milliseconds
+    private static final long MAX_MSG_DELIVERY_OFFSET = 60 * 1000; // milliseconds
 
-    private static final Logger log = ZetaLogger
-            .getLog(BackendAPIWrappers.class.getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(BackendAPIWrappers.class.getSimpleName());
 
     public static void setDefaultBackendURL(String url) {
         BackendREST.setDefaultBackendURL(url);
     }
 
-    public static ClientUser updateUserAccentColor(ClientUser user)
-            throws Exception {
+    public static ClientUser updateUserAccentColor(ClientUser user) throws Exception {
         final JSONObject additionalUserInfo = BackendREST
                 .getUserInfo(receiveAuthToken(user));
         user.setAccentColor(AccentColor.getById(additionalUserInfo
@@ -58,16 +58,21 @@ public final class BackendAPIWrappers {
         return user;
     }
 
-    public static Future<String> initMessageListener(ClientUser forUser)
-            throws Exception {
+    public static Future<String> initMessageListener(ClientUser forUser) throws Exception {
         IMAPSMailbox mbox = IMAPSMailbox.getInstance();
-        Map<String, String> expectedHeaders = new HashMap<String, String>();
+        Map<String, String> expectedHeaders = new HashMap<>();
         expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER,
                 forUser.getEmail());
         // The MAX_MSG_DELIVERY_OFFSET is necessary because of small
         // time difference between UTC and your local machine
+        long currentTime = new Date().getTime();
+        try {
+            currentTime = CommonUtils.getPreciseTime().get(10, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return mbox.getMessage(expectedHeaders, ACTIVATION_TIMEOUT,
-                new Date().getTime() - MAX_MSG_DELIVERY_OFFSET);
+                currentTime - MAX_MSG_DELIVERY_OFFSET);
     }
 
     /**

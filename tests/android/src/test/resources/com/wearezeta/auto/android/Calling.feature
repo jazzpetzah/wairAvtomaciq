@@ -12,7 +12,6 @@ Feature: Calling
     And <Contact> stops all calls to me
     Then I do not see calling overlay Big bar
     When I tap on contact name <Contact>
-    And I see dialog page
     Then I see dialog with missed call from <Contact>
 
     Examples:
@@ -43,7 +42,6 @@ Feature: Calling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I see dialog page
     And I swipe on text input
     And I press Call button
     Then I see call overlay
@@ -113,7 +111,6 @@ Feature: Calling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I tap on contact name <Contact>
-    And I see dialog page
     And <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I answer the call from the overlay bar
@@ -144,9 +141,7 @@ Feature: Calling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I see dialog page
     And <Contact> calls me using <CallBackend>
-    And I see call overlay
     And I answer the call from the overlay bar
     When I remember the current state of <MuteBtnName> button
     And I press <MuteBtnName> button
@@ -171,7 +166,6 @@ Feature: Calling
     Given I see Contact list with contacts
     When <Contact1> calls me using <CallBackend>
     And I answer the call from the overlay bar
-    And I see dialog page
     Then I see calling overlay Big bar
     And I navigate back from dialog page
     And I open Search by tap
@@ -184,7 +178,6 @@ Feature: Calling
     And I close Personal Info Page
     And I see calling overlay Micro bar
     And I tap on contact name <Contact2>
-    And I see dialog page
     And I see calling overlay Mini bar
 
     Examples:
@@ -226,7 +219,6 @@ Feature: Calling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
-    And I see dialog page
     And I swipe on text input
     And I press Call button
     Then I see call overlay
@@ -255,7 +247,6 @@ Feature: Calling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
-    And I see dialog page
     And <Contact1> calls <GroupChatName> using <CallBackend2>
     And I answer the call from the overlay bar
     Then I do not see join group call overlay
@@ -568,7 +559,6 @@ Feature: Calling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I tap on contact name <Contact>
-    And I see dialog page
     And I swipe on text input
     And I press Call button
     And I see calling overlay Big bar
@@ -609,7 +599,6 @@ Feature: Calling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I tap on contact name <Contact1>
-    And I see dialog page
     And <Contact1> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact1>
     And I answer the call from the overlay bar

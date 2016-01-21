@@ -25,7 +25,7 @@ public class RegistrationPage extends IOSPage {
     private static final By xpathCreateAccountButton = By.xpath(
             "//UIASecureTextField[contains(@name, 'PasswordField')]/UIAButton");
 
-    private static final Function<String, String> xpathConfirmationByMessage = msg ->
+    private static final Function<String, String> xpathStrConfirmationByMessage = msg ->
             String.format("//UIAStaticText[contains(@name, 'We sent an email to %s.')]", msg);
 
     private static final By xpathEmailVerifPrompt = By.xpath(xpathStrMainWindow +
@@ -39,7 +39,7 @@ public class RegistrationPage extends IOSPage {
 
     public static final By xpathCountryList = By.xpath(xpathStrMainWindow + "/UIATableView[1]");
 
-    private static final By xpathConfirmButton = By.xpath(xpathStrMainWindow + "/UIATextField[1]/UIAButton[1]");
+    private static final By nameConfirmButton = By.name("RegistrationConfirmButton");
 
     private static final By nameAgreeButton = By.name("I AGREE");
 
@@ -81,7 +81,7 @@ public class RegistrationPage extends IOSPage {
 
     public void inputPhoneNumber(String number) throws Exception {
         getElement(namePhoneNumberField).sendKeys(number);
-        getElement(xpathConfirmButton).click();
+        getElement(nameConfirmButton).click();
     }
 
     public boolean isVerificationCodePageVisible() throws Exception {
@@ -90,7 +90,7 @@ public class RegistrationPage extends IOSPage {
 
     public void inputActivationCode(String code) throws Exception {
         getElement(xpathActivationCode, "Activation code input is not visible").sendKeys(code);
-        getElement(xpathConfirmButton).click();
+        getElement(nameConfirmButton).click();
     }
 
     public void inputRandomActivationCode() throws Exception {
@@ -107,7 +107,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public boolean isConfirmationShown() throws Exception {
-        final By locator = By.xpath(xpathConfirmationByMessage.apply(getEmail()));
+        final By locator = By.xpath(xpathStrConfirmationByMessage.apply(getEmail()));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
@@ -115,12 +115,8 @@ public class RegistrationPage extends IOSPage {
         getElement(nameConfirmImageButton).click();
     }
 
-    public void hideKeyboard() throws Exception {
-        this.getDriver().hideKeyboard();
-    }
-
     public void inputName() throws Exception {
-        getElement(xpathConfirmButton).click();
+        getElement(nameConfirmButton).click();
     }
 
     public void clickCreateAccountButton() throws Exception {

@@ -4,12 +4,14 @@ import io.appium.java_client.AppiumDriver;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.InetAddress;
 import java.security.MessageDigest;
 import java.util.*;
 import java.util.concurrent.*;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.net.ntp.NTPUDPClient;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
@@ -555,6 +557,15 @@ public class CommonUtils {
         return getValueFromConfig(cls, "appName");
     }
 
+    private static final int SCREENSHOT_TIMEOUT_SECONDS = 5;
+
+    public static void takeIOSSimulatorScreenshot(String screenshotPath) throws Exception {
+        executeUIShellScript(new String[]{
+                String.format("mkdir -p $(dirname \"%s\")", screenshotPath),
+                String.format("%s/simshot \"%s\"", getIOSToolsRoot(CommonUtils.class), screenshotPath)
+        }).get(SCREENSHOT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+    }
+
     private static class UIScriptExecutionMonitor implements Callable<Void> {
         private File flag;
         private File script;
@@ -601,7 +612,7 @@ public class CommonUtils {
         Runtime.getRuntime().exec(new String[]{"chmod", "u+x",
                 result.getCanonicalPath()}).waitFor();
         Runtime.getRuntime().exec(new String[]{"/usr/bin/open", "-a", "Terminal",
-                result.getCanonicalPath()}).waitFor();
+                result.getCanonicalPath(), "-g"}).waitFor();
         return Executors.newSingleThreadExecutor().submit(
                 new UIScriptExecutionMonitor(executionFlag, result));
     }
@@ -618,5 +629,16 @@ public class CommonUtils {
         }
         String[] asArray = new String[scriptContent.size()];
         return executeUIShellScript(scriptContent.toArray(asArray));
+    }
+
+    private static final String TIME_SERVER = "time-a.nist.gov";
+
+    public static Future<Long> getPreciseTime() throws Exception {
+        final Callable<Long> task = () -> {
+            final NTPUDPClient timeClient = new NTPUDPClient();
+            final InetAddress inetAddress = InetAddress.getByName(TIME_SERVER);
+            return new Date(timeClient.getTime(inetAddress).getReturnTime()).getTime();
+        };
+        return Executors.newSingleThreadExecutor().submit(task);
     }
 }

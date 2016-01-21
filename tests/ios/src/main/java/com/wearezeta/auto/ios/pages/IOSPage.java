@@ -5,7 +5,9 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -21,6 +23,8 @@ import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public abstract class IOSPage extends BasePage {
+    private static final Logger log = ZetaLogger.getLog(IOSPage.class.getSimpleName());
+
     public final static long IOS_DRIVER_INIT_TIMEOUT = 1000 * 60 * 3;
 
     private static final int SWIPE_DELAY = 10 * 1000; // milliseconds
@@ -207,18 +211,15 @@ public abstract class IOSPage extends BasePage {
     public void minimizeApplication(int timeSeconds) throws Exception {
         assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            final String[] doubleClickHomeScript = new String[]{
+            CommonUtils.executeUIAppleScript(new String[]{
                     "tell application \"System Events\"",
                     "tell application \"Simulator\" to activate",
                     "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
                     "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
-                    "end tell"
-            };
-            CommonUtils.executeUIAppleScript(doubleClickHomeScript).
-                    get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+                    "end tell"}).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
             Thread.sleep(timeSeconds * 1000);
-            CommonUtils.executeUIAppleScript(doubleClickHomeScript).
-                    get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+            final Dimension screenSize = getDriver().manage().window().getSize();
+            getDriver().tap(1, screenSize.getWidth() / 3, screenSize.getHeight() / 2, DriverUtils.SINGLE_TAP_DURATION);
         } else {
             // https://discuss.appium.io/t/runappinbackground-does-not-work-for-ios9/6201
             this.getDriver().runAppInBackground(timeSeconds);
@@ -318,5 +319,35 @@ public abstract class IOSPage extends BasePage {
 
     public void resetApplication() throws Exception {
         getDriver().resetApp();
+    }
+
+    @Override
+    protected WebElement getElement(By locator) throws Exception {
+        try {
+            return super.getElement(locator);
+        } catch (Exception e) {
+            log.debug(getDriver().getPageSource());
+            throw e;
+        }
+    }
+
+    @Override
+    protected WebElement getElement(By locator, String message) throws Exception {
+        try {
+            return super.getElement(locator, message);
+        } catch (Exception e) {
+            log.debug(getDriver().getPageSource());
+            throw e;
+        }
+    }
+
+    @Override
+    protected WebElement getElement(By locator, String message, int timeoutSeconds) throws Exception {
+        try {
+            return super.getElement(locator, message, timeoutSeconds);
+        } catch (Exception e) {
+            log.debug(getDriver().getPageSource());
+            throw e;
+        }
     }
 }

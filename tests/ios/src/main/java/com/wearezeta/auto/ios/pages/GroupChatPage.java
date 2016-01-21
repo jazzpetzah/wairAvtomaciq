@@ -64,11 +64,9 @@ public class GroupChatPage extends DialogPage {
 
     @Override
     public void swipeUp(int time) throws Exception {
-        WebElement element = getDriver().findElement(
-                By.name(nameStrMainWindow));
-
-        Point coords = element.getLocation();
-        Dimension elementSize = element.getSize();
+        final WebElement element = getElement(nameMainWindow);
+        final Point coords = element.getLocation();
+        final Dimension elementSize = element.getSize();
         this.getDriver().swipe(coords.x + elementSize.width / 2,
                 coords.y + elementSize.height - 170,
                 coords.x + elementSize.width / 2, coords.y + 40, time);

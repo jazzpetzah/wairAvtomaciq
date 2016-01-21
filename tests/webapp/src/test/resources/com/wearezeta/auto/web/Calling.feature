@@ -218,30 +218,23 @@ Feature: Calling
     Then I see another call warning modal
     And I close the another call warning modal
     And I do not see another call warning modal
-    Then I do not see the calling bar
-    And I open conversation with <Contact1>
-    And I see the calling bar
-    When I open conversation with <Contact2>
-    Then I do not see the calling bar
+    Then I see the calling bar from user <Contact1>
     When I call
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
-    Then I do not see the calling bar
+    Then I see the calling bar from user <Contact1>
     When I call
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
-    Then I do not see the calling bar
+    Then I see the calling bar from user <Contact1>
     When I call
     Then I see another call warning modal
     When I click on "Hang Up" button in another call warning modal
     Then I do not see another call warning modal
     Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then I see the calling bar from user <Contact2>
-    And I open conversation with <Contact1>
-    Then I do not see the calling bar
-    When I open conversation with <Contact2>
     And I end the call
 
     Examples: 
@@ -295,30 +288,23 @@ Feature: Calling
     Then I see another call warning modal
     And I close the another call warning modal
     And I do not see another call warning modal
-    Then I do not see the calling bar
-    And I open conversation with <Contact1>
-    And I see the calling bar
-    When I open conversation with <Contact2>
-    Then I do not see the calling bar
+    Then I see the calling bar from user <Contact1>
     When I call
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
-    Then I do not see the calling bar
+    Then I see the calling bar from user <Contact1>
     When I call
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
-    Then I do not see the calling bar
+    Then I see the calling bar from user <Contact1>
     When I call
     Then I see another call warning modal
     Then I click on "Hang Up" button in another call warning modal
     Then I do not see another call warning modal
     Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then I see the calling bar from user <Contact2>
-    And I open conversation with <Contact1>
-    Then I do not see the calling bar
-    When I open conversation with <Contact2>
     And I end the call
 
     Examples: 

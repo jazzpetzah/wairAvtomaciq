@@ -6,7 +6,6 @@ import com.wearezeta.auto.android.pages.CallingLockscreenPage;
 import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import org.openqa.selenium.By;
 
 public class TabletFullScreenCallingOverlayPage extends AndroidTabletPage {
 
@@ -31,7 +30,7 @@ public class TabletFullScreenCallingOverlayPage extends AndroidTabletPage {
 
     public void acceptCall() throws Exception {
         DriverUtils.swipeElementPointToPoint(getDriver(),
-                getDriver().findElement(By.id(CallingLockscreenPage.idMainContent)),
+                getDriver().findElement(CallingLockscreenPage.idMainContent),
                 1500, 50, ACCEPT_CALL_CONTROLS_Y, 70, ACCEPT_CALL_CONTROLS_Y);
     }
 }

@@ -31,15 +31,15 @@ public class GroupPopover extends AbstractPopoverContainer {
 		this.participantsPage.selectMenuItem(itemName);
 	}
 
-	public void tapConfirmLeaveButton() {
+	public void tapConfirmLeaveButton() throws Exception {
 		this.participantsPage.tapConfirmLeaveButton();
 	}
 
-	public void tapOptionsButton() {
+	public void tapOptionsButton() throws Exception {
 		this.participantsPage.tapOptionsButton();
 	}
 
-	public void tapRemoveButton() {
+	public void tapRemoveButton() throws Exception {
 		this.connectedParticipantPage.tapRemoveButton();
 	}
 
@@ -77,7 +77,7 @@ public class GroupPopover extends AbstractPopoverContainer {
 		this.participantsPage.renameConversation(newName);
 	}
 
-	public void tapOpenConversationButton() {
+	public void tapOpenConversationButton() throws Exception {
 		this.participantsPage.tapOpenConversationButton();
 	}
 

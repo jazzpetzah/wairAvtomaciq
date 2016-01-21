@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.ios.pages.IOSPage;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -16,6 +17,7 @@ import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import com.wearezeta.auto.common.usrmgmt.UserState;
 import com.wearezeta.auto.ios.pages.RegistrationPage;
+import com.wearezeta.auto.ios.pages.LoginPage;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -27,6 +29,10 @@ public class RegistrationPageSteps {
 
     private RegistrationPage getRegistrationPage() throws Exception {
         return pagesCollection.getPage(RegistrationPage.class);
+    }
+
+    private LoginPage getLoginPage() throws Exception {
+        return pagesCollection.getPage(LoginPage.class);
     }
 
     private ClientUser userToRegister = null;
@@ -284,6 +290,7 @@ public class RegistrationPageSteps {
         BackendAPIWrappers
                 .activateRegisteredUserByEmail(this.activationMessage);
         userToRegister.setUserState(UserState.Created);
+        getLoginPage().waitForLoginToFinish();
     }
 
     /**

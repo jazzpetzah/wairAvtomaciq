@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import org.junit.Assert;
 
 import java.io.IOException;
@@ -21,6 +22,7 @@ import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.RegistrationPage;
 
 import cucumber.api.java.en.*;
+import org.openqa.selenium.By;
 
 /**
  * Contains steps to work with Login/Welcome page
@@ -62,8 +64,6 @@ public class LoginPageSteps {
      */
     @Given("^I sign in using my email$")
     public void GivenISignInUsingEmail() throws Exception {
-        ISeeSignInScreen();
-
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
         emailLoginSequence(self.getEmail(), self.getPassword());
     }
@@ -236,7 +236,6 @@ public class LoginPageSteps {
      */
     @Given("^I sign in using my email or phone number$")
     public void GivenISignInUsingEmailOrPhone() throws Exception {
-        Assert.assertTrue("Login page is not visible", getLoginPage().isVisible());
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
         if (CommonUtils.trueInPercents(BY_PHONE_NUMBER_LOGIN_PROBABILITY)) {
             phoneLoginSequence(self.getPhoneNumber());
@@ -569,6 +568,7 @@ public class LoginPageSteps {
     @When("^I click Not Now to not add phone number$")
     public void IClickNotNowToNotAddPhoneNumber() throws Throwable {
         getLoginPage().clickPhoneNotNow();
+        getLoginPage().waitForLoginToFinish();
     }
 
 }

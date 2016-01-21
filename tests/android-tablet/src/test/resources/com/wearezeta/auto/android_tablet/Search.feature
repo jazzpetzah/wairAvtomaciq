@@ -487,7 +487,6 @@ Feature: Search
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     And I tap Search input
-    And I see People Picker page
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap the found item <Contact1> on People Picker page
     And I enter "<Contact2>" into Search input on People Picker page

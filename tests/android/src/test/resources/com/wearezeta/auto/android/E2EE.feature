@@ -41,11 +41,12 @@ Feature: E2EE
       | Password      | Name      | DeviceToRemove |
       | user1Password | user1Name | Device1        |
 
-  @C3227 @staging
+  @C3227 @rc @regression
   Scenario Outline: Verify you can receive encrypted and non-encrypted images in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
     Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When User <Contact> sends encrypted image <ImageName> to single user conversation Myself
     And User <Contact> sends image <ImageName> to single user conversation Myself

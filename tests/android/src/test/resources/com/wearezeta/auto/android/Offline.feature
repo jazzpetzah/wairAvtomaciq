@@ -8,7 +8,6 @@ Feature: Offline
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I tap on contact name <Contact>
-    And I see dialog page
     When Contact <Contact> send message <Message1> to user <Name>
     Then Last message is <Message1>
     When I enable Airplane mode on the device
@@ -33,7 +32,6 @@ Feature: Offline
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I tap on contact name <Contact>
-    And I see dialog page
     And I enable Airplane mode on the device
     When I tap on text input
     And I type the message "<Message>" and send it

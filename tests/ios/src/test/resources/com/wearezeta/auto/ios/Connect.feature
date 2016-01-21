@@ -152,31 +152,25 @@ Feature: Connect
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     Given User <Contact> securely pings conversation <Name>
     Given User <Contact> sends 1 encrypted message to user Myself
-    And I wait for 10 seconds
     Then I dont see conversation <Contact> in contact list
     When I open search by taping on it
-    And I see People picker page
+    And I wait until <Contact> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
     And I tap on connected user <Contact> on People picker page
     And I unblock user
-    And I wait for 5 seconds
-    Then I see User <Contact> Pinged message in the conversation
-    And I see new photo in the dialog
-    And I see 1 default message in the dialog
+    Then I see 1 message in the dialog
     And I return to the chat list
-    #And I see People picker page
-    #And I click close button to dismiss people view
     Given User <Contact> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact>
-    Then I see 2 default messages in the dialog
+    Then I see 1 default messages in the dialog
 
     Examples: 
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C39 @regression @id596
+  @C39 @regression @id596 @ZIOS-5466
   Scenario Outline: Verify you cannot send the invitation message twice
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -403,11 +397,10 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    Then I see dialog page
     And I type the default message
     When I send the message
     Then I see 1 default message in the dialog
-    When I swipe the text input cursor
+    When I click plus button next to text input
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll
@@ -471,7 +464,7 @@ Feature: Connect
     When I see Pending request link in contact list
     And I click on Pending request link in contact list
     And I see Pending request page
-    Then I see user <NewName> found on Pending request page
+    Then I see Hello connect message from user <NewName> on Pending request page
 
     Examples: 
       | Name      | Contact   | NewName  |

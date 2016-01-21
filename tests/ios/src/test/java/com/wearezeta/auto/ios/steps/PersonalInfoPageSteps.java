@@ -314,8 +314,8 @@ public class PersonalInfoPageSteps {
     @When("I see email (.*) on Personal page")
     public void ISeeMyEmailOnPersonalPage(String email) throws Exception {
         email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
-        Assert.assertTrue(getPersonalInfoPage().getUserEmailVaue().contains(
-                email));
+        Assert.assertTrue(String.format("The email '%s' is not visible", email),
+                getPersonalInfoPage().isEmailVisible(email));
     }
 
     @When("I attempt to enter (.*) and press return")

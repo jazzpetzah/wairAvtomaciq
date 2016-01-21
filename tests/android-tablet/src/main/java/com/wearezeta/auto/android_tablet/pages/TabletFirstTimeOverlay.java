@@ -15,6 +15,10 @@ public class TabletFirstTimeOverlay extends AndroidTabletPage {
         return this.getAndroidPageInstance(FirstTimeOverlay.class);
     }
 
+    public boolean isVisible() throws Exception {
+        return getFirstTimeOverlay().isVisible();
+    }
+
     public boolean isVisible(int timeoutSeconds) throws Exception {
         return getFirstTimeOverlay().isVisible(timeoutSeconds);
     }
@@ -25,5 +29,9 @@ public class TabletFirstTimeOverlay extends AndroidTabletPage {
 
     public boolean isInvisible() throws Exception {
         return getFirstTimeOverlay().isInvisible();
+    }
+
+    public void acceptWhenVisible(int timeoutSeconds) throws Exception {
+        getFirstTimeOverlay().acceptWhenVisible(timeoutSeconds);
     }
 }

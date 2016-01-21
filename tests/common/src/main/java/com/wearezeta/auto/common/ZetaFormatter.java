@@ -11,9 +11,9 @@ import java.util.concurrent.Future;
 
 import javax.imageio.ImageIO;
 
-import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.rc.TestcaseResultToTestrailTransformer;
 import com.wearezeta.auto.common.testrail.TestrailSyncUtilities;
+import io.appium.java_client.ios.IOSDriver;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -158,35 +158,58 @@ public class ZetaFormatter implements Formatter, Reporter {
                 // suite execution
                 return;
             }
-//screenshots patch will be enabled after cucumber reports plugin update
-//            int index = 1;
-//			boolean isExist;
-//            String tmpScreenshotPath;
-//            do {
-//				tmpScreenshotPath = String.format("%s/%s/%s/%s_%s.png",
-//						CommonUtils.getPictureResultsPathFromConfig(this
-//								.getClass()), feature.replaceAll("\\W+", "_"),
-//						scenario.replaceAll("\\W+", "_"), stepName.replaceAll(
-//								"\\W+", "_"), index);
-//				isExist = new File(tmpScreenshotPath).exists();
-//				index++;
-//			} while (isExist);
-//            final String screenshotPath = tmpScreenshotPath;
-            final String screenshotPath = String
-                    .format("%s/%s/%s/%s.png", CommonUtils
-                                    .getPictureResultsPathFromConfig(this.getClass()),
-                            feature.replaceAll("\\W+", "_"), scenario
-                                    .replaceAll("\\W+", "_"), stepName
-                                    .replaceAll("\\W+", "_"));
-            final Optional<BufferedImage> screenshot = DriverUtils.takeFullScreenShot(driver);
-            if (!screenshot.isPresent()) {
-                return;
+            int index = 1;
+			boolean isExist;
+            String tmpScreenshotPath;
+            do {
+				tmpScreenshotPath = String.format("%s/%s/%s/%s_%s.png",
+						CommonUtils.getPictureResultsPathFromConfig(this
+								.getClass()), feature.replaceAll("\\W+", "_"),
+						scenario.replaceAll("\\W+", "_"), stepName.replaceAll(
+								"\\W+", "_"), index);
+				isExist = new File(tmpScreenshotPath).exists();
+				index++;
+			} while (isExist);
+            final String screenshotPath = tmpScreenshotPath;
+            if (driver instanceof IOSDriver && CommonUtils.getIsSimulatorFromConfig(ZetaFormatter.class)) {
+                try {
+                    CommonUtils.takeIOSSimulatorScreenshot(screenshotPath);
+                } catch (Exception e) {
+                    log.error("Failed to take iOS simulator screenshot:");
+                    e.printStackTrace();
+                }
+            } else {
+                final Optional<BufferedImage> screenshot = DriverUtils.takeFullScreenShot(driver);
+                if (!screenshot.isPresent()) {
+                    return;
+                }
+                screenshotSavers.execute(() -> storeScreenshot(screenshot.get(), screenshotPath));
             }
-            screenshotSavers.execute(() -> storeScreenshot(screenshot.get(), screenshotPath));
         } else {
             log.debug(String
                     .format("Selenium driver is not ready yet. Skipping screenshot creation for step '%s'",
                             stepName));
+        }
+    }
+
+    private static boolean isScreenshotingEnabled = true;
+
+    static {
+        try {
+            isScreenshotingEnabled = CommonUtils.getMakeScreenshotsFromConfig(ZetaFormatter.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static boolean isScreenshotingOnPassedStepsEnabled = true;
+
+    static {
+        try {
+            isScreenshotingOnPassedStepsEnabled =
+                    CommonUtils.getMakeScreenshotOnPassedStepsFromConfig(ZetaFormatter.class);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -200,24 +223,9 @@ public class ZetaFormatter implements Formatter, Reporter {
         final String stepStatus = result.getStatus();
         steps.put(currentStep, stepStatus);
         final long stepFinishedTimestamp = new Date().getTime();
-        boolean isScreenshotingEnabled = true;
-        try {
-            isScreenshotingEnabled = CommonUtils
-                    .getMakeScreenshotsFromConfig(this.getClass());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        boolean isScreenshotingOnPassedStepsEnabled = true;
-        try {
-            isScreenshotingOnPassedStepsEnabled = CommonUtils
-                    .getMakeScreenshotOnPassedStepsFromConfig(this.getClass());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         if (isScreenshotingEnabled) {
-            if (!isScreenshotingOnPassedStepsEnabled
-                    && (result.getStatus().equals(Result.PASSED))) {
-                log.debug("Skip screenshot for passed step...");
+            if (!isScreenshotingOnPassedStepsEnabled && (result.getStatus().equals(Result.PASSED))) {
+                log.debug("Skip screenshot for passed step....");
             } else {
                 try {
                     takeStepScreenshot(result, stepName);
@@ -229,13 +237,11 @@ public class ZetaFormatter implements Formatter, Reporter {
             final long screenshotFinishedTimestamp = new Date().getTime();
             log.debug(String
                     .format("%s (status: %s, step duration: %s ms + screenshot duration: %s ms)",
-                            stepName, stepStatus, stepFinishedTimestamp
-                                    - stepStartedTimestamp,
+                            stepName, stepStatus, stepFinishedTimestamp - stepStartedTimestamp,
                             screenshotFinishedTimestamp - stepFinishedTimestamp));
         } else {
             log.debug(String.format("%s (status: %s, step duration: %s ms)",
-                    stepName, stepStatus, stepFinishedTimestamp
-                            - stepStartedTimestamp));
+                    stepName, stepStatus, stepFinishedTimestamp - stepStartedTimestamp));
         }
     }
 

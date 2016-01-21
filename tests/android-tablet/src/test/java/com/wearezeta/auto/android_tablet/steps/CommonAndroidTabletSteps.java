@@ -152,12 +152,11 @@ public class CommonAndroidTabletSteps {
     private static final long INTERFACE_INIT_TIMEOUT_MILLISECONDS = 15000;
 
     private void onDriverInitFinished(RemoteWebDriver drv) {
-        final By locator = By.xpath(AndroidPage.xpathDismissUpdateButton);
         final long millisecondsStarted = System.currentTimeMillis();
         WebDriverException savedException = null;
         do {
             try {
-                DriverUtils.waitUntilLocatorIsDisplayed(drv, locator, 1);
+                DriverUtils.waitUntilLocatorIsDisplayed(drv, AndroidPage.xpathDismissUpdateButton, 1);
                 break;
             } catch (WebDriverException e) {
                 savedException = e;
