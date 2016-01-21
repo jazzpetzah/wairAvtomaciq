@@ -8,18 +8,15 @@ import cucumber.api.java.en.When;
 
 public class VideoPlayerPageSteps {
 
-	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
-			.getInstance();
+	private final IOSPagesCollection pagesCollecton = IOSPagesCollection.getInstance();
 
 	private VideoPlayerPage getVideoPlayerPage() throws Exception {
-		return (VideoPlayerPage) pagesCollecton.getPage(VideoPlayerPage.class);
+		return pagesCollecton.getPage(VideoPlayerPage.class);
 	}
 
 	@When("I see video player page is opened")
 	public void ISeeVideoPlayerPage() throws Exception {
-		getVideoPlayerPage().waitForVideoPlayerPage();
-		Assert.assertTrue("Video Player is not opened", getVideoPlayerPage()
-				.isVideoPlayerPageOpened());
+		Assert.assertTrue("Video Player is not opened", getVideoPlayerPage().isVideoPlayerPageOpened());
 	}
 
 	@When("I tap on Done button on Video player page")

@@ -1,16 +1,14 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import com.wearezeta.auto.common.driver.DummyElement;
-import io.appium.java_client.ios.IOSElement;
+import cucumber.api.java.gl.E;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -68,18 +66,6 @@ public class PeoplePickerPage extends IOSPage {
     private static final Function<String, String> xpathStrFoundContactByName =
             name -> String.format("//*[@name='%s' and @visible='true']", name);
 
-    private static final Function<String, String> xpathStrSuggestedContactToSwipeByName = name ->
-            String.format("//UIACollectionCell[descendant::UIAStaticText[@name='%s']]", name);
-
-    private static final Function<String, String> xpathStrHideButtonForContactByName = name ->
-            String.format("//UIAButton[@name='HIDE'][ancestor::UIACollectionCell[descendant::UIAStaticText[@name='%s']]]",
-                    name);
-
-    private static final By nameHideSuggestedContactButton = By.name("HIDE");
-
-    private static final Function<String, String> xpathStrSuggestedContactByName = name ->
-            String.format("//UIACollectionCell/UIAStaticText[@name='%s']", name);
-
     private static final Function<Integer, String> xpathStrPeoplePickerTopConnectionsAvatarByIdx = idx ->
             String.format("%s/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell[%s]",
                     xpathStrMainWindow, idx);
@@ -98,13 +84,6 @@ public class PeoplePickerPage extends IOSPage {
 
     public void clickMaybeLaterButton() throws Exception {
         getElement(nameLaterButton).click();
-    }
-
-    public void closeShareContactsIfVisible() throws Exception {
-        final Optional<WebElement> notNowButton = getElementIfDisplayed(nameNotNowButton, 1);
-        if (notNowButton.isPresent()) {
-            notNowButton.get().click();
-        }
     }
 
     public boolean isPeoplePickerPageVisible() throws Exception {
@@ -159,57 +138,28 @@ public class PeoplePickerPage extends IOSPage {
         getElement(xpathPickerSearch).sendKeys(text);
     }
 
-    public boolean waitUserPickerFindUser(String user) throws Exception {
+    public Optional<WebElement> getSearchResultsElement(String user) throws Exception {
         final By locator = By.xpath(xpathStrFoundContactByName.apply(user));
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
+        return getElementIfDisplayed(locator);
+    }
+
+    public boolean isElementNotFoundInSearch(String name) throws Exception {
+        final By locator = By.xpath(xpathStrFoundContactByName.apply(name));
+        return !getElementIfDisplayed(locator, 2).isPresent();
     }
 
     public void clickOnNotConnectedUser(String name) throws Exception {
         getElement(By.xpath(xpathStrFoundContactByName.apply(name))).click();
     }
 
-    public void pickUserAndTap(String name) throws Exception {
-        pickUser(name).click();
-    }
-
-    public void pickIgnoredUserAndTap(String name) throws Exception {
-        pickUser(name).click();
+    public void selectElementInSearchResults(String name) throws Exception {
+        getSearchResultsElement(name).orElseThrow(
+                () -> new IllegalStateException(String.format("User '%s' is not visible in people picker", name))).
+                click();
     }
 
     public void dismissPeoplePicker() throws Exception {
         getElement(xpathPickerClearButton, "Clear button is not visible in the search field").click();
-    }
-
-    public void swipeToRevealHideSuggestedContact(String contact) throws Exception {
-        assert this.waitUserPickerFindUser(contact) :
-                String.format("'%s' is not visible in People Picker", contact);
-        final By locator = By.xpath(xpathStrSuggestedContactToSwipeByName.apply(contact));
-        final WebElement contactToSwipe = getElement(locator);
-        int count = 0;
-        do {
-            DriverUtils.swipeRight(this.getDriver(), contactToSwipe, 500, 50, 50);
-            count++;
-        } while (!isHideButtonVisible() || count > 3);
-    }
-
-    public void swipeCompletelyToDismissSuggestedContact(String contact) throws Exception {
-        final By locator = By.xpath(xpathStrSuggestedContactToSwipeByName.apply(contact));
-        DriverUtils.swipeRight(this.getDriver(),
-                getElement(locator, String.format("'%s' is not visible in People Picker", contact)), 1000, 100, 50);
-    }
-
-    public void tapHideSuggestedContact(String contact) throws Exception {
-        final By locator = By.xpath(xpathStrHideButtonForContactByName.apply(contact));
-        getElement(locator, String.format("Hide button is not visible for '%s'", contact)).click();
-    }
-
-    public boolean isHideButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameHideSuggestedContactButton);
-    }
-
-    public boolean isSuggestedContactVisible(String contact) throws Exception {
-        final By locator = By.xpath(xpathStrSuggestedContactByName.apply(contact));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 2);
     }
 
     public boolean addToConversationNotVisible() throws Exception {
@@ -218,25 +168,6 @@ public class PeoplePickerPage extends IOSPage {
 
     public void clickOnGoButton() throws Exception {
         getElement(nameKeyboardEnterButton).click();
-    }
-
-    private WebElement pickUser(String name) throws Exception {
-        fillTextInPeoplePickerSearch(name);
-        waitUserPickerFindUser(name);
-        return getDriver().findElementByName(name);
-    }
-
-    public void selectUser(String name) throws Exception {
-        List<WebElement> elements = getDriver().findElements(By.name(name));
-        if (elements.size() == 0) {
-            throw new NoSuchElementException("Element not found");
-        }
-        for (WebElement el : elements) {
-            if (el.isDisplayed() && el.isEnabled()) {
-                DriverUtils.tapByCoordinates(getDriver(), el);
-                break;
-            }
-        }
     }
 
     public void tapNumberOfTopConnections(int numberToTap) throws Exception {
@@ -281,8 +212,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void clickOnUserOnPending(String contact) throws Exception {
-        WebElement el = getDriver().findElement(By.name(contact));
-        DriverUtils.tapByCoordinates(getDriver(), el);
+        DriverUtils.tapByCoordinates(getDriver(), getElement(By.name(contact)));
     }
 
     public boolean isUploadDialogShown() throws Exception {
@@ -310,13 +240,8 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public int getNumberOfSelectedTopPeople() throws Exception {
-        int selectedPeople = 0;
-        for (WebElement people : getElements(xpathPeoplePickerAllTopPeople)) {
-            if (people.getAttribute("value").equals("1")) {
-                selectedPeople++;
-            }
-        }
-        return selectedPeople;
+        return (int) getElements(xpathPeoplePickerAllTopPeople).stream().filter(
+                x -> x.getAttribute("value").equals("1")).count();
     }
 
     public void tapSendInviteButton() throws Exception {

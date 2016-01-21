@@ -14,8 +14,8 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class PersonalInfoPage extends IOSPage {
-    private static final By xpathEmailField = By.xpath(
-            "//UIAElement[@name='ProfileSelfNameField']/following-sibling::UIAStaticText[1]");
+    private static final Function<String, String> xpathStrEmailFieldByValue = value ->
+            String.format("//*UIAStaticText[contains(@name, '%s')]", value);
 
     private static final By nameProfileSettingsButton = By.name("SettingsButton");
 
@@ -67,11 +67,11 @@ public class PersonalInfoPage extends IOSPage {
 
     private static final By nameCloseLegalPageButton = By.name("WebViewCloseButton");
 
-    private static final By xpathTermsOfUsePageText = By.xpath(
-            "//UIAApplication[1]/UIAWindow[2]/UIAScrollView[1]/UIAWebView[1]/UIAStaticText[2]");
+    private static final Function<String, String> xpathStrTermsOfUseByText = text ->
+            String.format("//UIAStaticText[@name='%s']", text);
 
-    private static final By xpathPrivacyPolicyPageText = By.xpath(
-            "//UIAApplication[1]/UIAWindow[2]/UIAScrollView[1]/UIAWebView[1]/UIALink[1]/UIAStaticText[1]");
+    private static final Function<String, String> xpathStrPrivacyPolicyByText = text ->
+            String.format("//UIAStaticText[@name='%s']", text);
 
     private static final By xpathWireWebsiteUrl = By.xpath("//UIAElement[@name ='URL']");
 
@@ -92,16 +92,16 @@ public class PersonalInfoPage extends IOSPage {
     private static final By xpathChangePasswordPageChangePasswordButton =
             By.xpath("//UIAButton[@name='RESET PASSWORD']");
 
+    private static final String TERMS_OF_USE_PAGE_VALUE =
+            "PLEASE READ THIS AGREEMENT CAREFULLY; THIS IS A BINDING CONTRACT.";
+    private static final String PRIVACY_POLICY_PAGE_VALUE = "Our Privacy Commitment";
+    private static final String ABOUT_LOGO_IMAGE = "about_page_logo.png";
+    private static final int COLORS_COUNT = 7;
+    private static final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.95;
+
     public PersonalInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
-
-    final String TERMS_OF_USE_PAGE_VALUE = "PLEASE READ THIS AGREEMENT CAREFULLY; THIS IS A BINDING CONTRACT.";
-    final String PRIVACY_POLICY_PAGE_VALUE = "Our Privacy Commitment";
-    final String ABOUT_LOGO_IMAGE = "about_page_logo.png";
-    final int COLORS_COUNT = 7;
-
-    final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.95;
 
     public void closePersonalInfo() throws Exception {
         getElement(nameCloseButton).click();
@@ -115,8 +115,9 @@ public class PersonalInfoPage extends IOSPage {
         return getElement(xpathProfileNameEditField).getAttribute("value").contains(" ");
     }
 
-    public String getUserEmailVaue() throws Exception {
-        return getElement(xpathEmailField).getText();
+    public boolean isEmailVisible(String expectedEmail) throws Exception {
+        final By locator = By.xpath(xpathStrEmailFieldByValue.apply(expectedEmail));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public void clickOnSettingsButton() throws Exception {
@@ -193,13 +194,13 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public boolean isTermsOfUsePageVisible() throws Exception {
-        return getElement(xpathTermsOfUsePageText).getAttribute("name").equals(
-                TERMS_OF_USE_PAGE_VALUE);
+        final By locator = By.xpath(xpathStrTermsOfUseByText.apply(TERMS_OF_USE_PAGE_VALUE));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isPrivacyPolicyPageVisible() throws Exception {
-        return getElement(xpathPrivacyPolicyPageText).getAttribute("name").equals(
-                PRIVACY_POLICY_PAGE_VALUE);
+        final By locator = By.xpath(xpathStrPrivacyPolicyByText.apply(PRIVACY_POLICY_PAGE_VALUE));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isResetPasswordPageVisible() throws Exception {

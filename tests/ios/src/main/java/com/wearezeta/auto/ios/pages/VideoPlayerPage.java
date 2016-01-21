@@ -15,16 +15,10 @@ public class VideoPlayerPage extends IOSPage {
 
     private static final By nameVideoDoneButton = By.name("Done");
 
-    private static final By nameVideoFullScreenButton = By.name("Full screen");
-
     private static final By nameVideoPauseButton = By.name("PauseButton");
 
     public VideoPlayerPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
-    }
-
-    public void waitForVideoPlayerPage() throws Exception {
-        DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameVideoFullScreenButton);
     }
 
     public boolean isVideoPlayerPageOpened() throws Exception {
