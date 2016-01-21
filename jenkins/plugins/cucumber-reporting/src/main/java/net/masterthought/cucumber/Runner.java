@@ -18,7 +18,7 @@ public class Runner {
 //        list.add("/Users/kings/.jenkins/jobs/cucumber-jvm/builds/7/cucumber-html-reports/project4.json");
 //        list.add("/Users/kings/.jenkins/jobs/cucumber-jvm/builds/7/cucumber-html-reports/project5.json");
 //        list.add("/Users/kings/.jenkins/jobs/cucumber-jvm/builds/7/cucumber-html-reports/project6.json");
-
+        System.out.println("Running report builder...");
         ReportBuilder reportBuilder = new ReportBuilder(list, rd, "", "", "", "", "1", "cucumber-jvm", false, false, false, true, false, "Account has sufficient funds again~the account balance is 300~account~scenario1_psp_auth_request.xml~xml\nAccount has sufficient funds again~the card is valid~card~scenario1_psp_auth_response.xml~xml", false);
         HashMap<String, String> headers = new HashMap<String, String>();
         headers.put("@TC-V2-1491", "Verify that a visit for none suggestion account is created successfully");
@@ -38,6 +38,7 @@ public class Runner {
 
         reportBuilder.setCustomHeader(headers);
         reportBuilder.generateReports();
+        System.out.println("Reports are generated.");
 //               boolean result = featureReportGenerator.getBuildStatus();
 //               System.out.println("status: " + result);
 
