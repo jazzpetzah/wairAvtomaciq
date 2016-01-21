@@ -158,26 +158,27 @@ public class ZetaFormatter implements Formatter, Reporter {
                 // suite execution
                 return;
             }
-//screenshots patch will be enabled after cucumber reports plugin update
-//            int index = 1;
-//			boolean isExist;
-//            String tmpScreenshotPath;
-//            do {
-//				tmpScreenshotPath = String.format("%s/%s/%s/%s_%s.png",
-//						CommonUtils.getPictureResultsPathFromConfig(this
-//								.getClass()), feature.replaceAll("\\W+", "_"),
-//						scenario.replaceAll("\\W+", "_"), stepName.replaceAll(
-//								"\\W+", "_"), index);
-//				isExist = new File(tmpScreenshotPath).exists();
-//				index++;
-//			} while (isExist);
-//            final String screenshotPath = tmpScreenshotPath;
-            final String screenshotPath = String
-                    .format("%s/%s/%s/%s.png", CommonUtils
-                                    .getPictureResultsPathFromConfig(this.getClass()),
-                            feature.replaceAll("\\W+", "_"), scenario
-                                    .replaceAll("\\W+", "_"), stepName
-                                    .replaceAll("\\W+", "_"));
+//screenshots patch for updates in cucumber reports plugin
+            int index = 1;
+			boolean isExist;
+            String tmpScreenshotPath;
+            do {
+				tmpScreenshotPath = String.format("%s/%s/%s/%s_%s.png",
+						CommonUtils.getPictureResultsPathFromConfig(this
+								.getClass()), feature.replaceAll("\\W+", "_"),
+						scenario.replaceAll("\\W+", "_"), stepName.replaceAll(
+								"\\W+", "_"), index);
+				isExist = new File(tmpScreenshotPath).exists();
+				index++;
+			} while (isExist);
+            final String screenshotPath = tmpScreenshotPath;
+//leave old code for debugging
+//            final String screenshotPath = String
+//                    .format("%s/%s/%s/%s.png", CommonUtils
+//                                    .getPictureResultsPathFromConfig(this.getClass()),
+//                            feature.replaceAll("\\W+", "_"), scenario
+//                                    .replaceAll("\\W+", "_"), stepName
+//                                    .replaceAll("\\W+", "_"));
             if (driver instanceof IOSDriver && CommonUtils.getIsSimulatorFromConfig(ZetaFormatter.class)) {
                 try {
                     CommonUtils.takeIOSSimulatorScreenshot(screenshotPath);
