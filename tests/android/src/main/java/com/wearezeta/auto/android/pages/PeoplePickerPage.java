@@ -1,12 +1,10 @@
 package com.wearezeta.auto.android.pages;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -15,7 +13,7 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 public class PeoplePickerPage extends AndroidPage {
     public static final By idParticipantsClose = By.id("gtv__participants__close");
 
-    public static final By idPickerSearch = By.id("puet_pickuser__searchbox");
+    public static final By xpathPickerSearch = By.xpath("//*[@id='puet_pickuser__searchbox' and @shown='true']");
 
     public static final By idPeoplePickerClearbtn = By.id("gtv_pickuser__clearbutton");
 
@@ -51,25 +49,12 @@ public class PeoplePickerPage extends AndroidPage {
 
     private static final By idPickerListContainer = By.id("pfac__pickuser__header_list_view");
 
-    public PeoplePickerPage(Future<ZetaAndroidDriver> lazyDriver)
-            throws Exception {
+    public PeoplePickerPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
-    private WebElement findVisiblePickerSearch() throws Exception {
-        List<WebElement> pickerSearches = selectVisibleElements(idPickerSearch);
-        for (WebElement candidate : pickerSearches) {
-            if (DriverUtils.isElementPresentAndDisplayed(getDriver(), candidate)
-                    && candidate.getLocation().getX() >= 0
-                    && candidate.getLocation().getY() >= 0) {
-                return candidate;
-            }
-        }
-        throw new ElementNotVisibleException("People Picker input is not displayed");
-    }
-
     public void tapPeopleSearch() throws Exception {
-        findVisiblePickerSearch().click();
+        getElement(xpathPickerSearch).click();
     }
 
     public void tapOnContactInTopPeoples(String name) throws Exception {
@@ -78,13 +63,13 @@ public class PeoplePickerPage extends AndroidPage {
     }
 
     public void typeTextInPeopleSearch(String text) throws Exception {
-        final WebElement pickerSearch = findVisiblePickerSearch();
+        final WebElement pickerSearch = getElement(xpathPickerSearch);
         pickerSearch.click();
         pickerSearch.sendKeys(text);
     }
 
     public void addTextToPeopleSearch(String text) throws Exception {
-        findVisiblePickerSearch().sendKeys(text);
+        getElement(xpathPickerSearch).sendKeys(text);
     }
 
     public boolean isNoResultsFoundVisible() throws Exception {
@@ -119,7 +104,7 @@ public class PeoplePickerPage extends AndroidPage {
     public void selectUser(String name) throws Exception {
         final By locator = By.xpath(xpathStrPeoplePickerContactByName.apply(name));
         scrollUntilLocatorVisible(locator).orElseThrow(() -> new IllegalStateException(
-                        String.format("A user '%s' is not present on People Picker page", name))).click();
+                String.format("A user '%s' is not present on People Picker page", name))).click();
     }
 
     public void selectGroup(String name) throws Exception {
@@ -129,12 +114,7 @@ public class PeoplePickerPage extends AndroidPage {
     }
 
     public boolean isPeoplePickerPageVisible() throws Exception {
-        try {
-            findVisiblePickerSearch();
-            return true;
-        } catch (ElementNotVisibleException e) {
-            return false;
-        }
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), PeoplePickerPage.xpathPickerSearch);
     }
 
     public void navigateBack() throws Exception {

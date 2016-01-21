@@ -9,11 +9,11 @@ import org.openqa.selenium.By;
 import com.wearezeta.auto.android.pages.PeoplePickerPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import org.openqa.selenium.WebElement;
 
 public class TabletPeoplePickerPage extends AndroidTabletPage {
 
-    public TabletPeoplePickerPage(Future<ZetaAndroidDriver> lazyDriver)
-            throws Exception {
+    public TabletPeoplePickerPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
@@ -22,13 +22,15 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilVisible() throws Exception {
+        final Optional<WebElement> pickerSearch = getElementIfDisplayed(PeoplePickerPage.xpathPickerSearch);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), PeoplePickerPage.idPeoplePickerClearbtn)
-                && getElement(PeoplePickerPage.idPickerSearch).getLocation().getX() >= 0;
+                && pickerSearch.isPresent() && pickerSearch.get().getLocation().getX() >= 0;
     }
 
     public boolean waitUntilInvisible() throws Exception {
+        final Optional<WebElement> pickerSearch = getElementIfDisplayed(PeoplePickerPage.xpathPickerSearch);
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), PeoplePickerPage.idPeoplePickerClearbtn)
-                || getElement(PeoplePickerPage.idPickerSearch).getLocation().getX() < 0;
+                || !pickerSearch.isPresent() || pickerSearch.get().getLocation().getX() < 0;
     }
 
     public void tapCloseButton() throws Exception {
