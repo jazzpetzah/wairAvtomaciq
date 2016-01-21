@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 import org.openqa.selenium.By;
 
@@ -14,7 +15,8 @@ public class ImageFullScreenPage extends IOSPage {
 
     private static final By nameFullScreenDownloadButton = By.name("fullScreenDownloadButton");
 
-    private static final By nameFullScreenSenderName = By.name("fullScreenSenderName");
+    private static final Function<String, String> xpathStrFullScreenSenderByName = name ->
+            String.format("//*[@name='fullScreenSenderName' and contains(@value, '%s')]", name);
 
     private static final By nameFullScreenTimeStamp = By.name("fullScreenTimeStamp");
 
@@ -45,12 +47,9 @@ public class ImageFullScreenPage extends IOSPage {
         getElement(nameImageFullScreenPage).click();
     }
 
-    public boolean isSenderNameVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameFullScreenSenderName);
-    }
-
-    public String getSenderName() throws Exception {
-        return getElement(nameFullScreenSenderName).getText();
+    public boolean isSenderNameVisible(String expectedName) throws Exception {
+        final By locator = By.xpath(xpathStrFullScreenSenderByName.apply(expectedName));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isSentTimeVisible() throws Exception {

@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
 import java.awt.image.BufferedImage;
+
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.IOSConstants;
@@ -14,139 +15,136 @@ import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class ImageFullScreenPageSteps {
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
-			.getInstance();
+    private final IOSPagesCollection pagesCollecton = IOSPagesCollection
+            .getInstance();
 
-	private ImageFullScreenPage getImageFullScreenPage() throws Exception {
-		return (ImageFullScreenPage) pagesCollecton
-				.getPage(ImageFullScreenPage.class);
-	}
+    private ImageFullScreenPage getImageFullScreenPage() throws Exception {
+        return pagesCollecton.getPage(ImageFullScreenPage.class);
+    }
 
-	public static final double FULLSCREEN_SCORE = 0.7;
+    public static final double FULLSCREEN_SCORE = 0.7;
 
-	BufferedImage referenceImage;
+    BufferedImage referenceImage;
 
-	@When("^I see Full Screen Page opened$")
-	public void ISeeFullScreenPage() throws Exception {
-		Assert.assertTrue(getImageFullScreenPage().isImageFullScreenShown());
-	}
+    @When("^I see Full Screen Page opened$")
+    public void ISeeFullScreenPage() throws Exception {
+        Assert.assertTrue(getImageFullScreenPage().isImageFullScreenShown());
+    }
 
-	@When("I see expected image in fullscreen (.*)")
-	public void ISeeExpectedImageInFullScreen(String filename) throws Throwable {
-		referenceImage = getImageFullScreenPage().takeScreenshot().orElseThrow(
-				AssertionError::new);
-		BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage
-				.getImagesPath() + filename);
-		double score = ImageUtil.getOverlapScore(referenceImage, templateImage,
-				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-		System.out.print("SCORE: " + score);
-		Assert.assertTrue(
-				"Overlap between two images has no enough score. Expected >= "
-						+ IOSConstants.MIN_IMG_SCORE + " , current = " + score,
-				score >= IOSConstants.MIN_IMG_SCORE);
-	}
+    @When("I see expected image in fullscreen (.*)")
+    public void ISeeExpectedImageInFullScreen(String filename) throws Throwable {
+        referenceImage = getImageFullScreenPage().takeScreenshot().orElseThrow(
+                AssertionError::new);
+        BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage
+                .getImagesPath() + filename);
+        double score = ImageUtil.getOverlapScore(referenceImage, templateImage,
+                ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+        System.out.print("SCORE: " + score);
+        Assert.assertTrue(
+                "Overlap between two images has no enough score. Expected >= "
+                        + IOSConstants.MIN_IMG_SCORE + " , current = " + score,
+                score >= IOSConstants.MIN_IMG_SCORE);
+    }
 
-	@When("I tap on fullscreen page")
-	public void ITapFullScreenPage() throws Exception {
-		getImageFullScreenPage().tapOnFullScreenPage();
-	}
+    @When("I tap on fullscreen page")
+    public void ITapFullScreenPage() throws Exception {
+        getImageFullScreenPage().tapOnFullScreenPage();
+    }
 
-	@When("I see sender first name (.*) on fullscreen page")
-	public void ISeeSenderName(String sender) throws Exception {
-		String senderFirstName = usrMgr.findUserByNameOrNameAlias(sender)
-				.getName().split(" ")[0].toUpperCase();
-		Assert.assertEquals(senderFirstName, getImageFullScreenPage()
-				.getSenderName());
-	}
+    @When("I see sender first name (.*) on fullscreen page")
+    public void ISeeSenderName(String sender) throws Exception {
+        String senderFirstName = usrMgr.findUserByNameOrNameAlias(sender)
+                .getName().split(" ")[0].toUpperCase();
+        Assert.assertTrue(String.format("Sender name '%s' does not exist on the page", senderFirstName),
+                getImageFullScreenPage().isSenderNameVisible(senderFirstName));
+    }
 
-	@When("I see send date on fullscreen page")
-	public void ISeeSendDate() throws Exception {
-		long actualDate = DialogPageSteps.sendDate;
-		long expectedDate = IOSCommonUtils
-				.stringToTime(getImageFullScreenPage().getTimeStamp());
-		boolean flag = Math.abs(actualDate - expectedDate) < IOSConstants.DELTA_SEND_TIME;
-		Assert.assertTrue("Expected date: " + expectedDate
-				+ " is different from actual: " + actualDate, flag);
-	}
+    @When("I see send date on fullscreen page")
+    public void ISeeSendDate() throws Exception {
+        long actualDate = DialogPageSteps.sendDate;
+        long expectedDate = IOSCommonUtils
+                .stringToTime(getImageFullScreenPage().getTimeStamp());
+        boolean flag = Math.abs(actualDate - expectedDate) < IOSConstants.DELTA_SEND_TIME;
+        Assert.assertTrue("Expected date: " + expectedDate
+                + " is different from actual: " + actualDate, flag);
+    }
 
-	@When("I see download button shown on fullscreen page")
-	public void ISeeDownloadButtonOnFullscreenPage() throws Exception {
-		Assert.assertTrue(getImageFullScreenPage().isDownloadButtonVisible());
-	}
+    @When("I see download button shown on fullscreen page")
+    public void ISeeDownloadButtonOnFullscreenPage() throws Exception {
+        Assert.assertTrue(getImageFullScreenPage().isDownloadButtonVisible());
+    }
 
-	@When("I tap download button on fullscreen page")
-	public void ITapDownloadButtonOnFullscreenPage() throws Exception {
-		getImageFullScreenPage().clickDownloadButton();
-	}
+    @When("I tap download button on fullscreen page")
+    public void ITapDownloadButtonOnFullscreenPage() throws Exception {
+        getImageFullScreenPage().clickDownloadButton();
+    }
 
-	@When("I verify image caption and download button are not shown")
-	public void IDontSeeImageCaptionAndDownloadButton() throws Exception {
-		Assert.assertFalse(getImageFullScreenPage().isDownloadButtonVisible());
-		Assert.assertFalse(getImageFullScreenPage().isSenderNameVisible());
-		Assert.assertFalse(getImageFullScreenPage().isSentTimeVisible());
-	}
+    @When("I verify image caption and download button are not shown")
+    public void IDontSeeImageCaptionAndDownloadButton() throws Exception {
+        Assert.assertFalse(getImageFullScreenPage().isDownloadButtonVisible());
+        Assert.assertFalse(getImageFullScreenPage().isSentTimeVisible());
+    }
 
-	@When("I tap close fullscreen page button")
-	public void ITapCloseFullscreenButton() throws Exception {
-		getImageFullScreenPage().clickCloseButton();
-	}
+    @When("I tap close fullscreen page button")
+    public void ITapCloseFullscreenButton() throws Exception {
+        getImageFullScreenPage().clickCloseButton();
+    }
 
-	/**
-	 * When the image is shown in fullscreen mode, the device gets rotated
-	 * 
-	 * @step. ^I see image rotated in fullscreen mode$
-	 * @throws Exception
-	 */
-	@Then("^I see image rotated in fullscreen mode$")
-	public void ISeeImageRotatedInFullscreenMode() throws Exception {
-		Thread.sleep(2000);
-		referenceImage = getImageFullScreenPage().takeScreenshot().orElseThrow(
-				AssertionError::new);
-		BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage
-				.getImagesPath() + "dialog_userpicture_ios_check_landscape.png");
-		double score = ImageUtil.getOverlapScore(referenceImage, templateImage,
-				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-		System.out.print("SCORE: " + score);
-		Assert.assertTrue(
-				"Overlap between two images has no enough score. Expected >= "
-						+ FULLSCREEN_SCORE + " , current = " + score,
-				score >= FULLSCREEN_SCORE);
-	}
+    /**
+     * When the image is shown in fullscreen mode, the device gets rotated
+     *
+     * @throws Exception
+     * @step. ^I see image rotated in fullscreen mode$
+     */
+    @Then("^I see image rotated in fullscreen mode$")
+    public void ISeeImageRotatedInFullscreenMode() throws Exception {
+        referenceImage = getImageFullScreenPage().takeScreenshot().orElseThrow(
+                AssertionError::new);
+        BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage
+                .getImagesPath() + "dialog_userpicture_ios_check_landscape.png");
+        double score = ImageUtil.getOverlapScore(referenceImage, templateImage,
+                ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+        System.out.print("SCORE: " + score);
+        Assert.assertTrue(
+                "Overlap between two images has no enough score. Expected >= "
+                        + FULLSCREEN_SCORE + " , current = " + score,
+                score >= FULLSCREEN_SCORE);
+    }
 
-	/**
-	 * When the image is shown in fullscreen mode, the device gets rotated
-	 * 
-	 * @step. I see image rotated to portrait in fullscreen mode
-	 * @throws Exception
-	 */
-	@Then("^I see image rotated to portrait in fullscreen mode$")
-	public void ISeeImageRotatedPortraitInFullscreenMode() throws Exception {
-		Thread.sleep(2000);
-		referenceImage = getImageFullScreenPage().takeScreenshot().orElseThrow(
-				AssertionError::new);
+    /**
+     * When the image is shown in fullscreen mode, the device gets rotated
+     *
+     * @throws Exception
+     * @step. I see image rotated to portrait in fullscreen mode
+     */
+    @Then("^I see image rotated to portrait in fullscreen mode$")
+    public void ISeeImageRotatedPortraitInFullscreenMode() throws Exception {
+        Thread.sleep(2000);
+        referenceImage = getImageFullScreenPage().takeScreenshot().orElseThrow(
+                AssertionError::new);
 
-		BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage
-				.getImagesPath() + "userpicture_ipad_check.png");
-		double score = ImageUtil.getOverlapScore(referenceImage, templateImage,
-				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-		System.out.print("SCORE: " + score);
-		Assert.assertTrue(
-				"Overlap between two images has no enough score. Expected >= "
-						+ FULLSCREEN_SCORE + " , current = " + score,
-				score >= FULLSCREEN_SCORE);
-	}
+        BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage
+                .getImagesPath() + "userpicture_ipad_check.png");
+        double score = ImageUtil.getOverlapScore(referenceImage, templateImage,
+                ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+        System.out.print("SCORE: " + score);
+        Assert.assertTrue(
+                "Overlap between two images has no enough score. Expected >= "
+                        + FULLSCREEN_SCORE + " , current = " + score,
+                score >= FULLSCREEN_SCORE);
+    }
 
-	/**
-	 * Presses the sketch button on the image fullscreen page
-	 * 
-	 * @step. ^I press Sketch button on image fullscreen page$
-	 * @throws Throwable
-	 */
-	@When("^I press Sketch button on image fullscreen page$")
-	public void IPressSketchButtonOnImageFullscreenPage() throws Throwable {
-		getImageFullScreenPage().clickSketchButton();
-	}
+    /**
+     * Presses the sketch button on the image fullscreen page
+     *
+     * @throws Throwable
+     * @step. ^I press Sketch button on image fullscreen page$
+     */
+    @When("^I press Sketch button on image fullscreen page$")
+    public void IPressSketchButtonOnImageFullscreenPage() throws Throwable {
+        getImageFullScreenPage().clickSketchButton();
+    }
 
 }

@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import com.wearezeta.auto.common.driver.DummyElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -61,10 +62,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     }
 
     public void catchContinueAlert() throws Exception {
-        final Optional<WebElement> el = getElementIfDisplayed(nameContinueButton);
-        if (el.isPresent()) {
-            el.get().click();
-        }
+        getElementIfDisplayed(nameContinueButton).orElseGet(DummyElement::new).click();
     }
 
     public void openEllipsisMenu() throws Exception {
@@ -106,8 +104,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     }
 
     public boolean isOtherUserProfileNameVisible(String name) throws Exception {
-        WebElement otherUserName = getDriver().findElementByName(name);
-        return otherUserName.isEnabled();
+        return getElement(By.name(name)).isEnabled();
     }
 
     public void removeFromConversation() throws Exception {

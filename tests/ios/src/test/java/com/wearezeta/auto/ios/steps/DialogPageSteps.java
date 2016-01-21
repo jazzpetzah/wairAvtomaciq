@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.steps;
 
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -285,7 +286,7 @@ public class DialogPageSteps {
 
     @When("^I memorize message send time$")
     public void IMemorizeMessageSendTime() throws Exception {
-        sendDate = getDialogPage().getSendTime();
+        sendDate = new Date().getTime();
     }
 
     @Then("I see youtube link (.*) and media in dialog")

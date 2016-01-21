@@ -25,8 +25,7 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 
     private static final By nameCancelRequestConfirmationLabel = By.name("Cancel Request?");
 
-    public OtherUserOnPendingProfilePage(Future<ZetaIOSDriver> lazyDriver)
-            throws Exception {
+    public OtherUserOnPendingProfilePage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 

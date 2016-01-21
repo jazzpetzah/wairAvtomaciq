@@ -471,7 +471,7 @@ Feature: Connect
     When I see Pending request link in contact list
     And I click on Pending request link in contact list
     And I see Pending request page
-    Then I see user <NewName> found on Pending request page
+    Then I see Hello connect message from user <NewName> on Pending request page
 
     Examples: 
       | Name      | Contact   | NewName  |

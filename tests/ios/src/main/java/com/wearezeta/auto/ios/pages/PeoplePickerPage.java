@@ -6,7 +6,6 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import com.wearezeta.auto.common.driver.DummyElement;
-import cucumber.api.java.gl.E;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
@@ -31,8 +30,6 @@ public class PeoplePickerPage extends IOSPage {
     private static final By namePeoplePickerAddToConversationButton = By.name("ADD TO CONVERSATION");
 
     private static final By nameShareButton = By.name("SHARE CONTACTS");
-
-    private static final By nameNotNowButton = By.name("NOT NOW");
 
     private static final By nameContinueUploadButton = By.name("SHARE CONTACTS");
 
@@ -256,18 +253,12 @@ public class PeoplePickerPage extends IOSPage {
         getElement(nameInstantConnectButton).click();
     }
 
-    public String getNameOfNuser(int i) throws Exception {
-        final By locator = By.xpath(xpathStrPeoplePickerTopConnectionsItemByIdx.apply(i));
-        return getElement(locator).getAttribute("name");
-    }
-
-    public void tapNumberOfTopConnectionsButNotUser(int numberToTap,
-                                                    String contact) throws Exception {
-        // FIXME: Optimize locator
-        for (int i = 1; i < numberToTap + 1; i++) {
-            if (!contact.equals(getNameOfNuser(i).toLowerCase())) {
-                final By locator = By.xpath(xpathStrPeoplePickerTopConnectionsAvatarByIdx.apply(i));
-                getElement(locator).click();
+    public void tapNumberOfTopConnectionsButNotUser(int numberToTap, String contact) throws Exception {
+        for (int i = 1; i <= numberToTap; i++) {
+            final By locator = By.xpath(xpathStrPeoplePickerTopConnectionsItemByIdx.apply(i));
+            final WebElement el = getElement(locator);
+            if (!contact.equalsIgnoreCase(el.getAttribute("name"))) {
+                el.click();
             } else {
                 numberToTap++;
             }

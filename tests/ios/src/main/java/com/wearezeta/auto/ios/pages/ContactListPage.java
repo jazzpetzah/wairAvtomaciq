@@ -53,8 +53,6 @@ public class ContactListPage extends IOSPage {
     private static final By xpathArchiveConversationButton =
             By.xpath("//UIAButton[@name='ARCHIVE' and @visible='true']");
 
-    private static final By classNameContactListNames = By.className("UIACollectionCell");
-
     private static final Function<String, String> xpathStrSelectedConversationEntryByName = name ->
             String.format("%s/UIACollectionView[1]/UIACollectionCell[@name='%s']", xpathStrMainWindow, name);
 

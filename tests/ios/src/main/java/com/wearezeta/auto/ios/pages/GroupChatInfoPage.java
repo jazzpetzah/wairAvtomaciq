@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -20,8 +21,6 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
 public class GroupChatInfoPage extends IOSPage {
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
     private static final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.80;
 
     private static final String AQA_PICTURE_CONTACT = "AQAPICTURECONTACT";
@@ -59,6 +58,9 @@ public class GroupChatInfoPage extends IOSPage {
     private static final By xpathParticipantAvatarCell = By.xpath(xpathAvatarCollectionView + "/UIACollectionCell");
 
     private static final String PEOPLE_COUNT_TEXT_SUBSTRING = " PEOPLE";
+
+    private static final Function<String, String> xpathStrParticipantElementByName = name ->
+            String.format("//UIAStaticText[@name='%s']", name);
 
     public GroupChatInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -111,75 +113,9 @@ public class GroupChatInfoPage extends IOSPage {
         return flag;
     }
 
-    public void tapAndCheckAllParticipants(String user, boolean checkEmail) throws Exception {
-        List<WebElement> participants = getCurrentParticipants();
-        String participantNameTextFieldValue;
-        String participantName;
-        String participantEmailTextFieldValue;
-
-        user = usrMgr.findUserByNameOrNameAlias(user).getName();
-        String email = usrMgr.findUserByNameOrNameAlias(user).getEmail();
-
-        for (WebElement participant : participants) {
-            ClientUser participantUser = getParticipantUser(participant);
-            participantName = participantUser.getName();
-            if (!participantName.equalsIgnoreCase(user)) {
-                continue;
-            }
-            tapOnParticipant(getParticipantName(participant));
-            final OtherUserPersonalInfoPage otherUserPersonalInfoPage =
-                    new OtherUserPersonalInfoPage(this.getLazyDriver());
-            participantNameTextFieldValue = otherUserPersonalInfoPage
-                    .getNameFieldValue(user);
-            participantEmailTextFieldValue = otherUserPersonalInfoPage
-                    .getEmailFieldValue().orElseGet(() -> "");
-            Assert.assertTrue(
-                    "Participant Name is incorrect and/or not displayed",
-                    participantNameTextFieldValue.equalsIgnoreCase(user));
-            if (checkEmail) {
-                Assert.assertTrue("User's email is not displayed",
-                        participantEmailTextFieldValue.equalsIgnoreCase(email));
-            } else {
-                Assert.assertFalse("User's email is displayed",
-                        participantEmailTextFieldValue.equalsIgnoreCase(email));
-            }
-            break;
-        }
-        new OtherUserPersonalInfoPage(this.getLazyDriver())
-                .leavePageToGroupInfoPage();
-    }
-
-    public String getParticipantName(WebElement participant) {
-        String firstElementName = participant
-                .findElements(By.className("UIAStaticText")).get(0)
-                .getAttribute("name");
-        try {
-            return participant.findElements(By.className("UIAStaticText"))
-                    .get(1).getAttribute("name");
-        } catch (IndexOutOfBoundsException e) {
-            return firstElementName;
-        }
-    }
-
-    public ClientUser getParticipantUser(WebElement participant)
-            throws NoSuchUserException {
-        return usrMgr
-                .findUserByNameOrNameAlias(getParticipantName(participant));
-    }
-
-    public void tapOnParticipant(String participantName) throws Exception {
-        participantName = usrMgr.findUserByNameOrNameAlias(participantName)
-                .getName();
-        List<WebElement> participants = getCurrentParticipants();
-        for (WebElement participant : participants) {
-            if (getParticipantName(participant).equalsIgnoreCase(
-                    participantName)) {
-                participant.click();
-                return;
-            }
-        }
-        throw new NoSuchElementException(
-                "No participant was found with the name: " + participantName);
+    public Optional<WebElement> getParticipantElement(String name) throws Exception {
+        final By locator = By.xpath(xpathStrParticipantElementByName.apply(name));
+        return getElementIfDisplayed(locator);
     }
 
     public boolean isCorrectConversationName(String contact1, String contact2) throws Exception {
@@ -187,8 +123,6 @@ public class GroupChatInfoPage extends IOSPage {
         if (conversationNameTextField.getText().equals(conversationName)) {
             return true;
         } else {
-            contact1 = usrMgr.findUserByNameOrNameAlias(contact1).getName();
-            contact2 = usrMgr.findUserByNameOrNameAlias(contact2).getName();
             if (contact1.contains(" ")) {
                 contact1 = contact1.substring(0, contact1.indexOf(" "));
             }
