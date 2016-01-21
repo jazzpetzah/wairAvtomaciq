@@ -7,12 +7,14 @@ Feature: E2EE
     Given I enter email "<Email>"
     Given I enter password "<Password>"
     Given I check option to remember me
+    Given user <Name> adds a new device <Device> with label <Label>
     Given I press Sign In button
-    And I see my avatar on top of Contact list
-    When user <Name> adds a new device <Device> with label <Label>
-    And I open self profile
-    And I click gear button on self profile page
+    And I see the history info page
+    And I click confirm on history info page
+    Then I am signed in properly
+    When I click gear button on self profile page
     And I select Settings menu item on self profile page
+    And I wait for 2 seconds
     Then I see a device named <Device> in the devices section
     When I click on the device <Device> in the devices section
     Then I see a device named <Device> with label <Label> in the device details
@@ -26,7 +28,7 @@ Feature: E2EE
     And I select Settings menu item on self profile page
     Then I do not see a device named <Device> in the devices section
 
-    Examples: 
+    Examples:
       | Email      | Password      | Name      | Device  | Label  |
       | user1Email | user1Password | user1Name | Remote1 | Label1 |
 
@@ -63,7 +65,7 @@ Feature: E2EE
     And I see a device named Device6 with label Label6 under managed devices
     And I see a device named Device7 with label Label7 under managed devices
 
-    Examples: 
+    Examples:
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
@@ -81,9 +83,10 @@ Feature: E2EE
     Given I enter email "<Email>"
     Given I enter password "<Password>"
     When I press Sign In button
-    And I see my avatar on top of Contact list
-    And I open self profile
-    And I click gear button on self profile page
+    And I see the history info page
+    And I click confirm on history info page
+    Then I am signed in properly
+    When I click gear button on self profile page
     And I select Settings menu item on self profile page
     Then I see a device named Device1 in the devices section
     And I see a device named Device2 in the devices section
@@ -93,7 +96,7 @@ Feature: E2EE
     And I see a device named Device6 in the devices section
     And I see a device named Device7 in the devices section
 
-    Examples: 
+    Examples:
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
@@ -105,9 +108,10 @@ Feature: E2EE
     Given I enter password "<Password>"
     When I check option to remember me
     And I press Sign In button
-    And I see my avatar on top of Contact list
-    And I open self profile
-    And I click gear button on self profile page
+    And I see the history info page
+    And I click confirm on history info page
+    Then I am signed in properly
+    When I click gear button on self profile page
     And I select Settings menu item on self profile page
     And I remember the device id of the current device
     And I click close settings page button
@@ -126,7 +130,7 @@ Feature: E2EE
     Then I verify that the device id of the current device is the same
     And I see 0 devices in the devices section
 
-    Examples: 
+    Examples:
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
@@ -135,9 +139,10 @@ Feature: E2EE
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
-    And I see my avatar on top of Contact list
-    And I open self profile
-    And I click gear button on self profile page
+    And I see the history info page
+    And I click confirm on history info page
+    Then I am signed in properly
+    When I click gear button on self profile page
     And I select Settings menu item on self profile page
     And I remember the device id of the current device
     And I click close settings page button
@@ -146,13 +151,14 @@ Feature: E2EE
     And I select Log out menu item on self profile page
     And I see Sign In page
     And I Sign in using login <Email> and password <Password>
-    And I see my avatar on top of Contact list
-    And I open self profile
-    And I click gear button on self profile page
+    And I see the history info page
+    And I click confirm on history info page
+    Then I am signed in properly
+    When I click gear button on self profile page
     And I select Settings menu item on self profile page
     Then I verify that the device id of the current device is not the same
     And I see 0 devices in the devices section
 
-    Examples: 
+    Examples:
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
