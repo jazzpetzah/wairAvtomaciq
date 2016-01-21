@@ -13,7 +13,8 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 public class TabletSelfProfilePage extends AndroidTabletPage {
     public static final By idSelfNameInput = By.id("tet__profile__guided");
 
-    public static final By idSelfProfileView = By.id("ll_self_form");
+    public static final String idStrSelfProfileView = "ll_self_form";
+    public static final By idSelfProfileView = By.id(idStrSelfProfileView);
 
     public static final Function<String, String> xpathStrSelfNameByContent = content -> String
             .format("//*[@id='ttv__profile__name' and @value='%s']", content);

@@ -19,6 +19,9 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 public class TabletConversationsListPage extends AndroidTabletPage {
     private static final int PLAY_PAUSE_BUTTON_WIDTH_PERCENTAGE = 15;
 
+    private static final By xpathStrConvoViewOrSelfProfile = By.xpath(String.format("//*[@id='%s' or @id='%s']",
+            TabletSelfProfilePage.idStrSelfProfileView, TabletConversationViewPage.idStrRootLocator));
+
     public TabletConversationsListPage(Future<ZetaAndroidDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
@@ -34,35 +37,27 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 
     private static final int LOAD_TIMEOUT = 15; // seconds
 
-    private static final String xpathConvoViewOrSelfProfile = String.format("//*[@id='%s' or @id='%s']",
-            TabletSelfProfilePage.idSelfProfileView, TabletConversationViewPage.idStrRootLocator);
-
     public void verifyConversationsListIsLoaded() throws Exception {
         if (ScreenOrientationHelper.getInstance().fixOrientation(getDriver()) == ScreenOrientation.PORTRAIT) {
-            if (DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(xpathConvoViewOrSelfProfile), LOAD_TIMEOUT)) {
+            if (DriverUtils.waitUntilLocatorAppears(getDriver(), xpathStrConvoViewOrSelfProfile, LOAD_TIMEOUT)) {
                 // FIXME: Workaround for self profile as start page issue
                 int ntry = 1;
                 final int maxRetries = 3;
                 final int leftBorderWidth = getDriver().manage().window().getSize().width / 4;
-                Optional<WebElement> selfProfileEl = Optional.empty();
-                if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), TabletSelfProfilePage.idSelfProfileView, 1)) {
-                    selfProfileEl = Optional.of(getElement(TabletSelfProfilePage.idSelfProfileView));
-                }
+                final Optional<WebElement> selfProfileEl =
+                        getElementIfDisplayed(TabletSelfProfilePage.idSelfProfileView, 1);
                 do {
                     if (DriverUtils.waitUntilLocatorDissapears(getDriver(), ContactListPage.idSelfUserAvatar, 2)
                             || (selfProfileEl.isPresent() && selfProfileEl.get().getLocation().getX() < leftBorderWidth)) {
                         DriverUtils.swipeByCoordinates(getDriver(), 1000, 30, 50, 90, 50);
-                        // FIXME: Self profile could switch to full colour
-                        // instead
-                        // of being swiped
+                        // FIXME: Self profile could switch to full colour instead of being swiped
                         if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ContactListPage.idSelfUserAvatar, 1)
                                 && (selfProfileEl.isPresent()
                                 && selfProfileEl.get().getLocation().getX() > leftBorderWidth)) {
                             break;
                         } else {
                             this.tapOnCenterOfScreen();
-                            DriverUtils.swipeByCoordinates(getDriver(), 1000,
-                                    30, 50, 90, 50);
+                            DriverUtils.swipeByCoordinates(getDriver(), 1000, 30, 50, 90, 50);
                         }
                     } else {
                         break;
