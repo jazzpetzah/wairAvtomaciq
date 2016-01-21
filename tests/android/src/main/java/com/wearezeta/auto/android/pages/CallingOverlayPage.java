@@ -61,16 +61,14 @@ public class CallingOverlayPage extends AndroidPage {
 
     private static final By idEndCurrentCallContinueButton = By.id("button1");
 
-    public CallingOverlayPage(Future<ZetaAndroidDriver> lazyDriver)
-            throws Exception {
+    public CallingOverlayPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
     private static final int VISIBILITY_TIMEOUT_SECONDS = 20;
 
     public boolean waitUntilVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCallingContainer,
-                VISIBILITY_TIMEOUT_SECONDS);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCallingContainer, VISIBILITY_TIMEOUT_SECONDS);
     }
 
     public boolean waitUntilNotVisible() throws Exception {
@@ -81,14 +79,12 @@ public class CallingOverlayPage extends AndroidPage {
         getElement(idIgnoreButton, "Ignore button is not visible").click();
     }
 
-    public boolean waitUntilNameAppearsOnCallingBarCaption(String name)
-            throws Exception {
+    public boolean waitUntilNameAppearsOnCallingBarCaption(String name) throws Exception {
         final By locator = By.xpath(xpathCallingBarCaptionByName.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean waitUntilNameAppearsOnCallingBarAvatar(String name)
-            throws Exception {
+    public boolean waitUntilNameAppearsOnCallingBarAvatar(String name) throws Exception {
         final By locator = By.xpath(xpathCallingBarAvatarByName.apply(name));
         // isDisplayed sometimes does not work properly here
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
@@ -101,11 +97,9 @@ public class CallingOverlayPage extends AndroidPage {
         } else {
             final Optional<WebElement> joinGroupCallButton =
                     getElementIfDisplayed(idGroupCallingJoinOverlayContainer, 1);
-            if (joinGroupCallButton.isPresent()) {
-                joinGroupCallButton.get().click();
-            }
+            joinGroupCallButton.orElseThrow(() -> new IllegalStateException("No Accept or JOIN CALL button visible")).
+                    click();
         }
-        throw new IllegalStateException("No Accept or JOIN CALL button visible");
     }
 
     public boolean callingDismissIsVisible() throws Exception {
@@ -130,15 +124,13 @@ public class CallingOverlayPage extends AndroidPage {
                 VISIBILITY_TIMEOUT_SECONDS);
     }
 
-    public boolean waitUntilJoinGroupCallButtonVisible(String name)
-            throws Exception {
+    public boolean waitUntilJoinGroupCallButtonVisible(String name) throws Exception {
         final By locator = By.xpath(xpathJoinButton.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator,
                 VISIBILITY_TIMEOUT_SECONDS);
     }
 
-    public boolean waitUntilJoinGroupCallButtonNotVisible(String name)
-            throws Exception {
+    public boolean waitUntilJoinGroupCallButtonNotVisible(String name) throws Exception {
         final By locator = By.xpath(xpathJoinButton.apply(name));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator,
                 VISIBILITY_TIMEOUT_SECONDS);
