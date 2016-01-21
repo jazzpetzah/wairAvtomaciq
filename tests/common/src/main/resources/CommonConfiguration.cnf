@@ -22,3 +22,4 @@ testrailRunName=${testrailRunName}
 testrailRunConfigName=${testrailRunConfigName}
 syncIsAutomated=${syncIsAutomated}
 syncIsMuted=${syncIsMuted}
+adbPrefix=${adbPrefix}

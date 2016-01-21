@@ -32,6 +32,7 @@
         <syncIsAutomated>False</syncIsAutomated>
         <syncIsMuted>False</syncIsMuted>
         <zmessaging.actor.version>58.320</zmessaging.actor.version>
+        <adbPrefix></adbPrefix>
     </properties>
 
     <dependencies>
