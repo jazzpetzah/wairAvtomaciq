@@ -210,7 +210,7 @@ class RealAndroidDevice(BaseNodeVerifier):
 IOS_SIMULATOR_BOOT_TIMEOUT = 60 * 2 # seconds
 IOS_SIMULATOR_EXECUTABLE_NAME = 'Simulator'
 IOS_SIMULATOR_AGENT_NAME = 'launchd_sim'
-AUTORUN_APPIUM_APP_PATH = '/Applications/AutorunAppium.app'
+AUTORUN_APPIUM_APP = 'AutorunAppium'
 
 class IOSSimulator(BaseNodeVerifier):
     def _get_installed_simulators(self, ssh_client):
@@ -284,7 +284,7 @@ class IOSSimulator(BaseNodeVerifier):
                 sys.stderr.write('Adjusting simulator scale...')
                 self._adjust_simulator_size(client, 3 if simulator_name.lower().find('iphone') >= 0 else 4)
                 sys.stderr.write('Restarting Appium server...')
-                client.exec_command('open -a "{}"'.format(AUTORUN_APPIUM_APP_PATH), timeout=10)
+                client.exec_command('/usr/bin/open -a {}'.format(AUTORUN_APPIUM_APP), timeout=10)
             return result
         finally:
             client.close()
