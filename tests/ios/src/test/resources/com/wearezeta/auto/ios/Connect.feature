@@ -152,26 +152,19 @@ Feature: Connect
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     Given User <Contact> securely pings conversation <Name>
     Given User <Contact> sends 1 encrypted message to user Myself
-    And I wait for 10 seconds
     Then I dont see conversation <Contact> in contact list
     When I open search by taping on it
-    And I see People picker page
     And I wait until <Contact> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
     And I tap on connected user <Contact> on People picker page
     And I unblock user
-    And I wait for 5 seconds
-    Then I see User <Contact> Pinged message in the conversation
-    And I see new photo in the dialog
-    And I see 1 default message in the dialog
+    Then I see 1 message in the dialog
     And I return to the chat list
-    #And I see People picker page
-    #And I click close button to dismiss people view
     Given User <Contact> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact>
-    Then I see 2 default messages in the dialog
+    Then I see 1 default messages in the dialog
 
     Examples: 
       | Name      | Contact   | Picture     |

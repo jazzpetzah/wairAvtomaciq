@@ -102,8 +102,8 @@ public class DialogPage extends IOSPage {
     private static final By xpathUserAvatarNextToInput = By.xpath(
             "//UIAImage[following-sibling::UIATextView[@name='ConversationTextInputField'] and @visible='true']");
 
-    private static final By xpathAllMessages = By.xpath(
-            xpathStrMainWindow + "/UIATableView[1]/UIATableCell/UIATextView");
+    private static final String xpathAllMessages =
+            xpathStrMainWindow + "/UIATableView[1]/UIATableCell/UIATextView";
 
     private static final Function<String, String> xpathMessagesByText = text ->
             String.format("%s[@value='%s']", xpathAllMessages, text);
@@ -217,7 +217,7 @@ public class DialogPage extends IOSPage {
     public int getMessagesCount(String expectedMessage) throws Exception {
         By locator;
         if (expectedMessage == null) {
-            locator = xpathAllMessages;
+            locator = By.xpath(xpathAllMessages);
         } else {
             locator = By.xpath(xpathMessagesByText.apply(expectedMessage));
         }
