@@ -97,8 +97,7 @@ public class LoginPageSteps {
         getRegistrationPage().selectWirestan();
         getRegistrationPage().inputPhoneNumber(
                 number.toString().replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""));
-        String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(number);
-        getRegistrationPage().inputActivationCode(code);
+        getRegistrationPage().inputActivationCode(number);
         getLoginPage().waitForLoginToFinish();
     }
 
@@ -115,10 +114,7 @@ public class LoginPageSteps {
         getRegistrationPage().selectWirestan();
         getRegistrationPage().inputPhoneNumber(
                 self.getPhoneNumber().toString().replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""));
-        String code = BackendAPIWrappers.getActivationCodeByPhoneNumber(self
-                .getPhoneNumber());
-
-        getRegistrationPage().inputActivationCode(code);
+        getRegistrationPage().inputActivationCode(self.getPhoneNumber());
     }
 
     /**
@@ -131,9 +127,7 @@ public class LoginPageSteps {
     @When("^I enter verification code for user (.*)$")
     public void IEnterVerificationCodeForUser(String name) throws Exception {
         ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
-        String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(user
-                .getPhoneNumber());
-        getRegistrationPage().inputActivationCode(code);
+        getRegistrationPage().inputActivationCode(user.getPhoneNumber());
     }
 
     /**

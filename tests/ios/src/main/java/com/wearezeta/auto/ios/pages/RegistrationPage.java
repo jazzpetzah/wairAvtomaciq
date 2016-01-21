@@ -1,14 +1,18 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import org.openqa.selenium.WebElement;
 
 public class RegistrationPage extends IOSPage {
     private static final By xpathPhotoButton = By.xpath(xpathStrMainWindow + "/UIAButton[5]");
@@ -88,13 +92,15 @@ public class RegistrationPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathVerificationPage);
     }
 
-    public void inputActivationCode(String code) throws Exception {
-        getElement(xpathActivationCode, "Activation code input is not visible").sendKeys(code);
-        getElement(nameConfirmButton).click();
+    public void inputActivationCode(PhoneNumber forNumber) throws Exception {
+        final WebElement activationCodeInput = getElement(xpathActivationCode, "Activation code input is not visible");
+        final String code = BackendAPIWrappers.getActivationCodeByPhoneNumber(forNumber);
+        activationCodeInput.sendKeys(code);
+        getElement(nameConfirmButton, "Confirm button is not visible", 2);
     }
 
     public void inputRandomActivationCode() throws Exception {
-        inputActivationCode(CommonUtils.generateRandomXdigits(6));
+        inputActivationCode(new PhoneNumber(PhoneNumber.WIRE_COUNTRY_PREFIX));
     }
 
     public void clickResendCodeButton() throws Exception {

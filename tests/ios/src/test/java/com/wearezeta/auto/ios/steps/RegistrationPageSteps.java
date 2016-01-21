@@ -163,10 +163,7 @@ public class RegistrationPageSteps {
      */
     @When("^I enter activation code$")
     public void IEnterActivationCode() throws Exception {
-        String code = BackendAPIWrappers
-                .getActivationCodeByPhoneNumber(this.userToRegister
-                        .getPhoneNumber());
-        getRegistrationPage().inputActivationCode(code);
+        getRegistrationPage().inputActivationCode(this.userToRegister.getPhoneNumber());
     }
 
     @When("^I enter name (.*)$")
