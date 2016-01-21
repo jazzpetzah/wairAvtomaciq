@@ -190,25 +190,21 @@ public class PeoplePickerPage extends AndroidPage {
         getElement(idCreateOrOpenConversationButton).click();
     }
 
-    public boolean waitUntilOpenOrCreateConversationButtonIsVisible()
-            throws Exception {
+    public boolean waitUntilOpenOrCreateConversationButtonIsVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCreateOrOpenConversationButton);
     }
 
-    public boolean waitUntilOpenOrCreateConversationButtonIsVisible(
-            String expectedCaption) throws Exception {
+    public boolean waitUntilOpenOrCreateConversationButtonIsVisible(String expectedCaption) throws Exception {
         final By locator = By.xpath(xpathStrCreateOrOpenConversationButtonByCaption.apply(expectedCaption));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean waitUntilOpenOrCreateConversationButtonIsInvisible()
-            throws Exception {
+    public boolean waitUntilOpenOrCreateConversationButtonIsInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), idCreateOrOpenConversationButton);
     }
 
-    public AndroidPage swipeDown(int durationMilliseconds) throws Exception {
+    public void swipeDown(int durationMilliseconds) throws Exception {
         DriverUtils.swipeByCoordinates(getDriver(), durationMilliseconds, 50, 20, 50, 90);
-        return new ContactListPage(getLazyDriver());
     }
 
     public void tapCallButton() throws Exception {
