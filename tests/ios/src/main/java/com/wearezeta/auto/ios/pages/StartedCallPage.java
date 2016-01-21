@@ -26,6 +26,10 @@ public class StartedCallPage extends CallPage {
     private static final Function<String, String> xpathStrStartedCallMessageUserByName = name ->
             String.format("//UIAStaticText[@name='%s']", name);
 
+    public StartedCallPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+        super(lazyDriver);
+    }
+
     public boolean isCallingMessageVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathCallingMessage);
     }
@@ -37,10 +41,6 @@ public class StartedCallPage extends CallPage {
     public boolean isStartedCallMessageVisible(String contact) throws Exception {
         final By locator = By.xpath(xpathStrStartedCallMessageUserByName.apply(contact));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-    }
-
-    public StartedCallPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
-        super(lazyDriver);
     }
 
     public boolean isEndCallVisible() throws Exception {

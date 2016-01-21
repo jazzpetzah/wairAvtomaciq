@@ -25,7 +25,7 @@ public class RegistrationPage extends IOSPage {
     private static final By xpathCreateAccountButton = By.xpath(
             "//UIASecureTextField[contains(@name, 'PasswordField')]/UIAButton");
 
-    private static final Function<String, String> xpathConfirmationByMessage = msg ->
+    private static final Function<String, String> xpathStrConfirmationByMessage = msg ->
             String.format("//UIAStaticText[contains(@name, 'We sent an email to %s.')]", msg);
 
     private static final By xpathEmailVerifPrompt = By.xpath(xpathStrMainWindow +
@@ -107,16 +107,12 @@ public class RegistrationPage extends IOSPage {
     }
 
     public boolean isConfirmationShown() throws Exception {
-        final By locator = By.xpath(xpathConfirmationByMessage.apply(getEmail()));
+        final By locator = By.xpath(xpathStrConfirmationByMessage.apply(getEmail()));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public void confirmPicture() throws Exception {
         getElement(nameConfirmImageButton).click();
-    }
-
-    public void hideKeyboard() throws Exception {
-        this.getDriver().hideKeyboard();
     }
 
     public void inputName() throws Exception {

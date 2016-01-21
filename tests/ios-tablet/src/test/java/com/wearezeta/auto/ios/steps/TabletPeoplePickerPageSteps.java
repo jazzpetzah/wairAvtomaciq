@@ -78,7 +78,7 @@ public class TabletPeoplePickerPageSteps {
 		}
 		Assert.assertTrue("User :" + name
 				+ " is not presented on Pepople picker page",
-				getTabletPeoplePickerPage().waitUserPickerFindUser(name));
+				getTabletPeoplePickerPage().getSearchResultsElement(name).isPresent());
 	}
 
 	/**

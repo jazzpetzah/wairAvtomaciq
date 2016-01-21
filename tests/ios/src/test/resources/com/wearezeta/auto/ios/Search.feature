@@ -184,47 +184,6 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C1059 @regression @rc @id2117
-  Scenario Outline: Verify dismissing with clicking on Hide
-    Given There are 5 users where <Name> is me
-    Given <ContactWithFriends> is connected to <Name>
-    Given <ContactWithFriends> is connected to <Friend1>
-    Given <ContactWithFriends> is connected to <Friend2>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I open search by taping on it
-    And I see People picker page
-    And I re-enter the people picker if CONNECT label is not there
-    And I see CONNECT label
-    And I swipe to reveal hide button for suggested contact <Friend1>
-    And I tap hide for suggested contact <Friend1>
-    Then I do not see suggested contact <Friend1>
-
-    Examples:
-      | Name      | ContactWithFriends | Friend1   | Friend2   |
-      | user1Name | user2Name          | user3Name | user4Name |
-
-  @C1058 @regression @rc @id2116
-  Scenario Outline: Verify dismissing with one single gesture
-    Given There are 5 users where <Name> is me
-    Given <ContactWithFriends> is connected to <Name>
-    Given <ContactWithFriends> is connected to <Friend1>
-    Given <ContactWithFriends> is connected to <Friend2>
-    Given <ContactWithFriends> is connected to <Friend3>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I open search by taping on it
-    And I see People picker page
-    And I re-enter the people picker if CONNECT label is not there
-    And I see CONNECT label
-    #And I hide peoplepicker keyboard
-    And I swipe completely to dismiss suggested contact <Friend1>
-    Then I do not see suggested contact <Friend1>
-
-    Examples:
-      | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
-      | user1Name | user2Name          | user3Name | user4Name | user5Name |
-
   @C2785 @regression @id2149
   Scenario Outline: Verify search by second name (something after space)
     Given There are 2 users where <Name> is me
@@ -423,42 +382,6 @@ Feature: Search
     Examples:
       | Name      |
       | user1Name |
-
-  @C1055 @regression @id2121
-  Scenario Outline: Verify label hiding after dismissing all PYMK
-    Given There are 4 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given <Contact1> is connected to <Contact2>,<Contact3>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I open search by taping on it
-    And I see People picker page
-    And I re-enter the people picker if CONNECT label is not there
-    And I see CONNECT label
-    And I swipe to reveal hide button for suggested contact <Contact2>
-    And I tap hide for suggested contact <Contact2>
-    And I swipe to reveal hide button for suggested contact <Contact3>
-    And I tap hide for suggested contact <Contact3>
-    Then I dont see CONNECT label
-
-    Examples:
-      | Name      | Contact1  | Contact2  | Contact3  |
-      | user1Name | user2Name | user3Name | user4Name |
-
-  @C1054 @regression @id2120
-  Scenario Outline: Verify impossibility of dismissing if search isn't empty
-    Given There are 2 users where <Name> is me
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I open search by taping on it
-    And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
-    And I swipe completely to dismiss suggested contact <Contact>
-    Then I see user <Contact> found on People picker page
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
 
   @C1042 @regression @id4118
   Scenario Outline: Verify action buttons appear after choosing user from search results
