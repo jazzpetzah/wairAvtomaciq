@@ -281,10 +281,10 @@ class IOSSimulator(BaseNodeVerifier):
                                               msg)
                 return False
             if result is True:
-                sys.stderr.write('Adjusting simulator scale...')
-                self._adjust_simulator_size(client, 3 if simulator_name.lower().find('iphone') >= 0 else 4)
                 sys.stderr.write('Restarting Appium server...')
                 client.exec_command('/usr/bin/open -a {}'.format(AUTORUN_APPIUM_APP), timeout=10)
+                sys.stderr.write('Adjusting simulator scale...')
+                self._adjust_simulator_size(client, 3 if simulator_name.lower().find('iphone') >= 0 else 4)
             return result
         finally:
             client.close()
