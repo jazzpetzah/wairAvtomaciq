@@ -169,7 +169,6 @@ Feature: Search
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     When I open search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
@@ -209,7 +208,6 @@ Feature: Search
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     When I open search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
@@ -335,7 +333,6 @@ Feature: Search
     And I tap on user name found on People picker page <Contact2>
     And I see Create Conversation button on people picker page
     And I tap Create Conversation button on People picker page
-    Then I see dialog page
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:

@@ -8,7 +8,6 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I tap conversation details button
     And I press options menu button
     And I press SILENCE conversation menu button
@@ -30,7 +29,6 @@ Feature: Conversation View
     Given I see Contact list with contacts
     Given Contact <Contact1> is muted
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I tap conversation details button
     And I press options menu button
     And I press NOTIFY conversation menu button
@@ -50,7 +48,6 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I see dialog page
     And I tap on text input
     And I type the message "<Message>" and send it
     Then I see my message "<Message>" in the dialog
@@ -67,7 +64,6 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I see dialog page
     And I swipe on text input
     And I press Add Picture button
     And I press "Take Photo" button
@@ -86,7 +82,6 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I tap conversation details button
     And I see <Contact1> user profile page
     And I press add contact button
@@ -113,7 +108,6 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
-    And I see dialog page
     And I tap on text input
     And I type the message "<Message>" and send it
     Then I see my message "<Message>" in the dialog
@@ -130,7 +124,6 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I see dialog page
     And I tap on text input
     And I type the message "LONG_MESSAGE" and send it
     Then I see my message "LONG_MESSAGE" in the dialog
@@ -147,7 +140,6 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I see dialog page
     And I tap on text input
     And I type the message "<Message>" and send it
     Then I see my message "<Message>" in the dialog
@@ -164,7 +156,6 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I see dialog page
     And I tap on text input
     And I type the message "<Message>" and send it
     Then I see my message "<Message>" in the dialog
@@ -181,7 +172,6 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I see dialog page
     And I swipe on text input
     And I press Add Picture button
     And I press "Gallery" button
@@ -200,7 +190,6 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I see dialog page
     And I swipe on text input
     And I press Add Picture button
     And I press "Gallery" button
@@ -229,7 +218,6 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I swipe on text input
     And I press Sketch button
     And I draw a sketch with <NumColors> colors
@@ -248,8 +236,6 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I see dialog page
-    And I rotate UI to portrait
     And I swipe on text input
     And I press Add Picture button
     And I press "Gallery" button
@@ -270,7 +256,6 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I swipe on text input
     And I press Add Picture button
     And I press "Take Photo" button
@@ -291,13 +276,11 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I see dialog page
     And I tap on text input
     And I type the message "<Message>"
     And I click on the GIF button
     Then I see giphy preview page
     When I click on the giphy send button
-    Then I see dialog page
     And I see new photo in the dialog
     And Last message is <Message> · via giphy.com
 
@@ -332,7 +315,6 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I see dialog page
     And I swipe on text input
     And I press Add Picture button
     And I press "Switch Camera" button
@@ -352,7 +334,6 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I see dialog page
     And I tap on text input
     And I type the message "<Message>"
     And I click on the GIF button
@@ -362,8 +343,7 @@ Feature: Conversation View
     Then I select a random gif from the grid preview
     Then I see giphy preview page
     When I click on the giphy send button
-    Then I see dialog page
-    And I see new photo in the dialog
+    Then I see new photo in the dialog
     And Last message is <Message> · via giphy.com
 
     Examples:

@@ -8,7 +8,6 @@ Feature: Conversation List
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I tap on contact name <Contact1>
-    And I see dialog page
     And I scroll to the bottom of conversation view
     And I navigate back from dialog page
     And I remember unread messages indicator state for conversation <Contact1>
@@ -19,7 +18,6 @@ Feature: Conversation List
     Then I see unread messages indicator state is changed for conversation <Contact1>
     When I remember unread messages indicator state for conversation <Contact1>
     And I tap on contact name <Contact1>
-    And I see dialog page
     And I scroll to the bottom of conversation view
     And I navigate back from dialog page
     Then I see unread messages indicator state is changed for conversation <Contact1>
@@ -39,7 +37,6 @@ Feature: Conversation List
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I tap on contact name <Contact1>
-    And I see dialog page
     And I scroll to the bottom of conversation view
     And Last message is "<Message>"
     And I navigate back from dialog page
@@ -53,7 +50,6 @@ Feature: Conversation List
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
     And I click on open conversation action button on People picker page
-    And I see dialog page
     Then I see Connect to <Contact1> Dialog page
 
     Examples:
@@ -72,7 +68,6 @@ Feature: Conversation List
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
-    And I see dialog page
     And I scroll to the bottom of conversation view
     And Last message is "<Message>"
     And I navigate back from dialog page
@@ -81,11 +76,9 @@ Feature: Conversation List
     And I press DELETE on the confirm alert
     Then I do not see contact list with name <GroupChatName>
     And I open search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<GroupChatName>" into Search input on People Picker page
     And I tap on group found on People picker page <GroupChatName>
-    And I see dialog page
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:
@@ -260,7 +253,6 @@ Feature: Conversation List
     And I see BLOCK button in conversation settings menu
     And I press back button
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I tap conversation details button
     When I press options menu button
     Then I see SILENCE button in option menu
@@ -287,7 +279,6 @@ Feature: Conversation List
     And I see LEAVE button in conversation settings menu
     And I press back button
     When I tap on contact name <GroupChatName>
-    And I see dialog page
     And I tap conversation details button
     When I press options menu button
     Then I see SILENCE button in option menu

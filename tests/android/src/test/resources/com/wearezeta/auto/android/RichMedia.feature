@@ -8,7 +8,6 @@ Feature: Rich Media
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I see dialog page
     And Contact <Contact1> send 18 messages to user Myself
     And I scroll to the bottom of conversation view
     And I tap on text input
@@ -35,7 +34,6 @@ Feature: Rich Media
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I tap on text input
     And I type the message "<SoudCloudLink>" and send it
     # Workaround for bug with autoscroll
@@ -56,7 +54,6 @@ Feature: Rich Media
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I tap on text input
     And I type the message "<SoundCloudLink>" and send it
     And I scroll to the bottom of conversation view
@@ -64,7 +61,6 @@ Feature: Rich Media
     And I navigate back from dialog page
     Then I see PlayPause media content button for conversation <Contact1>
     When I tap on contact name <Contact2>
-    And I see dialog page
     And I press back button
     Then I see PlayPause media content button for conversation <Contact1>
     When I remember the state of PlayPause button next to the <Contact1> conversation
@@ -83,7 +79,6 @@ Feature: Rich Media
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I tap on text input
     And I type the message "<YoutubeLink>" and send it
     Then I see Play button on Youtube container

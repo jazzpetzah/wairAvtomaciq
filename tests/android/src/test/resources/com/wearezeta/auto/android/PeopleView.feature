@@ -13,7 +13,6 @@ Feature: People View
     And I see contact list with name <Contact1>
     And I see contact list with name <Contact2>
     When I tap on contact name <GroupChatName>
-    And I see dialog page
     And I tap conversation details button
     And I tap on group chat contact <Contact1NewName>
     Then I see <Contact1> user name and email
@@ -31,7 +30,6 @@ Feature: People View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
-    And I see dialog page
     And I tap conversation details button
     And I press options menu button
     And I press LEAVE conversation menu button
@@ -53,14 +51,12 @@ Feature: People View
     And I see contact list with name <Contact1>
     And I see contact list with name <Contact2>
     When I tap on contact name <GroupChatName>
-    And I see dialog page
     And I tap conversation details button
     And I tap on group chat contact <Contact2>
     And I click Remove
     And I confirm remove
     Then I do not see <Contact2> on group chat info page
     When I close participants page by UI button
-    And I see dialog page
     Then I see message <Message> contact <Contact2> on group page
 
     Examples:
@@ -83,7 +79,6 @@ Feature: People View
     And I see contact list with name <Contact1>
     And I see contact list with name <Contact2>
     When I tap on contact name <GroupChatName>
-    And I see dialog page
     And I tap conversation details button
     Then I see that the conversation name is <GroupChatName>
     And I see the correct number of participants in the title <ParticipantNumber>
@@ -126,7 +121,6 @@ Feature: People View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I see dialog page
     And I tap conversation details button
     And I see <Contact> user profile page
     And I press options menu button
@@ -195,7 +189,6 @@ Feature: People View
     And I see contact list with name <Contact1>
     And I see contact list with name <Contact2>
     When I tap on contact name <GroupChatName>
-    And I see dialog page
     And I tap conversation details button
     Then I see participants page
     And I see that the conversation name is <GroupChatName>
