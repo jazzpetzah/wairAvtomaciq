@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android.pages;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -78,6 +79,7 @@ public class PeoplePickerPage extends AndroidPage {
 
     public void typeTextInPeopleSearch(String text) throws Exception {
         final WebElement pickerSearch = findVisiblePickerSearch();
+        pickerSearch.click();
         pickerSearch.sendKeys(text);
     }
 
@@ -99,37 +101,31 @@ public class PeoplePickerPage extends AndroidPage {
 
     private static final int MAX_SCROLLS = 3;
 
-    private boolean scrollUntilLocatorVisible(By locator) throws Exception {
+    private Optional<WebElement> scrollUntilLocatorVisible(By locator) throws Exception {
         this.hideKeyboard();
         int ntry = 0;
         while (ntry < MAX_SCROLLS) {
-            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
-                return true;
+            final Optional<WebElement> result = getElementIfDisplayed(locator, 1);
+            if (result.isPresent()) {
+                return result;
             } else {
-                DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idPickerListContainer),
-                        500, 50, 90, 50, 10);
+                DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idPickerListContainer), 500, 50, 90, 50, 10);
             }
             ntry++;
         }
-        return false;
+        return Optional.empty();
     }
 
     public void selectUser(String name) throws Exception {
         final By locator = By.xpath(xpathStrPeoplePickerContactByName.apply(name));
-        if (!scrollUntilLocatorVisible(locator)) {
-            throw new IllegalStateException(
-                    String.format("A user '%s' is not present on People Picker page", name));
-        }
-        getDriver().findElement(locator).click();
+        scrollUntilLocatorVisible(locator).orElseThrow(() -> new IllegalStateException(
+                        String.format("A user '%s' is not present on People Picker page", name))).click();
     }
 
     public void selectGroup(String name) throws Exception {
         final By locator = By.xpath(xpathStrPeoplePickerGroupByName.apply(name));
-        if (!scrollUntilLocatorVisible(locator)) {
-            throw new IllegalStateException(
-                    String.format("A group '%s' is not present on People Picker page", name));
-        }
-        this.getDriver().findElement(locator).click();
+        scrollUntilLocatorVisible(locator).orElseThrow(() -> new IllegalStateException(
+                String.format("A group '%s' is not present on People Picker page", name))).click();
     }
 
     public boolean isPeoplePickerPageVisible() throws Exception {
@@ -164,12 +160,12 @@ public class PeoplePickerPage extends AndroidPage {
 
     public boolean isUserVisible(String name) throws Exception {
         final By locator = By.xpath(xpathStrPeoplePickerContactByName.apply(name));
-        return scrollUntilLocatorVisible(locator);
+        return scrollUntilLocatorVisible(locator).isPresent();
     }
 
     public boolean isGroupVisible(String name) throws Exception {
         final By locator = By.xpath(xpathStrPeoplePickerGroupByName.apply(name));
-        return scrollUntilLocatorVisible(locator);
+        return scrollUntilLocatorVisible(locator).isPresent();
     }
 
     public boolean isUserInvisible(String name) throws Exception {
