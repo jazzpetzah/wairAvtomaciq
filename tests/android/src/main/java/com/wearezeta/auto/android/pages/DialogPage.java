@@ -461,8 +461,20 @@ public class DialogPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public String getLastMessageFromDialog() throws Exception {
-        return getElement(xpathLastConversationMessage).getText();
+    public boolean isLastMessageEqualTo(String expectedMessage, int timeoutSeconds) throws Exception {
+        final By locator = By.xpath(xpathStrConversationMessageByText.apply(expectedMessage));
+        final long millisecondsStarted = System.currentTimeMillis();
+        do {
+            final Optional<WebElement> msgElement = getElementIfDisplayed(locator);
+            if (msgElement.isPresent()) {
+                final String lastMessage = getElement(xpathLastConversationMessage,
+                        "Cannot find the last message in the dialog", 1).getText();
+                if (expectedMessage.equals(lastMessage)) {
+                    return true;
+                }
+            }
+        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
+        return false;
     }
 
     public Optional<BufferedImage> getRecentPictureScreenshot() throws Exception {
