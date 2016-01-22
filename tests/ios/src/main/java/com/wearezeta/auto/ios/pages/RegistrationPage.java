@@ -37,7 +37,7 @@ public class RegistrationPage extends IOSPage {
 
     private static final By namePhoneNumberField = By.name("PhoneNumberField");
 
-    private static final By xpathActivationCode = By.xpath(xpathStrMainWindow + "/UIATextField[1]");
+    private static final By xpathActivationCode = By.xpath(xpathStrMainWindow + "//UIATextField");
 
     private static final By nameCountryPickerButton = By.name("CountryPickerButton");
 
@@ -96,7 +96,7 @@ public class RegistrationPage extends IOSPage {
         final WebElement activationCodeInput = getElement(xpathActivationCode, "Activation code input is not visible");
         final String code = BackendAPIWrappers.getActivationCodeByPhoneNumber(forNumber);
         activationCodeInput.sendKeys(code);
-        getElement(nameConfirmButton, "Confirm button is not visible", 2);
+        getElement(nameConfirmButton, "Confirm button is not visible", 2).click();
     }
 
     public void inputRandomActivationCode() throws Exception {

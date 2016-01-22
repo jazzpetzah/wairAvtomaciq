@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 import org.junit.Assert;
 
@@ -242,28 +243,16 @@ public class ContactListPageSteps {
         Assert.assertFalse(getContactListPage().isDisplayedInContactList(name));
     }
 
-    @When("I see in contact list group chat with (.*) (.*) (.*)")
-    public void ISeeInContactsGroupChatWith(String name1, String name2,
-                                            String name3) throws Exception {
-        name1 = usrMgr.findUserByNameOrNameAlias(name1).getName();
-        name2 = usrMgr.findUserByNameOrNameAlias(name2).getName();
-        name3 = usrMgr.findUserByNameOrNameAlias(name3).getName();
-        boolean chatExists = getContactListPage()
-                .conversationWithUsersPresented(name1, name2, name3);
-        Assert.assertTrue("Convesation with : " + name1 + ", " + name2 + ", "
-                + name3 + ", " + " is not in chat list", chatExists);
-    }
-
-    @When("I don't see in contact list group chat with (.*) (.*) (.*)")
-    public void IDontSeeInContactsGroupChatWith(String name1, String name2,
-                                                String name3) throws Exception {
-        name1 = usrMgr.findUserByNameOrNameAlias(name1).getName();
-        name2 = usrMgr.findUserByNameOrNameAlias(name2).getName();
-        name3 = usrMgr.findUserByNameOrNameAlias(name3).getName();
-        boolean chatExists = getContactListPage()
-                .conversationWithUsersPresented(name1, name2, name3);
-        Assert.assertFalse("Convesation with : " + name1 + ", " + name2 + ", "
-                + name3 + ", " + " is in chat list", chatExists);
+    @When("I (don't )?see in contact list group chat with (.*)")
+    public void ISeeInContactsGroupChatWith(String shouldNotSee, String participantNameAliases) throws Exception {
+        final List<String> participantNames = CommonSteps.splitAliases(participantNameAliases);
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("There is no conversation with '%s' in the list", participantNames),
+                    getContactListPage().isConversationWithUsersExist(participantNames, 5));
+        } else {
+            Assert.assertFalse(String.format("There is conversation with '%s' in the list, which should be hidden",
+                    participantNames), getContactListPage().isConversationWithUsersExist(participantNames, 2));
+        }
     }
 
     /**

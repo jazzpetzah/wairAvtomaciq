@@ -258,7 +258,7 @@ Feature: Search
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I press Confirm button
-    Then I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
+    Then I see group chat page with <Contact1>,<Contact2>,<Contact3>
     And I see new photo in the dialog
     When I navigate back to conversations view
     Then I see in contact list group chat with <Contact1> <Contact2> <Contact3>

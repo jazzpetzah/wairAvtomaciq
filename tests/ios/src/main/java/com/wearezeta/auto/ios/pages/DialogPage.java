@@ -1,11 +1,11 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
@@ -48,9 +48,6 @@ public class DialogPage extends IOSPage {
 
     private static final By xpathLastChatMessage = By.xpath(
             xpathStrMainWindow + "/UIATableView[1]/UIATableCell[last()]/*[last()]");
-
-    private static final By xpathStartedConversationMessage =
-            By.xpath("//UIAStaticText[starts-with(@name, 'YOU STARTED A CONVERSATION WITH')]");
 
     protected static final By nameAddPictureButton = By.name("ComposeControllerPictureButton");
 
@@ -142,18 +139,11 @@ public class DialogPage extends IOSPage {
     public static final Function<String, String> xpathStrConnectedToUserLabelByName = name ->
             String.format("//UIAStaticText[contains(@name, 'CONNECTED TO %s')]", name.toUpperCase());
 
+    private static final Function<String, String> xpathStartConversationEntryTeamplate = xpathExpr ->
+            String.format("//UIAStaticText[%s]", xpathExpr);
+
     public DialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
-    }
-
-    public String getStartedChatMessage() throws Exception {
-        return getElement(xpathStartedConversationMessage,
-                "Conversation started message is not present in the view").getText();
-    }
-
-    public String getAddedToChatMessage() throws Exception {
-        return getElement(xpathStartedConversationMessage,
-                "Added to conversation system message is not visible in the conversation view").getText();
     }
 
     public boolean isMessageVisible(String msg) throws Exception {
@@ -301,6 +291,14 @@ public class DialogPage extends IOSPage {
 
     public void stopMediaContent() throws Exception {
         clickMediaBarCloseButton();
+    }
+
+    public boolean isChatMessageContainsStringsExist(List<String> values) throws Exception {
+        final String xpathExpr = String.join(" and ", values.stream().
+                map(x -> String.format("contains(@name, '%s')", x.toUpperCase())).
+                collect(Collectors.toList()));
+        final By locator = By.xpath(xpathStartConversationEntryTeamplate.apply(xpathExpr));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public String getMediaState() throws Exception {

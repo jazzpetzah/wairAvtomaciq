@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import codecs
+from pprint import pformat
 import os
 
 # This requires pip install gherkin-parser
@@ -52,5 +53,5 @@ class GherkinUtilities(object):
                             result.append(line)
                     with codecs.open(os.path.join(root, fname), 'w', 'utf-8') as f:
                         f.write('\n'.join(result))
-                    changed_features.append(os.path.join(root, fname))
-        return changed_features
+                    changed_features.append((os.path.join(root, fname), occurrences))
+        return pformat(changed_features)
