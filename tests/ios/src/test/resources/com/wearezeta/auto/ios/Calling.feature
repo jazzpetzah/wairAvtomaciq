@@ -373,8 +373,6 @@ Feature: Calling
     And I accept incoming call
     And I see Accept second call alert
     And I press Accept button on alert
-    And I swipe right on Dialog page
-    And I tap on group chat with name <GroupChatName>
     Then I see <NumberOfAvatars> avatars in the group call bar
     Then I see mute call, end call and speakers buttons
 
