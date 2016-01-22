@@ -3,17 +3,20 @@ package com.wearezeta.auto.common;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import javax.imageio.ImageIO;
 
-import com.wearezeta.auto.common.rc.TestcaseResultToTestrailTransformer;
-import com.wearezeta.auto.common.testrail.TestrailSyncUtilities;
-import io.appium.java_client.ios.IOSDriver;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -21,6 +24,8 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.rc.RCTestcase;
+import com.wearezeta.auto.common.rc.TestcaseResultToTestrailTransformer;
+import com.wearezeta.auto.common.testrail.TestrailSyncUtilities;
 
 import gherkin.formatter.Formatter;
 import gherkin.formatter.Reporter;
@@ -33,6 +38,7 @@ import gherkin.formatter.model.Scenario;
 import gherkin.formatter.model.ScenarioOutline;
 import gherkin.formatter.model.Step;
 import gherkin.formatter.model.Tag;
+import io.appium.java_client.ios.IOSDriver;
 
 public class ZetaFormatter implements Formatter, Reporter {
     private static String feature = "";
@@ -40,8 +46,7 @@ public class ZetaFormatter implements Formatter, Reporter {
     private static Map<Step, String> steps = new LinkedHashMap<>();
     private static Optional<Iterator<Step>> stepsIterator = Optional.empty();
 
-    private static final Logger log = ZetaLogger.getLog(ZetaFormatter.class
-            .getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(ZetaFormatter.class.getSimpleName());
 
     private long stepStartedTimestamp;
 
@@ -86,8 +91,7 @@ public class ZetaFormatter implements Formatter, Reporter {
     @Override
     public void scenario(Scenario arg0) {
         scenario = arg0.getName();
-        log.debug(String.format("\n\nScenario: %s %s", scenario,
-                formatTags(arg0.getTags())));
+        log.debug(String.format("\n\nScenario: %s %s", scenario, formatTags(arg0.getTags())));
     }
 
     @Override
@@ -101,8 +105,7 @@ public class ZetaFormatter implements Formatter, Reporter {
     }
 
     @Override
-    public void syntaxError(String arg0, String arg1, List<String> arg2,
-                            String arg3, Integer arg4) {
+    public void syntaxError(String arg0, String arg1, List<String> arg2, String arg3, Integer arg4) {
 
     }
 
@@ -130,16 +133,14 @@ public class ZetaFormatter implements Formatter, Reporter {
     private static final int MAX_SCREENSHOT_WIDTH = 1600;
     private static final int MAX_SCREENSHOT_HEIGHT = 900;
 
-    private static BufferedImage adjustScreenshotSize(
-            BufferedImage originalImage) {
+    private static BufferedImage adjustScreenshotSize(BufferedImage originalImage) {
         int height = originalImage.getHeight();
         int width = originalImage.getWidth();
         float resizeRatio = 1;
         if (width > MAX_SCREENSHOT_WIDTH || height > MAX_SCREENSHOT_HEIGHT) {
             float resizeRatioW = (float) MAX_SCREENSHOT_WIDTH / width;
             float resizeRatioH = (float) MAX_SCREENSHOT_HEIGHT / height;
-            resizeRatio = (resizeRatioH > resizeRatioW) ? resizeRatioW
-                    : resizeRatioH;
+            resizeRatio = (resizeRatioH > resizeRatioW) ? resizeRatioW : resizeRatioH;
         }
         try {
             return ImageUtil.resizeImage(originalImage, resizeRatio);
@@ -149,8 +150,7 @@ public class ZetaFormatter implements Formatter, Reporter {
         }
     }
 
-    private void takeStepScreenshot(final Result stepResult,
-                                    final String stepName) throws Exception {
+    private void takeStepScreenshot(final Result stepResult, final String stepName) throws Exception {
         final ZetaDriver driver = getDriver().orElse(null);
         if (driver != null) {
             if (stepResult.getStatus().equals(Result.SKIPPED.getStatus())) {
@@ -158,25 +158,23 @@ public class ZetaFormatter implements Formatter, Reporter {
                 // suite execution
                 return;
             }
-//            int index = 1;
-//			boolean isExist;
-//            String tmpScreenshotPath;
-//            do {
-//				tmpScreenshotPath = String.format("%s/%s/%s/%s_%s.png",
-//						CommonUtils.getPictureResultsPathFromConfig(this
-//								.getClass()), feature.replaceAll("\\W+", "_"),
-//						scenario.replaceAll("\\W+", "_"), stepName.replaceAll(
-//								"\\W+", "_"), index);
-//				isExist = new File(tmpScreenshotPath).exists();
-//				index++;
-//			} while (isExist);
-//            final String screenshotPath = tmpScreenshotPath;
-            final String screenshotPath = String
-                .format("%s/%s/%s/%s.png", CommonUtils
-                                .getPictureResultsPathFromConfig(this.getClass()),
-                        feature.replaceAll("\\W+", "_"), scenario
-                                .replaceAll("\\W+", "_"), stepName
-                                .replaceAll("\\W+", "_"));
+            int index = 1;
+            boolean isExist;
+            String tmpScreenshotPath;
+            do {
+                tmpScreenshotPath = String.format("%s/%s/%s/%s_%s.png",
+                    CommonUtils.getPictureResultsPathFromConfig(this.getClass()), feature.replaceAll("\\W+", "_"),
+                    scenario.replaceAll("\\W+", "_"), stepName.replaceAll("\\W+", "_"), index);
+                isExist = new File(tmpScreenshotPath).exists();
+                index++;
+            } while (isExist);
+            final String screenshotPath = tmpScreenshotPath;
+            // final String screenshotPath = String
+            // .format("%s/%s/%s/%s.png", CommonUtils
+            // .getPictureResultsPathFromConfig(this.getClass()),
+            // feature.replaceAll("\\W+", "_"), scenario
+            // .replaceAll("\\W+", "_"), stepName
+            // .replaceAll("\\W+", "_"));
             if (driver instanceof IOSDriver && CommonUtils.getIsSimulatorFromConfig(ZetaFormatter.class)) {
                 try {
                     CommonUtils.takeIOSSimulatorScreenshot(screenshotPath);
@@ -192,9 +190,7 @@ public class ZetaFormatter implements Formatter, Reporter {
                 screenshotSavers.execute(() -> storeScreenshot(screenshot.get(), screenshotPath));
             }
         } else {
-            log.debug(String
-                    .format("Selenium driver is not ready yet. Skipping screenshot creation for step '%s'",
-                            stepName));
+            log.debug(String.format("Selenium driver is not ready yet. Skipping screenshot creation for step '%s'", stepName));
         }
     }
 
@@ -212,8 +208,7 @@ public class ZetaFormatter implements Formatter, Reporter {
 
     static {
         try {
-            isScreenshotingOnPassedStepsEnabled =
-                    CommonUtils.getMakeScreenshotOnPassedStepsFromConfig(ZetaFormatter.class);
+            isScreenshotingOnPassedStepsEnabled = CommonUtils.getMakeScreenshotOnPassedStepsFromConfig(ZetaFormatter.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -241,22 +236,19 @@ public class ZetaFormatter implements Formatter, Reporter {
                 }
             }
             final long screenshotFinishedTimestamp = new Date().getTime();
-            log.debug(String
-                    .format("%s (status: %s, step duration: %s ms + screenshot duration: %s ms)",
-                            stepName, stepStatus, stepFinishedTimestamp - stepStartedTimestamp,
-                            screenshotFinishedTimestamp - stepFinishedTimestamp));
+            log.debug(String.format("%s (status: %s, step duration: %s ms + screenshot duration: %s ms)", stepName, stepStatus,
+                stepFinishedTimestamp - stepStartedTimestamp, screenshotFinishedTimestamp - stepFinishedTimestamp));
         } else {
-            log.debug(String.format("%s (status: %s, step duration: %s ms)",
-                    stepName, stepStatus, stepFinishedTimestamp - stepStartedTimestamp));
+            log.debug(String.format("%s (status: %s, step duration: %s ms)", stepName, stepStatus,
+                stepFinishedTimestamp - stepStartedTimestamp));
         }
     }
 
-    private void storeScreenshot(final BufferedImage screenshot,
-                                 final String path) {
+    private void storeScreenshot(final BufferedImage screenshot, final String path) {
         try {
             final File outputFile = new File(path);
             if (!outputFile.getParentFile().exists()) {
-                //noinspection ResultOfMethodCallIgnored
+                // noinspection ResultOfMethodCallIgnored
                 outputFile.getParentFile().mkdirs();
             }
             ImageIO.write(adjustScreenshotSize(screenshot), "png", outputFile);
@@ -269,8 +261,7 @@ public class ZetaFormatter implements Formatter, Reporter {
     public void write(String arg0) {
     }
 
-    private static Optional<ZetaDriver> getDriver()
-            throws Exception {
+    private static Optional<ZetaDriver> getDriver() throws Exception {
         if (lazyDriver != null && lazyDriver.isDone() && !lazyDriver.isCancelled()) {
             return Optional.of((ZetaDriver) lazyDriver.get());
         } else {
@@ -280,13 +271,11 @@ public class ZetaFormatter implements Formatter, Reporter {
 
     private static Future<? extends RemoteWebDriver> lazyDriver = null;
 
-    public synchronized static void setLazyDriver(
-            Future<? extends RemoteWebDriver> lazyDriver) {
+    public synchronized static void setLazyDriver(Future<? extends RemoteWebDriver> lazyDriver) {
         ZetaFormatter.lazyDriver = lazyDriver;
     }
 
-    private static final ExecutorService screenshotSavers = Executors
-            .newFixedThreadPool(3);
+    private static final ExecutorService screenshotSavers = Executors.newFixedThreadPool(3);
 
     @Override
     public void startOfScenarioLifeCycle(Scenario scenario) {
@@ -310,8 +299,7 @@ public class ZetaFormatter implements Formatter, Reporter {
             final Set<String> normalizedTags = normalizeTags(scenario.getTags());
 
             TestrailSyncUtilities.syncExecutedScenarioWithTestrail(scenario,
-                    new TestcaseResultToTestrailTransformer(steps).transform(),
-                    normalizedTags);
+                new TestcaseResultToTestrailTransformer(steps).transform(), normalizedTags);
         } finally {
             steps.clear();
             stepsIterator = Optional.empty();
