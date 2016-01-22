@@ -1,39 +1,45 @@
 package com.wearezeta.auto.common.sync_engine_bridge;
 
+import com.google.common.base.Throwables;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 
 import java.io.File;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
 public class SEBridge {
-    private static UserDevicePool devicePool = null;
+    private static final long DEVICE_POOL_INIT_TIMEOUT_SECONDS = 60;
+    private Future<UserDevicePool> devicePool;
     private static SEBridge instance = null;
 
     private static final Logger LOG = ZetaLogger.getLog(SEBridge.class
             .getSimpleName());
 
-    static {
-        Runtime.getRuntime().addShutdownHook(new Thread(SEBridge::shutdown));
-    }
-
-    private SEBridge() {
+    private SEBridge() throws Exception {
+        final Callable<UserDevicePool> task = () -> new UserDevicePool(CommonUtils.getBackendType(CommonUtils.class));
+        this.devicePool = Executors.newSingleThreadExecutor().submit(task);
+        Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
     }
 
     public static synchronized SEBridge getInstance() {
         if (instance == null) {
-            instance = new SEBridge();
+            try {
+                instance = new SEBridge();
+            } catch (Exception e) {
+                Throwables.propagate(e);
+            }
         }
         return instance;
     }
 
     private synchronized UserDevicePool getDevicePool() throws Exception {
-        if (devicePool == null) {
-            devicePool = new UserDevicePool(CommonUtils.getBackendType(CommonUtils.class));
-        }
-        return devicePool;
+        return this.devicePool.get(DEVICE_POOL_INIT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
     }
 
     private void login(ClientUser user, IDevice dstDevice) throws Exception {
@@ -90,13 +96,11 @@ public class SEBridge {
         getOrAddRandomDevice(userFrom).sendPing(convId);
     }
 
-    private synchronized static void shutdown() {
-        if (devicePool != null) {
-            try {
-                devicePool.shutdown();
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
+    private synchronized void shutdown() {
+        try {
+            getDevicePool().shutdown();
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
     }
 }
