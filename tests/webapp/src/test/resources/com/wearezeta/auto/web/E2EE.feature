@@ -1,6 +1,6 @@
 Feature: E2EE
 
-  @C1846
+  @C1846 @e2ee
   Scenario Outline: Remove remote device from device list
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
@@ -32,7 +32,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Device  | Label  |
       | user1Email | user1Password | user1Name | Remote1 | Label1 |
 
-  @C1847
+  @C1847 @e2ee
   Scenario Outline: Login as permanent device after permanent device limit is reached
     Given There is 1 user where <Name> is me
     Given user <Name> adds a new device Device1 with label Label1
@@ -69,7 +69,7 @@ Feature: E2EE
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C2100
+  @C2100 @e2ee
   Scenario Outline: Login as temporary device after device limit is reached
     Given There is 1 user where <Name> is me
     Given user <Name> adds a new device Device1 with label Label1
@@ -100,7 +100,7 @@ Feature: E2EE
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C2098
+  @C2098 @e2ee
   Scenario Outline: Verify current browser is set as permanent device
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
@@ -123,10 +123,9 @@ Feature: E2EE
     And I enter password "<Password>"
     And I check option to remember me
     And I press Sign In button
-    And I see my avatar on top of Contact list
-    And I open self profile
+    Then I am signed in properly
     And I click gear button on self profile page
-    And I select Settings menu item on self profile page
+    When I select Settings menu item on self profile page
     Then I verify that the device id of the current device is the same
     And I see 0 devices in the devices section
 
@@ -134,7 +133,7 @@ Feature: E2EE
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C2099
+  @C2099 @e2ee
   Scenario Outline: Verify current browser is set as temporary device
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page

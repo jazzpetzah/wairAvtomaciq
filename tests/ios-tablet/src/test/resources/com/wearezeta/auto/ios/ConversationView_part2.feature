@@ -258,7 +258,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2593 @C2594 @regression @rc @id3097 @id3098
+  @C2594 @regression @rc @id3097 @id3098
   Scenario Outline: Verify opening and closing the cursor by clicking swiping right/left [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

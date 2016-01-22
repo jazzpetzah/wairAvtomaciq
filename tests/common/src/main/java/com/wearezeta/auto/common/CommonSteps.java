@@ -31,6 +31,8 @@ public final class CommonSteps {
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
+    private static final SEBridge seBridge = SEBridge.getInstance();
+
     public ClientUsersManager getUserManager() {
         return this.usrMgr;
     }
@@ -289,7 +291,7 @@ public final class CommonSteps {
     public void UserAddsRemoteDeviceToAccount(String userNameAlias,
             String deviceName, String label) throws Exception {
         ClientUser user = usrMgr.findUserByNameOrNameAlias(userNameAlias);
-        SEBridge.getInstance().addRemoteDeviceToAccount(user, deviceName, label);
+        seBridge.addRemoteDeviceToAccount(user, deviceName, label);
     }
 
     public void UserPingedConversation(String pingFromUserNameAlias,
@@ -308,7 +310,7 @@ public final class CommonSteps {
         final ClientUser pingFromUser = usrMgr.findUserByNameOrNameAlias(pingFromUserNameAlias);
         dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
         final String convId = BackendAPIWrappers.getConversationIdByName(pingFromUser, dstConversationName);
-        SEBridge.getInstance().sendPing(pingFromUser, convId);
+        seBridge.sendPing(pingFromUser, convId);
     }
 
     public void UserHotPingedConversationOtr(String pingFromUserNameAlias,
@@ -317,7 +319,7 @@ public final class CommonSteps {
         dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
         final String convId = BackendAPIWrappers.getConversationIdByName(pingFromUser, dstConversationName);
         for (int i = 0; i < 2; i++) {
-            SEBridge.getInstance().sendPing(pingFromUser, convId);
+            seBridge.sendPing(pingFromUser, convId);
             Thread.sleep(500);
         }
     }
@@ -370,7 +372,7 @@ public final class CommonSteps {
                 dstConversationName, FindBy.NAME_ALIAS);
         String dstConvId = BackendAPIWrappers.getConversationIdByName(userFrom,
                 dstConversationName);
-        SEBridge.getInstance().sendConversationMessage(userFrom, dstConvId,
+        seBridge.sendConversationMessage(userFrom, dstConvId,
                 message);
     }
 

@@ -144,10 +144,14 @@ Feature: People View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    #And I swipe up on group chat page
     And I open group conversation details
-    And I tap on <GroupCreator> and check email visible and name
-    And I tap on <NonConnectedContact> and check email invisible and name
+    And I select contact <GroupCreator>
+    And I verify username <GroupCreator> on Other User Profile page is displayed and correct
+    And I verify user email for <GroupCreator> on Other User Profile page is correct and displayed
+    And I click close user profile page button
+    And I select contact <NonConnectedContact>
+    And I verify username <NonConnectedContact> on Other User Profile page is displayed and correct
+    Then I verify email for user <NonConnectedContact> on Other User Profile page is not displayed
 
     Examples:
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
@@ -238,10 +242,10 @@ Feature: People View
     And I see user <Contact3> found on People picker page
     And I click on connected user <Contact3> avatar on People picker page
     And I click on Go button
-    And I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
+    And I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I return to the chat list
     And I see conversations list
-    And I see in contact list group chat with <Contact1> <Contact2> <Contact3>
+    And I see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  |
@@ -276,7 +280,7 @@ Feature: People View
     And I see dialog page
     And I return to the chat list
     And I see conversations list
-    And I don't see in contact list group chat with <Contact1> <Contact2> <Contact3>
+    And I don't see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  |

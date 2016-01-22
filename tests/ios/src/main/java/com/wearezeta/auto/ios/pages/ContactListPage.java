@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.concurrent.Future;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.*;
@@ -23,14 +24,16 @@ public class ContactListPage extends IOSPage {
     private static final String xpathStrContactListRoot = xpathStrMainWindow + "/UIACollectionView[1]";
     private static final By xpathContactListRoot = By.xpath(xpathStrContactListRoot);
 
-    private static final String xpathStrNameContactListItems = xpathStrContactListRoot + "//UIACollectionCell";
+    private static final String xpathStrContactListItems = xpathStrContactListRoot + "//UIACollectionCell";
+    private static final Function<String, String> xpathStrContactListItemByExpr = xpathExpr ->
+            String.format("%s/UIAStaticText[%s]", xpathStrContactListItems, xpathExpr);
 
     private static final Function<String, String> xpathStrConvoListEntryByName = name ->
-            String.format("%s[ .//*[@value='%s'] ]", xpathStrNameContactListItems, name);
+            String.format("%s[ .//*[@value='%s'] ]", xpathStrContactListItems, name);
     private static final Function<Integer, String> xpathStrConvoListEntryByIdx = idx ->
-            String.format("(%s)[%s]", xpathStrNameContactListItems, idx);
+            String.format("(%s)[%s]", xpathStrContactListItems, idx);
     private static final Function<Integer, String> xpathStrConvoListEntryNameByIdx = idx ->
-            String.format("(%s)[%s]/UIAStaticText", xpathStrNameContactListItems, idx);
+            String.format("(%s)[%s]/UIAStaticText", xpathStrContactListItems, idx);
 
     private static final By nameOpenStartUI = By.name("START A CONVERSATION");
 
@@ -190,10 +193,12 @@ public class ContactListPage extends IOSPage {
                 coords.y + elementSize.height - 150, time);
     }
 
-    public boolean conversationWithUsersPresented(String name1, String name2, String name3) throws Exception {
-        String firstChat = getFirstConversationName();
-        return firstChat.contains(name1)
-                && firstChat.contains(name2) && firstChat.contains(name3);
+    public boolean isConversationWithUsersExist(List<String> names, int timeoutSeconds) throws Exception {
+        final String xpathExpr = String.join(" and ", names.stream().
+                map(x -> String.format("contains(@name, '%s')", x)).
+                collect(Collectors.toList()));
+        final By locator = By.xpath(xpathStrContactListItemByExpr.apply(xpathExpr));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, timeoutSeconds);
     }
 
     public boolean isConversationSilenced(String conversation, boolean isSilenced) throws Exception {
