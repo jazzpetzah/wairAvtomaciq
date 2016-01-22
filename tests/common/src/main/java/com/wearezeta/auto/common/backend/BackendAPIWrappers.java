@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
 // argument by performing automatic login (set id and session token attributes)
 public final class BackendAPIWrappers {
     public static final int ACTIVATION_TIMEOUT = 120; // seconds
-    private static final int INVITATION_RECEIVING_TIMEOUT = 60; // seconds
+    private static final int INVITATION_RECEIVING_TIMEOUT = ACTIVATION_TIMEOUT; // seconds
 
     private static final int REQUEST_TOO_FREQUENT_ERROR = 429;
     private static final int LOGIN_CODE_HAS_NOT_BEEN_USED_ERROR = 403;
