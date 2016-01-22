@@ -59,7 +59,7 @@ Feature: E2EE
       | Name      | Contact   | ImageName   |
       | user1Name | user2Name | testing.jpg |
 
-  @C3241 @staging @torun
+  @C3241 @staging
   Scenario Outline: Verify you can receive encrypted and non-encrypted messages in group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
