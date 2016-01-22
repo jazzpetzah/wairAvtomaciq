@@ -212,13 +212,15 @@ public class OtherUserPersonalInfoPageSteps {
     /**
      * Verify that user email on Other User Profile page is not displayed
      * 
-     * @step.^I verify user email on Other User Profile page is not displayed$
+     * @step.^I verify email for user (.*) on Other User Profile page is not displayed$
+     * 
+     * @param name username
      * 
      * @throws Exception
      */
-    @When("^I verify user email on Other User Profile page is not displayed$")
-    public void IVerifyUserEmailOnOtherUserProfilePageIsNotDisplayed(String email) throws Exception {
-        email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
+    @When("^I verify email for user (.*) on Other User Profile page is not displayed$")
+    public void IVerifyUserEmailOnOtherUserProfilePageIsNotDisplayed(String name) throws Exception {
+        String email = usrMgr.findUserByNameOrNameAlias(name).getEmail();
         Assert.assertTrue("Email is visible", getOtherUserPersonalInfoPage().userEmailIsNotDisplayed(email));
     }
 
@@ -230,10 +232,9 @@ public class OtherUserPersonalInfoPageSteps {
      * @param email user email
      * @throws Exception
      */
-    @When("^I verify user email (.*) on Other User Profile page is correct and displayed$")
-    public void IVerifyUserEmailOnOtherUserProfilePageIsDisplayedAndCorrect(String email) throws Exception {
-        email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
-
+    @When("^I verify user email for (.*) on Other User Profile page is correct and displayed$")
+    public void IVerifyUserEmailOnOtherUserProfilePageIsDisplayedAndCorrect(String name) throws Exception {
+        String email = usrMgr.findUserByNameOrNameAlias(name).getEmail();
         Assert.assertTrue("Email is NOT displayed", getOtherUserPersonalInfoPage().isUserEmailVisible(email));
     }
 

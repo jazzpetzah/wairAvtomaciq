@@ -127,7 +127,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     }
     
     public boolean isUserEmailVisible(String email) throws Exception {
-        final By locator = By.xpath(xpathStrOtherPersonalInfoPageEmailFieldByEmail.apply(email));
+        final By locator = By.xpath(xpathStrOtherPersonalInfoPageEmailFieldByEmail.apply(email.toUpperCase()));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
     

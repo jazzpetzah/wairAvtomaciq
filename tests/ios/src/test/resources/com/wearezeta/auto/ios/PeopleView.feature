@@ -147,15 +147,15 @@ Feature: People View
     And I open group conversation details
     And I select contact <GroupCreator>
     And I verify username <GroupCreator> on Other User Profile page is displayed and correct
-    And I verify user email <GroupCreatorEmail> on Other User Profile page is correct and displayed
+    And I verify user email for <GroupCreator> on Other User Profile page is correct and displayed
     And I click close user profile page button
     And I select contact <NonConnectedContact>
     And I verify username <NonConnectedContact> on Other User Profile page is displayed and correct
-    Then I verify user email on Other User Profile page is not displayed
+    Then I verify email for user <NonConnectedContact> on Other User Profile page is not displayed
 
     Examples: 
-      | Name      | GroupCreator | GroupCreatorEmail | NonConnectedContact | GroupChatName |
-      | user1Name | user2Name    | user2Email        | user3Name           | TESTCHAT      |
+      | Name      | GroupCreator | NonConnectedContact | GroupChatName |
+      | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
   @C988 @regression @id2174
   Scenario Outline: Verify you can start 1:1 conversation from a group conversation profile
