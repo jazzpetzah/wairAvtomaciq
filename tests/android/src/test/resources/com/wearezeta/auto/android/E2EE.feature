@@ -67,13 +67,12 @@ Feature: E2EE
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When User <Contact1> sends encrypted image <ImageName> to group conversation <GroupChatName>
-    And User <Contact2> sends image <ImageName> to group conversation <GroupChatName>
+    When Contact <Contact1> sends encrypted message <EncryptedMessage> to group conversation <GroupChatName>
+    And Contact <Contact2> sends message <SimpleMessage> to group conversation <GroupChatName>
     And I tap on contact name <GroupChatName>
-    And I scroll to the bottom of conversation view
-    Then I see non-encrypted image 1 time in the conversation view
-    And I see encrypted image 1 time in the conversation view
+    Then I see non-encrypted message <SimpleMessage> 1 time in the conversation view
+    And I see encrypted message <EncryptedMessage> 1 time in the conversation view
 
     Examples:
-      | Name      | Contact1   | Contact2  | ImageName   | GroupChatName |
-      | user1Name | user2Name  | user3Name | testing.jpg | HybridGroup   |
+      | Name      | Contact1   | Contact2  | EncryptedMessage | SimpleMessage | GroupChatName |
+      | user1Name | user2Name  | user3Name | EncryptedYo      | SimpleYo      | HybridGroup   |

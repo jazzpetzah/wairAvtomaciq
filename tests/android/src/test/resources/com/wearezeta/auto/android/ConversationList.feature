@@ -62,8 +62,8 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given User <Contact1> sends image <Image> to group conversation <GroupChatName>
-    Given User <Contact1> sent message <SpotifyLink> to conversation <GroupChatName>
-    Given User <Contact1> sent message "<Message>" to conversation <GroupChatName>
+    Given Contact <Contact1> sends message <SpotifyLink> to group conversation <GroupChatName>
+    Given Contact <Contact1> sends message <Message> to group conversation <GroupChatName>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
@@ -104,7 +104,7 @@ Feature: Conversation List
     And I enter "<GroupChatName>" into Search input on People Picker page
     Then I do not see group <GroupChatName> in People picker
     And I navigate back to Conversations List
-    And User <Contact1> sent message <Message> to conversation <GroupChatName>
+    And Contact <Contact1> sends message <Message> to group conversation <GroupChatName>
     Then I do not see contact list with name <GroupChatName>
     And I swipe up contact list
     Then I do not see contact list with name <GroupChatName>
