@@ -46,7 +46,7 @@ public class CommonUtils {
     }
 
     public static boolean executeOsCommandWithTimeout(String[] cmd,
-                                                      long timeoutSeconds) throws Exception {
+            long timeoutSeconds) throws Exception {
         Process process = Runtime.getRuntime().exec(cmd);
         log.debug("Process started for cmdline " + Arrays.toString(cmd));
         outputErrorStreamToLog(process.getErrorStream());
@@ -66,7 +66,8 @@ public class CommonUtils {
         log.debug("Process started for cmdline " + Arrays.toString(cmd));
         String output;
         try (InputStream stream = process.getInputStream()) {
-            BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader(stream));
             StringBuilder sb = new StringBuilder("\n");
             String s;
             while ((s = br.readLine()) != null) {
@@ -141,7 +142,7 @@ public class CommonUtils {
     private final static Map<String, Optional<String>> cachedConfig = new HashMap<>();
 
     private static Optional<String> getValueFromConfigFile(Class<?> c,
-                                                           String key, String resourcePath) throws Exception {
+            String key, String resourcePath) throws Exception {
         final String configKey = String.format("%s:%s", resourcePath, key);
         if (cachedConfig.containsKey(configKey)) {
             return cachedConfig.get(configKey);
@@ -183,7 +184,7 @@ public class CommonUtils {
     private static final String PROJECT_CONFIG = "Configuration.cnf";
 
     public static Optional<String> getOptionalValueFromConfig(Class<?> c,
-                                                              String key) throws Exception {
+            String key) throws Exception {
         return getValueFromConfigFile(c, key, PROJECT_CONFIG);
     }
 
@@ -203,7 +204,7 @@ public class CommonUtils {
     private static final String COMMON_CONFIG = "CommonConfiguration.cnf";
 
     public static Optional<String> getOptionalValueFromCommonConfig(Class<?> c,
-                                                                    String key) throws Exception {
+            String key) throws Exception {
         return getValueFromConfigFile(c, key, COMMON_CONFIG);
     }
 
@@ -439,9 +440,9 @@ public class CommonUtils {
                 + TCPBLOCK_PREFIX_PATH + "tcpblock -a " + appName;
         try {
             executeOsXCommand(new String[]{"/bin/bash", "-c",
-                    blockTcpForAppCmd});
+                blockTcpForAppCmd});
             log.debug(executeOsXCommandWithOutput(new String[]{"/bin/bash",
-                    "-c", TCPBLOCK_PREFIX_PATH + "tcpblock -g"}));
+                "-c", TCPBLOCK_PREFIX_PATH + "tcpblock -g"}));
         } catch (Exception e) {
             log.error("TCP connections for " + appName
                     + " were not blocked. Make sure tcpblock is installed.");
@@ -454,9 +455,9 @@ public class CommonUtils {
                 + TCPBLOCK_PREFIX_PATH + "tcpblock -r " + appName;
         try {
             executeOsXCommand(new String[]{"/bin/bash", "-c",
-                    enableTcpForAppCmd});
+                enableTcpForAppCmd});
             log.debug(executeOsXCommandWithOutput(new String[]{"/bin/bash",
-                    "-c", TCPBLOCK_PREFIX_PATH + "tcpblock -g"}));
+                "-c", TCPBLOCK_PREFIX_PATH + "tcpblock -g"}));
         } catch (Exception e) {
             log.error("TCP connections for " + appName
                     + " were not enabled. Make sure tcpblock is installed.");
@@ -491,22 +492,26 @@ public class CommonUtils {
 
     public static boolean getMakeScreenshotOnPassedStepsFromConfig(Class<?> c)
             throws Exception {
-        return Boolean.valueOf(getValueFromCommonConfig(c, "makeScreenshotOnPassedSteps"));
+        return Boolean.valueOf(getValueFromCommonConfig(c,
+                "makeScreenshotOnPassedSteps"));
     }
 
     public static boolean getInitNoteIpFromConfig(Class<?> c) throws Exception {
         return Boolean.valueOf(getValueFromCommonConfig(c, "initNodeIp"));
     }
 
-    public static String getTestrailServerUrlFromConfig(Class<?> c) throws Exception {
+    public static String getTestrailServerUrlFromConfig(Class<?> c)
+            throws Exception {
         return getValueFromCommonConfig(c, "testrailServerUrl");
     }
 
-    public static String getTestrailUsernameFromConfig(Class<?> c) throws Exception {
+    public static String getTestrailUsernameFromConfig(Class<?> c)
+            throws Exception {
         return getValueFromConfig(c, "testrailUser");
     }
 
-    public static String getTestrailTokenFromConfig(Class<?> c) throws Exception {
+    public static String getTestrailTokenFromConfig(Class<?> c)
+            throws Exception {
         return getValueFromConfig(c, "testrailToken");
     }
 
@@ -531,11 +536,17 @@ public class CommonUtils {
     }
 
     public static boolean getSyncIsAutomated(Class<?> c) throws Exception {
-        return getValueFromCommonConfig(c, "syncIsAutomated").toLowerCase().equals("true");
+        return getValueFromCommonConfig(c, "syncIsAutomated").toLowerCase()
+                .equals("true");
     }
 
     public static boolean getSyncIsMuted(Class<?> c) throws Exception {
-        return getValueFromCommonConfig(c, "syncIsMuted").toLowerCase().equals("true");
+        return getValueFromCommonConfig(c, "syncIsMuted").toLowerCase().equals(
+                "true");
+    }
+
+    public static Optional<String> getAdbPrefixFromConfig(Class<?> c) throws Exception {
+        return getOptionalValueFromConfig(c, "adbPrefix");
     }
 
     public static String generateRandomXdigits(int i) {
@@ -545,11 +556,13 @@ public class CommonUtils {
         return Long.toString(Math.abs(random));
     }
 
-    public static String getPlatformVersionFromConfig(Class<?> cls) throws Exception {
+    public static String getPlatformVersionFromConfig(Class<?> cls)
+            throws Exception {
         return getValueFromConfig(cls, "platformVersion");
     }
 
-    public static Optional<String> getIsUseNativeInstrumentsLibFromConfig(Class<?> cls) throws Exception {
+    public static Optional<String> getIsUseNativeInstrumentsLibFromConfig(
+            Class<?> cls) throws Exception {
         return getOptionalValueFromConfig(cls, "useNativeInstrumentsLib");
     }
 
@@ -559,14 +572,20 @@ public class CommonUtils {
 
     private static final int SCREENSHOT_TIMEOUT_SECONDS = 5;
 
-    public static void takeIOSSimulatorScreenshot(String screenshotPath) throws Exception {
-        executeUIShellScript(new String[]{
-                String.format("mkdir -p $(dirname \"%s\")", screenshotPath),
-                String.format("%s/simshot \"%s\"", getIOSToolsRoot(CommonUtils.class), screenshotPath)
-        }).get(SCREENSHOT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+    public static void takeIOSSimulatorScreenshot(String screenshotPath)
+            throws Exception {
+        executeUIShellScript(
+                new String[]{
+                    String.format("mkdir -p $(dirname \"%s\")",
+                            screenshotPath),
+                    String.format("%s/simshot \"%s\"",
+                            getIOSToolsRoot(CommonUtils.class),
+                            screenshotPath)}).get(
+                        SCREENSHOT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
     }
 
     private static class UIScriptExecutionMonitor implements Callable<Void> {
+
         private File flag;
         private File script;
 
@@ -589,35 +608,39 @@ public class CommonUtils {
     }
 
     /**
-     * It is highly recommended to use these methods if it is necessary to interact with
-     * UI from a script. Otherwise it will be blocked by Mac OS as unsecure, because only
-     * Terminal.app is explicitly authorized to interact with UI.
+     * It is highly recommended to use these methods if it is necessary to interact with UI from a script. Otherwise it will be
+     * blocked by Mac OS as unsecure, because only Terminal.app is explicitly authorized to interact with UI.
      *
      * @param content the full script content, WITHOUT shebang
      * @return monitoring Future. Use it to block execution until shell script execution is done
      * @throws Exception
      */
-    public static Future<Void> executeUIShellScript(String[] content) throws Exception {
+    public static Future<Void> executeUIShellScript(String[] content)
+            throws Exception {
         final File result = File.createTempFile("script", ".sh");
 
         final File executionFlag = File.createTempFile("execution", ".flag");
         final List<String> scriptContent = new ArrayList<>();
         scriptContent.add("#!/bin/bash");
         Collections.addAll(scriptContent, content);
-        scriptContent.add(String.format("rm -f %s", executionFlag.getCanonicalPath()));
+        scriptContent.add(String.format("rm -f %s",
+                executionFlag.getCanonicalPath()));
 
         try (Writer output = new BufferedWriter(new FileWriter(result))) {
             output.write(String.join("\n", scriptContent));
         }
-        Runtime.getRuntime().exec(new String[]{"chmod", "u+x",
-                result.getCanonicalPath()}).waitFor();
-        Runtime.getRuntime().exec(new String[]{"/usr/bin/open", "-a", "Terminal",
-                result.getCanonicalPath(), "-g"}).waitFor();
+        Runtime.getRuntime()
+                .exec(new String[]{"chmod", "u+x", result.getCanonicalPath()})
+                .waitFor();
+        Runtime.getRuntime()
+                .exec(new String[]{"/usr/bin/open", "-a", "Terminal",
+                    result.getCanonicalPath(), "-g"}).waitFor();
         return Executors.newSingleThreadExecutor().submit(
                 new UIScriptExecutionMonitor(executionFlag, result));
     }
 
-    public static Future<Void> executeUIAppleScript(String[] content) throws Exception {
+    public static Future<Void> executeUIAppleScript(String[] content)
+            throws Exception {
         final List<String> scriptContent = new ArrayList<>();
         scriptContent.add("/usr/bin/osascript \\");
         for (int idx = 0; idx < content.length; idx++) {
@@ -637,7 +660,8 @@ public class CommonUtils {
         final Callable<Long> task = () -> {
             final NTPUDPClient timeClient = new NTPUDPClient();
             final InetAddress inetAddress = InetAddress.getByName(TIME_SERVER);
-            return new Date(timeClient.getTime(inetAddress).getReturnTime()).getTime();
+            return new Date(timeClient.getTime(inetAddress).getReturnTime())
+                    .getTime();
         };
         return Executors.newSingleThreadExecutor().submit(task);
     }
