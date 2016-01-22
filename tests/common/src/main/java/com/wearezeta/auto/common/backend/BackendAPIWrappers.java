@@ -28,12 +28,15 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 // Almost all methods of this class mutate ClientUser
 // argument by performing automatic login (set id and session token attributes)
 public final class BackendAPIWrappers {
     public static final int ACTIVATION_TIMEOUT = 120; // seconds
     private static final int INVITATION_RECEIVING_TIMEOUT = ACTIVATION_TIMEOUT; // seconds
+    private static final int DELETION_RECEIVING_TIMEOUT = ACTIVATION_TIMEOUT; // seconds
 
     private static final int REQUEST_TOO_FREQUENT_ERROR = 429;
     private static final int LOGIN_CODE_HAS_NOT_BEEN_USED_ERROR = 403;
@@ -997,6 +1000,26 @@ public final class BackendAPIWrappers {
         } catch (Exception e) {
             e.printStackTrace();
             return Optional.empty();
+        }
+    }
+
+    public static String getDeletionURL(String email) throws Exception {
+        Pattern pattern = Pattern.compile("https://[a-zA-Z_0-9.=-]+/d/\\?key=[a-zA-Z_0-9.-\\\\&_=]+");
+        IMAPSMailbox mbox = IMAPSMailbox.getInstance();
+        Map<String, String> expectedHeaders = new HashMap<>();
+        expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, email);
+        try {
+            final String msg = mbox.getMessage(expectedHeaders,
+                    DELETION_RECEIVING_TIMEOUT, 0).get();
+            String url = null;
+            Matcher matcher = pattern.matcher(msg);
+            if(matcher.find()) {
+                url = matcher.group(0);
+            }
+            return url;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

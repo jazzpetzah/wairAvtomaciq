@@ -47,3 +47,30 @@ Feature: Menus
     Examples: 
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
+
+  @C12064 @mute
+  Scenario Outline: Verify you can delete account
+    Given There is 1 user where <Name> is me
+    Given I switch to Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    Given I click gear button on self profile page
+    When I select Settings menu item on self profile page
+    And I see Settings dialog
+    #And I click delete account button on settings page
+    #And I see email <Email> in delete info text on settings page
+    #And I click cancel deletion button on settings page
+    #And I click delete account button on settings page
+    #And I see email <Email> in delete info text on settings page
+    And I wait for 30 seconds
+    #And I click send button to delete account
+    And I delete account of user <Name> via email
+    And I click gear button on self profile page
+    And I select Log out menu item on self profile page
+    When I enter email "<Email>"
+    And I enter password "<Password>"
+    And I press Sign In button
+    Then the sign in error message reads <Error>
+
+    Examples:
+      | Email      | Password      | Name      | Error                                     |
+      | user1Email | user1Password | user1Name | Please verify your details and try again. |

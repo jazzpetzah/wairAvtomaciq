@@ -169,4 +169,25 @@ public class SettingsPageSteps {
 		assertThat(webappPagesCollection.getPage(SettingsPage.class)
 				.getDeviceLabels(), hasSize(size));
 	}
+
+    @When("^I click delete account button on settings page$")
+    public void IClickDeleteAccountButton() throws Exception {
+        webappPagesCollection.getPage(SettingsPage.class).clickDeleteAccountButton();
+    }
+
+    @When("^I click cancel deletion button on settings page$")
+    public void IClickCancelDeleteButton() throws Exception {
+        webappPagesCollection.getPage(SettingsPage.class).clickCancelDeleteAccountButton();
+    }
+
+    @When("^I click send button to delete account$")
+    public void IClickSendButton() throws Exception {
+        webappPagesCollection.getPage(SettingsPage.class).clickConfirmDeleteAccountButton();
+    }
+
+    @When("^I see email (.*) in delete info text on settings page$")
+    public void ISeeEmailInDeleteInfo(String email) throws Exception {
+        assertThat("Email address not in description", webappPagesCollection.getPage(SettingsPage.class).getDeleteInfo(),
+                containsString(email));
+    }
 }

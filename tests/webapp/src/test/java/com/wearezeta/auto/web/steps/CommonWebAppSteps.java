@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.net.URI;
@@ -676,6 +677,15 @@ public class CommonWebAppSteps {
 					throw new IllegalStateException(
 						"Invitation message has not been received");
 				}).isValid());
+	}
+
+	@Then("^I delete account of user (.*) via email$")
+	public void IDeleteAccountViaEmail(String alias) throws Throwable {
+		final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
+		final String url = BackendAPIWrappers.getDeletionURL(email);
+		assertNotNull(
+				String.format("Delete email for %s is not valid", email), url);
+		log.info("URL: " + url);
 	}
 
 	/**
