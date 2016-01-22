@@ -27,7 +27,7 @@ public class Element {
 
     }
 
-	protected static Boolean updateStepsIndex = true;
+	protected Boolean updateStepsIndex = true;
 	public Sequence<Step> getSteps() {
 		if (updateStepsIndex) {
 			LinkedHashMap<String, Integer> stepNames = new LinkedHashMap<String, Integer>();
@@ -40,7 +40,7 @@ public class Element {
 		    	stepNames.put(oldName, count);
 		    	}
 		    }
-		    updateStepsIndex = false;
+		    this.updateStepsIndex = false;
 		return Sequences.sequence(option(steps).getOrElse(new Step[] {})).realise();
 	}
 
