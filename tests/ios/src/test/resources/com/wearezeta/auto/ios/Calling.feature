@@ -535,7 +535,6 @@ Feature: Calling
     And I see incoming group calling message
     And I wait for 45 seconds
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I see Join Call bar
     And I rejoin call by clicking Join button
     Then I see mute call, end call and speakers buttons

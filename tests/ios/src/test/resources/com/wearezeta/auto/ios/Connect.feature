@@ -34,7 +34,6 @@ Feature: Connect
     Given I see conversations list
     When I see Pending request link in contact list
     And I click on Pending request link in contact list
-    And I see Pending request page
     And I wait for 2 seconds
     And I see Hello connect message from user <Contact> on Pending request page
     And I click Connect button on Pending request page
@@ -80,7 +79,6 @@ Feature: Connect
     And I click on Pending request link in contact list
     And I see Pending request page
     And I click on Ignore button on Pending requests page <SentRequests> times
-    #And I return to the chat list
     And I dont see Pending request link in contact list
     And I don't see conversation with not connected user <Contact1>
     And I wait until <Contact1> exists in backend search results
