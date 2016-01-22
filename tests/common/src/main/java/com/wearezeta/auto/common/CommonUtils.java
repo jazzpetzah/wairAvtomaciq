@@ -545,8 +545,8 @@ public class CommonUtils {
                 "true");
     }
 
-    public static String getAdbPrefixFromConfig(Class<?> c) throws Exception {
-        return getValueFromConfig(c, "adbPrefix");
+    public static Optional<String> getAdbPrefixFromConfig(Class<?> c) throws Exception {
+        return getOptionalValueFromConfig(c, "adbPrefix");
     }
 
     public static String generateRandomXdigits(int i) {

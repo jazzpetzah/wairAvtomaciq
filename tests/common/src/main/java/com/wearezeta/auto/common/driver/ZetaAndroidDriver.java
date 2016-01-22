@@ -38,19 +38,19 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements
     private static final Logger log = ZetaLogger.getLog(ZetaAndroidDriver.class
             .getSimpleName());
 
+    public static String ADB_PREFIX = "";
+
     static {
         try {
             ADB_PREFIX = CommonUtils
-                    .getAdbPrefixFromConfig(ZetaAndroidDriver.class);
+                    .getAdbPrefixFromConfig(ZetaAndroidDriver.class).orElse("");
+            log.info("ADB Prefix is set to " + ADB_PREFIX);
         } catch (Exception ex) {
-            log.info("Could not load adb prefix - using empty prefix instead");
-            ADB_PREFIX = "";
+            log.info("Could not load adb prefix - using empty prefix instead", ex);
         }
     }
 
     private volatile boolean isSessionLost = false;
-
-    public static String ADB_PREFIX;
 
     private RemoteTouchScreen touch;
     private String androidOSVersion;
