@@ -69,7 +69,7 @@ Feature: Calling
       | user1Name | user2Name | autocall    |
 
   @C2111 @calling_basic @regression @rc @IPv6 @id2093
-  Scenario Outline: Verify accepting incoming call
+  Scenario Outline: (ZIOS-5534)Verify accepting incoming call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
