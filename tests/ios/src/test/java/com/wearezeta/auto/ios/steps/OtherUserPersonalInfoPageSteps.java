@@ -197,15 +197,16 @@ public class OtherUserPersonalInfoPageSteps {
     /**
      * Verify user name on Other User Profile page
      * 
-     * @step. ^I verify username (.*) on Other User Profile page is correct
+     * @step. ^I verify username (.*) on Other User Profile page is displayed and correct$
      * 
      * @param user user name
      * @throws Exception
      */
-    @When("^I verify username (.*) on Other User Profile page is correct$")
+    @When("^I verify username (.*) on Other User Profile page is displayed and correct$")
     public void IVerifyUserOtherUserProfilePage(String user) throws Exception {
         String username = usrMgr.findUserByNameOrNameAlias(user).getName();
-        Assert.assertEquals("Username is not correct", username, getOtherUserPersonalInfoPage().getNameFieldValue());
+        Assert.assertTrue("Username is not correct or not displayed", getOtherUserPersonalInfoPage()
+            .isUserNameVisible(username));
     }
 
     /**
@@ -216,8 +217,9 @@ public class OtherUserPersonalInfoPageSteps {
      * @throws Exception
      */
     @When("^I verify user email on Other User Profile page is not displayed$")
-    public void IVerifyUserEmailOnOtherUserProfilePageIsNotDisplayed() throws Exception {
-        Assert.assertTrue("Email is visible", getOtherUserPersonalInfoPage().emailIsNotVisible());
+    public void IVerifyUserEmailOnOtherUserProfilePageIsNotDisplayed(String email) throws Exception {
+        email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
+        Assert.assertTrue("Email is visible", getOtherUserPersonalInfoPage().userEmailIsNotDisplayed(email));
     }
 
     /**
@@ -232,8 +234,7 @@ public class OtherUserPersonalInfoPageSteps {
     public void IVerifyUserEmailOnOtherUserProfilePageIsDisplayedAndCorrect(String email) throws Exception {
         email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
 
-        Assert.assertTrue("Email is NOT displayed", getOtherUserPersonalInfoPage().isEmailVisible());
-        Assert.assertEquals("Eamil is not correct", email, getOtherUserPersonalInfoPage().getOtherUserEmailFieldValue());
+        Assert.assertTrue("Email is NOT displayed", getOtherUserPersonalInfoPage().isUserEmailVisible(email));
     }
 
 }

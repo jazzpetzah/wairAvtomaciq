@@ -146,13 +146,11 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select contact <GroupCreator>
-    And I see <GroupCreator> user profile page
-    And I verify username <GroupCreator> on Other User Profile page is correct
+    And I verify username <GroupCreator> on Other User Profile page is displayed and correct
     And I verify user email <GroupCreatorEmail> on Other User Profile page is correct and displayed
     And I click close user profile page button
     And I select contact <NonConnectedContact>
-    And I see <NonConnectedContact> user profile page
-    And I verify username <NonConnectedContact> on Other User Profile page is correct
+    And I verify username <NonConnectedContact> on Other User Profile page is displayed and correct
     Then I verify user email on Other User Profile page is not displayed
 
     Examples: 

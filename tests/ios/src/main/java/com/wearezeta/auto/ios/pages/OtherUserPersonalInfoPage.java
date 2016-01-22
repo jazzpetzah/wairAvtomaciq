@@ -5,6 +5,7 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import com.wearezeta.auto.common.driver.DummyElement;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -34,9 +35,9 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     private static final Function<String, String> xpathStrOtherPersonalInfoPageNameFieldByName = name -> String.format(
         "%s/UIAStaticText[@name='%s']", xpathStrMainWindow, name);
-
-    private static final By xpathOtherUserPersonalInfoPageNameField = By
-        .xpath("//UIAButton[@name='OtherUserProfileCloseButton']/preceding-sibling:: UIAStaticText");
+    
+    private static final Function<String, String> xpathStrOtherPersonalInfoPageEmailFieldByEmail = name -> String.format(
+        "//UIAButton[@name='OtherUserProfileCloseButton']/following-sibling:: UIATextView[@name='%s']", name);
 
     protected static final By xpathOtherPersonalInfoPageEmailField = By
         .xpath("//UIAButton[@name='OtherUserProfileCloseButton']/following-sibling:: UIATextView");
@@ -120,25 +121,29 @@ public class OtherUserPersonalInfoPage extends IOSPage {
         getElement(nameComfirmRemoveButton).click();
     }
 
-    public String getNameFieldValue() throws Exception {
-        return getElement(xpathOtherUserPersonalInfoPageNameField).getAttribute("value");
+    public boolean isUserNameVisible(String name) throws Exception {
+        final By locator = By.xpath(xpathStrOtherPersonalInfoPageNameFieldByName.apply(name));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+    
+    public boolean isUserEmailVisible(String email) throws Exception {
+        final By locator = By.xpath(xpathStrOtherPersonalInfoPageEmailFieldByEmail.apply(email));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+    
+    public boolean userEmailIsNotDisplayed(String email) throws Exception {
+        final By locator = By.xpath(xpathStrOtherPersonalInfoPageEmailFieldByEmail.apply(email));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public Optional<String> getEmailFieldValue() throws Exception {
-        final Optional<WebElement> emailField = getElementIfDisplayed(xpathOtherPersonalInfoPageEmailField);
+    public Optional<String> getEmailFieldValue(String email) throws Exception {
+        final By locator = By.xpath(xpathStrOtherPersonalInfoPageEmailFieldByEmail.apply(email));
+        final Optional<WebElement> emailField = getElementIfDisplayed(locator);
         if (emailField.isPresent()) {
             return Optional.of(emailField.get().getAttribute("value"));
         } else {
             return Optional.empty();
         }
-    }
-
-    public String getOtherUserEmailFieldValue() throws Exception {
-        return getElement(xpathOtherPersonalInfoPageEmailField).getAttribute("value").toLowerCase();
-    }
-
-    public boolean isEmailVisible() throws Exception {
-        return getEmailFieldValue().isPresent();
     }
 
     public boolean emailIsNotVisible() throws Exception {
