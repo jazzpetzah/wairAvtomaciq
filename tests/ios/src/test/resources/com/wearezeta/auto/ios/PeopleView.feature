@@ -23,7 +23,7 @@ Feature: People View
     And I wait for 2 seconds
     Then I see group chat page with users <Contact1>,<Contact2>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -48,7 +48,7 @@ Feature: People View
     Then I see that conversation has <Number> people
     Then I see <Number> participants avatars
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Number | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | 4      | TESTCHAT      |
 
@@ -69,7 +69,7 @@ Feature: People View
     And I tap on group chat with name <GroupChatName>
     And I see You Left message in group chat
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
 
@@ -89,7 +89,7 @@ Feature: People View
     And I click close user profile page button
     Then I see that <Contact2> is not present on group chat info page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
 
@@ -111,7 +111,7 @@ Feature: People View
     And I see the correct participant <Contact1> avatar
     And I see the correct participant <Contact2> avatar
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | ParticipantNumber | Picture                      | Color        | Color1       |
       | user1Name | user2Name | user3Name | 2                 | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow |
 
@@ -131,7 +131,7 @@ Feature: People View
     And I return to the chat list
     And I see in contact list group chat named <ChatName>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | ChatName | GroupChatName |
       | user1Name | user2Name | user3Name | QAtest   | TESTCHAT      |
 
@@ -153,7 +153,7 @@ Feature: People View
     And I verify username <NonConnectedContact> on Other User Profile page is displayed and correct
     Then I verify email for user <NonConnectedContact> on Other User Profile page is not displayed
 
-    Examples: 
+    Examples:
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
       | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
@@ -171,7 +171,7 @@ Feature: People View
     And I type the default message and send it
     Then I see 1 default message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
 
@@ -189,7 +189,7 @@ Feature: People View
     And I tap on not connected contact <NonConnectedContact>
     Then I see connect to <NonConnectedContact> dialog
 
-    Examples: 
+    Examples:
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
       | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
@@ -219,7 +219,7 @@ Feature: People View
     And I press keyboard Delete button
     Then I see user <Contact2> on People picker page is NOT selected
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -247,7 +247,7 @@ Feature: People View
     And I see conversations list
     And I see in contact list group chat with <Contact1> <Contact2> <Contact3>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
@@ -282,7 +282,7 @@ Feature: People View
     And I see conversations list
     And I don't see in contact list group chat with <Contact1> <Contact2> <Contact3>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
@@ -306,7 +306,7 @@ Feature: People View
     And I see conversations list
     Then I see conversation <Contact> is silenced
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Color  | NewName |
       | user1Name | user2Name | Violet | SILENCE |
 
@@ -331,7 +331,7 @@ Feature: People View
     And I see conversations list
     Then I see conversation <Contact> is unsilenced
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Color  | NewName |
       | user1Name | user2Name | Violet | SILENCE |
 
@@ -351,7 +351,7 @@ Feature: People View
     Then I dont see conversation <Contact1> in contact list
     Then I see conversation <Contact2> is selected in list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -372,7 +372,7 @@ Feature: People View
     And I return to the chat list
     Then I see conversation <Contact1> is selected in list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | UnblockFromGroup |
 
@@ -398,7 +398,7 @@ Feature: People View
     And I fill in Search field user name <Contact3>
     Then I see that user <Contact3> is NOT found on People picker page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user3Name | OnlyConnected |
 
@@ -420,7 +420,7 @@ Feature: People View
     And I open archived conversations
     Then I dont see conversation <GroupChatName> in contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
@@ -446,7 +446,7 @@ Feature: People View
     And I open archived conversations
     Then I dont see conversation <GroupChatName> in contact list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
@@ -472,7 +472,7 @@ Feature: People View
     When I tap on conversation <GroupChatName> in search result
     Then I see group chat page with users <Contact1>,<Contact2>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
       | user1Name | user2Name | user3Name | ForDeletion   | testing.jpg |
 
@@ -501,7 +501,7 @@ Feature: People View
     And I click open conversation button on People picker page
     Then I see the only message in dialog is system message CONNECTED TO <Contact1>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Image       |
       | user1Name | user2Name | testing.jpg |
 
@@ -526,7 +526,7 @@ Feature: People View
     And I tap on group chat with name <GroupChatName>
     Then I see 4 conversation entries
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Image       |
       | user1Name | user2Name | user3Name | TESTCHAT      | testing.jpg |
 
@@ -545,7 +545,7 @@ Feature: People View
     Then I see <Contact3> user pending profile page
     Then I see remove from group conversation button
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | TESTCHAT      |
 
@@ -563,7 +563,7 @@ Feature: People View
     And I click Cancel button
     Then I see conversation action menu
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -581,6 +581,6 @@ Feature: People View
     When I try to change group conversation name to random with length <MaxGroupChatNameLenght>
     Then I see correct conversation name <GroupChatName>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | MaxGroupChatNameLenght |
       | user1Name | user2Name | user3Name | TESTCHAT      | 65                     |
