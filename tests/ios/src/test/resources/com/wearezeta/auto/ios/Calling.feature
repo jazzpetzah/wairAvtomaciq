@@ -1,6 +1,6 @@
 Feature: Calling
 
-  @C2079 @calling_basic @id1831
+  @torun @C2079 @calling_basic @id1831
   Scenario Outline: Verify calling from missed call indicator in conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -10,7 +10,6 @@ Feature: Calling
     And I wait for 5 seconds
     And <Contact> stops all calls to me
     And I tap on contact name <Contact>
-    And I see dialog page
     Then I see missed call from contact <Contact>
     And I click missed call button to call contact <Contact>
     And I see calling to contact <Contact> message
@@ -95,7 +94,6 @@ Feature: Calling
     And I wait for 5 seconds
     And <Contact> stops all calls to me
     And I tap on contact name <Contact>
-    And I see dialog page
     Then I see missed call from contact <Contact>
 
     Examples:
