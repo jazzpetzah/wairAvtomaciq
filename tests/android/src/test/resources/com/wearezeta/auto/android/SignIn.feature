@@ -33,13 +33,11 @@ Feature: Sign In
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     When I tap on my avatar
-    Then I see personal info page
     When I tap options button
     And I tap settings button
     And I select "Account" settings menu item
     And I select "Log out" settings menu item
     And I confirm sign out
-    Then I see welcome screen
     When User <Name2> is me
     And I sign in using my email or phone number
     Then I see Contact list with no contacts
