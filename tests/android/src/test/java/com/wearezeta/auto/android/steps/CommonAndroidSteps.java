@@ -600,14 +600,20 @@ public class CommonAndroidSteps {
      * @param userFromNameAlias user who want to mute conversation
      * @param message           message to send
      * @param conversationName  the name of existing conversation to send the message to
+     * @param isEncrypted whether the message has to be encrypted
      * @throws Exception
-     * @step. ^User (.*) sent message (.*) to conversation (.*)$
+     * @step. ^User (.*) sent (encrypted )?message (.*) to conversation (.*)$
      */
-    @When("^User (.*) sent message (.*) to conversation (.*)$")
-    public void UserSentMessageToConversation(String userFromNameAlias,
+    @When("^User (.*) sent (encrypted )?message (.*) to conversation (.*)$")
+    public void UserSentMessageToConversation(String userFromNameAlias, String isEncrypted,
                                               String message, String conversationName) throws Exception {
         commonSteps.UserSentMessageToConversation(userFromNameAlias,
                 conversationName, message);
+        if (isEncrypted == null) {
+            commonSteps.UserSentMessageToConversation(userFromNameAlias, conversationName, message);
+        } else {
+            commonSteps.UserSentOtrMessageToConversation(userFromNameAlias, conversationName, message);
+        }
     }
 
     /**

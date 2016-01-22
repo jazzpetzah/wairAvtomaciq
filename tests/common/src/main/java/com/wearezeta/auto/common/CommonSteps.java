@@ -61,7 +61,7 @@ public final class CommonSteps {
     }
 
     public void ConnectionRequestIsSentTo(String userFromNameAlias,
-                                          String usersToNameAliases) throws Exception {
+            String usersToNameAliases) throws Exception {
         ClientUser userFrom = usrMgr
                 .findUserByNameOrNameAlias(userFromNameAlias);
         for (String userToNameAlias : splitAliases(usersToNameAliases)) {
@@ -73,7 +73,7 @@ public final class CommonSteps {
     }
 
     public void UserHasGroupChatWithContacts(String chatOwnerNameAlias,
-                                             String chatName, String otherParticipantsNameAlises)
+            String chatName, String otherParticipantsNameAlises)
             throws Exception {
         ClientUser chatOwner = usrMgr
                 .findUserByNameOrNameAlias(chatOwnerNameAlias);
@@ -95,7 +95,7 @@ public final class CommonSteps {
     private static final String OTHER_USERS_ALIAS = "all other";
 
     public void UserIsConnectedTo(String userFromNameAlias,
-                                  String usersToNameAliases) throws Exception {
+            String usersToNameAliases) throws Exception {
         ClientUser usrFrom = usrMgr
                 .findUserByNameOrNameAlias(userFromNameAlias);
         if (usersToNameAliases.toLowerCase().contains(OTHER_USERS_ALIAS)) {
@@ -128,14 +128,14 @@ public final class CommonSteps {
     }
 
     public void ThereAreNUsersWhereXIsMe(Platform currentPlatform, int count,
-                                         String myNameAlias) throws Exception {
+            String myNameAlias) throws Exception {
         usrMgr.createUsersOnBackend(count, RegistrationStrategy
                 .getRegistrationStrategyForPlatform(currentPlatform));
         usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(myNameAlias));
     }
 
     public void ThereAreNUsersWhereXIsMeRegOnlyByMail(Platform currentPlatform,
-                                                      int count, String myNameAlias) throws Exception {
+            int count, String myNameAlias) throws Exception {
         usrMgr.createUsersOnBackend(count, RegistrationStrategy.ByEmailOnly);
         usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(myNameAlias));
     }
@@ -198,7 +198,7 @@ public final class CommonSteps {
     }
 
     public void BlockContact(String blockAsUserNameAlias,
-                             String userToBlockNameAlias) throws Exception {
+            String userToBlockNameAlias) throws Exception {
         ClientUser blockAsUser = usrMgr
                 .findUserByNameOrNameAlias(blockAsUserNameAlias);
         ClientUser userToBlock = usrMgr
@@ -214,7 +214,7 @@ public final class CommonSteps {
     }
 
     public void UnblockContact(String unblockAsUserNameAlias,
-                               String userToUnblockNameAlias) throws Exception {
+            String userToUnblockNameAlias) throws Exception {
         ClientUser unblockAsUser = usrMgr
                 .findUserByNameOrNameAlias(unblockAsUserNameAlias);
         ClientUser userToUnblock = usrMgr
@@ -230,7 +230,7 @@ public final class CommonSteps {
     }
 
     public void ArchiveConversationWithUser(String usersToNameAliases,
-                                            String archiveConversationWithUser) throws Exception {
+            String archiveConversationWithUser) throws Exception {
         ClientUser user = usrMgr.findUserByNameOrNameAlias(usersToNameAliases);
         ClientUser archivedUser = usrMgr
                 .findUserByNameOrNameAlias(archiveConversationWithUser);
@@ -238,7 +238,7 @@ public final class CommonSteps {
     }
 
     public void ArchiveConversationWithGroup(String aUser,
-                                             String archiveConversationWithGroup) throws Exception {
+            String archiveConversationWithGroup) throws Exception {
         ClientUser user = usrMgr.findUserByNameOrNameAlias(aUser);
         final String conversationIDToArchive = BackendAPIWrappers
                 .getConversationIdByName(user, archiveConversationWithGroup);
@@ -251,7 +251,7 @@ public final class CommonSteps {
     }
 
     public void MuteConversationWithUser(String usersToNameAliases,
-                                         String muteConversationWithUser) throws Exception {
+            String muteConversationWithUser) throws Exception {
         ClientUser user = usrMgr.findUserByNameOrNameAlias(usersToNameAliases);
         ClientUser mutedUser = usrMgr
                 .findUserByNameOrNameAlias(muteConversationWithUser);
@@ -260,14 +260,14 @@ public final class CommonSteps {
     }
 
     public void MuteConversationWithGroup(String usersToNameAliases,
-                                          String muteConversationWithGroup) throws Exception {
+            String muteConversationWithGroup) throws Exception {
         ClientUser user = usrMgr.findUserByNameOrNameAlias(usersToNameAliases);
         BackendAPIWrappers.updateGroupConvMutedState(user,
                 muteConversationWithGroup, true);
     }
 
     public void UnarchiveConversationWithUser(String usersToNameAliases,
-                                              String archiveConversationWithUser) throws Exception {
+            String archiveConversationWithUser) throws Exception {
         ClientUser user = usrMgr.findUserByNameOrNameAlias(usersToNameAliases);
         ClientUser archivedUser = usrMgr
                 .findUserByNameOrNameAlias(archiveConversationWithUser);
@@ -275,7 +275,7 @@ public final class CommonSteps {
     }
 
     public void UnarchiveConversationWithGroup(String aUser,
-                                               String archiveConversationWithGroup) throws Exception {
+            String archiveConversationWithGroup) throws Exception {
         ClientUser user = usrMgr.findUserByNameOrNameAlias(aUser);
         final String conversationIDToArchive = BackendAPIWrappers
                 .getConversationIdByName(user, archiveConversationWithGroup);
@@ -289,13 +289,13 @@ public final class CommonSteps {
     }
 
     public void UserAddsRemoteDeviceToAccount(String userNameAlias,
-                                              String deviceName, String label) throws Exception {
+            String deviceName, String label) throws Exception {
         ClientUser user = usrMgr.findUserByNameOrNameAlias(userNameAlias);
         seBridge.addRemoteDeviceToAccount(user, deviceName, label);
     }
 
     public void UserPingedConversation(String pingFromUserNameAlias,
-                                       String dstConversationName) throws Exception {
+            String dstConversationName) throws Exception {
         ClientUser pingFromUser = usrMgr
                 .findUserByNameOrNameAlias(pingFromUserNameAlias);
         dstConversationName = usrMgr.replaceAliasesOccurences(
@@ -306,7 +306,7 @@ public final class CommonSteps {
     }
 
     public void UserPingedConversationOtr(String pingFromUserNameAlias,
-                                          String dstConversationName) throws Exception {
+            String dstConversationName) throws Exception {
         final ClientUser pingFromUser = usrMgr.findUserByNameOrNameAlias(pingFromUserNameAlias);
         dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
         final String convId = BackendAPIWrappers.getConversationIdByName(pingFromUser, dstConversationName);
@@ -314,7 +314,7 @@ public final class CommonSteps {
     }
 
     public void UserHotPingedConversationOtr(String pingFromUserNameAlias,
-                                             String dstConversationName) throws Exception {
+            String dstConversationName) throws Exception {
         final ClientUser pingFromUser = usrMgr.findUserByNameOrNameAlias(pingFromUserNameAlias);
         dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
         final String convId = BackendAPIWrappers.getConversationIdByName(pingFromUser, dstConversationName);
@@ -325,7 +325,7 @@ public final class CommonSteps {
     }
 
     public void UserSentMessageToUser(String msgFromUserNameAlias,
-                                      String dstUserNameAlias, String message) throws Exception {
+            String dstUserNameAlias, String message) throws Exception {
         ClientUser msgFromUser = usrMgr
                 .findUserByNameOrNameAlias(msgFromUserNameAlias);
         ClientUser msgToUser = usrMgr
@@ -334,7 +334,7 @@ public final class CommonSteps {
     }
 
     public void UserSentOtrMessageToUser(String msgFromUserNameAlias,
-                                         String dstUserNameAlias, String message) throws Exception {
+            String dstUserNameAlias, String message) throws Exception {
         ClientUser msgFromUser = usrMgr
                 .findUserByNameOrNameAlias(msgFromUserNameAlias);
         ClientUser msgToUser = usrMgr
@@ -344,7 +344,7 @@ public final class CommonSteps {
     }
 
     public void UserHotPingedConversation(String hotPingFromUserNameAlias,
-                                          String dstConversationName) throws Exception {
+            String dstConversationName) throws Exception {
         ClientUser hotPingFromUser = usrMgr
                 .findUserByNameOrNameAlias(hotPingFromUserNameAlias);
         dstConversationName = usrMgr.replaceAliasesOccurences(
@@ -355,7 +355,7 @@ public final class CommonSteps {
     }
 
     public void UserSentMessageToConversation(String userFromNameAlias,
-                                              String dstConversationName, String message) throws Exception {
+            String dstConversationName, String message) throws Exception {
         ClientUser userFrom = usrMgr
                 .findUserByNameOrNameAlias(userFromNameAlias);
         dstConversationName = usrMgr.replaceAliasesOccurences(
@@ -365,7 +365,7 @@ public final class CommonSteps {
     }
 
     public void UserSentOtrMessageToConversation(String userFromNameAlias,
-                                                 String dstConversationName, String message) throws Exception {
+            String dstConversationName, String message) throws Exception {
         ClientUser userFrom = usrMgr
                 .findUserByNameOrNameAlias(userFromNameAlias);
         dstConversationName = usrMgr.replaceAliasesOccurences(
@@ -377,7 +377,7 @@ public final class CommonSteps {
     }
 
     public void UserSentImageToConversation(String imageSenderUserNameAlias,
-                                            String imagePath, String dstConversationName, boolean isGroup)
+            String imagePath, String dstConversationName, boolean isGroup)
             throws Exception {
         ClientUser imageSender = usrMgr
                 .findUserByNameOrNameAlias(imageSenderUserNameAlias);
@@ -395,7 +395,7 @@ public final class CommonSteps {
     }
 
     public void UserSentImageToConversationOtr(String imageSenderUserNameAlias,
-                                               String imagePath, String dstConversationName, boolean isGroup)
+            String imagePath, String dstConversationName, boolean isGroup)
             throws Exception {
         ClientUser imageSender = usrMgr
                 .findUserByNameOrNameAlias(imageSenderUserNameAlias);
@@ -413,7 +413,7 @@ public final class CommonSteps {
     }
 
     public void IChangeUserAvatarPicture(String userNameAlias,
-                                         String picturePath) throws Exception {
+            String picturePath) throws Exception {
         final ClientUser dstUser = usrMgr
                 .findUserByNameOrNameAlias(userNameAlias);
         if (new File(picturePath).exists()) {
@@ -462,7 +462,7 @@ public final class CommonSteps {
     }
 
     public void WaitUntilContactIsNotFoundInSearch(String searchByNameAlias,
-                                                   String contactAlias, int timeoutSeconds) throws Exception {
+            String contactAlias, int timeoutSeconds) throws Exception {
         String query = usrMgr.replaceAliasesOccurences(contactAlias,
                 FindBy.NAME_ALIAS);
         query = usrMgr.replaceAliasesOccurences(query, FindBy.EMAIL_ALIAS);
@@ -472,7 +472,7 @@ public final class CommonSteps {
     }
 
     public void WaitUntilContactIsFoundInSearch(String searchByNameAlias,
-                                                String contactAlias) throws Exception {
+            String contactAlias) throws Exception {
         String query = usrMgr.replaceAliasesOccurences(contactAlias,
                 FindBy.NAME_ALIAS);
         query = usrMgr.replaceAliasesOccurences(query, FindBy.EMAIL_ALIAS);
@@ -489,7 +489,7 @@ public final class CommonSteps {
     }
 
     public void WaitUntilContactBlockStateInSearch(String searchByNameAlias,
-                                                   String contactAlias, boolean expectedState) throws Exception {
+            String contactAlias, boolean expectedState) throws Exception {
         String query = usrMgr.replaceAliasesOccurences(contactAlias,
                 FindBy.NAME_ALIAS);
         query = usrMgr.replaceAliasesOccurences(query, FindBy.EMAIL_ALIAS);
@@ -499,7 +499,7 @@ public final class CommonSteps {
     }
 
     public void UserXAddedContactsToGroupChat(String userAsNameAlias,
-                                              String contactsToAddNameAliases, String chatName) throws Exception {
+            String contactsToAddNameAliases, String chatName) throws Exception {
         final ClientUser userAs = usrMgr
                 .findUserByNameOrNameAlias(userAsNameAlias);
         List<ClientUser> contactsToAdd = new ArrayList<ClientUser>();
@@ -512,7 +512,7 @@ public final class CommonSteps {
     }
 
     public void UserXRemoveContactFromGroupChat(String userAsNameAlias,
-                                                String contactToRemoveNameAlias, String chatName) throws Exception {
+            String contactToRemoveNameAlias, String chatName) throws Exception {
         final ClientUser userAs = usrMgr
                 .findUserByNameOrNameAlias(userAsNameAlias);
         final ClientUser userToRemove = usrMgr
@@ -578,7 +578,7 @@ public final class CommonSteps {
     }
 
     public void UserXHasContactsInAddressBook(String userAsNameAlias,
-                                              String contacts) throws Exception {
+            String contacts) throws Exception {
         StringBuilder sb = new StringBuilder();
         for (String contact : splitAliases(contacts)) {
             sb.append(usrMgr.findUserByNameOrNameAlias(contact).getEmail());
@@ -588,7 +588,7 @@ public final class CommonSteps {
     }
 
     public void UserXHasEmailsInAddressBook(String userAsNameAlias,
-                                            String emails) throws Exception {
+            String emails) throws Exception {
         final ClientUser userAs = usrMgr
                 .findUserByNameOrNameAlias(userAsNameAlias);
         BackendAPIWrappers.uploadAddressBookWithContacts(userAs, splitAliases(emails));
