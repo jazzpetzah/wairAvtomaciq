@@ -29,7 +29,8 @@
 		<resultsPath>/results/</resultsPath>
 		<backendType>staging</backendType>
 		<androidToolsPath>${project.basedir}/../tools/android</androidToolsPath>
-		<rcNotificationsRecepients>vova@wire.com,nick@wire.com</rcNotificationsRecepients>
+                <rcNotificationsRecepients>vova@wire.com,nick@wire.com</rcNotificationsRecepients>
+                <adbPrefix></adbPrefix>
 	</properties>
 
 	<dependencies>
