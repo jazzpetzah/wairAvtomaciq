@@ -285,7 +285,7 @@ class IOSSimulator(BaseNodeVerifier):
                 client.exec_command('/usr/bin/open -a {}'.format(AUTORUN_APPIUM_APP), timeout=10)
                 sys.stderr.write('Adjusting simulator scale...')
                 scale_factor = 4
-                if simulator_name.lower.find('iphone') >= 0 and simulator_name.lower.find('plus') < 0:
+                if simulator_name.lower().find('iphone') >= 0 and simulator_name.lower().find('plus') < 0:
                     scale_factor = 3
                 self._adjust_simulator_size(client, scale_factor)
             return result
