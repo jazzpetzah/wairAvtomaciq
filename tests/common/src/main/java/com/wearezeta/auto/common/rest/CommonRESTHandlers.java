@@ -22,7 +22,7 @@ public final class CommonRESTHandlers {
     }
 
     public CommonRESTHandlers(RESTResponseHandler responseHandler,
-                              int maxRetries) {
+            int maxRetries) {
         this.responseHandler = responseHandler;
         this.maxRetries = maxRetries;
     }
@@ -52,15 +52,15 @@ public final class CommonRESTHandlers {
     }
 
     public <T> T httpPost(Builder webResource, Object entity,
-                          Class<T> responseEntityType, int[] acceptableResponseCodes)
+            Class<T> responseEntityType, int[] acceptableResponseCodes)
             throws RESTError {
         return httpPost(webResource, MediaType.APPLICATION_JSON, entity,
                 responseEntityType, acceptableResponseCodes);
     }
 
     public <T> T httpPost(Builder webResource, String contentType,
-                          Object entity, Class<T> responseEntityType,
-                          int[] acceptableResponseCodes) throws RESTError {
+            Object entity, Class<T> responseEntityType,
+            int[] acceptableResponseCodes) throws RESTError {
         log.debug("POST REQUEST...");
         log.debug(String.format(" >>> Input data: %s", formatLogRecord(entity)));
         Response response = null;
@@ -82,9 +82,8 @@ public final class CommonRESTHandlers {
             log.debug(String.format(" >>> Response: %s",
                     formatLogRecord(responseEntity)));
             this.responseHandler.verifyRequestResult(response.getStatus(),
-                    acceptableResponseCodes);
-        } catch (ProcessingException | IllegalStateException
-                | NullPointerException e) {
+                    acceptableResponseCodes, formatLogRecord(responseEntity));
+        } catch (ProcessingException | IllegalStateException | NullPointerException e) {
             responseEntity = null;
             log.warn(e.getMessage());
 
@@ -94,9 +93,8 @@ public final class CommonRESTHandlers {
                     log.debug(String.format(" >>> Response: %s",
                             formatLogRecord(responseString)));
                     this.responseHandler.verifyRequestResult(
-                            response.getStatus(), acceptableResponseCodes);
-                } catch (ProcessingException | IllegalStateException
-                        | NullPointerException ex) {
+                            response.getStatus(), acceptableResponseCodes, formatLogRecord(responseString));
+                } catch (ProcessingException | IllegalStateException | NullPointerException ex) {
                     log.warn(ex.getMessage());
                 }
             }
@@ -105,7 +103,7 @@ public final class CommonRESTHandlers {
     }
 
     public String httpPost(Builder webResource, Object entity,
-                           int[] acceptableResponseCodes) throws RESTError {
+            int[] acceptableResponseCodes) throws RESTError {
         String returnString = httpPost(webResource, entity, String.class,
                 acceptableResponseCodes);
         returnString = returnString == null ? "" : returnString;
@@ -113,7 +111,7 @@ public final class CommonRESTHandlers {
     }
 
     public String httpPost(Builder webResource, Object entity,
-                           String contentType, int[] acceptableResponseCodes) throws RESTError {
+            String contentType, int[] acceptableResponseCodes) throws RESTError {
         String returnString = httpPost(webResource, contentType, entity,
                 String.class, acceptableResponseCodes);
         returnString = returnString == null ? "" : returnString;
@@ -121,7 +119,7 @@ public final class CommonRESTHandlers {
     }
 
     public <T> T httpPut(Builder webResource, Object entity,
-                         Class<T> responseEntityType, int[] acceptableResponseCodes)
+            Class<T> responseEntityType, int[] acceptableResponseCodes)
             throws RESTError {
         log.debug("PUT REQUEST...");
         log.debug(String.format(" >>> Input data: %s", formatLogRecord(entity)));
@@ -145,9 +143,8 @@ public final class CommonRESTHandlers {
             log.debug(String.format(" >>> Response: %s",
                     formatLogRecord(responseEntity)));
             this.responseHandler.verifyRequestResult(response.getStatus(),
-                    acceptableResponseCodes);
-        } catch (ProcessingException | IllegalStateException
-                | NullPointerException e) {
+                    acceptableResponseCodes, formatLogRecord(responseEntity));
+        } catch (ProcessingException | IllegalStateException | NullPointerException e) {
             responseEntity = null;
             log.warn(e.getMessage());
             if (!"java.lang.String".equals(responseEntityType.getName())) {
@@ -156,9 +153,8 @@ public final class CommonRESTHandlers {
                     log.debug(String.format(" >>> Response: %s",
                             formatLogRecord(responseString)));
                     this.responseHandler.verifyRequestResult(
-                            response.getStatus(), acceptableResponseCodes);
-                } catch (ProcessingException | IllegalStateException
-                        | NullPointerException ex) {
+                            response.getStatus(), acceptableResponseCodes, formatLogRecord(responseString));
+                } catch (ProcessingException | IllegalStateException | NullPointerException ex) {
                     log.warn(ex.getMessage());
                 }
             }
@@ -167,7 +163,7 @@ public final class CommonRESTHandlers {
     }
 
     public String httpPut(Builder webResource, Object entity,
-                          int[] acceptableResponseCodes) throws RESTError {
+            int[] acceptableResponseCodes) throws RESTError {
         String returnString = httpPut(webResource, entity, String.class,
                 acceptableResponseCodes);
         returnString = returnString == null ? "" : returnString;
@@ -175,7 +171,7 @@ public final class CommonRESTHandlers {
     }
 
     public <T> T httpDelete(Builder webResource, Optional<Object> entity, Class<T> responseEntityType,
-                            int[] acceptableResponseCodes) throws RESTError {
+            int[] acceptableResponseCodes) throws RESTError {
         log.debug("DELETE REQUEST...");
         Response response = null;
         int tryNum = 0;
@@ -201,9 +197,8 @@ public final class CommonRESTHandlers {
             log.debug(String.format(" >>> Response: %s",
                     formatLogRecord(responseEntity)));
             this.responseHandler.verifyRequestResult(response.getStatus(),
-                    acceptableResponseCodes);
-        } catch (ProcessingException | IllegalStateException
-                | NullPointerException e) {
+                    acceptableResponseCodes, formatLogRecord(responseEntity));
+        } catch (ProcessingException | IllegalStateException | NullPointerException e) {
             responseEntity = null;
             log.warn(e.getMessage());
             if (!"java.lang.String".equals(responseEntityType.getName())) {
@@ -212,16 +207,14 @@ public final class CommonRESTHandlers {
                     log.debug(String.format(" >>> Response: %s",
                             formatLogRecord(responseString)));
                     this.responseHandler.verifyRequestResult(
-                            response.getStatus(), acceptableResponseCodes);
-                } catch (ProcessingException | IllegalStateException
-                        | NullPointerException ex) {
+                            response.getStatus(), acceptableResponseCodes, formatLogRecord(responseString));
+                } catch (ProcessingException | IllegalStateException | NullPointerException ex) {
                     log.warn(ex.getMessage());
                 }
             }
         }
         return responseEntity;
     }
-
 
     public String httpDelete(Builder webResource, Object entity, int[] acceptableResponseCodes)
             throws RESTError {
@@ -240,7 +233,7 @@ public final class CommonRESTHandlers {
     }
 
     public <T> T httpGet(Builder webResource,
-                         GenericType<T> responseEntityType, int[] acceptableResponseCodes)
+            GenericType<T> responseEntityType, int[] acceptableResponseCodes)
             throws RESTError {
         log.debug("GET REQUEST...");
         Response response = null;
@@ -261,9 +254,8 @@ public final class CommonRESTHandlers {
             log.debug(String.format(" >>> Response: %s",
                     formatLogRecord(responseEntity)));
             this.responseHandler.verifyRequestResult(response.getStatus(),
-                    acceptableResponseCodes);
-        } catch (ProcessingException | IllegalStateException
-                | NullPointerException e) {
+                    acceptableResponseCodes, formatLogRecord(responseEntity));
+        } catch (ProcessingException | IllegalStateException | NullPointerException e) {
             responseEntity = null;
             log.warn(e.getMessage());
             if (!"java.lang.String".equals(responseEntityType.getRawType()
@@ -273,9 +265,8 @@ public final class CommonRESTHandlers {
                     log.debug(String.format(" >>> Response: %s",
                             formatLogRecord(responseString)));
                     this.responseHandler.verifyRequestResult(
-                            response.getStatus(), acceptableResponseCodes);
-                } catch (ProcessingException | IllegalStateException
-                        | NullPointerException ex) {
+                            response.getStatus(), acceptableResponseCodes, formatLogRecord(responseString));
+                } catch (ProcessingException | IllegalStateException | NullPointerException ex) {
                     log.warn(ex.getMessage());
                 }
             }
