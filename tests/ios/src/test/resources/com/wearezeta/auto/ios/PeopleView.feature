@@ -144,10 +144,14 @@ Feature: People View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    #And I swipe up on group chat page
     And I open group conversation details
-    And I tap on <GroupCreator> and check email visible and name
-    And I tap on <NonConnectedContact> and check email invisible and name
+    And I select contact <GroupCreator>
+    And I verify username <GroupCreator> on Other User Profile page is displayed and correct
+    And I verify user email for <GroupCreator> on Other User Profile page is correct and displayed
+    And I click close user profile page button
+    And I select contact <NonConnectedContact>
+    And I verify username <NonConnectedContact> on Other User Profile page is displayed and correct
+    Then I verify email for user <NonConnectedContact> on Other User Profile page is not displayed
 
     Examples:
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |

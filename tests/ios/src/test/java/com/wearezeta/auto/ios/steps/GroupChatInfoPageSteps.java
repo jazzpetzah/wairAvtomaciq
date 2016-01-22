@@ -11,17 +11,17 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class GroupChatInfoPageSteps {
+
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-    private final IOSPagesCollection pagesCollecton = IOSPagesCollection
-            .getInstance();
+    private final IOSPagesCollection pagesCollecton = IOSPagesCollection.getInstance();
 
     private GroupChatInfoPage getGroupChatInfoPage() throws Exception {
-        return pagesCollecton.getPage(GroupChatInfoPage.class);
+        return (GroupChatInfoPage) pagesCollecton.getPage(GroupChatInfoPage.class);
     }
 
     private ContactListPage getContactListPage() throws Exception {
-        return pagesCollecton.getPage(ContactListPage.class);
+        return (ContactListPage) pagesCollecton.getPage(ContactListPage.class);
     }
 
     @When("^I press leave converstation button$")
@@ -36,9 +36,9 @@ public class GroupChatInfoPageSteps {
 
     /**
      * Try to input empty conversation name
-     *
-     * @throws Exception
+     * 
      * @step. ^I try to change group conversation name to empty$
+     * @throws Exception
      */
     @When("^I try to change group conversation name to empty$")
     public void IChangeConversationNameToEmpty() throws Exception {
@@ -47,11 +47,10 @@ public class GroupChatInfoPageSteps {
 
     /**
      * Try to input conversations name with given length
-     *
+     * 
+     * @step. ^I try to change group conversation name to random with length (.*)$"
      * @param length length of the conversation's name
      * @throws Exception
-     * @step. ^I try to change group conversation name to random with length
-     * (.*)$"
      */
     @When("^I try to change group conversation name to random with length (.*)$")
     public void IChangeConversationNameToRandom(int length) throws Exception {
@@ -60,10 +59,8 @@ public class GroupChatInfoPageSteps {
     }
 
     @Then("^I see that the conversation name is correct with (.*) and (.*)$")
-    public void IVerifyCorrectConversationName(String contact1, String contact2)
-            throws Exception {
-        Assert.assertTrue(getGroupChatInfoPage().isCorrectConversationName(
-                contact1, contact2));
+    public void IVerifyCorrectConversationName(String contact1, String contact2) throws Exception {
+        Assert.assertTrue(getGroupChatInfoPage().isCorrectConversationName(contact1, contact2));
     }
 
     @When("I see correct conversation name (.*)")
@@ -71,17 +68,10 @@ public class GroupChatInfoPageSteps {
         Assert.assertEquals(getGroupChatInfoPage().getGroupChatName(), name);
     }
 
-    @When("^I tap on (.*) and check email (.*) and name$")
-    public void ITapAllParticipantsAndCheckElements(String user, String checkEmail) throws Exception {
-        // FIXME: rewrite this verification
-    }
-
     @When("^I see the correct participant (.*) avatar$")
-    public void IVerifyCorrectParticipantAvatars(String contact)
-            throws Exception {
+    public void IVerifyCorrectParticipantAvatars(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        Assert.assertTrue(getGroupChatInfoPage().areParticipantAvatarCorrect(
-                contact));
+        Assert.assertTrue(getGroupChatInfoPage().areParticipantAvatarCorrect(contact));
     }
 
     @When("^I exit the group info page$")
@@ -92,8 +82,7 @@ public class GroupChatInfoPageSteps {
 
     @When("^I see leave conversation alert$")
     public void ISeeLeaveConversationAlert() throws Throwable {
-        Assert.assertTrue(getGroupChatInfoPage()
-                .isLeaveConversationAlertVisible());
+        Assert.assertTrue(getGroupChatInfoPage().isLeaveConversationAlertVisible());
     }
 
     @Then("^I press leave$")
@@ -115,21 +104,17 @@ public class GroupChatInfoPageSteps {
     }
 
     @Then("^I see that conversation has (.*) people$")
-    public void ISeeThatConversationHasNumberPeople(int number)
-            throws Throwable {
-        int actualNumberOfPeople = getGroupChatInfoPage()
-                .numberOfPeopleInConversation();
-        Assert.assertTrue("Actual number of people in chat ("
-                + actualNumberOfPeople + ") is not the same as expected ("
-                + number + ")", actualNumberOfPeople == number);
+    public void ISeeThatConversationHasNumberPeople(int number) throws Throwable {
+        int actualNumberOfPeople = getGroupChatInfoPage().numberOfPeopleInConversation();
+        Assert.assertTrue("Actual number of people in chat (" + actualNumberOfPeople + ") is not the same as expected ("
+            + number + ")", actualNumberOfPeople == number);
     }
 
     @When("^I see (.*) participants avatars$")
     public void ISeeNumberParticipantsAvatars(int number) throws Throwable {
         int actual = getGroupChatInfoPage().numberOfParticipantsAvatars();
-        Assert.assertTrue("Actual number of avatars (" + actual
-                        + ") is not the same as expected (" + number + ")",
-                actual == number);
+        Assert.assertTrue("Actual number of avatars (" + actual + ") is not the same as expected (" + number + ")",
+            actual == number);
     }
 
     @When("I tap on add button on group chat info page")
@@ -139,13 +124,13 @@ public class GroupChatInfoPageSteps {
 
     /**
      * Click on continue button on share history warning dialog
-     *
-     * @throws Throwable
+     * 
      * @step. I click on Continue button on share history warning
+     * 
+     * @throws Throwable
      */
     @When("I click on Continue button on share history warning")
-    public void IClickOnContinueButtonInAddPeopleToGroupChatDialog()
-            throws Throwable {
+    public void IClickOnContinueButtonInAddPeopleToGroupChatDialog() throws Throwable {
         getGroupChatInfoPage().clickOnAddDialogContinueButton();
     }
 
@@ -164,16 +149,15 @@ public class GroupChatInfoPageSteps {
 
     /**
      * Verifies that contact is not presented on Group chat info page
-     *
+     * 
+     * @step. ^I see that (.*) is not present on group chat info page$
+     * 
      * @param contact username
      * @throws Exception
-     * @step. ^I see that (.*) is not present on group chat info page$
      */
     @Then("^I see that (.*) is not present on group chat info page$")
-    public void ISeeContactIsNotPresentOnGroupChatPage(String contact)
-            throws Exception {
+    public void ISeeContactIsNotPresentOnGroupChatPage(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        Assert.assertTrue(getGroupChatInfoPage().waitForContactToDisappear(
-                contact));
+        Assert.assertTrue(getGroupChatInfoPage().waitForContactToDisappear(contact));
     }
 }
