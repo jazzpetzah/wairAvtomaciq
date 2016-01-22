@@ -62,26 +62,6 @@ Feature: Sign In
       | Name      |
       | user1Name |
 
-  @C1136 @regression @rc @id2717
-  Scenario Outline: Verify first time phone sign in when email is not assigned
-    Given There is 1 user where <Name> is me with phone number only
-    Given I see sign in screen
-    Then I see country picker button on Sign in screen
-    When I enter phone number for user <Name>
-    Then I see verification code page
-    When I enter verification code for user <Name>
-    And I have entered login <Email>
-    And I start activation email monitoring
-    And I have entered password <Password>
-    When I click DONE keyboard button
-    Then I see email verification reminder
-    When I verify registration address
-    Then I see conversations list
-
-    Examples:
-      | Email      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
-
   @C1145 @staging @id3813 @noAcceptAlert
   Scenario Outline: Verify impossibility to login with the wrong code
     Given There is 1 user where <Name> is me
@@ -130,7 +110,6 @@ Feature: Sign In
     And I enter phone number for user <Name>
     And I see verification code page
     And I enter verification code for user <Name>
-    And I see set email/password suggesstion page
     And I have entered login <Email>
     And I start activation email monitoring
     And I have entered password <Password>
