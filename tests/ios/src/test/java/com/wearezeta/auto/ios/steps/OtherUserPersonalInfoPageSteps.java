@@ -13,7 +13,7 @@ public class OtherUserPersonalInfoPageSteps {
     private final IOSPagesCollection pagesCollecton = IOSPagesCollection.getInstance();
 
     private OtherUserPersonalInfoPage getOtherUserPersonalInfoPage() throws Exception {
-        return (OtherUserPersonalInfoPage) pagesCollecton.getPage(OtherUserPersonalInfoPage.class);
+        return pagesCollecton.getPage(OtherUserPersonalInfoPage.class);
     }
 
     @When("^I see (.*) user profile page$")
@@ -49,10 +49,9 @@ public class OtherUserPersonalInfoPageSteps {
 
     /**
      * Close other user personal info page by click on close button
-     * 
-     * @step. ^I click close user profile page button$
-     * 
+     *
      * @throws Exception
+     * @step. ^I click close user profile page button$
      */
     @When("^I click close user profile page button$")
     public void ICloseUserProfileForDialog() throws Exception {
@@ -61,9 +60,9 @@ public class OtherUserPersonalInfoPageSteps {
 
     /**
      * Opens the conversation details menu by clicking the according button
-     * 
-     * @step. ^I press conversation menu button$
+     *
      * @throws Exception
+     * @step. ^I press conversation menu button$
      */
     @When("^I press conversation menu button$")
     public void IPressConversationMenuButton() throws Exception {
@@ -72,9 +71,9 @@ public class OtherUserPersonalInfoPageSteps {
 
     /**
      * Presses the silence button in the conversation detail menu
-     * 
-     * @step. ^I press menu silence button$
+     *
      * @throws Exception
+     * @step. ^I press menu silence button$
      */
     @When("^I press menu silence button$")
     public void IPressMenuSilenceButton() throws Exception {
@@ -83,9 +82,9 @@ public class OtherUserPersonalInfoPageSteps {
 
     /**
      * Presses the notify button in the conversation detail menu
-     * 
-     * @step. ^I press menu notify button$
+     *
      * @throws Exception
+     * @step. ^I press menu notify button$
      */
     @When("^I press menu notify button$")
     public void IPressMenuNotifyButton() throws Exception {
@@ -94,9 +93,9 @@ public class OtherUserPersonalInfoPageSteps {
 
     /**
      * Open ellipsis menu in conversation details
-     * 
-     * @step. ^I open ellipsis menu$
+     *
      * @throws Exception
+     * @step. ^I open ellipsis menu$
      */
     @When("^I open ellipsis menu$")
     public void IOpenEllipsisMenu() throws Exception {
@@ -105,9 +104,9 @@ public class OtherUserPersonalInfoPageSteps {
 
     /**
      * Click archive menu button in ellipsis menu
-     * 
-     * @step. ^I click archive menu button$
+     *
      * @throws Exception
+     * @step. ^I click archive menu button$
      */
     @When("^I click archive menu button$")
     public void IClickArchiveMenu() throws Exception {
@@ -116,9 +115,9 @@ public class OtherUserPersonalInfoPageSteps {
 
     /**
      * Click delete menu button in ellipsis menu
-     * 
-     * @step. ^I click delete menu button$
+     *
      * @throws Exception
+     * @step. ^I click delete menu button$
      */
     @When("^I click delete menu button$")
     public void IClickDeleteMenu() throws Exception {
@@ -127,9 +126,9 @@ public class OtherUserPersonalInfoPageSteps {
 
     /**
      * Click delete to confirm conversation content deletion
-     * 
-     * @step. ^I confirm delete conversation content$
+     *
      * @throws Exception
+     * @step. ^I confirm delete conversation content$
      */
     @When("^I confirm delete conversation content$")
     public void IConfirmDelete() throws Exception {
@@ -138,10 +137,9 @@ public class OtherUserPersonalInfoPageSteps {
 
     /**
      * Select Also Leave option on Delete conversation dialog
-     * 
-     * @step. ^I select Also Leave option on Delete conversation dialog$
-     * 
+     *
      * @throws Exception
+     * @step. ^I select Also Leave option on Delete conversation dialog$
      */
     @When("^I select Also Leave option on Delete conversation dialog$")
     public void ISelectAlsoLeaveOptionOnDeleteDialog() throws Exception {
@@ -150,9 +148,9 @@ public class OtherUserPersonalInfoPageSteps {
 
     /**
      * Clicks on the Block button in the profile menu
-     * 
-     * @step. ^I press menu Block button$
+     *
      * @throws Throwable
+     * @step. ^I press menu Block button$
      */
     @When("^I press menu Block button$")
     public void IPressMenuBlockButton() throws Throwable {
@@ -161,9 +159,9 @@ public class OtherUserPersonalInfoPageSteps {
 
     /**
      * Confirms the blocking alert by clicking block
-     * 
-     * @step. ^I confirm blocking alert$
+     *
      * @throws Throwable
+     * @step. ^I confirm blocking alert$
      */
     @When("^I confirm blocking alert$")
     public void IConfirmBlockingAlert() throws Throwable {
@@ -172,10 +170,9 @@ public class OtherUserPersonalInfoPageSteps {
 
     /**
      * Click on cancel button
-     * 
-     * @step. I click Cancel button
-     * 
+     *
      * @throws Exception
+     * @step. I click Cancel button
      */
     @When("^I click Cancel button$")
     public void IClickCancelButton() throws Exception {
@@ -184,58 +181,49 @@ public class OtherUserPersonalInfoPageSteps {
 
     /**
      * Verify if conversation action menu is visible
-     * 
-     * @step. I see conversation action menu
-     * 
+     *
      * @throws Exception
+     * @step. I see conversation action menu
      */
     @When("^I see conversation action menu$")
     public void ISeeConversationActionMenu() throws Exception {
-        Assert.assertTrue("Conversation action menu is not visible", getOtherUserPersonalInfoPage().isActionMenuVisible());
+        Assert.assertTrue("Conversation action menu is not visible",
+                getOtherUserPersonalInfoPage().isActionMenuVisible());
     }
 
     /**
      * Verify user name on Other User Profile page
-     * 
-     * @step. ^I verify username (.*) on Other User Profile page is displayed and correct$
-     * 
+     *
      * @param user user name
      * @throws Exception
+     * @step. ^I verify username (.*) on Other User Profile page is displayed and correct$
      */
-    @When("^I verify username (.*) on Other User Profile page is displayed and correct$")
+    @When("^I verify username (.*) on Other User Profile page is displayed")
     public void IVerifyUserOtherUserProfilePage(String user) throws Exception {
         String username = usrMgr.findUserByNameOrNameAlias(user).getName();
-        Assert.assertTrue("Username is not correct or not displayed", getOtherUserPersonalInfoPage()
-            .isUserNameVisible(username));
-    }
-
-    /**
-     * Verify that user email on Other User Profile page is not displayed
-     * 
-     * @step.^I verify email for user (.*) on Other User Profile page is not displayed$
-     * 
-     * @param name username
-     * 
-     * @throws Exception
-     */
-    @When("^I verify email for user (.*) on Other User Profile page is not displayed$")
-    public void IVerifyUserEmailOnOtherUserProfilePageIsNotDisplayed(String name) throws Exception {
-        String email = usrMgr.findUserByNameOrNameAlias(name).getEmail();
-        Assert.assertTrue("Email is visible", getOtherUserPersonalInfoPage().userEmailIsNotDisplayed(email));
+        Assert.assertTrue(String.format("Use name '%s' is not visible", username),
+                getOtherUserPersonalInfoPage().isUserNameVisible(username));
     }
 
     /**
      * Verify that user email on Other User Profile page is displayed and correct
-     * 
-     * @step. ^I verify user email (.*) on Other User Profile page is correct and displayed$
-     * 
+     *
      * @param email user email
+     * @param shouldNotBVisible equals to null if the email should be visible
      * @throws Exception
+     * @step. ^I verify user email (.*) on Other User Profile page is correct and displayed$
      */
-    @When("^I verify user email for (.*) on Other User Profile page is correct and displayed$")
-    public void IVerifyUserEmailOnOtherUserProfilePageIsDisplayedAndCorrect(String name) throws Exception {
-        String email = usrMgr.findUserByNameOrNameAlias(name).getEmail();
-        Assert.assertTrue("Email is NOT displayed", getOtherUserPersonalInfoPage().isUserEmailVisible(email));
+    @When("^I verify user email for (.*) on Other User Profile page is (not )?displayed$")
+    public void IVerifyUserEmailOnOtherUserProfilePageIsDisplayedAndCorrect(String email,
+                                                                            String shouldNotBVisible) throws Exception {
+        email = usrMgr.findUserByNameOrNameAlias(email).getEmail();
+        if (shouldNotBVisible == null) {
+            Assert.assertTrue(String.format("Email '%s' is not visible", email),
+                    getOtherUserPersonalInfoPage().isUserEmailVisible(email));
+        } else {
+            Assert.assertTrue(String.format("Email '%s' is displayed, but should be hidden", email),
+                    getOtherUserPersonalInfoPage().isUserEmailNotVisible(email));
+        }
     }
 
 }

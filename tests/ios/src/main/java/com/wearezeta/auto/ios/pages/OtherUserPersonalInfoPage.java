@@ -16,7 +16,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     private static final By nameRemoveFromConversation = By.name("OtherUserMetaControllerRightButton");
 
-    private static final By nameComfirmRemoveButton = By.name("REMOVE");
+    private static final By nameConfirmRemoveButton = By.name("REMOVE");
 
     private static final By nameOtherUserAddContactToChatButton = By.name("OtherUserMetaControllerLeftButton");
 
@@ -33,11 +33,12 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     private static final By nameAlsoLeaveCheckerButton = By.name("ALSO LEAVE THE CONVERSATION");
 
-    private static final Function<String, String> xpathStrOtherPersonalInfoPageNameFieldByName = name -> String.format(
-        "%s/UIAStaticText[@name='%s']", xpathStrMainWindow, name);
+    private static final Function<String, String> xpathStrOtherPersonalInfoPageNameFieldByName = name ->
+            String.format("%s/UIAStaticText[@name='%s']", xpathStrMainWindow, name);
     
     private static final Function<String, String> xpathStrOtherPersonalInfoPageEmailFieldByEmail = name -> String.format(
-        "//UIAButton[@name='OtherUserProfileCloseButton']/following-sibling:: UIATextView[@name='%s']", name);
+        "//UIAButton[@name='OtherUserProfileCloseButton']/following-sibling:: UIATextView[@name='%s']",
+            name.toUpperCase());
 
     protected static final By xpathOtherPersonalInfoPageEmailField = By
         .xpath("//UIAButton[@name='OtherUserProfileCloseButton']/following-sibling:: UIATextView");
@@ -87,10 +88,6 @@ public class OtherUserPersonalInfoPage extends IOSPage {
         getElement(nameAlsoLeaveCheckerButton, "'Also Leave' checkbox is not present").click();
     }
 
-    public void leavePageToGroupInfoPage() throws Exception {
-        getElement(nameExitOtherUserPersonalInfoPageButton).click();
-    }
-
     public void clickCloseUserProfileButton() throws Exception {
         getElement(nameExitOtherUserPersonalInfoPageButton, "Close profile button is not visible").click();
     }
@@ -114,11 +111,11 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     }
 
     public boolean isRemoveFromConversationAlertVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameComfirmRemoveButton);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameConfirmRemoveButton);
     }
 
     public void confirmRemove() throws Exception {
-        getElement(nameComfirmRemoveButton).click();
+        getElement(nameConfirmRemoveButton).click();
     }
 
     public boolean isUserNameVisible(String name) throws Exception {
@@ -127,30 +124,16 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     }
     
     public boolean isUserEmailVisible(String email) throws Exception {
-        final By locator = By.xpath(xpathStrOtherPersonalInfoPageEmailFieldByEmail.apply(email.toUpperCase()));
+        final By locator = By.xpath(xpathStrOtherPersonalInfoPageEmailFieldByEmail.apply(email));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
     
-    public boolean userEmailIsNotDisplayed(String email) throws Exception {
+    public boolean isUserEmailNotVisible(String email) throws Exception {
         final By locator = By.xpath(xpathStrOtherPersonalInfoPageEmailFieldByEmail.apply(email));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public Optional<String> getEmailFieldValue(String email) throws Exception {
-        final By locator = By.xpath(xpathStrOtherPersonalInfoPageEmailFieldByEmail.apply(email));
-        final Optional<WebElement> emailField = getElementIfDisplayed(locator);
-        if (emailField.isPresent()) {
-            return Optional.of(emailField.get().getAttribute("value"));
-        } else {
-            return Optional.empty();
-        }
-    }
-
-    public boolean emailIsNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathOtherPersonalInfoPageEmailField);
-    }
-
-    public void clickOnStartDialogButton() throws Exception {
+     public void clickOnStartDialogButton() throws Exception {
         this.getDriver().tap(1, getElement(nameOtherUserAddContactToChatButton), 1);
     }
 
