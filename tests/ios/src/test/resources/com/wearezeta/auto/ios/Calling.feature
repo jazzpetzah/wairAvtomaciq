@@ -1,6 +1,6 @@
 Feature: Calling
 
-  @torun @C2079 @calling_basic @id1831
+  @C2079 @calling_basic @id1831
   Scenario Outline: Verify calling from missed call indicator in conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
