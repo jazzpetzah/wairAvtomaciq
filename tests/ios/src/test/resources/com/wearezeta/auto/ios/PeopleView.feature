@@ -144,14 +144,20 @@ Feature: People View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    #And I swipe up on group chat page
     And I open group conversation details
-    And I tap on <GroupCreator> and check email visible and name
-    And I tap on <NonConnectedContact> and check email invisible and name
+    And I select contact <GroupCreator>
+    And I see <GroupCreator> user profile page
+    And I verify username <GroupCreator> on Other User Profile page is correct
+    And I verify user email <GroupCreatorEmail> on Other User Profile page is correct and displayed
+    And I click close user profile page button
+    And I select contact <NonConnectedContact>
+    And I see <NonConnectedContact> user profile page
+    And I verify username <NonConnectedContact> on Other User Profile page is correct
+    Then I verify user email on Other User Profile page is not displayed
 
-    Examples:
-      | Name      | GroupCreator | NonConnectedContact | GroupChatName |
-      | user1Name | user2Name    | user3Name           | TESTCHAT      |
+    Examples: 
+      | Name      | GroupCreator | GroupCreatorEmail | NonConnectedContact | GroupChatName |
+      | user1Name | user2Name    | user2Email        | user3Name           | TESTCHAT      |
 
   @C988 @regression @id2174
   Scenario Outline: Verify you can start 1:1 conversation from a group conversation profile

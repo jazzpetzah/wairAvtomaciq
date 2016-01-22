@@ -27,16 +27,19 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     private static final By xpathDeleteConversationButton = By.xpath("//UIAButton[@name='DELETE' and @visible='true']");
 
-    private static final By xpathConfirmDeleteButton = By.xpath(
-            "//UIAButton[@name='CANCEL']/following-sibling::UIAButton[@name='DELETE']");
+    private static final By xpathConfirmDeleteButton = By
+        .xpath("//UIAButton[@name='CANCEL']/following-sibling::UIAButton[@name='DELETE']");
 
     private static final By nameAlsoLeaveCheckerButton = By.name("ALSO LEAVE THE CONVERSATION");
 
-    private static final Function<String, String> xpathStrOtherPersonalInfoPageNameFieldByName = name ->
-            String.format("%s/UIAStaticText[@name='%s']", xpathStrMainWindow, name);
+    private static final Function<String, String> xpathStrOtherPersonalInfoPageNameFieldByName = name -> String.format(
+        "%s/UIAStaticText[@name='%s']", xpathStrMainWindow, name);
 
-    protected static final By xpathOtherPersonalInfoPageEmailField = By.xpath(
-            xpathStrMainWindow + "/UIATextView[contains(@name, 'WIRE.COM')]");
+    private static final By xpathOtherUserPersonalInfoPageNameField = By
+        .xpath("//UIAButton[@name='OtherUserProfileCloseButton']/preceding-sibling:: UIAStaticText");
+
+    protected static final By xpathOtherPersonalInfoPageEmailField = By
+        .xpath("//UIAButton[@name='OtherUserProfileCloseButton']/following-sibling:: UIATextView");
 
     private static final By nameAddContactToChatButton = By.name("metaControllerLeftButton");
 
@@ -44,8 +47,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     private static final By nameConversationMenu = By.name("metaControllerRightButton");
 
-    private static final By xpathSilenceConversationButton =
-            By.xpath(xpathStrMainWindow + "/UIAButton[@name='SILENCE']");
+    private static final By xpathSilenceConversationButton = By.xpath(xpathStrMainWindow + "/UIAButton[@name='SILENCE']");
 
     private static final By nameUnsilenceConversationButton = By.name("NOTIFY");
 
@@ -53,11 +55,10 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     private static final By nameCancelButton = By.name("CANCEL");
 
-    private static final By xpathActionMenu = By.xpath(
-            "//UIAStaticText[following-sibling::UIAButton[@name='CANCEL'] and @visible='true']");
+    private static final By xpathActionMenu = By
+        .xpath("//UIAStaticText[following-sibling::UIAButton[@name='CANCEL'] and @visible='true']");
 
-    public OtherUserPersonalInfoPage(Future<ZetaIOSDriver> lazyDriver)
-            throws Exception {
+    public OtherUserPersonalInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
@@ -119,9 +120,8 @@ public class OtherUserPersonalInfoPage extends IOSPage {
         getElement(nameComfirmRemoveButton).click();
     }
 
-    public String getNameFieldValue(String user) throws Exception {
-        final By locator = By.xpath(xpathStrOtherPersonalInfoPageNameFieldByName.apply(user));
-        return getElement(locator).getAttribute("name");
+    public String getNameFieldValue() throws Exception {
+        return getElement(xpathOtherUserPersonalInfoPageNameField).getAttribute("value");
     }
 
     public Optional<String> getEmailFieldValue() throws Exception {
@@ -131,6 +131,18 @@ public class OtherUserPersonalInfoPage extends IOSPage {
         } else {
             return Optional.empty();
         }
+    }
+
+    public String getOtherUserEmailFieldValue() throws Exception {
+        return getElement(xpathOtherPersonalInfoPageEmailField).getAttribute("value").toLowerCase();
+    }
+
+    public boolean isEmailVisible() throws Exception {
+        return getEmailFieldValue().isPresent();
+    }
+
+    public boolean emailIsNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathOtherPersonalInfoPageEmailField);
     }
 
     public void clickOnStartDialogButton() throws Exception {

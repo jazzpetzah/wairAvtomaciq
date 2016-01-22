@@ -73,11 +73,6 @@ public class GroupChatInfoPageSteps {
 		Assert.assertEquals(getGroupChatInfoPage().getGroupChatName(), name);
 	}
 
-	@When("^I tap on (.*) and check email (.*) and name$")
-	public void ITapAllParticipantsAndCheckElements(String user, String checkEmail) throws Exception {
-		// FIXME: rewrite this verification
-	}
-
 	@When("^I see the correct participant (.*) avatar$")
 	public void IVerifyCorrectParticipantAvatars(String contact)
 			throws Exception {
