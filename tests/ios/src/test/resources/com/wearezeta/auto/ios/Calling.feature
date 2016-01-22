@@ -106,21 +106,23 @@ Feature: Calling
   Scenario Outline: Verify missed call indicator appearance (list)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
-    Given User <Name> change accent color to <Color>
+    Given User Myself removes his avatar picture
     Given I sign in using my email or phone number
     Given I see conversations list
-    When <Contact> calls me using <CallBackend>
-    And I wait for 5 seconds
+    When I remember the state of <Contact> conversation item
+    And <Contact> calls me using <CallBackend>
     And <Contact> stops all calls to me
-    Then I see missed call indicator in list for contact <Contact>
-    Given User <Contact> sends <Number> encrypted messages to user Myself
-    Then I see missed call indicator in list for contact <Contact>
-    Given User <Contact1> sends <Number> encrypted messages to user Myself
-    Then I see missed call indicator got moved down in list for contact <Contact>
+    Then I see the state of <Contact> conversation item is changed
+    When I remember the state of <Contact> conversation item
+    And User <Contact> sends <Number> encrypted messages to user Myself
+    Then I see the state of <Contact> conversation item is not changed
+    When I remember the state of <Contact> conversation item
+    And User <Contact1> sends <Number> encrypted messages to user Myself
+    Then I see the state of <Contact> conversation item is not changed
 
     Examples:
-      | Name      | Contact   | Contact1  | Number | Color           | CallBackend |
-      | user1Name | user2Name | user3Name | 2      | StrongLimeGreen | autocall    |
+      | Name      | Contact   | Contact1  | Number | CallBackend |
+      | user1Name | user2Name | user3Name | 2      | autocall    |
 
   @C2069 @calling_basic @id882
   Scenario Outline: In zeta call for more than 15 mins
@@ -211,9 +213,14 @@ Feature: Calling
   Scenario Outline: 3rd person tries to call me after I initiate a call to somebody
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
+    Given User Myself removes his avatar picture
     Given <Contact1> starts waiting instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
+    # This is to make sure that this convo is selected before to take a screenshot
+    And I tap on contact name <Contact1>
+    And I return to the chat list
+    And I remember the state of <Contact2> conversation item
     And I tap on contact name <Contact1>
     And I click plus button next to text input
     And I press call button
@@ -228,7 +235,7 @@ Feature: Calling
     And <Contact2> stops all calls to me
     And I end started call
     And I return to the chat list
-    And I see missed call indicator in list for contact <Contact2>
+    And I see the state of <Contact2> conversation item is changed
     And I tap on contact name <Contact2>
     Then I see missed call from contact <Contact2>
 

@@ -233,9 +233,9 @@ public class LoginPageSteps {
         // FIXME: iOS wants to reregister if login by phone
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
 //        if (CommonUtils.trueInPercents(BY_PHONE_NUMBER_LOGIN_PROBABILITY)) {
-        phoneLoginSequence(self.getPhoneNumber());
+//        phoneLoginSequence(self.getPhoneNumber());
 //        } else {
-//            emailLoginSequence(self.getEmail(), self.getPassword());
+        emailLoginSequence(self.getEmail(), self.getPassword());
 //        }
     }
 

@@ -1,7 +1,6 @@
 package com.wearezeta.auto.common;
 
-import java.awt.AlphaComposite;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
@@ -210,23 +209,20 @@ public class ImageUtil {
 
 	/**
 	 * Resizes image to the given ratio (use >1 to upscale, or <1 to downscale)
-	 * Upscale ratio is limited to 2; Downscale ratio is limited to 0.2;
 	 */
-	public static BufferedImage resizeImage(BufferedImage image,
-			float resizeRatio) throws IOException {
-		if (resizeRatio > 2)
-			resizeRatio = 2;
-		if (resizeRatio < 0.2f)
-			resizeRatio = 0.2f;
-		if (resizeRatio == 1)
+	public static BufferedImage resizeImage(BufferedImage image, float resizeRatio) throws IOException {
+		assert resizeRatio > 0 : "Resize ratio should be positive";
+		if ((int)resizeRatio == 1) {
 			return image;
+		}
 		int w = image.getWidth(), h = image.getHeight();
 		int scaledW = Math.round(w * resizeRatio);
 		int scaledH = Math.round(h * resizeRatio);
-		BufferedImage result = new BufferedImage(scaledW, scaledH,
-				BufferedImage.TYPE_INT_RGB);
-		Graphics2D g = result.createGraphics();
-		g.drawImage(image, 0, 0, scaledW, scaledH, null);
+		BufferedImage result = new BufferedImage(scaledW, scaledH, BufferedImage.TYPE_INT_RGB);
+		Graphics2D g2d = result.createGraphics();
+		g2d.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING,
+				RenderingHints.VALUE_RENDER_QUALITY));
+		g2d.drawImage(image, 0, 0, scaledW, scaledH, null);
 		return result;
 	}
 
@@ -283,15 +279,5 @@ public class ImageUtil {
 
 	public static boolean isLandscape(BufferedImage bi) {
 		return (bi.getWidth() > bi.getHeight());
-	}
-
-	public static BufferedImage rotateCCW90Degrees(BufferedImage bi) {
-		int width = bi.getWidth();
-		int height = bi.getHeight();
-		BufferedImage biFlip = new BufferedImage(height, width, bi.getType());
-		for (int i = 0; i < width; i++)
-			for (int j = 0; j < height; j++)
-				biFlip.setRGB(j, width - 1 - i, bi.getRGB(i, j));
-		return biFlip;
 	}
 }

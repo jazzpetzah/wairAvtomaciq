@@ -77,17 +77,13 @@ public abstract class BasePage {
         return DriverUtils.takeFullScreenShot((ZetaDriver) this.getDriver());
     }
 
-    public Optional<BufferedImage> getElementScreenshot(WebElement element)
-            throws Exception {
-        Point elementLocation = element.getLocation();
-        Dimension elementSize = element.getSize();
-        int x = elementLocation.x;
-        int y = elementLocation.y;
-        int w = elementSize.width;
-        int h = elementSize.height;
+    public Optional<BufferedImage> getElementScreenshot(WebElement element) throws Exception {
         final Optional<BufferedImage> screenshot = takeScreenshot();
         if (screenshot.isPresent()) {
-            return Optional.of(screenshot.get().getSubimage(x, y, w, h));
+            final Point elementLocation = element.getLocation();
+            final Dimension elementSize = element.getSize();
+            return Optional.of(screenshot.get().getSubimage(
+                    elementLocation.x, elementLocation.y, elementSize.width, elementSize.height));
         } else {
             return Optional.empty();
         }

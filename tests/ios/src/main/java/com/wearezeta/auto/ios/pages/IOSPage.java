@@ -5,12 +5,12 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
 
@@ -133,27 +133,6 @@ public abstract class IOSPage extends BasePage {
 
     public void clickPopupPasteButton() throws Exception {
         getElement(nameEditingItemPaste, "Paste popup is not visible").click();
-    }
-
-    @Override
-    public Optional<BufferedImage> getElementScreenshot(WebElement element)
-            throws Exception {
-        Point elementLocation = element.getLocation();
-        Dimension elementSize = element.getSize();
-        int x = elementLocation.x * 2;
-        int y = elementLocation.y * 2;
-        int w = elementSize.width * 2;
-        Optional<BufferedImage> screenshot = takeScreenshot();
-        if (screenshot.isPresent()) {
-            if (x + w > screenshot.get().getWidth())
-                w = screenshot.get().getWidth() - x;
-            int h = elementSize.height * 2;
-            if (y + h > screenshot.get().getHeight())
-                h = screenshot.get().getHeight() - y;
-            return Optional.of(screenshot.get().getSubimage(x, y, w, h));
-        } else {
-            return Optional.empty();
-        }
     }
 
     public void inputStringFromKeyboard(String returnKey) throws Exception {
@@ -349,5 +328,23 @@ public abstract class IOSPage extends BasePage {
             log.debug(getDriver().getPageSource());
             throw e;
         }
+    }
+
+    /**
+     * We have to count the fact that Simulator window might be scaled
+     *
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Optional<BufferedImage> takeScreenshot() throws Exception {
+        final BufferedImage screen = DriverUtils.takeFullScreenShot(this.getDriver()).orElseThrow(
+                () -> new IllegalStateException("Appium has failed to take full screen shot"));
+        final float currentScreenHeight = getDriver().manage().window().getSize().getHeight();
+        final float realScreenHeight = screen.getHeight();
+        if ((int)currentScreenHeight != (int)realScreenHeight) {
+            return Optional.of(ImageUtil.resizeImage(screen, currentScreenHeight / realScreenHeight));
+        }
+        return Optional.of(screen);
     }
 }

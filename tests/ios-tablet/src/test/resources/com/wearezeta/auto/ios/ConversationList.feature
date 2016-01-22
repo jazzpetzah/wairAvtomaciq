@@ -266,40 +266,43 @@ Feature: Conversation List
   Scenario Outline: Verify missed call indicator appearance in conversation list [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
-    Given User <Name> change accent color to <Color>
+    Given User Myself removes his avatar picture
     Given I Sign in on tablet using my email
     And I see conversations list
+    When I remember the state of <Contact> conversation item
     When <Contact> calls me using <CallBackend>
-    And I wait for 5 seconds
     And <Contact> stops all calls to me
-    And <Contact> verifies that call status to me is changed to destroyed in 60 seconds
-    Then I see missed call indicator in list for contact <Contact>
-    Given User <Contact> sends <Number> encrypted messages to user Myself
-    Then I see missed call indicator in list for contact <Contact>
-    Given User <Contact1> sends <Number> encrypted messages to user Myself
-    Then I see missed call indicator got moved down in list for contact <Contact>
+    Then I see the state of <Contact> conversation item is changed
+    When I remember the state of <Contact> conversation item
+    And User <Contact> sends <Number> encrypted messages to user Myself
+    Then I see the state of <Contact> conversation item is not changed
+    When I remember the state of <Contact> conversation item
+    And User <Contact1> sends <Number> encrypted messages to user Myself
+    Then I see the state of <Contact> conversation item is not changed
 
     Examples:
-      | Name      | Contact   | Contact1  | Number | Color           | CallBackend |
-      | user1Name | user2Name | user3Name | 2      | StrongLimeGreen | autocall    |
+      | Name      | Contact   | Contact1  | Number | CallBackend |
+      | user1Name | user2Name | user3Name | 2      | autocall    |
 
   @C2539 @regression @id2995
   Scenario Outline: Verify missed call indicator appearance in conversation list [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
-    Given User <Name> change accent color to <Color>
+    Given User Myself removes his avatar picture
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see conversations list
-    When <Contact> calls me using <CallBackend>
+    When I remember the state of <Contact> conversation item
+    And <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
     And <Contact> stops all calls to me
-    And <Contact> verifies that call status to me is changed to DESTROYED in 60 seconds
-    Then I see missed call indicator in list for contact <Contact>
-    Given User <Contact> sends <Number> encrypted messages to user Myself
-    Then I see missed call indicator in list for contact <Contact>
-    Given User <Contact1> sends <Number> encrypted messages to user Myself
-    Then I see missed call indicator got moved down in list for contact <Contact>
+    Then I see the state of <Contact> conversation item is changed
+    When I remember the state of <Contact> conversation item
+    And User <Contact> sends <Number> encrypted messages to user Myself
+    Then I see the state of <Contact> conversation item is not changed
+    When I remember the state of <Contact> conversation item
+    And User <Contact1> sends <Number> encrypted messages to user Myself
+    Then I see the state of <Contact> conversation item is not changed
 
     Examples:
       | Name      | Contact   | Contact1  | Number | Color           | CallBackend |

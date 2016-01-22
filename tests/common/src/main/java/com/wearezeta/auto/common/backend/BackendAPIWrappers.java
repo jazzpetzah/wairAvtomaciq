@@ -781,31 +781,36 @@ public final class BackendAPIWrappers {
                 assetId);
     }
 
-    public static void updateUserPicture(ClientUser user, String picturePath)
-            throws Exception {
+    public static void updateUserPicture(ClientUser user, String picturePath) throws Exception {
         tryLoginByUser(user);
         final String convId = user.getId();
-        final byte[] srcImageAsByteArray = Files.readAllBytes(Paths
-                .get(picturePath));
+        if (picturePath == null) {
+            // This will delete self picture
+            BackendREST.updateSelfInfo(generateAuthToken(user), null, new HashMap<>(), null);
+        } else {
+            final byte[] srcImageAsByteArray = Files.readAllBytes(Paths
+                    .get(picturePath));
 
-        ImageAssetData srcImgData = new ImageAssetData(convId,
-                srcImageAsByteArray, getImageMimeType(picturePath));
-        srcImgData.setIsPublic(true);
-        srcImgData.setCorrelationId(String.valueOf(UUID.randomUUID()));
-        srcImgData.setNonce(srcImgData.getCorrelationId());
-        ImageAssetProcessor imgProcessor = new SelfImageProcessor(srcImgData);
-        ImageAssetRequestBuilder reqBuilder = new ImageAssetRequestBuilder(
-                imgProcessor);
-        Map<JSONObject, AssetData> sentPictures = BackendREST.sendPicture(
-                generateAuthToken(user), convId, reqBuilder);
-        Map<String, AssetData> processedAssets = new LinkedHashMap<String, AssetData>();
-        for (Map.Entry<JSONObject, AssetData> entry : sentPictures.entrySet()) {
-            final String postedImageId = entry.getKey().getJSONObject("data")
-                    .getString("id");
-            processedAssets.put(postedImageId, entry.getValue());
+            ImageAssetData srcImgData = new ImageAssetData(convId,
+                    srcImageAsByteArray, getImageMimeType(picturePath));
+            srcImgData.setIsPublic(true);
+            srcImgData.setCorrelationId(String.valueOf(UUID.randomUUID()));
+            srcImgData.setNonce(srcImgData.getCorrelationId());
+            ImageAssetProcessor imgProcessor = new SelfImageProcessor(srcImgData);
+            ImageAssetRequestBuilder reqBuilder = new ImageAssetRequestBuilder(
+                    imgProcessor);
+            Map<JSONObject, AssetData> sentPictures = BackendREST.sendPicture(
+                    generateAuthToken(user), convId, reqBuilder);
+            Map<String, AssetData> processedAssets = new LinkedHashMap<String, AssetData>();
+            for (Map.Entry<JSONObject, AssetData> entry : sentPictures.entrySet()) {
+                final String postedImageId = entry.getKey().getJSONObject("data")
+                        .getString("id");
+                processedAssets.put(postedImageId, entry.getValue());
+            }
+            BackendREST.updateSelfInfo(generateAuthToken(user), null,
+                    processedAssets, null);
         }
-        BackendREST.updateSelfInfo(generateAuthToken(user), null,
-                processedAssets, null);
+
     }
 
     public static void updateUserName(ClientUser user, String newName)

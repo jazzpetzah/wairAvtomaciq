@@ -9,14 +9,10 @@ import java.util.stream.Collectors;
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.*;
 
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class ContactListPage extends IOSPage {
-    private static final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.70;
-    private static final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.80;
     private static final int CONV_SWIPE_TIME = 500;
 
     private static final By nameSelfButton = By.name("SelfButton");
@@ -201,68 +197,6 @@ public class ContactListPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, timeoutSeconds);
     }
 
-    public boolean isConversationSilenced(String conversation, boolean isSilenced) throws Exception {
-        String deviceType = CommonUtils.getDeviceName(this.getClass());
-        BufferedImage referenceImage = null;
-        WebElement element = findNameInContactList(conversation).orElseThrow(IllegalStateException::new);
-        BufferedImage silencedConversation = CommonUtils.getElementScreenshot(element,
-                this.getDriver(), CommonUtils.getDeviceName(this.getClass()))
-                .orElseThrow(IllegalStateException::new);
-        switch (deviceType) {
-            case "iPhone 6 Plus":
-                referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath() +
-                        (isSilenced ? "silenceiPhone6plus.png" : "verifyUnsilenceIphone6plus.png"));
-                break;
-            case "iPhone 6":
-                referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath() +
-                        (isSilenced ? "silenceiPhone6.png" : "verifyUnsilenceTestIphone6"));
-                break;
-            case "iPad Air":
-                if (isSilenced) {
-                    referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
-                            + "verifySilenceiPadAir_" + getOrientation().toString() + ".png");
-                } else {
-                    referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
-                            + "verifyUnsilenceTestiPadAir_" + getOrientation().toString() + ".png");
-                }
-                break;
-        }
-
-        double score = ImageUtil.getOverlapScore(silencedConversation,
-                referenceImage, 0);
-        return score > MIN_ACCEPTABLE_IMAGE_VALUE;
-    }
-
-    public boolean isConversationSilencedBefore(String conversation)
-            throws Exception {
-        String deviceType = CommonUtils.getDeviceName(this.getClass());
-        BufferedImage referenceImage;
-        WebElement element = findNameInContactList(conversation).orElseThrow(IllegalStateException::new);
-        BufferedImage silencedConversation = CommonUtils.getElementScreenshot(element,
-                this.getDriver(), CommonUtils.getDeviceName(this.getClass()))
-                .orElseThrow(IllegalStateException::new);
-        switch (deviceType) {
-            case "iPhone 6 Plus":
-                referenceImage = ImageUtil.readImageFromFile(IOSPage
-                        .getImagesPath() + "unsilenceTestiPhone6plus.png");
-                break;
-            case "iPhone 6":
-                referenceImage = ImageUtil.readImageFromFile(IOSPage
-                        .getImagesPath() + "unsilenceTestiPhone6.png");
-                break;
-            case "iPad Air":
-                referenceImage = ImageUtil.readImageFromFile(IOSPage
-                        .getImagesPath() + "unsilenceTestiPadAir.png");
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Unknown device type '%s'",
-                        deviceType));
-        }
-        double score = ImageUtil.getOverlapScore(silencedConversation,
-                referenceImage, 0);
-        return score > MIN_ACCEPTABLE_IMAGE_VALUE;
-    }
-
     private boolean isCancelActionButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameCancelButton);
     }
@@ -270,6 +204,14 @@ public class ContactListPage extends IOSPage {
     public void clickArchiveConversationButton() throws Exception {
         WebElement archiveButton = this.getDriver().findElement(xpathArchiveConversationButton);
         DriverUtils.tapByCoordinates(getDriver(), archiveButton);
+    }
+
+    public BufferedImage getConversationEntryScreenshot(String name) throws Exception {
+        final By locator = By.xpath(xpathStrConvoListEntryByName.apply(name));
+        final WebElement el = getElement(locator,
+                String.format("Conversation list entry '%s' is not visible", name));
+        return this.getElementScreenshot(el).orElseThrow(IllegalStateException::new);
+        // ImageIO.write(scr, "png", new File("/Users/elf/Desktop/screen_" + System.currentTimeMillis() + ".png"));
     }
 
     public BufferedImage getScreenshotFirstContact() throws Exception {
@@ -283,126 +225,12 @@ public class ContactListPage extends IOSPage {
                 .orElseThrow(IllegalStateException::new);
     }
 
-    public boolean missedCallIndicatorIsVisible(String conversation) throws Exception {
-        WebElement contact = findNameInContactList(conversation).orElseThrow(IllegalStateException::new);
-        BufferedImage missedCallIndicator = getElementScreenshot(contact).orElseThrow(
-                IllegalStateException::new).getSubimage(0, 0,
-                2 * contact.getSize().height, 2 * contact.getSize().height);
-        BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
-                + "missedCallIndicator.png");
-        double score = ImageUtil.getOverlapScore(referenceImage, missedCallIndicator,
-                ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-        return score > MIN_ACCEPTABLE_IMAGE_SCORE;
-    }
-
-    public boolean unreadMessageIndicatorIsVisible(int numberOfMessages, String conversation) throws Exception {
-        BufferedImage referenceImage = null;
-        WebElement contact = findNameInContactList(conversation).orElseThrow(IllegalStateException::new);
-        BufferedImage unreadMessageIndicator = getElementScreenshot(contact).orElseThrow(
-                IllegalStateException::new).getSubimage(0, 0,
-                2 * contact.getSize().height, 2 * contact.getSize().height);
-
-        if (numberOfMessages == 0) {
-            if (CommonUtils.getDeviceName(this.getClass()).equals("iPad Air")) {
-                if (getOrientation() == ScreenOrientation.LANDSCAPE) {
-                    referenceImage = ImageUtil.readImageFromFile(IOSPage
-                            .getImagesPath()
-                            + "unreadMessageIndicator0_iPad_landscape.png");
-                } else {
-                    referenceImage = ImageUtil.readImageFromFile(IOSPage
-                            .getImagesPath()
-                            + "unreadMessageIndicator0_iPad.png");
-                }
-
-            } else if (CommonUtils.getDeviceName(this.getClass()).equals(
-                    "iPhone 6")) {
-                referenceImage = ImageUtil.readImageFromFile(IOSPage
-                        .getImagesPath()
-                        + "unreadMessageIndicator0_iPhone6.png");
-            } else if (CommonUtils.getDeviceName(this.getClass()).equals(
-                    "iPhone 6 Plus")) {
-                referenceImage = ImageUtil.readImageFromFile(IOSPage
-                        .getImagesPath()
-                        + "unreadMessageIndicator0_iPhone6Plus.png");
-            }
-        } else if (numberOfMessages == 1) {
-            if (CommonUtils.getDeviceName(this.getClass()).equals("iPhone 6")) {
-                referenceImage = ImageUtil.readImageFromFile(IOSPage
-                        .getImagesPath()
-                        + "unreadMessageIndicator1_iPhone6.png");
-            } else if (CommonUtils.getDeviceName(this.getClass()).equals(
-                    "iPhone 6 Plus")) {
-                referenceImage = ImageUtil.readImageFromFile(IOSPage
-                        .getImagesPath()
-                        + "unreadMessageIndicator1_iPhone6Plus.png");
-            } else {
-                referenceImage = ImageUtil.readImageFromFile(IOSPage
-                        .getImagesPath() + "unreadMessageIndicator1.png");
-            }
-        } else if (numberOfMessages > 1 && numberOfMessages < 10) {
-            if (CommonUtils.getDeviceName(this.getClass()).equals("iPhone 6")) {
-                referenceImage = ImageUtil.readImageFromFile(IOSPage
-                        .getImagesPath()
-                        + "unreadMessageIndicator5_iPhone6.png");
-            } else if (CommonUtils.getDeviceName(this.getClass()).equals(
-                    "iPhone 6 Plus")) {
-                referenceImage = ImageUtil.readImageFromFile(IOSPage
-                        .getImagesPath()
-                        + "unreadMessageIndicator5_iPhone6Plus.png");
-            } else {
-                referenceImage = ImageUtil.readImageFromFile(IOSPage
-                        .getImagesPath() + "unreadMessageIndicator5.png");
-            }
-        } else if (numberOfMessages >= 10) {
-            if (CommonUtils.getDeviceName(this.getClass()).equals("iPhone 6")) {
-                referenceImage = ImageUtil.readImageFromFile(IOSPage
-                        .getImagesPath()
-                        + "unreadMessageIndicator10_iPhone6.png");
-            } else if (CommonUtils.getDeviceName(this.getClass()).equals(
-                    "iPhone 6 Plus")) {
-                referenceImage = ImageUtil.readImageFromFile(IOSPage
-                        .getImagesPath()
-                        + "unreadMessageIndicator10_iPhone6Plus.png");
-            } else {
-                referenceImage = ImageUtil.readImageFromFile(IOSPage
-                        .getImagesPath() + "unreadMessageIndicator10.png");
-            }
-        }
-
-        double score = ImageUtil.getOverlapScore(referenceImage,
-                unreadMessageIndicator,
-                ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-        return score > MIN_ACCEPTABLE_IMAGE_VALUE;
-    }
-
     public boolean isMuteCallButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameMuteCallButton);
     }
 
     public void clickMuteCallButton() throws Exception {
         getElement(nameMuteCallButton).click();
-    }
-
-    public boolean isPauseButtonVisible() throws Exception {
-        BufferedImage pauseMediaButtonIcon = getElementScreenshot(getElement(nameMediaCellPlayButton))
-                .orElseThrow(IllegalStateException::new);
-        BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
-                + "pauseMediaButtonIcon.png");
-
-        double score = ImageUtil.getOverlapScore(referenceImage, pauseMediaButtonIcon,
-                ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-        return score > MIN_ACCEPTABLE_IMAGE_SCORE;
-    }
-
-    public boolean isPlayButtonVisible() throws Exception {
-        BufferedImage playMediaButtonIcon = getElementScreenshot(getElement(nameMediaCellPlayButton))
-                .orElseThrow(IllegalStateException::new);
-        BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
-                + "playMediaButtonIcon.png");
-
-        double score = ImageUtil.getOverlapScore(referenceImage, playMediaButtonIcon,
-                ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-        return score > MIN_ACCEPTABLE_IMAGE_SCORE;
     }
 
     public boolean isActionMenuVisibleForConversation(String conversation) throws Exception {
