@@ -58,3 +58,24 @@ Feature: E2EE
     Examples:
       | Name      | Contact   | ImageName   |
       | user1Name | user2Name | testing.jpg |
+
+  @C3242 @staging
+  Scenario Outline: Verify you can receive encrypted and non-encrypted images in group chat
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When User <Contact1> sends encrypted image <ImageName> to group conversation <GroupChatName>
+    And User <Contact1> sends image <ImageName> to group conversation <GroupChatName>
+    And I tap on contact name <GroupChatName>
+    And I scroll to the bottom of conversation view
+    Then I see non-encrypted image 1 time in the conversation view
+    And I see encrypted image 1 time in the conversation view
+
+    Examples:
+      | Name      | Contact1  | Contact2  | ImageName   | GroupChatName |
+      | user1Name | user2Name | user3Name | testing.jpg | GroupConvo    |
+
+  
