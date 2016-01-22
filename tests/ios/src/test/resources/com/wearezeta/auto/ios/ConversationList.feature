@@ -246,7 +246,7 @@ Feature: Conversation List
     And I see People picker page
     And I tap on Search input on People picker page
     And I search for user name <GroupChatName> and tap on it on People picker page
-    Then I see group chat page after deletion with users <Contact1>,<Contact2>
+    Then I see group chat page with users <Contact1>,<Contact2>
     And I see 0 conversation entries
 
     Examples:

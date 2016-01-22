@@ -1,7 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.Assert;
 
@@ -15,8 +15,7 @@ import cucumber.api.java.en.When;
 public class GroupChatPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-    private final IOSPagesCollection pagesCollecton = IOSPagesCollection
-            .getInstance();
+    private final IOSPagesCollection pagesCollecton = IOSPagesCollection.getInstance();
 
     private GroupChatPage getGroupChatPage() throws Exception {
         return pagesCollecton.getPage(GroupChatPage.class);
@@ -24,41 +23,17 @@ public class GroupChatPageSteps {
 
     @Then("^I see group chat page with users (.*)$")
     public void ThenISeeGroupChatPage(String participantNameAliases) throws Exception {
-        List<String> participantNames = new ArrayList<>();
-        for (String nameAlias : CommonSteps.splitAliases(participantNameAliases)) {
-            String name = usrMgr.findUserByNameOrNameAlias(nameAlias).getName();
-            if (name.contains(" ")) {
-                name = name.substring(0, name.indexOf(" "));
-            }
-            participantNames.add(name);
-        }
+        final List<String> participantNames = CommonSteps.splitAliases(participantNameAliases).stream().
+                map(x -> {
+                    if (x.contains(" ")) {
+                        return x.substring(0, x.indexOf(" "));
+                    } else {
+                        return x;
+                    }
+                }).collect(Collectors.toList());
         Assert.assertTrue(
-                String.format("Users %s are not visible in the group conversation", participantNameAliases),
-                getGroupChatPage().areRequiredContactsAddedToChat(participantNames));
-    }
-
-
-    /**
-     * Checks for start a conversation message after deletion of content
-     *
-     * @param participantNameAliases user names comma separated
-     * @throws Exception
-     * @step. ^I see group chat page after deletion with users (.*)$
-     */
-    @Then("^I see group chat page after deletion with users (.*)$")
-    public void ThenISeeGroupChatPageAfterDeletion(String participantNameAliases)
-            throws Exception {
-        List<String> participantNames = new ArrayList<>();
-        for (String nameAlias : CommonSteps.splitAliases(participantNameAliases)) {
-            String name = usrMgr.findUserByNameOrNameAlias(nameAlias).getName();
-            if (name.contains(" ")) {
-                name = name.substring(0, name.indexOf(" "));
-            }
-            participantNames.add(name);
-        }
-        Assert.assertTrue(
-                String.format("Users %s are not visible in the group conversation", participantNameAliases),
-                getGroupChatPage().areContactsAddedAfterDeleteContent(participantNames));
+                String.format("Users '%s' are not visible in the group conversation", participantNameAliases),
+                getGroupChatPage().isChatMessageContainsStringsExist(participantNames));
     }
 
     /**
@@ -73,20 +48,6 @@ public class GroupChatPageSteps {
         DialogPageSteps dialog = new DialogPageSteps();
         dialog.ISeeXConvoEntries(1);
         ThenISeeGroupChatPage(participantNameAliases);
-    }
-
-    @Then("^I see group chat page with 3 users (.*) (.*) (.*)$")
-    public void ThenISeeGroupChatPage3Users(String name1, String name2,
-                                            String name3) throws Throwable {
-        Assert.assertTrue("Conversation page is not shown", getGroupChatPage()
-                .isGroupChatPageVisible());
-        name1 = usrMgr.findUserByNameOrNameAlias(name1).getName();
-        name2 = usrMgr.findUserByNameOrNameAlias(name2).getName();
-        name3 = usrMgr.findUserByNameOrNameAlias(name3).getName();
-        Thread.sleep(1000);// still have to wait some time for animation to
-        // finish
-        Assert.assertTrue(getGroupChatPage().areRequired3ContactsAddedToChat(
-                name1, name2, name3));
     }
 
     /**
