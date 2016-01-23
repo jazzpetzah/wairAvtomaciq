@@ -227,7 +227,6 @@ Feature: Conversation View
     And I tap the conversation <Contact>
     And I see the conversation view
     When I tap the text input in the conversation view
-    And I tap Show Details button on conversation view page
     Then I do not see the Single user popover
     When I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
