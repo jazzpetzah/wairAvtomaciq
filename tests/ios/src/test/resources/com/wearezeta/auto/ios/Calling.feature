@@ -243,7 +243,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | user3Name | firefox     | autocall     | 120     |
 
-  @C2082 @calling_basic @id2646 @iOS9KnownIssue-NotOurBug
+  @C2082 @calling_basic @id2646 @iOS9KnownIssue-NotOurBug @torun
   Scenario Outline: Put app into background after initiating call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -261,7 +261,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | firefox     | 120     |
+      | user1Name | user2Name | firefox     | 30      |
 
   @C2077 @calling_basic @id933
   Scenario Outline: I want to accept a call through the incoming voice dialogue (Button)
@@ -280,7 +280,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | firefox     | autocall     | 120     |
+      | user1Name | user2Name | firefox     | autocall     | 30      |
 
   @C2074 @calling_basic @id913
   Scenario Outline: I want to end the call from the ongoing voice overlay
@@ -309,7 +309,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | firefox     | autocall     | 120     |
+      | user1Name | user2Name | firefox     | autocall     | 30      |
 
   @C2046 @regression @rc @IPv6 @id2682
   Scenario Outline: Verify accepting group call in foreground

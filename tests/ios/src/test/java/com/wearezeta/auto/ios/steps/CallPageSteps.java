@@ -45,12 +45,18 @@ public class CallPageSteps {
      */
     @When("^I see mute call, end call and speakers buttons$")
     public void ISeeCallingPageButtons() throws Exception {
-        Assert.assertTrue("End call button is not visible",
-                getStartedCallPage().isEndCallVisible());
-        Assert.assertTrue("Mute call button is not visible",
-                getStartedCallPage().isMuteCallVisible());
-        Assert.assertTrue("Speakers button is not visible",
-                getStartedCallPage().isSpeakersVisible());
+        try {
+            Assert.assertTrue("End call button is not visible",
+                    getStartedCallPage().isEndCallVisible());
+            Assert.assertTrue("Mute call button is not visible",
+                    getStartedCallPage().isMuteCallVisible());
+            Assert.assertTrue("Speakers button is not visible",
+                    getStartedCallPage().isSpeakersVisible());
+        } catch (AssertionError e) {
+            // For debug purposes
+            getStartedCallPage().printPageSource();
+            throw e;
+        }
     }
 
     /**

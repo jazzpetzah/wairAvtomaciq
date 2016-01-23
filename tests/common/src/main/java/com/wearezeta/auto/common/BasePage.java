@@ -169,4 +169,8 @@ public abstract class BasePage {
         final Constructor<?> ctor = newPageCls.getConstructor(Future.class);
         return newPageCls.cast(ctor.newInstance(this.getLazyDriver()));
     }
+
+    public void printPageSource() throws Exception {
+        log.debug(getDriver().getPageSource());
+    }
 }
