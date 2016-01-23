@@ -200,7 +200,7 @@ Feature: Search
       | user1Name | user2Name |
 
   @C439 @id3873 @regression
-  Scenario Outline: (AN-2894) Verify sending a photo with action button
+  Scenario Outline: Verify sending a photo with action button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -244,7 +244,7 @@ Feature: Search
       | user1Name | user2Name |
 
   @C442 @id3876 @regression
-  Scenario Outline: (AN-2894) Verify sharing a photo to a newly created group conversation with action button
+  Scenario Outline: Verify sharing a photo to a newly created group conversation with action button
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
@@ -290,7 +290,7 @@ Feature: Search
       | user1Name | user2Name |
 
   @C437 @id3870 @regression
-  Scenario Outline: (BUG AN-2894) Verify button Open is changed to Create after checking second person
+  Scenario Outline: Verify button Open is changed to Create after checking second person
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
@@ -360,7 +360,7 @@ Feature: Search
     Then I see call overlay
     Then I see calling overlay Big bar
     When I tap conversation details button
-    Then I see the correct number of participants in the title 3
+    Then I see the correct number of participants in the title 2
 
     Examples:
       | Name      | Contact1  | Contact2  |
