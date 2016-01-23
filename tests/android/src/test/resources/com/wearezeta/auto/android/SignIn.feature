@@ -27,7 +27,7 @@ Feature: Sign In
       | user1Name |
 
   @C337 @id209 @regression
-  Scenario Outline: (AN-3115) I can change sign in user
+  Scenario Outline: I can change sign in user
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -40,6 +40,7 @@ Feature: Sign In
     And I confirm sign out
     When User <Name2> is me
     And I sign in using my email or phone number
+    And I accept First Time overlay as soon as it is visible
     Then I see Contact list with no contacts
     When I tap on my avatar
     Then I see personal info page
