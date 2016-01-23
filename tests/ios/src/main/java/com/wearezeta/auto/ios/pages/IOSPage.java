@@ -2,12 +2,15 @@ package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
 import java.util.Optional;
+import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import com.wearezeta.auto.ios.tools.IRunnableWithException;
+import io.appium.java_client.ios.IOSDriver;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -15,9 +18,6 @@ import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.ios.tools.IOSKeyboard;
-import com.wearezeta.auto.common.BasePage;
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
@@ -241,17 +241,24 @@ public abstract class IOSPage extends BasePage {
                 throw new IllegalArgumentException(String.format("Unknown orientation '%s'",
                         orientation));
         }
-
     }
 
-    public void rotateDeviceToRefreshElementsTree() throws Exception {
-        if (getOrientation() == ScreenOrientation.PORTRAIT) {
-            rotateLandscape();
-            rotatePortrait();
-        } else {
-            rotatePortrait();
-            rotateLandscape();
+    public void workaroundUITreeRefreshIssue(IRunnableWithException f) throws Throwable {
+        try {
+            f.run();
+            return;
+        } catch (Throwable e) {
+            log.warn("UI tree seems to by corrupted. Trying to refresh...");
+            this.printPageSource();
+            if (getDriver().getOrientation() == ScreenOrientation.PORTRAIT) {
+                rotateLandscape();
+                rotatePortrait();
+            } else {
+                rotatePortrait();
+                rotateLandscape();
+            }
         }
+        f.run();
     }
 
     private void rotateLandscape() throws Exception {

@@ -4,6 +4,8 @@ import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.util.Date;
 
+import com.google.common.base.Throwables;
+import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
@@ -415,14 +417,15 @@ public class DialogPageSteps {
     }
 
     @Then("I see conversation view is scrolled back to the playing media link (.*)")
-    public void ISeeConversationViewIsScrolledBackToThePlayingMedia(String link)
-            throws Exception {
+    public void ISeeConversationViewIsScrolledBackToThePlayingMedia(String link) throws Throwable {
         Assert.assertEquals(link.toLowerCase(), getDialogPage()
                 .getLastMessageFromDialog().orElseThrow(() ->
                         new AssertionError("No messages are present in the conversation view")
                 ).toLowerCase());
-        Assert.assertTrue("View did not scroll back", getDialogPage()
-                .isMediaContainerVisible());
+        getDialogPage().workaroundUITreeRefreshIssue(
+                () -> Assert.assertTrue("View did not scroll back", getDialogPage()
+                        .isMediaContainerVisible())
+        );
     }
 
     @When("I tap and hold image to open full screen")

@@ -345,12 +345,7 @@ public class DialogPage extends IOSPage {
     }
 
     public boolean isMediaContainerVisible() throws Exception {
-        if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathMediaConversationCell)) {
-            return true;
-        } else {
-            rotateDeviceToRefreshElementsTree();
-            return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathMediaConversationCell);
-        }
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathMediaConversationCell);
     }
 
     public String getConnectMessageLabel() throws Exception {
