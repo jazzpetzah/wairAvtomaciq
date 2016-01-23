@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import com.wearezeta.auto.common.driver.DummyElement;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -190,6 +191,10 @@ public class DialogPage extends AndroidPage {
 
     public void tapPingBtn() throws Exception {
         getElement(idPing, "Ping button is not visible").click();
+    }
+
+    public void tapPingButtonIfVisible() throws Exception {
+        getElementIfDisplayed(idPing, 2).orElseGet(DummyElement::new).click();
     }
 
     public void tapSketchBtn() throws Exception {

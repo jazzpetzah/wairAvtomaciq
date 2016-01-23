@@ -299,7 +299,7 @@ public class ConversationViewPageSteps {
 	public void ITapPingButton(String shouldTapTwice) throws Exception {
 		getConversationViewPage().tapPingButton();
 		if (shouldTapTwice != null) {
-			getConversationViewPage().tapPingButton();
+			getConversationViewPage().tapPingButtonIfVisible();
 		}
 	}
 
