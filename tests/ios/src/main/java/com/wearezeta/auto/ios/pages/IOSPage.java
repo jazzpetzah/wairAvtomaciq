@@ -193,6 +193,7 @@ public abstract class IOSPage extends BasePage {
             CommonUtils.executeUIAppleScript(new String[]{
                     "tell application \"System Events\"",
                     "tell application \"Simulator\" to activate",
+                    "do shell script \"/bin/sleep 3\"",
                     "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
                     "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
                     "end tell"}).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
@@ -279,6 +280,7 @@ public abstract class IOSPage extends BasePage {
             CommonUtils.executeUIAppleScript(new String[]{
                     "tell application \"System Events\"",
                     "tell application \"Simulator\" to activate",
+                    "do shell script \"/bin/sleep 3\"",
                     "tell application \"System Events\" to keystroke \"l\" using {command down}",
                     "end tell"
             }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
@@ -287,6 +289,7 @@ public abstract class IOSPage extends BasePage {
             CommonUtils.executeUIAppleScript(new String[]{
                     "tell application \"System Events\"",
                     "tell application \"Simulator\" to activate",
+                    "do shell script \"/bin/sleep 3\"",
                     "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
                     "end tell"
             }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
