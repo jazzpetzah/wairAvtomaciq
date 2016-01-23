@@ -243,7 +243,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | user3Name | firefox     | autocall     | 120     |
 
-  @C2082 @calling_basic @id2646 @iOS9KnownIssue-NotOurBug @torun
+  @C2082 @calling_basic @id2646 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Put app into background after initiating call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

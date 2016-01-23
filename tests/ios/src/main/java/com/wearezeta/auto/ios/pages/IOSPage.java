@@ -2,7 +2,6 @@ package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
 import java.util.Optional;
-import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
@@ -10,7 +9,6 @@ import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import com.wearezeta.auto.ios.tools.IRunnableWithException;
-import io.appium.java_client.ios.IOSDriver;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -248,9 +246,9 @@ public abstract class IOSPage extends BasePage {
             f.run();
             return;
         } catch (Throwable e) {
-            log.warn("UI tree seems to by corrupted. Trying to refresh...");
+            log.warn("UI tree seems to be corrupted. Trying to refresh...");
             this.printPageSource();
-            if (getDriver().getOrientation() == ScreenOrientation.PORTRAIT) {
+            if (getOrientation() == ScreenOrientation.PORTRAIT) {
                 rotateLandscape();
                 rotatePortrait();
             } else {
@@ -269,7 +267,7 @@ public abstract class IOSPage extends BasePage {
         this.getDriver().rotate(ScreenOrientation.PORTRAIT);
     }
 
-    public ScreenOrientation getOrientation() throws Exception {
+    private ScreenOrientation getOrientation() throws Exception {
         return this.getDriver().getOrientation();
     }
 
