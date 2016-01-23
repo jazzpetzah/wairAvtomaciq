@@ -47,11 +47,11 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
         final Optional<WebElement> confirmButton = getElementIfDisplayed(DialogPage.xpathConfirmOKButton);
         if (confirmButton.isPresent()) {
             confirmButton.get().click();
-        } else {
-            // Workaround for unexpected orientation change issue
-            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getLensButtonLocator())) {
-                tapLensButton();
-            }
+        }
+        // Workaround for unexpected orientation change issue
+        final Optional<WebElement> lensButton = getElementIfDisplayed(getLensButtonLocator());
+        if (lensButton.isPresent()) {
+            lensButton.get().click();
             if (isGalleryModeActivated) {
                 tapGalleryButton();
                 isGalleryModeActivated = false;
