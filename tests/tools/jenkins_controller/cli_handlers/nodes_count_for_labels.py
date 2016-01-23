@@ -232,6 +232,7 @@ class IOSSimulator(BaseNodeVerifier):
         """#!/bin/bash
         /usr/bin/osascript -e "tell application \\"System Events\\"" \\
                     -e "tell application \\"Simulator\\" to activate" \\
+                    -e "do shell script \\"/bin/sleep 3\\"" \\
                     -e "tell application \\"System Events\\" to keystroke \\"{}\\" using {{command down}}" \\
                     -e "tell application \\"System Events\\" to keystroke \\"q\\" using {{command down}}" \\
                     -e "end tell"
