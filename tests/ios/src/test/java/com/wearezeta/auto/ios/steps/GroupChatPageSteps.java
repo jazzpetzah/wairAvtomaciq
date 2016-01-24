@@ -15,14 +15,16 @@ import cucumber.api.java.en.When;
 public class GroupChatPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-    private final IOSPagesCollection pagesCollecton = IOSPagesCollection.getInstance();
+    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
     private GroupChatPage getGroupChatPage() throws Exception {
-        return pagesCollecton.getPage(GroupChatPage.class);
+        return pagesCollection.getPage(GroupChatPage.class);
     }
 
     @Then("^I see group chat page with users (.*)$")
     public void ThenISeeGroupChatPage(String participantNameAliases) throws Exception {
+        participantNameAliases = usrMgr.replaceAliasesOccurences(participantNameAliases,
+                ClientUsersManager.FindBy.NAME_ALIAS);
         final List<String> participantNames = CommonSteps.splitAliases(participantNameAliases).stream().
                 map(x -> {
                     if (x.contains(" ")) {
@@ -75,11 +77,6 @@ public class GroupChatPageSteps {
     @Then("I see You Left message in group chat")
     public void ISeeYouLeftMessage() throws Exception {
         Assert.assertTrue(getGroupChatPage().isYouLeftMessageShown());
-    }
-
-    @When("^I return to the chat list$")
-    public void IReturnToChatList() throws Exception {
-        getGroupChatPage().returnToContactList();
     }
 
     @When("^I can see You Added (.*) message$")

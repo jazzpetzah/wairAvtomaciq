@@ -219,7 +219,7 @@ Feature: Calling
     Given I see conversations list
     # This is to make sure that this convo is selected before to take a screenshot
     And I tap on contact name <Contact1>
-    And I return to the chat list
+    And I navigate back to conversations list
     And I remember the state of <Contact2> conversation item
     And I tap on contact name <Contact1>
     And I click plus button next to text input
@@ -234,7 +234,7 @@ Feature: Calling
     And I see mute call, end call buttons
     And <Contact2> stops all calls to me
     And I end started call
-    And I return to the chat list
+    And I navigate back to conversations list
     And I see the state of <Contact2> conversation item is changed
     And I tap on contact name <Contact2>
     Then I see missed call from contact <Contact2>

@@ -439,15 +439,9 @@ public class DialogPageSteps {
         Thread.sleep(2000);
     }
 
-    @Then("^I navigate back to conversations view$")
-    public void INavigateToConversationsView() throws Exception {
-        for (int i = 0; i < 3; i++) {
-            getDialogPage().swipeRight(SWIPE_DURATION);
-            if (getContactListPage().isMyUserNameDisplayedFirstInContactList(
-                    usrMgr.getSelfUser().getName())) {
-                break;
-            }
-        }
+    @Then("^I navigate back to conversations list")
+    public void INavigateToConversationsList() throws Exception {
+        getDialogPage().returnToContactList();
     }
 
     @When("I try to send message with only spaces")

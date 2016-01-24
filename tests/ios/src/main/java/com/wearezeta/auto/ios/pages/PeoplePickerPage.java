@@ -168,7 +168,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void tapNumberOfTopConnections(int numberToTap) throws Exception {
-        for (int i = 1; i < numberToTap + 1; i++) {
+        for (int i = 1; i <= numberToTap; i++) {
             final By locator = By.xpath(xpathStrPeoplePickerTopConnectionsAvatarByIdx.apply(i));
             getElement(locator).click();
         }

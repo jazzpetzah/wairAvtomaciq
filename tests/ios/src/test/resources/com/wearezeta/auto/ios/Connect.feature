@@ -39,7 +39,7 @@ Feature: Connect
     And I see Hello connect message from user <Contact> on Pending request page
     And I click Connect button on Pending request page
     And I wait for 2 seconds
-    And I return to the chat list
+    And I navigate back to conversations list
     Then I see first item in contact list named <Contact>
 
     Examples: 
@@ -60,7 +60,7 @@ Feature: Connect
     And I click Connect button on connect to dialog
     And I see Connect dialog is closed
     And I exit the group info page
-    And I return to the chat list
+    And I navigate back to conversations list
     Then I see first item in contact list named <UnconnectedUser>
 
     Examples: 
@@ -80,14 +80,13 @@ Feature: Connect
     And I click on Pending request link in contact list
     And I see Pending request page
     And I click on Ignore button on Pending requests page <SentRequests> times
-    #And I return to the chat list
     And I dont see Pending request link in contact list
     And I don't see conversation with not connected user <Contact1>
     And I wait until <Contact1> exists in backend search results
     And I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
-    And I search for ignored user name <Contact1> and tap on it
+    And I search for user name <Contact1> and tap on it on People picker page
     Then I see Pending request page
 
     Examples: 
@@ -107,7 +106,7 @@ Feature: Connect
     And I click on Pending request link in contact list
     And I see Pending request page
     And I click on Connect button on Pending requests page <SentRequests> times
-    And I return to the chat list
+    And I navigate back to conversations list
     Then I dont see Pending request link in contact list
     And I see user <Contact1> in contact list
     And I see user <Contact2> in contact list
@@ -161,7 +160,7 @@ Feature: Connect
     And I tap on connected user <Contact> on People picker page
     And I unblock user
     Then I see 1 message in the dialog
-    And I return to the chat list
+    And I navigate back to conversations list
     Given User <Contact> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact>
     Then I see 1 default messages in the dialog
@@ -308,7 +307,7 @@ Feature: Connect
     And I open conversation details
     And I click Cancel request button
     And I confirm Cancel request by click on Yes button
-    And I return to the chat list
+    And I navigate back to conversations list
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
     And I see user <Contact1> found on People picker page
@@ -363,7 +362,7 @@ Feature: Connect
     And I click on start conversation button on pending profile page
     And I click on Ignore button on Pending requests page
     And I exit the group info page
-    And I return to the chat list
+    And I navigate back to conversations list
     Then I dont see Pending request link in contact list
 
     Examples: 
@@ -427,7 +426,7 @@ Feature: Connect
     And I tap on connected user <Contact> on People picker page
     And I unblock user
     Then I see dialog page
-    When I navigate back to conversations view
+    When I navigate back to conversations list
     Then I see user <Contact> in contact list
 
     Examples: 

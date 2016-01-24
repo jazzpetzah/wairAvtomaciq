@@ -126,7 +126,7 @@ public class DialogPage extends IOSPage {
     public static final Function<String, String> xpathStrConnectedToUserLabelByName = name ->
             String.format("//UIAStaticText[contains(@name, 'CONNECTED TO %s')]", name.toUpperCase());
 
-    private static final Function<String, String> xpathStartConversationEntryTeamplate = xpathExpr ->
+    private static final Function<String, String> xpathStartConversationEntryTemplate = xpathExpr ->
             String.format("//UIAStaticText[%s]", xpathExpr);
 
     public DialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -284,7 +284,7 @@ public class DialogPage extends IOSPage {
         final String xpathExpr = String.join(" and ", values.stream().
                 map(x -> String.format("contains(@name, '%s')", x.toUpperCase())).
                 collect(Collectors.toList()));
-        final By locator = By.xpath(xpathStartConversationEntryTeamplate.apply(xpathExpr));
+        final By locator = By.xpath(xpathStartConversationEntryTemplate.apply(xpathExpr));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 

@@ -165,8 +165,8 @@ public class PerformanceSteps {
 	public void WhenIStartTestCycleForNMinutes(int timeout, String fromContact)
 			throws Exception {
 		if (getDialogPage().waitForCursorInputVisible()) {
-			GroupChatPageSteps steps = new GroupChatPageSteps();
-			steps.IReturnToChatList();
+			DialogPageSteps steps = new DialogPageSteps();
+			steps.INavigateToConversationsList();
 		}
 		getContactListPage().waitForContactListToLoad();
 		final String destConvoName = usrMgr.findUserByNameOrNameAlias(

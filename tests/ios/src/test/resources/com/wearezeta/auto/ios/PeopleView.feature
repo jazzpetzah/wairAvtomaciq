@@ -128,7 +128,7 @@ Feature: People View
     Then I see correct conversation name <ChatName>
     And I exit the group info page
     And I see you renamed conversation to <ChatName> message shown in Group Chat
-    And I return to the chat list
+    And I navigate back to conversations list
     And I see in contact list group chat named <ChatName>
 
     Examples:
@@ -243,7 +243,7 @@ Feature: People View
     And I click on connected user <Contact3> avatar on People picker page
     And I click on Go button
     And I see group chat page with users <Contact1>,<Contact2>,<Contact3>
-    And I return to the chat list
+    And I navigate back to conversations list
     And I see conversations list
     And I see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
 
@@ -278,7 +278,7 @@ Feature: People View
     And I see <Contact1> user profile page
     And I click close user profile page button
     And I see dialog page
-    And I return to the chat list
+    And I navigate back to conversations list
     And I see conversations list
     And I don't see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
 
@@ -302,7 +302,7 @@ Feature: People View
     And I press menu silence button
     And I click close user profile page button
     And I see dialog page
-    And I return to the chat list
+    And I navigate back to conversations list
     And I see conversations list
     Then I see conversation <Contact> is silenced
 
@@ -327,7 +327,7 @@ Feature: People View
     And I press menu notify button
     And I click close user profile page button
     And I see dialog page
-    And I return to the chat list
+    And I navigate back to conversations list
     And I see conversations list
     Then I see conversation <Contact> is unsilenced
 
@@ -369,7 +369,7 @@ Feature: People View
     And I see <Contact1> user profile page
     And I unblock user
     Then I see dialog page
-    And I return to the chat list
+    And I navigate back to conversations list
     Then I see conversation <Contact1> is selected in list
 
     Examples:
@@ -493,7 +493,7 @@ Feature: People View
     And I press conversation menu button
     And I click delete menu button
     And I confirm delete conversation content
-    And I return to the chat list
+    And I navigate back to conversations list
     And I open search by taping on it
     And I fill in Search field user name <Contact1>
     And I see user <Contact1> found on People picker page

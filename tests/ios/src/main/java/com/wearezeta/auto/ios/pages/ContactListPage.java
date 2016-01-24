@@ -70,7 +70,8 @@ public class ContactListPage extends IOSPage {
 
     public boolean isMyUserNameDisplayedFirstInContactList(String name) throws Exception {
         final By locator = By.xpath(xpathStrConvoListEntryByIdx.apply(1));
-        return getElement(locator).getText().equals(name);
+        final Optional<WebElement> el = getElementIfDisplayed(locator);
+        return el.isPresent() && el.get().getText().equalsIgnoreCase(name);
     }
 
     public void openSearch() throws Exception {

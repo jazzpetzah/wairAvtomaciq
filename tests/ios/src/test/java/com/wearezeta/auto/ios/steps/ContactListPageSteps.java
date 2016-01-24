@@ -290,6 +290,8 @@ public class ContactListPageSteps {
 
     @When("I (don't )?see in contact list group chat with (.*)")
     public void ISeeInContactsGroupChatWith(String shouldNotSee, String participantNameAliases) throws Exception {
+        participantNameAliases = usrMgr.replaceAliasesOccurences(participantNameAliases,
+                ClientUsersManager.FindBy.NAME_ALIAS);
         final List<String> participantNames = CommonSteps.splitAliases(participantNameAliases);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("There is no conversation with '%s' in the list", participantNames),
