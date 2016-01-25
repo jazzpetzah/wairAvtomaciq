@@ -10,7 +10,6 @@ Feature: Calling
     And I wait for 5 seconds
     And <Contact> stops all calls to me
     And I tap on contact name <Contact>
-    And I see dialog page
     Then I see missed call from contact <Contact>
     And I click missed call button to call contact <Contact>
     And I see calling to contact <Contact> message
@@ -69,7 +68,7 @@ Feature: Calling
       | user1Name | user2Name | autocall    |
 
   @C2111 @calling_basic @regression @rc @IPv6 @id2093
-  Scenario Outline: Verify accepting incoming call
+  Scenario Outline: (ZIOS-5534)Verify accepting incoming call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -95,7 +94,6 @@ Feature: Calling
     And I wait for 5 seconds
     And <Contact> stops all calls to me
     And I tap on contact name <Contact>
-    And I see dialog page
     Then I see missed call from contact <Contact>
 
     Examples:
@@ -538,7 +536,6 @@ Feature: Calling
     And I see incoming group calling message
     And I wait for 45 seconds
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I see Join Call bar
     And I rejoin call by clicking Join button
     Then I see mute call, end call and speakers buttons
