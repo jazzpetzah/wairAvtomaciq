@@ -8,8 +8,7 @@ import cucumber.api.junit.Cucumber;
 @RunWith(Cucumber.class)
 @CucumberOptions(features = "src/test/resources", format = {
 		"html:target/report", "json:target/smoke_report.json",
-		"com.wearezeta.auto.ios.tools.IOSZetaFormatter" }, tags = { "~@mute",
-		"~@bug", "@smoke" })
+		"com.wearezeta.auto.common.ZetaFormatter" }, tags = { "~@mute", "~@bug", "@smoke" })
 public class SmokeRun {
 
 }

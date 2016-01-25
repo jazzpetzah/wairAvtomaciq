@@ -15,7 +15,7 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
 
-import com.wearezeta.auto.ios.tools.IOSKeyboard;
+import com.wearezeta.auto.ios.pages.keyboard.IOSKeyboard;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
@@ -55,6 +55,8 @@ public abstract class IOSPage extends BasePage {
 
     private static String imagesPath = "";
 
+    private IOSKeyboard onScreenKeyboard;
+
     protected long getDriverInitializationTimeout() {
         return IOS_DRIVER_INIT_TIMEOUT;
     }
@@ -64,6 +66,8 @@ public abstract class IOSPage extends BasePage {
 
         setImagesPath(CommonUtils.getSimulatorImagesPathFromConfig(this
                 .getClass()));
+
+        this.onScreenKeyboard = new IOSKeyboard(driver, getDriverInitializationTimeout());
     }
 
     @Override
@@ -134,8 +138,7 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void inputStringFromKeyboard(String str) throws Exception {
-        IOSKeyboard keyboard = IOSKeyboard.getInstance();
-        keyboard.typeString(str, this.getDriver());
+        this.onScreenKeyboard.typeString(str);
     }
 
     public boolean isKeyboardVisible() throws Exception {
@@ -341,7 +344,7 @@ public abstract class IOSPage extends BasePage {
     /**
      * We have to count the fact that Simulator window might be scaled
      *
-     * @return
+     * @return optionally, full screen shot as BufferedImage
      * @throws Exception
      */
     @Override

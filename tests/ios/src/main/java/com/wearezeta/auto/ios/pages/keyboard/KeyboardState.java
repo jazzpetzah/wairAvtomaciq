@@ -1,4 +1,4 @@
-package com.wearezeta.auto.ios.tools;
+package com.wearezeta.auto.ios.pages.keyboard;
 
 import java.util.regex.Pattern;
 
@@ -7,7 +7,7 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-public abstract class KeyboardState {
+abstract class KeyboardState {
     public static final String MORE_NUMBERS = "more, numbers";
     public static final String MORE_LETTERS = "more, letters";
     public static final String SHIFT = "shift";

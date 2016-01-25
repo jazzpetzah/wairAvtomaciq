@@ -7,8 +7,7 @@ import cucumber.api.junit.Cucumber;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(format = { "html:target/report",
-		"json:target/regression_report.json",
-		"com.wearezeta.auto.ios.tools.IOSZetaFormatter" }, tags = { "@regression" })
+		"json:target/regression_report.json", "com.wearezeta.auto.common.ZetaFormatter" }, tags = { "@regression" })
 public class RegressionRun {
 
 }

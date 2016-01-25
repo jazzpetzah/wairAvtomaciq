@@ -17,7 +17,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
-import com.wearezeta.auto.ios.tools.IOSKeyboard;
+import com.wearezeta.auto.ios.pages.keyboard.IOSKeyboard;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -606,7 +606,6 @@ public class CommonIOSSteps {
         }
 
         pagesCollecton.clearAllPages();
-        IOSKeyboard.dispose();
 
         if (getIsSimulatorFromConfig(getClass())) {
             IOSCommonUtils

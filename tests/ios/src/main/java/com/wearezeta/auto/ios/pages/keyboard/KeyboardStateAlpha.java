@@ -1,19 +1,19 @@
-package com.wearezeta.auto.ios.tools;
+package com.wearezeta.auto.ios.pages.keyboard;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import org.openqa.selenium.WebElement;
 
-public class KeyboardStateAlphaCaps extends KeyboardState {
+class KeyboardStateAlpha extends KeyboardState {
 
-	public KeyboardStateAlphaCaps(ZetaIOSDriver driver, WebElement keyboard) {
-        super(driver, keyboard);
-    }
+	public KeyboardStateAlpha(ZetaIOSDriver driver, WebElement keyboard) {
+		super(driver, keyboard);
+	}
 
 	@Override
 	public void switchTo(KeyboardState finalState) throws InterruptedException {
-		if (finalState instanceof KeyboardStateAlphaCaps) {
+		if (finalState instanceof KeyboardStateAlpha) {
 			return;
-		} else if (finalState instanceof KeyboardStateAlpha) {
+		} else if (finalState instanceof KeyboardStateAlphaCaps) {
 			tapSpecialKey(SHIFT);
 		} else if (finalState instanceof KeyboardStateNumbers) {
 			tapSpecialKey(MORE_NUMBERS);
@@ -27,12 +27,12 @@ public class KeyboardStateAlphaCaps extends KeyboardState {
 
 	@Override
 	public String getCharacterSetPattern() {
-		return "[A-Z\\s]";
+		return "[a-z\\s]";
 	}
 
 	@Override
 	public String getFirstCharacter() {
-		return "A";
+		return "a";
 	}
 
 }

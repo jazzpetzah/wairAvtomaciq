@@ -1,7 +1,11 @@
-package com.wearezeta.auto.ios.tools;
+package com.wearezeta.auto.ios.pages.keyboard;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -13,24 +17,13 @@ import org.openqa.selenium.WebElement;
 
 public class IOSKeyboard {
     private static final KeyboardState UNKNOWN_STATE = new KeyboardStateUnknown();
-    private List<KeyboardState> CACHED_STATES = new ArrayList<>();
     public static By xpathKeyboardLocator = By.xpath("//UIAKeyboard");
     private static final By xpathReturnKeyLocator = By.xpath("//*[@name='Go' or @name='Send']");
 
-    private List<KeyboardState> getStatesList(ZetaIOSDriver driver, WebElement keyboard) {
-        if (CACHED_STATES.size() == 0) {
-            CACHED_STATES.add(new KeyboardStateAlpha(driver, keyboard));
-            CACHED_STATES.add(new KeyboardStateAlphaCaps(driver, keyboard));
-            CACHED_STATES.add(new KeyboardStateNumbers(driver, keyboard));
-            CACHED_STATES.add(new KeyboardStateSpecial(driver, keyboard));
-        }
-        return CACHED_STATES;
-    }
-
-    private KeyboardState getFinalState(ZetaIOSDriver driver, WebElement keyboard, char c) {
+    private KeyboardState getFinalState(List<KeyboardState> statesList, char c) throws Exception {
         String messageChar = "" + c;
 
-        for (KeyboardState state : getStatesList(driver, keyboard)) {
+        for (KeyboardState state : statesList) {
             if (messageChar.matches(state.getCharacterSetPattern())) {
                 return state;
             }
@@ -38,31 +31,27 @@ public class IOSKeyboard {
         return UNKNOWN_STATE;
     }
 
-    protected IOSKeyboard() {
+    private Future<ZetaIOSDriver> lazyDriver;
+    private long driverTimeoutMilliseconds;
 
+    public IOSKeyboard(Future<ZetaIOSDriver> lazyDriver, long driverTimeoutMilliseconds) {
+        this.lazyDriver = lazyDriver;
+        this.driverTimeoutMilliseconds = driverTimeoutMilliseconds;
     }
 
-    private static IOSKeyboard instance = null;
-
-    public static synchronized IOSKeyboard getInstance() {
-        if (instance == null) {
-            instance = new IOSKeyboard();
-        }
-        return instance;
+    private ZetaIOSDriver getDriver() throws Exception {
+        return lazyDriver.get(driverTimeoutMilliseconds, TimeUnit.MILLISECONDS);
     }
 
-    public static synchronized void dispose() {
-        instance = null;
-    }
-
-    private KeyboardState getInitialState(ZetaIOSDriver driver, WebElement keyboard) {
+    private KeyboardState getInitialState(List<KeyboardState> statesList) throws Exception {
         final String emptyElement = "[object UIAElementNil]";
         final Function<String, String> getState = firstChar ->
-                String.format("target.frontMostApp().keyboard().keys().firstWithName(\"%s\").toString()", firstChar);
+                String.format("target.frontMostApp().keyboard().keys().firstWithName(\"%s\").toString()",
+                        firstChar);
 
-        for (KeyboardState state : getStatesList(driver, keyboard)) {
+        for (KeyboardState state : statesList) {
             final String firstStateChar = state.getFirstCharacter();
-            final String firstCharResponse = driver.executeScript(getState.apply(firstStateChar)).toString();
+            final String firstCharResponse = getDriver().executeScript(getState.apply(firstStateChar)).toString();
             if (!firstCharResponse.equals(emptyElement)) {
                 return state;
             }
@@ -71,16 +60,22 @@ public class IOSKeyboard {
         return UNKNOWN_STATE;
     }
 
-    public void typeString(String message, ZetaIOSDriver driver) throws Exception {
-        final WebElement keyboard = DriverUtils.verifyPresence(driver, xpathKeyboardLocator);
-        String messageChar;
+    public void typeString(String message) throws Exception {
+        final WebElement keyboard = DriverUtils.verifyPresence(getDriver(), xpathKeyboardLocator);
+        final List<KeyboardState> statesList = new ArrayList<>();
+        Collections.addAll(statesList,
+                new KeyboardStateAlpha(getDriver(), keyboard),
+                new KeyboardStateAlphaCaps(getDriver(), keyboard),
+                new KeyboardStateNumbers(getDriver(), keyboard),
+                new KeyboardStateSpecial(getDriver(), keyboard));
 
-        KeyboardState currentState = getInitialState(driver, keyboard);
+        String messageChar;
+        KeyboardState currentState = getInitialState(statesList);
         for (int i = 0; i < message.length(); i++) {
             final char c = message.charAt(i);
             messageChar = Character.toString(c);
 
-            KeyboardState finalState = getFinalState(driver, keyboard, c);
+            KeyboardState finalState = getFinalState(statesList, c);
             if (!currentState.equals(finalState)) {
                 currentState.switchTo(finalState);
                 currentState = finalState;

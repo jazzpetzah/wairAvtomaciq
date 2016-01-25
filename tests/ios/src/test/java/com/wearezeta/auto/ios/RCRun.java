@@ -9,8 +9,7 @@ import com.wearezeta.auto.common.rc.RCTestcase;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(format = { "html:target/report", "json:target/report.json",
-		"com.wearezeta.auto.ios.tools.IOSZetaFormatter",
-		"rerun:target/rerun.txt" }, tags = { RCTestcase.RC_TAG })
+		"com.wearezeta.auto.common.ZetaFormatter", "rerun:target/rerun.txt" }, tags = { RCTestcase.RC_TAG })
 public class RCRun {
 
 }
