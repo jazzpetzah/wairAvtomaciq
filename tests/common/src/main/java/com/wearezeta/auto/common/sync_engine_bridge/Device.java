@@ -95,4 +95,6 @@ class Device extends RemoteEntity implements IDevice {
     public void sendPing(String convId) throws Exception {
         askActor(this.ref(), new ActorMessage.Knock(new RConvId(convId)), PING_SENDING_TIMEOUT);
     }
+
+
 }

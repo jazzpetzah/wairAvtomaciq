@@ -24,7 +24,7 @@
 		<backendType>staging</backendType>
 		<!-- leave webappApplicationPath empty to get the default URL for the backendType -->
 		<webappApplicationPath></webappApplicationPath>
-		<webappImagesPath>img/</webappImagesPath>
+		<otrOnly>true</otrOnly>
 		<!-- The levels in descending order are: SEVERE (highest value), WARNING, 
 			INFO, CONFIG, FINE, FINER, FINEST (lowest value). In addition there is a 
 			level OFF that can be used to turn off logging, and a level ALL that can 

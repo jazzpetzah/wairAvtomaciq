@@ -15,10 +15,10 @@ webappProductionApplicationPath=https://app.wire.com/
 pictureResultsPath=${pictureResultsPath}
 driverTimeoutSeconds=${driverTimeoutSeconds}
 defaultEmail=${defaultEmail}
-webappImagesPath=${webappImagesPath}
 extendedLoggingLevel=${extendedLoggingLevel}
 #staging, production, edge
 backendType=${backendType}
+otrOnly=${otrOnly}
 rcNotificationsRecepients=${rcNotificationsRecepients}
 testrailUser=smoketester+webapp@wire.com
 testrailToken=tCzqgGGNbbgAHsm4bYOV-0NAyG4.RwaoX7dOwAvwM

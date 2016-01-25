@@ -27,11 +27,13 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
     private final ActorRef coordinatorActorRef;
 
     private final String backendType;
+    private final boolean otrOnly;
 
     public RemoteProcess(String processName, ActorRef coordinatorActorRef,
-                         FiniteDuration actorTimeout, String backendType) {
+                         FiniteDuration actorTimeout, String backendType, boolean otrOnly) {
         super(actorTimeout);
         this.backendType = backendType;
+        this.otrOnly = otrOnly;
         this.setName(processName);
         this.coordinatorActorRef = coordinatorActorRef;
         if (!coordinatorConnected()) {
@@ -69,7 +71,7 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
         final String serialized = Serialization
                 .serializedActorPath(coordinatorActorRef);
         final String[] cmd = {"java", "-jar", getActorsJarLocation(),
-                this.name(), serialized, backendType};
+                this.name(), serialized, backendType, String.valueOf(otrOnly)};
         LOG.info(String.format("Executing actors using the command line: %s", Arrays.toString(cmd)));
         final ProcessBuilder pb = new ProcessBuilder(cmd);
 
@@ -120,5 +122,10 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
             Throwables.propagate(e);
             return null;
         }
+    }
+
+    @Override
+    public boolean isOtrOnly() {
+        return this.otrOnly;
     }
 }
