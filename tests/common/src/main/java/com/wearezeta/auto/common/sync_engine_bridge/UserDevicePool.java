@@ -32,14 +32,14 @@ public class UserDevicePool {
     private static final Logger LOG = ZetaLogger.getLog(UserDevicePool.class
             .getSimpleName());
 
-    public UserDevicePool(String backendType) {
+    public UserDevicePool(String backendType, boolean otrOnly) {
         final Config config = ConfigFactory.load("actor_coordinator");
         final ActorSystem system = ActorSystem.create("CoordinatorSystem",
                 config);
         this.coordinatorActorRef = system.actorOf(
                 Props.create(CoordinatorActor.class), "coordinatorActor");
         this.hostProcess = new RemoteProcess(UUID.randomUUID().toString()
-                .substring(0, 8), this.coordinatorActorRef, ACTOR_DURATION, backendType);
+                .substring(0, 8), this.coordinatorActorRef, ACTOR_DURATION, backendType, otrOnly);
     }
 
     public synchronized IDevice addDevice(ClientUser user) {

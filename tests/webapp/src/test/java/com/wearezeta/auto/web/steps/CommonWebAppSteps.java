@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.net.URI;
@@ -623,6 +624,57 @@ public class CommonWebAppSteps {
 			dstConversationName);
 	}
 
+    /**
+     * User A sends a simple text message to user B
+     *
+     * @param msgFromUserNameAlias the user who sends the message
+     * @param msg                  a message to send. Random string will be sent if it is empty
+     * @param dstUserNameAlias     The user to receive the message
+     * @param isEncrypted          whether the message has to be encrypted
+     * @throws Exception
+     * @step. ^Contact (.*) sends? (encrypted )?message (.*)to user (.*)$
+     */
+    @When("^Contact (.*) sends? (encrypted )?message (.*)to user (.*)$")
+    public void UserSendMessageToConversation(String msgFromUserNameAlias, String isEncrypted,
+                                              String msg, String dstUserNameAlias)
+            throws Exception {
+        final String msgToSend = (msg == null || msg.trim().length() == 0) ?
+                CommonUtils.generateRandomString(10) : msg.trim();
+        if (isEncrypted == null) {
+            commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstUserNameAlias, msgToSend);
+        } else {
+            commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias, dstUserNameAlias, msgToSend);
+        }
+    }
+
+    /**
+     * Sends an image from one user to a conversation
+     *
+     * @param isEncrypted              whether the image has to be encrypted
+     * @param imageSenderUserNameAlias the user to sending the image
+     * @param imageFileName            the file path name of the image to send. The path name is
+     *                                 defined relative to the image file defined in
+     *                                 Configuration.cnf.
+     * @param conversationType         "single user" or "group" conversation.
+     * @param dstConversationName      the name of the conversation to send the image to.
+     * @throws Exception
+     * @step. ^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)
+     */
+    @When("^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)")
+    public void ContactSendImageToConversation(String imageSenderUserNameAlias, String isEncrypted,
+                                               String imageFileName, String conversationType,
+                                               String dstConversationName) throws Exception {
+        final String imagePath = WebCommonUtils.getFullPicturePath(imageFileName);
+        final boolean isGroup = conversationType.equals("group");
+        if (isEncrypted == null) {
+            commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,
+                    imagePath, dstConversationName, isGroup);
+        } else {
+            commonSteps.UserSentImageToConversationOtr(imageSenderUserNameAlias,
+                    imagePath, dstConversationName, isGroup);
+        }
+    }
+
 	/**
 	 * Send message to a conversation
 	 *
@@ -633,7 +685,7 @@ public class CommonWebAppSteps {
 	 * @throws Exception
 	 * @step. ^User (.*) sent message (.*) to conversation (.*)
 	 */
-	@When("^User (.*) sent message (.*) to conversation (.*)")
+	@When("^User (.*) sends? message (.*) to conversation (.*)")
 	public void UserSentMessageToConversation(String userFromNameAlias,
 		String message, String conversationName) throws Exception {
 		commonSteps.UserSentMessageToConversation(userFromNameAlias,

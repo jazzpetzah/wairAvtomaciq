@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.steps;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import org.junit.Assert;
 
 import java.io.IOException;
@@ -8,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.email.PasswordResetMessage;
 import com.wearezeta.auto.common.email.WireMessage;
@@ -22,7 +20,6 @@ import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.RegistrationPage;
 
 import cucumber.api.java.en.*;
-import org.openqa.selenium.By;
 
 /**
  * Contains steps to work with Login/Welcome page
@@ -490,8 +487,7 @@ public class LoginPageSteps {
      */
     @When("^I click on Change Password button on SignIn$")
     public void IClickOnChangePasswordButtonOnSignIn() throws Exception {
-        getLoginPage().tapChangePasswordButton();
-
+        getLoginPage().tapForgotPasswordButton();
     }
 
     @When("^I change URL to staging$")
@@ -536,9 +532,9 @@ public class LoginPageSteps {
      * Copies the link in the email and types it into the safari search field
      *
      * @throws Exception
-     * @step. ^I copy link from email and past it into Safari
+     * @step. ^I copy link from email and paste it into Safari
      */
-    @When("^I copy link from email and past it into Safari$")
+    @When("^I copy link from email and paste it into Safari$")
     public void ICopyLinkFromEmailAndPastItIntoSafari() throws Exception {
         String link = BackendAPIWrappers.getPasswordResetLink(this.activationMessage);
         getLoginPage().changeURLInBrowser(link);

@@ -11,6 +11,7 @@ defaultEmail=${defaultEmail}
 androidVersion=${androidVersion}
 perfReportPath=${perfReportPath}
 backendType=${backendType}
+otrOnly=${otrOnly}
 androidToolsPath=${androidToolsPath}
 rcNotificationsRecepients=${rcNotificationsRecepients}
 testrailUser=smoketester+android@wire.com

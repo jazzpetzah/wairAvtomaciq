@@ -1,26 +1,26 @@
 package com.wearezeta.auto.ios.tools;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import org.openqa.selenium.WebElement;
 
 public class KeyboardStateNumbers extends KeyboardState {
 
-	public KeyboardStateNumbers(ZetaIOSDriver driver) {
-		super(driver);
-		// TODO Auto-generated constructor stub
+	public KeyboardStateNumbers(ZetaIOSDriver driver, WebElement keyboard) {
+		super(driver, keyboard);
 	}
 
 	@Override
-	public void switchTo(KeyboardState finalState) {
+	public void switchTo(KeyboardState finalState) throws InterruptedException {
 
 		if (finalState instanceof KeyboardStateNumbers) {
 			return;
 		} else if (finalState instanceof KeyboardStateAlpha) {
-			tapKey(MORE_LETTERS);
+			tapSpecialKey(MORE_LETTERS);
 		} else if (finalState instanceof KeyboardStateAlphaCaps) {
-			tapKey(MORE_LETTERS);
-			tapKey(SHIFT);
+			tapSpecialKey(MORE_LETTERS);
+			tapSpecialKey(SHIFT);
 		} else if (finalState instanceof KeyboardStateSpecial) {
-			tapKey(MORE_SYMBOLS);
+			tapSpecialKey(SHIFT);
 		} else {
 			throw new UnsupportedOperationException();
 		}

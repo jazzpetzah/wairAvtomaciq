@@ -38,6 +38,8 @@ public class AppiumServerTools {
 
     public static synchronized void reset() throws Exception {
         Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9", "Simulator"}).waitFor(2, TimeUnit.SECONDS);
+        Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9", "configd_sim"}).waitFor(2, TimeUnit.SECONDS);
+        Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9", "ids_simd"}).waitFor(2, TimeUnit.SECONDS);
         Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9", "launchd_sim"}).waitFor(2, TimeUnit.SECONDS);
 
         log.warn("Trying to restart Appium server on localhost...");

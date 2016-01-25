@@ -14,6 +14,7 @@ iosClientInfoPlist=${iosClientInfoPlist}
 defaultEmail=${defaultEmail}
 deviceName=${deviceName}
 backendType=${backendType}
+otrOnly=${otrOnly}
 perfReportPath=${perfReportPath}
 rcNotificationsRecepients=${rcNotificationsRecepients}
 testrailUser=smoketester+ios@wire.com

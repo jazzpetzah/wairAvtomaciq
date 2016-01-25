@@ -22,7 +22,8 @@ public class SEBridge {
             .getSimpleName());
 
     private SEBridge() throws Exception {
-        final Callable<UserDevicePool> task = () -> new UserDevicePool(CommonUtils.getBackendType(CommonUtils.class));
+        final Callable<UserDevicePool> task = () -> new UserDevicePool(CommonUtils.getBackendType(CommonUtils.class),
+                CommonUtils.getOtrOnly(CommonUtils.class));
         this.devicePool = Executors.newSingleThreadExecutor().submit(task);
         Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
     }

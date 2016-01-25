@@ -29,6 +29,8 @@ public class LoginPage extends IOSPage {
 
     private static final By nameWrongCredentialsNotification = By.name("Please verify your details and try again.");
 
+    private static final By nameForgotPassword = By.name("FORGOT PASSWORD?");
+
     private static final By xpathSafariChangePasswordEmailField =
             By.xpath("//UIAApplication[@name='Safari']//UIATextField[@value='Email']");
 
@@ -169,8 +171,8 @@ public class LoginPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameWrongCredentialsNotification);
     }
 
-    public void tapChangePasswordButton() throws Exception {
-        getElement(xpathSafariChangePasswordEmailField).click();
+    public void tapForgotPasswordButton() throws Exception {
+        getElement(nameForgotPassword).click();
     }
 
     public void tapEmailFieldToChangePassword(String email) throws Exception {
@@ -186,12 +188,12 @@ public class LoginPage extends IOSPage {
 
     public void changeURLInBrowser(String URL) throws Exception {
         DriverUtils.tapByCoordinates(getDriver(), getElement(xpathSafariURLButton));
+        this.inputStringFromKeyboard("a+b");
         this.inputStringFromKeyboard(URL);
         DriverUtils.tapByCoordinates(getDriver(), getElement(xpathSafariGoButton));
     }
 
-    public void tapPasswordFieldToChangePassword(String newPassword)
-            throws Exception {
+    public void tapPasswordFieldToChangePassword(String newPassword) throws Exception {
         final WebElement safariEnterNewPasswordField = getElement(xpathSafariEnterNewPasswordField,
                 "Password input field in Safari is not visible");
         DriverUtils.tapByCoordinates(getDriver(), safariEnterNewPasswordField);
