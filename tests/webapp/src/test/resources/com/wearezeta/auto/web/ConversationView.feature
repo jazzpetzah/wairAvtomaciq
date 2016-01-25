@@ -122,7 +122,7 @@ Feature: Conversation View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given User Myself sent message <Msg1FromUserA> to conversation <ChatName>
+    Given User Myself sends message <Msg1FromUserA> to conversation <ChatName>
     Given User <Contact1> is me
     Given I switch to Sign In page
     Given I Sign in using login <Contact1Email> and password <Contact1Password>
@@ -134,7 +134,7 @@ Feature: Conversation View
     When I click Leave button on Group Participants popover
     And I click confirm leave group conversation on Group Participants popover
     Then I do not see Contact list with name <ChatName>
-    And User <Name> sent message <Msg2FromUserA> to conversation <ChatName>
+    And User <Name> sends message <Msg2FromUserA> to conversation <ChatName>
     When I open archive
     And I unarchive conversation <ChatName>
     When I open conversation with <ChatName>

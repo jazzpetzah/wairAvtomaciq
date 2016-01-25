@@ -161,3 +161,37 @@ Feature: E2EE
     Examples:
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
+
+  @C12068 @e2ee
+  Scenario Outline: Verify you can receive encrypted and non-encrypted messages in 1:1 chat
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to Myself
+    Given I switch to Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    Given I see the history info page
+    Given I click confirm on history info page
+    Given I am signed in properly
+    When Contact <Contact> sends encrypted message <EncryptedMessage> to user Myself
+    #And Contact <Contact> sends message <SimpleMessage> to user Myself
+    Then I see text message <EncryptedMessage>
+    #And I see text message <SimpleMessage>
+
+    Examples:
+      | Email      | Password      | Name      | Contact   | EncryptedMessage | SimpleMessage |
+      | user1Email | user1Password | user1Name | user2Name | EncryptedYo      | SimpleYo      |
+
+  @C12069 @e2ee
+  Scenario Outline: Verify you can receive encrypted and non-encrypted messages in 1:1 chat
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to Myself
+    Given I switch to Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    Given I see the history info page
+    Given I click confirm on history info page
+    Given I am signed in properly
+    When User <Contact> sends encrypted image <ImageName> to single user conversation Myself
+    Then I see sent picture <ImageName> in the conversation view
+
+    Examples:
+      | Email      | Password      | Name      | Contact   | ImageName                |
+      | user1Email | user1Password | user1Name | user2Name | userpicture_portrait.jpg |
