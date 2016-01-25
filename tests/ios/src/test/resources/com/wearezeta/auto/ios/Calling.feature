@@ -359,7 +359,7 @@ Feature: Calling
       | user1Name | user2Name | user3Name | IgnoringGROUPCALL | firefox     | autocall     |
 
   @C2050 @regression @rc @id2686
-  Scenario Outline: Verify receiving group call during 1-to-1 call (and accepting it)
+  Scenario Outline: (ZIOS-5587)Verify receiving group call during 1-to-1 call (and accepting it)
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
@@ -476,7 +476,7 @@ Feature: Calling
       | user1Name | user2Name | user3Name | user4Name | user5Name | RejoinGROUPCALL | firefox     | autocall     | 4               |
 
   @C2054 @regression @id2690
-  Scenario Outline: (ZIOS-5534)Verify receiving 1-to-1 call during group call (and accepting it)
+  Scenario Outline: (ZIOS-5587)Verify receiving 1-to-1 call during group call (and accepting it)
     Given There are 6 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
