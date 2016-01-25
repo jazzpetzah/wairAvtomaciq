@@ -85,7 +85,11 @@ public class LoginPage extends IOSPage {
     }
 
     public void switchToEmailLogin() throws Exception {
-        getElement(nameSwitchToEmailLogin).click();
+        final WebElement emailSwitchBtn = getElement(nameSwitchToEmailLogin);
+        emailSwitchBtn.click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameSwitchToEmailLogin)) {
+            emailSwitchBtn.click();
+        }
     }
 
     public void switchToPhoneLogin() throws Exception {
