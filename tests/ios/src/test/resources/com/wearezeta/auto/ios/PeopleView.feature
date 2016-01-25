@@ -150,8 +150,7 @@ Feature: People View
     And I verify user email for <GroupCreator> on Other User Profile page is displayed
     And I click close user profile page button
     And I select contact <NonConnectedContact>
-    And I verify username <NonConnectedContact> on Other User Profile page is displayed
-    Then I verify email for user <NonConnectedContact> on Other User Profile page is not displayed
+    Then I verify username <NonConnectedContact> on Other User Profile page is displayed
 
     Examples:
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |

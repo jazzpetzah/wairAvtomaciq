@@ -5,7 +5,6 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
     Given Myself archived conversation with <ArchivedUser>
-    Given I wait for 30 seconds
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open archived conversations
