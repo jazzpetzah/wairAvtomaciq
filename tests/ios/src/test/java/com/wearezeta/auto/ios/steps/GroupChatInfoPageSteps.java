@@ -140,10 +140,9 @@ public class GroupChatInfoPageSteps {
         IClickOnContinueButtonInAddPeopleToGroupChatDialog();
 
         PeoplePickerPageSteps pickerSteps = new PeoplePickerPageSteps();
-        pickerSteps.WhenISeePeoplePickerPage();
         pickerSteps.WhenIInputInPeoplePickerSearchFieldUserName(contact);
         pickerSteps.WhenISeeUserFoundOnPeoplePickerPage(contact);
-        pickerSteps.WhenITapOnUserNameFoundOnPeoplePickerPage(contact);
+        pickerSteps.ITapOnConversationFromSearch(contact);
         pickerSteps.WhenIClickOnAddToConversationButton();
     }
 

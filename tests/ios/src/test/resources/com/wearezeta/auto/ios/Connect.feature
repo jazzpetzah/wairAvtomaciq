@@ -12,7 +12,7 @@ Feature: Connect
     Given I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
-    And I tap on NOT connected user name on People picker page <Contact>
+    And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog
     And I click Connect button on connect to dialog
     And I see People picker page
@@ -127,12 +127,12 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
-    And I tap on NOT connected user name on People picker page <Contact>
+    And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog
     And I click Connect button on connect to dialog
     And I see People picker page
     And I see user <Contact> found on People picker page
-    And I tap on user on pending name on People picker page <Contact>
+    And I tap on conversation <Contact> in search result
     And I see <Contact> user pending profile page
     And I see cancel request button on pending profile page
 
@@ -156,7 +156,7 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
-    And I tap on connected user <Contact> on People picker page
+    And I tap on conversation <Contact> in search result
     And I unblock user
     Then I see 1 message in the dialog
     And I navigate back to conversations list
@@ -179,7 +179,7 @@ Feature: Connect
     And I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
-    And I tap on NOT connected user name on People picker page <Contact>
+    And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog
     And I click Connect button on connect to dialog
     And I see People picker page
@@ -190,7 +190,7 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
-    And I tap on user on pending name on People picker page <Contact>
+    And I tap on conversation <Contact> in search result
     Then I see cancel request button on pending profile page
 
     Examples: 
@@ -244,7 +244,6 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
     And I press keyboard Return button
-    Then I see the user <UnconnectedUser> avatar with a clock
     And I click close button to dismiss people view
     And I see first item in contact list named <UnconnectedUser>
     And I tap on contact name <UnconnectedUser>
@@ -309,7 +308,7 @@ Feature: Connect
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
     And I see user <Contact1> found on People picker page
-    And I tap on NOT connected user name on People picker page <Contact1>
+    And I tap on conversation <Contact> in search result
     And I see connect to <Contact1> dialog
     And I click Connect button on connect to dialog
     And I click close button to dismiss people view
@@ -330,13 +329,11 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I see user <Contact1> found on People picker page
-    And I see the user <Contact1> avatar with a clock
-    And I tap on NOT connected user name on People picker page <Contact1>
+    And I tap on conversation <Contact> in search result
     And I click Cancel request button
     And I see Cancel request confirmation page
     And I confirm Cancel request by click on Yes button
-    And I see user <Contact1> found on People picker page
-    Then I see the user <Contact1> avatar without the pending clock
+    Then I see user <Contact1> found on People picker page
 
     Examples: 
       | Name      | Contact1  |
@@ -421,7 +418,7 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
-    And I tap on connected user <Contact> on People picker page
+    And I tap on conversation <Contact> in search result
     And I unblock user
     Then I see dialog page
     When I navigate back to conversations list

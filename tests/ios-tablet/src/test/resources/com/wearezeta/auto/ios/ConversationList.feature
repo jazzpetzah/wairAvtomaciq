@@ -605,7 +605,7 @@ Feature: Conversation List
     And I confirm delete conversation content
     Then I dont see conversation <GroupChatName> in contact list
     When I open search by taping on it
-    And I input conversation name <GroupChatName> in Search input
+    And I input in People picker search field conversation name <GroupChatName>
     And I see conversation <GroupChatName> is presented in Search results
     And I tap on conversation <GroupChatName> in search result
     Then I see empty group chat page with users <Contact1>,<Contact2> with only system message
@@ -634,7 +634,7 @@ Feature: Conversation List
     And I confirm delete conversation content
     Then I dont see conversation <GroupChatName> in contact list
     When I open search by taping on it
-    And I input conversation name <GroupChatName> in Search input
+    And I input in People picker search field conversation name <GroupChatName>
     And I see conversation <GroupChatName> is presented in Search results
     And I tap on conversation <GroupChatName> in search result
     Then I see empty group chat page with users <Contact1>,<Contact2> with only system message
@@ -739,7 +739,7 @@ Feature: Conversation List
     And I select Also Leave option on Delete conversation dialog
     And I confirm delete conversation content
     And I open search by taping on it
-    And I input conversation name <GroupChatName> in Search input
+    And I input in People picker search field conversation name <GroupChatName>
     Then I see conversation <GroupChatName> is NOT presented in Search results
     When I click close button to dismiss people view
     And I dont see conversation <GroupChatName> in contact list
@@ -764,7 +764,7 @@ Feature: Conversation List
     And I select Also Leave option on Delete conversation dialog
     And I confirm delete conversation content
     And I open search by taping on it
-    And I input conversation name <GroupChatName> in Search input
+    And I input in People picker search field conversation name <GroupChatName>
     Then I see conversation <GroupChatName> is NOT presented in Search results
     When I click close button to dismiss people view
     And I dont see conversation <GroupChatName> in contact list

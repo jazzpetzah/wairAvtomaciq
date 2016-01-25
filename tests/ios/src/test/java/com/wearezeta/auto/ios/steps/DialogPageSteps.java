@@ -158,20 +158,6 @@ public class DialogPageSteps {
         getDialogPage().swipeUp(1000);
     }
 
-    /**
-     * Swipes up on the pending dialog page in order to access the pending
-     * personal info page
-     *
-     * @throws Throwable
-     * @step. ^I swipe up on pending dialog page to open other user pending
-     * personal page$
-     */
-
-    @When("^I swipe up on pending dialog page to open other user pending personal page$")
-    public void WhenISwipeUpOnPendingDialogPage() throws Throwable {
-        getDialogPage().swipePendingDialogPageUp(500);
-    }
-
     @Then("^I see (\\d+) (default )?messages? in the dialog$")
     public void ThenISeeMessageInTheDialog(int expectedCount, String isDefault) throws Exception {
         int actualCount;

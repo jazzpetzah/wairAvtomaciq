@@ -11,13 +11,10 @@ import cucumber.api.java.en.When;
 public class OtherUserOnPendingPersonalInfoPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
-			.getInstance();
+	private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-	private OtherUserOnPendingProfilePage getOtherUserOnPendingProfilePage()
-			throws Exception {
-		return (OtherUserOnPendingProfilePage) pagesCollecton
-				.getPage(OtherUserOnPendingProfilePage.class);
+	private OtherUserOnPendingProfilePage getOtherUserOnPendingProfilePage() throws Exception {
+		return pagesCollection.getPage(OtherUserOnPendingProfilePage.class);
 	}
 
 	@When("^I see (.*) user pending profile page$")

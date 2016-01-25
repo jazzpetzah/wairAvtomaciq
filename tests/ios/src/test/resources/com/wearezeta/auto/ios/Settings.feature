@@ -10,7 +10,7 @@ Feature: Settings
     And I click on Settings button from the options menu
     Then I see settings page
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -27,7 +27,7 @@ Feature: Settings
     And I close self profile
     Then I see conversations list
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -43,7 +43,7 @@ Feature: Settings
     And I click on Change Password button in Settings
     Then I see reset password page
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -59,24 +59,24 @@ Feature: Settings
     And I see the Sound alerts page
     Then I verify that all is the default selected value
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
-      
+
   @C1109 @regression @id2074
   Scenario Outline: Verify you can access Help site within the app
-  	Given There is 1 user where <Name> is me
+    Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
     And I tap on my name <Name>
     And I click on Settings button on personal page
     When I click on Help button from the options menu
     Then I see Support web page
-    
-    Examples: 
+
+    Examples:
       | Name      |
       | user1Name |
-      
+
   @C1113 @regression @id2146
   Scenario Outline: Verify switching on/off chatheads
     Given There are 3 users where <Name> is me
@@ -109,14 +109,14 @@ Feature: Settings
     When I tap on contact name <Contact>
     And I see dialog page
     Given User <Contact2> sends 1 encrypted message to user Myself
-    Then I see chathead of contact <Contact2> 
+    Then I see chathead of contact <Contact2>
     And I wait for 5 seconds
-    Then I do not see chathead of contact <Contact2>    
-    
-    Examples: 
+    Then I do not see chathead of contact <Contact2>
+
+    Examples:
       | Name      | Contact   | Contact2  | NewName  | Picture                      |
       | user1Name | user2Name | user3Name | CHATHEAD | aqaPictureContact600_800.jpg |
-  
+
   @C1100 @C1101 @regression @id730 @id731
   Scenario Outline: Verify about screen contains all the required information
     Given There is 1 user where <Name> is me
@@ -143,6 +143,6 @@ Feature: Settings
     And I open WireWebsite
     Then I see WireWebsitePage
 
-    Examples: 
-      | Name      | Contact   | Color  |
-      | user1Name | user2Name | Violet |
+    Examples:
+      | Name      | Color  |
+      | user1Name | Violet |

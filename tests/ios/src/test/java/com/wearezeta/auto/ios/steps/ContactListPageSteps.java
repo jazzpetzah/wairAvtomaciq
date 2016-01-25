@@ -191,7 +191,7 @@ public class ContactListPageSteps {
         pickerSteps.WhenITapOnSearchInputOnPeoplePickerPage();
         pickerSteps.WhenIInputInPeoplePickerSearchFieldUserName(contact2);
         pickerSteps.WhenISeeUserFoundOnPeoplePickerPage(contact2);
-        pickerSteps.WhenITapOnUserNameFoundOnPeoplePickerPage(contact2);
+        pickerSteps.ITapOnConversationFromSearch(contact2);
         pickerSteps.WhenIClickOnAddToConversationButton();
 
         GroupChatPageSteps groupChatSteps = new GroupChatPageSteps();
@@ -264,28 +264,15 @@ public class ContactListPageSteps {
         getContactListPage().clickPendingRequest();
     }
 
-    @When("I see Pending request link in contact list")
-    public void ISeePendingRequestLinkInContacts() throws Exception {
-        Assert.assertTrue("Pending request link is not in Contact list",
-                getContactListPage().isPendingRequestInContactList());
-    }
-
-    @When("I dont see Pending request link in contact list")
-    public void IDontSeePendingRequestLinkInContacts() throws Exception {
-        Assert.assertTrue("Pending request link is shown in contact list",
-                getContactListPage().pendingRequestInContactListIsNotShown());
-    }
-
-    @When("I see conversation with not connected user (.*)")
-    public void ISeeConversationWithUser(String name) throws Exception {
-        name = usrMgr.findUserByNameOrNameAlias(name).getName();
-        Assert.assertTrue(getContactListPage().isDisplayedInContactList(name));
-    }
-
-    @When("I don't see conversation with not connected user (.*)")
-    public void IDontSeeConversationWithUser(String name) throws Exception {
-        name = usrMgr.findUserByNameOrNameAlias(name).getName();
-        Assert.assertFalse(getContactListPage().isDisplayedInContactList(name));
+    @When("I (dont )?see Pending request link in contact list")
+    public void ISeePendingRequestLinkInContacts(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue("Pending request link is not in Contact list",
+                    getContactListPage().isPendingRequestInContactList());
+        } else {
+            Assert.assertTrue("Pending request link is shown in contact list",
+                    getContactListPage().pendingRequestInContactListIsNotShown());
+        }
     }
 
     @When("I (don't )?see in contact list group chat with (.*)")

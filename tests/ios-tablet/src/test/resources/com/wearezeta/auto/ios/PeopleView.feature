@@ -9,13 +9,13 @@ Feature: People View
     When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
-    And I fill in Search field user name <Contact1>
+    And I input in People picker search field user name <Contact1>
     And I see user <Contact1> found on People picker page
-    And I tap on connected user <Contact1> on People picker page
+    And I tap on conversation <Contact1> in search result
     And I tap on Search input on People picker page
-    And I fill in Search field user name <Contact2>
+    And I input in People picker search field user name <Contact2>
     And I see user <Contact2> found on People picker page
-    And I tap on connected user <Contact2> on People picker page
+    And I tap on conversation <Contact2> in search result
     And I click on Go button
     Then I see group chat page with users <Contact1>,<Contact2>
 
@@ -33,13 +33,13 @@ Feature: People View
     When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
-    And I fill in Search field user name <Contact1>
+    And I input in People picker search field user name <Contact1>
     And I see user <Contact1> found on People picker page
-    And I tap on connected user <Contact1> on People picker page
+    And I tap on conversation <Contact1> in search result
     And I tap on Search input on People picker page
-    And I fill in Search field user name <Contact2>
+    And I input in People picker search field user name <Contact2>
     And I see user <Contact2> found on People picker page
-    And I tap on connected user <Contact2> on People picker page
+    And I tap on conversation <Contact2> in search result
     And I click on Go button
     Then I see group chat page with users <Contact1>,<Contact2>
 
@@ -626,7 +626,7 @@ Feature: People View
     And I see People picker page on iPad popover
     And I wait until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
-    And I fill in Search field user name <Contact3>
+    And I input in People picker search field user name <Contact3>
     Then I see that user <Contact3> is NOT found on People picker page
 
     Examples:
@@ -653,7 +653,7 @@ Feature: People View
     And I see People picker page on iPad popover
     And I wait until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
-    And I fill in Search field user name <Contact3>
+    And I input in People picker search field user name <Contact3>
     Then I see that user <Contact3> is NOT found on People picker page
 
     Examples:
@@ -723,7 +723,7 @@ Feature: People View
     And I confirm delete conversation content
     And I wait until popover is closed
     And I open search by taping on it
-    And I input conversation name <GroupChatName> in Search input
+    And I input in People picker search field conversation name <GroupChatName>
     Then I see conversation <GroupChatName> is NOT presented in Search results
     When I click close button to dismiss people view
     And I dont see conversation <GroupChatName> in contact list
@@ -751,7 +751,7 @@ Feature: People View
     And I confirm delete conversation content
     And I wait until popover is closed
     And I open search by taping on it
-    And I input conversation name <GroupChatName> in Search input
+    And I input in People picker search field conversation name <GroupChatName>
     Then I see conversation <GroupChatName> is NOT presented in Search results
     When I click close button to dismiss people view
     And I dont see conversation <GroupChatName> in contact list
@@ -780,7 +780,7 @@ Feature: People View
     And I confirm delete conversation content
     And I wait until popover is closed
     And I open search by taping on it
-    And I input conversation name <GroupChatName> in Search input
+    And I input in People picker search field conversation name <GroupChatName>
     Then I see conversation <GroupChatName> is presented in Search results
     When I tap on conversation <GroupChatName> in search result
     Then I see group chat page with users <Contact1>,<Contact2>
@@ -808,7 +808,7 @@ Feature: People View
     And I confirm delete conversation content
     And I wait until popover is closed
     And I open search by taping on it
-    And I input conversation name <GroupChatName> in Search input
+    And I input in People picker search field conversation name <GroupChatName>
     Then I see conversation <GroupChatName> is presented in Search results
     When I tap on conversation <GroupChatName> in search result
     Then I see group chat page with users <Contact1>,<Contact2>
@@ -836,9 +836,9 @@ Feature: People View
     And I confirm delete conversation content
     And I wait until popover is closed
     And I open search by taping on it
-    And I fill in Search field user name <Contact1>
+    And I input in People picker search field user name <Contact1>
     And I see user <Contact1> found on People picker page
-    And I tap on connected user <Contact1> on People picker page
+    And I tap on conversation <Contact1> in search result
     And I click open conversation button on People picker page
     Then I see the only message in dialog is system message CONNECTED TO <Contact1>
 
@@ -866,9 +866,9 @@ Feature: People View
     And I confirm delete conversation content
     And I wait until popover is closed
     And I open search by taping on it
-    And I fill in Search field user name <Contact1>
+    And I input in People picker search field user name <Contact1>
     And I see user <Contact1> found on People picker page
-    And I tap on connected user <Contact1> on People picker page
+    And I tap on conversation <Contact1> in search result
     And I click open conversation button on People picker page
     Then I see the only message in dialog is system message CONNECTED TO <Contact1>
 

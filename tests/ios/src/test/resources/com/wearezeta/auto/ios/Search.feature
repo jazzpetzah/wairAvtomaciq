@@ -98,12 +98,10 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     And I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on first 2 top connections
     And I click Create Conversation button on People picker page
-    And I wait for 2 seconds
     And I open group conversation details
     And I change group conversation name to <ConvoName>
     And I exit the group info page
@@ -114,29 +112,24 @@ Feature: Search
       | Name      | ConvoName    | UserCount |
       | user1Name | TopGroupTest | 4         |
 
-  @C40 @regression @rc @id1454
+  @torun @C40 @regression @rc @id1454
   Scenario Outline: Verify sending a connection request to user chosen from search
     Given There are 2 users where <Name> is me
-    Given User <UnconnectedUser> name starts with <StartLetter>
-    Given User <Name> change accent color to <Color>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     And I search for user name <UnconnectedUser> and tap on it on People picker page
     Then I see connect to <UnconnectedUser> dialog
     And I click Connect button on connect to dialog
-    Then I see the user <UnconnectedUser> avatar with a clock
     And I click close button to dismiss people view
-    And I see conversation with not connected user <UnconnectedUser>
     And I tap on contact name <UnconnectedUser>
-    And I swipe up on pending dialog page to open other user pending personal page
+    And I open conversation details
     And I see <UnconnectedUser> user pending profile page
 
     Examples:
-      | Name      | UnconnectedUser | StartLetter | Color        |
-      | user1Name | user2Name       | T           | BrightOrange |
+      | Name      | UnconnectedUser |
+      | user1Name | user2Name       |
 
   @C3220 @regression @id763
   Scenario Outline: I can still search for other people using the search field, regardless of whether I already added people from Top conversations
@@ -153,7 +146,7 @@ Feature: Search
     #And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
-    And I tap on connected user <Contact> on People picker page
+    And I tap on conversation <Contact> in search result
     Then I see that <Number> contacts are selected
 
     Examples:
@@ -173,7 +166,7 @@ Feature: Search
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
-    And I tap on connected user <Contact> on People picker page
+    And I tap on conversation <Contact> in search result
     And I unblock user
     And I type the default message
     And I send the message
@@ -231,7 +224,7 @@ Feature: Search
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
-    When I tap on connected user <Contact> on People picker page
+    And I tap on conversation <Contact> in search result
     And I see call action button on People picker page
     And I click call action button on People picker page
     Then I see mute call, end call and speakers buttons
@@ -293,7 +286,7 @@ Feature: Search
     And I see People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
-    When I tap on connected user <Contact> on People picker page
+    When I tap on conversation <Contact> in search result
     Then I see action buttons appeared on People picker page
 
     Examples:
@@ -400,7 +393,7 @@ Feature: Search
     And I see Invite more people button
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
-    And I tap on connected user <Contact> on People picker page
+    And I tap on conversation <Contact> in search result
     And I DONT see Invite more people button
     And I see action buttons appeared on People picker page
     And I press backspace button

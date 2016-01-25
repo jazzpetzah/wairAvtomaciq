@@ -301,12 +301,11 @@ public class DialogPage extends IOSPage {
         getElement(nameTitle).click();
     }
 
-    private final int TEXT_INPUT_HEIGH = 150;
-    private final int TOP_BORDER_WIDTH = 40;
+    private static final int TEXT_INPUT_HEIGH = 150;
+    private static final int TOP_BORDER_WIDTH = 40;
 
     public void openConversationDetails() throws Exception {
-        final Optional<WebElement> openConversationDetails =
-                getElementIfDisplayed(nameOpenConversationDetails);
+        final Optional<WebElement> openConversationDetails = getElementIfDisplayed(nameOpenConversationDetails);
         if (openConversationDetails.isPresent()) {
             openConversationDetails.get().click();
         } else {
@@ -328,15 +327,6 @@ public class DialogPage extends IOSPage {
     public void swipeDialogPageDown(int time) throws Exception {
         DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationPage), time,
                 50, 30, 50, 95);
-    }
-
-    public void swipePendingDialogPageUp(int time) throws Exception {
-        Point coords = getElement(nameMainWindow).getLocation();
-        Dimension elementSize = getElement(nameMainWindow).getSize();
-        this.getDriver().swipe(coords.x + elementSize.width / 2,
-                coords.y + elementSize.height - TEXT_INPUT_HEIGH,
-                coords.x + elementSize.width / 2, coords.y + TOP_BORDER_WIDTH,
-                time);
     }
 
     public boolean isYoutubeContainerVisible() throws Exception {

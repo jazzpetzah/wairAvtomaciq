@@ -11,7 +11,7 @@ Feature: Search
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
-    When I tap on connected user <Contact> on People picker page
+    And I tap on conversation <Contact> in search result
     And I see call action button on People picker page
     And I click call action button on People picker page
     Then I see mute call, end call buttons
@@ -33,7 +33,7 @@ Feature: Search
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
-    When I tap on connected user <Contact> on People picker page
+    And I tap on conversation <Contact> in search result
     And I see call action button on People picker page
     And I click call action button on People picker page
     Then I see mute call, end call buttons
@@ -138,7 +138,7 @@ Feature: Search
     And I see People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
-    And I tap on connected user <Contact> on People picker page
+    And I tap on conversation <Contact> in search result
     And I see action buttons appeared on People picker page
 
     Examples: 
@@ -156,7 +156,7 @@ Feature: Search
     And I see People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
-    And I tap on connected user <Contact> on People picker page
+    And I tap on conversation <Contact> in search result
     And I see action buttons appeared on People picker page
 
     Examples: 
@@ -349,7 +349,7 @@ Feature: Search
     And I see Invite more people button
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
-    And I tap on connected user <Contact> on People picker page
+    And I tap on conversation <Contact> in search result
     And I DONT see Invite more people button
     And I see action buttons appeared on People picker page
     And I press backspace button
@@ -380,7 +380,7 @@ Feature: Search
     And I see Invite more people button
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
-    And I tap on connected user <Contact> on People picker page
+    And I tap on conversation <Contact> in search result
     And I DONT see Invite more people button
     And I see action buttons appeared on People picker page
     And I press backspace button

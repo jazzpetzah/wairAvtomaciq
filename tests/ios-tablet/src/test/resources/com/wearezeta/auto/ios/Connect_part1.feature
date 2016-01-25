@@ -13,10 +13,8 @@ Feature: Connect
     And I search for user name <UnconnectedUser> and tap on it on People picker page
     And I see connect to <UnconnectedUser> dialog
     And I click Connect button on connect to dialog
-    Then I see the user <UnconnectedUser> avatar with a clock
-    When I click close button to dismiss people view
-    Then I see conversation with not connected user <UnconnectedUser>
-    When I tap on contact name <UnconnectedUser>
+    And I click close button to dismiss people view
+    And I tap on contact name <UnconnectedUser>
     And I open conversation details
     Then I see <UnconnectedUser> user pending profile popover on iPad
 
@@ -38,10 +36,8 @@ Feature: Connect
     And I search for user name <UnconnectedUser> and tap on it on People picker page
     And I see connect to <UnconnectedUser> dialog
     And I click Connect button on connect to dialog
-    Then I see the user <UnconnectedUser> avatar with a clock
-    When I click close button to dismiss people view
-    Then I see conversation with not connected user <UnconnectedUser>
-    When I tap on contact name <UnconnectedUser>
+    And I click close button to dismiss people view
+    And I tap on contact name <UnconnectedUser>
     And I open conversation details
     Then I see <UnconnectedUser> user pending profile popover on iPad
 
@@ -61,7 +57,7 @@ Feature: Connect
     And I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
-    And I tap on NOT connected user name on People picker page <Contact>
+    And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog
     And I click Connect button on connect to dialog
     And I see People picker page
@@ -87,7 +83,7 @@ Feature: Connect
     And I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
-    And I tap on NOT connected user name on People picker page <Contact>
+    And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog
     And I click Connect button on connect to dialog
     And I see People picker page
@@ -154,12 +150,12 @@ Feature: Connect
     And I see Pending request page
     And I click on Ignore button on Pending requests page <SentRequests> times
     And I dont see Pending request link in contact list
-    And I don't see conversation with not connected user <Contact1>
+    And I dont see conversation <Contact1> in contact list
     And I wait until <Contact1> exists in backend search results
     And I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
-    And I search for ignored user name <Contact1> and tap on it
+    And I search for user name <Contact1> and tap on it on People picker page
     Then I see incoming pending popover from user <Contact1> on iPad
 
     Examples: 
@@ -181,7 +177,7 @@ Feature: Connect
     And I see Pending request page
     And I click on Ignore button on Pending requests page <SentRequests> times
     And I dont see Pending request link in contact list
-    And I don't see conversation with not connected user <Contact1>
+    And I dont see conversation <Contact1> in contact list
     And I wait until <Contact1> exists in backend search results
     And I open search by taping on it
     And I see People picker page
@@ -289,7 +285,7 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
-    And I tap on connected user <Contact> on People picker page
+    And I tap on conversation <Contact> in search result
     And I unblock user on iPad
     And I wait for 5 seconds
     And I see new photo in the dialog
@@ -323,7 +319,7 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
-    And I tap on connected user <Contact> on People picker page
+    And I tap on conversation <Contact> in search result
     And I unblock user on iPad
     And I wait for 5 seconds
     And I see new photo in the dialog
@@ -348,7 +344,7 @@ Feature: Connect
     And I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
-    And I tap on NOT connected user name on People picker page <Contact>
+    And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog
     And I click Connect button on connect to dialog
     And I see People picker page
@@ -359,7 +355,7 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
-    And I tap on user on pending name on People picker page <Contact>
+    And I tap on conversation <Contact> in search result
     And I see <Contact> user pending profile popover on iPad
 
     Examples: 
@@ -378,7 +374,7 @@ Feature: Connect
     And I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
-    And I tap on NOT connected user name on People picker page <Contact>
+    And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog
     And I click Connect button on connect to dialog
     And I see People picker page
@@ -389,7 +385,7 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
-    And I tap on user on pending name on People picker page <Contact>
+    And I tap on conversation <Contact> in search result
     And I see <Contact> user pending profile popover on iPad
 
     Examples: 

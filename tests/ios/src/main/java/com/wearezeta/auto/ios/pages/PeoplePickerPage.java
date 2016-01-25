@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.awt.image.BufferedImage;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
@@ -10,8 +9,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
@@ -45,9 +42,6 @@ public class PeoplePickerPage extends IOSPage {
     private static final By nameSendAnInviteButton = By.name("INVITE MORE PEOPLE");
 
     private static final By nameInstantConnectButton = By.name("instantPlusConnectButton");
-
-    private static final By xpathSearchResultCell = By.xpath(
-            xpathStrMainWindow + "/UIACollectionView[1]/UIACollectionCell[1]");
 
     private static final By nameLaterButton = By.name("MAYBE LATER");
 
@@ -97,35 +91,6 @@ public class PeoplePickerPage extends IOSPage {
         DriverUtils.tapByCoordinates(getDriver(), getElement(xpathPickerClearButton));
     }
 
-    public double checkAvatarClockIcon(String name) throws Exception {
-        BufferedImage clockImage = getAvatarClockIconScreenShot(name);
-        String path = CommonUtils.getAvatarWithClockIconPathIOS(GroupChatPage.class);
-        BufferedImage templateImage = ImageUtil.readImageFromFile(path);
-        return ImageUtil.getOverlapScore(clockImage, templateImage,
-                ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
-    }
-
-    public BufferedImage getAvatarClockIconScreenShot(String name) throws Exception {
-        int multiply = 1;
-        String device = CommonUtils.getDeviceName(this.getClass());
-        if (device.equalsIgnoreCase("iPhone 6")
-                || device.equalsIgnoreCase("iPad Air")) {
-            multiply = 2;
-        } else if (device.equalsIgnoreCase("iPhone 6 Plus")) {
-            multiply = 3;
-        }
-
-        final WebElement searchResultCell = getElement(xpathSearchResultCell);
-        int x = multiply * searchResultCell.getLocation().x;
-        int y = multiply * searchResultCell.getLocation().y;
-        int w = multiply
-                * (searchResultCell.getLocation().x + searchResultCell
-                .getSize().width / 4);
-        int h = multiply * searchResultCell.getSize().height;
-        return getScreenshotByCoordinates(x, y, w, h).orElseThrow(
-                IllegalStateException::new);
-    }
-
     public void fillTextInPeoplePickerSearch(String text) throws Exception {
         sendTextToSearchInput(text);
         clickSpaceKeyboardButton();
@@ -143,10 +108,6 @@ public class PeoplePickerPage extends IOSPage {
     public boolean isElementNotFoundInSearch(String name) throws Exception {
         final By locator = By.xpath(xpathStrFoundContactByName.apply(name));
         return !getElementIfDisplayed(locator, 2).isPresent();
-    }
-
-    public void clickOnNotConnectedUser(String name) throws Exception {
-        getElement(By.xpath(xpathStrFoundContactByName.apply(name))).click();
     }
 
     public void selectElementInSearchResults(String name) throws Exception {
@@ -195,21 +156,12 @@ public class PeoplePickerPage extends IOSPage {
         return getElement(locator).getAttribute("value").equals("1");
     }
 
-    public void clickConnectedUserAvatar(String name) throws Exception {
-        final By locator = By.xpath(xpathStrPeoplePickerSelectedCellByName.apply(name));
-        getElement(locator).click();
-    }
-
     public void hitDeleteButton() throws Exception {
         getElement(xpathPickerSearch).sendKeys(Keys.DELETE);
     }
 
-    public void clickAddToCoversationButton() throws Exception {
+    public void clickAddToConversationButton() throws Exception {
         getElement(namePeoplePickerAddToConversationButton).click();
-    }
-
-    public void clickOnUserOnPending(String contact) throws Exception {
-        DriverUtils.tapByCoordinates(getDriver(), getElement(By.name(contact)));
     }
 
     public boolean isUploadDialogShown() throws Exception {
@@ -294,11 +246,11 @@ public class PeoplePickerPage extends IOSPage {
         getElement(nameSendImageButton, "Send image button is not visible").click();
     }
 
-    public void inputTextInSearch(String text) throws Exception {
-        getElement(xpathPickerSearch, "Search input is not visible").sendKeys(text);
-    }
-
     public void closeInviteList() throws Exception {
         getElement(xpathContactViewCloseButton).click();
+    }
+
+    public boolean isPeopleYouMayKnowLabelInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), namePeopleYouMayKnowLabel);
     }
 }

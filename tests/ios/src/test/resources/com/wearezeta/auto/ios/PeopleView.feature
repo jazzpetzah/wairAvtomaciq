@@ -17,7 +17,7 @@ Feature: People View
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact2>
     And I see user <Contact2> found on People picker page
-    And I tap on connected user <Contact2> on People picker page
+    And I tap on conversation <Contact2> in search result
     #And I see Add to conversation button
     And I click on Go button
     And I wait for 2 seconds
@@ -41,7 +41,7 @@ Feature: People View
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
     And I see user <Contact3> found on People picker page
-    And I tap on connected user <Contact3> on People picker page
+    And I tap on conversation <Contact3> in search result
     And I click on Go button
     Then I can see You Added <Contact3> message
     When I open group conversation details
@@ -207,11 +207,11 @@ Feature: People View
     And I press Add button
     And I see People picker page
     #And I dont see keyboard
-    And I tap on connected user <Contact2> on People picker page
+    And I tap on conversation <Contact2> in search result
     Then I see user <Contact2> on People picker page is selected
-    And I tap on connected user <Contact2> on People picker page
+    And I tap on conversation <Contact2> in search result
     Then I see user <Contact2> on People picker page is NOT selected
-    And I tap on connected user <Contact2> on People picker page
+    And I tap on conversation <Contact2> in search result
     And I tap on Search input on People picker page
     #Then I see keyboard
     #And I don't see Add to conversation button
@@ -237,9 +237,9 @@ Feature: People View
     And I tap on Search input on People picker page
     And I see user <Contact2> found on People picker page
     And I don't see Add to conversation button
-    And I click on connected user <Contact2> avatar on People picker page
+    And I tap on conversation <Contact2> in search result
     And I see user <Contact3> found on People picker page
-    And I click on connected user <Contact3> avatar on People picker page
+    And I tap on conversation <Contact3> in search result
     And I click on Go button
     And I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I navigate back to conversations list
@@ -265,8 +265,8 @@ Feature: People View
     And I see People picker page
     And I scroll up page a bit
     And I dont see keyboard
-    And I tap on connected user <Contact2> on People picker page
-    And I tap on connected user <Contact3> on People picker page
+    And I tap on conversation <Contact2> in search result
+    And I tap on conversation <Contact3> in search result
     And I click close button to dismiss people view
     And I see <Contact1> user profile page
     And I press Add button
@@ -394,7 +394,7 @@ Feature: People View
     And I see People picker page
     And I wait until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
-    And I fill in Search field user name <Contact3>
+    And I input in People picker search field user name <Contact3>
     Then I see that user <Contact3> is NOT found on People picker page
 
     Examples:
@@ -438,7 +438,7 @@ Feature: People View
     And I select Also Leave option on Delete conversation dialog
     And I confirm delete conversation content
     And I open search by taping on it
-    And I input conversation name <GroupChatName> in Search input
+    And I input in People picker search field conversation name <GroupChatName>
     Then I see conversation <GroupChatName> is NOT presented in Search results
     When I click close button to dismiss people view
     And I dont see conversation <GroupChatName> in contact list
@@ -466,7 +466,7 @@ Feature: People View
     And I click delete menu button
     And I confirm delete conversation content
     And I open search by taping on it
-    And I input conversation name <GroupChatName> in Search input
+    And I input in People picker search field conversation name <GroupChatName>
     Then I see conversation <GroupChatName> is presented in Search results
     When I tap on conversation <GroupChatName> in search result
     Then I see group chat page with users <Contact1>,<Contact2>
@@ -494,9 +494,9 @@ Feature: People View
     And I confirm delete conversation content
     And I navigate back to conversations list
     And I open search by taping on it
-    And I fill in Search field user name <Contact1>
+    And I input in People picker search field user name <Contact1>
     And I see user <Contact1> found on People picker page
-    And I tap on connected user <Contact1> on People picker page
+    And I tap on conversation <Contact1> in search result
     And I click open conversation button on People picker page
     Then I see the only message in dialog is system message CONNECTED TO <Contact1>
 
