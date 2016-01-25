@@ -99,6 +99,10 @@ public class CommonUtils {
         return getValueFromConfig(c, "backendType");
     }
 
+    public static boolean getOtrOnly(Class<?> c) throws Exception {
+        return Boolean.parseBoolean(getValueFromConfig(c, "otrOnly"));
+    }
+
     public static String getDeviceName(Class<?> c) throws Exception {
         return getValueFromConfig(c, "deviceName");
     }
