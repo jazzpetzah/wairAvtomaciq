@@ -402,6 +402,12 @@ public class DialogPage extends IOSPage {
         }
     }
 
+    public void sendSpaceKeyToInput() throws Exception {
+        final WebElement convoInput =
+                getElement(nameConversationCursorInput, "Conversation input is not visible after the timeout");
+        convoInput.sendKeys(" ");
+    }
+
     public void waitLoremIpsumText() throws Exception {
         DriverUtils.waitUntilLocatorAppears(getDriver(), xpathLoremIpsumText, 10);
     }
