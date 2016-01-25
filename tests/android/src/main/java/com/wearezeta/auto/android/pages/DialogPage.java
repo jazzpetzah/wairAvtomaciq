@@ -357,15 +357,7 @@ public class DialogPage extends AndroidPage {
     }
 
     public void tapConversationDetailsButton() throws Exception {
-        final WebElement participantsBtn = getElement(idParticipantsBtn);
-        participantsBtn.click();
-        final long millisecondsStarted = System.currentTimeMillis();
-        final long maxAnimationDurationMillis = 2000;
-        do {
-            Thread.sleep(200);
-        } while (participantsBtn.getLocation().getY() > 0
-                && System.currentTimeMillis() - millisecondsStarted < maxAnimationDurationMillis);
-        assert participantsBtn.getLocation().getY() < 0;
+        getElement(idParticipantsBtn).click();
     }
 
     public boolean waitForPingMessageWithText(String expectedText)
