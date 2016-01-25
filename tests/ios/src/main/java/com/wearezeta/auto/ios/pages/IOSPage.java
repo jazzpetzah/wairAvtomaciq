@@ -133,9 +133,9 @@ public abstract class IOSPage extends BasePage {
         getElement(nameEditingItemPaste, "Paste popup is not visible").click();
     }
 
-    public void inputStringFromKeyboard(String returnKey) throws Exception {
+    public void inputStringFromKeyboard(String str) throws Exception {
         IOSKeyboard keyboard = IOSKeyboard.getInstance();
-        keyboard.typeString(returnKey, this.getDriver());
+        keyboard.typeString(str, this.getDriver());
     }
 
     public boolean isKeyboardVisible() throws Exception {

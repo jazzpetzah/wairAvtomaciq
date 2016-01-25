@@ -33,11 +33,10 @@ Feature: Sign In
     Given I see sign in screen
     And I tap I HAVE AN ACCOUNT button
     And I click on Change Password button on SignIn
-    Then I see reset password page
-    And I change URL to staging
+    When I change URL to staging
     And I type in email <Login> to change password
     And I press Change Password button in browser
-    And I copy link from email and past it into Safari
+    And I copy link from email and paste it into Safari
     And I type in new password <NewPassword>
     And I press Change Password button in browser
     And I reset Wire app

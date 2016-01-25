@@ -3,8 +3,7 @@ package com.wearezeta.auto.ios.tools;
 public class KeyboardStateUnknown extends KeyboardState {
 
 	public KeyboardStateUnknown() {
-		super(null);
-		// TODO Auto-generated constructor stub
+		super(null, null);
 	}
 
 	@Override
