@@ -115,7 +115,7 @@ Feature: E2EE
     When I enable Airplane mode on the device
     And User <Contact1> sends encrypted image <Picture> to group conversation <GroupChatName>
     Then I do not see new picture in the dialog
-    When Contact <Contact1> sends encrypted message <Message2> to group conversation <GroupChatName>
+    When Contact <Contact2> sends encrypted message <Message2> to group conversation <GroupChatName>
     Then Last message is <Message1>
     When I disable Airplane mode on the device
     And I scroll to the bottom of conversation view
