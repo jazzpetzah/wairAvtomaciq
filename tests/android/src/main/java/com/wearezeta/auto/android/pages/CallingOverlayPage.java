@@ -41,7 +41,8 @@ public class CallingOverlayPage extends AndroidPage {
 
     public static final By idCallingMicMute = By.id("cib__calling__mic_mute");
 
-    private static final By xpathGroupCallParticipantChathead = By.xpath("//*[@id='rv__calling__container']/*");
+    private static final By xpathGroupCallParticipantChathead =
+            By.xpath("//*[@id='rv__calling__container']//*[@id='ttv__calling_user_chathead_view']");
 
     private static final By xpathGroupCallIsFullAlertTitle =
             By.xpath("//DialogTitle[@id='alertTitle' and @value='The call is full']");
