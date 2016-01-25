@@ -101,6 +101,31 @@ Feature: E2EE
       | Name      | Contact1  | Message1 | Message2 | Picture     |
       | user1Name | user2Name | Msg1     | Msg2     | testing.jpg |
 
+  @C3235 @staging
+  Scenario Outline: Verify you can receive encrypted content in group conversation after switching online
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I tap on contact name <GroupChatName>
+    And Contact <Contact1> sends encrypted message <Message1> to group conversation <GroupChatName>
+    Then Last message is <Message1>
+    When I enable Airplane mode on the device
+    And User <Contact1> sends encrypted image <Picture> to group conversation <GroupChatName>
+    Then I do not see new picture in the dialog
+    When Contact <Contact2> sends encrypted message <Message2> to group conversation <GroupChatName>
+    Then Last message is <Message1>
+    When I disable Airplane mode on the device
+    And I scroll to the bottom of conversation view
+    Then Last message is <Message2>
+    And I see new picture in the dialog
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Message1 | Message2 | Picture     | GroupChatName |
+      | user1Name | user2Name | user3Name | Msg1     | Msg2     | testing.jpg | GroupConvo    |
+
   @C3242 @staging
   Scenario Outline: Verify you can receive encrypted and non-encrypted images in group chat
     Given There are 3 users where <Name> is me
