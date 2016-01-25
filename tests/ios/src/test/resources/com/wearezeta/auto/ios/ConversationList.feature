@@ -10,7 +10,7 @@ Feature: Conversation List
     Given I see conversations list
     When I open archived conversations
     And I tap on contact name <ArchivedUser>
-    And I return to the chat list
+    And I navigate back to conversations list
     Then I see first item in contact list named <ArchivedUser>
 
     Examples:
@@ -64,9 +64,9 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I return to the chat list
+    And I navigate back to conversations list
     And I tap on contact name <Contact1>
-    And I return to the chat list
+    And I navigate back to conversations list
     Then I dont see unread message indicator in list for contact <Contact>
     Given User <Contact> sends 1 encrypted message to user Myself
     Then I see 1 unread message indicator in list for contact <Contact>
@@ -107,7 +107,7 @@ Feature: Conversation List
     When I open archived conversations
     And I tap on contact name <GroupChatName>
     And I see dialog page
-    And I return to the chat list
+    And I navigate back to conversations list
     Then I see first item in contact list named <GroupChatName>
 
     Examples:
@@ -238,7 +238,7 @@ Feature: Conversation List
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on contact name <GroupChatName>
     Then I see new photo in the dialog
-    When I return to the chat list
+    When I navigate back to conversations list
     And I swipe right on a <GroupChatName>
     And I click delete menu button
     And I confirm delete conversation content
@@ -246,7 +246,7 @@ Feature: Conversation List
     And I see People picker page
     And I tap on Search input on People picker page
     And I search for user name <GroupChatName> and tap on it on People picker page
-    Then I see group chat page after deletion with users <Contact1>,<Contact2>
+    Then I see group chat page with users <Contact1>,<Contact2>
     And I see 0 conversation entries
 
     Examples:
@@ -264,7 +264,7 @@ Feature: Conversation List
     Given User Myself sends 1 encrypted message to user <Contact1>
     When I tap on contact name <Contact1>
     Then I see new photo in the dialog
-    When I return to the chat list
+    When I navigate back to conversations list
     And I swipe right on a <Contact1>
     And I click delete menu button
     And I confirm delete conversation content
@@ -306,7 +306,7 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     Given I see conversations list
     And I tap on contact name <Contact>
-    And I return to the chat list
+    And I navigate back to conversations list
     When I swipe right on a <Contact>
     And I press menu silence button
     Then I see conversation <Contact> is silenced
@@ -493,7 +493,7 @@ Feature: Conversation List
     And I see 1 unread message indicator in list for contact <Contact>
     And I tap on contact name <Contact>
     And I see dialog page
-    And I return to the chat list
+    And I navigate back to conversations list
     Then I dont see unread message indicator in list for contact <Contact>
 
     Examples:

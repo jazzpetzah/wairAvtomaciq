@@ -22,10 +22,12 @@ import org.openqa.selenium.ScreenOrientation;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import static com.wearezeta.auto.common.driver.ZetaAndroidDriver.ADB_PREFIX;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 
 public class AndroidCommonUtils extends CommonUtils {
+
     private static final Logger log = ZetaLogger
             .getLog(AndroidCommonUtils.class.getSimpleName());
 
@@ -36,14 +38,9 @@ public class AndroidCommonUtils extends CommonUtils {
     private static final String BACKEND_JSON = "customBackend.json";
     private static final String BACKEND_FILE_LOCATION = "/mnt/sdcard/customBackend.json";
 
-    public static final String ADB_PREFIX = "";
-
-    // public static final String ADB_PREFIX =
-    // "/Applications/android-sdk/platform-tools/";
-
     public static void executeAdb(final String cmdline) throws Exception {
         executeOsXCommand(new String[]{"/bin/bash", "-c",
-                ADB_PREFIX + "adb " + cmdline});
+            ADB_PREFIX + "adb " + cmdline});
     }
 
     public static void uploadPhotoToAndroid(String photoPathOnDevice)
@@ -106,7 +103,7 @@ public class AndroidCommonUtils extends CommonUtils {
     public static String readClientVersionFromAdb() throws Exception {
         final String output = getAdbOutput(String.format(
                 "shell dumpsys package %s | grep versionName", CommonUtils
-                        .getAndroidPackageFromConfig(AndroidCommonUtils.class)));
+                .getAndroidPackageFromConfig(AndroidCommonUtils.class)));
         if (output.contains("=")) {
             return output.substring(output.indexOf("=") + 1, output.length());
         } else {
@@ -192,8 +189,7 @@ public class AndroidCommonUtils extends CommonUtils {
     }
 
     /**
-     * http://stackoverflow.com/questions/4567904/how-to-start-an-application-
-     * using-android-adb-tools
+     * http://stackoverflow.com/questions/4567904/how-to-start-an-application- using-android-adb-tools
      *
      * @param packageId
      * @param mainActivity
@@ -206,8 +202,7 @@ public class AndroidCommonUtils extends CommonUtils {
     }
 
     /**
-     * http://stackoverflow.com/questions/13850192/how-to-lock-android-screen-
-     * via-adb
+     * http://stackoverflow.com/questions/13850192/how-to-lock-android-screen- via-adb
      *
      * @throws Exception
      */
@@ -257,14 +252,12 @@ public class AndroidCommonUtils extends CommonUtils {
     }
 
     /**
-     * Compares the Android of the plugged-in device with the input (target)
-     * version that you wish to check for. For exmaple, if you want to check
-     * that the plugged in device is 4.4 or higher, you need to supply "4.4" as
-     * the target version
+     * Compares the Android of the plugged-in device with the input (target) version that you wish to check for. For exmaple, if
+     * you want to check that the plugged in device is 4.4 or higher, you need to supply "4.4" as the target version
      *
      * @param targetVersion the Android version you wish to check for
-     * @return a negative int, 0, or a positive int if the targetVersion is less
-     * than, equal to or greater than the current device's version
+     * @return a negative int, 0, or a positive int if the targetVersion is less than, equal to or greater than the current
+     * device's version
      * @throws Exception
      */
     public static int compareAndroidVersion(String targetVersion)
@@ -405,7 +398,7 @@ public class AndroidCommonUtils extends CommonUtils {
      * @throws Exception
      */
     private static long getNetworkStatValue(final String packageId,
-                                            final int columnNumber) throws Exception {
+            final int columnNumber) throws Exception {
         final String output = getAdbOutput(
                 String.format("shell cat /proc/%d/net/dev",
                         getPackagePid(packageId))).trim();
@@ -475,9 +468,9 @@ public class AndroidCommonUtils extends CommonUtils {
     }
 
     /**
-     * We try to insert contacts in different groups to make them detectable by Wire.
-     * Anyway, the created contact will not be visible in Wire invitations list if
-     * current Google account on device under test is not set to MessagingUtils.getAccountName()
+     * We try to insert contacts in different groups to make them detectable by Wire. Anyway, the created contact will not be
+     * visible in Wire invitations list if current Google account on device under test is not set to
+     * MessagingUtils.getAccountName()
      *
      * @return
      * @throws Exception
@@ -546,7 +539,7 @@ public class AndroidCommonUtils extends CommonUtils {
     }
 
     public static void insertContact(String name, String email,
-                                     PhoneNumber phoneNumber) throws Exception {
+            PhoneNumber phoneNumber) throws Exception {
         final List<Integer> ids = insertContactAndGetIds();
         bindContactNameById(ids, name);
         bindContactEmailById(ids, email);
@@ -568,8 +561,8 @@ public class AndroidCommonUtils extends CommonUtils {
     }
 
     public static void broadcastInvitationCode(String code) throws Exception {
-        executeAdb(String.format("shell am broadcast -a com.android.vending.INSTALL_REFERRER " +
-                "-n \"%s/com.waz.zclient.broadcast.ReferralBroadcastReceiver\" " +
-                "--es referrer \"invite-%s\"", getAndroidPackageFromConfig(AndroidCommonUtils.class), code));
+        executeAdb(String.format("shell am broadcast -a com.android.vending.INSTALL_REFERRER "
+                + "-n \"%s/com.waz.zclient.broadcast.ReferralBroadcastReceiver\" "
+                + "--es referrer \"invite-%s\"", getAndroidPackageFromConfig(AndroidCommonUtils.class), code));
     }
 }

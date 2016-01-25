@@ -572,12 +572,10 @@ public class DialogPageSteps {
     @Then("^I see a message informing me that I renamed the conversation to (.*)$")
     public void ThenISeeMessageInformingGroupRename(String newConversationName)
             throws Exception {
-        Assert.assertTrue(
-                String.format(
-                        "The new conversation name '%s' has not been shown in the conversation view",
-                        newConversationName),
-                getDialogPage().waitForConversationNameChangedMessage(
-                        newConversationName));
+        Assert.assertTrue(String.format(
+                "The new conversation name '%s' has not been shown in the conversation view",
+                newConversationName),
+                getDialogPage().waitForConversationNameChangedMessage(newConversationName));
     }
 
     /**
@@ -590,20 +588,8 @@ public class DialogPageSteps {
      */
     @Then("^Last message is (.*)$")
     public void ThenLastMessageIs(String message) throws Exception {
-        final long millisecondsStarted = System.currentTimeMillis();
-        final int secondsTimeout = 10;
-        while (System.currentTimeMillis() - millisecondsStarted <= secondsTimeout * 1000) {
-            if (message
-                    .toLowerCase()
-                    .trim()
-                    .equals(getDialogPage().getLastMessageFromDialog()
-                            .toLowerCase().trim())) {
-                return;
-            }
-            Thread.sleep(500);
-        }
-        Assert.assertEquals(message.toLowerCase().trim(), getDialogPage()
-                .getLastMessageFromDialog().toLowerCase().trim());
+        Assert.assertTrue(String.format("The last conversation message is not equal to '%s'", message),
+                getDialogPage().isLastMessageEqualTo(message, 30));
     }
 
     /**
@@ -616,9 +602,8 @@ public class DialogPageSteps {
     public void ThenIseeOnMediaBar(String iconLabel) throws Exception {
         final double score = getDialogPage()
                 .getMediaBarControlIconOverlapScore(iconLabel);
-        Assert.assertTrue(
-                "Overlap between two images has not enough score. Expected >= 0.75, current = "
-                        + score, score >= 0.75d);
+        Assert.assertTrue("Overlap between two images has not enough score. Expected >= 0.75, current = "
+                + score, score >= 0.75d);
     }
 
     private BufferedImage previousMediaButtonState = null;
@@ -631,8 +616,7 @@ public class DialogPageSteps {
      */
     @When("^I remember the state of PlayPause media item button$")
     public void IRememeberMediaItemButtonState() throws Exception {
-        previousMediaButtonState = getDialogPage()
-                .getMediaControlButtonScreenshot();
+        previousMediaButtonState = getDialogPage().getMediaControlButtonScreenshot();
     }
 
     final static double MAX_OVERLAP_SCORE = 0.97;

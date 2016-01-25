@@ -1,11 +1,10 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.awt.image.BufferedImage;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
@@ -13,29 +12,17 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.ScreenOrientation;
 
-import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.ios.IOSConstants;
 
 public class DialogPage extends IOSPage {
-    private static final String PING_LABEL = "PINGED";
-    private static final String HOT_PING_LABEL = "PINGED AGAIN";
-    private static final long PING_ANIMATION_TIME = 3000;
-
     private static final By xpathConversationWindow = By.xpath("//UIATableView");
 
     private static final By nameConversationBackButton = By.name("ConversationBackButton");
 
     private static final By nameConversationCursorInput = By.name("ConversationTextInputField");
-
-    private static final By xpathPinged = By.xpath(xpathStrMainWindow +
-            "/UIATableView[1]/UIATableCell[last()]/UIAStaticText[contains(@name, 'PINGED')]");
-
-    private static final By xpathPingedAgain = By.xpath(xpathStrMainWindow +
-            "/UIATableView[1]/UIATableCell[last()]/UIAStaticText[contains(@name, 'PINGED AGAIN')]");
 
     private static final By namePlusButton = By.name("plusButton");
 
@@ -48,9 +35,6 @@ public class DialogPage extends IOSPage {
 
     private static final By xpathLastChatMessage = By.xpath(
             xpathStrMainWindow + "/UIATableView[1]/UIATableCell[last()]/*[last()]");
-
-    private static final By xpathStartedConversationMessage =
-            By.xpath("//UIAStaticText[starts-with(@name, 'YOU STARTED A CONVERSATION WITH')]");
 
     protected static final By nameAddPictureButton = By.name("ComposeControllerPictureButton");
 
@@ -142,18 +126,11 @@ public class DialogPage extends IOSPage {
     public static final Function<String, String> xpathStrConnectedToUserLabelByName = name ->
             String.format("//UIAStaticText[contains(@name, 'CONNECTED TO %s')]", name.toUpperCase());
 
+    private static final Function<String, String> xpathStartConversationEntryTemplate = xpathExpr ->
+            String.format("//UIAStaticText[%s]", xpathExpr);
+
     public DialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
-    }
-
-    public String getStartedChatMessage() throws Exception {
-        return getElement(xpathStartedConversationMessage,
-                "Conversation started message is not present in the view").getText();
-    }
-
-    public String getAddedToChatMessage() throws Exception {
-        return getElement(xpathStartedConversationMessage,
-                "Added to conversation system message is not visible in the conversation view").getText();
     }
 
     public boolean isMessageVisible(String msg) throws Exception {
@@ -303,6 +280,14 @@ public class DialogPage extends IOSPage {
         clickMediaBarCloseButton();
     }
 
+    public boolean isChatMessageContainsStringsExist(List<String> values) throws Exception {
+        final String xpathExpr = String.join(" and ", values.stream().
+                map(x -> String.format("contains(@name, '%s')", x.toUpperCase())).
+                collect(Collectors.toList()));
+        final By locator = By.xpath(xpathStartConversationEntryTemplate.apply(xpathExpr));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
     public String getMediaState() throws Exception {
         if (isMediaBarPlayButtonVisible()) {
             return IOSConstants.MEDIA_STATE_PAUSED;
@@ -360,12 +345,7 @@ public class DialogPage extends IOSPage {
     }
 
     public boolean isMediaContainerVisible() throws Exception {
-        if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathMediaConversationCell)) {
-            return true;
-        } else {
-            rotateDeviceToRefreshElementsTree();
-            return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathMediaConversationCell);
-        }
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathMediaConversationCell);
     }
 
     public String getConnectMessageLabel() throws Exception {
@@ -406,32 +386,6 @@ public class DialogPage extends IOSPage {
         }
     }
 
-    private static final int IMAGE_IN_CONVERSATION_HEIGHT = 510;
-    private static final int IMAGE_IN_IPAD_CONVERSATION_HEIGHT = 1020;
-
-    public BufferedImage takeImageScreenshot() throws Exception {
-        BufferedImage image = getElementScreenshot(getElement(xpathNameMediaContainer)).orElseThrow(
-                IllegalStateException::new);
-        String deviceType = CommonUtils.getDeviceName(this.getClass());
-        if (deviceType.equals("iPhone 6")) {
-            return image.getSubimage(0, image.getHeight()
-                            - IMAGE_IN_CONVERSATION_HEIGHT, image.getWidth(),
-                    IMAGE_IN_CONVERSATION_HEIGHT);
-        } else {
-            return image.getSubimage(0, image.getHeight()
-                            - IMAGE_IN_IPAD_CONVERSATION_HEIGHT, image.getWidth(),
-                    IMAGE_IN_IPAD_CONVERSATION_HEIGHT);
-        }
-    }
-
-    public double isLastImageSameAsTemplate(String filename) throws Throwable {
-        BufferedImage templateImage = takeImageScreenshot();
-        BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage
-                .getImagesPath() + filename);
-        return ImageUtil.getOverlapScore(referenceImage, templateImage,
-                ImageUtil.RESIZE_TEMPLATE_TO_RESOLUTION);
-    }
-
     public void typeAndSendConversationMessage(String message) throws Exception {
         typeConversationMessage(message);
         clickKeyboardSendButton();
@@ -454,58 +408,6 @@ public class DialogPage extends IOSPage {
 
     public void waitSoundCloudLoad() throws Exception {
         DriverUtils.waitUntilLocatorAppears(getDriver(), nameSoundCloudContainer);
-    }
-
-    public double checkPingIcon(String label) throws Exception {
-        String path = null;
-        BufferedImage pingImage = null;
-        ScreenOrientation orient = getOrientation();
-        if (label.equals(PING_LABEL)) {
-            pingImage = getPingIconScreenShot();
-            path = CommonUtils.getPingIconPathIOS(GroupChatPage.class);
-            if (orient == ScreenOrientation.LANDSCAPE) {
-                path = path.replace(".png", "_landscape.png");
-            }
-        } else if (label.equals(HOT_PING_LABEL)) {
-            pingImage = getPingAgainIconScreenShot();
-            path = CommonUtils.getHotPingIconPathIOS(GroupChatPage.class);
-            if (orient == ScreenOrientation.LANDSCAPE) {
-                path = path.replace(".png", "_landscape.png");
-            }
-        }
-        BufferedImage templateImage = ImageUtil.readImageFromFile(path);
-        return ImageUtil.getOverlapScore(pingImage, templateImage);
-    }
-
-    private static final int PING_ICON_WIDTH = 72;
-    private static final int PING_ICON_HEIGHT = 60;
-    private static final int PING_ICON_Y_OFFSET = 7;
-
-    private BufferedImage getPingIconScreenShot() throws Exception {
-        final WebElement pinged = getElement(xpathPinged);
-        Point elementLocation = pinged.getLocation();
-        Dimension elementSize = pinged.getSize();
-        int x = elementLocation.x * 2 + elementSize.width * 2;
-        int y = (elementLocation.y - PING_ICON_Y_OFFSET) * 2;
-        int w = PING_ICON_WIDTH;
-        int h = PING_ICON_HEIGHT;
-        return getScreenshotByCoordinates(x, y, w, h).orElseThrow(IllegalStateException::new);
-    }
-
-    private BufferedImage getPingAgainIconScreenShot() throws Exception {
-        final WebElement pingedAgain = getElement(xpathPingedAgain);
-        Point elementLocation = pingedAgain.getLocation();
-        Dimension elementSize = pingedAgain.getSize();
-        int x = elementLocation.x * 2 + elementSize.width * 2;
-        int y = (elementLocation.y - PING_ICON_Y_OFFSET) * 2;
-        int w = PING_ICON_WIDTH;
-        int h = PING_ICON_HEIGHT;
-        return getScreenshotByCoordinates(x, y, w, h).orElseThrow(
-                IllegalStateException::new);
-    }
-
-    public void waitPingAnimation() throws InterruptedException {
-        Thread.sleep(PING_ANIMATION_TIME);
     }
 
     public void scrollToEndOfConversation() throws Exception {

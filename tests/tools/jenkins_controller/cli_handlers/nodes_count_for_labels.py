@@ -232,6 +232,7 @@ class IOSSimulator(BaseNodeVerifier):
         """#!/bin/bash
         /usr/bin/osascript -e "tell application \\"System Events\\"" \\
                     -e "tell application \\"Simulator\\" to activate" \\
+                    -e "do shell script \\"/bin/sleep 3\\"" \\
                     -e "tell application \\"System Events\\" to keystroke \\"{}\\" using {{command down}}" \\
                     -e "tell application \\"System Events\\" to keystroke \\"q\\" using {{command down}}" \\
                     -e "end tell"
@@ -284,7 +285,10 @@ class IOSSimulator(BaseNodeVerifier):
                 sys.stderr.write('Restarting Appium server...')
                 client.exec_command('/usr/bin/open -a {}'.format(AUTORUN_APPIUM_APP), timeout=10)
                 sys.stderr.write('Adjusting simulator scale...')
-                self._adjust_simulator_size(client, 3 if simulator_name.lower().find('iphone') >= 0 else 4)
+                scale_factor = 4
+                if simulator_name.lower().find('iphone') >= 0 and simulator_name.lower().find('plus') < 0:
+                    scale_factor = 3
+                self._adjust_simulator_size(client, scale_factor)
             return result
         finally:
             client.close()

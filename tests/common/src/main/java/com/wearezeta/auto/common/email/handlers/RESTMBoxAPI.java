@@ -20,6 +20,7 @@ import javax.ws.rs.client.Invocation.Builder;
 import org.glassfish.jersey.client.ClientProperties;
 
 final class RESTMBoxAPI {
+
     private static final Logger log = ZetaLogger.getLog(RESTMBoxAPI.class
             .getSimpleName());
 
@@ -31,9 +32,9 @@ final class RESTMBoxAPI {
                     .format("%s%s:%s",
                             URL_PROTOCOL,
                             CommonUtils
-                                    .getDefaultEmailListenerServiceHostFromConfig(RESTMBoxAPI.class),
+                            .getDefaultEmailListenerServiceHostFromConfig(RESTMBoxAPI.class),
                             CommonUtils
-                                    .getDefaultEmailListenerServicePortFromConfig(RESTMBoxAPI.class));
+                            .getDefaultEmailListenerServicePortFromConfig(RESTMBoxAPI.class));
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e.getMessage());
@@ -44,19 +45,20 @@ final class RESTMBoxAPI {
             RESTMBoxAPI::verifyRequestResult);
 
     private static void verifyRequestResult(int currentResponseCode,
-                                            int[] acceptableResponseCodes) throws RESTMBoxException {
+            int[] acceptableResponseCodes, String message)
+            throws RESTMBoxException {
         if (!ArrayUtils.contains(acceptableResponseCodes, currentResponseCode)) {
             throw new RESTMBoxException(
                     String.format(
-                            "Mailbox service API request failed. Request return code is: %d. Expected codes are: %s",
+                            "Mailbox service API request failed. Request return code is: %d. Expected codes are: %s. Message from service is: %s",
                             currentResponseCode,
-                            Arrays.toString(acceptableResponseCodes)),
+                            Arrays.toString(acceptableResponseCodes), message),
                     currentResponseCode);
         }
     }
 
     private static Builder buildDefaultRequest(String restAction,
-                                               int timeoutMilliseconds) {
+            int timeoutMilliseconds) {
         final String dstUrl = String.format("%s/%s", getApiRoot(), restAction);
         log.debug(String.format("Request to %s...", dstUrl));
         final Client client = ClientBuilder.newClient();
@@ -66,9 +68,9 @@ final class RESTMBoxAPI {
     }
 
     public static JSONArray getRecentEmailsForUser(String email, int minCount,
-                                                   int maxCount, int timeoutMilliseconds) {
+            int maxCount, int timeoutMilliseconds) {
         Builder webResource = buildDefaultRequest(String.format(
-                        "recent_emails/%s/%s/%s", email, maxCount, minCount),
+                "recent_emails/%s/%s/%s", email, maxCount, minCount),
                 timeoutMilliseconds);
         try {
             final String output = restHandlers.httpGet(webResource,

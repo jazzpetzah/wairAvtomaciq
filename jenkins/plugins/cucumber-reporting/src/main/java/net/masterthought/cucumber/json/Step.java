@@ -299,7 +299,6 @@ public class Step {
     }
     
     private static String getFinalName (String name) {
-    	return (name.substring(name.length()-1, name.length()).matches("[0-9]"))? name.substring(0, name.length()-2) : name;
+    	return (name.substring(name.length()-2, name.length()).matches("\\s[0-9]"))? name.substring(0, name.length()-2) : name;
     }
-
 }

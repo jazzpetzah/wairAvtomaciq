@@ -89,7 +89,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
-    And I return to the chat list
+    And I navigate back to conversations list
     And I tap on contact name <Contact>
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
@@ -116,7 +116,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
-    And I return to the chat list
+    And I navigate back to conversations list
     And I tap on contact name <Contact>
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
@@ -139,7 +139,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input to scroll to the end
-    And I return to the chat list
+    And I navigate back to conversations list
     And I tap on contact name <Contact>
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
@@ -163,7 +163,7 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I see dialog page
     And I tap on text input to scroll to the end
-    And I return to the chat list
+    And I navigate back to conversations list
     And I tap on contact name <Contact1>
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
@@ -205,7 +205,7 @@ Feature: Conversation View
     And I see dialog page
     And I input more than 200 chars message and send it
     And I type the default message
-    And I return to the chat list
+    And I navigate back to conversations list
     And I tap on contact name <Contact>
     And I tap on text input
     And I send the message
@@ -363,7 +363,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I post media link <YouTubeLink>
-    And I return to the chat list
+    And I navigate back to conversations list
     And I tap on contact name <Contact>
     Then I see youtube link <YouTubeLink> and media in dialog
     And I click video container for the first time
@@ -383,7 +383,7 @@ Feature: Conversation View
     And I see dialog page
     And I type and send long message and media link <YouTubeLink>
     And I see youtube link <YouTubeLink> and media in dialog
-    And I return to the chat list
+    And I navigate back to conversations list
     And I tap on contact name <Contact>
     And I click video container for the first time
     And I see video player page is opened
@@ -413,11 +413,11 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I see dialog page
     And I tap on text input
-    And I return to the chat list
+    And I navigate back to conversations list
     And I tap on contact name <Contact1>
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
-    And I return to the chat list
+    And I navigate back to conversations list
     And I see play/pause button next to username <Contact1> in contact list
     And I tap play/pause button in contact list next to username <Contact1>
     And I tap on contact name <Contact2>
@@ -425,7 +425,7 @@ Feature: Conversation View
     And I tap on text input
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
-    And I return to the chat list
+    And I navigate back to conversations list
     And I see play/pause button next to username <Contact2> in contact list
     And I tap play/pause button in contact list next to username <Contact2>
     And I tap on contact name <Contact2>
@@ -520,17 +520,17 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
-    And I return to the chat list
+    And I navigate back to conversations list
     And I tap on contact name <Contact>
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
-    And I return to the chat list
+    And I navigate back to conversations list
     And I see play/pause button next to username <Contact> in contact list
     And I tap play/pause button in contact list next to username <Contact>
     And I tap on contact name <Contact>
     And I scroll media out of sight until media bar appears
     Then I see playing media is paused
-    And I return to the chat list
+    And I navigate back to conversations list
     And I tap play/pause button in contact list next to username <Contact>
     And I tap on contact name <Contact>
     Then I see media is playing
@@ -623,7 +623,7 @@ Feature: Conversation View
     And I click plus button next to text input
     Then I see only Details button. Call, Camera, Sketch, Ping are not shown
     And I click Close input options button
-    And I return to the chat list
+    And I navigate back to conversations list
     When I tap on group chat with name <GroupChatName>
     And I see plus button next to text input
     And I click plus button next to text input
@@ -748,10 +748,10 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I see dialog page
     And I type the default message
-    And I return to the chat list
+    And I navigate back to conversations list
     When I tap on contact name <Contact2>
     And I see dialog page
-    And I return to the chat list
+    And I navigate back to conversations list
     And I tap on contact name <Contact1>
     And I see dialog page
     Then I see Close input options button is not visible

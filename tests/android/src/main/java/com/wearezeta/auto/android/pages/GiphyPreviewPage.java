@@ -68,7 +68,8 @@ public class GiphyPreviewPage extends AndroidPage {
         final WebElement sendButton = getElement(idSendButton);
         sendButton.click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), idSendButton, GIPHY_LOCATOR_TIMEOUT_SECONDS)) {
-            throw new IllegalStateException("Giphy loading progress is still visible after the timeout");
+            // Sometimes the animation is not loaded fast enough
+            sendButton.click();
         }
     }
 

@@ -97,7 +97,6 @@ Feature: Search
     Given Myself is connected to all other users
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I wait for 30 seconds
     And I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
@@ -108,7 +107,7 @@ Feature: Search
     And I open group conversation details
     And I change group conversation name to <ConvoName>
     And I exit the group info page
-    And I return to the chat list
+    And I navigate back to conversations list
     And I see first item in contact list named <ConvoName>
 
     Examples:
@@ -258,10 +257,10 @@ Feature: Search
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I press Confirm button
-    Then I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
+    Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I see new photo in the dialog
-    When I navigate back to conversations view
-    Then I see in contact list group chat with <Contact1> <Contact2> <Contact3>
+    When I navigate back to conversations list
+    Then I see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  |

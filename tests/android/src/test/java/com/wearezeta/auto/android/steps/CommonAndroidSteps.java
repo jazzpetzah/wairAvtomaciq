@@ -576,39 +576,32 @@ public class CommonAndroidSteps {
      *
      * @param msgFromUserNameAlias the user who sends the message
      * @param msg                  a message to send. Random string will be sent if it is empty
-     * @param dstUserNameAlias     The user to receive the message
+     * @param dstConvoName         The user to receive the message
      * @param isEncrypted          whether the message has to be encrypted
+     * @param convoType            either 'user' or 'group conversation'
      * @throws Exception
      * @step. ^Contact (.*) sends? (encrypted )?message (.*)to user (.*)$
      */
-    @When("^Contact (.*) sends? (encrypted )?message (.*)to user (.*)$")
+    @When("^Contact (.*) sends? (encrypted )?message (.*)to (user|group conversation) (.*)$")
     public void UserSendMessageToConversation(String msgFromUserNameAlias, String isEncrypted,
-                                              String msg, String dstUserNameAlias)
-            throws Exception {
+                                              String msg, String convoType, String dstConvoName) throws Exception {
         final String msgToSend = (msg == null || msg.trim().length() == 0) ?
                 CommonUtils.generateRandomString(10) : msg.trim();
-        if (isEncrypted == null) {
-            commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstUserNameAlias, msgToSend);
+        if (convoType.equals("user")) {
+            if (isEncrypted == null) {
+                commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend);
+            } else {
+                commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend);
+            }
         } else {
-            commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias, dstUserNameAlias, msgToSend);
+            if (isEncrypted == null) {
+                commonSteps.UserSentMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend);
+            } else {
+                commonSteps.UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend);
+            }
         }
     }
 
-    /**
-     * Send message to a conversation
-     *
-     * @param userFromNameAlias user who want to mute conversation
-     * @param message           message to send
-     * @param conversationName  the name of existing conversation to send the message to
-     * @throws Exception
-     * @step. ^User (.*) sent message (.*) to conversation (.*)$
-     */
-    @When("^User (.*) sent message (.*) to conversation (.*)$")
-    public void UserSentMessageToConversation(String userFromNameAlias,
-                                              String message, String conversationName) throws Exception {
-        commonSteps.UserSentMessageToConversation(userFromNameAlias,
-                conversationName, message);
-    }
 
     /**
      * Send messages from all registered user to myself (these users have to be
@@ -641,8 +634,7 @@ public class CommonAndroidSteps {
     public void UserSendXMessagesToConversation(String msgFromUserNameAlias, int count, String areEncrypted,
                                                 String dstUserNameAlias) throws Exception {
         for (int i = 0; i < count; i++) {
-            UserSendMessageToConversation(msgFromUserNameAlias, areEncrypted,
-                    null, dstUserNameAlias);
+            UserSendMessageToConversation(msgFromUserNameAlias, areEncrypted, null, "user", dstUserNameAlias);
         }
     }
 

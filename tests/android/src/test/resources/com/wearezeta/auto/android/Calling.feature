@@ -184,7 +184,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend |
       | user1Name | user2Name | user3Name | autocall    |
 
-  @C431 @id3239 @calling_basic
+  @C431 @id3239 @calling_basic @torun
   Scenario Outline: Calling bar buttons are clickable and change their states in a group call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

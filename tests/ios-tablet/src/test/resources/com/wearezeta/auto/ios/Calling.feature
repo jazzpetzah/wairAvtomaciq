@@ -300,7 +300,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | firefox     | 300     |
+      | user1Name | user2Name | firefox     | 30      |
 
   @C2408 @calling_basic @id2631 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Screenlock device when in the call [PORTRAIT]
@@ -321,7 +321,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | firefox     | 120     |
+      | user1Name | user2Name | firefox     | 30      |
 
   @C2408 @calling_basic @id2631 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Screenlock device when in the call [LANDSCAPE]
@@ -343,7 +343,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | firefox     | 120     |
+      | user1Name | user2Name | firefox     | 30      |
 
   @C2427 @calling_advanced @id2652
   Scenario Outline: 3rd person tries to call me after I initate a call to somebody [PORTRAIT]
@@ -352,6 +352,9 @@ Feature: Calling
     Given <Contact1> starts waiting instance using <CallBackend>
     Given I Sign in on tablet using my email
     Given I see conversations list
+    And I tap on contact name <Contact1>
+    And I return to the chat list
+    And I remember the state of <Contact2> conversation item
     When I tap on contact name <Contact1>
     And I click plus button next to text input
     And I press call button
@@ -365,13 +368,13 @@ Feature: Calling
     And <Contact2> stops all calls to me
     And I end started call
     And I return to the chat list
-    And I see missed call indicator in list for contact <Contact2>
+    And I see the state of <Contact2> conversation item is changed
     And I tap on contact name <Contact2>
     Then I see missed call from contact <Contact2>
 
     Examples:
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | user3Name | firefox     | autocall     | 120     |
+      | user1Name | user2Name | user3Name | firefox     | autocall     | 30      |
 
   @C2427 @calling_basic @id2652
   Scenario Outline: 3rd person tries to call me after I initate a call to somebody [LANDSCAPE]
@@ -381,8 +384,10 @@ Feature: Calling
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap on contact name <Contact1>
-    And I click plus button next to text input
+    And I tap on contact name <Contact1>
+    And I return to the chat list
+    And I remember the state of <Contact2> conversation item
+    When I click plus button next to text input
     And I press call button
     And I see mute call, end call buttons
     And <Contact2> calls me using <CallBackend2>
@@ -393,13 +398,13 @@ Feature: Calling
     And I see mute call, end call buttons
     And <Contact2> stops all calls to me
     And I end started call
-    And I see missed call indicator in list for contact <Contact2>
+    And I see the state of <Contact2> conversation item is changed
     And I tap on contact name <Contact2>
     Then I see missed call from contact <Contact2>
 
     Examples:
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | user3Name | firefox     | autocall     | 120     |
+      | user1Name | user2Name | user3Name | firefox     | autocall     | 30      |
 
   @C2395 @calling_basic @id2618 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Put app into background after initiating call [PORTRAIT]
@@ -420,7 +425,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | firefox     | 120     |
+      | user1Name | user2Name | firefox     | 30      |
 
   @C2395 @calling_basic @id2618 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Put app into background after initiating call [LANDSCAPE]
@@ -442,7 +447,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | firefox     | 120     |
+      | user1Name | user2Name | firefox     | 30      |
 
   @C2404 @calling_basic @id2627
   Scenario Outline: I want to accept a call through the incoming voice dialogue (Button) [PORTRAIT]
@@ -461,7 +466,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | firefox     | autocall     | 120     |
+      | user1Name | user2Name | firefox     | autocall     | 30      |
 
   @C2404 @calling_basic @id2627
   Scenario Outline: I want to accept a call through the incoming voice dialogue (Button) [LANDSCAPE]
@@ -481,7 +486,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | firefox     | autocall     | 120     |
+      | user1Name | user2Name | firefox     | autocall     | 30      |
 
   @C2401 @calling_basic @id2624
   Scenario Outline: I want to end the call from the ongoing voice overlay [PORTRAIT]
@@ -510,7 +515,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | firefox     | autocall     | 120     |
+      | user1Name | user2Name | firefox     | autocall     | 30      |
 
   @C2401 @calling_basic @id2624
   Scenario Outline: I want to end the call from the ongoing voice overlay [LANDSCAPE]
@@ -540,7 +545,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | firefox     | autocall     | 120     |
+      | user1Name | user2Name | firefox     | autocall     | 30      |
 
   @C2503 @calling_basic @id2361
   Scenario Outline: Verify mute button is absent when you turn from portrait to landscape [PORTRAIT to LANDSCAPE]

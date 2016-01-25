@@ -1,5 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.google.common.base.Throwables;
+import gherkin.lexer.Th;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -40,13 +42,15 @@ public class CallPageSteps {
     /**
      * Verify that calling UI buttons are visible
      *
-     * @throws Exception
+     * @throws Throwable
      * @step. ^I see mute call, end call and speakers buttons$
      */
     @When("^I see mute call, end call and speakers buttons$")
-    public void ISeeCallingPageButtons() throws Exception {
-        Assert.assertTrue("End call button is not visible",
-                getStartedCallPage().isEndCallVisible());
+    public void ISeeCallingPageButtons() throws Throwable {
+        getStartedCallPage().workaroundUITreeRefreshIssue(
+                () -> Assert.assertTrue("End call button is not visible",
+                        getStartedCallPage().isEndCallVisible())
+        );
         Assert.assertTrue("Mute call button is not visible",
                 getStartedCallPage().isMuteCallVisible());
         Assert.assertTrue("Speakers button is not visible",
@@ -57,15 +61,16 @@ public class CallPageSteps {
      * Verify that calling UI buttons are visible (using it for iPad
      * verification step as far speakers button is not shown there)
      *
-     * @throws Exception
+     * @throws Throwable
      * @step. ^I see mute call, end call buttons$
      */
     @When("^I see mute call, end call buttons$")
-    public void ISeeCallingPageButtonsOnIpad() throws Exception {
-        Assert.assertTrue("End call button is not visible",
-                (getStartedCallPage().isEndCallVisible()));
-        Assert.assertTrue("Mute call button is not visible",
-                (getStartedCallPage().isMuteCallVisible()));
+    public void ISeeCallingPageButtonsOnIpad() throws Throwable {
+        getStartedCallPage().workaroundUITreeRefreshIssue(
+                () -> Assert.assertTrue("End call button is not visible",
+                        getStartedCallPage().isEndCallVisible())
+        );
+        Assert.assertTrue("Mute call button is not visible", getStartedCallPage().isMuteCallVisible());
     }
 
     /**

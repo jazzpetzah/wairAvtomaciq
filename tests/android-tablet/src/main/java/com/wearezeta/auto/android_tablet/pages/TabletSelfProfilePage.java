@@ -56,7 +56,7 @@ public class TabletSelfProfilePage extends AndroidTabletPage {
     }
 
     public BufferedImage getScreenshot() throws Exception {
-        return this.getElementScreenshot(getElement(idSelfProfileView)).orElseThrow(IllegalStateException::new);
+        return takeScreenshot().orElseThrow(IllegalStateException::new);
     }
 
     public void tapInTheCenter() throws Exception {

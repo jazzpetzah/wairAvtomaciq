@@ -783,7 +783,7 @@ Feature: People View
     And I input conversation name <GroupChatName> in Search input
     Then I see conversation <GroupChatName> is presented in Search results
     When I tap on conversation <GroupChatName> in search result
-    Then I see group chat page after deletion with users <Contact1>,<Contact2>
+    Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Image       |
@@ -811,7 +811,7 @@ Feature: People View
     And I input conversation name <GroupChatName> in Search input
     Then I see conversation <GroupChatName> is presented in Search results
     When I tap on conversation <GroupChatName> in search result
-    Then I see group chat page after deletion with users <Contact1>,<Contact2>
+    Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:
       | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |

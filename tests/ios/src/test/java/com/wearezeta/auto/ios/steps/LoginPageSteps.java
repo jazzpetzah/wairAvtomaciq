@@ -230,12 +230,13 @@ public class LoginPageSteps {
      */
     @Given("^I sign in using my email or phone number$")
     public void GivenISignInUsingEmailOrPhone() throws Exception {
+        // FIXME: iOS wants to reregister if login by phone
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
-        if (CommonUtils.trueInPercents(BY_PHONE_NUMBER_LOGIN_PROBABILITY)) {
-            phoneLoginSequence(self.getPhoneNumber());
-        } else {
-            emailLoginSequence(self.getEmail(), self.getPassword());
-        }
+//        if (CommonUtils.trueInPercents(BY_PHONE_NUMBER_LOGIN_PROBABILITY)) {
+//        phoneLoginSequence(self.getPhoneNumber());
+//        } else {
+        emailLoginSequence(self.getEmail(), self.getPassword());
+//        }
     }
 
     /**

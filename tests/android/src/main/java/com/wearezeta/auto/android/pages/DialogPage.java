@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import com.wearezeta.auto.common.driver.DummyElement;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -192,6 +193,10 @@ public class DialogPage extends AndroidPage {
         getElement(idPing, "Ping button is not visible").click();
     }
 
+    public void tapPingButtonIfVisible() throws Exception {
+        getElementIfDisplayed(idPing, 2).orElseGet(DummyElement::new).click();
+    }
+
     public void tapSketchBtn() throws Exception {
         getElement(idSketch, "Sketch button is not visible").click();
     }
@@ -352,15 +357,7 @@ public class DialogPage extends AndroidPage {
     }
 
     public void tapConversationDetailsButton() throws Exception {
-        final WebElement participantsBtn = getElement(idParticipantsBtn);
-        participantsBtn.click();
-        final long millisecondsStarted = System.currentTimeMillis();
-        final long maxAnimationDurationMillis = 2000;
-        do {
-            Thread.sleep(200);
-        } while (participantsBtn.getLocation().getY() > 0
-                && System.currentTimeMillis() - millisecondsStarted < maxAnimationDurationMillis);
-        assert participantsBtn.getLocation().getY() < 0;
+        getElement(idParticipantsBtn).click();
     }
 
     public boolean waitForPingMessageWithText(String expectedText)
@@ -461,8 +458,20 @@ public class DialogPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public String getLastMessageFromDialog() throws Exception {
-        return getElement(xpathLastConversationMessage).getText();
+    public boolean isLastMessageEqualTo(String expectedMessage, int timeoutSeconds) throws Exception {
+        final By locator = By.xpath(xpathStrConversationMessageByText.apply(expectedMessage));
+        final long millisecondsStarted = System.currentTimeMillis();
+        do {
+            final Optional<WebElement> msgElement = getElementIfDisplayed(locator);
+            if (msgElement.isPresent()) {
+                final String lastMessage = getElement(xpathLastConversationMessage,
+                        "Cannot find the last message in the dialog", 1).getText();
+                if (expectedMessage.equals(lastMessage)) {
+                    return true;
+                }
+            }
+        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
+        return false;
     }
 
     public Optional<BufferedImage> getRecentPictureScreenshot() throws Exception {

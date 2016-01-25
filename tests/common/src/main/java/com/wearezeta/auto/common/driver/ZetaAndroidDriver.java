@@ -32,19 +32,31 @@ import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements ZetaDriver, HasTouchScreen {
-
-    private volatile boolean isSessionLost = false;
+public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements
+        ZetaDriver, HasTouchScreen {
 
     private static final Logger log = ZetaLogger.getLog(ZetaAndroidDriver.class
             .getSimpleName());
-    public static final String ADB_PREFIX = "";
-    // "/Applications/android-sdk/platform-tools/";
+
+    public static String ADB_PREFIX = "";
+
+    static {
+        try {
+            ADB_PREFIX = CommonUtils
+                    .getAdbPrefixFromConfig(ZetaAndroidDriver.class).orElse("");
+            log.info("ADB Prefix is set to " + ADB_PREFIX);
+        } catch (Exception ex) {
+            log.info("Could not load adb prefix - using empty prefix instead", ex);
+        }
+    }
+
+    private volatile boolean isSessionLost = false;
 
     private RemoteTouchScreen touch;
     private String androidOSVersion;
 
     private enum SurfaceOrientation {
+
         ROTATION_0(0), ROTATION_90(1), ROTATION_180(2), ROTATION_270(3);
 
         final int code;
@@ -85,19 +97,21 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
 
     private void setSessionLost(boolean isSessionLost) {
         if (isSessionLost != this.isSessionLost) {
-            log.warn(String.format("Changing isSessionLost to %s", isSessionLost));
+            log.warn(String.format("Changing isSessionLost to %s",
+                    isSessionLost));
         }
         this.isSessionLost = isSessionLost;
     }
 
-    private static int getNextCoord(double startC, double endC, double current, double duration) {
+    private static int getNextCoord(double startC, double endC, double current,
+            double duration) {
         return (int) Math.round(startC + (endC - startC) / duration * current);
     }
 
     private final static int SWIPE_STEP_DURATION_MILLISECONDS = 40;
 
     private void swipeViaTouchActions(int startx, int starty, int endx,
-                                      int endy, int durationMilliseconds) {
+            int endy, int durationMilliseconds) {
         int duration = 1;
         if (durationMilliseconds > SWIPE_STEP_DURATION_MILLISECONDS) {
             duration = (durationMilliseconds % SWIPE_STEP_DURATION_MILLISECONDS == 0) ? (durationMilliseconds / SWIPE_STEP_DURATION_MILLISECONDS)
@@ -121,7 +135,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
 
     @Override
     public void swipe(int startx, int starty, int endx, int endy,
-                      int durationMilliseconds) {
+            int durationMilliseconds) {
         if (androidOSVersion.compareTo("4.3") < 0) {
             // adb swipe command under 4.2 does not support duration parameter
             // and this fucks up all the tests
@@ -131,7 +145,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
         }
 
         final String adbCommand = String.format(ADB_PREFIX
-                        + "adb shell input touchscreen swipe %d %d %d %d %d", startx,
+                + "adb shell input touchscreen swipe %d %d %d %d %d", startx,
                 starty, endx, endy, durationMilliseconds);
         log.debug("ADB swipe: " + adbCommand);
         try {
@@ -189,8 +203,8 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
         final String pathOnPhone = String.format("/sdcard/%s.png", CommonUtils
                 .generateGUID().replace("-", "").substring(0, 8));
         final String adbCommandsChain = String.format(ADB_PREFIX
-                        + "adb shell screencap -p %1$s; " + ADB_PREFIX
-                        + "adb pull %1$s %2$s; " + ADB_PREFIX + "adb shell rm %1$s",
+                + "adb shell screencap -p %1$s; " + ADB_PREFIX
+                + "adb pull %1$s %2$s; " + ADB_PREFIX + "adb shell rm %1$s",
                 pathOnPhone, result.getCanonicalPath());
         Runtime.getRuntime()
                 .exec(new String[]{"/bin/bash", "-c", adbCommandsChain})
@@ -214,8 +228,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
     }
 
     /**
-     * Workaround for selendroid when it cannot take a screenshot of the screen
-     * if main app is not in foreground
+     * Workaround for selendroid when it cannot take a screenshot of the screen if main app is not in foreground
      *
      * @return Selenium Response instance
      */
@@ -241,7 +254,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
     }
 
     private byte[] fixScreenshotOrientation(final byte[] initialScreenshot,
-                                            SurfaceOrientation currentOrientation) throws IOException {
+            SurfaceOrientation currentOrientation) throws IOException {
         if (currentOrientation != SurfaceOrientation.ROTATION_0) {
             BufferedImage screenshotImage = ImageIO
                     .read(new ByteArrayInputStream(initialScreenshot));
@@ -256,7 +269,8 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
     }
 
     @Override
-    public <X> X getScreenshotAs(OutputType<X> outputType) throws WebDriverException {
+    public <X> X getScreenshotAs(OutputType<X> outputType)
+            throws WebDriverException {
         final Object result = takeFullScreenShotWithAdb().getValue();
         final String base64EncodedPng = new String((byte[]) result);
         return outputType.convertFromBase64Png(base64EncodedPng);
@@ -275,13 +289,13 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
     }
 
     private boolean isSessionLostBecause(Throwable e) {
-        return (e instanceof UnreachableBrowserException) || (e instanceof SessionNotFoundException);
+        return (e instanceof UnreachableBrowserException)
+                || (e instanceof SessionNotFoundException);
     }
 
     /**
-     * This is workaround for some Selendroid issues when driver just generates
-     * unknown error when some transition in AUT is currently in progress. Retry
-     * helps
+     * This is workaround for some Selendroid issues when driver just generates unknown error when some transition in AUT is
+     * currently in progress. Retry helps
      *
      * @param driverCommand
      * @param parameters
@@ -289,11 +303,15 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
      */
     @Override
     public Response execute(String driverCommand, Map<String, ?> parameters) {
-        if (this.isSessionLost() && !driverCommand.equals(DriverCommand.SCREENSHOT)) {
+        if (this.isSessionLost()
+                && !driverCommand.equals(DriverCommand.SCREENSHOT)) {
             throw new IllegalStateException(
-                    String.format("Appium session is dead. Skipping execution of '%s' command...", driverCommand));
+                    String.format(
+                            "Appium session is dead. Skipping execution of '%s' command...",
+                            driverCommand));
         }
-        final Callable<Response> task = () -> super.execute(driverCommand, parameters);
+        final Callable<Response> task = () -> super.execute(driverCommand,
+                parameters);
         final Future<Response> future = getPool().submit(task);
         try {
             return future.get(MAX_COMMAND_DURATION, TimeUnit.SECONDS);
@@ -309,10 +327,11 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
                         response.setStatus(HttpStatus.SC_OK);
                         return response;
                     }
-                    if (e.getCause().getMessage().contains(SERVER_SIDE_ERROR_SIGNATURE)) {
-                        final long millisecondsStarted = System.currentTimeMillis();
-                        while (System.currentTimeMillis() - millisecondsStarted <=
-                                DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS) {
+                    if (e.getCause().getMessage()
+                            .contains(SERVER_SIDE_ERROR_SIGNATURE)) {
+                        final long millisecondsStarted = System
+                                .currentTimeMillis();
+                        while (System.currentTimeMillis() - millisecondsStarted <= DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS) {
                             try {
                                 Thread.sleep(300);
                             } catch (InterruptedException e1) {
@@ -324,16 +343,18 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
                                 if (isSessionLostBecause(e1)) {
                                     setSessionLost(true);
                                 }
-                                if (!e1.getMessage().contains(SERVER_SIDE_ERROR_SIGNATURE)) {
+                                if (!e1.getMessage().contains(
+                                        SERVER_SIDE_ERROR_SIGNATURE)) {
                                     throw e1;
                                 }
                             }
                         } // while have time
                     } // if getMessage contains
                     log.error(String.format(
-                            "Android driver is still not available after %s seconds timeout. " +
-                                    "The recent webdriver command was '%s'",
-                            DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS / 1000, driverCommand));
+                            "Android driver is still not available after %s seconds timeout. "
+                            + "The recent webdriver command was '%s'",
+                            DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS / 1000,
+                            driverCommand));
                 }
                 Throwables.propagate(e.getCause());
             } else {
@@ -389,15 +410,17 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
         Pattern p = Pattern.compile(regex);
         Matcher urlMatcher = p.matcher(output);
         if (urlMatcher.find()) {
-            return SurfaceOrientation.getByCode(Integer.parseInt(urlMatcher.group(1)));
+            return SurfaceOrientation.getByCode(Integer.parseInt(urlMatcher
+                    .group(1)));
         }
-        throw new IllegalStateException(String.format("Surface orientation cannot be parsed from the output\n%s",
+        throw new IllegalStateException(String.format(
+                "Surface orientation cannot be parsed from the output\n%s",
                 output));
     }
 
     /**
-     * Workaround for Selendroid issue when correct screen orientation is
-     * returned only for the step where it is actually changed :-@
+     * Workaround for Selendroid issue when correct screen orientation is returned only for the step where it is actually
+     * changed :-@
      */
     @Override
     public ScreenOrientation getOrientation() {
@@ -416,9 +439,8 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
     }
 
     /**
-     * This method requires the on-screen keyboard to be already visible. Also,
-     * it's important, that keyboard look and feel is set to Google Keyboard ->
-     * Holo White
+     * This method requires the on-screen keyboard to be already visible. Also, it's important, that keyboard look and feel is
+     * set to Google Keyboard -> Holo White
      *
      * @throws Exception
      */

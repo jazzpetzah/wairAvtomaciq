@@ -205,19 +205,17 @@ public class CallingPageSteps {
         int actualUsersCount;
         int ntries = 0;
         do {
-            actualUsersCount = getCallingOverlayPage()
-                    .numberOfParticipantsInGroupCall();
+            actualUsersCount = getCallingOverlayPage().numberOfParticipantsInGroupCall();
             if (actualUsersCount == expectedUsersCount) {
                 return;
             } else {
-                Thread.sleep(3000);
+                Thread.sleep(1500);
                 ntries++;
             }
         } while (ntries < 3);
-        throw new AssertionError(
-                String.format(
-                        "The actual count of users in call (%s) does not equal to the expected count (%s)",
-                        actualUsersCount, expectedUsersCount));
+        throw new AssertionError(String.format(
+                "The actual count of users in call %s does not equal to the expected count %s",
+                actualUsersCount, expectedUsersCount));
     }
 
     /**

@@ -104,21 +104,23 @@ Feature: Calling
   Scenario Outline: Verify missed call indicator appearance (list)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
-    Given User <Name> change accent color to <Color>
+    Given User Myself removes his avatar picture
     Given I sign in using my email or phone number
     Given I see conversations list
-    When <Contact> calls me using <CallBackend>
-    And I wait for 5 seconds
+    When I remember the state of <Contact> conversation item
+    And <Contact> calls me using <CallBackend>
     And <Contact> stops all calls to me
-    Then I see missed call indicator in list for contact <Contact>
-    Given User <Contact> sends <Number> encrypted messages to user Myself
-    Then I see missed call indicator in list for contact <Contact>
-    Given User <Contact1> sends <Number> encrypted messages to user Myself
-    Then I see missed call indicator got moved down in list for contact <Contact>
+    Then I see the state of <Contact> conversation item is changed
+    When I remember the state of <Contact> conversation item
+    And User <Contact> sends <Number> encrypted messages to user Myself
+    Then I see the state of <Contact> conversation item is not changed
+    When I remember the state of <Contact> conversation item
+    And User <Contact1> sends <Number> encrypted messages to user Myself
+    Then I see the state of <Contact> conversation item is not changed
 
     Examples:
-      | Name      | Contact   | Contact1  | Number | Color           | CallBackend |
-      | user1Name | user2Name | user3Name | 2      | StrongLimeGreen | autocall    |
+      | Name      | Contact   | Contact1  | Number | CallBackend |
+      | user1Name | user2Name | user3Name | 2      | autocall    |
 
   @C2069 @calling_basic @id882
   Scenario Outline: In zeta call for more than 15 mins
@@ -203,15 +205,20 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | firefox     | 60      |
+      | user1Name | user2Name | firefox     | 30      |
 
   @C3164 @regression @id2645
   Scenario Outline: 3rd person tries to call me after I initiate a call to somebody
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
+    Given User Myself removes his avatar picture
     Given <Contact1> starts waiting instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
+    # This is to make sure that this convo is selected before to take a screenshot
+    And I tap on contact name <Contact1>
+    And I navigate back to conversations list
+    And I remember the state of <Contact2> conversation item
     And I tap on contact name <Contact1>
     And I click plus button next to text input
     And I press call button
@@ -225,14 +232,14 @@ Feature: Calling
     And I see mute call, end call buttons
     And <Contact2> stops all calls to me
     And I end started call
-    And I return to the chat list
-    And I see missed call indicator in list for contact <Contact2>
+    And I navigate back to conversations list
+    And I see the state of <Contact2> conversation item is changed
     And I tap on contact name <Contact2>
     Then I see missed call from contact <Contact2>
 
     Examples:
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | user3Name | firefox     | autocall     | 120     |
+      | user1Name | user2Name | user3Name | firefox     | autocall     | 30      |
 
   @C2082 @calling_basic @id2646 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Put app into background after initiating call
@@ -252,7 +259,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | firefox     | 120     |
+      | user1Name | user2Name | firefox     | 30      |
 
   @C2077 @calling_basic @id933
   Scenario Outline: I want to accept a call through the incoming voice dialogue (Button)
@@ -271,7 +278,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | firefox     | autocall     | 120     |
+      | user1Name | user2Name | firefox     | autocall     | 30      |
 
   @C2074 @calling_basic @id913
   Scenario Outline: I want to end the call from the ongoing voice overlay
@@ -300,7 +307,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | firefox     | autocall     | 120     |
+      | user1Name | user2Name | firefox     | autocall     | 30      |
 
   @C2046 @regression @rc @IPv6 @id2682
   Scenario Outline: Verify accepting group call in foreground
@@ -328,7 +335,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName      | CallBackend | CallBackend2 | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | firefox     | autocall     | 5               |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | firefox     | autocall     | 4               |
 
   @C2047 @regression @id2683
   Scenario Outline: Verify ignoring group call in foreground
@@ -371,8 +378,6 @@ Feature: Calling
     And I accept incoming call
     And I see Accept second call alert
     And I press Accept button on alert
-    And I swipe right on Dialog page
-    And I tap on group chat with name <GroupChatName>
     Then I see <NumberOfAvatars> avatars in the group call bar
     Then I see mute call, end call and speakers buttons
 
@@ -407,7 +412,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | CallBackend2 | ChatName | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | RenameGROUPCALL | firefox     | autocall     | NewName  | 5               |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | RenameGROUPCALL | firefox     | autocall     | NewName  | 4               |
 
   @C2058 @staging @id2696
   Scenario Outline: Verify leaving group conversation during the group call
@@ -468,7 +473,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | CallBackend2 | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | RejoinGROUPCALL | firefox     | autocall     | 5               |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | RejoinGROUPCALL | firefox     | autocall     | 4               |
 
   @C2054 @regression @id2690
   Scenario Outline: (ZIOS-5534)Verify receiving 1-to-1 call during group call (and accepting it)
@@ -501,7 +506,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars | NumberOf1on1CallAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | GROUPCALL     | firefox     | autocall     | 5               | 2                       |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | GROUPCALL     | firefox     | autocall     | 4               | 2                       |
 
   @C2065 @regression @rc @IPv6 @id3270
   Scenario Outline: Verify possibility of starting group call
@@ -542,7 +547,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | WaitGROUPCALL | firefox     | autocall     | 5               |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | WaitGROUPCALL | firefox     | autocall     | 4               |
 
   @C2059 @regression @id2697
   Scenario Outline: Verify removing people from the conversation who joined the group call
@@ -575,7 +580,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | NumberOfAvatars | NewNumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | RemoveGROUPCALL | firefox     | 5               | 4                  |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | RemoveGROUPCALL | firefox     | 4               | 3                  |
 
   @C2039 @regression @id2673 @noAcceptAlert
   Scenario Outline: Verify impossibility to connect 6th person to the call
@@ -604,7 +609,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | FullGROUPCALL | firefox     | autocall     | 60      |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | FullGROUPCALL | firefox     | autocall     | 30      |
 
   @C2068 @calling_basic @rc @id880 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Verify putting client to the background during 1-to-1 call
@@ -653,4 +658,4 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName  | CallBackend | CallBackend2 | NumberOfAvatars | Timeout |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | AddMeGROUPCALL | chrome      | autocall     | 5               | 60      |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | AddMeGROUPCALL | chrome      | autocall     | 4               | 30      |

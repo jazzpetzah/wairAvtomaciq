@@ -5,19 +5,17 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import com.wearezeta.auto.ios.tools.IRunnableWithException;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.ios.tools.IOSKeyboard;
-import com.wearezeta.auto.common.BasePage;
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
@@ -135,27 +133,6 @@ public abstract class IOSPage extends BasePage {
         getElement(nameEditingItemPaste, "Paste popup is not visible").click();
     }
 
-    @Override
-    public Optional<BufferedImage> getElementScreenshot(WebElement element)
-            throws Exception {
-        Point elementLocation = element.getLocation();
-        Dimension elementSize = element.getSize();
-        int x = elementLocation.x * 2;
-        int y = elementLocation.y * 2;
-        int w = elementSize.width * 2;
-        Optional<BufferedImage> screenshot = takeScreenshot();
-        if (screenshot.isPresent()) {
-            if (x + w > screenshot.get().getWidth())
-                w = screenshot.get().getWidth() - x;
-            int h = elementSize.height * 2;
-            if (y + h > screenshot.get().getHeight())
-                h = screenshot.get().getHeight() - y;
-            return Optional.of(screenshot.get().getSubimage(x, y, w, h));
-        } else {
-            return Optional.empty();
-        }
-    }
-
     public void inputStringFromKeyboard(String returnKey) throws Exception {
         IOSKeyboard keyboard = IOSKeyboard.getInstance();
         keyboard.typeString(returnKey, this.getDriver());
@@ -214,6 +191,7 @@ public abstract class IOSPage extends BasePage {
             CommonUtils.executeUIAppleScript(new String[]{
                     "tell application \"System Events\"",
                     "tell application \"Simulator\" to activate",
+                    "do shell script \"/bin/sleep 3\"",
                     "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
                     "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
                     "end tell"}).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
@@ -261,17 +239,24 @@ public abstract class IOSPage extends BasePage {
                 throw new IllegalArgumentException(String.format("Unknown orientation '%s'",
                         orientation));
         }
-
     }
 
-    public void rotateDeviceToRefreshElementsTree() throws Exception {
-        if (getOrientation() == ScreenOrientation.PORTRAIT) {
-            rotateLandscape();
-            rotatePortrait();
-        } else {
-            rotatePortrait();
-            rotateLandscape();
+    public void workaroundUITreeRefreshIssue(IRunnableWithException f) throws Throwable {
+        try {
+            f.run();
+            return;
+        } catch (Throwable e) {
+            log.warn("UI tree seems to be corrupted. Trying to refresh...");
+            this.printPageSource();
+            if (getOrientation() == ScreenOrientation.PORTRAIT) {
+                rotateLandscape();
+                rotatePortrait();
+            } else {
+                rotatePortrait();
+                rotateLandscape();
+            }
         }
+        f.run();
     }
 
     private void rotateLandscape() throws Exception {
@@ -282,7 +267,7 @@ public abstract class IOSPage extends BasePage {
         this.getDriver().rotate(ScreenOrientation.PORTRAIT);
     }
 
-    public ScreenOrientation getOrientation() throws Exception {
+    private ScreenOrientation getOrientation() throws Exception {
         return this.getDriver().getOrientation();
     }
 
@@ -300,6 +285,7 @@ public abstract class IOSPage extends BasePage {
             CommonUtils.executeUIAppleScript(new String[]{
                     "tell application \"System Events\"",
                     "tell application \"Simulator\" to activate",
+                    "do shell script \"/bin/sleep 3\"",
                     "tell application \"System Events\" to keystroke \"l\" using {command down}",
                     "end tell"
             }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
@@ -308,6 +294,7 @@ public abstract class IOSPage extends BasePage {
             CommonUtils.executeUIAppleScript(new String[]{
                     "tell application \"System Events\"",
                     "tell application \"Simulator\" to activate",
+                    "do shell script \"/bin/sleep 3\"",
                     "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
                     "end tell"
             }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
@@ -349,5 +336,23 @@ public abstract class IOSPage extends BasePage {
             log.debug(getDriver().getPageSource());
             throw e;
         }
+    }
+
+    /**
+     * We have to count the fact that Simulator window might be scaled
+     *
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Optional<BufferedImage> takeScreenshot() throws Exception {
+        final BufferedImage screen = DriverUtils.takeFullScreenShot(this.getDriver()).orElseThrow(
+                () -> new IllegalStateException("Appium has failed to take full screen shot"));
+        final float currentScreenHeight = getDriver().manage().window().getSize().getHeight();
+        final float realScreenHeight = screen.getHeight();
+        if ((int)currentScreenHeight != (int)realScreenHeight) {
+            return Optional.of(ImageUtil.resizeImage(screen, currentScreenHeight / realScreenHeight));
+        }
+        return Optional.of(screen);
     }
 }

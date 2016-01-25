@@ -281,7 +281,7 @@ Feature: Conversation View
     And I click on the GIF button
     Then I see giphy preview page
     When I click on the giphy send button
-    And I see new photo in the dialog
+    Then I see new photo in the dialog
     And Last message is <Message> · via giphy.com
 
     Examples:

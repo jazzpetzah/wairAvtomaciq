@@ -464,9 +464,9 @@ public class CommonIOSSteps {
 
     @Given("^User (.*) sends (\\d+) (encrypted )?messages? to (user|group conversation) (.*)$")
     public void UserSendXMessagesToConversation(String msgFromUserNameAlias,
-                                              int msgsCount, String areEncrypted,
-                                              String conversationType,
-                                              String conversationName) throws Exception {
+                                                int msgsCount, String areEncrypted,
+                                                String conversationType,
+                                                String conversationName) throws Exception {
         for (int i = 0; i < msgsCount; i++) {
             if (conversationType.equals("user")) {
                 // 1:1 conversation
@@ -712,5 +712,17 @@ public class CommonIOSSteps {
     @When("^I reset Wire app$")
     public void ReturnToWireApp() throws Exception {
         pagesCollecton.getCommonPage().resetApplication();
+    }
+
+    /**
+     * Delete self profile picture
+     *
+     * @param nameAlias user name/alias
+     * @throws Exception
+     * @step. ^User (.*) removes his avatar picture$
+     */
+    @Given("^User (.*) removes his avatar picture$")
+    public void UserRemovesAvatarPicture(String nameAlias) throws Exception {
+        commonSteps.UserDeletesAvatarPicture(nameAlias);
     }
 }
