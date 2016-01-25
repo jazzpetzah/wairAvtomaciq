@@ -207,7 +207,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | firefox     | 60      |
+      | user1Name | user2Name | firefox     | 30      |
 
   @C3164 @regression @id2645
   Scenario Outline: 3rd person tries to call me after I initiate a call to somebody
@@ -241,7 +241,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | user3Name | firefox     | autocall     | 120     |
+      | user1Name | user2Name | user3Name | firefox     | autocall     | 30      |
 
   @C2082 @calling_basic @id2646 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Put app into background after initiating call
@@ -337,7 +337,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName      | CallBackend | CallBackend2 | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | firefox     | autocall     | 5               |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | firefox     | autocall     | 4               |
 
   @C2047 @regression @id2683
   Scenario Outline: Verify ignoring group call in foreground
@@ -414,7 +414,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | CallBackend2 | ChatName | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | RenameGROUPCALL | firefox     | autocall     | NewName  | 5               |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | RenameGROUPCALL | firefox     | autocall     | NewName  | 4               |
 
   @C2058 @staging @id2696
   Scenario Outline: Verify leaving group conversation during the group call
@@ -475,7 +475,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | CallBackend2 | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | RejoinGROUPCALL | firefox     | autocall     | 5               |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | RejoinGROUPCALL | firefox     | autocall     | 4               |
 
   @C2054 @regression @id2690
   Scenario Outline: (ZIOS-5534)Verify receiving 1-to-1 call during group call (and accepting it)
@@ -508,7 +508,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars | NumberOf1on1CallAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | GROUPCALL     | firefox     | autocall     | 5               | 2                       |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | GROUPCALL     | firefox     | autocall     | 4               | 2                       |
 
   @C2065 @regression @rc @IPv6 @id3270
   Scenario Outline: Verify possibility of starting group call
@@ -550,7 +550,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | WaitGROUPCALL | firefox     | autocall     | 5               |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | WaitGROUPCALL | firefox     | autocall     | 4               |
 
   @C2059 @regression @id2697
   Scenario Outline: Verify removing people from the conversation who joined the group call
@@ -583,7 +583,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | NumberOfAvatars | NewNumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | RemoveGROUPCALL | firefox     | 5               | 4                  |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | RemoveGROUPCALL | firefox     | 4               | 3                  |
 
   @C2039 @regression @id2673 @noAcceptAlert
   Scenario Outline: Verify impossibility to connect 6th person to the call
@@ -612,7 +612,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | FullGROUPCALL | firefox     | autocall     | 60      |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | FullGROUPCALL | firefox     | autocall     | 30      |
 
   @C2068 @calling_basic @rc @id880 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Verify putting client to the background during 1-to-1 call
@@ -661,4 +661,4 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName  | CallBackend | CallBackend2 | NumberOfAvatars | Timeout |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | AddMeGROUPCALL | chrome      | autocall     | 5               | 60      |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | AddMeGROUPCALL | chrome      | autocall     | 4               | 30      |
