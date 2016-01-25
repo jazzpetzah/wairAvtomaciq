@@ -106,7 +106,9 @@ public class ContactListPage extends IOSPage {
     }
 
     public void tapOnName(String name) throws Exception {
-        findNameInContactList(name).orElseThrow(IllegalStateException::new).click();
+        findNameInContactList(name).orElseThrow(
+                () -> new IllegalStateException(String.format("The conversation '%s' is not visible in the list", name))
+        ).click();
     }
 
     public String getFirstDialogName() throws Exception {
@@ -260,7 +262,7 @@ public class ContactListPage extends IOSPage {
     public Optional<String> getSelectedConversationCellValue(String conversation)
             throws Exception {
         final By locator = By.xpath(xpathStrSelectedConversationEntryByName.apply(conversation));
-        final Optional<WebElement> cell =  getElementIfDisplayed(locator);
+        final Optional<WebElement> cell = getElementIfDisplayed(locator);
         if (cell.isPresent()) {
             return Optional.of(cell.get().getAttribute("value"));
         }

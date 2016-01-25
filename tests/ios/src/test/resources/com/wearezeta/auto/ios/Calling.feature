@@ -370,10 +370,9 @@ Feature: Calling
     Given <Contact4> accepts next incoming call automatically
     Given I sign in using my email or phone number
     Given I see conversations list
+    And I tap on contact name <Contact1>
     When <Contact1> calls me using <CallBackend2>
     And I accept incoming call
-    And I dont see calling page
-    And I tap on contact name <Contact1>
     Then I see mute call, end call and speakers buttons
     When <Contact2> calls <GroupChatName> using <CallBackend2>
     And I see incoming group calling message
@@ -399,7 +398,6 @@ Feature: Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And <Contact2> calls <GroupChatName> using <CallBackend2>
     And I see incoming group calling message
     And I accept incoming call
@@ -430,7 +428,6 @@ Feature: Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And <Contact1> calls <GroupChatName> using <CallBackend2>
     And I see incoming group calling message
     And I accept incoming call
@@ -459,7 +456,6 @@ Feature: Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And <Contact2> calls <GroupChatName> using <CallBackend2>
     And I see incoming group calling message
     And I accept incoming call
