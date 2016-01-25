@@ -77,6 +77,30 @@ Feature: E2EE
       | Name      | Contact1   | Contact2  | EncryptedMessage | SimpleMessage | GroupChatName |
       | user1Name | user2Name  | user3Name | EncryptedYo      | SimpleYo      | HybridGroup   |
 
+  @C3234 @staging
+  Scenario Outline: Verify you receive encrypted content in 1:1 conversation after switching online
+    Given There are 2 users where <Name> is me
+    Given <Contact1> is connected to me
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    And I tap on contact name <Contact1>
+    When Contact <Contact1> sends encrypted message <Message1> to user <Name>
+    Then Last message is <Message1>
+    When I enable Airplane mode on the device
+    And User <Contact1> sends encrypted image <Picture> to single user conversation <Name>
+    Then I do not see new picture in the dialog
+    When Contact <Contact1> sends encrypted message <Message2> to user <Name>
+    Then Last message is <Message1>
+    When I disable Airplane mode on the device
+    And I scroll to the bottom of conversation view
+    Then Last message is <Message2>
+    And I see new picture in the dialog
+
+    Examples:
+      | Name      | Contact1  | Message1 | Message2 | Picture     |
+      | user1Name | user2Name | Msg1     | Msg2     | testing.jpg |
+
   @C3242 @staging
   Scenario Outline: Verify you can receive encrypted and non-encrypted images in group chat
     Given There are 3 users where <Name> is me
@@ -86,13 +110,13 @@ Feature: E2EE
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When User <Contact1> sends encrypted image <ImageName> to group conversation <GroupChatName>
-    And User <Contact1> sends image <ImageName> to group conversation <GroupChatName>
+    And User <Contact1> sends image <ImageName2> to group conversation <GroupChatName>
     And I tap on contact name <GroupChatName>
     And I scroll to the bottom of conversation view
     Then I see non-encrypted image 1 time in the conversation view
     And I see encrypted image 1 time in the conversation view
 
     Examples:
-      | Name      | Contact1  | Contact2  | ImageName   | GroupChatName |
-      | user1Name | user2Name | user3Name | testing.jpg | GroupConvo    |
+      | Name      | Contact1  | Contact2  | ImageName   | ImageName2    | GroupChatName |
+      | user1Name | user2Name | user3Name | testing.jpg | hdpicture.jpg | GroupConvo    |
 
