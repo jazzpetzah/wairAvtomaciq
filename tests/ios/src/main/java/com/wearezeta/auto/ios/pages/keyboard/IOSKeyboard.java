@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios.pages.keyboard;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Future;
@@ -45,13 +44,14 @@ public class IOSKeyboard {
 
     private KeyboardState getInitialState(List<KeyboardState> statesList) throws Exception {
         final String emptyElement = "[object UIAElementNil]";
-        final Function<String, String> getState = firstChar ->
+        final Function<String, String> getStateScript = firstChar ->
                 String.format("target.frontMostApp().keyboard().keys().firstWithName(\"%s\").toString()",
                         firstChar);
 
         for (KeyboardState state : statesList) {
             final String firstStateChar = state.getFirstCharacter();
-            final String firstCharResponse = getDriver().executeScript(getState.apply(firstStateChar)).toString();
+            final String firstCharResponse = getDriver().executeScript(
+                    getStateScript.apply(firstStateChar)).toString();
             if (!firstCharResponse.equals(emptyElement)) {
                 return state;
             }
@@ -62,12 +62,14 @@ public class IOSKeyboard {
 
     public void typeString(String message) throws Exception {
         final WebElement keyboard = DriverUtils.verifyPresence(getDriver(), xpathKeyboardLocator);
+
+        final KeyboardStateAlpha keyboardStateAlpha = new KeyboardStateAlpha(getDriver(), keyboard);
+        final KeyboardStateAlphaCaps keyboardStateAlphaCaps = new KeyboardStateAlphaCaps(getDriver(), keyboard);
+        final KeyboardStateNumbers keyboardStateNumbers = new KeyboardStateNumbers(getDriver(), keyboard);
+        final KeyboardStateSpecial keyboardStateSpecial = new KeyboardStateSpecial(getDriver(), keyboard);
         final List<KeyboardState> statesList = new ArrayList<>();
         Collections.addAll(statesList,
-                new KeyboardStateAlpha(getDriver(), keyboard),
-                new KeyboardStateAlphaCaps(getDriver(), keyboard),
-                new KeyboardStateNumbers(getDriver(), keyboard),
-                new KeyboardStateSpecial(getDriver(), keyboard));
+                keyboardStateAlpha, keyboardStateAlphaCaps, keyboardStateNumbers, keyboardStateSpecial);
 
         String messageChar;
         KeyboardState currentState = getInitialState(statesList);
@@ -98,6 +100,11 @@ public class IOSKeyboard {
             }
             keyboard.findElement(keyLocator).click();
             Thread.sleep(DriverUtils.SINGLE_TAP_DURATION);
+
+            if (currentState.equals(keyboardStateAlphaCaps)) {
+                // Shift state is reset after uppercase character is typed
+                currentState = keyboardStateAlpha;
+            }
         }
     }
 }

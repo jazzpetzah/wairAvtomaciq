@@ -28,7 +28,7 @@ Feature: Sign In
       | wrongwrong | wrong         |
 
   @C1135 @id1479 @id1403 @regression @rc
-  Scenario Outline: Verify possibility of reseting password (welcome page)
+  Scenario Outline: Verify possibility of password reset (welcome page)
     Given There is 1 user where <Name> is me
     Given I see sign in screen
     And I tap I HAVE AN ACCOUNT button

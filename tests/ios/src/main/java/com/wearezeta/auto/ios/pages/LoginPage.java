@@ -188,7 +188,6 @@ public class LoginPage extends IOSPage {
 
     public void changeURLInBrowser(String URL) throws Exception {
         DriverUtils.tapByCoordinates(getDriver(), getElement(xpathSafariURLButton));
-        this.inputStringFromKeyboard("a+b");
         this.inputStringFromKeyboard(URL);
         DriverUtils.tapByCoordinates(getDriver(), getElement(xpathSafariGoButton));
     }
