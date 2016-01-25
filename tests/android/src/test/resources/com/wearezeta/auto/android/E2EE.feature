@@ -80,17 +80,17 @@ Feature: E2EE
   @C3234 @staging
   Scenario Outline: Verify you receive encrypted content in 1:1 conversation after switching online
     Given There are 2 users where <Name> is me
-    Given <Contact1> is connected to me
+    Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    And I tap on contact name <Contact1>
-    When Contact <Contact1> sends encrypted message <Message1> to user <Name>
+    When I tap on contact name <Contact1>
+    And Contact <Contact1> sends encrypted message <Message1> to user Myself
     Then Last message is <Message1>
     When I enable Airplane mode on the device
-    And User <Contact1> sends encrypted image <Picture> to single user conversation <Name>
+    And User <Contact1> sends encrypted image <Picture> to single user conversation Myself
     Then I do not see new picture in the dialog
-    When Contact <Contact1> sends encrypted message <Message2> to user <Name>
+    When Contact <Contact1> sends encrypted message <Message2> to user Myself
     Then Last message is <Message1>
     When I disable Airplane mode on the device
     And I scroll to the bottom of conversation view
