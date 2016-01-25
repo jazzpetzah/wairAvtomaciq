@@ -269,7 +269,6 @@ Feature: Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And <Contact> calls me using <CallBackend2>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
@@ -323,7 +322,6 @@ Feature: Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And <Contact1> calls <GroupChatName> using <CallBackend2>
     And I see incoming group calling message
     And I accept incoming call
@@ -347,7 +345,6 @@ Feature: Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And <Contact1> calls <GroupChatName> using <CallBackend2>
     And I see incoming group calling message
     And I ignore incoming call
