@@ -1,7 +1,7 @@
 Feature: Connect
 
   @C1034 @regression @rc @id2541 @ZIOS-5466
-  Scenario Outline: Send invitation message to a user
+  Scenario Outline: (ZIOS-5601)Send invitation message to a user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given I sign in using my email or phone number
@@ -213,7 +213,6 @@ Feature: Connect
     And I click close Invite list button
     And I click clear button
     And I tap on contact name <Contact>
-    And I see dialog page
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
