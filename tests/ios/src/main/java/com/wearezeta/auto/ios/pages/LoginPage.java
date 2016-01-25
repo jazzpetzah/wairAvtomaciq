@@ -87,6 +87,7 @@ public class LoginPage extends IOSPage {
     public void switchToEmailLogin() throws Exception {
         final WebElement emailSwitchBtn = getElement(nameSwitchToEmailLogin);
         emailSwitchBtn.click();
+        //Work around: to click again, when it didnt got clicked the first time
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameSwitchToEmailLogin)) {
             emailSwitchBtn.click();
         }

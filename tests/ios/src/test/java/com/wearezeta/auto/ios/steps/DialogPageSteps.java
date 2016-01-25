@@ -645,8 +645,7 @@ public class DialogPageSteps {
      */
     @When("^I type tag for giphy preview (.*) and open preview overlay$")
     public void ITypeGiphyTagAndOpenPreview(String message) throws Exception {
-        getDialogPage().typeConversationMessage(message);
-        getDialogPage().sendSpaceKeyToInput();
+        getDialogPage().typeMessageAndSendSpaceKey(message);
         getDialogPage().openGifPreviewPage();
     }
 

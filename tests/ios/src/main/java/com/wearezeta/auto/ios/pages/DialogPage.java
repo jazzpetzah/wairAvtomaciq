@@ -402,10 +402,17 @@ public class DialogPage extends IOSPage {
         }
     }
 
-    public void sendSpaceKeyToInput() throws Exception {
+    public void typeMessageAndSendSpaceKey(String message) throws Exception {
         final WebElement convoInput =
                 getElement(nameConversationCursorInput, "Conversation input is not visible after the timeout");
-        convoInput.sendKeys(" ");
+        convoInput.click();
+        try {
+            ((IOSElement) convoInput).setValue(message);
+            //Work around: we need to send an extra space to see the giph button
+            convoInput.sendKeys(" ");
+        } catch (WebDriverException e) {
+            // Ignore silently
+        }
     }
 
     public void waitLoremIpsumText() throws Exception {
@@ -534,5 +541,6 @@ public class DialogPage extends IOSPage {
     public boolean isUserAvatarNextToInputVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathUserAvatarNextToInput);
     }
+
 
 }
