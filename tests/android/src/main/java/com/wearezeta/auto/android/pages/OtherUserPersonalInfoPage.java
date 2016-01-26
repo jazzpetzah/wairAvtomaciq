@@ -12,6 +12,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import java.util.stream.Collectors;
 
 public class OtherUserPersonalInfoPage extends AndroidPage {
 
@@ -34,6 +35,13 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     private static final Function<String, String> xpathSingleParticipantEmailByText = text -> String
             .format("//*[@id='ttv__single_participants__sub_header' and @value='%s']",
                     text);
+
+    private static final Function<String, String> xpathSingleParticipantTabByText = text -> String
+            .format("//*[@value='%s']",
+                    text);
+
+    private static final By idParticipantDevices = By.id("ttv__row_otr_device");
+
 
     private static final Function<String, String> xpathParticipantAvatarByName = name -> String
             .format("//*[@id='cv__group__adapter' and ./parent::*/*[@value='%s']]",
@@ -87,6 +95,24 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
                 By.xpath(xpathConvOptionsMenuItemByName.apply("SILENCE")),
                 By.xpath(xpathConvOptionsMenuItemByName.apply("DELETE")),
                 By.xpath(xpathConvOptionsMenuItemByName.apply("ARCHIVE"))};
+    }
+
+    private static By[] getSingleParticipantTabs() {
+        return new By[]{
+            By.xpath(xpathSingleParticipantTabByText.apply("DETAILS")),
+            By.xpath(xpathSingleParticipantTabByText.apply("DEVICES"))
+        };
+    }
+
+    public List<String> getParticipantDevices() throws Exception {
+        return getElements(idParticipantDevices).stream().map(WebElement::getText).map((string) -> string.replaceAll("(PHONE)|(DESKTOP)|(\\n)|(\\s)|(ID:)", "").toLowerCase()).collect(Collectors.toList());
+    }
+
+    public void selectSingleParticipantTab(String itemName) throws Exception {
+        final By locator = By.xpath(xpathSingleParticipantTabByText.apply(itemName));
+        getElement(locator,
+                String.format("Single participant tab item '%s' could not be found on the current screen", itemName)).
+                click();
     }
 
     private static final int MENU_ITEM_VISIBILITY_TIMEOUT_SECONDS = 5;
@@ -235,6 +261,26 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
             throw new AssertionError(
                     String.format(
                             "The conversations details screen has not been closed after %s retries",
+                            maxRetries));
+        }
+    }
+
+    public void tapSingleParticipantCloseButton() throws Exception {
+        final WebElement closeButton = getElement(PeoplePickerPage.idSingleParticipantClose,
+                "Close single participant button is not visible");
+        final int halfHeight = this.getDriver().manage().window().getSize().getHeight() / 2;
+        int ntry = 1;
+        final int maxRetries = 3;
+        do {
+            closeButton.click();
+            ntry++;
+        } while (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), PeoplePickerPage.idSingleParticipantClose, 1)
+                && closeButton.getLocation().getY() < halfHeight
+                && ntry <= maxRetries);
+        if (ntry > maxRetries) {
+            throw new AssertionError(
+                    String.format(
+                            "The participant details screen has not been closed after %s retries",
                             maxRetries));
         }
     }

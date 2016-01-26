@@ -31,7 +31,7 @@
         <testrailRunConfigName></testrailRunConfigName>
         <syncIsAutomated>False</syncIsAutomated>
         <syncIsMuted>False</syncIsMuted>
-        <zmessaging.actor.version>59.341</zmessaging.actor.version>
+        <zmessaging.actor.version>59.346</zmessaging.actor.version>
     </properties>
 
     <dependencies>
