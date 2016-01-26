@@ -207,6 +207,23 @@ public class DialogPageSteps {
             }
         }
     }
+    
+    /**
+     * Swipe right text input to reveal option buttons
+     * 
+     * @step. ^I swipe right text input to reveal option buttons$
+     * 
+     * @throws Throwable
+     */
+    @When("^I swipe right text input to reveal option buttons$")
+    public void ISwipeTheTextInputCursor() throws Throwable {
+        for (int i = 0; i < 3; i++) {
+            getDialogPage().swipeRightInputCursor();
+            if (getDialogPage().isPingButtonVisible()) {
+                break;
+            }
+        }
+    }
 
     @When("^I press Add Picture button$")
     public void IPressAddPictureButton() throws Throwable {
@@ -814,8 +831,8 @@ public class DialogPageSteps {
      */
     @When("^I see Close input options button is not visible$")
     public void ISeeCloseButtonInputOptionsNotVisible() throws Exception {
-        Assert.assertFalse("Close button is visible", getDialogPage()
-                .isCloseButtonVisible());
+        Assert.assertTrue("Close input options button is visible", getDialogPage()
+                .verifyInputOptionsCloseButtonNotVisible());
     }
 
     /**
@@ -852,7 +869,7 @@ public class DialogPageSteps {
      */
     @When("^I click Close input options button$")
     public void IClickCloseButtonInputOptions() throws Exception {
-        getDialogPage().clickCloseButton();
+        getDialogPage().clickInputOptionsCloseButton();
     }
 
     /**

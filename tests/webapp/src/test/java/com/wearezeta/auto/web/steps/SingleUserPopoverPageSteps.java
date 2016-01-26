@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
@@ -193,6 +194,41 @@ public class SingleUserPopoverPageSteps {
 	public void IConfirmBlockUser() throws Exception {
 		webappPagesCollection.getPage(SingleUserPopoverContainer.class)
 				.clickConfirmButton();
+	}
+
+	/**
+	 * Switch to Devices tab on Single User Profile popover
+	 *
+	 * @step. ^I switch to Devices tab on Single User Profile popover$
+	 *
+	 */
+	@Then("^I switch to Devices tab on Single User Profile popover$")
+	public void ISwitchToDevices() throws Exception {
+		webappPagesCollection.getPage(SingleUserPopoverContainer.class)
+				.switchToDevicesTab();
+	}
+
+	/**
+	 * Switch to Details tab on Single User Profile popover
+	 *
+	 * @step. ^I switch to Details tab on Single User Profile popover$
+	 *
+	 */
+	@Then("^I switch to Details tab on Single User Profile popover$")
+	public void ISwitchToDetails() throws Exception {
+		webappPagesCollection.getPage(SingleUserPopoverContainer.class)
+				.switchToDetailsTab();
+	}
+
+	/**
+	 * I see text message in the popup
+	 *
+	 * @throws Exception
+     */
+	@Then("^I verify system message contains (.*) on Single User Profile popover$")
+	public void ISeeSystemMessage(String message) throws Exception {
+		assertThat(webappPagesCollection.getPage(SingleUserPopoverContainer.class)
+				.getDevicesText(), containsString(message));
 	}
 
 	/**

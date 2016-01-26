@@ -135,10 +135,10 @@ Feature: Search
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
-    Given User Me sent message <Message1> to conversation <Contact1>
-    Given User <Contact1> sent message <Message1> to conversation <Name>
-    Given User Me sent message <Message1> to conversation <Contact2>
-    Given User <Contact2> sent message <Message1> to conversation <Name>
+    Given User Me sends message <Message1> to conversation <Contact1>
+    Given User <Contact1> sends message <Message1> to conversation <Name>
+    Given User Me sends message <Message1> to conversation <Contact2>
+    Given User <Contact2> sends message <Message1> to conversation <Name>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I see my avatar on top of Contact list
@@ -157,12 +157,12 @@ Feature: Search
   Scenario Outline: Verify you can create a group conversation from Top People list
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>, <Contact3>
-    Given User Me sent message <Message1> to conversation <Contact1>
-    Given User <Contact1> sent message <Message1> to conversation <Name>
-    Given User Me sent message <Message1> to conversation <Contact2>
-    Given User <Contact2> sent message <Message1> to conversation <Name>
-    Given User Me sent message <Message1> to conversation <Contact3>
-    Given User <Contact3> sent message <Message1> to conversation <Name>
+    Given User Me sends message <Message1> to conversation <Contact1>
+    Given User <Contact1> sends message <Message1> to conversation <Name>
+    Given User Me sends message <Message1> to conversation <Contact2>
+    Given User <Contact2> sends message <Message1> to conversation <Name>
+    Given User Me sends message <Message1> to conversation <Contact3>
+    Given User <Contact3> sends message <Message1> to conversation <Name>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I see my avatar on top of Contact list
@@ -193,16 +193,16 @@ Feature: Search
   Scenario Outline: Verify More button is shown in Top People list when you have more than 8 people in Top people
     Given There are 11 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>, <Contact3>, <Contact4>, <Contact5>, <Contact6>, <Contact7>, <Contact8>, <Contact9>, <Contact10>
-    Given User Myself sent message <Message1> to conversation <Contact1>
-    Given User Myself sent message <Message1> to conversation <Contact2>
-    Given User Myself sent message <Message1> to conversation <Contact3>
-    Given User Myself sent message <Message1> to conversation <Contact4>
-    Given User Myself sent message <Message1> to conversation <Contact5>
-    Given User Myself sent message <Message1> to conversation <Contact6>
-    Given User Myself sent message <Message1> to conversation <Contact7>
-    Given User Myself sent message <Message1> to conversation <Contact8>
-    Given User Myself sent message <Message1> to conversation <Contact9>
-    Given User Myself sent message <Message1> to conversation <Contact10>
+    Given User Myself sends message <Message1> to conversation <Contact1>
+    Given User Myself sends message <Message1> to conversation <Contact2>
+    Given User Myself sends message <Message1> to conversation <Contact3>
+    Given User Myself sends message <Message1> to conversation <Contact4>
+    Given User Myself sends message <Message1> to conversation <Contact5>
+    Given User Myself sends message <Message1> to conversation <Contact6>
+    Given User Myself sends message <Message1> to conversation <Contact7>
+    Given User Myself sends message <Message1> to conversation <Contact8>
+    Given User Myself sends message <Message1> to conversation <Contact9>
+    Given User Myself sends message <Message1> to conversation <Contact10>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I see my avatar on top of Contact list
