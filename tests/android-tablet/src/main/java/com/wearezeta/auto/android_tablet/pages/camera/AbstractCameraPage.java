@@ -34,7 +34,7 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
     }
 
     public void tapTakePhotoButton() throws Exception {
-        getElement(idTakePhotoButton).click();
+        getElement(idTakePhotoButton, "Take Photo button is not visible", 15).click();
     }
 
     public boolean waitUntilTakePhotoButtonVisible() throws Exception {
@@ -49,7 +49,7 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
             confirmButton.get().click();
         }
         // Workaround for unexpected orientation change issue
-        final Optional<WebElement> lensButton = getElementIfDisplayed(getLensButtonLocator(), 15);
+        final Optional<WebElement> lensButton = getElementIfDisplayed(getLensButtonLocator());
         if (lensButton.isPresent()) {
             lensButton.get().click();
             if (isGalleryModeActivated) {
@@ -65,7 +65,7 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
     }
 
     public void tapGalleryButton() throws Exception {
-        getElement(idGalleryButton, "Open gallery button is not visible").click();
+        getElement(idGalleryButton, "Open gallery button is not visible", 15).click();
         isGalleryModeActivated = true;
     }
 
