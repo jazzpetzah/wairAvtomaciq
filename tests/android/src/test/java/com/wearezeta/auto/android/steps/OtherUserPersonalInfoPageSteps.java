@@ -175,11 +175,11 @@ public class OtherUserPersonalInfoPageSteps {
      * Checks the number of devices in single participant devices tab
      *
      * @param expectedNumDevices Expected number of devices
-     * @step. ^(\\d+) devices are shown in single participant devices tab$
+     * @step. ^(\\d+) devices? are shown in single participant devices tab$
      *
      * @throws Exception
      */
-    @When("^(\\d+) devices are shown in single participant devices tab$")
+    @When("^(\\d+) devices? are shown in single participant devices tab$")
     public void ICheckNumberOfDevicesInSingleParticipantDevicesTab(int expectedNumDevices) throws Exception {
         int numDevices = getOtherUserPersonalInfoPage().getParticipantDevices().size();
         Assert.assertTrue("expected size", expectedNumDevices == numDevices);
