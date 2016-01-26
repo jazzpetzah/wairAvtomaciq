@@ -49,7 +49,7 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
             confirmButton.get().click();
         }
         // Workaround for unexpected orientation change issue
-        final Optional<WebElement> lensButton = getElementIfDisplayed(getLensButtonLocator());
+        final Optional<WebElement> lensButton = getElementIfDisplayed(getLensButtonLocator(), 15);
         if (lensButton.isPresent()) {
             lensButton.get().click();
             if (isGalleryModeActivated) {
