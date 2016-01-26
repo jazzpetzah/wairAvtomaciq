@@ -35,6 +35,32 @@ Feature: Utility
     And I see button for Windows
     And I see button for Webapp
 
+  @C3283 @utility
+  Scenario Outline: Verify that there are no dead links on start page for <Agent>
+    When I navigate to start page for <Agent>
+    When I navigate to start page for <Agent>
+    And I can see no dead links
+
+    Examples: 
+      | Agent   |
+      | iphone  |
+      | android |
+      | osx     |
+      | windows |
+  
+  @C12086 @utility
+  Scenario Outline: Verify that there are no dead links on german start page for <Agent>
+    When I navigate to german start page for <Agent>
+    When I navigate to german start page for <Agent>
+    And I can see no dead links
+
+    Examples: 
+      | Agent   |
+      | iphone  |
+      | android |
+      | osx     |
+      | windows |
+        
   @C5232 @utility
   Scenario Outline: Check password reset utility page for all agents
     Given There is 1 user where <Name> is me
