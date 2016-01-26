@@ -232,6 +232,34 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact1   | Contact2  | ImageName                | GroupChatName |
       | user1Email | user1Password | user1Name | user2Name  | user3Name | userpicture_portrait.jpg | HybridGroup   |
 
+  @C12050 @e2ee
+  Scenario Outline: Verify you receive encrypted content in 1:1 conversation after switching online
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to Myself
+    Given I switch to Sign In page
+    Given I enter email "<Email>"
+    Given I enter password "<Password>"
+    Given I check option to remember me
+    Given I Sign in using login <Email> and password <Password>
+    Given I see the history info page
+    Given I click confirm on history info page
+    When I am signed in properly
+    And I click gear button on self profile page
+    And I select Log out menu item on self profile page
+    And Contact <Contact> sends encrypted message <EncryptedMessage> to user Myself
+    And User <Contact> sends encrypted image <ImageName> to single user conversation Myself
+    And I see Sign In page
+    And I enter email "<Email>"
+    And I enter password "<Password>"
+    And I check option to remember me
+    And I Sign in using login <Email> and password <Password>
+    Then I see text message <EncryptedMessage>
+    And I see sent picture <ImageName> in the conversation view
+
+    Examples:
+      | Email      | Password      | Name      | Contact   | EncryptedMessage | ImageName                |
+      | user1Email | user1Password | user1Name | user2Name | EncryptedYo      | userpicture_portrait.jpg |
+
   @C12045 @e2ee
   Scenario Outline: Verify you can see device ids of the other conversation participant in 1:1 conversation details
     Given There are 2 users where <Name> is me
