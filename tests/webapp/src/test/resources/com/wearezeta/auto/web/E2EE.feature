@@ -163,7 +163,7 @@ Feature: E2EE
       | user1Email | user1Password | user1Name |
 
   @C12068 @e2ee
-  Scenario Outline: Verify you can receive encrypted and non-encrypted messages in 1:1 chat
+  Scenario Outline: Verify you can receive encrypted messages in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
     Given I switch to Sign In page
@@ -172,16 +172,14 @@ Feature: E2EE
     Given I click confirm on history info page
     Given I am signed in properly
     When Contact <Contact> sends encrypted message <EncryptedMessage> to user Myself
-    #And Contact <Contact> sends message <SimpleMessage> to user Myself
     Then I see text message <EncryptedMessage>
-    #And I see text message <SimpleMessage>
 
     Examples:
-      | Email      | Password      | Name      | Contact   | EncryptedMessage | SimpleMessage |
-      | user1Email | user1Password | user1Name | user2Name | EncryptedYo      | SimpleYo      |
+      | Email      | Password      | Name      | Contact   | EncryptedMessage |
+      | user1Email | user1Password | user1Name | user2Name | EncryptedYo      |
 
   @C12069 @e2ee
-  Scenario Outline: Verify you can receive encrypted and non-encrypted messages in 1:1 chat
+  Scenario Outline: Verify you can receive encrypted and non-encrypted images in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
     Given I switch to Sign In page
@@ -195,3 +193,64 @@ Feature: E2EE
     Examples:
       | Email      | Password      | Name      | Contact   | ImageName                |
       | user1Email | user1Password | user1Name | user2Name | userpicture_portrait.jpg |
+
+  @C12043 @e2ee
+  Scenario Outline: Verify you can receive encrypted messages in group chat
+    Given There are 3 users where <Name> is me
+    Given <Contact1> is connected to Myself
+    Given <Contact2> is connected to Myself
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    Given I see the history info page
+    Given I click confirm on history info page
+    Given I am signed in properly
+    When I open conversation with <GroupChatName>
+    And Contact <Contact1> sends encrypted message <EncryptedMessage> to group conversation <GroupChatName>
+    Then I see text message <EncryptedMessage>
+
+    Examples:
+      | Email      | Password      | Name      | Contact1   | Contact2  | EncryptedMessage | GroupChatName |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name | EncryptedYo      | HybridGroup   |
+
+  @C12044 @e2ee
+  Scenario Outline: Verify you can receive encrypted messages in group chat
+    Given There are 3 users where <Name> is me
+    Given <Contact1> is connected to Myself
+    Given <Contact2> is connected to Myself
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    Given I see the history info page
+    Given I click confirm on history info page
+    Given I am signed in properly
+    When I open conversation with <GroupChatName>
+    And User <Contact1> sends encrypted image <ImageName> to group conversation <GroupChatName>
+    Then I see text message <EncryptedMessage>
+
+    Examples:
+      | Email      | Password      | Name      | Contact1   | Contact2  | ImageName                | GroupChatName |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name | userpicture_portrait.jpg | HybridGroup   |
+
+  @C12045 @e2ee
+  Scenario Outline: Verify you can see device ids of the other conversation participant in 1:1 conversation details
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to Myself
+    Given I switch to Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    Given I see the history info page
+    Given I click confirm on history info page
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    And I click People button in one to one conversation
+    Then I see Single User Profile popover
+    When I switch to Devices tab on Single User Profile popover
+    Then I verify system message contains <Message1> on Single User Profile popover
+    When user <Contact> adds a new device Device1 with label Label1
+    And I switch to Details tab on Single User Profile popover
+    And I switch to Devices tab on Single User Profile popover
+    Then I verify system message contains <Message2> on Single User Profile popover
+
+    Examples:
+      | Email      | Password      | Name      | Contact   | Message1                                | Message 2                             |
+      | user1Email | user1Password | user1Name | user2Name | user is not using the encrypted version | Every device has a unique fingerprint |
