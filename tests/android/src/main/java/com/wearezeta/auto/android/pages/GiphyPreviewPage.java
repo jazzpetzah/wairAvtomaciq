@@ -1,7 +1,5 @@
 package com.wearezeta.auto.android.pages;
 
-import java.util.List;
-import java.util.Random;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
@@ -52,8 +50,12 @@ public class GiphyPreviewPage extends AndroidPage {
     }
 
     public void clickOnSomeGif() throws Exception {
-        final List<WebElement> grid = selectVisibleElements(idGiphyGridImage);
-        grid.get(new Random().nextInt(grid.size())).click();
+        final WebElement giphyGridCell = getElement(idGiphyGridImage);
+        giphyGridCell.click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), idGiphyGridImage)) {
+            // The grid has not been loaded yet
+            giphyGridCell.click();
+        }
     }
 
     private static final int GIPHY_LOAD_TIMEOUT_SECONDS = 60;
