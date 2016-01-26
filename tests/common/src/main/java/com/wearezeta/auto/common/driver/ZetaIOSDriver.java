@@ -1,11 +1,13 @@
 package com.wearezeta.auto.common.driver;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
 import java.util.concurrent.*;
 
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableMap;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Capabilities;
@@ -24,6 +26,15 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
 
     public ZetaIOSDriver(URL remoteAddress, Capabilities desiredCapabilities) {
         super(remoteAddress, desiredCapabilities);
+
+        try {
+            if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+                Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c",
+                        "chmod -R u+rw $HOME/Library/Developer/CoreSimulator/Devices/"}).waitFor(5, TimeUnit.SECONDS);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
