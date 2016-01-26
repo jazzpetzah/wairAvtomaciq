@@ -292,7 +292,7 @@ Feature: Connect
       | user1Name | user2Name | user3Name |
 
   @C35 @regression @id3224
-  Scenario Outline: Verify sending connection request after disconnecting
+  Scenario Outline: (ZIOS-5601)Verify sending connection request after disconnecting
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given Me sent connection request to <Contact1>
