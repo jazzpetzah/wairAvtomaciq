@@ -13,6 +13,8 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 public class TabletSelfProfilePage extends AndroidTabletPage {
     public static final By idSelfNameInput = By.id("tet__profile__guided");
 
+    public static final By idSelfPageContainer = By.id("fl__profile__page_container");
+
     public static final String idStrSelfProfileView = "ll_self_form";
     public static final By idSelfProfileView = By.id(idStrSelfProfileView);
 
@@ -25,8 +27,7 @@ public class TabletSelfProfilePage extends AndroidTabletPage {
 
     public static final By idOptionsButton = By.id("gtv__profile__settings_button");
 
-    public TabletSelfProfilePage(Future<ZetaAndroidDriver> lazyDriver)
-            throws Exception {
+    public TabletSelfProfilePage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
@@ -60,7 +61,7 @@ public class TabletSelfProfilePage extends AndroidTabletPage {
     }
 
     public void tapInTheCenter() throws Exception {
-        DriverUtils.tapInTheCenterOfTheElement(this.getDriver(), getElement(idSelfProfileView));
+        DriverUtils.tapInTheCenterOfTheElement(this.getDriver(), getElement(idSelfPageContainer));
     }
 
     public boolean waitUntilOptionsMenuItemVisible(String itemName) throws Exception {
