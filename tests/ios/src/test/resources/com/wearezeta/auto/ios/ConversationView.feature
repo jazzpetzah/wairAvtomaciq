@@ -208,7 +208,7 @@ Feature: Conversation View
     And I navigate back to conversations list
     And I tap on contact name <Contact>
     And I tap on text input
-    And I send the message
+    And I click send button on keyboard
     Then I see 1 default message in the dialog
 
     Examples:
@@ -224,7 +224,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I input more than 200 chars message and send it
-    Then I see 1 message in the dialog
+    Then I see 2 message in the dialog
 
     Examples:
       | Name      | Contact   |
@@ -239,8 +239,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I input message with lower case and upper case
-    And I send the message
-    Then I see 1 message in the dialog
+    Then I see 2 message in the dialog
 
     Examples:
       | Name      | Contact   |
@@ -280,7 +279,7 @@ Feature: Conversation View
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
-    And I send the message
+    And I click send button on keyboard
     Then I see last message in dialog is expected message <Text>
 
     Examples:
@@ -298,11 +297,9 @@ Feature: Conversation View
     And I try to send message with only spaces
     And I see the only message in dialog is system message CONNECTED TO <Contact>
     And I input message with leading empty spaces
-    And I send the message
-    And I see 1 message in the dialog
+    And I see 2 message in the dialog
     And I input message with trailing emtpy spaces
-    And I send the message
-    Then I see 1 message in the dialog
+    Then I see 3 message in the dialog
 
     Examples:
       | Name      | Contact   |
@@ -547,7 +544,6 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact>
-    And I see dialog page
     Then I see 1 default message in the dialog
 
     Examples:
