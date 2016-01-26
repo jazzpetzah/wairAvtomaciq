@@ -153,18 +153,18 @@ Feature: E2EE
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    And Contact <Contact1> sends encrypted message <Message1> to group conversation <GroupChatName>
+    When Contact <Contact1> sends encrypted message <Message1> to group conversation <GroupChatName>
     And Contact <Contact2> sends encrypted message <Message1> to group conversation <GroupChatName>
     And I tap on contact name <GroupChatName>
     And I tap conversation details button
     And I select contact <Contact1>
     And I select single participant tab "Devices"
-    And 1 devices are shown in single participant devices tab
+    Then 1 devices are shown in single participant devices tab
     And I verify all device ids of user <Contact1> are shown in single participant devices tab
-    And I close single participant page by UI button
+    When I close single participant page by UI button
     And I select contact <Contact2>
     And I select single participant tab "Devices"
-    And 1 devices are shown in single participant devices tab
+    Then 1 devices are shown in single participant devices tab
     And I verify all device ids of user <Contact2> are shown in single participant devices tab
 
     Examples:
@@ -178,13 +178,14 @@ Feature: E2EE
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
+    When Contact <Contact1> sends encrypted message <Message1> to user Myself
     And I tap on contact name <Contact1>
     And I tap conversation details button
-    And Contact <Contact1> sends encrypted message <Message1> to user Myself
     And I select single participant tab "Devices"
-    And 1 devices are shown in single participant devices tab
+    Then 1 devices are shown in single participant devices tab
     And I verify all device ids of user <Contact1> are shown in single participant devices tab
 
     Examples:
-      | Name      | Contact1  | Message1 | GroupChatName |
-      | user1Name | user2Name | Msg1     | GroupConvo    |
+      | Name      | Contact1  | Message1 |
+      | user1Name | user2Name | Msg1     |
+
