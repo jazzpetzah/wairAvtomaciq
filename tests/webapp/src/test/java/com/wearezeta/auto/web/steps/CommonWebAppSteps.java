@@ -629,21 +629,29 @@ public class CommonWebAppSteps {
      *
      * @param msgFromUserNameAlias the user who sends the message
      * @param msg                  a message to send. Random string will be sent if it is empty
-     * @param dstUserNameAlias     The user to receive the message
+     * @param dstConvoName         The user to receive the message
      * @param isEncrypted          whether the message has to be encrypted
+     * @param convoType            either 'user' or 'group conversation'
      * @throws Exception
      * @step. ^Contact (.*) sends? (encrypted )?message (.*)to user (.*)$
      */
-    @When("^Contact (.*) sends? (encrypted )?message (.*)to user (.*)$")
+    @When("^Contact (.*) sends? (encrypted )?message (.*)to (user|group conversation) (.*)$")
     public void UserSendMessageToConversation(String msgFromUserNameAlias, String isEncrypted,
-                                              String msg, String dstUserNameAlias)
-            throws Exception {
+                                              String msg, String convoType, String dstConvoName) throws Exception {
         final String msgToSend = (msg == null || msg.trim().length() == 0) ?
                 CommonUtils.generateRandomString(10) : msg.trim();
-        if (isEncrypted == null) {
-            commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstUserNameAlias, msgToSend);
+        if (convoType.equals("user")) {
+            if (isEncrypted == null) {
+                commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend);
+            } else {
+                commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend);
+            }
         } else {
-            commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias, dstUserNameAlias, msgToSend);
+            if (isEncrypted == null) {
+                commonSteps.UserSentMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend);
+            } else {
+                commonSteps.UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend);
+            }
         }
     }
 

@@ -80,6 +80,9 @@ public final class PopoverLocators {
 
 			public static final String xpathUnblockButton = xpathPageRootLocator
 					+ "//*[@data-uie-name='do-unblock']";
+			public static final String cssDevicesTab = "#participants-bubble [data-ui-name='go-profile-devices']";
+			public static final String cssDetailsTab = "#participants-bubble [data-ui-name='go-profile-details']";
+			public static final String cssDevicesText = "#participants-bubble .user-profile-devices";
 		}
 
 		public static final class BlockUserConfirmationPage {

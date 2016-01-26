@@ -60,7 +60,9 @@ public class DialogPage extends IOSPage {
 
     private static final By xpathConversationPage = By.xpath(xpathStrMainWindow + "/UIATableView[1]");
 
-    private static final By nameCloseButton = By.name("mediabarCloseButton");
+    private static final By nameMediaBarCloseButton = By.name("mediabarCloseButton");
+    
+    private static final By nameInputOptionsCloseButton = By.name("closeButton");
 
     private static final By nameTitle = By.name("playingMediaTitle");
 
@@ -210,6 +212,10 @@ public class DialogPage extends IOSPage {
     public String getExpectedConnectingLabel(String name) {
         return nameStrConnectingLabelByReceiverName.apply(name);
     }
+    
+    public void swipeRightInputCursor() throws Exception {
+        DriverUtils.swipeRight(this.getDriver(), getElement(nameConversationCursorInput), 1000);
+    }
 
     public void swipeLeftOptionsButtons() throws Exception {
         final WebElement conversationInput = getElement(nameConversationCursorInput);
@@ -273,7 +279,7 @@ public class DialogPage extends IOSPage {
     }
 
     private void clickMediaBarCloseButton() throws Exception {
-        getElement(nameCloseButton, "Close button is not visible on Media bar").click();
+        getElement(nameMediaBarCloseButton, "Close button is not visible on Media bar").click();
     }
 
     public void stopMediaContent() throws Exception {
@@ -493,12 +499,12 @@ public class DialogPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameCursorSketchButton);
     }
 
-    public boolean isCloseButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameCloseButton);
+    public boolean verifyInputOptionsCloseButtonNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameInputOptionsCloseButton);
     }
-
-    public void clickCloseButton() throws Exception {
-        getElement(nameCloseButton, "Close button is not visible").click();
+    
+    public void clickInputOptionsCloseButton() throws Exception {
+        getElement(nameInputOptionsCloseButton, "Close input options button is not visible").click();
     }
 
     public boolean isGiphyImageVisible() throws Exception {

@@ -98,6 +98,18 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 		this.singleUserPopoverPage.clickUnblockButton();
 	}
 
+	public void switchToDevicesTab() {
+		this.singleUserPopoverPage.switchToDevicesTab();
+	}
+
+	public void switchToDetailsTab() {
+		this.singleUserPopoverPage.switchToDetailsTab();
+	}
+
+	public String getDevicesText() {
+		return this.singleUserPopoverPage.getDevicesText();
+	}
+
 	public void clickConfirmButton() {
 		this.blockUserConfirmationPopoverPage.clickConfirmButton();
 	}

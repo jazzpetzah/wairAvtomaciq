@@ -21,8 +21,8 @@ Feature: Bring Your Friends
   Scenario Outline: Invite people when you have top people or search suggestions
     Given There is 2 user where <Name> is me
     Given Myself is connected to <Contact>
-    Given User Me sent message <Message> to conversation <Contact>
-    Given User <Contact> sent message <Message> to conversation <Name>
+    Given User Me sends message <Message> to conversation <Contact>
+    Given User <Contact> sends message <Message> to conversation <Name>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I see my avatar on top of Contact list
@@ -78,8 +78,8 @@ Feature: Bring Your Friends
   Scenario Outline: Switch between Invitation and Share Contacts bubbles
     Given There is 2 user where <Name> is me
     Given Myself is connected to <Contact>
-    Given User Me sent message <Message> to conversation <Contact>
-    Given User <Contact> sent message <Message> to conversation <Name>
+    Given User Me sends message <Message> to conversation <Contact>
+    Given User <Contact> sends message <Message> to conversation <Name>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I see my avatar on top of Contact list
