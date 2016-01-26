@@ -9,7 +9,7 @@ Feature: Archive
     And I see my avatar on top of Contact list
     When I archive conversation <Contact>
     Then I do not see Contact list with name <Contact>
-    When User <Contact> sent message <Message> to conversation <Contact>
+    When User <Contact> sends message <Message> to conversation <Contact>
     Then I see Contact list with name <Contact>
     Then I verify that <Contact> index in Contact list is 1
 
@@ -28,7 +28,7 @@ Feature: Archive
     When I archive conversation <Contact>
     And I archive conversation <Contact2>
     Then I see Archive button at the bottom of my Contact list
-    When User <Contact> sent message <Message> to conversation <Contact>
+    When User <Contact> sends message <Message> to conversation <Contact>
     And I open archive
     And I unarchive conversation <Contact2>
     Then I do not see Archive button at the bottom of my Contact list

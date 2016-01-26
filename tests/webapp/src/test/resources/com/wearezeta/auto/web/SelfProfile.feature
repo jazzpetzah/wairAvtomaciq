@@ -85,7 +85,7 @@ Feature: Self Profile
     Then I verify my accent color in color picker is set to <ColorName> color
     And I verify my avatar background color is set to <ColorName> color
     When User <Contact1> pinged in the conversation with <Name>
-    And User <Contact2> sent message <Msg1> to conversation <Name>
+    And User <Contact2> sends message <Msg1> to conversation <Name>
     Then I verify ping icon in conversation with <Contact1> has <ColorName> color
     And I verify unread dot in conversation with <Contact2> has <ColorName> color
 
