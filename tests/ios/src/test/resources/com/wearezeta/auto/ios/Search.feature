@@ -112,7 +112,7 @@ Feature: Search
       | Name      | ConvoName    | UserCount |
       | user1Name | TopGroupTest | 4         |
 
-  @torun @C40 @regression @rc @id1454
+  @C40 @regression @rc @id1454
   Scenario Outline: Verify sending a connection request to user chosen from search
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
