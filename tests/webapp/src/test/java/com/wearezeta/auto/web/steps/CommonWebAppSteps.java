@@ -1,6 +1,5 @@
 package com.wearezeta.auto.web.steps;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.net.URI;

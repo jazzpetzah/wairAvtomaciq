@@ -3,9 +3,6 @@ package com.wearezeta.auto.web.steps;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-import org.hamcrest.collection.IsCollectionWithSize;
-
-import com.wearezeta.auto.web.pages.DeviceDetailPage;
 import com.wearezeta.auto.web.pages.DeviceLimitPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
@@ -43,8 +40,7 @@ public class DeviceLimitPageSteps {
 	 * @throws Exception
 	 */
 	@Then("I see a device named (.*) with label (.*) under managed devices$")
-	public void ISeeACertainDevice(String name, String label)
-			throws Exception {
+	public void ISeeACertainDevice(String name, String label) throws Exception {
 		assertThat(webappPagesCollection.getPage(DeviceLimitPage.class)
 				.getDevicesNames(), hasItem(name.toUpperCase()));
 	}
