@@ -97,13 +97,26 @@ Feature: E2EE
 
   @C2098 @e2ee @regression
   Scenario Outline: Verify current browser is set as permanent device
-    Given There is 1 user where <Name> is me
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
     Then I see the history info page
     And I click confirm on history info page
     And I am signed in properly
-    When I click gear button on self profile page
+    When I open conversation with <Contact1>
+    And Contact <Contact1> sends message <Message1> to user Myself
+    And User <Contact1> sends image <ImageName1> to single user conversation Myself
+    Then I see text message <Message1>
+    And I see sent picture <ImageName1> in the conversation view
+    When I open conversation with <GroupChatName>
+    And Contact <Contact2> sends message <Message2> to group conversation <GroupChatName>
+    And User <Contact2> sends image <ImageName1> to group conversation <GroupChatName>
+    Then I see text message <Message2>
+    And I see sent picture <ImageName1> in the conversation view
+    When I open self profile
+    And I click gear button on self profile page
     And I select Settings menu item on self profile page
     And I remember the device id of the current device
     And I click close settings page button
@@ -111,19 +124,25 @@ Feature: E2EE
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see Sign In page
-    And I enter email "<Email>"
-    And I enter password "<Password>"
-    And I check option to remember me
-    And I press Sign In button
+    And I Sign in using login <Email> and password <Password>
+     Then I see the history info page
+     And I click confirm on history info page
     Then I am signed in properly
+    And I open conversation with <Contact1>
+    And I see text message <Message1>
+    And I see sent picture <ImageName1> in the conversation view
+    And I open conversation with <GroupChatName>
+    And I see text message <Message2>
+    And I see sent picture <ImageName1> in the conversation view
+    When I open self profile
     And I click gear button on self profile page
-    When I select Settings menu item on self profile page
+    And I select Settings menu item on self profile page
     Then I verify that the device id of the current device is the same
     And I see 0 devices in the devices section
 
     Examples:
-      | Email      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message1   | Message2     | ImageName1               |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat     | Hello 1:1! | Hello Group! | userpicture_portrait.jpg |
 
   @C2099 @e2ee @regression
   Scenario Outline: Verify current browser is set as temporary device
@@ -194,8 +213,7 @@ Feature: E2EE
   @C12043 @e2ee
   Scenario Outline: Verify you can receive encrypted messages in group chat
     Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to Myself
-    Given <Contact2> is connected to Myself
+    Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
@@ -213,8 +231,7 @@ Feature: E2EE
   @C12044 @e2ee
   Scenario Outline: Verify you can receive encrypted messages in group chat
     Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to Myself
-    Given <Contact2> is connected to Myself
+    Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
@@ -255,8 +272,7 @@ Feature: E2EE
   @C12051 @e2ee
   Scenario Outline: Verify you receive encrypted content in group conversation after switching online
     Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to Myself
-    Given <Contact2> is connected to Myself
+    Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
