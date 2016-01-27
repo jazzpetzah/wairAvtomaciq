@@ -81,6 +81,9 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssCallButton)
 	private WebElement callButton;
 
+	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssVideoCallButton)
+	private WebElement videoCallButton;
+
 	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssPingMessage)
 	private WebElement pingMessage;
 
@@ -414,6 +417,20 @@ public class ConversationPage extends WebPage {
 				By.cssSelector(WebAppLocators.ConversationPage.cssCallButton),
 				5);
 		callButton.click();
+	}
+
+	public void clickVideoCallButton() throws Exception {
+		if (WebAppExecutionContext.getBrowser()
+				.isSupportingNativeMouseActions()) {
+			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
+		} else {
+			// safari workaround
+			DriverUtils.addClass(this.getDriver(), conversation, "hover");
+		}
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.cssSelector(WebAppLocators.ConversationPage.cssVideoCallButton),
+				5);
+		videoCallButton.click();
 	}
 
 	private static final int TEXT_MESSAGE_VISIBILITY_TIMEOUT_SECONDS = 5;

@@ -858,4 +858,15 @@ public class ConversationPageSteps {
 		webappPagesCollection.getPage(ConversationPage.class).clickUserAvatar(
 				user.getId());
 	}
+
+	/**
+	 * Start call in opened conversation
+	 *
+	 * @step. ^I call$
+	 */
+	@When("^I start a video call$")
+	public void IMakeVideoCallToUser() throws Throwable {
+		webappPagesCollection.getPage(ConversationPage.class).clickVideoCallButton();
+	}
+
 }
