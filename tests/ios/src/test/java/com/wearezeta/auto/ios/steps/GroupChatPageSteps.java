@@ -47,8 +47,6 @@ public class GroupChatPageSteps {
     @Then("^I see empty group chat page with users (.*) with only system message$")
     public void ISeeGroupChatPageWithUsersAndOnlySystemMessage(
             String participantNameAliases) throws Exception {
-        DialogPageSteps dialog = new DialogPageSteps();
-        dialog.ISeeXConvoEntries(1);
         ThenISeeGroupChatPage(participantNameAliases);
     }
 
