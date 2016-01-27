@@ -351,51 +351,7 @@ public class CommonUtils {
         return getValueFromCommonConfig(c, "defaultCallingServiceUrl");
     }
 
-    public static Optional<BufferedImage> getElementScreenshot(
-            WebElement element, AppiumDriver<? extends WebElement> driver)
-            throws Exception {
-        return getElementScreenshot(element, driver, "iPhone 6");
-    }
-
-    public static Optional<BufferedImage> getElementScreenshot(
-            WebElement element, AppiumDriver<? extends WebElement> driver,
-            String deviceName) throws Exception {
-        int multiply = 3;
-        if (deviceName.equals("iPhone 6") || deviceName.equals("iPad Air")) {
-            multiply = 2;
-        } else if (deviceName.equals("Android Device")) {
-            multiply = 1;
-        }
-        org.openqa.selenium.Point elementLocation = element.getLocation();
-        Dimension elementSize = element.getSize();
-        final Optional<BufferedImage> screenshot = DriverUtils
-                .takeFullScreenShot((ZetaDriver) driver);
-        if (screenshot.isPresent()) {
-            return Optional.of(screenshot.get()
-                    .getSubimage(elementLocation.x * multiply,
-                            elementLocation.y * multiply,
-                            elementSize.width * multiply,
-                            elementSize.height * multiply));
-        } else {
-            return Optional.empty();
-        }
-    }
-
-    public static Optional<BufferedImage> getElementScreenshot(
-            WebElement element, ZetaWebAppDriver driver) throws Exception {
-        org.openqa.selenium.Point elementLocation = element.getLocation();
-        Dimension elementSize = element.getSize();
-        final Optional<BufferedImage> screenshot = DriverUtils
-                .takeFullScreenShot(driver);
-        if (screenshot.isPresent()) {
-            return Optional.of(screenshot.get().getSubimage(elementLocation.x,
-                    elementLocation.y, elementSize.width, elementSize.height));
-        } else {
-            return Optional.empty();
-        }
-    }
-
-    public static void blockTcpForAppName(String appName) throws Exception {
+   public static void blockTcpForAppName(String appName) throws Exception {
         final String blockTcpForAppCmd = "echo "
                 + getJenkinsSuperUserPassword(CommonUtils.class) + "| sudo -S "
                 + TCPBLOCK_PREFIX_PATH + "tcpblock -a " + appName;
