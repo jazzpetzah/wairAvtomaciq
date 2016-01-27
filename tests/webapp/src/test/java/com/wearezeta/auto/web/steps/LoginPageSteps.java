@@ -60,8 +60,8 @@ public class LoginPageSteps {
 				+ password);
 		this.IEnterEmail(login);
 		this.IEnterPassword(password);
-		this.IPressSignInButton();
 		this.ICheckOptionToRememberMe(null);
+		this.IPressSignInButton();
 	}
 
 	/**
