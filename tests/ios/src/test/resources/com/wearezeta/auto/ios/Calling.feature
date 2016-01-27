@@ -333,7 +333,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName      | CallBackend | CallBackend2 | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | firefox     | autocall     | 4               |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | firefox     | autocall     | 5               |
 
   @C2047 @regression @id2683
   Scenario Outline: Verify ignoring group call in foreground
@@ -379,7 +379,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | GROUPCALL     | firefox     | autocall     | 4               |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | GROUPCALL     | firefox     | autocall     | 5               |
 
   @C2062 @regression @id2700
   Scenario Outline: Verify renaming group during group call
@@ -407,7 +407,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | CallBackend2 | ChatName | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | RenameGROUPCALL | firefox     | autocall     | NewName  | 4               |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | RenameGROUPCALL | firefox     | autocall     | NewName  | 5               |
 
   @C2058 @staging @id2696
   Scenario Outline: Verify leaving group conversation during the group call
@@ -466,7 +466,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | CallBackend2 | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | RejoinGROUPCALL | firefox     | autocall     | 4               |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | RejoinGROUPCALL | firefox     | autocall     | 5               |
 
   @C2054 @regression @id2690
   Scenario Outline: (ZIOS-5587)Verify receiving 1-to-1 call during group call (and accepting it)
@@ -499,7 +499,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars | NumberOf1on1CallAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | GROUPCALL     | firefox     | autocall     | 4               | 2                       |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | GROUPCALL     | firefox     | autocall     | 5               | 2                       |
 
   @C2065 @regression @rc @IPv6 @id3270
   Scenario Outline: Verify possibility of starting group call
@@ -540,7 +540,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | WaitGROUPCALL | firefox     | autocall     | 4               |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | WaitGROUPCALL | firefox     | autocall     | 5               |
 
   @C2059 @regression @id2697
   Scenario Outline: Verify removing people from the conversation who joined the group call
@@ -573,7 +573,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | NumberOfAvatars | NewNumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | RemoveGROUPCALL | firefox     | 4               | 3                  |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | RemoveGROUPCALL | firefox     | 5               | 4                  |
 
   @C2039 @regression @id2673 @noAcceptAlert
   Scenario Outline: Verify impossibility to connect 6th person to the call

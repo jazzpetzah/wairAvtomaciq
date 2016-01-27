@@ -80,7 +80,6 @@ Feature: Connect
     And I see Pending request page
     And I click on Ignore button on Pending requests page <SentRequests> times
     And I dont see Pending request link in contact list
-    And I don't see conversation with not connected user <Contact1>
     And I wait until <Contact1> exists in backend search results
     And I open search by taping on it
     And I see People picker page
@@ -216,7 +215,7 @@ Feature: Connect
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
-    And I send the message
+    And I click send button on keyboard
     Then I check copied content from <Name>
 
     Examples: 
@@ -293,7 +292,7 @@ Feature: Connect
       | user1Name | user2Name | user3Name |
 
   @C35 @regression @id3224
-  Scenario Outline: Verify sending connection request after disconnecting
+  Scenario Outline: (ZIOS-5601)Verify sending connection request after disconnecting
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given Me sent connection request to <Contact1>
