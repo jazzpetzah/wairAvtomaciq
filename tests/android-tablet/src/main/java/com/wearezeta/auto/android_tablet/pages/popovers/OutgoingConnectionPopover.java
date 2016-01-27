@@ -8,15 +8,14 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class OutgoingConnectionPopover extends AbstractPopoverContainer {
 	static final String idStrRootLocator = "fl__participant_dialog__main__container";
-	static final By idRootLocator = By.id(idStrRootLocator);
+	private static final By idRootLocator = By.id(idStrRootLocator);
 
 	private NonConnectedUserOutgoingConnectionPage outgoingConnectionPage;
 
 	public OutgoingConnectionPopover(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
-		this.outgoingConnectionPage = new NonConnectedUserOutgoingConnectionPage(
-				lazyDriver, this);
+		this.outgoingConnectionPage = new NonConnectedUserOutgoingConnectionPage(lazyDriver, this);
 	}
 
 	@Override
