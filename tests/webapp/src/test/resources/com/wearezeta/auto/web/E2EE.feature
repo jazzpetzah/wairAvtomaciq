@@ -244,6 +244,7 @@ Feature: E2EE
     Given I see the history info page
     Given I click confirm on history info page
     When I am signed in properly
+    And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And Contact <Contact> sends encrypted message <EncryptedMessage> to user Myself
@@ -280,5 +281,5 @@ Feature: E2EE
     Then I verify system message contains <Message2> on Single User Profile popover
 
     Examples:
-      | Email      | Password      | Name      | Contact   | Message1                                | Message 2                             |
+      | Email      | Password      | Name      | Contact   | Message1                                | Message2                              |
       | user1Email | user1Password | user1Name | user2Name | user is not using the encrypted version | Every device has a unique fingerprint |
