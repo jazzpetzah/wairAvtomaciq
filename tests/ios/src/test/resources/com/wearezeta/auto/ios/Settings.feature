@@ -41,6 +41,7 @@ Feature: Settings
     And I click on Settings button from the options menu
     And I click on Account Info on settings page
     And I click on Change Password button in Settings
+    And I wait for 4 seconds
     Then I see reset password page
 
     Examples:
