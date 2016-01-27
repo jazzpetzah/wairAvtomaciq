@@ -218,7 +218,7 @@ Feature: Conversation View
     And I see dialog page
     And I input more than 200 chars message and send it
     And I type the default message
-    And I return to the chat list
+    And I navigate back to conversations list
     When I tap on my name <Name>
     And I close self profile
     And I tap on text input
@@ -618,7 +618,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input to scroll to the end
-    And I return to the chat list
+    And I navigate back to conversations list
     And I tap on contact name <Contact>
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link

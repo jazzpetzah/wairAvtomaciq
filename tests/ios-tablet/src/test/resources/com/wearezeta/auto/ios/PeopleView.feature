@@ -406,7 +406,7 @@ Feature: People View
     And I click NOTIFY button on iPad ellipsis menu
     And I exit the group info iPad popover
     And I see dialog page
-    And I return to the chat list
+    And I navigate back to conversations list
     Then I see conversation <GroupChatName> is unsilenced
 
     Examples:
@@ -452,7 +452,7 @@ Feature: People View
     And I click SILENCE button on iPad ellipsis menu
     And I exit the group info iPad popover
     And I see dialog page
-    And I return to the chat list
+    And I navigate back to conversations list
     Then I see conversation <GroupChatName> is silenced
 
     Examples:
@@ -579,7 +579,7 @@ Feature: People View
     And I see <Contact1> user profile page
     And I unblock user
     Then I see dialog page
-    And I return to the chat list
+    And I navigate back to conversations list
     Then I see conversation <Contact1> is selected in list
 
     Examples:

@@ -202,7 +202,7 @@ Feature: Connect
     And I click on Pending request link in contact list
     And I see Pending request page
     And I click on Connect button on Pending requests page <SentRequests> times
-    And I return to the chat list
+    And I navigate back to conversations list
     Then I dont see Pending request link in contact list
     And I see user <Contact1> in contact list
     And I see user <Contact2> in contact list
@@ -290,7 +290,7 @@ Feature: Connect
     And I wait for 5 seconds
     And I see new photo in the dialog
     And I see 1 default message in the dialog
-    And I return to the chat list
+    And I navigate back to conversations list
     #And I see People picker page
     #And I click close button to dismiss people view
     Given User <Contact> sends 1 encrypted message to user Myself

@@ -172,7 +172,7 @@ Feature: Conversation List
     And I remember the state of the first conversation cell
     When I tap on contact name <Contact>
     And I see dialog page
-    And I return to the chat list
+    And I navigate back to conversations list
     Then I see change of state for first conversation cell
 
     Examples:
@@ -316,9 +316,9 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I return to the chat list
+    And I navigate back to conversations list
     And I tap on contact name <Contact1>
-    And I return to the chat list
+    And I navigate back to conversations list
     Then I dont see unread message indicator in list for contact <Contact>
     Given User <Contact> sends 1 encrypted message to user Myself
     Then I see 1 unread message indicator in list for contact <Contact>
@@ -389,7 +389,7 @@ Feature: Conversation List
     And I see dialog page
     And I tap media link
     And I rotate UI to portrait
-    And I return to the chat list
+    And I navigate back to conversations list
     Then I see Pause media button next to user <Contact>
     And I tap on play/pause button in contact list
     And I see Play media button next to user <Contact>
