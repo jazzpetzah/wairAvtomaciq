@@ -27,7 +27,6 @@ public class TabletLoginPageSteps {
 	 */
 	@Given("^I Sign in on tablet using my email$")
 	public void GivenISignInUsingEmail() throws Exception {
-		Assert.assertTrue("Login page is not visible", getTabletLoginPage().isVisible());
 		final ClientUser self = usrMgr.getSelfUserOrThrowError();
 		getTabletLoginPage().switchToEmailLogin();
 		getTabletLoginPage().setLogin(self.getEmail());

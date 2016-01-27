@@ -107,7 +107,7 @@ public class ContactListPageSteps {
      */
     @When("^I dismiss settings warning$")
     public void IDismissSettingsWarning() throws Exception {
-        getLoginPage().dismissSettingsWaring();
+        getLoginPage().dismissSettingsWarning();
     }
 
     @When("^I tap on my name (.*)$")
