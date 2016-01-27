@@ -128,22 +128,6 @@ public class TabletGroupConversationDetailPopoverPageSteps {
 	}
 
 	/**
-	 * Checks that the contact has the correct avatar picture
-	 * 
-	 * @step. ^I see the correct avatar picture for user (.*) on iPad$
-	 * @param contact
-	 *            the avatar picture gets checked of
-	 * @throws Throwable
-	 */
-	@Then("^I see the correct avatar picture for user (.*) on iPad$")
-	public void ISeeTheCorrectAvatarPictureForUserOniPad(String contact)
-			throws Throwable {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertTrue(getTabletGroupConversationDetailPopoverPage()
-				.areParticipantAvatarCorrectOniPadPopover(contact));
-	}
-
-	/**
 	 * Clicks on the SILENCE button in the iPad popover ellipsis menu
 	 * 
 	 * @step. ^I click SILENCE button on iPad ellipsis menu$

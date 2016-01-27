@@ -224,11 +224,6 @@ Feature: People View
   @C2711 @regression @rc @id2442
   Scenario Outline: Verify correct group info page information [PORTRAIT]
     Given There are 3 users where <Name> is me
-    Given User <Contact1> change avatar picture to <Picture>
-    Given User <Contact1> change name to AQAPICTURECONTACT
-    Given User <Contact2> change name to QAAVATAR TestContact
-    Given User <Contact2> change accent color to <Color>
-    Given User <Contact1> change accent color to <Color2>
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact2>,<Contact1>
     Given I Sign in on tablet using my email
@@ -238,21 +233,14 @@ Feature: People View
     And I open group conversation details
     Then I can read the group name <GroupChatName> on the iPad popover
     Then I see that number of participants <ParticipantsNumber> is correct on iPad popover
-    Then I see the correct avatar picture for user <Contact1> on iPad
-    Then I see the correct avatar picture for user <Contact2> on iPad
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | Picture                      | Color        | Color2       | ParticipantsNumber |
-      | user1Name | user2Name | user3Name | GroupInfo     | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow | 3                  |
+      | Name      | Contact1  | Contact2  | GroupChatName | ParticipantsNumber |
+      | user1Name | user2Name | user3Name | GroupInfo     | 3                  |
 
   @C2717 @regression @id2989
   Scenario Outline: Verify correct group info page information [LANDSCAPE]
     Given There are 3 users where <Name> is me
-    Given User <Contact1> change avatar picture to <Picture>
-    Given User <Contact1> change name to AQAPICTURECONTACT
-    Given User <Contact2> change name to QAAVATAR TestContact
-    Given User <Contact2> change accent color to <Color>
-    Given User <Contact1> change accent color to <Color2>
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
@@ -263,12 +251,10 @@ Feature: People View
     And I open group conversation details
     Then I can read the group name <GroupChatName> on the iPad popover
     Then I see that number of participants <ParticipantsNumber> is correct on iPad popover
-    Then I see the correct avatar picture for user <Contact1> on iPad
-    Then I see the correct avatar picture for user <Contact2> on iPad
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | Picture                      | Color        | Color2       | ParticipantsNumber |
-      | user1Name | user2Name | user3Name | GroupInfo     | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow | 3                  |
+      | Name      | Contact1  | Contact2  | GroupChatName | ParticipantsNumber |
+      | user1Name | user2Name | user3Name | GroupInfo     | 3                  |
 
   @C2702 @regression @rc @id2432
   Scenario Outline: Check any users personal info in group conversation [PORTRAIT]
