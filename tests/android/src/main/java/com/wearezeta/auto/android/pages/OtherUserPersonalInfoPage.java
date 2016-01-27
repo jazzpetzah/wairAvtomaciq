@@ -105,8 +105,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     }
 
     public List<String> getParticipantDevices() throws Exception {
-        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idParticipantDevices) : "Devices are not displayed within default timeout";
-        return getElements(idParticipantDevices).stream().map(WebElement::getText).map((string) -> string.replaceAll("(PHONE)|(DESKTOP)|(\\n)|(\\s)|(ID:)", "").toLowerCase()).collect(Collectors.toList());
+        return selectVisibleElements(idParticipantDevices).stream().map(WebElement::getText).map((string) -> string.replaceAll("(PHONE)|(DESKTOP)|(\\n)|(\\s)|(ID:)", "").toLowerCase()).collect(Collectors.toList());
     }
 
     public void selectSingleParticipantTab(String itemName) throws Exception {
