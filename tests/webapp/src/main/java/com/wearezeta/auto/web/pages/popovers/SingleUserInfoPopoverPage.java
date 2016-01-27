@@ -17,6 +17,15 @@ class SingleUserInfoPopoverPage extends AbstractUserInfoPopoverPage {
 	@FindBy(how = How.XPATH, using = PopoverLocators.SingleUserPopover.SingleUserInfoPage.xpathUnblockButton)
 	private WebElement unblockButton;
 
+	@FindBy(how = How.CSS, using = PopoverLocators.SingleUserPopover.SingleUserInfoPage.cssDevicesTab)
+	private WebElement devicesTab;
+
+	@FindBy(how = How.CSS, using = PopoverLocators.SingleUserPopover.SingleUserInfoPage.cssDetailsTab)
+	private WebElement detailsTab;
+
+	@FindBy(how = How.CSS, using = PopoverLocators.SingleUserPopover.SingleUserInfoPage.cssDevicesText)
+	private WebElement devicesText;
+
 	public SingleUserInfoPopoverPage(Future<ZetaWebAppDriver> lazyDriver,
 			PeoplePopoverContainer container) throws Exception {
 		super(lazyDriver, container);
@@ -54,5 +63,16 @@ class SingleUserInfoPopoverPage extends AbstractUserInfoPopoverPage {
 	}
 	public void clickUnblockButton() {
 		unblockButton.click();
+	}
+
+	public void switchToDevicesTab() {
+		devicesTab.click();
+	}
+	public void switchToDetailsTab() {
+		detailsTab.click();
+	}
+
+	public String getDevicesText() {
+		return devicesText.getText();
 	}
 }

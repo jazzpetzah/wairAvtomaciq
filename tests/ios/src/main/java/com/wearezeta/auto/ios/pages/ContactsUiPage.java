@@ -37,8 +37,7 @@ public class ContactsUiPage extends IOSPage {
         input.sendKeys(text);
     }
 
-    public boolean isContactPresentedInContactsList(String contact)
-            throws Exception {
+    public boolean isContactPresentedInContactsList(String contact) throws Exception {
         final By locator = By.xpath(xpathStrConvoCellByName.apply(contact));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 5);
     }

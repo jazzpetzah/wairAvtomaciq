@@ -583,13 +583,13 @@ Feature: Conversation View
       | user1Name | user2Name |
 
   @C888 @C889 @regression @rc @id3093 @id3092
-  Scenario Outline: Verify opening and closing the cursor by clicking swiping right/left
+  Scenario Outline: Verify opening and closing input options by buttons click and swiping right/left
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I click plus button next to text input
+    And I swipe right text input to reveal option buttons
     Then I see Buttons: Details, Call, Camera, Sketch, Ping
     And I see plus button is not shown
     And I swipe left on options buttons

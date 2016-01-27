@@ -105,7 +105,11 @@ public class CommonIOSSteps {
 
         setTestStartedDate(new Date());
         return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance()
-                .resetDriver(getUrl(), capabilities, DRIVER_CREATION_RETRIES_COUNT);
+                .resetDriver(getUrl(), capabilities, DRIVER_CREATION_RETRIES_COUNT,
+                        // Tune this delay if you keep getting "target.frontMostApp().keyboard()
+                        // failed to tap" exception
+                        drv -> drv.executeScript("au.mainApp().keyboard().setInterKeyDelay(0.5);"),
+                        null);
     }
 
     @Before
