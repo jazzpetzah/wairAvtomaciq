@@ -592,20 +592,6 @@ public class DialogPageSteps {
                 getDialogPage().isLastMessageEqualTo(message, 30));
     }
 
-    /**
-     * Verify that I see Play or Pause button on Mediabar
-     *
-     * @throws Exception
-     * @step. ^I see (.*) on Mediabar$
-     */
-    @Then("^I see (.*) on Mediabar$")
-    public void ThenIseeOnMediaBar(String iconLabel) throws Exception {
-        final double score = getDialogPage()
-                .getMediaBarControlIconOverlapScore(iconLabel);
-        Assert.assertTrue("Overlap between two images has not enough score. Expected >= 0.75, current = "
-                + score, score >= 0.75d);
-    }
-
     private BufferedImage previousMediaButtonState = null;
 
     /**

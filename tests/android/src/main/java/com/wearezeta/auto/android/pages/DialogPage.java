@@ -12,7 +12,6 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -21,9 +20,6 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 public class DialogPage extends AndroidPage {
 
     private static final Logger log = ZetaLogger.getLog(DialogPage.class.getSimpleName());
-
-    public static final String MEDIA_PLAY = "PLAY";
-    public static final String MEDIA_PAUSE = "PAUSE";
 
     public static final By xpathConfirmOKButton = By.xpath("//*[@id='ttv__confirmation__confirm' and @value='OK']");
 
@@ -422,21 +418,6 @@ public class DialogPage extends AndroidPage {
 
     public boolean waitUntilYoutubePlayButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idYoutubePlayButton);
-    }
-
-    public double getMediaBarControlIconOverlapScore(String label)
-            throws Exception {
-        String path = null;
-        BufferedImage mediaImage = getElementScreenshot(getElement(idMediaBarControl))
-                .orElseThrow(IllegalStateException::new);
-        if (label.equals(MEDIA_PLAY)) {
-            path = CommonUtils.getMediaBarPlayIconPath(DialogPage.class);
-        } else if (label.equals(MEDIA_PAUSE)) {
-            path = CommonUtils.getMediaBarPauseIconPath(DialogPage.class);
-        }
-        BufferedImage templateImage = ImageUtil.readImageFromFile(path);
-        return ImageUtil.getOverlapScore(mediaImage, templateImage,
-                ImageUtil.RESIZE_TO_MAX_SCORE);
     }
 
     public BufferedImage getMediaControlButtonScreenshot() throws Exception {

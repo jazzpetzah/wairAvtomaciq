@@ -26,11 +26,6 @@ public class CommonUtils {
     public static final int MAX_PARALLEL_USER_CREATION_TASKS = 25;
 
     private static final String USER_IMAGE = "userpicture_landscape.jpg";
-    private static final String IOS_PING_IMAGE = "ios_ping_image.png";
-    private static final String IOS_HOT_PING_IMAGE = "ios_hot_ping_image.png";
-    private static final String IOS_AVATAR_CLOCK_IMAGE = "new_avatarclock.png";
-    private static final String MEDIABAR_PLAY_IMAGE = "android_mediabar_play_image_(white).png";
-    private static final String MEDIABAR_PAUSE_IMAGE = "android_mediabar_pause_image_(white).png";
 
     private static final Random rand = new Random();
 
@@ -38,12 +33,6 @@ public class CommonUtils {
             .getSimpleName());
 
     private static final String TCPBLOCK_PREFIX_PATH = "/usr/local/bin/";
-
-    public static boolean trueInPercents(int percent) {
-        Random rand = new Random();
-        int nextInt = rand.nextInt(100);
-        return nextInt < percent;
-    }
 
     public static boolean executeOsCommandWithTimeout(String[] cmd,
             long timeoutSeconds) throws Exception {
@@ -111,30 +100,8 @@ public class CommonUtils {
         return getValueFromConfig(c, "defaultImagesPath") + USER_IMAGE;
     }
 
-    public static String getPingIconPathIOS(Class<?> c) throws Exception {
-        return getValueFromConfig(c, "iosImagesPath") + IOS_PING_IMAGE;
-    }
-
-    public static String getHotPingIconPathIOS(Class<?> c) throws Exception {
-        return getValueFromConfig(c, "iosImagesPath") + IOS_HOT_PING_IMAGE;
-    }
-
-    public static String getAvatarWithClockIconPathIOS(Class<?> c)
-            throws Exception {
-        return getValueFromConfig(c, "iosImagesPath") + IOS_AVATAR_CLOCK_IMAGE;
-    }
-
     public static String getImagesPath(Class<?> c) throws Exception {
         return getValueFromConfig(c, "defaultImagesPath");
-    }
-
-    public static String getMediaBarPlayIconPath(Class<?> c) throws Exception {
-        return getValueFromConfig(c, "defaultImagesPath") + MEDIABAR_PLAY_IMAGE;
-    }
-
-    public static String getMediaBarPauseIconPath(Class<?> c) throws Exception {
-        return getValueFromConfig(c, "defaultImagesPath")
-                + MEDIABAR_PAUSE_IMAGE;
     }
 
     public static String getPictureResultsPathFromConfig(Class<?> c)
@@ -346,16 +313,6 @@ public class CommonUtils {
             e.printStackTrace();
             return null;
         }
-    }
-
-    public static String getUserPicturePathFromConfig(Class<?> c)
-            throws Exception {
-        return getValueFromConfig(c, "pathToUserpic");
-    }
-
-    public static String getUserAddressBookFromConfig(Class<?> c)
-            throws Exception {
-        return getValueFromConfig(c, "pathToAddressBook");
     }
 
     public static String generateGUID() {

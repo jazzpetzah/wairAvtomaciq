@@ -127,7 +127,6 @@ Feature: Settings
     And I click on Settings button on personal page
     And I click on About button on personal page
     Then I see About page
-    And I see that the About page is colored <Color>
     And I see WireWebsiteButton
     And I see TermsButton
     And I see PrivacyPolicyButton
