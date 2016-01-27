@@ -86,7 +86,7 @@ public class IOSKeyboard {
             By keyLocator;
             switch (messageChar) {
                 case "\n":
-                    keyLocator = xpathReturnKeyLocator;
+                    keyLocator = By.name("Send");
                     break;
                 case " ":
                     keyLocator = By.name("space");

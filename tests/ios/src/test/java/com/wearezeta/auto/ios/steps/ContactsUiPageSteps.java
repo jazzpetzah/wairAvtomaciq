@@ -45,8 +45,7 @@ public class ContactsUiPageSteps {
      * @step. ^I input user name (.*) in search on ContactsUI$
      */
     @When("^I input user name (.*) in search on ContactsUI$")
-    public void IInputUserNameInSearchOnContactsUI(String contact)
-            throws Exception {
+    public void IInputUserNameInSearchOnContactsUI(String contact) throws Exception {
         try {
             contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         } catch (NoSuchUserException e) {

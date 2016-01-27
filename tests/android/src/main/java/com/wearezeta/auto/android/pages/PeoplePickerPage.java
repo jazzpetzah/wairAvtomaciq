@@ -13,9 +13,13 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 public class PeoplePickerPage extends AndroidPage {
     public static final By idParticipantsClose = By.id("gtv__participants__close");
 
-    public static final By idSingleParticipantClose = By.id("gtv__single_participants__close");
+    private static final String idStrPickerSearch = "puet_pickuser__searchbox";
 
-    public static final By xpathPickerSearch = By.xpath("//*[@id='puet_pickuser__searchbox' and @shown='true']");
+    public static final By idPickerSearch = By.id(idStrPickerSearch);
+
+    public static final By xpathPickerSearch = By.xpath("//*[@id='" + idStrPickerSearch + "' and @shown='true']");
+
+    public static final By idSingleParticipantClose = By.id("gtv__single_participants__close");
 
     public static final By idPeoplePickerClearbtn = By.id("gtv_pickuser__clearbutton");
 

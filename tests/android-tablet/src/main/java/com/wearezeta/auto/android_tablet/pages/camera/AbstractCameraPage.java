@@ -3,6 +3,7 @@ package com.wearezeta.auto.android_tablet.pages.camera;
 import java.util.Optional;
 import java.util.concurrent.Future;
 
+import gherkin.lexer.Th;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -34,7 +35,7 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
     }
 
     public void tapTakePhotoButton() throws Exception {
-        getElement(idTakePhotoButton).click();
+        getElement(idTakePhotoButton, "Take Photo button is not visible", 15).click();
     }
 
     public boolean waitUntilTakePhotoButtonVisible() throws Exception {
@@ -44,28 +45,43 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
     private boolean isGalleryModeActivated = false;
 
     public void confirmPictureSelection() throws Exception {
+        Thread.sleep(1500);
         final Optional<WebElement> confirmButton = getElementIfDisplayed(DialogPage.xpathConfirmOKButton);
         if (confirmButton.isPresent()) {
             confirmButton.get().click();
-        }
-        // Workaround for unexpected orientation change issue
-        final Optional<WebElement> lensButton = getElementIfDisplayed(getLensButtonLocator());
-        if (lensButton.isPresent()) {
-            lensButton.get().click();
-            if (isGalleryModeActivated) {
-                tapGalleryButton();
-                isGalleryModeActivated = false;
+        } else {
+            // Workaround for unexpected orientation change issue
+            final Optional<WebElement> takePhotoButton = getElementIfDisplayed(idTakePhotoButton);
+            if (takePhotoButton.isPresent()) {
+                if (isGalleryModeActivated) {
+                    tapGalleryButton();
+                    isGalleryModeActivated = false;
+                } else {
+                    takePhotoButton.get().click();
+                }
+                getElement(DialogPage.xpathConfirmOKButton,
+                        "Picture selection confirmation has not been shown after the timeout", 5).click();
             } else {
-                tapTakePhotoButton();
+                final Optional<WebElement> lensButton = getElementIfDisplayed(getLensButtonLocator());
+                if (lensButton.isPresent()) {
+                    lensButton.get().click();
+                    if (isGalleryModeActivated) {
+                        tapGalleryButton();
+                        isGalleryModeActivated = false;
+                    } else {
+                        tapTakePhotoButton();
+                    }
+                    getElement(DialogPage.xpathConfirmOKButton,
+                            "Picture selection confirmation has not been shown after the timeout", 5).click();
+                }
             }
-            getElement(DialogPage.xpathConfirmOKButton,
-                    "Picture selection confirmation has not been shown after the timeout", 5);
         }
+        Thread.sleep(1500);
         ScreenOrientationHelper.getInstance().fixOrientation(getDriver());
     }
 
     public void tapGalleryButton() throws Exception {
-        getElement(idGalleryButton, "Open gallery button is not visible").click();
+        getElement(idGalleryButton, "Open gallery button is not visible", 15).click();
         isGalleryModeActivated = true;
     }
 

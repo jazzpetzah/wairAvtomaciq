@@ -4,8 +4,6 @@ import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.util.Date;
 
-import com.google.common.base.Throwables;
-import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
@@ -1043,5 +1041,16 @@ public class DialogPageSteps {
     public void ISeeConversationIsScrolledToEnd() throws Throwable {
         Assert.assertTrue(getDialogPage().isPlusButtonVisible());
         Assert.assertTrue(getDialogPage().isCursorInputVisible());
+    }
+
+    /**
+     * Clicks the send button on the keyboard
+     *
+     * @throws Exception
+     * @step. ^I click send button on keyboard
+     */
+    @When("^I click send button on keyboard$")
+    public void iClickSendButtonOnKeyboard() throws Exception {
+        getDialogPage().clickKeyboardSendButton();
     }
 }
