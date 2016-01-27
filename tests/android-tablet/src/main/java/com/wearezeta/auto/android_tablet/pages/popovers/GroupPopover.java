@@ -6,12 +6,11 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import org.openqa.selenium.WebElement;
 
 public class GroupPopover extends AbstractPopoverContainer {
 	public final static String idStrRootLocator = "fl__participant_dialog__root";
 
-	private static final By xpathLeftActionButton =
+	private static final By xpathOpenConversationButton =
 			By.xpath("//*[@id='fl__participant__tab__container']//*[@id='gtv__participants__left__action']");
 
 	private ParticipantsPage participantsPage;
@@ -21,10 +20,8 @@ public class GroupPopover extends AbstractPopoverContainer {
 	public GroupPopover(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 		this.participantsPage = new ParticipantsPage(lazyDriver, this);
-		this.connectedParticipantPage = new ConnectedParticipantPage(
-				lazyDriver, this);
-		this.outgoingConnectionPage = new ParticipantOutgoingConnectionPage(
-				lazyDriver, this);
+		this.connectedParticipantPage = new ConnectedParticipantPage(lazyDriver, this);
+		this.outgoingConnectionPage = new ParticipantOutgoingConnectionPage(lazyDriver, this);
 	}
 
 	@Override
@@ -52,8 +49,7 @@ public class GroupPopover extends AbstractPopoverContainer {
 		this.connectedParticipantPage.tapConfirmRemovalButton();
 	}
 
-	public boolean waitForParticipantAvatarVisible(String name)
-			throws Exception {
+	public boolean waitForParticipantAvatarVisible(String name) throws Exception {
 		return this.participantsPage.waitForParticipantAvatarVisible(name);
 	}
 
@@ -82,7 +78,7 @@ public class GroupPopover extends AbstractPopoverContainer {
 	}
 
 	public void tapOpenConversationButton() throws Exception {
-		getElement(xpathLeftActionButton).click();
+		getElement(xpathOpenConversationButton).click();
 	}
 
 	public boolean waitUntilUserNameVisible(String expectedName) throws Exception {
@@ -108,4 +104,12 @@ public class GroupPopover extends AbstractPopoverContainer {
 	public boolean waitUntilMenuItemIsInvisible(String itemName) throws Exception {
 		return participantsPage.isMenuItemInvisible(itemName);
 	}
+
+	public boolean waitUntilOpenConversationBtnIsVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOpenConversationButton);
+	}
+
+    public boolean waitUntilOpenConversationBtnIsInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathOpenConversationButton);
+    }
 }
