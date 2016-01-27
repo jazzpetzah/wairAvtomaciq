@@ -394,7 +394,7 @@ public class DialogPage extends IOSPage {
         try {
             ((IOSElement) convoInput).setValue(message);
         } catch (WebDriverException e) {
-            // Ignore silently
+            ((IOSElement) convoInput).sendKeys(message);
         }
     }
 
