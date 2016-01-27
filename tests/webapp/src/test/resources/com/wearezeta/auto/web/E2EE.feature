@@ -3,12 +3,9 @@ Feature: E2EE
   @C1846 @e2ee
   Scenario Outline: Remove remote device from device list
     Given There is 1 user where <Name> is me
-    Given I switch to Sign In page
-    Given I enter email "<Email>"
-    Given I enter password "<Password>"
-    Given I check option to remember me
     Given user <Name> adds a new device <Device> with label <Label>
-    Given I press Sign In button
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
     And I see the history info page
     And I click confirm on history info page
     Then I am signed in properly
@@ -43,10 +40,7 @@ Feature: E2EE
     Given user <Name> adds a new device Device6 with label Label6
     Given user <Name> adds a new device Device7 with label Label7
     Given I switch to Sign In page
-    Given I enter email "<Email>"
-    Given I enter password "<Password>"
-    Given I check option to remember me
-    When I press Sign In button
+    When I Sign in using login <Email> and password <Password>
     Then I am informed about the device limit
     When I click on Sign Out on the device limit page
     Then I see Sign In page
@@ -80,12 +74,13 @@ Feature: E2EE
     Given user <Name> adds a new device Device6 with label Label6
     Given user <Name> adds a new device Device7 with label Label7
     Given I switch to Sign In page
-    Given I enter email "<Email>"
-    Given I enter password "<Password>"
-    When I press Sign In button
-    And I see the history info page
+    Given I see Sign In page
+    When I enter email "<Email>"
+    And I enter password "<Password>"
+    And I press Sign In button
+    Then I see the history info page
     And I click confirm on history info page
-    Then I am signed in properly
+    And I am signed in properly
     When I click gear button on self profile page
     And I select Settings menu item on self profile page
     Then I see a device named Device1 in the devices section
@@ -104,13 +99,10 @@ Feature: E2EE
   Scenario Outline: Verify current browser is set as permanent device
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
-    Given I enter email "<Email>"
-    Given I enter password "<Password>"
-    When I check option to remember me
-    And I press Sign In button
-    And I see the history info page
+    When I Sign in using login <Email> and password <Password>
+    Then I see the history info page
     And I click confirm on history info page
-    Then I am signed in properly
+    And I am signed in properly
     When I click gear button on self profile page
     And I select Settings menu item on self profile page
     And I remember the device id of the current device
@@ -137,10 +129,13 @@ Feature: E2EE
   Scenario Outline: Verify current browser is set as temporary device
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
-    Given I Sign in using login <Email> and password <Password>
-    And I see the history info page
+    Given I see Sign In page
+    When I enter email "<Email>"
+    And I enter password "<Password>"
+    And I press Sign In button
+    Then I see the history info page
     And I click confirm on history info page
-    Then I am signed in properly
+    And I am signed in properly
     When I click gear button on self profile page
     And I select Settings menu item on self profile page
     And I remember the device id of the current device
@@ -149,7 +144,9 @@ Feature: E2EE
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see Sign In page
-    And I Sign in using login <Email> and password <Password>
+    And I enter email "<Email>"
+    And I enter password "<Password>"
+    And I press Sign In button
     And I see the history info page
     And I click confirm on history info page
     Then I am signed in properly
@@ -237,9 +234,6 @@ Feature: E2EE
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
     Given I switch to Sign In page
-    Given I enter email "<Email>"
-    Given I enter password "<Password>"
-    Given I check option to remember me
     Given I Sign in using login <Email> and password <Password>
     Given I see the history info page
     Given I click confirm on history info page
@@ -250,9 +244,6 @@ Feature: E2EE
     And Contact <Contact> sends encrypted message <EncryptedMessage> to user Myself
     And User <Contact> sends encrypted image <ImageName> to single user conversation Myself
     And I see Sign In page
-    And I enter email "<Email>"
-    And I enter password "<Password>"
-    And I check option to remember me
     And I Sign in using login <Email> and password <Password>
     Then I see text message <EncryptedMessage>
     And I see sent picture <ImageName> in the conversation view
@@ -268,9 +259,6 @@ Feature: E2EE
     Given <Contact2> is connected to Myself
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
-    Given I enter email "<Email>"
-    Given I enter password "<Password>"
-    Given I check option to remember me
     Given I Sign in using login <Email> and password <Password>
     Given I see the history info page
     Given I click confirm on history info page
@@ -281,9 +269,6 @@ Feature: E2EE
     And Contact <Contact1> sends encrypted message <EncryptedMessage> to group conversation <GroupChat>
     And User <Contact1> sends encrypted image <ImageName> to group conversation <GroupChat>
     And I see Sign In page
-    And I enter email "<Email>"
-    And I enter password "<Password>"
-    And I check option to remember me
     And I Sign in using login <Email> and password <Password>
     And I open conversation with <GroupChatName>
     Then I see text message <EncryptedMessage>
