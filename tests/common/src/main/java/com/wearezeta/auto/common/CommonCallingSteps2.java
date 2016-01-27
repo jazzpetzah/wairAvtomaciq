@@ -38,10 +38,10 @@ public final class CommonCallingSteps2 {
 		.getLog(CommonCallingSteps2.class.getName());
 
 	private static final String CALL_BACKEND_VERSION_SEPARATOR = ":";
-	private static final String ZCALL_DEFAULT_VERSION = "1.12";
-	private static final String AUTOCALL_DEFAULT_VERSION = "1.12";
-	private static final String FIREFOX_DEFAULT_VERSION = "43.0.2";
-	private static final String CHROME_DEFAULT_VERSION = "47.0.2526.73";
+    private static final String ZCALL_DEFAULT_VERSION = "2.1";
+    private static final String AUTOCALL_DEFAULT_VERSION = "2.1";
+    private static final String FIREFOX_DEFAULT_VERSION = "44.0";
+    private static final String CHROME_DEFAULT_VERSION = "48.0.2564.82";
 
 	// Request timeout of 180 secs is set by callingservice, we add additional
 	// 10 seconds on the client side to actually get a timeout response to
