@@ -21,7 +21,7 @@
 		<driverTimeoutSeconds>7</driverTimeoutSeconds>
 		<defaultEmail>smoketester@wire.com</defaultEmail>
 		<!-- edge | staging | production -->
-		<backendType>staging</backendType>
+		<backendType>gregor</backendType>
 		<!-- leave webappApplicationPath empty to get the default URL for the backendType -->
 		<webappApplicationPath></webappApplicationPath>
 		<otrOnly>true</otrOnly>
