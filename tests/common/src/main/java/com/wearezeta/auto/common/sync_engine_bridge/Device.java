@@ -16,8 +16,7 @@ class Device extends RemoteEntity implements IDevice {
     private IRemoteProcess hostProcess;
 
     public Device(String deviceName, IRemoteProcess process, FiniteDuration actorTimeout) {
-        super(actorTimeout);
-        this.setName(deviceName);
+        super(process.ref(), deviceName,actorTimeout);
         this.hostProcess = process;
         spawn();
     }
@@ -39,8 +38,7 @@ class Device extends RemoteEntity implements IDevice {
                 String.format(
                         "There was an error establishing a connection with a new device: "
                                 + "%s on process: %s. Please check the log file %s for more details.",
-                        this.name(), this.hostProcess.name(),
-                        this.hostProcess.getLogPath()));
+                        this.name(), this.hostProcess.name(), this.hostProcess.getLogPath()));
     }
 
     @Override
@@ -95,6 +93,4 @@ class Device extends RemoteEntity implements IDevice {
     public void sendPing(String convId) throws Exception {
         askActor(this.ref(), new ActorMessage.Knock(new RConvId(convId)), PING_SENDING_TIMEOUT);
     }
-
-
 }

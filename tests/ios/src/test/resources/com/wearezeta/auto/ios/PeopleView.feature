@@ -288,13 +288,12 @@ Feature: People View
   @C3170 @regression @rc @id1462
   Scenario Outline: Verify silence the conversation
     Given There are 2 users where <Name> is me
-    Given User <Name> change accent color to <Color>
-    Given <Contact> is connected to <Name>
-    Given User <Contact> change accent color to <Color>
-    Given User <Contact> change name to <NewName>
+    Given User Myself removes his avatar picture
+    Given <Contact> is connected to Myself
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on contact name <Contact>
+    When I remember the state of <Contact> conversation item
+    And I tap on contact name <Contact>
     And I see dialog page
     And I open conversation details
     And I press conversation menu button
@@ -303,23 +302,22 @@ Feature: People View
     And I see dialog page
     And I navigate back to conversations list
     And I see conversations list
-    Then I see conversation <Contact> is silenced
+    Then I see the state of <Contact> conversation item is changed
 
     Examples:
-      | Name      | Contact   | Color  | NewName |
-      | user1Name | user2Name | Violet | SILENCE |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C3171 @regression @rc @id1335
   Scenario Outline: Verify unsilence the conversation
     Given There are 2 users where <Name> is me
-    Given User <Name> change accent color to <Color>
-    Given <Contact> is connected to <Name>
-    Given User <Contact> change name to <NewName>
-    Given <Name> silenced conversation with <Contact>
+    Given User Myself removes his avatar picture
+    Given <Contact> is connected to Myself
+    Given Myself silenced conversation with <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    And I see conversation <Contact> got silenced before
-    When I tap on contact name <Contact>
+    When I remember the state of <Contact> conversation item
+    And I tap on contact name <Contact>
     And I see dialog page
     And I open conversation details
     And I press conversation menu button
@@ -328,11 +326,11 @@ Feature: People View
     And I see dialog page
     And I navigate back to conversations list
     And I see conversations list
-    Then I see conversation <Contact> is unsilenced
+    Then I see the state of <Contact> conversation item is changed
 
     Examples:
-      | Name      | Contact   | Color  | NewName |
-      | user1Name | user2Name | Violet | SILENCE |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C26 @regression @id712
   Scenario Outline: Verify you can block a person from profile view
@@ -492,7 +490,6 @@ Feature: People View
     And I press conversation menu button
     And I click delete menu button
     And I confirm delete conversation content
-    And I navigate back to conversations list
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
     And I see user <Contact1> found on People picker page

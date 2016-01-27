@@ -171,6 +171,21 @@ public class ConversationPage extends WebPage {
 		return true;
 	}
 
+	public void waitForTextMessageContains(String text) throws Exception {
+		Set<String> set = new HashSet<String>();
+		set.add(text);
+		waitForTextMessageContains(set);
+	}
+
+	public void waitForTextMessageContains(Set<String> parts)
+			throws Exception {
+		final By locator = By
+				.cssSelector(WebAppLocators.ConversationPage.cssTextMessage);
+		WebDriverWait wait = new WebDriverWait(getDriver(),
+				DriverUtils.getDefaultLookupTimeoutSeconds());
+		wait.until(visibilityOfTextInElementsLocated(locator, parts));
+	}
+
 	public void waitForMessageHeaderContains(String text) throws Exception {
 		waitForMessageHeaderContains(new HashSet<String>(Arrays.asList(text)));
 	}

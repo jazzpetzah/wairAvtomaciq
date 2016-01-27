@@ -353,7 +353,7 @@ Feature: Calling
     Given I Sign in on tablet using my email
     Given I see conversations list
     And I tap on contact name <Contact1>
-    And I return to the chat list
+    And I navigate back to conversations list
     And I remember the state of <Contact2> conversation item
     When I tap on contact name <Contact1>
     And I click plus button next to text input
@@ -367,7 +367,7 @@ Feature: Calling
     And I see mute call, end call buttons
     And <Contact2> stops all calls to me
     And I end started call
-    And I return to the chat list
+    And I navigate back to conversations list
     And I see the state of <Contact2> conversation item is changed
     And I tap on contact name <Contact2>
     Then I see missed call from contact <Contact2>
@@ -385,7 +385,7 @@ Feature: Calling
     Given I Sign in on tablet using my email
     Given I see conversations list
     And I tap on contact name <Contact1>
-    And I return to the chat list
+    And I navigate back to conversations list
     And I remember the state of <Contact2> conversation item
     When I click plus button next to text input
     And I press call button

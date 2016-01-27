@@ -74,24 +74,6 @@ Feature: Self Profile
       | Name      | NewUsername | Contact   |
       | user1Name | New Name    | user2Name |
 
-  @C1083 @regression @id667
-  Scenario Outline: Verify changing and applying accent color
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given User <Contact> sends 40 encrypted messages to user Myself
-    Given User <Name> change accent color to <Color1>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on my name <Name>
-    And I slide my accent color via the colorpicker from <Color1> to <Color2>
-    And I close self profile
-    And User <Contact> sends encrypted message "<Message>" to user <Name>
-    Then I see 1 unread message indicator in list for contact <Contact>
-
-    Examples: 
-      | Name      | Color1 | Color2          | Contact   | Message |
-      | user1Name | Violet | StrongLimeGreen | user2Name | hidiho  |
-
   @C1085 @regression @id3849
   Scenario Outline: Verify adding phone number to the contact signed up with email
     Given There is 1 users where <Name> is me with email only

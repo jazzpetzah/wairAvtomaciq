@@ -10,7 +10,7 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 abstract class AbstractConnectionPage extends AbstractPopoverPage {
 	public static final Function<String, String> xpathStrNameByValue = value -> String
-			.format("//*[@id='%s']//*[@value='%s']", OutgoingConnectionPopover.idRootLocator, value);
+			.format("//*[@id='%s']//*[@value='%s']", OutgoingConnectionPopover.idStrRootLocator, value);
 
 	public static final By idCloseButton = By.id("gtv__participants__close");
 

@@ -973,7 +973,7 @@ public class DialogPageSteps {
     @When("^I see the only message in dialog is system message CONNECTED TO (.*)$")
     public void ISeeLastMessageIsSystem(String username) throws Exception {
         username = usrMgr.findUserByNameOrNameAlias(username).getName();
-        ISeeXConvoEntries(1);
+        ISeeXConvoEntries(0);
         Assert.assertTrue(getDialogPage()
                 .isConnectedToUserStartedConversationLabelVisible(username));
     }
