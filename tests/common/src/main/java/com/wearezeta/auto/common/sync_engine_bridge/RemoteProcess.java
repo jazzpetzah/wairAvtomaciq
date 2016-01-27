@@ -86,16 +86,16 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
                     this.pinger.shutdownNow();
                 }
                 this.pinger = Executors.newSingleThreadExecutor();
-                LOG.debug(String.format("Starting ping thread with interval %s seconds for the remote process '%s'...",
+                LOG.debug(String.format("Starting ping thread with %s-seconds interval for the remote process '%s'...",
                         PING_INTERVAL_SECONDS, name()));
                 this.pinger.submit(() -> {
                     while(!Thread.currentThread().isInterrupted()) {
-                        if (!isConnected()) {
-                            break;
-                        }
                         try {
                             Thread.sleep(PING_INTERVAL_SECONDS * 1000);
                         } catch (InterruptedException e) {
+                            break;
+                        }
+                        if (!isConnected()) {
                             break;
                         }
                     }

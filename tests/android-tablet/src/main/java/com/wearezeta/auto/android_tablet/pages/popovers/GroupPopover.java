@@ -2,12 +2,17 @@ package com.wearezeta.auto.android_tablet.pages.popovers;
 
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import org.openqa.selenium.WebElement;
 
 public class GroupPopover extends AbstractPopoverContainer {
-	public final static String idRootLocator = "fl__participant_dialog__root";
+	public final static String idStrRootLocator = "fl__participant_dialog__root";
+
+	private static final By xpathLeftActionButton =
+			By.xpath("//*[@id='fl__participant__tab__container']//*[@id='gtv__participants__left__action']");
 
 	private ParticipantsPage participantsPage;
 	private ConnectedParticipantPage connectedParticipantPage;
@@ -24,7 +29,7 @@ public class GroupPopover extends AbstractPopoverContainer {
 
 	@Override
 	protected By getLocator() {
-		return By.id(idRootLocator);
+		return By.id(idStrRootLocator);
 	}
 
 	public void selectMenuItem(String itemName) throws Exception {
@@ -56,8 +61,7 @@ public class GroupPopover extends AbstractPopoverContainer {
 		this.participantsPage.tapParticipantAvatar(name);
 	}
 
-	public boolean waitForParticipantAvatarNotVisible(String name)
-			throws Exception {
+	public boolean waitForParticipantAvatarNotVisible(String name) throws Exception {
 		return this.participantsPage.waitForParticipantAvatarNotVisible(name);
 	}
 
@@ -78,39 +82,30 @@ public class GroupPopover extends AbstractPopoverContainer {
 	}
 
 	public void tapOpenConversationButton() throws Exception {
-		this.participantsPage.tapOpenConversationButton();
+		getElement(xpathLeftActionButton).click();
 	}
 
-	public boolean waitUntilUserNameVisible(String expectedName)
-			throws Exception {
-		return this.connectedParticipantPage
-				.waitUntilUserNameVisible(expectedName);
+	public boolean waitUntilUserNameVisible(String expectedName) throws Exception {
+		return this.connectedParticipantPage.waitUntilUserNameVisible(expectedName);
 	}
 
-	public boolean waitUntilUserEmailVisible(String expectedEmail)
-			throws Exception {
-		return this.connectedParticipantPage
-				.waitUntilUserEmailVisible(expectedEmail);
+	public boolean waitUntilUserEmailVisible(String expectedEmail) throws Exception {
+		return this.connectedParticipantPage.waitUntilUserEmailVisible(expectedEmail);
 	}
 
-	public boolean waitUntilConversationNameVisible(String expectedName)
-			throws Exception {
-		return this.participantsPage
-				.waitUntilConversationNameVisible(expectedName);
+	public boolean waitUntilConversationNameVisible(String expectedName) throws Exception {
+		return this.participantsPage.waitUntilConversationNameVisible(expectedName);
 	}
 
-	public boolean waitUntilSubheaderIsVisible(String expectedText)
-			throws Exception {
+	public boolean waitUntilSubheaderIsVisible(String expectedText) throws Exception {
 		return this.participantsPage.waitUntilSubheaderIsVisible(expectedText);
-
 	}
 
 	public boolean waitUntilMenuItemIsVisible(String itemName) throws Exception {
 		return participantsPage.isMenuItemVisible(itemName);
 	}
 
-	public boolean waitUntilMenuItemIsInvisible(String itemName)
-			throws Exception {
+	public boolean waitUntilMenuItemIsInvisible(String itemName) throws Exception {
 		return participantsPage.isMenuItemInvisible(itemName);
 	}
 }
