@@ -194,25 +194,6 @@ Feature: Search
       | Name      | Contact   | NewName  | LastName |
       | user1Name | user2Name | NEW NAME | NAME     |
 
-  @C1033 @regression @rc @id2540 @id2118
-  Scenario Outline: Verify sending connection request from PYMK
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given <Contact1> is connected to <Contact2>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I open search by taping on it
-    And I see People picker page
-    And I re-enter the people picker if CONNECT label is not there
-    And I see CONNECT label
-    And I press the instant connect button
-    And I click close button to dismiss people view
-    Then I see first item in contact list named <Contact2>
-
-    Examples:
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
-
   @C1049 @regression @rc @id3282
   Scenario Outline: Verify starting a call with action button
     Given There are 2 users where <Name> is me

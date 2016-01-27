@@ -108,6 +108,9 @@ public class DialogPage extends IOSPage {
     private static final Function<String, String> nameStrConnectingLabelByReceiverName =
             name -> String.format("CONNECTING TO %s.", name.toUpperCase());
 
+    public static final Function<String, String> xpathStrConnectingToUserLabelByName = name ->
+            String.format("//UIAStaticText[contains(@name, 'CONNECTING TO %s.')]", name.toUpperCase());
+
     private static final By xpathLoremIpsumText = By.xpath("//UIATextView[contains(@name, 'Lorem ipsum')]");
 
     protected static final By nameCameraLibraryButton = By.name("cameraLibraryButton");
@@ -463,7 +466,7 @@ public class DialogPage extends IOSPage {
     }
 
     public boolean isConnectedToUserStartedConversationLabelVisible(String username) throws Exception {
-        final By locator = By.xpath(xpathStrConnectedToUserLabelByName.apply(username));
+        final By locator = By.xpath(xpathStrConnectingToUserLabelByName.apply(username));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
