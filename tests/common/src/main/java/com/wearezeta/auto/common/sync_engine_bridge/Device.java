@@ -118,7 +118,7 @@ class Device extends RemoteEntity implements IDevice {
     @Override
     public String getFingerprint() throws Exception {
         if (!this.fingerprint.isPresent()) {
-            final Object resp = askActor(this.ref(), new ActorMessage.GetDeviceId());
+            final Object resp = askActor(this.ref(), new ActorMessage.GetDeviceFingerPrint());
             if (resp instanceof ActorMessage.Successful) {
                 fingerprint = Optional.of(((ActorMessage.Successful) resp).response());
                 return fingerprint.get();

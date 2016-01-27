@@ -159,12 +159,12 @@ Feature: E2EE
     And I tap conversation details button
     And I select contact <Contact1>
     And I select single participant tab "Devices"
-    Then 1 device is shown in single participant devices tab
+    Then I see 1 device is shown in single participant devices tab
     And I verify all device ids of user <Contact1> are shown in single participant devices tab
     When I close single participant page by UI button
     And I select contact <Contact2>
     And I select single participant tab "Devices"
-    Then 1 device is shown in single participant devices tab
+    Then I see 1 device is shown in single participant devices tab
     And I verify all device ids of user <Contact2> are shown in single participant devices tab
 
     Examples:
@@ -182,7 +182,7 @@ Feature: E2EE
     And I tap on contact name <Contact1>
     And I tap conversation details button
     And I select single participant tab "Devices"
-    Then 1 device is shown in single participant devices tab
+    Then I see 1 device is shown in single participant devices tab
     And I verify all device ids of user <Contact1> are shown in single participant devices tab
 
     Examples:

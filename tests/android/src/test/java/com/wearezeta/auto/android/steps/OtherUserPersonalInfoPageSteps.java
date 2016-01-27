@@ -180,7 +180,7 @@ public class OtherUserPersonalInfoPageSteps {
      *
      * @throws Exception
      */
-    @When("^(\\d+) devices? (?:are|is) shown in single participant devices tab$")
+    @When("^I see (\\d+) devices? (?:are|is) shown in single participant devices tab$")
     public void ICheckNumberOfDevicesInSingleParticipantDevicesTab(int expectedNumDevices) throws Exception {
         int numDevices = getOtherUserPersonalInfoPage().getParticipantDevices().size();
         Assert.assertTrue("expected size", expectedNumDevices == numDevices);
