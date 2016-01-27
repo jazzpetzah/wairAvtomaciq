@@ -57,26 +57,26 @@ Feature: Conversation List
 
   @C350 @regression @id2153
   Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact>,<Contact1>
-    Given User <Name> change accent color to <Color>
+    Given There are 2 users where <Name> is me
+    Given User Myself removes his avatar picture
+    Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
     And I navigate back to conversations list
-    And I tap on contact name <Contact1>
-    And I navigate back to conversations list
-    Then I dont see unread message indicator in list for contact <Contact>
-    Given User <Contact> sends 1 encrypted message to user Myself
-    Then I see 1 unread message indicator in list for contact <Contact>
-    Given User <Contact> sends 1 encrypted message to user Myself
-    Then I see 5 unread message indicator in list for contact <Contact>
-    Given User <Contact> sends 8 encrypted messages to user Myself
-    Then I see 10 unread message indicator in list for contact <Contact>
+    And I remember the state of <Contact> conversation item
+    When User <Contact> sends 1 encrypted message to user Myself
+    Then I see the state of <Contact> conversation item is changed
+    When I remember the state of <Contact> conversation item
+    And User <Contact> sends 4 encrypted message to user Myself
+    Then I see the state of <Contact> conversation item is changed
+    When I remember the state of <Contact> conversation item
+    Given User <Contact> sends 5 encrypted messages to user Myself
+    Then I see the state of <Contact> conversation item is changed
 
     Examples:
-      | Name      | Contact   | Contact1  | Color           |
-      | user1Name | user2Name | user3Name | StrongLimeGreen |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C19 @regression @id2040
   Scenario Outline: Verify archive a group conversation
@@ -298,24 +298,24 @@ Feature: Conversation List
   @C850 @staging @id3312
   Scenario Outline: Verify silencing and notify from the action menu
     Given There are 2 users where <Name> is me
-    Given User <Name> change accent color to <Color>
+    Given User Myself removes his avatar picture
     Given Myself is connected to <Contact>
-    Given User <Contact> change accent color to <Color>
-    Given User <Contact> change name to <NewName>
     Given I sign in using my email or phone number
     Given I see conversations list
+    When I remember the state of <Contact> conversation item
     And I tap on contact name <Contact>
     And I navigate back to conversations list
     When I swipe right on a <Contact>
     And I press menu silence button
-    Then I see conversation <Contact> is silenced
-    When I swipe right on a <Contact>
+    Then I see the state of <Contact> conversation item is changed
+    When I remember the state of <Contact> conversation item
+    And I swipe right on a <Contact>
     And I press menu notify button
-    Then I see conversation <Contact> is unsilenced
+    Then I see the state of <Contact> conversation item is changed
 
     Examples:
-      | Name      | Contact   | Color  | NewName |
-      | user1Name | user2Name | Violet | SILENCE |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C106 @staging @id3899 @ZIOS-5279
   Scenario Outline: Verify first conversation in the list is highlighted and opened
@@ -484,20 +484,20 @@ Feature: Conversation List
   @C366 @regression @rc @id1075
   Scenario Outline: Verify messages are marked as read with disappearing unread dot
     Given There are 2 users where <Name> is me
+    Given User Myself removes his avatar picture
     Given <Contact> is connected to <Name>
-    Given User <Name> change accent color to <Color>
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User <Contact> sends <Number> encrypted messages to user Myself
-    And I see 1 unread message indicator in list for contact <Contact>
+    Given User <Contact> sends 1 encrypted messages to user Myself
+    When I remember the state of <Contact> conversation item
     And I tap on contact name <Contact>
     And I see dialog page
     And I navigate back to conversations list
-    Then I dont see unread message indicator in list for contact <Contact>
+    Then I see the state of <Cobntact> conversation item is changed
 
     Examples:
-      | Name      | Contact   | Color           | Number |
-      | user1Name | user2Name | StrongLimeGreen | 1      |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C108 @regression @id4103
   Scenario Outline: Verify 'Invite more people' is hidden after 6 connections

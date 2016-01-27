@@ -440,12 +440,13 @@ Feature: People View
   @C2746 @regression @rc @id2456
   Scenario Outline: Verify silence the conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
-    Given User <Name> change accent color to <Color>
+    Given User Myself removes his avatar picture
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap on group chat with name <GroupChatName>
+    When I remember the state of <GroupChatName> conversation item
+    And I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I open group conversation details
     And I press conversation menu button on iPad
@@ -453,33 +454,34 @@ Feature: People View
     And I exit the group info iPad popover
     And I see dialog page
     And I navigate back to conversations list
-    Then I see conversation <GroupChatName> is silenced
+    Then I see the state of <GroupChatName> conversation item is changed
 
     Examples:
-      | Name      | Contact1  | Contact2  | Color  | GroupChatName |
-      | user1Name | user2Name | user3Name | Violet | SILENCE       |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | SILENCE       |
 
   @C2748 @regression @id3209
   Scenario Outline: Verify silence the conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
-    Given User <Name> change accent color to <Color>
+    Given User Myself removes his avatar picture
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap on group chat with name <GroupChatName>
+    When I remember the state of <GroupChatName> conversation item
+    And I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I open group conversation details
     And I press conversation menu button on iPad
     And I click SILENCE button on iPad ellipsis menu
     And I exit the group info iPad popover
     And I see dialog page
-    Then I see conversation <GroupChatName> is silenced
+    Then I see the state of <GroupChatName> conversation item is changed
 
     Examples:
-      | Name      | Contact1  | Contact2  | Color  | GroupChatName |
-      | user1Name | user2Name | user3Name | Violet | SILENCE       |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | SILENCE       |
 
   @C2722 @regression @id3220
   Scenario Outline: Add someone to a group conversation [PORTRAIT]
