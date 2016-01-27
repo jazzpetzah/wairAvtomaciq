@@ -248,7 +248,8 @@ public class DialogPageSteps {
     public void ISeePendingConnectMessage(String contact, String user)
             throws Throwable {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        Assert.assertTrue(String.format("Connecting to %s is not visible",contact),getDialogPage().isConnectedToUserStartedConversationLabelVisible(contact));
+        Assert.assertTrue(String.format("Connecting to %s is not visible", contact),
+                getDialogPage().isConnectedToUserStartedConversationLabelVisible(contact));
     }
 
     @Then("^I see new photo in the dialog$")
