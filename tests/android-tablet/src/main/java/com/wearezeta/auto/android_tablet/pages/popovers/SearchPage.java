@@ -19,7 +19,7 @@ class SearchPage extends AbstractPopoverPage {
     }
 
     private WebElement getSearchInput() throws Exception {
-        return getElement(this.getContainer().getLocator()).findElement(PeoplePickerPage.xpathPickerSearch);
+        return getElement(this.getContainer().getLocator()).findElement(PeoplePickerPage.idPickerSearch);
     }
 
     public void enterSearchText(String text) throws Exception {
