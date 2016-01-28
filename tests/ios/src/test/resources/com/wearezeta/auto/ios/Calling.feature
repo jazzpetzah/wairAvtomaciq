@@ -213,22 +213,20 @@ Feature: Calling
     Given Myself is connected to all other users
     Given User Myself removes his avatar picture
     Given <Contact1> starts waiting instance using <CallBackend>
+    Given <Contact1> accepts next incoming call automatically
     Given I sign in using my email or phone number
     Given I see conversations list
-    # This is to make sure that this convo is selected before to take a screenshot
-    And I tap on contact name <Contact1>
-    And I navigate back to conversations list
-    And I remember the state of <Contact2> conversation item
+    # This is to have this convo selected
+    Given I tap on contact name <Contact1>
+    Given I navigate back to conversations list
+    When I remember the state of <Contact2> conversation item
     And I tap on contact name <Contact1>
     And I click plus button next to text input
     And I press call button
     And I see mute call, end call and speakers buttons
-    And I wait for 5 seconds
     And <Contact2> calls me using <CallBackend2>
     And I see incoming calling message for contact <Contact2>
     And I ignore incoming call
-    And <Contact1> accepts next incoming call automatically
-    And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see mute call, end call buttons
     And <Contact2> stops all calls to me
     And I end started call
@@ -238,8 +236,8 @@ Feature: Calling
     Then I see missed call from contact <Contact2>
 
     Examples:
-      | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | user3Name | firefox     | autocall     | 30      |
+      | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 |
+      | user1Name | user2Name | user3Name | firefox     | autocall     |
 
   @C2082 @calling_basic @id2646 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Put app into background after initiating call
