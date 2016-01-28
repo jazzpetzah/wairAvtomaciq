@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import com.wearezeta.auto.android.common.logging.LoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionFailedLoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionPassedLoggingProfile;
+import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import cucumber.api.Scenario;
 import gherkin.formatter.model.Result;
@@ -192,7 +193,13 @@ public class CommonAndroidTabletSteps {
     }
 
     @After
-    public void tearDown(Scenario scenario) throws Exception {
+    public void tearDown(Scenario scenario) {
+        try {
+            SEBridge.getInstance().reset();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         try {
             AndroidCommonUtils.setAirplaneMode(false);
         } catch (Exception e) {
@@ -210,12 +217,12 @@ public class CommonAndroidTabletSteps {
 
         pagesCollection.clearAllPages();
 
-        if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
-            try {
+        try {
+            if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
                 PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
-            } catch (WebDriverException e) {
-                e.printStackTrace();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         AndroidLogListener.forceStopAll();
@@ -223,10 +230,18 @@ public class CommonAndroidTabletSteps {
         if (!scenario.getStatus().equals(Result.PASSED)) {
             loggingProfile = new RegressionFailedLoggingProfile();
         }
-        AndroidLogListener.writeDeviceLogsToConsole(AndroidLogListener
-                .getInstance(ListenerType.DEFAULT), loggingProfile);
+        try {
+            AndroidLogListener.writeDeviceLogsToConsole(AndroidLogListener
+                    .getInstance(ListenerType.DEFAULT), loggingProfile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        commonSteps.getUserManager().resetUsers();
+        try {
+            commonSteps.getUserManager().resetUsers();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

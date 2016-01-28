@@ -50,9 +50,8 @@ abstract class RemoteEntity implements IRemoteEntity {
 		}
 		Object resp;
 		try {
-			resp = askActor(ref, new ActorMessage.Echo("test", "test"));
+			resp = askActor(ref, new ActorMessage.Echo("test", "test"), 5000);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return false;
 		}
 		if (resp instanceof ActorMessage.Echo && ((ActorMessage.Echo) resp).msg().equals("test")) {

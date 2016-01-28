@@ -5,6 +5,7 @@ import java.util.UUID;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import cucumber.api.Scenario;
 import org.junit.Assert;
 import org.openqa.selenium.ScreenOrientation;
@@ -594,7 +595,13 @@ public class CommonIOSSteps {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
+        try {
+            SEBridge.getInstance().reset();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         try {
             // async calls/waiting instances cleanup
             CommonCallingSteps2.getInstance().cleanup();
@@ -605,18 +612,30 @@ public class CommonIOSSteps {
 
         pagesCollecton.clearAllPages();
 
-        if (getIsSimulatorFromConfig(getClass())) {
-            IOSCommonUtils
-                    .collectSimulatorLogs(
-                            getDeviceName(getClass()),
-                            getTestStartedDate());
+        try {
+            if (getIsSimulatorFromConfig(getClass())) {
+                IOSCommonUtils
+                        .collectSimulatorLogs(
+                                getDeviceName(getClass()),
+                                getTestStartedDate());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
-            PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+        try {
+            if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+                PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        commonSteps.getUserManager().resetUsers();
+        try {
+            commonSteps.getUserManager().resetUsers();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public Date getTestStartedDate() {

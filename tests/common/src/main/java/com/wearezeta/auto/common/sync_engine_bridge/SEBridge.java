@@ -20,14 +20,12 @@ public class SEBridge {
     private Future<UserDevicePool> devicePool;
     private static SEBridge instance = null;
 
-    private static final Logger LOG = ZetaLogger.getLog(SEBridge.class
-            .getSimpleName());
+    private static final Logger LOG = ZetaLogger.getLog(SEBridge.class.getSimpleName());
 
     private SEBridge() throws Exception {
         final Callable<UserDevicePool> task = () -> new UserDevicePool(CommonUtils.getBackendType(CommonUtils.class),
                 CommonUtils.getOtrOnly(CommonUtils.class));
         this.devicePool = Executors.newSingleThreadExecutor().submit(task);
-        Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
     }
 
     public static synchronized SEBridge getInstance() {
@@ -130,6 +128,17 @@ public class SEBridge {
             getDevicePool().shutdown();
         } catch (Throwable e) {
             e.printStackTrace();
+        }
+    }
+
+    {
+        Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
+    }
+
+    public synchronized void reset() throws Exception {
+        if (this.devicePool.isDone() && this.getDevicePool().size() > 0) {
+            this.getDevicePool().shutdown();
+            instance = new SEBridge();
         }
     }
 }
