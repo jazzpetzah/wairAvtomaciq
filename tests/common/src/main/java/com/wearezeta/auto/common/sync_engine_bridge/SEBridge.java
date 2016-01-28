@@ -6,6 +6,8 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -66,6 +68,32 @@ public class SEBridge {
         IDevice dstDevice = getDevicePool().getOrAddRandomDevice(user);
         this.login(user, dstDevice);
         return dstDevice;
+    }
+
+    public List<String> getDeviceIds(ClientUser user) throws Exception {
+        List<IDevice> devices = getDevicePool().getDevices(user);
+        List<String> ids = new ArrayList<>();
+        for (IDevice device : devices) {
+            try {
+                ids.add(device.getId());
+            } catch (Exception e) {
+                LOG.error(String.format("Could not get ID from device of user '%s'", user.getName()), e);
+            }
+        }
+        return ids;
+    }
+
+    public List<String> getDeviceFingerprints(ClientUser user) throws Exception {
+        List<IDevice> devices = getDevicePool().getDevices(user);
+        List<String> fingerprints = new ArrayList<>();
+        for (IDevice device : devices) {
+            try {
+                fingerprints.add(device.getFingerprint());
+            } catch (Exception e) {
+                LOG.error(String.format("Could not get fingerprint from device of user '%s'", user.getName()), e);
+            }
+        }
+        return fingerprints;
     }
 
     private static void verifyPathExists(String path) {
