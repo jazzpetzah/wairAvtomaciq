@@ -466,7 +466,7 @@ public class DialogPage extends IOSPage {
     }
 
     public boolean isConnectedToUserStartedConversationLabelVisible(String username) throws Exception {
-        final By locator = By.xpath(xpathStrConnectingToUserLabelByName.apply(username));
+        final By locator = By.xpath(xpathStrConnectedToUserLabelByName.apply(username));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
