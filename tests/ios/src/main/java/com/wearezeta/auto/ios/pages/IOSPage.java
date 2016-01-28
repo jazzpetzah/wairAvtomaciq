@@ -26,6 +26,7 @@ public abstract class IOSPage extends BasePage {
     public final static long IOS_DRIVER_INIT_TIMEOUT = 1000 * 60 * 3;
 
     private static final int SWIPE_DELAY = 10 * 1000; // milliseconds
+    private static final int DEFAULT_RETRY_COUNT = 2;
 
     protected static final String nameStrMainWindow = "ZClientMainWindow";
     protected static final By nameMainWindow = By.name(nameStrMainWindow);
@@ -310,15 +311,21 @@ public abstract class IOSPage extends BasePage {
     public void resetApplication() throws Exception {
         getDriver().resetApp();
     }
+
+    public void clickElementWithRetryIfStillDisplayed(By locator, int retryCount) throws Exception {
+        WebElement el = getElement(locator);
+        int counter = 0;
+        do {
+            el.click();
+            counter++;
+        } while (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator) && counter <= retryCount);
+        if (el.isDisplayed()) {
+            throw new IllegalStateException(String.format("Locator %s is still displayed", locator));
+        }
+    }
     
     public void clickElementWithRetryIfStillDisplayed(By locator) throws Exception {
-        getElement(locator).click();
-        if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator)) {
-            getElement(locator).click();
-            if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator)) {
-                throw new IllegalStateException(String.format("Locator %s is still displayed", locator));
-            }
-        }
+        clickElementWithRetryIfStillDisplayed(locator, DEFAULT_RETRY_COUNT);
     }
 
     @Override

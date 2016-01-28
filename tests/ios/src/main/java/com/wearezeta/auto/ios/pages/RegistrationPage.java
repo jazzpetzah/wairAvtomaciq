@@ -86,7 +86,9 @@ public class RegistrationPage extends IOSPage {
     public void inputPhoneNumber(String number) throws Exception {
         getElement(namePhoneNumberField).sendKeys(number);
         getElement(nameConfirmButton).click();
-        DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConfirmButton);
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConfirmButton)) {
+            throw new IllegalStateException("Confirm button is still visible");
+        }
     }
 
     public boolean isVerificationCodePageVisible() throws Exception {
@@ -124,7 +126,9 @@ public class RegistrationPage extends IOSPage {
 
     public void inputName() throws Exception {
         getElement(nameConfirmButton).click();
-        DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConfirmButton);
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConfirmButton)) {
+            throw new IllegalStateException("Confirm button is still visible");
+        }
     }
 
     public void clickCreateAccountButton() throws Exception {
