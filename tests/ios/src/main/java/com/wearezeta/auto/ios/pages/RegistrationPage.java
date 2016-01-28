@@ -59,8 +59,6 @@ public class RegistrationPage extends IOSPage {
     private static final By nameChooseOwnPictureButton = By.name("ChooseOwnPictureButton");
 
     private static final By nameChoosePhotoButton = By.name("Choose Photo");
-    
-    private static final By xpathLoadSpinnerImage = By.xpath(xpathStrMainWindow + "/UIAImage[@visible='true']");
 
     private String name;
     private String email;
@@ -71,8 +69,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void clickAgreeButton() throws Exception {
-        getElement(nameAgreeButton, "Agree button is not visible").click();
-        DriverUtils.waitUntilLocatorDissapears(getDriver(), nameAgreeButton);
+        clickElementWithRetryIfStillDisplayed(nameAgreeButton);
     }
 
     public boolean isCountryPickerButtonVisible() throws Exception {
@@ -186,19 +183,9 @@ public class RegistrationPage extends IOSPage {
         DriverUtils.waitUntilAlertAppears(getDriver());
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInvalidCode);
     }
-    
-    private void waitUntilSpinnerDisappear() throws Exception {
-        int counter = 0;
-        while (getElements(xpathLoadSpinnerImage).size()>3 || counter<3 ) {
-         Thread.sleep(1000);
-         counter++;
-        }
-    }
 
     public void clickChooseOwnPicButton() throws Exception {
-        waitUntilSpinnerDisappear();
-        getElement(nameChooseOwnPictureButton).click();
-        DriverUtils.waitUntilLocatorDissapears(getDriver(), nameChooseOwnPictureButton);
+        clickElementWithRetryIfStillDisplayed(nameChooseOwnPictureButton);
     }
 
     public void clickChoosePhotoButton() throws Exception {

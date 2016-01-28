@@ -310,6 +310,16 @@ public abstract class IOSPage extends BasePage {
     public void resetApplication() throws Exception {
         getDriver().resetApp();
     }
+    
+    public void clickElementWithRetryIfStillDisplayed(By locator) throws Exception {
+        getElement(locator).click();
+        if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator)) {
+            getElement(locator).click();
+            if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator)) {
+                throw new IllegalStateException(String.format("Locator %s is still displayed", locator));
+            }
+        }
+    }
 
     @Override
     protected WebElement getElement(By locator) throws Exception {
