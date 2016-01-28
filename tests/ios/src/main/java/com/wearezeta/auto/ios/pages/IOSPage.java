@@ -315,13 +315,16 @@ public abstract class IOSPage extends BasePage {
     public void clickElementWithRetryIfStillDisplayed(By locator, int retryCount) throws Exception {
         WebElement el = getElement(locator);
         int counter = 0;
+        boolean flag;
         do {
             el.click();
             counter++;
-        } while (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator) && counter <= retryCount);
-        if (el.isDisplayed()) {
-            throw new IllegalStateException(String.format("Locator %s is still displayed", locator));
-        }
+            flag = DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
+            if (flag) {
+                return;
+            }
+        } while (!flag && counter <= retryCount);
+        throw new IllegalStateException(String.format("Locator %s is still displayed", locator));
     }
     
     public void clickElementWithRetryIfStillDisplayed(By locator) throws Exception {
