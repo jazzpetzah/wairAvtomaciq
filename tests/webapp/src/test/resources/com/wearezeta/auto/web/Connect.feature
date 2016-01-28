@@ -75,6 +75,8 @@ Feature: Connect
     Given I wait until <Contact> exists in backend search results
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
+    When I see Search is opened
+    And I see Bring Your Friends or Invite People button
     And I type <Contact> in search field of People Picker
     And I see user <Contact> found in People Picker
     And I click on not connected user <Contact> found in People Picker
