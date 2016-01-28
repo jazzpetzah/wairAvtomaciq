@@ -134,14 +134,13 @@ Feature: Calling
     And I click plus button next to text input
     And I press call button
     And I see mute call, end call and speakers buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then I lock screen for 5 seconds
     And I see mute call, end call and speakers buttons
     And I end started call
 
     Examples:
-      | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | firefox     | 30      |
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | firefox     |
 
   @C3164 @regression @id2645
   Scenario Outline: 3rd person tries to call me after I initiate a call to somebody
@@ -187,13 +186,12 @@ Feature: Calling
     And I click plus button next to text input
     And I press call button
     And I see mute call, end call and speakers buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then I close the app for 5 seconds
     And I see mute call, end call and speakers buttons
 
     Examples:
-      | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | firefox     | 30      |
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | firefox     |
 
   @C2077 @calling_basic @id933
   Scenario Outline: I want to accept a call through the incoming voice dialogue (Button)
@@ -225,22 +223,18 @@ Feature: Calling
     And I click plus button next to text input
     And I press call button
     And I see mute call, end call and speakers buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I end started call
     Then I dont see calling page
-    And <Contact> verifies that waiting instance status is changed to ready in <Timeout> seconds
     And <Contact> calls me using <CallBackend2>
-    And I wait for 2 seconds
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
     And I see mute call, end call and speakers buttons
-    And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And <Contact> stops all calls to me
     And I dont see calling page
 
     Examples:
-      | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | firefox     | autocall     | 30      |
+      | Name      | Contact   | CallBackend | CallBackend2 |
+      | user1Name | user2Name | firefox     | autocall     |
 
   @C2046 @regression @rc @IPv6 @id2682
   Scenario Outline: Verify accepting group call in foreground
@@ -526,17 +520,13 @@ Feature: Calling
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     When <Contact5> calls <GroupChatName> using <CallBackend2>
-    And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact3> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact4> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see incoming group calling message
     And I accept incoming call
     Then I see group call is Full message
 
     Examples:
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | FullGROUPCALL | firefox     | autocall     | 30      |
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | CallBackend | CallBackend2 |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | FullGROUPCALL | firefox     | autocall     |
 
   @C2068 @calling_basic @rc @id880 @iOS9KnownIssue-NotOurBug
   Scenario Outline: Verify putting client to the background during 1-to-1 call
@@ -572,9 +562,6 @@ Feature: Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When <Contact2> calls <GroupChatName> using <CallBackend2>
-    And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact3> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact4> verifies that waiting instance status is changed to active in <Timeout> seconds
     And User <Contact1> adds User <Name> to group chat <GroupChatName>
     And I see user <GroupChatName> in contact list
     When I tap on group chat with name <GroupChatName>
@@ -584,5 +571,5 @@ Feature: Calling
     Then I see <NumberOfAvatars> avatars in the group call bar
 
     Examples:
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName  | CallBackend | CallBackend2 | NumberOfAvatars | Timeout |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | AddMeGROUPCALL | chrome      | autocall     | 4               | 30      |
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName  | CallBackend | CallBackend2 | NumberOfAvatars |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | AddMeGROUPCALL | chrome      | autocall     | 4               |
