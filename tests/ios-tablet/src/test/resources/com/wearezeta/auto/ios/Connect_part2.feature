@@ -14,7 +14,7 @@ Feature: Connect
     Then I see Cancel request confirmation page
     And I confirm Cancel request by click on Yes button
     And I dismiss popover on iPad
-    When I return to the chat list
+    When I navigate back to conversations list
     Then I dont see conversation <Contact> in contact list
 
     Examples: 
@@ -156,7 +156,7 @@ Feature: Connect
     And I tap on start dialog button on other user profile page
     And I click on Ignore button on Pending requests page
     And I exit the group info iPad popover
-    And I return to the chat list
+    And I navigate back to conversations list
     Then I dont see Pending request link in contact list
 
     Examples: 

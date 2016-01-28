@@ -17,12 +17,11 @@ import cucumber.api.java.en.When;
 public class PersonalInfoPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-    private final IOSPagesCollection pagesCollecton = IOSPagesCollection
+    private final IOSPagesCollection pagesCollection = IOSPagesCollection
             .getInstance();
 
     private PersonalInfoPage getPersonalInfoPage() throws Exception {
-        return (PersonalInfoPage) pagesCollecton
-                .getPage(PersonalInfoPage.class);
+        return pagesCollection.getPage(PersonalInfoPage.class);
     }
 
     BufferedImage referenceImage;
@@ -111,20 +110,6 @@ public class PersonalInfoPageSteps {
     @When("^I close About page$")
     public void ICloseAboutPage() throws Exception {
         getPersonalInfoPage().clickAboutCloseButton();
-    }
-
-    /**
-     * Verifies the about page is Violet
-     *
-     * @param color the color the about page should be (Violet)
-     * @throws AssertionError the about page is not Violet
-     * @step. ^I see that the About page is colored (.*)$
-     */
-    @Then("^I see that the About page is colored (.*)$")
-    public void AboutPageIsColor(String color) throws Exception {
-        // only takes violet color
-        Assert.assertTrue("About page is not Violet", getPersonalInfoPage()
-                .isAboutPageCertainColor(color));
     }
 
     /**

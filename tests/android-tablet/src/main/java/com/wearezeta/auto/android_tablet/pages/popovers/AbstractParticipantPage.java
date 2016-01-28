@@ -2,18 +2,17 @@ package com.wearezeta.auto.android_tablet.pages.popovers;
 
 import java.util.concurrent.Future;
 
-import com.wearezeta.auto.android.pages.OtherUserPersonalInfoPage;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 abstract class AbstractParticipantPage extends AbstractPopoverPage {
-	public static final By xpathConfirRemoveButton = By.xpath("//*[@id='confirm' and @value='REMOVE']");
+	public static final By xpathConfirmRemoveButton = By.xpath("//*[@id='confirm' and @value='REMOVE']");
 
-	public static final By xpathRemoveButton = OtherUserPersonalInfoPage.xpathRightActionButton;
+	public static final By xpathRemoveButton =
+			By.xpath("//*[@id='fl__participant__tab__container']//*[@id='gtv__participants__right__action']");
 
-	public AbstractParticipantPage(Future<ZetaAndroidDriver> lazyDriver,
-			GroupPopover container) throws Exception {
+	public AbstractParticipantPage(Future<ZetaAndroidDriver> lazyDriver, GroupPopover container) throws Exception {
 		super(lazyDriver, container);
 	}
 
@@ -22,6 +21,6 @@ abstract class AbstractParticipantPage extends AbstractPopoverPage {
 	}
 
 	public void tapConfirmRemovalButton() throws Exception {
-		getElement(xpathConfirRemoveButton).click();
+		getElement(xpathConfirmRemoveButton).click();
 	}
 }

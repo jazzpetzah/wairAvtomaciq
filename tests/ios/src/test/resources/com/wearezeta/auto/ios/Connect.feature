@@ -1,7 +1,7 @@
 Feature: Connect
 
   @C1034 @regression @rc @id2541 @ZIOS-5466
-  Scenario Outline: (ZIOS-5601)Send invitation message to a user
+  Scenario Outline: Send invitation message to a user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given I sign in using my email or phone number
@@ -292,7 +292,7 @@ Feature: Connect
       | user1Name | user2Name | user3Name |
 
   @C35 @regression @id3224
-  Scenario Outline: (ZIOS-5601)Verify sending connection request after disconnecting
+  Scenario Outline: Verify sending connection request after disconnecting
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given Me sent connection request to <Contact1>
@@ -307,7 +307,7 @@ Feature: Connect
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
     And I see user <Contact1> found on People picker page
-    And I tap on conversation <Contact> in search result
+    And I tap on conversation <Contact1> in search result
     And I see connect to <Contact1> dialog
     And I click Connect button on connect to dialog
     And I click close button to dismiss people view
@@ -391,7 +391,7 @@ Feature: Connect
     Given I see conversations list
     When I tap on contact name <Contact>
     And I type the default message
-    When I send the message
+    And I click send button on keyboard
     Then I see 1 default message in the dialog
     When I click plus button next to text input
     And I press Add Picture button

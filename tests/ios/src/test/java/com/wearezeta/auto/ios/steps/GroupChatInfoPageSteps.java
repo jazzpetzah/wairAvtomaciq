@@ -14,14 +14,14 @@ public class GroupChatInfoPageSteps {
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-    private final IOSPagesCollection pagesCollecton = IOSPagesCollection.getInstance();
+    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
     private GroupChatInfoPage getGroupChatInfoPage() throws Exception {
-        return (GroupChatInfoPage) pagesCollecton.getPage(GroupChatInfoPage.class);
+        return pagesCollection.getPage(GroupChatInfoPage.class);
     }
 
     private ContactListPage getContactListPage() throws Exception {
-        return (ContactListPage) pagesCollecton.getPage(ContactListPage.class);
+        return pagesCollection.getPage(ContactListPage.class);
     }
 
     @When("^I press leave converstation button$")
@@ -66,12 +66,6 @@ public class GroupChatInfoPageSteps {
     @When("I see correct conversation name (.*)")
     public void ISeeCorrectConversationName(String name) throws Exception {
         Assert.assertEquals(getGroupChatInfoPage().getGroupChatName(), name);
-    }
-
-    @When("^I see the correct participant (.*) avatar$")
-    public void IVerifyCorrectParticipantAvatars(String contact) throws Exception {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        Assert.assertTrue(getGroupChatInfoPage().areParticipantAvatarCorrect(contact));
     }
 
     @When("^I exit the group info page$")

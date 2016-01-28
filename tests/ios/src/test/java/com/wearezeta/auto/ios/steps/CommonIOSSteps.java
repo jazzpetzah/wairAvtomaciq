@@ -108,7 +108,7 @@ public class CommonIOSSteps {
                 .resetDriver(getUrl(), capabilities, DRIVER_CREATION_RETRIES_COUNT,
                         // Tune this delay if you keep getting "target.frontMostApp().keyboard()
                         // failed to tap" exception
-                        drv -> drv.executeScript("au.mainApp().keyboard().setInterKeyDelay(0.5);"),
+                        drv -> drv.executeScript("au.mainApp().keyboard().setInterKeyDelay(1.0);"),
                         null);
     }
 

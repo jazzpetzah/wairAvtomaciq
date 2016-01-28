@@ -109,7 +109,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I post media link <YouTubeLink>
-    And I return to the chat list
+    And I navigate back to conversations list
     And I tap on contact name <Contact>
     Then I see youtube link <YouTubeLink> and media in dialog
     And I click video container for the first time
@@ -492,10 +492,10 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I see dialog page
     And I type the default message
-    And I return to the chat list
+    And I navigate back to conversations list
     When I tap on contact name <Contact2>
     And I see dialog page
-    And I return to the chat list
+    And I navigate back to conversations list
     And I tap on contact name <Contact1>
     And I see dialog page
     Then I see Close input options button is not visible

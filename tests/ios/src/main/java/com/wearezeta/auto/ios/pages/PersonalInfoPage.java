@@ -95,9 +95,7 @@ public class PersonalInfoPage extends IOSPage {
     private static final String TERMS_OF_USE_PAGE_VALUE =
             "PLEASE READ THIS AGREEMENT CAREFULLY; THIS IS A BINDING CONTRACT.";
     private static final String PRIVACY_POLICY_PAGE_VALUE = "Our Privacy Commitment";
-    private static final String ABOUT_LOGO_IMAGE = "about_page_logo.png";
     private static final int COLORS_COUNT = 7;
-    private static final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.95;
 
     public PersonalInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -134,27 +132,6 @@ public class PersonalInfoPage extends IOSPage {
 
     public void clickAboutCloseButton() throws Exception {
         getElement(nameAboutCloseButton).click();
-    }
-
-    public boolean isAboutPageCertainColor(String color) throws Exception {
-        if (!color.equals("Violet")) {
-            return false;
-        }
-        String aboutLogo = ABOUT_LOGO_IMAGE;
-        String deviceType = CommonUtils.getDeviceName(this.getClass());
-        BufferedImage coloredLogoImage = getElementScreenshot(getElement(xpathAboutPageWireLogo))
-                .orElseThrow(IllegalStateException::new);
-        if (deviceType.equals("iPhone 6") || deviceType.equals("iPhone 6 Plus")) {
-            aboutLogo = ABOUT_LOGO_IMAGE.replace(".png", "_iPhone.png");
-        } else if (deviceType.equals("iPad Air")) {
-            aboutLogo = ABOUT_LOGO_IMAGE.replace(".png", "_iPad.png");
-        }
-        BufferedImage realLogoImage = ImageUtil.readImageFromFile(IOSPage
-                .getImagesPath() + aboutLogo);
-        double score = ImageUtil.getOverlapScore(realLogoImage,
-                coloredLogoImage,
-                ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
-        return (score >= MIN_ACCEPTABLE_IMAGE_VALUE);
     }
 
     public boolean isWireWebsiteButtonVisible() throws Exception {

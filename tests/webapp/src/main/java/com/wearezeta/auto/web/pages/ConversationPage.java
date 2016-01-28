@@ -171,6 +171,19 @@ public class ConversationPage extends WebPage {
 		return true;
 	}
 
+	public void waitForTextMessageContains(String text) throws Exception {
+		waitForTextMessageContains(new HashSet<String>(Arrays.asList(text)));
+	}
+
+	public void waitForTextMessageContains(Set<String> parts)
+			throws Exception {
+		final By locator = By
+				.cssSelector(WebAppLocators.ConversationPage.cssTextMessage);
+		WebDriverWait wait = new WebDriverWait(getDriver(),
+				DriverUtils.getDefaultLookupTimeoutSeconds());
+		wait.until(visibilityOfTextInElementsLocated(locator, parts));
+	}
+
 	public void waitForMessageHeaderContains(String text) throws Exception {
 		waitForMessageHeaderContains(new HashSet<String>(Arrays.asList(text)));
 	}
@@ -339,9 +352,7 @@ public class ConversationPage extends WebPage {
 			return 0.0;
 		}
 		// comparison of the original and sent pictures
-		BufferedImage actualImage = CommonUtils.getElementScreenshot(
-				lastImageEntry, this.getDriver()).orElseThrow(
-				IllegalStateException::new);
+		BufferedImage actualImage = this.getElementScreenshot(lastImageEntry).orElseThrow(IllegalStateException::new);
 		BufferedImage expectedImage = ImageUtil.readImageFromFile(picturePath);
 		return ImageUtil.getOverlapScore(actualImage, expectedImage,
 				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
@@ -355,9 +366,7 @@ public class ConversationPage extends WebPage {
 			return 0.0;
 		}
 		// comparison of the fullscreen image and sent picture
-		BufferedImage actualImage = CommonUtils.getElementScreenshot(
-				fullscreenImage, this.getDriver()).orElseThrow(
-				IllegalStateException::new);
+		BufferedImage actualImage = this.getElementScreenshot(fullscreenImage).orElseThrow(IllegalStateException::new);
 		BufferedImage expectedImage = ImageUtil.readImageFromFile(picturePath);
 		return ImageUtil.getOverlapScore(actualImage, expectedImage,
 				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);

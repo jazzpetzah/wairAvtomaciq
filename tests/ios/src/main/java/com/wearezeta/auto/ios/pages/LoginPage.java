@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.pages;
 import java.util.Optional;
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.driver.DummyElement;
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -125,15 +126,12 @@ public class LoginPage extends IOSPage {
         ((IOSElement) getElement(namePasswordField)).setValue(password);
     }
 
-    public void dismissSettingsWaring() throws Exception {
-        final Optional<WebElement> maybeLater = getElementIfDisplayed(nameMaybeLater);
-        if (maybeLater.isPresent()) {
-            maybeLater.get().click();
-        }
+    public void dismissSettingsWarning() throws Exception {
+        getElementIfDisplayed(nameMaybeLater, 20).orElseGet(DummyElement::new).click();
     }
 
     public Boolean isLoginFinished() throws Exception {
-        dismissSettingsWaring();
+        dismissSettingsWarning();
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameSelfButton), 60);
     }
 

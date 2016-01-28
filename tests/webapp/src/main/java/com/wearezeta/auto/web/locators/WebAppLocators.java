@@ -241,6 +241,8 @@ public final class WebAppLocators {
 		// message header contains action description
 		public static String cssMessageHeader = cssMessage + " .message-header";
 
+		public static String cssTextMessage = cssMessage + " .text";
+
 		public static final String cssLastMessage = "[data-uie-name='item-message']:last-child";
 
 		public static final String cssSecondLastMessage = "[data-uie-name='item-message']:nth-last-child(2)";

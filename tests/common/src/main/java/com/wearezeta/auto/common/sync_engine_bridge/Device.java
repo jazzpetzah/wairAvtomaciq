@@ -18,8 +18,7 @@ class Device extends RemoteEntity implements IDevice {
     private IRemoteProcess hostProcess;
 
     public Device(String deviceName, IRemoteProcess process, FiniteDuration actorTimeout) {
-        super(actorTimeout);
-        this.setName(deviceName);
+        super(process.ref(), deviceName,actorTimeout);
         this.hostProcess = process;
         spawn();
     }

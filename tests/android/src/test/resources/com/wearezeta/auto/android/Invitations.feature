@@ -49,7 +49,7 @@ Feature: Invitations
       | user1Name | user2Name | user2Email   | user2Password   | Hello   |
 
   @C460 @id4158 @regression
-  Scenario Outline: Invite people button present in the list if user has up to 5 contacts
+  Scenario Outline: Invite people button present in the list even user has more than 5 contacts
     Given There are 7 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
     Given I sign in using my email or phone number
@@ -59,10 +59,6 @@ Feature: Invitations
     Then I see invite more people button in contacts list
     Given <Contact6> sent connection request to <Name>
     When <Name> accept all requests
-    Then I do not see invite more people button in contacts list
-    When I swipe right on a <Contact1>
-    And I select DELETE from conversation settings menu
-    And I press DELETE on the confirm alert
     Then I see invite more people button in contacts list
 
     Examples: 
