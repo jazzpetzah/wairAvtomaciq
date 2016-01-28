@@ -69,7 +69,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void clickAgreeButton() throws Exception {
-        getElement(nameAgreeButton, "Agree button is not visible").click();
+        clickElementWithRetryIfStillDisplayed(nameAgreeButton);
     }
 
     public boolean isCountryPickerButtonVisible() throws Exception {
@@ -86,6 +86,9 @@ public class RegistrationPage extends IOSPage {
     public void inputPhoneNumber(String number) throws Exception {
         getElement(namePhoneNumberField).sendKeys(number);
         getElement(nameConfirmButton).click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConfirmButton)) {
+            throw new IllegalStateException("Confirm button is still visible");
+        }
     }
 
     public boolean isVerificationCodePageVisible() throws Exception {
@@ -123,6 +126,9 @@ public class RegistrationPage extends IOSPage {
 
     public void inputName() throws Exception {
         getElement(nameConfirmButton).click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConfirmButton)) {
+            throw new IllegalStateException("Confirm button is still visible");
+        }
     }
 
     public void clickCreateAccountButton() throws Exception {
@@ -183,7 +189,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void clickChooseOwnPicButton() throws Exception {
-        getElement(nameChooseOwnPictureButton).click();
+        clickElementWithRetryIfStillDisplayed(nameChooseOwnPictureButton);
     }
 
     public void clickChoosePhotoButton() throws Exception {
