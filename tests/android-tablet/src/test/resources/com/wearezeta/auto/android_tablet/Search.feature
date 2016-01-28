@@ -66,11 +66,12 @@ Feature: Search
 
   @C471 @id2180 @regression
   Scenario Outline: I should able to swipe to conversation when search is opened (portrait only)
-    Given There is 1 user where <Name> is me
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to Myself
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
-    Given I see the conversations list with no conversations
+    Given I see the conversations list with conversations
     When I tap the Search input
     And I swipe left to show the conversation view
     Then I do not see People Picker page
@@ -78,8 +79,8 @@ Feature: Search
     Then I see People Picker page
 
     Examples:
-      | Name      |
-      | user1Name |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C490 @id2848 @regression
   Scenario Outline: I ignore someone from search and clear my inbox (portrait)
