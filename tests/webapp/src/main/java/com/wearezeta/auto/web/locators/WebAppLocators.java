@@ -187,9 +187,10 @@ public final class WebAppLocators {
         public static final String cssCurrentDevice = "[data-uie-name='device-card-info-current']";
 
         public static final String cssDeleteAccountButton = "[data-uie-name='go-delete-account']";
-        public static final String cssCancelDeleteAccountButton = "[data-uie-name='cancel-delete-account']";
+        public static final String cssCancelDeleteAccountButton = "[data-uie-name='do-delete-cancel']";
         public static final String cssConfirmDeleteAccountButton = "[data-uie-name='do-delete-account']";
-        public static final String cssConfirmInfo = "[data-uie-name='confirm-info']";
+        public static final String cssConfirmInfo = "[data-uie-name='delete-confirm-text']";
+        public static final String cssConfirmInfo = "[data-uie-name='delete-confirm-text']";
     }
 
     public static final class SelfProfilePage {

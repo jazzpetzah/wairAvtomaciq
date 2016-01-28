@@ -56,10 +56,10 @@ Feature: Menus
     Given I click gear button on self profile page
     When I select Settings menu item on self profile page
     And I see Settings dialog
-    #And I click delete account button on settings page
-    #And I see email <Email> in delete info text on settings page
-    #And I click cancel deletion button on settings page
-    #And I click delete account button on settings page
+    And I click delete account button on settings page
+    And I see email <Email> in delete info text on settings page
+    And I click cancel deletion button on settings page
+    And I click delete account button on settings page
     #And I see email <Email> in delete info text on settings page
     And I wait for 30 seconds
     #And I click send button to delete account
