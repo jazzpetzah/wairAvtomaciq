@@ -40,8 +40,8 @@ Feature: Self Profile
     Then I see my new name <NewUsername1>
 
     Examples:
-      | Name      | NewUsername                                                          | NewUsername1                                                     | Contact   |
-      | user1Name | mynewusernamewithmorethan64characters3424245345345354353452345234535 | mynewusernamewithmorethan64characters342424534534535435345234523 | user2Name |
+      | Name      | NewUsername                                                          | NewUsername1                                                     |
+      | user1Name | mynewusernamewithmorethan64characters3424245345345354353452345234535 | mynewusernamewithmorethan64characters342424534534535435345234523 |
 
   @C2877 @regression @id2581
   Scenario Outline: I verify I am unable to enter a name using only spaces or more than 80 chars [PORTRAIT]
@@ -230,12 +230,10 @@ Feature: Self Profile
     Given Myself is connected to <Contact>
     Given User <Name> change accent color to <Color1>
     Given I Sign in on tablet using my email
-    Given User <Contact> sends 40 encrypted messages to user Myself
     Given I see conversations list
     When I tap on my name <Name>
     And I slide my accent color via the colorpicker from <Color1> to <Color2>
     And I close self profile
-    Then I see 5 unread message indicator in list for contact <Contact>
 
     Examples:
       | Name      | Color1 | Color2          | Contact   |
@@ -248,12 +246,10 @@ Feature: Self Profile
     Given User <Name> change accent color to <Color1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given User <Contact> sends 40 encrypted messages to user Myself
     Given I see conversations list
     When I tap on my name <Name>
     And I slide my accent color via the colorpicker from <Color1> to <Color2>
     And I close self profile
-    Then I see 5 unread message indicator in list for contact <Contact>
 
     Examples:
       | Name      | Color1 | Color2          | Contact   |

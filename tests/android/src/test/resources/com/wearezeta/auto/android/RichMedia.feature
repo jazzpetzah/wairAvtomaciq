@@ -17,9 +17,8 @@ Feature: Rich Media
     And I press PlayPause media item button
     And I remember the state of PlayPause media item button
     And I swipe down on dialog page until Mediabar appears
-    Then I see PAUSE on Mediabar
     And I press PlayPause on Mediabar button
-    When I scroll to the bottom of conversation view
+    And I scroll to the bottom of conversation view
     Then I verify the state of PlayPause media item button is changed
 
     Examples:

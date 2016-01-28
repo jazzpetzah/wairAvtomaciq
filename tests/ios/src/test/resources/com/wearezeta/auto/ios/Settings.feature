@@ -41,6 +41,7 @@ Feature: Settings
     And I click on Settings button from the options menu
     And I click on Account Info on settings page
     And I click on Change Password button in Settings
+    And I wait for 4 seconds
     Then I see reset password page
 
     Examples:
@@ -127,7 +128,6 @@ Feature: Settings
     And I click on Settings button on personal page
     And I click on About button on personal page
     Then I see About page
-    And I see that the About page is colored <Color>
     And I see WireWebsiteButton
     And I see TermsButton
     And I see PrivacyPolicyButton

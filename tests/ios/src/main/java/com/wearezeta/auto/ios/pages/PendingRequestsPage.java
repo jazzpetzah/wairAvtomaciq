@@ -16,7 +16,7 @@ public class PendingRequestsPage extends IOSPage {
     private static final By namePendingRequestConnectButton = By.name("CONNECT");
 
     private static final Function<String, String> xpathStrPendingRequesterByName = name ->
-            String.format("//UIAStaticText[contains(@name, 'Connect to') and contains(@name, '%s)]", name);
+            String.format("//UIAStaticText[contains(@name, 'Connect to %s')]", name);
 
     private static final By xpathYouBothKnowPeopleIcon = By.xpath(
             xpathStrMainWindow + "/UIATableView[1]/UIATableCell[1]/UIAButton[2]");

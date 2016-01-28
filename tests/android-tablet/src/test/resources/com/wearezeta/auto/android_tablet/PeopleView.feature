@@ -403,8 +403,7 @@ Feature: People View
     And I see the Group popover
     And I see the participant avatar <Contact2> on Group popover
     And I tap the participant avatar <Contact2> on Group popover
-    When I tap Open Conversation button on Group popover
-    Then I see the Group popover
+    Then I do not see Open Conversation button on Group popover
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName        |

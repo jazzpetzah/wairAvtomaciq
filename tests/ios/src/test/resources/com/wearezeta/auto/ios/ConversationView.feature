@@ -29,7 +29,6 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  #https://wearezeta.atlassian.net/browse/ZIOS-3269
   @C923 @regression @id331
   Scenario Outline: Send Hello to contact
     Given There are 2 users where <Name> is me

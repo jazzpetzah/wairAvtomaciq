@@ -20,19 +20,18 @@ import com.wearezeta.auto.ios.pages.*;
 public class ContactListPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-    private final IOSPagesCollection pagesCollecton = IOSPagesCollection
-            .getInstance();
+    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
     private ContactListPage getContactListPage() throws Exception {
-        return pagesCollecton.getPage(ContactListPage.class);
+        return pagesCollection.getPage(ContactListPage.class);
     }
 
     private LoginPage getLoginPage() throws Exception {
-        return pagesCollecton.getPage(LoginPage.class);
+        return pagesCollection.getPage(LoginPage.class);
     }
 
     private PersonalInfoPage getPersonalInfoPage() throws Exception {
-        return pagesCollecton.getPage(PersonalInfoPage.class);
+        return pagesCollection.getPage(PersonalInfoPage.class);
     }
 
     @Given("^I see conversations list$")
@@ -179,15 +178,12 @@ public class ContactListPageSteps {
     public void ICreateGroupChat(String contact1, String contact2) throws Exception {
         WhenITapOnContactName(contact1);
         DialogPageSteps dialogSteps = new DialogPageSteps();
-        dialogSteps.WhenISeeDialogPage();
         dialogSteps.IOpenConversationDetails();
 
         OtherUserPersonalInfoPageSteps infoPageSteps = new OtherUserPersonalInfoPageSteps();
-        infoPageSteps.WhenISeeOtherUserProfilePage(contact1);
         infoPageSteps.WhenIPressAddButton();
 
         PeoplePickerPageSteps pickerSteps = new PeoplePickerPageSteps();
-        pickerSteps.WhenISeePeoplePickerPage();
         pickerSteps.WhenITapOnSearchInputOnPeoplePickerPage();
         pickerSteps.WhenIInputInPeoplePickerSearchFieldUserName(contact2);
         pickerSteps.WhenISeeUserFoundOnPeoplePickerPage(contact2);
@@ -229,28 +225,6 @@ public class ContactListPageSteps {
             throws Exception {
         String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
         getContactListPage().tapPlayPauseButtonNextTo(name);
-    }
-
-    /**
-     * Verify pause media button in contact list
-     *
-     * @throws Exception
-     * @step. I see pause media button in contact list
-     */
-    @When("I see pause media button in contact list")
-    public void ISeePauseMediaButtonContactList() throws Exception {
-        // FXIME: Replace with synamic image comparison
-    }
-
-    /**
-     * Verify play media button in contact list
-     *
-     * @throws Exception
-     * @step. I see play media button in contact list
-     */
-    @When("I see play media button in contact list")
-    public void ISeePlayMediaButtonContactList() throws Exception {
-        // FIXME: replace with dynamic image comparison
     }
 
     @When("I see in contact list group chat named (.*)")
@@ -306,44 +280,6 @@ public class ContactListPageSteps {
     }
 
     /**
-     * Verifies, that the conversation is really silenced
-     *
-     * @param conversation conversation name to silence
-     * @throws Exception
-     * @step. ^I see conversation (.*) is silenced$
-     */
-    @Then("^I see conversation (.*) is silenced$")
-    public void ISeeConversationIsSilenced(String conversation) throws Exception {
-        // FIXME: Replace with dynamic image comparison
-    }
-
-    /**
-     * Verifies, that the conversation got silenced before from backend
-     *
-     * @param conversation conversation name to silence
-     * @throws Exception
-     * @step. ^I see conversation (.*) got silenced before$
-     */
-    @Then("^I see conversation (.*) got silenced before$")
-    public void ISeeConversationGotSilencedBefore(String conversation)
-            throws Exception {
-        // FIXME: Replace with dynamic image comparison
-    }
-
-    /**
-     * Verifies, that the conversation is unsilenced
-     *
-     * @param conversation conversation name to unsilence
-     * @throws Exception
-     * @step. ^I see conversation (.*) is unsilenced$
-     */
-    @Then("^I see conversation (.*) is unsilenced$")
-    public void ISeeConversationIsUnSilenced(String conversation)
-            throws Exception {
-        // FIXME: Replace with dynamic image comparison
-    }
-
-    /**
      * Click on archive button for a conversation
      *
      * @throws Exception if conversation is not found
@@ -390,63 +326,7 @@ public class ContactListPageSteps {
                 score <= MAX_OVERLAP_SCORE);
     }
 
-
-    /**
-     * Verify that relevant unread message indicator is seen in conversation
-     * list
-     *
-     * @param contact the missed call is from
-     * @throws Exception
-     * @step. ^I see (.*) unread message indicator in list for contact (.*)$
-     */
-    @Then("^I see (.*) unread message indicator in list for contact (.*)$")
-    public void ISeeUnreadMessageIndicatorInListForContact(int numOfMessage,
-                                                           String contact) throws Exception {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        // FIXME: Replace with dynamic image comparison
-    }
-
-    /**
-     * Verify that unread icon is not shown next to contact
-     *
-     * @param contact contact name
-     * @throws Exception
-     * @step. ^I dont see unread message indicator in list for contact (.*)$
-     */
-    @Then("^I dont see unread message indicator in list for contact (.*)$")
-    public void IDontSeeUnreadIndicator(String contact) throws Exception {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        // FIXME: Replace with dynamic image comparison
-    }
-
-    /**
-     * Verify that play icon is not shown next to contact
-     *
-     * @param contact contact name
-     * @throws Exception
-     * @step. ^I see Play media button next to user (.*)$
-     */
-    @Then("^I see Play media button next to user (.*)$")
-    public void ISeeMediaButtonChangedToPlay(String contact) throws Exception {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        // FIXME: Replace with dynamic image comparison
-    }
-
-    /**
-     * Verify that pause icon is not shown next to contact
-     *
-     * @param contact contact name
-     * @throws Exception
-     * @step. ^I see Pause media button next to user (.*)$
-     */
-    @Then("^I see Pause media button next to user (.*)$")
-    public void ISeeMediaButtonChangedToPause(String contact)
-            throws IllegalStateException, Exception {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        // FIXME: Replace with dynamic image comparison
-    }
-
-    /**
+      /**
      * Verify that mute call button is shown in conversation list
      *
      * @throws Exception
