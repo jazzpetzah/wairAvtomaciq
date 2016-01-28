@@ -3,12 +3,15 @@ package com.wearezeta.auto.android.steps;
 import com.wearezeta.auto.android.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.android.pages.UnknownUserDetailsPage;
 import com.wearezeta.auto.common.CommonSteps;
+import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import java.util.List;
+import static org.hamcrest.Matchers.is;
 import org.junit.Assert;
 
 public class OtherUserPersonalInfoPageSteps {
@@ -153,7 +156,52 @@ public class OtherUserPersonalInfoPageSteps {
 				"The background image seems to be incorrect",
 				getOtherUserPersonalInfoPage().isBackGroundImageCorrect(
 						BG_IMAGE_NAME));
-	}
+    }
+
+    /**
+     * Selects a tab in the single participant view
+     *
+     * @param tabName Name of the tab to select
+     * @step. ^I select single participant tab (.*)$
+     *
+     * @throws Exception
+     */
+    @When("^I select single participant tab \"(.*)\"$")
+    public void WhenISelectSingleParticipantTab(String tabName) throws Exception {
+        getOtherUserPersonalInfoPage().selectSingleParticipantTab(tabName);
+    }
+
+    /**
+     * Checks the number of devices in single participant devices tab
+     *
+     * @param expectedNumDevices Expected number of devices
+     * @step. ^(\\d+) devices? (?:are|is) shown in single participant devices
+     * tab$
+     *
+     * @throws Exception
+     */
+    @When("^I see (\\d+) devices? (?:are|is) shown in single participant devices tab$")
+    public void ICheckNumberOfDevicesInSingleParticipantDevicesTab(int expectedNumDevices) throws Exception {
+        int numDevices = getOtherUserPersonalInfoPage().getParticipantDevices().size();
+        Assert.assertTrue("expected size", expectedNumDevices == numDevices);
+    }
+
+    /**
+     * Checks the ids of all devices displayed in single participant devices tab
+     *
+     * @param user The user with devices to check for
+     * @step. ^I verify all device ids of user (.*) are shown in single
+     * participant devices tab$
+     *
+     * @throws Exception
+     */
+    @When("^I verify all device ids of user (.*) are shown in single participant devices tab$")
+    public void IVerifyAllDeviceIdsOfUserXAreShown(String user) throws Exception {
+        List<String> expectedDeviceIds = SEBridge.getInstance().getDeviceIds(usrMgr.findUserByNameOrNameAlias(user));
+        List<String> actualDeviceIds = getOtherUserPersonalInfoPage().getParticipantDevices();
+        Assert.assertThat("List does not contain all device ids", actualDeviceIds, is(expectedDeviceIds));
+    }
+
 
 	// ------ Group
 	// Separate steps file?
@@ -482,15 +530,28 @@ public class OtherUserPersonalInfoPageSteps {
 				getUnknownUserDetailsPage().isPendingButtonVisible());
 	}
 
-	/**
-	 * Closes participants page by UI button
-	 * 
-	 * @step. ^I close participants? page by UI button$
-	 * 
-	 * @throws Exception
-	 */
-	@Then("^I close participants? page by UI button$")
-	public void ThenICloseParticipantPageByUIButton() throws Exception {
-		getOtherUserPersonalInfoPage().tapCloseButton();
-	}
+    /**
+     * Closes participants page by UI button
+     *
+     * @step. ^I close participants? page by UI button$
+     *
+     * @throws Exception
+     */
+    @Then("^I close participants? page by UI button$")
+    public void ThenICloseParticipantPageByUIButton() throws Exception {
+	getOtherUserPersonalInfoPage().tapCloseButton();
+    }
+
+    /**
+     * Closes single participant page by UI button
+     *
+     * @step. ^I close single participant page by UI button$
+     *
+     * @throws Exception
+     */
+    @Then("^I close single participant page by UI button$")
+    public void ThenICloseSingleParticipantPageByUIButton() throws Exception {
+        getOtherUserPersonalInfoPage().tapSingleParticipantCloseButton();
+    }
+    
 }

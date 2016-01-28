@@ -145,3 +145,47 @@ Feature: E2EE
       | Name      | Contact1  | Contact2  | ImageName   | ImageName2    | GroupChatName |
       | user1Name | user2Name | user3Name | testing.jpg | hdpicture.jpg | GroupConvo    |
 
+  @C3229 @staging
+  Scenario Outline: Verify you can see device ids of the other conversation participant in participant details view inside a group conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When Contact <Contact1> sends encrypted message <Message1> to group conversation <GroupChatName>
+    And Contact <Contact2> sends encrypted message <Message1> to group conversation <GroupChatName>
+    And I tap on contact name <GroupChatName>
+    And I tap conversation details button
+    And I select contact <Contact1>
+    And I select single participant tab "Devices"
+    Then I see 1 device is shown in single participant devices tab
+    And I verify all device ids of user <Contact1> are shown in single participant devices tab
+    When I close single participant page by UI button
+    And I select contact <Contact2>
+    And I select single participant tab "Devices"
+    Then I see 1 device is shown in single participant devices tab
+    And I verify all device ids of user <Contact2> are shown in single participant devices tab
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Message1 | GroupChatName |
+      | user1Name | user2Name | user3Name | Msg1     | GroupConvo    |
+
+  @C3228 @staging
+  Scenario Outline: Verify you can see device ids of the other conversation participant in 1:1 conversation details
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When Contact <Contact1> sends encrypted message <Message1> to user Myself
+    And I tap on contact name <Contact1>
+    And I tap conversation details button
+    And I select single participant tab "Devices"
+    Then I see 1 device is shown in single participant devices tab
+    And I verify all device ids of user <Contact1> are shown in single participant devices tab
+
+    Examples:
+      | Name      | Contact1  | Message1 |
+      | user1Name | user2Name | Msg1     |
+

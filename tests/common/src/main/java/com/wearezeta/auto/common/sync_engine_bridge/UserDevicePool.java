@@ -19,6 +19,7 @@ import com.waz.provision.CoordinatorActor;
 import com.waz.provision.ActorMessage.ReleaseRemotes$;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
+import java.util.List;
 
 public class UserDevicePool {
 
@@ -65,6 +66,14 @@ public class UserDevicePool {
         deviceCount++;
         userDevices.put(user, devices);
         return result;
+    }
+
+    public List<IDevice> getDevices(ClientUser user) {
+        if (!userDevices.containsKey(user)) {
+            throw new IllegalArgumentException(String.format(
+                    "Could not find device list for user %s", user.getName()));
+        }
+        return userDevices.get(user);
     }
 
     public IDevice getDevice(ClientUser user, String deviceName) {
