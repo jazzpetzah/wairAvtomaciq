@@ -6,8 +6,8 @@ Feature: E2EE
     Given user <Name> adds a new device <Device> with label <Label>
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
-    And I see the history info page
-    And I click confirm on history info page
+    #And I see the history info page
+    #And I click confirm on history info page
     Then I am signed in properly
     When I click gear button on self profile page
     And I select Settings menu item on self profile page
@@ -78,8 +78,8 @@ Feature: E2EE
     When I enter email "<Email>"
     And I enter password "<Password>"
     And I press Sign In button
-    Then I see the history info page
-    And I click confirm on history info page
+    #Then I see the history info page
+    #And I click confirm on history info page
     And I am signed in properly
     When I click gear button on self profile page
     And I select Settings menu item on self profile page
@@ -102,8 +102,8 @@ Feature: E2EE
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
-    Then I see the history info page
-    And I click confirm on history info page
+    #Then I see the history info page
+    #And I click confirm on history info page
     And I am signed in properly
     When I open conversation with <Contact1>
     And Contact <Contact1> sends message <Message1> to user Myself
@@ -125,8 +125,6 @@ Feature: E2EE
     And I select Log out menu item on self profile page
     And I see Sign In page
     And I Sign in using login <Email> and password <Password>
-     Then I see the history info page
-     And I click confirm on history info page
     Then I am signed in properly
     And I open conversation with <Contact1>
     And I see text message <Message1>
@@ -152,8 +150,8 @@ Feature: E2EE
     When I enter email "<Email>"
     And I enter password "<Password>"
     And I press Sign In button
-    Then I see the history info page
-    And I click confirm on history info page
+    #Then I see the history info page
+    #And I click confirm on history info page
     And I am signed in properly
     When I click gear button on self profile page
     And I select Settings menu item on self profile page
@@ -166,8 +164,8 @@ Feature: E2EE
     And I enter email "<Email>"
     And I enter password "<Password>"
     And I press Sign In button
-    And I see the history info page
-    And I click confirm on history info page
+    #And I see the history info page
+    #And I click confirm on history info page
     Then I am signed in properly
     When I click gear button on self profile page
     And I select Settings menu item on self profile page

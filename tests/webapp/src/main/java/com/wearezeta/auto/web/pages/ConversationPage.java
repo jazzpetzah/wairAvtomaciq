@@ -172,9 +172,7 @@ public class ConversationPage extends WebPage {
 	}
 
 	public void waitForTextMessageContains(String text) throws Exception {
-		Set<String> set = new HashSet<String>();
-		set.add(text);
-		waitForTextMessageContains(set);
+		waitForTextMessageContains(new HashSet<String>(Arrays.asList(text)));
 	}
 
 	public void waitForTextMessageContains(Set<String> parts)

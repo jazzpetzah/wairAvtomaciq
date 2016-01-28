@@ -410,6 +410,10 @@ public class ConversationPageSteps {
 		if (doNot == null) {
 			webappPagesCollection.getPage(ConversationPage.class)
 					.waitForTextMessageContains(message);
+		} else {
+			Assert.assertFalse("Saw text message " + message,
+					webappPagesCollection.getPage(ConversationPage.class)
+							.isTextMessageVisible(message == null ? "" : message));
 		}
 	}
 
@@ -471,20 +475,6 @@ public class ConversationPageSteps {
 			throws Exception {
 		assertThat(webappPagesCollection.getPage(ConversationPage.class)
 				.getSecondLastTextMessage(), equalTo(expectedMessage));
-	}
-
-	/**
-	 * Verify a text message is not visible in conversation
-	 *
-	 * @step. ^I do not see text message (.*)
-	 * @param message
-	 * @throws Exception
-	 */
-	@Then("^I do not see text message ?(.*)$")
-	public void IDontSeeTextMessage(String message) throws Exception {
-		Assert.assertFalse("Saw text message " + message,
-				webappPagesCollection.getPage(ConversationPage.class)
-						.isTextMessageVisible(message == null ? "" : message));
 	}
 
 	/**
