@@ -17,7 +17,6 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
-import com.wearezeta.auto.ios.pages.keyboard.IOSKeyboard;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -108,7 +107,7 @@ public class CommonIOSSteps {
                 .resetDriver(getUrl(), capabilities, DRIVER_CREATION_RETRIES_COUNT,
                         // Tune this delay if you keep getting "target.frontMostApp().keyboard()
                         // failed to tap" exception
-                        drv -> drv.executeScript("au.mainApp().keyboard().setInterKeyDelay(1.0);"),
+                        drv -> drv.executeScript("au.mainApp().keyboard().setInterKeyDelay(2.0);"),
                         null);
     }
 
