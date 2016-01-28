@@ -1004,10 +1004,11 @@ public final class BackendAPIWrappers {
     }
 
     public static String getDeletionURL(String email) throws Exception {
-        Pattern pattern = Pattern.compile("https://[a-zA-Z_0-9.=-]+/d/\\?key=[a-zA-Z_0-9.-\\\\&_=]+");
+        Pattern pattern = Pattern.compile("https://[a-zA-Z_0-9.=-]+/d/\\?key=[a-zA-Z_0-9.\\-\\\\&_=]+");
         IMAPSMailbox mbox = IMAPSMailbox.getInstance();
         Map<String, String> expectedHeaders = new HashMap<>();
         expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, email);
+        expectedHeaders.put(MessagingUtils.SUBJECT_HEADER, "Wire Account Deletion");
         try {
             final String msg = mbox.getMessage(expectedHeaders,
                     DELETION_RECEIVING_TIMEOUT, 0).get();
@@ -1015,6 +1016,8 @@ public final class BackendAPIWrappers {
             Matcher matcher = pattern.matcher(msg);
             if(matcher.find()) {
                 url = matcher.group(0);
+            } else {
+                return msg;
             }
             return url;
         } catch (Exception e) {

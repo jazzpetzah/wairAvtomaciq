@@ -189,8 +189,8 @@ public final class WebAppLocators {
         public static final String cssDeleteAccountButton = "[data-uie-name='go-delete-account']";
         public static final String cssCancelDeleteAccountButton = "[data-uie-name='do-delete-cancel']";
         public static final String cssConfirmDeleteAccountButton = "[data-uie-name='do-delete-account']";
-        public static final String cssConfirmInfo = "[data-uie-name='delete-confirm-text']";
-        public static final String cssConfirmInfo = "[data-uie-name='delete-confirm-text']";
+        public static final String cssConfirmText = "[data-uie-name='delete-confirm-text']";
+        public static final String cssSentText = "[data-uie-name='delete-sent']";
     }
 
     public static final class SelfProfilePage {

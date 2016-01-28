@@ -2,6 +2,7 @@ package com.wearezeta.auto.web.steps;
 
 import java.util.List;
 
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import org.junit.Assert;
 
 import com.wearezeta.auto.web.pages.DeviceLimitPage;
@@ -16,6 +17,7 @@ import static org.hamcrest.Matchers.*;
 
 public class SettingsPageSteps {
 
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
 			.getInstance();
 
@@ -186,8 +188,9 @@ public class SettingsPageSteps {
     }
 
     @When("^I see email (.*) in delete info text on settings page$")
-    public void ISeeEmailInDeleteInfo(String email) throws Exception {
+    public void ISeeEmailInDeleteInfo(String emailAlias) throws Exception {
+		String email = usrMgr.findUserByEmailOrEmailAlias(emailAlias).getEmail();
         assertThat("Email address not in description", webappPagesCollection.getPage(SettingsPage.class).getDeleteInfo(),
-                containsString(email));
+                containsString(email.toUpperCase()));
     }
 }

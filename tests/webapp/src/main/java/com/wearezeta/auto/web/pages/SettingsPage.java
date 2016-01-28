@@ -40,8 +40,8 @@ public class SettingsPage extends WebPage {
     @FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssConfirmDeleteAccountButton)
     private WebElement confirmDeleteAccountButton;
 
-    @FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssConfirmInfo)
-    private WebElement confirmInfo;
+    @FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssConfirmText)
+    private WebElement confirmText;
 
     public SettingsPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -164,6 +164,6 @@ public class SettingsPage extends WebPage {
     }
 
     public String getDeleteInfo() throws Exception {
-        return confirmInfo.getText();
+        return confirmText.getText();
     }
 }

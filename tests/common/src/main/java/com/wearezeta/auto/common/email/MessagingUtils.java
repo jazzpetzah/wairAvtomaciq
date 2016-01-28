@@ -16,6 +16,7 @@ import com.wearezeta.auto.common.CommonUtils;
 
 public class MessagingUtils {
 	public static final String DELIVERED_TO_HEADER = "Delivered-To";
+	public static final String SUBJECT_HEADER = "Subject";
 
 	public static String msgToString(Message msg) throws IOException,
 			MessagingException {

@@ -60,9 +60,8 @@ Feature: Menus
     And I see email <Email> in delete info text on settings page
     And I click cancel deletion button on settings page
     And I click delete account button on settings page
-    #And I see email <Email> in delete info text on settings page
-    And I wait for 30 seconds
-    #And I click send button to delete account
+    And I see email <Email> in delete info text on settings page
+    And I click send button to delete account
     And I delete account of user <Name> via email
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
