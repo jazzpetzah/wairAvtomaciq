@@ -262,7 +262,7 @@ Feature: Calling
       | chrome      | autocall     | user1Name | user2Name | user3Name | user4Name | user5Name | ChatForGroupCall | 60      |
 
   @C805 @id3174 @calling_basic @rc
-  Scenario Outline: I can join group call after I ignored it
+  Scenario Outline: (AN-3396) I can join group call after I ignored it
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -276,7 +276,6 @@ Feature: Calling
     Then I see call overlay
     When I click the ignore call button
     Then I see "JOIN CALL" button
-    And I wait for 30 seconds
     When I press join group call button
     Then I do not see "JOIN CALL" button
     And I see calling overlay Big bar
