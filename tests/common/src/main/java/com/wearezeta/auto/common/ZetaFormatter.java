@@ -169,12 +169,6 @@ public class ZetaFormatter implements Formatter, Reporter {
                 index++;
             } while (isExist);
             final String screenshotPath = tmpScreenshotPath;
-            // final String screenshotPath = String
-            // .format("%s/%s/%s/%s.png", CommonUtils
-            // .getPictureResultsPathFromConfig(this.getClass()),
-            // feature.replaceAll("\\W+", "_"), scenario
-            // .replaceAll("\\W+", "_"), stepName
-            // .replaceAll("\\W+", "_"));
             if (driver instanceof IOSDriver && CommonUtils.getIsSimulatorFromConfig(ZetaFormatter.class)) {
                 try {
                     CommonUtils.takeIOSSimulatorScreenshot(screenshotPath);

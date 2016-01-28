@@ -358,22 +358,4 @@ public abstract class IOSPage extends BasePage {
             throw e;
         }
     }
-
-    /**
-     * We have to count the fact that Simulator window might be scaled
-     *
-     * @return optionally, full screen shot as BufferedImage
-     * @throws Exception
-     */
-    @Override
-    public Optional<BufferedImage> takeScreenshot() throws Exception {
-        final BufferedImage screen = DriverUtils.takeFullScreenShot(this.getDriver()).orElseThrow(
-                () -> new IllegalStateException("Appium has failed to take full screen shot"));
-        final float currentScreenHeight = getDriver().manage().window().getSize().getHeight();
-        final float realScreenHeight = screen.getHeight();
-        if ((int)currentScreenHeight != (int)realScreenHeight) {
-            return Optional.of(ImageUtil.resizeImage(screen, currentScreenHeight / realScreenHeight));
-        }
-        return Optional.of(screen);
-    }
 }

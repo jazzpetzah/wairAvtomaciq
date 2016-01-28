@@ -68,12 +68,6 @@ public class ContactListPage extends IOSPage {
         super(lazyDriver);
     }
 
-    public boolean isMyUserNameDisplayedFirstInContactList(String name) throws Exception {
-        final By locator = By.xpath(xpathStrConvoListEntryByIdx.apply(1));
-        final Optional<WebElement> el = getElementIfDisplayed(locator);
-        return el.isPresent() && el.get().getText().equalsIgnoreCase(name);
-    }
-
     public void openSearch() throws Exception {
         getElement(nameOpenStartUI).click();
     }
@@ -175,10 +169,6 @@ public class ContactListPage extends IOSPage {
         getElement(xpathPendingRequest).click();
     }
 
-    public boolean isDisplayedInContactList(String name) throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.name(name), 5);
-    }
-
     public boolean contactIsNotDisplayed(String name) throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.name(name), 5);
     }
@@ -211,10 +201,10 @@ public class ContactListPage extends IOSPage {
 
     public BufferedImage getConversationEntryScreenshot(String name) throws Exception {
         final By locator = By.xpath(xpathStrConvoListEntryByName.apply(name));
-        final WebElement el = getElement(locator,
-                String.format("Conversation list entry '%s' is not visible", name));
+        final WebElement el = getElement(locator, String.format("Conversation list entry '%s' is not visible", name));
         return this.getElementScreenshot(el).orElseThrow(IllegalStateException::new);
         // ImageIO.write(scr, "png", new File("/Users/elf/Desktop/screen_" + System.currentTimeMillis() + ".png"));
+        // return scr;
     }
 
     public BufferedImage getScreenshotFirstContact() throws Exception {

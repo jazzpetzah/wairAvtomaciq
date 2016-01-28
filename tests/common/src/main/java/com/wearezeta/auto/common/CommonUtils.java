@@ -1,8 +1,5 @@
 package com.wearezeta.auto.common;
 
-import io.appium.java_client.AppiumDriver;
-
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.InetAddress;
 import java.security.MessageDigest;
@@ -13,12 +10,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.net.ntp.NTPUDPClient;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebElement;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.ZetaDriver;
-import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class CommonUtils {
@@ -487,10 +479,9 @@ public class CommonUtils {
         return getValueFromConfig(cls, "appName");
     }
 
-    private static final int SCREENSHOT_TIMEOUT_SECONDS = 5;
+    public static final int SCREENSHOT_TIMEOUT_SECONDS = 5;
 
-    public static void takeIOSSimulatorScreenshot(String screenshotPath)
-            throws Exception {
+    public static void takeIOSSimulatorScreenshot(String screenshotPath) throws Exception {
         executeUIShellScript(
                 new String[]{
                     String.format("mkdir -p $(dirname \"%s\")",
