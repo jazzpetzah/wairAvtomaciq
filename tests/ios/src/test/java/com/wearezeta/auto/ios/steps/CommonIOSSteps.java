@@ -85,7 +85,6 @@ public class CommonIOSSteps {
         final String deviceName = getDeviceName(this.getClass());
         capabilities.setCapability("deviceName", deviceName);
         capabilities.setCapability("platformVersion", getPlatformVersion());
-        capabilities.setCapability("sendKeyStrategy", "grouped");
         capabilities.setCapability("launchTimeout", IOSPage.IOS_DRIVER_INIT_TIMEOUT);
         final String backendType = getBackendType(this.getClass());
         capabilities
@@ -104,11 +103,7 @@ public class CommonIOSSteps {
 
         setTestStartedDate(new Date());
         return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance()
-                .resetDriver(getUrl(), capabilities, DRIVER_CREATION_RETRIES_COUNT,
-                        // Tune this delay if you keep getting "target.frontMostApp().keyboard()
-                        // failed to tap" exception
-                        drv -> drv.executeScript("au.mainApp().keyboard().setInterKeyDelay(2.0);"),
-                        null);
+                .resetDriver(getUrl(), capabilities, DRIVER_CREATION_RETRIES_COUNT);
     }
 
     @Before

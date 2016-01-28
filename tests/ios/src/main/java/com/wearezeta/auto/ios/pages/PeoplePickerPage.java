@@ -5,9 +5,7 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import com.wearezeta.auto.common.driver.DummyElement;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
@@ -82,9 +80,8 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void tapOnPeoplePickerSearch() throws Exception {
-        final WebElement peoplePickerSearch = getElement(xpathPickerSearch);
-        this.getDriver().tap(1, peoplePickerSearch.getLocation().x + 40,
-                peoplePickerSearch.getLocation().y + 30, DriverUtils.SINGLE_TAP_DURATION);
+        final Point location = getElement(xpathPickerSearch).getLocation();
+        this.getDriver().tap(1, location.x + 40, location.y + 30, DriverUtils.SINGLE_TAP_DURATION);
     }
 
     public void tapOnPeoplePickerClearBtn() throws Exception {
@@ -97,7 +94,8 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void sendTextToSearchInput(String text) throws Exception {
-        getElement(xpathPickerSearch).sendKeys(text);
+        final WebElement searchInput = getElement(xpathPickerSearch);
+        searchInput.sendKeys(text);
     }
 
     public Optional<WebElement> getSearchResultsElement(String user) throws Exception {
