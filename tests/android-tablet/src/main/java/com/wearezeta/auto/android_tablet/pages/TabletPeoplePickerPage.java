@@ -22,15 +22,13 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilVisible() throws Exception {
-        final Optional<WebElement> pickerSearch = getElementIfDisplayed(PeoplePickerPage.xpathPickerSearch);
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), PeoplePickerPage.idPeoplePickerClearbtn)
-                && pickerSearch.isPresent() && pickerSearch.get().getLocation().getX() >= 0;
+        final Optional<WebElement> pickerSearch = getElementIfDisplayed(PeoplePickerPage.xpathMainSearchField);
+        return pickerSearch.isPresent() && pickerSearch.get().getLocation().getX() >= 0;
     }
 
     public boolean waitUntilInvisible() throws Exception {
-        final Optional<WebElement> pickerSearch = getElementIfDisplayed(PeoplePickerPage.xpathPickerSearch);
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), PeoplePickerPage.idPeoplePickerClearbtn)
-                || !pickerSearch.isPresent() || pickerSearch.get().getLocation().getX() < 0;
+        final Optional<WebElement> pickerSearch = getElementIfDisplayed(PeoplePickerPage.xpathMainSearchField, 5);
+        return !pickerSearch.isPresent() || pickerSearch.get().getLocation().getX() < 0;
     }
 
     public void tapCloseButton() throws Exception {

@@ -13,11 +13,11 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 public class PeoplePickerPage extends AndroidPage {
     public static final By idParticipantsClose = By.id("gtv__participants__close");
 
-    private static final String idStrPickerSearch = "puet_pickuser__searchbox";
+    public static final By xpathMainSearchField =
+            By.xpath("//*[@id='fl__search_box_container']//*[@id='puet_pickuser__searchbox']");
 
-    public static final By idPickerSearch = By.id(idStrPickerSearch);
-
-    public static final By xpathPickerSearch = By.xpath("//*[@id='" + idStrPickerSearch + "' and @shown='true']");
+    public static final By xpathAddPeopleSearchField =
+            By.xpath("//*[@id='fl__add_to_conversation__searchbox__container']//*[@id='puet_pickuser__searchbox']");
 
     public static final By idSingleParticipantClose = By.id("gtv__single_participants__close");
 
@@ -59,8 +59,17 @@ public class PeoplePickerPage extends AndroidPage {
         super(lazyDriver);
     }
 
+    private WebElement getPickerEdit() throws Exception {
+        final Optional<WebElement> mainEdit = getElementIfDisplayed(xpathMainSearchField, 3);
+        if (mainEdit.isPresent()) {
+            return mainEdit.get();
+        } else {
+            return getElement(xpathAddPeopleSearchField, "Search field is not visible on the current page");
+        }
+    }
+
     public void tapPeopleSearch() throws Exception {
-        getElement(xpathPickerSearch).click();
+        getPickerEdit().click();
     }
 
     public void tapOnContactInTopPeoples(String name) throws Exception {
@@ -69,13 +78,13 @@ public class PeoplePickerPage extends AndroidPage {
     }
 
     public void typeTextInPeopleSearch(String text) throws Exception {
-        final WebElement pickerSearch = getElement(xpathPickerSearch);
+        final WebElement pickerSearch = getPickerEdit();
         pickerSearch.click();
         pickerSearch.sendKeys(text);
     }
 
     public void addTextToPeopleSearch(String text) throws Exception {
-        getElement(xpathPickerSearch).sendKeys(text);
+        getPickerEdit().sendKeys(text);
     }
 
     public boolean isNoResultsFoundVisible() throws Exception {
@@ -120,7 +129,12 @@ public class PeoplePickerPage extends AndroidPage {
     }
 
     public boolean isPeoplePickerPageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), PeoplePickerPage.xpathPickerSearch);
+        try {
+            getPickerEdit();
+            return true;
+        } catch (IllegalStateException e) {
+            return false;
+        }
     }
 
     public void navigateBack() throws Exception {

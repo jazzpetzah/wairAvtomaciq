@@ -165,7 +165,7 @@ public class ContactListPage extends AndroidPage {
     }
 
     public void tapOnSearchBox() throws Exception {
-        getElement(PeoplePickerPage.xpathPickerSearch).click();
+        getElement(PeoplePickerPage.xpathMainSearchField).click();
     }
 
     public boolean isContactExists(String name) throws Exception {
