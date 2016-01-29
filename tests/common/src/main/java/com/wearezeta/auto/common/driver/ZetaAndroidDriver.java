@@ -3,13 +3,11 @@ package com.wearezeta.auto.common.driver;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableMap;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.ocr.OnScreenKeyboardScanner;
 import io.appium.java_client.MobileCommand;
 import io.appium.java_client.android.AndroidDriver;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
@@ -20,8 +18,6 @@ import org.openqa.selenium.interactions.TouchScreen;
 import org.openqa.selenium.interactions.touch.TouchActions;
 import org.openqa.selenium.remote.*;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
 import java.util.List;
@@ -55,7 +51,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements
     private RemoteTouchScreen touch;
     private String androidOSVersion;
 
-    private enum SurfaceOrientation {
+    public enum SurfaceOrientation {
 
         ROTATION_0(0), ROTATION_90(1), ROTATION_180(2), ROTATION_270(3);
 
@@ -104,14 +100,14 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements
     }
 
     private static int getNextCoord(double startC, double endC, double current,
-            double duration) {
+                                    double duration) {
         return (int) Math.round(startC + (endC - startC) / duration * current);
     }
 
     private final static int SWIPE_STEP_DURATION_MILLISECONDS = 40;
 
     private void swipeViaTouchActions(int startx, int starty, int endx,
-            int endy, int durationMilliseconds) {
+                                      int endy, int durationMilliseconds) {
         int duration = 1;
         if (durationMilliseconds > SWIPE_STEP_DURATION_MILLISECONDS) {
             duration = (durationMilliseconds % SWIPE_STEP_DURATION_MILLISECONDS == 0) ? (durationMilliseconds / SWIPE_STEP_DURATION_MILLISECONDS)
@@ -135,7 +131,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements
 
     @Override
     public void swipe(int startx, int starty, int endx, int endy,
-            int durationMilliseconds) {
+                      int durationMilliseconds) {
         if (androidOSVersion.compareTo("4.3") < 0) {
             // adb swipe command under 4.2 does not support duration parameter
             // and this fucks up all the tests
@@ -145,7 +141,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements
         }
 
         final String adbCommand = String.format(ADB_PREFIX
-                + "adb shell input touchscreen swipe %d %d %d %d %d", startx,
+                        + "adb shell input touchscreen swipe %d %d %d %d %d", startx,
                 starty, endx, endy, durationMilliseconds);
         log.debug("ADB swipe: " + adbCommand);
         try {
@@ -198,35 +194,6 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements
         return this.touch;
     }
 
-    private File getScreenshotInFile() throws Exception {
-        File result = File.createTempFile("tmp", ".png", null);
-        final String pathOnPhone = String.format("/sdcard/%s.png", CommonUtils
-                .generateGUID().replace("-", "").substring(0, 8));
-        final String adbCommandsChain = String.format(ADB_PREFIX
-                + "adb shell screencap -p %1$s; " + ADB_PREFIX
-                + "adb pull %1$s %2$s; " + ADB_PREFIX + "adb shell rm %1$s",
-                pathOnPhone, result.getCanonicalPath());
-        Runtime.getRuntime()
-                .exec(new String[]{"/bin/bash", "-c", adbCommandsChain})
-                .waitFor();
-        byte[] output = FileUtils.readFileToByteArray(result);
-        if (CommonUtils.getIsTabletFromConfig(this.getClass())) {
-            SurfaceOrientation currentOrientation;
-            try {
-                currentOrientation = this.getSurfaceOrientation();
-            } catch (Exception e) {
-                e.printStackTrace();
-                // Use the default value if command failed
-                currentOrientation = SurfaceOrientation.ROTATION_0;
-            }
-            log.debug(String.format("Current screen orientation value -> %s",
-                    currentOrientation.getCode()));
-            output = fixScreenshotOrientation(output, currentOrientation);
-            IOUtils.write(output, new FileOutputStream(result));
-        }
-        return result;
-    }
-
     /**
      * Workaround for selendroid when it cannot take a screenshot of the screen if main app is not in foreground
      *
@@ -234,39 +201,27 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements
      */
     private Response takeFullScreenShotWithAdb() {
         final Response result = new Response();
-        File tmpScreenshot = null;
+        File tmpScreenshot;
         try {
-            tmpScreenshot = getScreenshotInFile();
+            tmpScreenshot = File.createTempFile("tmp", ".png");
+        } catch (IOException e) {
+            throw new WebDriverException(e);
+        }
+        try {
+            CommonUtils.takeAndroidScreenshot(this, tmpScreenshot);
             result.setSessionId(this.getSessionId().toString());
             result.setStatus(HttpStatus.SC_OK);
-            result.setValue(Base64.encodeBase64(IOUtils
-                    .toByteArray(new FileInputStream(tmpScreenshot))));
+            result.setValue(Base64.encodeBase64(IOUtils.toByteArray(new FileInputStream(tmpScreenshot))));
             return result;
         } catch (Exception e) {
             e.printStackTrace();
             // Wrap generic error into WebDriverException
             throw new WebDriverException(e.getMessage(), e);
         } finally {
-            if (tmpScreenshot != null) {
-                tmpScreenshot.delete();
-            }
+            tmpScreenshot.delete();
         }
     }
 
-    private byte[] fixScreenshotOrientation(final byte[] initialScreenshot,
-            SurfaceOrientation currentOrientation) throws IOException {
-        if (currentOrientation != SurfaceOrientation.ROTATION_0) {
-            BufferedImage screenshotImage = ImageIO
-                    .read(new ByteArrayInputStream(initialScreenshot));
-            screenshotImage = ImageUtil.tilt(screenshotImage,
-                    -currentOrientation.getCode() * Math.PI / 2);
-            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(screenshotImage, "png", baos);
-            return baos.toByteArray();
-        } else {
-            return initialScreenshot;
-        }
-    }
 
     @Override
     public <X> X getScreenshotAs(OutputType<X> outputType)
@@ -352,7 +307,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements
                     } // if getMessage contains
                     log.error(String.format(
                             "Android driver is still not available after %s seconds timeout. "
-                            + "The recent webdriver command was '%s'",
+                                    + "The recent webdriver command was '%s'",
                             DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS / 1000,
                             driverCommand));
                 }
@@ -404,7 +359,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements
      * @return 0 to 3. 0 is default portrait
      * @throws Exception
      */
-    private SurfaceOrientation getSurfaceOrientation() throws Exception {
+    public SurfaceOrientation getSurfaceOrientation() throws Exception {
         final String output = getAdbOutput("shell dumpsys input").trim();
         String regex = "SurfaceOrientation:\\s+(\\d+)";
         Pattern p = Pattern.compile(regex);
@@ -445,7 +400,8 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements
      * @throws Exception
      */
     public void tapSendButton() throws Exception {
-        final File screenshot = getScreenshotInFile();
+        final File screenshot = File.createTempFile("tmp", ".png");
+        CommonUtils.takeAndroidScreenshot(this, screenshot);
         try {
             final List<List<Rect>> keyboardButtons = new OnScreenKeyboardScanner()
                     .getButtonCoordinates(screenshot.getCanonicalPath());

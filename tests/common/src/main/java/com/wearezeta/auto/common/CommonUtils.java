@@ -1,17 +1,26 @@
 package com.wearezeta.auto.common;
 
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.InetAddress;
 import java.security.MessageDigest;
 import java.util.*;
 import java.util.concurrent.*;
 
+import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import com.wearezeta.auto.common.driver.ZetaAndroidDriver.SurfaceOrientation;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.net.ntp.NTPUDPClient;
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
+
+import javax.imageio.ImageIO;
+
+import static com.wearezeta.auto.common.driver.ZetaAndroidDriver.ADB_PREFIX;
 
 public class CommonUtils {
 
@@ -27,7 +36,7 @@ public class CommonUtils {
     private static final String TCPBLOCK_PREFIX_PATH = "/usr/local/bin/";
 
     public static boolean executeOsCommandWithTimeout(String[] cmd,
-            long timeoutSeconds) throws Exception {
+                                                      long timeoutSeconds) throws Exception {
         Process process = Runtime.getRuntime().exec(cmd);
         log.debug("Process started for cmdline " + Arrays.toString(cmd));
         outputErrorStreamToLog(process.getErrorStream());
@@ -105,7 +114,7 @@ public class CommonUtils {
     private final static Map<String, Optional<String>> cachedConfig = new HashMap<>();
 
     private static Optional<String> getValueFromConfigFile(Class<?> c,
-            String key, String resourcePath) throws Exception {
+                                                           String key, String resourcePath) throws Exception {
         final String configKey = String.format("%s:%s", resourcePath, key);
         if (cachedConfig.containsKey(configKey)) {
             return cachedConfig.get(configKey);
@@ -147,7 +156,7 @@ public class CommonUtils {
     private static final String PROJECT_CONFIG = "Configuration.cnf";
 
     public static Optional<String> getOptionalValueFromConfig(Class<?> c,
-            String key) throws Exception {
+                                                              String key) throws Exception {
         return getValueFromConfigFile(c, key, PROJECT_CONFIG);
     }
 
@@ -167,7 +176,7 @@ public class CommonUtils {
     private static final String COMMON_CONFIG = "CommonConfiguration.cnf";
 
     public static Optional<String> getOptionalValueFromCommonConfig(Class<?> c,
-            String key) throws Exception {
+                                                                    String key) throws Exception {
         return getValueFromConfigFile(c, key, COMMON_CONFIG);
     }
 
@@ -343,15 +352,15 @@ public class CommonUtils {
         return getValueFromCommonConfig(c, "defaultCallingServiceUrl");
     }
 
-   public static void blockTcpForAppName(String appName) throws Exception {
+    public static void blockTcpForAppName(String appName) throws Exception {
         final String blockTcpForAppCmd = "echo "
                 + getJenkinsSuperUserPassword(CommonUtils.class) + "| sudo -S "
                 + TCPBLOCK_PREFIX_PATH + "tcpblock -a " + appName;
         try {
             executeOsXCommand(new String[]{"/bin/bash", "-c",
-                blockTcpForAppCmd});
+                    blockTcpForAppCmd});
             log.debug(executeOsXCommandWithOutput(new String[]{"/bin/bash",
-                "-c", TCPBLOCK_PREFIX_PATH + "tcpblock -g"}));
+                    "-c", TCPBLOCK_PREFIX_PATH + "tcpblock -g"}));
         } catch (Exception e) {
             log.error("TCP connections for " + appName
                     + " were not blocked. Make sure tcpblock is installed.");
@@ -364,9 +373,9 @@ public class CommonUtils {
                 + TCPBLOCK_PREFIX_PATH + "tcpblock -r " + appName;
         try {
             executeOsXCommand(new String[]{"/bin/bash", "-c",
-                enableTcpForAppCmd});
+                    enableTcpForAppCmd});
             log.debug(executeOsXCommandWithOutput(new String[]{"/bin/bash",
-                "-c", TCPBLOCK_PREFIX_PATH + "tcpblock -g"}));
+                    "-c", TCPBLOCK_PREFIX_PATH + "tcpblock -g"}));
         } catch (Exception e) {
             log.error("TCP connections for " + appName
                     + " were not enabled. Make sure tcpblock is installed.");
@@ -484,12 +493,49 @@ public class CommonUtils {
     public static void takeIOSSimulatorScreenshot(String screenshotPath) throws Exception {
         executeUIShellScript(
                 new String[]{
-                    String.format("mkdir -p $(dirname \"%s\")",
-                            screenshotPath),
-                    String.format("%s/simshot \"%s\"",
-                            getIOSToolsRoot(CommonUtils.class),
-                            screenshotPath)}).get(
-                        SCREENSHOT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+                        String.format("mkdir -p $(dirname \"%s\")",
+                                screenshotPath),
+                        String.format("%s/simshot \"%s\"",
+                                getIOSToolsRoot(CommonUtils.class),
+                                screenshotPath)}).get(
+                SCREENSHOT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+    }
+
+    private static byte[] fixScreenshotOrientation(final byte[] initialScreenshot, SurfaceOrientation currentOrientation)
+            throws IOException {
+        if (currentOrientation != SurfaceOrientation.ROTATION_0) {
+            BufferedImage screenshotImage = ImageIO.read(new ByteArrayInputStream(initialScreenshot));
+            screenshotImage = ImageUtil.tilt(screenshotImage, -currentOrientation.getCode() * Math.PI / 2);
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(screenshotImage, "png", baos);
+            return baos.toByteArray();
+        } else {
+            return initialScreenshot;
+        }
+    }
+
+    public static void takeAndroidScreenshot(ZetaAndroidDriver driver, File resultScreenShot) throws Exception {
+        final String pathOnPhone = String.format("/sdcard/%s.png", generateGUID().replace("-", "").substring(0, 8));
+        final String adbCommandsChain = String.format(
+                ADB_PREFIX + "adb shell screencap -p %1$s; " +
+                        ADB_PREFIX + "adb pull %1$s %2$s; " +
+                        ADB_PREFIX + "adb shell rm %1$s",
+                pathOnPhone, resultScreenShot.getCanonicalPath());
+        Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", adbCommandsChain}).waitFor();
+        byte[] output = FileUtils.readFileToByteArray(resultScreenShot);
+        if (getIsTabletFromConfig(CommonUtils.class)) {
+            SurfaceOrientation currentOrientation;
+            try {
+                currentOrientation = driver.getSurfaceOrientation();
+            } catch (Exception e) {
+                e.printStackTrace();
+                // Use the default value if command failed
+                currentOrientation = SurfaceOrientation.ROTATION_0;
+            }
+            log.debug(String.format("Current screen orientation value -> %s", currentOrientation.getCode()));
+            output = fixScreenshotOrientation(output, currentOrientation);
+            IOUtils.write(output, new FileOutputStream(resultScreenShot));
+        }
     }
 
     private static class UIScriptExecutionMonitor implements Callable<Void> {
@@ -542,7 +588,7 @@ public class CommonUtils {
                 .waitFor();
         Runtime.getRuntime()
                 .exec(new String[]{"/usr/bin/open", "-a", "Terminal",
-                    result.getCanonicalPath(), "-g"}).waitFor();
+                        result.getCanonicalPath(), "-g"}).waitFor();
         return Executors.newSingleThreadExecutor().submit(
                 new UIScriptExecutionMonitor(executionFlag, result));
     }
