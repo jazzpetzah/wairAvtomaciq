@@ -1,14 +1,13 @@
 Feature: People View
 
   @C985 @regression @id1393
-  Scenario Outline: (ZIOS-5442) Start group chat with users from contact list
+  Scenario Outline: Start group chat with users from contact list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I see dialog page
-    #And I swipe up on dialog page to open other user personal page
     And I open conversation details
     And I see <Contact1> user profile page
     And I press Add button
@@ -18,7 +17,6 @@ Feature: People View
     And I input in People picker search field user name <Contact2>
     And I see user <Contact2> found on People picker page
     And I tap on conversation <Contact2> in search result
-    #And I see Add to conversation button
     And I click on Go button
     And I wait for 2 seconds
     Then I see group chat page with users <Contact1>,<Contact2>
@@ -97,16 +95,17 @@ Feature: People View
   Scenario Outline: Verify correct group info page information
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I create group chat with <Contact1> and <Contact2>
+    When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    Then I see that the conversation name is correct with <Contact1> and <Contact2>
+    Then I see correct conversation name <GroupChatName>
     And I see that conversation has <ParticipantNumber> people
 
     Examples:
-      | Name      | Contact1  | Contact2  | ParticipantNumber |
-      | user1Name | user2Name | user3Name | 2                 |
+      | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName |
+      | user1Name | user2Name | user3Name | 2                 | GroupInfo     |
 
   @C3174 @regression @rc @id1406
   Scenario Outline: I can edit the conversation name
