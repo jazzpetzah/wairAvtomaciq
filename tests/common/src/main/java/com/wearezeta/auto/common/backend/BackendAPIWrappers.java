@@ -1011,23 +1011,23 @@ public final class BackendAPIWrappers {
         Map<String, String> expectedHeaders = new HashMap<>();
         expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, email);
         expectedHeaders.put(MessagingUtils.SUBJECT_HEADER, "Wire Account Deletion");
-        try {
-            final String raw_msg = mbox.getMessage(expectedHeaders,
-                    DELETION_RECEIVING_TIMEOUT, 0).get();
-            final Message msg = MessagingUtils.stringToMsg(raw_msg);
-            String content = MessagingUtils.getPlaintextFromMultipart(msg);
 
-            String url = null;
-            Matcher matcher = pattern.matcher(content);
-            if(matcher.find()) {
-                url = matcher.group(0);
-            } else {
-                return raw_msg;
-            }
-            return url;
+        String content = null;
+        String raw_msg = null;
+        try {
+            raw_msg = mbox.getMessage(expectedHeaders, DELETION_RECEIVING_TIMEOUT, 0).get();
+            final Message msg = MessagingUtils.stringToMsg(raw_msg);
+            content = MessagingUtils.getPlaintextFromMultipart(msg);
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            throw new Exception("Could not fetch mail with account deletion url: " + e.getMessage());
+        }
+
+        Matcher matcher = pattern.matcher(content);
+        if (matcher.find()) {
+            return matcher.group(0);
+        } else {
+            throw new Exception("Unable to extract URL from mail: " + raw_msg);
         }
     }
 
