@@ -48,7 +48,7 @@ Feature: Menus
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C12064 @mute
+  @C12064 @regression
   Scenario Outline: Verify you can delete account
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
