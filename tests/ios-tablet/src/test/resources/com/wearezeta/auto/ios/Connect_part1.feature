@@ -182,7 +182,7 @@ Feature: Connect
     And I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
-    And I search for ignored user name <Contact1> and tap on it
+    And I search for user name <Contact1> and tap on it on People picker page
     Then I see incoming pending popover from user <Contact1> on iPad
 
     Examples: 
@@ -287,9 +287,8 @@ Feature: Connect
     And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I unblock user on iPad
-    And I wait for 5 seconds
-    And I see new photo in the dialog
     And I see 1 default message in the dialog
+    And I see 1 photo in the dialog
     And I navigate back to conversations list
     #And I see People picker page
     #And I click close button to dismiss people view
@@ -321,9 +320,8 @@ Feature: Connect
     And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I unblock user on iPad
-    And I wait for 5 seconds
-    And I see new photo in the dialog
     And I see 1 default message in the dialog
+    And I see 1 photo in the dialog
     #And I click close button to dismiss people view
     Given User <Contact> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact>

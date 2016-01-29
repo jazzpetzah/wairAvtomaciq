@@ -223,7 +223,7 @@ Feature: Search
     And I choose a picture from camera roll
     And I press Confirm button
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
     When I navigate back to conversations list
     Then I see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
 

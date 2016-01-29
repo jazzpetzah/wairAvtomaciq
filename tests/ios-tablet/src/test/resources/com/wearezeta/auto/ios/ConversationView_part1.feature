@@ -76,7 +76,7 @@ Feature: Conversation View
     And I press Camera Roll button on iPad
     And I choose a picture from camera roll on iPad popover
     And I press Confirm button on iPad popover
-    Then I see new photo in the dialog
+    Then I see 1 photo in the dialog
 
     Examples:
       | Name      | Contact   |
@@ -95,7 +95,7 @@ Feature: Conversation View
     And I press Camera Roll button on iPad
     And I choose a picture from camera roll on iPad popover
     And I press Confirm button on iPad popover
-    Then I see new photo in the dialog
+    Then I see 1 photo in the dialog
 
     Examples:
       | Name      | Contact   |
@@ -106,25 +106,22 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given User <Contact1> change name to <ContactName>
     Given Myself is connected to <Contact1>
-    Given User <Contact1> change accent color to <Color>
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given I tap on contact name <Contact1>
     Given User <Contact1> securely pings conversation <Name>
     When I wait for 3 seconds
     Then I see User <Contact1> Pinged message in the conversation
-    And I see <Action1> icon in conversation
 
     Examples:
-      | Name      | Contact1  | Action1 | Color        | ContactName |
-      | user1Name | user2Name | PINGED  | BrightOrange | OtherUser   |
+      | Name      | Contact1  | ContactName |
+      | user1Name | user2Name | OtherUser   |
 
   @C2642 @regression @id2429 @C3222
   Scenario Outline: Verify you can see Ping on the other side - 1:1 conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given User <Contact1> change name to <ContactName>
     Given Myself is connected to <Contact1>
-    Given User <Contact1> change accent color to <Color>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -132,18 +129,15 @@ Feature: Conversation View
     Given User <Contact1> securely pings conversation <Name>
     When I wait for 3 seconds
     Then I see User <Contact1> Pinged message in the conversation
-    And I see <Action1> icon in conversation
 
     Examples:
-      | Name      | Contact1  | Action1 | Color        | ContactName |
-      | user1Name | user2Name | PINGED  | BrightOrange | OtherUser   |
+      | Name      | Contact1  | ContactName |
+      | user1Name | user2Name | OtherUser   |
 
   @C2640 @regression @id2427 @C3223
   Scenario Outline: Verify you can see Ping on the other side - group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given User <Contact1> change name to <ContactName>
-    Given User <Contact1> change accent color to <Color>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -151,18 +145,15 @@ Feature: Conversation View
     Given User <Contact1> securely pings conversation <GroupChatName>
     When I wait for 3 seconds
     Then I see User <Contact1> Pinged message in the conversation
-    And I see <Action1> icon in conversation
 
     Examples:
-      | Name      | Contact1  | Contact2  | Action1 | GroupChatName        | Color        | ContactName |
-      | user1Name | user2Name | user3Name | PINGED  | ReceivePingGroupChat | BrightOrange | OtherUser   |
+      | Name      | Contact1  | Contact2  | GroupChatName        |
+      | user1Name | user2Name | user3Name | ReceivePingGroupChat |
 
   @C2640 @regression @id2427 @C3224
   Scenario Outline: Verify you can see Ping on the other side - group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given User <Contact1> change name to <ContactName>
-    Given User <Contact1> change accent color to <Color>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
@@ -171,11 +162,10 @@ Feature: Conversation View
     Given User <Contact1> securely pings conversation <GroupChatName>
     When I wait for 3 seconds
     Then I see User <Contact1> Pinged message in the conversation
-    And I see <Action1> icon in conversation
 
     Examples:
-      | Name      | Contact1  | Contact2  | Action1 | GroupChatName        | Color        | ContactName |
-      | user1Name | user2Name | user3Name | PINGED  | ReceivePingGroupChat | BrightOrange | OtherUser   |
+      | Name      | Contact1  | Contact2  | GroupChatName        |
+      | user1Name | user2Name | user3Name | ReceivePingGroupChat |
 
   @C2627 @regression @id2669 @deployPictures
   Scenario Outline: Receive a camera roll picture from user from contact list [PORTRAIT]
@@ -185,8 +175,7 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to <ConversationType> conversation <Name>
     When I tap on contact name <Contact>
-    And I see dialog page
-    Then I see new photo in the dialog
+    Then I see 1 photo in the dialog
 
     Examples:
       | Name      | Contact   | Picture     | ConversationType |
@@ -201,8 +190,7 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
-    And I see dialog page
-    Then I see new photo in the dialog
+    Then I see 1 photo in the dialog
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -517,7 +505,7 @@ Feature: Conversation View
     And I tap on sketch button in cursor
     And I draw a random sketch
     And I send my sketch
-    Then I see new photo in the dialog
+    Then I see 1 photo in the dialog
 
     Examples:
       | Name      | Contact1  |
@@ -535,7 +523,7 @@ Feature: Conversation View
     And I tap on sketch button in cursor
     And I draw a random sketch
     And I send my sketch
-    Then I see new photo in the dialog
+    Then I see 1 photo in the dialog
 
     Examples:
       | Name      | Contact1  |

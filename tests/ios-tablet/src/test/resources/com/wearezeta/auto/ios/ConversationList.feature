@@ -700,7 +700,7 @@ Feature: Conversation List
     And I open archived conversations on iPad
     Then I see user <Contact> in contact list
     And I tap on contact name <Contact>
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -725,7 +725,7 @@ Feature: Conversation List
     And I open archived conversations on iPad
     Then I see user <Contact> in contact list
     And I tap on contact name <Contact>
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
 
     Examples:
       | Name      | Contact   | Picture     |

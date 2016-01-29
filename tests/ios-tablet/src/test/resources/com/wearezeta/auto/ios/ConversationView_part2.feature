@@ -53,7 +53,7 @@ Feature: Conversation View
     And I press Camera Roll button
     And I choose a picture from camera roll on iPad popover
     And I press Confirm button on iPad popover
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
     And I memorize message send time
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
@@ -64,7 +64,7 @@ Feature: Conversation View
     And I verify image caption and download button are not shown
     And I tap on fullscreen page
     And I tap close fullscreen page button
-    Then I see new photo in the dialog
+    Then I see 2 photos in the dialog
 
     Examples:
       | Name      | Contact   |
@@ -83,7 +83,7 @@ Feature: Conversation View
     And I press Camera Roll button
     And I choose a picture from camera roll on iPad popover
     And I press Confirm button on iPad popover
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
     And I memorize message send time
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
@@ -94,7 +94,7 @@ Feature: Conversation View
     And I verify image caption and download button are not shown
     And I tap on fullscreen page
     And I tap close fullscreen page button
-    Then I see new photo in the dialog
+    Then I see 2 photos in the dialog
 
     Examples:
       | Name      | Contact   |
@@ -182,7 +182,7 @@ Feature: Conversation View
     And I press Camera Roll button
     And I choose a picture from camera roll on iPad popover
     And I press Confirm button on iPad popover
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
     And I memorize message send time
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
@@ -208,7 +208,7 @@ Feature: Conversation View
     And I press Camera Roll button
     And I choose a picture from camera roll on iPad popover
     And I press Confirm button on iPad popover
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
     And I memorize message send time
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
@@ -537,13 +537,13 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
     And I longpress on image in the conversation
     And I tap on copy badge
     And I tap and hold on message input
     And I click on popup Paste item
     And I press Confirm button
-    Then I see new photo in the dialog
+    Then I see 2 photos in the dialog
 
     Examples:
       | Name      | Contact   | Picture     | ConversationType |
@@ -559,14 +559,14 @@ Feature: Conversation View
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     And I tap on contact name <Contact>
     And I see dialog page
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
     And I longpress on image in the conversation
     And I tap on copy badge
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
     And I press Confirm button
-    Then I see new photo in the dialog
+    Then I see 2 photos in the dialog
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -633,7 +633,7 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I see download button shown on fullscreen page
@@ -644,7 +644,7 @@ Feature: Conversation View
     And I press Camera Roll button
     And I choose last picture from camera roll
     And I press Confirm button
-    Then I verify image in dialog is same as template <Picture>
+    And I see 2 photos in the dialog
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -659,7 +659,7 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I see download button shown on fullscreen page
@@ -670,8 +670,7 @@ Feature: Conversation View
     And I press Camera Roll button
     And I choose last picture from camera roll
     And I press Confirm button
-    And I scroll to the end of the conversation
-    Then I verify image in dialog is same as template <Picture>
+    And I see 2 photos in the dialog
 
     Examples:
       | Name      | Contact   | Picture     |
