@@ -54,7 +54,7 @@ public class ContactListPage extends AndroidPage {
 
     public static final By idSelfUserAvatar = By.id("civ__searchbox__self_user_avatar");
 
-    private static final By xpathConfirmDeleteConversationButton = By.xpath("//*[@id='confirm' and @value='DELETE']");
+    private static final By xpathConfirmDeleteConversationButton = By.xpath("//*[@id='positive' and @value='DELETE']");
 
     private static final By idSearchButton = By.id("gtv_pickuser__searchbutton");
 
