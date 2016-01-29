@@ -9,7 +9,6 @@ Feature: Connect
     Given I see the Conversations list with no conversations
     And I wait until <Contact> exists in backend search results
     When I tap Search input
-    And I see People Picker page
     And I enter "<Contact>" into Search input on People Picker page
     And I tap the found item <Contact> on People Picker page
     And I see Outgoing Connection popover
@@ -33,7 +32,6 @@ Feature: Connect
     Given I see the Conversations list with no conversations
     And I wait until <Contact> exists in backend search results
     When I tap Search input
-    And I see People Picker page
     And I enter "<Contact>" into Search input on People Picker page
     And I tap the found item <Contact> on People Picker page
     And I see Outgoing Connection popover
@@ -155,7 +153,6 @@ Feature: Connect
     Given I see the Conversations list with no conversations
     And I wait until <ContactEmail> exists in backend search results
     When I tap Search input
-    And I see People Picker page
     And I enter "<ContactEmail>" into Search input on People Picker page
     And I tap the found item <Contact> on People Picker page
     And I see Outgoing Connection popover
@@ -179,7 +176,6 @@ Feature: Connect
     Given I see the Conversations list with no conversations
     And I wait until <ContactEmail> exists in backend search results
     When I tap Search input
-    And I see People Picker page
     And I enter "<ContactEmail>" into Search input on People Picker page
     And I tap the found item <Contact> on People Picker page
     And I see Outgoing Connection popover
@@ -215,7 +211,6 @@ Feature: Connect
     And I do not see the conversation <WaitingMess> in my conversations list
     And I wait until <Contact> exists in backend search results
     And I tap Search input
-    And I see People Picker page
     And I enter "<Contact>" into Search input on People Picker page
     And I tap the found item <Contact> on People Picker page
     And I see Incoming Connection popover
@@ -246,7 +241,6 @@ Feature: Connect
     And I do not see the conversation <WaitingMess> in my conversations list
     And I wait until <Contact> exists in backend search results
     And I tap Search input
-    And I see People Picker page
     And I enter "<Contact>" into Search input on People Picker page
     And I tap the found item <Contact> on People Picker page
     And I see Incoming Connection popover

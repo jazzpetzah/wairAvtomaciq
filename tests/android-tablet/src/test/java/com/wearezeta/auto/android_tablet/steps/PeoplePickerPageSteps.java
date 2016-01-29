@@ -17,35 +17,32 @@ import cucumber.api.java.en.When;
 public class PeoplePickerPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection
-            .getInstance();
+    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
 
     private TabletPeoplePickerPage getPeoplePickerPage() throws Exception {
         return pagesCollection.getPage(TabletPeoplePickerPage.class);
     }
 
-    private TabletConversationsListPage getConversationsListPage()
-            throws Exception {
+    private TabletConversationsListPage getConversationsListPage() throws Exception {
         return pagesCollection.getPage(TabletConversationsListPage.class);
     }
 
     /**
-     * Verify that People Picker is visible or not
+     * Verify that People Picker is visible or not.
+     * Sometimes it's quite hard to make sure this page is not visible and that is why we check whether Top People
+     * overlay is shown or not
      *
      * @param shouldNotBeVisible equals to null is "do not" part does not exist
      * @throws Exception
      * @step. ^I (do not )?see People Picker page$
      */
     @When("^I (do not )?see People Picker page$")
-    public void WhenITapOnTabletCreateConversation(String shouldNotBeVisible)
-            throws Exception {
+    public void WhenITapOnTabletCreateConversation(String shouldNotBeVisible) throws Exception {
         if (shouldNotBeVisible == null) {
-            Assert.assertTrue("People Picker page is not visible",
-                    getPeoplePickerPage().waitUntilVisible());
+            Assert.assertTrue("People Picker page is not visible", getPeoplePickerPage().waitUntilVisible());
         } else {
             Assert.assertTrue(
-                    "People Picker page is visible, but should be hidden",
-                    getPeoplePickerPage().waitUntilInvisible());
+                    "People Picker page is visible, but should be hidden", getPeoplePickerPage().waitUntilInvisible());
         }
     }
 
@@ -57,14 +54,10 @@ public class PeoplePickerPageSteps {
      * @step. ^I enter \"(.*)\" into Search input on People [Pp]icker page$
      */
     @When("^I enter \"(.*)\" into Search input on People [Pp]icker page")
-    public void IEnterStringIntoSearchField(String searchCriteria)
-            throws Exception {
-        searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria,
-                FindBy.EMAIL_ALIAS);
-        searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria,
-                FindBy.NAME_ALIAS);
-        searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria,
-                FindBy.PHONENUMBER_ALIAS);
+    public void IEnterStringIntoSearchField(String searchCriteria) throws Exception {
+        searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria, FindBy.EMAIL_ALIAS);
+        searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria, FindBy.NAME_ALIAS);
+        searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria, FindBy.PHONENUMBER_ALIAS);
         getPeoplePickerPage().typeTextInPeopleSearch(searchCriteria);
     }
 
@@ -91,13 +84,13 @@ public class PeoplePickerPageSteps {
      *
      * @param shouldNotSee equals to null if "do not " part does not exist in the step
      *                     description
-     * @param name    user name/alias
-     * @param isGroup is not null if group avatar should be verified instead of single user avatar
+     * @param name         user name/alias
+     * @param isGroup      is not null if group avatar should be verified instead of single user avatar
      * @throws Exception
      * @step. ^I see "(.*)" (group )?avatar on [Pp]eople [Pp]icker page$
      */
     @When("^I (do not )?see \"(.*)\" (group )?avatar on [Pp]eople [Pp]icker page$")
-    public void ISeeContactAvatar(String shouldNotSee,String name, String isGroup) throws Exception {
+    public void ISeeContactAvatar(String shouldNotSee, String name, String isGroup) throws Exception {
         name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         if (shouldNotSee == null) {
             if (isGroup == null) {

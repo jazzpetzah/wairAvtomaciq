@@ -155,7 +155,6 @@ Feature: People View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the Search input
-    And I see People Picker page
     And I keep on reopening People Picker until I see Top People
     And I tap <Contact1> avatar in Top People
     When I tap Open Conversation button on People Picker page
@@ -175,7 +174,6 @@ Feature: People View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the Search input
-    And I see People Picker page
     And I keep on reopening People Picker until I see Top People
     And I tap <Contact1> avatar in Top People
     When I tap Open Conversation button on People Picker page

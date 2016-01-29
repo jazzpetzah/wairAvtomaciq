@@ -27,8 +27,9 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilInvisible() throws Exception {
-        final Optional<WebElement> pickerSearch = getElementIfDisplayed(PeoplePickerPage.xpathMainSearchField, 5);
-        return !pickerSearch.isPresent() || pickerSearch.get().getLocation().getX() < 0;
+        final Optional<WebElement> pickerSearch = getElementIfDisplayed(PeoplePickerPage.xpathMainSearchField, 3);
+        return !pickerSearch.isPresent() || pickerSearch.get().getLocation().getX() < 0 ||
+                DriverUtils.waitUntilLocatorDissapears(getDriver(), PeoplePickerPage.xpathTopPeopleAvatars, 3);
     }
 
     public void tapCloseButton() throws Exception {
