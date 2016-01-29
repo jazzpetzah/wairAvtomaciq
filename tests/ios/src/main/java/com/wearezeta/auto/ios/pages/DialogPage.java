@@ -410,7 +410,7 @@ public class DialogPage extends IOSPage {
             //Work around: we need to send an extra space to see the giph button
             convoInput.sendKeys(" ");
         } catch (WebDriverException e) {
-            // Ignore silently
+            ((IOSElement) convoInput).setValue(message);
         }
     }
 
