@@ -18,6 +18,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
+import com.wearezeta.auto.web.pages.external.DeleteAccountPage;
+import junit.framework.Assert;
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
@@ -686,7 +688,13 @@ public class CommonWebAppSteps {
 		assertNotNull(
 				String.format("Delete email for %s is not valid", email), url);
 		log.info("URL: " + url);
-	}
+        DeleteAccountPage deleteAccountPage = WebappPagesCollection.getInstance()
+                .getPage(DeleteAccountPage.class);
+        deleteAccountPage.setUrl(url);
+        deleteAccountPage.navigateTo();
+        deleteAccountPage.clickDeleteAccountButton();
+        assertTrue("Delete account page does not show success message", deleteAccountPage.isSuccess());
+    }
 
 	/**
 	 * Navigates to the prefilled personal invitation registration page

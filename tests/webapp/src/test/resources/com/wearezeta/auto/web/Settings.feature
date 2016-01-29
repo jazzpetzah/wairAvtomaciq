@@ -63,8 +63,8 @@ Feature: Menus
     And I see email <Email> in delete info text on settings page
     And I click send button to delete account
     And I delete account of user <Name> via email
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
+    And I open Sign In page
+    And I see Sign In page
     When I enter email "<Email>"
     And I enter password "<Password>"
     And I press Sign In button

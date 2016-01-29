@@ -31,6 +31,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.activation.MimeType;
+import javax.mail.BodyPart;
+import javax.mail.Message;
+import javax.mail.internet.MimeMultipart;
+
 // Almost all methods of this class mutate ClientUser
 // argument by performing automatic login (set id and session token attributes)
 public final class BackendAPIWrappers {
@@ -1010,14 +1015,17 @@ public final class BackendAPIWrappers {
         expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, email);
         expectedHeaders.put(MessagingUtils.SUBJECT_HEADER, "Wire Account Deletion");
         try {
-            final String msg = mbox.getMessage(expectedHeaders,
+            final String raw_msg = mbox.getMessage(expectedHeaders,
                     DELETION_RECEIVING_TIMEOUT, 0).get();
+            final Message msg = MessagingUtils.stringToMsg(raw_msg);
+            String content = MessagingUtils.getPlaintextFromMultipart(msg);
+
             String url = null;
-            Matcher matcher = pattern.matcher(msg);
+            Matcher matcher = pattern.matcher(content);
             if(matcher.find()) {
                 url = matcher.group(0);
             } else {
-                return msg;
+                return raw_msg;
             }
             return url;
         } catch (Exception e) {

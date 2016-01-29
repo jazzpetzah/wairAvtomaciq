@@ -6,11 +6,13 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Map;
 
+import javax.mail.BodyPart;
 import javax.mail.Header;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 import com.wearezeta.auto.common.CommonUtils;
 
@@ -30,6 +32,17 @@ public class MessagingUtils {
 				null);
 		return new MimeMessage(session, new ByteArrayInputStream(
 				rawMsg.getBytes()));
+	}
+
+	public static String getPlaintextFromMultipart(Message message) throws IOException, MessagingException {
+		MimeMultipart multipart = (MimeMultipart) message.getContent();
+		for(int i = 0; i < multipart.getCount(); i++) {
+			BodyPart bodypart = multipart.getBodyPart(i);
+			if(bodypart.isMimeType("text/plain")) {
+				return (String) bodypart.getContent();
+			}
+		}
+		throw new MessagingException("No text/plain part in multipart message");
 	}
 	
 	public static String extractDeliveredToValue(Map<String, String> headers) throws Exception {
