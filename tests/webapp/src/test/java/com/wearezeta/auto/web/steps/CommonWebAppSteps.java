@@ -18,6 +18,10 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
+import com.wearezeta.auto.common.email.AccountDeletionMessage;
+import com.wearezeta.auto.common.email.MessagingUtils;
+import com.wearezeta.auto.common.email.WireMessage;
+import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.web.pages.external.DeleteAccountPage;
 import junit.framework.Assert;
 import org.apache.commons.collections.IteratorUtils;
@@ -76,6 +80,7 @@ public class CommonWebAppSteps {
 	public static final Platform CURRENT_PLATFORM = Platform.Web;
 
 	public static final int SAFARI_DRIVER_CREATION_RETRY = 3;
+	private static final int DELETION_RECEIVING_TIMEOUT = 120;
 
 	private static final String DEFAULT_USER_PICTURE = "/images/aqaPictureContact600_800.jpg";
 
@@ -684,17 +689,21 @@ public class CommonWebAppSteps {
 	@Then("^I delete account of user (.*) via email$")
 	public void IDeleteAccountViaEmail(String alias) throws Throwable {
 		final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
-		final String url = BackendAPIWrappers.getDeletionURL(email);
-		assertNotNull(
-				String.format("Delete email for %s is not valid", email), url);
+		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
+		Map<String, String> expectedHeaders = new HashMap<>();
+		expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, email);
+		expectedHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME, AccountDeletionMessage.MESSAGE_PURPOSE);
+		AccountDeletionMessage message = new AccountDeletionMessage(mbox.getMessage(expectedHeaders,
+				DELETION_RECEIVING_TIMEOUT, 0).get());
+		final String url = message.extractAccountDeletionLink();
 		log.info("URL: " + url);
-        DeleteAccountPage deleteAccountPage = WebappPagesCollection.getInstance()
-                .getPage(DeleteAccountPage.class);
-        deleteAccountPage.setUrl(url);
-        deleteAccountPage.navigateTo();
-        deleteAccountPage.clickDeleteAccountButton();
-        assertTrue("Delete account page does not show success message", deleteAccountPage.isSuccess());
-    }
+		DeleteAccountPage deleteAccountPage = WebappPagesCollection.getInstance()
+				.getPage(DeleteAccountPage.class);
+		deleteAccountPage.setUrl(url);
+		deleteAccountPage.navigateTo();
+		deleteAccountPage.clickDeleteAccountButton();
+		assertTrue("Delete account page does not show success message", deleteAccountPage.isSuccess());
+	}
 
 	/**
 	 * Navigates to the prefilled personal invitation registration page

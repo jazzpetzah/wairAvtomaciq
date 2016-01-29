@@ -1005,32 +1005,6 @@ public final class BackendAPIWrappers {
         }
     }
 
-    public static String getDeletionURL(String email) throws Exception {
-        Pattern pattern = Pattern.compile("https://[a-zA-Z_0-9.=-]+/d/\\?key=[a-zA-Z_0-9.\\-\\\\&_=]+");
-        IMAPSMailbox mbox = IMAPSMailbox.getInstance();
-        Map<String, String> expectedHeaders = new HashMap<>();
-        expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, email);
-        expectedHeaders.put(MessagingUtils.SUBJECT_HEADER, "Wire Account Deletion");
-
-        String content = null;
-        String raw_msg = null;
-        try {
-            raw_msg = mbox.getMessage(expectedHeaders, DELETION_RECEIVING_TIMEOUT, 0).get();
-            final Message msg = MessagingUtils.stringToMsg(raw_msg);
-            content = MessagingUtils.getPlaintextFromMultipart(msg);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new Exception("Could not fetch mail with account deletion url: " + e.getMessage());
-        }
-
-        Matcher matcher = pattern.matcher(content);
-        if (matcher.find()) {
-            return matcher.group(0);
-        } else {
-            throw new Exception("Unable to extract URL from mail: " + raw_msg);
-        }
-    }
-
     public static List<OtrClient> getOtrClients(ClientUser forUser) throws Exception {
         tryLoginByUser(forUser);
         final List<OtrClient> result = new ArrayList<>();

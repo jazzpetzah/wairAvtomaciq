@@ -18,7 +18,6 @@ import com.wearezeta.auto.common.CommonUtils;
 
 public class MessagingUtils {
 	public static final String DELIVERED_TO_HEADER = "Delivered-To";
-	public static final String SUBJECT_HEADER = "Subject";
 
 	public static String msgToString(Message msg) throws IOException,
 			MessagingException {
@@ -32,17 +31,6 @@ public class MessagingUtils {
 				null);
 		return new MimeMessage(session, new ByteArrayInputStream(
 				rawMsg.getBytes()));
-	}
-
-	public static String getPlaintextFromMultipart(Message message) throws IOException, MessagingException {
-		MimeMultipart multipart = (MimeMultipart) message.getContent();
-		for(int i = 0; i < multipart.getCount(); i++) {
-			BodyPart bodypart = multipart.getBodyPart(i);
-			if(bodypart.isMimeType("text/plain")) {
-				return (String) bodypart.getContent();
-			}
-		}
-		throw new MessagingException("No text/plain part in multipart message");
 	}
 	
 	public static String extractDeliveredToValue(Map<String, String> headers) throws Exception {
