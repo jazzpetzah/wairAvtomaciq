@@ -22,8 +22,8 @@ public class DeviceLimitPage extends WebPage {
 	@FindBy(css = "[data-uie-name='go-sign-out']")
 	WebElement signOutButton;
 
-	@FindBy(css = "device-card")
-	List<WebElement> deviceCards;
+	@FindBy(css = "[data-uie-name='device-header-model']")
+	List<WebElement> deviceNames;
 
 	public DeviceLimitPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
@@ -44,8 +44,8 @@ public class DeviceLimitPage extends WebPage {
 	}
 
 	public List<String> getDevicesNames() {
-		return deviceCards.stream()
-				.map(a -> a.findElement(By.cssSelector("span")).getText())
+		return deviceNames.stream()
+				.map(a -> a.getText())
 				.collect(Collectors.toList());
 	}
 }
