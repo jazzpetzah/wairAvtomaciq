@@ -29,7 +29,7 @@ public class UserDevicePool {
     private static final int MAX_DEVICES = 1100;
     private volatile int deviceCount = 0;
     private Map<ClientUser, CopyOnWriteArrayList<IDevice>> userDevices = new ConcurrentHashMap<>();
-    private static final FiniteDuration ACTOR_DURATION = new FiniteDuration(30000, TimeUnit.MILLISECONDS);
+    private static final FiniteDuration ACTOR_DURATION = new FiniteDuration(60000, TimeUnit.MILLISECONDS);
     private static final Logger LOG = ZetaLogger.getLog(UserDevicePool.class.getSimpleName());
 
     public UserDevicePool(String backendType, boolean otrOnly) {
