@@ -165,6 +165,12 @@ public class CommonAndroidSteps {
 
     @Before
     public void setUp(Scenario scenario) throws Exception {
+        try {
+            SEBridge.getInstance().reset();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         if (scenario.getSourceTagNames().contains("@performance")) {
             AndroidLogListener.getInstance(ListenerType.PERF).start();
         }
@@ -774,12 +780,6 @@ public class CommonAndroidSteps {
 
     @After
     public void tearDown(Scenario scenario) {
-        try {
-            SEBridge.getInstance().reset();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         try {
             AndroidCommonUtils.setAirplaneMode(false);
         } catch (Exception e) {

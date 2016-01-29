@@ -136,7 +136,7 @@ public class SEBridge {
     }
 
     public synchronized void reset() throws Exception {
-        if (this.devicePool.isDone() && this.getDevicePool().size() > 0) {
+        if (this.devicePool.isDone()) {
             this.getDevicePool().shutdown();
             instance = new SEBridge();
         }

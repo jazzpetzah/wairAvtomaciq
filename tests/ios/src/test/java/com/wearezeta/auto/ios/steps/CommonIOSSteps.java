@@ -109,6 +109,12 @@ public class CommonIOSSteps {
 
     @Before
     public void setUp(Scenario scenario) throws Exception {
+        try {
+            SEBridge.getInstance().reset();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(
                 !scenario.getSourceTagNames().contains("@noAcceptAlert"));
         ZetaFormatter.setLazyDriver(lazyDriver);
@@ -596,12 +602,6 @@ public class CommonIOSSteps {
 
     @After
     public void tearDown() {
-        try {
-            SEBridge.getInstance().reset();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         try {
             // async calls/waiting instances cleanup
             CommonCallingSteps2.getInstance().cleanup();
