@@ -11,6 +11,11 @@ public final class ExternalLocators {
 		public final static String cssDownloadWireButton = "[data-ga-category='connect'][data-ga-action='webapp']";
 	}
 
+	public static final class DeleteAccountPage {
+		public final static String cssSubmitButton = "[data-uie-name='do-delete-account']";
+		public final static String cssSuccess = ".success";
+	}
+
 	public static final class PasswordChangePage {
 		public final static String idPasswordInput = "password";
 		public final static String cssSubmitButton = "button.btn-lg";
