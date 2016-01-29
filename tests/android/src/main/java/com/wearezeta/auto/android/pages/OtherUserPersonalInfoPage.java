@@ -32,7 +32,6 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
     private static final By idParticipantDevices = By.id("ttv__row_otr_device");
 
-
     private static final Function<String, String> xpathParticipantAvatarByName = name -> String
             .format("//*[@id='cv__group__adapter' and ./parent::*/*[@value='%s']]",
                     name.split("\\s+")[0]);
@@ -57,6 +56,10 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     private static final By idParticipantsSubHeader = By.id("ttv__participants__sub_header");
 
     private static final By xpathConfirmRemoveButton = By.xpath("//*[@id='positive' and @value='REMOVE']");
+
+    private static final By xpathConfirmBlockButton = By.xpath("//*[@id='positive' and @value='BLOCK']");
+
+    private static final By xpathConfirmBtn = By.xpath("(//*[@id='confirm'])[last()]");
 
     public OtherUserPersonalInfoPage(Future<ZetaAndroidDriver> lazyDriver)
             throws Exception {
@@ -269,5 +272,9 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
     public void tapConfirmRemoveButton() throws Exception {
         getElement(xpathConfirmRemoveButton).click();
+    }
+
+    public void pressConfirmBlock() throws Exception {
+        getElement(xpathConfirmBlockButton).click();
     }
 }

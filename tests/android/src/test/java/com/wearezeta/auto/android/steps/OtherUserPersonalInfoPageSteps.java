@@ -87,7 +87,7 @@ public class OtherUserPersonalInfoPageSteps {
      */
     @When("^I confirm block$")
     public void WhenIConfirmBlock() throws Exception {
-        getOtherUserPersonalInfoPage().pressConfirmBtn();
+        getOtherUserPersonalInfoPage().pressConfirmBlock();
     }
 
     /**

@@ -35,6 +35,8 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
             .format("//*[@id='ttv__settings_box__item' and @value='%s']/parent::*//*[@id='fl_options_menu_button']",
                     text.toUpperCase());
 
+    private static final By xpathConfirmBlockButton = By.xpath("//*[@id='positive' and @value='BLOCK']");
+
     public IncomingPendingConnectionsPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -54,10 +56,6 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
 
     public void clickUnblockBtn() throws Exception {
         getElement(OtherUserPersonalInfoPage.xpathUnblockButton).click();
-    }
-
-    public void pressConfirmBtn() throws Exception {
-        getElement(xpathConfirmBtn).click();
     }
 
     public boolean isConnectToHeaderVisible(String name) throws Exception {
@@ -138,4 +136,7 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
         getElement(xpathCloseButton).click();
     }
 
+    public void tapConfirmBlockButton() throws Exception {
+        getElement(xpathConfirmBlockButton).click();
+    }
 }

@@ -235,7 +235,7 @@ public class IncomingPendingConnectionsPageSteps {
 	 */
 	@When("^I confirm block on connect to page$")
 	public void WhenIConfirmBlock() throws Exception {
-		getIncomingPendingConnectionsPage().pressConfirmBtn();
+		getIncomingPendingConnectionsPage().tapConfirmBlockButton();
 	}
 
 	/**
