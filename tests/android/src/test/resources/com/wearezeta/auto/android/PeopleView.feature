@@ -41,7 +41,7 @@ Feature: People View
       | user1Name | user2Name | user3Name | LeaveGroupChat |
 
   @C686 @id322 @regression @rc @rc42
-  Scenario Outline: (CM-691) Remove from group chat
+  Scenario Outline: Remove from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -64,7 +64,7 @@ Feature: People View
       | user1Name | user2Name | user3Name | RemoveFromGroupChat | You removed |
 
   @C697 @id594 @regression @rc
-  Scenario Outline: (CM-691) Verify correct group info page information
+  Scenario Outline: Verify correct group info page information
     Given There are 3 users where <Name> is me
     Given <Contact1> has an avatar picture from file <Picture>
     Given <Contact2> has an accent color <Color1>
@@ -179,7 +179,7 @@ Feature: People View
       | user1Name | user2Name | user3Name | GroupChat     |
 
   @C396 @id2291 @regression
-  Scenario Outline: (CM-691) Check interaction with participants view
+  Scenario Outline: Check interaction with participants view
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
