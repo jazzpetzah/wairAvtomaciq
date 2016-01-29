@@ -63,7 +63,7 @@ Feature: People View
     And I click on connected user <Contact3> on People picker on iPad popover
     And I click on Add to Conversation button on iPad popover
     Then I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
-    And I swipe right on group chat page
+    And I navigate back to conversations list
     Then I see in contact list group chat with <Contact1> <Contact2> <Contact3>
 
     Examples:
@@ -192,7 +192,7 @@ Feature: People View
     And I change group conversation name to <ChatName>
     And I exit the group info iPad popover
     Then I see you renamed conversation to <ChatName> message shown in Group Chat
-    And I swipe right on group chat page
+    And I navigate back to conversations list
     Then I see in contact list group chat named <ChatName>
 
     Examples:

@@ -109,7 +109,7 @@ Feature: Connect
     And I tap on not connected contact <UnconnectedUser>
     And I click Connect button on not connected user profile popover
     And I exit the group info iPad popover
-    And I swipe right on group chat page
+    And I navigate back to conversations list
     Then I see first item in contact list named <UnconnectedUser>
 
     Examples: 

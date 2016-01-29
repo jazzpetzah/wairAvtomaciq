@@ -84,9 +84,4 @@ public class GroupChatPageSteps {
                 .isYouAddedUserMessageShown(contact));
     }
 
-    @When("I swipe right on group chat page")
-    public void ISwipeRightOnGroupChatPage() throws Throwable {
-        getGroupChatPage().swipeRight(1000);
-    }
-
 }
