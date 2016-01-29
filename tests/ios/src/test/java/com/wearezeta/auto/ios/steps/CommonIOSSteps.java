@@ -711,9 +711,9 @@ public class CommonIOSSteps {
      * @param userToBeAdded user that gets added by someone
      * @param group         group chat you get added to
      * @throws Throwable
-     * @step. ^User (.*) adds User (.*) to group chat (.*)$
+     * @step. ^User (.*) adds [Uu]ser (.*) to group chat (.*)$
      */
-    @When("^User (.*) adds User (.*) to group chat (.*)$")
+    @When("^User (.*) adds [Uu]ser (.*) to group chat (.*)$")
     public void UserAddsUserToGroupChat(String user, String userToBeAdded,
                                         String group) throws Throwable {
         commonSteps.UserXAddedContactsToGroupChat(user, userToBeAdded, group);
