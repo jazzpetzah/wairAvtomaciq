@@ -319,7 +319,7 @@ Feature: Conversation View
     And I click plus button next to text input
     Then I see only Details button. Call, Camera, Sketch, Ping are not shown
     And I click Close input options button
-    And I navigate back to conversations view
+    And I navigate back to conversations list
     When I tap on group chat with name <GroupChatName>
     And I click plus button next to text input
     Then I see only Details button. Call, Camera, Sketch, Ping are not shown

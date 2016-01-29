@@ -77,7 +77,7 @@ Feature: Conversation List
     Given I see conversations list
     And I open archived conversations on iPad
     And I tap on contact name <ArchivedUser>
-    And I navigate back to conversations view
+    And I navigate back to conversations list
     Then I see first item in contact list named <ArchivedUser>
 
     Examples:
