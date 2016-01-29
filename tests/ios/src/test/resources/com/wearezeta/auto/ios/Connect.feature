@@ -45,7 +45,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C987 @regression @rc @id576 @ZIOS-5522
+  @C987 @regression @rc @id576
   Scenario Outline: Send connection request to unconnected participant in a group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <GroupCreator>
@@ -114,7 +114,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
-  @C45 @regression @rc @id1404 @ZIOS-5466
+  @C45 @regression @rc @id1404
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (Search)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -266,10 +266,9 @@ Feature: Connect
     Then I see CONNECT label
     And I see user <Contact1> found on People picker page
 
-    #And I see user <Contact2> found on People picker page
     Examples: 
-      | Name      | Contact1 | Contact2 |
-      | user1Name | vb003    | Dorothy  |
+      | Name      | Contact1 |
+      | user1Name | vb003    |
 
   @C38 @regression @rc @id3227
   Scenario Outline: Verify possibility of disconnecting from conversation list
