@@ -70,8 +70,7 @@ public class CommonUtils {
         return output;
     }
 
-    public static void outputErrorStreamToLog(InputStream stream)
-            throws IOException {
+    public static void outputErrorStreamToLog(InputStream stream) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(stream));
         StringBuilder sb = new StringBuilder("\n");
         String s;
@@ -90,7 +89,7 @@ public class CommonUtils {
     }
 
     public static boolean getOtrOnly(Class<?> c) throws Exception {
-        return Boolean.parseBoolean(getValueFromConfig(c, "otrOnly"));
+        return Boolean.parseBoolean(getOptionalValueFromConfig(c, "otrOnly").orElse("false"));
     }
 
     public static String getDeviceName(Class<?> c) throws Exception {
@@ -162,8 +161,7 @@ public class CommonUtils {
 
     public static String getValueFromConfig(Class<?> c, String key)
             throws Exception {
-        final Optional<String> value = getValueFromConfigFile(c, key,
-                PROJECT_CONFIG);
+        final Optional<String> value = getValueFromConfigFile(c, key, PROJECT_CONFIG);
         if (value.isPresent()) {
             return value.get();
         } else {
