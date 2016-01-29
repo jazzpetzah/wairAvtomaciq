@@ -189,3 +189,15 @@ Feature: E2EE
       | Name      | Contact1  | Message1 |
       | user1Name | user2Name | Msg1     |
 
+  @C3231 @staging
+  Scenario Outline: Verify the appropriate device is signed out if you remove it from settings  
+    Given There are 1 users where <Name> is me
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    When User Myself removes all his registered OTR clients
+    And I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    
+    Examples:
+      | Name      |
+      | user1Name |
