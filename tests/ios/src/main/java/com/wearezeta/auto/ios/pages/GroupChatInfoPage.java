@@ -109,6 +109,9 @@ public class GroupChatInfoPage extends IOSPage {
 
     public void leaveConversation() throws Exception {
         getElement(nameConversationMenu).click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConversationMenu)){
+            throw new IllegalStateException("Menu button is still shown");
+        }
         getElement(nameLeaveConversationButton).click();
     }
 
