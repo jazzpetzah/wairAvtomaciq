@@ -249,7 +249,7 @@ public class DialogPageSteps {
             throws Throwable {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         Assert.assertTrue(String.format("Connecting to %s is not visible", contact),
-                getDialogPage().isConnectedToUserStartedConversationLabelVisible(contact));
+                getDialogPage().isConnectingToUserConversationLabelVisible(contact));
     }
 
     @Then("^I see new photo in the dialog$")
