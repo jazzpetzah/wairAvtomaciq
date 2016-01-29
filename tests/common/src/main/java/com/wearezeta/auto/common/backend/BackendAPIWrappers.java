@@ -28,17 +28,12 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.mail.Message;
 
 // Almost all methods of this class mutate ClientUser
 // argument by performing automatic login (set id and session token attributes)
 public final class BackendAPIWrappers {
     public static final int ACTIVATION_TIMEOUT = 120; // seconds
     private static final int INVITATION_RECEIVING_TIMEOUT = ACTIVATION_TIMEOUT; // seconds
-    private static final int DELETION_RECEIVING_TIMEOUT = ACTIVATION_TIMEOUT; // seconds
 
     private static final int REQUEST_TOO_FREQUENT_ERROR = 429;
     private static final int LOGIN_CODE_HAS_NOT_BEEN_USED_ERROR = 403;
