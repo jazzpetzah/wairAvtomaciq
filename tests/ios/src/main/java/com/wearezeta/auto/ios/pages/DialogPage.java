@@ -469,6 +469,11 @@ public class DialogPage extends IOSPage {
         final By locator = By.xpath(xpathStrConnectedToUserLabelByName.apply(username));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
+    
+    public boolean isConnectingToUserConversationLabelVisible(String username) throws Exception {
+        final By locator = By.xpath(xpathStrConnectingToUserLabelByName.apply(username));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
 
     public void navigateBack(int timeMilliseconds) throws Exception {
         swipeRight(timeMilliseconds, DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, 30);

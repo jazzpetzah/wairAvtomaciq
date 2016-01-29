@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @C1034 @regression @rc @id2541 @ZIOS-5466
+  @C1034 @regression @rc @id2541
   Scenario Outline: Send invitation message to a user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -114,7 +114,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
-  @C45 @regression @rc @id1404 @ZIOS-5466
+  @C45 @regression @rc @id1404
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (Search)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -167,7 +167,7 @@ Feature: Connect
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C39 @regression @id596 @ZIOS-5466
+  @C39 @regression @id596
   Scenario Outline: Verify you cannot send the invitation message twice
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
