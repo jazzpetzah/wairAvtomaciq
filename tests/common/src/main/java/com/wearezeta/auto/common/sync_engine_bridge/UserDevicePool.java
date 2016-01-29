@@ -19,6 +19,7 @@ import com.waz.provision.CoordinatorActor;
 import com.waz.provision.ActorMessage.ReleaseRemotes$;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
+
 import java.util.List;
 
 public class UserDevicePool {
@@ -28,17 +29,13 @@ public class UserDevicePool {
     private static final int MAX_DEVICES = 1100;
     private volatile int deviceCount = 0;
     private Map<ClientUser, CopyOnWriteArrayList<IDevice>> userDevices = new ConcurrentHashMap<>();
-    private static final FiniteDuration ACTOR_DURATION = new FiniteDuration(
-            30000, TimeUnit.MILLISECONDS);
-    private static final Logger LOG = ZetaLogger.getLog(UserDevicePool.class
-            .getSimpleName());
+    private static final FiniteDuration ACTOR_DURATION = new FiniteDuration(30000, TimeUnit.MILLISECONDS);
+    private static final Logger LOG = ZetaLogger.getLog(UserDevicePool.class.getSimpleName());
 
     public UserDevicePool(String backendType, boolean otrOnly) {
         final Config config = ConfigFactory.load("actor_coordinator");
-        final ActorSystem system = ActorSystem.create("CoordinatorSystem",
-                config);
-        this.coordinatorActorRef = system.actorOf(
-                Props.create(CoordinatorActor.class), "coordinatorActor");
+        final ActorSystem system = ActorSystem.create("CoordinatorSystem", config);
+        this.coordinatorActorRef = system.actorOf(Props.create(CoordinatorActor.class), "coordinatorActor");
         this.hostProcess = new RemoteProcess(UUID.randomUUID().toString()
                 .substring(0, 8), this.coordinatorActorRef, ACTOR_DURATION, backendType, otrOnly);
     }
@@ -48,20 +45,16 @@ public class UserDevicePool {
     }
 
     public synchronized IDevice addDevice(ClientUser user, String deviceName) {
-        LOG.info("Add new device for user " + user.getName()
-                + " with device name " + deviceName);
+        LOG.info("Add new device for user " + user.getName() + " with device name " + deviceName);
         if (deviceCount >= MAX_DEVICES) {
-            throw new IllegalStateException(
-                    String.format(
-                            "Cannot create more than %s devices per one process instance",
-                            MAX_DEVICES));
+            throw new IllegalStateException(String.format(
+                    "Cannot create more than %s devices per one process instance", MAX_DEVICES));
         }
         CopyOnWriteArrayList<IDevice> devices = userDevices.get(user);
         if (devices == null) {
             devices = new CopyOnWriteArrayList<>();
         }
-        final Device result = new Device(deviceName, this.hostProcess,
-                ACTOR_DURATION);
+        final Device result = new Device(deviceName, this.hostProcess, ACTOR_DURATION);
         devices.add(result);
         deviceCount++;
         userDevices.put(user, devices);
@@ -109,12 +102,16 @@ public class UserDevicePool {
     }
 
     public synchronized void shutdown() {
-        if (this.coordinatorActorRef != null) {
+        if (this.userDevices != null && this.coordinatorActorRef != null && this.hostProcess != null) {
+            LOG.info(String.format("Shutting down device pool @ process named '%s'...", this.hostProcess.name()));
             coordinatorActorRef.tell(ReleaseRemotes$.MODULE$, null);
             this.coordinatorActorRef = null;
+            this.userDevices = null;
+            this.hostProcess = null;
+            this.deviceCount = 0;
+        } else {
+            LOG.error("Trying to shut down the device pool for the second time! Skipping...");
         }
-        this.userDevices = null;
-        this.hostProcess = null;
     }
 
     public int size() {
