@@ -194,5 +194,8 @@ public class RegistrationPage extends IOSPage {
 
     public void clickChoosePhotoButton() throws Exception {
         getElement(nameChoosePhotoButton, "Choose photo button is not visible").click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameChoosePhotoButton)) {
+            throw new IllegalStateException("Confirm button is still visible");
+        }
     }
 }
