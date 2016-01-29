@@ -493,7 +493,7 @@ Feature: Conversation List
     And I tap on contact name <Contact>
     And I see dialog page
     And I navigate back to conversations list
-    Then I see the state of <Cobntact> conversation item is changed
+    Then I see the state of <Contact> conversation item is changed
 
     Examples:
       | Name      | Contact   |
