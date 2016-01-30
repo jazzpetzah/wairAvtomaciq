@@ -29,7 +29,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C1060 @regression @id299 @noAcceptAlert @obsolete
+  @C1060 @regression @id299 @noAcceptAlert
   Scenario Outline: Verify denying address book uploading
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number

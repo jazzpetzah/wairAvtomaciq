@@ -428,29 +428,6 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @obsolete @id2405
-  Scenario Outline: Play/pause Youtube media link from the media bar [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I Sign in on tablet using my email
-    And I see conversations list
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I type and send long message and media link <YouTubeLink>
-    And I see media link <YouTubeLink> and media in dialog
-    And I click play video button
-    And I scroll media out of sight until media bar appears
-    And I pause playing the media in media bar
-    Then I see playing media is paused
-    And I press play in media bar
-    Then I see media is playing
-    And I stop media in media bar
-    Then The media stops playing
-
-    Examples:
-      | Name      | Contact   | YouTubeLink                                 |
-      | user1Name | user2Name | https://www.youtube.com/watch?v=gywGBuMUiI4 |
-
   @C5237 @regression @id2403
   Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar [PORTRAIT]
     Given There are 2 users where <Name> is me

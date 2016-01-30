@@ -369,33 +369,6 @@ Feature: Conversation View
       | Name      | Contact   | YouTubeLink                                |
       | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
 
-  @obsolete @id1387
-  Scenario Outline: Verify you can play/pause media from the Media Bar - YouTube
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I type and send long message and media link <YouTubeLink>
-    And I see youtube link <YouTubeLink> and media in dialog
-    And I navigate back to conversations list
-    And I tap on contact name <Contact>
-    And I click video container for the first time
-    And I see video player page is opened
-    And I tap Pause button on Video player page
-    And I tap on Done button on Video player page
-    And I scroll media out of sight until media bar appears
-    And I press play in media bar
-    And I see video player page is opened
-    And I tap on Done button on Video player page
-    And I stop media in media bar
-    Then The media stops playing
-
-    Examples:
-      | Name      | Contact   | YouTubeLink                                |
-      | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
-
   @C140 @staging @id1388
   Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation - SoundCloud
     Given There are 3 users where <Name> is me

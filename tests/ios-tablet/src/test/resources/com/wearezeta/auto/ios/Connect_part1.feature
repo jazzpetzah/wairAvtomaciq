@@ -440,21 +440,3 @@ Feature: Connect
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
-
-  @C3194 @staging @id2768 @deployAddressBook @noAcceptAlert @obsolete
-  Scenario Outline: Verify you can see People you may know on Wire after uploading your address book
-    Given There are 1 user where <Name> is me
-    Given I Sign in on tablet using my email
-    Given I dismiss all alerts
-    Given I see conversations list
-    And I open search by taping on it
-    And I see Upload contacts dialog
-    And I click Continue button on Upload dialog
-    And I accept alert
-    Then I see CONNECT label
-    And I see user <Contact1> found on People picker page
-    And I see user <Contact2> found on People picker page
-
-    Examples: 
-      | Name      | Contact1 | Contact2 |
-      | user1Name | vb003    | Dorothy  |
