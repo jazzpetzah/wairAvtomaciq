@@ -6,8 +6,6 @@ import java.util.concurrent.Future;
 import com.wearezeta.auto.common.driver.DummyElement;
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -23,10 +21,6 @@ public class LoginPage extends IOSPage {
     private static final By nameLoginField = By.name("EmailField");
 
     private static final By namePasswordField = By.name("PasswordField");
-
-    private static final By nameTermsPrivacyLinks = By.name("TermsPrivacyTextView");
-
-    private static final By nameTermsPrivacyCloseButton = By.name("WebViewCloseButton");
 
     private static final By nameWrongCredentialsNotification = By.name("Please verify your details and try again.");
 
@@ -143,22 +137,6 @@ public class LoginPage extends IOSPage {
         final WebElement loginField = getElement(nameLoginField);
         message = loginField.getText();
         this.getDriver().tap(1, loginField, 1000);
-    }
-
-    public void openTermsLink() throws Exception {
-        final WebElement termsButton = getElement(nameTermsPrivacyLinks);
-        Point p = termsButton.getLocation();
-        Dimension k = termsButton.getSize();
-        this.getDriver().tap(1, (p.x) + (k.width - 70),
-                (p.y) + (k.height - 16), 1);
-    }
-
-    public void closeTermsPrivacyController() throws Exception {
-        getElement(nameTermsPrivacyCloseButton, "Close Terms button is not visible").click();
-    }
-
-    public boolean isTermsPrivacyCloseButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameTermsPrivacyCloseButton);
     }
 
     public void tapPasswordField() throws Exception {
