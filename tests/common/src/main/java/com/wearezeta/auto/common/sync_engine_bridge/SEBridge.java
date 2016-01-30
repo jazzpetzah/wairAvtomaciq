@@ -14,40 +14,39 @@ import org.apache.log4j.Logger;
 
 public class SEBridge {
     private static final long DEVICE_POOL_INIT_TIMEOUT_SECONDS = 60;
-    private Future<UserDevicePool> devicePool;
+    private volatile Future<UserDevicePool> devicePool;
     private static SEBridge instance = null;
     private static final Semaphore poolGuard = new Semaphore(1);
-    private static final Semaphore instanceGuard = new Semaphore(1);
 
     private static final Logger LOG = ZetaLogger.getLog(SEBridge.class.getSimpleName());
 
     private SEBridge() throws Exception {
-        final Callable<UserDevicePool> task = () -> new UserDevicePool(CommonUtils.getBackendType(CommonUtils.class),
-                CommonUtils.getOtrOnly(CommonUtils.class));
-        this.devicePool = Executors.newSingleThreadExecutor().submit(task);
+        resetDevicePool();
     }
 
     public static synchronized SEBridge getInstance() {
-        try {
-            instanceGuard.acquire();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        try {
-            if (instance == null) {
-                try {
-                    instance = new SEBridge();
-                } catch (Exception e) {
-                    Throwables.propagate(e);
-                }
+        if (instance == null) {
+            try {
+                instance = new SEBridge();
+            } catch (Exception e) {
+                Throwables.propagate(e);
             }
-            return instance;
+        }
+        return instance;
+    }
+
+    private void resetDevicePool() throws Exception {
+        poolGuard.acquire();
+        try {
+            final Callable<UserDevicePool> task = () -> new UserDevicePool(
+                    CommonUtils.getBackendType(CommonUtils.class), CommonUtils.getOtrOnly(CommonUtils.class));
+            this.devicePool = Executors.newSingleThreadExecutor().submit(task);
         } finally {
-            instanceGuard.release();
+            poolGuard.release();
         }
     }
 
-    private synchronized UserDevicePool getDevicePool() throws Exception {
+    private UserDevicePool getDevicePool() throws Exception {
         poolGuard.acquire();
         try {
             return this.devicePool.get(DEVICE_POOL_INIT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
@@ -135,16 +134,9 @@ public class SEBridge {
 
     private void shutdown() {
         try {
-            poolGuard.acquire();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        try {
             getDevicePool().shutdown();
         } catch (Throwable e) {
             e.printStackTrace();
-        } finally {
-            poolGuard.release();
         }
     }
 
@@ -153,16 +145,8 @@ public class SEBridge {
     }
 
     public void reset() throws Exception {
-        instanceGuard.acquire();
-        poolGuard.acquire();
-        try {
-            if (this.devicePool.isDone()) {
-                this.getDevicePool().shutdown();
-                instance = new SEBridge();
-            }
-        } finally {
-            poolGuard.release();
-            instanceGuard.release();
+        if (this.devicePool.isDone()) {
+            this.resetDevicePool();
         }
     }
 }
