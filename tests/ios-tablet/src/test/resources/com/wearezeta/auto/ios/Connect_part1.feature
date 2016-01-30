@@ -3,8 +3,6 @@ Feature: Connect
   @C2484 @regression @id2355
   Scenario Outline: Verify sending a connection request to user chosen from search [PORTRAIT]
     Given There are 2 users where <Name> is me
-    Given User <UnconnectedUser> name starts with <StartLetter>
-    Given User <Name> change accent color to <Color>
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
@@ -19,14 +17,12 @@ Feature: Connect
     Then I see <UnconnectedUser> user pending profile popover on iPad
 
     Examples: 
-      | Name      | UnconnectedUser | StartLetter | Color        |
-      | user1Name | user2Name       | T           | BrightOrange |
+      | Name      | UnconnectedUser |
+      | user1Name | user2Name       |
 
   @C2488 @regression @id3008
   Scenario Outline: Verify sending a connection request to user chosen from search [LANDSCAPE]
     Given There are 2 users where <Name> is me
-    Given User <UnconnectedUser> name starts with <StartLetter>
-    Given User <Name> change accent color to <Color>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -42,8 +38,8 @@ Feature: Connect
     Then I see <UnconnectedUser> user pending profile popover on iPad
 
     Examples: 
-      | Name      | UnconnectedUser | StartLetter | Color        |
-      | user1Name | user2Name       | T           | BrightOrange |
+      | Name      | UnconnectedUser |
+      | user1Name | user2Name       |
 
   @C2486 @regression @rc @id2119
   Scenario Outline: Verify sending connection request after opening profile by clicking on the name and avatar [PORTRAIT]

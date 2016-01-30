@@ -546,24 +546,6 @@ public class CommonIOSSteps {
         commonSteps.IChangeUserName(userNameAlias, newName);
     }
 
-    /**
-     * Changes a users name to a randomly generated name that starts with a
-     * certain letter
-     *
-     * @param userNameAlias user's name alias to change
-     * @param startLetter   the first letter of the new username
-     * @step. ^User (\\w+) name starts with (.*)$
-     */
-
-    @When("^User (\\w+) name starts with (.*)$")
-    public void IChangeUserNameToNameStartingWith(String userNameAlias,
-                                                  String startLetter) throws Exception {
-        String newName = startLetter.concat(UUID.randomUUID().toString()
-                .replace("-", ""));
-        newName = newName.substring(0, newName.length() / 2);
-        commonSteps.IChangeUserName(userNameAlias, newName);
-    }
-
     @When("^User (\\w+) changes? accent color to (.*)$")
     public void IChangeAccentColor(String userNameAlias, String newColor) throws Exception {
         commonSteps.IChangeUserAccentColor(userNameAlias, newColor);
