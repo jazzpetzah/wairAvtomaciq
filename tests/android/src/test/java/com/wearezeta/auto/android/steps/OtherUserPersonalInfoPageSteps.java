@@ -245,7 +245,7 @@ public class OtherUserPersonalInfoPageSteps {
      */
     @When("^I confirm leaving$")
     public void WhenIConfirmLeaving() throws Exception {
-        getOtherUserPersonalInfoPage().pressConfirmBtn();
+        getOtherUserPersonalInfoPage().pressConfirmLeaveBtn();
     }
 
     /**

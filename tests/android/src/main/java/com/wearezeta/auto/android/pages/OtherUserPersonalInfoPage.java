@@ -59,7 +59,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
     private static final By xpathConfirmBlockButton = By.xpath("//*[@id='positive' and @value='BLOCK']");
 
-    private static final By xpathConfirmBtn = By.xpath("(//*[@id='confirm'])[last()]");
+    private static final By xpathConfirmLeaveButton = By.xpath("//*[@id='positive' and @value='LEAVE']");
 
     public OtherUserPersonalInfoPage(Future<ZetaAndroidDriver> lazyDriver)
             throws Exception {
@@ -176,11 +176,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idUserProfileConfirmationMenu);
     }
 
-    public void pressConfirmBtn() throws Exception {
-        getElement(xpathConfirmBtn, "Confirmation button is not visible").click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathConfirmBtn, 3)) {
-            throw new IllegalStateException("Confirmation button is still visible after 3 seconds timeout");
-        }
+    public void pressConfirmLeaveBtn() throws Exception {
+        getElement(xpathConfirmLeaveButton, "Confirmation button is not visible").click();
     }
 
     public void tapLeftActionBtn() throws Exception {
