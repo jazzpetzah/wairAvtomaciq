@@ -8,10 +8,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 import org.apache.log4j.Logger;
 
@@ -19,6 +16,7 @@ public class SEBridge {
     private static final long DEVICE_POOL_INIT_TIMEOUT_SECONDS = 60;
     private Future<UserDevicePool> devicePool;
     private static SEBridge instance = null;
+    private static final Semaphore poolGuard = new Semaphore(1);
 
     private static final Logger LOG = ZetaLogger.getLog(SEBridge.class.getSimpleName());
 
@@ -40,7 +38,12 @@ public class SEBridge {
     }
 
     private synchronized UserDevicePool getDevicePool() throws Exception {
-        return this.devicePool.get(DEVICE_POOL_INIT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+        poolGuard.acquire();
+        try {
+            return this.devicePool.get(DEVICE_POOL_INIT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+        } finally {
+            poolGuard.release();
+        }
     }
 
     private void login(ClientUser user, IDevice dstDevice) throws Exception {
@@ -100,21 +103,18 @@ public class SEBridge {
         }
     }
 
-    public void sendConversationMessage(ClientUser userFrom, String convId,
-                                        String message) throws Exception {
+    public void sendConversationMessage(ClientUser userFrom, String convId, String message) throws Exception {
         getOrAddRandomDevice(userFrom).sendMessage(convId, message);
     }
 
-    public void addRemoteDeviceToAccount(ClientUser user, String deviceName, String label)
-            throws Exception {
+    public void addRemoteDeviceToAccount(ClientUser user, String deviceName, String label) throws Exception {
         IDevice dstDevice = this.getDevicePool().addDevice(user, deviceName);
         this.login(user, dstDevice);
         LOG.info("Set label for device " + deviceName + " to " + label);
         dstDevice.setLabel(label);
     }
 
-    public void sendImage(ClientUser userFrom, String convId, String path)
-            throws Exception {
+    public void sendImage(ClientUser userFrom, String convId, String path) throws Exception {
         verifyPathExists(path);
         getOrAddRandomDevice(userFrom).sendImage(convId, path);
     }
@@ -123,7 +123,7 @@ public class SEBridge {
         getOrAddRandomDevice(userFrom).sendPing(convId);
     }
 
-    private synchronized void shutdown() {
+    private void shutdown() {
         try {
             getDevicePool().shutdown();
         } catch (Throwable e) {
@@ -135,10 +135,15 @@ public class SEBridge {
         Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
     }
 
-    public synchronized void reset() throws Exception {
-        if (this.devicePool.isDone()) {
-            this.getDevicePool().shutdown();
-            instance = new SEBridge();
+    public void reset() throws Exception {
+        poolGuard.acquire();
+        try {
+            if (this.devicePool.isDone()) {
+                this.getDevicePool().shutdown();
+                instance = new SEBridge();
+            }
+        } finally {
+            poolGuard.release();
         }
     }
 }
