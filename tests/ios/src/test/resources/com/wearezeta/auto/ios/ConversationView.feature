@@ -548,7 +548,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C922 @regression @IPv6 @id2763 @deployPictures
+  @C922 @regression @IPv6 @id2763
   Scenario Outline: Receive a camera roll picture from user from contact list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

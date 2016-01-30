@@ -50,26 +50,6 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  #regression
-  @C1061 @staging @id311 @deployAddressBook @noAcceptAlert @obsolete
-  Scenario Outline: Verify uploading address book to the server
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given I sign in using my email or phone number
-    And I dismiss all alerts
-    And I dismiss settings warning
-    And I open search by taping on it
-    And I see Upload contacts dialog
-    And I click Continue button on Upload dialog
-    And I accept alert
-    Then I see CONNECT label
-    And I see user <Contact1> found on People picker page
-    And I see user <Contact2> found on People picker page
-
-    Examples:
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
-
   @C3167 @regression @rc @id1394
   Scenario Outline: Start 1:1 chat with users from Top Connections
     Given There are <UserCount> users where <Name> is me
