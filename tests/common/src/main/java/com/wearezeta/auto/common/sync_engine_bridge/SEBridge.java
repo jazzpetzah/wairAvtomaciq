@@ -17,6 +17,7 @@ public class SEBridge {
     private Future<UserDevicePool> devicePool;
     private static SEBridge instance = null;
     private static final Semaphore poolGuard = new Semaphore(1);
+    private static final Semaphore instanceGuard = new Semaphore(1);
 
     private static final Logger LOG = ZetaLogger.getLog(SEBridge.class.getSimpleName());
 
@@ -27,14 +28,23 @@ public class SEBridge {
     }
 
     public static synchronized SEBridge getInstance() {
-        if (instance == null) {
-            try {
-                instance = new SEBridge();
-            } catch (Exception e) {
-                Throwables.propagate(e);
-            }
+        try {
+            instanceGuard.acquire();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        return instance;
+        try {
+            if (instance == null) {
+                try {
+                    instance = new SEBridge();
+                } catch (Exception e) {
+                    Throwables.propagate(e);
+                }
+            }
+            return instance;
+        } finally {
+            instanceGuard.release();
+        }
     }
 
     private synchronized UserDevicePool getDevicePool() throws Exception {
@@ -125,9 +135,16 @@ public class SEBridge {
 
     private void shutdown() {
         try {
+            poolGuard.acquire();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        try {
             getDevicePool().shutdown();
         } catch (Throwable e) {
             e.printStackTrace();
+        } finally {
+            poolGuard.release();
         }
     }
 
@@ -136,6 +153,7 @@ public class SEBridge {
     }
 
     public void reset() throws Exception {
+        instanceGuard.acquire();
         poolGuard.acquire();
         try {
             if (this.devicePool.isDone()) {
@@ -144,6 +162,7 @@ public class SEBridge {
             }
         } finally {
             poolGuard.release();
+            instanceGuard.release();
         }
     }
 }
