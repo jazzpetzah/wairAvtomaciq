@@ -39,13 +39,18 @@ Feature: Sign In
     And I copy link from email and paste it into Safari
     And I type in new password <NewPassword>
     And I press Change Password button in browser
-    And I reset Wire app
-    And I sign in using my email
-    Then I see conversations list
+    And I click at 0.75,0.57 of Simulator window
+    And I click at 0.75,0.60 of Simulator window
+    # Wait until Wire app is restored
+    And I wait for 5 seconds
+    When I have entered login <Login>
+    And I have entered password <NewPassword>
+    Then I press Login button
+    # TODO: Verify Got It button is visible
 
     Examples:
       | Login      | Name      | NewPassword  |
-      | user1Email | user1Name | aqa123456789 |
+      | user1Email | user1Name | 12345679     |
 
   @C1138 @regression @id2719
   Scenario Outline: Verify phone sign in when email is assigned

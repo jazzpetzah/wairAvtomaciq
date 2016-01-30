@@ -16,8 +16,10 @@ import org.openqa.selenium.WebElement;
 
 public class IOSKeyboard {
     private static final KeyboardState UNKNOWN_STATE = new KeyboardStateUnknown();
-    public static By xpathKeyboardLocator = By.xpath("//UIAKeyboard");
-    private static final By xpathReturnKeyLocator = By.xpath("//*[@name='Go' or @name='Send']");
+    private static final String xpathStrKeyboardLocator = "//UIAKeyboard";
+    public static By xpathKeyboardLocator = By.xpath(xpathStrKeyboardLocator);
+    private static final By xpathReturnKeyLocator =
+            By.xpath(xpathStrKeyboardLocator + "//*[@name='Go' or @name='Send']");
 
     private KeyboardState getFinalState(List<KeyboardState> statesList, char c) throws Exception {
         String messageChar = "" + c;
@@ -86,7 +88,7 @@ public class IOSKeyboard {
             By keyLocator;
             switch (messageChar) {
                 case "\n":
-                    keyLocator = By.name("Send");
+                    keyLocator = xpathReturnKeyLocator;
                     break;
                 case " ":
                     keyLocator = By.name("space");
@@ -99,7 +101,6 @@ public class IOSKeyboard {
                     break;
             }
             keyboard.findElement(keyLocator).click();
-            Thread.sleep(DriverUtils.SINGLE_TAP_DURATION);
 
             if (currentState.equals(keyboardStateAlphaCaps)) {
                 // Shift state is reset after uppercase character is typed

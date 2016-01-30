@@ -16,6 +16,8 @@ public class IOSSimulatorHelper {
     private static final int MAX_SWIPE_TIME_SECONDS = 40;
 
     private static final String SWIPE_SCRIPT_NAME = "swipeInWindow.py";
+    private static final String CLICK_SCRIPT_NAME = "clickInWindow.py";
+
 
     public static void swipeDown() throws Exception {
         CommonUtils.executeUIShellScript(new String[] {
@@ -29,5 +31,12 @@ public class IOSSimulatorHelper {
                 String.format("/usr/bin/python '%s/%s' 0.2 0.8 0.9 0.8",
                         getIOSToolsRoot(IOSSimulatorHelper.class), SWIPE_SCRIPT_NAME)
         }).get(MAX_SWIPE_TIME_SECONDS, TimeUnit.SECONDS);
+    }
+
+    public static void clickAt(String relativeX, String relativeY) throws Exception {
+        CommonUtils.executeUIShellScript(new String[] {
+                String.format("/usr/bin/python '%s/%s' %s %s",
+                        getIOSToolsRoot(IOSSimulatorHelper.class), CLICK_SCRIPT_NAME, relativeX, relativeY)
+        }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 }

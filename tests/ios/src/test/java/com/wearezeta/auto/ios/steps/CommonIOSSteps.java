@@ -6,6 +6,8 @@ import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
+import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import cucumber.api.PendingException;
 import cucumber.api.Scenario;
 import org.junit.Assert;
 import org.openqa.selenium.ScreenOrientation;
@@ -720,14 +722,20 @@ public class CommonIOSSteps {
     }
 
     /**
-     * Returns in Simulator back to Wire App
+     * Click Simulator window at the corresponding position
      *
+     * @param strX float number 0 <= x <= 1, relative width position of click point
+     * @param strY float number 0 <= y <= 1, relative height position of click point
      * @throws Exception
-     * @step. ^I reset Wire app$
+     * @step. ^I click at ([\d\.]+),([\d\.]+) of Simulator window$
      */
-    @When("^I reset Wire app$")
-    public void ReturnToWireApp() throws Exception {
-        pagesCollecton.getCommonPage().resetApplication();
+    @When("^I click at ([\\d\\.]+),([\\d\\.]+) of Simulator window$")
+    public void ReturnToWireApp(String strX, String strY) throws Exception {
+        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            IOSSimulatorHelper.clickAt(strX, strY);
+        } else {
+            throw new PendingException("This step is not available for non-simulator devices");
+        }
     }
 
     /**

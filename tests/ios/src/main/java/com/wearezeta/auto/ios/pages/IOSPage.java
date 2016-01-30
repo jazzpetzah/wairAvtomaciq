@@ -308,10 +308,6 @@ public abstract class IOSPage extends BasePage {
         }
     }
 
-    public void resetApplication() throws Exception {
-        getDriver().resetApp();
-    }
-
     public void clickElementWithRetryIfStillDisplayed(By locator, int retryCount) throws Exception {
         WebElement el = getElement(locator);
         int counter = 0;
