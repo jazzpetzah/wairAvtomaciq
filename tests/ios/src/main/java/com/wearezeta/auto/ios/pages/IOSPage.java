@@ -199,9 +199,13 @@ public abstract class IOSPage extends BasePage {
                     "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
                     "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
                     "end tell"}).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
-            Thread.sleep(timeSeconds * 1000);
-            final Dimension screenSize = getDriver().manage().window().getSize();
-            getDriver().tap(1, screenSize.getWidth() / 3, screenSize.getHeight() / 2, DriverUtils.SINGLE_TAP_DURATION);
+            final int clickAtHelperDuration = 4; // seconds
+            if (timeSeconds >= clickAtHelperDuration) {
+                Thread.sleep((timeSeconds - clickAtHelperDuration) * 1000);
+            } else {
+                Thread.sleep(timeSeconds * 1000);
+            }
+            IOSSimulatorHelper.clickAt("0.3", "0.5");
         } else {
             // https://discuss.appium.io/t/runappinbackground-does-not-work-for-ios9/6201
             this.getDriver().runAppInBackground(timeSeconds);
