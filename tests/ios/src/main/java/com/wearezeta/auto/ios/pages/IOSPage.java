@@ -1,7 +1,5 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.awt.image.BufferedImage;
-import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
@@ -11,7 +9,6 @@ import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import com.wearezeta.auto.ios.tools.IRunnableWithException;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
 
@@ -96,13 +93,12 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void swipeRight(int time, int percentX, int percentY) throws Exception {
-        DriverUtils.swipeRight(this.getDriver(), getElement(nameMainWindow), time, percentX,
-                percentY);
+        DriverUtils.swipeRight(this.getDriver(), getElement(nameMainWindow), time, percentX, percentY);
     }
 
     public void swipeUp(int time) throws Exception {
         DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(nameMainWindow), time,
-                50, 90, 50, 10);
+                50, 55, 50, 10);
     }
 
     public void swipeDownSimulator() throws Exception {

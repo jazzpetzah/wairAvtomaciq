@@ -207,7 +207,7 @@ Feature: Conversation View
     And I input more than 200 chars message and send it
     And I type the default message
     And I navigate back to conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I close self profile
     And I tap on text input
     And I send the message
@@ -228,7 +228,7 @@ Feature: Conversation View
     And I see dialog page
     And I input more than 200 chars message and send it
     And I type the default message
-    When I tap on my name <Name>
+    When I tap my avatar
     And I close self profile
     And I send the message
     Then I see 1 message in the dialog

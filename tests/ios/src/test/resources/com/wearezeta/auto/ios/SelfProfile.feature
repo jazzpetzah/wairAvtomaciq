@@ -7,7 +7,7 @@ Feature: Self Profile
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I tap on personal screen
     And I press Camera button
     And I choose a picture from camera roll
@@ -26,7 +26,7 @@ Feature: Self Profile
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I tap to edit my name
     And I attempt to input an empty name and press return
     And I see error message asking for more characters
@@ -43,7 +43,7 @@ Feature: Self Profile
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I tap to edit my name
     And I attempt to enter <username> and press return
     And I see error message asking for more characters
@@ -60,14 +60,14 @@ Feature: Self Profile
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I tap to edit my name
     And I attempt to input an empty name and press return
     And I see error message asking for more characters
     And I change name <Name> to <NewUsername>
     And I close self profile
     And I see conversations list
-    And I tap on my name <NewUsername>
+    And I tap my avatar
     Then I see my new name <NewUsername>
 
     Examples: 
@@ -80,7 +80,7 @@ Feature: Self Profile
     Given I sign in using my email
     Given I click Not Now to not add phone number
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I tap to add my phone number
     And I see country picker button on Sign in screen
     And I enter phone number and verification code
@@ -98,7 +98,7 @@ Feature: Self Profile
     When I click Not Now to not add phone number
     And I accept alert
     And I see conversations list
-    And I tap on my name <Name>
+    And I tap my avatar
     And I tap to add my phone number
     And I see country picker button on Sign in screen
     And I enter invalid phone number
@@ -116,7 +116,7 @@ Feature: Self Profile
     When I click Not Now to not add phone number
     And I accept alert
     And I see conversations list
-    And I tap on my name <Name>
+    And I tap my avatar
     And I tap to add my phone number
     And I see country picker button on Sign in screen
     And I input phone number <Number> with code <Code>
@@ -131,7 +131,7 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     Then I see theme switcher button on self profile page
 
     Examples: 

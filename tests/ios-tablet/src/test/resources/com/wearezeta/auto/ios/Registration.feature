@@ -87,7 +87,7 @@ Feature: Registration
     And I choose a picture from camera roll on iPad popover
     And I press Confirm button on iPad popover
     Then I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     Then I see user name doesnt contains spaces
 
     Examples: 

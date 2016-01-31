@@ -301,7 +301,7 @@ Feature: Sign In
     And I see email verification reminder
     And I verify registration address
     Then I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     Then I see email <Email> on Personal page
 
     Examples:
@@ -328,7 +328,7 @@ Feature: Sign In
     And I see email verification reminder
     And I verify registration address
     Then I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     Then I see email <Email> on Personal page
 
     Examples:

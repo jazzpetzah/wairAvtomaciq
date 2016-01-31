@@ -49,7 +49,7 @@ Feature: Registration
     And I See selected picture
     And I confirm selection
     Then I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     Then I see user name doesnt contains spaces
 
     Examples:

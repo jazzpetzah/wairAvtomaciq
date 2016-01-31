@@ -116,19 +116,19 @@ Feature: Conversation List
   @C3177 @regression @rc @id1369
   Scenario Outline: Verify Ping animation in the conversations list
     Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
-    Given User <Contact> change name to <NewName>
-    Given User <Name> change accent color to <Color>
+    Given User Myself removes his avatar picture
+    Given <Contact> is connected to Myself
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given I remember the state of the first conversation cell
-    Given User <Contact> securely pings conversation <Name>
-    When I wait for 10 seconds
-    Then I see change of state for first conversation cell
+    Given I remember the state of <Contact> conversation item
+    When User <Contact> securely pings conversation Myself
+    # Wait for ping animation
+    And I wait for 2 seconds
+    Then I see the state of <Contact> conversation item is changed
 
     Examples:
-      | Name      | Contact   | NewName | Color        |
-      | user1Name | user2Name | PING    | BrightOrange |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C104 @regression @id2761
   Scenario Outline: Verify conversations are sorted according to most recent activity
@@ -236,7 +236,7 @@ Feature: Conversation List
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on contact name <GroupChatName>
-    Then I see new photo in the dialog
+    Then I see 1 photo in the dialog
     When I navigate back to conversations list
     And I swipe right on a <GroupChatName>
     And I click delete menu button
@@ -262,7 +262,7 @@ Feature: Conversation List
     Given User <Contact1> sends 1 encrypted message to user <Name>
     Given User Myself sends 1 encrypted message to user <Contact1>
     When I tap on contact name <Contact1>
-    Then I see new photo in the dialog
+    Then I see 1 photo in the dialog
     When I navigate back to conversations list
     And I swipe right on a <Contact1>
     And I click delete menu button
