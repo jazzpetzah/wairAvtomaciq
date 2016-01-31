@@ -164,39 +164,38 @@ Feature: Conversation List
   Scenario Outline: Verify messages are marked as read with disappearing unread dot [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
-    Given User <Contact> change name to <NewName>
-    Given User <Name> change accent color to <Color>
+    Given User Myself removes his avatar picture
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given User <Contact> sends <Number> encrypted messages to user Myself
-    And I remember the state of the first conversation cell
+    Given I remember the state of <Contact> conversation item
     When I tap on contact name <Contact>
     And I see dialog page
     And I navigate back to conversations list
-    Then I see change of state for first conversation cell
+    Then I see the state of <Contact> conversation item is changed
 
     Examples:
-      | Name      | Contact   | NewName    | Color        | Number |
-      | user1Name | user2Name | UNREAD DOT | BrightYellow | 2      |
+      | Name      | Contact   | Number |
+      | user1Name | user2Name | 2      |
 
   @C2536 @regression @id2711
   Scenario Outline: Verify messages are marked as read with disappearing unread dot [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
-    Given User <Contact> change name to <NewName>
-    Given User <Name> change accent color to <Color>
+    Given User Myself removes his avatar picture
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given User <Contact> sends <Number> encrypted messages to user Myself
-    And I remember the state of the first conversation cell
+    Given I remember the state of <Contact> conversation item
     When I tap on contact name <Contact>
     And I see dialog page
-    Then I see change of state for first conversation cell
+    And I navigate back to conversations list
+    Then I see the state of <Contact> conversation item is changed
 
     Examples:
-      | Name      | Contact   | NewName    | Color        | Number |
-      | user1Name | user2Name | UNREAD DOT | BrightYellow | 2      |
+      | Name      | Contact   | Number |
+      | user1Name | user2Name | 2      |
 
   @C2507 @regression @id2756
   Scenario Outline: Verify conversations are sorted according to most recent activity [PORTRAIT]
