@@ -244,36 +244,25 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @C977 @staging @id559
+  @C977 @regression @id559
   Scenario Outline: Verify you can add people from 1:1 people view (cancel view)
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
-    #And I swipe up on dialog page to open other user personal page
     And I open conversation details
-    And I see <Contact1> user profile page
     And I press Add button
-    And I see People picker page
-    And I scroll up page a bit
-    And I dont see keyboard
     And I tap on conversation <Contact2> in search result
     And I tap on conversation <Contact3> in search result
     And I click close button to dismiss people view
-    And I see <Contact1> user profile page
     And I press Add button
-    And I see People picker page
     And I see user <Contact2> on People picker page is NOT selected
     And I see user <Contact3> on People picker page is NOT selected
     And I click close button to dismiss people view
-    And I see <Contact1> user profile page
     And I click close user profile page button
-    And I see dialog page
     And I navigate back to conversations list
-    And I see conversations list
-    And I don't see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
+    Then I don't see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  |
