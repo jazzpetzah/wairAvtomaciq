@@ -93,7 +93,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
 
-  @C3173 @staging @rc @id1396
+  @C3173 @regression @rc @id1396
   Scenario Outline: Verify correct group info page information
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -101,7 +101,8 @@ Feature: People View
     Given I see conversations list
     When I create group chat with <Contact1> and <Contact2>
     And I open group conversation details
-    Then I see that the conversation name is correct with <Contact1> and <Contact2>
+    Then I see that the conversation name contains users <Contact1>,<Contact2>
+    And I see <ParticipantNumber> participant avatars
     And I see that conversation has <ParticipantNumber> people
 
     Examples:
