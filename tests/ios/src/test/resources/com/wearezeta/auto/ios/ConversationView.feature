@@ -420,26 +420,24 @@ Feature: Conversation View
       | Name      | Contact   | CloseAppTime |
       | user1Name | user2Name | 2            |
 
-  @C921 @staging @id1480
+  @C921 @regression @id1480
   Scenario Outline: Rotate image in fullscreen mode
     Given There are 2 users where <Name> is me
-    Given User <Contact> change name to <NewName>
-    Given User <Contact> change accent color to <Color>
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
-    When I tap on contact name <Contact>
+    And I tap on contact name <Contact>
     And I see 1 photo in the dialog
     And I memorize message send time
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
-    And I rotate UI to landscape
-    Then I see image rotated in fullscreen mode
+    When I rotate UI to landscape
+    Then I see Full Screen Page opened
 
     Examples:
-      | Name      | Contact   | Picture     | Color        | NewName          |
-      | user1Name | user2Name | testing.jpg | BrightOrange | RotateFullscreen |
+      | Name      | Contact   | Picture     |
+      | user1Name | user2Name | testing.jpg |
 
   @C1826 @regression @id2124
   Scenario Outline: Verify archiving conversation from ellipsis menu

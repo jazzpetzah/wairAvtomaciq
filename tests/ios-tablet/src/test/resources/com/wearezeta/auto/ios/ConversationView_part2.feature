@@ -171,12 +171,10 @@ Feature: Conversation View
   @C2626 @regression @id2418
   Scenario Outline: Rotate image in fullscreen mode [PORTRAIT]
     Given There are 2 users where <Name> is me
-    Given User <Contact> change name to <NewName>
-    Given User <Contact> change accent color to <Color>
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap on contact name <Contact>
+    And I tap on contact name <Contact>
     And I click plus button next to text input
     And I press Add Picture button
     And I press Camera Roll button
@@ -186,18 +184,16 @@ Feature: Conversation View
     And I memorize message send time
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
-    And I rotate UI to landscape
-    Then I see image rotated in fullscreen mode
+    When I rotate UI to landscape
+    Then I see Full Screen Page opened
 
     Examples:
-      | Name      | Contact   | Color        | NewName          |
-      | user1Name | user2Name | BrightOrange | RotateFullscreen |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C2630 @regression @id3206
   Scenario Outline: Rotate image in fullscreen mode [LANDSCAPE]
     Given There are 2 users where <Name> is me
-    Given User <Contact> change name to <NewName>
-    Given User <Contact> change accent color to <Color>
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
@@ -213,11 +209,11 @@ Feature: Conversation View
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I rotate UI to portrait
-    Then I see image rotated to portrait in fullscreen mode
+    Then I see Full Screen Page opened
 
     Examples:
-      | Name      | Contact   | Color        | NewName          |
-      | user1Name | user2Name | BrightOrange | RotateFullscreen |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C2729 @regression @id2451
   Scenario Outline: Verify archiving conversation from ellipsis menu [PORTRAIT]
