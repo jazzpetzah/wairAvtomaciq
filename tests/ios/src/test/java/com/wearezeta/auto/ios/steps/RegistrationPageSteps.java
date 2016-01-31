@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 
-import com.wearezeta.auto.ios.pages.IOSPage;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -77,21 +76,6 @@ public class RegistrationPageSteps {
         getRegistrationPage().selectWirestan();
         getRegistrationPage().inputPhoneNumber(
                 this.userToRegister.getPhoneNumber().toString().replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""));
-    }
-
-    /**
-     * Input phone number of allready registered user
-     *
-     * @param name username
-     * @throws Exception
-     * @step. ^I input phone number of already registered user (.*)$
-     */
-    @When("^I input phone number of already registered user (.*)$")
-    public void IInputPhoneNumberOfRegisteredUser(String name) throws Exception {
-        ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
-        getRegistrationPage().selectWirestan();
-        getRegistrationPage().inputPhoneNumber(
-                user.getPhoneNumber().toString().replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""));
     }
 
     /**
