@@ -66,12 +66,12 @@ Feature: Sign In
       | Name      |
       | user1Name |
 
-  @C1145 @staging @id3813 @noAcceptAlert
+  @C1145 @regression @id3813 @noAcceptAlert
   Scenario Outline: Verify impossibility to login with the wrong code
     Given There is 1 user where <Name> is me
     Given I see sign in screen
     And I see country picker button on Sign in screen
-    And I enter phone number for user <Name>
+    And I enter phone number for user Myself
     And I see verification code page
     When I enter random verification code
     Then I see wrong credentials notification
@@ -88,13 +88,13 @@ Feature: Sign In
     And I enter phone number for user <Name>
     And I see verification code page
     When I tap RESEND code button
-    Then I see Resend will be possible after 10 min aleart
+    Then I see Resend will be possible after 10 min alert
 
     Examples:
       | Name      |
       | user1Name |
 
-  @C1143 @staging @id2724 @noAcceptAlert
+  @C1143 @regression @id2724 @noAcceptAlert
   Scenario Outline: Verify impossibility to login with unregistered phone number
     Given There is 1 user where <Name> is me
     Given I see sign in screen

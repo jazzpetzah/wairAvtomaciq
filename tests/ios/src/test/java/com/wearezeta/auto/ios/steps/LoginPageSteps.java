@@ -387,9 +387,9 @@ public class LoginPageSteps {
      * Verifies whether the notification Resend avialble in 10 min is shown
      *
      * @throws Exception
-     * @step. ^I see Resend will be possible after 10 min aleart$
+     * @step. ^I see Resend will be possible after 10 min alert$
      */
-    @Then("^I see Resend will be possible after 10 min aleart$")
+    @Then("^I see Resend will be possible after 10 min alert$")
     public void ISeeResendIn10minAlert() throws Exception {
         Assert.assertTrue("I don't see Resend in 10 min alert", getLoginPage()
                 .isResendIn10minAlertVisible());
