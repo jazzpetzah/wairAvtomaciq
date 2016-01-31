@@ -7,7 +7,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I swipe right on a <Contact>
-    And I click archive button for conversation <Contact>
+    And I click archive button for conversation
     Then I dont see conversation <Contact> in contact list
     And I open archived conversations on iPad
     Then I see user <Contact> in contact list
@@ -24,7 +24,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I swipe right on a <Contact>
-    And I click archive button for conversation <Contact>
+    And I click archive button for conversation
     Then I dont see conversation <Contact> in contact list
     And I open archived conversations on iPad
     Then I see user <Contact> in contact list
@@ -41,7 +41,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     Given I see conversations list
     And I swipe right on a <GroupChatName>
-    And I click archive button for conversation <GroupChatName>
+    And I click archive button for conversation
     Then I dont see conversation <GroupChatName> in contact list
     And I open archived conversations on iPad
     Then I see user <GroupChatName> in contact list
@@ -59,7 +59,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     Given I see conversations list
     And I swipe right on a <GroupChatName>
-    And I click archive button for conversation <GroupChatName>
+    And I click archive button for conversation
     Then I dont see conversation <GroupChatName> in contact list
     And I open archived conversations on iPad
     Then I see user <GroupChatName> in contact list
@@ -398,7 +398,7 @@ Feature: Conversation List
     And I see the state of <Contact> conversation item is changed
     And I see playing media is paused
     And I tap on play/pause button in contact list
-    And I see Pause media button next to user <Contact>
+    And I see play/pause button next to username <Contact> in contact list
     And I see media is playing
     And I see the state of <Contact> conversation item is not changed
 
@@ -690,7 +690,7 @@ Feature: Conversation List
     When I swipe right on a <Contact>
     And I press menu silence button
     When I swipe right on a <Contact>
-    And I click archive button for conversation <Contact>
+    And I click archive button for conversation
     Then I dont see conversation <Contact> in contact list
     Given User <Contact> sends 1 encrypted message to user Myself
     And I dont see conversation <Contact> in contact list
@@ -715,7 +715,7 @@ Feature: Conversation List
     When I swipe right on a <Contact>
     And I press menu silence button
     When I swipe right on a <Contact>
-    And I click archive button for conversation <Contact>
+    And I click archive button for conversation
     Then I dont see conversation <Contact> in contact list
     Given User <Contact> sends 1 encrypted message to user Myself
     And I dont see conversation <Contact> in contact list
