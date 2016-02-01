@@ -518,7 +518,6 @@ Feature: Calling
     Given I accept alert
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     When <Contact5> calls <GroupChatName> using <CallBackend2>
     And I see incoming group calling message
     And I accept incoming call

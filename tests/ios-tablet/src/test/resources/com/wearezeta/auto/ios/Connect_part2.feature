@@ -149,7 +149,6 @@ Feature: Connect
     Given I see conversations list
     When I see Pending request link in contact list
     And I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
     And I select user on iPad group popover <Contact3>
     And I see incoming pending popover from user <Contact3> on iPad
@@ -175,7 +174,6 @@ Feature: Connect
     Given I see conversations list
     When I see Pending request link in contact list
     And I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
     And I select user on iPad group popover <Contact3>
     And I see incoming pending popover from user <Contact3> on iPad

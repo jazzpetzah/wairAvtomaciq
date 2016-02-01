@@ -7,7 +7,6 @@ Feature: People View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I open conversation details
     And I see <Contact1> user profile page
     And I press Add button
@@ -192,12 +191,10 @@ Feature: People View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
     #And I swipe up on dialog page to open other user personal page
     And I open conversation details
     And I see <Contact1> user profile page
     And I press Add button
-    And I see People picker page
     #And I dont see keyboard
     And I tap on conversation <Contact2> in search result
     Then I see user <Contact2> on People picker page is selected
@@ -221,11 +218,9 @@ Feature: People View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I open conversation details
     And I see <Contact1> user profile page
     And I press Add button
-    And I see People picker page
     And I tap on Search input on People picker page
     And I see user <Contact2> found on People picker page
     And I don't see Add to conversation button
@@ -275,12 +270,10 @@ Feature: People View
     Given I see conversations list
     When I remember the state of <Contact> conversation item
     And I tap on contact name <Contact>
-    And I see dialog page
     And I open conversation details
     And I press conversation menu button
     And I press menu silence button
     And I click close user profile page button
-    And I see dialog page
     And I navigate back to conversations list
     And I see conversations list
     Then I see the state of <Contact> conversation item is changed
@@ -299,12 +292,10 @@ Feature: People View
     Given I see conversations list
     When I remember the state of <Contact> conversation item
     And I tap on contact name <Contact>
-    And I see dialog page
     And I open conversation details
     And I press conversation menu button
     And I press menu notify button
     And I click close user profile page button
-    And I see dialog page
     And I navigate back to conversations list
     And I see conversations list
     Then I see the state of <Contact> conversation item is changed
@@ -320,7 +311,6 @@ Feature: People View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I open conversation details
     And I see <Contact1> user profile page
     And I press conversation menu button
@@ -466,7 +456,6 @@ Feature: People View
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I see 5 conversation entries
     And I open conversation details
     And I press conversation menu button
@@ -493,7 +482,6 @@ Feature: People View
     Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I see 3 conversation entries
     And I open group conversation details
     And I press leave conversation button
@@ -517,7 +505,6 @@ Feature: People View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
     And I select participant <Contact3>
     Then I see <Contact3> user pending profile page
@@ -534,7 +521,6 @@ Feature: People View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I open conversation details
     And I press conversation menu button
     And I press menu Block button

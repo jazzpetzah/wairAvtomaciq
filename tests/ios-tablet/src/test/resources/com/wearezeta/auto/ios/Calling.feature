@@ -47,7 +47,6 @@ Feature: Calling
     And I wait for 5 seconds
     And <Contact> stops all calls to me
     And I tap on contact name <Contact>
-    And I see dialog page
     Then I see missed call from contact <Contact>
     And I click missed call button to call contact <Contact>
     And I see calling to contact <Contact> message
@@ -67,7 +66,6 @@ Feature: Calling
     And I wait for 5 seconds
     And <Contact> stops all calls to me
     And I tap on contact name <Contact>
-    And I see dialog page
     Then I see missed call from contact <Contact>
     And I click missed call button to call contact <Contact>
     And I see calling to contact <Contact> message
@@ -152,7 +150,6 @@ Feature: Calling
     And I wait for 5 seconds
     And <Contact> stops all calls to me
     And I tap on contact name <Contact>
-    And I see dialog page
     Then I see missed call from contact <Contact>
 
     Examples:
@@ -170,7 +167,6 @@ Feature: Calling
     And I wait for 5 seconds
     And <Contact> stops all calls to me
     And I tap on contact name <Contact>
-    And I see dialog page
     Then I see missed call from contact <Contact>
 
     Examples:
@@ -457,7 +453,6 @@ Feature: Calling
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And <Contact> calls me using <CallBackend2>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
@@ -477,7 +472,6 @@ Feature: Calling
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And <Contact> calls me using <CallBackend2>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
