@@ -198,7 +198,6 @@ Feature: E2EE
     When I tap on my avatar
     And I tap options button
     And I tap settings button
-    Then I see settings page
     When I select "Privacy & Security" settings menu item
     And I select "Devices" settings menu item
     And I tap current device in devices settings menu
@@ -206,7 +205,6 @@ Feature: E2EE
     When I press back button
     And I press back button
     And I press back button
-    Then I see settings page
     When I select "Account" settings menu item
     And I select "Log out" settings menu item
     Then I confirm sign out
@@ -216,7 +214,6 @@ Feature: E2EE
     When I tap on my avatar
     And I tap options button
     And I tap settings button
-    Then I see settings page
     When I select "Privacy & Security" settings menu item
     And I select "Devices" settings menu item
     And I tap current device in devices settings menu
