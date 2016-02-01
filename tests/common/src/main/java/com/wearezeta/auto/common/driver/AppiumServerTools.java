@@ -37,14 +37,12 @@ public class AppiumServerTools {
     }
 
     public static synchronized void reset() throws Exception {
-        Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9", "Simulator"}).waitFor(2, TimeUnit.SECONDS);
-        Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9", "configd_sim"}).waitFor(2, TimeUnit.SECONDS);
-        Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9", "ids_simd"}).waitFor(2, TimeUnit.SECONDS);
-        Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9", "launchd_sim"}).waitFor(2, TimeUnit.SECONDS);
+        Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9",
+                "Simulator", "configd_sim", "ids_simd", "launchd_sim", "instruments"}).waitFor(2, TimeUnit.SECONDS);
 
         log.warn("Trying to restart Appium server on localhost...");
         Runtime.getRuntime().exec(new String[]{"/usr/bin/open", "-a", EXECUTOR_APP}).
-                waitFor(RESTART_TIMEOUT,TimeUnit.MILLISECONDS);
+                waitFor(RESTART_TIMEOUT, TimeUnit.MILLISECONDS);
         Thread.sleep(RESTART_TIMEOUT);
         log.info(String.format("Waiting %s seconds for Appium port %s to be opened...", RESTART_TIMEOUT / 1000, PORT));
         if (!waitUntilPortOpened()) {
