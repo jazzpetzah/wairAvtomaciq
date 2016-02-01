@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import org.junit.Assert;
 
 import cucumber.api.java.en.*;
@@ -199,7 +200,11 @@ public class ContactListPageSteps {
 
     @Then("^I open archived conversations$")
     public void IOpenArchivedConversations() throws Exception {
-        getContactListPage().swipeUp(1000);
+        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            IOSSimulatorHelper.swipe(0.2, 0.7, 0.2, 0.1);
+        } else {
+            getContactListPage().swipeUp(1000);
+        }
     }
 
     @When("I see play/pause button next to username (.*) in contact list")

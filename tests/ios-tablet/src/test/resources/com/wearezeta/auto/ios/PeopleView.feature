@@ -877,7 +877,7 @@ Feature: People View
     And I see dialog page
     And I see 3 conversation entries
     And I open group conversation details
-    And I press leave converstation button
+    And I press leave conversation button
     And I see leave conversation alert
     And I press leave
     And I wait until popover is closed
@@ -904,7 +904,7 @@ Feature: People View
     And I see dialog page
     And I see 3 conversation entries
     And I open group conversation details
-    And I press leave converstation button
+    And I press leave conversation button
     And I see leave conversation alert
     And I press leave
     And I wait until popover is closed

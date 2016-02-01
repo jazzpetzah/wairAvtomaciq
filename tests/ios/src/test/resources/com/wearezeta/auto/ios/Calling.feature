@@ -337,7 +337,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | CallBackend2 | ChatName | NumberOfAvatars |
       | user1Name | user2Name | user3Name | user4Name | user5Name | RenameGROUPCALL | firefox     | autocall     | NewName  | 5               |
 
-  @C2058 @staging @id2696
+  @C2058 @calling_advanced @id2696
   Scenario Outline: Verify leaving group conversation during the group call
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
@@ -355,7 +355,7 @@ Feature: Calling
     And I see incoming group calling message
     And I accept incoming call
     And I open group conversation details
-    And I press leave converstation button
+    And I press leave conversation button
     And I see leave conversation alert
     Then I press leave
     And I open archived conversations

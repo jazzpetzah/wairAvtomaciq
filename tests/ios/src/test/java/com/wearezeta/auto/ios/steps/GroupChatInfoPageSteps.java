@@ -28,8 +28,8 @@ public class GroupChatInfoPageSteps {
         return pagesCollection.getPage(ContactListPage.class);
     }
 
-    @When("^I press leave converstation button$")
-    public void IPressLeaveConverstationButton() throws Exception {
+    @When("^I press leave conversation button$")
+    public void IPressLeaveConversationButton() throws Exception {
         getGroupChatInfoPage().leaveConversation();
     }
 
