@@ -352,7 +352,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C844 @staging @id3960
+  @C844 @regression @id3960
   Scenario Outline: Verify deleting 1-to-1 conversation from archive
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
