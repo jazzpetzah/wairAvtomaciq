@@ -72,6 +72,7 @@ Feature: Settings
     And I tap my avatar
     And I click on Settings button on personal page
     When I click on Help button from the options menu
+    And I wait for 4 seconds
     Then I see Support web page
 
     Examples:

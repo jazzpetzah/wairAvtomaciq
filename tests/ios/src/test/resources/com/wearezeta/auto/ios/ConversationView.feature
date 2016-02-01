@@ -405,22 +405,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | SoundCloudLink                                                                       |
       | user1Name | user2Name | user3Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
-  @C870 @staging @id1137
-  Scenario Outline: Verify appearance of title bar for conversation, restored from background
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I close the app for <CloseAppTime> seconds
-    Then I see title bar in conversation name <Contact>
-
-    Examples:
-      | Name      | Contact   | CloseAppTime |
-      | user1Name | user2Name | 2            |
-
-  @C921 @regression @id1480
+  @C921 @staging @id1480
   Scenario Outline: Rotate image in fullscreen mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -468,7 +453,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
-    Given User <Contact> sends 1 encrypted message to user Myself
+    Given User <Contact2> sends 1 encrypted message to user Myself
     Then I see chathead of contact <Contact2>
     And I wait for 5 seconds
     Then I do not see chathead of contact <Contact2>

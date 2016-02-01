@@ -45,7 +45,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C987 @regression @rc @id576 @ZIOS-5522
+  @C987 @regression @rc @id576
   Scenario Outline: Send connection request to unconnected participant in a group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <GroupCreator>
