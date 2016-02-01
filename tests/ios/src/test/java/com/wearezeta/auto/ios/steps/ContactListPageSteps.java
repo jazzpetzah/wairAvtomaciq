@@ -416,4 +416,60 @@ public class ContactListPageSteps {
                 getContactListPage().isInviteMorePeopleButtonNotVisible());
     }
 
+    private BufferedImage previousSelfAvatarState = null;
+
+    /**
+     * Remember the current state of self avatar
+     *
+     * @throws Exception
+     * @step. ^I remember the state of my self avatar$
+     */
+    @When("^I remember the state of my avatar$")
+    public void IRememberAvatarState() throws Exception {
+        previousSelfAvatarState = getContactListPage().getAvatarStateScreenshot();
+    }
+
+    private static final long AVATAR_CHANGE_TIMEOUT_MILLISECONDS = 10000;
+
+    /**
+     * Verify whether avatar state is changed within the timeout
+     *
+     * @param shouldNotChange equals to null if the state should be changed
+     * @throws Exception
+     * @step. ^I wait until my avatar is (not )?changed$
+     */
+    @Then("^I wait until my avatar is (not )?changed$")
+    public void IWaitUntilAvatarIsChanged(String shouldNotChange) throws Exception {
+        if (previousSelfAvatarState == null) {
+            throw new IllegalStateException("Please take the initial screenshot of the avatar first");
+        }
+        double score;
+        final double minScore = 0.97;
+        final long millisecondsStarted = System.currentTimeMillis();
+        do {
+            final BufferedImage currentAvatarState = getContactListPage().getAvatarStateScreenshot();
+            score = ImageUtil.getOverlapScore(currentAvatarState,
+                    previousSelfAvatarState, ImageUtil.RESIZE_NORESIZE);
+            if (shouldNotChange == null) {
+                if (score < minScore) {
+                    return;
+                }
+            } else {
+                if (score >= minScore) {
+                    return;
+                }
+            }
+            Thread.sleep(500);
+        } while (System.currentTimeMillis() - millisecondsStarted <= AVATAR_CHANGE_TIMEOUT_MILLISECONDS);
+        if (shouldNotChange == null) {
+            throw new AssertionError(String.format("The previous and the current state of self avatar " +
+                            "icon seems to be equal after %s seconds (%.2f >= %.2f)",
+                    AVATAR_CHANGE_TIMEOUT_MILLISECONDS / 1000, score, minScore));
+        } else {
+            throw new AssertionError(String.format("The previous and the current state of self avatar " +
+                            "icon seems to be different after %s seconds (%.2f < %.2f)",
+                    AVATAR_CHANGE_TIMEOUT_MILLISECONDS / 1000, score, minScore));
+        }
+    }
+
 }

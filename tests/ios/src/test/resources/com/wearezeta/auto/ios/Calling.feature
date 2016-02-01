@@ -328,7 +328,7 @@ Feature: Calling
     And I open group conversation details
     And I change group conversation name to <ChatName>
     Then I see correct conversation name <ChatName>
-    And I exit the group info page
+    And I close group info page
     And I see you renamed conversation to <ChatName> message shown in Group Chat
     Then I see mute call, end call and speakers buttons
     Then I see <NumberOfAvatars> avatars in the group call bar
@@ -490,13 +490,13 @@ Feature: Calling
     And I wait for 3 seconds
     And I see <NumberOfAvatars> avatars in the group call bar
     And I open group conversation details
-    And I select contact <Contact2>
+    And I select participant <Contact2>
     And I click Remove
     And I see warning message
     And I confirm remove
     And I click close user profile page button
     Then I see that <Contact2> is not present on group chat info page
-    And I exit the group info page
+    And I close group info page
     Then I see <NewNumberOfAvatars> avatars in the group call bar
 
     Examples:

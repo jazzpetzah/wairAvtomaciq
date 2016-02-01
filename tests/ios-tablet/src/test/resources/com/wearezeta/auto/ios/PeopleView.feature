@@ -563,7 +563,7 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I select contact <Contact1>
+    And I select participant <Contact1>
     And I see <Contact1> user profile page
     And I unblock user
     Then I see dialog page
@@ -585,7 +585,7 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I select contact <Contact1>
+    And I select participant <Contact1>
     And I see <Contact1> user profile page
     And I unblock user
     Then I see dialog page
@@ -926,9 +926,8 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
-    And I select contact <Contact3>
+    And I select participant <Contact3>
     Then I see <Contact3> user pending profile popover on iPad
     Then I see remove from group conversation button
 
@@ -946,9 +945,8 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
-    And I select contact <Contact3>
+    And I select participant <Contact3>
     Then I see <Contact3> user pending profile popover on iPad
     Then I see remove from group conversation button
 

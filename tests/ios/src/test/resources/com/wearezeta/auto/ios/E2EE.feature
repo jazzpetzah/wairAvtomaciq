@@ -19,3 +19,25 @@ Feature: E2EE
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | EncryptedGrp  |
+
+  @C3293 @noAcceptAlert @staging
+  Scenario Outline: (ZIOS-5684) Verify system message appearance in case of using a new device by you
+    Given There is 1 user where <Name> is me
+    Given User Myself removes his avatar picture
+    Given I sign in using my email
+    Given I accept alert
+    Given I accept First Time overlay if it is visible
+    Given I accept alert
+    Given I see conversations list
+    When I remember the state of my avatar
+    And User Myself adds a new device <DeviceName> with label <DeviceLabel>
+    Then I wait until my avatar is changed
+    When I tap my avatar
+    Then I verify the alert contains text <DeviceLabel>
+    When I accept alert
+    And I close self profile
+    Then I wait until my avatar is not changed
+
+    Examples:
+      | Name      | DeviceName | DeviceLabel  |
+      | user1Name | Device1    | Device1Label |

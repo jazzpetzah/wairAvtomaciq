@@ -102,7 +102,7 @@ Feature: Connect
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I tap on not connected contact <UnconnectedUser>
+    And I select participant <UnconnectedUser>
     And I click Connect button on not connected user profile popover
     And I exit the group info iPad popover
     And I navigate back to conversations list
@@ -123,7 +123,7 @@ Feature: Connect
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I tap on not connected contact <UnconnectedUser>
+    And I select participant <UnconnectedUser>
     And I click Connect button on not connected user profile popover
     And I exit the group info iPad popover
     Then I see first item in contact list named <UnconnectedUser>

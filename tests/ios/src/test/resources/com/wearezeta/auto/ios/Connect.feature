@@ -55,10 +55,10 @@ Feature: Connect
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I tap on not connected contact <UnconnectedUser>
+    And I select participant <UnconnectedUser>
     And I click Connect button on connect to dialog
     And I see Connect dialog is closed
-    And I exit the group info page
+    And I close group info page
     And I navigate back to conversations list
     Then I see first item in contact list named <UnconnectedUser>
 
@@ -328,13 +328,13 @@ Feature: Connect
     Given I see conversations list
     And I see Pending request link in contact list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
-    And I select contact <Contact3>
+    And I select participant <Contact3>
     And I see <Contact3> user pending profile page
     And I click on start conversation button on pending profile page
     And I click on Ignore button on Pending requests page
-    And I exit the group info page
+    And I close group participant details page
+    And I close group info page
     And I navigate back to conversations list
     Then I dont see Pending request link in contact list
 

@@ -256,4 +256,8 @@ public class ContactListPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameSelfButton);
     }
 
+    public BufferedImage getAvatarStateScreenshot() throws Exception {
+        return this.getElementScreenshot(getElement(nameSelfButton)).orElseThrow(() ->
+                new IllegalStateException("Self avatar is not visible"));
+    }
 }
