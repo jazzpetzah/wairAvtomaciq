@@ -79,44 +79,6 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @C1113 @regression @id2146
-  Scenario Outline: Verify switching on/off chatheads
-    Given There are 3 users where <Name> is me
-    Given User <Contact2> change avatar picture to <Picture>
-    Given User <Contact2> change name to <NewName>
-    Given Myself is connected to <Contact>,<Contact2>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap my avatar
-    And I click on Settings button on personal page
-    And I click on Settings button from the options menu
-    When I tap on Sound Alerts
-    And I see the Sound alerts page
-    And I switch on or off the chathead preview
-    And I close the Settings
-    And I close self profile
-    When I tap on contact name <Contact>
-    Given User <Contact2> sends 1 encrypted message to user Myself
-    Then I do not see chathead of contact <Contact2>
-    And I swipe right on Dialog page
-    And I tap my avatar
-    And I click on Settings button on personal page
-    And I click on Settings button from the options menu
-    When I tap on Sound Alerts
-    And I see the Sound alerts page
-    And I switch on or off the chathead preview
-    And I close the Settings
-    And I close self profile
-    When I tap on contact name <Contact>
-    Given User <Contact2> sends 1 encrypted message to user Myself
-    Then I see chathead of contact <Contact2>
-    And I wait for 5 seconds
-    Then I do not see chathead of contact <Contact2>
-
-    Examples:
-      | Name      | Contact   | Contact2  | NewName  | Picture                      |
-      | user1Name | user2Name | user3Name | CHATHEAD | aqaPictureContact600_800.jpg |
-
   @C1100 @C1101 @regression @id730 @id731
   Scenario Outline: Verify about screen contains all the required information
     Given There is 1 user where <Name> is me

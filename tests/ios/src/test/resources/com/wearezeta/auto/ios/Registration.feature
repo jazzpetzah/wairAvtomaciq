@@ -37,17 +37,16 @@ Feature: Registration
       | Name      |
       | user1Name |
 
-  @C1008 @staging @id295
+  @C1008 @regression @id295
   Scenario Outline: Verify cutting spaces from the beginning and ending the name
     Given I see sign in screen
     When I enter phone number for user <Name>
     And I enter activation code
     And I accept terms of service
     And I fill in name <Name> with leading and trailing spaces and hit Enter
-    And I press Picture button
+    And I press Choose Own Picture button
+    And I press Choose Photo button
     And I choose a picture from camera roll
-    And I See selected picture
-    And I confirm selection
     Then I see conversations list
     When I tap my avatar
     Then I see user name doesnt contains spaces

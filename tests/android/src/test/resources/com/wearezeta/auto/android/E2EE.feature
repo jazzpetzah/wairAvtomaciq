@@ -189,6 +189,40 @@ Feature: E2EE
       | Name      | Contact1  | Message1 |
       | user1Name | user2Name | Msg1     |
 
+  @C3232 @staging
+  Scenario Outline: Verify the device id is not changed after relogin
+    Given There are 1 users where <Name> is me
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with no contacts
+    When I tap on my avatar
+    And I tap options button
+    And I tap settings button
+    When I select "Privacy & Security" settings menu item
+    And I select "Devices" settings menu item
+    And I tap current device in devices settings menu
+    Then I remember the device id shown in the device detail view
+    When I press back button
+    And I press back button
+    And I press back button
+    When I select "Account" settings menu item
+    And I select "Log out" settings menu item
+    Then I confirm sign out
+    And I see welcome screen
+    When I sign in using my email or phone number
+    Then I see Contact list with no contacts
+    When I tap on my avatar
+    And I tap options button
+    And I tap settings button
+    When I select "Privacy & Security" settings menu item
+    And I select "Devices" settings menu item
+    And I tap current device in devices settings menu
+    Then I verify the remembered device id is shown in the device detail view
+
+    Examples:
+      | Name      |
+      | user1Name |
+
   @C3231 @rc @regression
   Scenario Outline: Verify the appropriate device is signed out if you remove it from settings  
     Given There are 1 users where <Name> is me

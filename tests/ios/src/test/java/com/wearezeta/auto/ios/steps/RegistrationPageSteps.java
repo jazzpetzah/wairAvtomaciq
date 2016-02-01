@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.steps;
 
-import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -37,25 +36,6 @@ public class RegistrationPageSteps {
     private ClientUser userToRegister = null;
 
     private Future<String> activationMessage;
-
-    BufferedImage templateImage;
-
-    @When("^I press Picture button$")
-    public void WhenIPressPictureButton() throws Exception {
-        getRegistrationPage().selectPicture();
-    }
-
-    @When("^I See selected picture$")
-    public void ISeeSelectedPicture() throws Exception {
-        templateImage = getRegistrationPage().takeScreenshot().orElseThrow(
-                AssertionError::new);
-        Assert.assertTrue(getRegistrationPage().isPictureSelected());
-    }
-
-    @When("^I confirm selection$")
-    public void IConfirmSelection() throws Exception {
-        getRegistrationPage().confirmPicture();
-    }
 
     /**
      * Input fake phone number for given user
@@ -181,7 +161,8 @@ public class RegistrationPageSteps {
      */
     @When("^I fill in name (.*) with leading and trailing spaces and hit Enter$")
     public void IInputNameWithSpacesAndHitEnter(String name) throws Exception {
-        getRegistrationPage().setName("  " + name + "  ");
+        getRegistrationPage().setName(
+                "  " + usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS) + "  ");
         getRegistrationPage().inputName();
     }
 

@@ -2,7 +2,6 @@ package com.wearezeta.auto.ios.steps;
 
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
-import java.util.Date;
 
 import org.junit.Assert;
 
@@ -551,38 +550,6 @@ public class DialogPageSteps {
     public void ISeeTapOrSlideText() throws Exception {
         boolean result = getDialogPage().isTypeOrSlideExists(TAP_OR_SLIDE);
         Assert.assertTrue(result);
-    }
-
-    /**
-     * Checks if a chathaed is visible with message and avatar for 5sec
-     *
-     * @param contact you see the chathead of
-     * @throws Exception
-     * @step. ^I see chathead of contact (.*)
-     */
-    @Then("^I see chathead of contact (.*)")
-    public void ISeeChatheadOfContact(String contact) throws Exception {
-        contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-        boolean chatheadIsVisible = getDialogPage().chatheadIsVisible(contact);
-        Assert.assertTrue("No Chathead visible.", chatheadIsVisible);
-        boolean chAvatarImageIsVisible = getDialogPage()
-                .chatheadAvatarImageIsVisible();
-        Assert.assertTrue("No Chathead avatar visible.", chAvatarImageIsVisible);
-    }
-
-    /**
-     * Verify that the chathaed is not seen after 5 seconds
-     *
-     * @param contact you not see the chathead of
-     * @throws Exception
-     * @step. I do not see chathead of contact (.*)
-     */
-    @Then("^I do not see chathead of contact (.*)")
-    public void IDoNotSeeChatheadOfContactForSecondsWithAvatarAndMessage(
-            String contact) throws Exception {
-        contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-        boolean chatheadIsVisible = getDialogPage().chatheadIsVisible(contact);
-        Assert.assertFalse("Chathead visible.", chatheadIsVisible);
     }
 
     /**

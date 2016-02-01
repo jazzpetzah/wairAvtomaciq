@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.Future;
 import java.util.function.Function;
@@ -10,16 +9,11 @@ import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import org.openqa.selenium.WebElement;
 
 public class RegistrationPage extends IOSPage {
-    private static final By xpathPhotoButton = By.xpath(xpathStrMainWindow + "/UIAButton[5]");
-
-    private static final By nameConfirmImageButton = By.name("OK");
-
     private static final By xpathYourName =
             By.xpath(xpathStrMainWindow + "/UIATextField[@value='YOUR FULL NAME']");
 
@@ -47,8 +41,6 @@ public class RegistrationPage extends IOSPage {
     private static final By nameConfirmButton = By.name("RegistrationConfirmButton");
 
     private static final By nameAgreeButton = By.name("I AGREE");
-
-    private static final By nameSelectPictureButton = By.name("SET A PICTURE");
 
     private static final By xpathVerificationPage = By.xpath(
             "//UIAStaticText[contains(@name, 'Enter the verification code we sent to')]");
@@ -119,18 +111,9 @@ public class RegistrationPage extends IOSPage {
         getElement(nameResendCodeButton, "Resend code button is not visible").click();
     }
 
-    public void selectPicture() throws Exception {
-        getElement(nameSelectPictureButton, "Select Picture button is not visible").click();
-        getElement(xpathPhotoButton, "Take Photo button is not visible").click();
-    }
-
     public boolean isConfirmationShown() throws Exception {
         final By locator = By.xpath(xpathStrConfirmationByMessage.apply(getEmail()));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-    }
-
-    public void confirmPicture() throws Exception {
-        getElement(nameConfirmImageButton).click();
     }
 
     public void inputName() throws Exception {
@@ -150,10 +133,6 @@ public class RegistrationPage extends IOSPage {
 
     public void typeUsername() throws Exception {
         getElement(xpathYourName, "Name input is not visible").sendKeys(getName());
-    }
-
-    public boolean isPictureSelected() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameConfirmImageButton);
     }
 
     public String getName() {

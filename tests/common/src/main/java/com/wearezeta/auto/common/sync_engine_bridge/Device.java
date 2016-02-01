@@ -83,7 +83,7 @@ class Device extends RemoteEntity implements IDevice {
         // TODO: Auto-generated method stub
     }
 
-    private static final long IMAGE_SENDING_TIMEOUT = 90 * 1000; // milliseconds
+    private static final long IMAGE_SENDING_TIMEOUT = 60 * 1000; // milliseconds
 
     @Override
     public void sendImage(String convId, String path) throws Exception {

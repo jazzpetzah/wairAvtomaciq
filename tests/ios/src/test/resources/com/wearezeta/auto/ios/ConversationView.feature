@@ -345,7 +345,7 @@ Feature: Conversation View
       | Name      | Contact   | YouTubeLink                                |
       | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
 
-  @C140 @staging @id1388
+  @C140 @regression @id1388
   Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation - SoundCloud
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -379,7 +379,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | SoundCloudLink                                                                       |
       | user1Name | user2Name | user3Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
-  @C921 @staging @id1480
+  @C921 @regression @id1480
   Scenario Outline: Rotate image in fullscreen mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -414,24 +414,6 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
-
-  @staging @id2132
-  Scenario Outline: Verify displaying chathead when another conversation is opened
-    Given There are 3 users where <Name> is me
-    Given User <Contact2> change avatar picture to <Picture>
-    Given User <Contact2> change name to <NewName>
-    Given Myself is connected to <Contact>,<Contact2>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    Given User <Contact2> sends 1 encrypted message to user Myself
-    Then I see chathead of contact <Contact2>
-    And I wait for 5 seconds
-    Then I do not see chathead of contact <Contact2>
-
-    Examples:
-      | Name      | Contact   | Contact2  | NewName  | Picture                      |
-      | user1Name | user2Name | user3Name | CHATHEAD | aqaPictureContact600_800.jpg |
 
   @C141 @regression @rc @id1476
   Scenario Outline: Play/pause controls can change playing media state (SoundCloud)
@@ -760,24 +742,6 @@ Feature: Conversation View
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
       | user1Name | user2Name | user3Name | Caramba!      | testing.jpg |
-
-  @C884 @staging @id1245
-  Scenario Outline: Verify cursor swiping is disabled when you scroll back into a conversation
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    Given User Myself sends 40 encrypted messages to user <Contact>
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
-    When I tap on contact name <Contact>
-    And I tap on text input
-    And I scroll to the beginning of the conversation
-    And I click plus button next to text input
-    Then I see controller buttons can not be visible
-
-    Examples:
-      | Name      | Contact   | Picture     |
-      | user1Name | user2Name | testing.jpg |
 
   @C886 @regression @id2019
   Scenario Outline: Verify people icon is changed on avatar with opening keyboard and back

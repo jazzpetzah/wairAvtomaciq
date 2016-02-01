@@ -432,17 +432,6 @@ public class PersonalInfoPageSteps {
     }
 
     /**
-     * Switches the chathead preview on or off in settings
-     *
-     * @throws Exception
-     * @step. ^I switch on or off the chathead preview$
-     */
-    @When("^I switch on or off the chathead preview$")
-    public void ISwitchOnOrOffTheChatheadPreview() throws Exception {
-        getPersonalInfoPage().switchChatheadsOnOff();
-    }
-
-    /**
      * Closes the settings by pressing back and done button
      *
      * @throws Exception
