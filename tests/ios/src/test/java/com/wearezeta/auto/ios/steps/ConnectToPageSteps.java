@@ -10,24 +10,20 @@ import cucumber.api.java.en.When;
 public class ConnectToPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
-			.getInstance();
+	private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
 	private ConnectToPage getConnectToPage() throws Exception {
-		return (ConnectToPage) pagesCollecton.getPage(ConnectToPage.class);
+		return pagesCollection.getPage(ConnectToPage.class);
 	}
 
 	@When("^I see connect to (.*) dialog$")
-	public void WhenISeeConnectToUserDialog(String name) throws Throwable {
+	public void WhenISeeConnectToUserDialog(String name) throws Exception {
 		Assert.assertTrue("Connection input is not visible", getConnectToPage()
 				.isConnectToUserDialogVisible());
 	}
 
 	@When("I click Connect button on connect to dialog")
-	public void IClickConnectButtonConnectDialog() throws Throwable {
-		// if (getConnectToPage().isKeyboardVisible()) {
-		// getConnectToPage().clickKeyboardGoButton();
-		// }
+	public void IClickConnectButtonConnectDialog() throws Exception {
 		getConnectToPage().sendInvitation();
 	}
 

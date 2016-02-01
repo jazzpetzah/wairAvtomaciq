@@ -102,7 +102,7 @@ Feature: Connect
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I tap on not connected contact <UnconnectedUser>
+    And I select participant <UnconnectedUser>
     And I click Connect button on not connected user profile popover
     And I exit the group info iPad popover
     And I navigate back to conversations list
@@ -123,7 +123,7 @@ Feature: Connect
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I tap on not connected contact <UnconnectedUser>
+    And I select participant <UnconnectedUser>
     And I click Connect button on not connected user profile popover
     And I exit the group info iPad popover
     Then I see first item in contact list named <UnconnectedUser>
@@ -283,14 +283,14 @@ Feature: Connect
     And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I unblock user on iPad
-    And I see 1 default message in the dialog
-    And I see 1 photo in the dialog
+    And I see 0 default message in the dialog
+    And I see 0 photo in the dialog
     And I navigate back to conversations list
     #And I see People picker page
     #And I click close button to dismiss people view
     Given User <Contact> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact>
-    Then I see 2 default messages in the dialog
+    Then I see 1 default messages in the dialog
 
     Examples: 
       | Name      | Contact   | Picture     |
@@ -402,7 +402,6 @@ Feature: Connect
     And I click close Invite list button
     And I click clear button
     And I tap on contact name <Contact>
-    And I see dialog page
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
@@ -430,7 +429,6 @@ Feature: Connect
     And I click close Invite list button
     And I click clear button
     And I tap on contact name <Contact>
-    And I see dialog page
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item

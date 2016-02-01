@@ -7,7 +7,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     Then I see TAPORSLIDE text
 
     Examples:
@@ -78,7 +77,7 @@ Feature: Conversation View
       | user1Name | user2Name | user3Name |
 
   @C3210 @regression @rc @IPv6 @id1468
-  Scenario Outline: Play/pause SoundCloud media link from the media bar
+  Scenario Outline: (MediaBar disappears on Simulator) Play/pause SoundCloud media link from the media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -86,10 +85,7 @@ Feature: Conversation View
     Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
-    And I see dialog page
     And I tap on text input
-    And I navigate back to conversations list
-    And I tap on contact name <Contact>
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -101,11 +97,11 @@ Feature: Conversation View
     Then The media stops playing
 
     Examples:
-      | Name      | Contact   | SoundCloudLink                                                                       |
-      | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+      | Name      | Contact   | SoundCloudLink                                                   |
+      | user1Name | user2Name | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
 
   @C3205 @regression @id384
-  Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar
+  Scenario Outline: (MediaBar disappears on Simulator) Conversation gets scrolled back to playing media when clicking on media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -113,10 +109,7 @@ Feature: Conversation View
     Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
-    And I see dialog page
     And I tap on text input
-    And I navigate back to conversations list
-    And I tap on contact name <Contact>
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -127,32 +120,27 @@ Feature: Conversation View
       | Name      | Contact   | SoundCloudLink                                   |
       | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
 
-  @C3206 @staging @id385
-  Scenario Outline: Verify the Media Bar dissapears after playback finishes - SoundCloud
+  @C3206 @regression @id385
+  Scenario Outline: (MediaBar disappears on Simulator) Verify the Media Bar dissapears after playback finishes - SoundCloud
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I tap on text input to scroll to the end
-    And I navigate back to conversations list
     And I tap on contact name <Contact>
+    And I tap on text input to scroll to the end
     And I see media link <SoundCloudLink> and media in dialog
-    And I tap media link
+    When I tap media link
     And I scroll media out of sight until media bar appears
-    And I see media bar on dialog page
-    And I wait 150 seconds for media to stop playing
-    Then I dont see media bar on dialog page
+    Then I wait up to 35 seconds for media bar to disappear
 
     Examples:
-      | Name      | Contact   | SoundCloudLink                                   |
-      | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
+      | Name      | Contact   | SoundCloudLink                                                   |
+      | user1Name | user2Name | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
 
   @C3207 @regression @id386
-  Scenario Outline: Verify the Media Bar disappears when playing media is back in view - SoundCloud
+  Scenario Outline: (MediaBar disappears on Simulator) Verify the Media Bar disappears when playing media is back in view - SoundCloud
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -160,19 +148,16 @@ Feature: Conversation View
     Given User <Name> sends 40 encrypted messages to user <Contact1>
     Given User <Name> sends encrypted message "<SoundCloudLink>" to user <Contact1>
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I tap on text input to scroll to the end
-    And I navigate back to conversations list
-    And I tap on contact name <Contact1>
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
-    And I scroll media out of sight until media bar appears
+    When I scroll media out of sight until media bar appears
     And I tap on text input to scroll to the end
     Then I dont see media bar on dialog page
 
     Examples:
-      | Name      | Contact1  | SoundCloudLink                                                                       |
-      | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+      | Name      | Contact1  | SoundCloudLink                                                   |
+      | user1Name | user2Name | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
 
   @C883 @regression @id394
   Scenario Outline: Tap the cursor to get to the end of the conversation
@@ -181,7 +166,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I send long message
     And I type the default message and send it
     And I scroll to the beginning of the conversation
@@ -201,7 +185,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I input more than 200 chars message and send it
     And I type the default message
     And I navigate back to conversations list
@@ -221,7 +204,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I input more than 200 chars message and send it
     Then I see 2 message in the dialog
 
@@ -236,7 +218,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I input message with lower case and upper case
     Then I see 2 message in the dialog
 
@@ -251,7 +232,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I send using script predefined message <Text>
     Then I see last message in dialog is expected message <Text>
 
@@ -274,7 +254,6 @@ Feature: Conversation View
     And I press Login button
     And I see conversations list
     And I tap on contact name <Contact>
-    And I see dialog page
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
@@ -292,7 +271,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I try to send message with only spaces
     And I see the only message in dialog is system message CONNECTED TO <Contact>
     And I input message with leading empty spaces
@@ -311,7 +289,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I tap on text input
     And I see keyboard
     And I scroll away the keyboard
@@ -334,7 +311,6 @@ Feature: Conversation View
     And I choose a picture from camera roll
     And I press Confirm button
     And I see 1 photo in the dialog
-    And I memorize message send time
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I see sender first name <Name> on fullscreen page
@@ -357,7 +333,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I post media link <YouTubeLink>
     And I navigate back to conversations list
     And I tap on contact name <Contact>
@@ -380,7 +355,6 @@ Feature: Conversation View
     Given User Myself sends 40 encrypted messages to user <Contact2>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact2>
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I tap on text input
     And I navigate back to conversations list
     And I tap on contact name <Contact1>
@@ -390,7 +364,6 @@ Feature: Conversation View
     And I see play/pause button next to username <Contact1> in contact list
     And I tap play/pause button in contact list next to username <Contact1>
     And I tap on contact name <Contact2>
-    And I see dialog page
     And I tap on text input
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
@@ -414,7 +387,6 @@ Feature: Conversation View
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     And I tap on contact name <Contact>
     And I see 1 photo in the dialog
-    And I memorize message send time
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     When I rotate UI to landscape
@@ -431,7 +403,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I open conversation details
     And I open ellipsis menu
     And I click archive menu button
@@ -452,7 +423,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     Given User <Contact2> sends 1 encrypted message to user Myself
     Then I see chathead of contact <Contact2>
     And I wait for 5 seconds
@@ -469,7 +439,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
     And I navigate back to conversations list
     And I tap on contact name <Contact>
@@ -512,7 +481,6 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
-    And I see dialog page
     Then I see 1 photo in the dialog
 
     Examples:
@@ -591,7 +559,6 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     When I tap on contact name <Contact>
-    And I see dialog page
     And I see 1 photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
@@ -633,7 +600,6 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Name> sends encrypted message "<VimeoLink>" to user <Contact>
     When I tap on contact name <Contact>
-    And I see dialog page
     Then I see vimeo link <VimeoLink> but NO media player
 
     Examples:
@@ -648,7 +614,6 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Name> sends encrypted message "<VimeoLink>" to user <Contact1>
     When I tap on contact name <Contact1>
-    And I see dialog page
     Then I see vimeo link <VimeoLink> and media in dialog
 
     Examples:
@@ -663,7 +628,6 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Name> sends encrypted message "<Link>" to user <Contact1>
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I see Link <Link> in dialog
     And I tap on Link
     Then I see WireWebsitePage
@@ -680,7 +644,6 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Name> sends encrypted message "<MessageAndLink>" to user <Contact1>
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I see Link <MessageAndLink> in dialog
     And I tap on Link
     Then I see WireWebsitePage
@@ -696,14 +659,11 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I type the default message
     And I navigate back to conversations list
     When I tap on contact name <Contact2>
-    And I see dialog page
     And I navigate back to conversations list
     And I tap on contact name <Contact1>
-    And I see dialog page
     Then I see Close input options button is not visible
     And I see controller buttons can not be visible
     And I see the default message in input field
@@ -745,7 +705,6 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     And I tap on contact name <Contact>
-    And I see dialog page
     And I see 1 photo in the dialog
     And I longpress on image in the conversation
     And I tap on copy badge
@@ -825,7 +784,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I see plus button next to text input
     And I type the default message
     And I see plus icon is changed to user avatar icon

@@ -54,7 +54,6 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I open conversation details
     And I see <Contact1> user profile page in iPad popover
     And I press Add button
@@ -62,9 +61,9 @@ Feature: People View
     And I click on connected user <Contact2> on People picker on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
     And I click on Add to Conversation button on iPad popover
-    Then I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
+    Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I navigate back to conversations list
-    Then I see in contact list group chat with <Contact1> <Contact2> <Contact3>
+    Then I see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  |
@@ -78,7 +77,6 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I open conversation details
     And I see <Contact1> user profile page in iPad popover
     And I press Add button
@@ -86,7 +84,7 @@ Feature: People View
     And I click on connected user <Contact2> on People picker on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
     And I click on Add to Conversation button on iPad popover
-    And I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
+    And I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     Then I see in contact list group chat with <Contact1> <Contact2> <Contact3>
 
     Examples:
@@ -101,7 +99,6 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
     And I press leave converstation button on iPad
     Then I press leave on iPad
@@ -122,7 +119,6 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
     And I press leave converstation button on iPad
     Then I press leave on iPad
@@ -142,7 +138,6 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
     And I click Remove on iPad
@@ -164,7 +159,6 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
     And I click Remove on iPad
@@ -185,7 +179,6 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
     And I press conversation menu button on iPad
     And I press RENAME on the menu on iPad
@@ -208,7 +201,6 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
     And I press conversation menu button on iPad
     And I press RENAME on the menu on iPad
@@ -229,7 +221,6 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
     Then I can read the group name <GroupChatName> on the iPad popover
     Then I see that number of participants <ParticipantsNumber> is correct on iPad popover
@@ -247,7 +238,6 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
     Then I can read the group name <GroupChatName> on the iPad popover
     Then I see that number of participants <ParticipantsNumber> is correct on iPad popover
@@ -264,7 +254,6 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
     Then I see email and name of user <Contact2> on iPad popover
@@ -282,7 +271,6 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
     Then I see email and name of user <Contact2> on iPad popover
@@ -300,7 +288,6 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
     And I select user on iPad group popover <NonConnectedContact>
     Then I see Connect label on Other user profile popover
@@ -320,7 +307,6 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
     And I select user on iPad group popover <NonConnectedContact>
     Then I see Connect label on Other user profile popover
@@ -338,12 +324,10 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
     And I tap on start dialog button on other user profile page
     #And I dismiss popover on iPad
-    Then I see dialog page
     And I type the default message
     And I send the message
     Then I see 1 default message in the dialog
@@ -361,12 +345,10 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
     And I tap on start dialog button on other user profile page
     #And I dismiss popover on iPad
-    Then I see dialog page
     And I type the default message
     And I send the message
     Then I see 1 default message in the dialog
@@ -386,12 +368,10 @@ Feature: People View
     Given I see conversations list
     And I see conversation <GroupChatName> got silenced before
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
     And I press conversation menu button on iPad
     And I click NOTIFY button on iPad ellipsis menu
     And I exit the group info iPad popover
-    And I see dialog page
     And I navigate back to conversations list
     Then I see conversation <GroupChatName> is unsilenced
 
@@ -411,12 +391,10 @@ Feature: People View
     Given I see conversations list
     And I see conversation <GroupChatName> got silenced before
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
     And I press conversation menu button on iPad
     And I click NOTIFY button on iPad ellipsis menu
     And I exit the group info iPad popover
-    And I see dialog page
     Then I see conversation <GroupChatName> is unsilenced
 
     Examples:
@@ -433,12 +411,10 @@ Feature: People View
     Given I see conversations list
     When I remember the state of <GroupChatName> conversation item
     And I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
     And I press conversation menu button on iPad
     And I click SILENCE button on iPad ellipsis menu
     And I exit the group info iPad popover
-    And I see dialog page
     And I navigate back to conversations list
     Then I see the state of <GroupChatName> conversation item is changed
 
@@ -457,12 +433,10 @@ Feature: People View
     Given I see conversations list
     When I remember the state of <GroupChatName> conversation item
     And I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
     And I press conversation menu button on iPad
     And I click SILENCE button on iPad ellipsis menu
     And I exit the group info iPad popover
-    And I see dialog page
     Then I see the state of <GroupChatName> conversation item is changed
 
     Examples:
@@ -477,7 +451,6 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
     And I press Add button
     And I see People picker page on iPad popover
@@ -499,7 +472,6 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
     And I press Add button
     And I see People picker page on iPad popover
@@ -519,7 +491,6 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I open conversation details
     And I see <Contact1> user profile page
     And I press conversation menu button
@@ -540,7 +511,6 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I open conversation details
     And I see <Contact1> user profile page
     And I press conversation menu button
@@ -563,10 +533,9 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I select contact <Contact1>
+    And I select participant <Contact1>
     And I see <Contact1> user profile page
     And I unblock user
-    Then I see dialog page
     And I navigate back to conversations list
     Then I see conversation <Contact1> is selected in list
 
@@ -585,10 +554,9 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I select contact <Contact1>
+    And I select participant <Contact1>
     And I see <Contact1> user profile page
     And I unblock user
-    Then I see dialog page
     Then I see conversation <Contact1> is selected in list
 
     Examples:
@@ -816,7 +784,6 @@ Feature: People View
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I see 5 conversation entries
     And I open conversation details
     And I press conversation menu button
@@ -846,7 +813,6 @@ Feature: People View
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I see 5 conversation entries
     And I open conversation details
     And I press conversation menu button
@@ -874,10 +840,9 @@ Feature: People View
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I see 3 conversation entries
     And I open group conversation details
-    And I press leave converstation button
+    And I press leave conversation button
     And I see leave conversation alert
     And I press leave
     And I wait until popover is closed
@@ -901,10 +866,9 @@ Feature: People View
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I see 3 conversation entries
     And I open group conversation details
-    And I press leave converstation button
+    And I press leave conversation button
     And I see leave conversation alert
     And I press leave
     And I wait until popover is closed
@@ -926,9 +890,8 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
-    And I select contact <Contact3>
+    And I select participant <Contact3>
     Then I see <Contact3> user pending profile popover on iPad
     Then I see remove from group conversation button
 
@@ -946,9 +909,8 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
-    And I select contact <Contact3>
+    And I select participant <Contact3>
     Then I see <Contact3> user pending profile popover on iPad
     Then I see remove from group conversation button
 
@@ -963,7 +925,6 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I open conversation details
     And I press conversation menu button
     And I press menu Block button
@@ -982,7 +943,6 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I open conversation details
     And I press conversation menu button
     And I press menu Block button

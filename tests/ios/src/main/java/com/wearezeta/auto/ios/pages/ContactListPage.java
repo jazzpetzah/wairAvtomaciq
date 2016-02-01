@@ -197,6 +197,15 @@ public class ContactListPage extends IOSPage {
         DriverUtils.tapByCoordinates(getDriver(), archiveButton);
     }
 
+    public BufferedImage getConversationEntryScreenshot(int idx) throws Exception {
+        final By locator = By.xpath(xpathStrConvoListEntryByIdx.apply(idx));
+        final WebElement el = getElement(locator,
+                String.format("Conversation list entry number '%s' is not visible", idx));
+        return this.getElementScreenshot(el).orElseThrow(IllegalStateException::new);
+        // ImageIO.write(scr, "png", new File("/Users/elf/Desktop/screen_" + System.currentTimeMillis() + ".png"));
+        // return scr;
+    }
+
     public BufferedImage getConversationEntryScreenshot(String name) throws Exception {
         final By locator = By.xpath(xpathStrConvoListEntryByName.apply(name));
         final WebElement el = getElement(locator, String.format("Conversation list entry '%s' is not visible", name));
@@ -258,6 +267,15 @@ public class ContactListPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameSelfButton);
     }
 
+    public BufferedImage getAvatarStateScreenshot() throws Exception {
+        return this.getElementScreenshot(getElement(nameSelfButton)).orElseThrow(() ->
+                new IllegalStateException("Self avatar is not visible"));
+    }
+
+    public void tapConvoItemByIdx(int idx) throws Exception {
+        final By locator = By.xpath(xpathStrConvoListEntryNameByIdx.apply(idx));
+        getElement(locator, String.format("Conversation list entry number '%s' is not visible", idx)).click();
+    }
     public void tapOnNameYourInCallWith(String name) throws Exception {
         findNameIamCallingInContactList(name).orElseThrow(
                 () -> new IllegalStateException(String.format("The conversation '%s' is not visible in the list", name))

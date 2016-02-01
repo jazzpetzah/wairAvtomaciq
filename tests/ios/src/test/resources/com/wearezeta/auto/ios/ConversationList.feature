@@ -295,7 +295,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C850 @staging @id3312
+  @C850 @regression @id3312
   Scenario Outline: Verify silencing and notify from the action menu
     Given There are 2 users where <Name> is me
     Given User Myself removes his avatar picture
@@ -317,20 +317,21 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C106 @staging @id3899 @ZIOS-5279
+  @C106 @regression @id3899
   Scenario Outline: Verify first conversation in the list is highlighted and opened
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given User <Name> change accent color to BrightOrange
+    Given There are 3 users where <Name> is me
+    Given User Myself removes his avatar picture
+    Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see conversations list
-    And I see conversation <Contact> is selected in list
-    When I swipe left in current window
-    Then I see dialog page with contact <Contact>
-
+    When I remember the state of conversation item number 1
+    And I tap on conversation item number 2
+    And I navigate back to conversations list
+    Then I see the state of conversation item number 1 is changed
+    
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @C843 @regression @id3954
   Scenario Outline: Verify that deleted conversation isn't going to archive
@@ -351,7 +352,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C844 @staging @id3960
+  @C844 @regression @id3960
   Scenario Outline: Verify deleting 1-to-1 conversation from archive
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -372,14 +373,14 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C18 @staging @id1481 @ZIOS-5247
+  @C18 @regression @id1481 @ZIOS-5247
   Scenario Outline: Verify removing the content and leaving from the group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Name> sends 1 encrypted message to group conversation <GroupChatName>
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I click delete menu button
     And I select Also Leave option on Delete conversation dialog

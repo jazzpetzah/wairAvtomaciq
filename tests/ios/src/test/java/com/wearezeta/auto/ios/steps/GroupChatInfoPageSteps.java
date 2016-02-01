@@ -28,8 +28,8 @@ public class GroupChatInfoPageSteps {
         return pagesCollection.getPage(ContactListPage.class);
     }
 
-    @When("^I press leave converstation button$")
-    public void IPressLeaveConverstationButton() throws Exception {
+    @When("^I press leave conversation button$")
+    public void IPressLeaveConversationButton() throws Exception {
         getGroupChatInfoPage().leaveConversation();
     }
 
@@ -75,10 +75,14 @@ public class GroupChatInfoPageSteps {
         Assert.assertEquals(getGroupChatInfoPage().getGroupChatName(), name);
     }
 
-    @When("^I exit the group info page$")
-    // may require reworking when the UI changes
+    @When("^I close group info page$")
     public void IExitGroupInfoPage() throws Exception {
         getGroupChatInfoPage().exitGroupInfoPage();
+    }
+
+    @When("^I close group participant details page$")
+    public void IExitParticipantInfoPage() throws Exception {
+        getGroupChatInfoPage().exitParticipantInfoPage();
     }
 
     @When("^I see leave conversation alert$")
@@ -89,19 +93,12 @@ public class GroupChatInfoPageSteps {
     @Then("^I press leave$")
     public void IPressLeave() throws Throwable {
         getGroupChatInfoPage().confirmLeaveConversation();
-        getContactListPage().waitForContactListToLoad();
     }
 
-    @When("^I select contact (.*)$")
-    public void ISelectContact(String name) throws Exception {
+    @When("^I select participant (.*)$")
+    public void ISelectParticipant(String name) throws Exception {
         name = usrMgr.findUserByNameOrNameAlias(name).getName();
-        getGroupChatInfoPage().selectContactByName(name);
-    }
-
-    @When("I tap on not connected contact (.*)")
-    public void ITapOnNotConnectedContact(String name) throws Exception {
-        name = usrMgr.findUserByNameOrNameAlias(name).getName();
-        getGroupChatInfoPage().selectNotConnectedUser(name);
+        getGroupChatInfoPage().selectParticipant(name);
     }
 
     @Then("^I see that conversation has (\\d+) people$")

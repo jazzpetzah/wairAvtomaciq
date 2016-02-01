@@ -7,7 +7,6 @@ Feature: People View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I open conversation details
     And I see <Contact1> user profile page
     And I press Add button
@@ -59,7 +58,7 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I press leave converstation button
+    And I press leave conversation button
     And I see leave conversation alert
     Then I press leave
     And I open archived conversations
@@ -80,7 +79,7 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I select contact <Contact2>
+    And I select participant <Contact2>
     And I click Remove
     And I see warning message
     And I confirm remove
@@ -118,7 +117,7 @@ Feature: People View
     And I open group conversation details
     And I change group conversation name to <ChatName>
     Then I see correct conversation name <ChatName>
-    And I exit the group info page
+    And I close group info page
     And I see you renamed conversation to <ChatName> message shown in Group Chat
     And I navigate back to conversations list
     And I see in contact list group chat named <ChatName>
@@ -137,11 +136,11 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I select contact <GroupCreator>
+    And I select participant <GroupCreator>
     And I verify username <GroupCreator> on Other User Profile page is displayed
     And I verify user email for <GroupCreator> on Other User Profile page is displayed
     And I click close user profile page button
-    And I select contact <NonConnectedContact>
+    And I select participant <NonConnectedContact>
     Then I verify username <NonConnectedContact> on Other User Profile page is displayed
 
     Examples:
@@ -157,7 +156,7 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I select contact <Contact1>
+    And I select participant <Contact1>
     And I tap on start dialog button on other user profile page
     And I type the default message and send it
     Then I see 1 default message in the dialog
@@ -177,7 +176,7 @@ Feature: People View
     And I tap on group chat with name <GroupChatName>
     #And I swipe up on group chat page
     And I open group conversation details
-    And I tap on not connected contact <NonConnectedContact>
+    And I select participant <NonConnectedContact>
     Then I see connect to <NonConnectedContact> dialog
 
     Examples:
@@ -192,12 +191,10 @@ Feature: People View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
     #And I swipe up on dialog page to open other user personal page
     And I open conversation details
     And I see <Contact1> user profile page
     And I press Add button
-    And I see People picker page
     #And I dont see keyboard
     And I tap on conversation <Contact2> in search result
     Then I see user <Contact2> on People picker page is selected
@@ -221,11 +218,9 @@ Feature: People View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I open conversation details
     And I see <Contact1> user profile page
     And I press Add button
-    And I see People picker page
     And I tap on Search input on People picker page
     And I see user <Contact2> found on People picker page
     And I don't see Add to conversation button
@@ -275,12 +270,10 @@ Feature: People View
     Given I see conversations list
     When I remember the state of <Contact> conversation item
     And I tap on contact name <Contact>
-    And I see dialog page
     And I open conversation details
     And I press conversation menu button
     And I press menu silence button
     And I click close user profile page button
-    And I see dialog page
     And I navigate back to conversations list
     And I see conversations list
     Then I see the state of <Contact> conversation item is changed
@@ -299,12 +292,10 @@ Feature: People View
     Given I see conversations list
     When I remember the state of <Contact> conversation item
     And I tap on contact name <Contact>
-    And I see dialog page
     And I open conversation details
     And I press conversation menu button
     And I press menu notify button
     And I click close user profile page button
-    And I see dialog page
     And I navigate back to conversations list
     And I see conversations list
     Then I see the state of <Contact> conversation item is changed
@@ -320,7 +311,6 @@ Feature: People View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I open conversation details
     And I see <Contact1> user profile page
     And I press conversation menu button
@@ -343,7 +333,7 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I select contact <Contact1>
+    And I select participant <Contact1>
     And I see <Contact1> user profile page
     And I unblock user
     Then I see dialog page
@@ -466,7 +456,6 @@ Feature: People View
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I see 5 conversation entries
     And I open conversation details
     And I press conversation menu button
@@ -493,10 +482,9 @@ Feature: People View
     Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I see 3 conversation entries
     And I open group conversation details
-    And I press leave converstation button
+    And I press leave conversation button
     And I see leave conversation alert
     Then I press leave
     And I open archived conversations
@@ -517,9 +505,8 @@ Feature: People View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
-    And I select contact <Contact3>
+    And I select participant <Contact3>
     Then I see <Contact3> user pending profile page
     Then I see remove from group conversation button
 
@@ -534,7 +521,6 @@ Feature: People View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I open conversation details
     And I press conversation menu button
     And I press menu Block button

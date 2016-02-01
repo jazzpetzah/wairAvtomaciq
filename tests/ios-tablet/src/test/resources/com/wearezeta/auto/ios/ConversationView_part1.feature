@@ -7,7 +7,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I type the default message
     And I send the message
     Then I see 1 default message in the dialog
@@ -24,7 +23,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I type the default message
     And I send the message
     Then I see 1 default message in the dialog
@@ -41,7 +39,6 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends 1 encrypted message to user Myself
     And I tap on contact name <Contact>
-    And I see dialog page
     Then I see 1 default message in the dialog
 
     Examples:
@@ -57,7 +54,6 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact>
-    And I see dialog page
     Then I see 1 default message in the dialog
 
     Examples:
@@ -203,7 +199,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I input more than 200 chars message and send it
     And I type the default message
     And I navigate back to conversations list
@@ -225,7 +220,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I input more than 200 chars message and send it
     And I type the default message
     When I tap my avatar
@@ -244,7 +238,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I input more than 200 chars message and send it
     Then I see 1 message in the dialog
 
@@ -260,7 +253,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I input more than 200 chars message and send it
     Then I see 1 message in the dialog
 
@@ -275,7 +267,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I input message with lower case and upper case
     And I send the message
     Then I see 1 message in the dialog
@@ -292,7 +283,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I input message with lower case and upper case
     And I send the message
     Then I see 1 message in the dialog
@@ -308,7 +298,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     And I tap on contact name <Contact>
-    And I see dialog page
     And I send using script predefined message <Text>
     Then I see last message in dialog is expected message <Text>
 
@@ -324,7 +313,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     And I tap on contact name <Contact>
-    And I see dialog page
     And I send using script predefined message <Text>
     Then I see last message in dialog is expected message <Text>
 
@@ -347,7 +335,6 @@ Feature: Conversation View
     And I press Login button
     And I see conversations list
     And I tap on contact name <Contact>
-    And I see dialog page
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
@@ -374,7 +361,6 @@ Feature: Conversation View
     And I press Login button
     And I see conversations list
     And I tap on contact name <Contact>
-    And I see dialog page
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
@@ -392,7 +378,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I try to send message with only spaces
     And I see the only message in dialog is system message CONNECTED TO <Contact>
     And I input message with leading empty spaces
@@ -414,7 +399,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I try to send message with only spaces
     And I see the only message in dialog is system message CONNECTED TO <Contact>
     And I input message with leading empty spaces
@@ -437,7 +421,6 @@ Feature: Conversation View
     Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
-    And I see dialog page
     And I scroll to the end of the conversation
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
@@ -446,11 +429,11 @@ Feature: Conversation View
     Then I see conversation view is scrolled back to the playing media link <SoundCloudLink>
 
     Examples:
-      | Name      | Contact   | SoundCloudLink                                                                       |
-      | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+      | Name      | Contact   | SoundCloudLink                                                   |
+      | user1Name | user2Name | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
 
   @regression @id2404 @C3225
-  Scenario Outline: Verify the Media Bar dissapears after playback finishes - SoundCloud [PORTRAIT]
+  Scenario Outline: (MediaBar disappears on Simulator) Verify the Media Bar dissapears after playback finishes - SoundCloud [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
@@ -458,18 +441,15 @@ Feature: Conversation View
     Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
-    Then I see dialog page
     And I tap on text input to scroll to the end
     And I see media link <SoundCloudLink> and media in dialog
     When I tap media link
     And I scroll media out of sight until media bar appears
-    And I see media bar on dialog page
-    And I wait 150 seconds for media to stop playing
-    Then I dont see media bar on dialog page
+    Then I wait up to 35 seconds for media bar to disappear
 
     Examples:
-      | Name      | Contact   | SoundCloudLink                                                                       |
-      | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+      | Name      | Contact   | SoundCloudLink                                                   |
+      | user1Name | user2Name | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
 
   @C2676 @regression @id2987
   Scenario Outline: I can send a sketch[PORTRAIT]
@@ -545,7 +525,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I type the default message
     And I send the message
     Then I see 1 default message in the dialog
@@ -563,7 +542,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I type the default message
     And I send the message
     Then I see 1 default message in the dialog
@@ -581,7 +559,6 @@ Feature: Conversation View
     Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
-    And I see dialog page
     And I tap on text input to scroll to the end
     And I navigate back to conversations list
     And I tap on contact name <Contact>
@@ -609,7 +586,6 @@ Feature: Conversation View
     Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
-    And I see dialog page
     And I tap on text input to scroll to the end
     And I tap on contact name <Contact>
     Then I see media link <SoundCloudLink> and media in dialog
@@ -635,7 +611,6 @@ Feature: Conversation View
     Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I tap on text input to scroll to the end
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
@@ -657,7 +632,6 @@ Feature: Conversation View
     Given User Myself sends 40 encrypted messages to user <Contact1>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact1>
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I tap on text input to scroll to the end
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link

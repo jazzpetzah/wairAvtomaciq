@@ -7,7 +7,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I send long message
     And I type the default message and send it
     And I scroll to the beginning of the conversation
@@ -28,7 +27,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I send long message
     And I type the default message and send it
     And I scroll to the beginning of the conversation
@@ -54,7 +52,6 @@ Feature: Conversation View
     And I choose a picture from camera roll on iPad popover
     And I press Confirm button on iPad popover
     And I see 1 photo in the dialog
-    And I memorize message send time
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I see sender first name <Name> on fullscreen page
@@ -84,7 +81,6 @@ Feature: Conversation View
     And I choose a picture from camera roll on iPad popover
     And I press Confirm button on iPad popover
     And I see 1 photo in the dialog
-    And I memorize message send time
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I see sender first name <Name> on fullscreen page
@@ -107,7 +103,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I post media link <YouTubeLink>
     And I navigate back to conversations list
     And I tap on contact name <Contact>
@@ -127,7 +122,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I post media link <YouTubeLink>
     Then I see youtube link <YouTubeLink> and media in dialog
     And I click video container for the first time
@@ -144,7 +138,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I close the app for <CloseAppTime> seconds
     Then I see title bar in conversation name <Contact>
 
@@ -160,7 +153,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I close the app for <CloseAppTime> seconds
     Then I see title bar in conversation name <Contact>
 
@@ -181,7 +173,6 @@ Feature: Conversation View
     And I choose a picture from camera roll on iPad popover
     And I press Confirm button on iPad popover
     And I see 1 photo in the dialog
-    And I memorize message send time
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     When I rotate UI to landscape
@@ -205,7 +196,6 @@ Feature: Conversation View
     And I choose a picture from camera roll on iPad popover
     And I press Confirm button on iPad popover
     And I see 1 photo in the dialog
-    And I memorize message send time
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I rotate UI to portrait
@@ -222,7 +212,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I open conversation details
     And I open ellipsis menu
     And I click archive menu button
@@ -242,7 +231,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I open conversation details
     And I open ellipsis menu
     And I click archive menu button
@@ -355,7 +343,6 @@ Feature: Conversation View
     Given I see conversations list
     Given User Myself sends encrypted message "<VimeoLink>" to user <Contact1>
     When I tap on contact name <Contact1>
-    And I see dialog page
     Then I see vimeo link <VimeoLink> and media in dialog
 
     Examples:
@@ -371,7 +358,6 @@ Feature: Conversation View
     Given I see conversations list
     Given User Myself sends encrypted message "<VimeoLink>" to user <Contact1>
     When I tap on contact name <Contact1>
-    And I see dialog page
     Then I see vimeo link <VimeoLink> and media in dialog
 
     Examples:
@@ -386,7 +372,6 @@ Feature: Conversation View
     Given I see conversations list
     Given User Myself sends encrypted message "<VimeoLink>" to user <Contact>
     When I tap on contact name <Contact>
-    And I see dialog page
     Then I see vimeo link <VimeoLink> but NO media player
 
     Examples:
@@ -402,7 +387,6 @@ Feature: Conversation View
     Given I see conversations list
     Given User Myself sends encrypted message "<VimeoLink>" to user <Contact>
     When I tap on contact name <Contact>
-    And I see dialog page
     Then I see vimeo link <VimeoLink> but NO media player
 
     Examples:
@@ -417,7 +401,6 @@ Feature: Conversation View
     Given I see conversations list
     Given User Myself sends encrypted message "<MessageAndLink>" to user <Contact1>
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I see Link <MessageAndLink> in dialog
     And I tap on Link with a message
     Then I see WireWebsitePage
@@ -435,7 +418,6 @@ Feature: Conversation View
     Given I see conversations list
     Given User Myself sends encrypted message "<MessageAndLink>" to user <Contact1>
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I see Link <MessageAndLink> in dialog
     And I tap on Link with a message
     Then I see WireWebsitePage
@@ -452,7 +434,6 @@ Feature: Conversation View
     Given I see conversations list
     Given User Myself sends encrypted message "<Link>" to user <Contact1>
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I see Link <Link> in dialog
     And I tap on Link
     Then I see WireWebsitePage
@@ -470,7 +451,6 @@ Feature: Conversation View
     Given I see conversations list
     Given User Myself sends encrypted message "<Link>" to user <Contact1>
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I see Link <Link> in dialog
     And I tap on Link
     Then I see WireWebsitePage
@@ -486,14 +466,11 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I type the default message
     And I navigate back to conversations list
     When I tap on contact name <Contact2>
-    And I see dialog page
     And I navigate back to conversations list
     And I tap on contact name <Contact1>
-    And I see dialog page
     Then I see Close input options button is not visible
     And I see controller buttons can not be visible
     And I see the default message in input field
@@ -510,12 +487,9 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I type the default message
     When I tap on contact name <Contact2>
-    And I see dialog page
     And I tap on contact name <Contact1>
-    And I see dialog page
     Then I see Close input options button is not visible
     And I see controller buttons can not be visible
     And I see the default message in input field
@@ -532,7 +506,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I see 1 photo in the dialog
     And I longpress on image in the conversation
     And I tap on copy badge
@@ -554,7 +527,6 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     And I tap on contact name <Contact>
-    And I see dialog page
     And I see 1 photo in the dialog
     And I longpress on image in the conversation
     And I tap on copy badge
@@ -584,7 +556,6 @@ Feature: Conversation View
     And I tap on Search input on People picker page
     And I search for user name <Contact1> and tap on it on People picker page
     And I click open conversation button on People picker page
-    Then I see dialog page
     Then I see the only message in dialog is system message CONNECTED TO <Contact1>
     And I type the default message
     And I send the message
@@ -611,7 +582,6 @@ Feature: Conversation View
     And I tap on Search input on People picker page
     And I search for user name <Contact1> and tap on it on People picker page
     And I click open conversation button on People picker page
-    Then I see dialog page
     Then I see the only message in dialog is system message CONNECTED TO <Contact1>
     And I type the default message
     And I send the message
@@ -751,7 +721,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I see plus button next to text input
     And I type the default message
     And I see plus icon is changed to user avatar icon
@@ -770,7 +739,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I see plus button next to text input
     And I type the default message
     And I see plus icon is changed to user avatar icon

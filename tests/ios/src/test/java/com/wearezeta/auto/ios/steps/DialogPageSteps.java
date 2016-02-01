@@ -4,12 +4,10 @@ import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.util.Date;
 
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.ios.IOSConstants;
@@ -21,7 +19,6 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class DialogPageSteps {
-    private static final Logger log = ZetaLogger.getLog(DialogPageSteps.class.getSimpleName());
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
@@ -39,9 +36,7 @@ public class DialogPageSteps {
     }
 
     private String mediaState;
-    public static long sendDate;
     private static final String ONLY_SPACES_MESSAGE = "     ";
-    public static long memTime;
 
     @When("^I see dialog page$")
     public void WhenISeeDialogPage() throws Exception {
@@ -272,11 +267,6 @@ public class DialogPageSteps {
         getDialogPage().waitSoundCloudLoad();
     }
 
-    @When("^I memorize message send time$")
-    public void IMemorizeMessageSendTime() throws Exception {
-        sendDate = new Date().getTime();
-    }
-
     @Then("I see youtube link (.*) and media in dialog")
     public void ISeeYoutubeLinkAndMediaInDialog(String link) throws Exception {
         Assert.assertTrue("Media is missing in dialog", getDialogPage()
@@ -326,19 +316,37 @@ public class DialogPageSteps {
     @When("^I tap media link$")
     public void ITapMediaLink() throws Throwable {
         getDialogPage().startMediaContent();
-        memTime = System.currentTimeMillis();
     }
 
     @When("^I scroll media out of sight until media bar appears$")
     public void IScrollMediaOutOfSightUntilMediaBarAppears() throws Exception {
-        getDialogPage().scrollDownTilMediaBarAppears();
-        Assert.assertTrue("Media bar is not displayed", getDialogPage()
-                .isMediaBarDisplayed());
+        Assert.assertTrue("Media bar is not displayed after the view has been scrolled to the top",
+                getDialogPage().scrollDownTillMediaBarAppears());
     }
 
     @When("^I pause playing the media in media bar$")
     public void IPausePlayingTheMediaInMediaBar() throws Exception {
         getDialogPage().pauseMediaContent();
+    }
+
+    /**
+     * Verify that Media disappears after the timeout
+     *
+     * @step. ^I wait up to (\d+) seconds for media bar to disappear$
+     *
+     * @param timeoutSeconds number of seconds to wait
+     * @throws Exception
+     */
+    @Then("^I wait up to (\\d+) seconds for media bar to disappear$")
+    public void IVerifyMediaBarIsNotVisible(int timeoutSeconds) throws Exception {
+        final long millisecondsStarted = System.currentTimeMillis();
+        do {
+            if (getDialogPage().isMediaBarNotVisibled()) {
+                return;
+            }
+        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
+        throw new AssertionError(String.format("The media bar is still visible after %s seconds timeout",
+                timeoutSeconds));
     }
 
     @When("^I press play in media bar$")
@@ -370,21 +378,6 @@ public class DialogPageSteps {
         String endedState = IOSConstants.MEDIA_STATE_STOPPED;
         mediaState = getDialogPage().getMediaState();
         Assert.assertEquals(endedState, mediaState);
-    }
-
-    @When("I wait (.*) seconds for media to stop playing")
-    public void IWaitForMediaStopPlaying(int time) throws Throwable {
-        long deltaTime = 0;
-        long currentTime = System.currentTimeMillis();
-        if ((memTime + time * 1000) > currentTime) {
-            deltaTime = time * 1000 - (currentTime - memTime);
-            log.debug("Waiting " + deltaTime + " ms playback to finish");
-            Thread.sleep(deltaTime + 5000);
-            log.debug("Playback finished");
-        } else {
-            log.debug("Playback finished");
-        }
-
     }
 
     @Then("I see media bar on dialog page")
@@ -421,8 +414,7 @@ public class DialogPageSteps {
 
     @Then("^I scroll away the keyboard$")
     public void IScrollKeyboardAway() throws Throwable {
-        getDialogPage().swipeDialogPageDown(500);
-        Thread.sleep(2000);
+        getDialogPage().swipeDialogPageDown();
     }
 
     @Then("^I navigate back to conversations list")

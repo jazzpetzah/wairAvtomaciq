@@ -172,7 +172,6 @@ Feature: Settings
     And I close the Settings
     And I close self profile
     When I tap on contact name <Contact>
-    And I see dialog page
     Given User <Contact2> sends 1 encrypted message to user Myself
     Then I do not see chathead of contact <Contact2>
     And I swipe right on Dialog page
@@ -185,7 +184,6 @@ Feature: Settings
     And I close the Settings
     And I close self profile
     When I tap on contact name <Contact>
-    And I see dialog page
     Given User <Contact2> sends 1 encrypted message to user Myself
     Then I see chathead of contact <Contact2>
     And I wait for 5 seconds
@@ -213,7 +211,6 @@ Feature: Settings
     And I close the Settings
     And I close self profile
     When I tap on contact name <Contact>
-    And I see dialog page
     Given User <Contact2> sends 1 encrypted message to user Myself
     Then I do not see chathead of contact <Contact2>
     And I tap my avatar
@@ -225,7 +222,6 @@ Feature: Settings
     And I close the Settings
     And I close self profile
     When I tap on contact name <Contact>
-    And I see dialog page
     Given User <Contact2> sends 1 encrypted message to user Myself
     Then I do not see chathead of contact <Contact2>
 

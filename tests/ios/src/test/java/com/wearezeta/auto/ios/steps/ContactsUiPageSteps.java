@@ -1,9 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.ContactsUiPage;
@@ -13,14 +11,12 @@ import cucumber.api.java.en.When;
 
 public class ContactsUiPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    private static final Logger log = ZetaLogger
-            .getLog(ContactsUiPageSteps.class.getSimpleName());
 
-    private final IOSPagesCollection pagesCollecton = IOSPagesCollection
+    private final IOSPagesCollection pagesCollection = IOSPagesCollection
             .getInstance();
 
     private ContactsUiPage getContactsUiPage() throws Exception {
-        return (ContactsUiPage) pagesCollecton.getPage(ContactsUiPage.class);
+        return pagesCollection.getPage(ContactsUiPage.class);
     }
 
     /**

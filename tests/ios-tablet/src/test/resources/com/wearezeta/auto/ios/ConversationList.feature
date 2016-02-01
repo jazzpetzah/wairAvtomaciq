@@ -170,7 +170,6 @@ Feature: Conversation List
     Given User <Contact> sends <Number> encrypted messages to user Myself
     Given I remember the state of <Contact> conversation item
     When I tap on contact name <Contact>
-    And I see dialog page
     And I navigate back to conversations list
     Then I see the state of <Contact> conversation item is changed
 
@@ -189,7 +188,6 @@ Feature: Conversation List
     Given User <Contact> sends <Number> encrypted messages to user Myself
     Given I remember the state of <Contact> conversation item
     When I tap on contact name <Contact>
-    And I see dialog page
     And I navigate back to conversations list
     Then I see the state of <Contact> conversation item is changed
 
@@ -362,7 +360,6 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     When I see conversations list
     And I tap on contact name <Contact>
-    And I see dialog page
     And <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
@@ -370,8 +367,6 @@ Feature: Conversation List
     And I swipe right on Dialog page
     Then I see mute call button in conversation list
     And I click mute call button in conversation list
-    And I swipe left in current window
-    And I see mute call button on calling bar is selected
 
     Examples:
       | Name      | Contact   | CallBackend |
@@ -388,7 +383,6 @@ Feature: Conversation List
     Given User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
     Given I remember the state of <Contact> conversation item
     When I tap on contact name <Contact>
-    And I see dialog page
     And I tap media link
     And I rotate UI to portrait
     And I navigate back to conversations list

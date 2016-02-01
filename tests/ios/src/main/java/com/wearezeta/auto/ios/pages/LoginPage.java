@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.util.Optional;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.DummyElement;
@@ -63,8 +62,6 @@ public class LoginPage extends IOSPage {
 
     private static final By nameNotNowButton = By.name("NOT NOW");
 
-    private static final By nameGotItButton = By.name("GOT IT");
-
     public static final String nameSelfButton = "SelfButton";
 
     public String message;
@@ -98,10 +95,7 @@ public class LoginPage extends IOSPage {
         if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(), nameLoginButton, 40)) {
             throw new IllegalStateException("Login button is still visible after the timeout");
         }
-        final Optional<WebElement> gotItButton = getElementIfDisplayed(nameGotItButton, 2);
-        if (gotItButton.isPresent()) {
-            gotItButton.get().click();
-        }
+        instantiatePage(FirstTimeOverlay.class).acceptIfVisible(2);
     }
 
     public void clickLoginButton() throws Exception {
@@ -127,10 +121,6 @@ public class LoginPage extends IOSPage {
     public Boolean isLoginFinished() throws Exception {
         dismissSettingsWarning();
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameSelfButton), 60);
-    }
-
-    public boolean isLoginButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameSwitchToEmailLogin);
     }
 
     public void tapHoldEmailInput() throws Exception {

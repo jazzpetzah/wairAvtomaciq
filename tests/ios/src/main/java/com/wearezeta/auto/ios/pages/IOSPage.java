@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.pages;
 
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -52,6 +53,9 @@ public abstract class IOSPage extends BasePage {
     protected static final By nameDoneButton = By.name("Done");
 
     private static String imagesPath = "";
+
+    private static final Function<String, String> xpathStrAlertByText = text ->
+            String.format("//UIAAlert[ .//*[contains(@name, '%s')] or contains(@name, '%s')]", text, text);
 
     private IOSKeyboard onScreenKeyboard;
 
@@ -176,14 +180,21 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void acceptAlert() throws Exception {
-        DriverUtils.waitUntilAlertAppears(this.getDriver());
-        try {
+        if (DriverUtils.waitUntilAlertAppears(this.getDriver())) {
             this.getDriver().switchTo().alert().accept();
-        } catch (Exception e) {
-            // do nothing
         }
     }
 
+    public void dismissAlert() throws Exception {
+        if (DriverUtils.waitUntilAlertAppears(this.getDriver())) {
+            this.getDriver().switchTo().alert().dismiss();
+        }
+    }
+
+    public boolean isAlertContainsText(String expectedText) throws Exception {
+        final By locator = By.xpath(xpathStrAlertByText.apply(expectedText));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
 
     public void minimizeApplication(int timeSeconds) throws Exception {
         assert getDriver() != null : "WebDriver is not ready";
@@ -208,14 +219,6 @@ public abstract class IOSPage extends BasePage {
         }
     }
 
-    public void dismissAlert() throws Exception {
-        DriverUtils.waitUntilAlertAppears(this.getDriver());
-        try {
-            this.getDriver().switchTo().alert().dismiss();
-        } catch (Exception e) {
-            // do nothing
-        }
-    }
 
     public void dismissAllAlerts() throws Exception {
         int count = 0;
@@ -320,7 +323,7 @@ public abstract class IOSPage extends BasePage {
         } while (counter < retryCount);
         throw new IllegalStateException(String.format("Locator %s is still displayed", locator));
     }
-    
+
     public void clickElementWithRetryIfStillDisplayed(By locator) throws Exception {
         clickElementWithRetryIfStillDisplayed(locator, DEFAULT_RETRY_COUNT);
     }

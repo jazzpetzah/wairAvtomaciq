@@ -12,7 +12,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class GroupChatInfoPage extends IOSPage {
-    private static final By nameConversationMenu = By.name("metaControllerRightButton");
+    private static final By nameRightActionButton = By.name("metaControllerRightButton");
 
     private static final By nameLeaveConversationButton = By.name("LEAVE");
 
@@ -21,9 +21,12 @@ public class GroupChatInfoPage extends IOSPage {
     private static final Function<String, String> xpathStrConversationNameByExpr = expr ->
             String.format("//*[@name='ParticipantsView_GroupName' and %s]", expr);
 
+    private static final By nameExitParticipantInfoPageButton = By.name("OtherUserProfileCloseButton");
+
     private static final By nameExitGroupInfoPageButton = By.name("metaControllerCancelButton");
 
-    private static final By nameAddContactToChatButton = By.name("metaControllerLeftButton");
+
+    private static final By namLeftActionButton = By.name("metaControllerLeftButton");
 
     private static final By nameAddPeopleContinueButton = By.name("CONTINUE");
 
@@ -72,13 +75,17 @@ public class GroupChatInfoPage extends IOSPage {
         return selectVisibleElements(classNameParticipantAvatarCell).size();
     }
 
+    public void exitParticipantInfoPage() throws Exception {
+        getElement(nameExitParticipantInfoPageButton).click();
+    }
+
     public void exitGroupInfoPage() throws Exception {
-        getElement(nameExitGroupInfoPageButton, "Close group info button is not visible").click();
+        getElement(nameExitGroupInfoPageButton).click();
     }
 
     public void leaveConversation() throws Exception {
-        getElement(nameConversationMenu).click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConversationMenu)){
+        getElement(nameRightActionButton).click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameRightActionButton)){
             throw new IllegalStateException("Menu button is still shown");
         }
         getElement(nameLeaveConversationButton).click();
@@ -88,14 +95,10 @@ public class GroupChatInfoPage extends IOSPage {
         getElement(nameLeaveConversationButton).click();
     }
 
-    public void selectContactByName(String name)
+    public void selectParticipant(String name)
             throws Exception {
         final By locator = By.xpath(xpathPeopleViewCollectionCellByName.apply(name));
         DriverUtils.tapByCoordinates(this.getDriver(), getElement(locator));
-    }
-
-    public void selectNotConnectedUser(String name) throws Exception {
-        getDriver().findElementByName(name.toUpperCase()).click();
     }
 
     public boolean isLeaveConversationAlertVisible() throws Exception {
@@ -103,7 +106,7 @@ public class GroupChatInfoPage extends IOSPage {
     }
 
     public void clickOnAddButton() throws Exception {
-        getElement(nameAddContactToChatButton).click();
+        getElement(namLeftActionButton).click();
     }
 
     public void clickOnAddDialogContinueButton() throws Throwable {

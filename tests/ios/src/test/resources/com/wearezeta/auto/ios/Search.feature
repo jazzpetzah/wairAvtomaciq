@@ -81,7 +81,7 @@ Feature: Search
     And I click Create Conversation button on People picker page
     And I open group conversation details
     And I change group conversation name to <ConvoName>
-    And I exit the group info page
+    And I close group info page
     And I navigate back to conversations list
     And I see first item in contact list named <ConvoName>
 

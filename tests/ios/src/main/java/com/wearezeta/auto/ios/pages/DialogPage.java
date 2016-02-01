@@ -6,6 +6,8 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -239,12 +241,17 @@ public class DialogPage extends IOSPage {
         }
     }
 
-    public void scrollDownTilMediaBarAppears() throws Exception {
-        int count = 0;
-        while ((count < 3) && !isMediaBarDisplayed()) {
-            swipeDialogPageDown(2000);
-            count++;
+    public boolean scrollDownTillMediaBarAppears() throws Exception {
+        final int maxScrolls = 3;
+        int nTry = 0;
+        while (nTry < maxScrolls) {
+            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameTitle, 2)) {
+                return true;
+            }
+            swipeDialogPageDown();
+            nTry++;
         }
+        return false;
     }
 
     private boolean isMediaBarPauseButtonVisible() throws Exception {
@@ -323,9 +330,13 @@ public class DialogPage extends IOSPage {
                 time);
     }
 
-    public void swipeDialogPageDown(int time) throws Exception {
-        DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationPage), time,
-                50, 30, 50, 95);
+    public void swipeDialogPageDown() throws Exception {
+        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            IOSSimulatorHelper.swipeDown();
+        } else {
+            DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationPage), 1000,
+                    50, 30, 50, 95);
+        }
     }
 
     public boolean isYoutubeContainerVisible() throws Exception {
@@ -339,6 +350,10 @@ public class DialogPage extends IOSPage {
 
     public boolean isMediaBarDisplayed() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameTitle);
+    }
+
+    public boolean isMediaBarNotVisibled() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameTitle);
     }
 
     public boolean waitMediabarClose() throws Exception {

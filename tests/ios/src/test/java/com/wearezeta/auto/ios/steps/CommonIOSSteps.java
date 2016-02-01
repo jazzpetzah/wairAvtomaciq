@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Future;
 
@@ -9,6 +10,7 @@ import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import cucumber.api.PendingException;
 import cucumber.api.Scenario;
+import cucumber.api.java.en.Then;
 import org.junit.Assert;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -667,28 +669,6 @@ public class CommonIOSSteps {
     }
 
     /**
-     * General swipe action
-     *
-     * @throws Exception
-     * @step. ^I swipe left in current window$
-     */
-    @When("^I swipe left in current window$")
-    public void ISwipeLeftInCurrentWindow() throws Exception {
-        pagesCollecton.getCommonPage().swipeLeft(1000);
-    }
-
-    /**
-     * General swipe action
-     *
-     * @throws Exception
-     * @step. ^I swipe right in current window$
-     */
-    @When("^I swipe right in current window$")
-    public void ISwipeRightInCurrentWindow() throws Exception {
-        pagesCollecton.getCommonPage().swipeRight(1000);
-    }
-
-    /**
      * A user adds another user to a group chat
      *
      * @param user          that adds someone to a chat
@@ -731,4 +711,41 @@ public class CommonIOSSteps {
     public void UserRemovesAvatarPicture(String nameAlias) throws Exception {
         commonSteps.UserDeletesAvatarPicture(nameAlias);
     }
+
+    @Then("^I verify the alert contains text (.*)")
+    public void IVerifyAlertContains(String expectedText) throws Exception {
+        Assert.assertTrue(String.format("there is not '%s' on the alert", expectedText),
+                pagesCollecton.getCommonPage().isAlertContainsText(expectedText));
+    }
+
+    /**
+     * User adds a remote device to his list of devices
+     *
+     * @param userNameAlias user name/alias
+     * @param deviceName    unique name of the device
+     * @throws Exception
+     * @step. User (.*) adds a new device (.*)$
+     */
+    @When("^User (.*) adds a new device (.*) with label (.*)$")
+    public void UserAddRemoteDeviceToAccount(String userNameAlias,
+                                             String deviceName, String label) throws Exception {
+        commonSteps.UserAddsRemoteDeviceToAccount(userNameAlias, deviceName, label);
+    }
+
+    /**
+     * User adds multiple devices to his list of devices
+     *
+     * @param userNameAlias user name/alias
+     * @param deviceNames   unique name of devices, comma-separated list
+     * @throws Exception
+     * @step. User (.*) adds new devices (.*)
+     */
+    @When("^User (.*) adds new devices (.*)")
+    public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
+        final List<String> names = CommonSteps.splitAliases(deviceNames);
+        for (String name : names) {
+            commonSteps.UserAddsRemoteDeviceToAccount(userNameAlias, name, CommonUtils.generateRandomString(10));
+        }
+    }
+
 }
