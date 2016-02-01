@@ -23,6 +23,8 @@ public class ContactListPage extends IOSPage {
     private static final String xpathStrContactListItems = xpathStrContactListRoot + "//UIACollectionCell";
     private static final Function<String, String> xpathStrContactListItemByExpr = xpathExpr ->
             String.format("%s/UIAStaticText[%s]", xpathStrContactListItems, xpathExpr);
+    private static final Function<String, String> xpathStrContactListItemYouAreInCallWithByName = name ->
+            String.format("%s/UIAStaticText[@name='%s']", xpathStrMainWindow, name);
 
     private static final Function<String, String> xpathStrConvoListEntryByName = name ->
             String.format("%s[ .//*[@value='%s'] ]", xpathStrContactListItems, name);
@@ -256,4 +258,23 @@ public class ContactListPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameSelfButton);
     }
 
+    public void tapOnNameYourInCallWith(String name) throws Exception {
+        findNameIamCallingInContactList(name).orElseThrow(
+                () -> new IllegalStateException(String.format("The conversation '%s' is not visible in the list", name))
+        ).click();
+    }
+
+    private Optional<WebElement> findNameIamCallingInContactList(String name) throws Exception {
+        final By locator = By.xpath(xpathStrContactListItemYouAreInCallWithByName.apply(name));
+        final Optional<WebElement> contactCellCalling = getElementIfDisplayed(locator);
+        if (contactCellCalling.isPresent()) {
+            return contactCellCalling;
+        } else {
+            try {
+                return Optional.of(((IOSElement) getElement(xpathContactListRoot)).scrollToExact(name));
+            } catch (WebDriverException e) {
+                return Optional.empty();
+            }
+        }
+    }
 }
