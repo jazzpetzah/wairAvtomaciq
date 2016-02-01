@@ -14,7 +14,6 @@ Feature: Block
     And I see the Conversations list with no conversations
     And I wait until <Contact> exists in backend search results
     When I tap Search input
-    And I see People Picker page
     And I enter "<Contact>" into Search input on People Picker page
     When I tap the found item <Contact> on People Picker page
     Then I see Blocked Connection popover
@@ -50,7 +49,6 @@ Feature: Block
     And I see the Conversations list with no conversations
     And I wait until <Contact> exists in backend search results
     When I tap Search input
-    And I see People Picker page
     And I enter "<Contact>" into Search input on People Picker page
     When I tap the found item <Contact> on People Picker page
     Then I see Blocked Connection popover
@@ -85,7 +83,6 @@ Feature: Block
     And I see the Conversations list with no conversations
     And I wait until <Contact> exists in backend search results
     When I tap Search input
-    And I see People Picker page
     When I enter "<Contact>" into Search input on People Picker page
     Then I see "<Contact>" avatar on People Picker page
     And I remember <Contact> avatar on People Picker page
@@ -112,7 +109,6 @@ Feature: Block
     And I see the Conversations list with no conversations
     And I wait until <Contact> exists in backend search results
     When I tap Search input
-    And I see People Picker page
     When I enter "<Contact>" into Search input on People Picker page
     Then I see "<Contact>" avatar on People Picker page
     And I remember <Contact> avatar on People Picker page
@@ -140,7 +136,6 @@ Feature: Block
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with no conversations
     When I tap Search input
-    And I see People Picker page
     And I enter "<Contact>" into Search input on People Picker page
     Then I see "<Contact>" avatar on People Picker page
     When I tap the found item <Contact> on People Picker page

@@ -53,7 +53,7 @@ Feature: Conversation View
     And I press Camera Roll button
     And I choose a picture from camera roll on iPad popover
     And I press Confirm button on iPad popover
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
     And I memorize message send time
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
@@ -64,7 +64,7 @@ Feature: Conversation View
     And I verify image caption and download button are not shown
     And I tap on fullscreen page
     And I tap close fullscreen page button
-    Then I see new photo in the dialog
+    Then I see 2 photos in the dialog
 
     Examples:
       | Name      | Contact   |
@@ -83,7 +83,7 @@ Feature: Conversation View
     And I press Camera Roll button
     And I choose a picture from camera roll on iPad popover
     And I press Confirm button on iPad popover
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
     And I memorize message send time
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
@@ -94,7 +94,7 @@ Feature: Conversation View
     And I verify image caption and download button are not shown
     And I tap on fullscreen page
     And I tap close fullscreen page button
-    Then I see new photo in the dialog
+    Then I see 2 photos in the dialog
 
     Examples:
       | Name      | Contact   |
@@ -171,33 +171,29 @@ Feature: Conversation View
   @C2626 @regression @id2418
   Scenario Outline: Rotate image in fullscreen mode [PORTRAIT]
     Given There are 2 users where <Name> is me
-    Given User <Contact> change name to <NewName>
-    Given User <Contact> change accent color to <Color>
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap on contact name <Contact>
+    And I tap on contact name <Contact>
     And I click plus button next to text input
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll on iPad popover
     And I press Confirm button on iPad popover
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
     And I memorize message send time
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
-    And I rotate UI to landscape
-    Then I see image rotated in fullscreen mode
+    When I rotate UI to landscape
+    Then I see Full Screen Page opened
 
     Examples:
-      | Name      | Contact   | Color        | NewName          |
-      | user1Name | user2Name | BrightOrange | RotateFullscreen |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C2630 @regression @id3206
   Scenario Outline: Rotate image in fullscreen mode [LANDSCAPE]
     Given There are 2 users where <Name> is me
-    Given User <Contact> change name to <NewName>
-    Given User <Contact> change accent color to <Color>
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
@@ -208,16 +204,16 @@ Feature: Conversation View
     And I press Camera Roll button
     And I choose a picture from camera roll on iPad popover
     And I press Confirm button on iPad popover
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
     And I memorize message send time
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I rotate UI to portrait
-    Then I see image rotated to portrait in fullscreen mode
+    Then I see Full Screen Page opened
 
     Examples:
-      | Name      | Contact   | Color        | NewName          |
-      | user1Name | user2Name | BrightOrange | RotateFullscreen |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C2729 @regression @id2451
   Scenario Outline: Verify archiving conversation from ellipsis menu [PORTRAIT]
@@ -319,7 +315,7 @@ Feature: Conversation View
     And I click plus button next to text input
     Then I see only Details button. Call, Camera, Sketch, Ping are not shown
     And I click Close input options button
-    And I navigate back to conversations view
+    And I navigate back to conversations list
     When I tap on group chat with name <GroupChatName>
     And I click plus button next to text input
     Then I see only Details button. Call, Camera, Sketch, Ping are not shown
@@ -537,13 +533,13 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I see dialog page
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
     And I longpress on image in the conversation
     And I tap on copy badge
     And I tap and hold on message input
     And I click on popup Paste item
     And I press Confirm button
-    Then I see new photo in the dialog
+    Then I see 2 photos in the dialog
 
     Examples:
       | Name      | Contact   | Picture     | ConversationType |
@@ -559,14 +555,14 @@ Feature: Conversation View
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     And I tap on contact name <Contact>
     And I see dialog page
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
     And I longpress on image in the conversation
     And I tap on copy badge
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
     And I press Confirm button
-    Then I see new photo in the dialog
+    Then I see 2 photos in the dialog
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -633,7 +629,7 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I see download button shown on fullscreen page
@@ -644,7 +640,7 @@ Feature: Conversation View
     And I press Camera Roll button
     And I choose last picture from camera roll
     And I press Confirm button
-    Then I verify image in dialog is same as template <Picture>
+    And I see 2 photos in the dialog
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -659,7 +655,7 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I see download button shown on fullscreen page
@@ -670,8 +666,7 @@ Feature: Conversation View
     And I press Camera Roll button
     And I choose last picture from camera roll
     And I press Confirm button
-    And I scroll to the end of the conversation
-    Then I verify image in dialog is same as template <Picture>
+    And I see 2 photos in the dialog
 
     Examples:
       | Name      | Contact   | Picture     |

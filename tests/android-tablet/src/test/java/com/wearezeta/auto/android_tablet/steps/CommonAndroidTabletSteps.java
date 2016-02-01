@@ -185,6 +185,12 @@ public class CommonAndroidTabletSteps {
 
     @Before
     public void setUp() throws Exception {
+        try {
+            SEBridge.getInstance().reset();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         AndroidLogListener.getInstance(ListenerType.DEFAULT).start();
         final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), getPath());
         ZetaFormatter.setLazyDriver(lazyDriver);
@@ -194,12 +200,6 @@ public class CommonAndroidTabletSteps {
 
     @After
     public void tearDown(Scenario scenario) {
-        try {
-            SEBridge.getInstance().reset();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         try {
             AndroidCommonUtils.setAirplaneMode(false);
         } catch (Exception e) {

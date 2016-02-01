@@ -24,11 +24,9 @@ Feature: Giphy
     When I tap on contact name <Contact>
     And I see dialog page
     And I type tag for giphy preview <GiphyTag> and open preview overlay
-    And I wait for 5 seconds
     And I send gif from giphy preview page
-    And I wait for 5 seconds
     And I see dialog page
-    Then I see new photo in the dialog
+    Then I see 1 photo in the dialog
 
     Examples: 
       | Name      | Contact   | GiphyTag |

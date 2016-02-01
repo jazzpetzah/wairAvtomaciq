@@ -5,14 +5,14 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I tap to edit my name
     And I change name <Name> to <NewUsername>
     Then I see my new name <NewUsername1>
     When I close self profile
     Then I see conversations list
     And I see my name <NewUsername1> first letter as label of Self Button
-    When I tap on my name <Name>
+    When I tap my avatar
     And I tap to edit my name
     And I change name <Name> to <NewUsername>
     Then I see my new name <NewUsername1>
@@ -27,14 +27,14 @@ Feature: Self Profile
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I tap to edit my name
     And I change name <Name> to <NewUsername>
     Then I see my new name <NewUsername1>
     When I close self profile
     Then I see conversations list
     And I see my name <NewUsername1> first letter as label of Self Button
-    When I tap on my name <Name>
+    When I tap my avatar
     And I tap to edit my name
     And I change name <Name> to <NewUsername>
     Then I see my new name <NewUsername1>
@@ -48,7 +48,7 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I attempt to change name using only spaces
     And I see error message asking for more characters
     And I attempt to enter an 80 char name
@@ -64,7 +64,7 @@ Feature: Self Profile
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I attempt to change name using only spaces
     And I see error message asking for more characters
     And I attempt to enter an 80 char name
@@ -80,7 +80,7 @@ Feature: Self Profile
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I tap on personal screen
     And I press Camera button
     And I choose a picture from camera roll on iPad popover
@@ -99,7 +99,7 @@ Feature: Self Profile
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I tap on personal screen
     And I press Camera button
     And I choose a picture from camera roll on iPad popover
@@ -117,7 +117,7 @@ Feature: Self Profile
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I tap to edit my name
     And I attempt to input an empty name and press return
     And I see error message asking for more characters
@@ -135,7 +135,7 @@ Feature: Self Profile
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I tap to edit my name
     And I attempt to input an empty name and press return
     And I see error message asking for more characters
@@ -152,7 +152,7 @@ Feature: Self Profile
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I tap to edit my name
     And I attempt to enter <username1char> and press return
     Then I see error message asking for more characters
@@ -172,7 +172,7 @@ Feature: Self Profile
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I tap to edit my name
     And I attempt to enter <username1char> and press return
     Then I see error message asking for more characters
@@ -192,7 +192,7 @@ Feature: Self Profile
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given User <Name> sends 1 encrypted message to user <Contact>
-    When I tap on my name <Name>
+    When I tap my avatar
     And I tap to edit my name
     And I change name <Name> to <NewUsername>
     And I close self profile
@@ -212,7 +212,7 @@ Feature: Self Profile
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given User <Name> sends 1 encrypted message to user <Contact>
-    When I tap on my name <Name>
+    When I tap my avatar
     And I tap to edit my name
     And I change name <Name> to <NewUsername>
     And I close self profile
@@ -231,7 +231,7 @@ Feature: Self Profile
     Given User <Name> change accent color to <Color1>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I slide my accent color via the colorpicker from <Color1> to <Color2>
     And I close self profile
 
@@ -247,7 +247,7 @@ Feature: Self Profile
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I slide my accent color via the colorpicker from <Color1> to <Color2>
     And I close self profile
 
@@ -261,7 +261,7 @@ Feature: Self Profile
     Given I Sign in on tablet using my email
     Given I click Not Now to not add phone number
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I tap to add my phone number
     And I see country picker button on Sign in screen
     And I enter phone number and verification code
@@ -278,7 +278,7 @@ Feature: Self Profile
     Given I Sign in on tablet using my email
     Given I click Not Now to not add phone number
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I tap to add my phone number
     And I see country picker button on Sign in screen
     And I enter phone number and verification code
@@ -296,7 +296,7 @@ Feature: Self Profile
     When I click Not Now to not add phone number
     And I accept alert
     And I see conversations list
-    And I tap on my name <Name>
+    And I tap my avatar
     And I tap to add my phone number
     And I see country picker button on Sign in screen
     And I enter invalid phone number
@@ -315,7 +315,7 @@ Feature: Self Profile
     When I click Not Now to not add phone number
     And I accept alert
     And I see conversations list
-    And I tap on my name <Name>
+    And I tap my avatar
     And I tap to add my phone number
     And I see country picker button on Sign in screen
     And I enter invalid phone number
@@ -333,7 +333,7 @@ Feature: Self Profile
     When I click Not Now to not add phone number
     And I accept alert
     And I see conversations list
-    And I tap on my name <Name>
+    And I tap my avatar
     And I tap to add my phone number
     And I see country picker button on Sign in screen
     And I input phone number <Number> with code <Code>
@@ -352,7 +352,7 @@ Feature: Self Profile
     When I click Not Now to not add phone number
     And I accept alert
     And I see conversations list
-    And I tap on my name <Name>
+    And I tap my avatar
     And I tap to add my phone number
     And I see country picker button on Sign in screen
     And I input phone number <Number> with code <Code>
@@ -367,7 +367,7 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     Then I dont see theme switcher button on self profile page
 
     Examples:
@@ -380,7 +380,7 @@ Feature: Self Profile
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     Then I dont see theme switcher button on self profile page
 
     Examples:

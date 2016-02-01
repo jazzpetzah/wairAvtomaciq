@@ -15,7 +15,6 @@ Feature: Lock/Unlock
     And I unlock the device
     Then I see the conversation <Contact1> in my conversations list
     When I tap the Search input
-    And I see People Picker page
     When I lock the device
     And I unlock the device
     Then I see People Picker page

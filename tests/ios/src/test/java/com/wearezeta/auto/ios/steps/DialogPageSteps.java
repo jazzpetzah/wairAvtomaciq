@@ -21,33 +21,27 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class DialogPageSteps {
-    private static final Logger log = ZetaLogger.getLog(DialogPageSteps.class
-            .getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(DialogPageSteps.class.getSimpleName());
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-    private final IOSPagesCollection pagesCollecton = IOSPagesCollection
-            .getInstance();
+    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
     private DialogPage getDialogPage() throws Exception {
-        return pagesCollecton.getPage(DialogPage.class);
+        return pagesCollection.getPage(DialogPage.class);
     }
 
     private GroupChatPage getGroupChatPage() throws Exception {
-        return pagesCollecton.getPage(GroupChatPage.class);
+        return pagesCollection.getPage(GroupChatPage.class);
     }
 
     private ContactListPage getContactListPage() throws Exception {
-        return pagesCollecton.getPage(ContactListPage.class);
+        return pagesCollection.getPage(ContactListPage.class);
     }
 
     private String mediaState;
     public static long sendDate;
-    private static final int SWIPE_DURATION = 1000;
     private static final String ONLY_SPACES_MESSAGE = "     ";
     public static long memTime;
-    public String pingId;
-    private int beforeNumberOfImages = 0;
-    final String sendInviteMailContent = "I’m on Wire. Search for %s";
 
     @When("^I see dialog page$")
     public void WhenISeeDialogPage() throws Exception {
@@ -205,13 +199,12 @@ public class DialogPageSteps {
             }
         }
     }
-    
+
     /**
      * Swipe right text input to reveal option buttons
-     * 
-     * @step. ^I swipe right text input to reveal option buttons$
-     * 
+     *
      * @throws Throwable
+     * @step. ^I swipe right text input to reveal option buttons$
      */
     @When("^I swipe right text input to reveal option buttons$")
     public void ISwipeTheTextInputCursor() throws Throwable {
@@ -249,29 +242,26 @@ public class DialogPageSteps {
             throws Throwable {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         Assert.assertTrue(String.format("Connecting to %s is not visible", contact),
-                getDialogPage().isConnectedToUserStartedConversationLabelVisible(contact));
+                getDialogPage().isConnectingToUserConversationLabelVisible(contact));
     }
 
-    @Then("^I see new photo in the dialog$")
-    public void ISeeNewPhotoInTheDialog() throws Throwable {
-        int afterNumberOfImages = -1;
+    private static final long IMAGE_VISIBILITY_TIMEOUT = 10000; //milliseconds
 
-        boolean isNumberIncreased = false;
-        for (int i = 0; i < 3; i++) {
-            afterNumberOfImages = getDialogPage().getNumberOfImages();
-            if (afterNumberOfImages == beforeNumberOfImages + 1) {
-                isNumberIncreased = true;
-                break;
-            }
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-            }
+    @Then("^I see (\\d+) photos? in the dialog$")
+    public void ISeeNewPhotoInTheDialog(int expectedCount) throws Exception {
+        int actualCount = getDialogPage().getCountOfImages();
+        if (actualCount > 0 && expectedCount > 1 && actualCount < expectedCount) {
+            final long millisecondsStarted = System.currentTimeMillis();
+            do {
+                actualCount = getDialogPage().getCountOfImages();
+                if (actualCount >= expectedCount) {
+                    break;
+                }
+                Thread.sleep(500);
+            } while (System.currentTimeMillis() - millisecondsStarted <= IMAGE_VISIBILITY_TIMEOUT);
         }
-
-        Assert.assertTrue("Incorrect images count: before - "
-                        + beforeNumberOfImages + ", after - " + afterNumberOfImages,
-                isNumberIncreased);
+        Assert.assertTrue(String.format("The actual count of images in the conversation view %s" +
+                "does not equal to the expected count %s", actualCount, expectedCount), actualCount == expectedCount);
     }
 
     @When("I type and send long message and media link (.*)")
@@ -501,23 +491,6 @@ public class DialogPageSteps {
     }
 
     /**
-     * Verify last image in dialog is same as template
-     *
-     * @param filename template file name
-     * @throws Exception
-     * @step. ^I verify image in dialog is same as template (.*)$
-     */
-    @When("^I verify image in dialog is same as template (.*)$")
-    public void IVerifyImageInDialogSameAsTemplate(String filename) throws Exception {
-        // FIXME: replace with dynamic image comparison
-    }
-
-    @Then("^I see (.*) icon in conversation$")
-    public void ThenIseeIcon(String iconLabel) throws Exception {
-        // FIXME: replace with dynamic comparison or remove
-    }
-
-    /**
      * Scrolls to the end of the conversation
      *
      * @throws Exception
@@ -537,14 +510,13 @@ public class DialogPageSteps {
      */
     @Then("^I check copied content from (.*)$")
     public void ICheckCopiedContentFrom(String mail) throws Exception {
-        mail = usrMgr.findUserByNameOrNameAlias(mail).getEmail();
-        final String finalString = String.format(sendInviteMailContent, mail);
-        String lastMessage = getDialogPage().getLastMessageFromDialog().orElseThrow(() ->
+        final String finalString = String.format("I’m on Wire. Search for %s",
+                usrMgr.findUserByNameOrNameAlias(mail).getEmail());
+        final String lastMessage = getDialogPage().getLastMessageFromDialog().orElseThrow(() ->
                 new AssertionError("No messages are present in the conversation view")
         );
-        boolean messageContainsContent = lastMessage.contains(finalString);
-        Assert.assertTrue("Mail Invite content is not shown in lastMessage",
-                messageContainsContent);
+        Assert.assertTrue(String.format("The last message in the chat '%s' does not contain '%s' part",
+                lastMessage, finalString), lastMessage.contains(finalString));
     }
 
     /**

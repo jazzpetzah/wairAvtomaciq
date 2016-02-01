@@ -6,6 +6,8 @@ import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
+import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import cucumber.api.PendingException;
 import cucumber.api.Scenario;
 import org.junit.Assert;
 import org.openqa.selenium.ScreenOrientation;
@@ -109,6 +111,12 @@ public class CommonIOSSteps {
 
     @Before
     public void setUp(Scenario scenario) throws Exception {
+        try {
+            SEBridge.getInstance().reset();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(
                 !scenario.getSourceTagNames().contains("@noAcceptAlert"));
         ZetaFormatter.setLazyDriver(lazyDriver);
@@ -538,24 +546,6 @@ public class CommonIOSSteps {
         commonSteps.IChangeUserName(userNameAlias, newName);
     }
 
-    /**
-     * Changes a users name to a randomly generated name that starts with a
-     * certain letter
-     *
-     * @param userNameAlias user's name alias to change
-     * @param startLetter   the first letter of the new username
-     * @step. ^User (\\w+) name starts with (.*)$
-     */
-
-    @When("^User (\\w+) name starts with (.*)$")
-    public void IChangeUserNameToNameStartingWith(String userNameAlias,
-                                                  String startLetter) throws Exception {
-        String newName = startLetter.concat(UUID.randomUUID().toString()
-                .replace("-", ""));
-        newName = newName.substring(0, newName.length() / 2);
-        commonSteps.IChangeUserName(userNameAlias, newName);
-    }
-
     @When("^User (\\w+) changes? accent color to (.*)$")
     public void IChangeAccentColor(String userNameAlias, String newColor) throws Exception {
         commonSteps.IChangeUserAccentColor(userNameAlias, newColor);
@@ -596,12 +586,6 @@ public class CommonIOSSteps {
 
     @After
     public void tearDown() {
-        try {
-            SEBridge.getInstance().reset();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         try {
             // async calls/waiting instances cleanup
             CommonCallingSteps2.getInstance().cleanup();
@@ -711,23 +695,29 @@ public class CommonIOSSteps {
      * @param userToBeAdded user that gets added by someone
      * @param group         group chat you get added to
      * @throws Throwable
-     * @step. ^User (.*) adds User (.*) to group chat (.*)$
+     * @step. ^User (.*) adds [Uu]ser (.*) to group chat (.*)$
      */
-    @When("^User (.*) adds User (.*) to group chat (.*)$")
+    @When("^User (.*) adds [Uu]ser (.*) to group chat (.*)$")
     public void UserAddsUserToGroupChat(String user, String userToBeAdded,
                                         String group) throws Throwable {
         commonSteps.UserXAddedContactsToGroupChat(user, userToBeAdded, group);
     }
 
     /**
-     * Returns in Simulator back to Wire App
+     * Click Simulator window at the corresponding position
      *
+     * @param strX float number 0 <= x <= 1, relative width position of click point
+     * @param strY float number 0 <= y <= 1, relative height position of click point
      * @throws Exception
-     * @step. ^I reset Wire app$
+     * @step. ^I click at ([\d\.]+),([\d\.]+) of Simulator window$
      */
-    @When("^I reset Wire app$")
-    public void ReturnToWireApp() throws Exception {
-        pagesCollecton.getCommonPage().resetApplication();
+    @When("^I click at ([\\d\\.]+),([\\d\\.]+) of Simulator window$")
+    public void ReturnToWireApp(String strX, String strY) throws Exception {
+        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            IOSSimulatorHelper.clickAt(strX, strY);
+        } else {
+            throw new PendingException("This step is not available for non-simulator devices");
+        }
     }
 
     /**

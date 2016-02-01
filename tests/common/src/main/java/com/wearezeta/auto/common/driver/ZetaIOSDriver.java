@@ -10,8 +10,10 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableMap;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import io.appium.java_client.MobileCommand;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
+import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 
@@ -111,6 +113,13 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
             return future.get(MAX_COMMAND_DURATION, TimeUnit.SECONDS);
         } catch (Exception e) {
             if (e instanceof ExecutionException) {
+                if (driverCommand.equals(MobileCommand.HIDE_KEYBOARD) && (e.getCause() instanceof WebDriverException)) {
+                    log.debug("The keyboard seems to be already hidden.");
+                    final Response response = new Response();
+                    response.setSessionId(this.getSessionId().toString());
+                    response.setStatus(HttpStatus.SC_OK);
+                    return response;
+                }
                 if (isSessionLostBecause(e.getCause())) {
                     setSessionLost(true);
                 }

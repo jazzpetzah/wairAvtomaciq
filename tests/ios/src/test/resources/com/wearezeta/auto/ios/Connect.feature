@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @C1034 @regression @rc @id2541 @ZIOS-5466
+  @C1034 @regression @rc @id2541
   Scenario Outline: Send invitation message to a user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -167,7 +167,7 @@ Feature: Connect
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C39 @regression @id596 @ZIOS-5466
+  @C39 @regression @id596
   Scenario Outline: Verify you cannot send the invitation message twice
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -225,8 +225,6 @@ Feature: Connect
   @C41 @regression @id2294
   Scenario Outline: Verify sending connection request by clicking instant + button (with search)
     Given There are 2 users where <Name> is me
-    Given User <UnconnectedUser> name starts with <StartLetter>
-    Given User <Name> change accent color to <Color>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
@@ -249,26 +247,8 @@ Feature: Connect
     Then I see Pending Connect to <UnconnectedUser> message on Dialog page from user <Name>
 
     Examples: 
-      | Name      | UnconnectedUser | ContactEmail | StartLetter | Color        |
-      | user1Name | user2Name       | user2Email   | T           | BrightOrange |
-
-  #regression
-  @C3194 @staging @id2768 @deployAddressBook @noAcceptAlert @obsolete
-  Scenario Outline: Verify you can see People you may know on Wire after uploading your address book
-    Given There are 1 user where <Name> is me
-    Given I sign in using my email or phone number
-    And I dismiss all alerts
-    And I dismiss settings warning
-    And I open search by taping on it
-    And I see Upload contacts dialog
-    And I click Continue button on Upload dialog
-    And I accept alert
-    Then I see CONNECT label
-    And I see user <Contact1> found on People picker page
-
-    Examples: 
-      | Name      | Contact1 |
-      | user1Name | vb003    |
+      | Name      | UnconnectedUser | ContactEmail |
+      | user1Name | user2Name       | user2Email   |
 
   @C38 @regression @rc @id3227
   Scenario Outline: Verify possibility of disconnecting from conversation list
@@ -397,7 +377,7 @@ Feature: Connect
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I press Confirm button
-    Then I see new photo in the dialog
+    Then I see 1 photo in the dialog
 
     Examples: 
       | Name      | Contact   |

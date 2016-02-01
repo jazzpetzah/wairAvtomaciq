@@ -16,19 +16,7 @@ Feature: Registration
       | Name      |
       | user1Name |
 
-  @C1002 @regression @id2468
-  Scenario Outline: Verify user is logged in when trying to register with a phone already assigned to the email
-    Given There is 1 user where <Name> is me
-    Given I see sign in screen
-    When I input phone number of already registered user <Name>
-    And I enter verification code for user <Name>
-    Then I see conversations list
-
-    Examples:
-      | Name      |
-      | user1Name |
-
-  @staging @noAcceptAlert @id1517
+  @C14321 @noAcceptAlert @regression
   Scenario Outline: Verify that it's impossible to proceed registration with more than 16 characters in Phone
     Given I see sign in screen
     When I enter <Count> digits phone number
@@ -61,20 +49,8 @@ Feature: Registration
     And I See selected picture
     And I confirm selection
     Then I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     Then I see user name doesnt contains spaces
-
-    Examples:
-      | Name      |
-      | user1Name |
-
-  @staging @id2467
-  Scenario Outline: Verify user is logged in when trying to register with already registered phone
-    Given There is 1 user where <Name> is me with phone number only
-    Given I see sign in screen
-    When I input phone number of already registered user <Name>
-    And I enter verification code for user <Name>
-    Then I see conversations list
 
     Examples:
       | Name      |

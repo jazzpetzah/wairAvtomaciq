@@ -91,7 +91,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
 
-  @C3173 @staging @rc @id1396
+  @C3173 @regression @rc @id1396
   Scenario Outline: Verify correct group info page information
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -242,36 +242,25 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @C977 @staging @id559
+  @C977 @regression @id559
   Scenario Outline: Verify you can add people from 1:1 people view (cancel view)
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
-    #And I swipe up on dialog page to open other user personal page
     And I open conversation details
-    And I see <Contact1> user profile page
     And I press Add button
-    And I see People picker page
-    And I scroll up page a bit
-    And I dont see keyboard
     And I tap on conversation <Contact2> in search result
     And I tap on conversation <Contact3> in search result
     And I click close button to dismiss people view
-    And I see <Contact1> user profile page
     And I press Add button
-    And I see People picker page
     And I see user <Contact2> on People picker page is NOT selected
     And I see user <Contact3> on People picker page is NOT selected
     And I click close button to dismiss people view
-    And I see <Contact1> user profile page
     And I click close user profile page button
-    And I see dialog page
     And I navigate back to conversations list
-    And I see conversations list
-    And I don't see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
+    Then I don't see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  |
@@ -439,17 +428,17 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
-  @C1830 @staging @id3971
+  @C1830 @regression @id3971
   Scenario Outline: Verify removing the content from the group conversation via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
-    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User Myself securely pings conversation <GroupChatName>
-    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
+    Given User <Contact1> securely pings conversation <GroupChatName>
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
-    Given User Myself sends encrypted image <Picture> to group conversation <GroupChatName>
+    Given User <Contact2> sends 1 encrypted message to group conversation <GroupChatName>
+    Given User <Contact2> sends encrypted image <Picture> to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button
@@ -460,6 +449,7 @@ Feature: People View
     Then I see conversation <GroupChatName> is presented in Search results
     When I tap on conversation <GroupChatName> in search result
     Then I see group chat page with users <Contact1>,<Contact2>
+    And I see 0 conversation entries
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |

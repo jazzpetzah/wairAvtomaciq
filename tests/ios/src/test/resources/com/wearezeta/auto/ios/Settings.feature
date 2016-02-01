@@ -5,7 +5,7 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
     Then I see settings page
@@ -19,7 +19,7 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I click on Settings button on personal page
     And I click on About button on personal page
     Then I see About page
@@ -36,7 +36,7 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
     And I click on Account Info on settings page
@@ -53,7 +53,7 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
     When I tap on Sound Alerts
@@ -69,7 +69,7 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    And I tap on my name <Name>
+    And I tap my avatar
     And I click on Settings button on personal page
     When I click on Help button from the options menu
     And I wait for 4 seconds
@@ -87,7 +87,7 @@ Feature: Settings
     Given Myself is connected to <Contact>,<Contact2>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
     When I tap on Sound Alerts
@@ -100,7 +100,7 @@ Feature: Settings
     Given User <Contact2> sends 1 encrypted message to user Myself
     Then I do not see chathead of contact <Contact2>
     And I swipe right on Dialog page
-    And I tap on my name <Name>
+    And I tap my avatar
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
     When I tap on Sound Alerts
@@ -125,7 +125,7 @@ Feature: Settings
     Given User me change accent color to <Color>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I click on Settings button on personal page
     And I click on About button on personal page
     Then I see About page

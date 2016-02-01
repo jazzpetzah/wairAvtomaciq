@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.util.Optional;
+import java.util.Random;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -102,8 +103,16 @@ public class RegistrationPage extends IOSPage {
         getElement(nameConfirmButton, "Confirm button is not visible", 2).click();
     }
 
+    public void inputActivationCode(String code) throws Exception {
+        final WebElement activationCodeInput = getElement(xpathActivationCode, "Activation code input is not visible");
+        activationCodeInput.sendKeys(code);
+        getElement(nameConfirmButton, "Confirm button is not visible", 2).click();
+    }
+
+    private static final Random rand = new Random();
+
     public void inputRandomActivationCode() throws Exception {
-        inputActivationCode(new PhoneNumber(PhoneNumber.WIRE_COUNTRY_PREFIX));
+        inputActivationCode(Integer.toString(100000 + rand.nextInt(900000)));
     }
 
     public void clickResendCodeButton() throws Exception {
@@ -194,5 +203,8 @@ public class RegistrationPage extends IOSPage {
 
     public void clickChoosePhotoButton() throws Exception {
         getElement(nameChoosePhotoButton, "Choose photo button is not visible").click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameChoosePhotoButton)) {
+            throw new IllegalStateException("Confirm button is still visible");
+        }
     }
 }

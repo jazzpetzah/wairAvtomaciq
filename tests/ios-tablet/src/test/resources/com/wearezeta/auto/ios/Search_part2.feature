@@ -59,9 +59,9 @@ Feature: Search
     And I press Camera Roll button
     And I choose a picture from camera roll on iPad popover
     And I press Confirm button on iPad popover
-    Then I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
-    And I see new photo in the dialog
-    When I navigate back to conversations view
+    Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
+    And I see 1 photo in the dialog
+    When I navigate back to conversations list
     Then I see in contact list group chat with <Contact1> <Contact2> <Contact3>
 
     Examples: 
@@ -85,8 +85,8 @@ Feature: Search
     And I press Camera Roll button
     And I choose a picture from camera roll on iPad popover
     And I press Confirm button on iPad popover
-    Then I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
-    And I see new photo in the dialog
+    Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
+    And I see 1 photo in the dialog
     And I see in contact list group chat with <Contact1> <Contact2> <Contact3>
 
     Examples: 

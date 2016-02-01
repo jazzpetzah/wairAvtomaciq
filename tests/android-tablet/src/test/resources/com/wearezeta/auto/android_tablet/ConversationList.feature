@@ -185,7 +185,6 @@ Feature: Conversation List
     Then I do not see Conversation Actions overlay
     And I do not see conversation <Contact1> in my conversations list
     When I tap Search input
-    And I see People Picker page
     And I enter "<Contact1>" into Search input on People Picker page
     Then I see "<Contact1>" avatar on People Picker page
     And I close People Picker
@@ -218,7 +217,6 @@ Feature: Conversation List
     Then I do not see Conversation Actions overlay
     And I do not see conversation <GroupChatName> in my conversations list
     When I tap Search input
-    And I see People Picker page
     And I enter "<GroupChatName>" into Search input on People Picker page
     Then I see "<GroupChatName>" group avatar on People Picker page
     And I close People Picker
@@ -252,7 +250,6 @@ Feature: Conversation List
     Then I do not see Conversation Actions overlay
     And I do not see conversation <GroupChatName> in my conversations list
     When I tap Search input
-    And I see People Picker page
     And I enter "<GroupChatName>" into Search input on People Picker page
     Then I see "<GroupChatName>" group avatar on People Picker page
     And I close People Picker
@@ -285,7 +282,6 @@ Feature: Conversation List
     Then I do not see Conversation Actions overlay
     And I do not see conversation <GroupChatName> in my conversations list
     When I tap Search input
-    And I see People Picker page
     And I enter "<GroupChatName>" into Search input on People Picker page
     Then I do not see "<GroupChatName>" group avatar on People Picker page
     And I close People Picker
@@ -317,7 +313,6 @@ Feature: Conversation List
     Then I do not see Conversation Actions overlay
     And I do not see conversation <GroupChatName> in my conversations list
     When I tap Search input
-    And I see People Picker page
     And I enter "<GroupChatName>" into Search input on People Picker page
     Then I do not see "<GroupChatName>" group avatar on People Picker page
     And I close People Picker
@@ -348,7 +343,6 @@ Feature: Conversation List
     Then I do not see Conversation Actions overlay
     And I do not see conversation <GroupChatName> in my conversations list
     When I tap Search input
-    And I see People Picker page
     And I enter "<GroupChatName>" into Search input on People Picker page
     Then I see "<GroupChatName>" group avatar on People Picker page
     And I close People Picker
@@ -390,7 +384,6 @@ Feature: Conversation List
     Then I do not see Conversation Actions overlay
     And I do not see conversation <GroupChatName> in my conversations list
     When I tap Search input
-    And I see People Picker page
     And I enter "<GroupChatName>" into Search input on People Picker page
     Then I see "<GroupChatName>" group avatar on People Picker page
     And I close People Picker

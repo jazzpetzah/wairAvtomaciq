@@ -28,9 +28,6 @@ public class DialogPage extends IOSPage {
 
     private static final By nameOpenConversationDetails = By.name("ComposeControllerConversationDetailButton");
 
-    private static final By xpathConnectionMessage =
-            By.xpath("//UIAStaticText[contains(@name, 'Let’s connect on Wire.')]");
-
     protected static final By nameYouRenamedConversation = By.name("YOU RENAMED THE CONVERSATION");
 
     private static final By xpathLastChatMessage = By.xpath(
@@ -42,8 +39,7 @@ public class DialogPage extends IOSPage {
 
     private static final By xpathMessageEntries = By.xpath(xpathStrMainWindow + "/UIATableView/UIATableCell");
 
-    private static final By xpathOtherConversationLastCell = By.xpath(
-            xpathStrMainWindow + "/UIATableView[1]/UIATableCell[last()]");
+    private static final By nameImageCell = By.name("ImageCell");
 
     private static final By xpathNameMediaContainer = By.xpath(
             xpathStrMainWindow + "/UIATableView[1]/UIATableCell[last()]");
@@ -61,7 +57,7 @@ public class DialogPage extends IOSPage {
     private static final By xpathConversationPage = By.xpath(xpathStrMainWindow + "/UIATableView[1]");
 
     private static final By nameMediaBarCloseButton = By.name("mediabarCloseButton");
-    
+
     private static final By nameInputOptionsCloseButton = By.name("closeButton");
 
     private static final By nameTitle = By.name("playingMediaTitle");
@@ -90,7 +86,7 @@ public class DialogPage extends IOSPage {
 
     private static final By xpathAllMessages = By.xpath(
             xpathStrMainWindow + "/UIATableView[1]/UIATableCell/UIATextView");
-    
+
     private static final String xpathStrAllMessages =
             xpathStrMainWindow + "/UIATableView[1]/UIATableCell/UIATextView";
 
@@ -105,9 +101,6 @@ public class DialogPage extends IOSPage {
     private static final By xpathLastMessage = By.xpath(
             String.format("%s/UIATableView[1]/UIATableCell[last()]/UIATextView[1]", xpathStrMainWindow));
 
-    private static final Function<String, String> nameStrConnectingLabelByReceiverName =
-            name -> String.format("CONNECTING TO %s.", name.toUpperCase());
-
     public static final Function<String, String> xpathStrConnectingToUserLabelByName = name ->
             String.format("//UIAStaticText[contains(@name, 'CONNECTING TO %s.')]", name.toUpperCase());
 
@@ -120,6 +113,7 @@ public class DialogPage extends IOSPage {
     private static final Function<String, String> xpathChatheadByName =
             name -> String.format("//UIAElement/following-sibling::UIAStaticText[@name='%s']", name);
 
+    // FIXME: bad locator
     private static final By xpathImage = By.xpath(xpathStrMainWindow + "/UIATableView[1]/UIATableCell[2]");
 
     private static final By xpathSimpleMessageLink = By.xpath(
@@ -212,18 +206,13 @@ public class DialogPage extends IOSPage {
         return 0;
     }
 
-    public String getExpectedConnectingLabel(String name) {
-        return nameStrConnectingLabelByReceiverName.apply(name);
-    }
-    
     public void swipeRightInputCursor() throws Exception {
         DriverUtils.swipeRight(this.getDriver(), getElement(nameConversationCursorInput), 1000);
     }
 
     public void swipeLeftOptionsButtons() throws Exception {
         final WebElement conversationInput = getElement(nameConversationCursorInput);
-        int inputMiddle = conversationInput.getLocation().y
-                + conversationInput.getSize().height / 2;
+        int inputMiddle = conversationInput.getLocation().y + conversationInput.getSize().height / 2;
         int windowSize = getElement(nameMainWindow).getSize().height;
         int swipeLocation = inputMiddle * 100 / windowSize;
         DriverUtils.swipeLeftCoordinates(getDriver(), 1000, swipeLocation);
@@ -231,11 +220,13 @@ public class DialogPage extends IOSPage {
 
     public void pressAddPictureButton() throws Exception {
         getElement(nameAddPictureButton).click();
-        DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameCameraLibraryButton);
     }
 
-    public int getNumberOfImages() throws Exception {
-        return getDriver().findElements(xpathOtherConversationLastCell).size();
+    public int getCountOfImages() throws Exception {
+        if (DriverUtils.waitUntilLocatorAppears(getDriver(), nameImageCell)) {
+            return getElements(nameImageCell).size();
+        }
+        return 0;
     }
 
     public void startMediaContent() throws Exception {
@@ -244,8 +235,7 @@ public class DialogPage extends IOSPage {
             mediaLinkCell.get().click();
         } else {
             final WebElement soundCloudButton = getElement(nameSoundCloudButton);
-            this.getDriver().tap(1, soundCloudButton.getLocation().x + 200,
-                    soundCloudButton.getLocation().y + 200, 1);
+            this.getDriver().tap(1, soundCloudButton.getLocation().x + 200, soundCloudButton.getLocation().y + 200, 1);
         }
     }
 
@@ -347,10 +337,6 @@ public class DialogPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathMediaConversationCell);
     }
 
-    public String getConnectMessageLabel() throws Exception {
-        return getElement(xpathConnectionMessage).getText();
-    }
-
     public boolean isMediaBarDisplayed() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameTitle);
     }
@@ -397,7 +383,8 @@ public class DialogPage extends IOSPage {
         try {
             ((IOSElement) convoInput).setValue(message);
         } catch (WebDriverException e) {
-            ((IOSElement) convoInput).sendKeys(message);
+            convoInput.clear();
+            convoInput.sendKeys(message);
         }
     }
 
@@ -410,7 +397,8 @@ public class DialogPage extends IOSPage {
             //Work around: we need to send an extra space to see the giph button
             convoInput.sendKeys(" ");
         } catch (WebDriverException e) {
-            // Ignore silently
+            convoInput.clear();
+            convoInput.sendKeys(message + " ");
         }
     }
 
@@ -470,6 +458,11 @@ public class DialogPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
+    public boolean isConnectingToUserConversationLabelVisible(String username) throws Exception {
+        final By locator = By.xpath(xpathStrConnectingToUserLabelByName.apply(username));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
     public void navigateBack(int timeMilliseconds) throws Exception {
         swipeRight(timeMilliseconds, DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, 30);
     }
@@ -505,7 +498,7 @@ public class DialogPage extends IOSPage {
     public boolean verifyInputOptionsCloseButtonNotVisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameInputOptionsCloseButton);
     }
-    
+
     public void clickInputOptionsCloseButton() throws Exception {
         getElement(nameInputOptionsCloseButton, "Close input options button is not visible").click();
     }
@@ -540,6 +533,4 @@ public class DialogPage extends IOSPage {
     public boolean isUserAvatarNextToInputVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathUserAvatarNextToInput);
     }
-
-
 }

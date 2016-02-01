@@ -109,25 +109,20 @@ public class ContactListPageSteps {
         getLoginPage().dismissSettingsWarning();
     }
 
-    @When("^I tap on my name (.*)$")
-    public void WhenITapOnMyName(String name) throws Exception {
-        getContactListPage().tapOnMyName();
-        getPersonalInfoPage().waitSelfProfileVisible();
+    @When("^I tap my avatar$")
+    public void WhenITapOnMyName() throws Exception {
+        getContactListPage().tapMyAvatar();
     }
 
-    @When("^I tap on contact name (.*)$")
+    @When("^I tap on contact name (.*)")
     public void WhenITapOnContactName(String name) throws Exception {
-        try {
-            name = usrMgr.findUserByNameOrNameAlias(name).getName();
-        } catch (NoSuchUserException e) {
-            // Ignore silently
-        }
+        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         getContactListPage().tapOnName(name);
     }
 
-    @When("^I tap on group chat with name (.*)$")
+    @When("^I tap on group chat with name (.*)")
     public void WhenITapOnGroupChatName(String chatName) throws Exception {
-        getContactListPage().tapOnGroupChat(chatName);
+        WhenITapOnContactName(chatName);
     }
 
     @When("^I swipe down contact list$")
@@ -275,8 +270,8 @@ public class ContactListPageSteps {
     public void IDoNotSeeConversationInContactList(String name)
             throws Exception {
         name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-        Assert.assertTrue("Conversation is displayed", getContactListPage()
-                .contactIsNotDisplayed(name));
+        Assert.assertTrue(String.format("Conversation '%s' is still displayed", name),
+                getContactListPage().contactIsNotDisplayed(name));
     }
 
     /**
@@ -286,47 +281,11 @@ public class ContactListPageSteps {
      * @step. ^I click archive button for conversation$
      */
     @When("^I click archive button for conversation$")
-    public void IClickArchiveConversationButton()
-            throws Exception {
+    public void IClickArchiveConversationButton() throws Exception {
         getContactListPage().clickArchiveConversationButton();
     }
 
-    private BufferedImage referenceImage = null;
-    private static final double MAX_OVERLAP_SCORE = 0.70;
-
     /**
-     * Takes screenshot of conversation cell of first contact
-     *
-     * @throws Exception
-     * @step. ^I remember the state of the first conversation cell$
-     */
-    @When("^I remember the state of the first conversation cell$")
-    public void IRememberConversationState() throws Exception {
-        referenceImage = getContactListPage().getScreenshotFirstContact();
-    }
-
-    /**
-     * Verifies that the change of state of first conversation cell is visible
-     *
-     * @throws Exception
-     * @step. ^I see change of state for first conversation cell$
-     */
-    @Then("^I see change of state for first conversation cell$")
-    public void ISeeFirstConvCellChange() throws Exception {
-        if (referenceImage == null) {
-            throw new IllegalStateException(
-                    "This step requires you to remember the initial state of the conversation cell");
-        }
-        double score = -1;
-        final BufferedImage convCellState = getContactListPage()
-                .getScreenshotFirstContact();
-        score = ImageUtil.getOverlapScore(convCellState, referenceImage,
-                ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-        Assert.assertTrue("Ping symbol not visible. Score is : " + score,
-                score <= MAX_OVERLAP_SCORE);
-    }
-
-      /**
      * Verify that mute call button is shown in conversation list
      *
      * @throws Exception

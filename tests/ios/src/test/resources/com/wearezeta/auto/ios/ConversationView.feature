@@ -56,7 +56,7 @@ Feature: Conversation View
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I press Confirm button
-    Then I see new photo in the dialog
+    Then I see 1 photo in the dialog
 
     Examples:
       | Name      | Contact   |
@@ -333,7 +333,7 @@ Feature: Conversation View
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I press Confirm button
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
     And I memorize message send time
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
@@ -344,7 +344,7 @@ Feature: Conversation View
     And I verify image caption and download button are not shown
     And I tap on fullscreen page
     And I tap close fullscreen page button
-    Then I see new photo in the dialog
+    Then I see 2 photos in the dialog
 
     Examples:
       | Name      | Contact   |
@@ -364,33 +364,6 @@ Feature: Conversation View
     Then I see youtube link <YouTubeLink> and media in dialog
     And I click video container for the first time
     And I see video player page is opened
-
-    Examples:
-      | Name      | Contact   | YouTubeLink                                |
-      | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
-
-  @obsolete @id1387
-  Scenario Outline: Verify you can play/pause media from the Media Bar - YouTube
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I type and send long message and media link <YouTubeLink>
-    And I see youtube link <YouTubeLink> and media in dialog
-    And I navigate back to conversations list
-    And I tap on contact name <Contact>
-    And I click video container for the first time
-    And I see video player page is opened
-    And I tap Pause button on Video player page
-    And I tap on Done button on Video player page
-    And I scroll media out of sight until media bar appears
-    And I press play in media bar
-    And I see video player page is opened
-    And I tap on Done button on Video player page
-    And I stop media in media bar
-    Then The media stops playing
 
     Examples:
       | Name      | Contact   | YouTubeLink                                |
@@ -435,24 +408,21 @@ Feature: Conversation View
   @C921 @staging @id1480
   Scenario Outline: Rotate image in fullscreen mode
     Given There are 2 users where <Name> is me
-    Given User <Contact> change name to <NewName>
-    Given User <Contact> change accent color to <Color>
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I see new photo in the dialog
+    And I tap on contact name <Contact>
+    And I see 1 photo in the dialog
     And I memorize message send time
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
-    And I rotate UI to landscape
-    Then I see image rotated in fullscreen mode
+    When I rotate UI to landscape
+    Then I see Full Screen Page opened
 
     Examples:
-      | Name      | Contact   | Picture     | Color        | NewName          |
-      | user1Name | user2Name | testing.jpg | BrightOrange | RotateFullscreen |
+      | Name      | Contact   | Picture     |
+      | user1Name | user2Name | testing.jpg |
 
   @C1826 @regression @id2124
   Scenario Outline: Verify archiving conversation from ellipsis menu
@@ -534,7 +504,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C922 @regression @IPv6 @id2763 @deployPictures
+  @C922 @regression @IPv6 @id2763
   Scenario Outline: Receive a camera roll picture from user from contact list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -543,7 +513,7 @@ Feature: Conversation View
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    Then I see new photo in the dialog
+    Then I see 1 photo in the dialog
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -560,7 +530,7 @@ Feature: Conversation View
     And I tap on sketch button in cursor
     And I draw a random sketch
     And I send my sketch
-    Then I see new photo in the dialog
+    Then I see 1 photo in the dialog
 
     Examples:
       | Name      | Contact1  |
@@ -622,13 +592,13 @@ Feature: Conversation View
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     When I tap on contact name <Contact>
     And I see dialog page
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I press Sketch button on image fullscreen page
     And I draw a random sketch
     And I send my sketch
-    Then I see new photo in the dialog
+    Then I see 2 photos in the dialog
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -649,7 +619,7 @@ Feature: Conversation View
     And I draw a random sketch
     And I send my sketch
     And I press Confirm button
-    Then I see new photo in the dialog
+    Then I see 1 photo in the dialog
 
     Examples:
       | Name      | Contact   |
@@ -776,13 +746,13 @@ Feature: Conversation View
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     And I tap on contact name <Contact>
     And I see dialog page
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
     And I longpress on image in the conversation
     And I tap on copy badge
     And I tap and hold on message input
     And I click on popup Paste item
     And I press Confirm button
-    Then I see new photo in the dialog
+    Then I see 2 photo in the dialog
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -796,7 +766,7 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I see download button shown on fullscreen page
@@ -807,7 +777,7 @@ Feature: Conversation View
     And I press Camera Roll button
     And I choose last picture from camera roll
     And I press Confirm button
-    Then I verify image in dialog is same as template <Picture>
+    And I see 2 photos in the dialog
 
     Examples:
       | Name      | Contact   | Picture     |

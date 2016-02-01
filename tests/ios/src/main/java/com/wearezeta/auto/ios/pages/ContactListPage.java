@@ -86,7 +86,7 @@ public class ContactListPage extends IOSPage {
         getElement(locator).click();
     }
 
-    public void tapOnMyName() throws Exception {
+    public void tapMyAvatar() throws Exception {
         getElement(nameSelfButton).click();
     }
 
@@ -149,10 +149,6 @@ public class ContactListPage extends IOSPage {
         return getDialogNameByIndex(1);
     }
 
-    public void tapOnGroupChat(String chatName) throws Exception {
-        findNameInContactList(chatName).orElseThrow(IllegalStateException::new).click();
-    }
-
     public boolean waitForContactListToLoad() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.xpath(xpathStrConvoListEntryByIdx.apply(1)));
     }
@@ -205,17 +201,6 @@ public class ContactListPage extends IOSPage {
         return this.getElementScreenshot(el).orElseThrow(IllegalStateException::new);
         // ImageIO.write(scr, "png", new File("/Users/elf/Desktop/screen_" + System.currentTimeMillis() + ".png"));
         // return scr;
-    }
-
-    public BufferedImage getScreenshotFirstContact() throws Exception {
-        // This takes a screenshot of the area to the left of a contact where
-        // ping and unread dot notifications are visible
-        final By locator = By.xpath(xpathStrConvoListEntryByIdx.apply(1));
-        final WebElement contact = getElement(locator, "No contacts are visible in the list");
-        return getScreenshotByCoordinates(contact.getLocation().x,
-                contact.getLocation().y + getElement(xpathContactListRoot).getLocation().y,
-                contact.getSize().width / 4, contact.getSize().height * 2)
-                .orElseThrow(IllegalStateException::new);
     }
 
     public boolean isMuteCallButtonVisible() throws Exception {

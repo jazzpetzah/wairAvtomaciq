@@ -75,7 +75,6 @@ Feature: Rotations
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     When I tap the Search input
-    And I see People Picker page
     And I enter "<Contact2>" into Search input on People Picker page
     And I tap the found item <Contact2> on People Picker page
     Then I see Outgoing Connection popover

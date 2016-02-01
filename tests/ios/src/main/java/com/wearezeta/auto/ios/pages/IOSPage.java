@@ -1,7 +1,5 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.awt.image.BufferedImage;
-import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
@@ -11,7 +9,6 @@ import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import com.wearezeta.auto.ios.tools.IRunnableWithException;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
 
@@ -96,13 +93,12 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void swipeRight(int time, int percentX, int percentY) throws Exception {
-        DriverUtils.swipeRight(this.getDriver(), getElement(nameMainWindow), time, percentX,
-                percentY);
+        DriverUtils.swipeRight(this.getDriver(), getElement(nameMainWindow), time, percentX, percentY);
     }
 
     public void swipeUp(int time) throws Exception {
         DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(nameMainWindow), time,
-                50, 90, 50, 10);
+                50, 55, 50, 10);
     }
 
     public void swipeDownSimulator() throws Exception {
@@ -199,9 +195,13 @@ public abstract class IOSPage extends BasePage {
                     "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
                     "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
                     "end tell"}).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
-            Thread.sleep(timeSeconds * 1000);
-            final Dimension screenSize = getDriver().manage().window().getSize();
-            getDriver().tap(1, screenSize.getWidth() / 3, screenSize.getHeight() / 2, DriverUtils.SINGLE_TAP_DURATION);
+            final int clickAtHelperDuration = 4; // seconds
+            if (timeSeconds >= clickAtHelperDuration) {
+                Thread.sleep((timeSeconds - clickAtHelperDuration) * 1000);
+            } else {
+                Thread.sleep(timeSeconds * 1000);
+            }
+            IOSSimulatorHelper.clickAt("0.3", "0.5");
         } else {
             // https://discuss.appium.io/t/runappinbackground-does-not-work-for-ios9/6201
             this.getDriver().runAppInBackground(timeSeconds);
@@ -306,10 +306,6 @@ public abstract class IOSPage extends BasePage {
         } else {
             this.getDriver().lockScreen(timeSeconds);
         }
-    }
-
-    public void resetApplication() throws Exception {
-        getDriver().resetApp();
     }
 
     public void clickElementWithRetryIfStillDisplayed(By locator, int retryCount) throws Exception {

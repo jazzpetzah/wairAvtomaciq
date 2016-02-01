@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -8,7 +7,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
@@ -74,9 +72,6 @@ public class PersonalInfoPage extends IOSPage {
             String.format("//UIAStaticText[@name='%s']", text);
 
     private static final By xpathWireWebsiteUrl = By.xpath("//UIAElement[@name ='URL']");
-
-    private static final By xpathAboutPageWireLogo = By.xpath(
-            "//UIAApplication/UIAWindow/UIAButton[@name='wire.com']/preceding-sibling::UIAImage[1]");
 
     private static final By nameAboutCloseButton = By.name("aboutCloseButton");
 

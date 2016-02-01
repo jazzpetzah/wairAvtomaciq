@@ -46,7 +46,7 @@ public class DeviceLimitPageSteps {
 	public void ISeeACertainDevice(String name, String label)
 			throws Exception {
 		assertThat(webappPagesCollection.getPage(DeviceLimitPage.class)
-				.getDevicesNames(), hasItem(name.toUpperCase()));
+				.getDevicesNames(), hasItem(name));
 	}
 
 	@Then("I see (\\d+) devices under managed devices$")

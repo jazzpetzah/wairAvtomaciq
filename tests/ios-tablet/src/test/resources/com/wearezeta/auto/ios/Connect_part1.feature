@@ -3,8 +3,6 @@ Feature: Connect
   @C2484 @regression @id2355
   Scenario Outline: Verify sending a connection request to user chosen from search [PORTRAIT]
     Given There are 2 users where <Name> is me
-    Given User <UnconnectedUser> name starts with <StartLetter>
-    Given User <Name> change accent color to <Color>
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
@@ -19,14 +17,12 @@ Feature: Connect
     Then I see <UnconnectedUser> user pending profile popover on iPad
 
     Examples: 
-      | Name      | UnconnectedUser | StartLetter | Color        |
-      | user1Name | user2Name       | T           | BrightOrange |
+      | Name      | UnconnectedUser |
+      | user1Name | user2Name       |
 
   @C2488 @regression @id3008
   Scenario Outline: Verify sending a connection request to user chosen from search [LANDSCAPE]
     Given There are 2 users where <Name> is me
-    Given User <UnconnectedUser> name starts with <StartLetter>
-    Given User <Name> change accent color to <Color>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -42,8 +38,8 @@ Feature: Connect
     Then I see <UnconnectedUser> user pending profile popover on iPad
 
     Examples: 
-      | Name      | UnconnectedUser | StartLetter | Color        |
-      | user1Name | user2Name       | T           | BrightOrange |
+      | Name      | UnconnectedUser |
+      | user1Name | user2Name       |
 
   @C2486 @regression @rc @id2119
   Scenario Outline: Verify sending connection request after opening profile by clicking on the name and avatar [PORTRAIT]
@@ -109,7 +105,7 @@ Feature: Connect
     And I tap on not connected contact <UnconnectedUser>
     And I click Connect button on not connected user profile popover
     And I exit the group info iPad popover
-    And I swipe right on group chat page
+    And I navigate back to conversations list
     Then I see first item in contact list named <UnconnectedUser>
 
     Examples: 
@@ -182,7 +178,7 @@ Feature: Connect
     And I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
-    And I search for ignored user name <Contact1> and tap on it
+    And I search for user name <Contact1> and tap on it on People picker page
     Then I see incoming pending popover from user <Contact1> on iPad
 
     Examples: 
@@ -287,9 +283,8 @@ Feature: Connect
     And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I unblock user on iPad
-    And I wait for 5 seconds
-    And I see new photo in the dialog
     And I see 1 default message in the dialog
+    And I see 1 photo in the dialog
     And I navigate back to conversations list
     #And I see People picker page
     #And I click close button to dismiss people view
@@ -321,9 +316,8 @@ Feature: Connect
     And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I unblock user on iPad
-    And I wait for 5 seconds
-    And I see new photo in the dialog
     And I see 1 default message in the dialog
+    And I see 1 photo in the dialog
     #And I click close button to dismiss people view
     Given User <Contact> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact>
@@ -446,21 +440,3 @@ Feature: Connect
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
-
-  @C3194 @staging @id2768 @deployAddressBook @noAcceptAlert @obsolete
-  Scenario Outline: Verify you can see People you may know on Wire after uploading your address book
-    Given There are 1 user where <Name> is me
-    Given I Sign in on tablet using my email
-    Given I dismiss all alerts
-    Given I see conversations list
-    And I open search by taping on it
-    And I see Upload contacts dialog
-    And I click Continue button on Upload dialog
-    And I accept alert
-    Then I see CONNECT label
-    And I see user <Contact1> found on People picker page
-    And I see user <Contact2> found on People picker page
-
-    Examples: 
-      | Name      | Contact1 | Contact2 |
-      | user1Name | vb003    | Dorothy  |

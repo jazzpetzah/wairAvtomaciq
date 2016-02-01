@@ -24,8 +24,9 @@ abstract class KeyboardState {
     protected void tapSpecialKey(String keyName) throws InterruptedException {
         if (keyName.equals(SHIFT) || keyName.equals(MORE_LETTERS) || keyName.equals(MORE_NUMBERS)) {
             final WebElement el = keyboard.findElement(By.name(keyName));
+            // el.click freezes here
             DriverUtils.tapByCoordinates(driver, el);
-            Thread.sleep(1000);
+            Thread.sleep(1500);
         } else {
             throw new IllegalArgumentException(String.format("The key '%s' is not recognized as special", keyName));
         }

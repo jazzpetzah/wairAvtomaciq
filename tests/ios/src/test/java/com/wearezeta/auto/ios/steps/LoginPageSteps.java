@@ -349,42 +349,6 @@ public class LoginPageSteps {
     }
 
     /**
-     * Taps "Terms of Service" link on Welcome screen
-     *
-     * @step. ^I press Terms of Service link$
-     */
-    @When("^I press Terms of Service link$")
-    public void IPressTermsOfServiceLink() throws Throwable {
-        getLoginPage().openTermsLink();
-    }
-
-    /**
-     * Verifies whether the current page is "Terms and Conditions" page
-     *
-     * @throws AssertionError if the current page is not "Terms and Conditions" page
-     * @step. ^I see the terms info page$
-     */
-    @Then("^I see the terms info page$")
-    public void ISeeTheTermsInfoPage() throws Throwable {
-        Assert.assertTrue("I don't see terms of service page", getLoginPage()
-                .isTermsPrivacyCloseButtonVisible());
-        // TODO:verify correct content as far as copywrite is in
-    }
-
-    /**
-     * Closes "Terms and Conditions" page to return back to Welcome page
-     *
-     * @throws AssertionError if the current page is not "Welcome" page
-     * @step. ^I return to welcome page$
-     */
-    @When("^I return to welcome page$")
-    public void IReturnToWelcomePage() throws Throwable {
-        getLoginPage().closeTermsPrivacyController();
-        Assert.assertTrue("I don't see login screen", getLoginPage()
-                .isLoginButtonVisible());
-    }
-
-    /**
      * Enters given text into email input field and taps password field
      *
      * @param wrongMail text to enter into email input field
@@ -423,9 +387,9 @@ public class LoginPageSteps {
      * Verifies whether the notification Resend avialble in 10 min is shown
      *
      * @throws Exception
-     * @step. ^I see Resend will be possible after 10 min aleart$
+     * @step. ^I see Resend will be possible after 10 min alert$
      */
-    @Then("^I see Resend will be possible after 10 min aleart$")
+    @Then("^I see Resend will be possible after 10 min alert$")
     public void ISeeResendIn10minAlert() throws Exception {
         Assert.assertTrue("I don't see Resend in 10 min alert", getLoginPage()
                 .isResendIn10minAlertVisible());

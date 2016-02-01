@@ -29,7 +29,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C1060 @regression @id299 @noAcceptAlert @obsolete
+  @C1060 @regression @id299 @noAcceptAlert
   Scenario Outline: Verify denying address book uploading
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -49,26 +49,6 @@ Feature: Search
     Examples:
       | Name      |
       | user1Name |
-
-  #regression
-  @C1061 @staging @id311 @deployAddressBook @noAcceptAlert @obsolete
-  Scenario Outline: Verify uploading address book to the server
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given I sign in using my email or phone number
-    And I dismiss all alerts
-    And I dismiss settings warning
-    And I open search by taping on it
-    And I see Upload contacts dialog
-    And I click Continue button on Upload dialog
-    And I accept alert
-    Then I see CONNECT label
-    And I see user <Contact1> found on People picker page
-    And I see user <Contact2> found on People picker page
-
-    Examples:
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
 
   @C3167 @regression @rc @id1394
   Scenario Outline: Start 1:1 chat with users from Top Connections
@@ -223,7 +203,7 @@ Feature: Search
     And I choose a picture from camera roll
     And I press Confirm button
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
     When I navigate back to conversations list
     Then I see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
 

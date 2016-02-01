@@ -64,7 +64,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2831 @staging @id2531 @noAcceptAlert @obsolete
+  @C2831 @staging @id2531 @noAcceptAlert
   Scenario Outline: Verify denying address book uploading [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -84,7 +84,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @C2833 @staging @id2928 @noAcceptAlert @obsolete
+  @C2833 @staging @id2928 @noAcceptAlert
   Scenario Outline: Verify denying address book uploading [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -162,7 +162,7 @@ Feature: Search
     And I open group conversation details
     And I change group conversation name to <ConvoName>
     And I dismiss popover on iPad
-    And I swipe right on group chat page
+    And I navigate back to conversations list
     Then I see first item in contact list named <ConvoName>
 
     Examples: 
@@ -171,7 +171,7 @@ Feature: Search
 
   @C2840 @regression @id2930
   Scenario Outline: Start group chat with users from Top Connections [LANDSCAPE]
-    Given There are <UserCount> users where <Name> is me
+    Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
@@ -190,8 +190,8 @@ Feature: Search
     And I see first item in contact list named <ConvoName>
 
     Examples: 
-      | Name      | ConvoName    | UserCount | Contact   |
-      | user1Name | TopGroupTest | 3         | user2Name |
+      | Name      | ConvoName    |
+      | user1Name | TopGroupTest |
 
   @C2456 @C2778 @regression @rc @id2342 @id1456
   Scenario Outline: Verify you can unblock someone from search list [PORTRAIT]

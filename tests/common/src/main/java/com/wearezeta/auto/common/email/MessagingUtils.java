@@ -6,11 +6,13 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Map;
 
+import javax.mail.BodyPart;
 import javax.mail.Header;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 import com.wearezeta.auto.common.CommonUtils;
 

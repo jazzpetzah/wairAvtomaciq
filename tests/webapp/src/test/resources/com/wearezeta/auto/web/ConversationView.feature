@@ -148,8 +148,10 @@ Feature: Conversation View
 
   @C1710 @regression
   Scenario Outline: Verify you can add maximum+1 number of participants into group conversation
-    Given I switch to Sign In page
-    Given I Sign in using login <Login> and password <Password>
+    Given I switch to sign in page
+    Given I enter email "<Login>"
+    Given I enter password "<Password>"
+    Given I press Sign In button
     Given I wait for 20 seconds
     When I see my avatar on top of Contact list
     And I open People Picker from Contact List

@@ -17,6 +17,8 @@ import java.util.concurrent.Future;
 
 import javax.imageio.ImageIO;
 
+import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import io.appium.java_client.android.AndroidDriver;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -163,8 +165,8 @@ public class ZetaFormatter implements Formatter, Reporter {
             String tmpScreenshotPath;
             do {
                 tmpScreenshotPath = String.format("%s/%s/%s/%s_%s.png",
-                    CommonUtils.getPictureResultsPathFromConfig(this.getClass()), feature.replaceAll("\\W+", "_"),
-                    scenario.replaceAll("\\W+", "_"), stepName.replaceAll("\\W+", "_"), index);
+                        CommonUtils.getPictureResultsPathFromConfig(this.getClass()), feature.replaceAll("\\W+", "_"),
+                        scenario.replaceAll("\\W+", "_"), stepName.replaceAll("\\W+", "_"), index);
                 isExist = new File(tmpScreenshotPath).exists();
                 index++;
             } while (isExist);
@@ -174,6 +176,13 @@ public class ZetaFormatter implements Formatter, Reporter {
                     CommonUtils.takeIOSSimulatorScreenshot(screenshotPath);
                 } catch (Exception e) {
                     log.error("Failed to take iOS simulator screenshot:");
+                    e.printStackTrace();
+                }
+            } else if (driver instanceof ZetaAndroidDriver) {
+                try {
+                    CommonUtils.takeAndroidScreenshot((ZetaAndroidDriver) driver, new File(screenshotPath));
+                } catch (Exception e) {
+                    log.error("Failed to take Android screenshot:");
                     e.printStackTrace();
                 }
             } else {
@@ -231,10 +240,10 @@ public class ZetaFormatter implements Formatter, Reporter {
             }
             final long screenshotFinishedTimestamp = new Date().getTime();
             log.debug(String.format("%s (status: %s, step duration: %s ms + screenshot duration: %s ms)", stepName, stepStatus,
-                stepFinishedTimestamp - stepStartedTimestamp, screenshotFinishedTimestamp - stepFinishedTimestamp));
+                    stepFinishedTimestamp - stepStartedTimestamp, screenshotFinishedTimestamp - stepFinishedTimestamp));
         } else {
             log.debug(String.format("%s (status: %s, step duration: %s ms)", stepName, stepStatus,
-                stepFinishedTimestamp - stepStartedTimestamp));
+                    stepFinishedTimestamp - stepStartedTimestamp));
         }
     }
 
@@ -293,7 +302,7 @@ public class ZetaFormatter implements Formatter, Reporter {
             final Set<String> normalizedTags = normalizeTags(scenario.getTags());
 
             TestrailSyncUtilities.syncExecutedScenarioWithTestrail(scenario,
-                new TestcaseResultToTestrailTransformer(steps).transform(), normalizedTags);
+                    new TestcaseResultToTestrailTransformer(steps).transform(), normalizedTags);
         } finally {
             steps.clear();
             stepsIterator = Optional.empty();
