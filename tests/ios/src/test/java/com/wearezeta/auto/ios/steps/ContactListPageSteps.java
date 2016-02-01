@@ -31,10 +31,6 @@ public class ContactListPageSteps {
         return pagesCollection.getPage(LoginPage.class);
     }
 
-    private PersonalInfoPage getPersonalInfoPage() throws Exception {
-        return pagesCollection.getPage(PersonalInfoPage.class);
-    }
-
     @Given("^I see conversations list$")
     public void GivenISeeConversationsList() throws Exception {
         Assert.assertTrue("Conversations list is not visible after the timeout", getLoginPage().isLoginFinished());

@@ -549,7 +549,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @C2061 @staging @id2699
+  @C2061 @calling_advanced @id2699
   Scenario Outline: (Bug ZIOS-5436)Verify adding people to group conversation during the group call (Me gets added)
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
