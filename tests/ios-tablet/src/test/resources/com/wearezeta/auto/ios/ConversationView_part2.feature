@@ -52,7 +52,6 @@ Feature: Conversation View
     And I choose a picture from camera roll on iPad popover
     And I press Confirm button on iPad popover
     And I see 1 photo in the dialog
-    And I memorize message send time
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I see sender first name <Name> on fullscreen page
@@ -82,7 +81,6 @@ Feature: Conversation View
     And I choose a picture from camera roll on iPad popover
     And I press Confirm button on iPad popover
     And I see 1 photo in the dialog
-    And I memorize message send time
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I see sender first name <Name> on fullscreen page
@@ -175,7 +173,6 @@ Feature: Conversation View
     And I choose a picture from camera roll on iPad popover
     And I press Confirm button on iPad popover
     And I see 1 photo in the dialog
-    And I memorize message send time
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     When I rotate UI to landscape
@@ -199,7 +196,6 @@ Feature: Conversation View
     And I choose a picture from camera roll on iPad popover
     And I press Confirm button on iPad popover
     And I see 1 photo in the dialog
-    And I memorize message send time
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I rotate UI to portrait

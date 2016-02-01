@@ -77,7 +77,7 @@ Feature: Conversation View
       | user1Name | user2Name | user3Name |
 
   @C3210 @regression @rc @IPv6 @id1468
-  Scenario Outline: Play/pause SoundCloud media link from the media bar
+  Scenario Outline: (MediaBar disappears on Simulator) Play/pause SoundCloud media link from the media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -86,8 +86,6 @@ Feature: Conversation View
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
     And I tap on text input
-    And I navigate back to conversations list
-    And I tap on contact name <Contact>
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -99,11 +97,11 @@ Feature: Conversation View
     Then The media stops playing
 
     Examples:
-      | Name      | Contact   | SoundCloudLink                                                                       |
-      | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+      | Name      | Contact   | SoundCloudLink                                                   |
+      | user1Name | user2Name | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
 
   @C3205 @regression @id384
-  Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar
+  Scenario Outline: (MediaBar disappears on Simulator) Conversation gets scrolled back to playing media when clicking on media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -112,8 +110,6 @@ Feature: Conversation View
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
     And I tap on text input
-    And I navigate back to conversations list
-    And I tap on contact name <Contact>
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -124,31 +120,27 @@ Feature: Conversation View
       | Name      | Contact   | SoundCloudLink                                   |
       | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
 
-  @C3206 @staging @id385
-  Scenario Outline: Verify the Media Bar dissapears after playback finishes - SoundCloud
+  @C3206 @regression @id385
+  Scenario Outline: (MediaBar disappears on Simulator) Verify the Media Bar dissapears after playback finishes - SoundCloud
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
-    When I tap on contact name <Contact>
-    And I tap on text input to scroll to the end
-    And I navigate back to conversations list
     And I tap on contact name <Contact>
+    And I tap on text input to scroll to the end
     And I see media link <SoundCloudLink> and media in dialog
-    And I tap media link
+    When I tap media link
     And I scroll media out of sight until media bar appears
-    And I see media bar on dialog page
-    And I wait 150 seconds for media to stop playing
-    Then I dont see media bar on dialog page
+    Then I wait up to 35 seconds for media bar to disappear
 
     Examples:
-      | Name      | Contact   | SoundCloudLink                                   |
-      | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
+      | Name      | Contact   | SoundCloudLink                                                   |
+      | user1Name | user2Name | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
 
   @C3207 @regression @id386
-  Scenario Outline: Verify the Media Bar disappears when playing media is back in view - SoundCloud
+  Scenario Outline: (MediaBar disappears on Simulator) Verify the Media Bar disappears when playing media is back in view - SoundCloud
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -157,17 +149,15 @@ Feature: Conversation View
     Given User <Name> sends encrypted message "<SoundCloudLink>" to user <Contact1>
     When I tap on contact name <Contact1>
     And I tap on text input to scroll to the end
-    And I navigate back to conversations list
-    And I tap on contact name <Contact1>
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
-    And I scroll media out of sight until media bar appears
+    When I scroll media out of sight until media bar appears
     And I tap on text input to scroll to the end
     Then I dont see media bar on dialog page
 
     Examples:
-      | Name      | Contact1  | SoundCloudLink                                                                       |
-      | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+      | Name      | Contact1  | SoundCloudLink                                                   |
+      | user1Name | user2Name | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
 
   @C883 @regression @id394
   Scenario Outline: Tap the cursor to get to the end of the conversation
@@ -321,7 +311,6 @@ Feature: Conversation View
     And I choose a picture from camera roll
     And I press Confirm button
     And I see 1 photo in the dialog
-    And I memorize message send time
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I see sender first name <Name> on fullscreen page
@@ -398,7 +387,6 @@ Feature: Conversation View
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     And I tap on contact name <Contact>
     And I see 1 photo in the dialog
-    And I memorize message send time
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     When I rotate UI to landscape

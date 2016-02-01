@@ -429,11 +429,11 @@ Feature: Conversation View
     Then I see conversation view is scrolled back to the playing media link <SoundCloudLink>
 
     Examples:
-      | Name      | Contact   | SoundCloudLink                                                                       |
-      | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+      | Name      | Contact   | SoundCloudLink                                                   |
+      | user1Name | user2Name | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
 
   @regression @id2404 @C3225
-  Scenario Outline: Verify the Media Bar dissapears after playback finishes - SoundCloud [PORTRAIT]
+  Scenario Outline: (MediaBar disappears on Simulator) Verify the Media Bar dissapears after playback finishes - SoundCloud [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
@@ -445,13 +445,11 @@ Feature: Conversation View
     And I see media link <SoundCloudLink> and media in dialog
     When I tap media link
     And I scroll media out of sight until media bar appears
-    And I see media bar on dialog page
-    And I wait 150 seconds for media to stop playing
-    Then I dont see media bar on dialog page
+    Then I wait up to 35 seconds for media bar to disappear
 
     Examples:
-      | Name      | Contact   | SoundCloudLink                                                                       |
-      | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+      | Name      | Contact   | SoundCloudLink                                                   |
+      | user1Name | user2Name | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
 
   @C2676 @regression @id2987
   Scenario Outline: I can send a sketch[PORTRAIT]
