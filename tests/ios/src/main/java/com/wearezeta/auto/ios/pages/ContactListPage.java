@@ -276,9 +276,11 @@ public class ContactListPage extends IOSPage {
         final By locator = By.xpath(xpathStrConvoListEntryNameByIdx.apply(idx));
         getElement(locator, String.format("Conversation list entry number '%s' is not visible", idx)).click();
     }
+
     public void tapOnNameYourInCallWith(String name) throws Exception {
         findNameIamCallingInContactList(name).orElseThrow(
-                () -> new IllegalStateException(String.format("The conversation '%s' is not visible in the list", name))
+                () -> new IllegalStateException(String.format("The conversation '%s' you are in a call with is not" +
+                        " shown on top", name))
         ).click();
     }
 
