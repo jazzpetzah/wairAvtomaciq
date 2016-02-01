@@ -20,7 +20,7 @@ public class SettingsPage extends AndroidPage {
     private static final Function<String, String> xpathStrConfirmBtnByName = name -> String
             .format("//*[starts-with(@id, 'button') and @value='%s']", name);
 
-    private static final String xpathCurrentDevice = xpathStrSettingsMenuItemByText.apply(CURRENT_DEVICE) + "/following-sibling::*//*[@id='title']";
+    private static final By xpathCurrentDevice = By.xpath(xpathStrSettingsMenuItemByText.apply(CURRENT_DEVICE) + "/following-sibling::*//*[@id='title']");
 
     private static final By idPasswordConfirmationInput = By.id("acet__remove_otr__password");
 
@@ -73,8 +73,7 @@ public class SettingsPage extends AndroidPage {
     }
 
     public void tapCurrentDevice() throws Exception {
-        By currentDeviceLocator = By.xpath(xpathCurrentDevice);
-        getElement(currentDeviceLocator).click();
+        getElement(xpathCurrentDevice).click();
     }
 
     public boolean waitUntilMenuItemVisible(String name) throws Exception {
