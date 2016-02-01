@@ -72,8 +72,6 @@ public class DialogPage extends IOSPage {
     private static final Function<String, String> xpathStrDialogTitleBar =
             title -> String.format("//UIAStaticText[@name='%s']", title);
 
-    private static final By nameChatheadAvatarImage = By.name("ChatheadAvatarImage");
-
     private static final By nameGifButton = By.name("rightMenuButton");
 
     private static final By nameCursorSketchButton = By.name("ComposeControllerSketchButton");
@@ -111,9 +109,6 @@ public class DialogPage extends IOSPage {
     protected static final By nameCameraLibraryButton = By.name("cameraLibraryButton");
 
     private static final By nameSoundCloudContainer = By.name("Play on SoundCloud");
-
-    private static final Function<String, String> xpathChatheadByName =
-            name -> String.format("//UIAElement/following-sibling::UIAStaticText[@name='%s']", name);
 
     // FIXME: bad locator
     private static final By xpathImage = By.xpath(xpathStrMainWindow + "/UIATableView[1]/UIATableCell[2]");
@@ -440,15 +435,6 @@ public class DialogPage extends IOSPage {
 
     public boolean isTypeOrSlideExists(String msg) throws Exception {
         return DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(msg), 5);
-    }
-
-    public boolean chatheadIsVisible(String contact) throws Exception {
-        final By locator = By.xpath(xpathChatheadByName.apply(contact));
-        return selectVisibleElements(locator).size() > 0;
-    }
-
-    public boolean chatheadAvatarImageIsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), nameChatheadAvatarImage);
     }
 
     public void clickOnPlayVideoButton() throws Exception {

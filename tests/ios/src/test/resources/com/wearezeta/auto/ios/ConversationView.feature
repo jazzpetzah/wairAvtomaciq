@@ -378,7 +378,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | SoundCloudLink                                                                       |
       | user1Name | user2Name | user3Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
-  @C921 @staging @id1480
+  @C921 @regression @id1480
   Scenario Outline: Rotate image in fullscreen mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -413,24 +413,6 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
-
-  @staging @id2132
-  Scenario Outline: Verify displaying chathead when another conversation is opened
-    Given There are 3 users where <Name> is me
-    Given User <Contact2> change avatar picture to <Picture>
-    Given User <Contact2> change name to <NewName>
-    Given Myself is connected to <Contact>,<Contact2>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    Given User <Contact2> sends 1 encrypted message to user Myself
-    Then I see chathead of contact <Contact2>
-    And I wait for 5 seconds
-    Then I do not see chathead of contact <Contact2>
-
-    Examples:
-      | Name      | Contact   | Contact2  | NewName  | Picture                      |
-      | user1Name | user2Name | user3Name | CHATHEAD | aqaPictureContact600_800.jpg |
 
   @C141 @regression @rc @id1476
   Scenario Outline: Play/pause controls can change playing media state (SoundCloud)

@@ -48,8 +48,6 @@ public class PersonalInfoPage extends IOSPage {
 
     private static final By nameAccentColorPicker = By.name("AccentColorPickerView");
 
-    private static final By xpathSettingsChatheadSwitch = By.xpath("//UIASwitch[@name='Message previews']");
-
     private static final By nameSettingsBackButton = By.name("Back");
 
     private static final By nameSettingsDoneButton = By.name("Done");
@@ -269,10 +267,6 @@ public class PersonalInfoPage extends IOSPage {
         DriverUtils.swipeElementPointToPoint(getDriver(), getElement(nameAccentColorPicker),
                 1000, startColor * 2 * COLORS_COUNT - COLORS_COUNT, 50,
                 endColor * 2 * COLORS_COUNT - COLORS_COUNT, 50);
-    }
-
-    public void switchChatheadsOnOff() throws Exception {
-        getElement(xpathSettingsChatheadSwitch).click();
     }
 
     public void pressSettingsBackButton() throws Exception {
