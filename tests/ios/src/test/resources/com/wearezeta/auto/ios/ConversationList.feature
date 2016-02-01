@@ -373,14 +373,14 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C18 @staging @id1481 @ZIOS-5247
+  @C18 @regression @id1481 @ZIOS-5247
   Scenario Outline: Verify removing the content and leaving from the group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Name> sends 1 encrypted message to group conversation <GroupChatName>
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I click delete menu button
     And I select Also Leave option on Delete conversation dialog
