@@ -344,7 +344,7 @@ Feature: Conversation View
       | Name      | Contact   | YouTubeLink                                |
       | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
 
-  @C140 @staging @id1388
+  @C140 @regression @id1388
   Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation - SoundCloud
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
