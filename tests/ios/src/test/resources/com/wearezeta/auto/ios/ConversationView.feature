@@ -741,24 +741,6 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
       | user1Name | user2Name | user3Name | Caramba!      | testing.jpg |
 
-  @C884 @staging @id1245
-  Scenario Outline: Verify cursor swiping is disabled when you scroll back into a conversation
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    Given User Myself sends 40 encrypted messages to user <Contact>
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
-    When I tap on contact name <Contact>
-    And I tap on text input
-    And I scroll to the beginning of the conversation
-    And I click plus button next to text input
-    Then I see controller buttons can not be visible
-
-    Examples:
-      | Name      | Contact   | Picture     |
-      | user1Name | user2Name | testing.jpg |
-
   @C886 @regression @id2019
   Scenario Outline: Verify people icon is changed on avatar with opening keyboard and back
     Given There are 2 users where <Name> is me
