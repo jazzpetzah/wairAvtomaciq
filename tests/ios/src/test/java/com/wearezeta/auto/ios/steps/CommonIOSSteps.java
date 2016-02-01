@@ -669,28 +669,6 @@ public class CommonIOSSteps {
     }
 
     /**
-     * General swipe action
-     *
-     * @throws Exception
-     * @step. ^I swipe left in current window$
-     */
-    @When("^I swipe left in current window$")
-    public void ISwipeLeftInCurrentWindow() throws Exception {
-        pagesCollecton.getCommonPage().swipeLeft(1000);
-    }
-
-    /**
-     * General swipe action
-     *
-     * @throws Exception
-     * @step. ^I swipe right in current window$
-     */
-    @When("^I swipe right in current window$")
-    public void ISwipeRightInCurrentWindow() throws Exception {
-        pagesCollecton.getCommonPage().swipeRight(1000);
-    }
-
-    /**
      * A user adds another user to a group chat
      *
      * @param user          that adds someone to a chat

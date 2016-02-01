@@ -236,10 +236,6 @@ Feature: Connect
     When I see Pending request link in contact list
     And I click on Pending request link in contact list
     Then I see Pending request page
-    When I swipe right in current window
-    And I see conversation 2 people waiting is selected in list
-    And I swipe left in current window
-    Then I see Pending request page
 
     Examples: 
       | Name      | Contact   | Contact2  | Contact3  |
@@ -257,8 +253,6 @@ Feature: Connect
     When I see Pending request link in contact list
     And I click on Pending request link in contact list
     Then I see Pending request page
-    When I swipe right in current window
-    And I see conversation 2 people waiting is selected in list
 
     Examples: 
       | Name      | Contact   | Contact2  | Contact3  |

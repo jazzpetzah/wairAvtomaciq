@@ -367,8 +367,6 @@ Feature: Conversation List
     And I swipe right on Dialog page
     Then I see mute call button in conversation list
     And I click mute call button in conversation list
-    And I swipe left in current window
-    And I see mute call button on calling bar is selected
 
     Examples:
       | Name      | Contact   | CallBackend |

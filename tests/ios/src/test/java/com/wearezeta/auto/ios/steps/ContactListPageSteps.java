@@ -81,6 +81,49 @@ public class ContactListPageSteps {
         }
     }
 
+    private Map<Integer, BufferedImage> savedConvoItemScreenshotsByIdx = new HashMap<>();
+
+    /**
+     * Store the screenshot of a particular conversation list entry
+     *
+     * @param convoIdx conversation index, starts from 1
+     * @throws Exception
+     * @step. ^I remember the state of (.*) conversation item$
+     */
+    @When("^I remember the state of conversation item number (\\d+)$")
+    public void IRememberConvoItemStateByIdx(int convoIdx) throws Exception {
+        this.savedConvoItemScreenshotsByIdx.put(convoIdx, getContactListPage().getConversationEntryScreenshot(convoIdx));
+    }
+
+    /**
+     * Verify whether the previous conversation state is the same or different to the current state
+     *
+     * @param convoIdx           conversation index, starts from 1
+     * @param shouldNotBeChanged equals to null if the state should be changed
+     * @throws Exception
+     * @step. ^I see the state of conversation item number (\\d+) is (not )?changed$"
+     */
+    @Then("^I see the state of conversation item number (\\d+) is (not )?changed$")
+    public void IVerifyConvoStateByIdx(int convoIdx, String shouldNotBeChanged) throws Exception {
+        if (!this.savedConvoItemScreenshotsByIdx.containsKey(convoIdx)) {
+            throw new IllegalStateException(String.format(
+                    "Please take a screenshot of conversation entry number %s first", convoIdx));
+        }
+        final BufferedImage actualConvoItemScreenshot = getContactListPage().getConversationEntryScreenshot(convoIdx);
+        final double score = ImageUtil.getOverlapScore(this.savedConvoItemScreenshotsByIdx.get(convoIdx),
+                actualConvoItemScreenshot, ImageUtil.RESIZE_NORESIZE);
+        final double minScore = 0.97;
+        if (shouldNotBeChanged == null) {
+            Assert.assertTrue(
+                    String.format("The state of conversation item number %s seems to be the same (%.2f >= %.2f)",
+                            convoIdx, score, minScore), score < minScore);
+        } else {
+            Assert.assertTrue(
+                    String.format("The state of conversation item number %s seems to be changed (%.2f < %.2f)",
+                            convoIdx, score, minScore), score >= minScore);
+        }
+    }
+
     /**
      * Verify label in Self button
      *
@@ -115,6 +158,18 @@ public class ContactListPageSteps {
     public void WhenITapOnContactName(String name) throws Exception {
         name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         getContactListPage().tapOnName(name);
+    }
+
+    /**
+     * Tap conversation list item by its index
+     *
+     * @param idx convo index in list, starts with 1
+     * @throws Exception
+     * @step. ^I tap on conversation item number (\d+)$
+     */
+    @When("^I tap on conversation item number (\\d+)$")
+    public void WhenITapOnConvoByIdx(int idx) throws Exception {
+        getContactListPage().tapConvoItemByIdx(idx);
     }
 
     @When("^I tap on group chat with name (.*)")
@@ -387,7 +442,7 @@ public class ContactListPageSteps {
             throws Throwable {
         conversation = usrMgr.replaceAliasesOccurences(conversation,
                 FindBy.NAME_ALIAS);
-        Assert.assertEquals("Converstaion is not selected", "1",
+        Assert.assertEquals("Conversation is not selected", "1",
                 getContactListPage().getSelectedConversationCellValue(conversation).
                         orElseThrow(() -> new IllegalStateException("No conversations are selected in the list")));
     }
