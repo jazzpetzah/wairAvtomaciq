@@ -262,7 +262,7 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public boolean isSupportWebPageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathSettingsHelpHeader);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),xpathSettingsHelpHeader,5);
     }
 
     private void swipeColorPickerFromColorToColor(int startColor, int endColor) throws Exception {
