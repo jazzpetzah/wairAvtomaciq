@@ -10,6 +10,8 @@ import org.openqa.selenium.WebElement;
 
 public class SettingsPage extends AndroidPage {
 
+    private static final String CURRENT_DEVICE = "CURRENT DEVICE";
+
     private static final By xpathSettingsTitle = By.xpath("//*[@id='action_bar_container' and .//*[@value='Settings']]");
 
     private static final Function<String, String> xpathStrSettingsMenuItemByText = text -> String
@@ -17,6 +19,8 @@ public class SettingsPage extends AndroidPage {
 
     private static final Function<String, String> xpathStrConfirmBtnByName = name -> String
             .format("//*[starts-with(@id, 'button') and @value='%s']", name);
+
+    private static final String xpathCurrentDevice = xpathStrSettingsMenuItemByText.apply(CURRENT_DEVICE) + "/following-sibling::*//*[@id='title']";
 
     private static final By idPasswordConfirmationInput = By.id("acet__remove_otr__password");
 
@@ -66,6 +70,11 @@ public class SettingsPage extends AndroidPage {
 
     public void tapOKButtonOnPasswordConfirmationDialog() throws Exception {
         getElement(xpathConfirmationInputOKButton).click();
+    }
+
+    public void tapCurrentDevice() throws Exception {
+        By currentDeviceLocator = By.xpath(xpathCurrentDevice);
+        getElement(currentDeviceLocator).click();
     }
 
     public boolean waitUntilMenuItemVisible(String name) throws Exception {
