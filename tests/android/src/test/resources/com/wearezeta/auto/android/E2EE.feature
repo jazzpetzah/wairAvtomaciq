@@ -59,25 +59,7 @@ Feature: E2EE
       | Name      | Contact   | ImageName   |
       | user1Name | user2Name | testing.jpg |
 
-  @C3241 @staging
-  Scenario Outline: Verify you can receive encrypted and non-encrypted messages in group chat
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When Contact <Contact1> sends encrypted message <EncryptedMessage> to group conversation <GroupChatName>
-    And Contact <Contact2> sends message <SimpleMessage> to group conversation <GroupChatName>
-    And I tap on contact name <GroupChatName>
-    Then I see non-encrypted message <SimpleMessage> 1 time in the conversation view
-    And I see encrypted message <EncryptedMessage> 1 time in the conversation view
-
-    Examples:
-      | Name      | Contact1   | Contact2  | EncryptedMessage | SimpleMessage | GroupChatName |
-      | user1Name | user2Name  | user3Name | EncryptedYo      | SimpleYo      | HybridGroup   |
-
-  @C3234 @staging
+  @C3234 @rc @regression
   Scenario Outline: Verify you receive encrypted content in 1:1 conversation after switching online
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -126,7 +108,25 @@ Feature: E2EE
       | Name      | Contact1  | Contact2  | Message1 | Message2 | Picture     | GroupChatName |
       | user1Name | user2Name | user3Name | Msg1     | Msg2     | testing.jpg | GroupConvo    |
 
-  @C3242 @staging
+  @C3241 @regression
+  Scenario Outline: Verify you can receive encrypted and non-encrypted messages in group chat
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When Contact <Contact1> sends encrypted message <EncryptedMessage> to group conversation <GroupChatName>
+    And Contact <Contact2> sends message <SimpleMessage> to group conversation <GroupChatName>
+    And I tap on contact name <GroupChatName>
+    Then I see non-encrypted message <SimpleMessage> 1 time in the conversation view
+    And I see encrypted message <EncryptedMessage> 1 time in the conversation view
+
+    Examples:
+      | Name      | Contact1   | Contact2  | EncryptedMessage | SimpleMessage | GroupChatName |
+      | user1Name | user2Name  | user3Name | EncryptedYo      | SimpleYo      | HybridGroup   |
+
+  @C3242 @regression
   Scenario Outline: Verify you can receive encrypted and non-encrypted images in group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -171,7 +171,7 @@ Feature: E2EE
       | Name      | Contact1  | Contact2  | Message1 | GroupChatName |
       | user1Name | user2Name | user3Name | Msg1     | GroupConvo    |
 
-  @C3228 @staging
+  @C3228 @rc @regression
   Scenario Outline: Verify you can see device ids of the other conversation participant in 1:1 conversation details
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -189,12 +189,13 @@ Feature: E2EE
       | Name      | Contact1  | Message1 |
       | user1Name | user2Name | Msg1     |
 
-  @C3231 @staging
+  @C3231 @rc @regression
   Scenario Outline: Verify the appropriate device is signed out if you remove it from settings  
     Given There are 1 users where <Name> is me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     When User Myself removes all his registered OTR clients
+    Then I see welcome screen
     And I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     
