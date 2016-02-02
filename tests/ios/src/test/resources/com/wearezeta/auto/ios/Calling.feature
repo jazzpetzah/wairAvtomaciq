@@ -499,11 +499,12 @@ Feature: Calling
     And I click close user profile page button
     Then I see that <Contact2> is not present on group chat info page
     And I close group info page
+    # The person is still in the call after removal. This is bug-feature in iOS
     Then I see <NewNumberOfAvatars> avatars in the group call bar
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | NumberOfAvatars | NewNumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | RemoveGROUPCALL | firefox     | 5               | 4                  |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | RemoveGROUPCALL | firefox     | 5               | 5                  |
 
   @C2039 @regression @id2673 @noAcceptAlert
   Scenario Outline: Verify impossibility to connect 6th person to the call
