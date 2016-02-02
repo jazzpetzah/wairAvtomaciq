@@ -237,7 +237,7 @@ Feature: E2EE
     And I wait for 5 seconds
     And User <Contact1> adds user Myself to group chat <GroupChatName>
     And I tap on contact name <GroupChatName>
-    Then I see encrypted message <EncMessage> 0 time in the conversation view
+    Then I see encrypted message <EncMessage> 0 times in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | EncMessage |

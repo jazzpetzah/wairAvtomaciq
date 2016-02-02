@@ -8,18 +8,15 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import com.wearezeta.auto.common.driver.DummyElement;
-import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.log.ZetaLogger;
+import java.util.stream.Collectors;
 
 public class DialogPage extends AndroidPage {
-
-    private static final Logger log = ZetaLogger.getLog(DialogPage.class.getSimpleName());
 
     public static final By xpathConfirmOKButton = By.xpath("//*[@id='ttv__confirmation__confirm' and @value='OK']");
 
@@ -34,11 +31,11 @@ public class DialogPage extends AndroidPage {
     public static final By idAddPicture = By.id("cursor_menu_item_camera");
 
     private static final Function<String, String> xpathStrConversationMessageByText = text -> String
-            .format("//*[@id='ltv__row_conversation__message' and @value='%s' and not(/parent::*/following-sibling::*/*[@id='v__row_conversation__e2ee'])]", text);
+            .format("//*[@id='ltv__row_conversation__message' and @value='%s']", text);
 
-    private static final Function<String, String> xpathStrEncryptedConversationMessageByText = text -> String
-            .format("//*[@id='ltv__row_conversation__message' and @value='%s' and /parent::*/following-sibling::*"
-                    + "/*[@id='v__row_conversation__e2ee']]", text);
+    private static final Function<String, String> xpathStrConversationLockMessageByText = text -> String
+            .format("//*[@id='ltv__row_conversation__message' and @value='%s']/parent::*/following-sibling::*"
+                    + "/*[@id='v__row_conversation__e2ee']", text);
 
     private static final Function<String, String> xpathStrUnsentIndicatorByText = text -> String
             .format("%s/parent::*/parent::*//*[@id='v__row_conversation__error']",
@@ -503,24 +500,17 @@ public class DialogPage extends AndroidPage {
     }
 
     public boolean waitForXEncryptedMessages(String msg, int times) throws Exception {
-        final By locator = By.xpath(xpathStrEncryptedConversationMessageByText.apply(msg));
-        if (times > 0) {
-            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) &&
-                getDriver().findElements(locator).size() == times;
-        } else {
-            return getDriver().findElements(locator).size() == times;
-        }
-        
+        By locator = By.xpath(xpathStrConversationLockMessageByText.apply(msg));
+        List<WebElement> elements = getElements(locator);
+        List<WebElement> encryptedMessages = elements.stream().filter((wel) -> wel.getSize().getWidth() > 0).collect(Collectors.toList());
+        return encryptedMessages.size() == times;
     }
 
     public boolean waitForXNonEncryptedMessages(String msg, int times) throws Exception {
-        final By locator = By.xpath(xpathStrConversationMessageByText.apply(msg));
-        if (times > 0) {
-            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator)
-                    && getDriver().findElements(locator).size() == times;
-        } else {
-            return getDriver().findElements(locator).size() == times;
-        }
+        By locator = By.xpath(xpathStrConversationLockMessageByText.apply(msg));
+        List<WebElement> elements = getElements(locator);
+        List<WebElement> nonEncryptedMessages = elements.stream().filter((wel) -> wel.getSize().getWidth() <= 0).collect(Collectors.toList());
+        return nonEncryptedMessages.size() == times;
     }
 
     public boolean waitForXEncryptedImages(int times) throws Exception {
