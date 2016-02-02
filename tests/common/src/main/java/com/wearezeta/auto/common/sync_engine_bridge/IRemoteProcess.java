@@ -7,4 +7,5 @@ interface IRemoteProcess extends IRemoteEntity {
 	void reconnect();
 	String getLogPath();
 	boolean isOtrOnly();
+	void shutdown();
 }
