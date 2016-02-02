@@ -83,8 +83,8 @@ Feature: Self Profile
     When I tap my avatar
     And I tap on personal screen
     And I press Camera button
-    And I choose a picture from camera roll on iPad popover
-    And I press Confirm button on iPad popover
+    And I choose a picture from camera roll
+    And I press Confirm button
     And I return to personal page
     Then I see changed user picture <Picture>
 
@@ -102,8 +102,8 @@ Feature: Self Profile
     When I tap my avatar
     And I tap on personal screen
     And I press Camera button
-    And I choose a picture from camera roll on iPad popover
-    And I press Confirm button on iPad popover
+    And I choose a picture from camera roll
+    And I press Confirm button
     And I return to personal page
     Then I see changed user picture <Picture>
 
