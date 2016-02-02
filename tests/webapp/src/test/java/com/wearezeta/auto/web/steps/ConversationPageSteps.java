@@ -294,8 +294,8 @@ public class ConversationPageSteps {
 	public void ThenISeeActionInConversation(String doNot, String message)
 			throws Exception {
 		if (doNot == null) {
-			webappPagesCollection.getPage(
-					ConversationPage.class).waitForMessageHeaderContains(message);
+			webappPagesCollection.getPage(ConversationPage.class)
+					.waitForMessageHeaderContains(message);
 		} else {
 			Assert.assertTrue(webappPagesCollection.getPage(
 					ConversationPage.class).isActionMessageNotSent(message));
@@ -354,7 +354,7 @@ public class ConversationPageSteps {
 	 */
 	@Then("^I( do not)? see (.*) action for (.*) in conversation$")
 	public void ThenISeeActionForContactInConversation(String doNot,
-													   String message, String contacts) throws Exception {
+			String message, String contacts) throws Exception {
 		contacts = usrMgr.replaceAliasesOccurences(contacts, FindBy.NAME_ALIAS);
 		Set<String> parts = new HashSet<String>();
 		parts.add(message);
@@ -363,8 +363,10 @@ public class ConversationPageSteps {
 			webappPagesCollection.getPage(ConversationPage.class)
 					.waitForMessageHeaderContains(parts);
 		} else {
-			assertThat(message + " action for " + contacts, webappPagesCollection.getPage(ConversationPage.class)
-					.waitForNumberOfMessageHeadersContain(parts), equalTo(0));
+			assertThat(message + " action for " + contacts,
+					webappPagesCollection.getPage(ConversationPage.class)
+							.waitForNumberOfMessageHeadersContain(parts),
+					equalTo(0));
 		}
 	}
 
@@ -493,8 +495,11 @@ public class ConversationPageSteps {
 	 */
 	@When("^I see only one ping message$")
 	public void ISeeOnlyOnePingMessage() throws Exception {
-		assertThat("PING action", webappPagesCollection.getPage(ConversationPage.class)
-				.waitForNumberOfMessageHeadersContain(Collections.singleton("PING")), equalTo(1));
+		assertThat(
+				"PING action",
+				webappPagesCollection.getPage(ConversationPage.class)
+						.waitForNumberOfMessageHeadersContain(
+								Collections.singleton("PING")), equalTo(1));
 	}
 
 	/**
@@ -860,13 +865,14 @@ public class ConversationPageSteps {
 	}
 
 	/**
-	 * Start call in opened conversation
+	 * Start a video call in opened conversation
 	 *
 	 * @step. ^I call$
 	 */
 	@When("^I start a video call$")
 	public void IMakeVideoCallToUser() throws Throwable {
-		webappPagesCollection.getPage(ConversationPage.class).clickVideoCallButton();
+		webappPagesCollection.getPage(ConversationPage.class)
+				.clickVideoCallButton();
 	}
 
 }

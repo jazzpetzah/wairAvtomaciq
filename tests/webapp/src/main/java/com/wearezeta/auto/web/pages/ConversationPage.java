@@ -160,7 +160,8 @@ public class ConversationPage extends WebPage {
 	private static boolean containsAllCaseInsensitive(String text,
 			Set<String> parts) {
 		for (String part : parts) {
-			if (!text.replaceAll(" +", " ").toLowerCase().contains(part.toLowerCase())) {
+			if (!text.replaceAll(" +", " ").toLowerCase()
+					.contains(part.toLowerCase())) {
 				return false;
 			}
 		}
@@ -180,7 +181,8 @@ public class ConversationPage extends WebPage {
 		wait.until(visibilityOfTextInElementsLocated(locator, parts));
 	}
 
-	public int waitForNumberOfMessageHeadersContain(Set<String> parts) throws Exception {
+	public int waitForNumberOfMessageHeadersContain(Set<String> parts)
+			throws Exception {
 		final By locator = By
 				.cssSelector(WebAppLocators.ConversationPage.cssMessageHeader);
 		Thread.sleep(DriverUtils.getDefaultLookupTimeoutSeconds() * 1000);
@@ -226,7 +228,8 @@ public class ConversationPage extends WebPage {
 		};
 	}
 
-	public int getNumberOfElementsContainingText(final By locator, final Set<String> expectedTexts) throws Exception {
+	public int getNumberOfElementsContainingText(final By locator,
+			final Set<String> expectedTexts) throws Exception {
 		int count = 0;
 		List<String> elements = getTextOfDisplayedElements(locator, getDriver());
 		for (String element : elements) {
@@ -416,13 +419,11 @@ public class ConversationPage extends WebPage {
 		if (WebAppExecutionContext.getBrowser()
 				.isSupportingNativeMouseActions()) {
 			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
-		} else {
-			// safari workaround
-			DriverUtils.addClass(this.getDriver(), conversation, "hover");
 		}
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.cssSelector(WebAppLocators.ConversationPage.cssVideoCallButton),
-				5);
+		assert DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						this.getDriver(),
+						By.cssSelector(WebAppLocators.ConversationPage.cssVideoCallButton));
 		videoCallButton.click();
 	}
 
