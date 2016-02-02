@@ -223,7 +223,7 @@ Feature: E2EE
       | Name      |
       | user1Name |
 
-  @C3284 @staging
+  @C3236 @staging
   Scenario Outline: Verify newly added people in a group conversation don't see a history
     Given There are 4 users where <Name> is me
     Given <Contact1> is connected to Myself,<Contact2>,<Contact3>
