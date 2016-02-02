@@ -290,7 +290,7 @@ Feature: Connect
     #And I click close button to dismiss people view
     Given User <Contact> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact>
-    Then I see 1 default messages in the dialog
+    Then I see 1 default message in the dialog
 
     Examples: 
       | Name      | Contact   | Picture     |

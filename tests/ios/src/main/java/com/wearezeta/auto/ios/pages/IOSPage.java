@@ -327,6 +327,23 @@ public abstract class IOSPage extends BasePage {
     public void clickElementWithRetryIfStillDisplayed(By locator) throws Exception {
         clickElementWithRetryIfStillDisplayed(locator, DEFAULT_RETRY_COUNT);
     }
+    
+    public void clickElementWithRetryIfNextElementNotAppears(By locator, By nextLocator, int retryCount) throws Exception {
+        WebElement el = getElement(locator);
+        int counter = 0;
+        do {
+            el.click();
+            counter++;
+            if (DriverUtils.waitUntilLocatorAppears(this.getDriver(), nextLocator)) {
+                return;
+            }
+        } while (counter < retryCount);
+        throw new IllegalStateException(String.format("Locator %s did't appear", nextLocator));
+    }
+    
+    public void clickElementWithRetryIfNextElementAppears(By locator, By nextLocator) throws Exception {
+        clickElementWithRetryIfNextElementNotAppears(locator, nextLocator, DEFAULT_RETRY_COUNT);
+    }
 
     @Override
     protected WebElement getElement(By locator) throws Exception {

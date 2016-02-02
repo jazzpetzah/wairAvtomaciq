@@ -1,22 +1,17 @@
 package com.wearezeta.auto.ios.steps;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.Future;
 
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import com.wearezeta.auto.common.usrmgmt.UserState;
 import com.wearezeta.auto.ios.pages.RegistrationPage;
-import com.wearezeta.auto.ios.pages.LoginPage;
-
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -27,10 +22,6 @@ public class RegistrationPageSteps {
 
     private RegistrationPage getRegistrationPage() throws Exception {
         return pagesCollection.getPage(RegistrationPage.class);
-    }
-
-    private LoginPage getLoginPage() throws Exception {
-        return pagesCollection.getPage(LoginPage.class);
     }
 
     private ClientUser userToRegister = null;
@@ -203,10 +194,10 @@ public class RegistrationPageSteps {
         }
 
         if (flag) {
-            getRegistrationPage().setEmail(email + "\n");
+            getRegistrationPage().setEmail(email);
         } else {
             getRegistrationPage().setEmail(
-                    this.userToRegister.getEmail() + "\n");
+                    this.userToRegister.getEmail());
         }
     }
 
@@ -229,7 +220,7 @@ public class RegistrationPageSteps {
 
     @Then("^I see confirmation page$")
     public void ISeeConfirmationPage() throws Exception {
-        Assert.assertTrue(getRegistrationPage().isConfirmationShown());
+        Assert.assertTrue("Confirmation message is not shown or not correct", getRegistrationPage().isConfirmationShown());
     }
 
     /**
@@ -241,10 +232,8 @@ public class RegistrationPageSteps {
      */
     @When("^I start activation email monitoring$")
     public void IStartActivationEmailMonitoring() throws Exception {
-        Map<String, String> expectedHeaders = new HashMap<String, String>();
-        expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-        this.activationMessage = IMAPSMailbox.getInstance().getMessage(
-                expectedHeaders, BackendAPIWrappers.ACTIVATION_TIMEOUT);
+        activationMessage = BackendAPIWrappers
+            .initMessageListener(userToRegister);
     }
 
     @Then("^I verify registration address$")
@@ -252,7 +241,7 @@ public class RegistrationPageSteps {
         BackendAPIWrappers
                 .activateRegisteredUserByEmail(this.activationMessage);
         userToRegister.setUserState(UserState.Created);
-        getLoginPage().waitForLoginToFinish();
+        getRegistrationPage().waitRegistrationToFinish();
     }
 
     /**
