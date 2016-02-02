@@ -201,6 +201,7 @@ public class ContactListPage extends IOSPage {
         final By locator = By.xpath(xpathStrConvoListEntryByIdx.apply(idx));
         final WebElement el = getElement(locator,
                 String.format("Conversation list entry number '%s' is not visible", idx));
+        // ImageIO.write(takeScreenshot().get(), "png", new File("/Users/elf/Desktop/screen_" + System.currentTimeMillis() + ".png"));
         return this.getElementScreenshot(el).orElseThrow(IllegalStateException::new);
         // ImageIO.write(scr, "png", new File("/Users/elf/Desktop/screen_" + System.currentTimeMillis() + ".png"));
         // return scr;
