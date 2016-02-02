@@ -39,18 +39,12 @@ public class DialogPageSteps {
 
     @When("^I see dialog page$")
     public void WhenISeeDialogPage() throws Exception {
-        Assert.assertTrue("Cursor input is not visible",
-                getDialogPage().waitForCursorInputVisible());
+        Assert.assertTrue("Cursor input is not visible", getDialogPage().waitForCursorInputVisible());
     }
 
     @When("^I tap on text input$")
     public void WhenITapOnTextInput() throws Exception {
-        for (int i = 0; i < 3; i++) {
-            getDialogPage().tapOnCursorInput();
-            if (getDialogPage().isKeyboardVisible()) {
-                break;
-            }
-        }
+        getDialogPage().tapOnCursorInput();
     }
 
     /**
@@ -61,12 +55,8 @@ public class DialogPageSteps {
      */
     @When("^I tap on text input to scroll to the end$")
     public void WhenITapOnTextInputToScroll() throws Exception {
-        for (int i = 0; i < 3; i++) {
-            getDialogPage().tapOnCursorInput();
-            if (getDialogPage().isPlusButtonVisible()) {
-                break;
-            }
-        }
+        getDialogPage().tapOnCursorInput();
+        getDialogPage().hideKeyboard();
     }
 
     /**
@@ -77,8 +67,7 @@ public class DialogPageSteps {
      */
     @When("I see text input in dialog is not allowed")
     public void ISeeTextInputIsNotAllowed() throws Exception {
-        Assert.assertFalse("Text input is allowed", getDialogPage()
-                .isCursorInputVisible());
+        Assert.assertFalse("Text input is allowed", getDialogPage().isCursorInputVisible());
     }
 
     @When("^I type the default message$")
@@ -331,10 +320,9 @@ public class DialogPageSteps {
     /**
      * Verify that Media disappears after the timeout
      *
-     * @step. ^I wait up to (\d+) seconds for media bar to disappear$
-     *
      * @param timeoutSeconds number of seconds to wait
      * @throws Exception
+     * @step. ^I wait up to (\d+) seconds for media bar to disappear$
      */
     @Then("^I wait up to (\\d+) seconds for media bar to disappear$")
     public void IVerifyMediaBarIsNotVisible(int timeoutSeconds) throws Exception {
@@ -476,8 +464,7 @@ public class DialogPageSteps {
     }
 
     @When("^I send using script predefined message (.*)$")
-    public void ISendUsingScriptPredefinedMessage(String message)
-            throws Exception {
+    public void ISendUsingScriptPredefinedMessage(String message) throws Exception {
         getDialogPage().typeAndSendConversationMessage(message);
     }
 
