@@ -39,7 +39,7 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 
     public void verifyConversationsListIsLoaded() throws Exception {
         if (ScreenOrientationHelper.getInstance().fixOrientation(getDriver()) == ScreenOrientation.PORTRAIT) {
-            if (DriverUtils.waitUntilLocatorAppears(getDriver(), xpathStrConvoViewOrSelfProfile, LOAD_TIMEOUT)) {
+            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathStrConvoViewOrSelfProfile, LOAD_TIMEOUT)) {
                 // FIXME: Workaround for self profile as start page issue
                 int ntry = 1;
                 final int maxRetries = 3;
