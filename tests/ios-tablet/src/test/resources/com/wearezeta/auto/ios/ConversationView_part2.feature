@@ -49,8 +49,8 @@ Feature: Conversation View
     And I click plus button next to text input
     And I press Add Picture button
     And I press Camera Roll button
-    And I choose a picture from camera roll on iPad popover
-    And I press Confirm button on iPad popover
+    And I choose a picture from camera roll
+    And I press Confirm button
     And I see 1 photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
@@ -78,8 +78,8 @@ Feature: Conversation View
     And I click plus button next to text input
     And I press Add Picture button
     And I press Camera Roll button
-    And I choose a picture from camera roll on iPad popover
-    And I press Confirm button on iPad popover
+    And I choose a picture from camera roll
+    And I press Confirm button
     And I see 1 photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
@@ -170,8 +170,8 @@ Feature: Conversation View
     And I click plus button next to text input
     And I press Add Picture button
     And I press Camera Roll button
-    And I choose a picture from camera roll on iPad popover
-    And I press Confirm button on iPad popover
+    And I choose a picture from camera roll
+    And I press Confirm button
     And I see 1 photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
@@ -193,8 +193,8 @@ Feature: Conversation View
     And I click plus button next to text input
     And I press Add Picture button
     And I press Camera Roll button
-    And I choose a picture from camera roll on iPad popover
-    And I press Confirm button on iPad popover
+    And I choose a picture from camera roll
+    And I press Confirm button
     And I see 1 photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened

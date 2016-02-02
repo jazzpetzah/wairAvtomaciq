@@ -54,8 +54,8 @@ Feature: Search
     When I see Send image action button on People picker page
     And I click Send image action button on People picker page
     And I press Camera Roll button
-    And I choose a picture from camera roll on iPad popover
-    And I press Confirm button on iPad popover
+    And I choose a picture from camera roll
+    And I press Confirm button
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I see 1 photo in the dialog
     When I navigate back to conversations list
@@ -79,8 +79,8 @@ Feature: Search
     When I see Send image action button on People picker page
     And I click Send image action button on People picker page
     And I press Camera Roll button
-    And I choose a picture from camera roll on iPad popover
-    And I press Confirm button on iPad popover
+    And I choose a picture from camera roll
+    And I press Confirm button
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I see 1 photo in the dialog
     And I see in contact list group chat with <Contact1> <Contact2> <Contact3>

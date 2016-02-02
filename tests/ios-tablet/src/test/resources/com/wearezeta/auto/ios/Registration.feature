@@ -11,9 +11,9 @@ Feature: Registration
     And I accept terms of service
     And I see confirmation page
     And I verify registration address
-    And I press Picture button
-    And I choose a picture from camera roll on iPad popover
-    And I press Confirm button on iPad popover
+    And I press Choose Own Picture button
+    And I press Choose Photo button
+    And I choose a picture from camera roll
     Then I see conversations list
 
     Examples: 
@@ -32,9 +32,9 @@ Feature: Registration
     And I accept terms of service
     And I see confirmation page
     And I verify registration address
-    And I press Picture button
-    And I choose a picture from camera roll on iPad popover
-    And I press Confirm button on iPad popover
+    And I press Choose Own Picture button
+    And I press Choose Photo button
+    And I choose a picture from camera roll
     Then I see conversations list
 
     Examples: 
@@ -84,8 +84,8 @@ Feature: Registration
     And I see confirmation page
     And I verify registration address
     And I press Picture button
-    And I choose a picture from camera roll on iPad popover
-    And I press Confirm button on iPad popover
+    And I choose a picture from camera roll
+    And I press Confirm button
     Then I see conversations list
     When I tap my avatar
     Then I see user name doesnt contains spaces

@@ -161,6 +161,21 @@ public class OtherUserPersonalInfoPageSteps {
         int numDevices = getOtherUserPersonalInfoPage().getParticipantDevices().size();
         Assert.assertTrue("expected size", expectedNumDevices == numDevices);
     }
+    
+    /**
+     * Verifies device number X in single participant devices tab
+     *
+     * @param deviceNum Device number to verify
+     * @param suffix Optional num suffix to get string like 1st, 2nd, etc.
+     * @throws Exception
+     * @step. ^I verify (\\d+)(st|nd|rd|th)? device$
+     * tab$
+     */
+    @When("^I verify (\\d+)(st|nd|rd|th)? device$")
+    public void IVerifyDeviceX(int deviceNum, String suffix) throws Exception {
+        getOtherUserPersonalInfoPage().tapOnParticipantFirstDevice(deviceNum);
+        getOtherUserPersonalInfoPage().verifyParticipantDevice();
+    }
 
     /**
      * Checks the ids of all devices displayed in single participant devices tab
