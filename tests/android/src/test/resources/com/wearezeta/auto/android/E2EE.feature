@@ -231,13 +231,13 @@ Feature: E2EE
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    And Contact <Contact1> sends message <EncMessage> to group conversation <GroupChatName>
+    When Contact <Contact1> sends message <EncMessage> to group conversation <GroupChatName>
     And Contact <Contact2> sends message <EncMessage> to group conversation <GroupChatName>
     And Contact <Contact3> sends message <EncMessage> to group conversation <GroupChatName>
-    Given I wait for 5 seconds
-    Given User <Contact1> adds user Myself to group chat <GroupChatName>
-    When I tap on contact name <GroupChatName>
-    And I see encrypted message <EncMessage> 0 time in the conversation view
+    And I wait for 5 seconds
+    And User <Contact1> adds user Myself to group chat <GroupChatName>
+    And I tap on contact name <GroupChatName>
+    Then I see encrypted message <EncMessage> 0 time in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | EncMessage |
