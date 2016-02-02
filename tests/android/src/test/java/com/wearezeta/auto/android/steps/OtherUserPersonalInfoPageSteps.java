@@ -169,14 +169,26 @@ public class OtherUserPersonalInfoPageSteps {
      * @param suffix Optional num suffix to get string like 1st, 2nd, etc.
      * @throws Exception
      * @step. ^I verify (\\d+)(st|nd|rd|th)? device$
-     * tab$
      */
-    @When("^I verify (\\d+)(st|nd|rd|th)? device$")
+    @Then("^I verify (\\d+)(st|nd|rd|th)? device$")
     public void IVerifyDeviceX(int deviceNum, String suffix) throws Exception {
         getOtherUserPersonalInfoPage().tapOnParticipantFirstDevice(deviceNum);
         getOtherUserPersonalInfoPage().verifyParticipantDevice();
     }
 
+    
+    /**
+     * Verifies that shield is showed in participant profile
+     *
+     * @throws Exception
+     * @step. ^I see shield in participant profile$
+     */
+    @Then("^I see shield in participant profile$")
+    public void IVerifyDeviceX() throws Exception {
+        Assert.assertTrue(getOtherUserPersonalInfoPage().isParticipantShieldShowed());
+    }
+    
+    
     /**
      * Checks the ids of all devices displayed in single participant devices tab
      *

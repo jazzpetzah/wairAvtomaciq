@@ -32,6 +32,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
     private static final By idParticipantDevices = By.id("ttv__row_otr_device");
     
+    private static final By idParticipantOtrShield = By.id("sv__otr__verified_shield");
+    
     private static final Function<Integer, String> xpathParticipantDeviceByIdx = idx -> String
         .format("//*[@id='ttv__row_otr_device'][%d]", idx);
     
@@ -119,7 +121,10 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
             return;
         else
             throw new RuntimeException("Failed verify device");
-
+    }
+    
+    public boolean isParticipantShieldShowed() throws Exception {
+        return DriverUtils.isElementPresentAndDisplayed(getDriver(), getElement(idParticipantOtrShield));
     }
     
     public void selectSingleParticipantTab(String itemName) throws Exception {
