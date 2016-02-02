@@ -44,7 +44,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 import java.util.logging.Level;
 
 public class CommonAndroidSteps {
@@ -981,9 +981,22 @@ public class CommonAndroidSteps {
     @When("^User (.*) adds new devices (.*)")
     public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
         final List<String> names = CommonSteps.splitAliases(deviceNames);
+        final int poolSize = 2;  // Runtime.getRuntime().availableProcessors()
+        final ExecutorService pool = Executors.newFixedThreadPool(poolSize);
         for (String name : names) {
-            commonSteps.UserAddsRemoteDeviceToAccount(userNameAlias, name,
-                    CommonUtils.generateRandomString(10));
+            pool.submit(() -> {
+                try {
+                    commonSteps.UserAddsRemoteDeviceToAccount(userNameAlias, name, CommonUtils.generateRandomString(10));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+        pool.shutdown();
+        final int secondsTimeout = (names.size() / poolSize + 1) * 40;
+        if (!pool.awaitTermination(secondsTimeout, TimeUnit.SECONDS)) {
+            throw new IllegalStateException(String.format(
+                    "Devices '%s' were not created within %s seconds timeout", names, secondsTimeout));
         }
     }
 

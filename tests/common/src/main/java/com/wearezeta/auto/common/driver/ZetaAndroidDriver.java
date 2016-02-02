@@ -28,8 +28,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements
-        ZetaDriver, HasTouchScreen {
+public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements ZetaDriver, HasTouchScreen {
 
     private static final Logger log = ZetaLogger.getLog(ZetaAndroidDriver.class
             .getSimpleName());
@@ -258,8 +257,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements
      */
     @Override
     public Response execute(String driverCommand, Map<String, ?> parameters) {
-        if (this.isSessionLost()
-                && !driverCommand.equals(DriverCommand.SCREENSHOT)) {
+        if (this.isSessionLost() && !driverCommand.equals(DriverCommand.SCREENSHOT)) {
             throw new IllegalStateException(
                     String.format(
                             "Appium session is dead. Skipping execution of '%s' command...",

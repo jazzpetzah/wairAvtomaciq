@@ -21,23 +21,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 class RemoteProcess extends RemoteEntity implements IRemoteProcess {
-
-    private static final Logger LOG = ZetaLogger.getLog(RemoteProcess.class
-            .getSimpleName());
+    private static final Logger LOG = ZetaLogger.getLog(RemoteProcess.class.getSimpleName());
 
     private final String backendType;
     private final boolean otrOnly;
-    private ExecutorService pinger;
+    private volatile ExecutorService pinger;
     {
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            if (this.pinger != null) {
-                try {
-                    this.pinger.shutdownNow();
-                } catch (Throwable e) {
-                    e.printStackTrace();
-                }
-            }
-        }));
+        Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
     }
 
     // Default actor lib TTL equals to 30 seconds
@@ -86,10 +76,11 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
                     this.pinger.shutdownNow();
                 }
                 this.pinger = Executors.newSingleThreadExecutor();
-                LOG.debug(String.format("Starting ping thread with %s-seconds interval for the remote process '%s'...",
+                LOG.debug(String.format(
+                        "Starting ping thread with %s-seconds interval for the remote process '%s'...",
                         PING_INTERVAL_SECONDS, name()));
                 this.pinger.submit(() -> {
-                    while(!Thread.currentThread().isInterrupted()) {
+                    while (!Thread.currentThread().isInterrupted()) {
                         try {
                             Thread.sleep(PING_INTERVAL_SECONDS * 1000);
                         } catch (InterruptedException e) {
@@ -138,5 +129,16 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
     @Override
     public boolean isOtrOnly() {
         return this.otrOnly;
+    }
+
+    public void shutdown() {
+        // The process will kill itself if no messages within 30 seconds
+        if (this.pinger != null) {
+            try {
+                this.pinger.shutdownNow();
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

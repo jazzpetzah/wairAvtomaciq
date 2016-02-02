@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 
 import io.appium.java_client.ios.IOSDriver;
+import org.openqa.selenium.remote.DriverCommand;
 import org.openqa.selenium.remote.Response;
 import org.openqa.selenium.remote.SessionNotFoundException;
 import org.openqa.selenium.remote.UnreachableBrowserException;
@@ -102,7 +103,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
 
     @Override
     public Response execute(String driverCommand, Map<String, ?> parameters) {
-        if (this.isSessionLost()) {
+        if (this.isSessionLost() && !driverCommand.equals(DriverCommand.SCREENSHOT)) {
             throw new IllegalStateException(
                     String.format("Appium session is dead. Skipping execution of '%s' command...", driverCommand));
         }

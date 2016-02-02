@@ -286,7 +286,7 @@ public class DialogPage extends IOSPage {
                 map(x -> String.format("contains(@name, '%s')", x.toUpperCase())).
                 collect(Collectors.toList()));
         final By locator = By.xpath(xpathStartConversationEntryTemplate.apply(xpathExpr));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator,10);
     }
 
     public String getMediaState() throws Exception {

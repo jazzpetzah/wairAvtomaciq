@@ -527,4 +527,16 @@ public class ContactListPageSteps {
         }
     }
 
+    /**
+     * Taps on the name you are in a call with in conversation list
+     * @step. ^I tap on chat I am in a call with name (.*)$
+     * @param name
+     * @throws Throwable
+     */
+    @When("^I tap on chat I am in a call with name (.*)$")
+    public void ITapOnChatIAmInACallWithName(String name) throws Throwable {
+        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        getContactListPage().tapOnNameYourInCallWith(name);
+    }
+
 }
