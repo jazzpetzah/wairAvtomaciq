@@ -106,18 +106,14 @@ public class IOSSimulatorHelper {
     public static void lock() throws Exception {
         activateWindow();
         CommonUtils.executeUIAppleScript(new String[]{
-                "tell application \"System Events\"",
-                "tell application \"System Events\" to keystroke \"l\" using {command down}",
-                "end tell"
+                "tell application \"System Events\" to keystroke \"l\" using {command down}"
         }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 
     public static void goHome() throws Exception {
         activateWindow();
         CommonUtils.executeUIAppleScript(new String[]{
-                "tell application \"System Events\"",
-                "keystroke \"h\" using {command down, shift down}",
-                "end tell"
+                "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}"
         }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 }
