@@ -133,7 +133,23 @@ public class DialogPage extends AndroidPage {
     }
 
     public void pressPlusButtonOnDialogPage() throws Exception {
-        getElement(idCursorBtn, "Plus cursor button is not visible").click();
+        final WebElement cursorBtn = getElement(idCursorBtn, "Plus cursor button is not visible");
+        int locationX = cursorBtn.getLocation().getX();
+        int ntry = 1;
+        do {
+            cursorBtn.click();
+            if(cursorBtn.getLocation().getX() < 0 && cursorBtn.getLocation().getX() != locationX)
+                return;
+            log.debug(String.format(
+                    "Failed to open control buttons by tap on plus button. Retrying (%s of %s)...",
+                    ntry, MAX_SWIPE_RETRIES));
+            ntry++;
+            Thread.sleep(500);
+        } while (ntry <= MAX_SWIPE_RETRIES);
+        throw new RuntimeException(
+                String.format(
+                        "Failed to open control buttons by tap on plus button after %s retries!",
+                        MAX_SWIPE_RETRIES));
     }
 
     public void swipeRightOnCursorInput() throws Exception {
