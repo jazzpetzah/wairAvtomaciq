@@ -41,7 +41,6 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -312,6 +311,21 @@ public class CommonAndroidSteps {
         } else {
             throw new RuntimeException("Selenium has failed to take the screenshot from current page");
         }
+    }
+
+    /**
+     * A user adds another user to a group chat
+     *
+     * @param user that adds someone to a chat
+     * @param userToBeAdded user that gets added by someone
+     * @param group group chat you get added to
+     * @throws Throwable
+     * @step. ^User (.*) adds [Uu]ser (.*) to group chat (.*)$
+     */
+    @When("^User (.*) adds [Uu]ser (.*) to group chat (.*)$")
+    public void UserAddsUserToGroupChat(String user, String userToBeAdded,
+            String group) throws Throwable {
+        commonSteps.UserXAddedContactsToGroupChat(user, userToBeAdded, group);
     }
 
     /**

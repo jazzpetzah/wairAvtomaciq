@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import static org.junit.Assert.assertTrue;
 
 public class DialogPageSteps {
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
@@ -531,14 +532,14 @@ public class DialogPageSteps {
     @Then("^I see group chat page with users (.*)$")
     public void ThenISeeGroupChatPage(String participantNameAliases)
             throws Exception {
-        assert getDialogPage().isDialogVisible() : "Group chat view is not visible";
+        assertTrue("Group chat view is not visible", getDialogPage().isDialogVisible());
         List<String> participantNames = new ArrayList<String>();
         for (String nameAlias : CommonSteps
                 .splitAliases(participantNameAliases)) {
             participantNames.add(usrMgr.findUserByNameOrNameAlias(nameAlias)
                     .getName());
         }
-        Assert.assertTrue(getDialogPage().isGroupChatDialogContainsNames(
+        Assert.assertTrue("Group chat view with names is not visible", getDialogPage().isGroupChatDialogContainsNames(
                 participantNames));
     }
 
