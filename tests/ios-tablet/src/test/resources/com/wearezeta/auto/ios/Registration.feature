@@ -41,37 +41,6 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C2763 @regression @rc @id2476
-  Scenario Outline: Verify registration with email [PORTRAIT]
-    Given I see sign in screen
-    When I enter name <Name>
-    And I enter email <Email>
-    And I enter password <Password>
-    And I start activation email monitoring
-    And I click Create Account Button
-    And I accept terms of service
-    And I see confirmation page
-
-    Examples: 
-      | Email      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
-
-  @C2767 @regression @id2937
-  Scenario Outline: Verify registration with email [LANDSCAPE]
-    Given I see sign in screen
-    Given I rotate UI to landscape
-    When I enter name <Name>
-    And I enter email <Email>
-    And I enter password <Password>
-    And I start activation email monitoring
-    And I click Create Account Button
-    And I accept terms of service
-    And I see confirmation page
-
-    Examples: 
-      | Email      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
-
   @C2769 @staging @id4049
   Scenario Outline: Verify cutting spaces from the beginning and ending the name
     Given I see sign in screen
