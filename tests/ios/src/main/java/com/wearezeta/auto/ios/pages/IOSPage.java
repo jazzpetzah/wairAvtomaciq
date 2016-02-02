@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 import com.wearezeta.auto.common.*;
@@ -23,7 +22,6 @@ public abstract class IOSPage extends BasePage {
 
     public final static long IOS_DRIVER_INIT_TIMEOUT = 1000 * 60 * 3;
 
-    private static final int SWIPE_DELAY = 10 * 1000; // milliseconds
     private static final int DEFAULT_RETRY_COUNT = 2;
 
     protected static final String nameStrMainWindow = "ZClientMainWindow";
@@ -88,14 +86,6 @@ public abstract class IOSPage extends BasePage {
         super.close();
     }
 
-    public void swipeLeft(int time) throws Exception {
-        DriverUtils.swipeLeft(this.getDriver(), getElement(nameMainWindow), time);
-    }
-
-    public void swipeRight(int time) throws Exception {
-        DriverUtils.swipeRight(this.getDriver(), getElement(nameMainWindow), time);
-    }
-
     public void swipeRight(int time, int percentX, int percentY) throws Exception {
         DriverUtils.swipeRight(this.getDriver(), getElement(nameMainWindow), time, percentX, percentY);
     }
@@ -103,11 +93,6 @@ public abstract class IOSPage extends BasePage {
     public void swipeUp(int time) throws Exception {
         DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(nameMainWindow), time,
                 50, 55, 50, 10);
-    }
-
-    public void swipeDownSimulator() throws Exception {
-        IOSSimulatorHelper.swipeDown();
-        Thread.sleep(SWIPE_DELAY);
     }
 
     public void swipeDown(int time) throws Exception {
@@ -139,7 +124,11 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void inputStringFromKeyboard(String str) throws Exception {
-        this.onScreenKeyboard.typeString(str);
+        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+           IOSSimulatorHelper.typeString(str);
+        } else {
+            this.onScreenKeyboard.typeString(str);
+        }
     }
 
     public boolean isKeyboardVisible() throws Exception {
@@ -199,13 +188,7 @@ public abstract class IOSPage extends BasePage {
     public void minimizeApplication(int timeSeconds) throws Exception {
         assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            CommonUtils.executeUIAppleScript(new String[]{
-                    "tell application \"System Events\"",
-                    "tell application \"Simulator\" to activate",
-                    "do shell script \"/bin/sleep 3\"",
-                    "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
-                    "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
-                    "end tell"}).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+            IOSSimulatorHelper.switchToAppsList();
             final int clickAtHelperDuration = 4; // seconds
             if (timeSeconds >= clickAtHelperDuration) {
                 Thread.sleep((timeSeconds - clickAtHelperDuration) * 1000);
@@ -289,22 +272,10 @@ public abstract class IOSPage extends BasePage {
     public void lockScreen(int timeSeconds) throws Exception {
         assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            CommonUtils.executeUIAppleScript(new String[]{
-                    "tell application \"System Events\"",
-                    "tell application \"Simulator\" to activate",
-                    "do shell script \"/bin/sleep 3\"",
-                    "tell application \"System Events\" to keystroke \"l\" using {command down}",
-                    "end tell"
-            }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+            IOSSimulatorHelper.lock();
             Thread.sleep(timeSeconds * 1000);
             // this is to show the unlock label if not visible yet
-            CommonUtils.executeUIAppleScript(new String[]{
-                    "tell application \"System Events\"",
-                    "tell application \"Simulator\" to activate",
-                    "do shell script \"/bin/sleep 3\"",
-                    "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
-                    "end tell"
-            }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+            IOSSimulatorHelper.goHome();
             IOSSimulatorHelper.swipeRight();
         } else {
             this.getDriver().lockScreen(timeSeconds);

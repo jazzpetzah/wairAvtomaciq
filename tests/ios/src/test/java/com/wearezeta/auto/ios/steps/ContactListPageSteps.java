@@ -177,15 +177,6 @@ public class ContactListPageSteps {
         WhenITapOnContactName(chatName);
     }
 
-    @When("^I swipe down contact list$")
-    public void ISwipeDownContactList() throws Throwable {
-        if (!CommonUtils.getIsSimulatorFromConfig(IOSPage.class)) {
-            getContactListPage().swipeDown(500);
-        } else {
-            getContactListPage().swipeDownSimulator();
-        }
-    }
-
     /**
      * Open search by taping on search field
      *

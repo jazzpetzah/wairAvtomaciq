@@ -563,7 +563,7 @@ public class CommonUtils {
      * It is highly recommended to use these methods if it is necessary to interact with UI from a script. Otherwise it will be
      * blocked by Mac OS as unsecure, because only Terminal.app is explicitly authorized to interact with UI.
      *
-     * @param content the full script content, WITHOUT shebang
+     * @param content the full script content, WITHOUT shebangsmoketester+ce914e4a@wire.com
      * @return monitoring Future. Use it to block execution until shell script execution is done
      * @throws Exception
      */
