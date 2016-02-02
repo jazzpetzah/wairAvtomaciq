@@ -40,11 +40,11 @@ public class UserDevicePool {
         this.otrOnly = otrOnly;
     }
 
-    public synchronized IDevice addDevice(ClientUser user) {
+    public IDevice addDevice(ClientUser user) {
         return addDevice(user, "Device_" + System.currentTimeMillis());
     }
 
-    public synchronized IDevice addDevice(ClientUser user, String deviceName) {
+    public IDevice addDevice(ClientUser user, String deviceName) {
         LOG.info("Add new device for user " + user.getName() + " with device name " + deviceName);
         if (deviceCount >= MAX_DEVICES) {
             throw new IllegalStateException(String.format(
@@ -103,7 +103,7 @@ public class UserDevicePool {
     }
 
     public synchronized void shutdown() {
-        if (this.userDevices != null && this.coordinatorActorRef != null) {
+        if (this.coordinatorActorRef != null) {
             LOG.info("Shutting down device pool...");
             coordinatorActorRef.tell(ReleaseRemotes$.MODULE$, null);
             this.coordinatorActorRef = null;

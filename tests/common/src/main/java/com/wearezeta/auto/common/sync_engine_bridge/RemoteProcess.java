@@ -131,7 +131,7 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
         return this.otrOnly;
     }
 
-    public synchronized void shutdown() {
+    public void shutdown() {
         // The process will kill itself if no messages within 30 seconds
         if (this.pinger != null) {
             try {

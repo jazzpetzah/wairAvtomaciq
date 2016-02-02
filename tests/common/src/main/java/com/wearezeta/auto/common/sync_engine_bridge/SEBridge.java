@@ -16,7 +16,7 @@ public class SEBridge {
     private static final long DEVICE_POOL_INIT_TIMEOUT_SECONDS = 60;
     private volatile Future<UserDevicePool> devicePool;
     private static SEBridge instance = null;
-    private static final Semaphore poolGuard = new Semaphore(1);
+    private final Semaphore poolGuard = new Semaphore(1);
 
     private static final Logger LOG = ZetaLogger.getLog(SEBridge.class.getSimpleName());
 
@@ -146,6 +146,7 @@ public class SEBridge {
 
     public void reset() throws Exception {
         if (this.devicePool.isDone()) {
+            this.devicePool.get().shutdown();
             this.resetDevicePool();
         }
     }
