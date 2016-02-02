@@ -365,7 +365,6 @@ Feature: Conversation View
     And I see play/pause button next to username <Contact1> in contact list
     And I tap play/pause button in contact list next to username <Contact1>
     And I tap on contact name <Contact2>
-    And I tap on text input
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I navigate back to conversations list
