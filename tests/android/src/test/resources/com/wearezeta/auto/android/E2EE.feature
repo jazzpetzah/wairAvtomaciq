@@ -231,9 +231,9 @@ Feature: E2EE
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When Contact <Contact1> sends message <EncMessage> to group conversation <GroupChatName>
-    And Contact <Contact2> sends message <EncMessage> to group conversation <GroupChatName>
-    And Contact <Contact3> sends message <EncMessage> to group conversation <GroupChatName>
+    When Contact <Contact1> sends encrypted message <EncMessage> to group conversation <GroupChatName>
+    And Contact <Contact2> sends encrypted message <EncMessage> to group conversation <GroupChatName>
+    And Contact <Contact3> sends encrypted message <EncMessage> to group conversation <GroupChatName>
     And I wait for 5 seconds
     And User <Contact1> adds user Myself to group chat <GroupChatName>
     And I tap on contact name <GroupChatName>
