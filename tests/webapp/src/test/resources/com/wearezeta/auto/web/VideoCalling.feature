@@ -1,7 +1,7 @@
 Feature: VideoCalling
 
   @C12071 @videocalling
-  Scenario Outline: Verify I can start a Video call
+  Scenario Outline: Verify I can start a 1:1 Video call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -12,10 +12,9 @@ Feature: VideoCalling
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
-    And I start a video call
+    And I start a 1:1 video call
     And I wait for 60 seconds
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 60 seconds
     And I see the calling bar
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I end the call

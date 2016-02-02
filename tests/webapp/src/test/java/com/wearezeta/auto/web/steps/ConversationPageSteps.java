@@ -869,7 +869,7 @@ public class ConversationPageSteps {
 	 *
 	 * @step. ^I call$
 	 */
-	@When("^I start a video call$")
+	@When("^I start a 1:1 video call$")
 	public void IMakeVideoCallToUser() throws Throwable {
 		webappPagesCollection.getPage(ConversationPage.class)
 				.clickVideoCallButton();
