@@ -1,34 +1,39 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
+
 import io.appium.java_client.ios.IOSElement;
+
 import org.openqa.selenium.By;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+
 import org.openqa.selenium.WebElement;
 
 public class RegistrationPage extends IOSPage {
-    private static final By xpathYourName =
-            By.xpath(xpathStrMainWindow + "/UIATextField[@value='YOUR FULL NAME']");
+
+    private static final By xpathYourName = By.xpath(xpathStrMainWindow + "/UIATextField[@value='YOUR FULL NAME']");
 
     private static final By nameYourEmail = By.name("EmailField");
 
     private static final By nameYourPassword = By.name("PasswordField");
 
-    private static final By xpathCreateAccountButton = By.xpath(
-            "//UIASecureTextField[contains(@name, 'PasswordField')]/UIAButton");
+    private static final By xpathCreateAccountButton = By
+        .xpath("//UIASecureTextField[contains(@name, 'PasswordField')]/UIAButton");
 
-    private static final Function<String, String> xpathStrConfirmationByMessage = msg ->
-            String.format("//UIAStaticText[contains(@name, 'We sent an email to %s.')]", msg);
+    private static final Function<String, String> xpathStrConfirmationByMessage = msg -> String.format(
+        "//UIAStaticText[contains(@name, 'We sent an email to %s')]", msg);
 
-    private static final By xpathEmailVerifPrompt = By.xpath(xpathStrMainWindow +
-            "/UIAStaticText[contains(@name, 'We sent an email to ')]");
+    private static final By xpathEmailVerifPrompt = By.xpath(xpathStrMainWindow
+        + "/UIAStaticText[contains(@name, 'We sent an email to ')]");
 
     private static final By namePhoneNumberField = By.name("PhoneNumberField");
 
@@ -42,8 +47,8 @@ public class RegistrationPage extends IOSPage {
 
     private static final By nameAgreeButton = By.name("I AGREE");
 
-    private static final By xpathVerificationPage = By.xpath(
-            "//UIAStaticText[contains(@name, 'Enter the verification code we sent to')]");
+    private static final By xpathVerificationPage = By
+        .xpath("//UIAStaticText[contains(@name, 'Enter the verification code we sent to')]");
 
     private static final By nameResendCodeButton = By.name("RESEND");
 
@@ -128,11 +133,19 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void typeEmail() throws Exception {
-        getElement(nameYourEmail).sendKeys(getEmail());
+        try {
+            ((IOSElement) getElement(nameYourEmail)).setValue(getEmail());
+        } catch (Exception e) {
+            getElement(nameYourEmail).sendKeys(getEmail());
+        }
     }
 
     public void typeUsername() throws Exception {
-        getElement(xpathYourName, "Name input is not visible").sendKeys(getName());
+        try {
+            ((IOSElement) getElement(xpathYourName, "Name input is not visible")).setValue(getName());
+        } catch (Exception e) {
+            getElement(xpathYourName, "Name input is not visible").sendKeys(getName());
+        }
     }
 
     public String getName() {
@@ -159,7 +172,11 @@ public class RegistrationPage extends IOSPage {
     }
 
     private void typePassword() throws Exception {
-        getElement(nameYourPassword).sendKeys(getPassword());
+        try {
+            ((IOSElement) getElement(nameYourPassword)).setValue(getPassword());
+        } catch (Exception e) {
+            getElement(nameYourPassword).sendKeys(getPassword());
+        }
     }
 
     public void setPassword(String password) throws Exception {
@@ -177,7 +194,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void clickChooseOwnPicButton() throws Exception {
-        clickElementWithRetryIfStillDisplayed(nameChooseOwnPictureButton);
+        clickElementWithRetryIfNextElementAppears(nameChooseOwnPictureButton, nameChoosePhotoButton);
     }
 
     public void clickChoosePhotoButton() throws Exception {
@@ -185,5 +202,13 @@ public class RegistrationPage extends IOSPage {
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameChoosePhotoButton)) {
             throw new IllegalStateException("Confirm button is still visible");
         }
+    }    
+    
+    public void waitRegistrationToFinish() throws Exception {
+        final By locator = By.xpath(xpathStrConfirmationByMessage.apply(getEmail()));
+        if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator, 40)) {
+            throw new IllegalStateException("Verification page is still visible after the timeout");
+        }
+        instantiatePage(FirstTimeOverlay.class).acceptIfVisible(2);
     }
 }

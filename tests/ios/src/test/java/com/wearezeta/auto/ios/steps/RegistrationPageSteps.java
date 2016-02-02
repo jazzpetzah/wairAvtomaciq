@@ -181,7 +181,7 @@ public class RegistrationPageSteps {
 
     @When("^I enter email (.*)$")
     public void IEnterEmail(String email) throws Exception {
-        boolean flag = false;
+        boolean isRealEmail = false;
         try {
             String realEmail = usrMgr.findUserByEmailOrEmailAlias(email)
                     .getEmail();
@@ -190,10 +190,10 @@ public class RegistrationPageSteps {
             if (this.userToRegister == null) {
                 this.userToRegister = new ClientUser();
             }
-            flag = true;
+            isRealEmail = true;
         }
 
-        if (flag) {
+        if (isRealEmail) {
             getRegistrationPage().setEmail(email);
         } else {
             getRegistrationPage().setEmail(
