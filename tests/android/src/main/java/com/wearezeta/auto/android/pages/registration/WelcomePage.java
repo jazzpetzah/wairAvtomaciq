@@ -43,10 +43,10 @@ public class WelcomePage extends AndroidPage {
 
     public void tapSignInTab() throws Exception {
         final WebElement signInTab = getElement(xpathSignInTab, "Sign In tab is not visible", 30);
-        if (!DriverUtils.waitUntilElementClickable(getDriver(), signInTab)) {
-            throw new IllegalStateException("Sign in tab is not clickable");
-        }
         signInTab.click();
+        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), EmailSignInPage.idLoginInput)) {
+            signInTab.click();
+        }
     }
 
     public boolean waitForInitialScreen() throws Exception {
@@ -54,6 +54,10 @@ public class WelcomePage extends AndroidPage {
     }
 
     public void clickAreaCodeSelector() throws Exception {
-        getElement(idAreaCodeSelector, "Area code selector is not visible").click();
+        final WebElement areaCodeSelector = getElement(idAreaCodeSelector, "Area code selector is not visible");
+        areaCodeSelector.click();
+        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), AreaCodePage.idCode)) {
+            areaCodeSelector.click();
+        }
     }
 }
