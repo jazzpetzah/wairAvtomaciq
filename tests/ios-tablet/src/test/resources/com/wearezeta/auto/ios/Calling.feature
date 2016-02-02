@@ -173,132 +173,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @C2396 @calling_basic @id2619
-  Scenario Outline: In zeta call for more than 15 mins [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given <Contact> starts waiting instance using <CallBackend>
-    Given <Contact> accepts next incoming call automatically
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    And I click plus button next to text input
-    And I press call button
-    And I see mute call, end call buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And I end started call
-    And I dont see calling page
-
-    Examples:
-      | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | firefox     | 60      |
-
-  @C2396 @calling_basic @id2619
-  Scenario Outline: In zeta call for more than 15 mins [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given <Contact> starts waiting instance using <CallBackend>
-    Given <Contact> accepts next incoming call automatically
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    And I click plus button next to text input
-    And I press call button
-    And I see mute call, end call buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 60 seconds
-    And I see mute call, end call buttons
-    And I end started call
-    And I dont see calling page
-
-    Examples:
-      | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | firefox     | 30      |
-
-  @C2408 @calling_basic @id2631 @iOS9KnownIssue-NotOurBug
+  @C2408 @calling_basic @id2631
   Scenario Outline: Screenlock device when in the call [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -319,7 +194,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | firefox     | 30      |
 
-  @C2408 @calling_basic @id2631 @iOS9KnownIssue-NotOurBug
+  @C2408 @calling_basic @id2631
   Scenario Outline: Screenlock device when in the call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -402,7 +277,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | user3Name | firefox     | autocall     | 30      |
 
-  @C2395 @calling_basic @id2618 @iOS9KnownIssue-NotOurBug
+  @C2395 @calling_basic @id2618
   Scenario Outline: Put app into background after initiating call [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -423,7 +298,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | firefox     | 30      |
 
-  @C2395 @calling_basic @id2618 @iOS9KnownIssue-NotOurBug
+  @C2395 @calling_basic @id2618
   Scenario Outline: Put app into background after initiating call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -563,7 +438,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C2412 @calling_basic @id3811 @iOS9KnownIssue-NotOurBug
+  @C2412 @calling_basic @id3811
   Scenario Outline: Verify putting client to the background during 1-to-1 call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -584,7 +459,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @C2413 @calling_basic @id3812 @iOS9KnownIssue-NotOurBug
+  @C2413 @calling_basic @id3812
   Scenario Outline: Verify putting client to the background during 1-to-1 call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
