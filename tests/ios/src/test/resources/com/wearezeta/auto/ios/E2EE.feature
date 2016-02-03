@@ -43,7 +43,7 @@ Feature: E2EE
       | user1Name | Device1    | Device1Label |
 
   @C3296 @staging
-  Scenario Outline: Verify you can see device ids of the other conversation participant in 1:1 conversation details
+  Scenario Outline: Verify opening device details by clicking on it in person's profile
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email
