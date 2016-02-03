@@ -54,7 +54,6 @@ Feature: E2EE
     And I tap on Devices button
     Then I see 3 devices shown in participant devices tab
 
-
     Examples:
       | Name      | Contact1  | DeviceName1 | DeviceName2 | DeviceName3 |
       | user1Name | user2Name | Device1     | Device2     | Device3     |
