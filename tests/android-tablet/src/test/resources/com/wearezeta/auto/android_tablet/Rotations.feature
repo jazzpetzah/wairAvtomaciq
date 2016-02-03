@@ -48,11 +48,11 @@ Feature: Rotations
   Scenario Outline: Conversation view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given Contact <Contact> sends message "<Message>" to user Myself
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
+    Given User <Contact> sends exnrypted message <Message> to user Myself
     When I tap the conversation <Contact>
     Then I see the conversation view
     And I see the message "<Message>" in the conversation view

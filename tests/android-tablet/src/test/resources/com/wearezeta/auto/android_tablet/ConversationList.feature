@@ -177,7 +177,7 @@ Feature: Conversation List
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <Contact1> in my conversations list
-    And Contact <Contact1> sends message "<Msg1>" to user Myself
+    And User <Contact1> sends encrypted message <Msg1> to user Myself
     When I swipe right the conversations list item <Contact1>
     Then I see Conversation Actions overlay
     When I select <DeleteItem> menu item on Conversation Actions overlay
@@ -188,7 +188,7 @@ Feature: Conversation List
     And I enter "<Contact1>" into Search input on People Picker page
     Then I see "<Contact1>" avatar on People Picker page
     And I close People Picker
-    When Contact <Contact1> sends message "<Msg2>" to user Myself
+    When User <Contact1> sends encrypted message <Msg2> to user Myself
     Then I see conversation <Contact1> in my conversations list
     When I tap the conversation <Contact1>
     Then I see the conversation view
@@ -209,7 +209,7 @@ Feature: Conversation List
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
-    And Contact <Contact1> sends message "<Msg1>" to conversation <GroupChatName>
+    And User <Contact1> sends encrypted message <Msg1> to group conversation <GroupChatName>
     When I swipe right the conversations list item <GroupChatName>
     Then I see Conversation Actions overlay
     When I select <DeleteItem> menu item on Conversation Actions overlay
@@ -220,7 +220,7 @@ Feature: Conversation List
     And I enter "<GroupChatName>" into Search input on People Picker page
     Then I see "<GroupChatName>" group avatar on People Picker page
     And I close People Picker
-    And Contact <Contact1> sends message "<Msg2>" to conversation <GroupChatName>
+    And User <Contact1> sends encrypted message <Msg2> to group conversation <GroupChatName>
     Then I see conversation <GroupChatName> in my conversations list
     When I tap the conversation <GroupChatName>
     Then I see the conversation view
@@ -241,7 +241,7 @@ Feature: Conversation List
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I see the conversation <GroupChatName> in my conversations list
-    And Contact <Contact1> sends message "<Msg1>" to conversation <GroupChatName>
+    And User <Contact1> sends encrypted message <Msg1> to group conversation <GroupChatName>
     When I swipe right the conversations list item <GroupChatName>
     Then I see Conversation Actions overlay
     When I select <DeleteItem> menu item on Conversation Actions overlay
@@ -253,7 +253,7 @@ Feature: Conversation List
     And I enter "<GroupChatName>" into Search input on People Picker page
     Then I see "<GroupChatName>" group avatar on People Picker page
     And I close People Picker
-    And Contact <Contact1> sends message "<Msg2>" to conversation <GroupChatName>
+    And User <Contact1> sends encrypted message <Msg2> to group conversation <GroupChatName>
     Then I see conversation <GroupChatName> in my conversations list
     When I tap the conversation <GroupChatName>
     Then I see the conversation view
@@ -285,7 +285,7 @@ Feature: Conversation List
     And I enter "<GroupChatName>" into Search input on People Picker page
     Then I do not see "<GroupChatName>" group avatar on People Picker page
     And I close People Picker
-    And Contact <Contact1> sends message "<Message>" to conversation <GroupChatName>
+    And User <Contact1> sends encrypted message <Message> to group conversation <GroupChatName>
     Then I do not see conversation <GroupChatName> in my conversations list
     When I do long swipe up on conversations list
     Then I do not see conversation <GroupChatName> in my conversations list
@@ -316,7 +316,7 @@ Feature: Conversation List
     And I enter "<GroupChatName>" into Search input on People Picker page
     Then I do not see "<GroupChatName>" group avatar on People Picker page
     And I close People Picker
-    And Contact <Contact1> sends message "<Message>" to conversation <GroupChatName>
+    And User <Contact1> sends encrypted message <Message> to group conversation <GroupChatName>
     Then I do not see conversation <GroupChatName> in my conversations list
     When I do long swipe up on conversations list
     Then I do not see conversation <GroupChatName> in my conversations list
@@ -346,14 +346,14 @@ Feature: Conversation List
     And I enter "<GroupChatName>" into Search input on People Picker page
     Then I see "<GroupChatName>" group avatar on People Picker page
     And I close People Picker
-    And Contact <Contact1> sends image <Image> to group conversation <GroupChatName>
+    And User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     Then I see conversation <GroupChatName> in my conversations list
     When I swipe right the conversations list item <GroupChatName>
     Then I see Conversation Actions overlay
     When I select <DeleteItem> menu item on Conversation Actions overlay
     And I confirm conversation deletion on Conversation Actions overlay
     Then I do not see conversation <GroupChatName> in my conversations list
-    When Contact <Contact1> ping conversation <GroupChatName>
+    When User <Contact1> securely pings conversation <GroupChatName>
     Then I see conversation <GroupChatName> in my conversations list
     When I swipe right the conversations list item <GroupChatName>
     Then I see Conversation Actions overlay
@@ -387,14 +387,14 @@ Feature: Conversation List
     And I enter "<GroupChatName>" into Search input on People Picker page
     Then I see "<GroupChatName>" group avatar on People Picker page
     And I close People Picker
-    And Contact <Contact1> sends image <Image> to group conversation <GroupChatName>
+    And User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     Then I see conversation <GroupChatName> in my conversations list
     When I swipe right the conversations list item <GroupChatName>
     Then I see Conversation Actions overlay
     When I select <DeleteItem> menu item on Conversation Actions overlay
     And I confirm conversation deletion on Conversation Actions overlay
     Then I do not see conversation <GroupChatName> in my conversations list
-    When Contact <Contact1> ping conversation <GroupChatName>
+    When User <Contact1> securely pings conversation <GroupChatName>
     Then I see conversation <GroupChatName> in my conversations list
     When I swipe right the conversations list item <GroupChatName>
     Then I see Conversation Actions overlay

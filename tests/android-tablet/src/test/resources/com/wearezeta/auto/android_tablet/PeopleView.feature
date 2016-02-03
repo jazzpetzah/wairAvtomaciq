@@ -191,11 +191,11 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given Contact <Contact1> sends message "<Message>" to user Myself
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
+    Given User <Contact1> sends encrypted message <Message> to user Myself
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
@@ -217,11 +217,11 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given Contact <Contact1> sends message "<Message>" to user Myself
     Given I rotate UI to landscape
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
+    Given User <Contact1> sends encrypted  message <Message> to user Myself
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
