@@ -444,6 +444,18 @@ public class LoginPageSteps {
     }
 
     /**
+     * Verifies whether the notification something went wrong is shown
+     *
+     * @throws Exception
+     * @step. ^I see something went wrong alert$
+     */
+    @Then("^I see something went wrong alert$")
+    public void ISeeSomethingWentWrongAlert() throws Exception {
+        Assert.assertTrue("I don't see already registered email alert",
+                getLoginPage().isSomethingWentWrongAlertShown());
+    }
+
+    /**
      * Clicks on the Forgot/Change password button on the Sign In screen
      *
      * @throws Exception

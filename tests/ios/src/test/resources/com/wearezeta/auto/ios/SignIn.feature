@@ -74,7 +74,7 @@ Feature: Sign In
     And I enter phone number for user Myself
     And I see verification code page
     When I enter random verification code
-    Then I see wrong credentials notification
+    Then I see already registered phone number alert
 
     Examples:
       | Name      |
@@ -100,7 +100,7 @@ Feature: Sign In
     Given I see sign in screen
     When I see country picker button on Sign in screen
     And I enter random phone number
-    Then I see invalid phone number alert
+    Then I see something went wrong alert
 
     Examples:
       | Name      |

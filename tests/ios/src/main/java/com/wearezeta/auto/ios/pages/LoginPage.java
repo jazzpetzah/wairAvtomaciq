@@ -136,6 +136,10 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean wrongCredentialsNotificationIsShown() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameWrongCredentialsNotification);
+    }
+
+    public boolean phoneNumberIsRegAlreadyIsShown() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameAlreadyRegisteredNumber);
     }
 
@@ -182,7 +186,7 @@ public class LoginPage extends IOSPage {
 
     public boolean isInvalidPhoneNumberAlertShown() throws Exception {
         DriverUtils.waitUntilAlertAppears(getDriver());
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameSomethingWentWrong, 1);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInvalidPhoneNumber, 1);
     }
 
     public boolean isInvalidEmailAlertShown() throws Exception {
@@ -202,5 +206,10 @@ public class LoginPage extends IOSPage {
 
     public void clickPhoneNotNow() throws Exception {
         getElement(nameNotNowButton).click();
+    }
+
+    public boolean isSomethingWentWrongAlertShown() throws Exception {
+        DriverUtils.waitUntilAlertAppears(getDriver());
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameSomethingWentWrong, 1);
     }
 }
