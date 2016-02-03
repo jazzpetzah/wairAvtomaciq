@@ -142,8 +142,8 @@ Feature: E2EE
     And I see encrypted image 1 time in the conversation view
 
     Examples:
-      | Name      | Contact1  | Contact2  | ImageName   | ImageName2    | GroupChatName |
-      | user1Name | user2Name | user3Name | testing.jpg | hdpicture.jpg | GroupConvo    |
+      | Name      | Contact1  | Contact2  | ImageName   | ImageName2               | GroupChatName |
+      | user1Name | user2Name | user3Name | testing.jpg | userpicture_portrait.jpg | GroupConvo    |
 
   @C3229 @staging
   Scenario Outline: Verify you can see device ids of the other conversation participant in participant details view inside a group conversation
@@ -231,9 +231,9 @@ Feature: E2EE
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When Contact <Contact1> sends encrypted message <EncMessage> to group conversation <GroupChatName>
-    And Contact <Contact2> sends encrypted message <EncMessage> to group conversation <GroupChatName>
-    And Contact <Contact3> sends encrypted message <EncMessage> to group conversation <GroupChatName>
+    When User <Contact1> sends encrypted message <EncMessage> to group conversation <GroupChatName>
+    And User <Contact2> sends encrypted message <EncMessage> to group conversation <GroupChatName>
+    And User <Contact3> sends encrypted message <EncMessage> to group conversation <GroupChatName>
     And I wait for 5 seconds
     And User <Contact1> adds user Myself to group chat <GroupChatName>
     And I tap on contact name <GroupChatName>
