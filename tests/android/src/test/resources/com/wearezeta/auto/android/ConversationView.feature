@@ -99,7 +99,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
       
-  @C18044 @staging @rc @rc42
+  @C18044 @regression
   Scenario Outline: I see creation header when someone create group conversation with me
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>,<Contact2>
