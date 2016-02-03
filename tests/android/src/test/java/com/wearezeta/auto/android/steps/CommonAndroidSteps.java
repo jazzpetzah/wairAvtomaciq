@@ -324,7 +324,7 @@ public class CommonAndroidSteps {
      */
     @When("^User (.*) adds [Uu]ser (.*) to group chat (.*)$")
     public void UserAddsUserToGroupChat(String user, String userToBeAdded,
-            String group) throws Throwable {
+            String group) throws Exception {
         commonSteps.UserXAddedContactsToGroupChat(user, userToBeAdded, group);
     }
 
