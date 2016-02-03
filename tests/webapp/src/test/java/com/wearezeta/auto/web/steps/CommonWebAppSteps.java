@@ -22,6 +22,7 @@ import com.wearezeta.auto.common.email.AccountDeletionMessage;
 import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.email.WireMessage;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
+import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.web.pages.external.DeleteAccountPage;
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.lang3.NotImplementedException;
@@ -952,6 +953,12 @@ public class CommonWebAppSteps {
 
 	@After
 	public void tearDown(Scenario scenario) throws Exception {
+        try {
+            SEBridge.getInstance().reset();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 		try {
 			// async calls/waiting instances cleanup
 			CommonCallingSteps2.getInstance().cleanup();
