@@ -460,6 +460,9 @@ public class DialogPage extends IOSPage {
 
     public void clickPlusButton() throws Exception {
         getElement(namePlusButton).click();
+        if(!DriverUtils.waitUntilLocatorDissapears(getDriver(),namePlusButton)){
+            throw new IllegalStateException("The Details plus button is still visible");
+        }
     }
 
     public boolean isPlusButtonVisible() throws Exception {
