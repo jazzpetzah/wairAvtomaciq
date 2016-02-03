@@ -20,616 +20,711 @@ import static org.hamcrest.CoreMatchers.*;
 
 public class GroupPopoverPageSteps {
 
-    private static final String MAILTO = "mailto:";
-    private static final String CAPTION_OPEN_CONVERSATION = "OPEN CONVERSATION";
-    private static final String CAPTION_PENDING = "PENDING";
-    private static final String CAPTION_UNBLOCK = "UNBLOCK";
-    private static final String CAPTION_PROFILE = "PROFILE";
-    private static final String TOOLTIP_REMOVE_FROM_CONVERSATION = "Remove from conversation";
-    private static final String TOOLTIP_LEAVE_CONVERSATION = "Leave conversation";
-    private static final String TOOLTIP_ADD_PEOPLE_TO_CONVERSATION = "Add people to conversation";
-    private static final String SHORTCUT_ADD_PEOPLE_TO_CONVERSATION_WIN = "(Ctrl + Shift + K)";
-    private static final String SHORTCUT_ADD_PEOPLE_TO_CONVERSATION_MAC = "(⌘⇧K)";
-    private static final String TOOLTIP_BACK = "Back";
-    private static final String TOOLTIP_OPEN_CONVERSATION = "Open conversation";
-    private static final String TOOLTIP_CHANGE_CONVERSATION_NAME = "Change conversation name";
-    private static final String TOOLTIP_PENDING = "Pending";
-    private static final String TOOLTIP_UNBLOCK = "Unblock";
-    private static final String TOOLTIP_OPEN_YOUR_PROFILE = "Open your profile";
+	private static final String MAILTO = "mailto:";
+	private static final String CAPTION_OPEN_CONVERSATION = "OPEN CONVERSATION";
+	private static final String CAPTION_PENDING = "PENDING";
+	private static final String CAPTION_UNBLOCK = "UNBLOCK";
+	private static final String CAPTION_PROFILE = "PROFILE";
+	private static final String TOOLTIP_REMOVE_FROM_CONVERSATION = "Remove from conversation";
+	private static final String TOOLTIP_LEAVE_CONVERSATION = "Leave conversation";
+	private static final String TOOLTIP_ADD_PEOPLE_TO_CONVERSATION = "Add people to conversation";
+	private static final String SHORTCUT_ADD_PEOPLE_TO_CONVERSATION_WIN = "(Ctrl + Shift + K)";
+	private static final String SHORTCUT_ADD_PEOPLE_TO_CONVERSATION_MAC = "(⌘⇧K)";
+	private static final String TOOLTIP_BACK = "Back";
+	private static final String TOOLTIP_OPEN_CONVERSATION = "Open conversation";
+	private static final String TOOLTIP_CHANGE_CONVERSATION_NAME = "Change conversation name";
+	private static final String TOOLTIP_PENDING = "Pending";
+	private static final String TOOLTIP_UNBLOCK = "Unblock";
+	private static final String TOOLTIP_OPEN_YOUR_PROFILE = "Open your profile";
 
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    private final WebappPagesCollection webappPagesCollection = WebappPagesCollection.getInstance();
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
+			.getInstance();
 
-    /**
-     * Verify that Group Participants popover is shown or not
-     *
-     * @step. ^I( do not)? see Group Participants popover$
-     * 
-     * @param shouldNotBeVisible is set to null if "do not" part does not exist
-     * 
-     * @throws Exception
-     *
-     */
-    @When("^I( do not)? see Group Participants popover$")
-    public void ISeeUserProfilePopupPage(String shouldNotBeVisible) throws Exception {
-        if (shouldNotBeVisible == null) {
-            webappPagesCollection.getPage(GroupPopoverContainer.class).waitUntilVisibleOrThrowException();
-        } else {
-            webappPagesCollection.getPage(GroupPopoverContainer.class).waitUntilNotVisibleOrThrowException();
-        }
-    }
+	/**
+	 * Verify that Group Participants popover is shown or not
+	 *
+	 * @step. ^I( do not)? see Group Participants popover$
+	 * 
+	 * @param shouldNotBeVisible
+	 *            is set to null if "do not" part does not exist
+	 * 
+	 * @throws Exception
+	 *
+	 */
+	@When("^I( do not)? see Group Participants popover$")
+	public void ISeeUserProfilePopupPage(String shouldNotBeVisible)
+			throws Exception {
+		if (shouldNotBeVisible == null) {
+			webappPagesCollection.getPage(GroupPopoverContainer.class)
+					.waitUntilVisibleOrThrowException();
+		} else {
+			webappPagesCollection.getPage(GroupPopoverContainer.class)
+					.waitUntilNotVisibleOrThrowException();
+		}
+	}
 
-    /**
-     * Click leave group chat button on Group Participants popover
-     *
-     * @step. ^I click Leave button on Group Participants popover$
-     *
-     */
-    @When("^I click Leave button on Group Participants popover$")
-    public void IClickLeaveGroupChat() throws Exception {
-        webappPagesCollection.getPage(GroupPopoverContainer.class).clickLeaveGroupChat();
-    }
+	/**
+	 * Click leave group chat button on Group Participants popover
+	 *
+	 * @step. ^I click Leave button on Group Participants popover$
+	 *
+	 */
+	@When("^I click Leave button on Group Participants popover$")
+	public void IClickLeaveGroupChat() throws Exception {
+		webappPagesCollection.getPage(GroupPopoverContainer.class)
+				.clickLeaveGroupChat();
+	}
 
-    /**
-     * Confirm leaving group chat by clicking LEAVE button on Group Participants popover
-     *
-     * @step. ^I click confirm leave group conversation on Group Participants popover$
-     * @throws Exception
-     *
-     */
-    @When("^I click confirm leave group conversation on Group Participants popover$")
-    public void IClickConfirmLeaveGroupChat() throws Exception {
-        webappPagesCollection.getPage(GroupPopoverContainer.class).confirmLeaveGroupChat();
-    }
+	/**
+	 * Confirm leaving group chat by clicking LEAVE button on Group Participants
+	 * popover
+	 *
+	 * @step. ^I click confirm leave group conversation on Group Participants
+	 *        popover$
+	 * @throws Exception
+	 *
+	 */
+	@When("^I click confirm leave group conversation on Group Participants popover$")
+	public void IClickConfirmLeaveGroupChat() throws Exception {
+		webappPagesCollection.getPage(GroupPopoverContainer.class)
+				.confirmLeaveGroupChat();
+	}
 
-    /**
-     * Verifies whether back button tool tip is correct or not.
-     *
-     * @step. ^I see correct back button tool tip on Group Participants popover$
-     *
-     */
-    @Then("^I see correct back button tool tip on Group Participants popover$")
-    public void ThenISeeCorrectBackButtonToolTip() throws Exception {
-        Assert.assertTrue(webappPagesCollection.getPage(GroupPopoverContainer.class).getBackButtonToolTip()
-            .equals(TOOLTIP_BACK));
-    }
+	/**
+	 * Verifies whether back button tool tip is correct or not.
+	 *
+	 * @step. ^I see correct back button tool tip on Group Participants popover$
+	 *
+	 */
+	@Then("^I see correct back button tool tip on Group Participants popover$")
+	public void ThenISeeCorrectBackButtonToolTip() throws Exception {
+		Assert.assertTrue(webappPagesCollection
+				.getPage(GroupPopoverContainer.class).getBackButtonToolTip()
+				.equals(TOOLTIP_BACK));
+	}
 
-    /**
-     * Click on back button.
-     *
-     * @step. ^I click back button on Group Participants popover$
-     *
-     */
-    @When("^I click back button on Group Participants popover$")
-    public void WhenIClickBackButton() throws Exception {
-        webappPagesCollection.getPage(GroupPopoverContainer.class).clickBackButton();
-    }
+	/**
+	 * Click on back button.
+	 *
+	 * @step. ^I click back button on Group Participants popover$
+	 *
+	 */
+	@When("^I click back button on Group Participants popover$")
+	public void WhenIClickBackButton() throws Exception {
+		webappPagesCollection.getPage(GroupPopoverContainer.class)
+				.clickBackButton();
+	}
 
-    /**
-     * Verifies whether pending button tool tip is correct or not.
-     *
-     * @step. ^I see correct pending button tool tip on Group Participants popover$
-     *
-     */
-    @Then("^I see correct pending button tool tip on Group Participants popover$")
-    public void ThenISeeCorrectPendingButtonToolTip() throws Exception {
-        Assert.assertTrue(webappPagesCollection.getPage(GroupPopoverContainer.class).getPendingButtonToolTip()
-            .equals(TOOLTIP_PENDING));
-    }
+	/**
+	 * Verifies whether pending button tool tip is correct or not.
+	 *
+	 * @step. ^I see correct pending button tool tip on Group Participants
+	 *        popover$
+	 *
+	 */
+	@Then("^I see correct pending button tool tip on Group Participants popover$")
+	public void ThenISeeCorrectPendingButtonToolTip() throws Exception {
+		Assert.assertTrue(webappPagesCollection
+				.getPage(GroupPopoverContainer.class).getPendingButtonToolTip()
+				.equals(TOOLTIP_PENDING));
+	}
 
-    /**
-     * Click on a participant on Group Participants popover
-     *
-     * @step. ^I click on participant (.*) on Group Participants popover$
-     *
-     * @param name user name string
-     * @throws Exception
-     */
-    @When("^I click on participant (.*) on Group Participants popover$")
-    public void IClickOnParticipant(String name) throws Exception {
-        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-        webappPagesCollection.getPage(GroupPopoverContainer.class).clickOnParticipant(name);
-    }
+	/**
+	 * Click on a participant on Group Participants popover
+	 *
+	 * @step. ^I click on participant (.*) on Group Participants popover$
+	 *
+	 * @param name
+	 *            user name string
+	 * @throws Exception
+	 */
+	@When("^I click on participant (.*) on Group Participants popover$")
+	public void IClickOnParticipant(String name) throws Exception {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		webappPagesCollection.getPage(GroupPopoverContainer.class)
+				.clickOnParticipant(name);
+	}
 
-    /**
-     * Verifies whether Pending button is visible on Group Participants popover
-     *
-     * @step. ^I see Pending button on Group Participants popover$
-     *
-     * @throws Exception
-     */
-    @Then("^I see Pending button on Group Participants popover$")
-    public void ISeePendingButton() throws Exception {
-        final String pendingButtonMissingMessage = "Pending button is not visible on Group Participants popover";
-        final String pendingButtonWrongCaptionMessage = "Pending button has wrong caption on Group Participants popover";
-        Assert.assertTrue(pendingButtonMissingMessage, webappPagesCollection.getPage(GroupPopoverContainer.class)
-            .isPendingButtonVisible());
-        Assert.assertTrue(pendingButtonWrongCaptionMessage, webappPagesCollection.getPage(GroupPopoverContainer.class)
-            .getPendingButtonCaption().trim().equals(CAPTION_PENDING));
-    }
+	/**
+	 * Verifies whether Pending button is visible on Group Participants popover
+	 *
+	 * @step. ^I see Pending button on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I see Pending button on Group Participants popover$")
+	public void ISeePendingButton() throws Exception {
+		final String pendingButtonMissingMessage = "Pending button is not visible on Group Participants popover";
+		final String pendingButtonWrongCaptionMessage = "Pending button has wrong caption on Group Participants popover";
+		Assert.assertTrue(pendingButtonMissingMessage, webappPagesCollection
+				.getPage(GroupPopoverContainer.class).isPendingButtonVisible());
+		Assert.assertTrue(
+				pendingButtonWrongCaptionMessage,
+				webappPagesCollection.getPage(GroupPopoverContainer.class)
+						.getPendingButtonCaption().trim()
+						.equals(CAPTION_PENDING));
+	}
 
-    /**
-     * Click Pending button on Group Participants popover
-     *
-     * @step. ^I click Pending button on Group Participants popover$
-     *
-     * @throws Exception
-     */
-    @Then("^I click Pending button on Group Participants popover$")
-    public void IClickPendingButton() throws Exception {
-        webappPagesCollection.getPage(GroupPopoverContainer.class).clickPendingButton();
-    }
+	/**
+	 * Click Pending button on Group Participants popover
+	 *
+	 * @step. ^I click Pending button on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I click Pending button on Group Participants popover$")
+	public void IClickPendingButton() throws Exception {
+		webappPagesCollection.getPage(GroupPopoverContainer.class)
+				.clickPendingButton();
+	}
 
-    /**
-     * Verifies whether profile button is visible on Group Participants popover
-     *
-     * @step. ^I see profile button on Group Participants popover$
-     *
-     * @throws Exception
-     */
-    @Then("^I see profile button on Group Participants popover$")
-    public void ISeeProfileButton() throws Exception {
-        final String pendingButtonMissingMessage = "Profile button is not visible on Group Participants popover";
-        final String pendingButtonWrongCaptionMessage = "Profile button has wrong caption on Group Participants popover";
-        Assert.assertTrue(pendingButtonMissingMessage, webappPagesCollection.getPage(GroupPopoverContainer.class)
-            .isProfileButtonVisible());
-        Assert.assertTrue(pendingButtonWrongCaptionMessage, webappPagesCollection.getPage(GroupPopoverContainer.class)
-            .getProfileButtonCaption().trim().equals(CAPTION_PROFILE));
-    }
+	/**
+	 * Verifies whether profile button is visible on Group Participants popover
+	 *
+	 * @step. ^I see profile button on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I see profile button on Group Participants popover$")
+	public void ISeeProfileButton() throws Exception {
+		final String pendingButtonMissingMessage = "Profile button is not visible on Group Participants popover";
+		final String pendingButtonWrongCaptionMessage = "Profile button has wrong caption on Group Participants popover";
+		Assert.assertTrue(pendingButtonMissingMessage, webappPagesCollection
+				.getPage(GroupPopoverContainer.class).isProfileButtonVisible());
+		Assert.assertTrue(
+				pendingButtonWrongCaptionMessage,
+				webappPagesCollection.getPage(GroupPopoverContainer.class)
+						.getProfileButtonCaption().trim()
+						.equals(CAPTION_PROFILE));
+	}
 
-    /**
-     * Click profile button on Group Participants popover
-     *
-     * @step. ^I click profile button on Group Participants popover$
-     *
-     * @throws Exception
-     */
-    @Then("^I click profile button on Group Participants popover$")
-    public void IClickProfileButton() throws Exception {
-        webappPagesCollection.getPage(GroupPopoverContainer.class).clickProfileButton();
-    }
+	/**
+	 * Click profile button on Group Participants popover
+	 *
+	 * @step. ^I click profile button on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I click profile button on Group Participants popover$")
+	public void IClickProfileButton() throws Exception {
+		webappPagesCollection.getPage(GroupPopoverContainer.class)
+				.clickProfileButton();
+	}
 
-    /**
-     * Verifies whether profile button tool tip is correct or not.
-     *
-     * @step. ^I see correct profile button tool tip on Group Participants popover$
-     *
-     */
-    @Then("^I see correct profile button tool tip on Group Participants popover$")
-    public void ThenISeeCorrectProfileButtonToolTip() throws Exception {
-        Assert.assertTrue(webappPagesCollection.getPage(GroupPopoverContainer.class).getProfileButtonToolTip()
-            .equals(TOOLTIP_OPEN_YOUR_PROFILE));
-    }
+	/**
+	 * Verifies whether profile button tool tip is correct or not.
+	 *
+	 * @step. ^I see correct profile button tool tip on Group Participants
+	 *        popover$
+	 *
+	 */
+	@Then("^I see correct profile button tool tip on Group Participants popover$")
+	public void ThenISeeCorrectProfileButtonToolTip() throws Exception {
+		Assert.assertTrue(webappPagesCollection
+				.getPage(GroupPopoverContainer.class).getProfileButtonToolTip()
+				.equals(TOOLTIP_OPEN_YOUR_PROFILE));
+	}
 
-    /**
-     * Click Unblock button on Group Participants popover
-     *
-     * @step. ^I click Unblock button on Group Participants popover$
-     *
-     * @throws Exception
-     */
-    @Then("^I click Unblock button on Group Participants popover$")
-    public void IClickUnblockButton() throws Exception {
-        webappPagesCollection.getPage(GroupPopoverContainer.class).clickUnblockButton();
-    }
+	/**
+	 * Click Unblock button on Group Participants popover
+	 *
+	 * @step. ^I click Unblock button on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I click Unblock button on Group Participants popover$")
+	public void IClickUnblockButton() throws Exception {
+		webappPagesCollection.getPage(GroupPopoverContainer.class)
+				.clickUnblockButton();
+	}
 
-    /**
-     * Verifies whether Unblock button tool tip is correct or not.
-     *
-     * @step. ^I see correct Unblock button tool tip on Group Participants popover$
-     *
-     */
-    @Then("^I see correct Unblock button tool tip on Group Participants popover$")
-    public void ThenISeeCorrectUnblockButtonToolTip() throws Exception {
-        Assert.assertTrue(webappPagesCollection.getPage(GroupPopoverContainer.class).getUnblockButtonToolTip()
-            .equals(TOOLTIP_UNBLOCK));
-    }
+	/**
+	 * Verifies whether Unblock button tool tip is correct or not.
+	 *
+	 * @step. ^I see correct Unblock button tool tip on Group Participants
+	 *        popover$
+	 *
+	 */
+	@Then("^I see correct Unblock button tool tip on Group Participants popover$")
+	public void ThenISeeCorrectUnblockButtonToolTip() throws Exception {
+		Assert.assertTrue(webappPagesCollection
+				.getPage(GroupPopoverContainer.class).getUnblockButtonToolTip()
+				.equals(TOOLTIP_UNBLOCK));
+	}
 
-    /**
-     * Verifies whether Unblock button is visible on Group Participants popover
-     *
-     * @step. ^I see Unblock button on Group Participants popover$
-     *
-     * @throws Exception
-     */
-    @Then("^I see Unblock button on Group Participants popover$")
-    public void ISeeUnblockButton() throws Exception {
-        final String openUnblockButtonMissingMessage = "Unblock button is not visible on Group Participants popover";
-        final String openUnblockButtonWrongCaptionMessage = "Unblock button has wrong caption on Group Participants popover";
-        Assert.assertTrue(openUnblockButtonMissingMessage, webappPagesCollection.getPage(GroupPopoverContainer.class)
-            .isUnblockButtonVisible());
-        Assert.assertTrue(openUnblockButtonWrongCaptionMessage, webappPagesCollection.getPage(GroupPopoverContainer.class)
-            .getUnblockButtonCaption().trim().equals(CAPTION_UNBLOCK));
-    }
+	/**
+	 * Verifies whether Unblock button is visible on Group Participants popover
+	 *
+	 * @step. ^I see Unblock button on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I see Unblock button on Group Participants popover$")
+	public void ISeeUnblockButton() throws Exception {
+		final String openUnblockButtonMissingMessage = "Unblock button is not visible on Group Participants popover";
+		final String openUnblockButtonWrongCaptionMessage = "Unblock button has wrong caption on Group Participants popover";
+		Assert.assertTrue(openUnblockButtonMissingMessage,
+				webappPagesCollection.getPage(GroupPopoverContainer.class)
+						.isUnblockButtonVisible());
+		Assert.assertTrue(
+				openUnblockButtonWrongCaptionMessage,
+				webappPagesCollection.getPage(GroupPopoverContainer.class)
+						.getUnblockButtonCaption().trim()
+						.equals(CAPTION_UNBLOCK));
+	}
 
-    /**
-     * Confirm Unblock from group chat by clicking UNBLOCK button
-     *
-     * @step. ^I confirm Unblock from group chat on Group Participants popover$
-     * @throws Exception
-     *
-     */
-    @When("^I confirm Unblock from group chat on Group Participants popover$")
-    public void IConfirmUnblockUser() throws Exception {
-        webappPagesCollection.getPage(GroupPopoverContainer.class).clickConfirmUnblockButton();
-    }
+	/**
+	 * Confirm Unblock from group chat by clicking UNBLOCK button
+	 *
+	 * @step. ^I confirm Unblock from group chat on Group Participants popover$
+	 * @throws Exception
+	 *
+	 */
+	@When("^I confirm Unblock from group chat on Group Participants popover$")
+	public void IConfirmUnblockUser() throws Exception {
+		webappPagesCollection.getPage(GroupPopoverContainer.class)
+				.clickConfirmUnblockButton();
+	}
 
-    /**
-     * Click confirm connect button on Group Participants popover
-     *
-     * @step. ^I click confirm connect button on Group Participants popover$
-     *
-     * @throws Exception
-     */
-    @Then("^I click confirm connect button on Group Participants popover$")
-    public void IClickConfirmConnectButton() throws Exception {
-        webappPagesCollection.getPage(GroupPopoverContainer.class).clickConfirmConnectButton();
-    }
+	/**
+	 * Click confirm connect button on Group Participants popover
+	 *
+	 * @step. ^I click confirm connect button on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I click confirm connect button on Group Participants popover$")
+	public void IClickConfirmConnectButton() throws Exception {
+		webappPagesCollection.getPage(GroupPopoverContainer.class)
+				.clickConfirmConnectButton();
+	}
 
-    /**
-     * Click ignore connect button on Group Participants popover
-     *
-     * @step. ^I click ignore connect button on Group Participants popover$
-     *
-     * @throws Exception
-     */
-    @Then("^I click ignore connect button on Group Participants popover$")
-    public void IClickIgnoreConnectButton() throws Exception {
-        webappPagesCollection.getPage(GroupPopoverContainer.class).clickIgnoreConnectButton();
-    }
+	/**
+	 * Click ignore connect button on Group Participants popover
+	 *
+	 * @step. ^I click ignore connect button on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I click ignore connect button on Group Participants popover$")
+	public void IClickIgnoreConnectButton() throws Exception {
+		webappPagesCollection.getPage(GroupPopoverContainer.class)
+				.clickIgnoreConnectButton();
+	}
 
-    /**
-     * Remove participant from group chat by clicking "exit" button
-     *
-     * @step. ^I click Remove button on Group Participants popover$
-     * @throws Exception
-     *
-     */
-    @When("^I click Remove button on Group Participants popover$")
-    public void IRemoveUserFromGroupChat() throws Exception {
-        webappPagesCollection.getPage(GroupPopoverContainer.class).clickRemoveFromGroupChat();
-    }
+	/**
+	 * Remove participant from group chat by clicking "exit" button
+	 *
+	 * @step. ^I click Remove button on Group Participants popover$
+	 * @throws Exception
+	 *
+	 */
+	@When("^I click Remove button on Group Participants popover$")
+	public void IRemoveUserFromGroupChat() throws Exception {
+		webappPagesCollection.getPage(GroupPopoverContainer.class)
+				.clickRemoveFromGroupChat();
+	}
 
-    /**
-     * Verifies whether Remove button is visible on Group Participants popover
-     *
-     * @step. ^I see Remove button on Group Participants popover$
-     *
-     * @throws Exception
-     */
-    @When("^I see Remove button on Group Participants popover$")
-    public void ISeeRemoveUserFromGroupChat() throws Exception {
-        webappPagesCollection.getPage(GroupPopoverContainer.class).isRemoveButtonVisible();
-    }
+	/**
+	 * Verifies whether Remove button is visible on Group Participants popover
+	 *
+	 * @step. ^I see Remove button on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@When("^I see Remove button on Group Participants popover$")
+	public void ISeeRemoveUserFromGroupChat() throws Exception {
+		webappPagesCollection.getPage(GroupPopoverContainer.class)
+				.isRemoveButtonVisible();
+	}
 
-    /**
-     * Confirm removing from group chat by clicking REMOVE button
-     *
-     * @step. ^I confirm remove from group chat on Group Participants popover$
-     * @throws Exception
-     *
-     */
-    @When("^I confirm remove from group chat on Group Participants popover$")
-    public void IConfirmRemoveFromGroupChat() throws Exception {
-        webappPagesCollection.getPage(GroupPopoverContainer.class).confirmRemoveFromGroupChat();
-    }
+	/**
+	 * Confirm removing from group chat by clicking REMOVE button
+	 *
+	 * @step. ^I confirm remove from group chat on Group Participants popover$
+	 * @throws Exception
+	 *
+	 */
+	@When("^I confirm remove from group chat on Group Participants popover$")
+	public void IConfirmRemoveFromGroupChat() throws Exception {
+		webappPagesCollection.getPage(GroupPopoverContainer.class)
+				.confirmRemoveFromGroupChat();
+	}
 
-    /**
-     * Verifies that contact is displayed on Group Participants popover
-     *
-     * @step. ^I see (.*) displayed on Group Participants popover$
-     *
-     * @param contactsAliases
-     * @throws Exception
-     */
-    @When("^I see (.*) displayed on Group Participants popover$")
-    public void ISeeContactsDisplayed(String contactsAliases) throws Exception {
-        List<String> contacts = CommonSteps.splitAliases(contactsAliases);
-        for (String contact : contacts) {
-            contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-            Assert.assertTrue(webappPagesCollection.getPage(GroupPopoverContainer.class).isParticipantVisible(contact));
-        }
-    }
+	/**
+	 * Verifies that contact is displayed on Group Participants popover
+	 *
+	 * @step. ^I see (.*) displayed on Group Participants popover$
+	 *
+	 * @param contactsAliases
+	 * @throws Exception
+	 */
+	@When("^I see (.*) displayed on Group Participants popover$")
+	public void ISeeContactsDisplayed(String contactsAliases) throws Exception {
+		List<String> contacts = CommonSteps.splitAliases(contactsAliases);
+		for (String contact : contacts) {
+			contact = usrMgr.replaceAliasesOccurences(contact,
+					FindBy.NAME_ALIAS);
+			Assert.assertTrue(webappPagesCollection.getPage(
+					GroupPopoverContainer.class).isParticipantVisible(contact));
+		}
+	}
 
-    /**
-     * Set new title for conversation on Group Participants popover
-     *
-     * @step. I change group conversation title to (.*) on Group Participants popover
-     *
-     * @param title new conversation title string
-     */
-    @When("^I change group conversation title to (.*) on Group Participants popover$")
-    public void IChangeGroupChatTitleTo(String title) throws Exception {
-        webappPagesCollection.getPage(GroupPopoverContainer.class).setConversationTitle(title);
-    }
+	/**
+	 * Set new title for conversation on Group Participants popover
+	 *
+	 * @step. I change group conversation title to (.*) on Group Participants
+	 *        popover
+	 *
+	 * @param title
+	 *            new conversation title string
+	 */
+	@When("^I change group conversation title to (.*) on Group Participants popover$")
+	public void IChangeGroupChatTitleTo(String title) throws Exception {
+		webappPagesCollection.getPage(GroupPopoverContainer.class)
+				.setConversationTitle(title);
+	}
 
-    /**
-     * Verify conversation title on Group Participants popover
-     *
-     * @step. ^I see conversation title (.*) on Group Participants popover$
-     *
-     * @param title expected title string
-     */
-    @Then("^I see conversation title (.*) on Group Participants popover$")
-    public void ISeeConversationTitle(String title) throws Exception {
-        Assert.assertEquals(title, webappPagesCollection.getPage(GroupPopoverContainer.class).getConversationTitle());
-    }
+	/**
+	 * Verify conversation title on Group Participants popover
+	 *
+	 * @step. ^I see conversation title (.*) on Group Participants popover$
+	 *
+	 * @param title
+	 *            expected title string
+	 */
+	@Then("^I see conversation title (.*) on Group Participants popover$")
+	public void ISeeConversationTitle(String title) throws Exception {
+		Assert.assertEquals(title,
+				webappPagesCollection.getPage(GroupPopoverContainer.class)
+						.getConversationTitle());
+	}
 
-    /**
-     * Click on add people button
-     *
-     * @step. ^I click Add People button on Group Participants popover$
-     * @throws Exception
-     *
-     */
-    @When("^I click Add People button on Group Participants popover$")
-    public void IClickAddPeopleButton() throws Exception {
-        webappPagesCollection.getPage(GroupPopoverContainer.class).clickAddPeopleButton();
-    }
+	/**
+	 * Click on add people button
+	 *
+	 * @step. ^I click Add People button on Group Participants popover$
+	 * @throws Exception
+	 *
+	 */
+	@When("^I click Add People button on Group Participants popover$")
+	public void IClickAddPeopleButton() throws Exception {
+		webappPagesCollection.getPage(GroupPopoverContainer.class)
+				.clickAddPeopleButton();
+	}
 
-    @Then("I see (\\d+) participants in the Group Participants popover")
-    public void ISeeXParticipants(int amount) throws Exception {
-        assertThat("People information under conversation name", webappPagesCollection.getPage(GroupPopoverContainer.class)
-            .getPeopleCountInfo(), equalTo(String.valueOf(amount) + " PEOPLE"));
-        assertThat("Actual amount of people in popover", webappPagesCollection.getPage(GroupPopoverContainer.class)
-            .getPeopleCount(), equalTo(amount));
-    }
+	@Then("I see (\\d+) participants in the Group Participants popover")
+	public void ISeeXParticipants(int amount) throws Exception {
+		assertThat("People information under conversation name",
+				webappPagesCollection.getPage(GroupPopoverContainer.class)
+						.getPeopleCountInfo(), equalTo(String.valueOf(amount)
+						+ " PEOPLE"));
+		assertThat("Actual amount of people in popover", webappPagesCollection
+				.getPage(GroupPopoverContainer.class).getPeopleCount(),
+				equalTo(amount));
+	}
 
-    /**
-     * Verifies there is a question if you want to add people
-     *
-     * @step. ^I see Add People message on Group Participants popover$
-     * @throws Exception
-     *
-     */
-    @When("^I see Add People message on Group Participants popover$")
-    public void ISeeAddPeopleMessage() throws Exception {
-        Assert.assertTrue(webappPagesCollection.getPage(GroupPopoverContainer.class).isAddPeopleMessageShown());
-    }
+	/**
+	 * Verifies there is a question if you want to add people
+	 *
+	 * @step. ^I see Add People message on Group Participants popover$
+	 * @throws Exception
+	 *
+	 */
+	@When("^I see Add People message on Group Participants popover$")
+	public void ISeeAddPeopleMessage() throws Exception {
+		Assert.assertTrue(webappPagesCollection.getPage(
+				GroupPopoverContainer.class).isAddPeopleMessageShown());
+	}
 
-    /**
-     * Input user name in search field
-     *
-     * @step. ^I input user name (.*) in search field on Group Participants popover$
-     *
-     * @param name
-     * @throws Exception
-     */
-    @When("^I input user name (.*) in search field on Group Participants popover$")
-    public void ISearchForUser(String name) throws Exception {
-        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-        webappPagesCollection.getPage(GroupPopoverContainer.class).searchForUser(name);
-    }
+	/**
+	 * Input user name in search field
+	 *
+	 * @step. ^I input user name (.*) in search field on Group Participants
+	 *        popover$
+	 *
+	 * @param name
+	 * @throws Exception
+	 */
+	@When("^I input user name (.*) in search field on Group Participants popover$")
+	public void ISearchForUser(String name) throws Exception {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		webappPagesCollection.getPage(GroupPopoverContainer.class)
+				.searchForUser(name);
+	}
 
-    /**
-     * Select user found in search results
-     *
-     * @step. ^I select user (.*) from Group Participants popover search results$
-     *
-     * @param user
-     * @throws Exception
-     */
-    @When("^I select user (.*) from Group Participants popover search results$")
-    public void ISelectUserFromSearchResults(String user) throws Exception {
-        user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
-        webappPagesCollection.getPage(GroupPopoverContainer.class).selectUserFromSearchResult(user);
-    }
+	/**
+	 * Select user found in search results
+	 *
+	 * @step. ^I select user (.*) from Group Participants popover search
+	 *        results$
+	 *
+	 * @param user
+	 * @throws Exception
+	 */
+	@When("^I select user (.*) from Group Participants popover search results$")
+	public void ISelectUserFromSearchResults(String user) throws Exception {
+		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
+		webappPagesCollection.getPage(GroupPopoverContainer.class)
+				.selectUserFromSearchResult(user);
+	}
 
-    /**
-     * Selects the first X participants from Group Participants popover search results
-     *
-     * @step. ^I select the first (\\d+) participants from Group Participants popover search results$
-     *
-     * @param amount number of participants to select
-     * @throws Exception
-     */
-    @When("^I select the first (\\d+) participants from Group Participants popover search results$")
-    public void ISelectFirstUsersFromSearchResults(int amount) throws Exception {
-        webappPagesCollection.getPage(GroupPopoverContainer.class).selectUsersFromSearchResult(amount);
-    }
+	/**
+	 * Selects the first X participants from Group Participants popover search
+	 * results
+	 *
+	 * @step. ^I select the first (\\d+) participants from Group Participants
+	 *        popover search results$
+	 *
+	 * @param amount
+	 *            number of participants to select
+	 * @throws Exception
+	 */
+	@When("^I select the first (\\d+) participants from Group Participants popover search results$")
+	public void ISelectFirstUsersFromSearchResults(int amount) throws Exception {
+		webappPagesCollection.getPage(GroupPopoverContainer.class)
+				.selectUsersFromSearchResult(amount);
+	}
 
-    /**
-     * Creates conversation with selected users from on Group Participants popover
-     *
-     * @step. ^I choose to create conversation from Group Participants popover$
-     * @throws Exception
-     */
-    @When("^I choose to create group conversation from Group Participants popover$")
-    public void IChooseToCreateGroupConversation() throws Exception {
-        webappPagesCollection.getPage(GroupPopoverContainer.class).clickCreateGroupConversation();
-    }
+	/**
+	 * Creates conversation with selected users from on Group Participants
+	 * popover
+	 *
+	 * @step. ^I choose to create conversation from Group Participants popover$
+	 * @throws Exception
+	 */
+	@When("^I choose to create group conversation from Group Participants popover$")
+	public void IChooseToCreateGroupConversation() throws Exception {
+		webappPagesCollection.getPage(GroupPopoverContainer.class)
+				.clickCreateGroupConversation();
+	}
 
-    /**
-     * Creates conversation with one user from on Group Participants popover
-     *
-     * @step. ^I click open conversation from Group Participants popover$
-     * @throws Exception
-     */
-    @When("^I click open conversation from Group Participants popover$")
-    public void IClickOpenConversation() throws Exception {
-        webappPagesCollection.getPage(GroupPopoverContainer.class).clickOpenConvButton();
-    }
+	/**
+	 * Creates conversation with one user from on Group Participants popover
+	 *
+	 * @step. ^I click open conversation from Group Participants popover$
+	 * @throws Exception
+	 */
+	@When("^I click open conversation from Group Participants popover$")
+	public void IClickOpenConversation() throws Exception {
+		webappPagesCollection.getPage(GroupPopoverContainer.class)
+				.clickOpenConvButton();
+	}
 
-    /**
-     * Click on continue people button
-     *
-     * @step. ^I confirm add to group chat on Group Participants popover$
-     * @throws Exception
-     *
-     */
-    @When("^I confirm add to chat on Group Participants popover$")
-    public void IClickConfirmAddToChat() throws Exception {
-        webappPagesCollection.getPage(GroupPopoverContainer.class).confirmAddPeople();
-    }
+	/**
+	 * Click on continue people button
+	 *
+	 * @step. ^I confirm add to group chat on Group Participants popover$
+	 * @throws Exception
+	 *
+	 */
+	@When("^I confirm add to chat on Group Participants popover$")
+	public void IClickConfirmAddToChat() throws Exception {
+		webappPagesCollection.getPage(GroupPopoverContainer.class)
+				.confirmAddPeople();
+	}
 
-    /**
-     * Verifies whether add people button tool tip is correct or not.
-     *
-     * @throws java.lang.Exception
-     * @step. ^I see correct add people button tool tip$
-     *
-     */
-    @Then("^I see correct add people button tool tip$")
-    public void ThenISeeCorrectAddPeopleButtonToolTip() throws Exception {
-        String tooltip = TOOLTIP_ADD_PEOPLE_TO_CONVERSATION + " ";
-        if (WebAppExecutionContext.isCurrentPlatformWindows()) {
-            tooltip = tooltip + SHORTCUT_ADD_PEOPLE_TO_CONVERSATION_WIN;
-        } else {
-            tooltip = tooltip + SHORTCUT_ADD_PEOPLE_TO_CONVERSATION_MAC;
-        }
-        assertThat(webappPagesCollection.getPage(GroupPopoverContainer.class).getAddPeopleButtonToolTip(), equalTo(tooltip));
-    }
+	/**
+	 * Verifies whether add people button tool tip is correct or not.
+	 *
+	 * @throws java.lang.Exception
+	 * @step. ^I see correct add people button tool tip$
+	 *
+	 */
+	@Then("^I see correct add people button tool tip$")
+	public void ThenISeeCorrectAddPeopleButtonToolTip() throws Exception {
+		String tooltip = TOOLTIP_ADD_PEOPLE_TO_CONVERSATION + " ";
+		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
+			tooltip = tooltip + SHORTCUT_ADD_PEOPLE_TO_CONVERSATION_WIN;
+		} else {
+			tooltip = tooltip + SHORTCUT_ADD_PEOPLE_TO_CONVERSATION_MAC;
+		}
+		assertThat(webappPagesCollection.getPage(GroupPopoverContainer.class)
+				.getAddPeopleButtonToolTip(), equalTo(tooltip));
+	}
 
-    /**
-     * Verifies whether leave conversation button tool tip is correct or not.
-     *
-     * @throws java.lang.Exception
-     * @step. ^I see correct leave conversation button tool tip$
-     *
-     */
-    @Then("^I see correct leave conversation button tool tip$")
-    public void ThenISeeCorrectLeaveConversationButtonToolTip() throws Exception {
-        Assert.assertTrue(webappPagesCollection.getPage(GroupPopoverContainer.class).getLeaveGroupChatButtonToolTip()
-            .equals(TOOLTIP_LEAVE_CONVERSATION));
-    }
+	/**
+	 * Verifies whether leave conversation button tool tip is correct or not.
+	 *
+	 * @throws java.lang.Exception
+	 * @step. ^I see correct leave conversation button tool tip$
+	 *
+	 */
+	@Then("^I see correct leave conversation button tool tip$")
+	public void ThenISeeCorrectLeaveConversationButtonToolTip()
+			throws Exception {
+		Assert.assertTrue(webappPagesCollection
+				.getPage(GroupPopoverContainer.class)
+				.getLeaveGroupChatButtonToolTip()
+				.equals(TOOLTIP_LEAVE_CONVERSATION));
+	}
 
-    /**
-     * Verifies whether rename conversation button tool tip is correct or not.
-     *
-     * @throws java.lang.Exception
-     * @step. ^I see correct rename conversation button tool tip$
-     *
-     */
-    @Then("^I see correct rename conversation button tool tip$")
-    public void ThenISeeCorrectRenameConversationButtonToolTip() throws Exception {
-        Assert.assertTrue(webappPagesCollection.getPage(GroupPopoverContainer.class).getRenameConversationToolTip()
-            .equals(TOOLTIP_CHANGE_CONVERSATION_NAME));
-    }
+	/**
+	 * Verifies whether rename conversation button tool tip is correct or not.
+	 *
+	 * @throws java.lang.Exception
+	 * @step. ^I see correct rename conversation button tool tip$
+	 *
+	 */
+	@Then("^I see correct rename conversation button tool tip$")
+	public void ThenISeeCorrectRenameConversationButtonToolTip()
+			throws Exception {
+		Assert.assertTrue(webappPagesCollection
+				.getPage(GroupPopoverContainer.class)
+				.getRenameConversationToolTip()
+				.equals(TOOLTIP_CHANGE_CONVERSATION_NAME));
+	}
 
-    /**
-     * Verifies whether remove from group button tool tip is correct or not.
-     *
-     * @step. ^I see correct remove from group button tool tip on Group Participants popover$
-     *
-     */
-    @Then("^I see correct remove from group button tool tip on Group Participants popover$")
-    public void ThenISeeCorrectRemoveFromGroupChatButtonToolTip() throws Exception {
-        Assert.assertTrue(webappPagesCollection.getPage(GroupPopoverContainer.class).getRemoveFromGroupChatButtonToolTip()
-            .equals(TOOLTIP_REMOVE_FROM_CONVERSATION));
-    }
+	/**
+	 * Verifies whether remove from group button tool tip is correct or not.
+	 *
+	 * @step. ^I see correct remove from group button tool tip on Group
+	 *        Participants popover$
+	 *
+	 */
+	@Then("^I see correct remove from group button tool tip on Group Participants popover$")
+	public void ThenISeeCorrectRemoveFromGroupChatButtonToolTip()
+			throws Exception {
+		Assert.assertTrue(webappPagesCollection
+				.getPage(GroupPopoverContainer.class)
+				.getRemoveFromGroupChatButtonToolTip()
+				.equals(TOOLTIP_REMOVE_FROM_CONVERSATION));
+	}
 
-    /**
-     * Compares if name on Single User Profile popover on Group Participants popover is same as expected
-     *
-     * @throws java.lang.Exception
-     * @step. ^I see username (.*) on Single User Profile popover on Group Participants popover$
-     *
-     * @param name user name string
-     */
-    @When("^I see username (.*) on Group Participants popover$")
-    public void IseeUserNameOnUserProfilePage(String name) throws Exception {
-        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-        Assert.assertEquals(name, webappPagesCollection.getPage(GroupPopoverContainer.class).getUserName());
-    }
+	/**
+	 * Compares if name on Single User Profile popover on Group Participants
+	 * popover is same as expected
+	 *
+	 * @throws java.lang.Exception
+	 * @step. ^I see username (.*) on Single User Profile popover on Group
+	 *        Participants popover$
+	 *
+	 * @param name
+	 *            user name string
+	 */
+	@When("^I see username (.*) on Group Participants popover$")
+	public void IseeUserNameOnUserProfilePage(String name) throws Exception {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		Assert.assertEquals(name,
+				webappPagesCollection.getPage(GroupPopoverContainer.class)
+						.getUserName());
+	}
 
-    /**
-     * Verifies whether the users avatar exists on the popover
-     *
-     * @throws java.lang.Exception
-     * @step. ^I see the users avatar on Group Participants User Profile popover$
-     *
-     */
-    @When("^I see an avatar on Group Participants popover")
-    public void IseeAvatarOnUserProfilePage() throws Exception {
-        Assert.assertTrue(webappPagesCollection.getPage(GroupPopoverContainer.class).isAvatarVisible());
-    }
+	/**
+	 * Verifies whether the users avatar exists on the popover
+	 *
+	 * @throws java.lang.Exception
+	 * @step. ^I see the users avatar on Group Participants User Profile
+	 *        popover$
+	 *
+	 */
+	@When("^I see an avatar on Group Participants popover")
+	public void IseeAvatarOnUserProfilePage() throws Exception {
+		Assert.assertTrue(webappPagesCollection.getPage(
+				GroupPopoverContainer.class).isAvatarVisible());
+	}
 
-    /**
-     * Verifies Mail is visible on Group Participants popover or not
-     *
-     * @param not is set to null if "do not" part does not exist
-     * @param mailAlias the mail alias to test for when mail alias is shown
-     * @step. ^I( do not)? see Mail on Group Participants popover$
-     *
-     * @throws Exception
-     */
-    @Then("^I( do not)? see Mail (.*)on Group Participants popover$")
-    public void ISeeMailOfUser(String not, String mailAlias) throws Exception {
-        mailAlias = mailAlias.trim();
-        GroupPopoverContainer groupPopoverPage = webappPagesCollection.getPage(GroupPopoverContainer.class);
-        if (not == null) {
-            if ("".equals(mailAlias)) {
-                // no mail given. just check if any text is in mail field
-                Assert.assertFalse(groupPopoverPage.getUserMail().isEmpty());
-            } else {
-                // mail given. strict check for mail
-                String email = null;
-                try {
-                    email = usrMgr.findUserByEmailOrEmailAlias(mailAlias).getEmail().toUpperCase();
-                } catch (NoSuchUserException e) {
-                    // Ignore silently
-                }
-                Assert.assertTrue(groupPopoverPage.getUserMail().equals(email));
-            }
-        } else {
-            // check for no mail, ignores the given mail alias
-            Assert.assertTrue(groupPopoverPage.getUserMail().isEmpty());
-        }
+	/**
+	 * Verifies Mail is visible on Group Participants popover or not
+	 *
+	 * @param not
+	 *            is set to null if "do not" part does not exist
+	 * @param mailAlias
+	 *            the mail alias to test for when mail alias is shown
+	 * @step. ^I( do not)? see Mail on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I( do not)? see Mail (.*)on Group Participants popover$")
+	public void ISeeMailOfUser(String not, String mailAlias) throws Exception {
+		mailAlias = mailAlias.trim();
+		GroupPopoverContainer groupPopoverPage = webappPagesCollection
+				.getPage(GroupPopoverContainer.class);
+		if (not == null) {
+			if ("".equals(mailAlias)) {
+				// no mail given. just check if any text is in mail field
+				Assert.assertFalse(groupPopoverPage.getUserMail().isEmpty());
+			} else {
+				// mail given. strict check for mail
+				String email = null;
+				try {
+					email = usrMgr.findUserByEmailOrEmailAlias(mailAlias)
+							.getEmail().toUpperCase();
+				} catch (NoSuchUserException e) {
+					// Ignore silently
+				}
+				Assert.assertTrue(groupPopoverPage.getUserMail().equals(email));
+			}
+		} else {
+			// check for no mail, ignores the given mail alias
+			Assert.assertTrue(groupPopoverPage.getUserMail().isEmpty());
+		}
 
-    }
+	}
 
-    /**
-     * Verifies whether click on mail would open mail client or not.
-     *
-     * @throws java.lang.Exception
-     * @step. ^Would open mail client when clicking mail on Group Participants popover$
-     *
-     */
-    @Then("^Would open mail client when clicking mail on Group Participants popover$")
-    public void ThenISeeThatClickOnMailWouldOpenMailClient() throws Exception {
-        Assert.assertTrue(webappPagesCollection.getPage(GroupPopoverContainer.class).getMailHref().contains(MAILTO));
+	/**
+	 * Verifies whether click on mail would open mail client or not.
+	 *
+	 * @throws java.lang.Exception
+	 * @step. ^Would open mail client when clicking mail on Group Participants
+	 *        popover$
+	 *
+	 */
+	@Then("^Would open mail client when clicking mail on Group Participants popover$")
+	public void ThenISeeThatClickOnMailWouldOpenMailClient() throws Exception {
+		Assert.assertTrue(webappPagesCollection
+				.getPage(GroupPopoverContainer.class).getMailHref()
+				.contains(MAILTO));
 
-    }
+	}
 
-    /**
-     * Verifies Pending text box is visible on Group Participant popover
-     *
-     * @step. ^I see Pending text box on Group Participants popover$
-     *
-     * @throws Exception
-     */
-    @Then("^I see Pending text box on Group Participants popover$")
-    public void ISeePendingTextBox() throws Exception {
-        Assert.assertTrue(webappPagesCollection.getPage(GroupPopoverContainer.class).isPendingTextBoxVisible());
-    }
+	/**
+	 * Verifies Pending text box is visible on Group Participant popover
+	 *
+	 * @step. ^I see Pending text box on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I see Pending text box on Group Participants popover$")
+	public void ISeePendingTextBox() throws Exception {
+		Assert.assertTrue(webappPagesCollection.getPage(
+				GroupPopoverContainer.class).isPendingTextBoxVisible());
+	}
 
-    /**
-     * Verifies whether open conversation button tool tip is correct or not.
-     *
-     * @throws java.lang.Exception
-     * @step. ^I see correct leave conversation button tool tip on Group Participants popover$
-     *
-     */
-    @Then("^I see correct open conversation button tool tip on Group Participants popover$")
-    public void ThenISeeCorrectOpenConversationButtonToolTip() throws Exception {
-        Assert.assertTrue(webappPagesCollection.getPage(GroupPopoverContainer.class).getOpenConvButtonToolTip()
-            .equals(TOOLTIP_OPEN_CONVERSATION));
-    }
+	/**
+	 * Verifies whether open conversation button tool tip is correct or not.
+	 *
+	 * @throws java.lang.Exception
+	 * @step. ^I see correct leave conversation button tool tip on Group
+	 *        Participants popover$
+	 *
+	 */
+	@Then("^I see correct open conversation button tool tip on Group Participants popover$")
+	public void ThenISeeCorrectOpenConversationButtonToolTip() throws Exception {
+		Assert.assertTrue(webappPagesCollection
+				.getPage(GroupPopoverContainer.class)
+				.getOpenConvButtonToolTip().equals(TOOLTIP_OPEN_CONVERSATION));
+	}
 
-    /**
-     * Verifies whether open conversation button is visible on Group Participants popover
-     *
-     * @step. ^I see open conversation button on Group Participants popover$
-     *
-     * @throws Exception
-     */
-    @Then("^I see open conversation button on Group Participants popover$")
-    public void ISeeOpenConversationButton() throws Exception {
-        final String openConvButtonMissingMessage = "Open conversation button is not visible on Group Participants popover";
-        final String openConvButtonWrongCaptionMessage = "Open conversation button has wrong caption on Group Participants popover";
-        Assert.assertTrue(openConvButtonMissingMessage, webappPagesCollection.getPage(GroupPopoverContainer.class)
-            .isOpenConvButtonVisible());
-        Assert.assertTrue(openConvButtonWrongCaptionMessage, webappPagesCollection.getPage(GroupPopoverContainer.class)
-            .getOpenConvButtonCaption().trim().equals(CAPTION_OPEN_CONVERSATION));
-    }
+	/**
+	 * Verifies whether open conversation button is visible on Group
+	 * Participants popover
+	 *
+	 * @step. ^I see open conversation button on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I see open conversation button on Group Participants popover$")
+	public void ISeeOpenConversationButton() throws Exception {
+		final String openConvButtonMissingMessage = "Open conversation button is not visible on Group Participants popover";
+		final String openConvButtonWrongCaptionMessage = "Open conversation button has wrong caption on Group Participants popover";
+		Assert.assertTrue(openConvButtonMissingMessage, webappPagesCollection
+				.getPage(GroupPopoverContainer.class).isOpenConvButtonVisible());
+		Assert.assertTrue(
+				openConvButtonWrongCaptionMessage,
+				webappPagesCollection.getPage(GroupPopoverContainer.class)
+						.getOpenConvButtonCaption().trim()
+						.equals(CAPTION_OPEN_CONVERSATION));
+	}
 }

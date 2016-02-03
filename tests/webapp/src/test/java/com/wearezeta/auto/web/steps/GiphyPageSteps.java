@@ -13,32 +13,39 @@ import cucumber.api.java.en.When;
 
 public class GiphyPageSteps {
 
-    private final WebappPagesCollection webappPagesCollection = WebappPagesCollection.getInstance();
+	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
+			.getInstance();
 
-    @Then("^I see Giphy popup$")
-    public void ISeeGiphyPopup() throws Throwable {
-        Assert.assertTrue("Giphy link icon in Giphy popup not visible", webappPagesCollection.getPage(GiphyPage.class)
-            .isGiphyQueryVisible());
-    }
+	@Then("^I see Giphy popup$")
+	public void ISeeGiphyPopup() throws Throwable {
+		Assert.assertTrue("Giphy link icon in Giphy popup not visible",
+				webappPagesCollection.getPage(GiphyPage.class)
+						.isGiphyQueryVisible());
+	}
 
-    @Then("^I verify that the search of the Giphy popup contains (.*)$")
-    public void IVerifyThatTheSearchOfTheGiphyPopupContains(String term) throws Exception {
-        assertThat(webappPagesCollection.getPage(GiphyPage.class).getSearchTerm(), equalTo(term.toUpperCase()));
-    }
+	@Then("^I verify that the search of the Giphy popup contains (.*)$")
+	public void IVerifyThatTheSearchOfTheGiphyPopupContains(String term)
+			throws Exception {
+		assertThat(webappPagesCollection.getPage(GiphyPage.class)
+				.getSearchTerm(), equalTo(term.toUpperCase()));
+	}
 
-    @Then("^I see gif image in Giphy popup$")
-    public void ISeeGifImageInGiphyPopup() throws Throwable {
-        Assert.assertTrue("Gif in Giphy popup not visible", webappPagesCollection.getPage(GiphyPage.class).isGifImageVisible());
-    }
+	@Then("^I see gif image in Giphy popup$")
+	public void ISeeGifImageInGiphyPopup() throws Throwable {
+		Assert.assertTrue("Gif in Giphy popup not visible",
+				webappPagesCollection.getPage(GiphyPage.class)
+						.isGifImageVisible());
+	}
 
-    @Then("^I see more button in Giphy popup$")
-    public void ISeeMoreButtonInGiphyPopup() throws Throwable {
-        Assert.assertTrue("More button in Giphy popup not visible", webappPagesCollection.getPage(GiphyPage.class)
-            .isMoreButtonVisible());
-    }
+	@Then("^I see more button in Giphy popup$")
+	public void ISeeMoreButtonInGiphyPopup() throws Throwable {
+		Assert.assertTrue("More button in Giphy popup not visible",
+				webappPagesCollection.getPage(GiphyPage.class)
+						.isMoreButtonVisible());
+	}
 
-    @When("^I click send button in Giphy popup$")
-    public void IClickSendButtonInGiphyPopup() throws Throwable {
-        webappPagesCollection.getPage(GiphyPage.class).clickSendButton();
-    }
+	@When("^I click send button in Giphy popup$")
+	public void IClickSendButtonInGiphyPopup() throws Throwable {
+		webappPagesCollection.getPage(GiphyPage.class).clickSendButton();
+	}
 }
