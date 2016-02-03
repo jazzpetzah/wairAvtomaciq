@@ -155,7 +155,7 @@ public abstract class IOSPage extends BasePage {
     }
 
     public boolean isKeyboardVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), classNameKeyboard, 3);
+        return DriverUtils.waitUntilLocatorAppears(getDriver(),classNameKeyboard,5);
     }
 
     public void clickKeyboardDeleteButton() throws Exception {

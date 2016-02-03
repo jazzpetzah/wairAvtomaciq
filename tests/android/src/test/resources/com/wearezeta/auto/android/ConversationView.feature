@@ -98,6 +98,21 @@ Feature: Conversation View
     Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
+      
+  @C18044 @regression
+  Scenario Outline: I see creation header when someone create group conversation with me
+    Given There are 3 users where <Name> is me
+    Given <Contact1> is connected to <Name>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>
+    When I tap on contact name <GroupChatName>
+    Then I see group chat page with users <Contact1>,<Contact2>
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName      |
+      | user1Name | user2Name | user3Name | MeAddedToGroupChat |
 
   @C684 @id320 @regression @rc
   Scenario Outline: Send message to group chat

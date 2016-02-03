@@ -331,8 +331,8 @@ Feature: E2EE
     Given <Contact> is connected to Myself
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
+    #Given I see the history info page
+    #Given I click confirm on history info page
     Given I am signed in properly
     When I open conversation with <Contact>
     And I click People button in one to one conversation
@@ -343,7 +343,11 @@ Feature: E2EE
     And I switch to Details tab on Single User Profile popover
     And I switch to Devices tab on Single User Profile popover
     Then I verify system message contains <Message2> on Single User Profile popover
+    And I see all devices of user <Contact> on Single User Profile popover
+    When I click on device Device1 of user <Contact> on Single User Profile popover
+    Then I verify id of device Device1 of user <Contact> on device detail page of Single User Profile popover
+    And I verify fingerprint of device Device1 of user <Contact> on device detail page of Single User Profile popover
 
     Examples:
-      | Email      | Password      | Name      | Contact   | Message1                                | Message2                              |
-      | user1Email | user1Password | user1Name | user2Name | user is not using the encrypted version | Every device has a unique fingerprint |
+      | Email      | Password      | Name      | Contact   | Message1                           | Message2                              |
+      | user1Email | user1Password | user1Name | user2Name | is not using the encrypted version | Every device has a unique fingerprint |

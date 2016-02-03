@@ -61,6 +61,11 @@ public final class PopoverLocators {
 		public static final String cssGmailImportButton = "#invite-bubble [data-uie-name='go-import-google']";
 	}
 
+	public static final class DeviceDetailPopoverPage {
+		public static final String cssDeviceIds = "#participants-bubble .user-profile-devices [data-uie-name='device-id']";
+		public static final Function<String, String> cssDeviceById = (id) -> String.format("#participants-bubble .user-profile-devices [data-uie-uid='%s']", id);
+	}
+
 	public static final class SingleUserPopover {
 
 		public static final String xpathRootLocator = "//div[@id='participants-bubble']";
@@ -80,8 +85,8 @@ public final class PopoverLocators {
 
 			public static final String xpathUnblockButton = xpathPageRootLocator
 					+ "//*[@data-uie-name='do-unblock']";
-			public static final String cssDevicesTab = "#participants-bubble [data-ui-name='go-profile-devices']";
-			public static final String cssDetailsTab = "#participants-bubble [data-ui-name='go-profile-details']";
+			public static final String cssDevicesTab = "#participants-bubble [data-uie-name='go-profile-devices']";
+			public static final String cssDetailsTab = "#participants-bubble [data-uie-name='go-profile-details']";
 			public static final String cssDevicesText = "#participants-bubble .user-profile-devices";
 		}
 

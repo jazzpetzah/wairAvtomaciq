@@ -103,6 +103,16 @@ public class SEBridge {
         return ids;
     }
 
+    public String getDeviceId(ClientUser user, String deviceName) throws Exception {
+        IDevice device = getDevicePool().getDevice(user, deviceName);
+
+        try {
+            return device.getId();
+        } catch (Exception e) {
+            throw new Exception(String.format("Could not get ID from device of user '%s'", user.getName()), e);
+        }
+    }
+
     public List<String> getDeviceFingerprints(ClientUser user) throws Exception {
         List<IDevice> devices = getDevicePool().getDevices(user);
         List<String> fingerprints = new ArrayList<>();
@@ -114,6 +124,17 @@ public class SEBridge {
             }
         }
         return fingerprints;
+    }
+
+    public String getDeviceFingerprint(ClientUser user, String deviceName) throws Exception {
+        IDevice device = getDevicePool().getDevice(user, deviceName);
+
+        try {
+            return device.getFingerprint();
+        } catch (Exception e) {
+            throw new Exception(String.format("Could not get fingerprint from device %s of user '%s'", deviceName,
+                    user.getName()), e);
+        }
     }
 
     private static void verifyPathExists(String path) {
