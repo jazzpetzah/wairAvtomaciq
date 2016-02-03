@@ -223,6 +223,26 @@ Feature: E2EE
       | Name      |
       | user1Name |
 
+  @C3236 @staging
+  Scenario Outline: Verify newly added people in a group conversation don't see a history
+    Given There are 4 users where <Name> is me
+    Given <Contact1> is connected to Myself,<Contact2>,<Contact3>
+    Given <Contact1> has group chat <GroupChatName> with <Contact2>,<Contact3>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When Contact <Contact1> sends encrypted message <EncMessage> to group conversation <GroupChatName>
+    And Contact <Contact2> sends encrypted message <EncMessage> to group conversation <GroupChatName>
+    And Contact <Contact3> sends encrypted message <EncMessage> to group conversation <GroupChatName>
+    And I wait for 5 seconds
+    And User <Contact1> adds user Myself to group chat <GroupChatName>
+    And I tap on contact name <GroupChatName>
+    Then I see encrypted message <EncMessage> 0 times in the conversation view
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | EncMessage |
+      | user1Name | user2Name | user3Name | user4Name | EncryptedGrp  | Bla        |
+
   @C3231 @rc @regression
   Scenario Outline: Verify the appropriate device is signed out if you remove it from settings  
     Given There are 1 users where <Name> is me

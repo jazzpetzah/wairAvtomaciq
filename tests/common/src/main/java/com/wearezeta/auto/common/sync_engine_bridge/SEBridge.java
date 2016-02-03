@@ -1,6 +1,7 @@
 package com.wearezeta.auto.common.sync_engine_bridge;
 
 import com.google.common.base.Throwables;
+import com.waz.provision.ActorMessage;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -19,6 +20,15 @@ public class SEBridge {
     private final Semaphore poolGuard = new Semaphore(1);
 
     private static final Logger LOG = ZetaLogger.getLog(SEBridge.class.getSimpleName());
+
+    static {
+        try {
+            CommonUtils.cleanupOutdatedMavenSnapshots(new File(ActorMessage.class.getProtectionDomain()
+                    .getCodeSource().getLocation().toURI().getPath()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private SEBridge() throws Exception {
         resetDevicePool();
