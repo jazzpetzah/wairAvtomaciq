@@ -38,14 +38,13 @@ Feature: Conversation List
     Given User <Contact1> sends encrypted message <Message> to user Myself
     And I tap on contact name <Contact1>
     And I scroll to the bottom of conversation view
-    And Last message is "<Message>"
+    And Last message is <Message>
     And I navigate back from dialog page
     And I swipe right on a <Contact1>
     And I select DELETE from conversation settings menu
     And I press DELETE on the confirm alert
     Then I see Contact list with no contacts
     And I open search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
@@ -69,7 +68,7 @@ Feature: Conversation List
     Given User <Contact1> sends encrypted message <Message> to group conversation <GroupChatName>
     When I tap on contact name <GroupChatName>
     And I scroll to the bottom of conversation view
-    And Last message is "<Message>"
+    And Last message is <Message>
     And I navigate back from dialog page
     And I swipe right on a <GroupChatName>
     And I select DELETE from conversation settings menu
@@ -99,7 +98,6 @@ Feature: Conversation List
     And I press DELETE on the confirm alert
     Then I do not see contact list with name <GroupChatName>
     And I open search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<GroupChatName>" into Search input on People Picker page
     Then I do not see group <GroupChatName> in People picker

@@ -11,12 +11,12 @@ Feature: Offline Mode
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And I see the conversation view
-    When Contact <Contact> sends message "<Message1>" to user Myself
+    When User <Contact> sends encrypted message <Message1> to user Myself
     Then I see the message "<Message1>" in the conversation view
     When I enable Airplane mode on the device
-    And Contact <Contact> sends image <Picture> to single user conversation <Name>
+    And User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     Then I do not see any new pictures in the conversation view
-    When Contact <Contact> sends message "<Message2>" to user Myself
+    When User <Contact> sends encrypted message <Message2> to user Myself
     Then I do not see the message "<Message2>" in the conversation view
     When I disable Airplane mode on the device
     # To let the content load properly after offline mode

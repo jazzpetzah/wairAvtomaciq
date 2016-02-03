@@ -169,7 +169,6 @@ Feature: Calling
     Then I see calling overlay Big bar
     And I navigate back from dialog page
     And I open Search by tap
-    And I see People picker page
     And I see calling overlay Micro bar
     And I press Clear button
     And I tap on my avatar

@@ -56,9 +56,9 @@ Feature: Ping
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
-    When Contact <Contact1> ping conversation <GroupChatName>
+    When User <Contact1> securely pings conversation <GroupChatName>
     Then I see the ping message "<PingMessage>" in the conversation view
-    When Contact <Contact1> hotping conversation <GroupChatName>
+    When User <Contact1> securely hotpings conversation <GroupChatName>
     Then I see the ping message "<HotPingMessage>" in the conversation view
     And I do not see the ping message "<PingMessage>" in the conversation view
 
@@ -78,9 +78,9 @@ Feature: Ping
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
-    When Contact <Contact1> ping conversation <GroupChatName>
+    When User <Contact1> securely pings conversation <GroupChatName>
     Then I see the ping message "<PingMessage>" in the conversation view
-    When Contact <Contact1> hotping conversation <GroupChatName>
+    When User <Contact1> securely hotpings conversation <GroupChatName>
     Then I see the ping message "<HotPingMessage>" in the conversation view
     And I do not see the ping message "<PingMessage>" in the conversation view
 

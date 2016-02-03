@@ -39,8 +39,8 @@ Feature: Settings
     When I tap my avatar
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
-    And I click on Account Info on settings page
-    And I click on Change Password button in Settings
+    And I select settings item Account
+    And I select settings item Reset Password
     And I wait for 4 seconds
     Then I see reset password page
 
@@ -56,9 +56,8 @@ Feature: Settings
     When I tap my avatar
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
-    When I tap on Sound Alerts
-    And I see the Sound alerts page
-    Then I verify that all is the default selected value
+    And I select settings item Alerts
+    Then I verify sound alerts settings are set to default values
 
     Examples:
       | Name      |

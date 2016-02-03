@@ -11,7 +11,7 @@ Feature: Notifications
     Given I tap the conversation <Contact2>
     Given I swipe right to show the conversations list
     When I tap my avatar on top of conversations list
-    And Contact <Contact1> sends message "<Message>" to user Myself
+    And User <Contact1> sends encrypted message <Message> to user Myself
     And I tap the chathead notification
     Then I see the conversation view
     And I see the message "<Message>" in the conversation view

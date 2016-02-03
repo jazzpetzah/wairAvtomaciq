@@ -531,14 +531,13 @@ public class DialogPageSteps {
     @Then("^I see group chat page with users (.*)$")
     public void ThenISeeGroupChatPage(String participantNameAliases)
             throws Exception {
-        assert getDialogPage().isDialogVisible() : "Group chat view is not visible";
         List<String> participantNames = new ArrayList<String>();
         for (String nameAlias : CommonSteps
                 .splitAliases(participantNameAliases)) {
             participantNames.add(usrMgr.findUserByNameOrNameAlias(nameAlias)
                     .getName());
         }
-        Assert.assertTrue(getDialogPage().isGroupChatDialogContainsNames(
+        Assert.assertTrue(String.format("Group chat view with names %s is not visible", participantNames), getDialogPage().isGroupChatDialogContainsNames(
                 participantNames));
     }
 

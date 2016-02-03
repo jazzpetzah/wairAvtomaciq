@@ -142,8 +142,8 @@ Feature: E2EE
     And I see encrypted image 1 time in the conversation view
 
     Examples:
-      | Name      | Contact1  | Contact2  | ImageName   | ImageName2    | GroupChatName |
-      | user1Name | user2Name | user3Name | testing.jpg | hdpicture.jpg | GroupConvo    |
+      | Name      | Contact1  | Contact2  | ImageName   | ImageName2               | GroupChatName |
+      | user1Name | user2Name | user3Name | testing.jpg | userpicture_portrait.jpg | GroupConvo    |
 
   @C3229 @staging
   Scenario Outline: Verify you can see device ids of the other conversation participant in participant details view inside a group conversation
@@ -191,11 +191,16 @@ Feature: E2EE
 
   @C3232 @staging
   Scenario Outline: Verify the device id is not changed after relogin
-    Given There are 1 users where <Name> is me
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with no contacts
-    When I tap on my avatar
+    Given I see Contact list with contacts
+    When User <Contact1> sends encrypted message <EncMessage> to user Myself
+    And I tap on contact name <Contact1>
+    Then I see encrypted message <EncMessage> 1 times in the conversation view
+    When I press back button
+    And I tap on my avatar
     And I tap options button
     And I tap settings button
     When I select "Privacy & Security" settings menu item
@@ -210,8 +215,11 @@ Feature: E2EE
     Then I confirm sign out
     And I see welcome screen
     When I sign in using my email or phone number
-    Then I see Contact list with no contacts
-    When I tap on my avatar
+    Then I see Contact list with contacts
+    When I tap on contact name <Contact1>
+    Then I see encrypted message <EncMessage> 1 times in the conversation view
+    When I press back button
+    And I tap on my avatar
     And I tap options button
     And I tap settings button
     When I select "Privacy & Security" settings menu item
@@ -220,8 +228,28 @@ Feature: E2EE
     Then I verify the remembered device id is shown in the device detail view
 
     Examples:
-      | Name      |
-      | user1Name |
+      | Name      | Contact1  | EncMessage |
+      | user1Name | user2Name | Bla        |
+
+  @C3236 @staging
+  Scenario Outline: Verify newly added people in a group conversation don't see a history
+    Given There are 4 users where <Name> is me
+    Given <Contact1> is connected to Myself,<Contact2>,<Contact3>
+    Given <Contact1> has group chat <GroupChatName> with <Contact2>,<Contact3>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When User <Contact1> sends encrypted message <EncMessage> to group conversation <GroupChatName>
+    And User <Contact2> sends encrypted message <EncMessage> to group conversation <GroupChatName>
+    And User <Contact3> sends encrypted message <EncMessage> to group conversation <GroupChatName>
+    And I wait for 5 seconds
+    And User <Contact1> adds user Myself to group chat <GroupChatName>
+    And I tap on contact name <GroupChatName>
+    Then I see encrypted message <EncMessage> 0 times in the conversation view
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | EncMessage |
+      | user1Name | user2Name | user3Name | user4Name | EncryptedGrp  | Bla        |
 
   @C3231 @rc @regression
   Scenario Outline: Verify the appropriate device is signed out if you remove it from settings  
@@ -236,6 +264,22 @@ Feature: E2EE
     Examples:
       | Name      |
       | user1Name |
+
+  @C3514 @staging
+  Scenario Outline: On first login on 2nd device there should be an explanation that user will not see previous messages
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    When User <Name> sends encrypted message <EncMessage> to user <Contact1>
+    Then I sign in using my email or phone number
+    And I see First Time overlay
+    When I tap Got It button on First Time overlay
+    Then I see Contact list with contacts
+    When I tap on contact name <Contact1>
+    Then I see encrypted message <EncMessage> 0 times in the conversation view
+
+    Examples:
+      | Name      | Contact1  | EncMessage |
+      | user1Name | user2Name | Bla        |
       
   @C3237 @staging
   Scenario Outline: Verify it is possible to verify other user's device in 1:1 conversation

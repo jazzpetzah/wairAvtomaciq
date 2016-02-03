@@ -610,9 +610,31 @@ public class CommonUtils {
         final Callable<Long> task = () -> {
             final NTPUDPClient timeClient = new NTPUDPClient();
             final InetAddress inetAddress = InetAddress.getByName(TIME_SERVER);
-            return new Date(timeClient.getTime(inetAddress).getReturnTime())
-                    .getTime();
+            return new Date(timeClient.getTime(inetAddress).getReturnTime()).getTime();
         };
         return Executors.newSingleThreadExecutor().submit(task);
+    }
+
+    public static void cleanupOutdatedMavenSnapshots(File pluginJar) {
+        try {
+            if (!pluginJar.getCanonicalPath().contains(".m2")) {
+                return;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        final File allVersionsRoot = pluginJar.getParentFile().getParentFile();
+        for (String versionRootName : allVersionsRoot.list()) {
+            try {
+                final File versionRoot =
+                        new File(allVersionsRoot.getCanonicalPath() + File.separator + versionRootName);
+                if (versionRoot.isDirectory() && !versionRoot.getName().equals(pluginJar.getParentFile().getName())) {
+                    FileUtils.deleteDirectory(versionRoot);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

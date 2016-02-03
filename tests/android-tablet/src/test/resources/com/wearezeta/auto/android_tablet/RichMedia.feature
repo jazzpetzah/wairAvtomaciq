@@ -4,11 +4,11 @@ Feature: Rich Media
   Scenario Outline: Send GIF format pic (portrait)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given Contact <Contact> sends image <GifName> to single user conversation <Name>
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
+    Given User <Contact> sends encrypted image <GifName> to single user conversation Myself
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And I see the conversation view
@@ -26,11 +26,11 @@ Feature: Rich Media
   Scenario Outline: Send GIF format pic (landscape)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given Contact <Contact> sends image <GifName> to single user conversation <Name>
     Given I rotate UI to landscape
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
+    Given User <Contact> sends encrypted image <GifName> to single user conversation Myself
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And I see the conversation view
@@ -156,11 +156,11 @@ Feature: Rich Media
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     # This is to be able to scroll up until Media Bar appears
-    Given Contact <Contact> sends <MsgsInConvo> messages to user Myself
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
+    Given User <Contact> sends <MsgsInConvo> encrypted messages to user Myself
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And I see the conversation view

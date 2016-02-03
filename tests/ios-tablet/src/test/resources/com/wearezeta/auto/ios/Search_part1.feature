@@ -36,7 +36,7 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I swipe down contact list on iPad
+    When I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
@@ -51,7 +51,7 @@ Feature: Search
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I swipe down contact list on iPad
+    When I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
@@ -72,7 +72,7 @@ Feature: Search
     And I dismiss alert
     And I press maybe later button
     And I click clear button
-    And I swipe down contact list on iPad
+    And I open search by taping on it
     And I click hide keyboard button
     Then I dont see Upload contacts dialog
 
@@ -93,7 +93,7 @@ Feature: Search
     And I dismiss alert
     And I press maybe later button
     And I click clear button
-    And I swipe down contact list on iPad
+    And I open search by taping on it
     And I click hide keyboard button
     Then I dont see Upload contacts dialog
 
