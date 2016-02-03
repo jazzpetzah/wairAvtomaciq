@@ -1,5 +1,8 @@
 package com.wearezeta.auto.web.steps;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
@@ -12,8 +15,6 @@ import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.CoreMatchers.*;
 
 public class LoginPageSteps {
 
@@ -24,20 +25,16 @@ public class LoginPageSteps {
 	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
 			.getInstance();
 
-	/**
-	 * Enters user email and password into corresponding fields on sign in
-	 * screen then taps "Sign In" button
-	 * 
-	 * @step. ^I Sign in using login (.*) and password (.*)$
-	 * 
-	 * @param login
-	 *            user login string
-	 * @param password
-	 *            user password string
-	 * 
-	 * @throws AssertionError
-	 *             if login operation was unsuccessful
-	 */
+	    /**
+     * Enters user email and password into corresponding fields on sign in screen then taps "Sign In" button
+     * 
+     * @step. ^I Sign in using login (.*) and password (.*)$
+     * 
+     * @param login user login string
+     * @param password user password string
+     * 
+     * @throws AssertionError if login operation was unsuccessful
+     */
 	@Given("^I Sign in using login (.*) and password (.*)$")
 	public void ISignInUsingLoginAndPassword(String login, String password)
 			throws Exception {
