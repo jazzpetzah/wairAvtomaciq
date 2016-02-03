@@ -57,3 +57,20 @@ Feature: E2EE
     Examples:
       | Name      | Contact1  | DeviceName1 | DeviceName2 | DeviceName3 |
       | user1Name | user2Name | Device1     | Device2     | Device3     |
+
+  @C3290 @staging
+  Scenario Outline: (ZIOS-5741) Verify new device is added to device management after sign in
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email
+    Given I see conversations list
+    And User Myself adds a new device <DeviceName> with label <DeviceLabel>
+    When I tap my avatar
+    And I click on Settings button on personal page
+    And I click on Settings button from the options menu
+    And I select settings item Privacy & Security
+    And I select settings item Manage devices
+    Then I see settings item <DeviceLabel>
+
+    Examples:
+      | Name      | DeviceName | DeviceLabel  |
+      | user1Name | Device1    | Device1Label |

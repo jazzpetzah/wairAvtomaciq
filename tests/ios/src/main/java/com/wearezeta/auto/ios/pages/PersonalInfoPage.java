@@ -28,29 +28,13 @@ public class PersonalInfoPage extends IOSPage {
 
     private static final By nameSelfNameTooShortError = By.name("AT LEAST 2 CHARACTERS ");
 
-    public static final By xpathSettingsPage = By.xpath("//UIANavigationBar[@name='Settings']");
-
     private static final By xpathOptionsSettingsButton = By.xpath("//UIAButton[@name='SETTINGS' or @name='Settings']");
-
-    private static final By nameSoundAlertsButton = By.name("Alerts");
-
-    private static final By xpathSoundAlertsPage = By.xpath("//UIANavigationBar[@name='Alerts']");
-
-    private static final By xpathAllSoundAlertsButton = By.xpath("//UIATableCell[@name='All']");
-
-    private static final By nameSettingsResetPasswordButton = By.name("Reset Password");
-
-    private static final By nameSettingsAccountInfoButton = By.name("Account");
 
     private static final By nameOptionsHelpButton = By.name("HELP");
 
     private static final By xpathSettingsHelpHeader = By.xpath("//UIAWebView/UIAStaticText[@name='Support']");
 
     private static final By nameAccentColorPicker = By.name("AccentColorPickerView");
-
-    private static final By nameSettingsBackButton = By.name("Back");
-
-    private static final By nameSettingsDoneButton = By.name("Done");
 
     private static final By nameCloseButton = By.name("CloseButton");
 
@@ -177,10 +161,6 @@ public class PersonalInfoPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathChangePasswordPageChangePasswordButton);
     }
 
-    public void clickChangePasswordButton() throws Exception {
-        getElement(nameSettingsResetPasswordButton).click();
-    }
-
     public void tapOnEditNameField() throws Exception {
         getElement(xpathProfileNameEditField, "Edit name field is not visible").click();
     }
@@ -239,22 +219,6 @@ public class PersonalInfoPage extends IOSPage {
         getElement(xpathOptionsSettingsButton).click();
     }
 
-    public boolean isSettingsPageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathSettingsPage);
-    }
-
-    public void enterSoundAlertSettings() throws Exception {
-        getElement(nameSoundAlertsButton).click();
-    }
-
-    public boolean isSoundAlertsPageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathSoundAlertsPage);
-    }
-
-    public boolean isDefaultSoundValOne() throws Exception {
-        return getElement(xpathAllSoundAlertsButton).getAttribute("value").equals("1");
-    }
-
     public void clickOnHelpButton() throws Exception {
         getElement(nameOptionsHelpButton, "Help button is not visible in Options").click();
     }
@@ -267,14 +231,6 @@ public class PersonalInfoPage extends IOSPage {
         DriverUtils.swipeElementPointToPoint(getDriver(), getElement(nameAccentColorPicker),
                 1000, startColor * 2 * COLORS_COUNT - COLORS_COUNT, 50,
                 endColor * 2 * COLORS_COUNT - COLORS_COUNT, 50);
-    }
-
-    public void pressSettingsBackButton() throws Exception {
-        getElement(nameSettingsBackButton).click();
-    }
-
-    public void pressSettingsDoneButton() throws Exception {
-        getElement(nameSettingsDoneButton, "Done button is not present in Settings").click();
     }
 
     public boolean waitSelfProfileVisible() throws Exception {
@@ -299,9 +255,5 @@ public class PersonalInfoPage extends IOSPage {
 
     public boolean isThemeSwitcherButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameThemeSwitcherButton, 5);
-    }
-
-    public void clickAccountInfoButton() throws Exception {
-        getElement(nameSettingsAccountInfoButton, "Account button is not present in settings").click();
     }
 }
