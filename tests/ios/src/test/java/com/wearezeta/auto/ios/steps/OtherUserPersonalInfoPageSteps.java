@@ -233,7 +233,7 @@ public class OtherUserPersonalInfoPageSteps {
      * @step. ^I tap on Devices button$
      */
     @When("^I tap on Devices button$")
-    public void ITapOnDevicesButton() throws Throwable {
+    public void ITapOnDevicesButton() throws Exception {
         getOtherUserPersonalInfoPage().clickDevicesButton();
     }
 
@@ -248,7 +248,7 @@ public class OtherUserPersonalInfoPageSteps {
     @When("^I see (\\d+) devices shown in participant devices tab$")
     public void ISeeDevicesShownInDevicesTab(int expectedNumDevices) throws Exception {
         int numDevices = getOtherUserPersonalInfoPage().getParticipantDevicesCount();
-        Assert.assertTrue("The expected number of devices is not equals to actual count", expectedNumDevices == numDevices);
+        Assert.assertTrue("The expected number of devices: "+ expectedNumDevices+ " is not equals to actual count: "+numDevices, expectedNumDevices == numDevices);
     }
 
 }

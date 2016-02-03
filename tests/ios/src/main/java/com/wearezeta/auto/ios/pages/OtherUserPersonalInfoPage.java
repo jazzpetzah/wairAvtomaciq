@@ -1,11 +1,8 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.Iterator;
 
 import com.wearezeta.auto.common.driver.DummyElement;
 
@@ -180,7 +177,9 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     }
 
     public int getParticipantDevicesCount() throws Exception {
-        final List<WebElement> deviceCell = getElements(xpathDevicesList);
-        return deviceCell.size();
+        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathDevicesList)) {
+            return getElements(xpathDevicesList).size();
+        }
+        return 0;
     }
 }
