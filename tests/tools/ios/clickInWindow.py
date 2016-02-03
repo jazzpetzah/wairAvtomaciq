@@ -12,6 +12,8 @@ Usage: %s <windowName> <X> <Y>
 Example: %s "Simulator" 0.5 0.5
 ''' % (sys.argv[0], sys.argv[0], sys.argv[0])
 
+WINDOW_CAPTION_HEIGHT = 22
+
 def mouseEvent(type, posx, posy):
     theEvent = CGEventCreateMouseEvent(None, type, (posx,posy), kCGMouseButtonLeft)
     CGEventPost(kCGHIDEventTap, theEvent)
@@ -37,21 +39,22 @@ def click(posx, posy):
     mouseclick(posx, posy)
     mousemove(int(currentpos.x), int(currentpos.y)) # Restore mouse position
 
-def clickRelative(posx, posy, sizeX, sizeY):
-    x = posx * float(sizeX)
-    y = posy * float(sizeY)
+def clickRelative(posx0, posy0, posx, posy, sizeX, sizeY):
+    x = int(posx0) + posx * float(sizeX)
+    y = int(posy0) + WINDOW_CAPTION_HEIGHT + posy * float(float(sizeY) - WINDOW_CAPTION_HEIGHT)
     click(int(x), int(y))
 
-# Moves the window to 0,0 so relative coordinates will be accurate
-def moveWindowToZero(windowName):
-    print "Moving window '%s' to (0,0)" % windowName
+def getWindowPosition(windowName):
     cmd="""
 osascript<<END
     tell application "System Events" to tell application process "%s"
-    	set position of window 1 to {0, 0}
+    	get position of window 1
     end tell
 """ % windowName
-    os.system(cmd)
+    dimensions = subprocess.check_output(cmd, shell=True)
+    result = dimensions.strip().split(", ")
+    print "Window position of '%s' is: %s" % (windowName, result)
+    return result
 
 # Use applescript to get the window size
 def getWindowSize(windowName):
@@ -68,9 +71,8 @@ osascript<<END
 
 def clickInWindow(windowName, posX, posY):
     dim = getWindowSize(windowName)
-    moveWindowToZero(windowName)
-    time.sleep(0.9)
-    clickRelative(posX, posY, dim[0], dim[1])
+    pos0 = getWindowPosition(windowName)
+    clickRelative(pos0[0], pos0[1], posX, posY, dim[0], dim[1])
 
 if __name__ == "__main__":
     if (len(sys.argv) < 3):

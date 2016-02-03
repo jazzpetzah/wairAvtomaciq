@@ -55,7 +55,7 @@ public class GroupChatInfoPage extends IOSPage {
 
     public void setGroupChatName(String name) throws Exception {
         ((IOSElement) getElement(nameConversationNameTextField)).setValue(name);
-        clickKeyboardReturnButton();
+        clickKeyboardCommitButton();
     }
 
     public boolean isCorrectConversationName(List<String> expectedNames) throws Exception {

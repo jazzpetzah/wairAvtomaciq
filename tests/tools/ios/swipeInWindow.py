@@ -13,6 +13,8 @@ Example: %s "Simulator" 0.5 0.5 0.5 0.8 1000
 (drags from middle of the window down to approx. 80 percent of the window)
 ''' % (sys.argv[0], sys.argv[0], sys.argv[0])
 
+WINDOW_CAPTION_HEIGHT = 22
+
 def mouseEvent(type, posx, posy):
     theEvent = CGEventCreateMouseEvent(None, type, (posx,posy), kCGMouseButtonLeft)
     CGEventPost(kCGHIDEventTap, theEvent)
@@ -52,27 +54,25 @@ def swipe(startX, startY, endX, endY, durationMilliseconds):
     time.sleep(1)
     mousemove(int(currentpos.x),int(currentpos.y)) # Restore mouse position
 
-# Swipe from start to end using relative coordinates (0.5, 0.5) would be middle of screen
-# Specify dimensions with sizeX and sizeY
-def swipeRelative(startX, startY, endX, endY, sizeX, sizeY, durationMilliseconds):
-    x1 = startX * float(sizeX)
-    y1 = startY * float(sizeY)
-    x2 = endX * float(sizeX)
-    y2 = endY * float(sizeY)
+def swipeRelative(posx0, posy0, startX, startY, endX, endY, sizeX, sizeY, durationMilliseconds):
+    x1 = int(posx0) + startX * float(sizeX)
+    y1 = int(posy0) + startY * float(float(sizeY) - WINDOW_CAPTION_HEIGHT)
+    x2 = int(posx0) + endX * float(sizeX)
+    y2 = int(posy0) + endY * float(float(sizeY) - WINDOW_CAPTION_HEIGHT)
     swipe (int(x1),int(y1),int(x2),int(y2), durationMilliseconds)
 
-# Moves the window to 0,0 so relative coordinates will be accurate
-def moveWindowToZero(windowName):
-    print "Moving window '%s' to (0,0)" % windowName
+def getWindowPosition(windowName):
     cmd="""
 osascript<<END
     tell application "System Events" to tell application process "%s"
-    	set position of window 1 to {0, 0}
+        get position of window 1
     end tell
 """ % windowName
-    os.system(cmd)
+    dimensions = subprocess.check_output(cmd, shell=True)
+    result = dimensions.strip().split(", ")
+    print "Window position of '%s' is: %s" % (windowName, result)
+    return result
 
-# Use applescript to get the window size
 def getWindowSize(windowName):
     cmd="""
 osascript<<END
@@ -87,11 +87,8 @@ osascript<<END
 
 def swipeInWindow(windowName, startX, startY, endX, endY, durationMilliseconds=DEFAULT_SWIPE_DURATION_MILLISECONDS):
     dim = getWindowSize(windowName)
-    print dim[0]
-    print dim[1]
-    moveWindowToZero(windowName)
-    time.sleep(0.9)
-    swipeRelative(startX,startY,endX,endY,dim[0],dim[1], durationMilliseconds)
+    pos0 = getWindowPosition(windowName)
+    swipeRelative(pos0[0], pos0[1], startX, startY, endX, endY, dim[0], dim[1], durationMilliseconds)
 
 if __name__ == "__main__":
     print('argv: ', len(sys.argv))

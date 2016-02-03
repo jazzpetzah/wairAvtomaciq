@@ -373,7 +373,7 @@ public class DialogPage extends IOSPage {
 
     public void typeAndSendConversationMessage(String message) throws Exception {
         typeConversationMessage(message);
-        clickKeyboardSendButton();
+        this.clickKeyboardCommitButton();
     }
 
     public void typeConversationMessage(String message) throws Exception {

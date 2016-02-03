@@ -125,7 +125,7 @@ public class DialogPageSteps {
 
     @When("^I send the message$")
     public void WhenISendTheMessage() throws Throwable {
-        getDialogPage().clickDoneKeyboardButton();
+        getDialogPage().clickKeyboardCommitButton();
     }
 
     @When("^I swipe up on dialog page to open other user personal page$")
@@ -964,6 +964,6 @@ public class DialogPageSteps {
      */
     @When("^I click send button on keyboard$")
     public void iClickSendButtonOnKeyboard() throws Exception {
-        getDialogPage().clickKeyboardSendButton();
+        getDialogPage().clickKeyboardCommitButton();
     }
 }

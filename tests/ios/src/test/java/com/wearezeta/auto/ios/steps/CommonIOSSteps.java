@@ -198,7 +198,7 @@ public class CommonIOSSteps {
      */
     @When("^I press keyboard Return button$")
     public void IPressKeyboardReturnBtn() throws Exception {
-        pagesCollection.getCommonPage().clickKeyboardReturnButton();
+        pagesCollection.getCommonPage().clickKeyboardCommitButton();
     }
 
     @When("^I scroll up page a bit$")
@@ -268,7 +268,7 @@ public class CommonIOSSteps {
      */
     @When("I click DONE keyboard button")
     public void IClickDoneKeyboardButton() throws Exception {
-        pagesCollection.getCommonPage().clickDoneKeyboardButton();
+        pagesCollection.getCommonPage().clickKeyboardCommitButton();
     }
 
     /**

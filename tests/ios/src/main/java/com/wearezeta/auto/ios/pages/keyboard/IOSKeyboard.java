@@ -18,8 +18,9 @@ public class IOSKeyboard {
     private static final KeyboardState UNKNOWN_STATE = new KeyboardStateUnknown();
     private static final String xpathStrKeyboardLocator = "//UIAKeyboard";
     public static By xpathKeyboardLocator = By.xpath(xpathStrKeyboardLocator);
-    public static final By xpathReturnKeyLocator =
-            By.xpath(xpathStrKeyboardLocator + "//*[@name='Go' or @name='Send' or @name='Done']");
+    public static final By xpathCommitKeyLocator =
+            By.xpath(xpathStrKeyboardLocator +
+                    "//*[@name='Go' or @name='Send' or @name='Done' or @name='return' or @name='Return']");
 
     private KeyboardState getFinalState(List<KeyboardState> statesList, char c) throws Exception {
         String messageChar = "" + c;
@@ -88,7 +89,7 @@ public class IOSKeyboard {
             By keyLocator;
             switch (messageChar) {
                 case "\n":
-                    keyLocator = xpathReturnKeyLocator;
+                    keyLocator = xpathCommitKeyLocator;
                     break;
                 case " ":
                     keyLocator = By.name("space");

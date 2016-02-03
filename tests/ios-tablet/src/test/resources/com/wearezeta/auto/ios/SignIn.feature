@@ -63,12 +63,10 @@ Feature: Sign In
     And I click on Change Password button on SignIn
     Then I see reset password page
     And I change URL to staging
-    And I type in email <Login> to change password
-    And I press Change Password button in browser
-    And I copy link from email and past it into Safari
-    And I type in new password <NewPassword>
-    And I press Change Password button in browser
-    And I reset Wire app
+    And I commit email <Login> to change password
+    And I copy link from email and paste it into Safari
+    And I commit new password <NewPassword>
+    And I click at 0.75,0.57 of Simulator window
     And I sign in using my email
     Then I see conversations list
 
@@ -84,12 +82,10 @@ Feature: Sign In
     And I click on Change Password button on SignIn
     Then I see reset password page
     And I change URL to staging
-    And I type in email <Login> to change password
-    And I press Change Password button in browser
-    And I copy link from email and past it into Safari
-    And I type in new password <NewPassword>
-    And I press Change Password button in browser
-    And I reset Wire app
+    And I commit email <Login> to change password
+    And I copy link from email and paste it into Safari
+    And I commit new password <NewPassword>
+    And I click at 0.75,0.57 of Simulator window
     And I sign in using my email
     Then I see conversations list
 
@@ -227,7 +223,7 @@ Feature: Sign In
     And I enter phone number for user <Name>
     And I see verification code page
     When I tap RESEND code button
-    Then I see Resend will be possible after 10 min aleart
+    Then I see Resend will be possible after 10 min alert
 
     Examples:
       | Name      |
@@ -245,7 +241,7 @@ Feature: Sign In
     And I enter phone number for user <Name>
     And I see verification code page
     When I tap RESEND code button
-    Then I see Resend will be possible after 10 min aleart
+    Then I see Resend will be possible after 10 min alert
 
     Examples:
       | Name      |

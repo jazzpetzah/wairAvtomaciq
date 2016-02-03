@@ -4,13 +4,12 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import com.wearezeta.auto.ios.tools.IRunnableWithException;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.ScreenOrientation;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 
 import com.wearezeta.auto.ios.pages.keyboard.IOSKeyboard;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -39,10 +38,6 @@ public abstract class IOSPage extends BasePage {
     protected static final By classNameKeyboard = By.className("UIAKeyboard");
 
     protected static final By nameKeyboardDeleteButton = By.name("delete");
-
-    protected static final By nameKeyboardReturnButton = By.name("Return");
-
-    protected static final By nameKeyboardSendButton = By.name("Send");
 
     protected static final By nameHideKeyboardButton = By.name("Hide keyboard");
 
@@ -121,11 +116,41 @@ public abstract class IOSPage extends BasePage {
         getElement(nameEditingItemPaste, "Paste popup is not visible").click();
     }
 
-    public void inputStringFromKeyboard(String str) throws Exception {
+    private void clickAtSimulatorElement(WebElement el) throws Exception {
+        final Point elLocation = el.getLocation();
+        final Dimension windowSize = getDriver().manage().window().getSize();
+        IOSSimulatorHelper.clickAt(String.format("%.2f", (elLocation.x + 10) * 1.0 / windowSize.width),
+                String.format("%.2f", (elLocation.y + 10) * 1.0 / windowSize.height));
+        Thread.sleep(1000);
+    }
+
+    /**
+     * !!! this method is not able to enter line breaks !!!
+     *
+     * @param dstElement the destination eit field
+     * @param str        string to enter
+     * @throws Exception
+     */
+    public void inputStringFromKeyboard(WebElement dstElement, String str,
+                                        boolean useAutocompleteWorkaround) throws Exception {
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            IOSSimulatorHelper.typeString(str);
+            clickAtSimulatorElement(dstElement);
+            IOSSimulatorHelper.typeString(str, useAutocompleteWorkaround);
         } else {
+            DriverUtils.tapByCoordinates(getDriver(), dstElement);
             this.onScreenKeyboard.typeString(str);
+        }
+    }
+
+    public void inputStringFromKeyboardAndCommit(WebElement dstElement, String str,
+                                                 boolean useAutocompleteWorkaround) throws Exception {
+        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            clickAtSimulatorElement(dstElement);
+            IOSSimulatorHelper.typeStringAndPressEnter(str, useAutocompleteWorkaround);
+        } else {
+            DriverUtils.tapByCoordinates(getDriver(), dstElement);
+            this.onScreenKeyboard.typeString(str);
+            this.clickKeyboardCommitButton();
         }
     }
 
@@ -137,14 +162,6 @@ public abstract class IOSPage extends BasePage {
         getElement(nameKeyboardDeleteButton).click();
     }
 
-    public void clickKeyboardReturnButton() throws Exception {
-        getElement(nameKeyboardReturnButton).click();
-    }
-
-    public void clickKeyboardSendButton() throws Exception {
-        getElement(nameKeyboardSendButton, "Keyboard Send button is not visible").click();
-    }
-
     public void clickHideKeyboardButton() throws Exception {
         getElement(nameHideKeyboardButton).click();
     }
@@ -153,8 +170,8 @@ public abstract class IOSPage extends BasePage {
         getElement(nameSpaceButton).click();
     }
 
-    public void clickDoneKeyboardButton() throws Exception {
-        getElement(IOSKeyboard.xpathReturnKeyLocator, "Keyboard Done button is not visible").click();
+    public void clickKeyboardCommitButton() throws Exception {
+        getElement(IOSKeyboard.xpathCommitKeyLocator, "Keyboard commit button is not visible").click();
     }
 
     public static Object executeScript(String script) throws Exception {

@@ -465,12 +465,11 @@ public class LoginPageSteps {
      *
      * @param email
      * @throws Exception
-     * @step. ^I type in email (.*) to change password$
+     * @step. ^I commit email (.*) to change password$
      */
-    @When("^I type in email (.*) to change password$")
+    @When("^I commit email (.*) to change password$")
     public void ITypeInEmailToChangePassword(String email) throws Exception {
         email = usrMgr.replaceAliasesOccurences(email, FindBy.EMAIL_ALIAS);
-        getLoginPage().tapEmailFieldToChangePassword(email);
 
         // activate the user, to get access to the mails
         Map<String, String> expectedHeaders = new HashMap<String, String>();
@@ -479,17 +478,8 @@ public class LoginPageSteps {
                 PasswordResetMessage.MESSAGE_PURPOSE);
         this.activationMessage = IMAPSMailbox.getInstance().getMessage(
                 expectedHeaders, BackendAPIWrappers.ACTIVATION_TIMEOUT);
-    }
 
-    /**
-     * Presses the change password button in the safari webview
-     *
-     * @throws Exception
-     * @step. ^I press Change Password button in browser$
-     */
-    @When("^I press Change Password button in browser$")
-    public void IPressChangePasswordButtonInBrowser() throws Exception {
-        getLoginPage().tapChangePasswordButtonInWebView();
+        getLoginPage().commitEmail(email);
     }
 
     /**
@@ -505,16 +495,16 @@ public class LoginPageSteps {
     }
 
     /**
-     * Types the new password into the password field
+     * Types the new password into the password field and commits it
      *
      * @param newPassword that gets set as new password by typing it into the field
      * @throws Exception
-     * @step. ^I type in new password (.*)$
+     * @step. ^I commit new password (.*)$
      */
-    @When("^I type in new password (.*)$")
+    @When("^I commit new password (.*)$")
     public void ITypeInNewPassword(String newPassword) throws Exception {
         usrMgr.getSelfUserOrThrowError().setPassword(newPassword);
-        getLoginPage().tapPasswordFieldToChangePassword(newPassword);
+        getLoginPage().commitNewPassword(newPassword);
     }
 
     /**
