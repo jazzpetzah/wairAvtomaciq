@@ -41,3 +41,19 @@ Feature: E2EE
     Examples:
       | Name      | DeviceName | DeviceLabel  |
       | user1Name | Device1    | Device1Label |
+
+  @C3296 @staging
+  Scenario Outline: Verify opening device details by clicking on it in person's profile
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email
+    Given I see conversations list
+    And User <Contact1> adds new devices <DeviceName1>,<DeviceName2>,<DeviceName3>
+    And I tap on contact name <Contact1>
+    And I open conversation details
+    And I tap on Devices button
+    Then I see 3 devices shown in participant devices tab
+
+    Examples:
+      | Name      | Contact1  | DeviceName1 | DeviceName2 | DeviceName3 |
+      | user1Name | user2Name | Device1     | Device2     | Device3     |
