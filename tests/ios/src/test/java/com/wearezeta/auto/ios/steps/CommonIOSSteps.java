@@ -176,6 +176,7 @@ public class CommonIOSSteps {
 
     @When("^I see keyboard$")
     public void ISeeKeyboard() throws Exception {
+        Thread.sleep(2000);
         Assert.assertTrue(pagesCollection.getCommonPage().isKeyboardVisible());
     }
 

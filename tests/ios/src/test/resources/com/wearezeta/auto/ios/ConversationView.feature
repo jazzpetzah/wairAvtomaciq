@@ -406,7 +406,9 @@ Feature: Conversation View
     And I open conversation details
     And I open ellipsis menu
     And I click archive menu button
+    And I wait for 2 seconds
     Then I dont see conversation <Contact> in contact list
+    And I wait for 2 seconds
     And I open archived conversations
     Then I see user <Contact> in contact list
 
