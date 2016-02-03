@@ -2,19 +2,26 @@ package com.wearezeta.auto.web.steps;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.everyItem;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.core.Is.is;
 
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
+import com.wearezeta.auto.web.pages.popovers.DeviceDetailPopoverPage;
 import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
 
 import cucumber.api.java.en.And;
@@ -22,6 +29,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import org.apache.log4j.Logger;
+import org.hamcrest.Matcher;
 import org.junit.Assert;
 
 public class SingleUserPopoverPageSteps {
@@ -446,5 +454,35 @@ public class SingleUserPopoverPageSteps {
 	public void IClickUnblockButton() throws Exception {
 		webappPagesCollection.getPage(SingleUserPopoverContainer.class)
 				.clickUnblockButton();
+	}
+
+	@Then("^I see all devices of user (.*) on Single User Profile popover$")
+	public void ISeeADeviceNamed(String userAlias) throws Exception {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(userAlias);
+		List<String> ids = SEBridge.getInstance().getDeviceIds(user);
+		webappPagesCollection.getPage(DeviceDetailPopoverPage.class).waitForDevices();
+		List<String> devices = webappPagesCollection.getPage(DeviceDetailPopoverPage.class).getDeviceIds();
+		assertThat("Device id in list", devices, is(ids));
+	}
+
+	@When("^I click on device (.*) of user (.*) on Single User Profile popover$")
+	public void IClickOnDevice(String deviceName, String userAlias) throws Exception {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(userAlias);
+		String id = SEBridge.getInstance().getDeviceId(user, deviceName);
+		webappPagesCollection.getPage(DeviceDetailPopoverPage.class).clickDevice(id);
+	}
+
+	@When("^I verify id of device (.*) of user (.*) on device detail page of Single User Profile popover$")
+	public void IVerifyDeviceId(String deviceName, String userAlias) throws Exception {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(userAlias);
+		String id = SEBridge.getInstance().getDeviceId(user, deviceName);
+		assertThat(webappPagesCollection.getPage(DeviceDetailPopoverPage.class).getDeviceId(), equalTo(id));
+	}
+
+	@When("^I verify fingerprint of device (.*) of user (.*) on device detail page of Single User Profile popover$")
+	public void IVerifyFingerPrint(String deviceName, String userAlias) throws Exception {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(userAlias);
+		String fingerprint = SEBridge.getInstance().getDeviceFingerprint(user, deviceName);
+		assertThat(webappPagesCollection.getPage(DeviceDetailPopoverPage.class).getFingerPrint(), equalTo(fingerprint));
 	}
 }
