@@ -52,7 +52,7 @@ Feature: E2EE
     And I tap on contact name <Contact1>
     And I open conversation details
     And I tap on Devices button
-    And I see 3 devices shown in participant devices tab
+    Then I see 3 devices shown in participant devices tab
 
 
     Examples:
