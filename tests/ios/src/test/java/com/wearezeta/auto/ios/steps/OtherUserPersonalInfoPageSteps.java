@@ -226,4 +226,32 @@ public class OtherUserPersonalInfoPageSteps {
         }
     }
 
+    /**
+     * Click on Devices button
+     *
+     * @throws Throwable
+     * @step. I tap on Devices button
+     */
+    @When("^I tap on Devices button$")
+    public void ITapOnDevicesButton() throws Throwable {
+        getOtherUserPersonalInfoPage().clickDevicesButton();
+    }
+
+
+    /**
+     * Checks the number of devices in participant devices tab
+     *
+     * @param expectedNumDevices Expected number of devices
+     * @throws Exception
+     * @step. ^(\\d+) devices? (?:are|is) shown in participant devices
+     * tab$
+     */
+    @When("^I see (\\d+) devices shown in participant devices tab$")
+    public void ISeeDevicesShownInDevicesTab(int expectedNumDevices) throws Exception {
+        int numDevices = getOtherUserPersonalInfoPage().getParticipantDevicesCount();
+        Assert.assertTrue("expected size", expectedNumDevices == numDevices);
+
+    }
+
+
 }
