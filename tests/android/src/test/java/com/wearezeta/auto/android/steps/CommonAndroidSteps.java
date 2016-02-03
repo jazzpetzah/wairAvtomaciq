@@ -313,6 +313,21 @@ public class CommonAndroidSteps {
     }
 
     /**
+     * A user adds another user to a group chat
+     *
+     * @param user that adds someone to a chat
+     * @param userToBeAdded user that gets added by someone
+     * @param group group chat you get added to
+     * @throws Throwable
+     * @step. ^User (.*) adds [Uu]ser (.*) to group chat (.*)$
+     */
+    @When("^User (.*) adds [Uu]ser (.*) to group chat (.*)$")
+    public void UserAddsUserToGroupChat(String user, String userToBeAdded,
+            String group) throws Exception {
+        commonSteps.UserXAddedContactsToGroupChat(user, userToBeAdded, group);
+    }
+
+    /**
      * Taps on the center of the screen
      *
      * @throws Throwable
