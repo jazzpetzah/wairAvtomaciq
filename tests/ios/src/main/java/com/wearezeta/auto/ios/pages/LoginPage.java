@@ -21,7 +21,8 @@ public class LoginPage extends IOSPage {
 
     private static final By namePasswordField = By.name("PasswordField");
 
-    private static final By nameWrongCredentialsNotification = By.name("Please verify your details and try again.");
+    private static final By nameWrongCredentialsNotification = By.name("The phone number you provided has already " +
+            "been registered. Please try again.");
 
     private static final By nameForgotPassword = By.name("FORGOT PASSWORD?");
 
