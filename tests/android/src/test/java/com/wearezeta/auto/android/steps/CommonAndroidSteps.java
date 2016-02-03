@@ -15,7 +15,6 @@ import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
@@ -450,7 +449,6 @@ public class CommonAndroidSteps {
     public void UserIsSilenced(String mutedUser, String otherUser) throws Exception {
         mutedUser = usrMgr.findUserByNameOrNameAlias(mutedUser).getName();
         otherUser = usrMgr.findUserByNameOrNameAlias(otherUser).getName();
-
         commonSteps.MuteConversationWithUser(otherUser, mutedUser);
     }
 
@@ -482,7 +480,6 @@ public class CommonAndroidSteps {
     @Given("^(.*) is unarchived group chat (.*)$")
     public void UserIsUnarchivedGroupChat(String currentUser, String groupChat) throws Exception {
         currentUser = usrMgr.findUserByNameOrNameAlias(currentUser).getName();
-
         commonSteps.UnarchiveConversationWithGroup(currentUser, groupChat);
     }
 
@@ -555,12 +552,18 @@ public class CommonAndroidSteps {
      *
      * @param pingFromUserNameAlias The user to do the pinging
      * @param dstConversationName   the target conversation to send the ping to
+     * @param isSecure equals null if ping should not be secure
      * @throws Exception
-     * @step. ^Contact (.*) ping conversation (.*)$
+     * @step. ^User (.*) (securely )?pings? conversation (.*)
      */
-    @When("^Contact (.*) ping conversation (.*)$")
-    public void UserPingedConversation(String pingFromUserNameAlias, String dstConversationName) throws Exception {
-        commonSteps.UserPingedConversation(pingFromUserNameAlias, dstConversationName);
+    @When("^User (.*) (securely )?pings? conversation (.*)")
+    public void UserPingedConversation(String pingFromUserNameAlias,
+                                       String isSecure, String dstConversationName) throws Exception {
+        if (isSecure == null) {
+            commonSteps.UserPingedConversation(pingFromUserNameAlias, dstConversationName);
+        } else {
+            commonSteps.UserPingedConversationOtr(pingFromUserNameAlias, dstConversationName);
+        }
     }
 
     /**
@@ -568,13 +571,18 @@ public class CommonAndroidSteps {
      *
      * @param hotPingFromUserNameAlias The user to do the hotpinging
      * @param dstConversationName      the target converation to send the ping to
+     * @param isSecure equals null if ping should not be secure
      * @throws Exception
-     * @step. ^Contact (.*) hotping conversation (.*)$
+     * @step. ^User (.*) (securely )?hotpings? conversation (.*)
      */
-    @When("^Contact (.*) hotping conversation (.*)$")
-    public void UserHotPingedConversation(String hotPingFromUserNameAlias, String dstConversationName)
-            throws Exception {
-        commonSteps.UserHotPingedConversation(hotPingFromUserNameAlias, dstConversationName);
+    @When("^User (.*) (securely )?hotpings? conversation (.*)")
+    public void UserHotPingedConversation(String hotPingFromUserNameAlias,
+                                          String isSecure, String dstConversationName) throws Exception {
+        if (isSecure == null) {
+            commonSteps.UserHotPingedConversation(hotPingFromUserNameAlias, dstConversationName);
+        } else {
+            commonSteps.UserHotPingedConversationOtr(hotPingFromUserNameAlias, dstConversationName);
+        }
     }
 
     /**
@@ -586,9 +594,9 @@ public class CommonAndroidSteps {
      * @param isEncrypted          whether the message has to be encrypted
      * @param convoType            either 'user' or 'group conversation'
      * @throws Exception
-     * @step. ^Contact (.*) sends? (encrypted )?message (.*)to user (.*)$
+     * @step. ^User (.*) sends? (encrypted )?message (.*)to user (.*)$
      */
-    @When("^Contact (.*) sends? (encrypted )?message (.*)to (user|group conversation) (.*)$")
+    @When("^User (.*) sends? (encrypted )?message (.*)to (user|group conversation) (.*)$")
     public void UserSendMessageToConversation(String msgFromUserNameAlias, String isEncrypted,
                                               String msg, String convoType, String dstConvoName) throws Exception {
         final String msgToSend = (msg == null || msg.trim().length() == 0) ?
@@ -608,24 +616,6 @@ public class CommonAndroidSteps {
         }
     }
 
-
-    /**
-     * Send messages from all registered user to myself (these users have to be
-     * already connected to myself)
-     *
-     * @param message A message to send
-     * @throws Exception
-     * @step. ^All contacts send me a message (.*)$"
-     */
-    @When("^All contacts send me a message (.*)$")
-    public void AllContactsSendMeAMessage(String message) throws Exception {
-        for (ClientUser user : usrMgr.getCreatedUsers()) {
-            if (!user.getName().equals(usrMgr.getSelfUser().getName())) {
-                commonSteps.UserSentMessageToUser(user.getName(), usrMgr.getSelfUser().getName(), message);
-            }
-        }
-    }
-
     /**
      * User A sends specified number of simple text messages to user B
      *
@@ -634,9 +624,9 @@ public class CommonAndroidSteps {
      * @param dstUserNameAlias     The user to receive the message
      * @param areEncrypted         Whether the messages should be encrypted
      * @throws Exception
-     * @step. ^Contact (.*) send[s]* (\d+) (encrypted )?messages? to user (.*)$
+     * @step. ^User (.*) sends? (\d+) (encrypted )?messages? to user (.*)$
      */
-    @When("^Contact (.*) send[s]* (\\d+) (encrypted )?messages? to user (.*)$")
+    @When("^User (.*) sends? (\\d+) (encrypted )?messages? to user (.*)$")
     public void UserSendXMessagesToConversation(String msgFromUserNameAlias, int count, String areEncrypted,
                                                 String dstUserNameAlias) throws Exception {
         for (int i = 0; i < count; i++) {

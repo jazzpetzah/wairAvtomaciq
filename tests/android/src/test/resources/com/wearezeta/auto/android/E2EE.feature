@@ -7,8 +7,8 @@ Feature: E2EE
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When Contact <Contact> sends encrypted message <EncryptedMessage> to user Myself
-    And Contact <Contact> sends message <SimpleMessage> to user Myself
+    When User <Contact> sends encrypted message <EncryptedMessage> to user Myself
+    And User <Contact> sends message <SimpleMessage> to user Myself
     And I tap on contact name <Contact>
     Then I see non-encrypted message <SimpleMessage> 1 time in the conversation view
     And I see encrypted message <EncryptedMessage> 1 time in the conversation view
@@ -67,12 +67,12 @@ Feature: E2EE
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And Contact <Contact1> sends encrypted message <Message1> to user Myself
+    And User <Contact1> sends encrypted message <Message1> to user Myself
     Then Last message is <Message1>
     When I enable Airplane mode on the device
     And User <Contact1> sends encrypted image <Picture> to single user conversation Myself
     Then I do not see new picture in the dialog
-    When Contact <Contact1> sends encrypted message <Message2> to user Myself
+    When User <Contact1> sends encrypted message <Message2> to user Myself
     Then Last message is <Message1>
     When I disable Airplane mode on the device
     And I scroll to the bottom of conversation view
@@ -92,12 +92,12 @@ Feature: E2EE
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
-    And Contact <Contact1> sends encrypted message <Message1> to group conversation <GroupChatName>
+    And User <Contact1> sends encrypted message <Message1> to group conversation <GroupChatName>
     Then Last message is <Message1>
     When I enable Airplane mode on the device
     And User <Contact1> sends encrypted image <Picture> to group conversation <GroupChatName>
     Then I do not see new picture in the dialog
-    When Contact <Contact2> sends encrypted message <Message2> to group conversation <GroupChatName>
+    When User <Contact2> sends encrypted message <Message2> to group conversation <GroupChatName>
     Then Last message is <Message1>
     When I disable Airplane mode on the device
     And I scroll to the bottom of conversation view
@@ -116,8 +116,8 @@ Feature: E2EE
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When Contact <Contact1> sends encrypted message <EncryptedMessage> to group conversation <GroupChatName>
-    And Contact <Contact2> sends message <SimpleMessage> to group conversation <GroupChatName>
+    When User <Contact1> sends encrypted message <EncryptedMessage> to group conversation <GroupChatName>
+    And User <Contact2> sends message <SimpleMessage> to group conversation <GroupChatName>
     And I tap on contact name <GroupChatName>
     Then I see non-encrypted message <SimpleMessage> 1 time in the conversation view
     And I see encrypted message <EncryptedMessage> 1 time in the conversation view
@@ -153,8 +153,8 @@ Feature: E2EE
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When Contact <Contact1> sends encrypted message <Message1> to group conversation <GroupChatName>
-    And Contact <Contact2> sends encrypted message <Message1> to group conversation <GroupChatName>
+    When User <Contact1> sends encrypted message <Message1> to group conversation <GroupChatName>
+    And User <Contact2> sends encrypted message <Message1> to group conversation <GroupChatName>
     And I tap on contact name <GroupChatName>
     And I tap conversation details button
     And I select contact <Contact1>
@@ -178,7 +178,7 @@ Feature: E2EE
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When Contact <Contact1> sends encrypted message <Message1> to user Myself
+    When User <Contact1> sends encrypted message <Message1> to user Myself
     And I tap on contact name <Contact1>
     And I tap conversation details button
     And I select single participant tab "Devices"
@@ -244,7 +244,7 @@ Feature: E2EE
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When Contact <Contact1> sends encrypted message <Message1> to user Myself
+    When User <Contact1> sends encrypted message <Message1> to user Myself
     And I tap on contact name <Contact1>
     And I tap conversation details button
     And I select single participant tab "Devices"
@@ -262,7 +262,7 @@ Feature: E2EE
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When Contact <Contact1> sends encrypted message <Message1> to user Myself
+    When User <Contact1> sends encrypted message <Message1> to user Myself
     And I tap on contact name <Contact1>
     And I tap conversation details button
     And I select single participant tab "Devices"
@@ -284,8 +284,8 @@ Feature: E2EE
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When Contact <Contact1> sends encrypted message <Message1> to group conversation <GroupChatName>
-    And Contact <Contact2> sends encrypted message <Message1> to group conversation <GroupChatName>
+    When User <Contact1> sends encrypted message <Message1> to group conversation <GroupChatName>
+    And User <Contact2> sends encrypted message <Message1> to group conversation <GroupChatName>
     And I tap on contact name <GroupChatName>
     And I tap conversation details button
     And I select contact <Contact1>

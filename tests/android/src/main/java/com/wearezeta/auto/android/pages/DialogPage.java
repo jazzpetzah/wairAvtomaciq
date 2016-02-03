@@ -465,6 +465,8 @@ public class DialogPage extends AndroidPage {
                         "Cannot find the last message in the dialog", 1).getText();
                 if (expectedMessage.equals(lastMessage)) {
                     return true;
+                } else {
+                    Thread.sleep(500);
                 }
             }
         } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);

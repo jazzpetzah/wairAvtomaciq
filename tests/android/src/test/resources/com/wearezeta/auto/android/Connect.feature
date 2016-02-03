@@ -436,9 +436,9 @@ Feature: Connect
     And I tap on text input
     And I type the message "<Message>" and send it
     And User <Name> blocks user <Contact>
-    And User <Contact> sends image <Picture> to single user conversation <Name>
-    And Contact <Contact> send message to user <Name>
-    And Contact <Contact> ping conversation <Name>
+    And User <Contact> sends encrypted image <Picture> to single user conversation <Name>
+    And User <Contact> sends encrypted message to user <Name>
+    And User <Contact> securely pings conversation Myself
     Then Last message is <Message>
 
     Examples:
