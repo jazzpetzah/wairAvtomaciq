@@ -10,7 +10,6 @@ Feature: People View
     And I open conversation details
     And I see <Contact1> user profile page
     And I press Add button
-    And I see People picker page
     And I wait until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact2>
@@ -34,7 +33,6 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press Add button
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
     And I see user <Contact3> found on People picker page
@@ -352,7 +350,6 @@ Feature: People View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
     And I see user <Contact3> found on People picker page
@@ -360,7 +357,6 @@ Feature: People View
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press Add button
-    And I see People picker page
     And I wait until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>

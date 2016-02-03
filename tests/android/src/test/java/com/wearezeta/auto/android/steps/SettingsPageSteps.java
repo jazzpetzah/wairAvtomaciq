@@ -110,4 +110,15 @@ public class SettingsPageSteps {
     public void ITapOKButtonOnPasswordConfirmationDialog() throws Exception {
         getSettingsPage().tapOKButtonOnPasswordConfirmationDialog();
     }
+
+    /**
+     * Tap on current device in Devices settings menu
+     *
+     * @throws Exception
+     * @step. ^I tap current device in devices settings menu$
+     */
+    @And("^I tap current device in devices settings menu$")
+    public void ITapCurrentDeviceInDevicesSettingsMenu() throws Exception {
+        getSettingsPage().tapCurrentDevice();
+    }
 }

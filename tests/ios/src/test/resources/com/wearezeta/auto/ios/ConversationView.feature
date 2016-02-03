@@ -65,16 +65,17 @@ Feature: Conversation View
   Scenario Outline: Send message to group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I create group chat with <Contact1> and <Contact2>
+    When I tap on group chat with name <GroupChatName>
     And I type the default message
-    And I send the message
+    And I click send button on keyboard
     Then I see 1 default message in the dialog
 
     Examples:
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | MessageToGroup|
 
   @C3210 @regression @rc @IPv6 @id1468
   Scenario Outline: (MediaBar disappears on Simulator) Play/pause SoundCloud media link from the media bar
@@ -364,7 +365,6 @@ Feature: Conversation View
     And I see play/pause button next to username <Contact1> in contact list
     And I tap play/pause button in contact list next to username <Contact1>
     And I tap on contact name <Contact2>
-    And I tap on text input
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I navigate back to conversations list
@@ -666,7 +666,6 @@ Feature: Conversation View
     And I confirm delete conversation content
     Then I dont see conversation <GroupChatName> in contact list
     And I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     And I search for user name <Contact1> and tap on it on People picker page
     And I click open conversation button on People picker page
@@ -691,6 +690,7 @@ Feature: Conversation View
     And I longpress on image in the conversation
     And I tap on copy badge
     And I tap and hold on message input
+    And I wait for 3 seconds
     And I click on popup Paste item
     And I press Confirm button
     Then I see 2 photo in the dialog

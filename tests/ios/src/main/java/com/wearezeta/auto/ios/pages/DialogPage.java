@@ -66,9 +66,6 @@ public class DialogPage extends IOSPage {
 
     private static final By namePingButton = By.name("ComposeControllerPingButton");
 
-    private static final By xpathYouAddedMessageCell =
-            By.xpath(xpathStrMainWindow + "/UIATableView[1]/UIATableCell[1]");
-
     private static final Function<String, String> xpathStrDialogTitleBar =
             title -> String.format("//UIAStaticText[@name='%s']", title);
 
@@ -286,7 +283,7 @@ public class DialogPage extends IOSPage {
                 map(x -> String.format("contains(@name, '%s')", x.toUpperCase())).
                 collect(Collectors.toList()));
         final By locator = By.xpath(xpathStartConversationEntryTemplate.apply(xpathExpr));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator,10);
     }
 
     public String getMediaState() throws Exception {
@@ -364,20 +361,13 @@ public class DialogPage extends IOSPage {
     }
 
     public void scrollToBeginningOfConversation() throws Exception {
-        // FIXME: this has to be refactored
-        int count = 0;
-        final List<WebElement> youAddedCell = getElements(xpathYouAddedMessageCell);
-        if (youAddedCell.size() > 0) {
-            boolean beginningConversation = youAddedCell.get(0).isDisplayed();
-            while (!(beginningConversation) & (count < 5)) {
+        for (int i = 0; i < 2; i++) {
+            if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+                IOSSimulatorHelper.swipeDown();
+            } else {
                 DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationPage),
                         500, 50, 10, 50, 90);
-                beginningConversation = youAddedCell.get(0).isDisplayed();
-                count++;
             }
-        }
-        if (!DriverUtils.isElementPresentAndDisplayed(getDriver(), youAddedCell.get(0))) {
-            throw new IllegalStateException("Failed to scroll to the beginning of the conversation");
         }
     }
 

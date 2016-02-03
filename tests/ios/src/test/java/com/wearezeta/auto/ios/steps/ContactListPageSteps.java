@@ -177,15 +177,6 @@ public class ContactListPageSteps {
         WhenITapOnContactName(chatName);
     }
 
-    @When("^I swipe down contact list$")
-    public void ISwipeDownContactList() throws Throwable {
-        if (!CommonUtils.getIsSimulatorFromConfig(IOSPage.class)) {
-            getContactListPage().swipeDown(500);
-        } else {
-            getContactListPage().swipeDownSimulator();
-        }
-    }
-
     /**
      * Open search by taping on search field
      *
@@ -525,6 +516,18 @@ public class ContactListPageSteps {
                             "icon seems to be different after %s seconds (%.2f < %.2f)",
                     AVATAR_CHANGE_TIMEOUT_MILLISECONDS / 1000, score, minScore));
         }
+    }
+
+    /**
+     * Taps on the name you are in a call with in conversation list
+     * @step. ^I tap on chat I am in a call with name (.*)$
+     * @param name
+     * @throws Throwable
+     */
+    @When("^I tap on chat I am in a call with name (.*)$")
+    public void ITapOnChatIAmInACallWithName(String name) throws Throwable {
+        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        getContactListPage().tapOnNameYourInCallWith(name);
     }
 
 }

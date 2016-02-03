@@ -31,6 +31,16 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
             .format("//*[@value='%s']", text);
 
     private static final By idParticipantDevices = By.id("ttv__row_otr_device");
+    
+    private static final By idParticipantOtrShield = By.id("sv__otr__verified_shield");
+    
+    private static final Function<Integer, String> xpathParticipantDeviceByIdx = idx -> String
+        .format("//*[@id='ttv__row_otr_device'][%d]", idx);
+    
+    private static final By xpathSingleOtrSwitch = By.xpath("//OtrSwitch[@id='os__single_otr_client__verify']/SwitchCompat");
+    
+    private static final By xpathSingleOtrSwitchValue = 
+            By.xpath("//OtrSwitch[@id='os__single_otr_client__verify']//TypefaceTextView[contains(@value, 'erified')]");
 
     private static final Function<String, String> xpathParticipantAvatarByName = name -> String
             .format("//*[@id='cv__group__adapter' and ./parent::*/*[@value='%s']]",
@@ -96,6 +106,27 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
         return selectVisibleElements(idParticipantDevices).stream().map(WebElement::getText).map((string) -> string.replaceAll("(PHONE)|(DESKTOP)|(\\n)|(\\s)|(ID:)", "").toLowerCase()).collect(Collectors.toList());
     }
 
+    public void tapOnParticipantFirstDevice(int deviceNum) throws Exception {
+        getElement(By.xpath(xpathParticipantDeviceByIdx.apply(deviceNum)),
+                String.format("Device '%s' is not found", deviceNum)).click();
+    }
+
+    private static final String VERIFIED_VELUE = "Verified";
+    private static final String NOT_VERIFIED_VELUE = "Not verified";
+
+    public void verifyParticipantDevice() throws Exception {
+        if (getElement(xpathSingleOtrSwitchValue, "Device verification status fot found").getText().equals(NOT_VERIFIED_VELUE))
+            getElement(xpathSingleOtrSwitch).click();
+        if (getElement(xpathSingleOtrSwitchValue, "Device verification status fot found").getText().equals(VERIFIED_VELUE))
+            return;
+        else
+            throw new RuntimeException("Failed verify device");
+    }
+    
+    public boolean isParticipantShieldShowed() throws Exception {
+        return DriverUtils.isElementPresentAndDisplayed(getDriver(), getElement(idParticipantOtrShield));
+    }
+    
     public void selectSingleParticipantTab(String itemName) throws Exception {
         final By locator = By.xpath(xpathSingleParticipantTabByText.apply(itemName));
         getElement(locator,

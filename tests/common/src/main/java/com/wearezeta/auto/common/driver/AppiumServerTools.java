@@ -36,10 +36,18 @@ public class AppiumServerTools {
         return false;
     }
 
-    public static synchronized void reset() throws Exception {
+    public static synchronized void resetIOSSimulator() throws Exception {
         Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9",
                 "Simulator", "configd_sim", "ids_simd", "launchd_sim", "instruments"}).waitFor(2, TimeUnit.SECONDS);
+        reset();
+    }
 
+    public static synchronized void resetIOSRealDevice() throws Exception {
+        Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9", "instruments"}).waitFor(2, TimeUnit.SECONDS);
+        reset();
+    }
+
+    private static void reset() throws Exception {
         log.warn("Trying to restart Appium server on localhost...");
         Runtime.getRuntime().exec(new String[]{"/usr/bin/open", "-a", EXECUTOR_APP}).
                 waitFor(RESTART_TIMEOUT, TimeUnit.MILLISECONDS);

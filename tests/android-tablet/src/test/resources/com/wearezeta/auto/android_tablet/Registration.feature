@@ -55,7 +55,7 @@ Feature: Registration
       | user1Email | user1Password | user1Name |
 
   @C479 @id2821 @regression
-  Scenario Outline: Verify automatic email verification is performed (portrait)
+  Scenario Outline: (AN-2965) Verify automatic email verification is performed (portrait)
     Given I see welcome screen
     Given I rotate UI to portrait
     Given I see welcome screen
@@ -67,7 +67,7 @@ Feature: Registration
     And I start listening for registration email
     And I submit the registration data
     Then I see the Confirmation page
-    And I see the entered email on the Confirmation page
+    And I see the entered email on the Confirmation page    
     When I lock the device
     And I verify my registration via email
     And I unlock the device

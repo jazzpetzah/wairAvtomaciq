@@ -18,266 +18,216 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 public class ImageUtil {
-	public static final int RESIZE_NORESIZE = 0;
-	public static final int RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION = 1;
-	public static final int RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION = 2;
-	public static final int RESIZE_FROM1920x1080OPTIMIZED = 3;
-	public static final int RESIZE_FROM2560x1600OPTIMIZED = 4;
-	public static final int RESIZE_TEMPLATE_TO_RESOLUTION = 5;
-	public static final int RESIZE_FROM_OPTIMIZED = 6;
-	public static final int RESIZE_TO_MAX_SCORE = 7;
+    public static final int RESIZE_NORESIZE = 0;
+    public static final int RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION = 1;
+    public static final int RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION = 2;
+    public static final int RESIZE_TEMPLATE_TO_RESOLUTION = 5;
+    public static final int RESIZE_TO_MAX_SCORE = 7;
 
-	static {
-		String arch = System.getProperty("sun.arch.data.model");
-		String libPath = Core.NATIVE_LIBRARY_NAME;
-		String os = System.getProperty("os.name");
-		// Check if OS is windows
-		if (os.toLowerCase().contains("win")) {
-			if ("64".equals(arch)) {
-				libPath = libPath.replaceAll("opencv_java249",
-						"opencv_java249_x64");
-			} else {
-				libPath = libPath.replaceAll("opencv_java249",
-						"opencv_java249_x86");
-			}
-		}
-		System.out.println("Loading OpenCV Lib from " + libPath);
-		System.loadLibrary(libPath);
-	}
+    static {
+        String arch = System.getProperty("sun.arch.data.model");
+        String libPath = Core.NATIVE_LIBRARY_NAME;
+        String os = System.getProperty("os.name");
+        // Check if OS is windows
+        if (os.toLowerCase().contains("win")) {
+            if ("64".equals(arch)) {
+                libPath = libPath.replaceAll("opencv_java249",
+                        "opencv_java249_x64");
+            } else {
+                libPath = libPath.replaceAll("opencv_java249",
+                        "opencv_java249_x86");
+            }
+        }
+        System.out.println("Loading OpenCV Lib from " + libPath);
+        System.loadLibrary(libPath);
+    }
 
-	private static Mat convertImageToOpenCVMat(BufferedImage image) {
-		byte[] pixels = ((DataBufferByte) image.getRaster().getDataBuffer())
-				.getData();
-		Mat imageMat = new Mat(image.getHeight(), image.getWidth(),
-				CvType.CV_8UC3);
-		imageMat.put(0, 0, pixels);
-		return imageMat;
-	}
+    private static Mat convertImageToOpenCVMat(BufferedImage image) {
+        byte[] pixels = ((DataBufferByte) image.getRaster().getDataBuffer())
+                .getData();
+        Mat imageMat = new Mat(image.getHeight(), image.getWidth(),
+                CvType.CV_8UC3);
+        imageMat.put(0, 0, pixels);
+        return imageMat;
+    }
 
-	private static BufferedImage convertToBufferedImageOfType(
-			BufferedImage original, int type) {
-		if (original == null) {
-			throw new IllegalArgumentException("original == null");
-		}
+    private static BufferedImage convertToBufferedImageOfType(
+            BufferedImage original, int type) {
+        if (original == null) {
+            throw new IllegalArgumentException("original == null");
+        }
 
-		// Create a buffered image
-		BufferedImage image = new BufferedImage(original.getWidth(),
-				original.getHeight(), type);
+        // Create a buffered image
+        BufferedImage image = new BufferedImage(original.getWidth(),
+                original.getHeight(), type);
 
-		// Draw the image onto the new buffer
-		Graphics2D g = image.createGraphics();
-		try {
-			g.setComposite(AlphaComposite.Src);
-			g.drawImage(original, 0, 0, null);
-		} finally {
-			g.dispose();
-		}
+        // Draw the image onto the new buffer
+        Graphics2D g = image.createGraphics();
+        try {
+            g.setComposite(AlphaComposite.Src);
+            g.drawImage(original, 0, 0, null);
+        } finally {
+            g.dispose();
+        }
 
-		return image;
-	}
+        return image;
+    }
 
-	public static Mat resizeTemplateMatrixFromOptimizedForResolution(Mat tpl,
-			Mat ref, int etWidth, int etHeight) {
-		Mat result;
-		if (ref.width() != etWidth && ref.height() != etHeight) {
-			result = new Mat();
-			Size sz = new Size((tpl.width() * ref.width()) / etWidth,
-					(tpl.height() * ref.height()) / etHeight);
-			Imgproc.resize(tpl, result, sz);
-		} else {
-			result = tpl;
-		}
-		return result;
-	}
+    public static Mat resizeFirstMatrixToSecondMatrixResolution(Mat first,
+                                                                Mat second) {
+        Mat result;
+        if (first.width() != second.width()
+                || first.height() != second.height()) {
+            result = new Mat();
+            Size sz = new Size(second.width(), second.height());
+            Imgproc.resize(first, result, sz);
+        } else {
+            result = first;
+        }
+        return result;
+    }
 
-	public static Mat resizeFirstMatrixToSecondMatrixResolution(Mat first,
-			Mat second) {
-		Mat result;
-		if (first.width() != second.width()
-				|| first.height() != second.height()) {
-			result = new Mat();
-			Size sz = new Size(second.width(), second.height());
-			Imgproc.resize(first, result, sz);
-		} else {
-			result = first;
-		}
-		return result;
-	}
+    public static Mat resizeMatrixToResolution(Mat matrix, int exWidth,
+                                               int exHeight) {
+        Mat result;
+        if (matrix.width() != exWidth || matrix.height() != exHeight) {
+            result = new Mat();
+            Size sz = new Size(exWidth, exHeight);
+            Imgproc.resize(matrix, result, sz);
+        } else {
+            result = matrix;
+        }
+        return result;
+    }
 
-	public static Mat resizeMatrixToResolution(Mat matrix, int exWidth,
-			int exHeight) {
-		Mat result;
-		if (matrix.width() != exWidth || matrix.height() != exHeight) {
-			result = new Mat();
-			Size sz = new Size(exWidth, exHeight);
-			Imgproc.resize(matrix, result, sz);
-		} else {
-			result = matrix;
-		}
-		return result;
-	}
+    public static double getOverlapScore(BufferedImage refImage, BufferedImage tplImage) {
+        return getOverlapScore(refImage, tplImage, RESIZE_TO_MAX_SCORE);
+    }
 
-	public static double getOverlapScore(BufferedImage refImage,
-			BufferedImage tplImage) {
-		return getOverlapScore(refImage, tplImage,
-		        RESIZE_TO_MAX_SCORE);
-	}
+    public static double getOverlapScore(BufferedImage refImage, BufferedImage tplImage, int resizeMode) {
+        if (resizeMode == RESIZE_TO_MAX_SCORE) {
+            if (getOverlapScore(refImage, tplImage,
+                    RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION, 1, 1) > getOverlapScore(
+                    refImage, tplImage,
+                    RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION, 1, 1)) {
+                return getOverlapScore(refImage, tplImage,
+                        RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION, 1, 1);
+            } else {
+                return getOverlapScore(refImage, tplImage,
+                        RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION, 2, 1);
+            }
+        } else {
+            return getOverlapScore(refImage, tplImage, resizeMode, 1, 1);
+        }
+    }
 
-	public static double getOverlapScore(BufferedImage refImage,
-			BufferedImage tplImage, int resizeMode) {
-		if (resizeMode == RESIZE_TO_MAX_SCORE) {
-			if (getOverlapScore(refImage, tplImage,
-					RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION, 1, 1) > getOverlapScore(
-					refImage, tplImage,
-					RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION, 1, 1)) {
-				return getOverlapScore(refImage, tplImage,
-						RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION, 1, 1);
-			} else {
-				return getOverlapScore(refImage, tplImage,
-						RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION, 2, 1);
-			}
-		} else {
-			return getOverlapScore(refImage, tplImage, resizeMode, 1, 1);
-		}
-	}
+    public static double getOverlapScore(BufferedImage refImage,
+                                         BufferedImage tplImage, int resizeMode, int exWidth, int exHeight) {
+        refImage = convertToBufferedImageOfType(refImage, BufferedImage.TYPE_3BYTE_BGR);
+        tplImage = convertToBufferedImageOfType(tplImage, BufferedImage.TYPE_3BYTE_BGR);
+        Mat ref = convertImageToOpenCVMat(refImage);
+        Mat tpl = convertImageToOpenCVMat(tplImage);
+        if (ref.empty() || tpl.empty()) {
+            if (ref.empty()) {
+                System.out.println("ERROR: No reference image found.");
+            }
+            if (tpl.empty()) {
+                System.out.println("ERROR: No template image found.");
+            }
+            return Double.NaN;
+        }
 
-	public static double getOverlapScore(BufferedImage refImage,
-			BufferedImage tplImage, int resizeMode, int exWidth, int exHeight) {
-		// convert images to matrixes
-		refImage = convertToBufferedImageOfType(refImage,
-				BufferedImage.TYPE_3BYTE_BGR);
-		tplImage = convertToBufferedImageOfType(tplImage,
-				BufferedImage.TYPE_3BYTE_BGR);
-		Mat ref = convertImageToOpenCVMat(refImage);
-		Mat tpl = convertImageToOpenCVMat(tplImage);
-		if (ref.empty() || tpl.empty()) {
-			if (ref.empty()) {
-				System.out.println("ERROR: No reference image found.");
-			}
-			if (tpl.empty()) {
-				System.out.println("ERROR: No template image found.");
-			}
-			return Double.NaN;
-		}
+        switch (resizeMode) {
+            case RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION:
+                tpl = resizeFirstMatrixToSecondMatrixResolution(tpl, ref);
+                break;
+            case RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION:
+                ref = resizeFirstMatrixToSecondMatrixResolution(ref, tpl);
+                break;
+            case RESIZE_TEMPLATE_TO_RESOLUTION:
+                tpl = resizeMatrixToResolution(tpl, exWidth, exHeight);
+                break;
+        }
 
-		if (resizeMode == RESIZE_FROM1920x1080OPTIMIZED) {
-			tpl = resizeTemplateMatrixFromOptimizedForResolution(tpl, ref,
-					1080, 1920);
-		} else if (resizeMode == RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION) {
-			tpl = resizeFirstMatrixToSecondMatrixResolution(tpl, ref);
-		} else if (resizeMode == RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION) {
-			ref = resizeFirstMatrixToSecondMatrixResolution(ref, tpl);
-		} else if (resizeMode == RESIZE_FROM2560x1600OPTIMIZED) {
-			tpl = resizeTemplateMatrixFromOptimizedForResolution(tpl, ref,
-					1600, 2560);
-		} else if (resizeMode == RESIZE_TEMPLATE_TO_RESOLUTION) {
-			tpl = resizeMatrixToResolution(tpl, exWidth, exHeight);
-		} else if (resizeMode == RESIZE_FROM_OPTIMIZED) {
-			tpl = resizeTemplateMatrixFromOptimizedForResolution(tpl, ref,
-					exWidth, exHeight);
-		}
+        Mat res = new Mat(ref.rows() - tpl.rows() + 1, ref.cols() - tpl.cols() + 1, CvType.CV_32FC1);
+        Imgproc.matchTemplate(ref, tpl, res, Imgproc.TM_CCOEFF_NORMED);
 
-		// get grayscale images for matching template
-		Mat gref = new Mat(), gtpl = new Mat();
-		Imgproc.cvtColor(ref, gref, Imgproc.COLOR_BGR2GRAY);
-		Imgproc.cvtColor(tpl, gtpl, Imgproc.COLOR_BGR2GRAY);
+        MinMaxLocResult minMaxLocResult = Core.minMaxLoc(res);
+        return minMaxLocResult.maxVal;
+    }
 
-		// matching template
-		Mat res = new Mat(ref.rows() - tpl.rows() + 1, ref.cols() - tpl.cols()
-				+ 1, CvType.CV_32FC1);
-		Imgproc.matchTemplate(gref, gtpl, res, Imgproc.TM_CCOEFF_NORMED);
+    public static BufferedImage readImageFromFile(String filePath) throws IOException {
+        return ImageIO.read(new File(filePath));
+    }
 
-		/*
-		 * Uncomment this if you want to see the images try {
-		 * ImageIO.write(refImage, "png", new File("refImage.png"));
-		 * ImageIO.write(tplImage, "png", new File("tplImage.png")); } catch
-		 * (IOException e) { e.printStackTrace(); }
-		 */
-		MinMaxLocResult minMaxLocResult = Core.minMaxLoc(res);
-		return minMaxLocResult.maxVal;
-	}
+    /**
+     * Resizes image to the given ratio (use >1 to upscale, or <1 to downscale)
+     */
+    public static BufferedImage resizeImage(BufferedImage image, float resizeRatio) throws IOException {
+        assert resizeRatio > 0 : "Resize ratio should be positive";
+        if ((int) resizeRatio == 1) {
+            return image;
+        }
+        int w = image.getWidth(), h = image.getHeight();
+        int scaledW = Math.round(w * resizeRatio);
+        int scaledH = Math.round(h * resizeRatio);
+        BufferedImage result = new BufferedImage(scaledW, scaledH, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = result.createGraphics();
+        g2d.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING,
+                RenderingHints.VALUE_RENDER_QUALITY));
+        g2d.drawImage(image, 0, 0, scaledW, scaledH, null);
+        return result;
+    }
 
-	public static BufferedImage readImageFromFile(String filePath)
-			throws IOException {
-		return ImageIO.read(new File(filePath));
-	}
+    public static BufferedImage tilt(BufferedImage image, double angle) {
+        double sin = Math.abs(Math.sin(angle)), cos = Math.abs(Math.cos(angle));
+        int w = image.getWidth(), h = image.getHeight();
+        int neww = (int) Math.floor(w * cos + h * sin), newh = (int) Math
+                .floor(h * cos + w * sin);
+        BufferedImage result = new BufferedImage(neww, newh,
+                BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = result.createGraphics();
+        g.translate((neww - w) / 2, (newh - h) / 2);
+        g.rotate(angle, w / 2, h / 2);
+        g.drawRenderedImage(image, null);
+        return result;
+    }
 
-	public static void storeImageToFile(BufferedImage im, String filePath)
-			throws IOException {
-		ImageIO.write(im, "PNG", new File(filePath));
-	}
+    /**
+     * Calculates average similarity value between 'maxFrames' image frames
+     * taken with help of elementStateScreenshoter method
+     *
+     * @param elementStateScreenshoter
+     * @param maxFrames                count of frames to compare. Is recommended to set this to 3 or
+     *                                 greater
+     * @param millisecondsDelay        minimum delay value between each screenshot. This delay can be
+     *                                 greater on real device, because it depends on the actual CPU
+     *                                 performance
+     * @return overlap value: 0 <= value <= 1
+     * @throws Exception
+     */
+    public static double getAnimationThreshold(
+            ISupplierWithException elementStateScreenshoter,
+            final int maxFrames, final long millisecondsDelay) throws Exception {
+        assert maxFrames >= 3 : "Please set maxFrames value to 3 or greater";
+        final List<BufferedImage> timelineScreenshots = new ArrayList<>();
+        do {
+            timelineScreenshots.add(elementStateScreenshoter.getScreenshot()
+                    .orElseThrow(IllegalStateException::new));
+            Thread.sleep(millisecondsDelay);
+        } while (timelineScreenshots.size() < maxFrames);
+        int idx = 0;
+        final List<Double> thresholds = new ArrayList<>();
+        while (idx < timelineScreenshots.size() - 1) {
+            thresholds.add(getOverlapScore(timelineScreenshots.get(idx + 1),
+                    timelineScreenshots.get(idx),
+                    ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION));
+            idx++;
+        }
+        return thresholds.stream().min(Double::compare).orElse(100.0);
+    }
 
-	/**
-	 * Resizes image to the given ratio (use >1 to upscale, or <1 to downscale)
-	 */
-	public static BufferedImage resizeImage(BufferedImage image, float resizeRatio) throws IOException {
-		assert resizeRatio > 0 : "Resize ratio should be positive";
-		if ((int)resizeRatio == 1) {
-			return image;
-		}
-		int w = image.getWidth(), h = image.getHeight();
-		int scaledW = Math.round(w * resizeRatio);
-		int scaledH = Math.round(h * resizeRatio);
-		BufferedImage result = new BufferedImage(scaledW, scaledH, BufferedImage.TYPE_INT_RGB);
-		Graphics2D g2d = result.createGraphics();
-		g2d.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING,
-				RenderingHints.VALUE_RENDER_QUALITY));
-		g2d.drawImage(image, 0, 0, scaledW, scaledH, null);
-		return result;
-	}
-
-	public static BufferedImage tilt(BufferedImage image, double angle) {
-		double sin = Math.abs(Math.sin(angle)), cos = Math.abs(Math.cos(angle));
-		int w = image.getWidth(), h = image.getHeight();
-		int neww = (int) Math.floor(w * cos + h * sin), newh = (int) Math
-				.floor(h * cos + w * sin);
-		BufferedImage result = new BufferedImage(neww, newh,
-				BufferedImage.TYPE_INT_RGB);
-		Graphics2D g = result.createGraphics();
-		g.translate((neww - w) / 2, (newh - h) / 2);
-		g.rotate(angle, w / 2, h / 2);
-		g.drawRenderedImage(image, null);
-		return result;
-	}
-
-	/**
-	 * Calculates average similarity value between 'maxFrames' image frames
-	 * taken with help of elementStateScreenshoter method
-	 * 
-	 * @param elementStateScreenshoter
-	 * @param maxFrames
-	 *            count of frames to compare. Is recommended to set this to 3 or
-	 *            greater
-	 * @param millisecondsDelay
-	 *            minimum delay value between each screenshot. This delay can be
-	 *            greater on real device, because it depends on the actual CPU
-	 *            performance
-	 *
-	 * @return overlap value: 0 <= value <= 1
-	 * @throws Exception
-	 */
-	public static double getAnimationThreshold(
-			ISupplierWithException elementStateScreenshoter,
-			final int maxFrames, final long millisecondsDelay) throws Exception {
-		assert maxFrames >= 3 : "Please set maxFrames value to 3 or greater";
-		final List<BufferedImage> timelineScreenshots = new ArrayList<>();
-		do {
-			timelineScreenshots.add(elementStateScreenshoter.getScreenshot()
-					.orElseThrow(IllegalStateException::new));
-			Thread.sleep(millisecondsDelay);
-		} while (timelineScreenshots.size() < maxFrames);
-		int idx = 0;
-		final List<Double> thresholds = new ArrayList<>();
-		while (idx < timelineScreenshots.size() - 1) {
-			thresholds.add(getOverlapScore(timelineScreenshots.get(idx + 1),
-					timelineScreenshots.get(idx),
-					ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION));
-			idx++;
-		}
-		return thresholds.stream().min(Double::compare).orElse(100.0);
-	}
-
-	public static boolean isLandscape(BufferedImage bi) {
-		return (bi.getWidth() > bi.getHeight());
-	}
+    public static boolean isLandscape(BufferedImage bi) {
+        return (bi.getWidth() > bi.getHeight());
+    }
 }

@@ -6,7 +6,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
     And I press keyboard Return button
@@ -23,7 +22,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
     And I press keyboard Return button
@@ -39,7 +37,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I swipe down contact list on iPad
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
@@ -55,7 +52,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I swipe down contact list on iPad
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
@@ -112,7 +108,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on first 1 top connections
@@ -133,7 +128,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on first 1 top connections
@@ -153,7 +147,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on first 2 top connections
@@ -177,7 +170,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I tap on first 2 top connections
@@ -203,7 +195,6 @@ Feature: Search
     When I dont see conversation <Contact> in contact list
     And I wait until <Contact> exists in backend search results
     And I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
@@ -228,7 +219,6 @@ Feature: Search
     When I dont see conversation <Contact> in contact list
     And I wait until <Contact> exists in backend search results
     And I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
@@ -252,7 +242,6 @@ Feature: Search
     Given I see conversations list
     When I open search by taping on it
     And I wait until <LastName> exists in backend search results
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <LastName>
     Then I see user <NewName> found on People picker page
@@ -271,7 +260,6 @@ Feature: Search
     Given I see conversations list
     When I open search by taping on it
     And I wait until <LastName> exists in backend search results
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <LastName>
     Then I see user <NewName> found on People picker page
@@ -289,7 +277,6 @@ Feature: Search
     Given I see conversations list
     When I open search by taping on it
     And I wait until <NewName> exists in backend search results
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <PartName>
     Then I see user <NewName> found on People picker page
@@ -308,7 +295,6 @@ Feature: Search
     Given I see conversations list
     When I open search by taping on it
     And I wait until <NewName> exists in backend search results
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <PartName>
     Then I see user <NewName> found on People picker page
@@ -325,7 +311,6 @@ Feature: Search
     Given I see conversations list
     Given I wait until <Contact> exists in backend search results
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I tap on 3 top connections but not <Contact>
@@ -349,7 +334,6 @@ Feature: Search
     Given I see conversations list
     Given I wait until <Contact> exists in backend search results
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I tap on 3 top connections but not <Contact>

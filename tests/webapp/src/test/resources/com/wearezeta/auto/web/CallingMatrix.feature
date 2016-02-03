@@ -23,7 +23,7 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.41 | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 | 60      |
       | user1Email | user1Password | user1Name | user2Name | chrome:47.0.2526.73 | 60      |
       | user1Email | user1Password | user1Name | user2Name | firefox:44.0        | 60      |
       | user1Email | user1Password | user1Name | user2Name | firefox:43.0        | 60      |
@@ -73,7 +73,7 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.41 | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 | 60      |
       | user1Email | user1Password | user1Name | user2Name | chrome:47.0.2526.73 | 60      |
       | user1Email | user1Password | user1Name | user2Name | firefox:44.0        | 60      |
       | user1Email | user1Password | user1Name | user2Name | firefox:43.0        | 60      |
@@ -129,7 +129,7 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | WaitBackend         | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:48.0.2564.41 | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:48.0.2564.97 | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:47.0.2526.73 | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:44.0        | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:43.0        | 60      |
@@ -186,7 +186,7 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend             | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:48.0.2564.41 | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:48.0.2564.97 | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:47.0.2526.73 | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:44.0        | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:43.0        | 60      |
@@ -222,7 +222,7 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend       | WaitBackend         | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | chrome:48.0.2564.41 | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | chrome:48.0.2564.97 | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | chrome:47.0.2526.73 | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | firefox:44.0        | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | firefox:43.0        | 60      |

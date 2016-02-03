@@ -5,12 +5,12 @@ Feature: Lock/Unlock
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given Contact <Contact1> sends message "<MessageGroup>" to conversation <GroupChatName>
-    Given Contact <Contact1> sends message "<Message1to1>" to user Myself
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
+    Given User <Contact1> sends encrypted message <MessageGroup> to group conversation <GroupChatName>
+    Given User <Contact1> sends encrypted message <Message1to1> to user Myself
     When I lock the device
     And I unlock the device
     Then I see the conversation <Contact1> in my conversations list

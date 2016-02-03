@@ -8,12 +8,12 @@ Feature: Offline
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I tap on contact name <Contact>
-    When Contact <Contact> send message <Message1> to user <Name>
+    When User <Contact> sends encrypted message <Message1> to user Myself
     Then Last message is <Message1>
     When I enable Airplane mode on the device
-    And User <Contact> sends image <Picture> to single user conversation <Name>
+    And User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     Then I do not see new picture in the dialog
-    When Contact <Contact> send message <Message2> to user <Name>
+    When User <Contact> sends encrypted message <Message2> to user Myself
     Then Last message is <Message1>
     When I disable Airplane mode on the device
     And I scroll to the bottom of conversation view

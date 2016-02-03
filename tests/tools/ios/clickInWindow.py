@@ -53,17 +53,6 @@ osascript<<END
 """ % windowName
     os.system(cmd)
 
-# Use applescript to bring a window to the foreground
-def activateWindow(windowName):
-    print "Moving window '%s' to foreground" % windowName
-    cmd="""
-osascript<<END
-    tell application "System Events" to tell application process "%s"
-        set frontmost to true
-    end tell
-""" % windowName
-    os.system(cmd)
-
 # Use applescript to get the window size
 def getWindowSize(windowName):
     cmd="""
@@ -80,8 +69,6 @@ osascript<<END
 def clickInWindow(windowName, posX, posY):
     dim = getWindowSize(windowName)
     moveWindowToZero(windowName)
-    time.sleep(0.9)
-    activateWindow(windowName)
     time.sleep(0.9)
     clickRelative(posX, posY, dim[0], dim[1])
 

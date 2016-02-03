@@ -202,8 +202,8 @@ Feature: Calling
     And I tap the text input in the conversation view
     When I type the message "<TextMessage>" in the conversation view
     And I send the typed message in the conversation view
-    Then I see the message "<TextMessage>" in the conversation view
     And I hide keyboard
+    Then I see the message "<TextMessage>" in the conversation view
     When I swipe right on text input in the conversation view
     And I tap Add Picture button in the conversation view
     And I tap Take Photo button in the conversation view

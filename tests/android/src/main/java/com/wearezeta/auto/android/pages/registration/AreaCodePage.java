@@ -15,7 +15,8 @@ import org.openqa.selenium.By;
  */
 public class AreaCodePage extends AndroidPage {
 	
-	public static final String idStrCode = "ttv_new_reg__signup__phone__country__row_code";
+	private static final String idStrCode = "ttv_new_reg__signup__phone__country__row_code";
+	public static final By idCode = By.id(idStrCode);
 
 	public static final Function<String, String> xpathStrFindAreaCode = areaCode -> String
 		.format("//*[@id='%s' and @value='%s']", idStrCode, areaCode);

@@ -145,11 +145,11 @@ Feature: Search
   Scenario Outline: (AN-2834) Verify starting 1:1 conversation with a person from Top People
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given Contact <Contact1> send message to user <Name>
-    Given Contact <Name> send message to user <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
+    Given User <Contact1> sends encrypted message to user Myself
+    Given User Me sends encrypted message to user <Contact1>
     When I open Search by UI button
     And I wait until Top People list appears
     And I tap on <Contact1> in Top People

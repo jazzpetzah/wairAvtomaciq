@@ -567,8 +567,7 @@ public class CommonUtils {
      * @return monitoring Future. Use it to block execution until shell script execution is done
      * @throws Exception
      */
-    public static Future<Void> executeUIShellScript(String[] content)
-            throws Exception {
+    public static Future<Void> executeUIShellScript(String[] content) throws Exception {
         final File result = File.createTempFile("script", ".sh");
 
         final File executionFlag = File.createTempFile("execution", ".flag");
@@ -591,8 +590,7 @@ public class CommonUtils {
                 new UIScriptExecutionMonitor(executionFlag, result));
     }
 
-    public static Future<Void> executeUIAppleScript(String[] content)
-            throws Exception {
+    public static Future<Void> executeUIAppleScript(String[] content) throws Exception {
         final List<String> scriptContent = new ArrayList<>();
         scriptContent.add("/usr/bin/osascript \\");
         for (int idx = 0; idx < content.length; idx++) {

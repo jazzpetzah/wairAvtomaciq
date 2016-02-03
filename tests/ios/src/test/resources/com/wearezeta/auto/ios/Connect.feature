@@ -7,7 +7,6 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     Given I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user name <Contact>
@@ -15,7 +14,6 @@ Feature: Connect
     And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog
     And I click Connect button on connect to dialog
-    And I see People picker page
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
     And I tap on contact name <Contact>
@@ -82,7 +80,6 @@ Feature: Connect
     And I dont see Pending request link in contact list
     And I wait until <Contact1> exists in backend search results
     And I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     And I search for user name <Contact1> and tap on it on People picker page
     Then I see Pending request page
@@ -121,7 +118,6 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I wait until <Contact> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
@@ -129,7 +125,6 @@ Feature: Connect
     And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog
     And I click Connect button on connect to dialog
-    And I see People picker page
     And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I see <Contact> user pending profile page
@@ -173,7 +168,6 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     And I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user name <Contact>
@@ -181,11 +175,9 @@ Feature: Connect
     And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog
     And I click Connect button on connect to dialog
-    And I see People picker page
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
     When I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
@@ -203,7 +195,6 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I press the send an invite button
@@ -228,19 +219,11 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     Given I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user email <ContactEmail>
-    And I press keyboard Return button
     And I see user <UnconnectedUser> found on People picker page
     And I press the instant connect button
-    And I click close button to dismiss people view
-    When I swipe down contact list
-    And I see People picker page
-    And I tap on Search input on People picker page
-    And I input in People picker search field user email <ContactEmail>
-    And I press keyboard Return button
     And I click close button to dismiss people view
     And I see first item in contact list named <UnconnectedUser>
     And I tap on contact name <UnconnectedUser>
@@ -303,7 +286,6 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I see user <Contact1> found on People picker page
@@ -392,7 +374,6 @@ Feature: Connect
     Given I see conversations list
     Then I dont see conversation <Contact> in contact list
     When I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
