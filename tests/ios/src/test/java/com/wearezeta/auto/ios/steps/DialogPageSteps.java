@@ -79,7 +79,6 @@ public class DialogPageSteps {
 
     @Then("^I see You Pinged message in the dialog$")
     public void ISeeHelloMessageFromMeInTheDialog() throws Throwable {
-        Thread.sleep(2000);
         Assert.assertTrue(getDialogPage().isMessageVisible(YOU_PINGED_MESSAGE));
     }
 
