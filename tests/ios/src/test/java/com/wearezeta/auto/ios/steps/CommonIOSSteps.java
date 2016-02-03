@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
+import com.wearezeta.auto.ios.reporter.IOSLogListener;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import cucumber.api.PendingException;
 import cucumber.api.Scenario;
@@ -37,16 +38,14 @@ public class CommonIOSSteps {
     private static final String DEFAULT_USER_AVATAR = "android_dialog_sendpicture_result.png";
     private Date testStartedDate = new Date();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection
-            .getInstance();
+    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
     public static final String DEFAULT_AUTOMATION_MESSAGE = "iPhone has stupid spell checker";
 
     static {
         System.setProperty("org.apache.commons.logging.Log",
                 "org.apache.commons.logging.impl.SimpleLog");
-        System.setProperty(
-                "org.apache.commons.logging.simplelog.log.org.apache.http",
+        System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http",
                 "warn");
     }
 
@@ -121,10 +120,58 @@ public class CommonIOSSteps {
             e.printStackTrace();
         }
 
+        if (scenario.getSourceTagNames().contains("@performance")) {
+            CommonUtils.defineNoHeadlessEnvironment();
+            try {
+                IOSLogListener.getInstance().start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(
                 !scenario.getSourceTagNames().contains("@noAcceptAlert"));
         ZetaFormatter.setLazyDriver(lazyDriver);
         pagesCollection.setFirstPage(new LoginPage(lazyDriver));
+    }
+
+    @After
+    public void tearDown(Scenario scenario) {
+        try {
+            // async calls/waiting instances cleanup
+            CommonCallingSteps2.getInstance().cleanup();
+        } catch (Exception e) {
+            // do not fail if smt fails here
+            e.printStackTrace();
+        }
+
+        pagesCollection.clearAllPages();
+
+        try {
+            if (getIsSimulatorFromConfig(getClass())) {
+                IOSCommonUtils.collectSimulatorLogs(getDeviceName(getClass()), getTestStartedDate());
+            }
+            if (scenario.getSourceTagNames().contains("@performance")) {
+                IOSLogListener.forceStopAll();
+                IOSLogListener.writeDeviceLogsToConsole(IOSLogListener.getInstance());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+                PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            commonSteps.getUserManager().resetUsers();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @When("^I see keyboard$")
@@ -585,44 +632,6 @@ public class CommonIOSSteps {
         } else {
             commonSteps.UserSentImageToConversationOtr(imageSenderUserNameAlias,
                     imagePath, dstConversationName, isGroup);
-        }
-    }
-
-    @After
-    public void tearDown() {
-        try {
-            // async calls/waiting instances cleanup
-            CommonCallingSteps2.getInstance().cleanup();
-        } catch (Exception e) {
-            // do not fail if smt fails here
-            e.printStackTrace();
-        }
-
-        pagesCollection.clearAllPages();
-
-        try {
-            if (getIsSimulatorFromConfig(getClass())) {
-                IOSCommonUtils
-                        .collectSimulatorLogs(
-                                getDeviceName(getClass()),
-                                getTestStartedDate());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
-                PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            commonSteps.getUserManager().resetUsers();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

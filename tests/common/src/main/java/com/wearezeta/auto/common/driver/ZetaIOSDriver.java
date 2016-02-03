@@ -73,13 +73,6 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
         if (isSessionLost != this.isSessionLost) {
             log.warn(String.format("Changing isSessionLost to %s", isSessionLost));
         }
-        if (isSessionLost && !this.isSessionLost) {
-            try {
-                AppiumServerTools.reset();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
         this.isSessionLost = isSessionLost;
     }
 

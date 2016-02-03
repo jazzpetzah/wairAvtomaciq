@@ -16,8 +16,7 @@ import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
-    private static final Logger log = ZetaLogger
-            .getLog(LazyDriverInitializer.class.getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(LazyDriverInitializer.class.getSimpleName());
 
 
     private String url;
@@ -51,30 +50,28 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
         }
         int ntry = 1;
         do {
-            log.debug(String.format(
-                    "Creating driver instance for platform '%s'...",
-                    this.platform.name()));
+            log.debug(String.format("Creating driver instance for platform '%s'...", this.platform.name()));
             RemoteWebDriver platformDriver;
             try {
                 switch (this.platform) {
                     case Mac:
-                        platformDriver = new ZetaOSXDriver(new URL(url),
-                                capabilities);
+                        platformDriver = new ZetaOSXDriver(new URL(url), capabilities);
                         break;
                     case iOS:
-                        platformDriver = new ZetaIOSDriver(new URL(url),
-                                capabilities);
+                        if (capabilities.getCapability("udid") instanceof String) {
+                            AppiumServerTools.resetIOSRealDevice();
+                        } else {
+                            AppiumServerTools.resetIOSSimulator();
+                        }
+                        platformDriver = new ZetaIOSDriver(new URL(url), capabilities);
                         break;
                     case Android:
-                        platformDriver = new ZetaAndroidDriver(new URL(url),
-                                capabilities);
+                        platformDriver = new ZetaAndroidDriver(new URL(url), capabilities);
                         break;
                     case Web:
-                        platformDriver = new ZetaWebAppDriver(new URL(url),
-                                capabilities);
+                        platformDriver = new ZetaWebAppDriver(new URL(url), capabilities);
                         platformDriver.setFileDetector(new LocalFileDetector());
-                        platformDriver.manage().window()
-                                .setPosition(new Point(0, 0));
+                        platformDriver.manage().window().setPosition(new Point(0, 0));
                         break;
                     default:
                         throw new RuntimeException(String.format("Platform '%s' is unknown", this.platform.name()));
@@ -86,8 +83,7 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
                     log.debug("Driver post-initialization callback has been successfully invoked");
                 }
 
-                log.debug(String.format("Successfully created driver instance for platform '%s'",
-                        this.platform.name()));
+                log.debug(String.format("Successfully created driver instance for platform '%s'", this.platform.name()));
                 return platformDriver;
             } catch (WebDriverException e) {
                 if (ntry >= this.maxRetryCount) {
@@ -97,9 +93,6 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
                 e.printStackTrace();
                 log.debug(String.format("Driver initialization failed. Trying to recreate (%d of %d)...",
                         ntry, this.maxRetryCount));
-                if (this.platform == Platform.iOS) {
-                    AppiumServerTools.reset();
-                }
             }
         } while (ntry <= this.maxRetryCount);
         throw new WebDriverException(

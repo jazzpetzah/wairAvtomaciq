@@ -48,8 +48,6 @@ public abstract class IOSPage extends BasePage {
 
     protected static final By nameSpaceButton = By.name("space");
 
-    protected static final By nameDoneButton = By.name("Done");
-
     private static String imagesPath = "";
 
     private static final Function<String, String> xpathStrAlertByText = text ->
@@ -125,7 +123,7 @@ public abstract class IOSPage extends BasePage {
 
     public void inputStringFromKeyboard(String str) throws Exception {
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-           IOSSimulatorHelper.typeString(str);
+            IOSSimulatorHelper.typeString(str);
         } else {
             this.onScreenKeyboard.typeString(str);
         }
@@ -156,7 +154,7 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void clickDoneKeyboardButton() throws Exception {
-        getElement(nameDoneButton, "Keyboard Done button is not visible").click();
+        getElement(IOSKeyboard.xpathReturnKeyLocator, "Keyboard Done button is not visible").click();
     }
 
     public static Object executeScript(String script) throws Exception {
@@ -298,7 +296,7 @@ public abstract class IOSPage extends BasePage {
     public void clickElementWithRetryIfStillDisplayed(By locator) throws Exception {
         clickElementWithRetryIfStillDisplayed(locator, DEFAULT_RETRY_COUNT);
     }
-    
+
     public void clickElementWithRetryIfNextElementNotAppears(By locator, By nextLocator, int retryCount) throws Exception {
         WebElement el = getElement(locator);
         int counter = 0;
@@ -311,7 +309,7 @@ public abstract class IOSPage extends BasePage {
         } while (counter < retryCount);
         throw new IllegalStateException(String.format("Locator %s did't appear", nextLocator));
     }
-    
+
     public void clickElementWithRetryIfNextElementAppears(By locator, By nextLocator) throws Exception {
         clickElementWithRetryIfNextElementNotAppears(locator, nextLocator, DEFAULT_RETRY_COUNT);
     }
