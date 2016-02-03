@@ -53,6 +53,8 @@ public class LoginPage extends IOSPage {
 
     private static final By nameInvalidPhoneNumber = By.name("Please enter a valid phone number");
 
+    private static final By nameSomethingWentWrong = By.name("Something went wrong, please try again");
+
     private static final By nameInvalidEmail = By.name("Please enter a valid email address");
 
     private static final By nameAlreadyRegisteredNumber = By.name(
@@ -135,7 +137,7 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean wrongCredentialsNotificationIsShown() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameWrongCredentialsNotification);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameAlreadyRegisteredNumber);
     }
 
     public void tapForgotPasswordButton() throws Exception {
@@ -181,7 +183,7 @@ public class LoginPage extends IOSPage {
 
     public boolean isInvalidPhoneNumberAlertShown() throws Exception {
         DriverUtils.waitUntilAlertAppears(getDriver());
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInvalidPhoneNumber, 1);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameSomethingWentWrong, 1);
     }
 
     public boolean isInvalidEmailAlertShown() throws Exception {
