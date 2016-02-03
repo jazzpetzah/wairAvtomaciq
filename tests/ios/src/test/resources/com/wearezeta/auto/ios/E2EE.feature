@@ -42,7 +42,7 @@ Feature: E2EE
       | Name      | DeviceName | DeviceLabel  |
       | user1Name | Device1    | Device1Label |
 
-  @C3296 @staging
+  @torun @C3296 @staging
   Scenario Outline: Verify opening device details by clicking on it in person's profile
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
