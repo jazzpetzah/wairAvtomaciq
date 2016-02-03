@@ -14,6 +14,7 @@ import org.openqa.selenium.WebElement;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class DialogPage extends AndroidPage {
@@ -499,12 +500,15 @@ public class DialogPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathDialogTakePhotoButton);
     }
 
+    private final Predicate<? super WebElement> isEncryptedMessageFilter = (WebElement wel) -> wel.getSize().getWidth() > 0;
+    private final Predicate<? super WebElement> isNonEncryptedMessageFilter = (WebElement wel) -> wel.getSize().getWidth() <= 0;
+
     public boolean waitForXEncryptedMessages(String msg, int times) throws Exception {
         By locator = By.xpath(xpathStrConversationLockMessageByText.apply(msg));
         if (times > 0) {
             DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
         }
-        return getElements(locator).stream().filter((wel) -> wel.getSize().getWidth() > 0).collect(Collectors.toList()).size() == times;
+        return getElements(locator).stream().filter(isEncryptedMessageFilter).collect(Collectors.toList()).size() == times;
     }
 
     public boolean waitForXNonEncryptedMessages(String msg, int times) throws Exception {
@@ -512,7 +516,7 @@ public class DialogPage extends AndroidPage {
         if (times > 0) {
             DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
         }
-        return getElements(locator).stream().filter((wel) -> wel.getSize().getWidth() <= 0).collect(Collectors.toList()).size() == times;
+        return getElements(locator).stream().filter(isNonEncryptedMessageFilter).collect(Collectors.toList()).size() == times;
     }
 
     public boolean waitForXEncryptedImages(int times) throws Exception {
