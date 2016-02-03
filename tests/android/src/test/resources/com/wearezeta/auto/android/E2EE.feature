@@ -264,6 +264,22 @@ Feature: E2EE
     Examples:
       | Name      |
       | user1Name |
+
+  @C3514 @staging
+  Scenario Outline: On first login on 2nd device there should be an explanation that user will not see previous messages
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    When User <Name> sends encrypted message <EncMessage> to user <Contact1>
+    Then I sign in using my email or phone number
+    And I see First Time overlay
+    When I tap Got It button on First Time overlay
+    Then I see Contact list with contacts
+    When I tap on contact name <Contact1>
+    Then I see encrypted message <EncMessage> 0 times in the conversation view
+
+    Examples:
+      | Name      | Contact1  | EncMessage |
+      | user1Name | user2Name | Bla        |
       
   @C3237 @staging
   Scenario Outline: Verify it is possible to verify other user's device in 1:1 conversation
