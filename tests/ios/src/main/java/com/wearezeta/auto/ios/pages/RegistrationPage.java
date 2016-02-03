@@ -141,11 +141,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void typeUsername() throws Exception {
-        try {
-            ((IOSElement) getElement(xpathYourName, "Name input is not visible")).setValue(getName());
-        } catch (Exception e) {
-            getElement(xpathYourName, "Name input is not visible").sendKeys(getName());
-        }
+        getElement(xpathYourName, "Name input is not visible").sendKeys(getName());
     }
 
     public String getName() {
