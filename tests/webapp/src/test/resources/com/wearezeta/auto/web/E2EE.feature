@@ -195,6 +195,9 @@ Feature: E2EE
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I enable checkbox to clear all data
+    And I click Logout button on clear data dialog
     And I see Sign In page
     And I Sign in using login <Email3> and password <Password3>
     And I see Welcome page
