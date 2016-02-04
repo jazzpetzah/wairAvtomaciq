@@ -1,28 +1,31 @@
 package com.wearezeta.auto.android.steps;
 
+import static org.hamcrest.Matchers.is;
+
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.Assert;
+
 import com.wearezeta.auto.android.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.android.pages.UnknownUserDetailsPage;
 import com.wearezeta.auto.common.CommonSteps;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-import java.util.List;
-
-import static org.hamcrest.Matchers.is;
-
-import org.junit.Assert;
-
 public class OtherUserPersonalInfoPageSteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
-            .getInstance();
+    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
 
-    private OtherUserPersonalInfoPage getOtherUserPersonalInfoPage()
-            throws Exception {
+    private OtherUserPersonalInfoPage getOtherUserPersonalInfoPage() throws Exception {
         return pagesCollection.getPage(OtherUserPersonalInfoPage.class);
     }
 
@@ -115,10 +118,8 @@ public class OtherUserPersonalInfoPageSteps {
         ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(contact);
         contact = dstUser.getName();
         String email = dstUser.getEmail();
-        Assert.assertTrue("User name is not visible",
-                getOtherUserPersonalInfoPage().isOtherUserNameVisible(contact));
-        Assert.assertTrue("User email is not visible",
-                getOtherUserPersonalInfoPage().isOtherUserMailVisible(email));
+        Assert.assertTrue("User name is not visible", getOtherUserPersonalInfoPage().isOtherUserNameVisible(contact));
+        Assert.assertTrue("User email is not visible", getOtherUserPersonalInfoPage().isOtherUserMailVisible(email));
     }
 
     /**
@@ -132,8 +133,7 @@ public class OtherUserPersonalInfoPageSteps {
      */
     @Then("^User info should be shown with Unblock button$")
     public void UserShouldBeShownWithUnBlockButton() throws Exception {
-        Assert.assertTrue("Unblock button is not visible",
-                getOtherUserPersonalInfoPage().isUnblockBtnVisible());
+        Assert.assertTrue("Unblock button is not visible", getOtherUserPersonalInfoPage().isUnblockBtnVisible());
     }
 
     /**
@@ -161,14 +161,14 @@ public class OtherUserPersonalInfoPageSteps {
         int numDevices = getOtherUserPersonalInfoPage().getParticipantDevices().size();
         Assert.assertTrue("expected size", expectedNumDevices == numDevices);
     }
-    
+
     /**
      * Verifies device number X in single participant devices tab
      *
      * @param deviceNum Device number to verify
      * @param suffix Optional num suffix to get string like 1st, 2nd, etc.
      * @throws Exception
-     * @step. ^I verify (\\d+)(st|nd|rd|th)? device$
+     * @step. ^I verify (\\d+)(?:st|nd|rd|th)? device$
      */
     @Then("^I verify (\\d+)(?:st|nd|rd|th)? device$")
     public void IVerifyDeviceX(int deviceNum) throws Exception {
@@ -176,20 +176,20 @@ public class OtherUserPersonalInfoPageSteps {
         getOtherUserPersonalInfoPage().verifyParticipantDevice();
         pagesCollection.getCommonPage().navigateBack();
     }
-    
+
     /**
      * Select device number X in single participant devices tab
      *
      * @param deviceNum Device number to verify
      * @param suffix Optional num suffix to get string like 1st, 2nd, etc.
      * @throws Exception
-     * @step. ^I select (\\d+)(st|nd|rd|th)? device$
+     * @step. ^I select (\\d+)(?:st|nd|rd|th)? device$
      */
     @Then("^I select (\\d+)(?:st|nd|rd|th)? device$")
     public void ISelectDeviceX(int deviceNum) throws Exception {
         getOtherUserPersonalInfoPage().tapOnParticipantFirstDevice(deviceNum);
     }
-    
+
     /**
      * Verify selected participant device
      *
@@ -200,7 +200,7 @@ public class OtherUserPersonalInfoPageSteps {
     public void IVerifyParticipantDevice() throws Exception {
         getOtherUserPersonalInfoPage().verifyParticipantDevice();
     }
-    
+
     /**
      * Verifies that shield is showed in participant profile
      *
@@ -211,8 +211,7 @@ public class OtherUserPersonalInfoPageSteps {
     public void IVerifyDeviceX() throws Exception {
         Assert.assertTrue(getOtherUserPersonalInfoPage().isParticipantShieldShowed());
     }
-    
-    
+
     /**
      * Checks the ids of all devices displayed in single participant devices tab
      *
@@ -227,7 +226,6 @@ public class OtherUserPersonalInfoPageSteps {
         List<String> actualDeviceIds = getOtherUserPersonalInfoPage().getParticipantDevices();
         Assert.assertThat("List does not contain all device ids", actualDeviceIds, is(expectedDeviceIds));
     }
-
 
     // ------ Group
     // Separate steps file?
@@ -273,7 +271,6 @@ public class OtherUserPersonalInfoPageSteps {
         getOtherUserPersonalInfoPage().selectConvoSettingsMenuItem(itemName);
     }
 
-
     /**
      * Verifys the user profile menu item is visible
      *
@@ -284,9 +281,8 @@ public class OtherUserPersonalInfoPageSteps {
     @Then("^I see (.*) button in option menu$")
     public void ISeeButtonInUserProfileMenuAtPosition(String itemName) throws Exception {
         Assert.assertTrue("The user profile menu item is not visible",
-                getOtherUserPersonalInfoPage().isUserProfileMenuItemVisible(itemName));
+            getOtherUserPersonalInfoPage().isUserProfileMenuItemVisible(itemName));
     }
-
 
     /**
      * Confirms the current user's decision to leave a conversation -outofplace
@@ -321,8 +317,7 @@ public class OtherUserPersonalInfoPageSteps {
      */
     @Then("^I see that the conversation name is (.*)$")
     public void IVerifyCorrectConversationName(String name) throws Exception {
-        Assert.assertEquals(getOtherUserPersonalInfoPage()
-                .getConversationName(), name);
+        Assert.assertEquals(getOtherUserPersonalInfoPage().getConversationName(), name);
     }
 
     /**
@@ -335,13 +330,9 @@ public class OtherUserPersonalInfoPageSteps {
     @Then("^I see the correct participant avatars for (.*)")
     public void ISeeCorrectParticipantAvatars(String contacts) throws Exception {
         for (String contactName : CommonSteps.splitAliases(contacts)) {
-            contactName = usrMgr.findUserByNameOrNameAlias(contactName)
-                    .getName();
-            Assert.assertTrue(
-                    String.format("The avatar for '%s' is not visible",
-                            contactName),
-                    getOtherUserPersonalInfoPage().isParticipantAvatarVisible(
-                            contactName));
+            contactName = usrMgr.findUserByNameOrNameAlias(contactName).getName();
+            Assert.assertTrue(String.format("The avatar for '%s' is not visible", contactName),
+                getOtherUserPersonalInfoPage().isParticipantAvatarVisible(contactName));
         }
     }
 
@@ -354,10 +345,8 @@ public class OtherUserPersonalInfoPageSteps {
      * @step. ^I see the correct number of participants in the title (.*)$
      */
     @Then("^I see the correct number of participants in the title (.*)$")
-    public void IVerifyParticipantNumber(String realNumberOfParticipants)
-            throws Exception {
-        Assert.assertEquals(realNumberOfParticipants + " people",
-                getOtherUserPersonalInfoPage().getSubHeader().toLowerCase());
+    public void IVerifyParticipantNumber(String realNumberOfParticipants) throws Exception {
+        Assert.assertEquals(realNumberOfParticipants + " people", getOtherUserPersonalInfoPage().getSubHeader().toLowerCase());
     }
 
     /**
@@ -369,14 +358,10 @@ public class OtherUserPersonalInfoPageSteps {
      * @step. ^I do not see (.*) on group chat info page$
      */
     @Then("^I do not see (.*) on group chat info page$")
-    public void ThenIDoNotSeeOnGroupChatInfoPage(String contact)
-            throws Exception {
+    public void ThenIDoNotSeeOnGroupChatInfoPage(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        Assert.assertTrue(
-                String.format(
-                        "Chat participant '%s' should not be visible in participants list, but it is",
-                        contact), getOtherUserPersonalInfoPage()
-                        .isParticipantNotVisible(contact));
+        Assert.assertTrue(String.format("Chat participant '%s' should not be visible in participants list, but it is", contact),
+            getOtherUserPersonalInfoPage().isParticipantNotVisible(contact));
     }
 
     /**
@@ -388,8 +373,7 @@ public class OtherUserPersonalInfoPageSteps {
      * @step. ^I rename group conversation to (.*)$
      */
     @Then("^I rename group conversation to (.*)$")
-    public void ThenIRenameGroupConversationTo(String newConversationName)
-            throws Exception {
+    public void ThenIRenameGroupConversationTo(String newConversationName) throws Exception {
         getOtherUserPersonalInfoPage().tapOnParticipantsHeader();
         getOtherUserPersonalInfoPage().renameGroupChat(newConversationName);
     }
@@ -402,8 +386,7 @@ public class OtherUserPersonalInfoPageSteps {
      */
     @Then("^I see correct 1:1 options menu$")
     public void ThenISeeOneToOneOptionsMenu() throws Exception {
-        Assert.assertTrue(getOtherUserPersonalInfoPage()
-                .areOneToOneMenuOptionsVisible());
+        Assert.assertTrue(getOtherUserPersonalInfoPage().areOneToOneMenuOptionsVisible());
     }
 
     /**
@@ -414,10 +397,8 @@ public class OtherUserPersonalInfoPageSteps {
      */
     @Then("^I do not see participants? page$")
     public void IDoNotSeeParticipantPage() throws Exception {
-        Assert.assertTrue(
-                "Contact profile page is visible, but expected not to be.",
-                getOtherUserPersonalInfoPage()
-                        .isParticipatPageUIContentNotVisible());
+        Assert.assertTrue("Contact profile page is visible, but expected not to be.",
+            getOtherUserPersonalInfoPage().isParticipatPageUIContentNotVisible());
     }
 
     /**
@@ -428,10 +409,8 @@ public class OtherUserPersonalInfoPageSteps {
      */
     @Then("^I do not see 1:1 options menu$")
     public void ThenIDoNotSeeOptionsMenu() throws Exception {
-        Assert.assertTrue(
-                "1on1 options menu is visible, but expected not to be.",
-                getOtherUserPersonalInfoPage()
-                        .areOneToOneMenuOptionsNotVisible());
+        Assert.assertTrue("1on1 options menu is visible, but expected not to be.",
+            getOtherUserPersonalInfoPage().areOneToOneMenuOptionsNotVisible());
     }
 
     /**
@@ -442,8 +421,7 @@ public class OtherUserPersonalInfoPageSteps {
      */
     @Then("^I see participants? page$")
     public void ISeeCorrectParticipantPage() throws Exception {
-        Assert.assertTrue(getOtherUserPersonalInfoPage()
-                .isParticipatPageUIContentVisible());
+        Assert.assertTrue(getOtherUserPersonalInfoPage().isParticipatPageUIContentVisible());
     }
 
     /**
@@ -458,8 +436,7 @@ public class OtherUserPersonalInfoPageSteps {
     }
 
     private UnknownUserDetailsPage getUnknownUserDetailsPage() throws Exception {
-        return (UnknownUserDetailsPage) pagesCollection
-                .getPage(UnknownUserDetailsPage.class);
+        return (UnknownUserDetailsPage) pagesCollection.getPage(UnknownUserDetailsPage.class);
     }
 
     /**
@@ -471,13 +448,10 @@ public class OtherUserPersonalInfoPageSteps {
      * @step. ^I see user name (.*) on non connected user page$
      */
     @Then("^I see user name (.*) on non connected user page$")
-    public void ISeeConnectToUnconnectedUserPageWithUser(String username)
-            throws Exception {
+    public void ISeeConnectToUnconnectedUserPageWithUser(String username) throws Exception {
         username = usrMgr.findUserByNameOrNameAlias(username).getName();
-        Assert.assertTrue(String.format(
-                "User name '%s' does not exist in non connected page header",
-                username),
-                getUnknownUserDetailsPage().isNameExistInHeader(username));
+        Assert.assertTrue(String.format("User name '%s' does not exist in non connected page header", username),
+            getUnknownUserDetailsPage().isNameExistInHeader(username));
     }
 
     /**
@@ -526,7 +500,7 @@ public class OtherUserPersonalInfoPageSteps {
     @Then("^I see Pending button on pending user page$")
     public void ISeePendingButton() throws Exception {
         Assert.assertTrue("Pending button is not visible, but it should be",
-                getUnknownUserDetailsPage().isPendingButtonVisible());
+            getUnknownUserDetailsPage().isPendingButtonVisible());
     }
 
     /**
@@ -551,4 +525,44 @@ public class OtherUserPersonalInfoPageSteps {
         getOtherUserPersonalInfoPage().tapSingleParticipantCloseButton();
     }
 
+    private final Map<Integer, BufferedImage> savedDeviceShieldStates = new HashMap<Integer, BufferedImage>();
+    private static final double SHIELD_STATE_OVERLAP_MAX_SCORE = 0.8d;
+
+    /**
+     * Takes screenshot of device shield current state for the further comparison
+     *
+     * @param deviceNum Device number
+     * @throws Exception
+     * @step. ^I remember state of (\\d+)(?:st|nd|rd|th)? device$
+     */
+    @When("^I remember state of (\\d+)(?:st|nd|rd|th)? device$")
+    public void IRememberDeviceShieldState(int deviceNum) throws Exception {
+        savedDeviceShieldStates.put(deviceNum, getOtherUserPersonalInfoPage().getDeviceShieldCurrentStateScreenshot(deviceNum));
+    }
+
+    /**
+     * Checks to see if device shield state is changed. Make sure,
+     * that the screenshot of previous state is already taken for this
+     * device
+     *
+     * @param deviceNum Device number
+     * @throws Exception
+     * @step. ^I see state of (\\d+)(?:st|nd|rd|th)? device is changed$
+     */
+    @Then("^I see state of (\\d+)(?:st|nd|rd|th)? device is changed$")
+    public void ICheckDeviceShieldStateIsChanged(int deviceNum) throws Exception {
+        if (!savedDeviceShieldStates.containsKey(deviceNum)) {
+            throw new IllegalStateException(String.format(
+                "Please call the corresponding step to take the screenshot of shield state for device '%s' first", deviceNum));
+        }
+        final BufferedImage previousStateScreenshot = savedDeviceShieldStates.get(deviceNum);
+        double overlapScore;
+        final BufferedImage currentStateScreenshot = getOtherUserPersonalInfoPage()
+            .getDeviceShieldCurrentStateScreenshot(deviceNum);
+        overlapScore = ImageUtil.getOverlapScore(currentStateScreenshot, previousStateScreenshot,
+            ImageUtil.RESIZE_TO_MAX_SCORE);
+        Assert.assertTrue(
+            String.format("Shield state for device '%s' seems not changed, overlap score '%s'", deviceNum, overlapScore),
+            overlapScore <= SHIELD_STATE_OVERLAP_MAX_SCORE);
+    }
 }

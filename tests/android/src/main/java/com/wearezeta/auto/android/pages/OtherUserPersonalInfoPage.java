@@ -1,15 +1,16 @@
 package com.wearezeta.auto.android.pages;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import java.util.stream.Collectors;
 
 public class OtherUserPersonalInfoPage extends AndroidPage {
 
@@ -31,15 +32,18 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
             .format("//*[@value='%s']", text);
 
     private static final By idParticipantDevices = By.id("ttv__row_otr_device");
-    
+
     private static final By idParticipantOtrShield = By.id("sv__otr__verified_shield");
-    
+
     private static final Function<Integer, String> xpathParticipantDeviceByIdx = idx -> String
         .format("//*[@id='ttv__row_otr_device'][%d]", idx);
-    
+
+    private static final Function<Integer, String> xpathParticipantDeviceShieldByIdx = idx -> String
+        .format("//*[@id='iv__row_otr_icon'][%d]", idx);
+
     private static final By xpathSingleOtrSwitch = By.xpath("//OtrSwitch[@id='os__single_otr_client__verify']/SwitchCompat");
-    
-    private static final By xpathSingleOtrSwitchValue = 
+
+    private static final By xpathSingleOtrSwitchValue =
             By.xpath("//OtrSwitch[@id='os__single_otr_client__verify']//TypefaceTextView[contains(@value, 'erified')]");
 
     private static final Function<String, String> xpathParticipantAvatarByName = name -> String
@@ -111,22 +115,30 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
                 String.format("Device '%s' is not found", deviceNum)).click();
     }
 
+    public BufferedImage getDeviceShieldCurrentStateScreenshot(int deviceNum) throws Exception {
+        final WebElement deviceShield = getElement(By.xpath(xpathParticipantDeviceShieldByIdx.apply(deviceNum)),
+                String.format("Device '%s' is not found", deviceNum));
+        return getElementScreenshot(deviceShield).orElseThrow(IllegalStateException::new);
+    }
+
     private static final String VERIFIED_VELUE = "Verified";
     private static final String NOT_VERIFIED_VELUE = "Not verified";
 
     public void verifyParticipantDevice() throws Exception {
-        if (getElement(xpathSingleOtrSwitchValue, "Device verification status fot found").getText().equals(NOT_VERIFIED_VELUE))
+        if (getElement(xpathSingleOtrSwitchValue, "Device verification status fot found").getText().equals(NOT_VERIFIED_VELUE)) {
             getElement(xpathSingleOtrSwitch).click();
-        if (getElement(xpathSingleOtrSwitchValue, "Device verification status fot found").getText().equals(VERIFIED_VELUE))
+        }
+        if (getElement(xpathSingleOtrSwitchValue, "Device verification status fot found").getText().equals(VERIFIED_VELUE)) {
             return;
-        else
+        } else {
             throw new RuntimeException("Failed verify device");
+        }
     }
-    
+
     public boolean isParticipantShieldShowed() throws Exception {
         return DriverUtils.isElementPresentAndDisplayed(getDriver(), getElement(idParticipantOtrShield));
     }
-    
+
     public void selectSingleParticipantTab(String itemName) throws Exception {
         final By locator = By.xpath(xpathSingleParticipantTabByText.apply(itemName));
         getElement(locator,
