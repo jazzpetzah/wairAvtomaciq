@@ -127,38 +127,40 @@ Feature: Conversation List
 
   @C2533 @regression @rc @id2369
   Scenario Outline: Verify Ping animation in the conversations list [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
     Given User Myself removes his avatar picture
     Given I Sign in on tablet using my email
     Given I see conversations list
+    When I tap on contact name <Contact2>
+    And I navigate back to conversations list
     Given I remember the state of <Contact> conversation item
     When User <Contact> securely pings conversation Myself
-    # Wait for ping animation
-    And I wait for 2 seconds
+    And I see first item in contact list named <Contact>
     Then I see the state of <Contact> conversation item is changed
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   |Contact2   	|
+      | user1Name | user2Name |user3Name	|
 
   @C2537 @regression @id2752
   Scenario Outline: Verify Ping animation in the conversations list [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
     Given User Myself removes his avatar picture
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
+    When I tap on contact name <Contact2>
+    And I navigate back to conversations list
     Given I remember the state of <Contact> conversation item
     When User <Contact> securely pings conversation Myself
-    # Wait for ping animation
-    And I wait for 2 seconds
+    And I see first item in contact list named <Contact>
     Then I see the state of <Contact> conversation item is changed
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   |Contact2   	|
+      | user1Name | user2Name |user3Name	|
 
   @C2531 @regression @id2367
   Scenario Outline: Verify messages are marked as read with disappearing unread dot [PORTRAIT]

@@ -293,7 +293,8 @@ Feature: E2EE
     And I tap conversation details button
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
-    And I verify 1st device
+    And I select 1st device
+    And I verify device
 
     Examples:
       | Name      | Contact1  | Message1 |
@@ -311,10 +312,10 @@ Feature: E2EE
     And I tap conversation details button
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
+    And I remember state of 1st device
     And I verify 1st device
-    When I press back button
+    And I see state of 1st device is changed
     Then I see shield in participant profile
-    #TODO: add check that all devices are verified
 
     Examples:
       | Name      | Contact1  | Message1 |
@@ -335,8 +336,38 @@ Feature: E2EE
     And I select contact <Contact1>
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
-    And I verify 1st device
+    And I select 1st device
+    And I verify device
 
     Examples:
       | Name      | Contact1  | Contact2  | Message1 | GroupChatName |
       | user1Name | user2Name | user3Name | Msg1     | GroupConvo    |
+      
+  @C12066 @staging
+  Scenario Outline: Verify I see system message when verify all other user's device in group conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When User <Contact1> sends encrypted message <Message1> to group conversation <GroupChatName>
+    And User <Contact2> sends encrypted message <Message1> to group conversation <GroupChatName>
+    And I tap on contact name <GroupChatName>
+    And I tap conversation details button
+    And I select contact <Contact1>
+    And I select single participant tab "Devices"
+    Then I see 1 device is shown in single participant devices tab
+    And I verify 1st device
+    When I close single participant page by UI button
+    And I select contact <Contact2>
+    And I select single participant tab "Devices"
+    Then I see 1 device is shown in single participant devices tab
+    And I verify 1st device
+    When I close single participant page by UI button
+    And I press back button
+    And I see <Message> conversation system message
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Message1 | GroupChatName | Message               |
+      | user1Name | user2Name | user3Name | Msg1     | GroupConvo    | Conversation verified |
