@@ -205,7 +205,7 @@ public class DialogPage extends IOSPage {
     }
 
     public void swipeLeftOptionsButtons() throws Exception {
-        final WebElement conversationInput = getElement(nameConversationCursorInput);
+        final WebElement conversationInput = getElement(nameInputOptionsCloseButton);
         int inputMiddle = conversationInput.getLocation().y + conversationInput.getSize().height / 2;
         int windowSize = getElement(nameMainWindow).getSize().height;
         int swipeLocation = inputMiddle * 100 / windowSize;
