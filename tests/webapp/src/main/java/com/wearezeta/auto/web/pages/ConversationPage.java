@@ -1,7 +1,5 @@
 package com.wearezeta.auto.web.pages;
 
-import akka.util.Collections;
-
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -23,7 +21,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,16 +28,12 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ConversationPage extends WebPage {
@@ -80,6 +73,9 @@ public class ConversationPage extends WebPage {
 
 	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssCallButton)
 	private WebElement callButton;
+
+	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssVideoCallButton)
+	private WebElement videoCallButton;
 
 	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssPingMessage)
 	private WebElement pingMessage;
@@ -164,7 +160,8 @@ public class ConversationPage extends WebPage {
 	private static boolean containsAllCaseInsensitive(String text,
 			Set<String> parts) {
 		for (String part : parts) {
-			if (!text.replaceAll(" +", " ").toLowerCase().contains(part.toLowerCase())) {
+			if (!text.replaceAll(" +", " ").toLowerCase()
+					.contains(part.toLowerCase())) {
 				return false;
 			}
 		}
@@ -197,7 +194,8 @@ public class ConversationPage extends WebPage {
 		wait.until(visibilityOfTextInElementsLocated(locator, parts));
 	}
 
-	public int waitForNumberOfMessageHeadersContain(Set<String> parts) throws Exception {
+	public int waitForNumberOfMessageHeadersContain(Set<String> parts)
+			throws Exception {
 		final By locator = By
 				.cssSelector(WebAppLocators.ConversationPage.cssMessageHeader);
 		Thread.sleep(DriverUtils.getDefaultLookupTimeoutSeconds() * 1000);
@@ -243,7 +241,8 @@ public class ConversationPage extends WebPage {
 		};
 	}
 
-	public int getNumberOfElementsContainingText(final By locator, final Set<String> expectedTexts) throws Exception {
+	public int getNumberOfElementsContainingText(final By locator,
+			final Set<String> expectedTexts) throws Exception {
 		int count = 0;
 		List<String> elements = getTextOfDisplayedElements(locator, getDriver());
 		for (String element : elements) {
@@ -423,6 +422,18 @@ public class ConversationPage extends WebPage {
 				By.cssSelector(WebAppLocators.ConversationPage.cssCallButton),
 				5);
 		callButton.click();
+	}
+
+	public void clickVideoCallButton() throws Exception {
+		if (WebAppExecutionContext.getBrowser()
+				.isSupportingNativeMouseActions()) {
+			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
+		}
+		assert DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						this.getDriver(),
+						By.cssSelector(WebAppLocators.ConversationPage.cssVideoCallButton));
+		videoCallButton.click();
 	}
 
 	private static final int TEXT_MESSAGE_VISIBILITY_TIMEOUT_SECONDS = 5;
