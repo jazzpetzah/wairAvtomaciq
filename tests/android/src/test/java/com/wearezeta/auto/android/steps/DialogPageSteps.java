@@ -808,5 +808,18 @@ public class DialogPageSteps {
                 String.format("The non-encrypted image is not present in the conversation view %s time(s)", times),
                 getDialogPage().waitForXNonEncryptedImages(times));
         }
+    } 
+    
+    /**
+     * Select device number X in single participant devices tab
+     *
+     * @param expectedMsg Expected messsage
+     * @throws Exception
+     * @step. ^I see (.*) conversation system message$
+     */
+    @Then("^I see (.*) conversation system message$")
+    public void ISeeConversationSystemMessasge(String expectedMsg) throws Exception {
+        Assert.assertTrue(String.format("The message '%s' is not visible in the conversation", expectedMsg),
+            getDialogPage().waitForOtrMessage(expectedMsg));
     }
 }

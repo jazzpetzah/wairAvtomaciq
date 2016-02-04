@@ -170,12 +170,36 @@ public class OtherUserPersonalInfoPageSteps {
      * @throws Exception
      * @step. ^I verify (\\d+)(st|nd|rd|th)? device$
      */
-    @Then("^I verify (\\d+)(st|nd|rd|th)? device$")
-    public void IVerifyDeviceX(int deviceNum, String suffix) throws Exception {
+    @Then("^I verify (\\d+)(?:st|nd|rd|th)? device$")
+    public void IVerifyDeviceX(int deviceNum) throws Exception {
         getOtherUserPersonalInfoPage().tapOnParticipantFirstDevice(deviceNum);
         getOtherUserPersonalInfoPage().verifyParticipantDevice();
+        pagesCollection.getCommonPage().navigateBack();
     }
-
+    
+    /**
+     * Select device number X in single participant devices tab
+     *
+     * @param deviceNum Device number to verify
+     * @param suffix Optional num suffix to get string like 1st, 2nd, etc.
+     * @throws Exception
+     * @step. ^I select (\\d+)(st|nd|rd|th)? device$
+     */
+    @Then("^I select (\\d+)(?:st|nd|rd|th)? device$")
+    public void ISelectDeviceX(int deviceNum) throws Exception {
+        getOtherUserPersonalInfoPage().tapOnParticipantFirstDevice(deviceNum);
+    }
+    
+    /**
+     * Verify selected participant device
+     *
+     * @throws Exception
+     * @step. ^I verify device$
+     */
+    @Then("^I verify device$")
+    public void IVerifyParticipantDevice() throws Exception {
+        getOtherUserPersonalInfoPage().verifyParticipantDevice();
+    }
     
     /**
      * Verifies that shield is showed in participant profile
