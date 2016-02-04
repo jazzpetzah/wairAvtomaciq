@@ -3,7 +3,6 @@ package com.wearezeta.auto.common;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -18,7 +17,6 @@ import java.util.concurrent.Future;
 import javax.imageio.ImageIO;
 
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import io.appium.java_client.android.AndroidDriver;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -129,7 +127,7 @@ public class ZetaFormatter implements Formatter, Reporter {
 
     @Override
     public void match(Match arg0) {
-        stepStartedTimestamp = new Date().getTime();
+        stepStartedTimestamp = System.currentTimeMillis();
     }
 
     private static final int MAX_SCREENSHOT_WIDTH = 1600;
@@ -226,7 +224,7 @@ public class ZetaFormatter implements Formatter, Reporter {
         final String stepName = currentStep.getName();
         final String stepStatus = result.getStatus();
         steps.put(currentStep, stepStatus);
-        final long stepFinishedTimestamp = new Date().getTime();
+        final long stepFinishedTimestamp = System.currentTimeMillis();
         if (isScreenshotingEnabled) {
             if (!isScreenshotingOnPassedStepsEnabled && (result.getStatus().equals(Result.PASSED))) {
                 log.debug("Skip screenshot for passed step....");
@@ -238,9 +236,8 @@ public class ZetaFormatter implements Formatter, Reporter {
                     e.printStackTrace();
                 }
             }
-            final long screenshotFinishedTimestamp = new Date().getTime();
             log.debug(String.format("%s (status: %s, step duration: %s ms + screenshot duration: %s ms)", stepName, stepStatus,
-                    stepFinishedTimestamp - stepStartedTimestamp, screenshotFinishedTimestamp - stepFinishedTimestamp));
+                    stepFinishedTimestamp - stepStartedTimestamp, System.currentTimeMillis() - stepFinishedTimestamp));
         } else {
             log.debug(String.format("%s (status: %s, step duration: %s ms)", stepName, stepStatus,
                     stepFinishedTimestamp - stepStartedTimestamp));

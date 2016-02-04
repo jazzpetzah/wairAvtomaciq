@@ -14,7 +14,7 @@ Feature: Search
     And I see call action button on People picker page
     And I click call action button on People picker page
     Then I see mute call, end call buttons
-    And I see calling to contact <Contact> message
+    And I see calling message
 
     Examples: 
       | Name      | Contact   |
@@ -35,7 +35,7 @@ Feature: Search
     And I see call action button on People picker page
     And I click call action button on People picker page
     Then I see mute call, end call buttons
-    And I see calling to contact <Contact> message
+    And I see calling message
 
     Examples: 
       | Name      | Contact   |

@@ -29,14 +29,12 @@ public class CallPageSteps {
     /**
      * Verify that calling UI is visible
      *
-     * @param contact User name whom we call
      * @throws Exception
-     * @step. ^I see calling to contact (.*) message$
+     * @step. ^I see calling message$
      */
-    @When("^I see calling to contact (.*) message$")
-    public void ISeeCallingMesage(String contact) throws Exception {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        Assert.assertTrue(getStartedCallPage().isCallingMessageVisible());
+    @When("^I see calling message$")
+    public void ISeeCallingMessage() throws Exception {
+        Assert.assertTrue("Calling message is not visible", getStartedCallPage().isCallingMessageVisible());
     }
 
     /**

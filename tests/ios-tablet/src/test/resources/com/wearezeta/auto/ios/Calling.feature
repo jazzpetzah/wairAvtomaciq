@@ -10,7 +10,7 @@ Feature: Calling
     And I click plus button next to text input
     And I press call button
     Then I see mute call, end call buttons
-    And I see calling to contact <Contact> message
+    And I see calling message
     When I end started call
     Then I dont see calling page
 
@@ -29,7 +29,7 @@ Feature: Calling
     And I click plus button next to text input
     And I press call button
     Then I see mute call, end call buttons
-    And I see calling to contact <Contact> message
+    And I see calling message
     When I end started call
     Then I dont see calling page
 
@@ -49,7 +49,7 @@ Feature: Calling
     And I tap on contact name <Contact>
     Then I see missed call from contact <Contact>
     And I click missed call button to call contact <Contact>
-    And I see calling to contact <Contact> message
+    And I see calling message
 
     Examples:
       | Name      | Contact   | CallBackend |
@@ -68,7 +68,7 @@ Feature: Calling
     And I tap on contact name <Contact>
     Then I see missed call from contact <Contact>
     And I click missed call button to call contact <Contact>
-    And I see calling to contact <Contact> message
+    And I see calling message
 
     Examples:
       | Name      | Contact   | CallBackend |
