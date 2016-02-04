@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -23,7 +24,7 @@
         <!-- edge | staging | production -->
         <backendType>staging</backendType>
         <!-- leave webappApplicationPath empty to get the default URL for the backendType -->
-        <webappApplicationPath></webappApplicationPath>
+        <webappApplicationPath />
         <otrOnly>true</otrOnly>
         <!-- The levels in descending order are: SEVERE (highest value), WARNING, 
             INFO, CONFIG, FINE, FINER, FINEST (lowest value). In addition there is a 
