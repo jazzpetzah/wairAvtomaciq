@@ -510,17 +510,15 @@ Feature: Calling
     Given There are 6 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
-    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts waiting instance using <CallBackend>
-    Given <Contact1> accepts next incoming call automatically
-    Given <Contact2> accepts next incoming call automatically
-    Given <Contact3> accepts next incoming call automatically
-    Given <Contact4> accepts next incoming call automatically
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> start waiting instance using <CallBackend>
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> accept next incoming call automatically
     Given I sign in using my email or phone number
     Given I dismiss alert
+    Given I accept First Time overlay if it is visible
     Given I accept alert
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    When <Contact5> calls <GroupChatName> using <CallBackend2>
+    And <Contact5> calls <GroupChatName> using <CallBackend2>
     And I see incoming group calling message
     And I accept incoming call
     Then I see group call is Full message
