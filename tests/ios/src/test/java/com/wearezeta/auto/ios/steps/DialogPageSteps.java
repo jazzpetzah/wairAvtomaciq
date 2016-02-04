@@ -175,32 +175,22 @@ public class DialogPageSteps {
      */
     @When("^I swipe left on options buttons$")
     public void ISwipeLeftTextInput() throws Exception {
-        for (int i = 0; i < 3; i++) {
-            getDialogPage().swipeLeftOptionsButtons();
-            if (getDialogPage().isPlusButtonVisible()) {
-                break;
-            }
-        }
+        getDialogPage().swipeLeftToShowInputCursor();
     }
 
     /**
      * Swipe right text input to reveal option buttons
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I swipe right text input to reveal option buttons$
      */
     @When("^I swipe right text input to reveal option buttons$")
-    public void ISwipeTheTextInputCursor() throws Throwable {
-        for (int i = 0; i < 3; i++) {
-            getDialogPage().swipeRightInputCursor();
-            if (getDialogPage().isPingButtonVisible()) {
-                break;
-            }
-        }
+    public void ISwipeTheTextInputCursor() throws Exception {
+        getDialogPage().swipeRightToShowConversationTools();
     }
 
     @When("^I press Add Picture button$")
-    public void IPressAddPictureButton() throws Throwable {
+    public void IPressAddPictureButton() throws Exception {
         getDialogPage().pressAddPictureButton();
     }
 

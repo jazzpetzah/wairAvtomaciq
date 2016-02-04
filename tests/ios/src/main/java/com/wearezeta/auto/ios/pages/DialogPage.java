@@ -200,16 +200,39 @@ public class DialogPage extends IOSPage {
         return 0;
     }
 
-    public void swipeRightInputCursor() throws Exception {
-        DriverUtils.swipeRight(this.getDriver(), getElement(nameConversationCursorInput), 1000);
+    public void swipeRightToShowConversationTools() throws Exception {
+        final WebElement convoInput = getElement(nameConversationCursorInput);
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            final Point inputLocation = convoInput.getLocation();
+            final Dimension inputSize = convoInput.getSize();
+            final Dimension windowSize = getDriver().manage().window().getSize();
+            IOSSimulatorHelper.swipe((inputLocation.x + inputSize.width / 10.0) / windowSize.width,
+                    (inputLocation.y + inputSize.height / 2.0) / windowSize.height,
+                    (inputLocation.x + inputSize.width) * 1.0 / windowSize.width,
+                    (inputLocation.y + inputSize.height / 2.0) / windowSize.height);
+        } else {
+            DriverUtils.swipeRight(this.getDriver(), convoInput, 1000);
+        }
     }
 
-    public void swipeLeftOptionsButtons() throws Exception {
-        final WebElement conversationInput = getElement(nameInputOptionsCloseButton);
-        int inputMiddle = conversationInput.getLocation().y + conversationInput.getSize().height / 2;
-        int windowSize = getElement(nameMainWindow).getSize().height;
-        int swipeLocation = inputMiddle * 100 / windowSize;
-        DriverUtils.swipeLeftCoordinates(getDriver(), 1000, swipeLocation);
+    public void swipeLeftToShowInputCursor() throws Exception {
+        final WebElement closeButton = getElement(nameInputOptionsCloseButton);
+        final Point btnLocation = closeButton.getLocation();
+        final Dimension btnSize = closeButton.getSize();
+        final Dimension windowSize = getDriver().manage().window().getSize();
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            IOSSimulatorHelper.swipe(
+                    btnLocation.x * 1.0 / windowSize.width,
+                    (btnLocation.y + btnSize.height / 2.0) / windowSize.height,
+                    (btnLocation.x - btnSize.width * 7.0) / windowSize.width,
+                    (btnLocation.y + btnSize.height / 2.0) / windowSize.height);
+        } else {
+            DriverUtils.swipeByCoordinates(this.getDriver(), 1000,
+                    btnLocation.x * 100 / windowSize.width,
+                    (btnLocation.y + btnSize.height / 2) * 100 / windowSize.height,
+                    (btnLocation.x - btnSize.width * 7) * 100 / windowSize.width,
+                    (btnLocation.y + btnSize.height / 2) * 100 / windowSize.height);
+        }
     }
 
     public void pressAddPictureButton() throws Exception {
@@ -283,7 +306,7 @@ public class DialogPage extends IOSPage {
                 map(x -> String.format("contains(@name, '%s')", x.toUpperCase())).
                 collect(Collectors.toList()));
         final By locator = By.xpath(xpathStartConversationEntryTemplate.apply(xpathExpr));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator,10);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 10);
     }
 
     public String getMediaState() throws Exception {
@@ -460,7 +483,7 @@ public class DialogPage extends IOSPage {
 
     public void clickPlusButton() throws Exception {
         getElement(namePlusButton).click();
-        if(!DriverUtils.waitUntilLocatorDissapears(getDriver(),namePlusButton)){
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), namePlusButton)) {
             throw new IllegalStateException("The Details plus button is still visible");
         }
     }

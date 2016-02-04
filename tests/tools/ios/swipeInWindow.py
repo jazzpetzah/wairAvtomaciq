@@ -56,9 +56,9 @@ def swipe(startX, startY, endX, endY, durationMilliseconds):
 
 def swipeRelative(posx0, posy0, startX, startY, endX, endY, sizeX, sizeY, durationMilliseconds):
     x1 = int(posx0) + startX * float(sizeX)
-    y1 = int(posy0) + startY * float(float(sizeY) - WINDOW_CAPTION_HEIGHT)
+    y1 = int(posy0) + WINDOW_CAPTION_HEIGHT + startY * float(float(sizeY) - WINDOW_CAPTION_HEIGHT)
     x2 = int(posx0) + endX * float(sizeX)
-    y2 = int(posy0) + endY * float(float(sizeY) - WINDOW_CAPTION_HEIGHT)
+    y2 = int(posy0) + WINDOW_CAPTION_HEIGHT + endY * float(float(sizeY) - WINDOW_CAPTION_HEIGHT)
     swipe (int(x1),int(y1),int(x2),int(y2), durationMilliseconds)
 
 def getWindowPosition(windowName):
