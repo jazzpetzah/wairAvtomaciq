@@ -26,6 +26,10 @@ public class DeviceDetailPopoverPage extends AbstractPopoverContainer {
     @FindBy(how = How.CSS, using = ".user-profile-device-detail .user-profile-device-detail-fingerprint")
     private WebElement fingerprint;
 
+    @FindBy(how = How.CSS, using = ".slider")
+    private WebElement verificationToggle;
+
+
     public DeviceDetailPopoverPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -54,5 +58,9 @@ public class DeviceDetailPopoverPage extends AbstractPopoverContainer {
 
     public String getFingerPrint() {
         return fingerprint.getText();
+    }
+
+    public void verifyDevice() {
+        verificationToggle.click();
     }
 }
