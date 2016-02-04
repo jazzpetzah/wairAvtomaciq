@@ -92,8 +92,15 @@ public class DialogPage extends AndroidPage {
     private static final By idCancelCall = By.id("cib__calling__dismiss");
 
     private static final String idStrNewConversationNameMessage = "ttv__row_conversation__new_conversation_name";
+
     private static Function<String, String> xpathStrNewConversationNameByValue = value -> String
             .format("//*[@id='%s' and @value='%s']", idStrNewConversationNameMessage, value);
+
+    private static final By xpathStrOtrVerifiedMessage
+            = By.xpath("//*[@id='ttv__row_conversation__otr_message' and @value='Conversation verified']");
+
+    private static final By idStrOtrNotVerifiedMessage
+            = By.xpath("//*[@id='ttv__row_conversation__otr_message' and @value='Conversation not verified']");
 
     private static final By xpathLastConversationMessage
             = By.xpath("(//*[@id='ltv__row_conversation__message'])[last()]");
@@ -293,6 +300,16 @@ public class DialogPage extends AndroidPage {
             throws Exception {
         final By locator = By.xpath(xpathStrNewConversationNameByValue.apply(expectedName));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean waitForOtrVerifiedMessage()
+            throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathStrOtrVerifiedMessage);
+    }
+
+    public boolean waitForOtrNonVerifiedMessage()
+            throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathStrOtrVerifiedMessage);
     }
 
     public boolean waitForMessage(String text) throws Exception {

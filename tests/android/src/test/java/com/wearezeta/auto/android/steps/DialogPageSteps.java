@@ -578,6 +578,28 @@ public class DialogPageSteps {
     }
 
     /**
+     * Checks for verified or non-verified conversation message
+     *
+     * @param verified weather the message should show verified or non verified conversation
+     * @throws Exception
+     * @step. ^I see a message informing me conversation is (not )?verified$
+     */
+    @Then("^I see a message informing me conversation is (not )?verified$")
+    public void ThenISeeVerifiedConversationMessage(String verified)
+            throws Exception {
+        if (verified == null) {
+            Assert.assertTrue(
+                    "The otr verified conversation message has not been shown in the conversation view",
+                    getDialogPage().waitForOtrVerifiedMessage());
+        } else {
+            Assert.assertTrue(
+                    "The otr non verified conversation message has been shown in the conversation view",
+                    getDialogPage().waitForOtrNonVerifiedMessage());
+        }
+
+    }
+
+    /**
      * Used once to check that the last message sent is the same as what is
      * expected
      *

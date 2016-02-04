@@ -90,6 +90,12 @@ public class SEBridge {
         return dstDevice;
     }
 
+    private IDevice getOrAddDevice(ClientUser user, String deviceName) throws Exception {
+        IDevice dstDevice = getDevicePool().getOrAddDevice(user, deviceName);
+        this.login(user, dstDevice);
+        return dstDevice;
+    }
+
     public List<String> getDeviceIds(ClientUser user) throws Exception {
         List<IDevice> devices = getDevicePool().getDevices(user);
         List<String> ids = new ArrayList<>();
@@ -145,6 +151,14 @@ public class SEBridge {
 
     public void sendConversationMessage(ClientUser userFrom, String convId, String message) throws Exception {
         getOrAddRandomDevice(userFrom).sendMessage(convId, message);
+    }
+
+    public void sendConversationMessage(ClientUser userFrom, String convId, String message, String deviceName) throws Exception {
+        if (deviceName == null) {
+            sendConversationMessage(userFrom, convId, message);
+        } else {
+            getOrAddDevice(userFrom, deviceName).sendMessage(convId, message);
+        }
     }
 
     public void addRemoteDeviceToAccount(ClientUser user, String deviceName, String label) throws Exception {
