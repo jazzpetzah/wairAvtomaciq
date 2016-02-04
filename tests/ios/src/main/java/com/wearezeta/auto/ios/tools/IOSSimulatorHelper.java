@@ -23,7 +23,6 @@ public class IOSSimulatorHelper {
      * @throws Exception
      */
     public static void swipe(double startX, double startY, double endX, double endY) throws Exception {
-        activateWindow();
         CommonUtils.executeUIShellScript(new String[]{
                 String.format("/usr/bin/python '%s/%s' %.2f %.2f %.2f %.2f",
                         getIOSToolsRoot(IOSSimulatorHelper.class), SWIPE_SCRIPT_NAME,
@@ -41,7 +40,6 @@ public class IOSSimulatorHelper {
      */
     public static void swipe(double startX, double startY, double endX, double endY,
                              long durationMillis) throws Exception {
-        activateWindow();
         CommonUtils.executeUIShellScript(new String[]{
                 String.format("/usr/bin/python '%s/%s' %.2f %.2f %.2f %.2f %d",
                         getIOSToolsRoot(IOSSimulatorHelper.class), SWIPE_SCRIPT_NAME,
@@ -58,7 +56,6 @@ public class IOSSimulatorHelper {
     }
 
     public static void clickAt(String relativeX, String relativeY) throws Exception {
-        activateWindow();
         CommonUtils.executeUIShellScript(new String[]{
                 String.format("/usr/bin/python '%s/%s' %s %s",
                         getIOSToolsRoot(IOSSimulatorHelper.class), CLICK_SCRIPT_NAME, relativeX, relativeY)

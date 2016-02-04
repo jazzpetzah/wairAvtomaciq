@@ -56,7 +56,16 @@ osascript<<END
     print "Window position of '%s' is: %s" % (windowName, result)
     return result
 
-# Use applescript to get the window size
+def moveWindowToForeground(windowName):
+    cmd="""
+osascript<<END
+    tell application "System Events" to tell application "%s"
+        activate
+    end tell
+""" % windowName
+    subprocess.check_output(cmd, shell=True)
+    time.sleep(2)
+
 def getWindowSize(windowName):
     cmd="""
 osascript<<END
@@ -72,6 +81,7 @@ osascript<<END
 def clickInWindow(windowName, posX, posY):
     dim = getWindowSize(windowName)
     pos0 = getWindowPosition(windowName)
+    moveWindowToForeground(windowName)
     clickRelative(pos0[0], pos0[1], posX, posY, dim[0], dim[1])
 
 if __name__ == "__main__":
