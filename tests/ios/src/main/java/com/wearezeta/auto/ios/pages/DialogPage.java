@@ -41,7 +41,7 @@ public class DialogPage extends IOSPage {
 
     private static final By xpathMessageEntries = By.xpath(xpathStrMainWindow + "/UIATableView/UIATableCell");
 
-    private static final By nameImageCell = By.name("ImageCell");
+    private static final By xpathImageCell = By.xpath("//UIATableCell[@name='ImageCell']");
 
     private static final By xpathNameMediaContainer = By.xpath(
             xpathStrMainWindow + "/UIATableView[1]/UIATableCell[last()]");
@@ -217,8 +217,8 @@ public class DialogPage extends IOSPage {
     }
 
     public int getCountOfImages() throws Exception {
-        if (DriverUtils.waitUntilLocatorAppears(getDriver(), nameImageCell)) {
-            return getElements(nameImageCell).size();
+        if (DriverUtils.waitUntilLocatorAppears(getDriver(), xpathImageCell)) {
+            return getElements(xpathImageCell).size();
         }
         return 0;
     }

@@ -243,7 +243,7 @@ public class DialogPageSteps {
                 Thread.sleep(500);
             } while (System.currentTimeMillis() - millisecondsStarted <= IMAGE_VISIBILITY_TIMEOUT);
         }
-        Assert.assertTrue(String.format("The actual count of images in the conversation view %s" +
+        Assert.assertTrue(String.format("The actual count of images in the conversation view %s " +
                 "does not equal to the expected count %s", actualCount, expectedCount), actualCount == expectedCount);
     }
 
