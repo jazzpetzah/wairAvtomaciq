@@ -75,7 +75,6 @@ Feature: Connect
     Given I see conversations list
     When I see Pending request link in contact list
     And I click on Pending request link in contact list
-    And I see Pending request page
     And I click on Ignore button on Pending requests page <SentRequests> times
     And I dont see Pending request link in contact list
     And I wait until <Contact1> exists in backend search results
@@ -99,7 +98,6 @@ Feature: Connect
     Given I see conversations list
     When I see Pending request link in contact list
     And I click on Pending request link in contact list
-    And I see Pending request page
     And I click on Connect button on Pending requests page <SentRequests> times
     And I navigate back to conversations list
     Then I dont see Pending request link in contact list
