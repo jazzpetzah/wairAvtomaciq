@@ -241,12 +241,8 @@ Feature: Calling
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    Given <Contact2> starts waiting instance using <CallBackend>
-    Given <Contact2> accepts next incoming call automatically
-    Given <Contact3> starts waiting instance using <CallBackend>
-    Given <Contact3> accepts next incoming call automatically
-    Given <Contact4> starts waiting instance using <CallBackend>
-    Given <Contact4> accepts next incoming call automatically
+    Given <Contact2>,<Contact3>,<Contact4> start waiting instance using <CallBackend>
+    Given <Contact2>,<Contact3>,<Contact4> accept next incoming call automatically
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
@@ -288,9 +284,8 @@ Feature: Calling
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    Given <Contact3>,<Contact4> starts waiting instance using <CallBackend>
-    Given <Contact3> accepts next incoming call automatically
-    Given <Contact4> accepts next incoming call automatically
+    Given <Contact3>,<Contact4> start waiting instance using <CallBackend>
+    Given <Contact3>,<Contact4> accept next incoming call automatically
     Given I sign in using my email or phone number
     Given I see conversations list
     And I tap on contact name <Contact1>
@@ -316,10 +311,8 @@ Feature: Calling
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    Given <Contact1>,<Contact3>,<Contact4> starts waiting instance using <CallBackend>
-    Given <Contact1> accepts next incoming call automatically
-    Given <Contact3> accepts next incoming call automatically
-    Given <Contact4> accepts next incoming call automatically
+    Given <Contact1>,<Contact3>,<Contact4> start waiting instance using <CallBackend>
+    Given <Contact1>,<Contact3>,<Contact4> accept next incoming call automatically
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
@@ -344,12 +337,8 @@ Feature: Calling
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    Given <Contact2> starts waiting instance using <CallBackend>
-    Given <Contact2> accepts next incoming call automatically
-    Given <Contact3> starts waiting instance using <CallBackend>
-    Given <Contact3> accepts next incoming call automatically
-    Given <Contact4> starts waiting instance using <CallBackend>
-    Given <Contact4> accepts next incoming call automatically
+    Given <Contact2>,<Contact3>,<Contact4> start waiting instance using <CallBackend>
+    Given <Contact2>,<Contact3>,<Contact4> accept next incoming call automatically
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
@@ -374,10 +363,8 @@ Feature: Calling
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    Given <Contact1>,<Contact3>,<Contact4> starts waiting instance using <CallBackend>
-    Given <Contact1> accepts next incoming call automatically
-    Given <Contact3> accepts next incoming call automatically
-    Given <Contact4> accepts next incoming call automatically
+    Given <Contact1>,<Contact3>,<Contact4> start waiting instance using <CallBackend>
+    Given <Contact1>,<Contact3>,<Contact4> accept next incoming call automatically
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
@@ -403,11 +390,8 @@ Feature: Calling
     Given There are 6 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts waiting instance using <CallBackend>
-    Given <Contact1> accepts next incoming call automatically
-    Given <Contact2> accepts next incoming call automatically
-    Given <Contact3> accepts next incoming call automatically
-    Given <Contact4> accepts next incoming call automatically
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> start waiting instance using <CallBackend>
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> accept next incoming call automatically
     Given I sign in using my email or phone number
     Given I see conversations list
     When <Contact2> calls <GroupChatName> using <CallBackend2>
@@ -453,10 +437,8 @@ Feature: Calling
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    Given <Contact1>,<Contact3>,<Contact4> starts waiting instance using <CallBackend>
-    Given <Contact1> accepts next incoming call automatically
-    Given <Contact3> accepts next incoming call automatically
-    Given <Contact4> accepts next incoming call automatically
+    Given <Contact1>,<Contact3>,<Contact4> start waiting instance using <CallBackend>
+    Given <Contact1>,<Contact3>,<Contact4> accept next incoming call automatically
     Given I sign in using my email or phone number
     Given I see conversations list
     And <Contact2> calls <GroupChatName> using <CallBackend2>
@@ -477,11 +459,8 @@ Feature: Calling
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts waiting instance using <CallBackend>
-    Given <Contact1> accepts next incoming call automatically
-    Given <Contact2> accepts next incoming call automatically
-    Given <Contact3> accepts next incoming call automatically
-    Given <Contact4> accepts next incoming call automatically
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> start waiting instance using <CallBackend>
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> accept next incoming call automatically
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
@@ -554,10 +533,8 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given <Contact1> is connected to <Contact2>,<Contact3>,<Contact4>
     Given <Contact1> has group chat <GroupChatName> with <Contact2>,<Contact3>,<Contact4>
-    Given <Contact1>,<Contact3>,<Contact4> starts waiting instance using <CallBackend>
-    Given <Contact1> accepts next incoming call automatically
-    Given <Contact3> accepts next incoming call automatically
-    Given <Contact4> accepts next incoming call automatically
+    Given <Contact1>,<Contact3>,<Contact4> start waiting instance using <CallBackend>
+    Given <Contact1>,<Contact3>,<Contact4> accept next incoming call automatically
     Given I sign in using my email or phone number
     Given I see conversations list
     When <Contact2> calls <GroupChatName> using <CallBackend2>
