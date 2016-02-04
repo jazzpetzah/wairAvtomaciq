@@ -526,9 +526,9 @@ public class CommonAndroidTabletSteps {
      * @param dstConversationName   the target conversation to send the ping to
      * @param isSecure equals null if ping should not be secure
      * @throws Exception
-     * @step. ^User (.*) (securely )?pings? conversation (.*)
+     * @step. ^User (\\w+) (securely )?pings? conversation (.*)$
      */
-    @When("^User (.*) (securely )?pings? conversation (.*)")
+    @When("^User (\\w+) (securely )?pings? conversation (.*)$")
     public void UserPingedConversation(String pingFromUserNameAlias,
                                        String isSecure, String dstConversationName) throws Exception {
         if (isSecure == null) {
@@ -545,9 +545,9 @@ public class CommonAndroidTabletSteps {
      * @param dstConversationName      the target converation to send the ping to
      * @param isSecure equals null if ping should not be secure
      * @throws Exception
-     * @step. ^User (.*) (securely )?hotpings? conversation (.*)
+     * @step. ^User (\\w+) (securely )?hotpings? conversation (.*)$
      */
-    @When("^User (.*) (securely )?hotpings? conversation (.*)")
+    @When("^User (\\w+) (securely )?hotpings? conversation (.*)$")
     public void UserHotPingedConversation(String hotPingFromUserNameAlias,
                                           String isSecure, String dstConversationName) throws Exception {
         if (isSecure == null) {
@@ -617,9 +617,9 @@ public class CommonAndroidTabletSteps {
      * @param conversationType         "single user" or "group" conversation.
      * @param dstConversationName      the name of the conversation to send the image to.
      * @throws Exception
-     * @step. ^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)
+     * @step. ^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)$
      */
-    @When("^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)")
+    @When("^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)$")
     public void ContactSendImageToConversation(String imageSenderUserNameAlias, String isEncrypted,
                                                String imageFileName, String conversationType,
                                                String dstConversationName) throws Exception {
@@ -783,9 +783,9 @@ public class CommonAndroidTabletSteps {
      * @param whatToExclude comma-separated list of user properties to exclude from being added to AB.
      *                      Can be email|phone
      * @throws Exception
-     * @step. ^I add (.*) into Address Book(?:\s+excluding\s+|\s*)(.*)
+     * @step. ^I add (.*) into Address Book(?:\s+excluding\s+|\s*)(.*)$
      */
-    @Given("^I add (.*) into Address Book(?:\\s+excluding\\s+|\\s*)(.*)")
+    @Given("^I add (.*) into Address Book(?:\\s+excluding\\s+|\\s*)(.*)$")
     public void IImportUserIntoAddressBook(String alias, String whatToExclude) throws Exception {
         List<String> excludesList = new ArrayList<>();
         if (whatToExclude != null) {
