@@ -123,8 +123,8 @@ Feature: E2EE
     And I see encrypted message <EncryptedMessage> 1 time in the conversation view
 
     Examples:
-      | Name      | Contact1   | Contact2  | EncryptedMessage | SimpleMessage | GroupChatName |
-      | user1Name | user2Name  | user3Name | EncryptedYo      | SimpleYo      | HybridGroup   |
+      | Name      | Contact1  | Contact2  | EncryptedMessage | SimpleMessage | GroupChatName |
+      | user1Name | user2Name | user3Name | EncryptedYo      | SimpleYo      | HybridGroup   |
 
   @C3242 @regression
   Scenario Outline: Verify you can receive encrypted and non-encrypted images in group chat
@@ -135,15 +135,15 @@ Feature: E2EE
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When User <Contact1> sends encrypted image <ImageName> to group conversation <GroupChatName>
-    And User <Contact1> sends image <ImageName2> to group conversation <GroupChatName>
+    And User <Contact1> sends image <ImageName> to group conversation <GroupChatName>
     And I tap on contact name <GroupChatName>
     And I scroll to the bottom of conversation view
     Then I see non-encrypted image 1 time in the conversation view
     And I see encrypted image 1 time in the conversation view
 
     Examples:
-      | Name      | Contact1  | Contact2  | ImageName   | ImageName2               | GroupChatName |
-      | user1Name | user2Name | user3Name | testing.jpg | userpicture_portrait.jpg | GroupConvo    |
+      | Name      | Contact1  | Contact2  | ImageName   | GroupChatName |
+      | user1Name | user2Name | user3Name | testing.jpg | GroupConvo    |
 
   @C3229 @staging
   Scenario Outline: Verify you can see device ids of the other conversation participant in participant details view inside a group conversation
@@ -252,7 +252,7 @@ Feature: E2EE
       | user1Name | user2Name | user3Name | user4Name | EncryptedGrp  | Bla        |
 
   @C3231 @rc @regression
-  Scenario Outline: Verify the appropriate device is signed out if you remove it from settings  
+  Scenario Outline: Verify the appropriate device is signed out if you remove it from settings
     Given There are 1 users where <Name> is me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -260,7 +260,7 @@ Feature: E2EE
     Then I see welcome screen
     And I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    
+
     Examples:
       | Name      |
       | user1Name |
@@ -280,7 +280,7 @@ Feature: E2EE
     Examples:
       | Name      | Contact1  | EncMessage |
       | user1Name | user2Name | Bla        |
-      
+
   @C3237 @staging
   Scenario Outline: Verify it is possible to verify other user's device in 1:1 conversation
     Given There are 2 users where <Name> is me
@@ -298,7 +298,7 @@ Feature: E2EE
     Examples:
       | Name      | Contact1  | Message1 |
       | user1Name | user2Name | Msg1     |
-      
+
   @C3515 @staging
   Scenario Outline: Verify green shield showed in other user profile when I verify all his devices
     Given There are 2 users where <Name> is me
@@ -319,9 +319,9 @@ Feature: E2EE
     Examples:
       | Name      | Contact1  | Message1 |
       | user1Name | user2Name | Msg1     |
-      
+
   @C3239 @staging
-  Scenario Outline: Verify it is possible to verify other user's device in group conversation  
+  Scenario Outline: Verify it is possible to verify other user's device in group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
