@@ -32,11 +32,6 @@ public class OtherUserPersonalInfoPageSteps {
         getOtherUserPersonalInfoPage().removeFromConversation();
     }
 
-    @When("^I see warning message$")
-    public void ISeeAreYouSure() throws Throwable {
-        Assert.assertTrue(getOtherUserPersonalInfoPage().isRemoveFromConversationAlertVisible());
-    }
-
     @When("^I confirm remove$")
     public void IConfirmRemove() throws Throwable {
         getOtherUserPersonalInfoPage().confirmRemove();

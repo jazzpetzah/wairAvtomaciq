@@ -116,10 +116,6 @@ public class OtherUserPersonalInfoPage extends IOSPage {
         DriverUtils.tapByCoordinates(this.getDriver(), getElement(nameRemoveFromConversation));
     }
 
-    public boolean isRemoveFromConversationAlertVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameConfirmRemoveButton);
-    }
-
     public void confirmRemove() throws Exception {
         getElement(nameConfirmRemoveButton).click();
     }

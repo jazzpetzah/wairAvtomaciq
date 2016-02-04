@@ -494,7 +494,6 @@ Feature: Calling
     And I open group conversation details
     And I select participant <Contact2>
     And I click Remove
-    And I see warning message
     And I confirm remove
     And I click close user profile page button
     Then I see that <Contact2> is not present on group chat info page

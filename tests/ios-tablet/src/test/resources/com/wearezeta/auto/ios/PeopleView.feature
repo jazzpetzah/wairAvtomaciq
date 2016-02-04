@@ -139,7 +139,6 @@ Feature: People View
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
     And I click Remove on iPad
-    And I see remove warning message on iPad
     And I confirm remove on iPad
     And I click Go back button on user profile popover
     Then I see that <Contact2> is not present on group chat info page
@@ -160,7 +159,6 @@ Feature: People View
     And I open group conversation details
     And I select user on iPad group popover <Contact2>
     And I click Remove on iPad
-    And I see remove warning message on iPad
     And I confirm remove on iPad
     And I click Go back button on user profile popover
     Then I see that <Contact2> is not present on group chat info page
