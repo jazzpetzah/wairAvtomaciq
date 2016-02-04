@@ -369,10 +369,16 @@ Feature: E2EE
     When I switch to Devices tab on Single User Profile popover
     And I click on device Device1 of user <Contact> on Single User Profile popover
     And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    #Then I see device Device1 of user <Contact> is verified on Single User Profile popover
+    #Then I see verified icon on Single User Profile popover
+    When I click People button in one to one conversation
+    Then I see <ALL_VERIFIED> action in conversation
+    #And I see verified icon in conversation
 
   Examples:
-    | Email      | Password      | Name      | Contact   |
-    | user1Email | user1Password | user1Name | user2Name |
+    | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  |
+    | user1Email | user1Password | user1Name | user2Name | All fingerprints are verified |
 
   @C12055 @e2ee
   Scenario Outline: Verify it is possible to verify group conversation participants
@@ -393,8 +399,16 @@ Feature: E2EE
     Then I see Group Participants popover
     When I click on participant <Contact1> on Group Participants popover
     And I switch to Devices tab on Single User Profile popover
+    And I click on device Device1 of user <Contact1> on Single User Profile popover
     And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    #Then I see device Device1 of user <Contact> is verified on Single User Profile popover
+    #Then I see verified icon on Single User Profile popover
+    #When I click back button
+    #Then User is in verified category
+    When I click People button in group conversation
+    And I see <ALL_VERIFIED> action in conversation
 
   Examples:
-    | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName |
-    | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat     |
+    | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | ALL_VERIFIED                  |
+    | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat     | All fingerprints are verified |

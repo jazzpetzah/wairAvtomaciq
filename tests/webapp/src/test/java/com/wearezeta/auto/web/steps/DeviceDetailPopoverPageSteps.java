@@ -33,4 +33,9 @@ public class DeviceDetailPopoverPageSteps {
     public void IVerifyDevice() throws Exception {
         webappPagesCollection.getPage(DeviceDetailPopoverPage.class).verifyDevice();
     }
+
+    @When("^I click back button on the Device Detail popover$")
+    public void IClickBackButton() throws Exception {
+        webappPagesCollection.getPage(DeviceDetailPopoverPage.class).clickBackButton();
+    }
 }
