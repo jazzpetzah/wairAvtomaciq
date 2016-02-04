@@ -155,7 +155,6 @@ Feature: People View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the Search input
-    And I see People Picker page
     And I keep on reopening People Picker until I see Top People
     And I tap <Contact1> avatar in Top People
     When I tap Open Conversation button on People Picker page
@@ -175,7 +174,6 @@ Feature: People View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the Search input
-    And I see People Picker page
     And I keep on reopening People Picker until I see Top People
     And I tap <Contact1> avatar in Top People
     When I tap Open Conversation button on People Picker page
@@ -193,11 +191,11 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given Contact <Contact1> sends message "<Message>" to user Myself
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
+    Given User <Contact1> sends encrypted message <Message> to user Myself
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
@@ -219,11 +217,11 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given Contact <Contact1> sends message "<Message>" to user Myself
     Given I rotate UI to landscape
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
+    Given User <Contact1> sends encrypted  message <Message> to user Myself
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
@@ -403,8 +401,7 @@ Feature: People View
     And I see the Group popover
     And I see the participant avatar <Contact2> on Group popover
     And I tap the participant avatar <Contact2> on Group popover
-    When I tap Open Conversation button on Group popover
-    Then I see the Group popover
+    Then I do not see Open Conversation button on Group popover
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName        |

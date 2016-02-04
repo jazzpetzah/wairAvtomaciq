@@ -130,7 +130,7 @@ Feature: Calling
       | autocall    | user1Name | user2Name | user3Name |
 
   @C521 @id3125 @calling_basic
-  Scenario Outline: (AN-3145) I see miss call notification on the list and inside conversation view (landscape)
+  Scenario Outline: I see miss call notification on the list and inside conversation view (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to landscape
@@ -202,8 +202,8 @@ Feature: Calling
     And I tap the text input in the conversation view
     When I type the message "<TextMessage>" in the conversation view
     And I send the typed message in the conversation view
-    Then I see the message "<TextMessage>" in the conversation view
     And I hide keyboard
+    Then I see the message "<TextMessage>" in the conversation view
     When I swipe right on text input in the conversation view
     And I tap Add Picture button in the conversation view
     And I tap Take Photo button in the conversation view

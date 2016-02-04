@@ -7,7 +7,7 @@ Feature: Self Profile
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I tap on personal screen
     And I press Camera button
     And I choose a picture from camera roll
@@ -26,7 +26,7 @@ Feature: Self Profile
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I tap to edit my name
     And I attempt to input an empty name and press return
     And I see error message asking for more characters
@@ -43,7 +43,7 @@ Feature: Self Profile
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I tap to edit my name
     And I attempt to enter <username> and press return
     And I see error message asking for more characters
@@ -60,37 +60,19 @@ Feature: Self Profile
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I tap to edit my name
     And I attempt to input an empty name and press return
     And I see error message asking for more characters
     And I change name <Name> to <NewUsername>
     And I close self profile
     And I see conversations list
-    And I tap on my name <NewUsername>
+    And I tap my avatar
     Then I see my new name <NewUsername>
 
     Examples: 
       | Name      | NewUsername | Contact   |
       | user1Name | New Name    | user2Name |
-
-  @C1083 @regression @id667
-  Scenario Outline: Verify changing and applying accent color
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given User <Contact> sends 40 encrypted messages to user Myself
-    Given User <Name> change accent color to <Color1>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on my name <Name>
-    And I slide my accent color via the colorpicker from <Color1> to <Color2>
-    And I close self profile
-    And User <Contact> sends encrypted message "<Message>" to user <Name>
-    Then I see 1 unread message indicator in list for contact <Contact>
-
-    Examples: 
-      | Name      | Color1 | Color2          | Contact   | Message |
-      | user1Name | Violet | StrongLimeGreen | user2Name | hidiho  |
 
   @C1085 @regression @id3849
   Scenario Outline: Verify adding phone number to the contact signed up with email
@@ -98,7 +80,7 @@ Feature: Self Profile
     Given I sign in using my email
     Given I click Not Now to not add phone number
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     And I tap to add my phone number
     And I see country picker button on Sign in screen
     And I enter phone number and verification code
@@ -116,7 +98,7 @@ Feature: Self Profile
     When I click Not Now to not add phone number
     And I accept alert
     And I see conversations list
-    And I tap on my name <Name>
+    And I tap my avatar
     And I tap to add my phone number
     And I see country picker button on Sign in screen
     And I enter invalid phone number
@@ -134,7 +116,7 @@ Feature: Self Profile
     When I click Not Now to not add phone number
     And I accept alert
     And I see conversations list
-    And I tap on my name <Name>
+    And I tap my avatar
     And I tap to add my phone number
     And I see country picker button on Sign in screen
     And I input phone number <Number> with code <Code>
@@ -149,7 +131,7 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     Then I see theme switcher button on self profile page
 
     Examples: 

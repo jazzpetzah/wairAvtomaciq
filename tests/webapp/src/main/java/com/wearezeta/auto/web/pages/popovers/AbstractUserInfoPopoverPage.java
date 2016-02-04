@@ -69,9 +69,8 @@ abstract class AbstractUserInfoPopoverPage extends AbstractPopoverPage {
 		return avatar.isDisplayed();
 	}
 
-	public BufferedImage getAvatar() throws IllegalStateException, Exception {
-		return CommonUtils.getElementScreenshot(avatar, this.getDriver())
-				.orElseThrow(IllegalStateException::new);
+	public BufferedImage getAvatar() throws Exception {
+		return this.getElementScreenshot(avatar).orElseThrow(IllegalStateException::new);
 	}
 
 	public String getMailText() {

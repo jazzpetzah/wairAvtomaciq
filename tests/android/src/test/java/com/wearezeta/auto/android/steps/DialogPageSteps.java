@@ -531,14 +531,13 @@ public class DialogPageSteps {
     @Then("^I see group chat page with users (.*)$")
     public void ThenISeeGroupChatPage(String participantNameAliases)
             throws Exception {
-        assert getDialogPage().isDialogVisible() : "Group chat view is not visible";
         List<String> participantNames = new ArrayList<String>();
         for (String nameAlias : CommonSteps
                 .splitAliases(participantNameAliases)) {
             participantNames.add(usrMgr.findUserByNameOrNameAlias(nameAlias)
                     .getName());
         }
-        Assert.assertTrue(getDialogPage().isGroupChatDialogContainsNames(
+        Assert.assertTrue(String.format("Group chat view with names %s is not visible", participantNames), getDialogPage().isGroupChatDialogContainsNames(
                 participantNames));
     }
 
@@ -590,20 +589,6 @@ public class DialogPageSteps {
     public void ThenLastMessageIs(String message) throws Exception {
         Assert.assertTrue(String.format("The last conversation message is not equal to '%s'", message),
                 getDialogPage().isLastMessageEqualTo(message, 30));
-    }
-
-    /**
-     * Verify that I see Play or Pause button on Mediabar
-     *
-     * @throws Exception
-     * @step. ^I see (.*) on Mediabar$
-     */
-    @Then("^I see (.*) on Mediabar$")
-    public void ThenIseeOnMediaBar(String iconLabel) throws Exception {
-        final double score = getDialogPage()
-                .getMediaBarControlIconOverlapScore(iconLabel);
-        Assert.assertTrue("Overlap between two images has not enough score. Expected >= 0.75, current = "
-                + score, score >= 0.75d);
     }
 
     private BufferedImage previousMediaButtonState = null;

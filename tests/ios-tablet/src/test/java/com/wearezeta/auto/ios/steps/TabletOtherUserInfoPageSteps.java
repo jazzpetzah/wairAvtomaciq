@@ -32,18 +32,6 @@ public class TabletOtherUserInfoPageSteps {
 	}
 
 	/**
-	 * Verifies that it sees the about to remove someone message
-	 * 
-	 * @step. ^I see remove warning message on iPad$
-	 * @throws Throwable
-	 */
-	@When("^I see remove warning message on iPad$")
-	public void ISeeRemoveWarningMessageOniPad() throws Throwable {
-		Assert.assertTrue(getTabletOtherUserInfoPage()
-				.isRemoveFromConversationAlertVisible());
-	}
-
-	/**
 	 * Clicks the confirm REMOVE button
 	 * 
 	 * @step. ^I confirm remove on iPad$

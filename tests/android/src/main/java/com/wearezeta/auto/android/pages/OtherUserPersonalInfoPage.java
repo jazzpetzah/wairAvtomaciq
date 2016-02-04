@@ -1,6 +1,5 @@
 package com.wearezeta.auto.android.pages;
 
-import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.function.Function;
@@ -8,32 +7,40 @@ import java.util.function.Function;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import java.util.stream.Collectors;
 
 public class OtherUserPersonalInfoPage extends AndroidPage {
-
-    private static final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.75;
 
     public static final By xpathUnblockButton = By.xpath("//*[contains(@id, '__unblock_button') and @shown='true']");
 
     private static final Function<String, String> xpathParticipantNameByText = text -> String
-            .format("//*[@id='ttv__participants__header' and @value='%s']",
-                    text);
+            .format("//*[@id='ttv__participants__header' and @value='%s']", text);
 
     private static final Function<String, String> xpathParticipantEmailByText = text -> String
-            .format("//*[@id='ttv__participants__sub_header' and @value='%s']",
-                    text);
+            .format("//*[@id='ttv__participants__sub_header' and @value='%s']", text);
 
     private static final Function<String, String> xpathSingleParticipantNameByText = text -> String
-            .format("//*[@id='ttv__single_participants__header' and @value='%s']",
-                    text);
+            .format("//*[@id='ttv__single_participants__header' and @value='%s']", text);
 
     private static final Function<String, String> xpathSingleParticipantEmailByText = text -> String
-            .format("//*[@id='ttv__single_participants__sub_header' and @value='%s']",
-                    text);
+            .format("//*[@id='ttv__single_participants__sub_header' and @value='%s']", text);
+
+    private static final Function<String, String> xpathSingleParticipantTabByText = text -> String
+            .format("//*[@value='%s']", text);
+
+    private static final By idParticipantDevices = By.id("ttv__row_otr_device");
+    
+    private static final By idParticipantOtrShield = By.id("sv__otr__verified_shield");
+    
+    private static final Function<Integer, String> xpathParticipantDeviceByIdx = idx -> String
+        .format("//*[@id='ttv__row_otr_device'][%d]", idx);
+    
+    private static final By xpathSingleOtrSwitch = By.xpath("//OtrSwitch[@id='os__single_otr_client__verify']/SwitchCompat");
+    
+    private static final By xpathSingleOtrSwitchValue = 
+            By.xpath("//OtrSwitch[@id='os__single_otr_client__verify']//TypefaceTextView[contains(@value, 'erified')]");
 
     private static final Function<String, String> xpathParticipantAvatarByName = name -> String
             .format("//*[@id='cv__group__adapter' and ./parent::*/*[@value='%s']]",
@@ -57,6 +64,12 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
             By.xpath("//*[contains(@id, '__right__action') and starts-with(@id, 'gtv__') and @shown='true']");
 
     private static final By idParticipantsSubHeader = By.id("ttv__participants__sub_header");
+
+    private static final By xpathConfirmRemoveButton = By.xpath("//*[@id='positive' and @value='REMOVE']");
+
+    private static final By xpathConfirmBlockButton = By.xpath("//*[@id='positive' and @value='BLOCK']");
+
+    private static final By xpathConfirmLeaveButton = By.xpath("//*[@id='positive' and @value='LEAVE']");
 
     public OtherUserPersonalInfoPage(Future<ZetaAndroidDriver> lazyDriver)
             throws Exception {
@@ -87,6 +100,38 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
                 By.xpath(xpathConvOptionsMenuItemByName.apply("SILENCE")),
                 By.xpath(xpathConvOptionsMenuItemByName.apply("DELETE")),
                 By.xpath(xpathConvOptionsMenuItemByName.apply("ARCHIVE"))};
+    }
+
+    public List<String> getParticipantDevices() throws Exception {
+        return selectVisibleElements(idParticipantDevices).stream().map(WebElement::getText).map((string) -> string.replaceAll("(PHONE)|(DESKTOP)|(\\n)|(\\s)|(ID:)", "").toLowerCase()).collect(Collectors.toList());
+    }
+
+    public void tapOnParticipantFirstDevice(int deviceNum) throws Exception {
+        getElement(By.xpath(xpathParticipantDeviceByIdx.apply(deviceNum)),
+                String.format("Device '%s' is not found", deviceNum)).click();
+    }
+
+    private static final String VERIFIED_VELUE = "Verified";
+    private static final String NOT_VERIFIED_VELUE = "Not verified";
+
+    public void verifyParticipantDevice() throws Exception {
+        if (getElement(xpathSingleOtrSwitchValue, "Device verification status fot found").getText().equals(NOT_VERIFIED_VELUE))
+            getElement(xpathSingleOtrSwitch).click();
+        if (getElement(xpathSingleOtrSwitchValue, "Device verification status fot found").getText().equals(VERIFIED_VELUE))
+            return;
+        else
+            throw new RuntimeException("Failed verify device");
+    }
+    
+    public boolean isParticipantShieldShowed() throws Exception {
+        return DriverUtils.isElementPresentAndDisplayed(getDriver(), getElement(idParticipantOtrShield));
+    }
+    
+    public void selectSingleParticipantTab(String itemName) throws Exception {
+        final By locator = By.xpath(xpathSingleParticipantTabByText.apply(itemName));
+        getElement(locator,
+                String.format("Single participant tab item '%s' could not be found on the current screen", itemName)).
+                click();
     }
 
     private static final int MENU_ITEM_VISIBILITY_TIMEOUT_SECONDS = 5;
@@ -162,11 +207,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idUserProfileConfirmationMenu);
     }
 
-    public void pressConfirmBtn() throws Exception {
-        getElement(xpathConfirmBtn, "Confirmation button is not visible").click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathConfirmBtn, 3)) {
-            throw new IllegalStateException("Confirmation button is still visible after 3 seconds timeout");
-        }
+    public void pressConfirmLeaveBtn() throws Exception {
+        getElement(xpathConfirmLeaveButton, "Confirmation button is not visible").click();
     }
 
     public void tapLeftActionBtn() throws Exception {
@@ -177,15 +219,6 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
         this.getDriver().tap(1, visibleButtons.get(0).getLocation().getX() + visibleButtons.get(0).getSize().width / 2,
                 visibleButtons.get(0).getLocation().getY() + visibleButtons.get(0).getSize().height / 2,
                 DriverUtils.SINGLE_TAP_DURATION);
-    }
-
-    public boolean isBackGroundImageCorrect(String imageName) throws Exception {
-        final BufferedImage bgImage = getElementScreenshot(getElement(idPager))
-                .orElseThrow(IllegalStateException::new);
-        String path = CommonUtils.getImagesPath(CommonUtils.class);
-        BufferedImage realImage = ImageUtil.readImageFromFile(path + imageName);
-        double score = ImageUtil.getOverlapScore(realImage, bgImage);
-        return (score >= MIN_ACCEPTABLE_IMAGE_VALUE);
     }
 
     public boolean isParticipantNotVisible(String name) throws Exception {
@@ -232,10 +265,26 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
                 && closeButton.getLocation().getY() < halfHeight
                 && ntry <= maxRetries);
         if (ntry > maxRetries) {
-            throw new AssertionError(
-                    String.format(
-                            "The conversations details screen has not been closed after %s retries",
-                            maxRetries));
+            throw new AssertionError(String.format(
+                            "The conversations details screen has not been closed after %s retries", maxRetries));
+        }
+    }
+
+    public void tapSingleParticipantCloseButton() throws Exception {
+        final WebElement closeButton = getElement(PeoplePickerPage.idSingleParticipantClose,
+                "Close single participant button is not visible");
+        final int halfHeight = this.getDriver().manage().window().getSize().getHeight() / 2;
+        int ntry = 1;
+        final int maxRetries = 3;
+        do {
+            closeButton.click();
+            ntry++;
+        } while (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), PeoplePickerPage.idSingleParticipantClose, 1)
+                && closeButton.getLocation().getY() < halfHeight
+                && ntry <= maxRetries);
+        if (ntry > maxRetries) {
+            throw new AssertionError(String.format(
+                            "The participant details screen has not been closed after %s retries", maxRetries));
         }
     }
 
@@ -245,8 +294,15 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     }
 
     public boolean isUserProfileMenuItemVisible(String itemName) throws Exception {
-        final By locator = By.xpath(xpathConvOptionsMenuItemByName
-                .apply(itemName));
+        final By locator = By.xpath(xpathConvOptionsMenuItemByName.apply(itemName));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public void tapConfirmRemoveButton() throws Exception {
+        getElement(xpathConfirmRemoveButton).click();
+    }
+
+    public void pressConfirmBlock() throws Exception {
+        getElement(xpathConfirmBlockButton).click();
     }
 }

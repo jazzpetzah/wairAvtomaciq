@@ -6,7 +6,6 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
     And I press keyboard Return button
@@ -30,7 +29,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C1060 @regression @id299 @noAcceptAlert @obsolete
+  @C1060 @regression @id299 @noAcceptAlert
   Scenario Outline: Verify denying address book uploading
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -51,35 +50,13 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  #regression
-  @C1061 @staging @id311 @deployAddressBook @noAcceptAlert @obsolete
-  Scenario Outline: Verify uploading address book to the server
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given I sign in using my email or phone number
-    And I dismiss all alerts
-    And I dismiss settings warning
-    And I open search by taping on it
-    And I see Upload contacts dialog
-    And I click Continue button on Upload dialog
-    And I accept alert
-    Then I see CONNECT label
-    And I see user <Contact1> found on People picker page
-    And I see user <Contact2> found on People picker page
-
-    Examples:
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
-
   @C3167 @regression @rc @id1394
   Scenario Outline: Start 1:1 chat with users from Top Connections
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I wait for 30 seconds
     And I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on first 1 top connections
@@ -104,7 +81,7 @@ Feature: Search
     And I click Create Conversation button on People picker page
     And I open group conversation details
     And I change group conversation name to <ConvoName>
-    And I exit the group info page
+    And I close group info page
     And I navigate back to conversations list
     And I see first item in contact list named <ConvoName>
 
@@ -137,9 +114,7 @@ Feature: Search
     Given Myself is connected to all other users
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I wait for 30 seconds
     And I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I tap on 3 top connections but not <Contact>
@@ -162,7 +137,6 @@ Feature: Search
     Given I see conversations list
     When I dont see conversation <Contact> in contact list
     And I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
@@ -185,7 +159,6 @@ Feature: Search
     Given I see conversations list
     When I open search by taping on it
     And I wait until <LastName> exists in backend search results
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <LastName>
     Then I see user <NewName> found on People picker page
@@ -194,25 +167,6 @@ Feature: Search
       | Name      | Contact   | NewName  | LastName |
       | user1Name | user2Name | NEW NAME | NAME     |
 
-  @C1033 @regression @rc @id2540 @id2118
-  Scenario Outline: Verify sending connection request from PYMK
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given <Contact1> is connected to <Contact2>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I open search by taping on it
-    And I see People picker page
-    And I re-enter the people picker if CONNECT label is not there
-    And I see CONNECT label
-    And I press the instant connect button
-    And I click close button to dismiss people view
-    Then I see first item in contact list named <Contact2>
-
-    Examples:
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
-
   @C1049 @regression @rc @id3282
   Scenario Outline: Verify starting a call with action button
     Given There are 2 users where <Name> is me
@@ -220,7 +174,6 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
@@ -241,7 +194,6 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on first 3 top connections
@@ -251,7 +203,7 @@ Feature: Search
     And I choose a picture from camera roll
     And I press Confirm button
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
     When I navigate back to conversations list
     Then I see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
 
@@ -266,7 +218,6 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     When I tap on first 1 top connections
@@ -283,7 +234,6 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
     When I tap on conversation <Contact> in search result
@@ -300,7 +250,6 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     When I tap on 1st top connection contact
@@ -319,7 +268,6 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     When I tap on 1st top connection contact
@@ -338,7 +286,6 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I tap on 1st top connection contact
@@ -363,7 +310,6 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I tap on 1st top connection contact
@@ -382,7 +328,6 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see Invite more people button
     And I tap on 1st top connection contact

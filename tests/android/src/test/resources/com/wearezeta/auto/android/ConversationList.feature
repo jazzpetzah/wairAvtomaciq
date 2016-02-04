@@ -11,10 +11,10 @@ Feature: Conversation List
     And I scroll to the bottom of conversation view
     And I navigate back from dialog page
     And I remember unread messages indicator state for conversation <Contact1>
-    When Contact <Contact1> sends 2 messages to user <Name>
+    When User <Contact1> sends 2 encrypted messages to user Myself
     Then I see unread messages indicator state is changed for conversation <Contact1>
     When I remember unread messages indicator state for conversation <Contact1>
-    And Contact <Contact1> sends 8 messages to user <Name>
+    And User <Contact1> sends 8 encrypted messages to user Myself
     Then I see unread messages indicator state is changed for conversation <Contact1>
     When I remember unread messages indicator state for conversation <Contact1>
     And I tap on contact name <Contact1>
@@ -30,22 +30,21 @@ Feature: Conversation List
   Scenario Outline: (AN-2969) Verify I can delete a 1:1 conversation from conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given All contacts send me a message <SpotifyLink>
-    Given User <Contact1> sends image <Image> to single user conversation <Name>
-    Given All contacts send me a message "<Message>"
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
+    Given User <Contact1> sends encrypted message <SpotifyLink> to user Myself
+    Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
+    Given User <Contact1> sends encrypted message <Message> to user Myself
     And I tap on contact name <Contact1>
     And I scroll to the bottom of conversation view
-    And Last message is "<Message>"
+    And Last message is <Message>
     And I navigate back from dialog page
     And I swipe right on a <Contact1>
     And I select DELETE from conversation settings menu
     And I press DELETE on the confirm alert
     Then I see Contact list with no contacts
     And I open search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
@@ -61,15 +60,15 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Contact1> sends image <Image> to group conversation <GroupChatName>
-    Given Contact <Contact1> sends message <SpotifyLink> to group conversation <GroupChatName>
-    Given Contact <Contact1> sends message <Message> to group conversation <GroupChatName>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
+    Given User <Contact1> sends encrypted message <SpotifyLink> to group conversation <GroupChatName>
+    Given User <Contact1> sends encrypted image <Image> to group conversation Myself
+    Given User <Contact1> sends encrypted message <Message> to group conversation <GroupChatName>
     When I tap on contact name <GroupChatName>
     And I scroll to the bottom of conversation view
-    And Last message is "<Message>"
+    And Last message is <Message>
     And I navigate back from dialog page
     And I swipe right on a <GroupChatName>
     And I select DELETE from conversation settings menu
@@ -99,12 +98,11 @@ Feature: Conversation List
     And I press DELETE on the confirm alert
     Then I do not see contact list with name <GroupChatName>
     And I open search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<GroupChatName>" into Search input on People Picker page
     Then I do not see group <GroupChatName> in People picker
     And I navigate back to Conversations List
-    And Contact <Contact1> sends message <Message> to group conversation <GroupChatName>
+    And User <Contact1> sends encrypted message <Message> to group conversation <GroupChatName>
     Then I do not see contact list with name <GroupChatName>
     And I swipe up contact list
     Then I do not see contact list with name <GroupChatName>
@@ -125,13 +123,13 @@ Feature: Conversation List
     And I select DELETE from conversation settings menu
     And I press DELETE on the confirm alert
     Then I do not see contact list with name <GroupChatName>
-    When User <Contact1> sends image <Image> to group conversation <GroupChatName>
+    When User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     Then I see contact list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I select DELETE from conversation settings menu
     And I press DELETE on the confirm alert
     Then I do not see contact list with name <GroupChatName>
-    When Contact <Contact1> ping conversation <GroupChatName>
+    When User <Contact1> securely pings conversation <GroupChatName>
     Then I see contact list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I select DELETE from conversation settings menu

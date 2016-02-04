@@ -8,7 +8,6 @@ Feature: Connect
     Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
     When I open Search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact>
@@ -75,7 +74,6 @@ Feature: Connect
     And I see contact list with name <WaitingMess3>
     And I wait until <Contact3> exists in backend search results
     And I open Search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact3>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact3>
@@ -107,7 +105,6 @@ Feature: Connect
     When I see contact list with name <WaitingMess1>
     And I wait until <Contact3> exists in backend search results
     And I open Search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact3>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact3>
@@ -136,7 +133,6 @@ Feature: Connect
     And I do not see contact list with name <WaitingMess>
     And I wait until <Contact> exists in backend search results
     And I open Search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact>
@@ -159,7 +155,6 @@ Feature: Connect
     When I see contact list with name <WaitingMess>
     And I wait until <Contact> exists in backend search results
     And I open Search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact>
@@ -179,7 +174,6 @@ Feature: Connect
     Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
     When I open Search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact>
@@ -223,7 +217,6 @@ Feature: Connect
     Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
     When I open Search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact>
@@ -249,7 +242,6 @@ Feature: Connect
     Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
     When I open Search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact>
@@ -262,7 +254,7 @@ Feature: Connect
       | user1Name | user2Name |
 
   @C389 @id550 @regression
-  Scenario Outline: (CM-691) I want to initiate a connect request by selecting someone from within a group conversation
+  Scenario Outline: I want to initiate a connect request by selecting someone from within a group conversation
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given <Contact1> is connected to <Contact2>
@@ -322,7 +314,6 @@ Feature: Connect
     Given I see Contact list with contacts
     And I wait until <Contact2> exists in backend search results
     When I open Search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact2>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact2>
@@ -365,7 +356,6 @@ Feature: Connect
     And I see contact list with name <Contact2>
     And I wait until <Contact1> exists in backend search results
     When I open Search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact1>" into Search input on People Picker page
     Then I see user <Contact1> found on People picker page
@@ -387,7 +377,6 @@ Feature: Connect
     And I navigate back from dialog page
     And I wait until <Contact1> exists in backend search results
     And I open Search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact1>" into Search input on People Picker page
     And I see user <Contact1> found on People picker page
@@ -410,7 +399,6 @@ Feature: Connect
     Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
     When I open Search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact>
@@ -436,9 +424,9 @@ Feature: Connect
     And I tap on text input
     And I type the message "<Message>" and send it
     And User <Name> blocks user <Contact>
-    And User <Contact> sends image <Picture> to single user conversation <Name>
-    And Contact <Contact> send message to user <Name>
-    And Contact <Contact> ping conversation <Name>
+    And User <Contact> sends encrypted image <Picture> to single user conversation <Name>
+    And User <Contact> sends encrypted message to user <Name>
+    And User <Contact> securely pings conversation Myself
     Then Last message is <Message>
 
     Examples:

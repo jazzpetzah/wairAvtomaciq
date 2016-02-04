@@ -35,6 +35,32 @@ Feature: Utility
     And I see button for Windows
     And I see button for Webapp
 
+  @C3283 @utility
+  Scenario Outline: Verify that there are no dead links on start page for <Agent>
+    When I navigate to start page for <Agent>
+    When I navigate to start page for <Agent>
+    And I can see no dead links
+
+    Examples: 
+      | Agent   |
+      | iphone  |
+      | android |
+      | osx     |
+      | windows |
+  
+  @C12086 @utility
+  Scenario Outline: Verify that there are no dead links on german start page for <Agent>
+    When I navigate to german start page for <Agent>
+    When I navigate to german start page for <Agent>
+    And I can see no dead links
+
+    Examples: 
+      | Agent   |
+      | iphone  |
+      | android |
+      | osx     |
+      | windows |
+        
   @C5232 @utility
   Scenario Outline: Check password reset utility page for all agents
     Given There is 1 user where <Name> is me
@@ -107,3 +133,41 @@ Feature: Utility
       | user1Email | user1Password | user1Name | aqa654321#  | android |
       | user1Email | user1Password | user1Name | aqa654321#  | osx     |
       | user1Email | user1Password | user1Name | aqa654321#  | windows |
+
+  @C3275 @C3276
+  Scenario Outline: Verify buttons from verication link for <Agent>
+    When I navigate to verify page for <Agent>
+    When I navigate to verify page for <Agent>
+    Then I see download button for <Agent>
+
+    Examples: 
+      | Agent   |
+      | iphone  |
+      | android |
+  
+
+  @C3277 @Utility
+  Scenario: Verify buttons from verification link for osx
+  When I navigate to verify page for osx
+  When I navigate to verify page for osx
+  Then I see download button for osx
+  And I see webapp button
+
+  @C3278 @Utility
+  Scenario: Verify buttons from verification link for windows
+  When I navigate to verify page for windows
+  When I navigate to verify page for windows
+  Then I see download button for windows
+
+  @C5236 @Utility
+  Scenario Outline: Verify error message by broken verification link for <Agent>
+  When I navigate to broken verify page for <Agent>
+  When I navigate to broken verify page for <Agent>
+  Then I see error message
+
+      Examples: 
+      | Agent   |
+      | iphone  |
+      | android |
+      | osx     |
+      | windows |

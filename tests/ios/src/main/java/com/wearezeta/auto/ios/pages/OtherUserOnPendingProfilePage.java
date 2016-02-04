@@ -19,7 +19,9 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
     private static final By xpathCancelRequestYesButton = By.xpath(
             "//UIAStaticText[@name='Cancel Request?']/following-sibling::UIAButton[@name='YES']");
 
-    private static final By nameRemoveFromConversation = By.name("OtherUserMetaControllerRightButton");
+    private static final By nameRightActionButton = By.name("OtherUserMetaControllerRightButton");
+
+    private static final By nameLeftActionButton = By.name("OtherUserMetaControllerLeftButton");
 
     private static final By nameOtherProfilePageCloseButton = By.name("OtherUserProfileCloseButton");
 
@@ -54,7 +56,7 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
     }
 
     public void clickStartConversationButton() throws Exception {
-        getElement(xpathOtherProfileCancelRequestButton).click();
+        getElement(nameLeftActionButton).click();
     }
 
     public boolean isUserNameDisplayed(String name) throws Exception {
@@ -62,6 +64,6 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
     }
 
     public boolean isRemoveFromGroupConversationVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameRemoveFromConversation);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameRightActionButton);
     }
 }

@@ -29,19 +29,19 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     private static final By xpathDeleteConversationButton = By.xpath("//UIAButton[@name='DELETE' and @visible='true']");
 
     private static final By xpathConfirmDeleteButton = By
-        .xpath("//UIAButton[@name='CANCEL']/following-sibling::UIAButton[@name='DELETE']");
+            .xpath("//UIAButton[@name='CANCEL']/following-sibling::UIAButton[@name='DELETE']");
 
     private static final By nameAlsoLeaveCheckerButton = By.name("ALSO LEAVE THE CONVERSATION");
 
     private static final Function<String, String> xpathStrOtherPersonalInfoPageNameFieldByName = name ->
             String.format("%s/UIAStaticText[@name='%s']", xpathStrMainWindow, name);
-    
+
     private static final Function<String, String> xpathStrOtherPersonalInfoPageEmailFieldByEmail = name -> String.format(
-        "//UIAButton[@name='OtherUserProfileCloseButton']/following-sibling:: UIATextView[@name='%s']",
+            "//UIAButton[@name='OtherUserProfileCloseButton']/following-sibling:: UIATextView[@name='%s']",
             name.toUpperCase());
 
     protected static final By xpathOtherPersonalInfoPageEmailField = By
-        .xpath("//UIAButton[@name='OtherUserProfileCloseButton']/following-sibling:: UIATextView");
+            .xpath("//UIAButton[@name='OtherUserProfileCloseButton']/following-sibling:: UIATextView");
 
     private static final By nameAddContactToChatButton = By.name("metaControllerLeftButton");
 
@@ -58,7 +58,13 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     private static final By nameCancelButton = By.name("CANCEL");
 
     private static final By xpathActionMenu = By
-        .xpath("//UIAStaticText[following-sibling::UIAButton[@name='CANCEL'] and @visible='true']");
+            .xpath("//UIAStaticText[following-sibling::UIAButton[@name='CANCEL'] and @visible='true']");
+
+    private static final By nameDevicesButton = By.name("DEVICES");
+
+    private static final By xpathDevicesList = By
+            .xpath(xpathStrMainWindow + "/UIATableView[1]/UIATableCell");
+
 
     public OtherUserPersonalInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -108,10 +114,6 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     public void removeFromConversation() throws Exception {
         DriverUtils.tapByCoordinates(this.getDriver(), getElement(nameRemoveFromConversation));
-    }
-
-    public boolean isRemoveFromConversationAlertVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameConfirmRemoveButton);
     }
 
     public void confirmRemove() throws Exception {
@@ -166,4 +168,14 @@ public class OtherUserPersonalInfoPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathActionMenu);
     }
 
+    public void clickDevicesButton() throws Exception {
+        getElement(nameDevicesButton).click();
+    }
+
+    public int getParticipantDevicesCount() throws Exception {
+        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathDevicesList)) {
+            return getElements(xpathDevicesList).size();
+        }
+        return 0;
+    }
 }

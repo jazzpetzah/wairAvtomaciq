@@ -16,8 +16,6 @@ public abstract class AndroidPage extends BasePage {
 
     protected static final By idGiphyPreviewButton = By.id("cursor_button_giphy");
 
-    protected static final By xpathConfirmBtn = By.xpath("(//*[@id='confirm'])[last()]");
-
     protected static final By idEditText = By.id("cursor_edit_text");
 
     protected static final By idCursorArea = By.id("caret");

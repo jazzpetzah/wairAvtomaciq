@@ -45,9 +45,9 @@ Feature: Ping
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
-    And Contact <Contact1> ping conversation <GroupChatName>
+    And User <Contact1> securely pings conversation <GroupChatName>
     And I see Ping message <Action1> in the dialog
-    And Contact <Contact1> hotping conversation <GroupChatName>
+    And User <Contact1> securely hotpings conversation <GroupChatName>
     Then I see Ping message <Action2> in the dialog
 
     Examples:

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import org.junit.Assert;
 
 import cucumber.api.java.en.*;
@@ -20,19 +21,14 @@ import com.wearezeta.auto.ios.pages.*;
 public class ContactListPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-    private final IOSPagesCollection pagesCollecton = IOSPagesCollection
-            .getInstance();
+    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
     private ContactListPage getContactListPage() throws Exception {
-        return pagesCollecton.getPage(ContactListPage.class);
+        return pagesCollection.getPage(ContactListPage.class);
     }
 
     private LoginPage getLoginPage() throws Exception {
-        return pagesCollecton.getPage(LoginPage.class);
-    }
-
-    private PersonalInfoPage getPersonalInfoPage() throws Exception {
-        return pagesCollecton.getPage(PersonalInfoPage.class);
+        return pagesCollection.getPage(LoginPage.class);
     }
 
     @Given("^I see conversations list$")
@@ -73,15 +69,58 @@ public class ContactListPageSteps {
         final BufferedImage actualConvoItemScreenshot = getContactListPage().getConversationEntryScreenshot(name);
         final double score = ImageUtil.getOverlapScore(this.savedConvoItemScreenshots.get(name),
                 actualConvoItemScreenshot, ImageUtil.RESIZE_NORESIZE);
-        final double minScore = 0.97;
+        final double minScore = 0.985;
         if (shouldNotBeChanged == null) {
             Assert.assertTrue(
-                    String.format("The state of '%s' conversation item seems to be the same (%.2f >= %.2f)",
+                    String.format("The state of '%s' conversation item seems to be the same (%.3f >= %.3f)",
                             name, score, minScore), score < minScore);
         } else {
             Assert.assertTrue(
-                    String.format("The state of '%s' conversation item seems to be changed (%.2f < %.2f)",
+                    String.format("The state of '%s' conversation item seems to be changed (%.3f < %.3f)",
                             name, score, minScore), score >= minScore);
+        }
+    }
+
+    private Map<Integer, BufferedImage> savedConvoItemScreenshotsByIdx = new HashMap<>();
+
+    /**
+     * Store the screenshot of a particular conversation list entry
+     *
+     * @param convoIdx conversation index, starts from 1
+     * @throws Exception
+     * @step. ^I remember the state of (.*) conversation item$
+     */
+    @When("^I remember the state of conversation item number (\\d+)$")
+    public void IRememberConvoItemStateByIdx(int convoIdx) throws Exception {
+        this.savedConvoItemScreenshotsByIdx.put(convoIdx, getContactListPage().getConversationEntryScreenshot(convoIdx));
+    }
+
+    /**
+     * Verify whether the previous conversation state is the same or different to the current state
+     *
+     * @param convoIdx           conversation index, starts from 1
+     * @param shouldNotBeChanged equals to null if the state should be changed
+     * @throws Exception
+     * @step. ^I see the state of conversation item number (\\d+) is (not )?changed$"
+     */
+    @Then("^I see the state of conversation item number (\\d+) is (not )?changed$")
+    public void IVerifyConvoStateByIdx(int convoIdx, String shouldNotBeChanged) throws Exception {
+        if (!this.savedConvoItemScreenshotsByIdx.containsKey(convoIdx)) {
+            throw new IllegalStateException(String.format(
+                    "Please take a screenshot of conversation entry number %s first", convoIdx));
+        }
+        final BufferedImage actualConvoItemScreenshot = getContactListPage().getConversationEntryScreenshot(convoIdx);
+        final double score = ImageUtil.getOverlapScore(this.savedConvoItemScreenshotsByIdx.get(convoIdx),
+                actualConvoItemScreenshot, ImageUtil.RESIZE_NORESIZE);
+        final double minScore = 0.97;
+        if (shouldNotBeChanged == null) {
+            Assert.assertTrue(
+                    String.format("The state of conversation item number %s seems to be the same (%.2f >= %.2f)",
+                            convoIdx, score, minScore), score < minScore);
+        } else {
+            Assert.assertTrue(
+                    String.format("The state of conversation item number %s seems to be changed (%.2f < %.2f)",
+                            convoIdx, score, minScore), score >= minScore);
         }
     }
 
@@ -107,37 +146,35 @@ public class ContactListPageSteps {
      */
     @When("^I dismiss settings warning$")
     public void IDismissSettingsWarning() throws Exception {
-        getLoginPage().dismissSettingsWaring();
+        getLoginPage().dismissSettingsWarning();
     }
 
-    @When("^I tap on my name (.*)$")
-    public void WhenITapOnMyName(String name) throws Exception {
-        getContactListPage().tapOnMyName();
-        getPersonalInfoPage().waitSelfProfileVisible();
+    @When("^I tap my avatar$")
+    public void WhenITapOnMyName() throws Exception {
+        getContactListPage().tapMyAvatar();
     }
 
-    @When("^I tap on contact name (.*)$")
+    @When("^I tap on contact name (.*)")
     public void WhenITapOnContactName(String name) throws Exception {
-        try {
-            name = usrMgr.findUserByNameOrNameAlias(name).getName();
-        } catch (NoSuchUserException e) {
-            // Ignore silently
-        }
+        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         getContactListPage().tapOnName(name);
     }
 
-    @When("^I tap on group chat with name (.*)$")
-    public void WhenITapOnGroupChatName(String chatName) throws Exception {
-        getContactListPage().tapOnGroupChat(chatName);
+    /**
+     * Tap conversation list item by its index
+     *
+     * @param idx convo index in list, starts with 1
+     * @throws Exception
+     * @step. ^I tap on conversation item number (\d+)$
+     */
+    @When("^I tap on conversation item number (\\d+)$")
+    public void WhenITapOnConvoByIdx(int idx) throws Exception {
+        getContactListPage().tapConvoItemByIdx(idx);
     }
 
-    @When("^I swipe down contact list$")
-    public void ISwipeDownContactList() throws Throwable {
-        if (!CommonUtils.getIsSimulatorFromConfig(IOSPage.class)) {
-            getContactListPage().swipeDown(500);
-        } else {
-            getContactListPage().swipeDownSimulator();
-        }
+    @When("^I tap on group chat with name (.*)")
+    public void WhenITapOnGroupChatName(String chatName) throws Exception {
+        WhenITapOnContactName(chatName);
     }
 
     /**
@@ -179,15 +216,12 @@ public class ContactListPageSteps {
     public void ICreateGroupChat(String contact1, String contact2) throws Exception {
         WhenITapOnContactName(contact1);
         DialogPageSteps dialogSteps = new DialogPageSteps();
-        dialogSteps.WhenISeeDialogPage();
         dialogSteps.IOpenConversationDetails();
 
         OtherUserPersonalInfoPageSteps infoPageSteps = new OtherUserPersonalInfoPageSteps();
-        infoPageSteps.WhenISeeOtherUserProfilePage(contact1);
         infoPageSteps.WhenIPressAddButton();
 
         PeoplePickerPageSteps pickerSteps = new PeoplePickerPageSteps();
-        pickerSteps.WhenISeePeoplePickerPage();
         pickerSteps.WhenITapOnSearchInputOnPeoplePickerPage();
         pickerSteps.WhenIInputInPeoplePickerSearchFieldUserName(contact2);
         pickerSteps.WhenISeeUserFoundOnPeoplePickerPage(contact2);
@@ -208,7 +242,11 @@ public class ContactListPageSteps {
 
     @Then("^I open archived conversations$")
     public void IOpenArchivedConversations() throws Exception {
-        getContactListPage().swipeUp(1000);
+        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            IOSSimulatorHelper.swipe(0.2, 0.7, 0.2, 0.1);
+        } else {
+            getContactListPage().swipeUp(1000);
+        }
     }
 
     @When("I see play/pause button next to username (.*) in contact list")
@@ -229,28 +267,6 @@ public class ContactListPageSteps {
             throws Exception {
         String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
         getContactListPage().tapPlayPauseButtonNextTo(name);
-    }
-
-    /**
-     * Verify pause media button in contact list
-     *
-     * @throws Exception
-     * @step. I see pause media button in contact list
-     */
-    @When("I see pause media button in contact list")
-    public void ISeePauseMediaButtonContactList() throws Exception {
-        // FXIME: Replace with synamic image comparison
-    }
-
-    /**
-     * Verify play media button in contact list
-     *
-     * @throws Exception
-     * @step. I see play media button in contact list
-     */
-    @When("I see play media button in contact list")
-    public void ISeePlayMediaButtonContactList() throws Exception {
-        // FIXME: replace with dynamic image comparison
     }
 
     @When("I see in contact list group chat named (.*)")
@@ -301,46 +317,8 @@ public class ContactListPageSteps {
     public void IDoNotSeeConversationInContactList(String name)
             throws Exception {
         name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-        Assert.assertTrue("Conversation is displayed", getContactListPage()
-                .contactIsNotDisplayed(name));
-    }
-
-    /**
-     * Verifies, that the conversation is really silenced
-     *
-     * @param conversation conversation name to silence
-     * @throws Exception
-     * @step. ^I see conversation (.*) is silenced$
-     */
-    @Then("^I see conversation (.*) is silenced$")
-    public void ISeeConversationIsSilenced(String conversation) throws Exception {
-        // FIXME: Replace with dynamic image comparison
-    }
-
-    /**
-     * Verifies, that the conversation got silenced before from backend
-     *
-     * @param conversation conversation name to silence
-     * @throws Exception
-     * @step. ^I see conversation (.*) got silenced before$
-     */
-    @Then("^I see conversation (.*) got silenced before$")
-    public void ISeeConversationGotSilencedBefore(String conversation)
-            throws Exception {
-        // FIXME: Replace with dynamic image comparison
-    }
-
-    /**
-     * Verifies, that the conversation is unsilenced
-     *
-     * @param conversation conversation name to unsilence
-     * @throws Exception
-     * @step. ^I see conversation (.*) is unsilenced$
-     */
-    @Then("^I see conversation (.*) is unsilenced$")
-    public void ISeeConversationIsUnSilenced(String conversation)
-            throws Exception {
-        // FIXME: Replace with dynamic image comparison
+        Assert.assertTrue(String.format("Conversation '%s' is still displayed", name),
+                getContactListPage().contactIsNotDisplayed(name));
     }
 
     /**
@@ -350,100 +328,8 @@ public class ContactListPageSteps {
      * @step. ^I click archive button for conversation$
      */
     @When("^I click archive button for conversation$")
-    public void IClickArchiveConversationButton()
-            throws Exception {
+    public void IClickArchiveConversationButton() throws Exception {
         getContactListPage().clickArchiveConversationButton();
-    }
-
-    private BufferedImage referenceImage = null;
-    private static final double MAX_OVERLAP_SCORE = 0.70;
-
-    /**
-     * Takes screenshot of conversation cell of first contact
-     *
-     * @throws Exception
-     * @step. ^I remember the state of the first conversation cell$
-     */
-    @When("^I remember the state of the first conversation cell$")
-    public void IRememberConversationState() throws Exception {
-        referenceImage = getContactListPage().getScreenshotFirstContact();
-    }
-
-    /**
-     * Verifies that the change of state of first conversation cell is visible
-     *
-     * @throws Exception
-     * @step. ^I see change of state for first conversation cell$
-     */
-    @Then("^I see change of state for first conversation cell$")
-    public void ISeeFirstConvCellChange() throws Exception {
-        if (referenceImage == null) {
-            throw new IllegalStateException(
-                    "This step requires you to remember the initial state of the conversation cell");
-        }
-        double score = -1;
-        final BufferedImage convCellState = getContactListPage()
-                .getScreenshotFirstContact();
-        score = ImageUtil.getOverlapScore(convCellState, referenceImage,
-                ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-        Assert.assertTrue("Ping symbol not visible. Score is : " + score,
-                score <= MAX_OVERLAP_SCORE);
-    }
-
-
-    /**
-     * Verify that relevant unread message indicator is seen in conversation
-     * list
-     *
-     * @param contact the missed call is from
-     * @throws Exception
-     * @step. ^I see (.*) unread message indicator in list for contact (.*)$
-     */
-    @Then("^I see (.*) unread message indicator in list for contact (.*)$")
-    public void ISeeUnreadMessageIndicatorInListForContact(int numOfMessage,
-                                                           String contact) throws Exception {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        // FIXME: Replace with dynamic image comparison
-    }
-
-    /**
-     * Verify that unread icon is not shown next to contact
-     *
-     * @param contact contact name
-     * @throws Exception
-     * @step. ^I dont see unread message indicator in list for contact (.*)$
-     */
-    @Then("^I dont see unread message indicator in list for contact (.*)$")
-    public void IDontSeeUnreadIndicator(String contact) throws Exception {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        // FIXME: Replace with dynamic image comparison
-    }
-
-    /**
-     * Verify that play icon is not shown next to contact
-     *
-     * @param contact contact name
-     * @throws Exception
-     * @step. ^I see Play media button next to user (.*)$
-     */
-    @Then("^I see Play media button next to user (.*)$")
-    public void ISeeMediaButtonChangedToPlay(String contact) throws Exception {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        // FIXME: Replace with dynamic image comparison
-    }
-
-    /**
-     * Verify that pause icon is not shown next to contact
-     *
-     * @param contact contact name
-     * @throws Exception
-     * @step. ^I see Pause media button next to user (.*)$
-     */
-    @Then("^I see Pause media button next to user (.*)$")
-    public void ISeeMediaButtonChangedToPause(String contact)
-            throws IllegalStateException, Exception {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        // FIXME: Replace with dynamic image comparison
     }
 
     /**
@@ -547,7 +433,7 @@ public class ContactListPageSteps {
             throws Throwable {
         conversation = usrMgr.replaceAliasesOccurences(conversation,
                 FindBy.NAME_ALIAS);
-        Assert.assertEquals("Converstaion is not selected", "1",
+        Assert.assertEquals("Conversation is not selected", "1",
                 getContactListPage().getSelectedConversationCellValue(conversation).
                         orElseThrow(() -> new IllegalStateException("No conversations are selected in the list")));
     }
@@ -574,6 +460,74 @@ public class ContactListPageSteps {
     public void IDontSeeInviteMorePeopleButton() throws Exception {
         Assert.assertTrue("Invite more people button is shown",
                 getContactListPage().isInviteMorePeopleButtonNotVisible());
+    }
+
+    private BufferedImage previousSelfAvatarState = null;
+
+    /**
+     * Remember the current state of self avatar
+     *
+     * @throws Exception
+     * @step. ^I remember the state of my self avatar$
+     */
+    @When("^I remember the state of my avatar$")
+    public void IRememberAvatarState() throws Exception {
+        previousSelfAvatarState = getContactListPage().getAvatarStateScreenshot();
+    }
+
+    private static final long AVATAR_CHANGE_TIMEOUT_MILLISECONDS = 10000;
+
+    /**
+     * Verify whether avatar state is changed within the timeout
+     *
+     * @param shouldNotChange equals to null if the state should be changed
+     * @throws Exception
+     * @step. ^I wait until my avatar is (not )?changed$
+     */
+    @Then("^I wait until my avatar is (not )?changed$")
+    public void IWaitUntilAvatarIsChanged(String shouldNotChange) throws Exception {
+        if (previousSelfAvatarState == null) {
+            throw new IllegalStateException("Please take the initial screenshot of the avatar first");
+        }
+        double score;
+        final double minScore = 0.97;
+        final long millisecondsStarted = System.currentTimeMillis();
+        do {
+            final BufferedImage currentAvatarState = getContactListPage().getAvatarStateScreenshot();
+            score = ImageUtil.getOverlapScore(currentAvatarState,
+                    previousSelfAvatarState, ImageUtil.RESIZE_NORESIZE);
+            if (shouldNotChange == null) {
+                if (score < minScore) {
+                    return;
+                }
+            } else {
+                if (score >= minScore) {
+                    return;
+                }
+            }
+            Thread.sleep(500);
+        } while (System.currentTimeMillis() - millisecondsStarted <= AVATAR_CHANGE_TIMEOUT_MILLISECONDS);
+        if (shouldNotChange == null) {
+            throw new AssertionError(String.format("The previous and the current state of self avatar " +
+                            "icon seems to be equal after %s seconds (%.2f >= %.2f)",
+                    AVATAR_CHANGE_TIMEOUT_MILLISECONDS / 1000, score, minScore));
+        } else {
+            throw new AssertionError(String.format("The previous and the current state of self avatar " +
+                            "icon seems to be different after %s seconds (%.2f < %.2f)",
+                    AVATAR_CHANGE_TIMEOUT_MILLISECONDS / 1000, score, minScore));
+        }
+    }
+
+    /**
+     * Taps on the name you are in a call with in conversation list
+     * @step. ^I tap on chat I am in a call with name (.*)$
+     * @param name
+     * @throws Throwable
+     */
+    @When("^I tap on chat I am in a call with name (.*)$")
+    public void ITapOnChatIAmInACallWithName(String name) throws Throwable {
+        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        getContactListPage().tapOnNameYourInCallWith(name);
     }
 
 }

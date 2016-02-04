@@ -60,10 +60,8 @@ public class LoginPageSteps {
 				+ password);
 		this.IEnterEmail(login);
 		this.IEnterPassword(password);
+		this.ICheckOptionToRememberMe(null);
 		this.IPressSignInButton();
-
-		// Wait until signed in properly
-		this.IAmSignedInProperly();
 	}
 
 	/**

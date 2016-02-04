@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -8,7 +7,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
@@ -30,31 +28,13 @@ public class PersonalInfoPage extends IOSPage {
 
     private static final By nameSelfNameTooShortError = By.name("AT LEAST 2 CHARACTERS ");
 
-    public static final By xpathSettingsPage = By.xpath("//UIANavigationBar[@name='Settings']");
-
     private static final By xpathOptionsSettingsButton = By.xpath("//UIAButton[@name='SETTINGS' or @name='Settings']");
-
-    private static final By nameSoundAlertsButton = By.name("Alerts");
-
-    private static final By xpathSoundAlertsPage = By.xpath("//UIANavigationBar[@name='Alerts']");
-
-    private static final By xpathAllSoundAlertsButton = By.xpath("//UIATableCell[@name='All']");
-
-    private static final By nameSettingsResetPasswordButton = By.name("Reset Password");
-
-    private static final By nameSettingsAccountInfoButton = By.name("Account");
 
     private static final By nameOptionsHelpButton = By.name("HELP");
 
     private static final By xpathSettingsHelpHeader = By.xpath("//UIAWebView/UIAStaticText[@name='Support']");
 
     private static final By nameAccentColorPicker = By.name("AccentColorPickerView");
-
-    private static final By xpathSettingsChatheadSwitch = By.xpath("//UIASwitch[@name='Message previews']");
-
-    private static final By nameSettingsBackButton = By.name("Back");
-
-    private static final By nameSettingsDoneButton = By.name("Done");
 
     private static final By nameCloseButton = By.name("CloseButton");
 
@@ -75,9 +55,6 @@ public class PersonalInfoPage extends IOSPage {
 
     private static final By xpathWireWebsiteUrl = By.xpath("//UIAElement[@name ='URL']");
 
-    private static final By xpathAboutPageWireLogo = By.xpath(
-            "//UIAApplication/UIAWindow/UIAButton[@name='wire.com']/preceding-sibling::UIAImage[1]");
-
     private static final By nameAboutCloseButton = By.name("aboutCloseButton");
 
     private static final By nameAddPhoneNumberButton = By.name("ADD PHONE NUMBER");
@@ -95,9 +72,7 @@ public class PersonalInfoPage extends IOSPage {
     private static final String TERMS_OF_USE_PAGE_VALUE =
             "PLEASE READ THIS AGREEMENT CAREFULLY; THIS IS A BINDING CONTRACT.";
     private static final String PRIVACY_POLICY_PAGE_VALUE = "Our Privacy Commitment";
-    private static final String ABOUT_LOGO_IMAGE = "about_page_logo.png";
     private static final int COLORS_COUNT = 7;
-    private static final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.95;
 
     public PersonalInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -134,27 +109,6 @@ public class PersonalInfoPage extends IOSPage {
 
     public void clickAboutCloseButton() throws Exception {
         getElement(nameAboutCloseButton).click();
-    }
-
-    public boolean isAboutPageCertainColor(String color) throws Exception {
-        if (!color.equals("Violet")) {
-            return false;
-        }
-        String aboutLogo = ABOUT_LOGO_IMAGE;
-        String deviceType = CommonUtils.getDeviceName(this.getClass());
-        BufferedImage coloredLogoImage = getElementScreenshot(getElement(xpathAboutPageWireLogo))
-                .orElseThrow(IllegalStateException::new);
-        if (deviceType.equals("iPhone 6") || deviceType.equals("iPhone 6 Plus")) {
-            aboutLogo = ABOUT_LOGO_IMAGE.replace(".png", "_iPhone.png");
-        } else if (deviceType.equals("iPad Air")) {
-            aboutLogo = ABOUT_LOGO_IMAGE.replace(".png", "_iPad.png");
-        }
-        BufferedImage realLogoImage = ImageUtil.readImageFromFile(IOSPage
-                .getImagesPath() + aboutLogo);
-        double score = ImageUtil.getOverlapScore(realLogoImage,
-                coloredLogoImage,
-                ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
-        return (score >= MIN_ACCEPTABLE_IMAGE_VALUE);
     }
 
     public boolean isWireWebsiteButtonVisible() throws Exception {
@@ -205,10 +159,6 @@ public class PersonalInfoPage extends IOSPage {
 
     public boolean isResetPasswordPageVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathChangePasswordPageChangePasswordButton);
-    }
-
-    public void clickChangePasswordButton() throws Exception {
-        getElement(nameSettingsResetPasswordButton).click();
     }
 
     public void tapOnEditNameField() throws Exception {
@@ -269,46 +219,18 @@ public class PersonalInfoPage extends IOSPage {
         getElement(xpathOptionsSettingsButton).click();
     }
 
-    public boolean isSettingsPageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathSettingsPage);
-    }
-
-    public void enterSoundAlertSettings() throws Exception {
-        getElement(nameSoundAlertsButton).click();
-    }
-
-    public boolean isSoundAlertsPageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathSoundAlertsPage);
-    }
-
-    public boolean isDefaultSoundValOne() throws Exception {
-        return getElement(xpathAllSoundAlertsButton).getAttribute("value").equals("1");
-    }
-
     public void clickOnHelpButton() throws Exception {
         getElement(nameOptionsHelpButton, "Help button is not visible in Options").click();
     }
 
     public boolean isSupportWebPageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathSettingsHelpHeader);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),xpathSettingsHelpHeader,5);
     }
 
     private void swipeColorPickerFromColorToColor(int startColor, int endColor) throws Exception {
         DriverUtils.swipeElementPointToPoint(getDriver(), getElement(nameAccentColorPicker),
                 1000, startColor * 2 * COLORS_COUNT - COLORS_COUNT, 50,
                 endColor * 2 * COLORS_COUNT - COLORS_COUNT, 50);
-    }
-
-    public void switchChatheadsOnOff() throws Exception {
-        getElement(xpathSettingsChatheadSwitch).click();
-    }
-
-    public void pressSettingsBackButton() throws Exception {
-        getElement(nameSettingsBackButton).click();
-    }
-
-    public void pressSettingsDoneButton() throws Exception {
-        getElement(nameSettingsDoneButton, "Done button is not present in Settings").click();
     }
 
     public boolean waitSelfProfileVisible() throws Exception {
@@ -333,9 +255,5 @@ public class PersonalInfoPage extends IOSPage {
 
     public boolean isThemeSwitcherButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameThemeSwitcherButton, 5);
-    }
-
-    public void clickAccountInfoButton() throws Exception {
-        getElement(nameSettingsAccountInfoButton, "Account button is not present in settings").click();
     }
 }

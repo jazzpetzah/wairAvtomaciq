@@ -8,18 +8,17 @@ Feature: Rich Media
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And Contact <Contact1> send 18 messages to user Myself
+    And User <Contact1> sends 18 encrypted messages to user Myself
     And I scroll to the bottom of conversation view
     And I tap on text input
     And I type the message "<SoundCloudLink>" and send it
-    And Contact <Contact1> send message to user Myself
+    And User <Contact1> sends encrypted message to user Myself
     And I scroll to the bottom of conversation view
     And I press PlayPause media item button
     And I remember the state of PlayPause media item button
     And I swipe down on dialog page until Mediabar appears
-    Then I see PAUSE on Mediabar
     And I press PlayPause on Mediabar button
-    When I scroll to the bottom of conversation view
+    And I scroll to the bottom of conversation view
     Then I verify the state of PlayPause media item button is changed
 
     Examples:

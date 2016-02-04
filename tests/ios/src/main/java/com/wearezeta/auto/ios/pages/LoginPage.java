@@ -1,12 +1,10 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.util.Optional;
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.driver.DummyElement;
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -23,10 +21,6 @@ public class LoginPage extends IOSPage {
 
     private static final By namePasswordField = By.name("PasswordField");
 
-    private static final By nameTermsPrivacyLinks = By.name("TermsPrivacyTextView");
-
-    private static final By nameTermsPrivacyCloseButton = By.name("WebViewCloseButton");
-
     private static final By nameWrongCredentialsNotification = By.name("Please verify your details and try again.");
 
     private static final By nameForgotPassword = By.name("FORGOT PASSWORD?");
@@ -36,13 +30,8 @@ public class LoginPage extends IOSPage {
 
     private static final By xpathSafariURLButton = By.xpath("//UIAButton[@name='URL']");
 
-    private static final By xpathSafariGoButton = By.xpath("//UIAButton[@name='Go']");
-
     private static final By xpathSafariEnterNewPasswordField =
             By.xpath("//UIASecureTextField[@value='Enter new password']");
-
-    private static final By xpathChangePasswordPageChangePasswordButton =
-            By.xpath("//UIAButton[@name='RESET PASSWORD']");
 
     private static final By namePhoneLoginButton = By.name("RegistrationRightButton");
 
@@ -50,13 +39,15 @@ public class LoginPage extends IOSPage {
 
     private static final By nameCountryPickerButton = By.name("CountryPickerButton");
 
-    private static final By xpathSetEmailPasswordSuggetionLabel = By.xpath(
+    private static final By xpathSetEmailPasswordSuggestionLabel = By.xpath(
             "//UIAStaticText[contains(@name, 'Add email address and password')]");
 
     public static final By nameResentIn10min = By.name(
             "We already sent you a code via SMS. Tap Resend after 10 minutes to get a new one.");
 
     private static final By nameInvalidPhoneNumber = By.name("Please enter a valid phone number");
+
+    private static final By nameSomethingWentWrong = By.name("Something went wrong, please try again");
 
     private static final By nameInvalidEmail = By.name("Please enter a valid email address");
 
@@ -67,8 +58,6 @@ public class LoginPage extends IOSPage {
             By.name("The email address you provided has already been registered. Please try again.");
 
     private static final By nameNotNowButton = By.name("NOT NOW");
-
-    private static final By nameGotItButton = By.name("GOT IT");
 
     public static final String nameSelfButton = "SelfButton";
 
@@ -103,10 +92,7 @@ public class LoginPage extends IOSPage {
         if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(), nameLoginButton, 40)) {
             throw new IllegalStateException("Login button is still visible after the timeout");
         }
-        final Optional<WebElement> gotItButton = getElementIfDisplayed(nameGotItButton, 2);
-        if (gotItButton.isPresent()) {
-            gotItButton.get().click();
-        }
+        instantiatePage(FirstTimeOverlay.class).acceptIfVisible(2);
     }
 
     public void clickLoginButton() throws Exception {
@@ -125,42 +111,19 @@ public class LoginPage extends IOSPage {
         ((IOSElement) getElement(namePasswordField)).setValue(password);
     }
 
-    public void dismissSettingsWaring() throws Exception {
-        final Optional<WebElement> maybeLater = getElementIfDisplayed(nameMaybeLater);
-        if (maybeLater.isPresent()) {
-            maybeLater.get().click();
-        }
+    public void dismissSettingsWarning() throws Exception {
+        getElementIfDisplayed(nameMaybeLater, 20).orElseGet(DummyElement::new).click();
     }
 
     public Boolean isLoginFinished() throws Exception {
-        dismissSettingsWaring();
+        dismissSettingsWarning();
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameSelfButton), 60);
-    }
-
-    public boolean isLoginButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameSwitchToEmailLogin);
     }
 
     public void tapHoldEmailInput() throws Exception {
         final WebElement loginField = getElement(nameLoginField);
         message = loginField.getText();
         this.getDriver().tap(1, loginField, 1000);
-    }
-
-    public void openTermsLink() throws Exception {
-        final WebElement termsButton = getElement(nameTermsPrivacyLinks);
-        Point p = termsButton.getLocation();
-        Dimension k = termsButton.getSize();
-        this.getDriver().tap(1, (p.x) + (k.width - 70),
-                (p.y) + (k.height - 16), 1);
-    }
-
-    public void closeTermsPrivacyController() throws Exception {
-        getElement(nameTermsPrivacyCloseButton, "Close Terms button is not visible").click();
-    }
-
-    public boolean isTermsPrivacyCloseButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameTermsPrivacyCloseButton);
     }
 
     public void tapPasswordField() throws Exception {
@@ -175,28 +138,18 @@ public class LoginPage extends IOSPage {
         getElement(nameForgotPassword).click();
     }
 
-    public void tapEmailFieldToChangePassword(String email) throws Exception {
-        final WebElement safariChangePWEmailField = getElement(xpathSafariChangePasswordEmailField,
-                "Email input field in Safari is not visible");
-        DriverUtils.tapByCoordinates(getDriver(), safariChangePWEmailField);
-        this.inputStringFromKeyboard(email);
-    }
-
-    public void tapChangePasswordButtonInWebView() throws Exception {
-        DriverUtils.tapByCoordinates(getDriver(), getElement(xpathChangePasswordPageChangePasswordButton));
+    public void commitEmail(String email) throws Exception {
+        this.inputStringFromKeyboardAndCommit(getElement(xpathSafariChangePasswordEmailField,
+                "Email input field in Safari is not visible"), email, false);
     }
 
     public void changeURLInBrowser(String URL) throws Exception {
-        DriverUtils.tapByCoordinates(getDriver(), getElement(xpathSafariURLButton));
-        this.inputStringFromKeyboard(URL);
-        DriverUtils.tapByCoordinates(getDriver(), getElement(xpathSafariGoButton));
+        this.inputStringFromKeyboardAndCommit(getElement(xpathSafariURLButton), URL, false);
     }
 
-    public void tapPasswordFieldToChangePassword(String newPassword) throws Exception {
-        final WebElement safariEnterNewPasswordField = getElement(xpathSafariEnterNewPasswordField,
-                "Password input field in Safari is not visible");
-        DriverUtils.tapByCoordinates(getDriver(), safariEnterNewPasswordField);
-        this.inputStringFromKeyboard(newPassword);
+    public void commitNewPassword(String newPassword) throws Exception {
+        this.inputStringFromKeyboardAndCommit(getElement(xpathSafariEnterNewPasswordField,
+                "Password input field in Safari is not visible"), newPassword, false);
     }
 
     public boolean isCountryPickerButtonVisible() throws Exception {
@@ -204,35 +157,52 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean isSetEmailPasswordSuggestionVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathSetEmailPasswordSuggetionLabel);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathSetEmailPasswordSuggestionLabel);
     }
 
     public boolean isResendIn10minAlertVisible() throws Exception {
-        DriverUtils.waitUntilAlertAppears(getDriver());
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameResentIn10min, 1);
+        if (DriverUtils.waitUntilAlertAppears(getDriver())){
+            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameResentIn10min, 1);
+        }
+        return false;
     }
 
     public boolean isInvalidPhoneNumberAlertShown() throws Exception {
-        DriverUtils.waitUntilAlertAppears(getDriver());
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInvalidPhoneNumber, 1);
+        if (DriverUtils.waitUntilAlertAppears(getDriver())){
+            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInvalidPhoneNumber, 1);
+        }
+        return false;
     }
 
     public boolean isInvalidEmailAlertShown() throws Exception {
-        DriverUtils.waitUntilAlertAppears(getDriver());
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInvalidEmail, 1);
+        if (DriverUtils.waitUntilAlertAppears(getDriver())){
+            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInvalidEmail, 1);
+        }
+        return false;
     }
 
     public boolean isRegisteredNumberAlertShown() throws Exception {
-        DriverUtils.waitUntilAlertAppears(getDriver());
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAlreadyRegisteredNumber, 1);
+        if (DriverUtils.waitUntilAlertAppears(getDriver())){
+            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAlreadyRegisteredNumber, 1);
+        }
+        return false;
     }
 
     public boolean isAlreadyRegisteredEmailAlertShown() throws Exception {
-        DriverUtils.waitUntilAlertAppears(getDriver());
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAlreadyRegisteredEmail, 1);
+        if (DriverUtils.waitUntilAlertAppears(getDriver())){
+            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAlreadyRegisteredEmail, 1);
+        }
+        return false;
     }
 
     public void clickPhoneNotNow() throws Exception {
         getElement(nameNotNowButton).click();
+    }
+
+    public boolean isSomethingWentWrongAlertShown() throws Exception {
+        if (DriverUtils.waitUntilAlertAppears(getDriver())){
+            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameSomethingWentWrong, 1);
+        }
+        return false;
     }
 }

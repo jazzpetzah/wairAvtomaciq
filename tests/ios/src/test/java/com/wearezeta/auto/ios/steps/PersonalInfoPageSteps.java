@@ -17,12 +17,11 @@ import cucumber.api.java.en.When;
 public class PersonalInfoPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-    private final IOSPagesCollection pagesCollecton = IOSPagesCollection
+    private final IOSPagesCollection pagesCollection = IOSPagesCollection
             .getInstance();
 
     private PersonalInfoPage getPersonalInfoPage() throws Exception {
-        return (PersonalInfoPage) pagesCollecton
-                .getPage(PersonalInfoPage.class);
+        return pagesCollection.getPage(PersonalInfoPage.class);
     }
 
     BufferedImage referenceImage;
@@ -79,10 +78,6 @@ public class PersonalInfoPageSteps {
         getPersonalInfoPage().clickOnSettingsButton();
     }
 
-    @When("I see settings page")
-    public void ISeeSettingsPage() throws Exception {
-        Assert.assertTrue("Settings page is not visible", getPersonalInfoPage().isSettingsPageVisible());
-    }
 
     @When("I click on About button on personal page")
     public void WhenIClickOnAboutButtonOnPersonalPage() throws Exception {
@@ -111,20 +106,6 @@ public class PersonalInfoPageSteps {
     @When("^I close About page$")
     public void ICloseAboutPage() throws Exception {
         getPersonalInfoPage().clickAboutCloseButton();
-    }
-
-    /**
-     * Verifies the about page is Violet
-     *
-     * @param color the color the about page should be (Violet)
-     * @throws AssertionError the about page is not Violet
-     * @step. ^I see that the About page is colored (.*)$
-     */
-    @Then("^I see that the About page is colored (.*)$")
-    public void AboutPageIsColor(String color) throws Exception {
-        // only takes violet color
-        Assert.assertTrue("About page is not Violet", getPersonalInfoPage()
-                .isAboutPageCertainColor(color));
     }
 
     /**
@@ -347,32 +328,10 @@ public class PersonalInfoPageSteps {
         getPersonalInfoPage().tapOnSettingsButton();
     }
 
-    @When("I click on Change Password button in Settings")
-    public void WhenIClickOnChangePasswordButtonFromSettings() throws Exception {
-        getPersonalInfoPage().clickChangePasswordButton();
-    }
-
     @Then("I see reset password page")
     public void ISeeResetPasswordPage() throws Exception {
         Assert.assertTrue("Change Password button is not shown",
                 getPersonalInfoPage().isResetPasswordPageVisible());
-    }
-
-    @When("I tap on Sound Alerts")
-    public void ITapOnSoundAlerts() throws Exception {
-        getPersonalInfoPage().enterSoundAlertSettings();
-    }
-
-    @When("I see the Sound alerts page")
-    public void ISeeSoundAlertsPage() throws Exception {
-        Assert.assertTrue("Sound alerts page is not visible",
-                getPersonalInfoPage().isSoundAlertsPageVisible());
-    }
-
-    @When("I verify that all is the default selected value")
-    public void IVerifyAllIsDefaultValue() throws Exception {
-        Assert.assertTrue("The selected value is different from the expected one",
-                getPersonalInfoPage().isDefaultSoundValOne());
     }
 
     /**
@@ -447,29 +406,6 @@ public class PersonalInfoPageSteps {
     }
 
     /**
-     * Switches the chathead preview on or off in settings
-     *
-     * @throws Exception
-     * @step. ^I switch on or off the chathead preview$
-     */
-    @When("^I switch on or off the chathead preview$")
-    public void ISwitchOnOrOffTheChatheadPreview() throws Exception {
-        getPersonalInfoPage().switchChatheadsOnOff();
-    }
-
-    /**
-     * Closes the settings by pressing back and done button
-     *
-     * @throws Exception
-     * @step. ^I close the Settings$
-     */
-    @When("^I close the Settings$")
-    public void ICloseTheSettings() throws Exception {
-        getPersonalInfoPage().pressSettingsBackButton();
-        getPersonalInfoPage().pressSettingsDoneButton();
-    }
-
-    /**
      * Close self profile by pressing X button
      *
      * @throws Exception
@@ -540,10 +476,5 @@ public class PersonalInfoPageSteps {
         Assert.assertFalse("Theme switcher button is visible",
                 getPersonalInfoPage().isThemeSwitcherButtonVisible());
     }
-
-    @When("^I click on Account Info on settings page$")
-    public void IClickOnAccountInfoOnSettingsPage() throws Throwable {
-        getPersonalInfoPage().clickAccountInfoButton();
-    }
-
 }
+

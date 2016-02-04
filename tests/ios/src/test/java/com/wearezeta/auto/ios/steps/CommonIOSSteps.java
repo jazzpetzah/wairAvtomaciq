@@ -1,11 +1,19 @@
 package com.wearezeta.auto.ios.steps;
 
 import java.util.Date;
-import java.util.UUID;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
+import com.wearezeta.auto.ios.reporter.IOSLogListener;
+import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import cucumber.api.PendingException;
 import cucumber.api.Scenario;
+import cucumber.api.java.en.Then;
 import org.junit.Assert;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -17,7 +25,6 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
-import com.wearezeta.auto.ios.pages.keyboard.IOSKeyboard;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -31,16 +38,14 @@ public class CommonIOSSteps {
     private static final String DEFAULT_USER_AVATAR = "android_dialog_sendpicture_result.png";
     private Date testStartedDate = new Date();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    private final IOSPagesCollection pagesCollecton = IOSPagesCollection
-            .getInstance();
+    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
     public static final String DEFAULT_AUTOMATION_MESSAGE = "iPhone has stupid spell checker";
 
     static {
         System.setProperty("org.apache.commons.logging.Log",
                 "org.apache.commons.logging.impl.SimpleLog");
-        System.setProperty(
-                "org.apache.commons.logging.simplelog.log.org.apache.http",
+        System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http",
                 "warn");
     }
 
@@ -86,7 +91,6 @@ public class CommonIOSSteps {
         final String deviceName = getDeviceName(this.getClass());
         capabilities.setCapability("deviceName", deviceName);
         capabilities.setCapability("platformVersion", getPlatformVersion());
-        capabilities.setCapability("sendKeyStrategy", "grouped");
         capabilities.setCapability("launchTimeout", IOSPage.IOS_DRIVER_INIT_TIMEOUT);
         final String backendType = getBackendType(this.getClass());
         capabilities
@@ -105,35 +109,85 @@ public class CommonIOSSteps {
 
         setTestStartedDate(new Date());
         return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance()
-                .resetDriver(getUrl(), capabilities, DRIVER_CREATION_RETRIES_COUNT,
-                        // Tune this delay if you keep getting "target.frontMostApp().keyboard()
-                        // failed to tap" exception
-                        drv -> drv.executeScript("au.mainApp().keyboard().setInterKeyDelay(0.5);"),
-                        null);
+                .resetDriver(getUrl(), capabilities, DRIVER_CREATION_RETRIES_COUNT);
     }
 
     @Before
     public void setUp(Scenario scenario) throws Exception {
+        try {
+            SEBridge.getInstance().reset();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (scenario.getSourceTagNames().contains("@performance")) {
+            CommonUtils.defineNoHeadlessEnvironment();
+            try {
+                IOSLogListener.getInstance().start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(
                 !scenario.getSourceTagNames().contains("@noAcceptAlert"));
         ZetaFormatter.setLazyDriver(lazyDriver);
-        pagesCollecton.setFirstPage(new LoginPage(lazyDriver));
+        pagesCollection.setFirstPage(new LoginPage(lazyDriver));
+    }
+
+    @After
+    public void tearDown(Scenario scenario) {
+        try {
+            // async calls/waiting instances cleanup
+            CommonCallingSteps2.getInstance().cleanup();
+        } catch (Exception e) {
+            // do not fail if smt fails here
+            e.printStackTrace();
+        }
+
+        pagesCollection.clearAllPages();
+
+        try {
+            if (getIsSimulatorFromConfig(getClass())) {
+                IOSCommonUtils.collectSimulatorLogs(getDeviceName(getClass()), getTestStartedDate());
+            }
+            if (scenario.getSourceTagNames().contains("@performance")) {
+                IOSLogListener.forceStopAll();
+                IOSLogListener.writeDeviceLogsToConsole(IOSLogListener.getInstance());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+                PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            commonSteps.getUserManager().resetUsers();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @When("^I see keyboard$")
     public void ISeeKeyboard() throws Exception {
-        Assert.assertTrue(pagesCollecton.getCommonPage().isKeyboardVisible());
+        Assert.assertTrue(pagesCollection.getCommonPage().isKeyboardVisible());
     }
 
     @When("^I dont see keyboard$")
     public void IDontSeeKeyboard() throws Exception {
-        Assert.assertFalse(pagesCollecton.getCommonPage().isKeyboardVisible());
+        Assert.assertFalse(pagesCollection.getCommonPage().isKeyboardVisible());
     }
 
     @When("^I press keyboard Delete button$")
     public void IPressKeyboardDeleteBtn() throws Exception {
-        pagesCollecton.getCommonPage().clickKeyboardDeleteButton();
-        pagesCollecton.getCommonPage().clickKeyboardDeleteButton();
+        pagesCollection.getCommonPage().clickKeyboardDeleteButton();
+        pagesCollection.getCommonPage().clickKeyboardDeleteButton();
     }
 
     /**
@@ -144,22 +198,22 @@ public class CommonIOSSteps {
      */
     @When("^I press keyboard Return button$")
     public void IPressKeyboardReturnBtn() throws Exception {
-        pagesCollecton.getCommonPage().clickKeyboardReturnButton();
+        pagesCollection.getCommonPage().clickKeyboardCommitButton();
     }
 
     @When("^I scroll up page a bit$")
     public void IScrollUpPageABit() throws Exception {
-        pagesCollecton.getCommonPage().smallScrollUp();
+        pagesCollection.getCommonPage().smallScrollUp();
     }
 
     @When("^I accept alert$")
     public void IAcceptAlert() throws Exception {
-        pagesCollecton.getCommonPage().acceptAlert();
+        pagesCollection.getCommonPage().acceptAlert();
     }
 
     @When("^I dismiss alert$")
     public void IDismissAlert() throws Exception {
-        pagesCollecton.getCommonPage().dismissAlert();
+        pagesCollection.getCommonPage().dismissAlert();
     }
 
     /**
@@ -170,7 +224,7 @@ public class CommonIOSSteps {
      */
     @When("^I dismiss all alerts$")
     public void IDismissAllAlerts() throws Exception {
-        pagesCollecton.getCommonPage().dismissAllAlerts();
+        pagesCollection.getCommonPage().dismissAllAlerts();
     }
 
     /**
@@ -181,7 +235,7 @@ public class CommonIOSSteps {
      */
     @When("^I hide keyboard$")
     public void IHideKeyboard() throws Exception {
-        pagesCollecton.getCommonPage().hideKeyboard();
+        pagesCollection.getCommonPage().hideKeyboard();
     }
 
     /**
@@ -192,7 +246,7 @@ public class CommonIOSSteps {
      */
     @When("^I click hide keyboard button$")
     public void IClickHideKeyboardBtn() throws Exception {
-        pagesCollecton.getCommonPage().clickHideKeyboardButton();
+        pagesCollection.getCommonPage().clickHideKeyboardButton();
     }
 
     /**
@@ -203,7 +257,7 @@ public class CommonIOSSteps {
      */
     @When("I click space keyboard button")
     public void IClickSpaceKeyboardButton() throws Exception {
-        pagesCollecton.getCommonPage().clickSpaceKeyboardButton();
+        pagesCollection.getCommonPage().clickSpaceKeyboardButton();
     }
 
     /**
@@ -214,7 +268,7 @@ public class CommonIOSSteps {
      */
     @When("I click DONE keyboard button")
     public void IClickDoneKeyboardButton() throws Exception {
-        pagesCollecton.getCommonPage().clickDoneKeyboardButton();
+        pagesCollection.getCommonPage().clickKeyboardCommitButton();
     }
 
     /**
@@ -226,7 +280,7 @@ public class CommonIOSSteps {
      */
     @When("^I close the app for (\\d+) seconds$")
     public void ICloseApp(int seconds) throws Exception {
-        pagesCollecton.getCommonPage().minimizeApplication(seconds);
+        pagesCollection.getCommonPage().minimizeApplication(seconds);
     }
 
     /**
@@ -238,7 +292,7 @@ public class CommonIOSSteps {
      */
     @When("^I lock screen for (\\d+) seconds$")
     public void ILockScreen(int seconds) throws Exception {
-        pagesCollecton.getCommonPage().lockScreen(seconds);
+        pagesCollection.getCommonPage().lockScreen(seconds);
     }
 
     @Given("^(.*) sent connection request to (.*)$")
@@ -543,24 +597,6 @@ public class CommonIOSSteps {
         commonSteps.IChangeUserName(userNameAlias, newName);
     }
 
-    /**
-     * Changes a users name to a randomly generated name that starts with a
-     * certain letter
-     *
-     * @param userNameAlias user's name alias to change
-     * @param startLetter   the first letter of the new username
-     * @step. ^User (\\w+) name starts with (.*)$
-     */
-
-    @When("^User (\\w+) name starts with (.*)$")
-    public void IChangeUserNameToNameStartingWith(String userNameAlias,
-                                                  String startLetter) throws Exception {
-        String newName = startLetter.concat(UUID.randomUUID().toString()
-                .replace("-", ""));
-        newName = newName.substring(0, newName.length() / 2);
-        commonSteps.IChangeUserName(userNameAlias, newName);
-    }
-
     @When("^User (\\w+) changes? accent color to (.*)$")
     public void IChangeAccentColor(String userNameAlias, String newColor) throws Exception {
         commonSteps.IChangeUserAccentColor(userNameAlias, newColor);
@@ -599,32 +635,6 @@ public class CommonIOSSteps {
         }
     }
 
-    @After
-    public void tearDown() throws Exception {
-        try {
-            // async calls/waiting instances cleanup
-            CommonCallingSteps2.getInstance().cleanup();
-        } catch (Exception e) {
-            // do not fail if smt fails here
-            e.printStackTrace();
-        }
-
-        pagesCollecton.clearAllPages();
-
-        if (getIsSimulatorFromConfig(getClass())) {
-            IOSCommonUtils
-                    .collectSimulatorLogs(
-                            getDeviceName(getClass()),
-                            getTestStartedDate());
-        }
-
-        if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
-            PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
-        }
-
-        commonSteps.getUserManager().resetUsers();
-    }
-
     public Date getTestStartedDate() {
         return testStartedDate;
     }
@@ -643,7 +653,7 @@ public class CommonIOSSteps {
     @When("^I rotate UI to (landscape|portrait)$")
     public void WhenIRotateUILandscape(ScreenOrientation orientation)
             throws Exception {
-        pagesCollecton.getCommonPage().rotateScreen(orientation);
+        pagesCollection.getCommonPage().rotateScreen(orientation);
         Thread.sleep(1000); // fix for animation
     }
 
@@ -655,7 +665,7 @@ public class CommonIOSSteps {
      */
     @When("^I tap on center of the screen$")
     public void ITapOnCenterOfTheScreen() throws Exception {
-        pagesCollecton.getCommonPage().tapOnCenterOfScreen();
+        pagesCollection.getCommonPage().tapOnCenterOfScreen();
     }
 
     /**
@@ -666,29 +676,7 @@ public class CommonIOSSteps {
      */
     @When("^I tap on top left corner of the screen$")
     public void ITapOnTopLeftCornerOfTheScreen() throws Exception {
-        pagesCollecton.getCommonPage().tapOnTopLeftScreen();
-    }
-
-    /**
-     * General swipe action
-     *
-     * @throws Exception
-     * @step. ^I swipe left in current window$
-     */
-    @When("^I swipe left in current window$")
-    public void ISwipeLeftInCurrentWindow() throws Exception {
-        pagesCollecton.getCommonPage().swipeLeft(1000);
-    }
-
-    /**
-     * General swipe action
-     *
-     * @throws Exception
-     * @step. ^I swipe right in current window$
-     */
-    @When("^I swipe right in current window$")
-    public void ISwipeRightInCurrentWindow() throws Exception {
-        pagesCollecton.getCommonPage().swipeRight(1000);
+        pagesCollection.getCommonPage().tapOnTopLeftScreen();
     }
 
     /**
@@ -698,23 +686,29 @@ public class CommonIOSSteps {
      * @param userToBeAdded user that gets added by someone
      * @param group         group chat you get added to
      * @throws Throwable
-     * @step. ^User (.*) adds User (.*) to group chat (.*)$
+     * @step. ^User (.*) adds [Uu]ser (.*) to group chat (.*)$
      */
-    @When("^User (.*) adds User (.*) to group chat (.*)$")
+    @When("^User (.*) adds [Uu]ser (.*) to group chat (.*)$")
     public void UserAddsUserToGroupChat(String user, String userToBeAdded,
                                         String group) throws Throwable {
         commonSteps.UserXAddedContactsToGroupChat(user, userToBeAdded, group);
     }
 
     /**
-     * Returns in Simulator back to Wire App
+     * Click Simulator window at the corresponding position
      *
+     * @param strX float number 0 <= x <= 1, relative width position of click point
+     * @param strY float number 0 <= y <= 1, relative height position of click point
      * @throws Exception
-     * @step. ^I reset Wire app$
+     * @step. ^I click at ([\d\.]+),([\d\.]+) of Simulator window$
      */
-    @When("^I reset Wire app$")
-    public void ReturnToWireApp() throws Exception {
-        pagesCollecton.getCommonPage().resetApplication();
+    @When("^I click at ([\\d\\.]+),([\\d\\.]+) of Simulator window$")
+    public void ReturnToWireApp(String strX, String strY) throws Exception {
+        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            IOSSimulatorHelper.clickAt(strX, strY);
+        } else {
+            throw new PendingException("This step is not available for non-simulator devices");
+        }
     }
 
     /**
@@ -728,4 +722,64 @@ public class CommonIOSSteps {
     public void UserRemovesAvatarPicture(String nameAlias) throws Exception {
         commonSteps.UserDeletesAvatarPicture(nameAlias);
     }
+
+    @Then("^I verify the alert contains text (.*)")
+    public void IVerifyAlertContains(String expectedText) throws Exception {
+        Assert.assertTrue(String.format("there is not '%s' on the alert", expectedText),
+                pagesCollection.getCommonPage().isAlertContainsText(expectedText));
+    }
+
+    /**
+     * User adds a remote device to his list of devices
+     *
+     * @param userNameAlias user name/alias
+     * @param deviceName    unique name of the device
+     * @throws Exception
+     * @step. User (.*) adds a new device (.*)$
+     */
+    @When("^User (.*) adds a new device (.*) with label (.*)$")
+    public void UserAddRemoteDeviceToAccount(String userNameAlias,
+                                             String deviceName, String label) throws Exception {
+        commonSteps.UserAddsRemoteDeviceToAccount(userNameAlias, deviceName, label);
+    }
+
+    /**
+     * User adds multiple devices to his list of devices
+     *
+     * @param userNameAlias user name/alias
+     * @param deviceNames   unique name of devices, comma-separated list
+     * @throws Exception
+     * @step. User (.*) adds new devices (.*)
+     */
+    @When("^User (.*) adds new devices (.*)")
+    public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
+        final List<String> names = CommonSteps.splitAliases(deviceNames);
+        final int poolSize = 2;  // Runtime.getRuntime().availableProcessors()
+        final ExecutorService pool = Executors.newFixedThreadPool(poolSize);
+        for (String name : names) {
+            pool.submit(() -> {
+                try {
+                    commonSteps.UserAddsRemoteDeviceToAccount(userNameAlias, name, CommonUtils.generateRandomString(10));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+        pool.shutdown();
+        final int secondsTimeout = (names.size() / poolSize + 1) * 40;
+        if (!pool.awaitTermination(secondsTimeout, TimeUnit.SECONDS)) {
+            throw new IllegalStateException(String.format(
+                    "Devices '%s' were not created within %s seconds timeout", names, secondsTimeout));
+        }
+    }
+
+    @When("^I press Enter key in Simulator window$")
+    public void IPressEnterKey() throws Exception {
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            IOSSimulatorHelper.pressEnterKey();
+        } else {
+            throw new PendingException("This step is not available for real device");
+        }
+    }
+
 }

@@ -3,7 +3,6 @@ package com.wearezeta.auto.android.steps;
 import java.util.Random;
 
 import org.junit.Assert;
-import org.openqa.selenium.NoSuchElementException;
 
 import com.wearezeta.auto.android.pages.registration.AreaCodePage;
 import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
@@ -20,8 +19,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class LoginSteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
-            .getInstance();
+    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
 
     private final static int DEFAULT_LOGIN_SCREEN_TIMEOUT_SECONDS = 60 * 2;
 
@@ -55,14 +53,7 @@ public class LoginSteps {
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
         assert getWelcomePage().waitForInitialScreen() : "The initial screen was not shown";
         getWelcomePage().tapSignInTab();
-        try {
-            getEmailSignInPage().setLogin(self.getEmail());
-        } catch (NoSuchElementException e) {
-            // FIXME: Sometimes clicking the tab does nothing
-            Thread.sleep(1000);
-            getWelcomePage().tapSignInTab();
-            getEmailSignInPage().setLogin(self.getEmail());
-        }
+        getEmailSignInPage().setLogin(self.getEmail());
         getEmailSignInPage().setPassword(self.getPassword());
         getEmailSignInPage().logIn(true, DEFAULT_LOGIN_SCREEN_TIMEOUT_SECONDS);
     }
@@ -78,13 +69,7 @@ public class LoginSteps {
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
         assert getWelcomePage().waitForInitialScreen() : "The initial screen was not shown";
         getWelcomePage().clickAreaCodeSelector();
-        try {
-            getAreaCodePage().selectAreaCode(PhoneNumber.WIRE_COUNTRY_PREFIX);
-        } catch (NoSuchElementException e) {
-            // FIXME: Sometimes the area code selector button is not clicked
-            getWelcomePage().clickAreaCodeSelector();
-            getAreaCodePage().selectAreaCode(PhoneNumber.WIRE_COUNTRY_PREFIX);
-        }
+        getAreaCodePage().selectAreaCode(PhoneNumber.WIRE_COUNTRY_PREFIX);
         getWelcomePage().inputPhoneNumber(
                 self.getPhoneNumber().toString()
                         .replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""));

@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import com.wearezeta.auto.android.common.logging.LoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionFailedLoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionPassedLoggingProfile;
+import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import cucumber.api.Scenario;
 import gherkin.formatter.model.Result;
@@ -56,14 +57,11 @@ public class CommonAndroidTabletSteps {
                 "warn");
     }
 
-    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection
-            .getInstance();
+    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
 
-    private final ScreenOrientationHelper screenOrientationHelper = ScreenOrientationHelper
-            .getInstance();
+    private final ScreenOrientationHelper screenOrientationHelper = ScreenOrientationHelper.getInstance();
 
-    private static final Logger log = ZetaLogger
-            .getLog(CommonAndroidTabletSteps.class.getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(CommonAndroidTabletSteps.class.getSimpleName());
 
     private final CommonSteps commonSteps = CommonSteps.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -74,13 +72,11 @@ public class CommonAndroidTabletSteps {
     private static final String DEFAULT_USER_AVATAR = "aqaPictureContact600_800.jpg";
 
     private static String getUrl() throws Exception {
-        return CommonUtils
-                .getAndroidAppiumUrlFromConfig(CommonAndroidTabletSteps.class);
+        return CommonUtils.getAndroidAppiumUrlFromConfig(CommonAndroidTabletSteps.class);
     }
 
     private static String getPath() throws Exception {
-        return CommonUtils
-                .getAndroidApplicationPathFromConfig(CommonAndroidTabletSteps.class);
+        return CommonUtils.getAndroidApplicationPathFromConfig(CommonAndroidTabletSteps.class);
     }
 
     @SuppressWarnings("unchecked")
@@ -93,13 +89,9 @@ public class CommonAndroidTabletSteps {
         // To init the first available device
         capabilities.setCapability("deviceName", "null");
         capabilities.setCapability("app", path);
-        capabilities.setCapability("appPackage",
-                CommonUtils.getAndroidPackageFromConfig(this.getClass()));
-        capabilities.setCapability("appActivity",
-                CommonUtils.getAndroidActivityFromConfig(this.getClass()));
-        capabilities
-                .setCapability("appWaitActivity", CommonUtils
-                        .getAndroidWaitActivitiesFromConfig(this.getClass()));
+        capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(this.getClass()));
+        capabilities.setCapability("appActivity", CommonUtils.getAndroidActivityFromConfig(this.getClass()));
+        capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidWaitActivitiesFromConfig(this.getClass()));
         capabilities.setCapability("applicationName", "selendroid");
         capabilities.setCapability("automationName", "selendroid");
 
@@ -126,8 +118,7 @@ public class CommonAndroidTabletSteps {
             AndroidCommonUtils.disableHockeyUpdates();
             AndroidCommonUtils.installTestingGalleryApp(this.getClass());
             final String backendJSON = AndroidCommonUtils
-                    .createBackendJSON(CommonUtils.getBackendType(this
-                            .getClass()));
+                    .createBackendJSON(CommonUtils.getBackendType(this.getClass()));
             AndroidCommonUtils.deployBackendFile(backendJSON);
         } catch (Exception e) {
             Throwables.propagate(e);
@@ -184,6 +175,12 @@ public class CommonAndroidTabletSteps {
 
     @Before
     public void setUp() throws Exception {
+        try {
+            SEBridge.getInstance().reset();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         AndroidLogListener.getInstance(ListenerType.DEFAULT).start();
         final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), getPath());
         ZetaFormatter.setLazyDriver(lazyDriver);
@@ -192,7 +189,7 @@ public class CommonAndroidTabletSteps {
     }
 
     @After
-    public void tearDown(Scenario scenario) throws Exception {
+    public void tearDown(Scenario scenario) {
         try {
             AndroidCommonUtils.setAirplaneMode(false);
         } catch (Exception e) {
@@ -210,12 +207,12 @@ public class CommonAndroidTabletSteps {
 
         pagesCollection.clearAllPages();
 
-        if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
-            try {
+        try {
+            if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
                 PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
-            } catch (WebDriverException e) {
-                e.printStackTrace();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         AndroidLogListener.forceStopAll();
@@ -223,10 +220,18 @@ public class CommonAndroidTabletSteps {
         if (!scenario.getStatus().equals(Result.PASSED)) {
             loggingProfile = new RegressionFailedLoggingProfile();
         }
-        AndroidLogListener.writeDeviceLogsToConsole(AndroidLogListener
-                .getInstance(ListenerType.DEFAULT), loggingProfile);
+        try {
+            AndroidLogListener.writeDeviceLogsToConsole(AndroidLogListener
+                    .getInstance(ListenerType.DEFAULT), loggingProfile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        commonSteps.getUserManager().resetUsers();
+        try {
+            commonSteps.getUserManager().resetUsers();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -519,14 +524,18 @@ public class CommonAndroidTabletSteps {
      *
      * @param pingFromUserNameAlias The user to do the pinging
      * @param dstConversationName   the target conversation to send the ping to
+     * @param isSecure equals null if ping should not be secure
      * @throws Exception
-     * @step. ^Contact (.*) ping conversation (.*)$
+     * @step. ^User (\\w+) (securely )?pings? conversation (.*)$
      */
-    @When("^Contact (.*) ping conversation (.*)$")
+    @When("^User (\\w+) (securely )?pings? conversation (.*)$")
     public void UserPingedConversation(String pingFromUserNameAlias,
-                                       String dstConversationName) throws Exception {
-        commonSteps.UserPingedConversation(pingFromUserNameAlias,
-                dstConversationName);
+                                       String isSecure, String dstConversationName) throws Exception {
+        if (isSecure == null) {
+            commonSteps.UserPingedConversation(pingFromUserNameAlias, dstConversationName);
+        } else {
+            commonSteps.UserPingedConversationOtr(pingFromUserNameAlias, dstConversationName);
+        }
     }
 
     /**
@@ -534,83 +543,95 @@ public class CommonAndroidTabletSteps {
      *
      * @param hotPingFromUserNameAlias The user to do the hotpinging
      * @param dstConversationName      the target converation to send the ping to
+     * @param isSecure equals null if ping should not be secure
      * @throws Exception
-     * @step. ^Contact (.*) hotping conversation (.*)$
+     * @step. ^User (\\w+) (securely )?hotpings? conversation (.*)$
      */
-    @When("^Contact (.*) hotping conversation (.*)$")
+    @When("^User (\\w+) (securely )?hotpings? conversation (.*)$")
     public void UserHotPingedConversation(String hotPingFromUserNameAlias,
-                                          String dstConversationName) throws Exception {
-        commonSteps.UserHotPingedConversation(hotPingFromUserNameAlias,
-                dstConversationName);
+                                          String isSecure, String dstConversationName) throws Exception {
+        if (isSecure == null) {
+            commonSteps.UserHotPingedConversation(hotPingFromUserNameAlias, dstConversationName);
+        } else {
+            commonSteps.UserHotPingedConversationOtr(hotPingFromUserNameAlias, dstConversationName);
+        }
     }
-
-    private static final int RANDOM_MSG_LENGTH = 10;
 
     /**
      * User A sends a simple text message to user B
      *
      * @param msgFromUserNameAlias the user who sends the message
-     * @param dstUserNameAlias     The user to receive the message
+     * @param msg                  a message to send. Random string will be sent if it is empty
+     * @param dstConvoName         The user to receive the message
+     * @param isEncrypted          whether the message has to be encrypted
+     * @param convoType            either 'user' or 'group conversation'
      * @throws Exception
-     * @step. ^Contact (.*) sends? message to user (.*)$
+     * @step. ^User (.*) sends? (encrypted )?message (.*)to user (.*)$
      */
-    @When("^Contact (.*) sends? message to user (.*)$")
-    public void UserSendMessageToContact(String msgFromUserNameAlias,
-                                         String dstUserNameAlias) throws Exception {
-        commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
-                dstUserNameAlias,
-                CommonUtils.generateRandomString(RANDOM_MSG_LENGTH));
-    }
-
-    /**
-     * Send multiple random messages to a user
-     *
-     * @param msgFromUserNameAlias the user who sends the message
-     * @param count                count of messages to send
-     * @param dstUserNameAlias     The user to receive the message
-     * @throws Exception
-     * @step. ^Contact (.*) sends? message to user (.*)$
-     */
-    @When("^Contact (.*) sends? (\\d+) messages? to user (.*)$")
-    public void UserSendMultipleMessageToContact(String msgFromUserNameAlias,
-                                                 int count, String dstUserNameAlias) throws Exception {
-        for (int i = 0; i < count; i++) {
-            commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
-                    dstUserNameAlias,
-                    CommonUtils.generateRandomString(RANDOM_MSG_LENGTH));
+    @When("^User (.*) sends? (encrypted )?message (.*)to (user|group conversation) (.*)$")
+    public void UserSendMessageToConversation(String msgFromUserNameAlias, String isEncrypted,
+                                              String msg, String convoType, String dstConvoName) throws Exception {
+        final String msgToSend = (msg == null || msg.trim().length() == 0) ?
+                CommonUtils.generateRandomString(10) : msg.trim();
+        if (convoType.equals("user")) {
+            if (isEncrypted == null) {
+                commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend);
+            } else {
+                commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend);
+            }
+        } else {
+            if (isEncrypted == null) {
+                commonSteps.UserSentMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend);
+            } else {
+                commonSteps.UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend);
+            }
         }
     }
 
     /**
-     * Send a particular text message via the backend
+     * User A sends specified number of simple text messages to user B
      *
      * @param msgFromUserNameAlias the user who sends the message
-     * @param msg                  the message to send
+     * @param count                number of messages to send
      * @param dstUserNameAlias     The user to receive the message
+     * @param areEncrypted         Whether the messages should be encrypted
      * @throws Exception
-     * @step. ^Contact (.*) sends? message "(.*)" to user (.*)$
+     * @step. ^User (.*) sends? (\d+) (encrypted )?messages? to user (.*)$
      */
-    @When("^Contact (.*) sends? message \"(.*)\" to user (.*)$")
-    public void UserSendMessageXToContact(String msgFromUserNameAlias,
-                                          String msg, String dstUserNameAlias) throws Exception {
-        commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
-                dstUserNameAlias, msg);
+    @When("^User (.*) sends? (\\d+) (encrypted )?messages? to user (.*)$")
+    public void UserSendXMessagesToConversation(String msgFromUserNameAlias, int count, String areEncrypted,
+                                                String dstUserNameAlias) throws Exception {
+        for (int i = 0; i < count; i++) {
+            UserSendMessageToConversation(msgFromUserNameAlias, areEncrypted, null, "user", dstUserNameAlias);
+        }
     }
 
     /**
-     * Send a particular text message via the backend
+     * Sends an image from one user to a conversation
      *
-     * @param msgFromUserNameAlias the user who sends the message
-     * @param msg                  the message to send
-     * @param convoName            destination conversation name
+     * @param isEncrypted              whether the image has to be encrypted
+     * @param imageSenderUserNameAlias the user to sending the image
+     * @param imageFileName            the file path name of the image to send. The path name is
+     *                                 defined relative to the image file defined in
+     *                                 Configuration.cnf.
+     * @param conversationType         "single user" or "group" conversation.
+     * @param dstConversationName      the name of the conversation to send the image to.
      * @throws Exception
-     * @step. ^Contact (.*) sends? message "(.*)" to conversation (.*)$
+     * @step. ^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)$
      */
-    @When("^Contact (.*) sends? message \"(.*)\" to conversation (.*)$")
-    public void UserSendMessageXToConversation(String msgFromUserNameAlias,
-                                               String msg, String convoName) throws Exception {
-        commonSteps.UserSentMessageToConversation(msgFromUserNameAlias,
-                convoName, msg);
+    @When("^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)$")
+    public void ContactSendImageToConversation(String imageSenderUserNameAlias, String isEncrypted,
+                                               String imageFileName, String conversationType,
+                                               String dstConversationName) throws Exception {
+        final String imagePath = CommonUtils.getImagesPath(CommonAndroidTabletSteps.class) + imageFileName;
+        final boolean isGroup = conversationType.equals("group");
+        if (isEncrypted == null) {
+            commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,
+                    imagePath, dstConversationName, isGroup);
+        } else {
+            commonSteps.UserSentImageToConversationOtr(imageSenderUserNameAlias,
+                    imagePath, dstConversationName, isGroup);
+        }
     }
 
     /**
@@ -724,29 +745,6 @@ public class CommonAndroidTabletSteps {
     }
 
     /**
-     * Sends an image from one user to a conversation
-     *
-     * @param imageSenderUserNameAlias the user to sending the image
-     * @param imageFileName            the file path name of the image to send. The path name is
-     *                                 defined relative to the image file defined in
-     *                                 Configuration.cnf.
-     * @param conversationType         "single user" or "group" conversation.
-     * @param dstConversationName      the name of the conversation to send the image to.
-     * @throws Exception
-     * @step. ^Contact (.*) sends image (.*) to (.*) conversation (.*)$
-     */
-    @When("^Contact (.*) sends image (.*) to (single user|group) conversation (.*)")
-    public void ContactSendImageToConversation(String imageSenderUserNameAlias,
-                                               String imageFileName, String conversationType,
-                                               String dstConversationName) throws Exception {
-        String imagePath = CommonUtils.getImagesPath(this.getClass())
-                + imageFileName;
-        commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,
-                imagePath, dstConversationName,
-                conversationType.equals("group"));
-    }
-
-    /**
      * Verify whether the app is in foreground
      *
      * @param shouldNotBeInForeground equals to null if 'not' part does not exist in step signature
@@ -785,9 +783,9 @@ public class CommonAndroidTabletSteps {
      * @param whatToExclude comma-separated list of user properties to exclude from being added to AB.
      *                      Can be email|phone
      * @throws Exception
-     * @step. ^I add (.*) into Address Book(?:\s+excluding\s+|\s*)(.*)
+     * @step. ^I add (.*) into Address Book(?:\s+excluding\s+|\s*)(.*)$
      */
-    @Given("^I add (.*) into Address Book(?:\\s+excluding\\s+|\\s*)(.*)")
+    @Given("^I add (.*) into Address Book(?:\\s+excluding\\s+|\\s*)(.*)$")
     public void IImportUserIntoAddressBook(String alias, String whatToExclude) throws Exception {
         List<String> excludesList = new ArrayList<>();
         if (whatToExclude != null) {

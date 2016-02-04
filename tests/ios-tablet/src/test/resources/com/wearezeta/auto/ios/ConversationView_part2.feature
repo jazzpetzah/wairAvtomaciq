@@ -7,7 +7,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I send long message
     And I type the default message and send it
     And I scroll to the beginning of the conversation
@@ -28,7 +27,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I send long message
     And I type the default message and send it
     And I scroll to the beginning of the conversation
@@ -51,10 +49,9 @@ Feature: Conversation View
     And I click plus button next to text input
     And I press Add Picture button
     And I press Camera Roll button
-    And I choose a picture from camera roll on iPad popover
-    And I press Confirm button on iPad popover
-    And I see new photo in the dialog
-    And I memorize message send time
+    And I choose a picture from camera roll
+    And I press Confirm button
+    And I see 1 photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I see sender first name <Name> on fullscreen page
@@ -64,7 +61,7 @@ Feature: Conversation View
     And I verify image caption and download button are not shown
     And I tap on fullscreen page
     And I tap close fullscreen page button
-    Then I see new photo in the dialog
+    Then I see 2 photos in the dialog
 
     Examples:
       | Name      | Contact   |
@@ -81,10 +78,9 @@ Feature: Conversation View
     And I click plus button next to text input
     And I press Add Picture button
     And I press Camera Roll button
-    And I choose a picture from camera roll on iPad popover
-    And I press Confirm button on iPad popover
-    And I see new photo in the dialog
-    And I memorize message send time
+    And I choose a picture from camera roll
+    And I press Confirm button
+    And I see 1 photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I see sender first name <Name> on fullscreen page
@@ -94,7 +90,7 @@ Feature: Conversation View
     And I verify image caption and download button are not shown
     And I tap on fullscreen page
     And I tap close fullscreen page button
-    Then I see new photo in the dialog
+    Then I see 2 photos in the dialog
 
     Examples:
       | Name      | Contact   |
@@ -107,9 +103,8 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I post media link <YouTubeLink>
-    And I return to the chat list
+    And I navigate back to conversations list
     And I tap on contact name <Contact>
     Then I see youtube link <YouTubeLink> and media in dialog
     And I click video container for the first time
@@ -127,7 +122,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I post media link <YouTubeLink>
     Then I see youtube link <YouTubeLink> and media in dialog
     And I click video container for the first time
@@ -144,7 +138,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I close the app for <CloseAppTime> seconds
     Then I see title bar in conversation name <Contact>
 
@@ -160,7 +153,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I close the app for <CloseAppTime> seconds
     Then I see title bar in conversation name <Contact>
 
@@ -171,33 +163,28 @@ Feature: Conversation View
   @C2626 @regression @id2418
   Scenario Outline: Rotate image in fullscreen mode [PORTRAIT]
     Given There are 2 users where <Name> is me
-    Given User <Contact> change name to <NewName>
-    Given User <Contact> change accent color to <Color>
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap on contact name <Contact>
+    And I tap on contact name <Contact>
     And I click plus button next to text input
     And I press Add Picture button
     And I press Camera Roll button
-    And I choose a picture from camera roll on iPad popover
-    And I press Confirm button on iPad popover
-    And I see new photo in the dialog
-    And I memorize message send time
+    And I choose a picture from camera roll
+    And I press Confirm button
+    And I see 1 photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
-    And I rotate UI to landscape
-    Then I see image rotated in fullscreen mode
+    When I rotate UI to landscape
+    Then I see Full Screen Page opened
 
     Examples:
-      | Name      | Contact   | Color        | NewName          |
-      | user1Name | user2Name | BrightOrange | RotateFullscreen |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C2630 @regression @id3206
   Scenario Outline: Rotate image in fullscreen mode [LANDSCAPE]
     Given There are 2 users where <Name> is me
-    Given User <Contact> change name to <NewName>
-    Given User <Contact> change accent color to <Color>
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
@@ -206,18 +193,17 @@ Feature: Conversation View
     And I click plus button next to text input
     And I press Add Picture button
     And I press Camera Roll button
-    And I choose a picture from camera roll on iPad popover
-    And I press Confirm button on iPad popover
-    And I see new photo in the dialog
-    And I memorize message send time
+    And I choose a picture from camera roll
+    And I press Confirm button
+    And I see 1 photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I rotate UI to portrait
-    Then I see image rotated to portrait in fullscreen mode
+    Then I see Full Screen Page opened
 
     Examples:
-      | Name      | Contact   | Color        | NewName          |
-      | user1Name | user2Name | BrightOrange | RotateFullscreen |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C2729 @regression @id2451
   Scenario Outline: Verify archiving conversation from ellipsis menu [PORTRAIT]
@@ -226,7 +212,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I open conversation details
     And I open ellipsis menu
     And I click archive menu button
@@ -246,7 +231,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I open conversation details
     And I open ellipsis menu
     And I click archive menu button
@@ -319,7 +303,7 @@ Feature: Conversation View
     And I click plus button next to text input
     Then I see only Details button. Call, Camera, Sketch, Ping are not shown
     And I click Close input options button
-    And I navigate back to conversations view
+    And I navigate back to conversations list
     When I tap on group chat with name <GroupChatName>
     And I click plus button next to text input
     Then I see only Details button. Call, Camera, Sketch, Ping are not shown
@@ -359,7 +343,6 @@ Feature: Conversation View
     Given I see conversations list
     Given User Myself sends encrypted message "<VimeoLink>" to user <Contact1>
     When I tap on contact name <Contact1>
-    And I see dialog page
     Then I see vimeo link <VimeoLink> and media in dialog
 
     Examples:
@@ -375,7 +358,6 @@ Feature: Conversation View
     Given I see conversations list
     Given User Myself sends encrypted message "<VimeoLink>" to user <Contact1>
     When I tap on contact name <Contact1>
-    And I see dialog page
     Then I see vimeo link <VimeoLink> and media in dialog
 
     Examples:
@@ -390,7 +372,6 @@ Feature: Conversation View
     Given I see conversations list
     Given User Myself sends encrypted message "<VimeoLink>" to user <Contact>
     When I tap on contact name <Contact>
-    And I see dialog page
     Then I see vimeo link <VimeoLink> but NO media player
 
     Examples:
@@ -406,7 +387,6 @@ Feature: Conversation View
     Given I see conversations list
     Given User Myself sends encrypted message "<VimeoLink>" to user <Contact>
     When I tap on contact name <Contact>
-    And I see dialog page
     Then I see vimeo link <VimeoLink> but NO media player
 
     Examples:
@@ -421,7 +401,6 @@ Feature: Conversation View
     Given I see conversations list
     Given User Myself sends encrypted message "<MessageAndLink>" to user <Contact1>
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I see Link <MessageAndLink> in dialog
     And I tap on Link with a message
     Then I see WireWebsitePage
@@ -439,7 +418,6 @@ Feature: Conversation View
     Given I see conversations list
     Given User Myself sends encrypted message "<MessageAndLink>" to user <Contact1>
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I see Link <MessageAndLink> in dialog
     And I tap on Link with a message
     Then I see WireWebsitePage
@@ -456,7 +434,6 @@ Feature: Conversation View
     Given I see conversations list
     Given User Myself sends encrypted message "<Link>" to user <Contact1>
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I see Link <Link> in dialog
     And I tap on Link
     Then I see WireWebsitePage
@@ -474,7 +451,6 @@ Feature: Conversation View
     Given I see conversations list
     Given User Myself sends encrypted message "<Link>" to user <Contact1>
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I see Link <Link> in dialog
     And I tap on Link
     Then I see WireWebsitePage
@@ -490,14 +466,11 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I type the default message
-    And I return to the chat list
+    And I navigate back to conversations list
     When I tap on contact name <Contact2>
-    And I see dialog page
-    And I return to the chat list
+    And I navigate back to conversations list
     And I tap on contact name <Contact1>
-    And I see dialog page
     Then I see Close input options button is not visible
     And I see controller buttons can not be visible
     And I see the default message in input field
@@ -514,12 +487,9 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I type the default message
     When I tap on contact name <Contact2>
-    And I see dialog page
     And I tap on contact name <Contact1>
-    And I see dialog page
     Then I see Close input options button is not visible
     And I see controller buttons can not be visible
     And I see the default message in input field
@@ -536,14 +506,13 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
     And I longpress on image in the conversation
     And I tap on copy badge
     And I tap and hold on message input
     And I click on popup Paste item
     And I press Confirm button
-    Then I see new photo in the dialog
+    Then I see 2 photos in the dialog
 
     Examples:
       | Name      | Contact   | Picture     | ConversationType |
@@ -558,15 +527,14 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     And I tap on contact name <Contact>
-    And I see dialog page
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
     And I longpress on image in the conversation
     And I tap on copy badge
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
     And I press Confirm button
-    Then I see new photo in the dialog
+    Then I see 2 photos in the dialog
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -584,11 +552,9 @@ Feature: Conversation View
     And I confirm delete conversation content
     Then I dont see conversation <GroupChatName> in contact list
     And I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     And I search for user name <Contact1> and tap on it on People picker page
     And I click open conversation button on People picker page
-    Then I see dialog page
     Then I see the only message in dialog is system message CONNECTED TO <Contact1>
     And I type the default message
     And I send the message
@@ -611,11 +577,9 @@ Feature: Conversation View
     And I confirm delete conversation content
     Then I dont see conversation <GroupChatName> in contact list
     And I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     And I search for user name <Contact1> and tap on it on People picker page
     And I click open conversation button on People picker page
-    Then I see dialog page
     Then I see the only message in dialog is system message CONNECTED TO <Contact1>
     And I type the default message
     And I send the message
@@ -633,7 +597,7 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I see download button shown on fullscreen page
@@ -644,7 +608,7 @@ Feature: Conversation View
     And I press Camera Roll button
     And I choose last picture from camera roll
     And I press Confirm button
-    Then I verify image in dialog is same as template <Picture>
+    And I see 2 photos in the dialog
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -659,7 +623,7 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I see download button shown on fullscreen page
@@ -670,8 +634,7 @@ Feature: Conversation View
     And I press Camera Roll button
     And I choose last picture from camera roll
     And I press Confirm button
-    And I scroll to the end of the conversation
-    Then I verify image in dialog is same as template <Picture>
+    And I see 2 photos in the dialog
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -756,7 +719,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I see plus button next to text input
     And I type the default message
     And I see plus icon is changed to user avatar icon
@@ -775,7 +737,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see dialog page
     And I see plus button next to text input
     And I type the default message
     And I see plus icon is changed to user avatar icon

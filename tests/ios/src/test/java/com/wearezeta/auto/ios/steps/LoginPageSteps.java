@@ -349,42 +349,6 @@ public class LoginPageSteps {
     }
 
     /**
-     * Taps "Terms of Service" link on Welcome screen
-     *
-     * @step. ^I press Terms of Service link$
-     */
-    @When("^I press Terms of Service link$")
-    public void IPressTermsOfServiceLink() throws Throwable {
-        getLoginPage().openTermsLink();
-    }
-
-    /**
-     * Verifies whether the current page is "Terms and Conditions" page
-     *
-     * @throws AssertionError if the current page is not "Terms and Conditions" page
-     * @step. ^I see the terms info page$
-     */
-    @Then("^I see the terms info page$")
-    public void ISeeTheTermsInfoPage() throws Throwable {
-        Assert.assertTrue("I don't see terms of service page", getLoginPage()
-                .isTermsPrivacyCloseButtonVisible());
-        // TODO:verify correct content as far as copywrite is in
-    }
-
-    /**
-     * Closes "Terms and Conditions" page to return back to Welcome page
-     *
-     * @throws AssertionError if the current page is not "Welcome" page
-     * @step. ^I return to welcome page$
-     */
-    @When("^I return to welcome page$")
-    public void IReturnToWelcomePage() throws Throwable {
-        getLoginPage().closeTermsPrivacyController();
-        Assert.assertTrue("I don't see login screen", getLoginPage()
-                .isLoginButtonVisible());
-    }
-
-    /**
      * Enters given text into email input field and taps password field
      *
      * @param wrongMail text to enter into email input field
@@ -423,9 +387,9 @@ public class LoginPageSteps {
      * Verifies whether the notification Resend avialble in 10 min is shown
      *
      * @throws Exception
-     * @step. ^I see Resend will be possible after 10 min aleart$
+     * @step. ^I see Resend will be possible after 10 min alert$
      */
-    @Then("^I see Resend will be possible after 10 min aleart$")
+    @Then("^I see Resend will be possible after 10 min alert$")
     public void ISeeResendIn10minAlert() throws Exception {
         Assert.assertTrue("I don't see Resend in 10 min alert", getLoginPage()
                 .isResendIn10minAlertVisible());
@@ -480,6 +444,18 @@ public class LoginPageSteps {
     }
 
     /**
+     * Verifies whether the notification something went wrong is shown
+     *
+     * @throws Exception
+     * @step. ^I see something went wrong alert$
+     */
+    @Then("^I see something went wrong alert$")
+    public void ISeeSomethingWentWrongAlert() throws Exception {
+        Assert.assertTrue("I don't see already registered email alert",
+                getLoginPage().isSomethingWentWrongAlertShown());
+    }
+
+    /**
      * Clicks on the Forgot/Change password button on the Sign In screen
      *
      * @throws Exception
@@ -501,12 +477,11 @@ public class LoginPageSteps {
      *
      * @param email
      * @throws Exception
-     * @step. ^I type in email (.*) to change password$
+     * @step. ^I commit email (.*) to change password$
      */
-    @When("^I type in email (.*) to change password$")
+    @When("^I commit email (.*) to change password$")
     public void ITypeInEmailToChangePassword(String email) throws Exception {
         email = usrMgr.replaceAliasesOccurences(email, FindBy.EMAIL_ALIAS);
-        getLoginPage().tapEmailFieldToChangePassword(email);
 
         // activate the user, to get access to the mails
         Map<String, String> expectedHeaders = new HashMap<String, String>();
@@ -515,17 +490,8 @@ public class LoginPageSteps {
                 PasswordResetMessage.MESSAGE_PURPOSE);
         this.activationMessage = IMAPSMailbox.getInstance().getMessage(
                 expectedHeaders, BackendAPIWrappers.ACTIVATION_TIMEOUT);
-    }
 
-    /**
-     * Presses the change password button in the safari webview
-     *
-     * @throws Exception
-     * @step. ^I press Change Password button in browser$
-     */
-    @When("^I press Change Password button in browser$")
-    public void IPressChangePasswordButtonInBrowser() throws Exception {
-        getLoginPage().tapChangePasswordButtonInWebView();
+        getLoginPage().commitEmail(email);
     }
 
     /**
@@ -541,16 +507,16 @@ public class LoginPageSteps {
     }
 
     /**
-     * Types the new password into the password field
+     * Types the new password into the password field and commits it
      *
      * @param newPassword that gets set as new password by typing it into the field
      * @throws Exception
-     * @step. ^I type in new password (.*)$
+     * @step. ^I commit new password (.*)$
      */
-    @When("^I type in new password (.*)$")
+    @When("^I commit new password (.*)$")
     public void ITypeInNewPassword(String newPassword) throws Exception {
         usrMgr.getSelfUserOrThrowError().setPassword(newPassword);
-        getLoginPage().tapPasswordFieldToChangePassword(newPassword);
+        getLoginPage().commitNewPassword(newPassword);
     }
 
     /**

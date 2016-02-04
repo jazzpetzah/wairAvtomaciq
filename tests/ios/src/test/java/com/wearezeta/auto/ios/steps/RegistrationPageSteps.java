@@ -1,24 +1,17 @@
 package com.wearezeta.auto.ios.steps;
 
-import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.Future;
 
-import com.wearezeta.auto.ios.pages.IOSPage;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import com.wearezeta.auto.common.usrmgmt.UserState;
 import com.wearezeta.auto.ios.pages.RegistrationPage;
-import com.wearezeta.auto.ios.pages.LoginPage;
-
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -31,32 +24,9 @@ public class RegistrationPageSteps {
         return pagesCollection.getPage(RegistrationPage.class);
     }
 
-    private LoginPage getLoginPage() throws Exception {
-        return pagesCollection.getPage(LoginPage.class);
-    }
-
     private ClientUser userToRegister = null;
 
     private Future<String> activationMessage;
-
-    BufferedImage templateImage;
-
-    @When("^I press Picture button$")
-    public void WhenIPressPictureButton() throws Exception {
-        getRegistrationPage().selectPicture();
-    }
-
-    @When("^I See selected picture$")
-    public void ISeeSelectedPicture() throws Exception {
-        templateImage = getRegistrationPage().takeScreenshot().orElseThrow(
-                AssertionError::new);
-        Assert.assertTrue(getRegistrationPage().isPictureSelected());
-    }
-
-    @When("^I confirm selection$")
-    public void IConfirmSelection() throws Exception {
-        getRegistrationPage().confirmPicture();
-    }
 
     /**
      * Input fake phone number for given user
@@ -77,21 +47,6 @@ public class RegistrationPageSteps {
         getRegistrationPage().selectWirestan();
         getRegistrationPage().inputPhoneNumber(
                 this.userToRegister.getPhoneNumber().toString().replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""));
-    }
-
-    /**
-     * Input phone number of allready registered user
-     *
-     * @param name username
-     * @throws Exception
-     * @step. ^I input phone number of already registered user (.*)$
-     */
-    @When("^I input phone number of already registered user (.*)$")
-    public void IInputPhoneNumberOfRegisteredUser(String name) throws Exception {
-        ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
-        getRegistrationPage().selectWirestan();
-        getRegistrationPage().inputPhoneNumber(
-                user.getPhoneNumber().toString().replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""));
     }
 
     /**
@@ -197,7 +152,8 @@ public class RegistrationPageSteps {
      */
     @When("^I fill in name (.*) with leading and trailing spaces and hit Enter$")
     public void IInputNameWithSpacesAndHitEnter(String name) throws Exception {
-        getRegistrationPage().setName("  " + name + "  ");
+        getRegistrationPage().setName(
+                "  " + usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS) + "  ");
         getRegistrationPage().inputName();
     }
 
@@ -225,7 +181,7 @@ public class RegistrationPageSteps {
 
     @When("^I enter email (.*)$")
     public void IEnterEmail(String email) throws Exception {
-        boolean flag = false;
+        boolean isRealEmail = false;
         try {
             String realEmail = usrMgr.findUserByEmailOrEmailAlias(email)
                     .getEmail();
@@ -234,14 +190,14 @@ public class RegistrationPageSteps {
             if (this.userToRegister == null) {
                 this.userToRegister = new ClientUser();
             }
-            flag = true;
+            isRealEmail = true;
         }
 
-        if (flag) {
-            getRegistrationPage().setEmail(email + "\n");
+        if (isRealEmail) {
+            getRegistrationPage().setEmail(email);
         } else {
             getRegistrationPage().setEmail(
-                    this.userToRegister.getEmail() + "\n");
+                    this.userToRegister.getEmail());
         }
     }
 
@@ -264,7 +220,7 @@ public class RegistrationPageSteps {
 
     @Then("^I see confirmation page$")
     public void ISeeConfirmationPage() throws Exception {
-        Assert.assertTrue(getRegistrationPage().isConfirmationShown());
+        Assert.assertTrue("Confirmation message is not shown or not correct", getRegistrationPage().isConfirmationShown());
     }
 
     /**
@@ -276,10 +232,8 @@ public class RegistrationPageSteps {
      */
     @When("^I start activation email monitoring$")
     public void IStartActivationEmailMonitoring() throws Exception {
-        Map<String, String> expectedHeaders = new HashMap<String, String>();
-        expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-        this.activationMessage = IMAPSMailbox.getInstance().getMessage(
-                expectedHeaders, BackendAPIWrappers.ACTIVATION_TIMEOUT);
+        activationMessage = BackendAPIWrappers
+            .initMessageListener(userToRegister);
     }
 
     @Then("^I verify registration address$")
@@ -287,7 +241,7 @@ public class RegistrationPageSteps {
         BackendAPIWrappers
                 .activateRegisteredUserByEmail(this.activationMessage);
         userToRegister.setUserState(UserState.Created);
-        getLoginPage().waitForLoginToFinish();
+        getRegistrationPage().waitRegistrationToFinish();
     }
 
     /**

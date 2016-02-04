@@ -1,19 +1,15 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.awt.image.BufferedImage;
-import java.util.Optional;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import com.wearezeta.auto.ios.tools.IRunnableWithException;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.ScreenOrientation;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 
 import com.wearezeta.auto.ios.pages.keyboard.IOSKeyboard;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -25,7 +21,7 @@ public abstract class IOSPage extends BasePage {
 
     public final static long IOS_DRIVER_INIT_TIMEOUT = 1000 * 60 * 3;
 
-    private static final int SWIPE_DELAY = 10 * 1000; // milliseconds
+    private static final int DEFAULT_RETRY_COUNT = 2;
 
     protected static final String nameStrMainWindow = "ZClientMainWindow";
     protected static final By nameMainWindow = By.name(nameStrMainWindow);
@@ -39,21 +35,10 @@ public abstract class IOSPage extends BasePage {
 
     protected static final By nameEditingItemPaste = By.name("Paste");
 
-    protected static final By classNameKeyboard = By.className("UIAKeyboard");
-
-    protected static final By nameKeyboardDeleteButton = By.name("delete");
-
-    protected static final By nameKeyboardReturnButton = By.name("Return");
-
-    protected static final By nameKeyboardSendButton = By.name("Send");
-
-    protected static final By nameHideKeyboardButton = By.name("Hide keyboard");
-
-    protected static final By nameSpaceButton = By.name("space");
-
-    protected static final By nameDoneButton = By.name("Done");
-
     private static String imagesPath = "";
+
+    private static final Function<String, String> xpathStrAlertByText = text ->
+            String.format("//UIAAlert[ .//*[contains(@name, '%s')] or contains(@name, '%s')]", text, text);
 
     private IOSKeyboard onScreenKeyboard;
 
@@ -67,7 +52,7 @@ public abstract class IOSPage extends BasePage {
         setImagesPath(CommonUtils.getSimulatorImagesPathFromConfig(this
                 .getClass()));
 
-        this.onScreenKeyboard = new IOSKeyboard(driver, getDriverInitializationTimeout());
+        this.onScreenKeyboard = new IOSKeyboard(driver);
     }
 
     @Override
@@ -81,32 +66,13 @@ public abstract class IOSPage extends BasePage {
         return (Future<ZetaIOSDriver>) super.getLazyDriver();
     }
 
-    @Override
-    public void close() throws Exception {
-        super.close();
-    }
-
-    public void swipeLeft(int time) throws Exception {
-        DriverUtils.swipeLeft(this.getDriver(), getElement(nameMainWindow), time);
-    }
-
-    public void swipeRight(int time) throws Exception {
-        DriverUtils.swipeRight(this.getDriver(), getElement(nameMainWindow), time);
-    }
-
     public void swipeRight(int time, int percentX, int percentY) throws Exception {
-        DriverUtils.swipeRight(this.getDriver(), getElement(nameMainWindow), time, percentX,
-                percentY);
+        DriverUtils.swipeRight(this.getDriver(), getElement(nameMainWindow), time, percentX, percentY);
     }
 
     public void swipeUp(int time) throws Exception {
         DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(nameMainWindow), time,
-                50, 90, 50, 10);
-    }
-
-    public void swipeDownSimulator() throws Exception {
-        IOSSimulatorHelper.swipeDown();
-        Thread.sleep(SWIPE_DELAY);
+                50, 55, 50, 10);
     }
 
     public void swipeDown(int time) throws Exception {
@@ -137,36 +103,61 @@ public abstract class IOSPage extends BasePage {
         getElement(nameEditingItemPaste, "Paste popup is not visible").click();
     }
 
-    public void inputStringFromKeyboard(String str) throws Exception {
-        this.onScreenKeyboard.typeString(str);
+    private void clickAtSimulatorElement(WebElement el) throws Exception {
+        final Point elLocation = el.getLocation();
+        final Dimension windowSize = getDriver().manage().window().getSize();
+        IOSSimulatorHelper.clickAt(String.format("%.2f", (elLocation.x + 10) * 1.0 / windowSize.width),
+                String.format("%.2f", (elLocation.y + 10) * 1.0 / windowSize.height));
+    }
+
+    /**
+     * !!! this method is not able to enter line breaks !!!
+     *
+     * @param dstElement the destination eit field
+     * @param str        string to enter
+     * @throws Exception
+     */
+    public void inputStringFromKeyboard(WebElement dstElement, String str,
+                                        boolean useAutocompleteWorkaround) throws Exception {
+        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            clickAtSimulatorElement(dstElement);
+            IOSSimulatorHelper.typeString(str, useAutocompleteWorkaround);
+        } else {
+            DriverUtils.tapByCoordinates(getDriver(), dstElement);
+            this.onScreenKeyboard.typeString(str);
+        }
+    }
+
+    public void inputStringFromKeyboardAndCommit(WebElement dstElement, String str,
+                                                 boolean useAutocompleteWorkaround) throws Exception {
+        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            clickAtSimulatorElement(dstElement);
+            IOSSimulatorHelper.typeStringAndPressEnter(str, useAutocompleteWorkaround);
+        } else {
+            DriverUtils.tapByCoordinates(getDriver(), dstElement);
+            this.onScreenKeyboard.typeString(str);
+            this.clickKeyboardCommitButton();
+        }
     }
 
     public boolean isKeyboardVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), classNameKeyboard, 3);
+        return this.onScreenKeyboard.isVisible();
     }
 
     public void clickKeyboardDeleteButton() throws Exception {
-        getElement(nameKeyboardDeleteButton).click();
-    }
-
-    public void clickKeyboardReturnButton() throws Exception {
-        getElement(nameKeyboardReturnButton).click();
-    }
-
-    public void clickKeyboardSendButton() throws Exception {
-        getElement(nameKeyboardSendButton, "Keyboard Send button is not visible").click();
+        this.onScreenKeyboard.pressDeleteButton();
     }
 
     public void clickHideKeyboardButton() throws Exception {
-        getElement(nameHideKeyboardButton).click();
+        this.onScreenKeyboard.pressHideButton();
     }
 
     public void clickSpaceKeyboardButton() throws Exception {
-        getElement(nameSpaceButton).click();
+        this.onScreenKeyboard.pressSpaceButton();
     }
 
-    public void clickDoneKeyboardButton() throws Exception {
-        getElement(nameDoneButton, "Keyboard Done button is not visible").click();
+    public void clickKeyboardCommitButton() throws Exception {
+        this.onScreenKeyboard.pressCommitButton();
     }
 
     public static Object executeScript(String script) throws Exception {
@@ -179,42 +170,39 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void acceptAlert() throws Exception {
-        DriverUtils.waitUntilAlertAppears(this.getDriver());
-        try {
+        if (DriverUtils.waitUntilAlertAppears(this.getDriver())) {
             this.getDriver().switchTo().alert().accept();
-        } catch (Exception e) {
-            // do nothing
         }
     }
 
+    public void dismissAlert() throws Exception {
+        if (DriverUtils.waitUntilAlertAppears(this.getDriver())) {
+            this.getDriver().switchTo().alert().dismiss();
+        }
+    }
+
+    public boolean isAlertContainsText(String expectedText) throws Exception {
+        final By locator = By.xpath(xpathStrAlertByText.apply(expectedText));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
 
     public void minimizeApplication(int timeSeconds) throws Exception {
         assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            CommonUtils.executeUIAppleScript(new String[]{
-                    "tell application \"System Events\"",
-                    "tell application \"Simulator\" to activate",
-                    "do shell script \"/bin/sleep 3\"",
-                    "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
-                    "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
-                    "end tell"}).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
-            Thread.sleep(timeSeconds * 1000);
-            final Dimension screenSize = getDriver().manage().window().getSize();
-            getDriver().tap(1, screenSize.getWidth() / 3, screenSize.getHeight() / 2, DriverUtils.SINGLE_TAP_DURATION);
+            IOSSimulatorHelper.switchToAppsList();
+            final int clickAtHelperDuration = 4; // seconds
+            if (timeSeconds >= clickAtHelperDuration) {
+                Thread.sleep((timeSeconds - clickAtHelperDuration) * 1000);
+            } else {
+                Thread.sleep(timeSeconds * 1000);
+            }
+            IOSSimulatorHelper.clickAt("0.3", "0.5");
         } else {
             // https://discuss.appium.io/t/runappinbackground-does-not-work-for-ios9/6201
             this.getDriver().runAppInBackground(timeSeconds);
         }
     }
 
-    public void dismissAlert() throws Exception {
-        DriverUtils.waitUntilAlertAppears(this.getDriver());
-        try {
-            this.getDriver().switchTo().alert().dismiss();
-        } catch (Exception e) {
-            // do nothing
-        }
-    }
 
     public void dismissAllAlerts() throws Exception {
         int count = 0;
@@ -285,30 +273,49 @@ public abstract class IOSPage extends BasePage {
     public void lockScreen(int timeSeconds) throws Exception {
         assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            CommonUtils.executeUIAppleScript(new String[]{
-                    "tell application \"System Events\"",
-                    "tell application \"Simulator\" to activate",
-                    "do shell script \"/bin/sleep 3\"",
-                    "tell application \"System Events\" to keystroke \"l\" using {command down}",
-                    "end tell"
-            }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+            IOSSimulatorHelper.lock();
             Thread.sleep(timeSeconds * 1000);
             // this is to show the unlock label if not visible yet
-            CommonUtils.executeUIAppleScript(new String[]{
-                    "tell application \"System Events\"",
-                    "tell application \"Simulator\" to activate",
-                    "do shell script \"/bin/sleep 3\"",
-                    "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}",
-                    "end tell"
-            }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+            IOSSimulatorHelper.goHome();
             IOSSimulatorHelper.swipeRight();
         } else {
             this.getDriver().lockScreen(timeSeconds);
         }
     }
 
-    public void resetApplication() throws Exception {
-        getDriver().resetApp();
+    public void clickElementWithRetryIfStillDisplayed(By locator, int retryCount) throws Exception {
+        WebElement el = getElement(locator);
+        int counter = 0;
+        do {
+            el.click();
+            counter++;
+            if (DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator)) {
+                return;
+            }
+        } while (counter < retryCount);
+        throw new IllegalStateException(String.format("Locator %s is still displayed", locator));
+    }
+
+    public void clickElementWithRetryIfStillDisplayed(By locator) throws Exception {
+        clickElementWithRetryIfStillDisplayed(locator, DEFAULT_RETRY_COUNT);
+    }
+
+    public void clickElementWithRetryIfNextElementNotAppears(By locator, By nextLocator, int retryCount)
+            throws Exception {
+        WebElement el = getElement(locator);
+        int counter = 0;
+        do {
+            el.click();
+            counter++;
+            if (DriverUtils.waitUntilLocatorAppears(this.getDriver(), nextLocator)) {
+                return;
+            }
+        } while (counter < retryCount);
+        throw new IllegalStateException(String.format("Locator %s did't appear", nextLocator));
+    }
+
+    public void clickElementWithRetryIfNextElementAppears(By locator, By nextLocator) throws Exception {
+        clickElementWithRetryIfNextElementNotAppears(locator, nextLocator, DEFAULT_RETRY_COUNT);
     }
 
     @Override
@@ -339,23 +346,5 @@ public abstract class IOSPage extends BasePage {
             log.debug(getDriver().getPageSource());
             throw e;
         }
-    }
-
-    /**
-     * We have to count the fact that Simulator window might be scaled
-     *
-     * @return optionally, full screen shot as BufferedImage
-     * @throws Exception
-     */
-    @Override
-    public Optional<BufferedImage> takeScreenshot() throws Exception {
-        final BufferedImage screen = DriverUtils.takeFullScreenShot(this.getDriver()).orElseThrow(
-                () -> new IllegalStateException("Appium has failed to take full screen shot"));
-        final float currentScreenHeight = getDriver().manage().window().getSize().getHeight();
-        final float realScreenHeight = screen.getHeight();
-        if ((int)currentScreenHeight != (int)realScreenHeight) {
-            return Optional.of(ImageUtil.resizeImage(screen, currentScreenHeight / realScreenHeight));
-        }
-        return Optional.of(screen);
     }
 }

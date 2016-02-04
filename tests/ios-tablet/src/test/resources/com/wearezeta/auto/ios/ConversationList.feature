@@ -7,7 +7,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I swipe right on a <Contact>
-    And I click archive button for conversation <Contact>
+    And I click archive button for conversation
     Then I dont see conversation <Contact> in contact list
     And I open archived conversations on iPad
     Then I see user <Contact> in contact list
@@ -24,7 +24,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I swipe right on a <Contact>
-    And I click archive button for conversation <Contact>
+    And I click archive button for conversation
     Then I dont see conversation <Contact> in contact list
     And I open archived conversations on iPad
     Then I see user <Contact> in contact list
@@ -41,7 +41,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     Given I see conversations list
     And I swipe right on a <GroupChatName>
-    And I click archive button for conversation <GroupChatName>
+    And I click archive button for conversation
     Then I dont see conversation <GroupChatName> in contact list
     And I open archived conversations on iPad
     Then I see user <GroupChatName> in contact list
@@ -59,7 +59,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     Given I see conversations list
     And I swipe right on a <GroupChatName>
-    And I click archive button for conversation <GroupChatName>
+    And I click archive button for conversation
     Then I dont see conversation <GroupChatName> in contact list
     And I open archived conversations on iPad
     Then I see user <GroupChatName> in contact list
@@ -77,7 +77,7 @@ Feature: Conversation List
     Given I see conversations list
     And I open archived conversations on iPad
     And I tap on contact name <ArchivedUser>
-    And I navigate back to conversations view
+    And I navigate back to conversations list
     Then I see first item in contact list named <ArchivedUser>
 
     Examples:
@@ -129,74 +129,71 @@ Feature: Conversation List
   Scenario Outline: Verify Ping animation in the conversations list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
-    Given User <Contact> change name to <NewName>
-    Given User <Name> change accent color to <Color>
+    Given User Myself removes his avatar picture
     Given I Sign in on tablet using my email
     Given I see conversations list
-    Given I remember the state of the first conversation cell
-    Given User <Contact> securely pings conversation <Name>
-    When I wait for 10 seconds
-    Then I see change of state for first conversation cell
+    Given I remember the state of <Contact> conversation item
+    When User <Contact> securely pings conversation Myself
+    # Wait for ping animation
+    And I wait for 2 seconds
+    Then I see the state of <Contact> conversation item is changed
 
     Examples:
-      | Name      | Contact   | NewName | Color        |
-      | user1Name | user2Name | PING    | BrightOrange |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C2537 @regression @id2752
   Scenario Outline: Verify Ping animation in the conversations list [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
-    Given User <Contact> change name to <NewName>
-    Given User <Name> change accent color to <Color>
+    Given User Myself removes his avatar picture
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    Given I remember the state of the first conversation cell
-    Given User <Contact> securely pings conversation <Name>
-    When I wait for 10 seconds
-    Then I see change of state for first conversation cell
+    Given I remember the state of <Contact> conversation item
+    When User <Contact> securely pings conversation Myself
+    # Wait for ping animation
+    And I wait for 2 seconds
+    Then I see the state of <Contact> conversation item is changed
 
     Examples:
-      | Name      | Contact   | NewName | Color        |
-      | user1Name | user2Name | PING    | BrightOrange |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C2531 @regression @id2367
   Scenario Outline: Verify messages are marked as read with disappearing unread dot [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
-    Given User <Contact> change name to <NewName>
-    Given User <Name> change accent color to <Color>
+    Given User Myself removes his avatar picture
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given User <Contact> sends <Number> encrypted messages to user Myself
-    And I remember the state of the first conversation cell
+    Given I remember the state of <Contact> conversation item
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I return to the chat list
-    Then I see change of state for first conversation cell
+    And I navigate back to conversations list
+    Then I see the state of <Contact> conversation item is changed
 
     Examples:
-      | Name      | Contact   | NewName    | Color        | Number |
-      | user1Name | user2Name | UNREAD DOT | BrightYellow | 2      |
+      | Name      | Contact   | Number |
+      | user1Name | user2Name | 2      |
 
   @C2536 @regression @id2711
   Scenario Outline: Verify messages are marked as read with disappearing unread dot [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
-    Given User <Contact> change name to <NewName>
-    Given User <Name> change accent color to <Color>
+    Given User Myself removes his avatar picture
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given User <Contact> sends <Number> encrypted messages to user Myself
-    And I remember the state of the first conversation cell
+    Given I remember the state of <Contact> conversation item
     When I tap on contact name <Contact>
-    And I see dialog page
-    Then I see change of state for first conversation cell
+    And I navigate back to conversations list
+    Then I see the state of <Contact> conversation item is changed
 
     Examples:
-      | Name      | Contact   | NewName    | Color        | Number |
-      | user1Name | user2Name | UNREAD DOT | BrightYellow | 2      |
+      | Name      | Contact   | Number |
+      | user1Name | user2Name | 2      |
 
   @C2507 @regression @id2756
   Scenario Outline: Verify conversations are sorted according to most recent activity [PORTRAIT]
@@ -305,53 +302,54 @@ Feature: Conversation List
     Then I see the state of <Contact> conversation item is not changed
 
     Examples:
-      | Name      | Contact   | Contact1  | Number | Color           | CallBackend |
-      | user1Name | user2Name | user3Name | 2      | StrongLimeGreen | autocall    |
+      | Name      | Contact   | Contact1  | Number | CallBackend |
+      | user1Name | user2Name | user3Name | 2      | autocall    |
 
   @C2535 @regression @rc @id2371
   Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages [PORTRAIT]
     Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact>,<Contact1>
-    Given User <Name> change accent color to <Color>
+    Given User Myself removes his avatar picture
+    Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I return to the chat list
-    And I tap on contact name <Contact1>
-    And I return to the chat list
-    Then I dont see unread message indicator in list for contact <Contact>
-    Given User <Contact> sends 1 encrypted message to user Myself
-    Then I see 1 unread message indicator in list for contact <Contact>
-    Given User <Contact> sends 1 encrypted message to user Myself
-    Then I see 5 unread message indicator in list for contact <Contact>
-    Given User <Contact> sends 8 encrypted messages to user Myself
-    Then I see 10 unread message indicator in list for contact <Contact>
+    And I navigate back to conversations list
+    And I remember the state of <Contact> conversation item
+    When User <Contact> sends 1 encrypted message to user Myself
+    Then I see the state of <Contact> conversation item is changed
+    When I remember the state of <Contact> conversation item
+    And User <Contact> sends 4 encrypted message to user Myself
+    Then I see the state of <Contact> conversation item is changed
+    When I remember the state of <Contact> conversation item
+    Given User <Contact> sends 5 encrypted messages to user Myself
+    Then I see the state of <Contact> conversation item is changed
 
     Examples:
-      | Name      | Contact   | Contact1  | Color           |
-      | user1Name | user2Name | user3Name | StrongLimeGreen |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C2538 @regression @id2942
   Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages [LANDSCAPE]
     Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact>,<Contact1>
-    Given User <Name> change accent color to <Color>
+    Given User Myself removes his avatar picture
+    Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see conversations list
-    When I tap on contact name <Contact>
-    And I tap on contact name <Contact1>
-    Then I dont see unread message indicator in list for contact <Contact>
-    Given User <Contact> sends 1 encrypted message to user Myself
-    Then I see 1 unread message indicator in list for contact <Contact>
-    Given User <Contact> sends 1 encrypted message to user Myself
-    Then I see 5 unread message indicator in list for contact <Contact>
-    Given User <Contact> sends 8 encrypted message to user Myself
-    Then I see 10 unread message indicator in list for contact <Contact>
+    And I tap on contact name <Contact>
+    And I remember the state of <Contact> conversation item
+    When User <Contact> sends 1 encrypted message to user Myself
+    Then I see the state of <Contact> conversation item is changed
+    When I remember the state of <Contact> conversation item
+    And User <Contact> sends 4 encrypted message to user Myself
+    Then I see the state of <Contact> conversation item is changed
+    When I remember the state of <Contact> conversation item
+    Given User <Contact> sends 5 encrypted messages to user Myself
+    Then I see the state of <Contact> conversation item is changed
 
     Examples:
-      | Name      | Contact   | Contact1  | Color           |
-      | user1Name | user2Name | user3Name | StrongLimeGreen |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C2504 @regression @rc @id2566
   Scenario Outline: Verify muting ongoing call [PORTRAIT]
@@ -362,7 +360,6 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     When I see conversations list
     And I tap on contact name <Contact>
-    And I see dialog page
     And <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
@@ -370,8 +367,6 @@ Feature: Conversation List
     And I swipe right on Dialog page
     Then I see mute call button in conversation list
     And I click mute call button in conversation list
-    And I swipe left in current window
-    And I see mute call button on calling bar is selected
 
     Examples:
       | Name      | Contact   | CallBackend |
@@ -381,22 +376,25 @@ Feature: Conversation List
   Scenario Outline: Verify play/pause controls can change playing media state - SoundCloud [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User Myself removes his avatar picture
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
+    Given I remember the state of <Contact> conversation item
     When I tap on contact name <Contact>
-    And I see dialog page
     And I tap media link
     And I rotate UI to portrait
-    And I return to the chat list
-    Then I see Pause media button next to user <Contact>
+    And I navigate back to conversations list
+    Then I see the state of <Contact> conversation item is changed
+    When I remember the state of <Contact> conversation item
     And I tap on play/pause button in contact list
-    And I see Play media button next to user <Contact>
+    And I see the state of <Contact> conversation item is changed
     And I see playing media is paused
     And I tap on play/pause button in contact list
-    And I see Pause media button next to user <Contact>
+    And I see play/pause button next to username <Contact> in contact list
     And I see media is playing
+    And I see the state of <Contact> conversation item is not changed
 
     Examples:
       | Name      | Contact   | SoundCloudLink                                                                       |
@@ -686,7 +684,7 @@ Feature: Conversation List
     When I swipe right on a <Contact>
     And I press menu silence button
     When I swipe right on a <Contact>
-    And I click archive button for conversation <Contact>
+    And I click archive button for conversation
     Then I dont see conversation <Contact> in contact list
     Given User <Contact> sends 1 encrypted message to user Myself
     And I dont see conversation <Contact> in contact list
@@ -695,7 +693,7 @@ Feature: Conversation List
     And I open archived conversations on iPad
     Then I see user <Contact> in contact list
     And I tap on contact name <Contact>
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -711,7 +709,7 @@ Feature: Conversation List
     When I swipe right on a <Contact>
     And I press menu silence button
     When I swipe right on a <Contact>
-    And I click archive button for conversation <Contact>
+    And I click archive button for conversation
     Then I dont see conversation <Contact> in contact list
     Given User <Contact> sends 1 encrypted message to user Myself
     And I dont see conversation <Contact> in contact list
@@ -720,7 +718,7 @@ Feature: Conversation List
     And I open archived conversations on iPad
     Then I see user <Contact> in contact list
     And I tap on contact name <Contact>
-    And I see new photo in the dialog
+    And I see 1 photo in the dialog
 
     Examples:
       | Name      | Contact   | Picture     |

@@ -17,5 +17,9 @@ public interface IDevice extends IRemoteEntity {
 
 	void logout() throws Exception;
 
-	void setLabel(String label) throws Exception;
+    void setLabel(String label) throws Exception;
+
+    String getId() throws Exception;
+
+    String getFingerprint() throws Exception;
 }

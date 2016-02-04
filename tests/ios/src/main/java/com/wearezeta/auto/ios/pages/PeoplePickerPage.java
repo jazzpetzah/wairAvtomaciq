@@ -4,10 +4,10 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DummyElement;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
+import io.appium.java_client.ios.IOSElement;
+import org.openqa.selenium.*;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
@@ -16,7 +16,7 @@ public class PeoplePickerPage extends IOSPage {
     private static final By xpathPickerSearch = By.xpath("//UIATextView[@name='textViewSearch' and @visible='true']");
 
     private static final By xpathPickerClearButton =
-            By.xpath("//*[@name='PeoplePickerClearButton' and @visible='true']");
+            By.xpath("//*[@name='PeoplePickerClearButton' or @name='ContactsViewCloseButton']");
 
     private static final By nameKeyboardEnterButton = By.name("Return");
 
@@ -82,9 +82,8 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void tapOnPeoplePickerSearch() throws Exception {
-        final WebElement peoplePickerSearch = getElement(xpathPickerSearch);
-        this.getDriver().tap(1, peoplePickerSearch.getLocation().x + 40,
-                peoplePickerSearch.getLocation().y + 30, DriverUtils.SINGLE_TAP_DURATION);
+        final Point location = getElement(xpathPickerSearch).getLocation();
+        this.getDriver().tap(1, location.x + 40, location.y + 30, DriverUtils.SINGLE_TAP_DURATION);
     }
 
     public void tapOnPeoplePickerClearBtn() throws Exception {
@@ -92,12 +91,13 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void fillTextInPeoplePickerSearch(String text) throws Exception {
-        sendTextToSearchInput(text);
-        clickSpaceKeyboardButton();
-    }
-
-    public void sendTextToSearchInput(String text) throws Exception {
-        getElement(xpathPickerSearch).sendKeys(text);
+        final WebElement searchInput = getElement(xpathPickerSearch);
+        if (CommonUtils.getIsSimulatorFromConfig(this.getClass()) && text.matches(".*\\W+.*")) {
+            inputStringFromKeyboard(searchInput, text + " ", true);
+        } else {
+            ((IOSElement) searchInput).setValue(text);
+            clickSpaceKeyboardButton();
+        }
     }
 
     public Optional<WebElement> getSearchResultsElement(String user) throws Exception {
@@ -107,7 +107,7 @@ public class PeoplePickerPage extends IOSPage {
 
     public boolean isElementNotFoundInSearch(String name) throws Exception {
         final By locator = By.xpath(xpathStrFoundContactByName.apply(name));
-        return !getElementIfDisplayed(locator, 2).isPresent();
+        return getElementIfDisplayed(locator, 2).isPresent();
     }
 
     public void selectElementInSearchResults(String name) throws Exception {

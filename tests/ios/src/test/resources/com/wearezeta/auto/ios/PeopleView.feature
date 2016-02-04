@@ -1,24 +1,20 @@
 Feature: People View
 
   @C985 @regression @id1393
-  Scenario Outline: (ZIOS-5442) Start group chat with users from contact list
+  Scenario Outline: Start group chat with users from contact list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
-    #And I swipe up on dialog page to open other user personal page
     And I open conversation details
     And I see <Contact1> user profile page
     And I press Add button
-    And I see People picker page
     And I wait until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact2>
     And I see user <Contact2> found on People picker page
     And I tap on conversation <Contact2> in search result
-    #And I see Add to conversation button
     And I click on Go button
     And I wait for 2 seconds
     Then I see group chat page with users <Contact1>,<Contact2>
@@ -37,7 +33,6 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press Add button
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
     And I see user <Contact3> found on People picker page
@@ -61,7 +56,7 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I press leave converstation button
+    And I press leave conversation button
     And I see leave conversation alert
     Then I press leave
     And I open archived conversations
@@ -82,9 +77,8 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I select contact <Contact2>
+    And I select participant <Contact2>
     And I click Remove
-    And I see warning message
     And I confirm remove
     And I click close user profile page button
     Then I see that <Contact2> is not present on group chat info page
@@ -93,27 +87,21 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
 
-  @C3173 @staging @rc @id1396
+  @C3173 @regression @rc @id1396
   Scenario Outline: Verify correct group info page information
     Given There are 3 users where <Name> is me
-    Given User <Contact1> changes avatar picture to <Picture>
-    Given User <Contact1> changes name to AQAPICTURECONTACT
-    Given User <Contact2> changes name to AQAAVATAR
-    Given User <Contact2> changes accent color to <Color>
-    Given User <Contact1> changes accent color to <Color1>
     Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I create group chat with <Contact1> and <Contact2>
+    When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    Then I see that the conversation name is correct with <Contact1> and <Contact2>
+    Then I see correct conversation name <GroupChatName>
     And I see that conversation has <ParticipantNumber> people
-    And I see the correct participant <Contact1> avatar
-    And I see the correct participant <Contact2> avatar
 
     Examples:
-      | Name      | Contact1  | Contact2  | ParticipantNumber | Picture                      | Color        | Color1       |
-      | user1Name | user2Name | user3Name | 2                 | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow |
+      | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName |
+      | user1Name | user2Name | user3Name | 2                 | GroupInfo     |
 
   @C3174 @regression @rc @id1406
   Scenario Outline: I can edit the conversation name
@@ -126,7 +114,7 @@ Feature: People View
     And I open group conversation details
     And I change group conversation name to <ChatName>
     Then I see correct conversation name <ChatName>
-    And I exit the group info page
+    And I close group info page
     And I see you renamed conversation to <ChatName> message shown in Group Chat
     And I navigate back to conversations list
     And I see in contact list group chat named <ChatName>
@@ -145,11 +133,11 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I select contact <GroupCreator>
+    And I select participant <GroupCreator>
     And I verify username <GroupCreator> on Other User Profile page is displayed
     And I verify user email for <GroupCreator> on Other User Profile page is displayed
     And I click close user profile page button
-    And I select contact <NonConnectedContact>
+    And I select participant <NonConnectedContact>
     Then I verify username <NonConnectedContact> on Other User Profile page is displayed
 
     Examples:
@@ -165,7 +153,7 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I select contact <Contact1>
+    And I select participant <Contact1>
     And I tap on start dialog button on other user profile page
     And I type the default message and send it
     Then I see 1 default message in the dialog
@@ -185,7 +173,7 @@ Feature: People View
     And I tap on group chat with name <GroupChatName>
     #And I swipe up on group chat page
     And I open group conversation details
-    And I tap on not connected contact <NonConnectedContact>
+    And I select participant <NonConnectedContact>
     Then I see connect to <NonConnectedContact> dialog
 
     Examples:
@@ -200,12 +188,10 @@ Feature: People View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
     #And I swipe up on dialog page to open other user personal page
     And I open conversation details
     And I see <Contact1> user profile page
     And I press Add button
-    And I see People picker page
     #And I dont see keyboard
     And I tap on conversation <Contact2> in search result
     Then I see user <Contact2> on People picker page is selected
@@ -229,11 +215,9 @@ Feature: People View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I open conversation details
     And I see <Contact1> user profile page
     And I press Add button
-    And I see People picker page
     And I tap on Search input on People picker page
     And I see user <Contact2> found on People picker page
     And I don't see Add to conversation button
@@ -250,36 +234,25 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @C977 @staging @id559
+  @C977 @regression @id559
   Scenario Outline: Verify you can add people from 1:1 people view (cancel view)
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
-    #And I swipe up on dialog page to open other user personal page
     And I open conversation details
-    And I see <Contact1> user profile page
     And I press Add button
-    And I see People picker page
-    And I scroll up page a bit
-    And I dont see keyboard
     And I tap on conversation <Contact2> in search result
     And I tap on conversation <Contact3> in search result
     And I click close button to dismiss people view
-    And I see <Contact1> user profile page
     And I press Add button
-    And I see People picker page
     And I see user <Contact2> on People picker page is NOT selected
     And I see user <Contact3> on People picker page is NOT selected
     And I click close button to dismiss people view
-    And I see <Contact1> user profile page
     And I click close user profile page button
-    And I see dialog page
     And I navigate back to conversations list
-    And I see conversations list
-    And I don't see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
+    Then I don't see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  |
@@ -288,51 +261,45 @@ Feature: People View
   @C3170 @regression @rc @id1462
   Scenario Outline: Verify silence the conversation
     Given There are 2 users where <Name> is me
-    Given User <Name> change accent color to <Color>
-    Given <Contact> is connected to <Name>
-    Given User <Contact> change accent color to <Color>
-    Given User <Contact> change name to <NewName>
+    Given User Myself removes his avatar picture
+    Given <Contact> is connected to Myself
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on contact name <Contact>
-    And I see dialog page
+    When I remember the state of <Contact> conversation item
+    And I tap on contact name <Contact>
     And I open conversation details
     And I press conversation menu button
     And I press menu silence button
     And I click close user profile page button
-    And I see dialog page
     And I navigate back to conversations list
     And I see conversations list
-    Then I see conversation <Contact> is silenced
+    Then I see the state of <Contact> conversation item is changed
 
     Examples:
-      | Name      | Contact   | Color  | NewName |
-      | user1Name | user2Name | Violet | SILENCE |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C3171 @regression @rc @id1335
   Scenario Outline: Verify unsilence the conversation
     Given There are 2 users where <Name> is me
-    Given User <Name> change accent color to <Color>
-    Given <Contact> is connected to <Name>
-    Given User <Contact> change name to <NewName>
-    Given <Name> silenced conversation with <Contact>
+    Given User Myself removes his avatar picture
+    Given <Contact> is connected to Myself
+    Given Myself silenced conversation with <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    And I see conversation <Contact> got silenced before
-    When I tap on contact name <Contact>
-    And I see dialog page
+    When I remember the state of <Contact> conversation item
+    And I tap on contact name <Contact>
     And I open conversation details
     And I press conversation menu button
     And I press menu notify button
     And I click close user profile page button
-    And I see dialog page
     And I navigate back to conversations list
     And I see conversations list
-    Then I see conversation <Contact> is unsilenced
+    Then I see the state of <Contact> conversation item is changed
 
     Examples:
-      | Name      | Contact   | Color  | NewName |
-      | user1Name | user2Name | Violet | SILENCE |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C26 @regression @id712
   Scenario Outline: Verify you can block a person from profile view
@@ -341,7 +308,6 @@ Feature: People View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I open conversation details
     And I see <Contact1> user profile page
     And I press conversation menu button
@@ -364,7 +330,7 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I select contact <Contact1>
+    And I select participant <Contact1>
     And I see <Contact1> user profile page
     And I unblock user
     Then I see dialog page
@@ -383,7 +349,6 @@ Feature: People View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
     And I see user <Contact3> found on People picker page
@@ -391,7 +356,6 @@ Feature: People View
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press Add button
-    And I see People picker page
     And I wait until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
@@ -449,17 +413,17 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
-  @C1830 @staging @id3971
+  @C1830 @regression @id3971
   Scenario Outline: Verify removing the content from the group conversation via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
-    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User Myself securely pings conversation <GroupChatName>
-    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
+    Given User <Contact1> securely pings conversation <GroupChatName>
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
-    Given User Myself sends encrypted image <Picture> to group conversation <GroupChatName>
+    Given User <Contact2> sends 1 encrypted message to group conversation <GroupChatName>
+    Given User <Contact2> sends encrypted image <Picture> to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button
@@ -470,6 +434,7 @@ Feature: People View
     Then I see conversation <GroupChatName> is presented in Search results
     When I tap on conversation <GroupChatName> in search result
     Then I see group chat page with users <Contact1>,<Contact2>
+    And I see 0 conversation entries
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
@@ -486,13 +451,11 @@ Feature: People View
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I see 5 conversation entries
     And I open conversation details
     And I press conversation menu button
     And I click delete menu button
     And I confirm delete conversation content
-    And I navigate back to conversations list
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
     And I see user <Contact1> found on People picker page
@@ -514,10 +477,9 @@ Feature: People View
     Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I see 3 conversation entries
     And I open group conversation details
-    And I press leave converstation button
+    And I press leave conversation button
     And I see leave conversation alert
     Then I press leave
     And I open archived conversations
@@ -538,9 +500,8 @@ Feature: People View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
-    And I select contact <Contact3>
+    And I select participant <Contact3>
     Then I see <Contact3> user pending profile page
     Then I see remove from group conversation button
 
@@ -555,7 +516,6 @@ Feature: People View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see dialog page
     And I open conversation details
     And I press conversation menu button
     And I press menu Block button

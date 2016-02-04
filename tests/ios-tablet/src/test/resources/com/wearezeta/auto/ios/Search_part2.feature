@@ -7,7 +7,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
@@ -29,7 +28,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
@@ -50,18 +48,17 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on first 3 top connections
     When I see Send image action button on People picker page
     And I click Send image action button on People picker page
     And I press Camera Roll button
-    And I choose a picture from camera roll on iPad popover
-    And I press Confirm button on iPad popover
-    Then I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
-    And I see new photo in the dialog
-    When I navigate back to conversations view
+    And I choose a picture from camera roll
+    And I press Confirm button
+    Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
+    And I see 1 photo in the dialog
+    When I navigate back to conversations list
     Then I see in contact list group chat with <Contact1> <Contact2> <Contact3>
 
     Examples: 
@@ -76,17 +73,16 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on first 3 top connections
     When I see Send image action button on People picker page
     And I click Send image action button on People picker page
     And I press Camera Roll button
-    And I choose a picture from camera roll on iPad popover
-    And I press Confirm button on iPad popover
-    Then I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
-    And I see new photo in the dialog
+    And I choose a picture from camera roll
+    And I press Confirm button
+    Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
+    And I see 1 photo in the dialog
     And I see in contact list group chat with <Contact1> <Contact2> <Contact3>
 
     Examples: 
@@ -100,7 +96,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I tap on first 1 top connections
@@ -118,7 +113,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I tap on first 1 top connections
@@ -135,7 +129,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
@@ -153,7 +146,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
@@ -170,7 +162,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I tap on 1st top connection contact
@@ -190,7 +181,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     When I tap on 1st top connection contact
@@ -209,7 +199,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     When I tap on 1st top connection contact
@@ -229,7 +218,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     When I tap on 1st top connection contact
@@ -248,7 +236,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I tap on 1st top connection contact
@@ -274,7 +261,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I tap on 1st top connection contact
@@ -299,7 +285,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I tap on 1st top connection contact
@@ -319,7 +304,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I tap on 1st top connection contact
@@ -338,7 +322,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see Invite more people button
     And I tap on 1st top connection contact
@@ -369,7 +352,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see Invite more people button
     And I tap on 1st top connection contact

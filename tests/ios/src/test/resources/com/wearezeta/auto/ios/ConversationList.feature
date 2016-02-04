@@ -57,26 +57,26 @@ Feature: Conversation List
 
   @C350 @regression @id2153
   Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact>,<Contact1>
-    Given User <Name> change accent color to <Color>
+    Given There are 2 users where <Name> is me
+    Given User Myself removes his avatar picture
+    Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
     And I navigate back to conversations list
-    And I tap on contact name <Contact1>
-    And I navigate back to conversations list
-    Then I dont see unread message indicator in list for contact <Contact>
-    Given User <Contact> sends 1 encrypted message to user Myself
-    Then I see 1 unread message indicator in list for contact <Contact>
-    Given User <Contact> sends 1 encrypted message to user Myself
-    Then I see 5 unread message indicator in list for contact <Contact>
-    Given User <Contact> sends 8 encrypted messages to user Myself
-    Then I see 10 unread message indicator in list for contact <Contact>
+    And I remember the state of <Contact> conversation item
+    When User <Contact> sends 1 encrypted message to user Myself
+    Then I see the state of <Contact> conversation item is changed
+    When I remember the state of <Contact> conversation item
+    And User <Contact> sends 4 encrypted message to user Myself
+    Then I see the state of <Contact> conversation item is changed
+    When I remember the state of <Contact> conversation item
+    Given User <Contact> sends 5 encrypted messages to user Myself
+    Then I see the state of <Contact> conversation item is changed
 
     Examples:
-      | Name      | Contact   | Contact1  | Color           |
-      | user1Name | user2Name | user3Name | StrongLimeGreen |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C19 @regression @id2040
   Scenario Outline: Verify archive a group conversation
@@ -116,19 +116,19 @@ Feature: Conversation List
   @C3177 @regression @rc @id1369
   Scenario Outline: Verify Ping animation in the conversations list
     Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
-    Given User <Contact> change name to <NewName>
-    Given User <Name> change accent color to <Color>
+    Given User Myself removes his avatar picture
+    Given <Contact> is connected to Myself
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given I remember the state of the first conversation cell
-    Given User <Contact> securely pings conversation <Name>
-    When I wait for 10 seconds
-    Then I see change of state for first conversation cell
+    Given I remember the state of <Contact> conversation item
+    When User <Contact> securely pings conversation Myself
+    # Wait for ping animation
+    And I wait for 2 seconds
+    Then I see the state of <Contact> conversation item is changed
 
     Examples:
-      | Name      | Contact   | NewName | Color        |
-      | user1Name | user2Name | PING    | BrightOrange |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C104 @regression @id2761
   Scenario Outline: Verify conversations are sorted according to most recent activity
@@ -236,13 +236,12 @@ Feature: Conversation List
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on contact name <GroupChatName>
-    Then I see new photo in the dialog
+    Then I see 1 photo in the dialog
     When I navigate back to conversations list
     And I swipe right on a <GroupChatName>
     And I click delete menu button
     And I confirm delete conversation content
     And I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     And I search for user name <GroupChatName> and tap on it on People picker page
     Then I see group chat page with users <Contact1>,<Contact2>
@@ -262,13 +261,12 @@ Feature: Conversation List
     Given User <Contact1> sends 1 encrypted message to user <Name>
     Given User Myself sends 1 encrypted message to user <Contact1>
     When I tap on contact name <Contact1>
-    Then I see new photo in the dialog
+    Then I see 1 photo in the dialog
     When I navigate back to conversations list
     And I swipe right on a <Contact1>
     And I click delete menu button
     And I confirm delete conversation content
     And I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     And I search for user name <Contact1> and tap on it on People picker page
     And I click open conversation button on People picker page
@@ -295,42 +293,43 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C850 @staging @id3312
+  @C850 @regression @id3312
   Scenario Outline: Verify silencing and notify from the action menu
     Given There are 2 users where <Name> is me
-    Given User <Name> change accent color to <Color>
+    Given User Myself removes his avatar picture
     Given Myself is connected to <Contact>
-    Given User <Contact> change accent color to <Color>
-    Given User <Contact> change name to <NewName>
     Given I sign in using my email or phone number
     Given I see conversations list
+    When I remember the state of <Contact> conversation item
     And I tap on contact name <Contact>
     And I navigate back to conversations list
     When I swipe right on a <Contact>
     And I press menu silence button
-    Then I see conversation <Contact> is silenced
-    When I swipe right on a <Contact>
+    Then I see the state of <Contact> conversation item is changed
+    When I remember the state of <Contact> conversation item
+    And I swipe right on a <Contact>
     And I press menu notify button
-    Then I see conversation <Contact> is unsilenced
-
-    Examples:
-      | Name      | Contact   | Color  | NewName |
-      | user1Name | user2Name | Violet | SILENCE |
-
-  @C106 @staging @id3899 @ZIOS-5279
-  Scenario Outline: Verify first conversation in the list is highlighted and opened
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given User <Name> change accent color to BrightOrange
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    And I see conversation <Contact> is selected in list
-    When I swipe left in current window
-    Then I see dialog page with contact <Contact>
+    Then I see the state of <Contact> conversation item is changed
 
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @C106 @regression @id3899
+  Scenario Outline: Verify first conversation in the list is highlighted and opened
+    Given There are 3 users where <Name> is me
+    Given User Myself removes his avatar picture
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I remember the state of conversation item number 1
+    And I tap on conversation item number 2
+    And I navigate back to conversations list
+    Then I see the state of conversation item number 1 is changed
+    
+    Examples:
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @C843 @regression @id3954
   Scenario Outline: Verify that deleted conversation isn't going to archive
@@ -351,7 +350,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C844 @staging @id3960
+  @C844 @regression @id3960
   Scenario Outline: Verify deleting 1-to-1 conversation from archive
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -372,14 +371,14 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C18 @staging @id1481 @ZIOS-5247
+  @C18 @regression @id1481 @ZIOS-5247
   Scenario Outline: Verify removing the content and leaving from the group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given User <Name> sends 1 encrypted message to group conversation <GroupChatName>
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I click delete menu button
     And I select Also Leave option on Delete conversation dialog
@@ -484,20 +483,20 @@ Feature: Conversation List
   @C366 @regression @rc @id1075
   Scenario Outline: Verify messages are marked as read with disappearing unread dot
     Given There are 2 users where <Name> is me
+    Given User Myself removes his avatar picture
     Given <Contact> is connected to <Name>
-    Given User <Name> change accent color to <Color>
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User <Contact> sends <Number> encrypted messages to user Myself
-    And I see 1 unread message indicator in list for contact <Contact>
+    Given User <Contact> sends 1 encrypted messages to user Myself
+    When I remember the state of <Contact> conversation item
     And I tap on contact name <Contact>
     And I see dialog page
     And I navigate back to conversations list
-    Then I dont see unread message indicator in list for contact <Contact>
+    Then I see the state of <Contact> conversation item is changed
 
     Examples:
-      | Name      | Contact   | Color           | Number |
-      | user1Name | user2Name | StrongLimeGreen | 1      |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C108 @regression @id4103
   Scenario Outline: Verify 'Invite more people' is hidden after 6 connections

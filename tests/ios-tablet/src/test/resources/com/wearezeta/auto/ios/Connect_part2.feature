@@ -14,7 +14,7 @@ Feature: Connect
     Then I see Cancel request confirmation page
     And I confirm Cancel request by click on Yes button
     And I dismiss popover on iPad
-    When I return to the chat list
+    When I navigate back to conversations list
     Then I dont see conversation <Contact> in contact list
 
     Examples: 
@@ -102,7 +102,6 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I see user <Contact1> found on People picker page
@@ -124,7 +123,6 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I see user <Contact1> found on People picker page
@@ -149,14 +147,13 @@ Feature: Connect
     Given I see conversations list
     When I see Pending request link in contact list
     And I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
     And I select user on iPad group popover <Contact3>
     And I see incoming pending popover from user <Contact3> on iPad
     And I tap on start dialog button on other user profile page
     And I click on Ignore button on Pending requests page
     And I exit the group info iPad popover
-    And I return to the chat list
+    And I navigate back to conversations list
     Then I dont see Pending request link in contact list
 
     Examples: 
@@ -175,7 +172,6 @@ Feature: Connect
     Given I see conversations list
     When I see Pending request link in contact list
     And I tap on group chat with name <GroupChatName>
-    And I see dialog page
     And I open group conversation details
     And I select user on iPad group popover <Contact3>
     And I see incoming pending popover from user <Contact3> on iPad
@@ -238,10 +234,6 @@ Feature: Connect
     When I see Pending request link in contact list
     And I click on Pending request link in contact list
     Then I see Pending request page
-    When I swipe right in current window
-    And I see conversation 2 people waiting is selected in list
-    And I swipe left in current window
-    Then I see Pending request page
 
     Examples: 
       | Name      | Contact   | Contact2  | Contact3  |
@@ -259,8 +251,6 @@ Feature: Connect
     When I see Pending request link in contact list
     And I click on Pending request link in contact list
     Then I see Pending request page
-    When I swipe right in current window
-    And I see conversation 2 people waiting is selected in list
 
     Examples: 
       | Name      | Contact   | Contact2  | Contact3  |

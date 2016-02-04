@@ -19,8 +19,10 @@ abstract class RemoteEntity implements IRemoteEntity {
 
 	private ActorRef ref;
 
-	public RemoteEntity(FiniteDuration actorTimeout) {
+	public RemoteEntity(ActorRef ref, String name, FiniteDuration actorTimeout) {
 		this.actorTimeout = actorTimeout;
+        this.ref = ref;
+        this.name = name;
 	}
 
 	@Override
@@ -43,15 +45,16 @@ abstract class RemoteEntity implements IRemoteEntity {
 
 	@Override
 	public boolean isConnected() {
-		Object resp = null;
-		try {
-			resp = askActor(ref, new ActorMessage.Echo("test", "test"));
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (this.ref == null) {
 			return false;
 		}
-		if (resp instanceof ActorMessage.Echo
-				&& ((ActorMessage.Echo) resp).msg().equals("test")) {
+		Object resp;
+		try {
+			resp = askActor(ref, new ActorMessage.Echo("test", "test"), 5000);
+		} catch (Exception e) {
+			return false;
+		}
+		if (resp instanceof ActorMessage.Echo && ((ActorMessage.Echo) resp).msg().equals("test")) {
 			return true;
 		}
 		return false;
@@ -67,17 +70,14 @@ abstract class RemoteEntity implements IRemoteEntity {
 	 */
 	protected Object askActor(ActorRef actorRef, ActorMessage message)
 			throws Exception {
-		Future<Object> future = Patterns.ask(actorRef, message,
-				actorTimeout.toMillis());
+		Future<Object> future = Patterns.ask(actorRef, message, actorTimeout.toMillis());
 		return Await.result(future, actorTimeout);
 	}
 
 	protected Object askActor(ActorRef actorRef, ActorMessage message,
 			long timeoutMilliseconds) throws Exception {
-		final FiniteDuration timeotObj = new FiniteDuration(
-				timeoutMilliseconds, TimeUnit.MILLISECONDS);
-		Future<Object> future = Patterns.ask(actorRef, message,
-				timeotObj.toMillis());
+		final FiniteDuration timeotObj = new FiniteDuration(timeoutMilliseconds, TimeUnit.MILLISECONDS);
+		Future<Object> future = Patterns.ask(actorRef, message, timeotObj.toMillis());
 		return Await.result(future, timeotObj);
 	}
 

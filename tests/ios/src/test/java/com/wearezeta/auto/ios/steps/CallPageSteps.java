@@ -116,10 +116,12 @@ public class CallPageSteps {
      * @step. ^I see incoming calling message for contact (.*)$
      */
     @When("^I see incoming calling message for contact (.*)$")
-    public void ISeeIncomingCallingMessage(String contact) throws Exception {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        Assert.assertTrue(String.format("Calling message for '%s' is not visible", contact),
-                getIncomingCallPage().isCallingMessageVisible(contact));
+    public void ISeeIncomingCallingMessage(String contact) throws Throwable {
+        final String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
+        getStartedCallPage().workaroundUITreeRefreshIssue(() ->
+                Assert.assertTrue(String.format("Calling message for '%s' is not visible", name),
+                        getIncomingCallPage().isCallingMessageVisible(name))
+        );
     }
 
     /**

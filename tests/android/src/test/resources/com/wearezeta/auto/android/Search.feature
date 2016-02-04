@@ -11,7 +11,6 @@ Feature: Search
     When I tap on contact name <Contact2>
     And I navigate back from dialog page
     And I open search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact1>" into Search input on People Picker page
     Then I see user <Contact1> in People picker
@@ -29,7 +28,6 @@ Feature: Search
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I open search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<GroupChatName>" into Search input on People Picker page
     Then I see group <GroupChatName> in People picker
@@ -48,7 +46,6 @@ Feature: Search
     When I tap on contact name <Contact2>
     And I navigate back from dialog page
     And I open search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field part <Size> of user name to connect to <Contact1>
     Then I see user <Contact1> in People picker
@@ -66,7 +63,6 @@ Feature: Search
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I open search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field part <Size> of user name to connect to <GroupChatName>
     Then I see group <GroupChatName> in People picker
@@ -82,7 +78,6 @@ Feature: Search
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     When I open search by tap
-    And I see People picker page
     And I press Clear button
     Then I see Contact list
 
@@ -99,12 +94,10 @@ Feature: Search
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I open Search by tap
-    And I see People picker page
     And I press Clear button
     Then I see Contact list with contacts
     And I do not see TOP PEOPLE
     When I open Search by UI button
-    And I see People picker page
     And I swipe down people picker
     Then I see Contact list with contacts
     And I do not see TOP PEOPLE
@@ -128,7 +121,6 @@ Feature: Search
     Given I wait until <Contact1> exists in backend search results
     Given I wait until <Contact2> exists in backend search results
     And I open search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
@@ -145,11 +137,11 @@ Feature: Search
   Scenario Outline: (AN-2834) Verify starting 1:1 conversation with a person from Top People
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given Contact <Contact1> send message to user <Name>
-    Given Contact <Name> send message to user <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
+    Given User <Contact1> sends encrypted message to user Myself
+    Given User Me sends encrypted message to user <Contact1>
     When I open Search by UI button
     And I wait until Top People list appears
     And I tap on <Contact1> in Top People
@@ -187,7 +179,6 @@ Feature: Search
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     When I open search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
@@ -230,7 +221,6 @@ Feature: Search
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     When I open search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
@@ -252,7 +242,6 @@ Feature: Search
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     When I open search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
@@ -278,7 +267,6 @@ Feature: Search
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     When I open search by tap
-    And I see People picker page
     And I wait until Top People list appears
     And I tap on <Contact1> in Top People
     Then I see action buttons appeared on People picker page
@@ -299,7 +287,6 @@ Feature: Search
     Given I wait until <Contact1> exists in backend search results
     Given I wait until <Contact2> exists in backend search results
     When I open search by tap
-    And I see People picker page
     And I wait until Top People list appears
     And I see TOP PEOPLE
     And I tap on <Contact1> in Top People
@@ -324,7 +311,6 @@ Feature: Search
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     When I open search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
@@ -348,7 +334,6 @@ Feature: Search
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     When I open search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
@@ -375,7 +360,6 @@ Feature: Search
     Given I see Contact list with contacts
     Given I wait until <Contact> exists in backend search results
     And I open search by tap
-    And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact>" into Search input on People Picker page
     When I see user <Contact> in People Picker

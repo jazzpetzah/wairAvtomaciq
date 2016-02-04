@@ -14,7 +14,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
+import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
@@ -40,11 +40,10 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 import java.util.logging.Level;
 
 public class CommonAndroidSteps {
@@ -164,6 +163,12 @@ public class CommonAndroidSteps {
 
     @Before
     public void setUp(Scenario scenario) throws Exception {
+        try {
+            SEBridge.getInstance().reset();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         if (scenario.getSourceTagNames().contains("@performance")) {
             AndroidLogListener.getInstance(ListenerType.PERF).start();
         }
@@ -308,6 +313,21 @@ public class CommonAndroidSteps {
     }
 
     /**
+     * A user adds another user to a group chat
+     *
+     * @param user that adds someone to a chat
+     * @param userToBeAdded user that gets added by someone
+     * @param group group chat you get added to
+     * @throws Throwable
+     * @step. ^User (.*) adds [Uu]ser (.*) to group chat (.*)$
+     */
+    @When("^User (.*) adds [Uu]ser (.*) to group chat (.*)$")
+    public void UserAddsUserToGroupChat(String user, String userToBeAdded,
+            String group) throws Exception {
+        commonSteps.UserXAddedContactsToGroupChat(user, userToBeAdded, group);
+    }
+
+    /**
      * Taps on the center of the screen
      *
      * @throws Throwable
@@ -444,7 +464,6 @@ public class CommonAndroidSteps {
     public void UserIsSilenced(String mutedUser, String otherUser) throws Exception {
         mutedUser = usrMgr.findUserByNameOrNameAlias(mutedUser).getName();
         otherUser = usrMgr.findUserByNameOrNameAlias(otherUser).getName();
-
         commonSteps.MuteConversationWithUser(otherUser, mutedUser);
     }
 
@@ -476,7 +495,6 @@ public class CommonAndroidSteps {
     @Given("^(.*) is unarchived group chat (.*)$")
     public void UserIsUnarchivedGroupChat(String currentUser, String groupChat) throws Exception {
         currentUser = usrMgr.findUserByNameOrNameAlias(currentUser).getName();
-
         commonSteps.UnarchiveConversationWithGroup(currentUser, groupChat);
     }
 
@@ -549,12 +567,18 @@ public class CommonAndroidSteps {
      *
      * @param pingFromUserNameAlias The user to do the pinging
      * @param dstConversationName   the target conversation to send the ping to
+     * @param isSecure equals null if ping should not be secure
      * @throws Exception
-     * @step. ^Contact (.*) ping conversation (.*)$
+     * @step. ^User (\\w+) (securely )?pings? conversation (.*)$
      */
-    @When("^Contact (.*) ping conversation (.*)$")
-    public void UserPingedConversation(String pingFromUserNameAlias, String dstConversationName) throws Exception {
-        commonSteps.UserPingedConversation(pingFromUserNameAlias, dstConversationName);
+    @When("^User (\\w+) (securely )?pings? conversation (.*)$")
+    public void UserPingedConversation(String pingFromUserNameAlias,
+                                       String isSecure, String dstConversationName) throws Exception {
+        if (isSecure == null) {
+            commonSteps.UserPingedConversation(pingFromUserNameAlias, dstConversationName);
+        } else {
+            commonSteps.UserPingedConversationOtr(pingFromUserNameAlias, dstConversationName);
+        }
     }
 
     /**
@@ -562,13 +586,18 @@ public class CommonAndroidSteps {
      *
      * @param hotPingFromUserNameAlias The user to do the hotpinging
      * @param dstConversationName      the target converation to send the ping to
+     * @param isSecure equals null if ping should not be secure
      * @throws Exception
-     * @step. ^Contact (.*) hotping conversation (.*)$
+     * @step. ^User (\\w+) (securely )?hotpings? conversation (.*)$
      */
-    @When("^Contact (.*) hotping conversation (.*)$")
-    public void UserHotPingedConversation(String hotPingFromUserNameAlias, String dstConversationName)
-            throws Exception {
-        commonSteps.UserHotPingedConversation(hotPingFromUserNameAlias, dstConversationName);
+    @When("^User (\\w+) (securely )?hotpings? conversation (.*)$")
+    public void UserHotPingedConversation(String hotPingFromUserNameAlias,
+                                          String isSecure, String dstConversationName) throws Exception {
+        if (isSecure == null) {
+            commonSteps.UserHotPingedConversation(hotPingFromUserNameAlias, dstConversationName);
+        } else {
+            commonSteps.UserHotPingedConversationOtr(hotPingFromUserNameAlias, dstConversationName);
+        }
     }
 
     /**
@@ -580,9 +609,9 @@ public class CommonAndroidSteps {
      * @param isEncrypted          whether the message has to be encrypted
      * @param convoType            either 'user' or 'group conversation'
      * @throws Exception
-     * @step. ^Contact (.*) sends? (encrypted )?message (.*)to user (.*)$
+     * @step. ^User (.*) sends? (encrypted )?message (.*)to user (.*)$
      */
-    @When("^Contact (.*) sends? (encrypted )?message (.*)to (user|group conversation) (.*)$")
+    @When("^User (.*) sends? (encrypted )?message (.*)to (user|group conversation) (.*)$")
     public void UserSendMessageToConversation(String msgFromUserNameAlias, String isEncrypted,
                                               String msg, String convoType, String dstConvoName) throws Exception {
         final String msgToSend = (msg == null || msg.trim().length() == 0) ?
@@ -602,24 +631,6 @@ public class CommonAndroidSteps {
         }
     }
 
-
-    /**
-     * Send messages from all registered user to myself (these users have to be
-     * already connected to myself)
-     *
-     * @param message A message to send
-     * @throws Exception
-     * @step. ^All contacts send me a message (.*)$"
-     */
-    @When("^All contacts send me a message (.*)$")
-    public void AllContactsSendMeAMessage(String message) throws Exception {
-        for (ClientUser user : usrMgr.getCreatedUsers()) {
-            if (!user.getName().equals(usrMgr.getSelfUser().getName())) {
-                commonSteps.UserSentMessageToUser(user.getName(), usrMgr.getSelfUser().getName(), message);
-            }
-        }
-    }
-
     /**
      * User A sends specified number of simple text messages to user B
      *
@@ -628,9 +639,9 @@ public class CommonAndroidSteps {
      * @param dstUserNameAlias     The user to receive the message
      * @param areEncrypted         Whether the messages should be encrypted
      * @throws Exception
-     * @step. ^Contact (.*) send[s]* (\d+) (encrypted )?messages? to user (.*)$
+     * @step. ^User (.*) sends? (\d+) (encrypted )?messages? to user (.*)$
      */
-    @When("^Contact (.*) send[s]* (\\d+) (encrypted )?messages? to user (.*)$")
+    @When("^User (.*) sends? (\\d+) (encrypted )?messages? to user (.*)$")
     public void UserSendXMessagesToConversation(String msgFromUserNameAlias, int count, String areEncrypted,
                                                 String dstUserNameAlias) throws Exception {
         for (int i = 0; i < count; i++) {
@@ -754,9 +765,9 @@ public class CommonAndroidSteps {
      * @param conversationType         "single user" or "group" conversation.
      * @param dstConversationName      the name of the conversation to send the image to.
      * @throws Exception
-     * @step. ^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)
+     * @step. ^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)$
      */
-    @When("^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)")
+    @When("^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)$")
     public void ContactSendImageToConversation(String imageSenderUserNameAlias, String isEncrypted,
                                                String imageFileName, String conversationType,
                                                String dstConversationName) throws Exception {
@@ -772,7 +783,7 @@ public class CommonAndroidSteps {
     }
 
     @After
-    public void tearDown(Scenario scenario) throws Exception {
+    public void tearDown(Scenario scenario) {
         try {
             AndroidCommonUtils.setAirplaneMode(false);
         } catch (Exception e) {
@@ -790,12 +801,12 @@ public class CommonAndroidSteps {
 
         pagesCollection.clearAllPages();
 
-        if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
-            try {
+        try {
+            if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
                 PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
-            } catch (WebDriverException e) {
-                e.printStackTrace();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         AndroidLogListener.forceStopAll();
@@ -803,10 +814,18 @@ public class CommonAndroidSteps {
         if (!scenario.getStatus().equals(Result.PASSED)) {
             loggingProfile = new RegressionFailedLoggingProfile();
         }
-        AndroidLogListener.writeDeviceLogsToConsole(AndroidLogListener.getInstance(ListenerType.DEFAULT),
-                loggingProfile);
+        try {
+            AndroidLogListener.writeDeviceLogsToConsole(AndroidLogListener.getInstance(ListenerType.DEFAULT),
+                    loggingProfile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        commonSteps.getUserManager().resetUsers();
+        try {
+            commonSteps.getUserManager().resetUsers();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -888,9 +907,9 @@ public class CommonAndroidSteps {
      * @param toMail          the email to send the invitation to
      * @param message         the message for the invitee
      * @throws Exception
-     * @step. ^(.*) send personal invitation to mail (.*) with message (.*)
+     * @step. ^(.*) send personal invitation to mail (.*) with message (.*)$
      */
-    @When("^(.*) sends personal invitation to mail (.*) with message (.*)")
+    @When("^(.*) sends personal invitation to mail (.*) with message (.*)$")
     public void UserXSendsPersonalInvitation(String userToNameAlias,
                                              String toMail, String message) throws Exception {
         commonSteps.UserXSendsPersonalInvitationWithMessageToUserWithMail(
@@ -947,14 +966,27 @@ public class CommonAndroidSteps {
      * @param userNameAlias user name/alias
      * @param deviceNames   unique name of devices, comma-separated list
      * @throws Exception
-     * @step. User (.*) adds new devices (.*)
+     * @step. User (.*) adds new devices (.*)$
      */
-    @When("^User (.*) adds new devices (.*)")
+    @When("^User (.*) adds new devices (.*)$")
     public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
         final List<String> names = CommonSteps.splitAliases(deviceNames);
+        final int poolSize = 2;  // Runtime.getRuntime().availableProcessors()
+        final ExecutorService pool = Executors.newFixedThreadPool(poolSize);
         for (String name : names) {
-            commonSteps.UserAddsRemoteDeviceToAccount(userNameAlias, name,
-                    CommonUtils.generateRandomString(10));
+            pool.submit(() -> {
+                try {
+                    commonSteps.UserAddsRemoteDeviceToAccount(userNameAlias, name, CommonUtils.generateRandomString(10));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+        pool.shutdown();
+        final int secondsTimeout = (names.size() / poolSize + 1) * 40;
+        if (!pool.awaitTermination(secondsTimeout, TimeUnit.SECONDS)) {
+            throw new IllegalStateException(String.format(
+                    "Devices '%s' were not created within %s seconds timeout", names, secondsTimeout));
         }
     }
 

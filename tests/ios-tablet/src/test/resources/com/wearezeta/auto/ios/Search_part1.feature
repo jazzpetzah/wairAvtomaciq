@@ -6,7 +6,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
     And I press keyboard Return button
@@ -23,7 +22,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
     And I press keyboard Return button
@@ -38,8 +36,7 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I swipe down contact list on iPad
-    And I see People picker page
+    When I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
@@ -54,8 +51,7 @@ Feature: Search
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I swipe down contact list on iPad
-    And I see People picker page
+    When I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
@@ -64,7 +60,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2831 @staging @id2531 @noAcceptAlert @obsolete
+  @C2831 @staging @id2531 @noAcceptAlert
   Scenario Outline: Verify denying address book uploading [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -76,7 +72,7 @@ Feature: Search
     And I dismiss alert
     And I press maybe later button
     And I click clear button
-    And I swipe down contact list on iPad
+    And I open search by taping on it
     And I click hide keyboard button
     Then I dont see Upload contacts dialog
 
@@ -84,7 +80,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @C2833 @staging @id2928 @noAcceptAlert @obsolete
+  @C2833 @staging @id2928 @noAcceptAlert
   Scenario Outline: Verify denying address book uploading [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -97,7 +93,7 @@ Feature: Search
     And I dismiss alert
     And I press maybe later button
     And I click clear button
-    And I swipe down contact list on iPad
+    And I open search by taping on it
     And I click hide keyboard button
     Then I dont see Upload contacts dialog
 
@@ -112,7 +108,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on first 1 top connections
@@ -133,7 +128,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on first 1 top connections
@@ -153,7 +147,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on first 2 top connections
@@ -162,7 +155,7 @@ Feature: Search
     And I open group conversation details
     And I change group conversation name to <ConvoName>
     And I dismiss popover on iPad
-    And I swipe right on group chat page
+    And I navigate back to conversations list
     Then I see first item in contact list named <ConvoName>
 
     Examples: 
@@ -171,13 +164,12 @@ Feature: Search
 
   @C2840 @regression @id2930
   Scenario Outline: Start group chat with users from Top Connections [LANDSCAPE]
-    Given There are <UserCount> users where <Name> is me
+    Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I tap on first 2 top connections
@@ -190,8 +182,8 @@ Feature: Search
     And I see first item in contact list named <ConvoName>
 
     Examples: 
-      | Name      | ConvoName    | UserCount | Contact   |
-      | user1Name | TopGroupTest | 3         | user2Name |
+      | Name      | ConvoName    |
+      | user1Name | TopGroupTest |
 
   @C2456 @C2778 @regression @rc @id2342 @id1456
   Scenario Outline: Verify you can unblock someone from search list [PORTRAIT]
@@ -203,7 +195,6 @@ Feature: Search
     When I dont see conversation <Contact> in contact list
     And I wait until <Contact> exists in backend search results
     And I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
@@ -228,7 +219,6 @@ Feature: Search
     When I dont see conversation <Contact> in contact list
     And I wait until <Contact> exists in backend search results
     And I open search by taping on it
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
@@ -252,7 +242,6 @@ Feature: Search
     Given I see conversations list
     When I open search by taping on it
     And I wait until <LastName> exists in backend search results
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <LastName>
     Then I see user <NewName> found on People picker page
@@ -271,7 +260,6 @@ Feature: Search
     Given I see conversations list
     When I open search by taping on it
     And I wait until <LastName> exists in backend search results
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <LastName>
     Then I see user <NewName> found on People picker page
@@ -289,7 +277,6 @@ Feature: Search
     Given I see conversations list
     When I open search by taping on it
     And I wait until <NewName> exists in backend search results
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <PartName>
     Then I see user <NewName> found on People picker page
@@ -308,7 +295,6 @@ Feature: Search
     Given I see conversations list
     When I open search by taping on it
     And I wait until <NewName> exists in backend search results
-    And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <PartName>
     Then I see user <NewName> found on People picker page
@@ -325,7 +311,6 @@ Feature: Search
     Given I see conversations list
     Given I wait until <Contact> exists in backend search results
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I tap on 3 top connections but not <Contact>
@@ -349,7 +334,6 @@ Feature: Search
     Given I see conversations list
     Given I wait until <Contact> exists in backend search results
     When I open search by taping on it
-    And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I tap on 3 top connections but not <Contact>

@@ -23,7 +23,7 @@ public class EmailSignInPage extends AndroidPage {
 
     private static final By xpathAlertOKButton = By.xpath("//*[starts-with(@id, 'button') and @value='OK']");
 
-    private static final By idLoginInput = By.id("get__sign_in__email");
+    public static final By idLoginInput = By.id("get__sign_in__email");
 
     private static final By idPasswordInput = By.id("get__sign_in__password");
 

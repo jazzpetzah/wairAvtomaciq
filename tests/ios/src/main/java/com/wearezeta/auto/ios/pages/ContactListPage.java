@@ -23,6 +23,8 @@ public class ContactListPage extends IOSPage {
     private static final String xpathStrContactListItems = xpathStrContactListRoot + "//UIACollectionCell";
     private static final Function<String, String> xpathStrContactListItemByExpr = xpathExpr ->
             String.format("%s/UIAStaticText[%s]", xpathStrContactListItems, xpathExpr);
+    private static final Function<String, String> xpathStrContactListItemYouAreInCallWithByName = name ->
+            String.format("%s/UIAStaticText[@name='%s']", xpathStrMainWindow, name);
 
     private static final Function<String, String> xpathStrConvoListEntryByName = name ->
             String.format("%s[ .//*[@value='%s'] ]", xpathStrContactListItems, name);
@@ -68,12 +70,6 @@ public class ContactListPage extends IOSPage {
         super(lazyDriver);
     }
 
-    public boolean isMyUserNameDisplayedFirstInContactList(String name) throws Exception {
-        final By locator = By.xpath(xpathStrConvoListEntryByIdx.apply(1));
-        final Optional<WebElement> el = getElementIfDisplayed(locator);
-        return el.isPresent() && el.get().getText().equalsIgnoreCase(name);
-    }
-
     public void openSearch() throws Exception {
         getElement(nameOpenStartUI).click();
     }
@@ -92,7 +88,7 @@ public class ContactListPage extends IOSPage {
         getElement(locator).click();
     }
 
-    public void tapOnMyName() throws Exception {
+    public void tapMyAvatar() throws Exception {
         getElement(nameSelfButton).click();
     }
 
@@ -155,10 +151,6 @@ public class ContactListPage extends IOSPage {
         return getDialogNameByIndex(1);
     }
 
-    public void tapOnGroupChat(String chatName) throws Exception {
-        findNameInContactList(chatName).orElseThrow(IllegalStateException::new).click();
-    }
-
     public boolean waitForContactListToLoad() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.xpath(xpathStrConvoListEntryByIdx.apply(1)));
     }
@@ -173,10 +165,6 @@ public class ContactListPage extends IOSPage {
 
     public void clickPendingRequest() throws Exception {
         getElement(xpathPendingRequest).click();
-    }
-
-    public boolean isDisplayedInContactList(String name) throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.name(name), 5);
     }
 
     public boolean contactIsNotDisplayed(String name) throws Exception {
@@ -209,23 +197,22 @@ public class ContactListPage extends IOSPage {
         DriverUtils.tapByCoordinates(getDriver(), archiveButton);
     }
 
-    public BufferedImage getConversationEntryScreenshot(String name) throws Exception {
-        final By locator = By.xpath(xpathStrConvoListEntryByName.apply(name));
+    public BufferedImage getConversationEntryScreenshot(int idx) throws Exception {
+        final By locator = By.xpath(xpathStrConvoListEntryByIdx.apply(idx));
         final WebElement el = getElement(locator,
-                String.format("Conversation list entry '%s' is not visible", name));
+                String.format("Conversation list entry number '%s' is not visible", idx));
+        // ImageIO.write(takeScreenshot().get(), "png", new File("/Users/elf/Desktop/screen_" + System.currentTimeMillis() + ".png"));
         return this.getElementScreenshot(el).orElseThrow(IllegalStateException::new);
         // ImageIO.write(scr, "png", new File("/Users/elf/Desktop/screen_" + System.currentTimeMillis() + ".png"));
+        // return scr;
     }
 
-    public BufferedImage getScreenshotFirstContact() throws Exception {
-        // This takes a screenshot of the area to the left of a contact where
-        // ping and unread dot notifications are visible
-        final By locator = By.xpath(xpathStrConvoListEntryByIdx.apply(1));
-        final WebElement contact = getElement(locator, "No contacts are visible in the list");
-        return getScreenshotByCoordinates(contact.getLocation().x,
-                contact.getLocation().y + getElement(xpathContactListRoot).getLocation().y,
-                contact.getSize().width / 4, contact.getSize().height * 2)
-                .orElseThrow(IllegalStateException::new);
+    public BufferedImage getConversationEntryScreenshot(String name) throws Exception {
+        final By locator = By.xpath(xpathStrConvoListEntryByName.apply(name));
+        final WebElement el = getElement(locator, String.format("Conversation list entry '%s' is not visible", name));
+        return this.getElementScreenshot(el).orElseThrow(IllegalStateException::new);
+        // ImageIO.write(scr, "png", new File("/Users/elf/Desktop/screen_" + System.currentTimeMillis() + ".png"));
+        // return scr;
     }
 
     public boolean isMuteCallButtonVisible() throws Exception {
@@ -281,4 +268,34 @@ public class ContactListPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameSelfButton);
     }
 
+    public BufferedImage getAvatarStateScreenshot() throws Exception {
+        return this.getElementScreenshot(getElement(nameSelfButton)).orElseThrow(() ->
+                new IllegalStateException("Self avatar is not visible"));
+    }
+
+    public void tapConvoItemByIdx(int idx) throws Exception {
+        final By locator = By.xpath(xpathStrConvoListEntryNameByIdx.apply(idx));
+        getElement(locator, String.format("Conversation list entry number '%s' is not visible", idx)).click();
+    }
+
+    public void tapOnNameYourInCallWith(String name) throws Exception {
+        findNameIamCallingInContactList(name).orElseThrow(
+                () -> new IllegalStateException(String.format("The conversation '%s' you are in a call with is not" +
+                        " shown on top", name))
+        ).click();
+    }
+
+    private Optional<WebElement> findNameIamCallingInContactList(String name) throws Exception {
+        final By locator = By.xpath(xpathStrContactListItemYouAreInCallWithByName.apply(name));
+        final Optional<WebElement> contactCellCalling = getElementIfDisplayed(locator);
+        if (contactCellCalling.isPresent()) {
+            return contactCellCalling;
+        } else {
+            try {
+                return Optional.of(((IOSElement) getElement(xpathContactListRoot)).scrollToExact(name));
+            } catch (WebDriverException e) {
+                return Optional.empty();
+            }
+        }
+    }
 }

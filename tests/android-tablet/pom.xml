@@ -1,135 +1,135 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.wearezeta.auto</groupId>
-	<artifactId>auto-android-tablet</artifactId>
-	<version>1.0-SNAPSHOT</version>
-	<packaging>jar</packaging>
+    <groupId>com.wearezeta.auto</groupId>
+    <artifactId>auto-android-tablet</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
-	<name>auto-android-tablet</name>
-	<url>http://maven.apache.org</url>
+    <name>auto-android-tablet</name>
+    <url>http://maven.apache.org</url>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<skipTests>true</skipTests>
-		<testRun>DevRun</testRun>
-		<url>http://127.0.0.1:4723/wd/hub</url>
-		<appPath>/Project/zclient.apk</appPath>
-		<package>com.waz.zclient.dev</package>
-		<activity>com.waz.zclient.LaunchActivity</activity>
-		<waitActivities>com.waz.zclient.LaunchActivity,com.waz.zclient.AppEntryActivity</waitActivities>
-		<driverTimeoutSeconds>7</driverTimeoutSeconds>
-		<androidClientInfoPath>/Project/builds_info/classes.dex</androidClientInfoPath>
-		<androidAppiumLogPath>/Project/appium_android.log</androidAppiumLogPath>
-		<defaultEmail>smoketester@wire.com</defaultEmail>
-		<pictureResultsPath>${user.home}/Downloads/</pictureResultsPath>
-		<androidVersion>44</androidVersion>
-		<resourceFilePath>/Project/</resourceFilePath>
-		<resultsPath>/results/</resultsPath>
-		<backendType>staging</backendType>
-		<androidToolsPath>${project.basedir}/../tools/android</androidToolsPath>
-                <rcNotificationsRecepients>vova@wire.com,nick@wire.com</rcNotificationsRecepients>
-                <adbPrefix></adbPrefix>
-	</properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <skipTests>true</skipTests>
+        <testRun>DevRun</testRun>
+        <url>http://127.0.0.1:4723/wd/hub</url>
+        <appPath>/Project/zclient.apk</appPath>
+        <package>com.waz.zclient.dev</package>
+        <activity>com.waz.zclient.LaunchActivity</activity>
+        <waitActivities>com.waz.zclient.LaunchActivity,com.waz.zclient.AppEntryActivity</waitActivities>
+        <driverTimeoutSeconds>7</driverTimeoutSeconds>
+        <androidClientInfoPath>/Project/builds_info/classes.dex</androidClientInfoPath>
+        <androidAppiumLogPath>/Project/appium_android.log</androidAppiumLogPath>
+        <defaultEmail>smoketester@wire.com</defaultEmail>
+        <pictureResultsPath>${user.home}/Downloads/</pictureResultsPath>
+        <androidVersion>44</androidVersion>
+        <resourceFilePath>/Project/</resourceFilePath>
+        <resultsPath>/results/</resultsPath>
+        <backendType>staging</backendType>
+        <androidToolsPath>${project.basedir}/../tools/android</androidToolsPath>
+        <rcNotificationsRecepients>vova@wire.com,nick@wire.com</rcNotificationsRecepients>
+        <adbPrefix></adbPrefix>
+    </properties>
 
-	<dependencies>
-	
-		<dependency>
-			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest-library</artifactId>
-			<version>1.3</version>
-			<scope>test</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.google.android</groupId>
-			<artifactId>android</artifactId>
-			<version>4.1.1.4</version>
-		</dependency>
+    <dependencies>
 
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.3.4</version>
-		</dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
+            <version>1.3</version>
+            <scope>test</scope>
+        </dependency>
 
-		<dependency>
-			<groupId>com.wearezeta.auto</groupId>
-			<artifactId>auto-common</artifactId>
-			<version>1.0-SNAPSHOT</version>
-			<type>jar</type>
-		</dependency>
+        <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>android</artifactId>
+            <version>4.1.1.4</version>
+        </dependency>
 
-		<dependency>
-			<groupId>com.wearezeta.auto</groupId>
-			<artifactId>auto-android</artifactId>
-			<version>1.0-SNAPSHOT</version>
-			<type>jar</type>
-		</dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.3.4</version>
+        </dependency>
 
-	</dependencies>
+        <dependency>
+            <groupId>com.wearezeta.auto</groupId>
+            <artifactId>auto-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
 
-	<build>
-		<sourceDirectory>src/main/java</sourceDirectory>
-		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
+        <dependency>
+            <groupId>com.wearezeta.auto</groupId>
+            <artifactId>auto-android</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.17</version>
-				<configuration>
-					<skipTests>${skipTests}</skipTests>
-					<includes>
-						<include>**/${testRun}.java</include>
-					</includes>
-					<argLine>-Djava.library.path=../common/native_lib</argLine>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.6</version>
-				<configuration>
-					<!-- specify UTF-8, ISO-8859-1 or any other file encoding -->
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
+    </dependencies>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.10.1</version>
-				<configuration>
-					<show>public</show>
-					<sourceFileIncludes>
-						<!-- This will work only since v 2.11+ (http://jira.codehaus.org/browse/MJAVADOC-365) -->
-						<include>**/*Steps.java</include>
-					</sourceFileIncludes>
-					<tags>
-						<tag>
-							<name>step.</name>
-							<placement>m</placement>
-							<head>Step Declaration:</head>
-						</tag>
-					</tags>
-				</configuration>
-			</plugin>
-		</plugins>
+    <build>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
 
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
-	</build>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.17</version>
+                <configuration>
+                    <skipTests>${skipTests}</skipTests>
+                    <includes>
+                        <include>**/${testRun}.java</include>
+                    </includes>
+                    <argLine>-Djava.library.path=../common/native_lib</argLine>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <!-- specify UTF-8, ISO-8859-1 or any other file encoding -->
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.1</version>
+                <configuration>
+                    <show>public</show>
+                    <sourceFileIncludes>
+                        <!-- This will work only since v 2.11+ (http://jira.codehaus.org/browse/MJAVADOC-365) -->
+                        <include>**/*Steps.java</include>
+                    </sourceFileIncludes>
+                    <tags>
+                        <tag>
+                            <name>step.</name>
+                            <placement>m</placement>
+                            <head>Step Declaration:</head>
+                        </tag>
+                    </tags>
+                </configuration>
+            </plugin>
+        </plugins>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
 </project>

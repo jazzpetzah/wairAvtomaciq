@@ -122,23 +122,6 @@ Feature: Sign In
       | Name      | EmailOfOtherUser      | PasswordOfOtherUser | ErrorAlready                | InvalidEmail | ErrorInvalidEmail                   | InvalidPassword | ErrorInvalidPassword                          |
       | user1Name | qa1+qa1@wearezeta.com | aqa123456!          | Email address already taken | @example.com | Please enter a valid email address. | 123             | Choose a password with at least 8 characters. |
 
-  @C1848 @regression
-  Scenario Outline: Verify Skip for now button is shown when youre adding an email address after sign in with a phone number
-    Given There is 1 user where <Name> is me with phone number only
-    Given I switch to sign in page
-    When I switch to phone number sign in page
-    When I sign in using phone number of user <Name>
-    And I click on sign in button on phone number sign in
-    And I enter phone verification code for emailless user <Name>
-    Then I see Skip for now button on add email address dialog
-    When I click Skip for now button on add email address dialog
-    Then I am signed in properly
-    And I see Welcome page
-
-    Examples: 
-      | Name      |
-      | user1Name |
-
   @C1849 @regression
   Scenario Outline: Verify you can verify added email later when sign in with a phone number
     Given There is 1 user where <Name> is me with phone number only
@@ -147,8 +130,7 @@ Feature: Sign In
     When I sign in using phone number of user <Name>
     And I click on sign in button on phone number sign in
     And I enter phone verification code for emailless user <Name>
-    Then I see Skip for now button on add email address dialog
-    When I enter email of user <Name> on add email address dialog
+    And I enter email of user <Name> on add email address dialog
     And I enter password <PasswordOfOtherUser> on add email address dialog
     Then I click add button on add email address dialog
     And I verify that an envelope icon is shown

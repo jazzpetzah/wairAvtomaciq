@@ -34,18 +34,22 @@ Feature: Sign In
     And I tap I HAVE AN ACCOUNT button
     And I click on Change Password button on SignIn
     When I change URL to staging
-    And I type in email <Login> to change password
-    And I press Change Password button in browser
+    And I commit email <Login> to change password
     And I copy link from email and paste it into Safari
-    And I type in new password <NewPassword>
-    And I press Change Password button in browser
-    And I reset Wire app
-    And I sign in using my email
-    Then I see conversations list
+    And I commit new password <NewPassword>
+    # Wait until the page is loaded
+    And I wait for 5 seconds
+    # click Open button
+    And I press Enter key in Simulator window
+    # Wait until the page is loaded
+    And I wait for 5 seconds
+    When I have entered login <Login>
+    And I have entered password <NewPassword>
+    Then I press Login button
 
     Examples:
       | Login      | Name      | NewPassword  |
-      | user1Email | user1Name | aqa123456789 |
+      | user1Email | user1Name | 12345679     |
 
   @C1138 @regression @id2719
   Scenario Outline: Verify phone sign in when email is assigned
@@ -61,15 +65,15 @@ Feature: Sign In
       | Name      |
       | user1Name |
 
-  @C1145 @staging @id3813 @noAcceptAlert
+  @C1145 @regression @id3813 @noAcceptAlert
   Scenario Outline: Verify impossibility to login with the wrong code
     Given There is 1 user where <Name> is me
     Given I see sign in screen
     And I see country picker button on Sign in screen
-    And I enter phone number for user <Name>
+    And I enter phone number for user Myself
     And I see verification code page
     When I enter random verification code
-    Then I see wrong credentials notification
+    Then I see already registered phone number alert
 
     Examples:
       | Name      |
@@ -83,25 +87,25 @@ Feature: Sign In
     And I enter phone number for user <Name>
     And I see verification code page
     When I tap RESEND code button
-    Then I see Resend will be possible after 10 min aleart
+    Then I see Resend will be possible after 10 min alert
 
     Examples:
       | Name      |
       | user1Name |
 
-  @C1143 @staging @id2724 @noAcceptAlert
+  @C1143 @regression @id2724 @noAcceptAlert
   Scenario Outline: Verify impossibility to login with unregistered phone number
     Given There is 1 user where <Name> is me
     Given I see sign in screen
     When I see country picker button on Sign in screen
     And I enter random phone number
-    Then I see invalid phone number alert
+    Then I see something went wrong alert
 
     Examples:
       | Name      |
       | user1Name |
 
-  @C1086 @regression @id3851
+  @C1136 @rc @regression @id3851
   Scenario Outline: Verify first time phone sign in when email is not assigned
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
@@ -116,7 +120,7 @@ Feature: Sign In
     And I see email verification reminder
     And I verify registration address
     Then I see conversations list
-    When I tap on my name <Name>
+    When I tap my avatar
     Then I see email <Email> on Personal page
 
     Examples:

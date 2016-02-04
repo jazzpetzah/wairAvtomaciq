@@ -48,11 +48,11 @@ Feature: Rotations
   Scenario Outline: Conversation view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given Contact <Contact> sends message "<Message>" to user Myself
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
+    Given User <Contact> sends exnrypted message <Message> to user Myself
     When I tap the conversation <Contact>
     Then I see the conversation view
     And I see the message "<Message>" in the conversation view
@@ -75,7 +75,6 @@ Feature: Rotations
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     When I tap the Search input
-    And I see People Picker page
     And I enter "<Contact2>" into Search input on People Picker page
     And I tap the found item <Contact2> on People Picker page
     Then I see Outgoing Connection popover

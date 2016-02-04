@@ -47,8 +47,6 @@ public class GroupChatPageSteps {
     @Then("^I see empty group chat page with users (.*) with only system message$")
     public void ISeeGroupChatPageWithUsersAndOnlySystemMessage(
             String participantNameAliases) throws Exception {
-        DialogPageSteps dialog = new DialogPageSteps();
-        dialog.ISeeXConvoEntries(1);
         ThenISeeGroupChatPage(participantNameAliases);
     }
 
@@ -84,11 +82,6 @@ public class GroupChatPageSteps {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         Assert.assertTrue(getGroupChatPage()
                 .isYouAddedUserMessageShown(contact));
-    }
-
-    @When("I swipe right on group chat page")
-    public void ISwipeRightOnGroupChatPage() throws Throwable {
-        getGroupChatPage().swipeRight(1000);
     }
 
 }
