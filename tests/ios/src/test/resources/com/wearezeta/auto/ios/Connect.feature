@@ -311,7 +311,6 @@ Feature: Connect
     And I see <Contact3> user pending profile page
     And I click on start conversation button on pending profile page
     And I click on Ignore button on Pending requests page
-    And I close group participant details page
     And I close group info page
     And I navigate back to conversations list
     Then I dont see Pending request link in contact list
