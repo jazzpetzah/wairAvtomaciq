@@ -69,7 +69,7 @@ public class ContactListPageSteps {
         final BufferedImage actualConvoItemScreenshot = getContactListPage().getConversationEntryScreenshot(name);
         final double score = ImageUtil.getOverlapScore(this.savedConvoItemScreenshots.get(name),
                 actualConvoItemScreenshot, ImageUtil.RESIZE_NORESIZE);
-        final double minScore = 0.985;
+        final double minScore = 0.995;
         if (shouldNotBeChanged == null) {
             Assert.assertTrue(
                     String.format("The state of '%s' conversation item seems to be the same (%.3f >= %.3f)",
@@ -88,7 +88,7 @@ public class ContactListPageSteps {
      *
      * @param convoIdx conversation index, starts from 1
      * @throws Exception
-     * @step. ^I remember the state of (.*) conversation item$
+     * @step. ^I remember the state of conversation item number (\\d+)$
      */
     @When("^I remember the state of conversation item number (\\d+)$")
     public void IRememberConvoItemStateByIdx(int convoIdx) throws Exception {

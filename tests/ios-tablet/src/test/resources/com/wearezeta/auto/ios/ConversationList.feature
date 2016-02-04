@@ -309,13 +309,14 @@ Feature: Conversation List
   Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given User Myself removes his avatar picture
-    Given Myself is connected to <Contact>
+    Given Myself is connected to all other
     Given I Sign in on tablet using my email
     And I see conversations list
-    When I tap on contact name <Contact>
+    When I tap on contact name <Contact2>
     And I navigate back to conversations list
     And I remember the state of <Contact> conversation item
     When User <Contact> sends 1 encrypted message to user Myself
+    And I see first item in contact list named <Contact>
     Then I see the state of <Contact> conversation item is changed
     When I remember the state of <Contact> conversation item
     And User <Contact> sends 4 encrypted message to user Myself
@@ -325,20 +326,21 @@ Feature: Conversation List
     Then I see the state of <Contact> conversation item is changed
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @C2538 @regression @id2942
   Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given User Myself removes his avatar picture
-    Given Myself is connected to <Contact>
+    Given Myself is connected to all other
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see conversations list
     And I tap on contact name <Contact>
     And I remember the state of <Contact> conversation item
     When User <Contact> sends 1 encrypted message to user Myself
+    And I see first item in contact list named <Contact>
     Then I see the state of <Contact> conversation item is changed
     When I remember the state of <Contact> conversation item
     And User <Contact> sends 4 encrypted message to user Myself
@@ -348,8 +350,8 @@ Feature: Conversation List
     Then I see the state of <Contact> conversation item is changed
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @C2504 @regression @rc @id2566
   Scenario Outline: Verify muting ongoing call [PORTRAIT]
