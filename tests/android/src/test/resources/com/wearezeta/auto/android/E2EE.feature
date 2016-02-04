@@ -338,7 +338,6 @@ Feature: E2EE
     Then I see a message informing me conversation is verified
     And User <Contact1> adds new devices Device2
     When User <Contact1> sends encrypted message "<Message1>" via device Device2 to user Myself
-    And I wait for 5 seconds
     Then I see a message informing me conversation is not verified
 
     Examples:
