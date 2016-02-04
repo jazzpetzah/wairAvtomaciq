@@ -56,6 +56,13 @@ public class CallingServiceClient {
 		return CALL_RESOURCE.acceptNext(instance, callRequest);
 	}
 
+	public Call acceptNextIncomingVideoCall(Instance instance)
+			throws CallingServiceCallException {
+		CallRequest callRequest = new CallRequest();
+
+		return CALL_RESOURCE.acceptNextVideo(instance, callRequest);
+	}
+
 	public Call callToUser(Instance instance, String convId)
 			throws CallingServiceCallException {
 		CallRequest callRequest = new CallRequest(convId);

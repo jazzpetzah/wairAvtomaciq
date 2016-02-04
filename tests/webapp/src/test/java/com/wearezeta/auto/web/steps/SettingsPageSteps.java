@@ -5,7 +5,6 @@ import java.util.List;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import org.junit.Assert;
 
-import com.wearezeta.auto.web.pages.DeviceLimitPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.SettingsPage;
 import com.wearezeta.auto.web.pages.SettingsPage.SoundAlertsLevel;
