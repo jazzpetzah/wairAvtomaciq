@@ -569,9 +569,9 @@ public class CommonAndroidSteps {
      * @param dstConversationName   the target conversation to send the ping to
      * @param isSecure equals null if ping should not be secure
      * @throws Exception
-     * @step. ^User (.*) (securely )?pings? conversation (.*)
+     * @step. ^User (\\w+) (securely )?pings? conversation (.*)$
      */
-    @When("^User (.*) (securely )?pings? conversation (.*)")
+    @When("^User (\\w+) (securely )?pings? conversation (.*)$")
     public void UserPingedConversation(String pingFromUserNameAlias,
                                        String isSecure, String dstConversationName) throws Exception {
         if (isSecure == null) {
@@ -588,9 +588,9 @@ public class CommonAndroidSteps {
      * @param dstConversationName      the target converation to send the ping to
      * @param isSecure equals null if ping should not be secure
      * @throws Exception
-     * @step. ^User (.*) (securely )?hotpings? conversation (.*)
+     * @step. ^User (\\w+) (securely )?hotpings? conversation (.*)$
      */
-    @When("^User (.*) (securely )?hotpings? conversation (.*)")
+    @When("^User (\\w+) (securely )?hotpings? conversation (.*)$")
     public void UserHotPingedConversation(String hotPingFromUserNameAlias,
                                           String isSecure, String dstConversationName) throws Exception {
         if (isSecure == null) {
@@ -765,9 +765,9 @@ public class CommonAndroidSteps {
      * @param conversationType         "single user" or "group" conversation.
      * @param dstConversationName      the name of the conversation to send the image to.
      * @throws Exception
-     * @step. ^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)
+     * @step. ^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)$
      */
-    @When("^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)")
+    @When("^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)$")
     public void ContactSendImageToConversation(String imageSenderUserNameAlias, String isEncrypted,
                                                String imageFileName, String conversationType,
                                                String dstConversationName) throws Exception {
@@ -907,9 +907,9 @@ public class CommonAndroidSteps {
      * @param toMail          the email to send the invitation to
      * @param message         the message for the invitee
      * @throws Exception
-     * @step. ^(.*) send personal invitation to mail (.*) with message (.*)
+     * @step. ^(.*) send personal invitation to mail (.*) with message (.*)$
      */
-    @When("^(.*) sends personal invitation to mail (.*) with message (.*)")
+    @When("^(.*) sends personal invitation to mail (.*) with message (.*)$")
     public void UserXSendsPersonalInvitation(String userToNameAlias,
                                              String toMail, String message) throws Exception {
         commonSteps.UserXSendsPersonalInvitationWithMessageToUserWithMail(
@@ -966,9 +966,9 @@ public class CommonAndroidSteps {
      * @param userNameAlias user name/alias
      * @param deviceNames   unique name of devices, comma-separated list
      * @throws Exception
-     * @step. User (.*) adds new devices (.*)
+     * @step. User (.*) adds new devices (.*)$
      */
-    @When("^User (.*) adds new devices (.*)")
+    @When("^User (.*) adds new devices (.*)$")
     public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
         final List<String> names = CommonSteps.splitAliases(deviceNames);
         final int poolSize = 2;  // Runtime.getRuntime().availableProcessors()
