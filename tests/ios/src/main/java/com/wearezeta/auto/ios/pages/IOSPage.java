@@ -7,7 +7,6 @@ import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
-import com.wearezeta.auto.ios.tools.IRunnableWithException;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 
@@ -55,9 +54,31 @@ public abstract class IOSPage extends BasePage {
         this.onScreenKeyboard = new IOSKeyboard(driver);
     }
 
+    /**
+     * Ugly workaround for random Appium bug when UI tree is sometimes not refreshed and is empty
+     *
+     * @param drv Appium driver instance
+     * @return the same driver instance
+     * @throws Exception
+     */
+    private static ZetaIOSDriver fixUITreeIfBroken(final ZetaIOSDriver drv) throws Exception {
+        if (drv.findElements(nameMainWindow).size() > 0) {
+            return drv;
+        }
+        log.warn("Detected Appium UI tree corruption. Trying to fix...");
+        if (drv.getOrientation() == ScreenOrientation.PORTRAIT) {
+            drv.rotate(ScreenOrientation.LANDSCAPE);
+            drv.rotate(ScreenOrientation.PORTRAIT);
+        } else {
+            drv.rotate(ScreenOrientation.PORTRAIT);
+            drv.rotate(ScreenOrientation.LANDSCAPE);
+        }
+        return drv;
+    }
+
     @Override
     protected ZetaIOSDriver getDriver() throws Exception {
-        return (ZetaIOSDriver) super.getDriver();
+        return fixUITreeIfBroken((ZetaIOSDriver) super.getDriver());
     }
 
     @SuppressWarnings("unchecked")
@@ -232,34 +253,12 @@ public abstract class IOSPage extends BasePage {
         }
     }
 
-    public void workaroundUITreeRefreshIssue(IRunnableWithException f) throws Throwable {
-        try {
-            f.run();
-            return;
-        } catch (Throwable e) {
-            log.warn("UI tree seems to be corrupted. Trying to refresh...");
-            this.printPageSource();
-            if (getOrientation() == ScreenOrientation.PORTRAIT) {
-                rotateLandscape();
-                rotatePortrait();
-            } else {
-                rotatePortrait();
-                rotateLandscape();
-            }
-        }
-        f.run();
-    }
-
     private void rotateLandscape() throws Exception {
         this.getDriver().rotate(ScreenOrientation.LANDSCAPE);
     }
 
     private void rotatePortrait() throws Exception {
         this.getDriver().rotate(ScreenOrientation.PORTRAIT);
-    }
-
-    private ScreenOrientation getOrientation() throws Exception {
-        return this.getDriver().getOrientation();
     }
 
     public void tapOnCenterOfScreen() throws Exception {
@@ -337,6 +336,7 @@ public abstract class IOSPage extends BasePage {
             throw e;
         }
     }
+
 
     @Override
     protected WebElement getElement(By locator, String message, int timeoutSeconds) throws Exception {

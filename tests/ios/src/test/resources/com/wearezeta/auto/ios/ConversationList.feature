@@ -480,7 +480,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C366 @regression @rc @id1075
+  @C366 @regression @rc @id1075 @torun
   Scenario Outline: Verify messages are marked as read with disappearing unread dot
     Given There are 2 users where <Name> is me
     Given User Myself removes his avatar picture

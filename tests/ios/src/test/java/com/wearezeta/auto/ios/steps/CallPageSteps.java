@@ -47,10 +47,8 @@ public class CallPageSteps {
      */
     @When("^I see mute call, end call and speakers buttons$")
     public void ISeeCallingPageButtons() throws Throwable {
-        getStartedCallPage().workaroundUITreeRefreshIssue(
-                () -> Assert.assertTrue("End call button is not visible",
-                        getStartedCallPage().isEndCallVisible())
-        );
+        Assert.assertTrue("End call button is not visible",
+                getStartedCallPage().isEndCallVisible());
         Assert.assertTrue("Mute call button is not visible",
                 getStartedCallPage().isMuteCallVisible());
         Assert.assertTrue("Speakers button is not visible",
@@ -66,10 +64,8 @@ public class CallPageSteps {
      */
     @When("^I see mute call, end call buttons$")
     public void ISeeCallingPageButtonsOnIpad() throws Throwable {
-        getStartedCallPage().workaroundUITreeRefreshIssue(
-                () -> Assert.assertTrue("End call button is not visible",
-                        getStartedCallPage().isEndCallVisible())
-        );
+        Assert.assertTrue("End call button is not visible",
+                getStartedCallPage().isEndCallVisible());
         Assert.assertTrue("Mute call button is not visible", getStartedCallPage().isMuteCallVisible());
     }
 
@@ -118,10 +114,8 @@ public class CallPageSteps {
     @When("^I see incoming calling message for contact (.*)$")
     public void ISeeIncomingCallingMessage(String contact) throws Throwable {
         final String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        getStartedCallPage().workaroundUITreeRefreshIssue(() ->
-                Assert.assertTrue(String.format("Calling message for '%s' is not visible", name),
-                        getIncomingCallPage().isCallingMessageVisible(name))
-        );
+        Assert.assertTrue(String.format("Calling message for '%s' is not visible", name),
+                getIncomingCallPage().isCallingMessageVisible(name));
     }
 
     /**

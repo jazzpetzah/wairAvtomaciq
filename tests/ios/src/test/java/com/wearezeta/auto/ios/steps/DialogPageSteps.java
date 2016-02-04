@@ -388,10 +388,8 @@ public class DialogPageSteps {
                 .getLastMessageFromDialog().orElseThrow(() ->
                         new AssertionError("No messages are present in the conversation view")
                 ).toLowerCase());
-        getDialogPage().workaroundUITreeRefreshIssue(
-                () -> Assert.assertTrue("View did not scroll back", getDialogPage()
-                        .isMediaContainerVisible())
-        );
+        Assert.assertTrue("View did not scroll back", getDialogPage()
+                .isMediaContainerVisible());
     }
 
     @When("I tap and hold image to open full screen")
