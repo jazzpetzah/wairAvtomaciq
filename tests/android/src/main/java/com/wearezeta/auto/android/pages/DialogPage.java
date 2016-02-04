@@ -99,7 +99,7 @@ public class DialogPage extends AndroidPage {
     private static final By xpathStrOtrVerifiedMessage
             = By.xpath("//*[@id='ttv__row_conversation__otr_message' and @value='Conversation verified']");
 
-    private static final By idStrOtrNotVerifiedMessage
+    private static final By xpathStrOtrNonVerifiedMessage
             = By.xpath("//*[@id='ttv__row_conversation__otr_message' and @value='Conversation not verified']");
 
     private static final By xpathLastConversationMessage
@@ -309,7 +309,7 @@ public class DialogPage extends AndroidPage {
 
     public boolean waitForOtrNonVerifiedMessage()
             throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathStrOtrVerifiedMessage);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathStrOtrNonVerifiedMessage);
     }
 
     public boolean waitForMessage(String text) throws Exception {
