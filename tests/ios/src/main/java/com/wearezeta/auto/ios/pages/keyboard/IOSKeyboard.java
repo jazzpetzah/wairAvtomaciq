@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
+import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.openqa.selenium.By;
@@ -14,13 +14,19 @@ import org.openqa.selenium.By;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import org.openqa.selenium.WebElement;
 
-public class IOSKeyboard {
+public class IOSKeyboard extends BasePage {
     private static final KeyboardState UNKNOWN_STATE = new KeyboardStateUnknown();
     private static final String xpathStrKeyboardLocator = "//UIAKeyboard";
-    public static By xpathKeyboardLocator = By.xpath(xpathStrKeyboardLocator);
-    public static final By xpathCommitKeyLocator =
+    private static By xpathKeyboardLocator = By.xpath(xpathStrKeyboardLocator);
+    private static final By xpathCommitKeyLocator =
             By.xpath(xpathStrKeyboardLocator +
                     "//*[@name='Go' or @name='Send' or @name='Done' or @name='return' or @name='Return']");
+
+    private static final By nameSpaceButton = By.name("space");
+
+    private static final By nameHideKeyboardButton = By.name("Hide keyboard");
+
+    private static final By nameKeyboardDeleteButton = By.name("delete");
 
     private KeyboardState getFinalState(List<KeyboardState> statesList, char c) throws Exception {
         String messageChar = "" + c;
@@ -33,16 +39,33 @@ public class IOSKeyboard {
         return UNKNOWN_STATE;
     }
 
-    private Future<ZetaIOSDriver> lazyDriver;
-    private long driverTimeoutMilliseconds;
-
-    public IOSKeyboard(Future<ZetaIOSDriver> lazyDriver, long driverTimeoutMilliseconds) {
-        this.lazyDriver = lazyDriver;
-        this.driverTimeoutMilliseconds = driverTimeoutMilliseconds;
+    public IOSKeyboard(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+        super(lazyDriver);
     }
 
-    private ZetaIOSDriver getDriver() throws Exception {
-        return lazyDriver.get(driverTimeoutMilliseconds, TimeUnit.MILLISECONDS);
+    @Override
+    protected ZetaIOSDriver getDriver() throws Exception {
+        return (ZetaIOSDriver) super.getDriver();
+    }
+
+    public boolean isVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathKeyboardLocator, 3);
+    }
+
+    public void pressSpaceButton() throws Exception {
+        getElement(nameSpaceButton).click();
+    }
+
+    public void pressHideButton() throws Exception {
+        getElement(nameHideKeyboardButton).click();
+    }
+
+    public void pressDeleteButton() throws Exception {
+        getElement(nameKeyboardDeleteButton).click();
+    }
+
+    public void pressCommitButton() throws Exception {
+        getElement(xpathCommitKeyLocator).click();
     }
 
     private KeyboardState getInitialState(List<KeyboardState> statesList) throws Exception {

@@ -773,4 +773,13 @@ public class CommonIOSSteps {
         }
     }
 
+    @When("^I press Enter key in Simulator window$")
+    public void IPressEnterKey() throws Exception {
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            IOSSimulatorHelper.pressEnterKey();
+        } else {
+            throw new PendingException("This step is not available for real device");
+        }
+    }
+
 }

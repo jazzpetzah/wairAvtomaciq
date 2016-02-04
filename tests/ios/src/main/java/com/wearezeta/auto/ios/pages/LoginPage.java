@@ -134,10 +134,6 @@ public class LoginPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameWrongCredentialsNotification);
     }
 
-    public boolean phoneNumberIsRegAlreadyIsShown() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameAlreadyRegisteredNumber);
-    }
-
     public void tapForgotPasswordButton() throws Exception {
         getElement(nameForgotPassword).click();
     }

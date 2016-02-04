@@ -68,7 +68,7 @@ public class IOSSimulatorHelper {
     /**
      * Type a string using keyboard and avoiding autocorrection
      *
-     * @param str the string to enter.
+     * @param str the string to enter
      * @throws Exception
      */
     public static void typeString(String str, boolean useAutocompleteWorkaround) throws Exception {
@@ -162,6 +162,13 @@ public class IOSSimulatorHelper {
         activateWindow();
         CommonUtils.executeUIAppleScript(new String[]{
                 "tell application \"System Events\" to keystroke \"h\" using {command down, shift down}"
+        }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+    }
+
+    public static void pressEnterKey() throws Exception {
+        activateWindow();
+        CommonUtils.executeUIAppleScript(new String[]{
+                "tell application \"System Events\" to keystroke return"
         }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 }

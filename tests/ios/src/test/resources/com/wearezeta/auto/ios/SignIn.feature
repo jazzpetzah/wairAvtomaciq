@@ -37,12 +37,15 @@ Feature: Sign In
     And I commit email <Login> to change password
     And I copy link from email and paste it into Safari
     And I commit new password <NewPassword>
-    And I click at 0.75,0.57 of Simulator window
+    # Wait until the page is loaded
+    And I wait for 5 seconds
+    # click Open button
+    And I press Enter key in Simulator window
+    # Wait until the page is loaded
     And I wait for 5 seconds
     When I have entered login <Login>
     And I have entered password <NewPassword>
     Then I press Login button
-    # TODO: Verify Got It button is visible
 
     Examples:
       | Login      | Name      | NewPassword  |

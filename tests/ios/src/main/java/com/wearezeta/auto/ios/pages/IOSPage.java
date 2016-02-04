@@ -35,14 +35,6 @@ public abstract class IOSPage extends BasePage {
 
     protected static final By nameEditingItemPaste = By.name("Paste");
 
-    protected static final By classNameKeyboard = By.className("UIAKeyboard");
-
-    protected static final By nameKeyboardDeleteButton = By.name("delete");
-
-    protected static final By nameHideKeyboardButton = By.name("Hide keyboard");
-
-    protected static final By nameSpaceButton = By.name("space");
-
     private static String imagesPath = "";
 
     private static final Function<String, String> xpathStrAlertByText = text ->
@@ -60,7 +52,7 @@ public abstract class IOSPage extends BasePage {
         setImagesPath(CommonUtils.getSimulatorImagesPathFromConfig(this
                 .getClass()));
 
-        this.onScreenKeyboard = new IOSKeyboard(driver, getDriverInitializationTimeout());
+        this.onScreenKeyboard = new IOSKeyboard(driver);
     }
 
     @Override
@@ -72,11 +64,6 @@ public abstract class IOSPage extends BasePage {
     @Override
     protected Future<ZetaIOSDriver> getLazyDriver() {
         return (Future<ZetaIOSDriver>) super.getLazyDriver();
-    }
-
-    @Override
-    public void close() throws Exception {
-        super.close();
     }
 
     public void swipeRight(int time, int percentX, int percentY) throws Exception {
@@ -121,7 +108,6 @@ public abstract class IOSPage extends BasePage {
         final Dimension windowSize = getDriver().manage().window().getSize();
         IOSSimulatorHelper.clickAt(String.format("%.2f", (elLocation.x + 10) * 1.0 / windowSize.width),
                 String.format("%.2f", (elLocation.y + 10) * 1.0 / windowSize.height));
-        Thread.sleep(1000);
     }
 
     /**
@@ -155,23 +141,23 @@ public abstract class IOSPage extends BasePage {
     }
 
     public boolean isKeyboardVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(),classNameKeyboard,5);
+        return this.onScreenKeyboard.isVisible();
     }
 
     public void clickKeyboardDeleteButton() throws Exception {
-        getElement(nameKeyboardDeleteButton).click();
+        this.onScreenKeyboard.pressDeleteButton();
     }
 
     public void clickHideKeyboardButton() throws Exception {
-        getElement(nameHideKeyboardButton).click();
+        this.onScreenKeyboard.pressHideButton();
     }
 
     public void clickSpaceKeyboardButton() throws Exception {
-        getElement(nameSpaceButton).click();
+        this.onScreenKeyboard.pressSpaceButton();
     }
 
     public void clickKeyboardCommitButton() throws Exception {
-        getElement(IOSKeyboard.xpathCommitKeyLocator, "Keyboard commit button is not visible").click();
+        this.onScreenKeyboard.pressCommitButton();
     }
 
     public static Object executeScript(String script) throws Exception {
@@ -314,7 +300,8 @@ public abstract class IOSPage extends BasePage {
         clickElementWithRetryIfStillDisplayed(locator, DEFAULT_RETRY_COUNT);
     }
 
-    public void clickElementWithRetryIfNextElementNotAppears(By locator, By nextLocator, int retryCount) throws Exception {
+    public void clickElementWithRetryIfNextElementNotAppears(By locator, By nextLocator, int retryCount)
+            throws Exception {
         WebElement el = getElement(locator);
         int counter = 0;
         do {
