@@ -280,16 +280,14 @@ Feature: Connect
   @C36 @regression @id3225
   Scenario Outline: Verify possibility of disconnecting from Search UI
     Given There are 2 users where <Name> is me
-    Given Me sent connection request to <Contact1>
+    Given I sent connection request to <Contact1>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
-    And I see user <Contact1> found on People picker page
-    And I tap on conversation <Contact> in search result
+    And I tap on conversation <Contact1> in search result
     And I click Cancel request button
-    And I see Cancel request confirmation page
     And I confirm Cancel request by click on Yes button
     Then I see user <Contact1> found on People picker page
 
@@ -303,7 +301,7 @@ Feature: Connect
     Given Myself is connected to <Contact1>
     Given <Contact3> sent connection request to me
     Given <Contact1> is connected to <Contact2>,<Contact3>
-    Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>,<Contact3>
+    Given <Contact1> has group chat <GroupChatName> with Myself,<Contact2>,<Contact3>
     Given I sign in using my email or phone number
     Given I see conversations list
     And I see Pending request link in contact list
