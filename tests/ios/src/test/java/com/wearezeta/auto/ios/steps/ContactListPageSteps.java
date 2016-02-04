@@ -69,14 +69,14 @@ public class ContactListPageSteps {
         final BufferedImage actualConvoItemScreenshot = getContactListPage().getConversationEntryScreenshot(name);
         final double score = ImageUtil.getOverlapScore(this.savedConvoItemScreenshots.get(name),
                 actualConvoItemScreenshot, ImageUtil.RESIZE_NORESIZE);
-        final double minScore = 0.97;
+        final double minScore = 0.985;
         if (shouldNotBeChanged == null) {
             Assert.assertTrue(
-                    String.format("The state of '%s' conversation item seems to be the same (%.2f >= %.2f)",
+                    String.format("The state of '%s' conversation item seems to be the same (%.3f >= %.3f)",
                             name, score, minScore), score < minScore);
         } else {
             Assert.assertTrue(
-                    String.format("The state of '%s' conversation item seems to be changed (%.2f < %.2f)",
+                    String.format("The state of '%s' conversation item seems to be changed (%.3f < %.3f)",
                             name, score, minScore), score >= minScore);
         }
     }
