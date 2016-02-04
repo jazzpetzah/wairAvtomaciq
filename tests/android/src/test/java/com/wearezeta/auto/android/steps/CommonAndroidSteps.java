@@ -610,9 +610,9 @@ public class CommonAndroidSteps {
      * @param isEncrypted          whether the message has to be encrypted
      * @param convoType            either 'user' or 'group conversation'
      * @throws Exception
-     * @step. ^User (.*) sends? (encrypted )?message (.*)to user (.*)$
+     * @step. ^User (.*) sends? (encrypted )?message \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$
      */
-    @When("^User (.*) sends? (encrypted )?message \"?([A-Za-z0-9 ]*)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$")
+    @When("^User (.*) sends? (encrypted )?message \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$")
     public void UserSendMessageToConversation(String msgFromUserNameAlias, String isEncrypted,
             String msg, String deviceName, String convoType, String dstConvoName) throws Exception {
         final String msgToSend = (msg == null || msg.trim().length() == 0) ?
@@ -641,13 +641,13 @@ public class CommonAndroidSteps {
      * @param deviceName the device to use when using encryption
      * @param areEncrypted         Whether the messages should be encrypted
      * @throws Exception
-     * @step. ^User (.*) sends? (\d+) (encrypted )?messages? to user (.*)$
+     * @step. ^User (.*) sends? (\\d+) (encrypted )?messages? (?:via device (.*)\\s)?to user (.*)$
      */
-    @When("^User (.*) sends? (\\d+) (encrypted )?messages? to user (.*)$")
+    @When("^User (.*) sends? (\\d+) (encrypted )?messages? (?:via device (.*)\\s)?to user (.*)$")
     public void UserSendXMessagesToConversation(String msgFromUserNameAlias, int count, String areEncrypted,
-            String dstUserNameAlias) throws Exception {
+            String deviceName, String dstUserNameAlias) throws Exception {
         for (int i = 0; i < count; i++) {
-            UserSendMessageToConversation(msgFromUserNameAlias, areEncrypted, null, "user", dstUserNameAlias, null);
+            UserSendMessageToConversation(msgFromUserNameAlias, areEncrypted, null, deviceName, "user", dstUserNameAlias);
         }
     }
 
