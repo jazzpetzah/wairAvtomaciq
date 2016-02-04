@@ -4,16 +4,15 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
-public class PendingRequestsPage extends IOSPage {
+public class IncomingPendingRequestsPage extends IOSPage {
 
-    private static final By namePendingRequestIgnoreButton = By.name("IGNORE");
+    private static final By xpathPendingRequestIgnoreButton = By.xpath("(//UIAButton[@name='IGNORE'])[last()]");
 
-    private static final By namePendingRequestConnectButton = By.name("CONNECT");
+    private static final By xpathPendingRequestConnectButton = By.xpath("(//UIAButton[@name='CONNECT'])[last()]");
 
     private static final Function<String, String> xpathStrPendingRequesterByName = name ->
             String.format("//UIAStaticText[contains(@name, 'Connect to %s')]", name);
@@ -23,39 +22,36 @@ public class PendingRequestsPage extends IOSPage {
 
     private static final By nameYouBothKnowHeader = By.name("YOU BOTH KNOW");
 
-    public PendingRequestsPage(Future<ZetaIOSDriver> lazyDriver)
-            throws Exception {
+    public IncomingPendingRequestsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
     public void clickIgnoreButton() throws Exception {
-        getElement(namePendingRequestIgnoreButton, "Ignore button is not visible").click();
+        getElement(xpathPendingRequestIgnoreButton, "Ignore button is not visible").click();
     }
 
     public void clickIgnoreButtonMultiple(int clicks) throws Exception {
-        final WebElement ignoreRequestButton = getElement(namePendingRequestIgnoreButton,
-                "Ignore button is not visible");
         for (int i = 0; i < clicks; i++) {
-            ignoreRequestButton.click();
-            Thread.sleep(500);
+            getElement(xpathPendingRequestIgnoreButton, "Ignore button is not visible").click();
+            // Wait for animation
+            Thread.sleep(1000);
         }
     }
 
     public void clickConnectButton() throws Exception {
-        getElement(namePendingRequestConnectButton, "Connect button is not visible").click();
+        getElement(xpathPendingRequestConnectButton, "Connect button is not visible").click();
     }
 
     public void clickConnectButtonMultiple(int clicks) throws Exception {
-        final WebElement connectRequestButton = getElement(namePendingRequestConnectButton,
-                "Connect button is not visible");
         for (int i = 0; i < clicks; i++) {
-            connectRequestButton.click();
-            Thread.sleep(500);
+            getElement(xpathPendingRequestConnectButton, "Connect button is not visible").click();
+            // Wait for animation
+            Thread.sleep(1000);
         }
     }
 
     public boolean isConnectButtonDisplayed() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), namePendingRequestConnectButton, 5);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathPendingRequestConnectButton, 5);
     }
 
     public boolean isConnectToNameExist(String expectedName) throws Exception {
