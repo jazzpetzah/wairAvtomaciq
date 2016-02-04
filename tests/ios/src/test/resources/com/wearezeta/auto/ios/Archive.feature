@@ -29,8 +29,8 @@ Feature: Archive
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | autocall    |
 
-  @C14 @regression @id1337 @ZIOS-3884
-  Scenario Outline: Verify unarchiving silenced conversation by ping and call
+  @C14 @regression @id1337
+  Scenario Outline: Verify unarchiving silenced conversation only by call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
     Given Myself silenced conversation with <ArchivedUser>
@@ -43,9 +43,7 @@ Feature: Archive
     Given User <ArchivedUser> sends encrypted image <Picture> to single user conversation Myself
     Then I dont see conversation <ArchivedUser> in contact list
     When User <ArchivedUser> securely pings conversation <Name>
-    Then I see first item in contact list named <ArchivedUser>
-    When Myself archived conversation with <ArchivedUser>
-    And I dont see conversation <ArchivedUser> in contact list
+    Then I dont see conversation <ArchivedUser> in contact list
     And <ArchivedUser> calls me using <CallBackend>
     And I see incoming calling message for contact <ArchivedUser>
     And I ignore incoming call
