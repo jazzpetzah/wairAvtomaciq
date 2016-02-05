@@ -11,26 +11,22 @@ import java.util.concurrent.Future;
 
 public class VideoCallPage extends WebPage {
 
-
-	private static final int TIMEOUT_END_VIDEO_CALL_BUTTON = 10; // seconds
-
-	private final Future<ZetaWebAppDriver> lazyDriver;
-	@FindBy(how = How.CSS, using = WebAppLocators.VideoCallPage.cssEndVideoCallButton)
-	private WebElement endVideoCallButton;
-
-	public VideoCallPage(Future<ZetaWebAppDriver> lazyDriver, WebElement endVideoCallButton)
+	public VideoCallPage (Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
-		super(lazyDriver);
-		this.lazyDriver = lazyDriver;
-		this.endVideoCallButton = endVideoCallButton;
-	}
+        super(lazyDriver);
+    }
+
+	@FindBy(css = WebAppLocators.VideoCallPage.cssEndVideoCallButton)
+	public WebElement endVideoCallButton;
 
 	public void clickEndVideoCallButton() throws Exception {
-		final By locator = By
-				.cssSelector(WebAppLocators.VideoCallPage.cssEndVideoCallButton);
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				locator) : "End video call button has not been shown after "
-				 + TIMEOUT_END_VIDEO_CALL_BUTTON +" seconds";
-		getDriver().findElement(locator).click();
+        DriverUtils.waitUntilElementClickable(this.getDriver(), endVideoCallButton);
+        endVideoCallButton.click();
+
 	}
+
+    public boolean isEndVideoCallButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorAppears(getDriver(),
+                By.cssSelector(WebAppLocators.VideoCallPage.cssEndVideoCallButton), 7000);
+    }
 }
