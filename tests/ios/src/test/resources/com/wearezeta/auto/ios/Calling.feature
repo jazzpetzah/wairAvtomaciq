@@ -18,7 +18,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @C3180 @calling_basic @rc @id908
+  @C3180 @rc @calling_basic @id908
   Scenario Outline: Verify starting outgoing call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -52,7 +52,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2108 @calling_basic @rc @id896
+  @C2108 @rc @calling_basic @id896
   Scenario Outline: Verify ignoring of incoming call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -67,7 +67,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @C2111 @calling_basic @rc @IPv6 @id2093
+  @C2111 @rc @calling_basic @IPv6 @id2093
   Scenario Outline: (ZIOS-5534)Verify accepting incoming call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -100,7 +100,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @C348 @calling_basic @rc @id1228
+  @C348 @calling_basic @id1228
   Scenario Outline: Verify missed call indicator appearance (list)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
@@ -237,7 +237,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | CallBackend2 |
       | user1Name | user2Name | firefox     | autocall     |
 
-  @C2046 @calling_basic @rc @IPv6 @id2682
+  @C2046 @rc @calling_basic @IPv6 @id2682
   Scenario Outline: Verify accepting group call in foreground
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
@@ -280,7 +280,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName     | CallBackend | CallBackend2 |
       | user1Name | user2Name | user3Name | IgnoringGROUPCALL | firefox     | autocall     |
 
-  @C2050 @calling_advanced @rc @id2686
+  @C2050 @rc @calling_advanced @id2686
   Scenario Outline: (ZIOS-5587)Verify receiving group call during 1-to-1 call (and accepting it)
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
@@ -359,7 +359,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    | CallBackend | CallBackend2 |
       | user1Name | user2Name | user3Name | user4Name | user5Name | LEAVEINGROUPCALL | firefox     | autocall     |
 
-  @C2042 @calling_advanced @rc @id2678
+  @C2042 @rc @calling_advanced @id2678
   Scenario Outline: Verify leaving and coming back to the call in 20 sec
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
@@ -386,7 +386,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | CallBackend2 | NumberOfAvatars |
       | user1Name | user2Name | user3Name | user4Name | user5Name | RejoinGROUPCALL | firefox     | autocall     | 5               |
 
-  @C2054 @calling_advanced @rc @id2690
+  @C2054 @rc @calling_advanced @id2690
   Scenario Outline: (ZIOS-5587)Verify receiving 1-to-1 call during group call (and accepting it)
     Given There are 6 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
@@ -416,7 +416,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars | NumberOf1on1CallAvatars |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | GROUPCALL     | firefox     | autocall     | 5               | 2                       |
 
-  @C2065 @calling_basic @rc @IPv6 @id3270
+  @C2065 @rc @calling_basic @IPv6 @id3270
   Scenario Outline: Verify possibility of starting group call
     Given There are 10 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>
@@ -433,7 +433,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Contact8  | Contact9   | GroupChatName  |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | user9Name | user10Name | StartGROUPCALL |
 
-  @C2048 @calling_advanced @rc @id2684
+  @C2048 @rc @calling_advanced @id2684
   Scenario Outline: Verify possibility to join call after 45 seconds of starting it
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
@@ -507,7 +507,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | CallBackend | CallBackend2 |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | FullGROUPCALL | firefox     | autocall     |
 
-  @C2068 @calling_basic @rc @id880
+  @C2068 @rc @calling_basic @id880
   Scenario Outline: Verify putting client to the background during 1-to-1 call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

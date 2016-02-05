@@ -337,7 +337,7 @@ Feature: E2EE
     When I press back button
     And I press back button
     Then I see a message informing me conversation is verified
-    And User <Contact1> adds new devices Device2
+    And User <Contact1> adds new device Device2
     When User <Contact1> sends encrypted message "<InvisibleMessage>" via device Device2 to user Myself
     Then I see a message informing me conversation is not verified caused by user <Contact1>
     And I see encrypted message <InvisibleMessage> 0 times in the conversation view
@@ -346,6 +346,41 @@ Feature: E2EE
     Examples:
       | Name      | Contact1  | Message1 | InvisibleMessage |
       | user1Name | user2Name | Msg1     | Can't touch this |
+
+  @C3240 @staging
+  Scenario Outline: Verify you get an alert if group conversation participant sends a message from non-verified device
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When User <Contact1> sends encrypted message "<Message1>" to group conversation <GroupChatName>
+    When User <Contact2> sends encrypted message "<Message1>" to group conversation <GroupChatName>
+    And I tap on contact name <GroupChatName>
+    And I tap conversation details button
+    And I select contact <Contact1>
+    And I select single participant tab "Devices"
+    Then I see 1 device is shown in single participant devices tab
+    And I verify 1st device
+    And I press back button
+    And I select contact <Contact2>
+    And I select single participant tab "Devices"
+    Then I see 1 device is shown in single participant devices tab
+    And I verify 1st device
+    And I press back button
+    And I press back button
+    Then I see a message informing me conversation is verified
+    And User <Contact1> adds new device Device2
+    When User <Contact1> sends encrypted message "<InvisibleMessage>" via device Device2 to group conversation <GroupChatName>
+    Then I see a message informing me conversation is not verified caused by user <Contact1>
+    And I see encrypted message <InvisibleMessage> 0 times in the conversation view
+# TODO Check if u can see message after verifying the new device
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | Message1 | InvisibleMessage |
+      | user1Name | user2Name | user3Name | EncryptedGrp  | Msg1     | Can't touch this |
+
 
   @C3239 @staging
   Scenario Outline: Verify it is possible to verify other user's device in group conversation
