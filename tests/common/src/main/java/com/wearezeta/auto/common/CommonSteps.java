@@ -343,6 +343,11 @@ public final class CommonSteps {
                 msgToUser.getId(), message, deviceName);
     }
 
+    public void UserSentOtrMessageToUser(String msgFromUserNameAlias,
+            String dstUserNameAlias, String message) throws Exception {
+        UserSentOtrMessageToUser(msgFromUserNameAlias, dstUserNameAlias, message, null);
+    }
+
     public void UserHotPingedConversation(String hotPingFromUserNameAlias,
                                           String dstConversationName) throws Exception {
         ClientUser hotPingFromUser = usrMgr
@@ -374,6 +379,11 @@ public final class CommonSteps {
                 dstConversationName);
         seBridge.sendConversationMessage(userFrom, dstConvId,
                 message, deviceName);
+    }
+
+    public void UserSentOtrMessageToConversation(String userFromNameAlias,
+            String dstConversationName, String message) throws Exception {
+        UserSentOtrMessageToConversation(userFromNameAlias, dstConversationName, message, null);
     }
 
     public void UserSentImageToConversation(String imageSenderUserNameAlias,
