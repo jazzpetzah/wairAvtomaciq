@@ -1,6 +1,6 @@
 Feature: VideoCalling
 
-  @C12071 @videocalling
+  @C12071 @videocalling @torun
   Scenario Outline: Verify I can start a Video call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -15,7 +15,7 @@ Feature: VideoCalling
     And I start a video call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the calling bar
-    And I end the call
+    And I end the video call
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |

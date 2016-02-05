@@ -25,8 +25,8 @@
             <properties>
                 <com.wire.os.name>mac</com.wire.os.name>
                 <com.wire.os.version></com.wire.os.version>
-                <com.wire.browser.name>firefox</com.wire.browser.name>
-                <com.wire.browser.version>43.0</com.wire.browser.version>
+                <com.wire.browser.name>chrome</com.wire.browser.name>
+                <com.wire.browser.version>48.0</com.wire.browser.version>
                 <backendType>gregor</backendType>
                 <hubHost>127.0.0.1</hubHost>
                 <hubPort>4444</hubPort>
