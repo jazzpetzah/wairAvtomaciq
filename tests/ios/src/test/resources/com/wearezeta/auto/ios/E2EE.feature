@@ -63,7 +63,7 @@ Feature: E2EE
     Given There is 1 user where <Name> is me
     Given I sign in using my email
     Given I see conversations list
-    And User Myself adds a new device <DeviceName> with label <DeviceLabel>
+    Given User Myself adds a new device <DeviceName> with label <DeviceLabel>
     When I tap my avatar
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
@@ -79,7 +79,7 @@ Feature: E2EE
   Scenario Outline: Verify shield appearance on the person's profile after verifying all the clients
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    And User <Contact1> adds new devices <DeviceName1>,<DeviceName2>
+    Given User <Contact1> adds new devices <DeviceName1>,<DeviceName2>
     Given I sign in using my email
     Given I see conversations list
     And I tap on contact name <Contact1>
