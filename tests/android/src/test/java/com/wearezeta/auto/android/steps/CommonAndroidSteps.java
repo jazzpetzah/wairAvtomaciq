@@ -970,7 +970,7 @@ public class CommonAndroidSteps {
      * @throws Exception
      * @step. User (.*) adds new devices (.*)$
      */
-    @When("^User (.*) adds new devices (.*)$")
+    @When("^User (.*) adds new devices? (.*)$")
     public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
         final List<String> names = CommonSteps.splitAliases(deviceNames);
         final int poolSize = 2;  // Runtime.getRuntime().availableProcessors()
