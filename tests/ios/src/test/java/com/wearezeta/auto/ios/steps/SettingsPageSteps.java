@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.ios.pages.SettingsPage;
+import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -86,4 +87,50 @@ public class SettingsPageSteps {
                 getSettingsPage().isItemVisible(itemName));
     }
 
+    /**
+     * Presses the Edit Button in Settings Manage devices
+     *
+     * @throws Exception
+     * @step. ^I press Edit button$
+     */
+    @When("^I press Edit button$")
+    public void IPressEditButton() throws Exception {
+        getSettingsPage().pressEditButton();
+    }
+
+    /**
+     * Presses the delete button for the particular device
+     *
+     * @param deviceName name of device that should be deleted
+     * @throws Exception
+     * @step. ^I press Delete (.*) button from devices$
+     */
+    @When("^I press Delete (.*) button from devices$")
+    public void IPressDeleteButtonFromDevices(String deviceName) throws Exception {
+        getSettingsPage().pressDeleteDeviceButton(deviceName);
+    }
+
+    /**
+     * Presses the final Delete button to delete the device
+     *
+     * @throws Exception
+     * @step. ^I press the Delete Button$
+     */
+    @When("^I press the Delete Button$")
+    public void IPressTheDeleteButton() throws Exception {
+        getSettingsPage().pressDeleteButton();
+    }
+
+    /**
+     * Types in the password and presses OK to confirm the device deletion
+     *
+     * @param password of user
+     * @throws Exception
+     * @step. ^I confirm with my (.*) the deletion of the device$
+     */
+    @When("^I confirm with my (.*) the deletion of the device$")
+    public void IConfirmWithMyPasswordTheDeletionOfTheDevice(String password) throws Exception {
+        getSettingsPage().typePasswordToConfirmDeleteDevice(password);
+        //pagesCollection.getCommonPage().acceptAlert();
+    }
 }
