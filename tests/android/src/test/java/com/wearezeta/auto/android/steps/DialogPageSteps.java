@@ -557,6 +557,37 @@ public class DialogPageSteps {
     }
 
     /**
+     * Checks for verified or non-verified conversation message
+     *
+     * @param nonVerified weather the message should show verified or non verified conversation
+     * @param userName the user who caused the downgrade of the conversation
+     * @throws Exception
+     * @step. ^I see a message informing me conversation is (not )?verified(?: caused by user (.*))?$
+     */
+    @Then("^I see a message informing me conversation is (not )?verified(?: caused by user (.*))?$")
+    public void ThenISeeVerifiedConversationMessage(String nonVerified, String userName)
+            throws Exception {
+        if (nonVerified == null) {
+            Assert.assertTrue(
+                    "The otr verified conversation message has not been shown in the conversation view",
+                    getDialogPage().waitForOtrVerifiedMessage());
+        } else {
+            if (userName == null) {
+                Assert.assertTrue(
+                        "The otr non verified conversation message has been shown in the conversation view",
+                        getDialogPage().waitForOtrNonVerifiedMessage());
+            } else {
+                userName = usrMgr.findUserByNameOrNameAlias(userName).getName();
+                Assert.assertTrue(
+                        String.format("The otr non verified conversation message caused by user '%s' has been shown in the conversation view", userName),
+                        getDialogPage().waitForOtrNonVerifiedMessageCausedByUser(userName));
+            }
+            
+        }
+
+    }
+
+    /**
      * Used once to check that the last message sent is the same as what is
      * expected
      *

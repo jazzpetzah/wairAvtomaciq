@@ -55,8 +55,13 @@ public class PhoneNumberVerificationPage extends AndroidPage {
         getElement(idConfirmButton).click();
     }
 
-    public boolean waitUntilConfirmButtonDissapears() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idConfirmButton, 40);
+    public boolean waitUntilConfirmButtonDisappears() throws Exception {
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), idConfirmButton)) {
+            // Try to click the button again if we did it too fast for the first time
+            DriverUtils.tapByCoordinates(getDriver(), getElement(idConfirmButton));
+            return DriverUtils.waitUntilLocatorDissapears(getDriver(), idConfirmButton, 40);
+        }
+        return true;
     }
 
     public boolean isIncorrectCodeErrorNotAppears() throws Exception {
