@@ -580,21 +580,29 @@ public class DialogPageSteps {
     /**
      * Checks for verified or non-verified conversation message
      *
-     * @param verified weather the message should show verified or non verified conversation
+     * @param nonVerified weather the message should show verified or non verified conversation
      * @throws Exception
      * @step. ^I see a message informing me conversation is (not )?verified$
      */
-    @Then("^I see a message informing me conversation is (not )?verified$")
-    public void ThenISeeVerifiedConversationMessage(String verified)
+    @Then("^I see a message informing me conversation is (not )?verified(?: caused by user (.*))?$")
+    public void ThenISeeVerifiedConversationMessage(String nonVerified, String userName)
             throws Exception {
-        if (verified == null) {
+        if (nonVerified == null) {
             Assert.assertTrue(
                     "The otr verified conversation message has not been shown in the conversation view",
                     getDialogPage().waitForOtrVerifiedMessage());
         } else {
-            Assert.assertTrue(
-                    "The otr non verified conversation message has been shown in the conversation view",
-                    getDialogPage().waitForOtrNonVerifiedMessage());
+            if (userName == null) {
+                Assert.assertTrue(
+                        "The otr non verified conversation message has been shown in the conversation view",
+                        getDialogPage().waitForOtrNonVerifiedMessage());
+            } else {
+                userName = usrMgr.findUserByNameOrNameAlias(userName).getName();
+                Assert.assertTrue(
+                        String.format("The otr non verified conversation message caused by user '%s' has been shown in the conversation view", userName),
+                        getDialogPage().waitForOtrNonVerifiedMessageCausedByUser(userName));
+            }
+            
         }
 
     }

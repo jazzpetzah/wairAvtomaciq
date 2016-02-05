@@ -97,10 +97,13 @@ public class DialogPage extends AndroidPage {
             .format("//*[@id='%s' and @value='%s']", idStrNewConversationNameMessage, value);
 
     private static final By xpathStrOtrVerifiedMessage
-            = By.xpath("//*[@id='ttv__row_conversation__otr_message' and @value='Conversation verified']");
+            = By.xpath("//*[@id='ttv__otr_added_new_device__message' and @value='ALL FINGERPRINTS ARE VERIFIED']");
 
     private static final By xpathStrOtrNonVerifiedMessage
-            = By.xpath("//*[@id='ttv__row_conversation__otr_message' and @value='Conversation not verified']");
+            = By.xpath("//*[@id='ttv__otr_added_new_device__message' and contains(@value,'STARTED USING A NEW DEVICE')]");
+
+    private static final Function<String, String> xpathStrOtrNonVerifiedMessageByValue
+            = value -> String.format("//*[@id='ttv__otr_added_new_device__message' and @value='%s STARTED USING A NEW DEVICE']", value.toUpperCase());
 
     private static final By xpathLastConversationMessage
             = By.xpath("(//*[@id='ltv__row_conversation__message'])[last()]");
@@ -310,6 +313,11 @@ public class DialogPage extends AndroidPage {
     public boolean waitForOtrNonVerifiedMessage()
             throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathStrOtrNonVerifiedMessage);
+    }
+
+    public boolean waitForOtrNonVerifiedMessageCausedByUser(String userName)
+            throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathStrOtrNonVerifiedMessageByValue.apply(userName)));
     }
 
     public boolean waitForMessage(String text) throws Exception {
