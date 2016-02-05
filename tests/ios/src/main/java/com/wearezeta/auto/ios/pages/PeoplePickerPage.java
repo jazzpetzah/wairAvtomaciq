@@ -6,7 +6,6 @@ import java.util.function.Function;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DummyElement;
-import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.*;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -95,8 +94,7 @@ public class PeoplePickerPage extends IOSPage {
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass()) && text.matches(".*\\W+.*")) {
             inputStringFromKeyboardAndCommit(searchInput, text, true);
         } else {
-            ((IOSElement) searchInput).setValue(text);
-            clickSpaceKeyboardButton();
+            searchInput.sendKeys(text + " ");
         }
     }
 

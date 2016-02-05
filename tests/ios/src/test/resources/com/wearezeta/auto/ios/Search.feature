@@ -115,9 +115,7 @@ Feature: Search
     Given I see conversations list
     And I open search by taping on it
     And I re-enter the people picker if top people list is not there
-    And I see top people list on People picker page
     And I tap on 3 top connections but not <Contact>
-    #And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     Then I see that <Number> contacts are selected
