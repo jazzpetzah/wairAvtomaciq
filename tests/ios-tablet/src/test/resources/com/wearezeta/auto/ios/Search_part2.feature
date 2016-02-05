@@ -315,7 +315,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @C2801 @staging @id4119
+  @C2801 @regression @id4119
   Scenario Outline: Verify action buttons appear after choosing user from search results [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -344,7 +344,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2802 @staging @id4120
+  @C2802 @regression @id4120
   Scenario Outline: Verify action buttons appear after choosing user from search results [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
