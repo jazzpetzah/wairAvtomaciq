@@ -74,3 +74,23 @@ Feature: E2EE
     Examples:
       | Name      | DeviceName | DeviceLabel  |
       | user1Name | Device1    | Device1Label |
+
+  @torun @C3510 @staging
+  Scenario Outline: Verify deleting one of the devices from device management by Edit
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email
+    Given I see conversations list
+    And User Myself adds new devices <DeviceName>
+    When I tap my avatar
+    And I click on Settings button on personal page
+    And I click on Settings button from the options menu
+    And I select settings item Privacy & Security
+    And I select settings item Manage devices
+    And I press Edit button
+    And I press Delete <DeviceName> button from devices
+    And I press the Delete Button
+    And I confirm with my <Password> the deletion of the device
+
+    Examples:
+      | Name      | DeviceName |Password     |
+      | user1Name | Device1    |user1Password|
