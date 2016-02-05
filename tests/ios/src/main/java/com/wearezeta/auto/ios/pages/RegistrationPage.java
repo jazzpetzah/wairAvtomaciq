@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.Future;
 import java.util.function.Function;
@@ -12,7 +11,6 @@ import io.appium.java_client.ios.IOSElement;
 
 import org.openqa.selenium.By;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
@@ -27,13 +25,13 @@ public class RegistrationPage extends IOSPage {
     private static final By nameYourPassword = By.name("PasswordField");
 
     private static final By xpathCreateAccountButton = By
-        .xpath("//UIASecureTextField[contains(@name, 'PasswordField')]/UIAButton");
+            .xpath("//UIASecureTextField[contains(@name, 'PasswordField')]/UIAButton");
 
     private static final Function<String, String> xpathStrConfirmationByMessage = msg -> String.format(
-        "//UIAStaticText[contains(@name, 'We sent an email to %s')]", msg);
+            "//UIAStaticText[contains(@name, 'We sent an email to %s')]", msg);
 
-    private static final By xpathEmailVerifPrompt = By.xpath(xpathStrMainWindow
-        + "/UIAStaticText[contains(@name, 'We sent an email to ')]");
+    private static final By xpathEmailVerifPrompt =
+            By.xpath("//UIAStaticText[contains(@name, 'We sent an email to ')]");
 
     private static final By namePhoneNumberField = By.name("PhoneNumberField");
 
@@ -48,7 +46,7 @@ public class RegistrationPage extends IOSPage {
     private static final By nameAgreeButton = By.name("I AGREE");
 
     private static final By xpathVerificationPage = By
-        .xpath("//UIAStaticText[contains(@name, 'Enter the verification code we sent to')]");
+            .xpath("//UIAStaticText[contains(@name, 'Enter the verification code we sent to')]");
 
     private static final By nameResendCodeButton = By.name("RESEND");
 
@@ -57,6 +55,8 @@ public class RegistrationPage extends IOSPage {
     private static final By nameChooseOwnPictureButton = By.name("ChooseOwnPictureButton");
 
     private static final By nameChoosePhotoButton = By.name("Choose Photo");
+
+    private static final By nameKeepThisOneButton = By.name("KeepDefaultPictureButton");
 
     private String name;
     private String email;
@@ -180,7 +180,7 @@ public class RegistrationPage extends IOSPage {
         typePassword();
     }
 
-    public boolean isEmailVerifPromptVisible() throws Exception {
+    public boolean isEmailVerificationPromptVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathEmailVerifPrompt);
     }
 
@@ -198,13 +198,17 @@ public class RegistrationPage extends IOSPage {
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameChoosePhotoButton)) {
             throw new IllegalStateException("Confirm button is still visible");
         }
-    }    
-    
+    }
+
     public void waitRegistrationToFinish() throws Exception {
         final By locator = By.xpath(xpathStrConfirmationByMessage.apply(getEmail()));
         if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator, 40)) {
             throw new IllegalStateException("Verification page is still visible after the timeout");
         }
         instantiatePage(FirstTimeOverlay.class).acceptIfVisible(2);
+    }
+
+    public void clickKeepThisOneButton() throws Exception {
+        getElement(nameKeepThisOneButton).click();
     }
 }
