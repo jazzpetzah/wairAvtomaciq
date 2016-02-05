@@ -124,41 +124,42 @@ public abstract class IOSPage extends BasePage {
         getElement(nameEditingItemPaste, "Paste popup is not visible").click();
     }
 
-    private void clickAtSimulatorElement(WebElement el) throws Exception {
-        final Point elLocation = el.getLocation();
+    private void clickAtSimulator(int x, int y) throws Exception {
         final Dimension windowSize = getDriver().manage().window().getSize();
-        IOSSimulatorHelper.clickAt(String.format("%.2f", (elLocation.x + 10) * 1.0 / windowSize.width),
-                String.format("%.2f", (elLocation.y + 10) * 1.0 / windowSize.height));
+        IOSSimulatorHelper.clickAt(String.format("%.2f", x * 1.0 / windowSize.width),
+                String.format("%.2f", y * 1.0 / windowSize.height));
     }
 
     /**
      * !!! this method is not able to enter line breaks !!!
      *
-     * @param dstElement the destination eit field
-     * @param str        string to enter
+     * @param dstElement          the destination eit field
+     * @param relativeClickPointX where to click the element before type, 0% <= X <= 100%
+     * @param relativeClickPointY where to click the element before type, 0% <= Y <= 100%
+     * @param str                 string to enter
      * @throws Exception
      */
-    public void inputStringFromKeyboard(WebElement dstElement, String str,
-                                        boolean useAutocompleteWorkaround) throws Exception {
+    public void inputStringFromKeyboardAndCommit(WebElement dstElement, int relativeClickPointX, int relativeClickPointY,
+                                                 String str, boolean useAutocompleteWorkaround) throws Exception {
+        final Dimension elSize = dstElement.getSize();
+        final Point elLocation = dstElement.getLocation();
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            clickAtSimulatorElement(dstElement);
-            IOSSimulatorHelper.typeString(str, useAutocompleteWorkaround);
-        } else {
-            DriverUtils.tapByCoordinates(getDriver(), dstElement);
-            this.onScreenKeyboard.typeString(str);
-        }
-    }
-
-    public void inputStringFromKeyboardAndCommit(WebElement dstElement, String str,
-                                                 boolean useAutocompleteWorkaround) throws Exception {
-        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            clickAtSimulatorElement(dstElement);
+            clickAtSimulator(elLocation.x + (relativeClickPointX * elSize.width) / 100,
+                    elLocation.y + (relativeClickPointY * elSize.height) / 100);
             IOSSimulatorHelper.typeStringAndPressEnter(str, useAutocompleteWorkaround);
         } else {
-            DriverUtils.tapByCoordinates(getDriver(), dstElement);
+            getDriver().tap(1,
+                    elLocation.x + (relativeClickPointX * elSize.width) / 100,
+                    elLocation.y + (relativeClickPointY * elSize.height) / 100,
+                    DriverUtils.SINGLE_TAP_DURATION);
             this.onScreenKeyboard.typeString(str);
             this.clickKeyboardCommitButton();
         }
+    }
+
+    public void inputStringFromKeyboardAndCommit(WebElement dstElement, String str, boolean useAutocompleteWorkaround)
+            throws Exception {
+        inputStringFromKeyboardAndCommit(dstElement, 50, 50, str, useAutocompleteWorkaround);
     }
 
     public boolean isKeyboardVisible() throws Exception {
