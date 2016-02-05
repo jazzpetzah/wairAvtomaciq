@@ -219,7 +219,7 @@ Feature: People View
       | user1Name | user2Name | user3Name | GroupInfoCheck | 2                 |
 
   @C397 @id2292 @regression
-  Scenario Outline: Start 1to1 conversation from participants view
+  Scenario Outline: (Bug AN-3428) Start 1to1 conversation from participants view
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>,<Contact2>
     Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>
