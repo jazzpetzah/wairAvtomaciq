@@ -1,6 +1,6 @@
 Feature: Search
 
-  @C2783 @regression @id2147
+  @C1035 @rc @regression @id2147
   Scenario Outline: Verify search by email
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -15,7 +15,7 @@ Feature: Search
       | Name      | ContactEmail | ContactName |
       | user1Name | user2Email   | user2Name   |
 
-  @C1036 @regression @rc @id2148 @id2543
+  @C1036 @rc @regression @id2148 @id2543
   Scenario Outline: Verify search by name
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -50,7 +50,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @C3167 @regression @rc @id1394
+  @C3167 @rc @regression @id1394
   Scenario Outline: Start 1:1 chat with users from Top Connections
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -68,7 +68,7 @@ Feature: Search
       | Name      | UserCount |
       | user1Name | 4         |
 
-  @C1069 @regression @rc @id1150
+  @C1069 @rc @regression @id1150
   Scenario Outline: Start group chat with users from Top Connections
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -89,7 +89,7 @@ Feature: Search
       | Name      | ConvoName    | UserCount |
       | user1Name | TopGroupTest | 4         |
 
-  @C40 @regression @rc @id1454
+  @C40 @rc @regression @id1454
   Scenario Outline: Verify sending a connection request to user chosen from search
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -165,7 +165,7 @@ Feature: Search
       | Name      | Contact   | NewName  | LastName |
       | user1Name | user2Name | NEW NAME | NAME     |
 
-  @C1049 @regression @rc @id3282
+  @C1049 @rc @regression @id3282
   Scenario Outline: Verify starting a call with action button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -185,7 +185,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C1053 @regression @rc @id3286
+  @C1053 @rc @regression @id3286
   Scenario Outline: Verify sharing a photo to a newly created group conversation with action button
     Given There are 4 users where <Name> is me
     Given Myself is connected to all other users

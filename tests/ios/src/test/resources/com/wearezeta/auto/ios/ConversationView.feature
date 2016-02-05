@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @C3182 @regression @rc @id855
+  @C3182 @regression @id855
   Scenario Outline: Verify swipe right tutorial appearance
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -13,7 +13,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C3181 @regression @rc @IPv6 @id330
+  @C3181 @rc @regression @IPv6 @id330
   Scenario Outline: Send Message to contact
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -43,7 +43,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C909 @C3176 @regression @rc @IPv6 @id332 @id1470
+  @C909 @C3176 @rc @regression @IPv6 @id332 @id1470
   Scenario Outline: Send a camera roll picture to user from contact list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -77,7 +77,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3Name | MessageToGroup |
 
-  @C3210 @regression @rc @IPv6 @id1468
+  @C3210 @rc @regression @IPv6 @id1468
   Scenario Outline: (MediaBar disappears on Simulator) Play/pause SoundCloud media link from the media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -327,7 +327,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C3183 @regression @rc @IPv6 @id526
+  @C3183 @rc @regression @IPv6 @id526
   Scenario Outline: I can send and play inline youtube link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -414,7 +414,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C141 @regression @rc @id1476
+  @C141 @rc @regression @id1476
   Scenario Outline: Play/pause controls can change playing media state (SoundCloud)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -469,7 +469,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C951 @regression @rc @id2976
+  @C951 @rc @regression @id2976
   Scenario Outline: I can send a sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -486,7 +486,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C888 @C889 @regression @rc @id3093 @id3092
+  @C888 @C889 @rc @regression @id3093 @id3092
   Scenario Outline: Verify opening and closing input options by buttons click and swiping right/left
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -553,7 +553,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C952 @regression @rc @id3263
+  @C952 @rc @regression @id3263
   Scenario Outline: Verify drawing on the image from gallery
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

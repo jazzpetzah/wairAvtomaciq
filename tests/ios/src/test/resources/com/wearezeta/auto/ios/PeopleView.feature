@@ -45,7 +45,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | Number | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | 3      | TESTCHAT      |
 
-  @C3175 @regression @rc @id1389
+  @C3175 @rc @regression @id1389
   Scenario Outline: Leave from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -65,7 +65,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
 
-  @C3169 @regression @rc @id1390
+  @C3169 @rc @regression @id1390
   Scenario Outline: Remove from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -84,7 +84,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
 
-  @C3173 @regression @rc @id1396
+  @C3173 @rc @regression @id1396
   Scenario Outline: Verify correct group info page information
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -100,7 +100,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName |
       | user1Name | user2Name | user3Name | 2                 | GroupInfo     |
 
-  @C3174 @regression @rc @id1406
+  @C3174 @rc @regression @id1406
   Scenario Outline: I can edit the conversation name
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -120,7 +120,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | ChatName | GroupChatName |
       | user1Name | user2Name | user3Name | QAtest   | TESTCHAT      |
 
-  @C3172 @regression @rc @id339
+  @C3172 @rc @regression @id339
   Scenario Outline: Tap on participant profiles in group info page participant view
     Given There are 3 users where <Name> is me
     Given <GroupCreator> is connected to me
@@ -205,7 +205,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C986 @regression @rc @id556
+  @C986 @rc @regression @id556
   Scenario Outline: Verify you can add people from 1:1 people view (via keyboard button)
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -253,7 +253,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @C3170 @regression @rc @id1462
+  @C3170 @rc @regression @id1462
   Scenario Outline: Verify silence the conversation
     Given There are 2 users where <Name> is me
     Given User Myself removes his avatar picture
@@ -274,7 +274,7 @@ Feature: People View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C3171 @regression @rc @id1335
+  @C3171 @rc @regression @id1335
   Scenario Outline: Verify unsilence the conversation
     Given There are 2 users where <Name> is me
     Given User Myself removes his avatar picture
@@ -382,7 +382,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
-  @C1831 @regression @rc @id3972 @ZIOS-5247
+  @C1831 @rc @regression @id3972 @ZIOS-5247
   Scenario Outline: Verify removing the content and leaving from the group conversation via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -435,7 +435,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
       | user1Name | user2Name | user3Name | ForDeletion   | testing.jpg |
 
-  @C1832 @regression @rc @id3973
+  @C1832 @rc @regression @id3973
   Scenario Outline: Verify removing the content from 1-to-1 via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users

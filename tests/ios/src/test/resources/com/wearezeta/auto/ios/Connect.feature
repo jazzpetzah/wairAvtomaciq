@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @C1034 @regression @rc @id2541
+  @C1034 @rc @regression @id2541
   Scenario Outline: Send invitation message to a user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -22,7 +22,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail | Contact2  |
       | user1Name | user2Name | user2Email   | user3Name |
 
-  @C102 @C3178 @regression @rc @id1475
+  @C102 @rc @regression @id1475
   Scenario Outline: (ZIOS-5508 Simulator issue)Get invitation message from user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -42,7 +42,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C987 @regression @rc @id576
+  @C987 @rc @regression @id576
   Scenario Outline: Send connection request to unconnected participant in a group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <GroupCreator>
@@ -108,7 +108,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
-  @C45 @regression @rc @id1404
+  @C45 @rc @regression @id1404
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (Search)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -129,7 +129,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C34 @regression @id1399
+  @C34 @rc @regression @id1399
   Scenario Outline: Verify you don't receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -180,7 +180,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @C1029 @regression @rc @id2536
+  @C1029 @regression @id2536
   Scenario Outline: Verify you can send an invitation via mail
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -225,7 +225,7 @@ Feature: Connect
       | Name      | UnconnectedUser | ContactEmail |
       | user1Name | user2Name       | user2Email   |
 
-  @C38 @regression @rc @id3227
+  @C38 @rc @regression @id3227
   Scenario Outline: Verify possibility of disconnecting from conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
