@@ -605,28 +605,29 @@ public class CommonAndroidSteps {
      *
      * @param msgFromUserNameAlias the user who sends the message
      * @param msg                  a message to send. Random string will be sent if it is empty
+     * @param deviceName the device to use when using encryption
      * @param dstConvoName         The user to receive the message
      * @param isEncrypted          whether the message has to be encrypted
      * @param convoType            either 'user' or 'group conversation'
      * @throws Exception
-     * @step. ^User (.*) sends? (encrypted )?message (.*)to user (.*)$
+     * @step. ^User (.*) sends? (encrypted )?message \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$
      */
-    @When("^User (.*) sends? (encrypted )?message (.*)to (user|group conversation) (.*)$")
+    @When("^User (.*) sends? (encrypted )?message \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$")
     public void UserSendMessageToConversation(String msgFromUserNameAlias, String isEncrypted,
-                                              String msg, String convoType, String dstConvoName) throws Exception {
+            String msg, String deviceName, String convoType, String dstConvoName) throws Exception {
         final String msgToSend = (msg == null || msg.trim().length() == 0) ?
                 CommonUtils.generateRandomString(10) : msg.trim();
         if (convoType.equals("user")) {
             if (isEncrypted == null) {
                 commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend);
             } else {
-                commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend);
+                commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
             }
         } else {
             if (isEncrypted == null) {
                 commonSteps.UserSentMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend);
             } else {
-                commonSteps.UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend);
+                commonSteps.UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
             }
         }
     }
@@ -637,15 +638,16 @@ public class CommonAndroidSteps {
      * @param msgFromUserNameAlias the user who sends the message
      * @param count                number of messages to send
      * @param dstUserNameAlias     The user to receive the message
+     * @param deviceName the device to use when using encryption
      * @param areEncrypted         Whether the messages should be encrypted
      * @throws Exception
-     * @step. ^User (.*) sends? (\d+) (encrypted )?messages? to user (.*)$
+     * @step. ^User (.*) sends? (\\d+) (encrypted )?messages? (?:via device (.*)\\s)?to user (.*)$
      */
-    @When("^User (.*) sends? (\\d+) (encrypted )?messages? to user (.*)$")
+    @When("^User (.*) sends? (\\d+) (encrypted )?messages? (?:via device (.*)\\s)?to user (.*)$")
     public void UserSendXMessagesToConversation(String msgFromUserNameAlias, int count, String areEncrypted,
-                                                String dstUserNameAlias) throws Exception {
+            String deviceName, String dstUserNameAlias) throws Exception {
         for (int i = 0; i < count; i++) {
-            UserSendMessageToConversation(msgFromUserNameAlias, areEncrypted, null, "user", dstUserNameAlias);
+            UserSendMessageToConversation(msgFromUserNameAlias, areEncrypted, null, deviceName, "user", dstUserNameAlias);
         }
     }
 
