@@ -581,8 +581,9 @@ public class DialogPageSteps {
      * Checks for verified or non-verified conversation message
      *
      * @param nonVerified weather the message should show verified or non verified conversation
+     * @param userName the user who caused the downgrade of the conversation
      * @throws Exception
-     * @step. ^I see a message informing me conversation is (not )?verified$
+     * @step. ^I see a message informing me conversation is (not )?verified(?: caused by user (.*))?$
      */
     @Then("^I see a message informing me conversation is (not )?verified(?: caused by user (.*))?$")
     public void ThenISeeVerifiedConversationMessage(String nonVerified, String userName)
