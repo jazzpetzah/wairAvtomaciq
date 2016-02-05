@@ -56,7 +56,6 @@ Feature: Connect
     And I navigate back to conversations list
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
-    And I see user <Contact1> found on People picker page
     And I tap on conversation <Contact1> in search result
     And I see connect to <Contact1> dialog
     And I click Connect button on connect to dialog
@@ -83,7 +82,6 @@ Feature: Connect
     And I dismiss popover on iPad
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
-    And I see user <Contact1> found on People picker page
     And I tap on conversation <Contact> in search result
     And I see connect to <Contact1> dialog
     And I click Connect button on connect to dialog
@@ -104,7 +102,6 @@ Feature: Connect
     When I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
-    And I see user <Contact1> found on People picker page
     And I tap on conversation <Contact1> in search result
     And I click Cancel request button
     And I see Cancel request confirmation page
@@ -125,7 +122,6 @@ Feature: Connect
     When I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
-    And I see user <Contact1> found on People picker page
     And I tap on conversation <Contact1> in search result
     And I click Cancel request button
     And I see Cancel request confirmation page

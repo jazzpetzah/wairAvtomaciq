@@ -533,7 +533,7 @@ public class CommonIOSSteps {
                             conversationName, DEFAULT_AUTOMATION_MESSAGE);
                 } else {
                     commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias,
-                            conversationName, DEFAULT_AUTOMATION_MESSAGE);
+                            conversationName, DEFAULT_AUTOMATION_MESSAGE, null);
                 }
             } else {
                 // group conversation
@@ -542,7 +542,7 @@ public class CommonIOSSteps {
                             conversationName, DEFAULT_AUTOMATION_MESSAGE);
                 } else {
                     commonSteps.UserSentOtrMessageToConversation(msgFromUserNameAlias,
-                            conversationName, DEFAULT_AUTOMATION_MESSAGE);
+                            conversationName, DEFAULT_AUTOMATION_MESSAGE, null);
                 }
             }
         }
@@ -555,20 +555,16 @@ public class CommonIOSSteps {
         if (conversationType.equals("user")) {
             // 1:1 conversation
             if (areEncrypted == null) {
-                commonSteps.UserSentMessageToConversation(userFromNameAlias,
-                        conversationName, msg);
+                commonSteps.UserSentMessageToConversation(userFromNameAlias, conversationName, msg);
             } else {
-                commonSteps.UserSentOtrMessageToConversation(userFromNameAlias,
-                        conversationName, msg);
+                commonSteps.UserSentOtrMessageToConversation(userFromNameAlias, conversationName, msg, null);
             }
         } else {
             // group conversation
             if (areEncrypted == null) {
-                commonSteps.UserSentMessageToConversation(userFromNameAlias,
-                        conversationName, msg);
+                commonSteps.UserSentMessageToConversation(userFromNameAlias, conversationName, msg);
             } else {
-                commonSteps.UserSentOtrMessageToConversation(userFromNameAlias,
-                        conversationName, msg);
+                commonSteps.UserSentOtrMessageToConversation(userFromNameAlias, conversationName, msg, null);
             }
         }
     }

@@ -130,7 +130,6 @@ Feature: Search
     Given I see conversations list
     When I open search by taping on it
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I see action buttons appeared on People picker page
 
@@ -147,7 +146,6 @@ Feature: Search
     Given I see conversations list
     When I open search by taping on it
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I see action buttons appeared on People picker page
 
@@ -331,7 +329,6 @@ Feature: Search
     And I see action buttons disappeared on People picker page
     And I see Invite more people button
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I DONT see Invite more people button
     And I see action buttons appeared on People picker page
@@ -361,7 +358,6 @@ Feature: Search
     And I see action buttons disappeared on People picker page
     And I see Invite more people button
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I DONT see Invite more people button
     And I see action buttons appeared on People picker page

@@ -9,11 +9,9 @@ Feature: People View
     When I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
-    And I see user <Contact1> found on People picker page
     And I tap on conversation <Contact1> in search result
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact2>
-    And I see user <Contact2> found on People picker page
     And I tap on conversation <Contact2> in search result
     And I click on Go button
     Then I see group chat page with users <Contact1>,<Contact2>
@@ -32,11 +30,9 @@ Feature: People View
     When I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
-    And I see user <Contact1> found on People picker page
     And I tap on conversation <Contact1> in search result
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact2>
-    And I see user <Contact2> found on People picker page
     And I tap on conversation <Contact2> in search result
     And I click on Go button
     Then I see group chat page with users <Contact1>,<Contact2>
@@ -786,7 +782,6 @@ Feature: People View
     And I wait until popover is closed
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
-    And I see user <Contact1> found on People picker page
     And I tap on conversation <Contact1> in search result
     And I click open conversation button on People picker page
     Then I see the only message in dialog is system message CONNECTED TO <Contact1>
@@ -815,7 +810,6 @@ Feature: People View
     And I wait until popover is closed
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
-    And I see user <Contact1> found on People picker page
     And I tap on conversation <Contact1> in search result
     And I click open conversation button on People picker page
     Then I see the only message in dialog is system message CONNECTED TO <Contact1>

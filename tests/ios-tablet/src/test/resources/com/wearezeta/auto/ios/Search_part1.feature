@@ -197,7 +197,6 @@ Feature: Search
     And I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I unblock user on iPad
     And I type the default message
@@ -221,7 +220,6 @@ Feature: Search
     And I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I click hide keyboard button
     And I tap on conversation <Contact> in search result
     And I unblock user on iPad
@@ -316,7 +314,6 @@ Feature: Search
     And I tap on 3 top connections but not <Contact>
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I click space keyboard button
     Then I see that <Number> contacts are selected
@@ -339,7 +336,6 @@ Feature: Search
     And I tap on 3 top connections but not <Contact>
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I click space keyboard button
     Then I see that <Number> contacts are selected

@@ -120,7 +120,6 @@ Feature: Search
     And I tap on 3 top connections but not <Contact>
     #And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     Then I see that <Number> contacts are selected
 
@@ -139,7 +138,6 @@ Feature: Search
     And I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I unblock user
     And I type the default message
@@ -235,7 +233,6 @@ Feature: Search
     Given I see conversations list
     When I open search by taping on it
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     When I tap on conversation <Contact> in search result
     Then I see action buttons appeared on People picker page
 
@@ -337,7 +334,6 @@ Feature: Search
     And I see action buttons disappeared on People picker page
     And I see Invite more people button
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I DONT see Invite more people button
     And I see action buttons appeared on People picker page

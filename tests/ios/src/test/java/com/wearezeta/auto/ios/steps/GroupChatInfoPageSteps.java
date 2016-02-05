@@ -102,13 +102,13 @@ public class GroupChatInfoPageSteps {
     }
 
     @Then("^I see that conversation has (\\d+) people$")
-    public void ISeeThatConversationHasNumberPeople(int number) throws Throwable {
-        Assert.assertTrue("Actual number of people in chat  is not the same as expected ("
-                + number + ")", getGroupChatInfoPage().isNumberOfPeopleEquals(number));
+    public void ISeeThatConversationHasNumberPeople(int number) throws Exception {
+        Assert.assertTrue(String.format("The actual number of people in the chat is not the same as expected number %s",
+                number), getGroupChatInfoPage().isNumberOfPeopleEquals(number));
     }
 
     @When("^I see (\\d+) participants? avatars$")
-    public void ISeeNumberParticipantsAvatars(int expectedCount) throws Throwable {
+    public void ISeeNumberParticipantsAvatars(int expectedCount) throws Exception {
         final int actual = getGroupChatInfoPage().getParticipantsAvatarsCount();
         Assert.assertTrue(String.format(
                 "Actual number of avatars (%s) is not the same as expected (%s)", actual, expectedCount),
