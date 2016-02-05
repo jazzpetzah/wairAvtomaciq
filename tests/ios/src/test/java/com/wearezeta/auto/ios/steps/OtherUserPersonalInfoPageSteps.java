@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
+import cucumber.api.java.en.Then;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -203,7 +204,7 @@ public class OtherUserPersonalInfoPageSteps {
     /**
      * Verify that user email on Other User Profile page is displayed and correct
      *
-     * @param email user email
+     * @param email             user email
      * @param shouldNotBVisible equals to null if the email should be visible
      * @throws Exception
      * @step. ^I verify user email (.*) on Other User Profile page is correct and displayed$
@@ -224,12 +225,13 @@ public class OtherUserPersonalInfoPageSteps {
     /**
      * Click on Devices button
      *
-     * @throws Throwable
-     * @step. ^I tap on Devices button$
+     * @throws Exception
+     * @param tabName either Devices or Details
+     * @step. ^I switch to (Devices|Details) tab$
      */
-    @When("^I tap on Devices button$")
-    public void ITapOnDevicesButton() throws Exception {
-        getOtherUserPersonalInfoPage().clickDevicesButton();
+    @When("^I switch to (Devices|Details) tab$")
+    public void IChangeTab(String tabName) throws Exception {
+        getOtherUserPersonalInfoPage().switchToTab(tabName);
     }
 
     /**
@@ -243,7 +245,38 @@ public class OtherUserPersonalInfoPageSteps {
     @When("^I see (\\d+) devices shown in participant devices tab$")
     public void ISeeDevicesShownInDevicesTab(int expectedNumDevices) throws Exception {
         int numDevices = getOtherUserPersonalInfoPage().getParticipantDevicesCount();
-        Assert.assertTrue("The expected number of devices: "+ expectedNumDevices+ " is not equals to actual count: "+numDevices, expectedNumDevices == numDevices);
+        Assert.assertTrue("The expected number of devices: " + expectedNumDevices +
+                " is not equals to actual count: " + numDevices, expectedNumDevices == numDevices);
     }
 
+    /**
+     * Open the details page of corresponding device on conversation details page
+     *
+     * @param deviceIndex the device index. Starts from 1
+     * @throws Exception
+     * @step. ^I open details page of device number (\d+)$
+     */
+    @When("^I open details page of device number (\\d+)$")
+    public void IOpenDeviceDetails(int deviceIndex) throws Exception {
+        getOtherUserPersonalInfoPage().openDeviceDetailsPage(deviceIndex);
+    }
+
+    /**
+     * Verify whether the shield icon is visible on conversation details page
+     *
+     * @step. ^I (do not )?see shield icon on conversation details page$
+     *
+     * @param shouldNotSee equals to null if the shield should be visible
+     * @throws Exception
+     */
+    @Then("^I (do not )?see shield icon on conversation details page$")
+    public void ISeeShieldIcon(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue("The shield icon is not visible on convo details page",
+                    getOtherUserPersonalInfoPage().isShieldIconVisible());
+        } else {
+            Assert.assertTrue("The shield icon is still visible on convo details page",
+                    getOtherUserPersonalInfoPage().isShieldIconNotVisible());
+        }
+    }
 }
