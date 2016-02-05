@@ -14,7 +14,7 @@ Feature: VideoCalling
     And I open conversation with <Contact>
     When I start a video call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I end the video call
+    #And I end the video call
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |

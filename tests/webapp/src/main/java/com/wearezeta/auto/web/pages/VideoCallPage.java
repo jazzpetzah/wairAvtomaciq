@@ -20,13 +20,14 @@ public class VideoCallPage extends WebPage {
 	public WebElement endVideoCallButton;
 
 	public void clickEndVideoCallButton() throws Exception {
-        DriverUtils.waitUntilElementClickable(this.getDriver(), endVideoCallButton);
+//        Thread.sleep(10000);
+//        DriverUtils.waitUntilElementClickable(this.getDriver(), endVideoCallButton);
         endVideoCallButton.click();
 
 	}
 
     public boolean isEndVideoCallButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(),
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                 By.cssSelector(WebAppLocators.VideoCallPage.cssEndVideoCallButton), 7000);
     }
 }
