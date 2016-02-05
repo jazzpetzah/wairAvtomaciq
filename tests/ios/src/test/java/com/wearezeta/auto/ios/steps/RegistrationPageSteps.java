@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.steps;
 
 import java.util.concurrent.Future;
 
+import cucumber.api.java.en.And;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -253,7 +254,7 @@ public class RegistrationPageSteps {
      */
     @Then("^I see email verification reminder$")
     public void ISeeEmailVerificationReminder() throws Exception {
-        Assert.assertTrue(getRegistrationPage().isEmailVerifPromptVisible());
+        Assert.assertTrue(getRegistrationPage().isEmailVerificationPromptVisible());
     }
 
     /**
@@ -288,6 +289,18 @@ public class RegistrationPageSteps {
     @When("^I press Choose Photo button$")
     public void IPressChoosePhotoButton() throws Exception {
         getRegistrationPage().clickChoosePhotoButton();
+    }
+
+    /**
+     * Tap Keep This One button on unsplash page
+     *
+     * @step. ^I press Keep This One button$
+     *
+     * @throws Exception
+     */
+    @And("^I press Keep This One button$")
+    public void IPressKeepThisOneButton() throws Exception {
+        getRegistrationPage().clickKeepThisOneButton();
     }
 
 }
