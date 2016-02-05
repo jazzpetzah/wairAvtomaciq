@@ -337,7 +337,7 @@ Feature: E2EE
     When I press back button
     And I press back button
     Then I see a message informing me conversation is verified
-    And User <Contact1> adds new devices Device2
+    And User <Contact1> adds new device Device2
     When User <Contact1> sends encrypted message "<InvisibleMessage>" via device Device2 to user Myself
     Then I see a message informing me conversation is not verified caused by user <Contact1>
     And I see encrypted message <InvisibleMessage> 0 times in the conversation view
@@ -371,7 +371,7 @@ Feature: E2EE
     And I press back button
     And I press back button
     Then I see a message informing me conversation is verified
-    And User <Contact1> adds new devices Device2
+    And User <Contact1> adds new device Device2
     When User <Contact1> sends encrypted message "<InvisibleMessage>" via device Device2 to group conversation <GroupChatName>
     Then I see a message informing me conversation is not verified caused by user <Contact1>
     And I see encrypted message <InvisibleMessage> 0 times in the conversation view
