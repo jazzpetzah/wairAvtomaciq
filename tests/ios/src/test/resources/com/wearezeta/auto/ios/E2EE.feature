@@ -1,6 +1,6 @@
 Feature: E2EE
 
-  @C3284 @staging
+  @C3284 @rc @regression
   Scenario Outline: Verify newly added people in a group conversation don't see a history
     Given There are 4 users where <Name> is me
     Given <Contact1> is connected to Myself,<Contact2>,<Contact3>
@@ -42,7 +42,7 @@ Feature: E2EE
       | Name      | DeviceName | DeviceLabel  |
       | user1Name | Device1    | Device1Label |
 
-  @C3296 @staging
+  @C3296 @regression
   Scenario Outline: Verify opening device details by clicking on it in person's profile
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

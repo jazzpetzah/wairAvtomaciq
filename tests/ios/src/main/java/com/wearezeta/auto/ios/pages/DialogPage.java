@@ -41,7 +41,10 @@ public class DialogPage extends IOSPage {
 
     private static final By xpathMessageEntries = By.xpath(xpathStrMainWindow + "/UIATableView/UIATableCell");
 
-    private static final By xpathImageCell = By.xpath("//UIATableCell[@name='ImageCell']");
+    private static final String xpathStrImageCells = "//UIATableCell[@name='ImageCell']";
+    private static final By xpathImageCell = By.xpath(xpathStrImageCells);
+    private static final By xpathLastImageCell = By.xpath(String.format("(%s)[last()]", xpathStrImageCells));
+
 
     private static final By xpathNameMediaContainer = By.xpath(
             xpathStrMainWindow + "/UIATableView[1]/UIATableCell[last()]");
@@ -107,11 +110,8 @@ public class DialogPage extends IOSPage {
 
     private static final By nameSoundCloudContainer = By.name("Play on SoundCloud");
 
-    // FIXME: bad locator
-    private static final By xpathImage = By.xpath(xpathStrMainWindow + "/UIATableView[1]/UIATableCell[2]");
-
-    private static final By xpathSimpleMessageLink = By.xpath(
-            xpathStrMainWindow + "/UIATableView[1]/UIATableCell[last()]/UIATextView[1]");
+    private static final Function<String, String> xpathStrMessageViewByText = text ->
+            String.format("//UIATextView[contains(@value, '%s')]", text);
 
     private static final Function<String, String> xpathStrLastItemByNameInDialog =
             name -> String.format("//UIAStaticText[@name='%s'][last()]", name.toUpperCase());
@@ -524,15 +524,6 @@ public class DialogPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathGiphyImage);
     }
 
-    public void tapOnLink() throws Exception {
-        DriverUtils.tapByCoordinates(getDriver(), getElement(xpathSimpleMessageLink));
-    }
-
-    public void tapOnLinkWithinAMessage() throws Exception {
-        final WebElement tapLink = getElement(xpathSimpleMessageLink);
-        DriverUtils.tapByCoordinates(getDriver(), tapLink, -(tapLink.getSize().width / 4), 0);
-    }
-
     public boolean isTherePossibilityControllerButtonsToBeDisplayed() throws Exception {
         int pingX = getElement(namePingButton).getLocation().x;
         int conversationX = getElement(xpathConversationWindow).getLocation().x;
@@ -541,7 +532,7 @@ public class DialogPage extends IOSPage {
 
     public void tapHoldImage() {
         try {
-            this.getDriver().tap(1, getElement(xpathImage), 1000);
+            this.getDriver().tap(1, getElement(xpathLastImageCell), 1000);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -549,5 +540,11 @@ public class DialogPage extends IOSPage {
 
     public boolean isUserAvatarNextToInputVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathUserAvatarNextToInput);
+    }
+
+    public void tapMessage(String expectedLink) throws Exception {
+        final By locator = By.xpath(xpathStrMessageViewByText.apply(expectedLink));
+        final WebElement el = getElement(locator);
+        DriverUtils.tapByCoordinates(getDriver(), el, -el.getSize().width / 4, 0);
     }
 }

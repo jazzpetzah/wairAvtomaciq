@@ -33,10 +33,6 @@ public class DialogPage extends AndroidPage {
 
     private static final Function<String, String> xpathStrConversationMessageByText = text -> String
             .format("//*[@id='ltv__row_conversation__message' and @value='%s']", text);
-    
-    private static final Function<String, String> xpathStrConversationOtrMessageByText = text -> String
-        .format("//*[@id='ttv__row_conversation__otr_message' and @value='%s']", text);
-    
 
     private static final Function<String, String> xpathStrConversationLockMessageByText = text -> String
             .format("//*[@id='ltv__row_conversation__message' and @value='%s']/parent::*/following-sibling::*"
@@ -327,12 +323,6 @@ public class DialogPage extends AndroidPage {
     public boolean waitForMessage(String text) throws Exception {
         scrollToTheBottom();
         final By locator = By.xpath(xpathStrConversationMessageByText.apply(text));
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
-    }
-
-    public boolean waitForOtrMessage(String text) throws Exception {
-        scrollToTheBottom();
-        final By locator = By.xpath(xpathStrConversationOtrMessageByText.apply(text));
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
     

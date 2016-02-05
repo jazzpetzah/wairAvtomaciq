@@ -49,7 +49,6 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog
     And I click Connect button on connect to dialog
@@ -73,7 +72,6 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog
     And I click Connect button on connect to dialog
@@ -271,7 +269,6 @@ Feature: Connect
     When I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I unblock user on iPad
     And I see 0 default message in the dialog
@@ -303,7 +300,6 @@ Feature: Connect
     When I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I unblock user on iPad
     And I see 1 default message in the dialog
@@ -326,7 +322,6 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog
     And I click Connect button on connect to dialog
@@ -335,7 +330,6 @@ Feature: Connect
     When I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I see <Contact> user pending profile popover on iPad
 
@@ -353,7 +347,6 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog
     And I click Connect button on connect to dialog
@@ -362,7 +355,6 @@ Feature: Connect
     When I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I see <Contact> user pending profile popover on iPad
 

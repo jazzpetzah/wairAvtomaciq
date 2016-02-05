@@ -74,8 +74,8 @@ Feature: Conversation View
     Then I see 1 default message in the dialog
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Name | user2Name | user3Name | MessageToGroup|
+      | Name      | Contact1  | Contact2  | GroupChatName  |
+      | user1Name | user2Name | user3Name | MessageToGroup |
 
   @C3210 @regression @rc @IPv6 @id1468
   Scenario Outline: (MediaBar disappears on Simulator) Play/pause SoundCloud media link from the media bar
@@ -608,10 +608,9 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User <Name> sends encrypted message "<Link>" to user <Contact1>
+    Given User Myself sends encrypted message "<Link>" to user <Contact1>
     When I tap on contact name <Contact1>
-    And I see Link <Link> in dialog
-    And I tap on Link
+    And I tap on message "<Link>"
     Then I see WireWebsitePage
 
     Examples:
@@ -624,15 +623,14 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User <Name> sends encrypted message "<MessageAndLink>" to user <Contact1>
+    Given User Myself sends encrypted message "<MessageAndLink>" to user <Contact1>
     When I tap on contact name <Contact1>
-    And I see Link <MessageAndLink> in dialog
-    And I tap on Link
+    And I tap on message "<MessageAndLink>"
     Then I see WireWebsitePage
 
     Examples:
-      | Name      | Contact1  | MessageAndLink                  |
-      | user1Name | user2Name | Check https://www.wire.com/ out |
+      | Name      | Contact1  | MessageAndLink                                |
+      | user1Name | user2Name | https://www.wire.com/ is the best of the best |
 
   @C943 @regression @id3798
   Scenario Outline: Verify input field and action buttons are not shown simultaniously

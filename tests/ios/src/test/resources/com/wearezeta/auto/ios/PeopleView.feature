@@ -13,7 +13,6 @@ Feature: People View
     And I wait until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact2>
-    And I see user <Contact2> found on People picker page
     And I tap on conversation <Contact2> in search result
     And I click on Go button
     And I wait for 2 seconds
@@ -27,7 +26,7 @@ Feature: People View
   Scenario Outline: Add user to a group conversation
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
-    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
@@ -35,7 +34,6 @@ Feature: People View
     And I press Add button
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
-    And I see user <Contact3> found on People picker page
     And I tap on conversation <Contact3> in search result
     And I click on Go button
     Then I can see You Added <Contact3> message
@@ -45,7 +43,7 @@ Feature: People View
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Number | GroupChatName |
-      | user1Name | user2Name | user3Name | user4Name | 4      | TESTCHAT      |
+      | user1Name | user2Name | user3Name | user4Name | 3      | TESTCHAT      |
 
   @C3175 @regression @rc @id1389
   Scenario Outline: Leave from group chat
@@ -60,7 +58,6 @@ Feature: People View
     And I see leave conversation alert
     Then I press leave
     And I open archived conversations
-    And I see user <GroupChatName> in contact list
     And I tap on group chat with name <GroupChatName>
     And I see You Left message in group chat
 
@@ -219,10 +216,8 @@ Feature: People View
     And I see <Contact1> user profile page
     And I press Add button
     And I tap on Search input on People picker page
-    And I see user <Contact2> found on People picker page
     And I don't see Add to conversation button
     And I tap on conversation <Contact2> in search result
-    And I see user <Contact3> found on People picker page
     And I tap on conversation <Contact3> in search result
     And I click on Go button
     And I see group chat page with users <Contact1>,<Contact2>,<Contact3>
@@ -458,7 +453,6 @@ Feature: People View
     And I confirm delete conversation content
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
-    And I see user <Contact1> found on People picker page
     And I tap on conversation <Contact1> in search result
     And I click open conversation button on People picker page
     Then I see the only message in dialog is system message CONNECTED TO <Contact1>

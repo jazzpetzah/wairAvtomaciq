@@ -401,13 +401,12 @@ Feature: Conversation View
     Given I see conversations list
     Given User Myself sends encrypted message "<MessageAndLink>" to user <Contact1>
     When I tap on contact name <Contact1>
-    And I see Link <MessageAndLink> in dialog
-    And I tap on Link with a message
+    And I tap on message "<MessageAndLink>"
     Then I see WireWebsitePage
 
     Examples:
-      | Name      | Contact1  | MessageAndLink                  |
-      | user1Name | user2Name | Check https://www.wire.com/ out |
+      | Name      | Contact1  | MessageAndLink                                |
+      | user1Name | user2Name | https://www.wire.com/ is the best of the best |
 
   @C2666 @regression @id3793
   Scenario Outline: Verify sending link and text in one message and opening the link [LANDSCAPE]
@@ -418,13 +417,12 @@ Feature: Conversation View
     Given I see conversations list
     Given User Myself sends encrypted message "<MessageAndLink>" to user <Contact1>
     When I tap on contact name <Contact1>
-    And I see Link <MessageAndLink> in dialog
-    And I tap on Link with a message
+    And I tap on message "<MessageAndLink>"
     Then I see WireWebsitePage
 
     Examples:
-      | Name      | Contact1  | MessageAndLink                  |
-      | user1Name | user2Name | Check https://www.wire.com/ out |
+      | Name      | Contact1  | MessageAndLink                                |
+      | user1Name | user2Name | https://www.wire.com/ is the best of the best |
 
   @C2663 @regression @id3790
   Scenario Outline: Verify sending link and opening it [PORTRAIT]
@@ -434,8 +432,7 @@ Feature: Conversation View
     Given I see conversations list
     Given User Myself sends encrypted message "<Link>" to user <Contact1>
     When I tap on contact name <Contact1>
-    And I see Link <Link> in dialog
-    And I tap on Link
+    And I tap on message "<Link>"
     Then I see WireWebsitePage
 
     Examples:
@@ -451,8 +448,7 @@ Feature: Conversation View
     Given I see conversations list
     Given User Myself sends encrypted message "<Link>" to user <Contact1>
     When I tap on contact name <Contact1>
-    And I see Link <Link> in dialog
-    And I tap on Link
+    And I tap on link <Link>
     Then I see WireWebsitePage
 
     Examples:

@@ -819,40 +819,16 @@ public class DialogPageSteps {
     }
 
     /**
-     * Verifies that link is seen in conversation view
-     *
-     * @param link that we sent to user
-     * @throws Throwable
-     * @step. ^I see Link (.*) in dialog$
-     */
-    @When("^I see Link (.*) in dialog$")
-    public void ISeeLinkInDialog(String link) throws Throwable {
-        Assert.assertEquals(link.toLowerCase(), getDialogPage()
-                .getLastMessageFromDialog().orElseThrow(() ->
-                        new AssertionError("No messages are present in the conversation view")
-                ).toLowerCase());
-    }
-
-    /**
      * Tap on the sent link to open it
+     * There is no way to simply detect the position of the link in the message cell
+     * That is why we assume it is located at the beginning of the string
      *
-     * @throws Throwable
-     * @step. ^I tap on Link$
+     * @throws Exception
+     * @step. ^I tap on message "(.*)"$
      */
-    @When("^I tap on Link$")
-    public void ITapOnLink() throws Throwable {
-        getDialogPage().tapOnLink();
-    }
-
-    /**
-     * Taps on a link that got sent together with a message
-     *
-     * @throws Throwable
-     * @step. ^I tap on Link with a message$
-     */
-    @When("^I tap on Link with a message$")
-    public void ITapOnLinkWithAMessage() throws Throwable {
-        getDialogPage().tapOnLinkWithinAMessage();
+    @When("^I tap on message \"(.*)\"$")
+    public void ITapOnLink(String msgWithLink) throws Exception {
+        getDialogPage().tapMessage(msgWithLink);
     }
 
     /**

@@ -10,7 +10,6 @@ Feature: Connect
     And I tap on Search input on People picker page
     Given I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog
     And I click Connect button on connect to dialog
@@ -119,9 +118,7 @@ Feature: Connect
     And I wait until <Contact> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
-    And I see connect to <Contact> dialog
     And I click Connect button on connect to dialog
     And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
@@ -147,7 +144,6 @@ Feature: Connect
     And I wait until <Contact> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I unblock user
     Then I see 1 message in the dialog
@@ -169,7 +165,6 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog
     And I click Connect button on connect to dialog
@@ -178,7 +173,6 @@ Feature: Connect
     When I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     Then I see cancel request button on pending profile page
 
@@ -221,7 +215,6 @@ Feature: Connect
     And I tap on Search input on People picker page
     Given I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user email <ContactEmail>
-    And I see user <UnconnectedUser> found on People picker page
     And I press the instant connect button
     And I click close button to dismiss people view
     And I see first item in contact list named <UnconnectedUser>
@@ -267,7 +260,6 @@ Feature: Connect
     And I navigate back to conversations list
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
-    And I see user <Contact1> found on People picker page
     And I tap on conversation <Contact1> in search result
     And I see connect to <Contact1> dialog
     And I click Connect button on connect to dialog
@@ -372,7 +364,6 @@ Feature: Connect
     When I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I unblock user
     Then I see dialog page

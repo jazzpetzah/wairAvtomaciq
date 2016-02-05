@@ -392,8 +392,8 @@ Feature: E2EE
     And I verify 1st device
     When I close single participant page by UI button
     And I press back button
-    And I see <Message> conversation system message
+    And I see a message informing me conversation is verified
 
     Examples:
-      | Name      | Contact1  | Contact2  | Message1 | GroupChatName | Message               |
-      | user1Name | user2Name | user3Name | Msg1     | GroupConvo    | Conversation verified |
+      | Name      | Contact1  | Contact2  | Message1 | GroupChatName |
+      | user1Name | user2Name | user3Name | Msg1     | GroupConvo    |
