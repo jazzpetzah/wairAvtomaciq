@@ -285,7 +285,7 @@ Feature: Connect
       | Name      | Contact   | NewName  |
       | user1Name | user2Name | New Name |
 
-  @C2468 @staging @id4001
+  @C2468 @regression @id4001
   Scenario Outline: Verify connection request is deleted from the inbox of the addresser [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -300,7 +300,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C2469 @staging @id4002
+  @C2469 @regression @id4002
   Scenario Outline: Verify connection request is deleted from the inbox of the addresser [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
