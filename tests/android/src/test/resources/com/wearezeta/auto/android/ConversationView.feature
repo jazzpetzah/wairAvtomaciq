@@ -100,7 +100,7 @@ Feature: Conversation View
       | user1Name | user2Name | user3Name |
       
   @C18044 @regression
-  Scenario Outline: I see creation header when someone create group conversation with me
+  Scenario Outline: (AN-3428) I see creation header when someone create group conversation with me
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>,<Contact2>
     Given I sign in using my email or phone number
