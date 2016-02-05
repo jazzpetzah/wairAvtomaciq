@@ -102,6 +102,17 @@ public class UserDevicePool {
         return addDevice(user);
     }
 
+    public IDevice getOrAddDevice(ClientUser user, String deviceName) {
+        if (userDevices.containsKey(user)) {
+            for (IDevice device : userDevices.get(user)) {
+                if (deviceName.equals(device.name())) {
+                    return device;
+                }
+            }
+        }
+        return addDevice(user, deviceName);
+    }
+
     public synchronized void shutdown() {
         if (this.coordinatorActorRef != null) {
             LOG.info("Shutting down device pool...");

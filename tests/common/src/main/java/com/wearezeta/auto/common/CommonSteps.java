@@ -334,13 +334,13 @@ public final class CommonSteps {
     }
 
     public void UserSentOtrMessageToUser(String msgFromUserNameAlias,
-                                         String dstUserNameAlias, String message) throws Exception {
+            String dstUserNameAlias, String message, String deviceName) throws Exception {
         ClientUser msgFromUser = usrMgr
                 .findUserByNameOrNameAlias(msgFromUserNameAlias);
         ClientUser msgToUser = usrMgr
                 .findUserByNameOrNameAlias(dstUserNameAlias);
         SEBridge.getInstance().sendConversationMessage(msgFromUser,
-                msgToUser.getId(), message);
+                msgToUser.getId(), message, deviceName);
     }
 
     public void UserHotPingedConversation(String hotPingFromUserNameAlias,
@@ -365,7 +365,7 @@ public final class CommonSteps {
     }
 
     public void UserSentOtrMessageToConversation(String userFromNameAlias,
-                                                 String dstConversationName, String message) throws Exception {
+            String dstConversationName, String message, String deviceName) throws Exception {
         ClientUser userFrom = usrMgr
                 .findUserByNameOrNameAlias(userFromNameAlias);
         dstConversationName = usrMgr.replaceAliasesOccurences(
@@ -373,7 +373,7 @@ public final class CommonSteps {
         String dstConvId = BackendAPIWrappers.getConversationIdByName(userFrom,
                 dstConversationName);
         seBridge.sendConversationMessage(userFrom, dstConvId,
-                message);
+                message, deviceName);
     }
 
     public void UserSentImageToConversation(String imageSenderUserNameAlias,
