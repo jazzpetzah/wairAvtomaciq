@@ -13,10 +13,7 @@ public class VideoCallPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private final WebappPagesCollection webappPagesCollection = WebappPagesCollection.getInstance();
 
-    @SuppressWarnings("unused")
     private static final Logger log = ZetaLogger.getLog(VideoCallPageSteps.class.getSimpleName());
-
-    private String randomMessage;
 
 
     /**
