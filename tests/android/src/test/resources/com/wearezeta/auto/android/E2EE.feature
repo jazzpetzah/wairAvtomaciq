@@ -404,7 +404,7 @@ Feature: E2EE
       | Name      | Contact1  | Contact2  | Message1 | GroupChatName |
       | user1Name | user2Name | user3Name | Msg1     | GroupConvo    |
       
-  @C12083 @staging @torun
+  @C12083 @staging
   Scenario Outline: When I'm entering a verified conversation, a green shield will appear at the bottom right
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
