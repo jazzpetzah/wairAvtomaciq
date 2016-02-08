@@ -273,11 +273,7 @@ Feature: Connect
     And I unblock user on iPad
     And I see 0 default message in the dialog
     And I see 0 photo in the dialog
-    And I navigate back to conversations list
-    #And I see People picker page
-    #And I click close button to dismiss people view
     Given User <Contact> sends 1 encrypted message to user Myself
-    When I tap on contact name <Contact>
     Then I see 1 default message in the dialog
 
     Examples: 
@@ -302,12 +298,10 @@ Feature: Connect
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I unblock user on iPad
-    And I see 1 default message in the dialog
-    And I see 1 photo in the dialog
-    #And I click close button to dismiss people view
+    And I see 0 default message in the dialog
+    And I see 0 photo in the dialog
     Given User <Contact> sends 1 encrypted message to user Myself
-    When I tap on contact name <Contact>
-    Then I see 2 default messages in the dialog
+    Then I see 1 default message in the dialog
 
     Examples: 
       | Name      | Contact   | Picture     |
