@@ -247,7 +247,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | user3Name | firefox     | autocall     | 30      |
 
-  @C2427 @calling_basic @id2652
+  @C2427 @calling_advanced @id2652
   Scenario Outline: 3rd person tries to call me after I initate a call to somebody [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -256,7 +256,6 @@ Feature: Calling
     Given I Sign in on tablet using my email
     Given I see conversations list
     And I tap on contact name <Contact1>
-    And I navigate back to conversations list
     And I remember the state of <Contact2> conversation item
     When I click plus button next to text input
     And I press call button
