@@ -417,3 +417,48 @@ Feature: E2EE
   Examples:
     | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | ALL_VERIFIED                  |
     | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat     | All fingerprints are verified |
+
+  @C28834 @e2ee @regression
+  Scenario Outline: Make sure data is restored after switching between temporary login and back to permanent
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+  #Then I see the history info page
+  #And I click confirm on history info page
+    And I am signed in properly
+    And I open conversation with <GroupChatName>
+    And I write message <Message1>
+    And I send message
+    And I open conversation with <Contact1>
+    And I write message <Message2>
+    And I send message
+    And I open self profile
+    And I click gear button on self profile page
+    And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
+    And I see Sign In page
+    And I enter email "<Email>"
+    And I enter password "<Password>"
+    And I press Sign In button
+    And I am signed in properly
+    And I open conversation with <GroupChatName>
+    Then I do not see text message <Message2>
+    When I open conversation with <Contact1>
+    Then I do not see text message <Message1>
+    And I open self profile
+    And I click gear button on self profile page
+    And I select Log out menu item on self profile page
+    And I see Sign In page
+    And I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    And I open conversation with <GroupChatName>
+    Then I see text message <Message2>
+    When I open conversation with <Contact1>
+    Then I see text message <Message1>
+
+    Examples:
+      | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message1   | Message2     |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | User1Chat     | Hello 1:1! | Hello Group! |
