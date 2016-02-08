@@ -122,6 +122,8 @@ public class DialogPage extends IOSPage {
     private static final Function<String, String> xpathStartConversationEntryTemplate = xpathExpr ->
             String.format("//UIAStaticText[%s]", xpathExpr);
 
+    private static final By nameShieldIconNextToInput = By.name("verifiedConversationIndicator");
+
     public DialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -572,5 +574,13 @@ public class DialogPage extends IOSPage {
         final By locator = By.xpath(xpathStrMessageViewByText.apply(expectedLink));
         final WebElement el = getElement(locator);
         DriverUtils.tapByCoordinates(getDriver(), el, -el.getSize().width / 4, 0);
+    }
+
+    public boolean isShieldIconVisibleNextToInputField() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameShieldIconNextToInput);
+    }
+
+    public boolean isShieldIconInvisibleNextToInputField() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameShieldIconNextToInput);
     }
 }
