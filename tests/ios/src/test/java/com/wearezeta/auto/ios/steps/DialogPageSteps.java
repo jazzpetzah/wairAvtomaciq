@@ -149,22 +149,19 @@ public class DialogPageSteps {
     }
 
     @Then("I see last message in dialog is expected message (.*)")
-    public void ThenISeeLasMessageInTheDialogIsExpected(String msg)
-            throws Throwable {
+    public void ThenISeeLasMessageInTheDialogIsExpected(String msg) throws Exception {
         String dialogLastMessage = getDialogPage().getLastMessageFromDialog().orElseThrow(() ->
                 new AssertionError("No messages are present in the conversation view")
         );
         if (!Normalizer.isNormalized(dialogLastMessage, Form.NFC)) {
-            dialogLastMessage = Normalizer.normalize(dialogLastMessage,
-                    Form.NFC);
+            dialogLastMessage = Normalizer.normalize(dialogLastMessage, Form.NFC);
         }
-
         if (!Normalizer.isNormalized(msg, Form.NFC)) {
-            dialogLastMessage = Normalizer.normalize(msg, Form.NFC);
+            msg = Normalizer.normalize(msg, Form.NFC);
         }
-
-        Assert.assertTrue("Message is different, actual: " + dialogLastMessage
-                + " expected: " + msg, dialogLastMessage.equals(msg));
+        Assert.assertTrue(
+                String.format("The last message in the conversation '%s' is different from the expected one '%s'",
+                        dialogLastMessage, msg), dialogLastMessage.equals(msg));
     }
 
     /**
@@ -929,5 +926,23 @@ public class DialogPageSteps {
     @When("^I click send button on keyboard$")
     public void iClickSendButtonOnKeyboard() throws Exception {
         getDialogPage().clickKeyboardCommitButton();
+    }
+
+    /**
+     * Verify whether shield cion is visible next to convo input field
+     *
+     * @param shouldNotSee equals to null is the shield should be visible
+     * @throws Exception
+     * @step, ^I (do not )?see shield icon next to conversation input field$"
+     */
+    @Then("^I (do not )?see shield icon next to conversation input field$")
+    public void ISeeShieldIconNextNextToInputField(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue("The shield icon is not visible next to the convo input field",
+                    getDialogPage().isShieldIconVisibleNextToInputField());
+        } else {
+            Assert.assertTrue("The shield icon is visible next to the convo input field, but should be hidden",
+                    getDialogPage().isShieldIconInvisibleNextToInputField());
+        }
     }
 }

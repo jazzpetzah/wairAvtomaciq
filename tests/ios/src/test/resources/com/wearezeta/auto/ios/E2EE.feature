@@ -84,6 +84,7 @@ Feature: E2EE
     Given I see conversations list
     And I tap on contact name <Contact1>
     And I open conversation details
+    And I do not see shield icon on conversation details page
     And I switch to Devices tab
     When I open details page of device number 1
     And I tap Verify switcher on Device Details page
@@ -97,6 +98,39 @@ Feature: E2EE
     Examples:
       | Name      | Contact1  | DeviceName1 | DeviceName2 |
       | user1Name | user2Name | Device1     | Device2     |
+
+  @C3287 @staging
+  Scenario Outline: Verify the group conversation is marked as verified after verifying clients of each other
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>s
+    Given User <Contact1> adds a new device <DeviceName1> with label <DeviceLabel1>
+    Given User <Contact2> adds a new device <DeviceName2> with label <DeviceLabel2>
+    Given I sign in using my email
+    Given I see conversations list
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    When I tap on contact name <GroupChatName>
+    Then I do not see shield icon next to conversation input field
+    And I open conversation details
+    When I select participant <Contact1>
+    And I switch to Devices tab
+    And I open details page of device number 1
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    And I close group participant details page
+    And I select participant <Contact2>
+    And I switch to Devices tab
+    And I open details page of device number 1
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    And I close group participant details page
+    And I close group info page
+    And I click Close input options button
+    Then I see shield icon next to conversation input field
+    And I see last message in dialog is expected message <VerificationMsg>
+
+    Examples:
+      | Name      | Contact1  | Contact2  | DeviceName1 | DeviceLabel1 | DeviceName2 | DeviceLabel2 | GroupChatName | VerificationMsg               |
+      | user1Name | user2Name | user3Name | Device1     | Label1       | Device2     | Label2       | VerifiedGroup | ALL FINGERPRINTS ARE VERIFIED |
 
   @C3294 @staging @torun
   Scenario Outline: Verify system message appearance in case of using a new device by friend
