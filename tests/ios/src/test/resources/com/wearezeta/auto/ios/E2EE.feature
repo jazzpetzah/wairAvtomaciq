@@ -20,7 +20,7 @@ Feature: E2EE
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | EncryptedGrp  |
 
-  @C3293 @noAcceptAlert @staging
+  @C3293 @noAcceptAlert @regression
   Scenario Outline: (ZIOS-5684) Verify system message appearance in case of using a new device by you
     Given There is 1 user where <Name> is me
     Given User Myself removes his avatar picture
