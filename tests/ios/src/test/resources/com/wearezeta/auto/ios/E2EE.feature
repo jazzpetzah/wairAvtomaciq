@@ -20,28 +20,6 @@ Feature: E2EE
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | EncryptedGrp  |
 
-  @C3293 @noAcceptAlert @regression
-  Scenario Outline: (ZIOS-5684) Verify system message appearance in case of using a new device by you
-    Given There is 1 user where <Name> is me
-    Given User Myself removes his avatar picture
-    Given I sign in using my email
-    Given I accept alert
-    Given I accept First Time overlay if it is visible
-    Given I accept alert
-    Given I see conversations list
-    When I remember the state of my avatar
-    And User Myself adds a new device <DeviceName> with label <DeviceLabel>
-    Then I wait until my avatar is changed
-    When I tap my avatar
-    Then I verify the alert contains text <DeviceLabel>
-    When I accept alert
-    And I close self profile
-    Then I wait until my avatar is not changed
-
-    Examples:
-      | Name      | DeviceName | DeviceLabel  |
-      | user1Name | Device1    | Device1Label |
-
   @C3296 @regression
   Scenario Outline: Verify opening device details by clicking on it in person's profile
     Given There are 2 users where <Name> is me
@@ -58,12 +36,23 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName1 | DeviceName2 | DeviceName3 |
       | user1Name | user2Name | Device1     | Device2     | Device3     |
 
-  @C3290 @regression
+  @C3290 @noAcceptAlert @regression
   Scenario Outline: (ZIOS-5741) Verify new device is added to device management after sign in
     Given There is 1 user where <Name> is me
+    Given User Myself removes his avatar picture
     Given I sign in using my email
+    Given I accept alert
+    Given I accept First Time overlay if it is visible
+    Given I accept alert
     Given I see conversations list
-    Given User Myself adds a new device <DeviceName> with label <DeviceLabel>
+    When I remember the state of my avatar
+    And User Myself adds a new device <DeviceName> with label <DeviceLabel>
+    Then I wait until my avatar is changed
+    When I tap my avatar
+    Then I verify the alert contains text <DeviceLabel>
+    When I accept alert
+    And I close self profile
+    Then I wait until my avatar is not changed
     When I tap my avatar
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
