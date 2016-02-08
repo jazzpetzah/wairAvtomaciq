@@ -11,13 +11,13 @@ import java.util.concurrent.Future;
 
 public class VideoCallPage extends WebPage {
 
-	public VideoCallPage (Future<ZetaWebAppDriver> lazyDriver)
-			throws Exception {
+    public VideoCallPage(Future<ZetaWebAppDriver> lazyDriver)
+            throws Exception {
         super(lazyDriver);
     }
 
-	@FindBy(css = WebAppLocators.VideoCallPage.cssEndVideoCallButton)
-	public WebElement endVideoCallButton;
+    @FindBy(css = WebAppLocators.VideoCallPage.cssEndVideoCallButton)
+    public WebElement endVideoCallButton;
 
     public void clickEndVideoCallButton() throws Exception {
         Actions builder = new Actions(this.getDriver());

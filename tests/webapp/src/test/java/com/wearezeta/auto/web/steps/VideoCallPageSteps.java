@@ -10,19 +10,10 @@ import org.junit.Assert;
 
 public class VideoCallPageSteps {
 
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private final WebappPagesCollection webappPagesCollection = WebappPagesCollection.getInstance();
 
     private static final Logger log = ZetaLogger.getLog(VideoCallPageSteps.class.getSimpleName());
 
-
-    /**
-     * End the current video call by clicking the end video call button
-     *
-     * @step. ^I end the video call$
-     *
-     * @throws Exception
-     */
     @When("^I end the video call$")
     public void IEndTheCall() throws Exception {
 
