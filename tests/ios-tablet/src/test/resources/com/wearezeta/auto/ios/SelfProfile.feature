@@ -7,14 +7,14 @@ Feature: Self Profile
     Given I see conversations list
     When I tap my avatar
     And I tap to edit my name
-    And I change name <Name> to <NewUsername>
+    And I change my name to <NewUsername>
     Then I see my new name <NewUsername1>
     When I close self profile
     Then I see conversations list
     And I see my name <NewUsername1> first letter as label of Self Button
     When I tap my avatar
     And I tap to edit my name
-    And I change name <Name> to <NewUsername>
+    And I change my name to <NewUsername>
     Then I see my new name <NewUsername1>
 
     Examples:
@@ -29,14 +29,14 @@ Feature: Self Profile
     Given I see conversations list
     When I tap my avatar
     And I tap to edit my name
-    And I change name <Name> to <NewUsername>
+    And I change my name to <NewUsername>
     Then I see my new name <NewUsername1>
     When I close self profile
     Then I see conversations list
     And I see my name <NewUsername1> first letter as label of Self Button
     When I tap my avatar
     And I tap to edit my name
-    And I change name <Name> to <NewUsername>
+    And I change my name to <NewUsername>
     Then I see my new name <NewUsername1>
 
     Examples:
@@ -76,45 +76,46 @@ Feature: Self Profile
 
   @C2869 @regression @rc @id2574
   Scenario Outline: Change your profile picture [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap my avatar
+    # This is usually enough to have the profile picture loaded
+    And I wait for 10 seconds
+    And I remember my current profile picture
     And I tap on personal screen
     And I press Camera button
     And I choose a picture from camera roll
     And I press Confirm button
-    And I return to personal page
-    Then I see changed user picture <Picture>
+    Then I wait up to <Timeout> seconds until my profile picture is changed
 
     Examples:
-      | Name      | Picture                   | Contact   |
-      | user1Name | userpicture_ios_check.png | user2Name |
+      | Name      | Timeout |
+      | user1Name | 60      |
 
   @C2875 @regression @id3159
   Scenario Outline: Change your profile picture [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap my avatar
+    # This is usually enough to have the profile picture loaded
+    And I wait for 10 seconds
+    And I remember my current profile picture
     And I tap on personal screen
     And I press Camera button
     And I choose a picture from camera roll
     And I press Confirm button
-    And I return to personal page
-    Then I see changed user picture <Picture>
+    Then I wait up to <Timeout> seconds until my profile picture is changed
 
     Examples:
-      | Name      | Picture                             | Contact   |
-      | user1Name | userpicture_ios_check_landscape.png | user2Name |
+      | Name      | Timeout |
+      | user1Name | 60      |
 
   @C2878 @regression @rc @id2582
   Scenario Outline: Attempt to enter a name with 0 chars [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap my avatar
@@ -125,13 +126,12 @@ Feature: Self Profile
     And I see error message asking for more characters
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      |
+      | user1Name |
 
   @C2885 @regression @id3160
   Scenario Outline: Attempt to enter a name with 0 chars [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -143,13 +143,12 @@ Feature: Self Profile
     And I see error message asking for more characters
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      |
+      | user1Name |
 
   @C2879 @regression @id2583
   Scenario Outline: Verify 2 chars limit [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap my avatar
@@ -162,13 +161,12 @@ Feature: Self Profile
     Then I see my new name <username2chars>
 
     Examples:
-      | Name      | username1char | username2chars | Contact   |
-      | user1Name | c             | AB             | user2Name |
+      | Name      | username1char | username2chars |
+      | user1Name | c             | AB             |
 
   @C2886 @regression @id3161
   Scenario Outline: Verify 2 chars limit [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -182,8 +180,8 @@ Feature: Self Profile
     Then I see my new name <username2chars>
 
     Examples:
-      | Name      | username1char | username2chars | Contact   |
-      | user1Name | c             | AB             | user2Name |
+      | Name      | username1char | username2chars |
+      | user1Name | c             | AB             |
 
   @C2887 @regression @id3162
   Scenario Outline: Verify name change [PORTRAIT]
@@ -194,7 +192,7 @@ Feature: Self Profile
     Given User <Name> sends 1 encrypted message to user <Contact>
     When I tap my avatar
     And I tap to edit my name
-    And I change name <Name> to <NewUsername>
+    And I change my name to <NewUsername>
     And I close self profile
     And I see conversations list
     And I tap on contact name <Contact>
@@ -214,7 +212,7 @@ Feature: Self Profile
     Given User <Name> sends 1 encrypted message to user <Contact>
     When I tap my avatar
     And I tap to edit my name
-    And I change name <Name> to <NewUsername>
+    And I change my name to <NewUsername>
     And I close self profile
     And I see conversations list
     And I tap on contact name <Contact>

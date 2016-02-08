@@ -82,6 +82,10 @@ public class PersonalInfoPage extends IOSPage {
         getElement(nameCloseButton).click();
     }
 
+    public boolean waitUntilVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameProfileSettingsButton);
+    }
+
     public String getUserNameValue() throws Exception {
         return getElement(xpathProfileNameEditField).getText();
     }
