@@ -8,7 +8,9 @@ Feature: Sign In
     When I enter email "<Email>"
     And I enter password "<Password>"
     And I press Sign In button
-    Then I am signed in properly
+    Then I see the history info page
+    When I click confirm on history info page
+    Then I see user name on self profile page <Name>
 
     Examples: 
       | Email      | Password      | Name      |
@@ -45,7 +47,7 @@ Feature: Sign In
       | Email      | Password      |
       | user1Email | user1Password |
 
-  @C1787 @smoke
+  @C1787 @mute
   Scenario Outline: Verify you can sign in with a phone number with correct credentials
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
@@ -61,7 +63,7 @@ Feature: Sign In
       | Name      | PhoneNumber      |
       | user1Name | user1PhoneNumber |
 
-  @C1788 @regression
+  @C1788 @mute
   Scenario Outline: Verify you see correct error message when sign in with incorrect phone number
     Given I switch to sign in page
     When I switch to phone number sign in page
@@ -76,7 +78,7 @@ Feature: Sign In
       | +49         | qwerqwer    | Invalid Phone Number |
       | +49         | !@$!@$      | Invalid Phone Number |
 
-  @C1789 @regression
+  @C1789 @mute
   Scenario Outline: Verify you see correct error message when sign in with a phone number with incorrect code
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
@@ -90,7 +92,7 @@ Feature: Sign In
       | Name      | Error        |
       | user1Name | Invalid Code |
 
-  @C1786 @regression
+  @C1786 @mute
   Scenario Outline: Verify you are asked to add an email address after sign in with a phone number
     Given There is 1 user where <Name> is me with phone number only
     Given I switch to sign in page
@@ -122,7 +124,7 @@ Feature: Sign In
       | Name      | EmailOfOtherUser      | PasswordOfOtherUser | ErrorAlready                | InvalidEmail | ErrorInvalidEmail                   | InvalidPassword | ErrorInvalidPassword                          |
       | user1Name | qa1+qa1@wearezeta.com | aqa123456!          | Email address already taken | @example.com | Please enter a valid email address. | 123             | Choose a password with at least 8 characters. |
 
-  @C1849 @regression
+  @C1849 @mute
   Scenario Outline: Verify you can verify added email later when sign in with a phone number
     Given There is 1 user where <Name> is me with phone number only
     Given I switch to sign in page
