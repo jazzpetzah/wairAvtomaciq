@@ -7,6 +7,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
+    And I tap on text input
     And I type the default message
     And I send the message
     Then I see 1 default message in the dialog
