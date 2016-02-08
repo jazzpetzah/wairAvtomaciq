@@ -335,17 +335,14 @@ Feature: E2EE
     Then I see 1 device is shown in single participant devices tab
     And I verify 1st device
     When I press back button
-    And I press back button
     Then I see a message informing me conversation is verified
     And User <Contact1> adds new device Device2
-    When User <Contact1> sends encrypted message "<InvisibleMessage>" via device Device2 to user Myself
+    When User <Contact1> sends encrypted message "<Message1>" via device Device2 to user Myself
     Then I see a message informing me conversation is not verified caused by user <Contact1>
-    And I see encrypted message <InvisibleMessage> 0 times in the conversation view
-# TODO Check if u can see message after verifying the new device
 
     Examples:
-      | Name      | Contact1  | Message1 | InvisibleMessage |
-      | user1Name | user2Name | Msg1     | Can't touch this |
+      | Name      | Contact1  | Message1 |
+      | user1Name | user2Name | Msg1     |
 
   @C3240 @staging
   Scenario Outline: Verify you get an alert if group conversation participant sends a message from non-verified device
