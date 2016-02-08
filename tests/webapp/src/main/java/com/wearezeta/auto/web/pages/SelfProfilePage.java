@@ -51,7 +51,7 @@ public class SelfProfilePage extends WebPage {
 	@FindBy(how = How.CSS, using = "[data-uie-name='go-logout']")
 	private WebElement logoutButton;
 
-	@FindBy(how = How.CSS, using = "[data-uie-name='do-clear-data']")
+	@FindBy(how = How.CSS, using = ".modal-logout .checkbox span")
 	private WebElement clearDataCheckbox;
 
 	public SelfProfilePage(Future<ZetaWebAppDriver> lazyDriver)

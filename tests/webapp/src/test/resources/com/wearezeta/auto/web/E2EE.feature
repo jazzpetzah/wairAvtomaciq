@@ -6,8 +6,8 @@ Feature: E2EE
     Given user <Name> adds a new device <Device> with label <Label>
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
-    #And I see the history info page
-    #And I click confirm on history info page
+    And I see the history info page
+    And I click confirm on history info page
     Then I am signed in properly
     When I click gear button on self profile page
     And I select Settings menu item on self profile page
@@ -78,8 +78,8 @@ Feature: E2EE
     When I enter email "<Email>"
     And I enter password "<Password>"
     And I press Sign In button
-    #Then I see the history info page
-    #And I click confirm on history info page
+    Then I see the history info page
+    And I click confirm on history info page
     And I am signed in properly
     When I click gear button on self profile page
     And I select Settings menu item on self profile page
@@ -102,8 +102,8 @@ Feature: E2EE
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
-    #Then I see the history info page
-    #And I click confirm on history info page
+    Then I see the history info page
+    And I click confirm on history info page
     And I am signed in properly
     When I open conversation with <Contact1>
     And Contact <Contact1> sends message <Message1> to user Myself
@@ -123,6 +123,8 @@ Feature: E2EE
     And I wait for 2 seconds
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And I see Sign In page
     And I Sign in using login <Email> and password <Password>
     Then I am signed in properly
@@ -150,8 +152,8 @@ Feature: E2EE
     When I enter email "<Email>"
     And I enter password "<Password>"
     And I press Sign In button
-    #Then I see the history info page
-    #And I click confirm on history info page
+    Then I see the history info page
+    And I click confirm on history info page
     And I am signed in properly
     When I click gear button on self profile page
     And I select Settings menu item on self profile page
@@ -164,8 +166,8 @@ Feature: E2EE
     And I enter email "<Email>"
     And I enter password "<Password>"
     And I press Sign In button
-    #And I see the history info page
-    #And I click confirm on history info page
+    And I see the history info page
+    And I click confirm on history info page
     Then I am signed in properly
     When I click gear button on self profile page
     And I select Settings menu item on self profile page
@@ -183,8 +185,8 @@ Feature: E2EE
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
-  #Then I see the history info page
-  #And I click confirm on history info page
+    Then I see the history info page
+    And I click confirm on history info page
     And I am signed in properly
     And I open conversation with <GroupChatName>
     And I write message <Message>
@@ -195,6 +197,9 @@ Feature: E2EE
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I enable checkbox to clear all data
+    And I click Logout button on clear data dialog
     And I see Sign In page
     And I Sign in using login <Email3> and password <Password3>
     And I see Welcome page
@@ -331,8 +336,8 @@ Feature: E2EE
     Given <Contact> is connected to Myself
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
-    #Given I see the history info page
-    #Given I click confirm on history info page
+    Given I see the history info page
+    Given I click confirm on history info page
     Given I am signed in properly
     When I open conversation with <Contact>
     And I click People button in one to one conversation
@@ -351,3 +356,138 @@ Feature: E2EE
     Examples:
       | Email      | Password      | Name      | Contact   | Message1                           | Message2                              |
       | user1Email | user1Password | user1Name | user2Name | is not using the encrypted version | Every device has a unique fingerprint |
+
+  @C12046 @e2ee
+  Scenario Outline: Verify you can see device ids of the other conversation participant in group conversation details
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    Given I see the history info page
+    Given I click confirm on history info page
+    Given I am signed in properly
+    When I open conversation with <GroupChatName>
+    And I click People button in group conversation
+    Then I see Group Participants popover
+    When I click on participant <Contact1> on Group Participants popover
+    And I switch to Devices tab on Single User Profile popover
+    Then I verify system message contains <Message1> on Single User Profile popover
+    When user <Contact1> adds a new device Device1 with label Label1
+    And I switch to Details tab on Single User Profile popover
+    And I switch to Devices tab on Single User Profile popover
+    Then I verify system message contains <Message2> on Single User Profile popover
+    And I see all devices of user <Contact1> on Single User Profile popover
+    When I click on device Device1 of user <Contact1> on Single User Profile popover
+    Then I verify id of device Device1 of user <Contact1> on device detail page of Single User Profile popover
+    And I verify fingerprint of device Device1 of user <Contact1> on device detail page of Single User Profile popover
+
+    Examples:
+      | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message1                           | Message2                              |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat     | is not using the encrypted version | Every device has a unique fingerprint |
+
+  @C12053 @e2ee
+  Scenario Outline: Verify it is possible to verify 1:1 conversation participants
+    Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given user <Contact> adds a new device Device2 with label Label2
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    Then I see the history info page
+    And I click confirm on history info page
+    And I am signed in properly
+    When I open conversation with <Contact>
+    And I click People button in one to one conversation
+    Then I see Single User Profile popover
+    When I switch to Devices tab on Single User Profile popover
+    And I click on device Device1 of user <Contact> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    Then I see device Device1 of user <Contact> is verified on Single User Profile popover
+    Then I see verified icon on Single User Profile popover
+    When I click People button in one to one conversation
+    Then I see <ALL_VERIFIED> action in conversation
+    #And I see verified icon in conversation
+
+  Examples:
+    | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  |
+    | user1Email | user1Password | user1Name | user2Name | All fingerprints are verified |
+
+  @C12055 @e2ee
+  Scenario Outline: Verify it is possible to verify group conversation participants
+    Given There are 3 users where <Name> is me
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given user <Contact1> adds a new device Device2 with label Label2
+    Given user <Contact2> adds a new device Device1 with label Label1
+    Given user <Contact2> adds a new device Device2 with label Label2
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    Then I see the history info page
+    And I click confirm on history info page
+    And I am signed in properly
+    When I open conversation with <GroupChatName>
+    And I click People button in group conversation
+    Then I see Group Participants popover
+    When I click on participant <Contact1> on Group Participants popover
+    And I switch to Devices tab on Single User Profile popover
+    And I click on device Device1 of user <Contact1> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    #Then I see device Device1 of user <Contact> is verified on Single User Profile popover
+    #Then I see verified icon on Single User Profile popover
+    #When I click back button
+    #Then User is in verified category
+    When I click People button in group conversation
+    And I see <ALL_VERIFIED> action in conversation
+
+  Examples:
+    | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | ALL_VERIFIED                  |
+    | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat     | All fingerprints are verified |
+
+  @C28834 @e2ee @regression
+  Scenario Outline: Make sure data is restored after switching between temporary login and back to permanent
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    Then I see the history info page
+    And I click confirm on history info page
+    And I am signed in properly
+    And I open conversation with <GroupChatName>
+    And I write message <Message1>
+    And I send message
+    And I open conversation with <Contact1>
+    And I write message <Message2>
+    And I send message
+    And I open self profile
+    And I click gear button on self profile page
+    And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
+    And I see Sign In page
+    And I enter email "<Email>"
+    And I enter password "<Password>"
+    And I press Sign In button
+    And I am signed in properly
+    And I open conversation with <GroupChatName>
+    Then I do not see text message <Message2>
+    When I open conversation with <Contact1>
+    Then I do not see text message <Message1>
+    And I open self profile
+    And I click gear button on self profile page
+    And I select Log out menu item on self profile page
+    And I see Sign In page
+    And I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    And I open conversation with <GroupChatName>
+    Then I see text message <Message2>
+    When I open conversation with <Contact1>
+    Then I see text message <Message1>
+
+    Examples:
+      | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message1   | Message2     |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | User1Chat     | Hello 1:1! | Hello Group! |

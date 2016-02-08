@@ -472,17 +472,4 @@ public class SingleUserPopoverPageSteps {
 		webappPagesCollection.getPage(DeviceDetailPopoverPage.class).clickDevice(id);
 	}
 
-	@When("^I verify id of device (.*) of user (.*) on device detail page of Single User Profile popover$")
-	public void IVerifyDeviceId(String deviceName, String userAlias) throws Exception {
-		ClientUser user = usrMgr.findUserByNameOrNameAlias(userAlias);
-		String id = SEBridge.getInstance().getDeviceId(user, deviceName);
-		assertThat(webappPagesCollection.getPage(DeviceDetailPopoverPage.class).getDeviceId(), equalTo(id));
-	}
-
-	@When("^I verify fingerprint of device (.*) of user (.*) on device detail page of Single User Profile popover$")
-	public void IVerifyFingerPrint(String deviceName, String userAlias) throws Exception {
-		ClientUser user = usrMgr.findUserByNameOrNameAlias(userAlias);
-		String fingerprint = SEBridge.getInstance().getDeviceFingerprint(user, deviceName);
-		assertThat(webappPagesCollection.getPage(DeviceDetailPopoverPage.class).getFingerPrint(), equalTo(fingerprint));
-	}
 }
