@@ -527,7 +527,7 @@ Feature: Calling
       | user1Name | user2Name | autocall    |
 
   @C2061 @calling_advanced @id2699
-  Scenario Outline: (Bug ZIOS-5436)Verify adding people to group conversation during the group call (Me gets added)
+  Scenario Outline: Verify adding people to group conversation during the group call (Me gets added)
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given <Contact1> is connected to <Contact2>,<Contact3>,<Contact4>
@@ -547,4 +547,4 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName  | CallBackend | CallBackend2 | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | AddMeGROUPCALL | chrome      | autocall     | 4               |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | AddMeGROUPCALL | chrome      | autocall     | 3               |
