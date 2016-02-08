@@ -121,6 +121,10 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     public void confirmRemove() throws Exception {
         getElement(nameConfirmRemoveButton).click();
+        if(!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConfirmRemoveButton)) {
+            throw new IllegalStateException("Confirm remove dialog should be autoclosed");
+        }
+        
     }
 
     public boolean isUserNameVisible(String name) throws Exception {
