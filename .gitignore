@@ -7,7 +7,8 @@ tests/tools/javadoc-exporter/target
 .DS_Store
 tests/common/bin/*
 tests/webapp/bin/*
-tests/webapp/nbactions.xml
+nbactions.xml
+nb-configuration.xml
 tests/tools/jenkins_controller/.idea
 customBackend.json
 .classpath
