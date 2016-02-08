@@ -547,7 +547,7 @@ public class DialogPage extends AndroidPage {
     
     public Optional<BufferedImage> getVerifiedConversationShieldScreenshot()
             throws Exception {
-        return this.getElementScreenshot(this.getDriver().findElement(idVerifiedConversationShield));
+        return this.getElementScreenshot(DriverUtils.getElementIfPresentInDOM(this.getDriver(), idVerifiedConversationShield).get());
     }
 
     private final Predicate<? super WebElement> isEncryptedMessageFilter = (WebElement wel) -> wel.getSize().getWidth() > 0;
