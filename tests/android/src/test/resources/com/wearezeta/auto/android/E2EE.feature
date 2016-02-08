@@ -413,13 +413,14 @@ Feature: E2EE
     Given I see Contact list with contacts
     When User <Contact1> sends encrypted message "<Message1>" to user Myself
     And I tap on contact name <Contact1>
+    And I remember verified conversation shield state
     And I tap conversation details button
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
     And I verify 1st device
     When I press back button
     Then I see a message informing me conversation is verified
-    And I see verified conversation shield
+    And I see verified conversation shield state has changed
 
     Examples:
       | Name      | Contact1  | Message1 |

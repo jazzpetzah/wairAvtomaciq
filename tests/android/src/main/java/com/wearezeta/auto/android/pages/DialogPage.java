@@ -545,8 +545,9 @@ public class DialogPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathDialogTakePhotoButton);
     }
     
-    public boolean waitForVerifiedConversationShield() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), idVerifiedConversationShield);
+    public Optional<BufferedImage> getVerifiedConversationShieldScreenshot()
+            throws Exception {
+        return this.getElementScreenshot(this.getDriver().findElement(idVerifiedConversationShield));
     }
 
     private final Predicate<? super WebElement> isEncryptedMessageFilter = (WebElement wel) -> wel.getSize().getWidth() > 0;
