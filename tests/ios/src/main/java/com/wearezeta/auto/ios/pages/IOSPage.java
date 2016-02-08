@@ -19,6 +19,7 @@ public abstract class IOSPage extends BasePage {
     private static final Logger log = ZetaLogger.getLog(IOSPage.class.getSimpleName());
 
     public final static long IOS_DRIVER_INIT_TIMEOUT = 1000 * 30 * 5;
+    public static final int DRIVER_CREATION_RETRIES_COUNT = 2;
 
     private static final int DEFAULT_RETRY_COUNT = 2;
 
@@ -42,7 +43,7 @@ public abstract class IOSPage extends BasePage {
     private IOSKeyboard onScreenKeyboard;
 
     protected long getDriverInitializationTimeout() {
-        return IOS_DRIVER_INIT_TIMEOUT + IOS_DRIVER_INIT_TIMEOUT / 2;
+        return IOS_DRIVER_INIT_TIMEOUT * DRIVER_CREATION_RETRIES_COUNT;
     }
 
     public IOSPage(Future<ZetaIOSDriver> driver) throws Exception {
