@@ -947,7 +947,7 @@ public class DialogPageSteps {
     }
 
     /**
-     * Verify whether shield cion is visible next to convo input field
+     * Verify whether shield icon is visible next to convo input field
      *
      * @param shouldNotSee equals to null is the shield should be visible
      * @throws Exception
