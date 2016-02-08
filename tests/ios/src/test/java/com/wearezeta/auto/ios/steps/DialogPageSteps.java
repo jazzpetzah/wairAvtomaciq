@@ -86,8 +86,7 @@ public class DialogPageSteps {
     public void ISeeUserPingedMessageTheDialog(String user) throws Throwable {
         String username = usrMgr.findUserByNameOrNameAlias(user).getName();
         String expectedPingMessage = username.toUpperCase() + " PINGED";
-        Assert.assertTrue(getDialogPage().isMessageVisible(expectedPingMessage)
-                || getGroupChatPage().isMessageVisible(expectedPingMessage));
+        Assert.assertTrue(getDialogPage().isMessageVisible(expectedPingMessage));
     }
 
     @When("^I type the default message and send it$")
@@ -148,8 +147,8 @@ public class DialogPageSteps {
                         actualCount, expectedCount), actualCount == expectedCount);
     }
 
-    @Then("I see last message in dialog is expected message (.*)")
-    public void ThenISeeLasMessageInTheDialogIsExpected(String msg) throws Exception {
+    @Then("^I see last message in dialog (is|contains) expected message (.*)")
+    public void ThenISeeLasMessageInTheDialogIsExpected(String operation, String msg) throws Exception {
         String dialogLastMessage = getDialogPage().getLastMessageFromDialog().orElseThrow(() ->
                 new AssertionError("No messages are present in the conversation view")
         );
@@ -159,9 +158,28 @@ public class DialogPageSteps {
         if (!Normalizer.isNormalized(msg, Form.NFC)) {
             msg = Normalizer.normalize(msg, Form.NFC);
         }
-        Assert.assertTrue(
-                String.format("The last message in the conversation '%s' is different from the expected one '%s'",
-                        dialogLastMessage, msg), dialogLastMessage.equals(msg));
+        if (operation.equals("is")) {
+            Assert.assertTrue(
+                    String.format("The last message in the conversation '%s' is different from the expected one '%s'",
+                            dialogLastMessage, msg), dialogLastMessage.equals(msg));
+        } else {
+            Assert.assertTrue(
+                    String.format("The last message in the conversation '%s' does not contain the expected one '%s'",
+                            dialogLastMessage, msg), dialogLastMessage.contains(msg));
+        }
+    }
+
+    /**
+     * Verify whether the expected message exists in the convo view
+     *
+     * @step. ^I see the conversation view contains message (.*)
+     * @param expectedMsg the expected message
+     * @throws Exception
+     */
+    @Then("^I see the conversation view contains message (.*)")
+    public void ISeeConversationMessage(String expectedMsg) throws Exception {
+        Assert.assertTrue(String.format("The expected message '%s' is not visible in the conversation view", expectedMsg),
+                getDialogPage().isMessageVisible(expectedMsg));
     }
 
     /**

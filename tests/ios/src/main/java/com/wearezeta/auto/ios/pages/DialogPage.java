@@ -124,12 +124,16 @@ public class DialogPage extends IOSPage {
 
     private static final By nameShieldIconNextToInput = By.name("verifiedConversationIndicator");
 
+    private static final Function<String, String> xpathStrConvoMessageByText = text ->
+            String.format("%s//UIATableView//*[contains(@name, '%s')]", xpathStrMainWindow, text);
+
     public DialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
     public boolean isMessageVisible(String msg) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(msg));
+        final By locator = By.xpath(xpathStrConvoMessageByText.apply(msg));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
     }
 
     public boolean isPingButtonVisible() throws Exception {
