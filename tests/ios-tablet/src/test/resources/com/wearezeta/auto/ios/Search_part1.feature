@@ -265,39 +265,37 @@ Feature: Search
       | user1Name | user2Name | NEW NAME | NAME     |
 
   @C2777 @regression @rc @id2150
-  Scenario Outline: Verify search by second name (something after space) [PORTRAIT]
+  Scenario Outline: Verify search by part of the name [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
-    Given User <Contact> change name to <NewName>
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I wait until <NewName> exists in backend search results
+    And I wait until <Contact> exists in backend search results
     And I tap on Search input on People picker page
-    And I input in People picker search field user name <PartName>
-    Then I see user <NewName> found on People picker page
+    And I input in People picker search field first 5 letters of user name <Contact>
+    Then I see user <Contact> found on People picker page
 
     Examples: 
-      | Name      | Contact   | NewName           | PartName |
-      | user1Name | user2Name | Djulieta Carnobat | Djuli    |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C2795 @regression @id2945
-  Scenario Outline: Verify search by second name (something after space) [LANDSAPE]
+  Scenario Outline: Verify search by part of the name [LANDSAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
-    Given User <Contact> change name to <NewName>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I wait until <NewName> exists in backend search results
+    And I wait until <Contact> exists in backend search results
     And I tap on Search input on People picker page
-    And I input in People picker search field user name <PartName>
-    Then I see user <NewName> found on People picker page
+    And I input in People picker search field first 5 letters of user name <Contact>
+    Then I see user <Contact> found on People picker page
 
     Examples: 
-      | Name      | Contact   | NewName           | PartName |
-      | user1Name | user2Name | Djulieta Carnobat | Djuli    |
+      | Name      | Contact   | 
+      | user1Name | user2Name |
 
   @C2787 @regression @id2703
   Scenario Outline: Verify search is possible after selection users from Top People [PORTRAIT]

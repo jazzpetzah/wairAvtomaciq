@@ -146,21 +146,20 @@ Feature: Search
       | user1Name | user2Name |
 
   @C2785 @regression @id2149
-  Scenario Outline: Verify search by second name (something after space)
+  Scenario Outline: Verify search by part of the name
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
-    Given User <Contact> change name to <NewName>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I wait until <LastName> exists in backend search results
+    And I wait until <Contact> exists in backend search results
     And I tap on Search input on People picker page
-    And I input in People picker search field user name <LastName>
-    Then I see user <NewName> found on People picker page
+    And I input in People picker search field first 5 letters of user name <Contact>
+    Then I see user <Contact> found on People picker page
 
     Examples:
-      | Name      | Contact   | NewName  | LastName |
-      | user1Name | user2Name | NEW NAME | NAME     |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C1049 @rc @regression @id3282
   Scenario Outline: Verify starting a call with action button

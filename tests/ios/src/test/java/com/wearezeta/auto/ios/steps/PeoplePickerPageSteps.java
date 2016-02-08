@@ -32,14 +32,12 @@ public class PeoplePickerPageSteps {
 
     @When("I see Upload contacts dialog")
     public void WhenISeeUploadContactsDialog() throws Exception {
-        Assert.assertTrue("Upload dialog is not shown", getPeoplePickerPage()
-                .isUploadDialogShown());
+        Assert.assertTrue("Upload dialog is not shown", getPeoplePickerPage().isUploadDialogShown());
     }
 
     @When("I dont see Upload contacts dialog")
     public void WhenIDontSeeUploadContactsDialog() throws Exception {
-        Assert.assertFalse("Upload dialog is shown", getPeoplePickerPage()
-                .isUploadDialogShown());
+        Assert.assertFalse("Upload dialog is shown", getPeoplePickerPage().isUploadDialogShown());
     }
 
     @When("I click Continue button on Upload dialog")
@@ -57,11 +55,9 @@ public class PeoplePickerPageSteps {
     @When("I (dont )?see CONNECT label")
     public void ISeePeopleYouMayKnowLabel(String shouldNotBeVisible) throws Exception {
         if (shouldNotBeVisible == null) {
-            Assert.assertTrue("CONNECT label is not visible",
-                    getPeoplePickerPage().isPeopleYouMayKnowLabelVisible());
+            Assert.assertTrue("CONNECT label is not visible", getPeoplePickerPage().isPeopleYouMayKnowLabelVisible());
         } else {
-            Assert.assertTrue("CONNECT label is visible",
-                    getPeoplePickerPage().isPeopleYouMayKnowLabelInvisible());
+            Assert.assertTrue("CONNECT label is visible", getPeoplePickerPage().isPeopleYouMayKnowLabelInvisible());
         }
     }
 
@@ -126,9 +122,27 @@ public class PeoplePickerPageSteps {
         getPeoplePickerPage().fillTextInPeoplePickerSearch(name);
     }
 
+    /**
+     * Fills in search field pointed amount of letters from username/conversation starting from the first one
+     * 
+     * @step. ^I input in People picker search field first (\\d+) letters of (?:user|conversation) name (.*)$
+     * @param number amount of letters to be input
+     * @param name user name
+     * @throws Exception
+     */
+    @When("^I input in People picker search field first (\\d+) letters of (?:user|conversation) name (.*)$")
+    public void WhenIInputInPeoplePickerSearchFieldUserName(int number, String name) throws Exception {
+        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        if (name.length() > number) {
+            getPeoplePickerPage().fillTextInPeoplePickerSearch(name.substring(0, number));
+        } else {
+            throw new IllegalArgumentException(String.format("Name is only %s chars length. Put in step a less value",
+                name.length()));
+        }
+    }
+
     @When("^I input in People picker search field user email (.*)$")
-    public void WhenIInputInPeoplePickerSearchFieldUserEmail(String email)
-            throws Exception {
+    public void WhenIInputInPeoplePickerSearchFieldUserEmail(String email) throws Exception {
         try {
             email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
         } catch (NoSuchUserException e) {
@@ -144,8 +158,8 @@ public class PeoplePickerPageSteps {
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
-        Assert.assertTrue(String.format("User '%s' is not presented on People picker page", contact),
-                getPeoplePickerPage().getSearchResultsElement(contact).isPresent());
+        Assert.assertTrue(String.format("User '%s' is not presented on People picker page", contact), getPeoplePickerPage()
+            .getSearchResultsElement(contact).isPresent());
     }
 
     /**
@@ -162,8 +176,8 @@ public class PeoplePickerPageSteps {
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
-        Assert.assertFalse("User: " + contact
-                + " is presented on People picker page", getPeoplePickerPage().isElementNotFoundInSearch(contact));
+        Assert.assertFalse("User: " + contact + " is presented on People picker page", getPeoplePickerPage()
+            .isElementNotFoundInSearch(contact));
     }
 
     /**
@@ -174,10 +188,9 @@ public class PeoplePickerPageSteps {
      * @step. ^I see conversation (.*) is NOT presented in Search results$
      */
     @When("^I see conversation (.*) is NOT presented in Search results$")
-    public void ISeeConversationIsNotFoundInSearchResult(String name)
-            throws Exception {
-        Assert.assertFalse("Conversation: " + name
-                + " is presented in Search results", getPeoplePickerPage().isElementNotFoundInSearch(name));
+    public void ISeeConversationIsNotFoundInSearchResult(String name) throws Exception {
+        Assert.assertFalse("Conversation: " + name + " is presented in Search results", getPeoplePickerPage()
+            .isElementNotFoundInSearch(name));
     }
 
     /**
@@ -188,11 +201,9 @@ public class PeoplePickerPageSteps {
      * @step. ^I see conversation (.*) is presented in Search results$
      */
     @When("^I see conversation (.*) is presented in Search results$")
-    public void ISeeConversationIsFoundInSearchResult(String name)
-            throws Exception {
-        Assert.assertTrue("Conversation: " + name
-                + " is not presented in Search results", getPeoplePickerPage()
-                .getSearchResultsElement(name).isPresent());
+    public void ISeeConversationIsFoundInSearchResult(String name) throws Exception {
+        Assert.assertTrue("Conversation: " + name + " is not presented in Search results", getPeoplePickerPage()
+            .getSearchResultsElement(name).isPresent());
     }
 
     @When("^I search for user name (.*) and tap on it on People picker page$")
@@ -204,8 +215,7 @@ public class PeoplePickerPageSteps {
 
     @When("^I don't see Add to conversation button$")
     public void WhenIDontSeeAddToConversationButton() throws Exception {
-        Assert.assertTrue("Add to conversation button is visible",
-                getPeoplePickerPage().addToConversationNotVisible());
+        Assert.assertTrue("Add to conversation button is visible", getPeoplePickerPage().addToConversationNotVisible());
     }
 
     @When("^I click on Go button$")
@@ -230,15 +240,13 @@ public class PeoplePickerPageSteps {
     }
 
     /**
-     * Select pointed amount of contacts from top people in a row starting from
-     * first
+     * Select pointed amount of contacts from top people in a row starting from first
      *
      * @param numberOfTopConnections amount of contacts that should be selected
      * @throws Exception
      */
     @Then("I tap on first (.*) top connections")
-    public void WhenITapOnTopConnections(int numberOfTopConnections)
-            throws Exception {
+    public void WhenITapOnTopConnections(int numberOfTopConnections) throws Exception {
         getPeoplePickerPage().tapNumberOfTopConnections(numberOfTopConnections);
     }
 
@@ -246,15 +254,13 @@ public class PeoplePickerPageSteps {
      * Tap on pointed amount of users from top people skipping pointed contact
      *
      * @param numberOfTopConnections number of top contacts to tap
-     * @param contact                name of contact that shouldn't be tapped
+     * @param contact name of contact that shouldn't be tapped
      * @throws Exception
      */
     @Then("I tap on (.*) top connections but not (.*)")
-    public void WhenITapOnTopConnectionsButNotUser(int numberOfTopConnections,
-                                                   String contact) throws Exception {
+    public void WhenITapOnTopConnectionsButNotUser(int numberOfTopConnections, String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        getPeoplePickerPage().tapNumberOfTopConnectionsButNotUser(
-                numberOfTopConnections, contact);
+        getPeoplePickerPage().tapNumberOfTopConnectionsButNotUser(numberOfTopConnections, contact);
     }
 
     /**
@@ -271,14 +277,13 @@ public class PeoplePickerPageSteps {
 
     @When("I see top people list on People picker page")
     public void ISeeTopPeopleListOnPeoplePickerPage() throws Exception {
-        Assert.assertTrue("Top People label is not shown",
-                getPeoplePickerPage().isTopPeopleLabelVisible());
+        Assert.assertTrue("Top People label is not shown", getPeoplePickerPage().isTopPeopleLabelVisible());
     }
 
     @When("I see Create Conversation button on People picker page")
     public void ISeeCreateConversationButton() throws Exception {
-        Assert.assertTrue("Create Conversation button is not visible.",
-                getPeoplePickerPage().isCreateConversationButtonVisible());
+        Assert.assertTrue("Create Conversation button is not visible.", getPeoplePickerPage()
+            .isCreateConversationButtonVisible());
     }
 
     /**
@@ -288,8 +293,7 @@ public class PeoplePickerPageSteps {
      * @step. ^I click open conversation button on People picker page$
      */
     @When("^I click open conversation button on People picker page$")
-    public void IClickOpenConversationButtonOnPeoplePickerPage()
-            throws Exception {
+    public void IClickOpenConversationButtonOnPeoplePickerPage() throws Exception {
         getPeoplePickerPage().clickOpenConversationButton();
     }
 
@@ -303,15 +307,13 @@ public class PeoplePickerPageSteps {
     }
 
     @When("I see user (.*) on People picker page is selected")
-    public void ISeeUserIsSelectedOnPeoplePickerPage(String name)
-            throws Exception {
+    public void ISeeUserIsSelectedOnPeoplePickerPage(String name) throws Exception {
         name = usrMgr.findUserByNameOrNameAlias(name).getName();
         Assert.assertTrue(getPeoplePickerPage().isUserSelected(name));
     }
 
     @When("I see user (.*) on People picker page is NOT selected")
-    public void ISeeUserIsNotSelectedOnPeoplePickerPage(String name)
-            throws Exception {
+    public void ISeeUserIsNotSelectedOnPeoplePickerPage(String name) throws Exception {
         name = usrMgr.findUserByNameOrNameAlias(name).getName();
         Assert.assertFalse(getPeoplePickerPage().isUserSelected(name));
     }
@@ -333,7 +335,6 @@ public class PeoplePickerPageSteps {
         name = usrMgr.findUserByNameOrNameAlias(name).getName();
         getPeoplePickerPage().selectElementInSearchResults(name);
     }
-
 
     @When("^I click on Add to conversation button$")
     public void WhenIClickOnAddToConversationButton() throws Exception {
@@ -380,18 +381,13 @@ public class PeoplePickerPageSteps {
      */
     @Then("^I see that (\\d+) contacts are selected$")
     public void ISeeThatContactsAreSelected(int number) throws Exception {
-        int numberOfSelectedTopPeople = getPeoplePickerPage()
-                .getNumberOfSelectedTopPeople();
-        Assert.assertEquals(
-                "Expected selected contacts: " + number
-                        + " but actual selected contacts: "
-                        + numberOfSelectedTopPeople, number,
-                numberOfSelectedTopPeople);
+        int numberOfSelectedTopPeople = getPeoplePickerPage().getNumberOfSelectedTopPeople();
+        Assert.assertEquals("Expected selected contacts: " + number + " but actual selected contacts: "
+            + numberOfSelectedTopPeople, number, numberOfSelectedTopPeople);
     }
 
     /**
-     * Presses the Send An Invite button in the people picker. To invite people
-     * via mail.
+     * Presses the Send An Invite button in the people picker. To invite people via mail.
      *
      * @throws Exception
      * @step. ^I press the send an invite button$
@@ -432,8 +428,7 @@ public class PeoplePickerPageSteps {
      */
     @When("^I see call action button on People picker page$")
     public void ISeeCallActionButtonOnPeoplePickerPage() throws Exception {
-        Assert.assertTrue("Call action button is not visible",
-                getPeoplePickerPage().isCallButtonVisible());
+        Assert.assertTrue("Call action button is not visible", getPeoplePickerPage().isCallButtonVisible());
     }
 
     /**
@@ -455,8 +450,7 @@ public class PeoplePickerPageSteps {
      */
     @When("^I see Send image action button on People picker page$")
     public void ISeeSendImageActionButtonOnPeoplePickerPage() throws Exception {
-        Assert.assertTrue("Send image action button is not visible",
-                getPeoplePickerPage().isSendImageButtonVisible());
+        Assert.assertTrue("Send image action button is not visible", getPeoplePickerPage().isSendImageButtonVisible());
     }
 
     /**
@@ -466,8 +460,7 @@ public class PeoplePickerPageSteps {
      * @step. ^I click Send image action button on People picker page$
      */
     @When("^I click Send image action button on People picker page$")
-    public void IClickSendImageActionButtonOnPeoplePickerPage()
-            throws Exception {
+    public void IClickSendImageActionButtonOnPeoplePickerPage() throws Exception {
         getPeoplePickerPage().clickSendImageButton();
     }
 
@@ -479,8 +472,7 @@ public class PeoplePickerPageSteps {
      */
     @When("^I see open conversation action button on People picker page$")
     public void ISeeOpenConversationActionButton() throws Exception {
-        Assert.assertTrue("Open conversation button is not visible",
-                getPeoplePickerPage().isOpenConversationButtonVisible());
+        Assert.assertTrue("Open conversation button is not visible", getPeoplePickerPage().isOpenConversationButtonVisible());
     }
 
     /**
@@ -503,14 +495,11 @@ public class PeoplePickerPageSteps {
      * @step. ^I see action buttons disappeared on People picker page
      */
     @When("^I see action buttons disappeared on People picker page$")
-    public void ISeeActionButttonsDisappearedOnPeoplePickerPage()
-            throws Exception {
-        Assert.assertFalse("Open conversation button is still visible",
-                getPeoplePickerPage().isOpenConversationButtonVisible());
-        Assert.assertFalse("Call action button is still visible",
-                getPeoplePickerPage().isCallButtonVisible());
-        Assert.assertFalse("Send image action button is still visible",
-                getPeoplePickerPage().isSendImageButtonVisible());
+    public void ISeeActionButttonsDisappearedOnPeoplePickerPage() throws Exception {
+        Assert
+            .assertFalse("Open conversation button is still visible", getPeoplePickerPage().isOpenConversationButtonVisible());
+        Assert.assertFalse("Call action button is still visible", getPeoplePickerPage().isCallButtonVisible());
+        Assert.assertFalse("Send image action button is still visible", getPeoplePickerPage().isSendImageButtonVisible());
     }
 
     /**
@@ -520,8 +509,7 @@ public class PeoplePickerPageSteps {
      * @step. ^I click open conversation action button on People picker page$
      */
     @When("^I click open conversation action button on People picker page$")
-    public void IClickOpenConversationActionButtonOnPeoplePickerPage()
-            throws Throwable {
+    public void IClickOpenConversationActionButtonOnPeoplePickerPage() throws Throwable {
         getPeoplePickerPage().clickOpenConversationButton();
     }
 }
