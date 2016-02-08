@@ -823,12 +823,13 @@ public class DialogPageSteps {
      * There is no way to simply detect the position of the link in the message cell
      * That is why we assume it is located at the beginning of the string
      *
+     * @param msgStartingWithLink the message containing a clickable link at the beginning
      * @throws Exception
      * @step. ^I tap on message "(.*)"$
      */
     @When("^I tap on message \"(.*)\"$")
-    public void ITapOnLink(String msgWithLink) throws Exception {
-        getDialogPage().tapMessage(msgWithLink);
+    public void ITapOnLink(String msgStartingWithLink) throws Exception {
+        getDialogPage().tapMessage(msgStartingWithLink);
     }
 
     /**

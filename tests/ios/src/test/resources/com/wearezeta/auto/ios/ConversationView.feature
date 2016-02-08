@@ -701,9 +701,9 @@ Feature: Conversation View
   Scenario Outline: Verify downloading images in fullscreen
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     When I tap on contact name <Contact>
     And I see 1 photo in the dialog
     And I tap and hold image to open full screen
