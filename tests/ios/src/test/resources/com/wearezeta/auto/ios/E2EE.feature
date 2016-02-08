@@ -97,3 +97,19 @@ Feature: E2EE
     Examples:
       | Name      | Contact1  | DeviceName1 | DeviceName2 |
       | user1Name | user2Name | Device1     | Device2     |
+
+  @C3294 @staging @torun
+  Scenario Outline: Verify system message appearance in case of using a new device by friend
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Contact1> adds a new device <DeviceName1> with label <DeviceLabel1>
+    Given I sign in using my email
+    Given I see conversations list
+    And I tap on contact name <Contact1>
+    When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
+    Then I see last message in dialog is expected message <ExpectedMsg>
+
+
+    Examples:
+      | Name      | Contact1  | DeviceName1 | DeviceLabel1 | DeviceName2 | DeviceLabel2 | ExpectedMsg |
+      | user1Name | user2Name | Device1     | Label1       | Device2     | Label2       | blabla      |
