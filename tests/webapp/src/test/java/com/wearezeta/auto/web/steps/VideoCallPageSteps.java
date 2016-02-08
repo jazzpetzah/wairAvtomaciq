@@ -9,6 +9,12 @@ public class VideoCallPageSteps {
 
     private final WebappPagesCollection webappPagesCollection = WebappPagesCollection.getInstance();
 
+    /**
+     * End the current video call by clicking the End video call button on video call page
+     *
+     * @throws Exception
+     * @step. ^I end the video call$
+     */
     @When("^I end the video call$")
     public void IEndTheCall() throws Exception {
 
