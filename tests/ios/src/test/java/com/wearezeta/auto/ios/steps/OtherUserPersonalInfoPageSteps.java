@@ -11,10 +11,10 @@ import cucumber.api.java.en.When;
 public class OtherUserPersonalInfoPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-    private final IOSPagesCollection pagesCollecton = IOSPagesCollection.getInstance();
+    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
     private OtherUserPersonalInfoPage getOtherUserPersonalInfoPage() throws Exception {
-        return pagesCollecton.getPage(OtherUserPersonalInfoPage.class);
+        return pagesCollection.getPage(OtherUserPersonalInfoPage.class);
     }
 
     @When("^I see (.*) user profile page$")
@@ -34,12 +34,12 @@ public class OtherUserPersonalInfoPageSteps {
     }
 
     @When("^I confirm remove$")
-    public void IConfirmRemove() throws Throwable {
+    public void IConfirmRemove() throws Exception {
         getOtherUserPersonalInfoPage().confirmRemove();
     }
 
     @When("I tap on start dialog button on other user profile page")
-    public void ITapStartDialogOnOtherUserPage() throws Throwable {
+    public void ITapStartDialogOnOtherUserPage() throws Exception {
         getOtherUserPersonalInfoPage().clickOnStartDialogButton();
     }
 
@@ -145,22 +145,22 @@ public class OtherUserPersonalInfoPageSteps {
     /**
      * Clicks on the Block button in the profile menu
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I press menu Block button$
      */
     @When("^I press menu Block button$")
-    public void IPressMenuBlockButton() throws Throwable {
+    public void IPressMenuBlockButton() throws Exception {
         getOtherUserPersonalInfoPage().clickBlockMenuButton();
     }
 
     /**
      * Confirms the blocking alert by clicking block
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I confirm blocking alert$
      */
     @When("^I confirm blocking alert$")
-    public void IConfirmBlockingAlert() throws Throwable {
+    public void IConfirmBlockingAlert() throws Exception {
         getOtherUserPersonalInfoPage().clickBlockMenuButton();
     }
 
@@ -225,8 +225,8 @@ public class OtherUserPersonalInfoPageSteps {
     /**
      * Click on Devices button
      *
-     * @throws Exception
      * @param tabName either Devices or Details
+     * @throws Exception
      * @step. ^I switch to (Devices|Details) tab$
      */
     @When("^I switch to (Devices|Details) tab$")
@@ -264,10 +264,9 @@ public class OtherUserPersonalInfoPageSteps {
     /**
      * Verify whether the shield icon is visible on conversation details page
      *
-     * @step. ^I (do not )?see shield icon on conversation details page$
-     *
      * @param shouldNotSee equals to null if the shield should be visible
      * @throws Exception
+     * @step. ^I (do not )?see shield icon on conversation details page$
      */
     @Then("^I (do not )?see shield icon on conversation details page$")
     public void ISeeShieldIcon(String shouldNotSee) throws Exception {

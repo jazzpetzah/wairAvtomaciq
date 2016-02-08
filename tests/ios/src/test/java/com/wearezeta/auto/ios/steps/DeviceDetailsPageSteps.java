@@ -15,7 +15,7 @@ public class DeviceDetailsPageSteps {
     /**
      * Tap the Verify switcher
      *
-     * @step. I tap Verify switcher on device details page$
+     * @step. ^I tap Verify switcher on device details page$
      *
      * @throws Exception
      */
