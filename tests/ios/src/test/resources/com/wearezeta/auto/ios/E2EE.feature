@@ -51,7 +51,7 @@ Feature: E2EE
     And User <Contact1> adds new devices <DeviceName1>,<DeviceName2>,<DeviceName3>
     And I tap on contact name <Contact1>
     And I open conversation details
-    And I tap on Devices button
+    And I switch to Devices tab
     Then I see 3 devices shown in participant devices tab
 
     Examples:
@@ -63,7 +63,7 @@ Feature: E2EE
     Given There is 1 user where <Name> is me
     Given I sign in using my email
     Given I see conversations list
-    And User Myself adds a new device <DeviceName> with label <DeviceLabel>
+    Given User Myself adds a new device <DeviceName> with label <DeviceLabel>
     When I tap my avatar
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
@@ -74,3 +74,26 @@ Feature: E2EE
     Examples:
       | Name      | DeviceName | DeviceLabel  |
       | user1Name | Device1    | Device1Label |
+
+  @C3295 @staging
+  Scenario Outline: Verify shield appearance on the person's profile after verifying all the clients
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Contact1> adds new devices <DeviceName1>,<DeviceName2>
+    Given I sign in using my email
+    Given I see conversations list
+    And I tap on contact name <Contact1>
+    And I open conversation details
+    And I switch to Devices tab
+    When I open details page of device number 1
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    And I open details page of device number 2
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    And I switch to Details tab
+    Then I see shield icon on conversation details page
+
+    Examples:
+      | Name      | Contact1  | DeviceName1 | DeviceName2 |
+      | user1Name | user2Name | Device1     | Device2     |
