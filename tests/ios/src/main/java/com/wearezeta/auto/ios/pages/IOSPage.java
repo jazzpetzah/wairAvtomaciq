@@ -67,12 +67,16 @@ public abstract class IOSPage extends BasePage {
             return drv;
         }
         log.warn("Detected Appium UI tree corruption. Trying to fix...");
-        if (drv.getOrientation() == ScreenOrientation.PORTRAIT) {
-            drv.rotate(ScreenOrientation.LANDSCAPE);
-            drv.rotate(ScreenOrientation.PORTRAIT);
-        } else {
-            drv.rotate(ScreenOrientation.PORTRAIT);
-            drv.rotate(ScreenOrientation.LANDSCAPE);
+        try {
+            if (drv.getOrientation() == ScreenOrientation.PORTRAIT) {
+                drv.rotate(ScreenOrientation.LANDSCAPE);
+                drv.rotate(ScreenOrientation.PORTRAIT);
+            } else {
+                drv.rotate(ScreenOrientation.PORTRAIT);
+                drv.rotate(ScreenOrientation.LANDSCAPE);
+            }
+        } catch (WebDriverException e) {
+            // pass silently
         }
         return drv;
     }
