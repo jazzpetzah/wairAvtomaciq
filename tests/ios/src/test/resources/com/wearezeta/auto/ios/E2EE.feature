@@ -133,17 +133,24 @@ Feature: E2EE
       | user1Name | user2Name | user3Name | Device1     | Label1       | Device2     | Label2       | VerifiedGroup | ALL FINGERPRINTS ARE VERIFIED |
 
   @C3294 @staging @torun
-  Scenario Outline: Verify system message appearance in case of using a new device by friend
+  Scenario Outline: (ZIOS-5787) Verify system message appearance in case of using a new device by friend
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Contact1> adds a new device <DeviceName1> with label <DeviceLabel1>
     Given I sign in using my email
     Given I see conversations list
+    Given User <Contact1> sends 1 encrypted message to user Myself
     And I tap on contact name <Contact1>
+    And I open conversation details
+    And I switch to Devices tab
+    And I open details page of device number 1
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    And I click close user profile page button
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
-    Then I see last message in dialog is expected message <ExpectedMsg>
-
+    And User <Contact1> sends 1 encrypted message using device <DeviceName2> to user Myself
+    # TODO: Check the device label in the system message
+    Then I see the conversation view contains message <ExpectedMsg>
 
     Examples:
-      | Name      | Contact1  | DeviceName1 | DeviceLabel1 | DeviceName2 | DeviceLabel2 | ExpectedMsg |
-      | user1Name | user2Name | Device1     | Label1       | Device2     | Label2       | blabla      |
+      | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                |
+      | user1Name | user2Name | Device2     | Label2       | STARTED USING A NEW DEVICE |
