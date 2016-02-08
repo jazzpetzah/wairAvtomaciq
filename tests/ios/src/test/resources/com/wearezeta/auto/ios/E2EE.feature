@@ -100,7 +100,7 @@ Feature: E2EE
       | user1Name | user2Name | Device1     | Device2     |
 
   @C3287 @staging
-  Scenario Outline: Verify shield appearance on the person's profile after verifying all the clients
+  Scenario Outline: Verify the group conversation is marked as verified after verifying clients of each other
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given User <Contact1> adds a new device <DeviceName1> with label <DeviceLabel1>
