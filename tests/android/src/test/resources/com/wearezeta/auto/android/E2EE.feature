@@ -369,14 +369,12 @@ Feature: E2EE
     And I press back button
     Then I see a message informing me conversation is verified
     And User <Contact1> adds new device Device2
-    When User <Contact1> sends encrypted message "<InvisibleMessage>" via device Device2 to group conversation <GroupChatName>
+    When User <Contact1> sends encrypted message "<Message1>" via device Device2 to group conversation <GroupChatName>
     Then I see a message informing me conversation is not verified caused by user <Contact1>
-    And I see encrypted message <InvisibleMessage> 0 times in the conversation view
-# TODO Check if u can see message after verifying the new device
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | Message1 | InvisibleMessage |
-      | user1Name | user2Name | user3Name | EncryptedGrp  | Msg1     | Can't touch this |
+      | Name      | Contact1  | Contact2  | GroupChatName | Message1 |
+      | user1Name | user2Name | user3Name | EncryptedGrp  | Msg1     |
 
 
   @C3239 @staging
@@ -400,7 +398,7 @@ Feature: E2EE
     Examples:
       | Name      | Contact1  | Contact2  | Message1 | GroupChatName |
       | user1Name | user2Name | user3Name | Msg1     | GroupConvo    |
-      
+        
   @C12083 @staging
   Scenario Outline: When I'm entering a verified conversation, a green shield will appear at the bottom right
     Given There are 2 users where <Name> is me
