@@ -321,7 +321,7 @@ Feature: Conversation View
     And I verify image caption and download button are not shown
     And I tap on fullscreen page
     And I tap close fullscreen page button
-    Then I see 2 photos in the dialog
+    Then I see 1 photo in the dialog
 
     Examples:
       | Name      | Contact   |
