@@ -58,7 +58,7 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName1 | DeviceName2 | DeviceName3 |
       | user1Name | user2Name | Device1     | Device2     | Device3     |
 
-  @C3290 @staging
+  @C3290 @regression
   Scenario Outline: (ZIOS-5741) Verify new device is added to device management after sign in
     Given There is 1 user where <Name> is me
     Given I sign in using my email
