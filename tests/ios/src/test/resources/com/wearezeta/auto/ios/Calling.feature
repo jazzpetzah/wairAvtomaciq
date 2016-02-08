@@ -298,10 +298,8 @@ Feature: Calling
     And I accept incoming call
     And I see Accept second call alert
     And I press Accept button on alert
-    And I navigate back to conversations list
-    And I tap on chat I am in a call with name <GroupChatName>
     Then I see <NumberOfAvatars> avatars in the group call bar
-    Then I see mute call, end call and speakers buttons
+    And I see mute call, end call and speakers buttons
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars |
