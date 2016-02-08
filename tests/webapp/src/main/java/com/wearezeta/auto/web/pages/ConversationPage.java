@@ -492,6 +492,15 @@ public class ConversationPage extends WebPage {
 		getDriver().findElement(locator).click();
 	}
 
+	public void clickAcceptVideoCallButton() throws Exception {
+		final By locator = By
+				.cssSelector(WebAppLocators.ConversationPage.cssAcceptVideoCallButton);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Accept video call button has not been shown after "
+				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
+		getDriver().findElement(locator).click();
+	}
+
 	public void clickEndCallButton() throws Exception {
 		final By locator = By
 				.cssSelector(WebAppLocators.ConversationPage.cssEndCallButton);

@@ -510,6 +510,17 @@ public class ConversationPageSteps {
     }
 
     /**
+     * Accepts incoming video call by clicking the video call button on the calling bar
+     *
+     * @throws Exception
+     * @step. ^I accept the incoming video call$
+     */
+    @When("^I accept the incoming video call$")
+    public void IAcceptIncomingVideoCall() throws Exception {
+        webappPagesCollection.getPage(ConversationPage.class).clickAcceptVideoCallButton();
+    }
+
+    /**
      * Joins ongoing call by clicking the join call bar
      *
      * @throws Exception
