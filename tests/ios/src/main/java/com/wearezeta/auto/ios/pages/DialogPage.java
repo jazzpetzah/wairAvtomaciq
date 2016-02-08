@@ -399,30 +399,56 @@ public class DialogPage extends IOSPage {
         this.clickKeyboardCommitButton();
     }
 
+    private static final int MAX_TYPE_RETRIES = 3;
+
     public void typeConversationMessage(String message) throws Exception {
         final WebElement convoInput =
                 getElement(nameConversationCursorInput, "Conversation input is not visible after the timeout");
         convoInput.click();
-        try {
-            ((IOSElement) convoInput).setValue(message);
-        } catch (WebDriverException e) {
-            convoInput.clear();
-            convoInput.sendKeys(message);
+        int tryNum = 0;
+        WebDriverException savedException = null;
+        // FIXME: workaround for https://github.com/lionheart/openradar-mirror/issues/3407
+        while(tryNum < MAX_TYPE_RETRIES) {
+            try {
+                ((IOSElement) convoInput).setValue(message);
+                return;
+            } catch (WebDriverException e) {
+                savedException = e;
+                Thread.sleep(1000);
+                try {
+                    convoInput.clear();
+                } catch (WebDriverException e1) {
+                    // pass silently
+                }
+            }
+            tryNum++;
         }
+        throw savedException;
     }
 
     public void typeMessageAndSendSpaceKey(String message) throws Exception {
         final WebElement convoInput =
                 getElement(nameConversationCursorInput, "Conversation input is not visible after the timeout");
         convoInput.click();
-        try {
-            ((IOSElement) convoInput).setValue(message);
-            //Work around: we need to send an extra space to see the giph button
-            convoInput.sendKeys(" ");
-        } catch (WebDriverException e) {
-            convoInput.clear();
-            convoInput.sendKeys(message + " ");
+        int tryNum = 0;
+        WebDriverException savedException = null;
+        while(tryNum < MAX_TYPE_RETRIES) {
+            try {
+                ((IOSElement) convoInput).setValue(message);
+                convoInput.sendKeys(" ");
+                return;
+            } catch (WebDriverException e) {
+                savedException = e;
+                Thread.sleep(1000);
+                try {
+                    convoInput.clear();
+                } catch (WebDriverException e1) {
+                    // pass silently
+                }
+            }
+            tryNum++;
         }
+        throw savedException;
     }
 
     public void waitLoremIpsumText() throws Exception {

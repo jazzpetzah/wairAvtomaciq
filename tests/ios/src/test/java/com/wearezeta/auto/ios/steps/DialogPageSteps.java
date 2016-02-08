@@ -197,22 +197,21 @@ public class DialogPageSteps {
     /**
      * Click call button to start a call
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I press call button$
      */
     @When("^I press call button$")
-    public void IPressCallButton() throws Throwable {
+    public void IPressCallButton() throws Exception {
         getDialogPage().pressCallButton();
     }
 
     @When("^I click Ping button$")
-    public void IPressPingButton() throws Throwable {
+    public void IPressPingButton() throws Exception {
         getDialogPage().pressPingButton();
     }
 
-    @Then("^I see Pending Connect to (.*) message on Dialog page from user (.*)$")
-    public void ISeePendingConnectMessage(String contact, String user)
-            throws Throwable {
+    @Then("^I see Pending Connect to (.*) message on Dialog page$")
+    public void ISeePendingConnectMessage(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         Assert.assertTrue(String.format("Connecting to %s is not visible", contact),
                 getDialogPage().isConnectingToUserConversationLabelVisible(contact));

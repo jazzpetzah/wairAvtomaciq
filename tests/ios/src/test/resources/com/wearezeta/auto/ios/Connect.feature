@@ -16,7 +16,7 @@ Feature: Connect
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
     And I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message on Dialog page from user <Name>
+    And I see Pending Connect to <Contact> message on Dialog page
 
     Examples: 
       | Name      | Contact   | ContactEmail | Contact2  |
@@ -215,7 +215,7 @@ Feature: Connect
     And I click close button to dismiss people view
     And I see first item in contact list named <UnconnectedUser>
     And I tap on contact name <UnconnectedUser>
-    Then I see Pending Connect to <UnconnectedUser> message on Dialog page from user <Name>
+    Then I see Pending Connect to <UnconnectedUser> message on Dialog page
 
     Examples: 
       | Name      | UnconnectedUser | ContactEmail |

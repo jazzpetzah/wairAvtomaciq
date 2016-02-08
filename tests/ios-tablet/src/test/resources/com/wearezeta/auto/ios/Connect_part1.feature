@@ -55,7 +55,7 @@ Feature: Connect
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
     And I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message on Dialog page from user <Name>
+    And I see Pending Connect to <Contact> message on Dialog page
 
     Examples: 
       | Name      | Contact   | ContactEmail | Contact2  |
@@ -78,7 +78,7 @@ Feature: Connect
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
     And I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message on Dialog page from user <Name>
+    And I see Pending Connect to <Contact> message on Dialog page
 
     Examples: 
       | Name      | Contact   | ContactEmail | Contact2  |
@@ -230,7 +230,7 @@ Feature: Connect
     Given I see conversations list
     And I see user <Contact> in contact list
     When I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message on Dialog page from user <Name>
+    And I see Pending Connect to <Contact> message on Dialog page
     Then I see text input in dialog is not allowed
 
     Examples: 
@@ -247,7 +247,7 @@ Feature: Connect
     Given I see conversations list
     And I see user <Contact> in contact list
     When I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message on Dialog page from user <Name>
+    And I see Pending Connect to <Contact> message on Dialog page
     Then I see text input in dialog is not allowed
 
     Examples: 
