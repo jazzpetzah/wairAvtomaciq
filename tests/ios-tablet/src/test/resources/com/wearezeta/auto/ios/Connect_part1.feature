@@ -363,17 +363,12 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I re-enter the people picker if top people list is not there
-    And I see top people list on People picker page
     And I press the send an invite button
     And I press invite others button
     And I press the copy button
     And I click close Invite list button
     And I click clear button
     And I tap on contact name <Contact>
-    And I see dialog page
-    And I tap on text input
-    And I see keyboard
     And I tap and hold on message input
     And I click on popup Paste item
     And I send the message
@@ -391,15 +386,12 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I re-enter the people picker if top people list is not there
-    And I see top people list on People picker page
     And I press the send an invite button
     And I press invite others button
     And I press the copy button
     And I click close Invite list button
     And I click clear button
     And I tap on contact name <Contact>
-    And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
     And I send the message
