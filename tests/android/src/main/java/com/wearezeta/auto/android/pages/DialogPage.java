@@ -66,6 +66,8 @@ public class DialogPage extends AndroidPage {
     private static final By idFullScreenImage = By.id("tiv__single_image_message__image");
 
     public static final By idParticipantsBtn = By.id("cursor_menu_item_participant");
+    
+    public static final By idVerifiedConversationShield = By.id("cursor_button_giphy");
 
     private static final String idStrStartChatLabel = "ttv__row_conversation__connect_request__chathead_footer__label";
     private static final Function<String, String> xpathStrStartChatLabelByPartOfText
@@ -541,6 +543,10 @@ public class DialogPage extends AndroidPage {
     public boolean tapSwitchCameraButton() throws Exception {
         getElement(idSwitchCameraButton).click();
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathDialogTakePhotoButton);
+    }
+    
+    public boolean waitForVerifiedConversationShield() throws Exception {
+        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), idVerifiedConversationShield);
     }
 
     private final Predicate<? super WebElement> isEncryptedMessageFilter = (WebElement wel) -> wel.getSize().getWidth() > 0;

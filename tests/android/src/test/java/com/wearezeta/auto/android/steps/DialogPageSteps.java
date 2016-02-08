@@ -839,5 +839,11 @@ public class DialogPageSteps {
                 String.format("The non-encrypted image is not present in the conversation view %s time(s)", times),
                 getDialogPage().waitForXNonEncryptedImages(times));
         }
-    } 
+    }
+    
+    @Then("^I see verified conversation shield$")
+    public void ISeeVerifiedConversationShield() throws Exception {
+            Assert.assertTrue("The verified conversation shield is not present in the conversation view",
+                getDialogPage().waitForVerifiedConversationShield());
+    }
 }

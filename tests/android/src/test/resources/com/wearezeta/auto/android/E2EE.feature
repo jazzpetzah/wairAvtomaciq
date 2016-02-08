@@ -404,6 +404,27 @@ Feature: E2EE
       | Name      | Contact1  | Contact2  | Message1 | GroupChatName |
       | user1Name | user2Name | user3Name | Msg1     | GroupConvo    |
       
+  @C12083 @staging
+  Scenario Outline: When I'm entering a verified conversation, a green shield will appear at the bottom right
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When User <Contact1> sends encrypted message "<Message1>" to user Myself
+    And I tap on contact name <Contact1>
+    And I tap conversation details button
+    And I select single participant tab "Devices"
+    Then I see 1 device is shown in single participant devices tab
+    And I verify 1st device
+    When I press back button
+    Then I see a message informing me conversation is verified
+    And I see verified conversation shield
+
+    Examples:
+      | Name      | Contact1  | Message1 |
+      | user1Name | user2Name | Msg1     |
+      
   @C12066 @staging
   Scenario Outline: Verify I see system message when verify all other user's device in group conversation
     Given There are 3 users where <Name> is me
