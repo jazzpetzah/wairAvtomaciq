@@ -245,7 +245,7 @@ Feature: E2EE
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
-    And I enable checkbox to clear all data
+    And I click Logout button on clear data dialog
     And Contact <Contact> sends encrypted message <EncryptedMessage> to user Myself
     And User <Contact> sends encrypted image <ImageName> to single user conversation Myself
     And I see Sign In page
@@ -269,7 +269,7 @@ Feature: E2EE
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
-    And I enable checkbox to clear all data
+    And I click Logout button on clear data dialog
     And Contact <Contact1> sends encrypted message <EncryptedMessage> to group conversation <GroupChatName>
     And User <Contact1> sends encrypted image <ImageName> to group conversation <GroupChatName>
     And I see Sign In page
