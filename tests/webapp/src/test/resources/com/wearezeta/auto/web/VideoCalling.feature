@@ -46,7 +46,7 @@ Feature: VideoCalling
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Given <Contact> starts a video call to <Name> using <CallBackend>
+    Given <Contact> starts a video call to me using <CallBackend>
     When I see my avatar on top of Contact list
     And I open conversation with <Contact>
     And I see the calling bar
