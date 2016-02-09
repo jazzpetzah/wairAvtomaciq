@@ -88,6 +88,8 @@ public final class PopoverLocators {
 			public static final String cssDevicesTab = "#participants-bubble [data-uie-name='go-profile-devices']";
 			public static final String cssDetailsTab = "#participants-bubble [data-uie-name='go-profile-details']";
 			public static final String cssDevicesText = "#participants-bubble .user-profile-devices";
+			public static final String cssUserVerifiedIcon = "#participants-bubble .user-profile-user-verified";
+			public static final String cssDevices = "#participants-bubble .user-profile-device";
 		}
 
 		public static final class BlockUserConfirmationPage {

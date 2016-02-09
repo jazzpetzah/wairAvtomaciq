@@ -197,6 +197,11 @@ public class ConversationPageSteps {
         webappPagesCollection.getPage(ConversationPage.class).clickPeopleButton();
     }
 
+    @When("^I see verified icon in conversation$")
+    public void ISeeVerifiedIconInConversation() throws Throwable {
+        assertThat("No verified icon", webappPagesCollection.getPage(ConversationPage.class).isConversationVerified());
+    }
+
     /**
      * Send a picture into current conversation
      *

@@ -1,7 +1,10 @@
 package com.wearezeta.auto.web.pages.popovers;
 
+import java.util.List;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -25,6 +28,15 @@ class SingleUserInfoPopoverPage extends AbstractUserInfoPopoverPage {
 
 	@FindBy(how = How.CSS, using = PopoverLocators.SingleUserPopover.SingleUserInfoPage.cssDevicesText)
 	private WebElement devicesText;
+
+	@FindBy(how = How.CSS, using = PopoverLocators.DeviceDetailPopoverPage.cssDeviceIds)
+	private WebElement firstDevice;
+
+	@FindBy(how = How.CSS, using = PopoverLocators.DeviceDetailPopoverPage.cssDeviceIds)
+	private List<WebElement> deviceIds;
+
+	@FindBy(how = How.CSS, using = PopoverLocators.SingleUserPopover.SingleUserInfoPage.cssDevices)
+	private List<WebElement> devices;
 
 	public SingleUserInfoPopoverPage(Future<ZetaWebAppDriver> lazyDriver,
 			PeoplePopoverContainer container) throws Exception {
@@ -74,5 +86,30 @@ class SingleUserInfoPopoverPage extends AbstractUserInfoPopoverPage {
 
 	public String getDevicesText() {
 		return devicesText.getText();
+	}
+
+	public boolean isUserVerified() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(PopoverLocators.SingleUserPopover
+				.SingleUserInfoPage.cssUserVerifiedIcon));
+	}
+
+	public List<String> getDeviceIds() {
+		return deviceIds.stream().map(w -> w.getText().toLowerCase()).collect(Collectors.toList());
+	}
+
+	public List<String> getVerifiedDeviceIds() {
+		return deviceIds.stream().filter(w -> "#icon-verified".equals(w.findElement(By.xpath
+				("//*[@class='user-profile-device']//*[local-name() = 'use']")).getAttribute("href"))).map(w -> w.findElement
+				(By.cssSelector("[data-uie-name='device-id']")).getText()).collect
+				(Collectors.toList());
+	}
+
+	public boolean waitForDevices() throws Exception {
+		return DriverUtils.waitUntilElementClickable(this.getDriver(), firstDevice);
+	}
+
+	public void clickDevice(String deviceId) throws Exception {
+		String locator = PopoverLocators.DeviceDetailPopoverPage.cssDeviceById.apply(deviceId);
+		this.getDriver().findElement(By.cssSelector(locator)).click();
 	}
 }

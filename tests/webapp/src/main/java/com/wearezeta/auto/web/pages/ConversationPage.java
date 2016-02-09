@@ -727,4 +727,8 @@ public class ConversationPage extends WebPage {
 		return connectedMessageLabel.getText();
 	}
 
+	public boolean isConversationVerified() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(WebAppLocators.ConversationPage
+				.cssConversationVerifiedIcon));
+	}
 }
