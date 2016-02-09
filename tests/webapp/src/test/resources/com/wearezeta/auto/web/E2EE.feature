@@ -217,7 +217,7 @@ Feature: E2EE
       | user1Email | user1Password | user1Name | user2Name  | user3Name | EncryptedYo      | HybridGroup   |
 
   @C12044 @e2ee
-  Scenario Outline: Verify you can receive encrypted messages in group chat
+  Scenario Outline: Verify you can receive encrypted images in group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -226,7 +226,7 @@ Feature: E2EE
     Given I am signed in properly
     When I open conversation with <GroupChatName>
     And User <Contact1> sends encrypted image <ImageName> to group conversation <GroupChatName>
-    Then I see text message <EncryptedMessage>
+    Then I see sent picture <ImageName> in the conversation view
 
     Examples:
       | Email      | Password      | Name      | Contact1   | Contact2  | ImageName                | GroupChatName |
@@ -242,6 +242,8 @@ Feature: E2EE
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I enable checkbox to clear all data
     And Contact <Contact> sends encrypted message <EncryptedMessage> to user Myself
     And User <Contact> sends encrypted image <ImageName> to single user conversation Myself
     And I see Sign In page
@@ -264,8 +266,10 @@ Feature: E2EE
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
-    And Contact <Contact1> sends encrypted message <EncryptedMessage> to group conversation <GroupChat>
-    And User <Contact1> sends encrypted image <ImageName> to group conversation <GroupChat>
+    And I see the clear data dialog
+    And I enable checkbox to clear all data
+    And Contact <Contact1> sends encrypted message <EncryptedMessage> to group conversation <GroupChatName>
+    And User <Contact1> sends encrypted image <ImageName> to group conversation <GroupChatName>
     And I see Sign In page
     And I Sign in using login <Email> and password <Password>
     And I open conversation with <GroupChatName>
