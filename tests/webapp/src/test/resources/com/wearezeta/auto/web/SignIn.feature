@@ -8,8 +8,6 @@ Feature: Sign In
     When I enter email "<Email>"
     And I enter password "<Password>"
     And I press Sign In button
-    Then I see the history info page
-    When I click confirm on history info page
     Then I see user name on self profile page <Name>
 
     Examples: 
