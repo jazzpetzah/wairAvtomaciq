@@ -153,7 +153,7 @@ public abstract class IOSPage extends BasePage {
             Thread.sleep(1000);
             clickAtSimulator(elLocation.x + (relativeClickPointX * elSize.width) / 100,
                     elLocation.y + (relativeClickPointY * elSize.height) / 100);
-            Thread.sleep(1000);
+            Thread.sleep(2000);
             IOSSimulatorHelper.typeStringAndPressEnter(str, useAutocompleteWorkaround);
         } else {
             getDriver().tap(1,
