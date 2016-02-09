@@ -9,7 +9,6 @@ import java.util.concurrent.TimeUnit;
 public class AppiumServerTools {
     private static final Logger log = ZetaLogger.getLog(AppiumServerTools.class.getSimpleName());
 
-    private static final String EXECUTOR_APP = "AutorunAppium";
     private static final int PORT = 4723;
     private static final int RESTART_TIMEOUT = 20000; // milliseconds
 
@@ -35,23 +34,37 @@ public class AppiumServerTools {
         return false;
     }
 
+    private static final String MAIN_EXECUTABLE_PATH = "/usr/local/bin/appium";
+    private static final String COMMAND_TIMEOUT = "500"; // in seconds
+    private static final String LOG_PATH = "/usr/local/var/log/appium/appium.log";
+
+    private static final String[] CMDLINE_IOS = new String[]{
+            MAIN_EXECUTABLE_PATH,
+            "--command-timeout", COMMAND_TIMEOUT,
+            "--port", Integer.toString(PORT),
+            "--log", LOG_PATH
+    };
+
     public static synchronized void resetIOSSimulator() throws Exception {
         Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9",
-                "Simulator", "configd_sim", "ids_simd", "launchd_sim", "instruments"}).waitFor(2, TimeUnit.SECONDS);
-        reset();
+                "Simulator", "configd_sim", "ids_simd", "launchd_sim", "instruments", "node"}).
+                waitFor(2, TimeUnit.SECONDS);
+        log.warn("Trying to restart Appium server on localhost...");
+        Runtime.getRuntime().exec(CMDLINE_IOS);
+        waitForAppiumRestart();
     }
 
     public static synchronized void resetIOSRealDevice() throws Exception {
-        Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9", "instruments"}).waitFor(2, TimeUnit.SECONDS);
-        reset();
+        Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9", "instruments", "node"}).
+                waitFor(2, TimeUnit.SECONDS);
+        log.warn("Trying to restart Appium server on localhost...");
+        Runtime.getRuntime().exec(CMDLINE_IOS);
+        waitForAppiumRestart();
     }
 
-    private static void reset() throws Exception {
-        log.warn("Trying to restart Appium server on localhost...");
-        Runtime.getRuntime().exec(new String[]{"/usr/bin/open", "-a", EXECUTOR_APP}).
-                waitFor(RESTART_TIMEOUT, TimeUnit.MILLISECONDS);
-        Thread.sleep(RESTART_TIMEOUT);
+    private static void waitForAppiumRestart() throws Exception {
         log.info(String.format("Waiting %s seconds for Appium port %s to be opened...", RESTART_TIMEOUT / 1000, PORT));
+        Thread.sleep(1000);
         if (!waitUntilPortOpened()) {
             throw new IllegalStateException(String.format(
                     "Appium server has failed to restart after %s seconds timeout", RESTART_TIMEOUT / 1000));

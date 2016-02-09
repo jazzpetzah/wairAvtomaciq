@@ -63,7 +63,7 @@ public abstract class IOSPage extends BasePage {
      * @throws Exception
      */
     private static ZetaIOSDriver fixUITreeIfBroken(final ZetaIOSDriver drv) throws Exception {
-        if (drv.findElements(nameMainWindow).size() > 0) {
+        if (drv.findElements(By.xpath("//UIAWindow")).size() > 0) {
             return drv;
         }
         log.warn("Detected Appium UI tree corruption. Trying to fix...");
@@ -75,6 +75,7 @@ public abstract class IOSPage extends BasePage {
                 drv.rotate(ScreenOrientation.PORTRAIT);
                 drv.rotate(ScreenOrientation.LANDSCAPE);
             }
+            Thread.sleep(500);
         } catch (WebDriverException e) {
             // pass silently
         }
@@ -149,8 +150,10 @@ public abstract class IOSPage extends BasePage {
         final Dimension elSize = dstElement.getSize();
         final Point elLocation = dstElement.getLocation();
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            Thread.sleep(1000);
             clickAtSimulator(elLocation.x + (relativeClickPointX * elSize.width) / 100,
                     elLocation.y + (relativeClickPointY * elSize.height) / 100);
+            Thread.sleep(2000);
             IOSSimulatorHelper.typeStringAndPressEnter(str, useAutocompleteWorkaround);
         } else {
             getDriver().tap(1,
