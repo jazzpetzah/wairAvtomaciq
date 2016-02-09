@@ -38,3 +38,21 @@ Feature: VideoCalling
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 | 60      |
+
+  @C12072 @videocalling
+  Scenario Outline: Verify I can decline Video call
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given <Contact> starts a video call to me using <CallBackend>
+    When I see my avatar on top of Contact list
+    And I open conversation with <Contact>
+    And I see the calling bar
+    And I silence the incoming call
+    And I do not see the calling bar
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | CallBackend         |
+      | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 |
