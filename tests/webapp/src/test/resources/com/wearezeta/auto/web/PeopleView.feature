@@ -7,8 +7,6 @@ Feature: People View
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     Given I am signed in properly
     When I open conversation with <Contact>
     And I click People button in one to one conversation
@@ -30,8 +28,6 @@ Feature: People View
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     Given I am signed in properly
     And I open conversation with <ChatName>
     And I click People button in group conversation
@@ -55,8 +51,6 @@ Feature: People View
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     Given I am signed in properly
     And I open conversation with <ChatName>
     And I click People button in group conversation
@@ -80,8 +74,6 @@ Feature: People View
     Given I sent connection request to <UnknownContact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     Given I am signed in properly
     When I open conversation with <ChatName>
     When I click People button in group conversation
@@ -110,8 +102,6 @@ Feature: People View
     Given <UnknownContact> sent connection request to Myself
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     Given I am signed in properly
     When I open conversation with <ChatName>
     When I click People button in group conversation
@@ -142,8 +132,6 @@ Feature: People View
     Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     Given I am signed in properly
     When I open conversation with <ChatName>
     When I click People button in group conversation
@@ -169,8 +157,6 @@ Feature: People View
     Given I sent connection request to <UnknownContact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     Given I am signed in properly
     When I open conversation with <ChatName>
     When I click People button in group conversation
@@ -200,8 +186,6 @@ Feature: People View
     Given Myself sent connection request to <UnknownContact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     Given I am signed in properly
     When I open conversation with <ChatName>
     When I click People button in group conversation
@@ -228,8 +212,6 @@ Feature: People View
     Given <UnknownContact> sent connection request to me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     Given I am signed in properly
     When I open conversation with <ChatName>
     When I click People button in group conversation
@@ -257,8 +239,6 @@ Feature: People View
     Given <UnknownContact> sent connection request to me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     Given I am signed in properly
     When I open conversation with <ChatName>
     When I click People button in group conversation
@@ -292,8 +272,6 @@ Feature: People View
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     Given I am signed in properly
     And I open conversation with <ChatName>
     And I click People button in group conversation
@@ -331,8 +309,6 @@ Feature: People View
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     Given I am signed in properly
     And I open conversation with <ChatName>
     And I click People button in group conversation
@@ -351,8 +327,6 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     Given I am signed in properly
     And I open conversation with <Contact1>
     And I click People button in one to one conversation
@@ -371,8 +345,6 @@ Feature: People View
     And I see Sign In page
     And User <Contact1> is me
     And I Sign in using login <Contact1> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     Given I am signed in properly
     And I see Contact list with name <Name>,<Contact2>
     And I open conversation with <Name>,<Contact2>
@@ -383,8 +355,6 @@ Feature: People View
     And I see Sign In page
     And User <Contact2> is me
     And I Sign in using login <Contact2> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     Given I am signed in properly
     And I see Contact list with name <Name>,<Contact1>
     And I see <Message2> action for <Name>,<Contact1>,You in conversation
@@ -401,8 +371,6 @@ Feature: People View
     Given Myself blocked <Contact1>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     Given I am signed in properly
     When I open conversation with <ChatName>
     When I click People button in group conversation
