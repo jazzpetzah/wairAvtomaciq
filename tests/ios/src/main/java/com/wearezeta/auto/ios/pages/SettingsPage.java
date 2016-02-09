@@ -33,7 +33,6 @@ public class SettingsPage extends IOSPage {
     private static final By nameDeleteButton = By.name("Delete");
 
     private static final By xpathDeleteDevicePasswordField = By.xpath("//UIASecureTextField[contains(@value,'Password')]");
-    //private static final By xpathDeleteDevicePasswordField = By.xpath("//UIAApplication[1]/UIAWindow[2]/UIAAlert[1]/UIAScrollView[1]/UIATableView[1]/UIATableCell[1]/UIASecureTextField[1]/UIASecureTextField[1]");
 
     public SettingsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -78,7 +77,7 @@ public class SettingsPage extends IOSPage {
 
     public void typePasswordToConfirmDeleteDevice(String password) throws Exception {
         password = usrMgr.findUserByPasswordAlias(password).getPassword();
-        ((IOSElement)getElement(xpathDeleteDevicePasswordField)).setValue(password);
+        ((IOSElement) getElement(xpathDeleteDevicePasswordField)).setValue(password);
     }
 
     public boolean isDeviceVisibleInList(String device) throws Exception {
