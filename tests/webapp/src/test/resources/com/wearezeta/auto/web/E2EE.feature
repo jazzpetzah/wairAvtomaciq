@@ -98,6 +98,8 @@ Feature: E2EE
   @C2098 @e2ee @regression
   Scenario Outline: Verify current browser is set as permanent device
     Given There are 3 users where <Name> is me
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given user <Contact2> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
@@ -415,7 +417,9 @@ Feature: E2EE
 
   @C28834 @e2ee @regression
   Scenario Outline: Make sure data is restored after switching between temporary login and back to permanent
-    Given There are 4 users where <Name> is me
+    Given There are 3 users where <Name> is me
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given user <Contact2> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
