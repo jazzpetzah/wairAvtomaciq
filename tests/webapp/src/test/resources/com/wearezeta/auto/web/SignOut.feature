@@ -7,8 +7,6 @@ Feature: Sign Out
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
-    Then I see the history info page
-    And I click confirm on history info page
     And I am signed in properly
     When I open self profile
     Then I see user name on self profile page <Name>
@@ -27,8 +25,6 @@ Feature: Sign Out
     And I click Logout button on clear data dialog
     And I see Sign In page
     And I Sign in using login <Email3> and password <Password3>
-    Then I see the history info page
-    And I click confirm on history info page
     And I see Welcome page
     And I confirm keeping picture on Welcome page
     And I am signed in properly
