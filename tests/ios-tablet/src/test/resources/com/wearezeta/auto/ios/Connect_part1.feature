@@ -271,10 +271,8 @@ Feature: Connect
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I unblock user on iPad
-    And I see 0 default message in the dialog
-    And I see 0 photo in the dialog
-    Given User <Contact> sends 1 encrypted message to user Myself
     Then I see 0 default messages in the dialog
+    And I see 0 photos in the dialog
 
     Examples: 
       | Name      | Contact   | Picture     |
@@ -298,10 +296,8 @@ Feature: Connect
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I unblock user on iPad
-    And I see 0 default message in the dialog
-    And I see 0 photo in the dialog
-    Given User <Contact> sends 1 encrypted message to user Myself
     Then I see 0 default messages in the dialog
+    And I see 0 photos in the dialog
 
     Examples: 
       | Name      | Contact   | Picture     |

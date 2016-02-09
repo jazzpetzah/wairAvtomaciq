@@ -7,12 +7,11 @@ import java.net.Socket;
 import java.util.concurrent.TimeUnit;
 
 public class AppiumServerTools {
-    private static final Logger log = ZetaLogger
-            .getLog(AppiumServerTools.class.getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(AppiumServerTools.class.getSimpleName());
 
     private static final String EXECUTOR_APP = "AutorunAppium";
     private static final int PORT = 4723;
-    private static final int RESTART_TIMEOUT = 10000; // milliseconds
+    private static final int RESTART_TIMEOUT = 20000; // milliseconds
 
     private static boolean waitUntilPortOpened() throws InterruptedException {
         Socket s = null;
