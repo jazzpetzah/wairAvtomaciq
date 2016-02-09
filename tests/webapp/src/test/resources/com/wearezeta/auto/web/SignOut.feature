@@ -37,4 +37,4 @@ Feature: Sign Out
 
     Examples:
       | Email      | Password      | Name      | Contact1  | Contact2  | Contact3  | Email3     | Password3     | GroupChatName | Message         |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user3Name | user4Email | user4Password | User1Chat     | Hello User1Chat |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user4Email | user4Password | User1Chat     | Hello User1Chat |
