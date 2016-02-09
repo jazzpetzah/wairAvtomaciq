@@ -299,4 +299,14 @@ public class PeoplePickerPageSteps {
         getPeoplePickerPage().tapCallButton();
     }
 
+    /**
+     * Tap Backspace in the search field
+     *
+     * @throws Exception
+     * @step. ^I type backspace in Search input on [Pp]eople [Pp]icker page$
+     */
+    @When("^I type backspace in Search input on [Pp]eople [Pp]icker page$")
+    public void ITypeBackspace() throws Exception {
+        getPeoplePickerPage().typeBackspaceInSearchInput();
+    }
 }

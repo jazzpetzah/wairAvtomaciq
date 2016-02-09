@@ -218,6 +218,10 @@ public class AndroidCommonUtils extends CommonUtils {
         executeAdb("shell input keyevent 3");
     }
 
+    public static void tapBackspaceButton() throws Exception {
+        executeAdb("shell input keyevent 67");
+    }
+
     public static double getScreenDensity() throws Exception {
         String result = getAdbOutput("shell getprop ro.sf.lcd_density");
         double screenPixels = Integer.parseInt(result);

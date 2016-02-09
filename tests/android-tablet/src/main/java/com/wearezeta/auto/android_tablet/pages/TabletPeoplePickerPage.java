@@ -106,4 +106,7 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
         getAndroidPeoplePickerPage().tapCallButton();
     }
 
+    public void typeBackspaceInSearchInput() throws Exception {
+        getAndroidPeoplePickerPage().typeBackspaceInSearchInput();
+    }
 }
