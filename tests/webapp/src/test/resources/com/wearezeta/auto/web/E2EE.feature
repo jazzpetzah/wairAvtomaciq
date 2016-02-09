@@ -6,8 +6,6 @@ Feature: E2EE
     Given user <Name> adds a new device <Device> with label <Label>
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
-    And I see the history info page
-    And I click confirm on history info page
     Then I am signed in properly
     When I click gear button on self profile page
     And I select Settings menu item on self profile page
@@ -180,8 +178,6 @@ Feature: E2EE
     Given <Contact> is connected to Myself
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     Given I am signed in properly
     When Contact <Contact> sends encrypted message <EncryptedMessage> to user Myself
     Then I see text message <EncryptedMessage>
@@ -196,8 +192,6 @@ Feature: E2EE
     Given <Contact> is connected to Myself
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     Given I am signed in properly
     When User <Contact> sends encrypted image <ImageName> to single user conversation Myself
     Then I see sent picture <ImageName> in the conversation view
@@ -213,8 +207,6 @@ Feature: E2EE
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     Given I am signed in properly
     When I open conversation with <GroupChatName>
     And Contact <Contact1> sends encrypted message <EncryptedMessage> to group conversation <GroupChatName>
@@ -231,8 +223,6 @@ Feature: E2EE
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     Given I am signed in properly
     When I open conversation with <GroupChatName>
     And User <Contact1> sends encrypted image <ImageName> to group conversation <GroupChatName>
@@ -248,8 +238,6 @@ Feature: E2EE
     Given <Contact> is connected to Myself
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     When I am signed in properly
     And I open self profile
     And I click gear button on self profile page
@@ -272,8 +260,6 @@ Feature: E2EE
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     When I am signed in properly
     And I open self profile
     And I click gear button on self profile page
@@ -296,8 +282,6 @@ Feature: E2EE
     Given <Contact> is connected to Myself
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     Given I am signed in properly
     When I open conversation with <Contact>
     And I click People button in one to one conversation
@@ -324,8 +308,6 @@ Feature: E2EE
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     Given I am signed in properly
     When I open conversation with <GroupChatName>
     And I click People button in group conversation
@@ -354,8 +336,6 @@ Feature: E2EE
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
-    Then I see the history info page
-    And I click confirm on history info page
     And I am signed in properly
     When I open conversation with <Contact>
     And I click People button in one to one conversation
@@ -385,8 +365,6 @@ Feature: E2EE
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
-    Then I see the history info page
-    And I click confirm on history info page
     And I am signed in properly
     When I open conversation with <GroupChatName>
     And I click People button in group conversation
