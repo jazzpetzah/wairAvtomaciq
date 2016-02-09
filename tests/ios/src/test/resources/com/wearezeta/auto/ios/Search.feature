@@ -28,27 +28,6 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C1060 @regression @id299 @noAcceptAlert
-  Scenario Outline: Verify denying address book uploading
-    Given There is 1 user where <Name> is me
-    Given I sign in using my email or phone number
-    And I dismiss all alerts
-    And I dismiss settings warning
-    And I open search by taping on it
-    And I see Upload contacts dialog
-    And I click Continue button on Upload dialog
-    And I dismiss alert
-    And I dont see CONNECT label
-    And I press maybe later button
-    And I click clear button
-    And I open search by taping on it
-    And I scroll up page a bit
-    And I dont see Upload contacts dialog
-
-    Examples:
-      | Name      |
-      | user1Name |
-
   @C3167 @rc @regression @id1394
   Scenario Outline: Start 1:1 chat with users from Top Connections
     Given There are <UserCount> users where <Name> is me

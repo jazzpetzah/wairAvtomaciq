@@ -58,47 +58,6 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2831 @staging @id2531 @noAcceptAlert
-  Scenario Outline: Verify denying address book uploading [PORTRAIT]
-    Given There is 1 user where <Name> is me
-    Given I Sign in on tablet using my email
-    Given I dismiss all alerts
-    Given I see conversations list
-    When I open search by taping on it
-    And I see Upload contacts dialog
-    And I click Continue button on Upload dialog
-    And I dismiss alert
-    And I press maybe later button
-    And I click clear button
-    And I open search by taping on it
-    And I click hide keyboard button
-    Then I dont see Upload contacts dialog
-
-    Examples: 
-      | Name      |
-      | user1Name |
-
-  @C2833 @staging @id2928 @noAcceptAlert
-  Scenario Outline: Verify denying address book uploading [LANDSCAPE]
-    Given There is 1 user where <Name> is me
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    Given I dismiss all alerts
-    Given I see conversations list
-    When I open search by taping on it
-    And I see Upload contacts dialog
-    And I click Continue button on Upload dialog
-    And I dismiss alert
-    And I press maybe later button
-    And I click clear button
-    And I open search by taping on it
-    And I click hide keyboard button
-    Then I dont see Upload contacts dialog
-
-    Examples: 
-      | Name      |
-      | user1Name |
-
   @C2838 @regression @id2656
   Scenario Outline: Start 1:1 chat with users from Top Connections [PORTRAIT]
     Given There are <UserCount> users where <Name> is me

@@ -25,8 +25,6 @@ public class PeoplePickerPage extends IOSPage {
 
     private static final By namePeoplePickerAddToConversationButton = By.name("ADD TO CONVERSATION");
 
-    private static final By nameShareButton = By.name("SHARE CONTACTS");
-
     private static final By nameContinueUploadButton = By.name("SHARE CONTACTS");
 
     private static final By namePeopleYouMayKnowLabel = By.name("CONNECT");
@@ -160,10 +158,6 @@ public class PeoplePickerPage extends IOSPage {
 
     public void clickAddToConversationButton() throws Exception {
         getElement(namePeoplePickerAddToConversationButton).click();
-    }
-
-    public boolean isUploadDialogShown() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameShareButton, 2);
     }
 
     public void clickContinueButton() throws Exception {
