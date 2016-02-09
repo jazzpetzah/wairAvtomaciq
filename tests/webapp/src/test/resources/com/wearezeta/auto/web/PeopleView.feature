@@ -217,7 +217,7 @@ Feature: People View
     When I open conversation with <ChatName>
     When I click People button in group conversation
     Then I see Group Participants popover
-    And I see Myself,<KnownContact>,<UnknownContact>,<UnknownContact2> displayed on Group Participants popover
+    And I see <KnownContact>,<UnknownContact>,<UnknownContact2> displayed on Group Participants popover
     And I do not see Archive button at the bottom of my Contact list
     When I click Leave button on Group Participants popover
     And I click confirm leave group conversation on Group Participants popover
@@ -228,6 +228,8 @@ Feature: People View
     When I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I enable checkbox to clear all data
     And I Sign in using login <KnownContact> and password <KnownContactPassword>
     And I open conversation with <ChatName>
     Then I see <MessageLeft> action for <Name> in conversation
