@@ -67,6 +67,7 @@ public abstract class IOSPage extends BasePage {
             return drv;
         }
         log.warn("Detected Appium UI tree corruption. Trying to fix...");
+        log.debug(drv.getPageSource());
         try {
             if (drv.getOrientation() == ScreenOrientation.PORTRAIT) {
                 drv.rotate(ScreenOrientation.LANDSCAPE);
