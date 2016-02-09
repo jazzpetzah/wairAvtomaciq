@@ -8,8 +8,7 @@ import java.util.concurrent.Future;
 public class DeviceDetailsPage extends IOSPage {
     private final static By nameVerifySwitcher = By.xpath("//UIASwitch");
 
-    // TODO: get a named locator for this button
-    private static final By xpathBackButton = By.xpath(xpathStrMainWindow + "/UIAButton[4]");
+    private static final By nameBackButton = By.name("Back");
 
     public DeviceDetailsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -20,6 +19,6 @@ public class DeviceDetailsPage extends IOSPage {
     }
 
     public void tapBackButton() throws Exception {
-        getElement(xpathBackButton).click();
+        getElement(nameBackButton).click();
     }
 }

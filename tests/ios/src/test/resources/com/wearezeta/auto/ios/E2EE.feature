@@ -143,3 +143,27 @@ Feature: E2EE
     Examples:
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                |
       | user1Name | user2Name | Device2     | Label2       | STARTED USING A NEW DEVICE |
+
+  @C3509 @staging
+  Scenario Outline: (ZIOS-5741) Verify verifying/unverifying one of the devices
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email
+    Given I see conversations list
+    And User Myself adds a new device <DeviceName> with label <DeviceLabel>
+    When I tap my avatar
+    And I click on Settings button on personal page
+    And I click on Settings button from the options menu
+    And I select settings item Privacy & Security
+    And I select settings item Manage devices
+    When I open details page of device number 2
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    Then I see for device <DeviceLabel> is shown label Verified
+    When I open details page of device number 2
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    Then I see for device <DeviceLabel> is shown label Not Verified
+
+    Examples:
+      | Name      | DeviceName | DeviceLabel  |
+      | user1Name | Device1    | Device1Label |

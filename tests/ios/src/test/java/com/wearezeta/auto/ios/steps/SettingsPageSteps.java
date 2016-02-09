@@ -1,9 +1,11 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.ios.pages.SettingsPage;
+
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+
 import org.junit.Assert;
 
 public class SettingsPageSteps {
@@ -68,8 +70,8 @@ public class SettingsPageSteps {
      */
     @When("^I verify sound alerts settings are set to default values$")
     public void IVerifyAllIsDefaultValue() throws Exception {
-        Assert.assertTrue("Sound alerts settings are NOT set to their default values",
-                getSettingsPage().isSoundAlertsSetToDefault());
+        Assert.assertTrue("Sound alerts settings are NOT set to their default values", getSettingsPage()
+            .isSoundAlertsSetToDefault());
     }
 
     /**
@@ -83,7 +85,14 @@ public class SettingsPageSteps {
     @Then("^I see settings item (.*)$")
     public void ISeeSettingsItem(String itemName) throws Exception {
         Assert.assertTrue(String.format("Settings menu item '%s' is not visible", itemName),
-                getSettingsPage().isItemVisible(itemName));
+            getSettingsPage().isItemVisible(itemName));
+    }
+
+    @Then("^I see for device (.*) is shown label (Verified|Not Verified)")
+    public void ISeeForDeviceALabelB(String deviceName, String label) throws Exception {
+        Assert.assertTrue(String.format("Label '%s' is not visible for device '%s'", label, deviceName), getSettingsPage()
+            .verificationLabelVisibility(deviceName, label));
+
     }
 
 }
