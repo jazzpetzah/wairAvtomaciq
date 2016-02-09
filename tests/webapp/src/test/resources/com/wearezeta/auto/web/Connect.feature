@@ -136,6 +136,8 @@ Feature: Connect
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And User <Name> is me
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
@@ -166,6 +168,8 @@ Feature: Connect
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And User <Name2> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
@@ -177,6 +181,8 @@ Feature: Connect
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And User <Name> is me
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
@@ -249,6 +255,8 @@ Feature: Connect
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And I see Sign In page
     And User <Name2> is me
     And I Sign in using login <Login2> and password <Password2>
@@ -260,6 +268,8 @@ Feature: Connect
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
     And User <Name> is me
@@ -421,6 +431,8 @@ Feature: Connect
     When I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And User <Contact1> is me
     And I Sign in using login <Contact1Email> and password <Contact1Password>
     Then I see my avatar on top of Contact list

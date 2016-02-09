@@ -44,6 +44,8 @@ Feature: Search
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And User <Contact1> is me
     And I see Sign In page
     And I Sign in using login <Contact1Email> and password <Contact1Password>
@@ -52,6 +54,8 @@ Feature: Search
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And User <Contact2> is me
     And I see Sign In page
     And I Sign in using login <Contact2Email> and password <Contact2Password>
