@@ -63,11 +63,10 @@ public abstract class IOSPage extends BasePage {
      * @throws Exception
      */
     private static ZetaIOSDriver fixUITreeIfBroken(final ZetaIOSDriver drv) throws Exception {
-        if (drv.findElements(By.name("//UIAWindow")).size() > 0) {
+        if (drv.findElements(By.xpath("//UIAWindow")).size() > 0) {
             return drv;
         }
         log.warn("Detected Appium UI tree corruption. Trying to fix...");
-        log.debug(drv.getPageSource());
         try {
             if (drv.getOrientation() == ScreenOrientation.PORTRAIT) {
                 drv.rotate(ScreenOrientation.LANDSCAPE);
@@ -76,6 +75,7 @@ public abstract class IOSPage extends BasePage {
                 drv.rotate(ScreenOrientation.PORTRAIT);
                 drv.rotate(ScreenOrientation.LANDSCAPE);
             }
+            Thread.sleep(500);
         } catch (WebDriverException e) {
             // pass silently
         }
