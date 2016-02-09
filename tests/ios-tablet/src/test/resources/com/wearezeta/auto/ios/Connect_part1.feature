@@ -274,7 +274,7 @@ Feature: Connect
     And I see 0 default message in the dialog
     And I see 0 photo in the dialog
     Given User <Contact> sends 1 encrypted message to user Myself
-    Then I see 1 default message in the dialog
+    Then I see 0 default messages in the dialog
 
     Examples: 
       | Name      | Contact   | Picture     |
@@ -301,7 +301,7 @@ Feature: Connect
     And I see 0 default message in the dialog
     And I see 0 photo in the dialog
     Given User <Contact> sends 1 encrypted message to user Myself
-    Then I see 1 default message in the dialog
+    Then I see 0 default messages in the dialog
 
     Examples: 
       | Name      | Contact   | Picture     |
