@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.pages;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
 
@@ -9,6 +10,7 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 public class SettingsPage extends IOSPage {
+    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private static final String xpathStrMenuContainer = "//UIATableView";
     private static final By xpathMenuContainer = By.xpath(xpathStrMenuContainer);
 
@@ -25,9 +27,13 @@ public class SettingsPage extends IOSPage {
     private static final Function<String, String> xpathDeleteDeviceButtonByName = devicename ->
             String.format("//UIAButton[contains(@name,'Delete %s')]", devicename);
 
+    private static final Function<String, String> xpathDeviceListEntry = device ->
+            String.format("//UIATableCell[contains(@name,'%s')]", device);
+
     private static final By nameDeleteButton = By.name("Delete");
 
-    private static final By xpathDeleteDevicePasswordField = By.xpath("//UIASecureTextField[1]/UIASecureTextField[contains(@value,'Password')]");
+    private static final By xpathDeleteDevicePasswordField = By.xpath("//UIASecureTextField[contains(@value,'Password')]");
+    //private static final By xpathDeleteDevicePasswordField = By.xpath("//UIAApplication[1]/UIAWindow[2]/UIAAlert[1]/UIAScrollView[1]/UIATableView[1]/UIATableCell[1]/UIASecureTextField[1]/UIASecureTextField[1]");
 
     public SettingsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -71,6 +77,12 @@ public class SettingsPage extends IOSPage {
     }
 
     public void typePasswordToConfirmDeleteDevice(String password) throws Exception {
+        password = usrMgr.findUserByPasswordAlias(password).getPassword();
         ((IOSElement)getElement(xpathDeleteDevicePasswordField)).setValue(password);
+    }
+
+    public boolean isDeviceVisibleInList(String device) throws Exception {
+        final By locator = By.xpath(xpathDeviceListEntry.apply(device));
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
 }

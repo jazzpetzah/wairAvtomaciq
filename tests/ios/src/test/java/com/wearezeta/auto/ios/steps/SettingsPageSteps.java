@@ -131,6 +131,25 @@ public class SettingsPageSteps {
     @When("^I confirm with my (.*) the deletion of the device$")
     public void IConfirmWithMyPasswordTheDeletionOfTheDevice(String password) throws Exception {
         getSettingsPage().typePasswordToConfirmDeleteDevice(password);
-        //pagesCollection.getCommonPage().acceptAlert();
+        pagesCollection.getCommonPage().acceptAlert();
+    }
+
+    /**
+     * Verifies that device is or is not in device settings list
+     *
+     * @param shouldNot equals to null if the device is in list
+     * @param device    name of device in list
+     * @throws Throwable
+     * @step. ^I (dont )?see device (.*) in devices list$
+     */
+    @Then("^I (dont )?see device (.*) in devices list$")
+    public void ISeeDeviceInDevicesList(String shouldNot, String device) throws Exception {
+        if (shouldNot == null) {
+            Assert.assertTrue("The device is not visible in the device list",
+                    getSettingsPage().isDeviceVisibleInList(device));
+        } else {
+            Assert.assertFalse("The device is still visible in the device list",
+                    getSettingsPage().isDeviceVisibleInList(device));
+        }
     }
 }
