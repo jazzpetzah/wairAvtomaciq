@@ -8,7 +8,7 @@ import org.openqa.selenium.By;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
-public class SingleConnectedUserDetalsPage extends
+public class SingleConnectedUserDetailsPage extends
 		AbstractConversationDetailsPage {
 	public final static Function<String, String> xpathNameByValue = value -> String
 			.format("//*[@id='ttv__participants__header' and @value='%s']",
@@ -18,8 +18,8 @@ public class SingleConnectedUserDetalsPage extends
 			.format("//*[@id='ttv__participants__sub_header' and @value='%s']",
 					value);
 
-	public SingleConnectedUserDetalsPage(Future<ZetaAndroidDriver> lazyDriver,
-			SingleUserPopover container) throws Exception {
+	public SingleConnectedUserDetailsPage(Future<ZetaAndroidDriver> lazyDriver,
+										  SingleUserPopover container) throws Exception {
 		super(lazyDriver, container);
 	}
 
