@@ -405,8 +405,6 @@ Feature: Calling
     And I accept incoming call
     And I see Accept second call alert
     And I press Accept button on alert
-    And I swipe right on Dialog page
-    And I tap on contact name <Contact5>
     Then I see mute call, end call and speakers buttons
     Then I see <NumberOf1on1CallAvatars> avatars in the group call bar
 
