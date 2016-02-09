@@ -190,17 +190,6 @@ public class CommonIOSSteps {
         pagesCollection.getCommonPage().clickKeyboardDeleteButton();
     }
 
-    /**
-     * Presses the return on keyboard
-     *
-     * @throws Exception
-     * @step. ^I press keyboard Return button$
-     */
-    @When("^I press keyboard Return button$")
-    public void IPressKeyboardReturnBtn() throws Exception {
-        pagesCollection.getCommonPage().clickKeyboardCommitButton();
-    }
-
     @When("^I scroll up page a bit$")
     public void IScrollUpPageABit() throws Exception {
         pagesCollection.getCommonPage().smallScrollUp();
@@ -288,7 +277,7 @@ public class CommonIOSSteps {
      *
      * @param seconds time in seconds to lock screen
      * @throws Exception
-     * @step.^I lock screen for (.*) seconds$
+     * @step. ^I lock screen for (.*) seconds$
      */
     @When("^I lock screen for (\\d+) seconds$")
     public void ILockScreen(int seconds) throws Exception {
@@ -533,7 +522,7 @@ public class CommonIOSSteps {
                             conversationName, DEFAULT_AUTOMATION_MESSAGE);
                 } else {
                     commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias,
-                            conversationName, DEFAULT_AUTOMATION_MESSAGE);
+                            conversationName, DEFAULT_AUTOMATION_MESSAGE, null);
                 }
             } else {
                 // group conversation
@@ -542,8 +531,26 @@ public class CommonIOSSteps {
                             conversationName, DEFAULT_AUTOMATION_MESSAGE);
                 } else {
                     commonSteps.UserSentOtrMessageToConversation(msgFromUserNameAlias,
-                            conversationName, DEFAULT_AUTOMATION_MESSAGE);
+                            conversationName, DEFAULT_AUTOMATION_MESSAGE, null);
                 }
+            }
+        }
+    }
+
+    @Given("^User (.*) sends (\\d+) encrypted messages? using device (.*) to (user|group conversation) (.*)$")
+    public void UserSendXMessagesToConversationUsingDevice(String msgFromUserNameAlias,
+                                                           int msgsCount, String deviceName,
+                                                           String conversationType,
+                                                           String conversationName) throws Exception {
+        for (int i = 0; i < msgsCount; i++) {
+            if (conversationType.equals("user")) {
+                // 1:1 conversation
+                commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias,
+                        conversationName, DEFAULT_AUTOMATION_MESSAGE, deviceName);
+            } else {
+                // group conversation
+                commonSteps.UserSentOtrMessageToConversation(msgFromUserNameAlias,
+                        conversationName, DEFAULT_AUTOMATION_MESSAGE, deviceName);
             }
         }
     }
@@ -555,20 +562,16 @@ public class CommonIOSSteps {
         if (conversationType.equals("user")) {
             // 1:1 conversation
             if (areEncrypted == null) {
-                commonSteps.UserSentMessageToConversation(userFromNameAlias,
-                        conversationName, msg);
+                commonSteps.UserSentMessageToConversation(userFromNameAlias, conversationName, msg);
             } else {
-                commonSteps.UserSentOtrMessageToConversation(userFromNameAlias,
-                        conversationName, msg);
+                commonSteps.UserSentOtrMessageToConversation(userFromNameAlias, conversationName, msg, null);
             }
         } else {
             // group conversation
             if (areEncrypted == null) {
-                commonSteps.UserSentMessageToConversation(userFromNameAlias,
-                        conversationName, msg);
+                commonSteps.UserSentMessageToConversation(userFromNameAlias, conversationName, msg);
             } else {
-                commonSteps.UserSentOtrMessageToConversation(userFromNameAlias,
-                        conversationName, msg);
+                commonSteps.UserSentOtrMessageToConversation(userFromNameAlias, conversationName, msg, null);
             }
         }
     }

@@ -49,14 +49,13 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog
     And I click Connect button on connect to dialog
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
     And I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message on Dialog page from user <Name>
+    And I see Pending Connect to <Contact> message on Dialog page
 
     Examples: 
       | Name      | Contact   | ContactEmail | Contact2  |
@@ -73,14 +72,13 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog
     And I click Connect button on connect to dialog
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
     And I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message on Dialog page from user <Name>
+    And I see Pending Connect to <Contact> message on Dialog page
 
     Examples: 
       | Name      | Contact   | ContactEmail | Contact2  |
@@ -232,7 +230,7 @@ Feature: Connect
     Given I see conversations list
     And I see user <Contact> in contact list
     When I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message on Dialog page from user <Name>
+    And I see Pending Connect to <Contact> message on Dialog page
     Then I see text input in dialog is not allowed
 
     Examples: 
@@ -249,7 +247,7 @@ Feature: Connect
     Given I see conversations list
     And I see user <Contact> in contact list
     When I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message on Dialog page from user <Name>
+    And I see Pending Connect to <Contact> message on Dialog page
     Then I see text input in dialog is not allowed
 
     Examples: 
@@ -271,16 +269,11 @@ Feature: Connect
     When I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I unblock user on iPad
     And I see 0 default message in the dialog
     And I see 0 photo in the dialog
-    And I navigate back to conversations list
-    #And I see People picker page
-    #And I click close button to dismiss people view
     Given User <Contact> sends 1 encrypted message to user Myself
-    When I tap on contact name <Contact>
     Then I see 1 default message in the dialog
 
     Examples: 
@@ -303,15 +296,12 @@ Feature: Connect
     When I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I unblock user on iPad
-    And I see 1 default message in the dialog
-    And I see 1 photo in the dialog
-    #And I click close button to dismiss people view
+    And I see 0 default message in the dialog
+    And I see 0 photo in the dialog
     Given User <Contact> sends 1 encrypted message to user Myself
-    When I tap on contact name <Contact>
-    Then I see 2 default messages in the dialog
+    Then I see 1 default message in the dialog
 
     Examples: 
       | Name      | Contact   | Picture     |
@@ -326,7 +316,6 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog
     And I click Connect button on connect to dialog
@@ -335,7 +324,6 @@ Feature: Connect
     When I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I see <Contact> user pending profile popover on iPad
 
@@ -353,7 +341,6 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog
     And I click Connect button on connect to dialog
@@ -362,7 +349,6 @@ Feature: Connect
     When I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I see <Contact> user pending profile popover on iPad
 
@@ -377,16 +363,12 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I re-enter the people picker if top people list is not there
-    And I see top people list on People picker page
     And I press the send an invite button
     And I press invite others button
     And I press the copy button
     And I click close Invite list button
     And I click clear button
     And I tap on contact name <Contact>
-    And I tap on text input
-    And I see keyboard
     And I tap and hold on message input
     And I click on popup Paste item
     And I send the message
@@ -404,15 +386,12 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I re-enter the people picker if top people list is not there
-    And I see top people list on People picker page
     And I press the send an invite button
     And I press invite others button
     And I press the copy button
     And I click close Invite list button
     And I click clear button
     And I tap on contact name <Contact>
-    And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
     And I send the message

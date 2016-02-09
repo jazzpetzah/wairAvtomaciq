@@ -70,19 +70,15 @@ public class LoginSteps {
         assert getWelcomePage().waitForInitialScreen() : "The initial screen was not shown";
         getWelcomePage().clickAreaCodeSelector();
         getAreaCodePage().selectAreaCode(PhoneNumber.WIRE_COUNTRY_PREFIX);
-        getWelcomePage().inputPhoneNumber(
-                self.getPhoneNumber().toString()
-                        .replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""));
+        getWelcomePage().inputPhoneNumber(self.getPhoneNumber().toString().replace(
+                PhoneNumber.WIRE_COUNTRY_PREFIX, ""));
         getWelcomePage().clickConfirm();
-        final String verificationCode = BackendAPIWrappers
-                .getLoginCodeByPhoneNumber(self.getPhoneNumber());
+        final String verificationCode = BackendAPIWrappers.getLoginCodeByPhoneNumber(self.getPhoneNumber());
         getVerificationPage().inputVerificationCode(verificationCode);
         getVerificationPage().clickConfirm();
-        Assert.assertTrue(
-                "Phone number verification code input screen is still visible",
-                getVerificationPage().waitUntilConfirmButtonDissapears());
-        Assert.assertTrue("Invalid verification code!", getVerificationPage()
-                .isIncorrectCodeErrorNotAppears());
+        Assert.assertTrue("Phone number verification code input screen is still visible",
+                getVerificationPage().waitUntilConfirmButtonDisappears());
+        Assert.assertTrue("Invalid verification code!", getVerificationPage().isIncorrectCodeErrorNotAppears());
     }
 
     private static final int PHONE_NUMBER_LOGIN_THRESHOLD = 60;
@@ -97,8 +93,7 @@ public class LoginSteps {
      * @step. ^I sign in using my email or phone number$
      */
     @Given("^I sign in using my email or phone number$")
-    public void ISignInUsingMyEmailOrPhoneNumber() throws Exception,
-            AssertionError {
+    public void ISignInUsingMyEmailOrPhoneNumber() throws Exception {
         if (random.nextInt(100) < PHONE_NUMBER_LOGIN_THRESHOLD) {
             ISignInUsingMyPhoneNumber();
         } else {

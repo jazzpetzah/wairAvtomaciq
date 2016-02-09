@@ -326,54 +326,49 @@ public final class CommonSteps {
 
     public void UserSentMessageToUser(String msgFromUserNameAlias,
                                       String dstUserNameAlias, String message) throws Exception {
-        ClientUser msgFromUser = usrMgr
-                .findUserByNameOrNameAlias(msgFromUserNameAlias);
-        ClientUser msgToUser = usrMgr
-                .findUserByNameOrNameAlias(dstUserNameAlias);
+        ClientUser msgFromUser = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
+        ClientUser msgToUser = usrMgr.findUserByNameOrNameAlias(dstUserNameAlias);
         BackendAPIWrappers.sendDialogMessage(msgFromUser, msgToUser, message);
     }
 
     public void UserSentOtrMessageToUser(String msgFromUserNameAlias,
-                                         String dstUserNameAlias, String message) throws Exception {
-        ClientUser msgFromUser = usrMgr
-                .findUserByNameOrNameAlias(msgFromUserNameAlias);
-        ClientUser msgToUser = usrMgr
-                .findUserByNameOrNameAlias(dstUserNameAlias);
-        SEBridge.getInstance().sendConversationMessage(msgFromUser,
-                msgToUser.getId(), message);
+            String dstUserNameAlias, String message, String deviceName) throws Exception {
+        ClientUser msgFromUser = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
+        ClientUser msgToUser = usrMgr.findUserByNameOrNameAlias(dstUserNameAlias);
+        SEBridge.getInstance().sendConversationMessage(msgFromUser, msgToUser.getId(), message, deviceName);
+    }
+
+    public void UserSentOtrMessageToUser(String msgFromUserNameAlias,
+            String dstUserNameAlias, String message) throws Exception {
+        UserSentOtrMessageToUser(msgFromUserNameAlias, dstUserNameAlias, message, null);
     }
 
     public void UserHotPingedConversation(String hotPingFromUserNameAlias,
                                           String dstConversationName) throws Exception {
-        ClientUser hotPingFromUser = usrMgr
-                .findUserByNameOrNameAlias(hotPingFromUserNameAlias);
-        dstConversationName = usrMgr.replaceAliasesOccurences(
-                dstConversationName, FindBy.NAME_ALIAS);
-        BackendAPIWrappers.sendHotPingToConversation(hotPingFromUser,
-                dstConversationName, pingId);
+        ClientUser hotPingFromUser = usrMgr.findUserByNameOrNameAlias(hotPingFromUserNameAlias);
+        dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
+        BackendAPIWrappers.sendHotPingToConversation(hotPingFromUser, dstConversationName, pingId);
         Thread.sleep(1000);
     }
 
     public void UserSentMessageToConversation(String userFromNameAlias,
                                               String dstConversationName, String message) throws Exception {
-        ClientUser userFrom = usrMgr
-                .findUserByNameOrNameAlias(userFromNameAlias);
-        dstConversationName = usrMgr.replaceAliasesOccurences(
-                dstConversationName, FindBy.NAME_ALIAS);
-        BackendAPIWrappers.sendDialogMessageByChatName(userFrom,
-                dstConversationName, message);
+        ClientUser userFrom = usrMgr.findUserByNameOrNameAlias(userFromNameAlias);
+        dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
+        BackendAPIWrappers.sendDialogMessageByChatName(userFrom, dstConversationName, message);
     }
 
     public void UserSentOtrMessageToConversation(String userFromNameAlias,
-                                                 String dstConversationName, String message) throws Exception {
-        ClientUser userFrom = usrMgr
-                .findUserByNameOrNameAlias(userFromNameAlias);
-        dstConversationName = usrMgr.replaceAliasesOccurences(
-                dstConversationName, FindBy.NAME_ALIAS);
-        String dstConvId = BackendAPIWrappers.getConversationIdByName(userFrom,
-                dstConversationName);
-        seBridge.sendConversationMessage(userFrom, dstConvId,
-                message);
+            String dstConversationName, String message, String deviceName) throws Exception {
+        ClientUser userFrom = usrMgr.findUserByNameOrNameAlias(userFromNameAlias);
+        dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
+        String dstConvId = BackendAPIWrappers.getConversationIdByName(userFrom, dstConversationName);
+        seBridge.sendConversationMessage(userFrom, dstConvId, message, deviceName);
+    }
+
+    public void UserSentOtrMessageToConversation(String userFromNameAlias,
+            String dstConversationName, String message) throws Exception {
+        UserSentOtrMessageToConversation(userFromNameAlias, dstConversationName, message, null);
     }
 
     public void UserSentImageToConversation(String imageSenderUserNameAlias,

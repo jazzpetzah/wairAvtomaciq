@@ -19,6 +19,7 @@ public abstract class IOSPage extends BasePage {
     private static final Logger log = ZetaLogger.getLog(IOSPage.class.getSimpleName());
 
     public final static long IOS_DRIVER_INIT_TIMEOUT = 1000 * 30 * 5;
+    public static final int DRIVER_CREATION_RETRIES_COUNT = 2;
 
     private static final int DEFAULT_RETRY_COUNT = 2;
 
@@ -42,7 +43,7 @@ public abstract class IOSPage extends BasePage {
     private IOSKeyboard onScreenKeyboard;
 
     protected long getDriverInitializationTimeout() {
-        return IOS_DRIVER_INIT_TIMEOUT + IOS_DRIVER_INIT_TIMEOUT / 2;
+        return IOS_DRIVER_INIT_TIMEOUT * DRIVER_CREATION_RETRIES_COUNT;
     }
 
     public IOSPage(Future<ZetaIOSDriver> driver) throws Exception {
@@ -66,12 +67,16 @@ public abstract class IOSPage extends BasePage {
             return drv;
         }
         log.warn("Detected Appium UI tree corruption. Trying to fix...");
-        if (drv.getOrientation() == ScreenOrientation.PORTRAIT) {
-            drv.rotate(ScreenOrientation.LANDSCAPE);
-            drv.rotate(ScreenOrientation.PORTRAIT);
-        } else {
-            drv.rotate(ScreenOrientation.PORTRAIT);
-            drv.rotate(ScreenOrientation.LANDSCAPE);
+        try {
+            if (drv.getOrientation() == ScreenOrientation.PORTRAIT) {
+                drv.rotate(ScreenOrientation.LANDSCAPE);
+                drv.rotate(ScreenOrientation.PORTRAIT);
+            } else {
+                drv.rotate(ScreenOrientation.PORTRAIT);
+                drv.rotate(ScreenOrientation.LANDSCAPE);
+            }
+        } catch (WebDriverException e) {
+            // pass silently
         }
         return drv;
     }
@@ -124,41 +129,42 @@ public abstract class IOSPage extends BasePage {
         getElement(nameEditingItemPaste, "Paste popup is not visible").click();
     }
 
-    private void clickAtSimulatorElement(WebElement el) throws Exception {
-        final Point elLocation = el.getLocation();
+    private void clickAtSimulator(int x, int y) throws Exception {
         final Dimension windowSize = getDriver().manage().window().getSize();
-        IOSSimulatorHelper.clickAt(String.format("%.2f", (elLocation.x + 10) * 1.0 / windowSize.width),
-                String.format("%.2f", (elLocation.y + 10) * 1.0 / windowSize.height));
+        IOSSimulatorHelper.clickAt(String.format("%.2f", x * 1.0 / windowSize.width),
+                String.format("%.2f", y * 1.0 / windowSize.height));
     }
 
     /**
      * !!! this method is not able to enter line breaks !!!
      *
-     * @param dstElement the destination eit field
-     * @param str        string to enter
+     * @param dstElement          the destination eit field
+     * @param relativeClickPointX where to click the element before type, 0% <= X <= 100%
+     * @param relativeClickPointY where to click the element before type, 0% <= Y <= 100%
+     * @param str                 string to enter
      * @throws Exception
      */
-    public void inputStringFromKeyboard(WebElement dstElement, String str,
-                                        boolean useAutocompleteWorkaround) throws Exception {
+    public void inputStringFromKeyboardAndCommit(WebElement dstElement, int relativeClickPointX, int relativeClickPointY,
+                                                 String str, boolean useAutocompleteWorkaround) throws Exception {
+        final Dimension elSize = dstElement.getSize();
+        final Point elLocation = dstElement.getLocation();
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            clickAtSimulatorElement(dstElement);
-            IOSSimulatorHelper.typeString(str, useAutocompleteWorkaround);
-        } else {
-            DriverUtils.tapByCoordinates(getDriver(), dstElement);
-            this.onScreenKeyboard.typeString(str);
-        }
-    }
-
-    public void inputStringFromKeyboardAndCommit(WebElement dstElement, String str,
-                                                 boolean useAutocompleteWorkaround) throws Exception {
-        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            clickAtSimulatorElement(dstElement);
+            clickAtSimulator(elLocation.x + (relativeClickPointX * elSize.width) / 100,
+                    elLocation.y + (relativeClickPointY * elSize.height) / 100);
             IOSSimulatorHelper.typeStringAndPressEnter(str, useAutocompleteWorkaround);
         } else {
-            DriverUtils.tapByCoordinates(getDriver(), dstElement);
+            getDriver().tap(1,
+                    elLocation.x + (relativeClickPointX * elSize.width) / 100,
+                    elLocation.y + (relativeClickPointY * elSize.height) / 100,
+                    DriverUtils.SINGLE_TAP_DURATION);
             this.onScreenKeyboard.typeString(str);
             this.clickKeyboardCommitButton();
         }
+    }
+
+    public void inputStringFromKeyboardAndCommit(WebElement dstElement, String str, boolean useAutocompleteWorkaround)
+            throws Exception {
+        inputStringFromKeyboardAndCommit(dstElement, 50, 50, str, useAutocompleteWorkaround);
     }
 
     public boolean isKeyboardVisible() throws Exception {

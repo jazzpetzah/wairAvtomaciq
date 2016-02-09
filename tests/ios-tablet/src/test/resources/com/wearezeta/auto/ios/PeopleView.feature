@@ -9,11 +9,9 @@ Feature: People View
     When I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
-    And I see user <Contact1> found on People picker page
     And I tap on conversation <Contact1> in search result
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact2>
-    And I see user <Contact2> found on People picker page
     And I tap on conversation <Contact2> in search result
     And I click on Go button
     Then I see group chat page with users <Contact1>,<Contact2>
@@ -32,11 +30,9 @@ Feature: People View
     When I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
-    And I see user <Contact1> found on People picker page
     And I tap on conversation <Contact1> in search result
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact2>
-    And I see user <Contact2> found on People picker page
     And I tap on conversation <Contact2> in search result
     And I click on Go button
     Then I see group chat page with users <Contact1>,<Contact2>
@@ -519,7 +515,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C2450 @staging @id2336
+  @C2450 @regression @id2336
   Scenario Outline: Verify you can unblock someone from a group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -559,7 +555,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | UnblockFromGroup |
 
-  @C2708 @staging @id2439
+  @C2708 @regression @id2439
   Scenario Outline: Verify displaying only connected users in the search in group chat [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -739,7 +735,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | Image       |
       | user1Name | user2Name | user3Name | ForDeletion   | testing.jpg |
 
-  @C1834 @staging @id3976 @ZIOS-5063
+  @C1834 @regression @id3976
   Scenario Outline: Verify removing the content from the group conversation via participant view [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -786,7 +782,6 @@ Feature: People View
     And I wait until popover is closed
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
-    And I see user <Contact1> found on People picker page
     And I tap on conversation <Contact1> in search result
     And I click open conversation button on People picker page
     Then I see the only message in dialog is system message CONNECTED TO <Contact1>
@@ -815,7 +810,6 @@ Feature: People View
     And I wait until popover is closed
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
-    And I see user <Contact1> found on People picker page
     And I tap on conversation <Contact1> in search result
     And I click open conversation button on People picker page
     Then I see the only message in dialog is system message CONNECTED TO <Contact1>
@@ -965,7 +959,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | MaxGroupChatNameLenght |
       | user1Name | user2Name | user3Name | TESTCHAT      | 65                     |
 
-  @C2725 @staging @id3950
+  @C2725 @regression @id3950
   Scenario Outline: Verify length limit for group conversation name [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

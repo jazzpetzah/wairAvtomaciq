@@ -1,6 +1,6 @@
 Feature: Search
 
-  @C2783 @regression @id2147
+  @C1035 @rc @regression @id2147
   Scenario Outline: Verify search by email
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -8,14 +8,13 @@ Feature: Search
     When I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
-    And I press keyboard Return button
     Then I see user <ContactName> found on People picker page
 
     Examples:
       | Name      | ContactEmail | ContactName |
       | user1Name | user2Email   | user2Name   |
 
-  @C1036 @regression @rc @id2148 @id2543
+  @C1036 @rc @regression @id2148 @id2543
   Scenario Outline: Verify search by name
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -50,7 +49,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @C3167 @regression @rc @id1394
+  @C3167 @rc @regression @id1394
   Scenario Outline: Start 1:1 chat with users from Top Connections
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -68,7 +67,7 @@ Feature: Search
       | Name      | UserCount |
       | user1Name | 4         |
 
-  @C1069 @regression @rc @id1150
+  @C1069 @rc @regression @id1150
   Scenario Outline: Start group chat with users from Top Connections
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -89,7 +88,7 @@ Feature: Search
       | Name      | ConvoName    | UserCount |
       | user1Name | TopGroupTest | 4         |
 
-  @C40 @regression @rc @id1454
+  @C40 @rc @regression @id1454
   Scenario Outline: Verify sending a connection request to user chosen from search
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -116,11 +115,8 @@ Feature: Search
     Given I see conversations list
     And I open search by taping on it
     And I re-enter the people picker if top people list is not there
-    And I see top people list on People picker page
     And I tap on 3 top connections but not <Contact>
-    #And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     Then I see that <Number> contacts are selected
 
@@ -139,7 +135,6 @@ Feature: Search
     And I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I unblock user
     And I type the default message
@@ -151,23 +146,22 @@ Feature: Search
       | user1Name | user2Name |
 
   @C2785 @regression @id2149
-  Scenario Outline: Verify search by second name (something after space)
+  Scenario Outline: Verify search by part of the name
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
-    Given User <Contact> change name to <NewName>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I wait until <LastName> exists in backend search results
+    And I wait until <Contact> exists in backend search results
     And I tap on Search input on People picker page
-    And I input in People picker search field user name <LastName>
-    Then I see user <NewName> found on People picker page
+    And I input in People picker search field first 5 letters of user name <Contact>
+    Then I see user <Contact> found on People picker page
 
     Examples:
-      | Name      | Contact   | NewName  | LastName |
-      | user1Name | user2Name | NEW NAME | NAME     |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
-  @C1049 @regression @rc @id3282
+  @C1049 @rc @regression @id3282
   Scenario Outline: Verify starting a call with action button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -187,7 +181,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C1053 @regression @rc @id3286
+  @C1053 @rc @regression @id3286
   Scenario Outline: Verify sharing a photo to a newly created group conversation with action button
     Given There are 4 users where <Name> is me
     Given Myself is connected to all other users
@@ -235,7 +229,6 @@ Feature: Search
     Given I see conversations list
     When I open search by taping on it
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     When I tap on conversation <Contact> in search result
     Then I see action buttons appeared on People picker page
 
@@ -337,7 +330,6 @@ Feature: Search
     And I see action buttons disappeared on People picker page
     And I see Invite more people button
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I DONT see Invite more people button
     And I see action buttons appeared on People picker page

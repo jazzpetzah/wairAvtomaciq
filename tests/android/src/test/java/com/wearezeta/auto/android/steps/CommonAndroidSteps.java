@@ -286,7 +286,9 @@ public class CommonAndroidSteps {
     public void WhenITake1stScreenshot(String first) throws Exception {
         final Optional<BufferedImage> screenshot = pagesCollection.getCommonPage().takeScreenshot();
         if (screenshot.isPresent()) {
-            if (first != null || (images.size() >= 2 && first == null)) images.clear();
+            if (first != null || images.size() >= 2) {
+                images.clear();
+            }
             images.add(screenshot.get());
 //            File outputfile = new File("/Project/screen_"+System.nanoTime()+".png");
 //            ImageIO.write(screenshot.get(), "png", outputfile);
@@ -315,15 +317,14 @@ public class CommonAndroidSteps {
     /**
      * A user adds another user to a group chat
      *
-     * @param user that adds someone to a chat
+     * @param user          that adds someone to a chat
      * @param userToBeAdded user that gets added by someone
-     * @param group group chat you get added to
+     * @param group         group chat you get added to
      * @throws Throwable
      * @step. ^User (.*) adds [Uu]ser (.*) to group chat (.*)$
      */
     @When("^User (.*) adds [Uu]ser (.*) to group chat (.*)$")
-    public void UserAddsUserToGroupChat(String user, String userToBeAdded,
-            String group) throws Exception {
+    public void UserAddsUserToGroupChat(String user, String userToBeAdded, String group) throws Exception {
         commonSteps.UserXAddedContactsToGroupChat(user, userToBeAdded, group);
     }
 
@@ -567,7 +568,7 @@ public class CommonAndroidSteps {
      *
      * @param pingFromUserNameAlias The user to do the pinging
      * @param dstConversationName   the target conversation to send the ping to
-     * @param isSecure equals null if ping should not be secure
+     * @param isSecure              equals null if ping should not be secure
      * @throws Exception
      * @step. ^User (\\w+) (securely )?pings? conversation (.*)$
      */
@@ -586,7 +587,7 @@ public class CommonAndroidSteps {
      *
      * @param hotPingFromUserNameAlias The user to do the hotpinging
      * @param dstConversationName      the target converation to send the ping to
-     * @param isSecure equals null if ping should not be secure
+     * @param isSecure                 equals null if ping should not be secure
      * @throws Exception
      * @step. ^User (\\w+) (securely )?hotpings? conversation (.*)$
      */
@@ -605,28 +606,29 @@ public class CommonAndroidSteps {
      *
      * @param msgFromUserNameAlias the user who sends the message
      * @param msg                  a message to send. Random string will be sent if it is empty
+     * @param deviceName           the device to use when using encryption
      * @param dstConvoName         The user to receive the message
      * @param isEncrypted          whether the message has to be encrypted
      * @param convoType            either 'user' or 'group conversation'
      * @throws Exception
-     * @step. ^User (.*) sends? (encrypted )?message (.*)to user (.*)$
+     * @step. ^User (.*) sends? (encrypted )?message \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$
      */
-    @When("^User (.*) sends? (encrypted )?message (.*)to (user|group conversation) (.*)$")
+    @When("^User (.*) sends? (encrypted )?message \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$")
     public void UserSendMessageToConversation(String msgFromUserNameAlias, String isEncrypted,
-                                              String msg, String convoType, String dstConvoName) throws Exception {
+                                              String msg, String deviceName, String convoType, String dstConvoName) throws Exception {
         final String msgToSend = (msg == null || msg.trim().length() == 0) ?
                 CommonUtils.generateRandomString(10) : msg.trim();
         if (convoType.equals("user")) {
             if (isEncrypted == null) {
                 commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend);
             } else {
-                commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend);
+                commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
             }
         } else {
             if (isEncrypted == null) {
                 commonSteps.UserSentMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend);
             } else {
-                commonSteps.UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend);
+                commonSteps.UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
             }
         }
     }
@@ -637,15 +639,16 @@ public class CommonAndroidSteps {
      * @param msgFromUserNameAlias the user who sends the message
      * @param count                number of messages to send
      * @param dstUserNameAlias     The user to receive the message
+     * @param deviceName           the device to use when using encryption
      * @param areEncrypted         Whether the messages should be encrypted
      * @throws Exception
-     * @step. ^User (.*) sends? (\d+) (encrypted )?messages? to user (.*)$
+     * @step. ^User (.*) sends? (\\d+) (encrypted )?messages? (?:via device (.*)\\s)?to user (.*)$
      */
-    @When("^User (.*) sends? (\\d+) (encrypted )?messages? to user (.*)$")
+    @When("^User (.*) sends? (\\d+) (encrypted )?messages? (?:via device (.*)\\s)?to user (.*)$")
     public void UserSendXMessagesToConversation(String msgFromUserNameAlias, int count, String areEncrypted,
-                                                String dstUserNameAlias) throws Exception {
+                                                String deviceName, String dstUserNameAlias) throws Exception {
         for (int i = 0; i < count; i++) {
-            UserSendMessageToConversation(msgFromUserNameAlias, areEncrypted, null, "user", dstUserNameAlias);
+            UserSendMessageToConversation(msgFromUserNameAlias, areEncrypted, null, deviceName, "user", dstUserNameAlias);
         }
     }
 
@@ -968,7 +971,7 @@ public class CommonAndroidSteps {
      * @throws Exception
      * @step. User (.*) adds new devices (.*)$
      */
-    @When("^User (.*) adds new devices (.*)$")
+    @When("^User (.*) adds new devices? (.*)$")
     public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
         final List<String> names = CommonSteps.splitAliases(deviceNames);
         final int poolSize = 2;  // Runtime.getRuntime().availableProcessors()

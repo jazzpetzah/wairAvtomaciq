@@ -60,11 +60,14 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     private static final By xpathActionMenu = By
             .xpath("//UIAStaticText[following-sibling::UIAButton[@name='CANCEL'] and @visible='true']");
 
-    private static final By nameDevicesButton = By.name("DEVICES");
+    private static final String xpathStrDevicesList = xpathStrMainWindow + "/UIATableView[1]/UIATableCell";
+    private static final By xpathDevicesList = By.xpath(xpathStrDevicesList);
+    private static final Function<Integer, String> xpathStrDeviceByIndex = idx ->
+            String.format("%s[%s]", xpathStrDevicesList, idx);
 
-    private static final By xpathDevicesList = By
-            .xpath(xpathStrMainWindow + "/UIATableView[1]/UIATableCell");
-
+    // FIXME: replace this with By.name("VerifiedShield") when available
+    private static final By xpathVerifiedShield =
+            By.xpath(xpathStrMainWindow + "/UIAImage[@width='16' and @height='16']");
 
     public OtherUserPersonalInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -118,6 +121,10 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     public void confirmRemove() throws Exception {
         getElement(nameConfirmRemoveButton).click();
+        if(!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConfirmRemoveButton)) {
+            throw new IllegalStateException("Confirm remove dialog should be autoclosed");
+        }
+        
     }
 
     public boolean isUserNameVisible(String name) throws Exception {
@@ -168,14 +175,27 @@ public class OtherUserPersonalInfoPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathActionMenu);
     }
 
-    public void clickDevicesButton() throws Exception {
-        getElement(nameDevicesButton).click();
-    }
-
     public int getParticipantDevicesCount() throws Exception {
         if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathDevicesList)) {
             return getElements(xpathDevicesList).size();
         }
         return 0;
+    }
+
+    public void openDeviceDetailsPage(int deviceIndex) throws Exception {
+        final By locator = By.xpath(xpathStrDeviceByIndex.apply(deviceIndex));
+        getElement(locator).click();
+    }
+
+    public boolean isShieldIconVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathVerifiedShield);
+    }
+
+    public boolean isShieldIconNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathVerifiedShield);
+    }
+
+    public void switchToTab(String tabName) throws Exception {
+        getElement(By.name(tabName.toUpperCase())).click();
     }
 }

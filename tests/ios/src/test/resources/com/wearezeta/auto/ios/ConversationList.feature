@@ -1,6 +1,6 @@
 Feature: Conversation List
 
-  @C836 @regression @rc @id1333
+  @C836 @rc @regression @id1333
   Scenario Outline: Unarchive conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -16,7 +16,7 @@ Feature: Conversation List
       | Name      | ArchivedUser |
       | user1Name | user2Name    |
 
-  @C352 @regression @rc @id1332 @id2171 @id2172
+  @C352 @rc @regression @id1332 @id2171 @id2172
   Scenario Outline: Verify archive a conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -113,7 +113,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | ArchiveGroupChat |
 
-  @C3177 @regression @rc @id1369
+  @C3177 @regression @id1369
   Scenario Outline: Verify Ping animation in the conversations list
     Given There are 2 users where <Name> is me
     Given User Myself removes his avatar picture
@@ -202,7 +202,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C848 @regression @id3314
+  @C848 @rc @regression @id3314
   Scenario Outline: Verify leaving group conversation from the action menu
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -225,7 +225,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName   |
       | user1Name | user2Name | user3Name | LeaveActionMenu |
 
-  @C840 @regression @rc @id3315
+  @C840 @rc @regression @id3315
   Scenario Outline: Verify removing the content from the group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -251,7 +251,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
       | user1Name | user2Name | user3Name | TESTCHAT      | testing.jpg |
 
-  @C842 @regression @rc @id3318
+  @C842 @rc @regression @id3318
   Scenario Outline: Verify removing the history from 1-to1 conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -480,7 +480,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C366 @regression @rc @id1075
+  @C366 @rc @regression @id1075
   Scenario Outline: Verify messages are marked as read with disappearing unread dot
     Given There are 2 users where <Name> is me
     Given User Myself removes his avatar picture

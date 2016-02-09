@@ -327,6 +327,8 @@ public final class WebAppLocators {
 
 		public static String cssAcceptCallButton = "[data-uie-name='do-call-controls-call-accept']";
 
+		public static String cssAcceptVideoCallButton = "[data-uie-name='do-call-controls-video-accept']";
+
 		public static String cssEndCallButton = "[data-uie-name='do-call-controls-call-cancel']";
 
 		public static String cssSilenceIncomingCallButton = "[data-uie-name='do-call-controls-call-ignore']";
@@ -524,6 +526,9 @@ public final class WebAppLocators {
 				+ "//*[@data-uie-name='do-set-picture']";
 
 		public static String cssDropZone = "#self-upload .self-upload-center";
+	}
+	public static final class VideoCallPage {
+		public static final String cssEndVideoCallButton = "[data-uie-name='do-call-controls-call-cancel']";
 	}
 
 	public static final class WarningPage {

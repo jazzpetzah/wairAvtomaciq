@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
+import com.wearezeta.auto.web.pages.HistoryInfoPage;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
@@ -38,8 +39,8 @@ public class LoginPageSteps {
 	 * @throws AssertionError
 	 *             if login operation was unsuccessful
 	 */
-	@Given("^I Sign in using login (.*) and password (.*)$")
-	public void ISignInUsingLoginAndPassword(String login, String password)
+	@Given("^I Sign in( temporary)? using login (.*) and password (.*)$")
+	public void ISignInUsingLoginAndPassword(String temporary, String login, String password)
 			throws Exception {
 		try {
 			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
@@ -60,8 +61,15 @@ public class LoginPageSteps {
 				+ password);
 		this.IEnterEmail(login);
 		this.IEnterPassword(password);
-		this.ICheckOptionToRememberMe(null);
-		this.IPressSignInButton();
+		if(temporary != null) {
+			this.IPressSignInButton();
+		} else {
+			this.ICheckOptionToRememberMe(null);
+			this.IPressSignInButton();
+			HistoryInfoPageSteps historyInfoPageSteps = new HistoryInfoPageSteps();
+			historyInfoPageSteps.ISeeConfirmButton();
+			historyInfoPageSteps.IClickConfirmButton();
+		}
 	}
 
 	/**

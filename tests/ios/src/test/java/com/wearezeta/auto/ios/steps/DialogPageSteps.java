@@ -86,8 +86,7 @@ public class DialogPageSteps {
     public void ISeeUserPingedMessageTheDialog(String user) throws Throwable {
         String username = usrMgr.findUserByNameOrNameAlias(user).getName();
         String expectedPingMessage = username.toUpperCase() + " PINGED";
-        Assert.assertTrue(getDialogPage().isMessageVisible(expectedPingMessage)
-                || getGroupChatPage().isMessageVisible(expectedPingMessage));
+        Assert.assertTrue(getDialogPage().isMessageVisible(expectedPingMessage));
     }
 
     @When("^I type the default message and send it$")
@@ -148,23 +147,39 @@ public class DialogPageSteps {
                         actualCount, expectedCount), actualCount == expectedCount);
     }
 
-    @Then("I see last message in dialog is expected message (.*)")
-    public void ThenISeeLasMessageInTheDialogIsExpected(String msg)
-            throws Throwable {
+    @Then("^I see last message in dialog (is|contains) expected message (.*)")
+    public void ThenISeeLasMessageInTheDialogIsExpected(String operation, String msg) throws Exception {
         String dialogLastMessage = getDialogPage().getLastMessageFromDialog().orElseThrow(() ->
                 new AssertionError("No messages are present in the conversation view")
         );
         if (!Normalizer.isNormalized(dialogLastMessage, Form.NFC)) {
-            dialogLastMessage = Normalizer.normalize(dialogLastMessage,
-                    Form.NFC);
+            dialogLastMessage = Normalizer.normalize(dialogLastMessage, Form.NFC);
         }
-
         if (!Normalizer.isNormalized(msg, Form.NFC)) {
-            dialogLastMessage = Normalizer.normalize(msg, Form.NFC);
+            msg = Normalizer.normalize(msg, Form.NFC);
         }
+        if (operation.equals("is")) {
+            Assert.assertTrue(
+                    String.format("The last message in the conversation '%s' is different from the expected one '%s'",
+                            dialogLastMessage, msg), dialogLastMessage.equals(msg));
+        } else {
+            Assert.assertTrue(
+                    String.format("The last message in the conversation '%s' does not contain the expected one '%s'",
+                            dialogLastMessage, msg), dialogLastMessage.contains(msg));
+        }
+    }
 
-        Assert.assertTrue("Message is different, actual: " + dialogLastMessage
-                + " expected: " + msg, dialogLastMessage.equals(msg));
+    /**
+     * Verify whether the expected message exists in the convo view
+     *
+     * @step. ^I see the conversation view contains message (.*)
+     * @param expectedMsg the expected message
+     * @throws Exception
+     */
+    @Then("^I see the conversation view contains message (.*)")
+    public void ISeeConversationMessage(String expectedMsg) throws Exception {
+        Assert.assertTrue(String.format("The expected message '%s' is not visible in the conversation view", expectedMsg),
+                getDialogPage().isMessageVisible(expectedMsg));
     }
 
     /**
@@ -197,22 +212,21 @@ public class DialogPageSteps {
     /**
      * Click call button to start a call
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I press call button$
      */
     @When("^I press call button$")
-    public void IPressCallButton() throws Throwable {
+    public void IPressCallButton() throws Exception {
         getDialogPage().pressCallButton();
     }
 
     @When("^I click Ping button$")
-    public void IPressPingButton() throws Throwable {
+    public void IPressPingButton() throws Exception {
         getDialogPage().pressPingButton();
     }
 
-    @Then("^I see Pending Connect to (.*) message on Dialog page from user (.*)$")
-    public void ISeePendingConnectMessage(String contact, String user)
-            throws Throwable {
+    @Then("^I see Pending Connect to (.*) message on Dialog page$")
+    public void ISeePendingConnectMessage(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         Assert.assertTrue(String.format("Connecting to %s is not visible", contact),
                 getDialogPage().isConnectingToUserConversationLabelVisible(contact));
@@ -819,40 +833,17 @@ public class DialogPageSteps {
     }
 
     /**
-     * Verifies that link is seen in conversation view
-     *
-     * @param link that we sent to user
-     * @throws Throwable
-     * @step. ^I see Link (.*) in dialog$
-     */
-    @When("^I see Link (.*) in dialog$")
-    public void ISeeLinkInDialog(String link) throws Throwable {
-        Assert.assertEquals(link.toLowerCase(), getDialogPage()
-                .getLastMessageFromDialog().orElseThrow(() ->
-                        new AssertionError("No messages are present in the conversation view")
-                ).toLowerCase());
-    }
-
-    /**
      * Tap on the sent link to open it
+     * There is no way to simply detect the position of the link in the message cell
+     * That is why we assume it is located at the beginning of the string
      *
-     * @throws Throwable
-     * @step. ^I tap on Link$
+     * @param msgStartingWithLink the message containing a clickable link at the beginning
+     * @throws Exception
+     * @step. ^I tap on message "(.*)"$
      */
-    @When("^I tap on Link$")
-    public void ITapOnLink() throws Throwable {
-        getDialogPage().tapOnLink();
-    }
-
-    /**
-     * Taps on a link that got sent together with a message
-     *
-     * @throws Throwable
-     * @step. ^I tap on Link with a message$
-     */
-    @When("^I tap on Link with a message$")
-    public void ITapOnLinkWithAMessage() throws Throwable {
-        getDialogPage().tapOnLinkWithinAMessage();
+    @When("^I tap on message \"(.*)\"$")
+    public void ITapOnLink(String msgStartingWithLink) throws Exception {
+        getDialogPage().tapMessage(msgStartingWithLink);
     }
 
     /**
@@ -953,5 +944,23 @@ public class DialogPageSteps {
     @When("^I click send button on keyboard$")
     public void iClickSendButtonOnKeyboard() throws Exception {
         getDialogPage().clickKeyboardCommitButton();
+    }
+
+    /**
+     * Verify whether shield icon is visible next to convo input field
+     *
+     * @param shouldNotSee equals to null is the shield should be visible
+     * @throws Exception
+     * @step, ^I (do not )?see shield icon next to conversation input field$"
+     */
+    @Then("^I (do not )?see shield icon next to conversation input field$")
+    public void ISeeShieldIconNextNextToInputField(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue("The shield icon is not visible next to the convo input field",
+                    getDialogPage().isShieldIconVisibleNextToInputField());
+        } else {
+            Assert.assertTrue("The shield icon is visible next to the convo input field, but should be hidden",
+                    getDialogPage().isShieldIconInvisibleNextToInputField());
+        }
     }
 }

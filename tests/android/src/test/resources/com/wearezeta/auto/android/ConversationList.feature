@@ -27,7 +27,7 @@ Feature: Conversation List
       | user1Name | user2Name |
 
   @C822 @id4042 @regression @rc
-  Scenario Outline: (AN-2969) Verify I can delete a 1:1 conversation from conversation list
+  Scenario Outline: (AN-2875) Verify I can delete a 1:1 conversation from conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -85,7 +85,7 @@ Feature: Conversation List
       | user1Name | user2Name | user3Name | DELETE        | Tschuessii | testing.jpg | https://open.spotify.com/track/0p6GeAWS4VCZddxNbBtEss |
 
   @C445 @id4053 @regression
-  Scenario Outline: Verify I can delete and leave a group conversation from conversation list
+  Scenario Outline: (BUG AN-3438) Verify I can delete and leave a group conversation from conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>

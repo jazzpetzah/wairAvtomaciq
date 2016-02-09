@@ -130,7 +130,6 @@ Feature: Search
     Given I see conversations list
     When I open search by taping on it
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I see action buttons appeared on People picker page
 
@@ -147,7 +146,6 @@ Feature: Search
     Given I see conversations list
     When I open search by taping on it
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I see action buttons appeared on People picker page
 
@@ -315,7 +313,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @C2801 @staging @id4119
+  @C2801 @regression @id4119
   Scenario Outline: Verify action buttons appear after choosing user from search results [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -331,7 +329,6 @@ Feature: Search
     And I see action buttons disappeared on People picker page
     And I see Invite more people button
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I DONT see Invite more people button
     And I see action buttons appeared on People picker page
@@ -344,7 +341,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2802 @staging @id4120
+  @C2802 @regression @id4120
   Scenario Outline: Verify action buttons appear after choosing user from search results [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -361,7 +358,6 @@ Feature: Search
     And I see action buttons disappeared on People picker page
     And I see Invite more people button
     And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I DONT see Invite more people button
     And I see action buttons appeared on People picker page

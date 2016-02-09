@@ -44,9 +44,7 @@ Feature: Registration
     And I enter activation code
     And I accept terms of service
     And I fill in name <Name> with leading and trailing spaces and hit Enter
-    And I press Choose Own Picture button
-    And I press Choose Photo button
-    And I choose a picture from camera roll
+    And I press Keep This One button
     Then I see conversations list
     When I tap my avatar
     Then I see user name doesnt contains spaces

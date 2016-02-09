@@ -4,8 +4,8 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DummyElement;
-import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.*;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -91,12 +91,11 @@ public class PeoplePickerPage extends IOSPage {
 
     public void fillTextInPeoplePickerSearch(String text) throws Exception {
         final WebElement searchInput = getElement(xpathPickerSearch);
-//        if (CommonUtils.getIsSimulatorFromConfig(this.getClass()) && text.matches(".*\\W+.*")) {
-//            inputStringFromKeyboard(searchInput, text + " ", true);
-//        } else {
-        ((IOSElement) searchInput).setValue(text);
-        clickSpaceKeyboardButton();
-//        }
+        if (CommonUtils.getIsSimulatorFromConfig(this.getClass()) && text.matches(".*\\W+.*")) {
+            inputStringFromKeyboardAndCommit(searchInput, text, true);
+        } else {
+            searchInput.sendKeys(text + " ");
+        }
     }
 
     public Optional<WebElement> getSearchResultsElement(String user) throws Exception {

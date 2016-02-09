@@ -45,6 +45,28 @@ public class CallingSteps {
 	}
 
 	/**
+	 * Make a video call to a specific user.
+	 *
+	 * @step. (.*) starts a video call to (.*) using (.*)$
+	 *
+	 * @param caller
+	 *            caller name/alias
+	 * @param conversationName
+	 *            destination conversation name
+	 * @param callBackend
+	 *            call backend. Available values: 'autocall', 'chrome',
+	 *            'firefox'
+	 * @throws Exception
+	 */
+	@When("(.*) starts a video call to (.*) using (.*)$")
+	public void UserXStartVideoCallsToUserYUsingCallBackend(String caller,
+															String conversationName, String callBackend) throws Exception {
+		commonCallingSteps.startVideoCallToConversation(caller, conversationName,
+				callBackend);
+	}
+
+
+	/**
 	 * Stop call on the caller side
 	 *
 	 * @step. (.*) stops? all calls to (.*)
