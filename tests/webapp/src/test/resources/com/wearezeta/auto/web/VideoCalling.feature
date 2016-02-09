@@ -19,3 +19,22 @@ Feature: VideoCalling
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 | 60      |
+
+  @C12070 @videocalling
+  Scenario Outline: Verify I can accept Video call
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given <Contact> starts a video call to <Name> using <CallBackend>
+    When I see my avatar on top of Contact list
+    And I open conversation with <Contact>
+    And I see the calling bar
+    And I accept the incoming video call
+    Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    And I end the video call
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 | 60      |
