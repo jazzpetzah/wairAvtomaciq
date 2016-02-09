@@ -346,7 +346,7 @@ public class ConversationPageSteps {
      */
     @Then("^I see text message (.*)")
     public void ISeeTextMessage(String message) throws Exception {
-        Assert.assertTrue(webappPagesCollection.getPage(ConversationPage.class).isTextMessageVisible(message));
+        webappPagesCollection.getPage(ConversationPage.class).waitForMessageContains(message);
     }
 
     private static String expandPattern(final String originalStr) {

@@ -424,10 +424,12 @@ Feature: E2EE
     And I open conversation with <GroupChatName>
     And I write message <Message1>
     And I send message
-    And I open conversation with <Contact1>
+    Then I see text message <Message1>
+    When I open conversation with <Contact1>
     And I write message <Message2>
     And I send message
-    And I open self profile
+    Then I see text message <Message2>
+    When I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
