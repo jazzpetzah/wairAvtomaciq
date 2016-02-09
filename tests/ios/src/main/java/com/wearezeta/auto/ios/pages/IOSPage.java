@@ -63,7 +63,7 @@ public abstract class IOSPage extends BasePage {
      * @throws Exception
      */
     private static ZetaIOSDriver fixUITreeIfBroken(final ZetaIOSDriver drv) throws Exception {
-        if (drv.findElements(By.xpath("//UIAWindow")).size() > 0) {
+        if (drv.findElements(By.className("UIAWindow")).size() > 0) {
             return drv;
         }
         log.warn("Detected Appium UI tree corruption. Trying to fix...");
