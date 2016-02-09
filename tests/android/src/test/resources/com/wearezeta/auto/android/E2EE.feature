@@ -83,7 +83,7 @@ Feature: E2EE
       | Name      | Contact1  | Message1 | Message2 | Picture     |
       | user1Name | user2Name | Msg1     | Msg2     | testing.jpg |
 
-  @C3235 @staging
+  @C3235 @rc @regression
   Scenario Outline: Verify you can receive encrypted content in group conversation after switching online
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -145,7 +145,7 @@ Feature: E2EE
       | Name      | Contact1  | Contact2  | ImageName   | GroupChatName |
       | user1Name | user2Name | user3Name | testing.jpg | GroupConvo    |
 
-  @C3229 @staging
+  @C3229 @rc @regression
   Scenario Outline: Verify you can see device ids of the other conversation participant in participant details view inside a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -189,7 +189,7 @@ Feature: E2EE
       | Name      | Contact1  | Message1 |
       | user1Name | user2Name | Msg1     |
 
-  @C3232 @staging
+  @C3232 @regression
   Scenario Outline: Verify the device id is not changed after relogin
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -231,7 +231,7 @@ Feature: E2EE
       | Name      | Contact1  | EncMessage |
       | user1Name | user2Name | Bla        |
 
-  @C3236 @staging
+  @C3236 @rc @regression
   Scenario Outline: Verify newly added people in a group conversation don't see a history
     Given There are 4 users where <Name> is me
     Given <Contact1> is connected to Myself,<Contact2>,<Contact3>
@@ -265,7 +265,7 @@ Feature: E2EE
       | Name      |
       | user1Name |
 
-  @C3514 @staging
+  @C3514 @regression
   Scenario Outline: On first login on 2nd device there should be an explanation that user will not see previous messages
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -281,26 +281,7 @@ Feature: E2EE
       | Name      | Contact1  | EncMessage |
       | user1Name | user2Name | Bla        |
 
-  @C3237 @staging
-  Scenario Outline: Verify it is possible to verify other user's device in 1:1 conversation
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When User <Contact1> sends encrypted message <Message1> to user Myself
-    And I tap on contact name <Contact1>
-    And I tap conversation details button
-    And I select single participant tab "Devices"
-    Then I see 1 device is shown in single participant devices tab
-    And I select 1st device
-    And I verify device
-
-    Examples:
-      | Name      | Contact1  | Message1 |
-      | user1Name | user2Name | Msg1     |
-
-  @C3515 @staging
+  @C3515 @C3237 @regression
   Scenario Outline: Verify green shield showed in other user profile when I verify all his devices
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -321,7 +302,7 @@ Feature: E2EE
       | Name      | Contact1  | Message1 |
       | user1Name | user2Name | Msg1     |
 
-  @C3238 @staging
+  @C3238 @regression
   Scenario Outline: Verify you see an alert in verified 1:1 conversation when the other participants types something from non-verified device
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -344,7 +325,7 @@ Feature: E2EE
       | Name      | Contact1  | Message1 |
       | user1Name | user2Name | Msg1     |
 
-  @C3240 @staging
+  @C3240 @rc @regression
   Scenario Outline: Verify you get an alert if group conversation participant sends a message from non-verified device
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -377,7 +358,7 @@ Feature: E2EE
       | user1Name | user2Name | user3Name | EncryptedGrp  | Msg1     |
 
 
-  @C3239 @staging
+  @C3239 @rc @regression
   Scenario Outline: Verify it is possible to verify other user's device in group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -399,7 +380,7 @@ Feature: E2EE
       | Name      | Contact1  | Contact2  | Message1 | GroupChatName |
       | user1Name | user2Name | user3Name | Msg1     | GroupConvo    |
         
-  @C12083 @staging
+  @C12083 @regression
   Scenario Outline: When I'm entering a verified conversation, a green shield will appear at the bottom right
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -421,7 +402,7 @@ Feature: E2EE
       | Name      | Contact1  | Message1 |
       | user1Name | user2Name | Msg1     |
       
-  @C12066 @staging
+  @C12066 @regression
   Scenario Outline: Verify I see system message when verify all other user's device in group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
