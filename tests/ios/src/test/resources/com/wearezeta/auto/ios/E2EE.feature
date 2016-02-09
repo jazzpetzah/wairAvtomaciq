@@ -167,13 +167,17 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                |
       | user1Name | user2Name | Device2     | Label2       | STARTED USING A NEW DEVICE |
 
- @torun @C3510 @staging
+  @C3510 @noAcceptAlert @staging
   Scenario Outline: Verify deleting one of the devices from device management by Edit
     Given There is 1 user where <Name> is me
     Given I sign in using my email
+    Given I accept alert
+    Given I accept First Time overlay if it is visible
+    Given I accept alert
     Given I see conversations list
     And User Myself adds new devices <DeviceName>
     When I tap my avatar
+    And I accept alert
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
     And I select settings item Privacy & Security
@@ -182,7 +186,8 @@ Feature: E2EE
     And I press Delete <DeviceName> button from devices
     And I press the Delete Button
     And I confirm with my <Password> the deletion of the device
+    Then I dont see device <DeviceName> in devices list
 
     Examples:
-      | Name      | DeviceName |Password     |
-      | user1Name | Device1    |user1Password|
+      | Name      | DeviceName | Password      |
+      | user1Name | Device1    | user1Password |
