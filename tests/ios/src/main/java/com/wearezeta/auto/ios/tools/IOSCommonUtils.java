@@ -121,8 +121,7 @@ public class IOSCommonUtils {
         return resultTime;
     }
 
-    private static String getIOSSimulatorIdByDeviceName(String deviceName)
-            throws Exception {
+    private static String getIOSSimulatorIdByDeviceName(String deviceName) throws Exception {
         return CommonUtils
                 .executeOsXCommandWithOutput(
                         new String[]{

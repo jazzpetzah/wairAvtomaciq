@@ -30,8 +30,7 @@ public class CommonUtils {
 
     private static final Random rand = new Random();
 
-    private static final Logger log = ZetaLogger.getLog(CommonUtils.class
-            .getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(CommonUtils.class.getSimpleName());
 
     private static final String TCPBLOCK_PREFIX_PATH = "/usr/local/bin/";
 
@@ -43,6 +42,13 @@ public class CommonUtils {
         return process.waitFor(timeoutSeconds, TimeUnit.SECONDS);
     }
 
+    /**
+     * Be careful when using this method - it will block forever if the commands stucks and fails to terminate
+     *
+     * @param cmd command arguments array
+     * @return command return code
+     * @throws Exception
+     */
     public static int executeOsXCommand(String[] cmd) throws Exception {
         Process process = Runtime.getRuntime().exec(cmd);
         log.debug("Process started for cmdline " + Arrays.toString(cmd));
@@ -50,14 +56,18 @@ public class CommonUtils {
         return process.waitFor();
     }
 
-    public static String executeOsXCommandWithOutput(String[] cmd)
-            throws Exception {
+    private static final int DEFAULT_COMMAND_TIMEOUT = 60; // seconds
+
+    public static String executeOsXCommandWithOutput(String[] cmd) throws Exception {
+        return executeOsXCommandWithOutput(cmd, DEFAULT_COMMAND_TIMEOUT);
+    }
+
+    public static String executeOsXCommandWithOutput(String[] cmd, int timeoutSeconds) throws Exception {
         Process process = Runtime.getRuntime().exec(cmd);
         log.debug("Process started for cmdline " + Arrays.toString(cmd));
         String output;
         try (InputStream stream = process.getInputStream()) {
-            BufferedReader br = new BufferedReader(
-                    new InputStreamReader(stream));
+            BufferedReader br = new BufferedReader(new InputStreamReader(stream));
             StringBuilder sb = new StringBuilder("\n");
             String s;
             while ((s = br.readLine()) != null) {
@@ -66,7 +76,7 @@ public class CommonUtils {
             output = sb.toString();
         }
         outputErrorStreamToLog(process.getErrorStream());
-        log.debug("Process exited with code " + process.waitFor());
+        process.waitFor(timeoutSeconds, TimeUnit.SECONDS);
         return output;
     }
 
