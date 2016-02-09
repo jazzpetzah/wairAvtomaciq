@@ -38,6 +38,8 @@ Feature: Self Profile
     When I set my accent color to <ColorName>
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
     Then I verify my accent color in color picker is set to <ColorName> color
