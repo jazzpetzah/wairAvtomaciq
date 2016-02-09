@@ -66,9 +66,6 @@ public class LoginPageSteps {
 		} else {
 			this.ICheckOptionToRememberMe(null);
 			this.IPressSignInButton();
-			HistoryInfoPageSteps historyInfoPageSteps = new HistoryInfoPageSteps();
-			historyInfoPageSteps.ISeeConfirmButton();
-			historyInfoPageSteps.IClickConfirmButton();
 		}
 	}
 
