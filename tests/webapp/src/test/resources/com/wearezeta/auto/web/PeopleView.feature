@@ -235,7 +235,7 @@ Feature: People View
     Then I see <MessageLeft> action for <Name> in conversation
     When I click People button in group conversation
     Then I see Group Participants popover
-    And I see <KnownContact>,<UnknownContact>,<UnknownContact2> displayed on Group Participants popover
+    And I see <UnknownContact>,<UnknownContact2> displayed on Group Participants popover
 
     Examples: 
       | Login      | Password      | Name      | KnownContact | KnownContactPassword | UnknownContact | UnknownContact2 | ChatName               | MessageLeft |

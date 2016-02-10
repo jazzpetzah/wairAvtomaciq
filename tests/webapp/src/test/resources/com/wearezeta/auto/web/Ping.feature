@@ -7,7 +7,7 @@ Feature: Ping
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <Contact>
     When I click ping button
     Then I see <PING> action in conversation
@@ -25,7 +25,7 @@ Feature: Ping
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <Contact>
     When I click ping button
     Then I see <PING> action in conversation
@@ -46,7 +46,7 @@ Feature: Ping
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <ChatName>
     When I click ping button
     Then I see <PING> action in conversation
