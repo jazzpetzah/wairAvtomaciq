@@ -229,7 +229,7 @@ Feature: People View
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
-    And I enable checkbox to clear all data
+    And I click Logout button on clear data dialog
     And I Sign in using login <KnownContact> and password <KnownContactPassword>
     And I open conversation with <ChatName>
     Then I see <MessageLeft> action for <Name> in conversation
@@ -290,8 +290,10 @@ Feature: People View
     And I click People button in group conversation
     And I see Group Participants popover
     And I change group conversation title to <ChatNameEdit> on Group Participants popover
+    Then I see <Message> action in conversation
+    When I click People button in group conversation
+    And I see Group Participants popover
     Then I see conversation title <ChatNameEdit> on Group Participants popover
-    And I see <Message> action in conversation
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName     | ChatNameEdit   | Message                  |
@@ -317,7 +319,9 @@ Feature: People View
     Then I see <Message> action for <Contact2>,<Contact1> in conversation
     And I open self profile
     And I click gear button on self profile page
-      And I select Log out menu item on self profile page
+    And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And I see Sign In page
     And User <Contact1> is me
     And I Sign in using login <Contact1> and password <Password>
@@ -326,8 +330,10 @@ Feature: People View
     And I open conversation with <Name>,<Contact2>
     And I see <Message2> action for <Name>,<Contact2>,You in conversation
     And I open self profile
-      And I click gear button on self profile page
-      And I select Log out menu item on self profile page
+    And I click gear button on self profile page
+    And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And I see Sign In page
     And User <Contact2> is me
     And I Sign in using login <Contact2> and password <Password>
