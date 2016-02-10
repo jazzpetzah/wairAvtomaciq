@@ -53,6 +53,8 @@ Feature: Ping
     When I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And User <Name> sends message <Message> to conversation <Contact1>
     And I see Sign In page
     And User <Contact1> is me
