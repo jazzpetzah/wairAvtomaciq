@@ -49,7 +49,7 @@ Feature: E2EE
     And User Myself adds a new device <DeviceName> with label <DeviceLabel>
     Then I wait until my avatar is changed
     When I tap my avatar
-    Then I verify the alert contains text <DeviceLabel>
+    Then I verify the alert contains text <DeviceName>
     When I accept alert
     And I close self profile
     Then I wait until my avatar is not changed
@@ -58,7 +58,7 @@ Feature: E2EE
     And I click on Settings button from the options menu
     And I select settings item Privacy & Security
     And I select settings item Manage devices
-    Then I see settings item <DeviceLabel>
+    Then I see settings item <DeviceName>
 
     Examples:
       | Name      | DeviceName | DeviceLabel  |
@@ -203,6 +203,30 @@ Feature: E2EE
     Examples:
       | Name      | DeviceName | Password      |
       | user1Name | Device1    | user1Password |
+
+  @C3509 @staging
+  Scenario Outline: (ZIOS-5741) Verify verifying/unverifying one of the devices
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email
+    Given I see conversations list
+    And User Myself adds a new device <DeviceName> with label <DeviceLabel>
+    When I tap my avatar
+    And I click on Settings button on personal page
+    And I click on Settings button from the options menu
+    And I select settings item Privacy & Security
+    And I select settings item Manage devices
+    When I open details page of device number 2
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    Then I see the label Verified is shown for the device <DeviceLabel>
+    When I open details page of device number 2
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    Then I see the label Not Verified is shown for the device <DeviceLabel>
+
+    Examples:
+      | Name      | DeviceName | DeviceLabel  |
+      | user1Name | Device1    | Device1Label |
 
   @C14317 @staging
   Scenario Outline: First time when 1:1 conversation is degraded - I can ignore alert screen and send messages with resend button

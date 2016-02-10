@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.pages;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.misc.Interfaces.FunctionFor2Parameters;
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
 
@@ -33,6 +34,10 @@ public class SettingsPage extends IOSPage {
     private static final By nameDeleteButton = By.name("Delete");
 
     private static final By xpathDeleteDevicePasswordField = By.xpath("//UIASecureTextField[contains(@value,'Password')]");
+    
+    private static final FunctionFor2Parameters<String, String, String> xpathStrDeviceVerificationLabel = (deviceName, verificationLabel) -> {
+        return String.format("//UIATableCell[@name='%s']/UIAStaticText[@name='%s']", deviceName, verificationLabel);
+    };
 
     public SettingsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -82,6 +87,11 @@ public class SettingsPage extends IOSPage {
 
     public boolean isDeviceVisibleInList(String device) throws Exception {
         final By locator = By.xpath(xpathDeviceListEntry.apply(device));
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+    }
+    
+    public boolean verificationLabelVisibility(String deviceName, String verificaitonLabel) throws Exception {
+        final By locator = By.xpath(xpathStrDeviceVerificationLabel.apply(deviceName, verificaitonLabel));
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
 }
