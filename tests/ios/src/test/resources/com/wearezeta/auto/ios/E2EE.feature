@@ -203,3 +203,24 @@ Feature: E2EE
     Examples:
       | Name      | DeviceName | Password      |
       | user1Name | Device1    | user1Password |
+
+  @C3288 @staging
+  Scenario Outline: Verify conversation is downgraded after adding a new device
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email
+    Given I see conversations list
+    Given User <Contact1> sends 1 encrypted message to user Myself
+    And I tap on contact name <Contact1>
+    And I open conversation details
+    And I switch to Devices tab
+    And I open details page of device number 1
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    And I click close user profile page button
+    When User Myself adds a new device <DeviceName2> with label <DeviceLabel2>
+    Then I see the conversation view contains message <ExpectedMsg>
+
+    Examples:
+      | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                    |
+      | user1Name | user2Name | Device2     | Label2       | YOU STARTED USING A NEW DEVICE |
