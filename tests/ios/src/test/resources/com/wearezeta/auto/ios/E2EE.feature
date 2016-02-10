@@ -49,7 +49,7 @@ Feature: E2EE
     And User Myself adds a new device <DeviceName> with label <DeviceLabel>
     Then I wait until my avatar is changed
     When I tap my avatar
-    Then I verify the alert contains text <DeviceLabel>
+    Then I verify the alert contains text <DeviceName>
     When I accept alert
     And I close self profile
     Then I wait until my avatar is not changed
@@ -58,7 +58,7 @@ Feature: E2EE
     And I click on Settings button from the options menu
     And I select settings item Privacy & Security
     And I select settings item Manage devices
-    Then I see settings item <DeviceLabel>
+    Then I see settings item <DeviceName>
 
     Examples:
       | Name      | DeviceName | DeviceLabel  |
