@@ -304,7 +304,7 @@ Feature: Conversation View
       | user1Name | user2Name | Yo      |
 
   @C674 @id165 @regression @rc
-  Scenario Outline: Send GIF format pic
+  Scenario Outline: (BUG AN-3443) Send GIF format pic
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
