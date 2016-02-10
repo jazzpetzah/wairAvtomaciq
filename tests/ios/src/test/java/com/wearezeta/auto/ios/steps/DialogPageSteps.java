@@ -169,13 +169,15 @@ public class DialogPageSteps {
     /**
      * Verify whether the expected message exists in the convo view
      *
-     * @step. ^I see the conversation view contains message (.*)
-     * @param expectedMsg the expected message
+     * @param expectedMsg the expected message. It can contain user name aliases
      * @throws Exception
+     * @step. ^I see the conversation view contains message (.*)
      */
     @Then("^I see the conversation view contains message (.*)")
     public void ISeeConversationMessage(String expectedMsg) throws Exception {
-        Assert.assertTrue(String.format("The expected message '%s' is not visible in the conversation view", expectedMsg),
+        expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
+        Assert.assertTrue(
+                String.format("The expected message '%s' is not visible in the conversation view", expectedMsg),
                 getDialogPage().isMessageVisible(expectedMsg));
     }
 
