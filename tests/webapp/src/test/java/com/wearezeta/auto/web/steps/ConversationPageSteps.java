@@ -129,7 +129,7 @@ public class ConversationPageSteps {
      */
     @Then("^I see random message in conversation$")
     public void ThenISeeRandomMessageInConversation() throws Exception {
-        Assert.assertTrue(webappPagesCollection.getPage(ConversationPage.class).isMessageSent(randomMessage));
+        ISeeTextMessage(randomMessage);
     }
 
     /**

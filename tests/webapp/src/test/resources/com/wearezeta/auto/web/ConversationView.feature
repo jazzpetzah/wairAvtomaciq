@@ -127,7 +127,6 @@ Feature: Conversation View
   Scenario Outline: I can see missed messages when rejoining a conversation after leaving it
     Given There are 3 users where <Name> is me
     Given user <Contact1> adds a new device Device1 with label Label1
-    Given user <Contact2> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given User Myself sends message <Msg1FromUserA> to conversation <ChatName>
