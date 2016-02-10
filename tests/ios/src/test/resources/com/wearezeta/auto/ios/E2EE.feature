@@ -158,11 +158,11 @@ Feature: E2EE
     When I open details page of device number 2
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
-    Then I see the label Verified is shown for the device <DeviceName>
+    Then I see the label Verified is shown for the device <DeviceLabel>
     When I open details page of device number 2
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
-    Then I see the label Not Verified is shown for the device <DeviceName>
+    Then I see the label Not Verified is shown for the device <DeviceLabel>
 
     Examples:
       | Name      | DeviceName | DeviceLabel  |
