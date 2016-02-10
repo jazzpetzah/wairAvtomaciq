@@ -203,3 +203,29 @@ Feature: E2EE
     Examples:
       | Name      | DeviceName | Password      |
       | user1Name | Device1    | user1Password |
+
+  @C14317 @staging
+  Scenario Outline: First time when 1:1 conversation is degraded - I can ignore alert screen and send messages with resend button
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email
+    Given I see conversations list
+    Given User <Contact1> sends 1 encrypted message to user Myself
+    And I tap on contact name <Contact1>
+    And I open conversation details
+    And I switch to Devices tab
+    And I open details page of device number 1
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    And I click close user profile page button
+    And I click Close input options button
+    When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
+    And I type the default message
+    And I send the message
+    And I close New Device overlay
+    And I resend the message to user with New Device
+    Then I see 2 default message in the dialog
+
+    Examples:
+      | Name      | Contact1  | DeviceName2 | DeviceLabel2 |
+      | user1Name | user2Name | Device2     | Label2       |
