@@ -56,3 +56,20 @@ Feature: VideoCalling
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend         |
       | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 |
+
+  @C12078 @videocalling
+  Scenario Outline: Verify I cannot see blocked contact trying to make a video call to me
+    Given My browser supports calling
+    Given There are 3 users where <Name> is me
+    # OtherContact is needed otherwise the search will show up sometimes
+    Given Myself is connected to <Contact>,<OtherContact>
+    Given Myself blocked <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    When <Contact> starts a video call to me using <CallBackend>
+    Then <Contact> verifies that call status to Myself is changed to connecting in <Timeout> seconds
+    And I do not see the calling bar
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | CallBackend         | Timeout | OtherContact |
+      | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 | 60      | user3Name    |
