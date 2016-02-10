@@ -243,50 +243,60 @@ Feature: E2EE
   @C12050 @e2ee
   Scenario Outline: Verify you receive encrypted content in 1:1 conversation after switching online
     Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
     Given <Contact> is connected to Myself
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
     When I am signed in properly
+    And Contact <Contact> sends encrypted message <OnlineMessage> to user Myself
+    Then I see text message <OnlineMessage>
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
-    And Contact <Contact> sends encrypted message <EncryptedMessage> to user Myself
+    And Contact <Contact> sends encrypted message <OfflineMessage> to user Myself
     And User <Contact> sends encrypted image <ImageName> to single user conversation Myself
     And I see Sign In page
     And I Sign in using login <Email> and password <Password>
-    Then I see text message <EncryptedMessage>
+    Then I see text message <OnlineMessage>
+    And I see text message <OfflineMessage>
     And I see sent picture <ImageName> in the conversation view
 
     Examples:
-      | Email      | Password      | Name      | Contact   | EncryptedMessage | ImageName                |
-      | user1Email | user1Password | user1Name | user2Name | EncryptedYo      | userpicture_portrait.jpg |
+      | Email      | Password      | Name      | Contact   | OnlineMessage | OfflineMessage  | ImageName                |
+      | user1Email | user1Password | user1Name | user2Name | Hello!        | Are you online? | userpicture_portrait.jpg |
 
   @C12051 @e2ee
   Scenario Outline: Verify you receive encrypted content in group conversation after switching online
     Given There are 3 users where <Name> is me
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given user <Contact2> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
     When I am signed in properly
+    And I open conversation with <GroupChatName>
+    And Contact <Contact1> sends encrypted message <OnlineMessage> to group conversation <GroupChatName>
+    Then I see text message <OnlineMessage>
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
-    And Contact <Contact1> sends encrypted message <EncryptedMessage> to group conversation <GroupChatName>
+    And Contact <Contact1> sends encrypted message <OfflineMessage> to group conversation <GroupChatName>
     And User <Contact1> sends encrypted image <ImageName> to group conversation <GroupChatName>
     And I see Sign In page
     And I Sign in using login <Email> and password <Password>
     And I open conversation with <GroupChatName>
-    Then I see text message <EncryptedMessage>
+    Then I see text message <OnlineMessage>
+    And I see text message <OfflineMessage>
     And I see sent picture <ImageName> in the conversation view
 
     Examples:
-      | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | EncryptedMessage | ImageName                |
-      | user1Email | user1Password | user1Name | user2Name | user3name | GroupChat     | EncryptedYo      | userpicture_portrait.jpg |
+      | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | OnlineMessage | OfflineMessage  | ImageName                |
+      | user1Email | user1Password | user1Name | user2Name | user3name | GroupChat     | Hello!        | Are you online? | userpicture_portrait.jpg |
 
   @C12045 @e2ee
   Scenario Outline: Verify you can see device ids of the other conversation participant in 1:1 conversation details
