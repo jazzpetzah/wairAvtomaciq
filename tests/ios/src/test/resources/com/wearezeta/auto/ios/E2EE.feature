@@ -91,7 +91,7 @@ Feature: E2EE
   @C3287 @staging
   Scenario Outline: Verify the group conversation is marked as verified after verifying clients of each other
     Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>s
+    Given Myself is connected to <Contact1>,<Contact2>
     Given User <Contact1> adds a new device <DeviceName1> with label <DeviceLabel1>
     Given User <Contact2> adds a new device <DeviceName2> with label <DeviceLabel2>
     Given I sign in using my email
@@ -144,8 +144,8 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                |
       | user1Name | user2Name | Device2     | Label2       | STARTED USING A NEW DEVICE |
 
-  @C3294 @staging
-  Scenario Outline: (ZIOS-5787) Verify system message appearance in case of using a new device by friend
+  @C3293 @staging
+  Scenario Outline: Verify system message appearance in case of using a new device by you
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email
@@ -158,15 +158,28 @@ Feature: E2EE
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
     And I click close user profile page button
+    And I click Close input options button
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
-    And User <Contact1> sends 1 encrypted message using device <DeviceName2> to user Myself
-    # TODO: Check the device label in the system message
-    Then I see the conversation view contains message <ExpectedMsg>
+    And I type the default message
+    And I send the message
+    Then I see the label "<Contact1> <ExpectedSuffix>" on New Device overlay
 
     Examples:
-      | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                |
-      | user1Name | user2Name | Device2     | Label2       | STARTED USING A NEW DEVICE |
+      | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedSuffix             |
+      | user1Name | user2Name | Device2     | Label2       | started using a new device |
 
+  @C14310 @noAcceptAlert @staging
+  Scenario Outline: On first login on 2nd device there should be an explanation that user will not see previous messages
+    Given There are 1 user where <Name> is me
+    Given User Myself adds a new device <DeviceName> with label <DeviceLabel>
+    When I sign in using my email
+    And I accept alert
+    Then I see First Time overlay
+
+    Examples:
+      | Name      | DeviceName | DeviceLabel  |
+      | user1Name | Device1    | Device1Label |
+  
   @C3510 @noAcceptAlert @staging
   Scenario Outline: Verify deleting one of the devices from device management by Edit
     Given There is 1 user where <Name> is me

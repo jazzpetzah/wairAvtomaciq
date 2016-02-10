@@ -4,7 +4,9 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -226,5 +228,10 @@ public class PeoplePickerPage extends AndroidPage {
     public void swipeRightOnContactAvatar(String name) throws Exception {
         final By locator = By.xpath(xpathStrPeoplePickerContactByName.apply(name));
         DriverUtils.swipeRight(getDriver(), getDriver().findElement(locator), 500);
+    }
+
+    public void typeBackspaceInSearchInput() throws Exception {
+        getPickerEdit().click();
+        AndroidCommonUtils.tapBackspaceButton();
     }
 }

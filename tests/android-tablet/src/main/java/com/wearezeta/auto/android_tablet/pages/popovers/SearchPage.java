@@ -13,8 +13,7 @@ class SearchPage extends AbstractPopoverPage {
     public final static Function<String, String> xpathStrSearchResultsAvatarByName = name -> String
             .format("//*[@id='ttv_pickuser__searchuser_name' and @value='%s']/parent::*", name);
 
-    public SearchPage(Future<ZetaAndroidDriver> lazyDriver,
-                      AbstractPopoverContainer container) throws Exception {
+    public SearchPage(Future<ZetaAndroidDriver> lazyDriver, AbstractPopoverContainer container) throws Exception {
         super(lazyDriver, container);
     }
 
@@ -23,13 +22,15 @@ class SearchPage extends AbstractPopoverPage {
     }
 
     public void enterSearchText(String text) throws Exception {
-        getSearchInput().sendKeys(text);
+        final WebElement searchInput = getSearchInput();
+        searchInput.click();
+        searchInput.sendKeys(text);
     }
 
     public void tapAvatarFromSearchResults(String name) throws Exception {
         final By locator = By.xpath(xpathStrSearchResultsAvatarByName.apply(name));
-        getElement(locator, String
-                .format("The avatar of '%s' has not been shown in search resulst after timeout", name)).click();
+        getElement(locator,
+                String.format("The avatar of '%s' has not been shown in search resulst after timeout", name)).click();
     }
 
     public void tapAddToConversationButton() throws Exception {

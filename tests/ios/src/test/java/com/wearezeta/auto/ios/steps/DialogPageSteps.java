@@ -72,7 +72,7 @@ public class DialogPageSteps {
 
     @When("^I type the default message$")
     public void WhenITypeTheMessage() throws Exception {
-        getDialogPage().typeConversationMessage(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+        getDialogPage().typeMessage(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
     }
 
     private static final String YOU_PINGED_MESSAGE = "YOU PINGED";

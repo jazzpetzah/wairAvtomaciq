@@ -177,32 +177,6 @@ Feature: People View
       | Login      | Password      | Name      | KnownContact | KnownContactMail | UnknownContact | ChatName               | Message   |
       | user1Email | user1Password | user1Name | user2Name    | user2Email       | user3Name      | PeoplePopoverGroupChat | YOU ADDED |
 
-  @C1716 @regression
-  Scenario Outline: Verify I can see participant profile of myself in a group conversation
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <KnownContact>
-    Given <KnownContact> is connected to <UnknownContact>
-    Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
-    Given Myself sent connection request to <UnknownContact>
-    Given I switch to Sign In page
-    Given I Sign in using login <Login> and password <Password>
-    Given I am signed in properly
-    When I open conversation with <ChatName>
-    When I click People button in group conversation
-    Then I see Group Participants popover
-    When I click on participant Myself on Group Participants popover
-    Then I see username me on Group Participants popover
-    And I see an avatar on Group Participants popover
-    And I see profile button on Group Participants popover
-    And I see correct profile button tool tip on Group Participants popover
-    And I see Mail <Mail> on Group Participants popover
-    And Would open mail client when clicking mail on Group Participants popover
-    When I click profile button on Group Participants popover
-
-    Examples: 
-      | Login      | Password      | Name      | Mail       | KnownContact | KnownContactMail | UnknownContact | ChatName               | Message   |
-      | user1Email | user1Password | user1Name | user1Email | user2Name    | user2Email       | user3Name      | PeoplePopoverGroupChat | YOU ADDED |
-
   @C1693 @regression
   Scenario Outline: Verify I can ignore connection request in a group conversation
     Given There are 3 users where <Name> is me
@@ -243,7 +217,7 @@ Feature: People View
     When I open conversation with <ChatName>
     When I click People button in group conversation
     Then I see Group Participants popover
-    And I see Myself,<KnownContact>,<UnknownContact>,<UnknownContact2> displayed on Group Participants popover
+    And I see <KnownContact>,<UnknownContact>,<UnknownContact2> displayed on Group Participants popover
     And I do not see Archive button at the bottom of my Contact list
     When I click Leave button on Group Participants popover
     And I click confirm leave group conversation on Group Participants popover
@@ -254,6 +228,8 @@ Feature: People View
     When I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I enable checkbox to clear all data
     And I Sign in using login <KnownContact> and password <KnownContactPassword>
     And I open conversation with <ChatName>
     Then I see <MessageLeft> action for <Name> in conversation

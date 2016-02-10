@@ -197,8 +197,7 @@ public class PersonalInfoPageSteps {
      */
     @Then("^I see WireWebsitePage$")
     public void ThenISeeWireWebsite() throws Exception {
-        Assert.assertTrue(
-                "wire.com is not shown or website element has changed",
+        Assert.assertTrue("wire.com is not shown or website element has changed",
                 getPersonalInfoPage().isWireWebsitePageVisible());
     }
 

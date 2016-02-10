@@ -353,9 +353,9 @@ Feature: Search
     When I enter "<Contact2>" into Search input on People Picker page
     And I tap the found item <Contact2> on People Picker page
     Then I see Create Conversation button on People Picker page
-    When I tap the found item <Contact2> on People Picker page
+    When I type backspace in Search input on People Picker page
     Then I see Open Conversation button on People Picker page
-    When I tap the found item <Contact1> on People Picker page
+    When I type backspace in Search input on People Picker page
     Then I do not see Open Conversation button on People Picker page
 
     Examples:
@@ -377,9 +377,9 @@ Feature: Search
     When I enter "<Contact2>" into Search input on People Picker page
     And I tap the found item <Contact2> on People Picker page
     Then I see Create Conversation button on People Picker page
-    When I tap the found item <Contact2> on People Picker page
+    When I type backspace in Search input on People Picker page
     Then I see Open Conversation button on People Picker page
-    When I tap the found item <Contact1> on People Picker page
+    When I type backspace in Search input on People Picker page
     Then I do not see Open Conversation button on People Picker page
 
     Examples:
@@ -442,10 +442,9 @@ Feature: Search
     And I enter "<Contact2>" into Search input on People Picker page
     And I tap the found item <Contact2> on People Picker page
     When I tap Call button on People Picker page
-    Then I do not see People Picker page
     And I see the conversation view
     And I see calling overlay Big bar
-    When I tap Show Tools button on conversation view page
+    And I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
     Then I see the participant avatar <Contact1> on Group popover
     And I see the participant avatar <Contact2> on Group popover

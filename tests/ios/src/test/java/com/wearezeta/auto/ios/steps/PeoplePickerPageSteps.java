@@ -15,29 +15,19 @@ import cucumber.api.java.en.When;
 public class PeoplePickerPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-    private final IOSPagesCollection pagesCollecton = IOSPagesCollection.getInstance();
+    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
     private PeoplePickerPage getPeoplePickerPage() throws Exception {
-        return pagesCollecton.getPage(PeoplePickerPage.class);
+        return pagesCollection.getPage(PeoplePickerPage.class);
     }
 
     private ContactListPage getСontactListPage() throws Exception {
-        return pagesCollecton.getPage(ContactListPage.class);
+        return pagesCollection.getPage(ContactListPage.class);
     }
 
     @When("^I see People picker page$")
     public void WhenISeePeoplePickerPage() throws Exception {
         Assert.assertTrue(getPeoplePickerPage().isPeoplePickerPageVisible());
-    }
-
-    @When("I see Upload contacts dialog")
-    public void WhenISeeUploadContactsDialog() throws Exception {
-        Assert.assertTrue("Upload dialog is not shown", getPeoplePickerPage().isUploadDialogShown());
-    }
-
-    @When("I dont see Upload contacts dialog")
-    public void WhenIDontSeeUploadContactsDialog() throws Exception {
-        Assert.assertFalse("Upload dialog is shown", getPeoplePickerPage().isUploadDialogShown());
     }
 
     @When("I click Continue button on Upload dialog")

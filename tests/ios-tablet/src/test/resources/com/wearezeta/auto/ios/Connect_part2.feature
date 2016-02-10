@@ -82,7 +82,7 @@ Feature: Connect
     And I dismiss popover on iPad
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
-    And I tap on conversation <Contact> in search result
+    And I tap on conversation <Contact1> in search result
     And I see connect to <Contact1> dialog
     And I click Connect button on connect to dialog
     And I see Connect dialog is closed

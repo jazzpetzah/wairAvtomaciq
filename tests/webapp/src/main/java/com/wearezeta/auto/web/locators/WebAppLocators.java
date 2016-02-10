@@ -351,6 +351,8 @@ public final class WebAppLocators {
 		public static final String cssConnectedMessageUser = ".message-connected-header";
 
 		public static final String cssConnectedMessageLabel = ".message-connected .label-xs";
+
+		public static final String cssConversationVerifiedIcon = ".conversation-verified";
 	}
 
 	public static final class ConnectToPage {

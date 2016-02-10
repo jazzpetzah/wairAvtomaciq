@@ -33,6 +33,8 @@ Feature: Sign In
     Given I see sign in screen
     And I tap I HAVE AN ACCOUNT button
     And I click on Change Password button on SignIn
+    # Wait until the page is loaded
+    And I wait for 5 seconds
     When I change URL to staging
     And I commit email <Login> to change password
     And I copy link from email and paste it into Safari

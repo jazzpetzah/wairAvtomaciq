@@ -144,6 +144,8 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public boolean isWireWebsitePageVisible() throws Exception {
+        // This is to let the browser and the webpage to be loaded
+        Thread.sleep(5000);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathWireWebsiteUrl);
     }
 

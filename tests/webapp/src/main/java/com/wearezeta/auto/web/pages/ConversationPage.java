@@ -181,6 +181,14 @@ public class ConversationPage extends WebPage {
 		wait.until(visibilityOfTextInElementsLocated(locator, parts));
 	}
 
+	public void waitForMessageContains(String text) throws Exception {
+		final By locator = By
+				.cssSelector(WebAppLocators.ConversationPage.cssTextMessage);
+		WebDriverWait wait = new WebDriverWait(getDriver(),
+				DriverUtils.getDefaultLookupTimeoutSeconds());
+		wait.until(visibilityOfTextInElementsLocated(locator, new HashSet<String>(Arrays.asList(text))));
+	}
+
 	public void waitForMessageHeaderContains(String text) throws Exception {
 		waitForMessageHeaderContains(new HashSet<String>(Arrays.asList(text)));
 	}
@@ -727,4 +735,8 @@ public class ConversationPage extends WebPage {
 		return connectedMessageLabel.getText();
 	}
 
+	public boolean isConversationVerified() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(WebAppLocators.ConversationPage
+				.cssConversationVerifiedIcon));
+	}
 }

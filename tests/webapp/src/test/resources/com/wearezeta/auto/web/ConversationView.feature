@@ -152,8 +152,10 @@ Feature: Conversation View
     Given I enter email "<Login>"
     Given I enter password "<Password>"
     Given I press Sign In button
+    Given I see the history info page
+    Given I click confirm on history info page
     Given I wait for 20 seconds
-    When I see my avatar on top of Contact list
+    And I am signed in properly
     And I open People Picker from Contact List
     And I type <Contact1> in search field of People Picker
     And I select <Contact1> from People Picker results

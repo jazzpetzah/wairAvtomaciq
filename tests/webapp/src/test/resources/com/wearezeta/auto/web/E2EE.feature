@@ -6,8 +6,8 @@ Feature: E2EE
     Given user <Name> adds a new device <Device> with label <Label>
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
-    And I see the history info page
-    And I click confirm on history info page
+    Then I see the history info page
+    When I click confirm on history info page
     Then I am signed in properly
     When I click gear button on self profile page
     And I select Settings menu item on self profile page
@@ -98,12 +98,12 @@ Feature: E2EE
   @C2098 @e2ee @regression
   Scenario Outline: Verify current browser is set as permanent device
     Given There are 3 users where <Name> is me
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given user <Contact2> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
-    Then I see the history info page
-    And I click confirm on history info page
     And I am signed in properly
     When I open conversation with <Contact1>
     And Contact <Contact1> sends message <Message1> to user Myself
@@ -152,8 +152,6 @@ Feature: E2EE
     When I enter email "<Email>"
     And I enter password "<Password>"
     And I press Sign In button
-    Then I see the history info page
-    And I click confirm on history info page
     And I am signed in properly
     When I click gear button on self profile page
     And I select Settings menu item on self profile page
@@ -184,8 +182,6 @@ Feature: E2EE
     Given <Contact> is connected to Myself
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     Given I am signed in properly
     When Contact <Contact> sends encrypted message <EncryptedMessage> to user Myself
     Then I see text message <EncryptedMessage>
@@ -200,8 +196,6 @@ Feature: E2EE
     Given <Contact> is connected to Myself
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     Given I am signed in properly
     When User <Contact> sends encrypted image <ImageName> to single user conversation Myself
     Then I see sent picture <ImageName> in the conversation view
@@ -213,12 +207,12 @@ Feature: E2EE
   @C12043 @e2ee
   Scenario Outline: Verify you can receive encrypted messages in group chat
     Given There are 3 users where <Name> is me
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given user <Contact2> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     Given I am signed in properly
     When I open conversation with <GroupChatName>
     And Contact <Contact1> sends encrypted message <EncryptedMessage> to group conversation <GroupChatName>
@@ -229,18 +223,18 @@ Feature: E2EE
       | user1Email | user1Password | user1Name | user2Name  | user3Name | EncryptedYo      | HybridGroup   |
 
   @C12044 @e2ee
-  Scenario Outline: Verify you can receive encrypted messages in group chat
+  Scenario Outline: Verify you can receive encrypted images in group chat
     Given There are 3 users where <Name> is me
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given user <Contact2> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     Given I am signed in properly
     When I open conversation with <GroupChatName>
     And User <Contact1> sends encrypted image <ImageName> to group conversation <GroupChatName>
-    Then I see text message <EncryptedMessage>
+    Then I see sent picture <ImageName> in the conversation view
 
     Examples:
       | Email      | Password      | Name      | Contact1   | Contact2  | ImageName                | GroupChatName |
@@ -252,12 +246,12 @@ Feature: E2EE
     Given <Contact> is connected to Myself
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     When I am signed in properly
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And Contact <Contact> sends encrypted message <EncryptedMessage> to user Myself
     And User <Contact> sends encrypted image <ImageName> to single user conversation Myself
     And I see Sign In page
@@ -276,14 +270,14 @@ Feature: E2EE
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     When I am signed in properly
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
-    And Contact <Contact1> sends encrypted message <EncryptedMessage> to group conversation <GroupChat>
-    And User <Contact1> sends encrypted image <ImageName> to group conversation <GroupChat>
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
+    And Contact <Contact1> sends encrypted message <EncryptedMessage> to group conversation <GroupChatName>
+    And User <Contact1> sends encrypted image <ImageName> to group conversation <GroupChatName>
     And I see Sign In page
     And I Sign in using login <Email> and password <Password>
     And I open conversation with <GroupChatName>
@@ -300,8 +294,6 @@ Feature: E2EE
     Given <Contact> is connected to Myself
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     Given I am signed in properly
     When I open conversation with <Contact>
     And I click People button in one to one conversation
@@ -328,8 +320,6 @@ Feature: E2EE
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
-    Given I see the history info page
-    Given I click confirm on history info page
     Given I am signed in properly
     When I open conversation with <GroupChatName>
     And I click People button in group conversation
@@ -358,8 +348,6 @@ Feature: E2EE
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
-    Then I see the history info page
-    And I click confirm on history info page
     And I am signed in properly
     When I open conversation with <Contact>
     And I click People button in one to one conversation
@@ -368,11 +356,16 @@ Feature: E2EE
     And I click on device Device1 of user <Contact> on Single User Profile popover
     And I verify device on Device Detail popover
     And I click back button on the Device Detail popover
-    Then I see device Device1 of user <Contact> is verified on Single User Profile popover
-    Then I see verified icon on Single User Profile popover
+    #Then I see device Device1 of user <Contact> is verified on Single User Profile popover
+    Then I do not see user verified icon on Single User Profile popover
+    And I click on device Device2 of user <Contact> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    #Then I see device Device2 of user <Contact> is verified on Single User Profile popover
+    Then I see user verified icon on Single User Profile popover
     When I click People button in one to one conversation
     Then I see <ALL_VERIFIED> action in conversation
-    #And I see verified icon in conversation
+    And I see verified icon in conversation
 
   Examples:
     | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  |
@@ -389,8 +382,6 @@ Feature: E2EE
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
-    Then I see the history info page
-    And I click confirm on history info page
     And I am signed in properly
     When I open conversation with <GroupChatName>
     And I click People button in group conversation
@@ -400,10 +391,27 @@ Feature: E2EE
     And I click on device Device1 of user <Contact1> on Single User Profile popover
     And I verify device on Device Detail popover
     And I click back button on the Device Detail popover
-    #Then I see device Device1 of user <Contact> is verified on Single User Profile popover
-    #Then I see verified icon on Single User Profile popover
-    #When I click back button
-    #Then User is in verified category
+    #Then I see device Device1 of user <Contact1> is verified on Single User Profile popover
+    Then I do not see user verified icon on Single User Profile popover
+    And I click on device Device2 of user <Contact1> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    #Then I see device Device2 of user <Contact1> is verified on Single User Profile popover
+    Then I see user verified icon on Single User Profile popover
+    When I click People button in group conversation
+    And I click People button in group conversation
+    When I click on participant <Contact2> on Group Participants popover
+    And I switch to Devices tab on Single User Profile popover
+    And I click on device Device1 of user <Contact2> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    #Then I see device Device1 of user <Contact2> is verified on Single User Profile popover
+    Then I do not see user verified icon on Single User Profile popover
+    And I click on device Device2 of user <Contact2> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    #Then I see device Device2 of user <Contact2> is verified on Single User Profile popover
+    Then I see user verified icon on Single User Profile popover
     When I click People button in group conversation
     And I see <ALL_VERIFIED> action in conversation
 
@@ -413,21 +421,23 @@ Feature: E2EE
 
   @C28834 @e2ee @regression
   Scenario Outline: Make sure data is restored after switching between temporary login and back to permanent
-    Given There are 4 users where <Name> is me
+    Given There are 3 users where <Name> is me
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given user <Contact2> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
-    Then I see the history info page
-    And I click confirm on history info page
     And I am signed in properly
     And I open conversation with <GroupChatName>
     And I write message <Message1>
     And I send message
-    And I open conversation with <Contact1>
+    Then I see text message <Message1>
+    When I open conversation with <Contact1>
     And I write message <Message2>
     And I send message
-    And I open self profile
+    Then I see text message <Message2>
+    When I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
@@ -436,6 +446,8 @@ Feature: E2EE
     And I enter email "<Email>"
     And I enter password "<Password>"
     And I press Sign In button
+    Then I see the history info page
+    When I click confirm on history info page
     And I am signed in properly
     And I open conversation with <GroupChatName>
     Then I do not see text message <Message2>

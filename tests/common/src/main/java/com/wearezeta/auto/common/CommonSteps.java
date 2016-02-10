@@ -488,16 +488,6 @@ public final class CommonSteps {
                 size, true, BACKEND_USER_SYNC_TIMEOUT);
     }
 
-    public void WaitUntilContactBlockStateInSearch(String searchByNameAlias,
-                                                   String contactAlias, boolean expectedState) throws Exception {
-        String query = usrMgr.replaceAliasesOccurences(contactAlias,
-                FindBy.NAME_ALIAS);
-        query = usrMgr.replaceAliasesOccurences(query, FindBy.EMAIL_ALIAS);
-        BackendAPIWrappers.waitUntilContactBlockState(
-                usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query,
-                expectedState, BACKEND_USER_SYNC_TIMEOUT);
-    }
-
     public void UserXAddedContactsToGroupChat(String userAsNameAlias,
                                               String contactsToAddNameAliases, String chatName) throws Exception {
         final ClientUser userAs = usrMgr
