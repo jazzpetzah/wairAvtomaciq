@@ -263,8 +263,8 @@ Feature: E2EE
     And I type the default message
     And I send the message
     And I close New Device overlay
-    And I resend the message to user with New Device
-    Then I see 2 default message in the dialog
+    And I resend the last message in the conversation with Resend button
+    Then I see 2 default messages in the dialog
 
     Examples:
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 |

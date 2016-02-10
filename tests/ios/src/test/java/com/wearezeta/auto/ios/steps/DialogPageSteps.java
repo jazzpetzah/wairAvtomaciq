@@ -976,14 +976,14 @@ public class DialogPageSteps {
     }
 
     /**
-     * Presses Resend button to send msg again after ignore new device
+     * Presses Resend button in dialog to send last msg again
      *
      * @throws Exception
-     * @step. ^I resend the message to user with New Device$
+     * @step. ^I resend the last message in the conversation with Resend button$
      */
-    @When("^I resend the message to user with New Device$")
-    public void IResendTheMessageToUserWithNewDevice() throws Exception {
-        getDialogPage().resendMessageToUserWithNewDevice();
+    @When("^I resend the last message in the conversation with Resend button$")
+    public void IResendTheLastMessageToUserInDialog() throws Exception {
+        getDialogPage().resendLastMessageInDialogToUser();
     }
 
 }

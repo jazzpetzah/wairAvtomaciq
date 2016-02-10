@@ -124,7 +124,7 @@ public class DialogPage extends IOSPage {
     private static final By xpathYouStartedUsingThisDeviceSystemMesssage = By
         .xpath("//UIATextView[@name='YOU STARTED USING THIS DEVICE']");
 
-    private static final By xpathResendMessageButton = By.xpath("//UIATableCell[last()]/UIAButton[1]");
+    private static final By xpathResendMessageButton = By.xpath("//UIATableView[1]/UIATableCell[last()]/UIAButton[1]");
 
     public DialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -554,7 +554,7 @@ public class DialogPage extends IOSPage {
             90, 50);
     }
 
-    public void resendMessageToUserWithNewDevice() throws Exception {
+    public void resendLastMessageInDialogToUser() throws Exception {
         getElement(xpathResendMessageButton).click();
     }
 }
