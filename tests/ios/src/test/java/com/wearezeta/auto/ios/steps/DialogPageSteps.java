@@ -963,4 +963,16 @@ public class DialogPageSteps {
                     getDialogPage().isShieldIconInvisibleNextToInputField());
         }
     }
+
+    /**
+     * Presses Resend button to send msg again after ignore new device
+     *
+     * @throws Exception
+     * @step. ^I resend the message to user with New Device$
+     */
+    @When("^I resend the message to user with New Device$")
+    public void IResendTheMessageToUserWithNewDevice() throws Exception {
+        getDialogPage().resendMessageToUserWithNewDevice();
+    }
+
 }

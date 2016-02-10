@@ -127,6 +127,8 @@ public class DialogPage extends IOSPage {
     private static final Function<String, String> xpathStrConvoMessageByText = text ->
             String.format("%s//UIATableView//*[contains(@name, '%s')]", xpathStrMainWindow, text);
 
+    private static final By xpathResendMessageButton = By.xpath("//UIATableCell[last()]/UIAButton[1]");
+
     public DialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -560,5 +562,9 @@ public class DialogPage extends IOSPage {
 
     public boolean isShieldIconInvisibleNextToInputField() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameShieldIconNextToInput);
+    }
+
+    public void resendMessageToUserWithNewDevice() throws Exception {
+        getElement(xpathResendMessageButton).click();
     }
 }
