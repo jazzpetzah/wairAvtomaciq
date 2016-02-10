@@ -70,24 +70,20 @@ public class AppiumServerTools {
         Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9",
                 "Simulator", "configd_sim", "ids_simd", "launchd_sim", "instruments", "node"}).
                 waitFor(2, TimeUnit.SECONDS);
-        log.warn("Trying to restart Appium server on localhost...");
-        ensureAppiumExecutableExistence();
-        ensureParentDirExistence(LOG_PATH);
-        Runtime.getRuntime().exec(CMDLINE_IOS);
-        waitForAppiumRestart();
+        restartAppium(CMDLINE_IOS);
     }
 
     public static synchronized void resetIOSRealDevice() throws Exception {
         Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9", "instruments", "node"}).
                 waitFor(2, TimeUnit.SECONDS);
+        restartAppium(CMDLINE_IOS);
+    }
+
+    private static void restartAppium(String[] cmdLine) throws Exception {
         log.warn("Trying to restart Appium server on localhost...");
         ensureAppiumExecutableExistence();
         ensureParentDirExistence(LOG_PATH);
-        Runtime.getRuntime().exec(CMDLINE_IOS);
-        waitForAppiumRestart();
-    }
-
-    private static void waitForAppiumRestart() throws Exception {
+        Runtime.getRuntime().exec(cmdLine);
         log.info(String.format("Waiting %s seconds for Appium port %s to be opened...", RESTART_TIMEOUT / 1000, PORT));
         Thread.sleep(1000);
         if (!waitUntilPortOpened()) {
