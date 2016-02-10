@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.ios.pages.SettingsPage;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -91,10 +90,10 @@ public class SettingsPageSteps {
      * Presses the Edit Button in Settings Manage devices
      *
      * @throws Exception
-     * @step. ^I press Edit button$
+     * @step. ^I tap Edit button$
      */
-    @When("^I press Edit button$")
-    public void IPressEditButton() throws Exception {
+    @When("^I tap Edit button$")
+    public void ITapEditButton() throws Exception {
         getSettingsPage().pressEditButton();
     }
 
@@ -103,21 +102,11 @@ public class SettingsPageSteps {
      *
      * @param deviceName name of device that should be deleted
      * @throws Exception
-     * @step. ^I press Delete (.*) button from devices$
+     * @step. ^I tap Delete (.*) button from devices$
      */
-    @When("^I press Delete (.*) button from devices$")
-    public void IPressDeleteButtonFromDevices(String deviceName) throws Exception {
+    @When("^I tap Delete (.*) button from devices$")
+    public void ITapDeleteButtonFromDevices(String deviceName) throws Exception {
         getSettingsPage().pressDeleteDeviceButton(deviceName);
-    }
-
-    /**
-     * Presses the final Delete button to delete the device
-     *
-     * @throws Exception
-     * @step. ^I press the Delete Button$
-     */
-    @When("^I press the Delete Button$")
-    public void IPressTheDeleteButton() throws Exception {
         getSettingsPage().pressDeleteButton();
     }
 
@@ -139,16 +128,16 @@ public class SettingsPageSteps {
      *
      * @param shouldNot equals to null if the device is in list
      * @param device    name of device in list
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I (dont )?see device (.*) in devices list$
      */
     @Then("^I (dont )?see device (.*) in devices list$")
     public void ISeeDeviceInDevicesList(String shouldNot, String device) throws Exception {
         if (shouldNot == null) {
-            Assert.assertTrue("The device is not visible in the device list",
+            Assert.assertTrue(String.format("The device %s is not visible in the device list",device),
                     getSettingsPage().isDeviceVisibleInList(device));
         } else {
-            Assert.assertFalse("The device is still visible in the device list",
+            Assert.assertFalse(String.format("The device %s is still visible in the device list",device),
                     getSettingsPage().isDeviceVisibleInList(device));
         }
     }

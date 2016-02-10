@@ -182,9 +182,8 @@ Feature: E2EE
     And I click on Settings button from the options menu
     And I select settings item Privacy & Security
     And I select settings item Manage devices
-    And I press Edit button
-    And I press Delete <DeviceName> button from devices
-    And I press the Delete Button
+    And I tap Edit button
+    And I tap Delete <DeviceName> button from devices
     And I confirm with my <Password> the deletion of the device
     Then I dont see device <DeviceName> in devices list
 
