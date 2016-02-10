@@ -40,13 +40,12 @@ public class CommonIOSSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    public static final String DEFAULT_AUTOMATION_MESSAGE = "iPhone has stupid spell checker";
+    // We keep this short and compatible with spell checker
+    public static final String DEFAULT_AUTOMATION_MESSAGE = "1 message";
 
     static {
-        System.setProperty("org.apache.commons.logging.Log",
-                "org.apache.commons.logging.impl.SimpleLog");
-        System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http",
-                "warn");
+        System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
+        System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http", "warn");
     }
 
     public static final Platform CURRENT_PLATFORM = Platform.iOS;
@@ -287,16 +286,13 @@ public class CommonIOSSteps {
     @Given("^(.*) sent connection request to (.*)$")
     public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
                                                String usersToNameAliases) throws Throwable {
-        commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
-                usersToNameAliases);
+        commonSteps.ConnectionRequestIsSentTo(userFromNameAlias, usersToNameAliases);
     }
 
     @Given("^(.*) has group chat (.*) with (.*)$")
     public void UserHasGroupChatWithContacts(String chatOwnerNameAlias,
-                                             String chatName, String otherParticipantsNameAlises)
-            throws Exception {
-        commonSteps.UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName,
-                otherParticipantsNameAlises);
+                                             String chatName, String otherParticipantsNameAlises) throws Exception {
+        commonSteps.UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName, otherParticipantsNameAlises);
     }
 
     /**
@@ -327,8 +323,7 @@ public class CommonIOSSteps {
     @When("^(.*) added (.*) to group chat (.*)")
     public void UserXaddUserBToGroupChat(String chatOwnerNameAlias,
                                          String userToAdd, String chatName) throws Exception {
-        commonSteps.UserXAddedContactsToGroupChat(chatOwnerNameAlias,
-                userToAdd, chatName);
+        commonSteps.UserXAddedContactsToGroupChat(chatOwnerNameAlias, userToAdd, chatName);
     }
 
     /**
@@ -340,14 +335,12 @@ public class CommonIOSSteps {
      * @step. ^(.*) leave(s) group chat (.*)$
      */
     @Given("^(.*) leave[s]* group chat (.*)$")
-    public void UserLeavesGroupChat(String userName, String chatName)
-            throws Exception {
+    public void UserLeavesGroupChat(String userName, String chatName) throws Exception {
         commonSteps.UserXLeavesGroupChat(userName, chatName);
     }
 
     @Given("^(.*) is connected to (.*)$")
-    public void UserIsConnectedTo(String userFromNameAlias,
-                                  String usersToNameAliases) throws Exception {
+    public void UserIsConnectedTo(String userFromNameAlias, String usersToNameAliases) throws Exception {
         commonSteps.UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
     }
 
@@ -357,10 +350,8 @@ public class CommonIOSSteps {
     }
 
     @Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
-    public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
-            throws Exception {
-        commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count,
-                myNameAlias);
+    public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias) throws Exception {
+        commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count, myNameAlias);
         IChangeUserAvatarPicture(myNameAlias, "default");
     }
 

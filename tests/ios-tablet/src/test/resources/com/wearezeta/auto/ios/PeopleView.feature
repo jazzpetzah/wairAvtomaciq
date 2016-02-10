@@ -320,8 +320,7 @@ Feature: People View
     And I select user on iPad group popover <Contact2>
     And I tap on start dialog button on other user profile page
     #And I dismiss popover on iPad
-    And I type the default message
-    And I send the message
+    And I type the default message and send it
     Then I see 1 default message in the dialog
 
     Examples:
@@ -341,8 +340,7 @@ Feature: People View
     And I select user on iPad group popover <Contact2>
     And I tap on start dialog button on other user profile page
     #And I dismiss popover on iPad
-    And I type the default message
-    And I send the message
+    And I type the default message and send it
     Then I see 1 default message in the dialog
 
     Examples:

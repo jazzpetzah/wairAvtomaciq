@@ -160,8 +160,7 @@ Feature: E2EE
     And I click close user profile page button
     And I click Close input options button
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
-    And I type the default message
-    And I send the message
+    And I type the default message and send it
     Then I see the label "<Contact1> <ExpectedSuffix>" on New Device overlay
 
     Examples:
