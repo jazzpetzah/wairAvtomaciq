@@ -974,4 +974,16 @@ public class DialogPageSteps {
     public void ITapThisDeviceLink() throws Exception {
         getDialogPage().clickThisDeviceLink();
     }
+
+    /**
+     * Presses Resend button in dialog to send last msg again
+     *
+     * @throws Exception
+     * @step. ^I resend the last message in the conversation with Resend button$
+     */
+    @When("^I resend the last message in the conversation with Resend button$")
+    public void IResendTheLastMessageToUserInDialog() throws Exception {
+        getDialogPage().resendLastMessageInDialogToUser();
+    }
+
 }
