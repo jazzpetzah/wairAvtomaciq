@@ -50,11 +50,19 @@ public class AppiumServerTools {
         final File log = new File(filePath);
         if (!log.getParentFile().exists()) {
             if (!log.getParentFile().mkdirs()) {
-                throw new RuntimeException(
-                        String.format("The script has failed to create '%s' folder for Appium logs. " +
-                                "Please make sure your account has correct access permissions on the parent folder",
-                                log.getParentFile().getCanonicalPath()));
+                throw new RuntimeException(String.format("The script has failed to create '%s' folder for Appium logs. " +
+                                "Please make sure your account has correct access permissions on the parent folder(s)",
+                        log.getParentFile().getCanonicalPath()));
             }
+        }
+    }
+
+    private static void ensureAppiumExecutableExistence() throws Exception {
+        if (!new File(MAIN_EXECUTABLE_PATH).exists()) {
+            throw new RuntimeException(
+                    String.format("The script is unable to find main Appium executable at the path '%s'. " +
+                                    "Please make sure it is properly installed (`npm install -g appium`)",
+                            MAIN_EXECUTABLE_PATH));
         }
     }
 
@@ -63,6 +71,7 @@ public class AppiumServerTools {
                 "Simulator", "configd_sim", "ids_simd", "launchd_sim", "instruments", "node"}).
                 waitFor(2, TimeUnit.SECONDS);
         log.warn("Trying to restart Appium server on localhost...");
+        ensureAppiumExecutableExistence();
         ensureParentDirExistence(LOG_PATH);
         Runtime.getRuntime().exec(CMDLINE_IOS);
         waitForAppiumRestart();
@@ -72,6 +81,7 @@ public class AppiumServerTools {
         Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9", "instruments", "node"}).
                 waitFor(2, TimeUnit.SECONDS);
         log.warn("Trying to restart Appium server on localhost...");
+        ensureAppiumExecutableExistence();
         ensureParentDirExistence(LOG_PATH);
         Runtime.getRuntime().exec(CMDLINE_IOS);
         waitForAppiumRestart();
