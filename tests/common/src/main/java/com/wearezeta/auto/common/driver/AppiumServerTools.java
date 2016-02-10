@@ -3,6 +3,7 @@ package com.wearezeta.auto.common.driver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import org.apache.log4j.Logger;
 
+import java.io.File;
 import java.net.Socket;
 import java.util.concurrent.TimeUnit;
 
@@ -45,11 +46,24 @@ public class AppiumServerTools {
             "--log", LOG_PATH
     };
 
+    private static void ensureParentDirExistence(String filePath) throws Exception {
+        final File log = new File(filePath);
+        if (!log.getParentFile().exists()) {
+            if (!log.getParentFile().mkdirs()) {
+                throw new RuntimeException(
+                        String.format("The script has failed to create '%s' folder for Appium logs. " +
+                                "Please make sure your account has correct access permissions on the parent folder",
+                                log.getParentFile().getCanonicalPath()));
+            }
+        }
+    }
+
     public static synchronized void resetIOSSimulator() throws Exception {
         Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9",
                 "Simulator", "configd_sim", "ids_simd", "launchd_sim", "instruments", "node"}).
                 waitFor(2, TimeUnit.SECONDS);
         log.warn("Trying to restart Appium server on localhost...");
+        ensureParentDirExistence(LOG_PATH);
         Runtime.getRuntime().exec(CMDLINE_IOS);
         waitForAppiumRestart();
     }
@@ -58,6 +72,7 @@ public class AppiumServerTools {
         Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9", "instruments", "node"}).
                 waitFor(2, TimeUnit.SECONDS);
         log.warn("Trying to restart Appium server on localhost...");
+        ensureParentDirExistence(LOG_PATH);
         Runtime.getRuntime().exec(CMDLINE_IOS);
         waitForAppiumRestart();
     }
