@@ -10,6 +10,8 @@ public class DeviceDetailsPage extends IOSPage {
     private final static By nameVerifySwitcher = By.xpath("//UIASwitch");
 
     private static final By nameBackButton = By.name("Back");
+
+    private static final By xpathBackButton = By.xpath(xpathStrMainWindow + "/UIAButton[4]");
     
     private static final By xpathKeyFingerpringValue = By.xpath("//UIATableCell[@name='Key Fingerprint']/UIAStaticText[2]");
 
@@ -22,7 +24,7 @@ public class DeviceDetailsPage extends IOSPage {
     }
 
     public void tapBackButton() throws Exception {
-        getElement(nameBackButton).click();
+        getElement(xpathBackButton).click();
     }
     
     public String getFingerprintValue() throws Exception {
