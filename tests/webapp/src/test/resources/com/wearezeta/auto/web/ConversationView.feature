@@ -3,6 +3,7 @@ Feature: Conversation View
   @C1703 @smoke
   Scenario Outline: Send message in 1on1
     Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -31,6 +32,8 @@ Feature: Conversation View
     When I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And I see Sign In page
     And User <Name2> is me
     And I Sign in using login <Login2> and password <Password2>
@@ -46,6 +49,8 @@ Feature: Conversation View
   @C1704 @regression
   Scenario Outline: Send message to group chat
     Given There are 3 users where <Name> is me
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given user <Contact2> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
@@ -79,6 +84,7 @@ Feature: Conversation View
   @C1784 @regression
   Scenario Outline: Able to send and play youtube link
     Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -120,6 +126,8 @@ Feature: Conversation View
   @C1764 @regression
   Scenario Outline: I can see missed messages when rejoining a conversation after leaving it
     Given There are 3 users where <Name> is me
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given user <Contact2> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given User Myself sends message <Msg1FromUserA> to conversation <ChatName>
@@ -287,6 +295,7 @@ Feature: Conversation View
   @C1794 @regression
   Scenario Outline: Verify you ping in a conversation when you press alt + ctrl + K (Win)
     Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
