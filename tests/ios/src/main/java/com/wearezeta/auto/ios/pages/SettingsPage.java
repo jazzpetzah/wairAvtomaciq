@@ -57,6 +57,5 @@ public class SettingsPage extends IOSPage {
     public boolean verificationLabelVisibility(String deviceName, String verificaitonLabel) throws Exception {
         final By locator = By.xpath(xpathStrDeviceVerificationLabel.apply(deviceName, verificaitonLabel));
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
-
     }
 }
