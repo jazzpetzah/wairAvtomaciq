@@ -218,15 +218,31 @@ Feature: E2EE
     When I open details page of device number 2
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
-    Then I see the label Verified is shown for the device <DeviceLabel>
+    Then I see the label Verified is shown for the device <DeviceName>
     When I open details page of device number 2
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
-    Then I see the label Not Verified is shown for the device <DeviceLabel>
+    Then I see the label Not Verified is shown for the device <DeviceName>
 
     Examples:
       | Name      | DeviceName | DeviceLabel  |
       | user1Name | Device1    | Device1Label |
+      
+  @C3293 @staging
+  Scenario Outline: Verify link is active for your own device and leads you to device's fingerprint
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email
+    Given I see conversations list
+    And I tap on contact name <Contact1>
+    And I see the conversation view contains message <ExpectedMsg>
+    And I tap on THIS DEVICE link
+    And I open details page of device number 1
+    Then I see fingerprint is not empty
+
+        Examples:
+      | Name      | Contact1  | ExpectedMsg               |
+      | user1Name | user2Name | STARTED USING THIS DEVICE |
 
   @C14317 @staging
   Scenario Outline: First time when 1:1 conversation is degraded - I can ignore alert screen and send messages with resend button

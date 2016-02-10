@@ -963,6 +963,17 @@ public class DialogPageSteps {
                     getDialogPage().isShieldIconInvisibleNextToInputField());
         }
     }
+    
+    /**
+     * Click on THIS DEVICE link from YOU STARTED USING system message
+     *
+     * @step. "^I tap on THIS DEVICE link$
+     * @throws Exception
+     */
+    @When("^I tap on THIS DEVICE link$")
+    public void ITapThisDeviceLink() throws Exception {
+        getDialogPage().clickThisDeviceLink();
+    }
 
     /**
      * Presses Resend button to send msg again after ignore new device
