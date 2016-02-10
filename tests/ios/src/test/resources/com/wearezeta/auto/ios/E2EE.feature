@@ -143,3 +143,15 @@ Feature: E2EE
     Examples:
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                |
       | user1Name | user2Name | Device2     | Label2       | STARTED USING A NEW DEVICE |
+
+  @C14310 @noAcceptAlert @staging
+  Scenario Outline: On first login on 2nd device there should be an explanation that user will not see previous messages
+    Given There are 1 user where <Name> is me
+    Given User Myself adds a new device <DeviceName> with label <DeviceLabel>
+    When I sign in using my email
+    And I accept alert
+    Then I see First Time overlay
+
+    Examples:
+      | Name      | DeviceName | DeviceLabel  |
+      | user1Name | Device1    | Device1Label |
