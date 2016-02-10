@@ -3,6 +3,7 @@ Feature: Ping
   @C1717 @smoke
   Scenario Outline: Send ping in 1on1
     Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -20,6 +21,7 @@ Feature: Ping
   @C1718 @regression
   Scenario Outline: Verify you cannot Ping several times in a row
     Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -38,6 +40,8 @@ Feature: Ping
   @C1719 @smoke
   Scenario Outline: Verify you can see Ping on the other side (group conversation)
     Given There are 3 users where <Name> is me
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given user <Contact2> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
