@@ -20,8 +20,7 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I type the default message
-    And I send the message
+    And I type the default message and send it
     Then I see 1 default message in the dialog
 
     Examples:
@@ -69,8 +68,7 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I type the default message
-    And I click send button on keyboard
+    And I type the default message and send it
     Then I see 1 default message in the dialog
 
     Examples:
@@ -233,7 +231,7 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I send using script predefined message <Text>
+    And I type the "<Text>" message and send it
     Then I see last message in dialog is expected message <Text>
 
     Examples:
@@ -668,8 +666,7 @@ Feature: Conversation View
     And I search for user name <Contact1> and tap on it on People picker page
     And I click open conversation button on People picker page
     Then I see dialog page
-    And I type the default message
-    And I send the message
+    And I type the default message and send it
     And I see 1 default message in the dialog
 
     Examples:

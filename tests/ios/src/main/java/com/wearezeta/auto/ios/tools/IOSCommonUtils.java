@@ -6,9 +6,7 @@ import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.Callable;
 
-import io.appium.java_client.ios.IOSDriver;
 import org.apache.log4j.Logger;
 
 import com.dd.plist.NSDictionary;
@@ -18,7 +16,6 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.BuildVersionInfo;
 import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 import com.wearezeta.auto.ios.pages.IOSPage;
-import org.openqa.selenium.ScreenOrientation;
 
 public class IOSCommonUtils {
     private static Logger log = ZetaLogger.getLog(IOSCommonUtils.class
@@ -59,8 +56,7 @@ public class IOSCommonUtils {
         String gsmNetworkType = "";
         Boolean isWifiEnabled = true;
 
-        return new ClientDeviceInfo(os, osBuild, deviceName, gsmNetworkType,
-                isWifiEnabled);
+        return new ClientDeviceInfo(os, osBuild, deviceName, gsmNetworkType, isWifiEnabled);
     }
 
     public static String getIosClientInfoPlistFromConfig(Class<?> c)
@@ -115,7 +111,6 @@ public class IOSCommonUtils {
             Date date = sdf.parse(time);
             resultTime = date.getTime();
         } catch (ParseException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return resultTime;

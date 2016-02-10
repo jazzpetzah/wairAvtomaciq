@@ -12,7 +12,6 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.ios.IOSConstants;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
-import com.wearezeta.auto.ios.pages.GroupChatPage;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -26,11 +25,7 @@ public class DialogPageSteps {
         return pagesCollection.getPage(DialogPage.class);
     }
 
-    private GroupChatPage getGroupChatPage() throws Exception {
-        return pagesCollection.getPage(GroupChatPage.class);
-    }
-
-    private ContactListPage getContactListPage() throws Exception {
+     private ContactListPage getContactListPage() throws Exception {
         return pagesCollection.getPage(ContactListPage.class);
     }
 
@@ -89,10 +84,13 @@ public class DialogPageSteps {
         Assert.assertTrue(getDialogPage().isMessageVisible(expectedPingMessage));
     }
 
-    @When("^I type the default message and send it$")
-    public void ITypeTheMessageAndSendIt() throws Exception {
-        getDialogPage().typeAndSendConversationMessage(
-                CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+    @When("^I type the (default|\".*\") message and send it$")
+    public void ITypeTheMessageAndSendIt(String msg) throws Exception {
+        if (msg.equals("default")) {
+            getDialogPage().typeAndSendConversationMessage(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+        } else {
+            getDialogPage().typeAndSendConversationMessage(msg.replaceAll("^\"|\"$", ""));
+        }
     }
 
     /**
@@ -107,8 +105,7 @@ public class DialogPageSteps {
         String chatName = usrMgr.findUserByNameOrNameAlias(convName).getName();
         // Title bar is gone quite fast so it may fail because of this
         Assert.assertTrue("Title bar with name - " + chatName
-                        + " is not on the page",
-                getDialogPage().isTitleBarDisplayed(chatName));
+                        + " is not on the page", getDialogPage().isTitleBarDisplayed(chatName));
     }
 
     /**
@@ -423,10 +420,9 @@ public class DialogPageSteps {
      * @step. I input message with leading empty spaces
      */
     @When("I input message with leading empty spaces")
-    public void IInpuMessageWithLeadingEmptySpace() throws Throwable {
+    public void IInputMessageWithLeadingEmptySpace() throws Throwable {
         getDialogPage().typeAndSendConversationMessage(
                 ONLY_SPACES_MESSAGE + CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
-
     }
 
     /**
@@ -561,7 +557,7 @@ public class DialogPageSteps {
      */
     @When("^I type tag for giphy preview (.*) and open preview overlay$")
     public void ITypeGiphyTagAndOpenPreview(String message) throws Exception {
-        getDialogPage().typeMessageAndSendSpaceKey(message);
+        getDialogPage().typeMessage(message);
         getDialogPage().openGifPreviewPage();
     }
 
@@ -951,7 +947,7 @@ public class DialogPageSteps {
      *
      * @param shouldNotSee equals to null is the shield should be visible
      * @throws Exception
-     * @step, ^I (do not )?see shield icon next to conversation input field$"
+     * @step. ^I (do not )?see shield icon next to conversation input field$"
      */
     @Then("^I (do not )?see shield icon next to conversation input field$")
     public void ISeeShieldIconNextNextToInputField(String shouldNotSee) throws Exception {

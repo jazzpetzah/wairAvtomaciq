@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
-import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -383,38 +382,36 @@ public class DialogPage extends IOSPage {
             if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
                 IOSSimulatorHelper.swipeDown();
             } else {
-                DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationPage), 500, 50, 10, 50, 90);
+                DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationPage),
+                        500, 50, 10, 50, 90);
             }
         }
     }
 
     public void typeAndSendConversationMessage(String message) throws Exception {
-        typeMessage(message);
-        this.clickKeyboardCommitButton();
+        final WebElement convoInput = getElement(nameConversationCursorInput,
+                "Conversation input is not visible after the timeout");
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            inputStringFromKeyboard(convoInput, message, false, true);
+        } else {
+            convoInput.click();
+            // Wait for animation
+            Thread.sleep(1000);
+            convoInput.sendKeys(message);
+            this.clickKeyboardCommitButton();
+        }
     }
 
     public void typeMessage(String message) throws Exception {
         final WebElement convoInput = getElement(nameConversationCursorInput,
-            "Conversation input is not visible after the timeout");
-        convoInput.click();
-        try {
-            ((IOSElement) convoInput).setValue(message);
-        } catch (WebDriverException e) {
-            convoInput.clear();
+                "Conversation input is not visible after the timeout");
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            inputStringFromKeyboard(convoInput, message, false, false);
+        } else {
+            convoInput.click();
+            // Wait for animation
+            Thread.sleep(1000);
             convoInput.sendKeys(message);
-        }
-    }
-
-    public void typeMessageAndSendSpaceKey(String message) throws Exception {
-        final WebElement convoInput = getElement(nameConversationCursorInput,
-            "Conversation input is not visible after the timeout");
-        convoInput.click();
-        try {
-            ((IOSElement) convoInput).setValue(message);
-            convoInput.sendKeys(" ");
-        } catch (WebDriverException e) {
-            convoInput.clear();
-            convoInput.sendKeys(message + " ");
         }
     }
 
