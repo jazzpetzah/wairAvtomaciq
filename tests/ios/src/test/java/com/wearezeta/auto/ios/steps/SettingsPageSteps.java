@@ -88,7 +88,16 @@ public class SettingsPageSteps {
             getSettingsPage().isItemVisible(itemName));
     }
 
-    @Then("^I see for device (.*) is shown label (Verified|Not Verified)")
+    /**
+     * Verify Device label (Verified|Not Verified)
+     * 
+     * @step. ^I see the label (Verified|Not Verified) is shown for the device (.*)$
+     * 
+     * @param deviceName name of device
+     * @param label label of device
+     * @throws Exception
+     */
+    @Then("^I see the label (Verified|Not Verified) is shown for the device (.*)$")
     public void ISeeForDeviceALabelB(String deviceName, String label) throws Exception {
         Assert.assertTrue(String.format("Label '%s' is not visible for device '%s'", label, deviceName), getSettingsPage()
             .verificationLabelVisibility(deviceName, label));

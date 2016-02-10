@@ -2,13 +2,13 @@ package com.wearezeta.auto.ios.pages;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import com.wearezeta.auto.common.misc.Interfaces.FunctionFor2Parameters;
 
 import io.appium.java_client.ios.IOSElement;
 
 import org.openqa.selenium.By;
 
 import java.util.concurrent.Future;
-import java.util.function.Function;
 
 public class SettingsPage extends IOSPage {
     private static final String xpathStrMenuContainer = "//UIATableView";
@@ -22,12 +22,7 @@ public class SettingsPage extends IOSPage {
 
     private static final By xpathAllSoundAlertsButton = By.xpath("//UIATableCell[@name='All']");
 
-    @FunctionalInterface
-    interface FunctionM<A, B, C> {
-        public C apply(A a, B b);
-    }
-
-    private static final FunctionM<String, String, String> xpathStrDeviceVerificationLabel = (deviceName, verificationLabel) -> {
+    private static final FunctionFor2Parameters<String, String, String> xpathStrDeviceVerificationLabel = (deviceName, verificationLabel) -> {
         return String.format("//UIATableCell[@name='%s']/UIAStaticText[@name='%s']", deviceName, verificationLabel);
     };
 
