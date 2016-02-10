@@ -401,6 +401,39 @@ Feature: E2EE
     Examples:
       | Name      | Contact1  | Message1 |
       | user1Name | user2Name | Msg1     |
+
+  @C3516 @staging
+  Scenario Outline: User should appear in verified list in group conversations details when all of his fingerprints are verified
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Contact1> adds new devices Device1,Device2
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When User <Contact2> sends encrypted message "<Message1>" to group conversation <GroupChatName>
+    And I tap on contact name <GroupChatName>
+    And I tap conversation details button
+    And I select contact <Contact1>
+    And I select single participant tab "Devices"
+    Then I see 2 devices is shown in single participant devices tab
+    When I verify 1st device
+    And I select single participant tab "Devices"
+    And I verify 2nd device
+    And I press back button
+    Then I see the verified participant avatar for <Contact1>
+    When I select contact <Contact2>
+    And I select single participant tab "Devices"
+    Then I see 1 devices is shown in single participant devices tab
+    When I verify 1st device
+    And I press back button
+    Then I see the verified participant avatars for <Contact1>,<Contact2>
+    When I press back button
+    Then I see a message informing me conversation is verified
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Message1 | GroupChatName |
+      | user1Name | user2Name | user3Name | Msg1     | GroupConvo    |
       
   @C12066 @regression
   Scenario Outline: Verify I see system message when verify all other user's device in group conversation
