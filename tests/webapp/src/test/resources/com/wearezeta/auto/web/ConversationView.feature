@@ -180,7 +180,7 @@ Feature: Conversation View
     And I choose to create group conversation from Group Participants popover
     When I click People button in group conversation
     And I see Group Participants popover
-    Then I see 128 participants in the Group Participants popover
+    Then I see 127 participants in the Group Participants popover
     When I click Add People button on Group Participants popover
     And I see Add People message on Group Participants popover
     And I confirm add to chat on Group Participants popover
@@ -188,7 +188,7 @@ Feature: Conversation View
     And I choose to create group conversation from Group Participants popover
     When I click People button in group conversation
     And I see Group Participants popover
-    Then I see 128 participants in the Group Participants popover
+    Then I see 127 participants in the Group Participants popover
 
     Examples: 
       | Login                       | Password   | Contact1   | Contact2   |
