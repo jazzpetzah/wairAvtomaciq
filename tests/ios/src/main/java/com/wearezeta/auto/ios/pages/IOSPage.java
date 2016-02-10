@@ -49,8 +49,7 @@ public abstract class IOSPage extends BasePage {
     public IOSPage(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);
 
-        setImagesPath(CommonUtils.getSimulatorImagesPathFromConfig(this
-                .getClass()));
+        setImagesPath(CommonUtils.getSimulatorImagesPathFromConfig(this.getClass()));
 
         this.onScreenKeyboard = new IOSKeyboard(driver);
     }

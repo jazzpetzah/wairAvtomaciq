@@ -144,6 +144,30 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                |
       | user1Name | user2Name | Device2     | Label2       | STARTED USING A NEW DEVICE |
 
+  @C3293 @staging
+  Scenario Outline: Verify system message appearance in case of using a new device by you
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email
+    Given I see conversations list
+    Given User <Contact1> sends 1 encrypted message to user Myself
+    And I tap on contact name <Contact1>
+    And I open conversation details
+    And I switch to Devices tab
+    And I open details page of device number 1
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    And I click close user profile page button
+    And I click Close input options button
+    When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
+    And I type the default message
+    And I send the message
+    Then I see the label "<Contact1> <ExpectedSuffix>" on New Device overlay
+
+    Examples:
+      | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedSuffix             |
+      | user1Name | user2Name | Device2     | Label2       | started using a new device |
+
   @C14310 @noAcceptAlert @staging
   Scenario Outline: On first login on 2nd device there should be an explanation that user will not see previous messages
     Given There are 1 user where <Name> is me
