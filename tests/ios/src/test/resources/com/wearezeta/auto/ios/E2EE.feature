@@ -314,3 +314,14 @@ Feature: E2EE
     Examples:
       | Name      | Contact1  | DeviceName1 | DeviceName2 |
       | user1Name | user2Name | Device1     | Device2     |
+
+  @3291 @staging
+  Scenario Outline: Verify device management appearance after 7 sign ins
+    Given There is 1 user where <Name> is me
+    Given User Myself adds new devices <DeviceName1>,<DeviceName2>,<DeviceName3>,<DeviceName4>,<DeviceName5>,<DeviceName6>,<DeviceName7>
+    Given I sign in using my email
+    Then I see Manage Devices overlay
+
+    Examples:
+      | Name      | DeviceName1 | DeviceName2 | DeviceName3 | DeviceName4 | DeviceName5 | DeviceName6 | DeviceName7 |
+      | user1Name | Device1     | Device2     | Device3     | Device4     | Device5     | Device6     | Device7     |
