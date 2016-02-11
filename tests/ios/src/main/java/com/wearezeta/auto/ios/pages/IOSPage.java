@@ -373,15 +373,4 @@ public abstract class IOSPage extends BasePage {
             throw e;
         }
     }
-
-    public void ensureSoftwareKeyboardVisibility() throws Exception {
-        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            IOSSimulatorHelper.toggleSoftwareKeyboard();
-        }
-        final int kbdVisibilityTimeoutSeconds = 10;
-        if (!onScreenKeyboard.isVisible(kbdVisibilityTimeoutSeconds)) {
-            throw new IllegalStateException(String.format("The keyboard is not visible after %s seconds timeout",
-                    kbdVisibilityTimeoutSeconds));
-        }
-    }
 }

@@ -768,12 +768,20 @@ public class CommonIOSSteps {
         }
     }
 
+    /**
+     * Press Enter button on the keyboard if this is simulator or Commit button on the
+     * on-screen keyboard if real device
+     *
+     * @step. ^I press Enter key in Simulator window$
+     *
+     * @throws Exception
+     */
     @When("^I press Enter key in Simulator window$")
     public void IPressEnterKey() throws Exception {
         if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
             IOSSimulatorHelper.pressEnterKey();
         } else {
-            throw new PendingException("This step is not available for real device");
+            pagesCollection.getCommonPage().clickKeyboardCommitButton();
         }
     }
 }
