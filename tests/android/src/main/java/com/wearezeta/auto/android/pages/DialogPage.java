@@ -395,6 +395,8 @@ public class DialogPage extends AndroidPage {
 
     public void tapConversationDetailsButton() throws Exception {
         getElement(idParticipantsBtn).click();
+        // Wait for animation
+        Thread.sleep(500);
     }
 
     public boolean waitForPingMessageWithText(String expectedText)
