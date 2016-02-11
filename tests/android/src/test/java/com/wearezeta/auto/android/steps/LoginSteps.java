@@ -178,7 +178,7 @@ public class LoginSteps {
      */
     @Given("^I see (?:forced)? e?mail login page$")
     public void GivenISeeEmailScreen() throws Exception {
-        Assert.assertTrue("Welcome page is not shown", getEmailSignInPage()
+        Assert.assertTrue("Forced email login page is not shown", getEmailSignInPage()
                 .waitForForcedEmailLoginScreen());
     }
 }
