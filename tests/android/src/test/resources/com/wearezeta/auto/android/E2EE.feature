@@ -401,7 +401,6 @@ Feature: E2EE
     Then I see the verified participant avatar for <Contact1>
     When I select contact <Contact2>
     And I select single participant tab "Devices"
-    Then I see 1 devices is shown in single participant devices tab
     When I verify 1st device
     And I press back button
     Then I see the verified participant avatars for <Contact1>,<Contact2>
