@@ -407,3 +407,19 @@ Feature: E2EE
     Examples:
       | Name      | Contact1  | Contact2  | Message1 | GroupChatName |
       | user1Name | user2Name | user3Name | Msg1     | GroupConvo    |
+      
+  @C3512 @staging
+  Scenario Outline: On first login by phone on not 1st device I have to be asked for email login
+    Given There is 1 user where <Name> is me
+    Given User <Name> adds new device Device2
+    Given I sign in using my phone number
+    Then I see forced email login page
+    And I have entered login <Login>
+    And I have entered password <Password>
+    And I press Log in button
+    And I accept First Time overlay as soon as it is visible
+    Then I see Contact list with no contacts
+
+    Examples:
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |

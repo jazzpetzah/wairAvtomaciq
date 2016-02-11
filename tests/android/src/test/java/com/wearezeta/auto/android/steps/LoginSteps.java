@@ -169,4 +169,16 @@ public class LoginSteps {
     public void IAcceptErrorMsg() throws Exception {
         getEmailSignInPage().acceptErrorMessage();
     }
+    
+    /**
+     * Verify whether forcer email login page is visible
+     * 
+     * @step. ^I see (?:forced)? e?mail login page$
+     * @throws Exception
+     */
+    @Given("^I see (?:forced)? e?mail login page$")
+    public void GivenISeeEmailScreen() throws Exception {
+        Assert.assertTrue("Welcome page is not shown", getEmailSignInPage()
+                .waitForForcedEmailLoginScreen());
+    }
 }
