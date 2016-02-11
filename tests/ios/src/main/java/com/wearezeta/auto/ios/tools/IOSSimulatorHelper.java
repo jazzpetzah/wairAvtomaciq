@@ -137,6 +137,8 @@ public class IOSSimulatorHelper {
                 "set frontmost to true",
                 "end tell"
         }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+        // To make sure the window is really activated
+        Thread.sleep(1000);
     }
 
     public static void switchToAppsList() throws Exception {
