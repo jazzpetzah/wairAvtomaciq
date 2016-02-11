@@ -273,7 +273,7 @@ public class PersonalInfoPageSteps {
             throw new IllegalStateException("Please take a screenshot of previous profile picture first");
         }
         final long millisecondsStarted = System.currentTimeMillis();
-        final double maxScore = 0.8;
+        final double maxScore = 0.87;
         double score;
         do {
             final BufferedImage currentProfilePictureScreenshot = getPersonalInfoPage().takeScreenshot().

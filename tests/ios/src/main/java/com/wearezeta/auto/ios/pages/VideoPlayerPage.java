@@ -22,7 +22,7 @@ public class VideoPlayerPage extends IOSPage {
     }
 
     public boolean isVideoPlayerPageOpened() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathVideoMainPage);
+        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), xpathVideoMainPage);
     }
 
     public void tapVideoPage() throws Exception {

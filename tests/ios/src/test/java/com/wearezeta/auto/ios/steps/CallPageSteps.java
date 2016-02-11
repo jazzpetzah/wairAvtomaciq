@@ -1,7 +1,5 @@
 package com.wearezeta.auto.ios.steps;
 
-import com.google.common.base.Throwables;
-import gherkin.lexer.Th;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -15,15 +13,14 @@ public class CallPageSteps {
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-    private final IOSPagesCollection pagesCollecton = IOSPagesCollection
-            .getInstance();
+    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
     private StartedCallPage getStartedCallPage() throws Exception {
-        return pagesCollecton.getPage(StartedCallPage.class);
+        return pagesCollection.getPage(StartedCallPage.class);
     }
 
     private IncomingCallPage getIncomingCallPage() throws Exception {
-        return pagesCollecton.getPage(IncomingCallPage.class);
+        return pagesCollection.getPage(IncomingCallPage.class);
     }
 
     /**
@@ -45,12 +42,9 @@ public class CallPageSteps {
      */
     @When("^I see mute call, end call and speakers buttons$")
     public void ISeeCallingPageButtons() throws Throwable {
-        Assert.assertTrue("End call button is not visible",
-                getStartedCallPage().isEndCallVisible());
-        Assert.assertTrue("Mute call button is not visible",
-                getStartedCallPage().isMuteCallVisible());
-        Assert.assertTrue("Speakers button is not visible",
-                getStartedCallPage().isSpeakersVisible());
+        Assert.assertTrue("End call button is not visible", getStartedCallPage().isEndCallVisible());
+        Assert.assertTrue("Mute call button is not visible", getStartedCallPage().isMuteCallVisible());
+        Assert.assertTrue("Speakers button is not visible", getStartedCallPage().isSpeakersVisible());
     }
 
     /**
@@ -172,7 +166,8 @@ public class CallPageSteps {
      */
     @When("^I see incoming group calling message$")
     public void ISeeIncomingGroupCallingMessage() throws Exception {
-        Assert.assertTrue(getIncomingCallPage().isGroupCallingMessageVisible());
+        Assert.assertTrue("The incoming group call message is not visible",
+                getIncomingCallPage().isGroupCallingMessageVisible());
     }
 
     /**
@@ -183,8 +178,7 @@ public class CallPageSteps {
      */
     @Then("^I see Join Call bar$")
     public void ISeeJoinCallBar() throws Exception {
-        boolean joinCallBarIsVisible = getIncomingCallPage()
-                .isJoinCallBarVisible();
+        boolean joinCallBarIsVisible = getIncomingCallPage().isJoinCallBarVisible();
         Assert.assertTrue("Join Call bar is not visible", joinCallBarIsVisible);
     }
 
@@ -196,10 +190,7 @@ public class CallPageSteps {
      */
     @When("^I see Accept second call alert$")
     public void ISeeAcceptSecondCallAlert() throws Exception {
-        boolean secondCallAlertIsVisible = getIncomingCallPage()
-                .isSecondCallAlertVisible();
-        Assert.assertTrue("Second call Alert is not shown",
-                secondCallAlertIsVisible);
+        Assert.assertTrue("Second call Alert is not shown", getIncomingCallPage().isSecondCallAlertVisible());
     }
 
     /**
@@ -259,7 +250,7 @@ public class CallPageSteps {
      */
     @Then("^I see calling to a group message$")
     public void ISeeCallingToMessage() throws Exception {
-        Assert.assertTrue(getStartedCallPage().isCallingMessageVisible());
+        Assert.assertTrue("Calling message is not visible", getStartedCallPage().isCallingMessageVisible());
     }
 
     /**
@@ -270,7 +261,8 @@ public class CallPageSteps {
      */
     @Then("^I see group call is Full message$")
     public void ISeeGroupCallIsFullMessage() throws Exception {
-        Assert.assertTrue(getIncomingCallPage().isGroupCallFullMessageShown());
+        Assert.assertTrue("GROUP CALL IS FULL message is not visible",
+                getIncomingCallPage().isGroupCallFullMessageShown());
     }
 
 }

@@ -30,7 +30,6 @@ public class DialogPageSteps {
     }
 
     private String mediaState;
-    private static final String ONLY_SPACES_MESSAGE = "     ";
 
     @When("^I see dialog page$")
     public void WhenISeeDialogPage() throws Exception {
@@ -670,14 +669,10 @@ public class DialogPageSteps {
     @When("I see only Details button. Call, Camera, Sketch, Ping are not shown")
     public void ISeeOnlyDetailsButtonRestNotShown() throws Exception {
         ISeeDetailsButtonShown();
-        Assert.assertFalse("Call button is visible", getDialogPage()
-                .isCallButtonVisible());
-        Assert.assertFalse("Camera button is visible", getDialogPage()
-                .isCameraButtonVisible());
-        Assert.assertFalse("Sketch button is visible", getDialogPage()
-                .isOpenScetchButtonVisible());
-        Assert.assertFalse("Ping button is visible", getDialogPage()
-                .isPingButtonVisible());
+        Assert.assertFalse("Call button is visible", getDialogPage().isCallButtonVisible());
+        Assert.assertFalse("Camera button is visible", getDialogPage().isCameraButtonVisible());
+        Assert.assertFalse("Sketch button is visible", getDialogPage().isOpenScetchButtonVisible());
+        Assert.assertFalse("Ping button is visible", getDialogPage().isPingButtonVisible());
     }
 
     /**
@@ -690,21 +685,6 @@ public class DialogPageSteps {
     public void ISeeCloseButtonInputOptionsNotVisible() throws Exception {
         Assert.assertTrue("Close input options button is visible", getDialogPage()
                 .verifyInputOptionsCloseButtonNotVisible());
-    }
-
-    /**
-     * Verify that ping controller button's x coordinate is less then
-     * conversation window's x coordinate
-     *
-     * @throws Exception
-     * @step. ^I see controller buttons can not be visible$
-     */
-    @When("^I see controller buttons can not be visible$")
-    public void ISeeControllerButtonsNotVisible() throws Exception {
-        Assert.assertFalse(
-                "Controller buttons can be visible. Please check screenshots",
-                getDialogPage()
-                        .isTherePossibilityControllerButtonsToBeDisplayed());
     }
 
     /**
@@ -874,8 +854,8 @@ public class DialogPageSteps {
      */
     @When("^I see conversation is scrolled to the end$")
     public void ISeeConversationIsScrolledToEnd() throws Throwable {
-        Assert.assertTrue(getDialogPage().isPlusButtonVisible());
-        Assert.assertTrue(getDialogPage().isCursorInputVisible());
+        Assert.assertTrue("The input field state looks incorrect",
+                getDialogPage().isPlusButtonVisible() && getDialogPage().isCursorInputVisible());
     }
 
     /**

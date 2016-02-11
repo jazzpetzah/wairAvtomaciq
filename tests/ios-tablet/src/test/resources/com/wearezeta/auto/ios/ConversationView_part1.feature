@@ -7,7 +7,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I tap on text input
     And I type the default message and send it
     Then I see 1 default message in the dialog
 
@@ -203,7 +202,7 @@ Feature: Conversation View
     When I tap my avatar
     And I close self profile
     And I tap on text input
-    And I send the message
+    And I press Enter key in Simulator window
     Then I see 1 default message in the dialog
 
     Examples:
@@ -223,7 +222,7 @@ Feature: Conversation View
     When I tap my avatar
     And I close self profile
     And I tap on text input
-    And I send the message
+    And I press Enter key in Simulator window
     Then I see 1 default message in the dialog
 
     Examples:
@@ -248,7 +247,7 @@ Feature: Conversation View
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
-    And I send the message
+    And I press Enter key in Simulator window
     Then I see last message in dialog is expected message <Text>
 
     Examples:
@@ -274,7 +273,7 @@ Feature: Conversation View
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
-    And I send the message
+    And I press Enter key in Simulator window
     Then I see last message in dialog is expected message <Text>
 
     Examples:
