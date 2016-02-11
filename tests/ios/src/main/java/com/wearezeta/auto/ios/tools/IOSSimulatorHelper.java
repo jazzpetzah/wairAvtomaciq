@@ -55,10 +55,10 @@ public class IOSSimulatorHelper {
         swipe(0.2, 0.8, 0.9, 0.8);
     }
 
-    public static void clickAt(String relativeX, String relativeY) throws Exception {
+    public static void clickAt(String relativeX, String relativeY, String durationSeconds) throws Exception {
         CommonUtils.executeUIShellScript(new String[]{
-                String.format("/usr/bin/python '%s/%s' %s %s",
-                        getIOSToolsRoot(IOSSimulatorHelper.class), CLICK_SCRIPT_NAME, relativeX, relativeY)
+                String.format("/usr/bin/python '%s/%s' %s %s %s",
+                        getIOSToolsRoot(IOSSimulatorHelper.class), CLICK_SCRIPT_NAME, relativeX, relativeY, durationSeconds)
         }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 

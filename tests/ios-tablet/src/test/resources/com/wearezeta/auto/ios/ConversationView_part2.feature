@@ -499,6 +499,7 @@ Feature: Conversation View
     And I see 1 photo in the dialog
     And I longpress on image in the conversation
     And I tap on copy badge
+    And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
     And I press Confirm button
