@@ -6,14 +6,11 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given User <Contact> sends 50 encrypted messages to user Myself
     When I tap on contact name <Contact>
-    And I send long message
-    And I type the default message and send it
-    And I scroll to the beginning of the conversation
     And I see plus button is not shown
     And I tap on text input to scroll to the end
     Then I see conversation is scrolled to the end
-    And I see 1 default message in the dialog
 
     Examples:
       | Name      | Contact   |
@@ -26,14 +23,11 @@ Feature: Conversation View
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given User <Contact> sends 40 encrypted messages to user Myself
     When I tap on contact name <Contact>
-    And I send long message
-    And I type the default message and send it
-    And I scroll to the beginning of the conversation
     And I see plus button is not shown
     And I tap on text input to scroll to the end
     Then I see conversation is scrolled to the end
-    And I see 1 default message in the dialog
 
     Examples:
       | Name      | Contact   |
@@ -505,6 +499,7 @@ Feature: Conversation View
     And I see 1 photo in the dialog
     And I longpress on image in the conversation
     And I tap on copy badge
+    And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
     And I press Confirm button
@@ -551,9 +546,8 @@ Feature: Conversation View
     And I tap on Search input on People picker page
     And I search for user name <Contact1> and tap on it on People picker page
     And I click open conversation button on People picker page
-    Then I see the only message in dialog is system message CONNECTED TO <Contact1>
-    And I type the default message and send it
-    And I see 1 default message in the dialog
+    When I type the default message and send it
+    Then I see 1 default message in the dialog
 
     Examples:
       | Name      | Contact1  |
@@ -575,9 +569,8 @@ Feature: Conversation View
     And I tap on Search input on People picker page
     And I search for user name <Contact1> and tap on it on People picker page
     And I click open conversation button on People picker page
-    Then I see the only message in dialog is system message CONNECTED TO <Contact1>
-    And I type the default message and send it
-    And I see 1 default message in the dialog
+    When I type the default message and send it
+    Then I see 1 default message in the dialog
 
     Examples:
       | Name      | Contact1  |

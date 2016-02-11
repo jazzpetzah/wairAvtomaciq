@@ -239,7 +239,7 @@ Feature: E2EE
     And I open details page of device number 1
     Then I see fingerprint is not empty
 
-        Examples:
+    Examples:
       | Name      | Contact1  | ExpectedMsg               |
       | user1Name | user2Name | STARTED USING THIS DEVICE |
 
@@ -289,3 +289,28 @@ Feature: E2EE
     Examples:
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                    |
       | user1Name | user2Name | Device2     | Label2       | YOU STARTED USING A NEW DEVICE |
+
+  @14319 @staging
+  Scenario Outline: When I'm entering a verified conversation, a blue shield will appear at the bottom right
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Contact1> adds new devices <DeviceName1>,<DeviceName2>
+    Given I sign in using my email
+    Given I see conversations list
+    When I tap on contact name <Contact1>
+    Then I do not see shield icon next to conversation input field
+    When I open conversation details
+    And I switch to Devices tab
+    And I open details page of device number 1
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    And I open details page of device number 2
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    And I click close user profile page button
+    And I click Close input options button
+    Then I see shield icon next to conversation input field
+
+    Examples:
+      | Name      | Contact1  | DeviceName1 | DeviceName2 |
+      | user1Name | user2Name | Device1     | Device2     |

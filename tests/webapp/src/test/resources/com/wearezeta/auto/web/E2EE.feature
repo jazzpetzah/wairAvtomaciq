@@ -477,3 +477,32 @@ Feature: E2EE
     Examples:
       | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message1   | Message2     |
       | user1Email | user1Password | user1Name | user2Name | user3Name | User1Chat     | Hello 1:1! | Hello Group! |
+
+  @C12054 @e2ee
+  Scenario Outline: Verify you see an alert in verified 1:1 conversation when the other participant sends message from non-verified device
+    Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    When I open conversation with <Contact>
+    And I write message Hello!
+    And I send message
+    And I click People button in one to one conversation
+    Then I see Single User Profile popover
+    When I switch to Devices tab on Single User Profile popover
+    And I click on device Device1 of user <Contact> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    Then I see user verified icon on Single User Profile popover
+    When I click People button in one to one conversation
+    Then I see <ALL_VERIFIED> action in conversation
+    When user <Contact> adds a new device Device2 with label Label2
+    And Contact <Contact> sends encrypted message <Message> via device Device2 to user Myself
+    Then I see <NON_VERIFIED> action in conversation
+    # Not sure if we want to check for the message. Should it be shown or not? Assuming it should
+
+    Examples:
+      | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  | NON_VERIFIED               | Message           |
+      | user1Email | user1Password | user1Name | user2Name | All fingerprints are verified | started using a new device | Unverified hello! |

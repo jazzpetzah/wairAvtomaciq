@@ -8,11 +8,13 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.ios.reporter.IOSLogListener;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import cucumber.api.PendingException;
 import cucumber.api.Scenario;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import org.junit.Assert;
 import org.openqa.selenium.ScreenOrientation;
@@ -679,12 +681,11 @@ public class CommonIOSSteps {
      * @param user          that adds someone to a chat
      * @param userToBeAdded user that gets added by someone
      * @param group         group chat you get added to
-     * @throws Throwable
+     * @throws Exception
      * @step. ^User (.*) adds [Uu]ser (.*) to group chat (.*)$
      */
     @When("^User (.*) adds [Uu]ser (.*) to group chat (.*)$")
-    public void UserAddsUserToGroupChat(String user, String userToBeAdded,
-                                        String group) throws Throwable {
+    public void UserAddsUserToGroupChat(String user, String userToBeAdded, String group) throws Exception {
         commonSteps.UserXAddedContactsToGroupChat(user, userToBeAdded, group);
     }
 
@@ -699,7 +700,7 @@ public class CommonIOSSteps {
     @When("^I click at ([\\d\\.]+),([\\d\\.]+) of Simulator window$")
     public void ReturnToWireApp(String strX, String strY) throws Exception {
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            IOSSimulatorHelper.clickAt(strX, strY);
+            IOSSimulatorHelper.clickAt(strX, strY, String.format("%.3f", DriverUtils.SINGLE_TAP_DURATION / 1000.0));
         } else {
             throw new PendingException("This step is not available for non-simulator devices");
         }
@@ -745,7 +746,7 @@ public class CommonIOSSteps {
      * @throws Exception
      * @step. User (.*) adds new devices (.*)
      */
-    @When("^User (.*) adds new devices (.*)")
+    @When("^User (.*) adds new devices? (.*)")
     public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
         final List<String> names = CommonSteps.splitAliases(deviceNames);
         final int poolSize = 2;  // Runtime.getRuntime().availableProcessors()
@@ -775,5 +776,4 @@ public class CommonIOSSteps {
             throw new PendingException("This step is not available for real device");
         }
     }
-
 }

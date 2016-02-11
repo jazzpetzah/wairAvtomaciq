@@ -16,10 +16,9 @@ import org.openqa.selenium.WebElement;
 
 public class IOSKeyboard extends BasePage {
     private static final KeyboardState UNKNOWN_STATE = new KeyboardStateUnknown();
-    private static final String xpathStrKeyboardLocator = "//UIAKeyboard";
-    private static By xpathKeyboardLocator = By.xpath(xpathStrKeyboardLocator);
-    private static final By xpathCommitKeyLocator =
-            By.xpath(xpathStrKeyboardLocator +
+    private static final String xpathStrKeyboard = "//UIAKeyboard";
+    private static By classNameKeyboard = By.className("UIAKeyboard");
+    private static final By xpathCommitKey = By.xpath(xpathStrKeyboard +
                     "//*[@name='Go' or @name='Send' or @name='Done' or @name='return' or @name='Return']");
 
     private static final By nameSpaceButton = By.name("space");
@@ -49,7 +48,7 @@ public class IOSKeyboard extends BasePage {
     }
 
     public boolean isVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathKeyboardLocator, 3);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), classNameKeyboard, 3);
     }
 
     public void pressSpaceButton() throws Exception {
@@ -65,7 +64,7 @@ public class IOSKeyboard extends BasePage {
     }
 
     public void pressCommitButton() throws Exception {
-        getElement(xpathCommitKeyLocator).click();
+        getElement(xpathCommitKey).click();
     }
 
     private KeyboardState getInitialState(List<KeyboardState> statesList) throws Exception {
@@ -87,7 +86,7 @@ public class IOSKeyboard extends BasePage {
     }
 
     public void typeString(String message) throws Exception {
-        final WebElement keyboard = DriverUtils.verifyPresence(getDriver(), xpathKeyboardLocator);
+        final WebElement keyboard = DriverUtils.verifyPresence(getDriver(), classNameKeyboard);
 
         final KeyboardStateAlpha keyboardStateAlpha = new KeyboardStateAlpha(getDriver(), keyboard);
         final KeyboardStateAlphaCaps keyboardStateAlphaCaps = new KeyboardStateAlphaCaps(getDriver(), keyboard);
@@ -112,7 +111,7 @@ public class IOSKeyboard extends BasePage {
             By keyLocator;
             switch (messageChar) {
                 case "\n":
-                    keyLocator = xpathCommitKeyLocator;
+                    keyLocator = xpathCommitKey;
                     break;
                 case " ":
                     keyLocator = By.name("space");

@@ -198,7 +198,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I input more than 200 chars message and send it
     And I type the default message
     And I navigate back to conversations list
     When I tap my avatar
@@ -219,105 +218,17 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I input more than 200 chars message and send it
+    And I type the default message
     And I type the default message
     When I tap my avatar
     And I close self profile
+    And I tap on text input
     And I send the message
-    Then I see 1 message in the dialog
+    Then I see 1 default message in the dialog
 
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
-
-  @C2648 @regression @id2738
-  Scenario Outline: Send more than 200 chars message [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I Sign in on tablet using my email
-    And I see conversations list
-    When I tap on contact name <Contact>
-    And I input more than 200 chars message and send it
-    Then I see 1 message in the dialog
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
-  @C2649 @regression @id2739
-  Scenario Outline: Send more than 200 chars message [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    And I see conversations list
-    When I tap on contact name <Contact>
-    And I input more than 200 chars message and send it
-    Then I see 1 message in the dialog
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
-  @C2650 @regression @id2740
-  Scenario Outline: Send one line message with lower case and upper case [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I Sign in on tablet using my email
-    And I see conversations list
-    When I tap on contact name <Contact>
-    And I input message with lower case and upper case
-    And I send the message
-    Then I see 1 message in the dialog
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
-  @C2651 @regression @id2741
-  Scenario Outline: Send one line message with lower case and upper case [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    And I see conversations list
-    When I tap on contact name <Contact>
-    And I input message with lower case and upper case
-    And I send the message
-    Then I see 1 message in the dialog
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
-  @C2652 @regression @id2742
-  Scenario Outline: Send special chars (German) [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I Sign in on tablet using my email
-    And I see conversations list
-    And I tap on contact name <Contact>
-    And I send using script predefined message <Text>
-    Then I see last message in dialog is expected message <Text>
-
-    Examples:
-      | Name      | Contact   | Text                  |
-      | user1Name | user2Name | ÄäÖöÜüß & latin chars |
-
-  @C2653 @regression @id2743
-  Scenario Outline: Send special chars (German) [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    And I see conversations list
-    And I tap on contact name <Contact>
-    And I send using script predefined message <Text>
-    Then I see last message in dialog is expected message <Text>
-
-    Examples:
-      | Name      | Contact   | Text                  |
-      | user1Name | user2Name | ÄäÖöÜüß & latin chars |
 
   @C2654 @regression @id2744
   Scenario Outline: Copy and paste to send the message [PORTRAIT]
@@ -375,16 +286,13 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see conversations list
+    Given I see conversations list
     When I tap on contact name <Contact>
-    And I try to send message with only spaces
-    And I see the only message in dialog is system message CONNECTED TO <Contact>
-    And I input message with leading empty spaces
-    And I send the message
-    And I see 1 message in the dialog
-    And I input message with trailing emtpy spaces
-    And I send the message
-    Then I see 2 messages in the dialog
+    And I type the "   " message and send it
+    Then I see 0 default messages in the dialog
+    When I type the default message
+    And I type the "   " message and send it
+    Then I see 1 default message in the dialog
 
     Examples:
       | Name      | Contact   |
@@ -396,16 +304,13 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see conversations list
+    Given I see conversations list
     When I tap on contact name <Contact>
-    And I try to send message with only spaces
-    And I see the only message in dialog is system message CONNECTED TO <Contact>
-    And I input message with leading empty spaces
-    And I send the message
-    And I see 1 message in the dialog
-    And I input message with trailing emtpy spaces
-    And I send the message
-    Then I see 2 messages in the dialog
+    And I type the "   " message and send it
+    Then I see 0 default messages in the dialog
+    When I type the default message
+    And I type the "   " message and send it
+    Then I see 1 default message in the dialog
 
     Examples:
       | Name      | Contact   |

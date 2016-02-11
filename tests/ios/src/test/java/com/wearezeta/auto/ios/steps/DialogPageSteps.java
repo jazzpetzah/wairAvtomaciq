@@ -3,13 +3,13 @@ package com.wearezeta.auto.ios.steps;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 
+import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.ios.IOSConstants;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
 
@@ -25,7 +25,7 @@ public class DialogPageSteps {
         return pagesCollection.getPage(DialogPage.class);
     }
 
-     private ContactListPage getContactListPage() throws Exception {
+    private ContactListPage getContactListPage() throws Exception {
         return pagesCollection.getPage(ContactListPage.class);
     }
 
@@ -40,6 +40,9 @@ public class DialogPageSteps {
     @When("^I tap on text input$")
     public void WhenITapOnTextInput() throws Exception {
         getDialogPage().tapOnCursorInput();
+        if (CommonUtils.getIsSimulatorFromConfig(getClass()) && !getDialogPage().isKeyboardVisible()) {
+            IOSSimulatorHelper.toggleSoftwareKeyboard();
+        }
     }
 
     /**
@@ -65,9 +68,13 @@ public class DialogPageSteps {
         Assert.assertFalse("Text input is allowed", getDialogPage().isCursorInputVisible());
     }
 
-    @When("^I type the default message$")
-    public void WhenITypeTheMessage() throws Exception {
-        getDialogPage().typeMessage(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+    @When("^I type the (default|\".*\") message$")
+    public void WhenITypeTheMessage(String msg) throws Exception {
+        if (msg.equals("default")) {
+            getDialogPage().typeMessage(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+        } else {
+            getDialogPage().typeMessage(msg.replaceAll("^\"|\"$", ""));
+        }
     }
 
     private static final String YOU_PINGED_MESSAGE = "YOU PINGED";
@@ -105,7 +112,7 @@ public class DialogPageSteps {
         String chatName = usrMgr.findUserByNameOrNameAlias(convName).getName();
         // Title bar is gone quite fast so it may fail because of this
         Assert.assertTrue("Title bar with name - " + chatName
-                        + " is not on the page", getDialogPage().isTitleBarDisplayed(chatName));
+                + " is not on the page", getDialogPage().isTitleBarDisplayed(chatName));
     }
 
     /**
@@ -250,14 +257,6 @@ public class DialogPageSteps {
                 "does not equal to the expected count %s", actualCount, expectedCount), actualCount == expectedCount);
     }
 
-    @When("I type and send long message and media link (.*)")
-    public void ITypeAndSendLongTextAndMediaLink(String link) throws Exception {
-        getDialogPage().typeAndSendConversationMessage(IOSConstants.LONG_MESSAGE);
-        getDialogPage().waitLoremIpsumText();
-        getDialogPage().typeAndSendConversationMessage(link);
-        getDialogPage().waitSoundCloudLoad();
-    }
-
     @Then("I see youtube link (.*) and media in dialog")
     public void ISeeYoutubeLinkAndMediaInDialog(String link) throws Exception {
         Assert.assertTrue("Media is missing in dialog", getDialogPage()
@@ -292,11 +291,6 @@ public class DialogPageSteps {
                 break;
             }
         }
-    }
-
-    @When("I send long message")
-    public void ISendLongMessage() throws Exception {
-        getDialogPage().typeAndSendConversationMessage(IOSConstants.LONG_MESSAGE);
     }
 
     @When("^I post media link (.*)$")
@@ -351,21 +345,21 @@ public class DialogPageSteps {
 
     @Then("I see playing media is paused")
     public void ThePlayingMediaIsPaused() throws Exception {
-        String pausedState = IOSConstants.MEDIA_STATE_PAUSED;
+        String pausedState = DialogPage.MEDIA_STATE_PAUSED;
         mediaState = getDialogPage().getMediaState();
         Assert.assertEquals(pausedState, mediaState);
     }
 
     @Then("I see media is playing")
     public void TheMediaIsPlaying() throws Exception {
-        String playingState = IOSConstants.MEDIA_STATE_PLAYING;
+        String playingState = DialogPage.MEDIA_STATE_PLAYING;
         mediaState = getDialogPage().getMediaState();
         Assert.assertEquals(playingState, mediaState);
     }
 
     @Then("The media stops playing")
     public void TheMediaStoppsPlaying() throws Exception {
-        String endedState = IOSConstants.MEDIA_STATE_STOPPED;
+        String endedState = DialogPage.MEDIA_STATE_STOPPED;
         mediaState = getDialogPage().getMediaState();
         Assert.assertEquals(endedState, mediaState);
     }
@@ -410,49 +404,6 @@ public class DialogPageSteps {
         getDialogPage().returnToContactList();
     }
 
-    @When("I try to send message with only spaces")
-    public void ISendMessageWithOnlySpaces() throws Throwable {
-        getDialogPage().typeAndSendConversationMessage(ONLY_SPACES_MESSAGE);
-    }
-
-    /**
-     * Send message with leading empty spaces by script
-     *
-     * @throws Throwable
-     * @step. I input message with leading empty spaces
-     */
-    @When("I input message with leading empty spaces")
-    public void IInputMessageWithLeadingEmptySpace() throws Throwable {
-        getDialogPage().typeAndSendConversationMessage(
-                ONLY_SPACES_MESSAGE + CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
-    }
-
-    /**
-     * Send message with trailing empty spaces by script
-     *
-     * @throws Throwable
-     * @step. I input message with trailing empty spaces
-     */
-    @When("I input message with trailing emtpy spaces")
-    public void IInputMessageWithTrailingEmptySpace() throws Throwable {
-        getDialogPage().typeAndSendConversationMessage(
-                CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE + ONLY_SPACES_MESSAGE);
-    }
-
-    @When("I input message with lower case and upper case")
-    public void IInputMessageWithLowerAndUpperCase() throws Throwable {
-        final String message = CommonUtils.generateRandomString(7).toLowerCase()
-                + CommonUtils.generateRandomString(7).toUpperCase();
-        getDialogPage().typeAndSendConversationMessage(message);
-    }
-
-    @When("I input more than 200 chars message and send it")
-    public void ISend200CharsMessage() throws Exception {
-        final String message = CommonUtils.generateRandomString(210).toLowerCase()
-                .replace("x", " ");
-        getDialogPage().typeAndSendConversationMessage(message);
-    }
-
     @When("I tap and hold on message input")
     public void ITapHoldTextInput() throws Exception {
         getDialogPage().tapHoldTextInput();
@@ -461,11 +412,6 @@ public class DialogPageSteps {
     @When("^I scroll to the beginning of the conversation$")
     public void IScrollToTheBeginningOfTheConversation() throws Throwable {
         getDialogPage().scrollToBeginningOfConversation();
-    }
-
-    @When("^I send using script predefined message (.*)$")
-    public void ISendUsingScriptPredefinedMessage(String message) throws Exception {
-        getDialogPage().typeAndSendConversationMessage(message);
     }
 
     /**
@@ -865,12 +811,11 @@ public class DialogPageSteps {
      * @step. ^I see the only message in dialog is system message CONNECTED TO
      * (.*)$
      */
-    @When("^I see the only message in dialog is system message CONNECTED TO (.*)$")
+    @When("^I see the system message CONNECTED TO (.*) in the conversation view$")
     public void ISeeLastMessageIsSystem(String username) throws Exception {
         username = usrMgr.findUserByNameOrNameAlias(username).getName();
-        ISeeXConvoEntries(0);
-        Assert.assertTrue(getDialogPage()
-                .isConnectedToUserStartedConversationLabelVisible(username));
+        Assert.assertTrue(String.format("The 'CONNECTED' TO %s' system message is not visible in the conversation view",
+                username), getDialogPage().isConnectedToUserStartedConversationLabelVisible(username));
     }
 
     /**
@@ -961,12 +906,12 @@ public class DialogPageSteps {
                     getDialogPage().isShieldIconInvisibleNextToInputField());
         }
     }
-    
+
     /**
      * Click on THIS DEVICE link from YOU STARTED USING system message
      *
-     * @step. "^I tap on THIS DEVICE link$
      * @throws Exception
+     * @step. "^I tap on THIS DEVICE link$
      */
     @When("^I tap on THIS DEVICE link$")
     public void ITapThisDeviceLink() throws Exception {

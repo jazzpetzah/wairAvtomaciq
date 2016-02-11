@@ -194,7 +194,11 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void pressInstantConnectButton() throws Exception {
-        getElement(nameInstantConnectButton).click();
+        final WebElement instantConnectButton = getElement(nameInstantConnectButton);
+        instantConnectButton.click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameInstantConnectButton)) {
+            instantConnectButton.click();
+        }
     }
 
     public void tapNumberOfTopConnectionsButNotUser(int numberToTap, String contact) throws Exception {

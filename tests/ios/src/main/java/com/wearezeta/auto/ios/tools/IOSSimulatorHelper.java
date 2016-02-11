@@ -55,10 +55,10 @@ public class IOSSimulatorHelper {
         swipe(0.2, 0.8, 0.9, 0.8);
     }
 
-    public static void clickAt(String relativeX, String relativeY) throws Exception {
+    public static void clickAt(String relativeX, String relativeY, String durationSeconds) throws Exception {
         CommonUtils.executeUIShellScript(new String[]{
-                String.format("/usr/bin/python '%s/%s' %s %s",
-                        getIOSToolsRoot(IOSSimulatorHelper.class), CLICK_SCRIPT_NAME, relativeX, relativeY)
+                String.format("/usr/bin/python '%s/%s' %s %s %s",
+                        getIOSToolsRoot(IOSSimulatorHelper.class), CLICK_SCRIPT_NAME, relativeX, relativeY, durationSeconds)
         }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 
@@ -133,6 +133,7 @@ public class IOSSimulatorHelper {
     private static void activateWindow() throws Exception {
         CommonUtils.executeUIAppleScript(new String[]{
                 "tell application \"System Events\" to tell application process \"Simulator\"",
+                "set frontmost to false",
                 "set frontmost to true",
                 "end tell"
         }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
@@ -166,6 +167,13 @@ public class IOSSimulatorHelper {
         activateWindow();
         CommonUtils.executeUIAppleScript(new String[]{
                 "tell application \"System Events\" to keystroke return"
+        }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+    }
+
+    public static void toggleSoftwareKeyboard() throws Exception {
+        activateWindow();
+        CommonUtils.executeUIAppleScript(new String[]{
+                "tell application \"System Events\" to keystroke \"k\" using {command down}"
         }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 }

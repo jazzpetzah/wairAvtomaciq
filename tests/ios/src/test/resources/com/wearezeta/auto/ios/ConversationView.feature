@@ -164,14 +164,11 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given User <Contact> sends 40 encrypted messages to user Myself
     When I tap on contact name <Contact>
-    And I send long message
-    And I type the default message and send it
-    And I scroll to the beginning of the conversation
     And I see plus button is not shown
     And I tap on text input to scroll to the end
     Then I see conversation is scrolled to the end
-    And I see 1 default message in the dialog
 
     Examples:
       | Name      | Contact   |
@@ -184,7 +181,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I input more than 200 chars message and send it
     And I type the default message
     And I navigate back to conversations list
     And I tap on contact name <Contact>
@@ -195,48 +191,6 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
-
-  @C925 @regression @id407
-  Scenario Outline: Send more than 200 chars message
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    And I input more than 200 chars message and send it
-    Then I see 2 message in the dialog
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
-  @C926 @regression @id408
-  Scenario Outline: Send one line message with lower case and upper case
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    And I input message with lower case and upper case
-    Then I see 2 message in the dialog
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
-  @C927 @regression @id409
-  Scenario Outline: Send special chars (German)
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    And I type the "<Text>" message and send it
-    Then I see last message in dialog is expected message <Text>
-
-    Examples:
-      | Name      | Contact   | Text                  |
-      | user1Name | user2Name | ÄäÖöÜüß & latin chars |
 
   @C878 @regression @id413
   Scenario Outline: Copy and paste to send the message
@@ -269,13 +223,12 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on contact name <Contact>
-    And I try to send message with only spaces
-    And I see the only message in dialog is system message CONNECTED TO <Contact>
-    And I input message with leading empty spaces
-    And I see 2 message in the dialog
-    And I input message with trailing emtpy spaces
-    Then I see 3 message in the dialog
+    And I tap on contact name <Contact>
+    When I type the "   " message and send it
+    Then I see 0 default messages in the dialog
+    When I type the default message
+    And I type the "   " message and send it
+    Then I see 1 default message in the dialog
 
     Examples:
       | Name      | Contact   |
@@ -419,7 +372,7 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I type and send long message and media link <SoundCloudLink>
+    And I type the "1 link <SoundCloudLink>" message and send it
     And I navigate back to conversations list
     And I tap on contact name <Contact>
     And I see media link <SoundCloudLink> and media in dialog
@@ -684,8 +637,8 @@ Feature: Conversation View
     And I see 1 photo in the dialog
     And I longpress on image in the conversation
     And I tap on copy badge
+    And I tap on text input
     And I tap and hold on message input
-    And I wait for 3 seconds
     And I click on popup Paste item
     And I press Confirm button
     Then I see 2 photo in the dialog

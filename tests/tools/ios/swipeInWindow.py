@@ -92,8 +92,9 @@ osascript<<END
 def moveWindowToForeground(windowName):
     cmd = """
 osascript<<END
-    tell application "System Events" to tell application "%s"
-        activate
+    tell application "System Events" to tell application process "%s"
+        set frontmost to false
+        set frontmost to true
     end tell
 """ % windowName
     subprocess.check_output(cmd, shell=True)
