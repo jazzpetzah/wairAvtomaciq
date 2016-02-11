@@ -294,7 +294,7 @@ Feature: E2EE
   Scenario Outline: When I'm entering a verified conversation, a blue shield will appear at the bottom right
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Contact1> adds new device <DeviceName1>,<DeviceName2>
+    Given User <Contact1> adds new devices <DeviceName1>,<DeviceName2>
     Given I sign in using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
