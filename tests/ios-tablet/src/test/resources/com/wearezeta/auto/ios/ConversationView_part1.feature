@@ -198,7 +198,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I input more than 200 chars message and send it
     And I type the default message
     And I navigate back to conversations list
     When I tap my avatar
@@ -219,41 +218,13 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I input more than 200 chars message and send it
+    And I type the default message
     And I type the default message
     When I tap my avatar
     And I close self profile
+    And I tap on text input
     And I send the message
-    Then I see 1 message in the dialog
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
-  @C2648 @regression @id2738
-  Scenario Outline: Send more than 200 chars message [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I Sign in on tablet using my email
-    And I see conversations list
-    When I tap on contact name <Contact>
-    And I input more than 200 chars message and send it
-    Then I see 1 message in the dialog
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
-  @C2649 @regression @id2739
-  Scenario Outline: Send more than 200 chars message [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    And I see conversations list
-    When I tap on contact name <Contact>
-    And I input more than 200 chars message and send it
-    Then I see 1 message in the dialog
+    Then I see 1 default message in the dialog
 
     Examples:
       | Name      | Contact   |

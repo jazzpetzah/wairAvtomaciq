@@ -133,6 +133,7 @@ public class IOSSimulatorHelper {
     private static void activateWindow() throws Exception {
         CommonUtils.executeUIAppleScript(new String[]{
                 "tell application \"System Events\" to tell application process \"Simulator\"",
+                "set frontmost to false",
                 "set frontmost to true",
                 "end tell"
         }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
@@ -166,6 +167,13 @@ public class IOSSimulatorHelper {
         activateWindow();
         CommonUtils.executeUIAppleScript(new String[]{
                 "tell application \"System Events\" to keystroke return"
+        }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+    }
+
+    public static void toggleSoftwareKeyboard() throws Exception {
+        activateWindow();
+        CommonUtils.executeUIAppleScript(new String[]{
+                "tell application \"System Events\" to keystroke \"k\" using {command down}"
         }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 }

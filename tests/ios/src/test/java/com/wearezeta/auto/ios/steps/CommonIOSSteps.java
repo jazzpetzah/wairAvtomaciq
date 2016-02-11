@@ -13,6 +13,7 @@ import com.wearezeta.auto.ios.reporter.IOSLogListener;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import cucumber.api.PendingException;
 import cucumber.api.Scenario;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import org.junit.Assert;
 import org.openqa.selenium.ScreenOrientation;
@@ -775,5 +776,4 @@ public class CommonIOSSteps {
             throw new PendingException("This step is not available for real device");
         }
     }
-
 }

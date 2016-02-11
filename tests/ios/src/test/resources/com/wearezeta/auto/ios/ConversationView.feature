@@ -164,14 +164,11 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given User <Contact> sends 40 encrypted messages to user Myself
     When I tap on contact name <Contact>
-    And I send long message
-    And I type the default message and send it
-    And I scroll to the beginning of the conversation
     And I see plus button is not shown
     And I tap on text input to scroll to the end
     Then I see conversation is scrolled to the end
-    And I see 1 default message in the dialog
 
     Examples:
       | Name      | Contact   |
@@ -184,27 +181,12 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I input more than 200 chars message and send it
     And I type the default message
     And I navigate back to conversations list
     And I tap on contact name <Contact>
     And I tap on text input
     And I click send button on keyboard
     Then I see 1 default message in the dialog
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
-  @C925 @regression @id407
-  Scenario Outline: Send more than 200 chars message
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    And I input more than 200 chars message and send it
-    Then I see 2 message in the dialog
 
     Examples:
       | Name      | Contact   |
@@ -419,7 +401,7 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I type and send long message and media link <SoundCloudLink>
+    And I type the "1 link <SoundCloudLink>" message and send it
     And I navigate back to conversations list
     And I tap on contact name <Contact>
     And I see media link <SoundCloudLink> and media in dialog

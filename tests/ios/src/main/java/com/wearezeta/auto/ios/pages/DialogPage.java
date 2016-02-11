@@ -16,7 +16,6 @@ import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.ios.IOSConstants;
 
 public class DialogPage extends IOSPage {
     private static final By xpathConversationWindow = By.xpath("//UIATableView");
@@ -124,6 +123,12 @@ public class DialogPage extends IOSPage {
         .xpath("//UIATextView[@name='YOU STARTED USING THIS DEVICE']");
 
     private static final By xpathResendMessageButton = By.xpath("//UIATableView[1]/UIATableCell[last()]/UIAButton[1]");
+
+    public static final String MEDIA_STATE_PLAYING = "playing";
+
+    public static final String MEDIA_STATE_PAUSED = "paused";
+
+    public static final String MEDIA_STATE_STOPPED = "ended";
 
     public DialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -309,11 +314,11 @@ public class DialogPage extends IOSPage {
 
     public String getMediaState() throws Exception {
         if (isMediaBarPlayButtonVisible()) {
-            return IOSConstants.MEDIA_STATE_PAUSED;
+            return MEDIA_STATE_PAUSED;
         } else if (isMediaBarPauseButtonVisible()) {
-            return IOSConstants.MEDIA_STATE_PLAYING;
+            return MEDIA_STATE_PLAYING;
         }
-        return IOSConstants.MEDIA_STATE_STOPPED;
+        return MEDIA_STATE_STOPPED;
     }
 
     public void tapOnMediaBar() throws Exception {

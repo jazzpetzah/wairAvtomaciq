@@ -3,13 +3,13 @@ package com.wearezeta.auto.ios.steps;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 
+import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.ios.IOSConstants;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
 
@@ -40,6 +40,9 @@ public class DialogPageSteps {
     @When("^I tap on text input$")
     public void WhenITapOnTextInput() throws Exception {
         getDialogPage().tapOnCursorInput();
+        if (CommonUtils.getIsSimulatorFromConfig(getClass()) && !getDialogPage().isKeyboardVisible()) {
+            IOSSimulatorHelper.toggleSoftwareKeyboard();
+        }
     }
 
     /**
@@ -250,14 +253,6 @@ public class DialogPageSteps {
                 "does not equal to the expected count %s", actualCount, expectedCount), actualCount == expectedCount);
     }
 
-    @When("I type and send long message and media link (.*)")
-    public void ITypeAndSendLongTextAndMediaLink(String link) throws Exception {
-        getDialogPage().typeAndSendConversationMessage(IOSConstants.LONG_MESSAGE);
-        getDialogPage().waitLoremIpsumText();
-        getDialogPage().typeAndSendConversationMessage(link);
-        getDialogPage().waitSoundCloudLoad();
-    }
-
     @Then("I see youtube link (.*) and media in dialog")
     public void ISeeYoutubeLinkAndMediaInDialog(String link) throws Exception {
         Assert.assertTrue("Media is missing in dialog", getDialogPage()
@@ -292,11 +287,6 @@ public class DialogPageSteps {
                 break;
             }
         }
-    }
-
-    @When("I send long message")
-    public void ISendLongMessage() throws Exception {
-        getDialogPage().typeAndSendConversationMessage(IOSConstants.LONG_MESSAGE);
     }
 
     @When("^I post media link (.*)$")
@@ -351,21 +341,21 @@ public class DialogPageSteps {
 
     @Then("I see playing media is paused")
     public void ThePlayingMediaIsPaused() throws Exception {
-        String pausedState = IOSConstants.MEDIA_STATE_PAUSED;
+        String pausedState = DialogPage.MEDIA_STATE_PAUSED;
         mediaState = getDialogPage().getMediaState();
         Assert.assertEquals(pausedState, mediaState);
     }
 
     @Then("I see media is playing")
     public void TheMediaIsPlaying() throws Exception {
-        String playingState = IOSConstants.MEDIA_STATE_PLAYING;
+        String playingState = DialogPage.MEDIA_STATE_PLAYING;
         mediaState = getDialogPage().getMediaState();
         Assert.assertEquals(playingState, mediaState);
     }
 
     @Then("The media stops playing")
     public void TheMediaStoppsPlaying() throws Exception {
-        String endedState = IOSConstants.MEDIA_STATE_STOPPED;
+        String endedState = DialogPage.MEDIA_STATE_STOPPED;
         mediaState = getDialogPage().getMediaState();
         Assert.assertEquals(endedState, mediaState);
     }
@@ -443,13 +433,6 @@ public class DialogPageSteps {
     public void IInputMessageWithLowerAndUpperCase() throws Throwable {
         final String message = CommonUtils.generateRandomString(7).toLowerCase()
                 + CommonUtils.generateRandomString(7).toUpperCase();
-        getDialogPage().typeAndSendConversationMessage(message);
-    }
-
-    @When("I input more than 200 chars message and send it")
-    public void ISend200CharsMessage() throws Exception {
-        final String message = CommonUtils.generateRandomString(210).toLowerCase()
-                .replace("x", " ");
         getDialogPage().typeAndSendConversationMessage(message);
     }
 
