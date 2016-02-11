@@ -209,7 +209,7 @@ Feature: Conversation View
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
-    And I click send button on keyboard
+    And I press Enter key in Simulator window
     Then I see last message in dialog is expected message <Text>
 
     Examples:
@@ -289,6 +289,8 @@ Feature: Conversation View
     And I tap on contact name <Contact>
     Then I see youtube link <YouTubeLink> and media in dialog
     And I click video container for the first time
+    # Wait until web page is loaded
+    And I wait for 5 seconds
     And I see video player page is opened
 
     Examples:

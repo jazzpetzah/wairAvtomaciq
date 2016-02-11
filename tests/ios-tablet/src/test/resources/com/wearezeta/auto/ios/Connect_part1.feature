@@ -368,7 +368,7 @@ Feature: Connect
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
-    And I send the message
+    And I press Enter key in Simulator window
     Then I check copied content from <Name>
 
     Examples: 
@@ -392,7 +392,7 @@ Feature: Connect
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
-    And I send the message
+    And I press Enter key in Simulator window
     Then I check copied content from <Name>
 
     Examples: 
