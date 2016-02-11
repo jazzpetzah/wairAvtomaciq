@@ -25,7 +25,7 @@ public class DialogPageSteps {
         return pagesCollection.getPage(DialogPage.class);
     }
 
-     private ContactListPage getContactListPage() throws Exception {
+    private ContactListPage getContactListPage() throws Exception {
         return pagesCollection.getPage(ContactListPage.class);
     }
 
@@ -68,9 +68,13 @@ public class DialogPageSteps {
         Assert.assertFalse("Text input is allowed", getDialogPage().isCursorInputVisible());
     }
 
-    @When("^I type the default message$")
-    public void WhenITypeTheMessage() throws Exception {
-        getDialogPage().typeMessage(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+    @When("^I type the (default|\".*\") message$")
+    public void WhenITypeTheMessage(String msg) throws Exception {
+        if (msg.equals("default")) {
+            getDialogPage().typeMessage(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+        } else {
+            getDialogPage().typeMessage(msg.replaceAll("^\"|\"$", ""));
+        }
     }
 
     private static final String YOU_PINGED_MESSAGE = "YOU PINGED";
@@ -108,7 +112,7 @@ public class DialogPageSteps {
         String chatName = usrMgr.findUserByNameOrNameAlias(convName).getName();
         // Title bar is gone quite fast so it may fail because of this
         Assert.assertTrue("Title bar with name - " + chatName
-                        + " is not on the page", getDialogPage().isTitleBarDisplayed(chatName));
+                + " is not on the page", getDialogPage().isTitleBarDisplayed(chatName));
     }
 
     /**
@@ -398,35 +402,6 @@ public class DialogPageSteps {
     @Then("^I navigate back to conversations list")
     public void INavigateToConversationsList() throws Exception {
         getDialogPage().returnToContactList();
-    }
-
-    @When("I try to send message with only spaces")
-    public void ISendMessageWithOnlySpaces() throws Throwable {
-        getDialogPage().typeAndSendConversationMessage(ONLY_SPACES_MESSAGE);
-    }
-
-    /**
-     * Send message with leading empty spaces by script
-     *
-     * @throws Throwable
-     * @step. I input message with leading empty spaces
-     */
-    @When("I input message with leading empty spaces")
-    public void IInputMessageWithLeadingEmptySpace() throws Throwable {
-        getDialogPage().typeAndSendConversationMessage(
-                ONLY_SPACES_MESSAGE + CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
-    }
-
-    /**
-     * Send message with trailing empty spaces by script
-     *
-     * @throws Throwable
-     * @step. I input message with trailing empty spaces
-     */
-    @When("I input message with trailing emtpy spaces")
-    public void IInputMessageWithTrailingEmptySpace() throws Throwable {
-        getDialogPage().typeAndSendConversationMessage(
-                CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE + ONLY_SPACES_MESSAGE);
     }
 
     @When("I tap and hold on message input")
@@ -836,12 +811,11 @@ public class DialogPageSteps {
      * @step. ^I see the only message in dialog is system message CONNECTED TO
      * (.*)$
      */
-    @When("^I see the only message in dialog is system message CONNECTED TO (.*)$")
+    @When("^I see the system message CONNECTED TO (.*) in the conversation view$")
     public void ISeeLastMessageIsSystem(String username) throws Exception {
         username = usrMgr.findUserByNameOrNameAlias(username).getName();
-        ISeeXConvoEntries(0);
-        Assert.assertTrue(getDialogPage()
-                .isConnectedToUserStartedConversationLabelVisible(username));
+        Assert.assertTrue(String.format("The 'CONNECTED' TO %s' system message is not visible in the conversation view",
+                username), getDialogPage().isConnectedToUserStartedConversationLabelVisible(username));
     }
 
     /**
@@ -932,12 +906,12 @@ public class DialogPageSteps {
                     getDialogPage().isShieldIconInvisibleNextToInputField());
         }
     }
-    
+
     /**
      * Click on THIS DEVICE link from YOU STARTED USING system message
      *
-     * @step. "^I tap on THIS DEVICE link$
      * @throws Exception
+     * @step. "^I tap on THIS DEVICE link$
      */
     @When("^I tap on THIS DEVICE link$")
     public void ITapThisDeviceLink() throws Exception {

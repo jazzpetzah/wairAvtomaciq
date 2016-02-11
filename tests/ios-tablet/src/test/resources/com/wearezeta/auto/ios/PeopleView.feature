@@ -782,7 +782,7 @@ Feature: People View
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I click open conversation button on People picker page
-    Then I see the only message in dialog is system message CONNECTED TO <Contact1>
+    Then I see the system message CONNECTED TO <Contact1> in the conversation view
 
     Examples:
       | Name      | Contact1  | Image       |
@@ -810,11 +810,11 @@ Feature: People View
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I click open conversation button on People picker page
-    Then I see the only message in dialog is system message CONNECTED TO <Contact1>
+    Then I see the system message CONNECTED TO <Contact1> in the conversation view
 
     Examples:
-      | Name      | Contact1  | Message | GroupChatName | Image       |
-      | user1Name | user2Name | testing | ForDeletion   | testing.jpg |
+      | Name      | Contact1  | Image       |
+      | user1Name | user2Name | testing.jpg |
 
   @C2556 @staging @id4003
   Scenario Outline: Verify that left conversation is shown in the Archive [PORTRAIT]

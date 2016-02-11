@@ -84,8 +84,8 @@ public class DialogPage extends IOSPage {
 
     private static final String xpathStrAllMessages = xpathStrMainWindow + "/UIATableView[1]/UIATableCell/UIATextView";
 
-    private static final Function<String, String> xpathMessagesByText = text -> String.format("%s[@value='%s']",
-        xpathStrAllMessages, text);
+    private static final Function<String, String> xpathMessagesByText =
+            text -> String.format("%s[starts-with(@value, '%s')]", xpathStrAllMessages, text);
 
     public static final Function<String, String> xpathFormatMissedCallButtonByContact = name -> String.format(
         "//UIATableCell[UIAStaticText[@name='%s CALLED']]/UIAButton[@name='ConversationMissedCallButton']", name.toUpperCase());
@@ -96,11 +96,7 @@ public class DialogPage extends IOSPage {
     public static final Function<String, String> xpathStrConnectingToUserLabelByName = name -> String.format(
         "//UIAStaticText[contains(@name, 'CONNECTING TO %s.')]", name.toUpperCase());
 
-    private static final By xpathLoremIpsumText = By.xpath("//UIATextView[contains(@name, 'Lorem ipsum')]");
-
     protected static final By nameCameraLibraryButton = By.name("cameraLibraryButton");
-
-    private static final By nameSoundCloudContainer = By.name("Play on SoundCloud");
 
     private static final Function<String, String> xpathStrMessageViewByText = text -> String.format(
         "//UIATextView[contains(@value, '%s')]", text);
@@ -418,14 +414,6 @@ public class DialogPage extends IOSPage {
             Thread.sleep(1000);
             convoInput.sendKeys(message);
         }
-    }
-
-    public void waitLoremIpsumText() throws Exception {
-        DriverUtils.waitUntilLocatorAppears(getDriver(), xpathLoremIpsumText, 10);
-    }
-
-    public void waitSoundCloudLoad() throws Exception {
-        DriverUtils.waitUntilLocatorAppears(getDriver(), nameSoundCloudContainer);
     }
 
     public void scrollToEndOfConversation() throws Exception {

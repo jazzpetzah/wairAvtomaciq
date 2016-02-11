@@ -223,13 +223,12 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on contact name <Contact>
-    And I try to send message with only spaces
-    And I see the only message in dialog is system message CONNECTED TO <Contact>
-    And I input message with leading empty spaces
-    And I see 2 message in the dialog
-    And I input message with trailing emtpy spaces
-    Then I see 3 message in the dialog
+    And I tap on contact name <Contact>
+    When I type the "   " message and send it
+    Then I see 0 default messages in the dialog
+    When I type the default message
+    And I type the "   " message and send it
+    Then I see 1 default message in the dialog
 
     Examples:
       | Name      | Contact   |

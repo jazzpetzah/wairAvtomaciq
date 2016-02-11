@@ -545,9 +545,8 @@ Feature: Conversation View
     And I tap on Search input on People picker page
     And I search for user name <Contact1> and tap on it on People picker page
     And I click open conversation button on People picker page
-    Then I see the only message in dialog is system message CONNECTED TO <Contact1>
-    And I type the default message and send it
-    And I see 1 default message in the dialog
+    When I type the default message and send it
+    Then I see 1 default message in the dialog
 
     Examples:
       | Name      | Contact1  |
@@ -569,9 +568,8 @@ Feature: Conversation View
     And I tap on Search input on People picker page
     And I search for user name <Contact1> and tap on it on People picker page
     And I click open conversation button on People picker page
-    Then I see the only message in dialog is system message CONNECTED TO <Contact1>
-    And I type the default message and send it
-    And I see 1 default message in the dialog
+    When I type the default message and send it
+    Then I see 1 default message in the dialog
 
     Examples:
       | Name      | Contact1  |
