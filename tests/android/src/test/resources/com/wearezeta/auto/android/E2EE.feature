@@ -411,15 +411,15 @@ Feature: E2EE
   @C3512 @staging
   Scenario Outline: After login by phone on not 1st device I have to be asked for email login
     Given There is 1 user where <Name> is me
-    Given User <Name> adds new device Device2
+    Given User Myself adds new device <Device>
     Given I sign in using my phone number
     Then I see forced email login page
-    And I have entered login <Login>
+    And I have entered login <Email>
     And I have entered password <Password>
     And I press Log in button
     And I accept First Time overlay as soon as it is visible
     Then I see Contact list with no contacts
 
     Examples:
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Name      | Email      | Password      | Device  |
+      | user1Name | user1Email | user1Password | device1 |
