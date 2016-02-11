@@ -219,7 +219,7 @@ Feature: People View
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | ParticipantsNumber |
-      | user1Name | user2Name | user3Name | GroupInfo     | 3                  |
+      | user1Name | user2Name | user3Name | GroupInfo     | 2                  |
 
   @C2717 @regression @id2989
   Scenario Outline: Verify correct group info page information [LANDSCAPE]
