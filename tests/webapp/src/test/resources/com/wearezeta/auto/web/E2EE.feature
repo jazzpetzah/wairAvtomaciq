@@ -485,16 +485,17 @@ Feature: E2EE
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
-    Then I see the history info page
-    And I click confirm on history info page
     And I am signed in properly
     When I open conversation with <Contact>
+    And I write message Hello!
+    And I send message
     And I click People button in one to one conversation
     Then I see Single User Profile popover
     When I switch to Devices tab on Single User Profile popover
     And I click on device Device1 of user <Contact> on Single User Profile popover
     And I verify device on Device Detail popover
     And I click back button on the Device Detail popover
+    Then I see user verified icon on Single User Profile popover
     When I click People button in one to one conversation
     Then I see <ALL_VERIFIED> action in conversation
     When user <Contact> adds a new device Device2 with label Label2
