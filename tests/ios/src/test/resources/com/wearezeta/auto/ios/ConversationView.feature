@@ -173,7 +173,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C932 @regression @id415 @torun
+  @C932 @regression @id415
   Scenario Outline: Send Message to contact after navigating away from chat page
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
