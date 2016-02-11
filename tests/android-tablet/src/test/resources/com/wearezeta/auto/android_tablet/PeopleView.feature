@@ -221,7 +221,7 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    Given User <Contact1> sends encrypted  message <Message> to user Myself
+    Given User <Contact1> sends encrypted message <Message> to user Myself
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
