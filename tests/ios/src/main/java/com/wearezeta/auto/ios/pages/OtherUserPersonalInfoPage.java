@@ -65,6 +65,9 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     private static final Function<Integer, String> xpathStrDeviceByIndex = idx ->
             String.format("%s[%s]", xpathStrDevicesList, idx);
 
+    private static final Function<String, String> xpathStrUserProfileNameByValue = value ->
+            String.format("//*[@name='%s' and @visible='true']", value);
+
     // FIXME: replace this with By.name("VerifiedShield") when available
     private static final By xpathVerifiedShield =
             By.xpath(xpathStrMainWindow + "/UIAImage[@width='16' and @height='16']");
@@ -112,7 +115,8 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     }
 
     public boolean isOtherUserProfileNameVisible(String name) throws Exception {
-        return getElement(By.name(name)).isEnabled();
+        final By locator = By.xpath(xpathStrUserProfileNameByValue.apply(name));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public void removeFromConversation() throws Exception {
@@ -121,28 +125,28 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     public void confirmRemove() throws Exception {
         getElement(nameConfirmRemoveButton).click();
-        if(!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConfirmRemoveButton)) {
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConfirmRemoveButton)) {
             throw new IllegalStateException("Confirm remove dialog should be autoclosed");
         }
-        
+
     }
 
     public boolean isUserNameVisible(String name) throws Exception {
         final By locator = By.xpath(xpathStrOtherPersonalInfoPageNameFieldByName.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
-    
+
     public boolean isUserEmailVisible(String email) throws Exception {
         final By locator = By.xpath(xpathStrOtherPersonalInfoPageEmailFieldByEmail.apply(email));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
-    
+
     public boolean isUserEmailNotVisible(String email) throws Exception {
         final By locator = By.xpath(xpathStrOtherPersonalInfoPageEmailFieldByEmail.apply(email));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-     public void clickOnStartDialogButton() throws Exception {
+    public void clickOnStartDialogButton() throws Exception {
         this.getDriver().tap(1, getElement(nameOtherUserAddContactToChatButton), 1);
     }
 
