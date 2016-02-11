@@ -323,16 +323,32 @@ public class OtherUserPersonalInfoPageSteps {
     /**
      * Checks to see that correct avatars for given users appear
      *
-     * @param contacts one or more contacs separated by comma
+     * @param contacts one or more contacts separated by comma
      * @throws Exception
-     * @step. ^I see the correct participant avatars for (.*)
+     * @step. ^I see the correct participant avatars for (.*)$
      */
-    @Then("^I see the correct participant avatars for (.*)")
+    @Then("^I see the correct participant avatars for (.*)$")
     public void ISeeCorrectParticipantAvatars(String contacts) throws Exception {
         for (String contactName : CommonSteps.splitAliases(contacts)) {
             contactName = usrMgr.findUserByNameOrNameAlias(contactName).getName();
             Assert.assertTrue(String.format("The avatar for '%s' is not visible", contactName),
                 getOtherUserPersonalInfoPage().isParticipantAvatarVisible(contactName));
+        }
+    }
+    
+    /**
+     * Checks to see that verified avatars for given users appear
+     *
+     * @param contacts one or more contacts separated by comma
+     * @throws Exception
+     * @step. ^I see the verified participant avatars for (.*)$
+     */
+    @Then("^I see the verified participant avatars? for (.*)$")
+    public void ISeeVerifiedParticipantAvatars(String contacts) throws Exception {
+        for (String contactName : CommonSteps.splitAliases(contacts)) {
+            contactName = usrMgr.findUserByNameOrNameAlias(contactName).getName();
+            Assert.assertTrue(String.format("The verified avatar for '%s' is not visible", contactName),
+                getOtherUserPersonalInfoPage().isVerifiedParticipantAvatarVisible(contactName));
         }
     }
 

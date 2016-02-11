@@ -36,10 +36,10 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     private static final By idParticipantOtrShield = By.id("sv__otr__verified_shield");
 
     private static final Function<Integer, String> xpathParticipantDeviceByIdx = idx -> String
-        .format("//*[@id='ttv__row_otr_device'][%d]", idx);
+        .format("(//*[@id='ttv__row_otr_device'])[%d]", idx);
 
     private static final Function<Integer, String> xpathParticipantDeviceShieldByIdx = idx -> String
-        .format("//*[@id='iv__row_otr_icon'][%d]", idx);
+        .format("(//*[@id='iv__row_otr_icon'])[%d]", idx);
 
     private static final By xpathSingleOtrSwitch = By.xpath("//OtrSwitch[@id='os__single_otr_client__verify']/SwitchCompat");
 
@@ -48,6 +48,10 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
     private static final Function<String, String> xpathParticipantAvatarByName = name -> String
             .format("//*[@id='cv__group__adapter' and ./parent::*/*[@value='%s']]",
+                    name.split("\\s+")[0]);
+    
+    private static final Function<String, String> xpathVerifiedParticipantAvatarByName = name -> String
+            .format("//*[@id='pfac__participants']/*/LinearLayout/following-sibling::*//*[@id='cv__group__adapter' and ./parent::*/*[@value='%s']]",
                     name.split("\\s+")[0]);
 
     private static final By idParticipantsHeader = By.id("ttv__participants__header");
@@ -302,6 +306,11 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
     public boolean isParticipantAvatarVisible(String name) throws Exception {
         final By locator = By.xpath(xpathParticipantAvatarByName.apply(name));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+    
+    public boolean isVerifiedParticipantAvatarVisible(String name) throws Exception {
+        final By locator = By.xpath(xpathVerifiedParticipantAvatarByName.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
