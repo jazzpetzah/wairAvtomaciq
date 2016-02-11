@@ -3,7 +3,6 @@ package com.wearezeta.auto.ios.steps;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 
-import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -40,7 +39,7 @@ public class DialogPageSteps {
     public void WhenITapOnTextInput() throws Exception {
         getDialogPage().tapOnCursorInput();
         if (CommonUtils.getIsSimulatorFromConfig(getClass()) && !getDialogPage().isKeyboardVisible()) {
-            IOSSimulatorHelper.toggleSoftwareKeyboard();
+            getDialogPage().ensureSoftwareKeyboardVisibility();
         }
     }
 
