@@ -1,8 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
-import com.wearezeta.auto.ios.pages.FirstTimeOverlay;
 import com.wearezeta.auto.ios.pages.ManageDevicesOverlay;
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import org.junit.Assert;
 
@@ -27,16 +25,5 @@ public class ManageDeviceOverlaySteps {
         } else {
             Assert.assertTrue("Manage Devices overlay is not visible", getManageDevicesOverlay().waitUntiInvisible());
         }
-    }
-
-    /**
-     * Wait for a while and accept Manage Devices overlay if it is viisble
-     *
-     * @throws Exception
-     * @step. ^I accept Manage Devices overlay if it is visible
-     */
-    @And("^I accept Manage Devices overlay if it is visible")
-    public void IAcceptManageDevicesOverlayIfVisible() throws Exception {
-        getManageDevicesOverlay().acceptIfVisible(5);
     }
 }
