@@ -230,66 +230,6 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2650 @regression @id2740
-  Scenario Outline: Send one line message with lower case and upper case [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I Sign in on tablet using my email
-    And I see conversations list
-    When I tap on contact name <Contact>
-    And I input message with lower case and upper case
-    And I send the message
-    Then I see 1 message in the dialog
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
-  @C2651 @regression @id2741
-  Scenario Outline: Send one line message with lower case and upper case [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    And I see conversations list
-    When I tap on contact name <Contact>
-    And I input message with lower case and upper case
-    And I send the message
-    Then I see 1 message in the dialog
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
-  @C2652 @regression @id2742
-  Scenario Outline: Send special chars (German) [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I Sign in on tablet using my email
-    And I see conversations list
-    And I tap on contact name <Contact>
-    And I send using script predefined message <Text>
-    Then I see last message in dialog is expected message <Text>
-
-    Examples:
-      | Name      | Contact   | Text                  |
-      | user1Name | user2Name | ÄäÖöÜüß & latin chars |
-
-  @C2653 @regression @id2743
-  Scenario Outline: Send special chars (German) [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    And I see conversations list
-    And I tap on contact name <Contact>
-    And I send using script predefined message <Text>
-    Then I see last message in dialog is expected message <Text>
-
-    Examples:
-      | Name      | Contact   | Text                  |
-      | user1Name | user2Name | ÄäÖöÜüß & latin chars |
-
   @C2654 @regression @id2744
   Scenario Outline: Copy and paste to send the message [PORTRAIT]
     Given There are 2 users where <Name> is me

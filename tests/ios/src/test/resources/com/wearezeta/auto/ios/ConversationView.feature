@@ -192,34 +192,6 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C926 @regression @id408
-  Scenario Outline: Send one line message with lower case and upper case
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    And I input message with lower case and upper case
-    Then I see 2 message in the dialog
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
-  @C927 @regression @id409
-  Scenario Outline: Send special chars (German)
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    And I type the "<Text>" message and send it
-    Then I see last message in dialog is expected message <Text>
-
-    Examples:
-      | Name      | Contact   | Text                  |
-      | user1Name | user2Name | ÄäÖöÜüß & latin chars |
-
   @C878 @regression @id413
   Scenario Outline: Copy and paste to send the message
     Given There are 2 users where <Name> is me

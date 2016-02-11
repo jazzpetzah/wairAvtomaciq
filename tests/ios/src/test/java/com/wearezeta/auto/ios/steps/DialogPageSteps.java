@@ -429,13 +429,6 @@ public class DialogPageSteps {
                 CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE + ONLY_SPACES_MESSAGE);
     }
 
-    @When("I input message with lower case and upper case")
-    public void IInputMessageWithLowerAndUpperCase() throws Throwable {
-        final String message = CommonUtils.generateRandomString(7).toLowerCase()
-                + CommonUtils.generateRandomString(7).toUpperCase();
-        getDialogPage().typeAndSendConversationMessage(message);
-    }
-
     @When("I tap and hold on message input")
     public void ITapHoldTextInput() throws Exception {
         getDialogPage().tapHoldTextInput();
@@ -444,11 +437,6 @@ public class DialogPageSteps {
     @When("^I scroll to the beginning of the conversation$")
     public void IScrollToTheBeginningOfTheConversation() throws Throwable {
         getDialogPage().scrollToBeginningOfConversation();
-    }
-
-    @When("^I send using script predefined message (.*)$")
-    public void ISendUsingScriptPredefinedMessage(String message) throws Exception {
-        getDialogPage().typeAndSendConversationMessage(message);
     }
 
     /**
