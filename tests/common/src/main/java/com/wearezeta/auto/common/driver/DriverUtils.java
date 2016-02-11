@@ -408,6 +408,13 @@ public class DriverUtils {
             AppiumDriver<? extends WebElement> driver, WebElement element) {
         tapByCoordinates(driver, element, 0, 0);
     }
+    
+    public static void tapByCoordinatesWithPercentOffcet(AppiumDriver<? extends WebElement> driver, WebElement element,
+        int offsetX, int offsetY) {
+        final Point coords = element.getLocation();
+        final Dimension elementSize = element.getSize();
+        driver.tap(1, (coords.x + elementSize.width * offsetX / 100), (coords.y + elementSize.height * offsetY / 100), 500);
+    }
 
     public static void multiTap(AppiumDriver<? extends WebElement> driver,
                                 WebElement element, int tapCount) {

@@ -552,8 +552,7 @@ Feature: Conversation View
     And I search for user name <Contact1> and tap on it on People picker page
     And I click open conversation button on People picker page
     Then I see the only message in dialog is system message CONNECTED TO <Contact1>
-    And I type the default message
-    And I send the message
+    And I type the default message and send it
     And I see 1 default message in the dialog
 
     Examples:
@@ -577,8 +576,7 @@ Feature: Conversation View
     And I search for user name <Contact1> and tap on it on People picker page
     And I click open conversation button on People picker page
     Then I see the only message in dialog is system message CONNECTED TO <Contact1>
-    And I type the default message
-    And I send the message
+    And I type the default message and send it
     And I see 1 default message in the dialog
 
     Examples:

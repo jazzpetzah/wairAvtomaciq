@@ -49,7 +49,7 @@ Feature: E2EE
     And User Myself adds a new device <DeviceName> with label <DeviceLabel>
     Then I wait until my avatar is changed
     When I tap my avatar
-    Then I verify the alert contains text <DeviceLabel>
+    Then I verify the alert contains text <DeviceName>
     When I accept alert
     And I close self profile
     Then I wait until my avatar is not changed
@@ -58,7 +58,7 @@ Feature: E2EE
     And I click on Settings button from the options menu
     And I select settings item Privacy & Security
     And I select settings item Manage devices
-    Then I see settings item <DeviceLabel>
+    Then I see settings item <DeviceName>
 
     Examples:
       | Name      | DeviceName | DeviceLabel  |
@@ -143,3 +143,149 @@ Feature: E2EE
     Examples:
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                |
       | user1Name | user2Name | Device2     | Label2       | STARTED USING A NEW DEVICE |
+
+  @C3293 @staging
+  Scenario Outline: Verify system message appearance in case of using a new device by you
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email
+    Given I see conversations list
+    Given User <Contact1> sends 1 encrypted message to user Myself
+    And I tap on contact name <Contact1>
+    And I open conversation details
+    And I switch to Devices tab
+    And I open details page of device number 1
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    And I click close user profile page button
+    And I click Close input options button
+    When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
+    And I type the default message and send it
+    Then I see the label "<Contact1> <ExpectedSuffix>" on New Device overlay
+
+    Examples:
+      | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedSuffix             |
+      | user1Name | user2Name | Device2     | Label2       | started using a new device |
+
+  @C14310 @noAcceptAlert @staging
+  Scenario Outline: On first login on 2nd device there should be an explanation that user will not see previous messages
+    Given There are 1 user where <Name> is me
+    Given User Myself adds a new device <DeviceName> with label <DeviceLabel>
+    When I sign in using my email
+    And I accept alert
+    Then I see First Time overlay
+
+    Examples:
+      | Name      | DeviceName | DeviceLabel  |
+      | user1Name | Device1    | Device1Label |
+  
+  @C3510 @noAcceptAlert @staging
+  Scenario Outline: Verify deleting one of the devices from device management by Edit
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email
+    Given I accept alert
+    Given I accept First Time overlay if it is visible
+    Given I accept alert
+    Given I see conversations list
+    And User Myself adds new devices <DeviceName>
+    When I tap my avatar
+    And I accept alert
+    And I click on Settings button on personal page
+    And I click on Settings button from the options menu
+    And I select settings item Privacy & Security
+    And I select settings item Manage devices
+    And I tap Edit button
+    And I tap Delete <DeviceName> button from devices
+    And I confirm with my <Password> the deletion of the device
+    Then I dont see device <DeviceName> in devices list
+
+    Examples:
+      | Name      | DeviceName | Password      |
+      | user1Name | Device1    | user1Password |
+
+  @C3509 @staging
+  Scenario Outline: (ZIOS-5741) Verify verifying/unverifying one of the devices
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email
+    Given I see conversations list
+    And User Myself adds a new device <DeviceName> with label <DeviceLabel>
+    When I tap my avatar
+    And I click on Settings button on personal page
+    And I click on Settings button from the options menu
+    And I select settings item Privacy & Security
+    And I select settings item Manage devices
+    When I open details page of device number 2
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    Then I see the label Verified is shown for the device <DeviceName>
+    When I open details page of device number 2
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    Then I see the label Not Verified is shown for the device <DeviceName>
+
+    Examples:
+      | Name      | DeviceName | DeviceLabel  |
+      | user1Name | Device1    | Device1Label |
+      
+  @C3293 @staging
+  Scenario Outline: Verify link is active for your own device and leads you to device's fingerprint
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email
+    Given I see conversations list
+    And I tap on contact name <Contact1>
+    And I see the conversation view contains message <ExpectedMsg>
+    And I tap on THIS DEVICE link
+    And I open details page of device number 1
+    Then I see fingerprint is not empty
+
+        Examples:
+      | Name      | Contact1  | ExpectedMsg               |
+      | user1Name | user2Name | STARTED USING THIS DEVICE |
+
+  @C14317 @staging
+  Scenario Outline: First time when 1:1 conversation is degraded - I can ignore alert screen and send messages with resend button
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email
+    Given I see conversations list
+    Given User <Contact1> sends 1 encrypted message to user Myself
+    And I tap on contact name <Contact1>
+    And I open conversation details
+    And I switch to Devices tab
+    And I open details page of device number 1
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    And I click close user profile page button
+    And I click Close input options button
+    When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
+    And I type the default message
+    And I send the message
+    And I close New Device overlay
+    And I resend the last message in the conversation with Resend button
+    Then I see 2 default messages in the dialog
+
+    Examples:
+      | Name      | Contact1  | DeviceName2 | DeviceLabel2 |
+      | user1Name | user2Name | Device2     | Label2       |
+
+  @C3288 @staging
+  Scenario Outline: Verify conversation is downgraded after adding a new device
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email
+    Given I see conversations list
+    Given User <Contact1> sends 1 encrypted message to user Myself
+    And I tap on contact name <Contact1>
+    And I open conversation details
+    And I switch to Devices tab
+    And I open details page of device number 1
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    And I click close user profile page button
+    When User Myself adds a new device <DeviceName2> with label <DeviceLabel2>
+    Then I see the conversation view contains message <ExpectedMsg>
+
+    Examples:
+      | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                    |
+      | user1Name | user2Name | Device2     | Label2       | YOU STARTED USING A NEW DEVICE |

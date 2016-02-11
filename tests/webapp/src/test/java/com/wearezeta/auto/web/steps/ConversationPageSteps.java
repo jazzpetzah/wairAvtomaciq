@@ -129,7 +129,7 @@ public class ConversationPageSteps {
      */
     @Then("^I see random message in conversation$")
     public void ThenISeeRandomMessageInConversation() throws Exception {
-        Assert.assertTrue(webappPagesCollection.getPage(ConversationPage.class).isMessageSent(randomMessage));
+        ISeeTextMessage(randomMessage);
     }
 
     /**
@@ -195,6 +195,11 @@ public class ConversationPageSteps {
     @When("^I click People button in group conversation$")
     public void WhenIClickPeopleButtonInGroup() throws Exception {
         webappPagesCollection.getPage(ConversationPage.class).clickPeopleButton();
+    }
+
+    @When("^I see verified icon in conversation$")
+    public void ISeeVerifiedIconInConversation() throws Throwable {
+        assertThat("No verified icon", webappPagesCollection.getPage(ConversationPage.class).isConversationVerified());
     }
 
     /**
@@ -341,7 +346,7 @@ public class ConversationPageSteps {
      */
     @Then("^I see text message (.*)")
     public void ISeeTextMessage(String message) throws Exception {
-        Assert.assertTrue(webappPagesCollection.getPage(ConversationPage.class).isTextMessageVisible(message));
+        webappPagesCollection.getPage(ConversationPage.class).waitForMessageContains(message);
     }
 
     private static String expandPattern(final String originalStr) {

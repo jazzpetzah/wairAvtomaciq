@@ -49,8 +49,7 @@ public abstract class IOSPage extends BasePage {
     public IOSPage(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);
 
-        setImagesPath(CommonUtils.getSimulatorImagesPathFromConfig(this
-                .getClass()));
+        setImagesPath(CommonUtils.getSimulatorImagesPathFromConfig(this.getClass()));
 
         this.onScreenKeyboard = new IOSKeyboard(driver);
     }
@@ -145,8 +144,9 @@ public abstract class IOSPage extends BasePage {
      * @param str                 string to enter
      * @throws Exception
      */
-    public void inputStringFromKeyboardAndCommit(WebElement dstElement, int relativeClickPointX, int relativeClickPointY,
-                                                 String str, boolean useAutocompleteWorkaround) throws Exception {
+    public void inputStringFromKeyboard(WebElement dstElement, int relativeClickPointX, int relativeClickPointY,
+                                        String str, boolean useAutocompleteWorkaround, boolean shouldCommitInput)
+            throws Exception {
         final Dimension elSize = dstElement.getSize();
         final Point elLocation = dstElement.getLocation();
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
@@ -154,20 +154,26 @@ public abstract class IOSPage extends BasePage {
             clickAtSimulator(elLocation.x + (relativeClickPointX * elSize.width) / 100,
                     elLocation.y + (relativeClickPointY * elSize.height) / 100);
             Thread.sleep(2000);
-            IOSSimulatorHelper.typeStringAndPressEnter(str, useAutocompleteWorkaround);
+            if (shouldCommitInput) {
+                IOSSimulatorHelper.typeStringAndPressEnter(str, useAutocompleteWorkaround);
+            } else {
+                IOSSimulatorHelper.typeString(str, useAutocompleteWorkaround);
+            }
         } else {
             getDriver().tap(1,
                     elLocation.x + (relativeClickPointX * elSize.width) / 100,
                     elLocation.y + (relativeClickPointY * elSize.height) / 100,
                     DriverUtils.SINGLE_TAP_DURATION);
             this.onScreenKeyboard.typeString(str);
-            this.clickKeyboardCommitButton();
+            if (shouldCommitInput) {
+                this.clickKeyboardCommitButton();
+            }
         }
     }
 
-    public void inputStringFromKeyboardAndCommit(WebElement dstElement, String str, boolean useAutocompleteWorkaround)
-            throws Exception {
-        inputStringFromKeyboardAndCommit(dstElement, 50, 50, str, useAutocompleteWorkaround);
+    public void inputStringFromKeyboard(WebElement dstElement, String str, boolean useAutocompleteWorkaround,
+                                        boolean shouldCommitInput) throws Exception {
+        inputStringFromKeyboard(dstElement, 50, 50, str, useAutocompleteWorkaround, shouldCommitInput);
     }
 
     public boolean isKeyboardVisible() throws Exception {

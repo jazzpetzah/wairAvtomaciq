@@ -1,9 +1,11 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.ios.pages.SettingsPage;
+
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+
 import org.junit.Assert;
 
 public class SettingsPageSteps {
@@ -68,8 +70,8 @@ public class SettingsPageSteps {
      */
     @When("^I verify sound alerts settings are set to default values$")
     public void IVerifyAllIsDefaultValue() throws Exception {
-        Assert.assertTrue("Sound alerts settings are NOT set to their default values",
-                getSettingsPage().isSoundAlertsSetToDefault());
+        Assert.assertTrue("Sound alerts settings are NOT set to their default values", getSettingsPage()
+            .isSoundAlertsSetToDefault());
     }
 
     /**
@@ -83,7 +85,78 @@ public class SettingsPageSteps {
     @Then("^I see settings item (.*)$")
     public void ISeeSettingsItem(String itemName) throws Exception {
         Assert.assertTrue(String.format("Settings menu item '%s' is not visible", itemName),
-                getSettingsPage().isItemVisible(itemName));
+            getSettingsPage().isItemVisible(itemName));
     }
 
+    /**
+     * Verify Device label (Verified|Not Verified)
+     * 
+     * @step. ^I see the label (Verified|Not Verified) is shown for the device (.*)$
+     * 
+     * @param label label of device
+     * @param deviceName name of device
+     * @throws Exception
+     */
+    @Then("^I see the label (Verified|Not Verified) is shown for the device (.*)$")
+    public void ISeeForDeviceALabelB(String label, String deviceName) throws Exception {
+        Assert.assertTrue(String.format("Label '%s' is not visible for device '%s'", label, deviceName), getSettingsPage()
+            .verificationLabelVisibility(deviceName, label));
+
+    }
+
+    /**
+     * Presses the Edit Button in Settings Manage devices
+     *
+     * @throws Exception
+     * @step. ^I tap Edit button$
+     */
+    @When("^I tap Edit button$")
+    public void ITapEditButton() throws Exception {
+        getSettingsPage().pressEditButton();
+    }
+
+    /**
+     * Presses the delete button for the particular device
+     *
+     * @param deviceName name of device that should be deleted
+     * @throws Exception
+     * @step. ^I tap Delete (.*) button from devices$
+     */
+    @When("^I tap Delete (.*) button from devices$")
+    public void ITapDeleteButtonFromDevices(String deviceName) throws Exception {
+        getSettingsPage().pressDeleteDeviceButton(deviceName);
+        getSettingsPage().pressDeleteButton();
+    }
+
+    /**
+     * Types in the password and presses OK to confirm the device deletion
+     *
+     * @param password of user
+     * @throws Exception
+     * @step. ^I confirm with my (.*) the deletion of the device$
+     */
+    @When("^I confirm with my (.*) the deletion of the device$")
+    public void IConfirmWithMyPasswordTheDeletionOfTheDevice(String password) throws Exception {
+        getSettingsPage().typePasswordToConfirmDeleteDevice(password);
+        pagesCollection.getCommonPage().acceptAlert();
+    }
+
+    /**
+     * Verifies that device is or is not in device settings list
+     *
+     * @param shouldNot equals to null if the device is in list
+     * @param device    name of device in list
+     * @throws Exception
+     * @step. ^I (dont )?see device (.*) in devices list$
+     */
+    @Then("^I (dont )?see device (.*) in devices list$")
+    public void ISeeDeviceInDevicesList(String shouldNot, String device) throws Exception {
+        if (shouldNot == null) {
+            Assert.assertTrue(String.format("The device %s is not visible in the device list",device),
+                    getSettingsPage().isDeviceVisibleInList(device));
+        } else {
+            Assert.assertFalse(String.format("The device %s is still visible in the device list",device),
+                    getSettingsPage().isDeviceVisibleInList(device));
+        }
+    }
 }

@@ -6,7 +6,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     When I archive conversation <Contact>
     Then I do not see Contact list with name <Contact>
     When I open archive
@@ -23,7 +23,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     When I set muted state for conversation <Contact>
     And I open self profile
     Then I see that conversation <Contact> is muted
@@ -39,7 +39,7 @@ Feature: Conversation List
     Given I muted conversation with <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I see that conversation <Contact> is muted
     When I set unmuted state for conversation <Contact>
     And I open self profile
@@ -55,7 +55,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     When I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open self profile
     When User <Contact> pinged in the conversation with <Name>
     And I see ping icon in conversation with <Contact>
@@ -71,7 +71,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <Contact>
     And I see that conversation <Contact> is not muted
     When I click on options button for conversation <Contact>
@@ -91,7 +91,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <Contact>
     When I click on options button for conversation <Contact>
     And I click the option to block in the options popover
@@ -110,7 +110,7 @@ Feature: Conversation List
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <ChatName>
     When I click on options button for conversation <ChatName>
     And I click the option to leave in the options popover
@@ -129,7 +129,7 @@ Feature: Conversation List
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <ChatName>
     When I click on options button for conversation <ChatName>
     And I click delete in the options popover
@@ -164,7 +164,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <Contact>
     When I click on options button for conversation <Contact>
     And I click the option to block in the options popover
@@ -196,7 +196,7 @@ Feature: Conversation List
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <ChatName>
     When I click on options button for conversation <ChatName>
     And I click the option to leave in the options popover
@@ -233,7 +233,7 @@ Feature: Conversation List
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <ChatName>
     When I click on options button for conversation <ChatName>
     And I click delete in the options popover
@@ -286,7 +286,7 @@ Feature: Conversation List
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <ChatName>
     When I click on options button for conversation <ChatName>
     And I click delete in the options popover
@@ -323,7 +323,7 @@ Feature: Conversation List
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <ChatName>
     When I click on options button for conversation <ChatName>
     And I click delete in the options popover
@@ -341,7 +341,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <Contact1>
     When I click on options button for conversation <Contact1>
     And I click delete in the options popover
@@ -376,7 +376,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <Contact1>
     When I click on options button for conversation <Contact1>
     And I click delete in the options popover

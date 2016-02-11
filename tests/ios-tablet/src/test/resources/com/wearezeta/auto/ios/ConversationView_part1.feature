@@ -8,8 +8,7 @@ Feature: Conversation View
     And I see conversations list
     When I tap on contact name <Contact>
     And I tap on text input
-    And I type the default message
-    And I send the message
+    And I type the default message and send it
     Then I see 1 default message in the dialog
 
     Examples:
@@ -24,8 +23,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I type the default message
-    And I send the message
+    And I type the default message and send it
     Then I see 1 default message in the dialog
 
     Examples:
@@ -526,8 +524,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I type the default message
-    And I send the message
+    And I type the default message and send it
     Then I see 1 default message in the dialog
 
     Examples:
@@ -543,8 +540,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I type the default message
-    And I send the message
+    And I type the default message and send it
     Then I see 1 default message in the dialog
 
     Examples:

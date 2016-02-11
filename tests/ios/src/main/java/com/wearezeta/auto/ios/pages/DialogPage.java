@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
-import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -32,8 +31,8 @@ public class DialogPage extends IOSPage {
 
     protected static final By nameYouRenamedConversation = By.name("YOU RENAMED THE CONVERSATION");
 
-    private static final By xpathLastChatMessage = By.xpath(
-            xpathStrMainWindow + "/UIATableView[1]/UIATableCell[last()]/*[last()]");
+    private static final By xpathLastChatMessage = By.xpath(xpathStrMainWindow
+        + "/UIATableView[1]/UIATableCell[last()]/*[last()]");
 
     protected static final By nameAddPictureButton = By.name("ComposeControllerPictureButton");
 
@@ -45,15 +44,13 @@ public class DialogPage extends IOSPage {
     private static final By xpathImageCell = By.xpath(xpathStrImageCells);
     private static final By xpathLastImageCell = By.xpath(String.format("(%s)[last()]", xpathStrImageCells));
 
+    private static final By xpathNameMediaContainer = By.xpath(xpathStrMainWindow + "/UIATableView[1]/UIATableCell[last()]");
 
-    private static final By xpathNameMediaContainer = By.xpath(
-            xpathStrMainWindow + "/UIATableView[1]/UIATableCell[last()]");
-
-    private static final By xpathMediaConversationCell = By.xpath(xpathStrMainWindow +
-            "/UIATableView[last()]/UIATableCell[last()]/UIAButton[@name='soundcloud']/following-sibling::UIAButton");
+    private static final By xpathMediaConversationCell = By.xpath(xpathStrMainWindow
+        + "/UIATableView[last()]/UIATableCell[last()]/UIAButton[@name='soundcloud']/following-sibling::UIAButton");
 
     private static final By xpathYoutubeVimeoConversationCell = By.xpath(xpathStrMainWindow
-            + "/UIATableView[1]/UIATableCell[last()]/UIAButton[1]");
+        + "/UIATableView[1]/UIATableCell[last()]/UIAButton[1]");
 
     private static final By namePlayButton = By.name("mediaBarPlayButton");
 
@@ -69,40 +66,36 @@ public class DialogPage extends IOSPage {
 
     private static final By namePingButton = By.name("ComposeControllerPingButton");
 
-    private static final Function<String, String> xpathStrDialogTitleBar =
-            title -> String.format("//UIAStaticText[@name='%s']", title);
+    private static final Function<String, String> xpathStrDialogTitleBar = title -> String.format(
+        "//UIAStaticText[@name='%s']", title);
 
     private static final By nameGifButton = By.name("rightMenuButton");
 
     private static final By nameCursorSketchButton = By.name("ComposeControllerSketchButton");
 
-    private static final By xpathGiphyImage =
-            By.xpath("//UIATextView[@name='via giphy.com']/following::UIATableCell[@name='ImageCell']");
+    private static final By xpathGiphyImage = By
+        .xpath("//UIATextView[@name='via giphy.com']/following::UIATableCell[@name='ImageCell']");
 
     private static final By nameSoundCloudButton = By.name("soundcloud");
 
-    private static final By xpathUserAvatarNextToInput = By.xpath(
-            "//UIAImage[following-sibling::UIATextView[@name='ConversationTextInputField'] and @visible='true']");
+    private static final By xpathUserAvatarNextToInput = By
+        .xpath("//UIAImage[following-sibling::UIATextView[@name='ConversationTextInputField'] and @visible='true']");
 
-    private static final By xpathAllMessages = By.xpath(
-            xpathStrMainWindow + "/UIATableView[1]/UIATableCell/UIATextView");
+    private static final By xpathAllMessages = By.xpath(xpathStrMainWindow + "/UIATableView[1]/UIATableCell/UIATextView");
 
-    private static final String xpathStrAllMessages =
-            xpathStrMainWindow + "/UIATableView[1]/UIATableCell/UIATextView";
+    private static final String xpathStrAllMessages = xpathStrMainWindow + "/UIATableView[1]/UIATableCell/UIATextView";
 
-    private static final Function<String, String> xpathMessagesByText = text ->
-            String.format("%s[@value='%s']", xpathStrAllMessages, text);
+    private static final Function<String, String> xpathMessagesByText = text -> String.format("%s[@value='%s']",
+        xpathStrAllMessages, text);
 
-    public static final Function<String, String> xpathFormatMissedCallButtonByContact = name ->
-            String.format(
-                    "//UIATableCell[UIAStaticText[@name='%s CALLED']]/UIAButton[@name='ConversationMissedCallButton']",
-                    name.toUpperCase());
+    public static final Function<String, String> xpathFormatMissedCallButtonByContact = name -> String.format(
+        "//UIATableCell[UIAStaticText[@name='%s CALLED']]/UIAButton[@name='ConversationMissedCallButton']", name.toUpperCase());
 
-    private static final By xpathLastMessage = By.xpath(
-            String.format("%s/UIATableView[1]/UIATableCell[last()]/UIATextView[1]", xpathStrMainWindow));
+    private static final By xpathLastMessage = By.xpath(String.format("%s/UIATableView[1]/UIATableCell[last()]/UIATextView[1]",
+        xpathStrMainWindow));
 
-    public static final Function<String, String> xpathStrConnectingToUserLabelByName = name ->
-            String.format("//UIAStaticText[contains(@name, 'CONNECTING TO %s.')]", name.toUpperCase());
+    public static final Function<String, String> xpathStrConnectingToUserLabelByName = name -> String.format(
+        "//UIAStaticText[contains(@name, 'CONNECTING TO %s.')]", name.toUpperCase());
 
     private static final By xpathLoremIpsumText = By.xpath("//UIATextView[contains(@name, 'Lorem ipsum')]");
 
@@ -110,22 +103,27 @@ public class DialogPage extends IOSPage {
 
     private static final By nameSoundCloudContainer = By.name("Play on SoundCloud");
 
-    private static final Function<String, String> xpathStrMessageViewByText = text ->
-            String.format("//UIATextView[contains(@value, '%s')]", text);
+    private static final Function<String, String> xpathStrMessageViewByText = text -> String.format(
+        "//UIATextView[contains(@value, '%s')]", text);
 
-    private static final Function<String, String> xpathStrLastItemByNameInDialog =
-            name -> String.format("//UIAStaticText[@name='%s'][last()]", name.toUpperCase());
+    private static final Function<String, String> xpathStrLastItemByNameInDialog = name -> String.format(
+        "//UIAStaticText[@name='%s'][last()]", name.toUpperCase());
 
-    public static final Function<String, String> xpathStrConnectedToUserLabelByName = name ->
-            String.format("//UIAStaticText[contains(@name, 'CONNECTED TO %s')]", name.toUpperCase());
+    public static final Function<String, String> xpathStrConnectedToUserLabelByName = name -> String.format(
+        "//UIAStaticText[contains(@name, 'CONNECTED TO %s')]", name.toUpperCase());
 
-    private static final Function<String, String> xpathStartConversationEntryTemplate = xpathExpr ->
-            String.format("//UIAStaticText[%s]", xpathExpr);
+    private static final Function<String, String> xpathStartConversationEntryTemplate = xpathExpr -> String.format(
+        "//UIAStaticText[%s]", xpathExpr);
 
     private static final By nameShieldIconNextToInput = By.name("verifiedConversationIndicator");
 
-    private static final Function<String, String> xpathStrConvoMessageByText = text ->
-            String.format("%s//UIATableView//*[contains(@name, '%s')]", xpathStrMainWindow, text);
+    private static final Function<String, String> xpathStrConvoMessageByText = text -> String.format(
+        "%s//UIATableView//*[contains(@name, '%s')]", xpathStrMainWindow, text);
+
+    private static final By xpathYouStartedUsingThisDeviceSystemMesssage = By
+        .xpath("//UIATextView[@name='YOU STARTED USING THIS DEVICE']");
+
+    private static final By xpathResendMessageButton = By.xpath("//UIATableView[1]/UIATableCell[last()]/UIAButton[1]");
 
     public DialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -213,9 +211,8 @@ public class DialogPage extends IOSPage {
             final Dimension inputSize = convoInput.getSize();
             final Dimension windowSize = getDriver().manage().window().getSize();
             IOSSimulatorHelper.swipe((inputLocation.x + inputSize.width / 10.0) / windowSize.width,
-                    (inputLocation.y + inputSize.height / 2.0) / windowSize.height,
-                    (inputLocation.x + inputSize.width) * 1.0 / windowSize.width,
-                    (inputLocation.y + inputSize.height / 2.0) / windowSize.height);
+                (inputLocation.y + inputSize.height / 2.0) / windowSize.height, (inputLocation.x + inputSize.width) * 1.0
+                    / windowSize.width, (inputLocation.y + inputSize.height / 2.0) / windowSize.height);
         } else {
             DriverUtils.swipeRight(this.getDriver(), convoInput, 1000);
         }
@@ -227,17 +224,13 @@ public class DialogPage extends IOSPage {
         final Dimension btnSize = closeButton.getSize();
         final Dimension windowSize = getDriver().manage().window().getSize();
         if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            IOSSimulatorHelper.swipe(
-                    btnLocation.x * 1.0 / windowSize.width,
-                    (btnLocation.y + btnSize.height / 2.0) / windowSize.height,
-                    (btnLocation.x - btnSize.width * 7.0) / windowSize.width,
-                    (btnLocation.y + btnSize.height / 2.0) / windowSize.height);
+            IOSSimulatorHelper.swipe(btnLocation.x * 1.0 / windowSize.width, (btnLocation.y + btnSize.height / 2.0)
+                / windowSize.height, (btnLocation.x - btnSize.width * 7.0) / windowSize.width,
+                (btnLocation.y + btnSize.height / 2.0) / windowSize.height);
         } else {
-            DriverUtils.swipeByCoordinates(this.getDriver(), 1000,
-                    btnLocation.x * 100 / windowSize.width,
-                    (btnLocation.y + btnSize.height / 2) * 100 / windowSize.height,
-                    (btnLocation.x - btnSize.width * 7) * 100 / windowSize.width,
-                    (btnLocation.y + btnSize.height / 2) * 100 / windowSize.height);
+            DriverUtils.swipeByCoordinates(this.getDriver(), 1000, btnLocation.x * 100 / windowSize.width,
+                (btnLocation.y + btnSize.height / 2) * 100 / windowSize.height, (btnLocation.x - btnSize.width * 7) * 100
+                    / windowSize.width, (btnLocation.y + btnSize.height / 2) * 100 / windowSize.height);
         }
     }
 
@@ -308,9 +301,8 @@ public class DialogPage extends IOSPage {
     }
 
     public boolean isChatMessageContainsStringsExist(List<String> values) throws Exception {
-        final String xpathExpr = String.join(" and ", values.stream().
-                map(x -> String.format("contains(@name, '%s')", x.toUpperCase())).
-                collect(Collectors.toList()));
+        final String xpathExpr = String.join(" and ",
+            values.stream().map(x -> String.format("contains(@name, '%s')", x.toUpperCase())).collect(Collectors.toList()));
         final By locator = By.xpath(xpathStartConversationEntryTemplate.apply(xpathExpr));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 10);
     }
@@ -345,24 +337,20 @@ public class DialogPage extends IOSPage {
     public void swipeUp(int time) throws Exception {
         Point coords = getElement(nameMainWindow).getLocation();
         Dimension elementSize = getElement(nameMainWindow).getSize();
-        this.getDriver().swipe(coords.x + elementSize.width / 2,
-                coords.y + elementSize.height - TEXT_INPUT_HEIGH,
-                coords.x + elementSize.width / 2, coords.y + TOP_BORDER_WIDTH,
-                time);
+        this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y + elementSize.height - TEXT_INPUT_HEIGH,
+            coords.x + elementSize.width / 2, coords.y + TOP_BORDER_WIDTH, time);
     }
 
     public void swipeDialogPageDown() throws Exception {
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             IOSSimulatorHelper.swipeDown();
         } else {
-            DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationPage), 1000,
-                    50, 30, 50, 95);
+            DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationPage), 1000, 50, 30, 50, 95);
         }
     }
 
     public boolean isYoutubeContainerVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                xpathYoutubeVimeoConversationCell, 10);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathYoutubeVimeoConversationCell, 10);
     }
 
     public boolean isMediaContainerVisible() throws Exception {
@@ -401,33 +389,29 @@ public class DialogPage extends IOSPage {
     }
 
     public void typeAndSendConversationMessage(String message) throws Exception {
-        typeMessage(message);
-        this.clickKeyboardCommitButton();
-    }
-
-
-    public void typeMessage(String message) throws Exception {
-        final WebElement convoInput =
-                getElement(nameConversationCursorInput, "Conversation input is not visible after the timeout");
-        convoInput.click();
-        try {
-            ((IOSElement) convoInput).setValue(message);
-        } catch (WebDriverException e) {
-            convoInput.clear();
+        final WebElement convoInput = getElement(nameConversationCursorInput,
+                "Conversation input is not visible after the timeout");
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            inputStringFromKeyboard(convoInput, message, false, true);
+        } else {
+            convoInput.click();
+            // Wait for animation
+            Thread.sleep(1000);
             convoInput.sendKeys(message);
+            this.clickKeyboardCommitButton();
         }
     }
 
-    public void typeMessageAndSendSpaceKey(String message) throws Exception {
-        final WebElement convoInput =
-                getElement(nameConversationCursorInput, "Conversation input is not visible after the timeout");
-        convoInput.click();
-        try {
-            ((IOSElement) convoInput).setValue(message);
-            convoInput.sendKeys(" ");
-        } catch (WebDriverException e) {
-            convoInput.clear();
-            convoInput.sendKeys(message + " ");
+    public void typeMessage(String message) throws Exception {
+        final WebElement convoInput = getElement(nameConversationCursorInput,
+                "Conversation input is not visible after the timeout");
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            inputStringFromKeyboard(convoInput, message, false, false);
+        } else {
+            convoInput.click();
+            // Wait for animation
+            Thread.sleep(1000);
+            convoInput.sendKeys(message);
         }
     }
 
@@ -560,5 +544,14 @@ public class DialogPage extends IOSPage {
 
     public boolean isShieldIconInvisibleNextToInputField() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameShieldIconNextToInput);
+    }
+
+    public void clickThisDeviceLink() throws Exception {
+        DriverUtils.tapByCoordinatesWithPercentOffcet(getDriver(), getElement(xpathYouStartedUsingThisDeviceSystemMesssage),
+            90, 50);
+    }
+
+    public void resendLastMessageInDialogToUser() throws Exception {
+        getElement(xpathResendMessageButton).click();
     }
 }

@@ -139,17 +139,17 @@ public class LoginPage extends IOSPage {
     }
 
     public void commitEmail(String email) throws Exception {
-        this.inputStringFromKeyboardAndCommit(getElement(xpathSafariChangePasswordEmailField,
-                "Email input field in Safari is not visible"), email, false);
+        this.inputStringFromKeyboard(getElement(xpathSafariChangePasswordEmailField,
+                "Email input field in Safari is not visible"), email, false, true);
     }
 
     public void changeURLInBrowser(String URL) throws Exception {
-        this.inputStringFromKeyboardAndCommit(getElement(xpathSafariURLButton), URL, false);
+        this.inputStringFromKeyboard(getElement(xpathSafariURLButton), URL, false, true);
     }
 
     public void commitNewPassword(String newPassword) throws Exception {
-        this.inputStringFromKeyboardAndCommit(getElement(xpathSafariEnterNewPasswordField,
-                "Password input field in Safari is not visible"), newPassword, false);
+        this.inputStringFromKeyboard(getElement(xpathSafariEnterNewPasswordField,
+                "Password input field in Safari is not visible"), newPassword, false, true);
     }
 
     public boolean isCountryPickerButtonVisible() throws Exception {
