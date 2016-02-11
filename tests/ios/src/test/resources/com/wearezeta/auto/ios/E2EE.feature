@@ -160,8 +160,7 @@ Feature: E2EE
     And I click close user profile page button
     And I click Close input options button
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
-    And I type the default message
-    And I send the message
+    And I type the default message and send it
     Then I see the label "<Contact1> <ExpectedSuffix>" on New Device overlay
 
     Examples:
@@ -243,3 +242,50 @@ Feature: E2EE
         Examples:
       | Name      | Contact1  | ExpectedMsg               |
       | user1Name | user2Name | STARTED USING THIS DEVICE |
+
+  @C14317 @staging
+  Scenario Outline: First time when 1:1 conversation is degraded - I can ignore alert screen and send messages with resend button
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email
+    Given I see conversations list
+    Given User <Contact1> sends 1 encrypted message to user Myself
+    And I tap on contact name <Contact1>
+    And I open conversation details
+    And I switch to Devices tab
+    And I open details page of device number 1
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    And I click close user profile page button
+    And I click Close input options button
+    When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
+    And I type the default message
+    And I send the message
+    And I close New Device overlay
+    And I resend the last message in the conversation with Resend button
+    Then I see 2 default messages in the dialog
+
+    Examples:
+      | Name      | Contact1  | DeviceName2 | DeviceLabel2 |
+      | user1Name | user2Name | Device2     | Label2       |
+
+  @C3288 @staging
+  Scenario Outline: Verify conversation is downgraded after adding a new device
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email
+    Given I see conversations list
+    Given User <Contact1> sends 1 encrypted message to user Myself
+    And I tap on contact name <Contact1>
+    And I open conversation details
+    And I switch to Devices tab
+    And I open details page of device number 1
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    And I click close user profile page button
+    When User Myself adds a new device <DeviceName2> with label <DeviceLabel2>
+    Then I see the conversation view contains message <ExpectedMsg>
+
+    Examples:
+      | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                    |
+      | user1Name | user2Name | Device2     | Label2       | YOU STARTED USING A NEW DEVICE |

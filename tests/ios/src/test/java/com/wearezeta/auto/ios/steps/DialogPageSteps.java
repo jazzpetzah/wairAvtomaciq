@@ -3,16 +3,15 @@ package com.wearezeta.auto.ios.steps;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 
+import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.ios.IOSConstants;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
-import com.wearezeta.auto.ios.pages.GroupChatPage;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -26,11 +25,7 @@ public class DialogPageSteps {
         return pagesCollection.getPage(DialogPage.class);
     }
 
-    private GroupChatPage getGroupChatPage() throws Exception {
-        return pagesCollection.getPage(GroupChatPage.class);
-    }
-
-    private ContactListPage getContactListPage() throws Exception {
+     private ContactListPage getContactListPage() throws Exception {
         return pagesCollection.getPage(ContactListPage.class);
     }
 
@@ -45,6 +40,9 @@ public class DialogPageSteps {
     @When("^I tap on text input$")
     public void WhenITapOnTextInput() throws Exception {
         getDialogPage().tapOnCursorInput();
+        if (CommonUtils.getIsSimulatorFromConfig(getClass()) && !getDialogPage().isKeyboardVisible()) {
+            IOSSimulatorHelper.toggleSoftwareKeyboard();
+        }
     }
 
     /**
@@ -89,10 +87,13 @@ public class DialogPageSteps {
         Assert.assertTrue(getDialogPage().isMessageVisible(expectedPingMessage));
     }
 
-    @When("^I type the default message and send it$")
-    public void ITypeTheMessageAndSendIt() throws Exception {
-        getDialogPage().typeAndSendConversationMessage(
-                CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+    @When("^I type the (default|\".*\") message and send it$")
+    public void ITypeTheMessageAndSendIt(String msg) throws Exception {
+        if (msg.equals("default")) {
+            getDialogPage().typeAndSendConversationMessage(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+        } else {
+            getDialogPage().typeAndSendConversationMessage(msg.replaceAll("^\"|\"$", ""));
+        }
     }
 
     /**
@@ -107,8 +108,7 @@ public class DialogPageSteps {
         String chatName = usrMgr.findUserByNameOrNameAlias(convName).getName();
         // Title bar is gone quite fast so it may fail because of this
         Assert.assertTrue("Title bar with name - " + chatName
-                        + " is not on the page",
-                getDialogPage().isTitleBarDisplayed(chatName));
+                        + " is not on the page", getDialogPage().isTitleBarDisplayed(chatName));
     }
 
     /**
@@ -172,13 +172,15 @@ public class DialogPageSteps {
     /**
      * Verify whether the expected message exists in the convo view
      *
-     * @step. ^I see the conversation view contains message (.*)
-     * @param expectedMsg the expected message
+     * @param expectedMsg the expected message. It can contain user name aliases
      * @throws Exception
+     * @step. ^I see the conversation view contains message (.*)
      */
     @Then("^I see the conversation view contains message (.*)")
     public void ISeeConversationMessage(String expectedMsg) throws Exception {
-        Assert.assertTrue(String.format("The expected message '%s' is not visible in the conversation view", expectedMsg),
+        expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
+        Assert.assertTrue(
+                String.format("The expected message '%s' is not visible in the conversation view", expectedMsg),
                 getDialogPage().isMessageVisible(expectedMsg));
     }
 
@@ -251,14 +253,6 @@ public class DialogPageSteps {
                 "does not equal to the expected count %s", actualCount, expectedCount), actualCount == expectedCount);
     }
 
-    @When("I type and send long message and media link (.*)")
-    public void ITypeAndSendLongTextAndMediaLink(String link) throws Exception {
-        getDialogPage().typeAndSendConversationMessage(IOSConstants.LONG_MESSAGE);
-        getDialogPage().waitLoremIpsumText();
-        getDialogPage().typeAndSendConversationMessage(link);
-        getDialogPage().waitSoundCloudLoad();
-    }
-
     @Then("I see youtube link (.*) and media in dialog")
     public void ISeeYoutubeLinkAndMediaInDialog(String link) throws Exception {
         Assert.assertTrue("Media is missing in dialog", getDialogPage()
@@ -293,11 +287,6 @@ public class DialogPageSteps {
                 break;
             }
         }
-    }
-
-    @When("I send long message")
-    public void ISendLongMessage() throws Exception {
-        getDialogPage().typeAndSendConversationMessage(IOSConstants.LONG_MESSAGE);
     }
 
     @When("^I post media link (.*)$")
@@ -352,21 +341,21 @@ public class DialogPageSteps {
 
     @Then("I see playing media is paused")
     public void ThePlayingMediaIsPaused() throws Exception {
-        String pausedState = IOSConstants.MEDIA_STATE_PAUSED;
+        String pausedState = DialogPage.MEDIA_STATE_PAUSED;
         mediaState = getDialogPage().getMediaState();
         Assert.assertEquals(pausedState, mediaState);
     }
 
     @Then("I see media is playing")
     public void TheMediaIsPlaying() throws Exception {
-        String playingState = IOSConstants.MEDIA_STATE_PLAYING;
+        String playingState = DialogPage.MEDIA_STATE_PLAYING;
         mediaState = getDialogPage().getMediaState();
         Assert.assertEquals(playingState, mediaState);
     }
 
     @Then("The media stops playing")
     public void TheMediaStoppsPlaying() throws Exception {
-        String endedState = IOSConstants.MEDIA_STATE_STOPPED;
+        String endedState = DialogPage.MEDIA_STATE_STOPPED;
         mediaState = getDialogPage().getMediaState();
         Assert.assertEquals(endedState, mediaState);
     }
@@ -423,10 +412,9 @@ public class DialogPageSteps {
      * @step. I input message with leading empty spaces
      */
     @When("I input message with leading empty spaces")
-    public void IInpuMessageWithLeadingEmptySpace() throws Throwable {
+    public void IInputMessageWithLeadingEmptySpace() throws Throwable {
         getDialogPage().typeAndSendConversationMessage(
                 ONLY_SPACES_MESSAGE + CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
-
     }
 
     /**
@@ -441,20 +429,6 @@ public class DialogPageSteps {
                 CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE + ONLY_SPACES_MESSAGE);
     }
 
-    @When("I input message with lower case and upper case")
-    public void IInputMessageWithLowerAndUpperCase() throws Throwable {
-        final String message = CommonUtils.generateRandomString(7).toLowerCase()
-                + CommonUtils.generateRandomString(7).toUpperCase();
-        getDialogPage().typeAndSendConversationMessage(message);
-    }
-
-    @When("I input more than 200 chars message and send it")
-    public void ISend200CharsMessage() throws Exception {
-        final String message = CommonUtils.generateRandomString(210).toLowerCase()
-                .replace("x", " ");
-        getDialogPage().typeAndSendConversationMessage(message);
-    }
-
     @When("I tap and hold on message input")
     public void ITapHoldTextInput() throws Exception {
         getDialogPage().tapHoldTextInput();
@@ -463,11 +437,6 @@ public class DialogPageSteps {
     @When("^I scroll to the beginning of the conversation$")
     public void IScrollToTheBeginningOfTheConversation() throws Throwable {
         getDialogPage().scrollToBeginningOfConversation();
-    }
-
-    @When("^I send using script predefined message (.*)$")
-    public void ISendUsingScriptPredefinedMessage(String message) throws Exception {
-        getDialogPage().typeAndSendConversationMessage(message);
     }
 
     /**
@@ -561,7 +530,7 @@ public class DialogPageSteps {
      */
     @When("^I type tag for giphy preview (.*) and open preview overlay$")
     public void ITypeGiphyTagAndOpenPreview(String message) throws Exception {
-        getDialogPage().typeMessageAndSendSpaceKey(message);
+        getDialogPage().typeMessage(message);
         getDialogPage().openGifPreviewPage();
     }
 
@@ -951,7 +920,7 @@ public class DialogPageSteps {
      *
      * @param shouldNotSee equals to null is the shield should be visible
      * @throws Exception
-     * @step, ^I (do not )?see shield icon next to conversation input field$"
+     * @step. ^I (do not )?see shield icon next to conversation input field$"
      */
     @Then("^I (do not )?see shield icon next to conversation input field$")
     public void ISeeShieldIconNextNextToInputField(String shouldNotSee) throws Exception {
@@ -974,4 +943,16 @@ public class DialogPageSteps {
     public void ITapThisDeviceLink() throws Exception {
         getDialogPage().clickThisDeviceLink();
     }
+
+    /**
+     * Presses Resend button in dialog to send last msg again
+     *
+     * @throws Exception
+     * @step. ^I resend the last message in the conversation with Resend button$
+     */
+    @When("^I resend the last message in the conversation with Resend button$")
+    public void IResendTheLastMessageToUserInDialog() throws Exception {
+        getDialogPage().resendLastMessageInDialogToUser();
+    }
+
 }

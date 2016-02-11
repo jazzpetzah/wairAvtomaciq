@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
-import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -17,7 +16,6 @@ import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.ios.IOSConstants;
 
 public class DialogPage extends IOSPage {
     private static final By xpathConversationWindow = By.xpath("//UIATableView");
@@ -123,6 +121,14 @@ public class DialogPage extends IOSPage {
 
     private static final By xpathYouStartedUsingThisDeviceSystemMesssage = By
         .xpath("//UIATextView[@name='YOU STARTED USING THIS DEVICE']");
+
+    private static final By xpathResendMessageButton = By.xpath("//UIATableView[1]/UIATableCell[last()]/UIAButton[1]");
+
+    public static final String MEDIA_STATE_PLAYING = "playing";
+
+    public static final String MEDIA_STATE_PAUSED = "paused";
+
+    public static final String MEDIA_STATE_STOPPED = "ended";
 
     public DialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -308,11 +314,11 @@ public class DialogPage extends IOSPage {
 
     public String getMediaState() throws Exception {
         if (isMediaBarPlayButtonVisible()) {
-            return IOSConstants.MEDIA_STATE_PAUSED;
+            return MEDIA_STATE_PAUSED;
         } else if (isMediaBarPauseButtonVisible()) {
-            return IOSConstants.MEDIA_STATE_PLAYING;
+            return MEDIA_STATE_PLAYING;
         }
-        return IOSConstants.MEDIA_STATE_STOPPED;
+        return MEDIA_STATE_STOPPED;
     }
 
     public void tapOnMediaBar() throws Exception {
@@ -381,38 +387,36 @@ public class DialogPage extends IOSPage {
             if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
                 IOSSimulatorHelper.swipeDown();
             } else {
-                DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationPage), 500, 50, 10, 50, 90);
+                DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationPage),
+                        500, 50, 10, 50, 90);
             }
         }
     }
 
     public void typeAndSendConversationMessage(String message) throws Exception {
-        typeMessage(message);
-        this.clickKeyboardCommitButton();
+        final WebElement convoInput = getElement(nameConversationCursorInput,
+                "Conversation input is not visible after the timeout");
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            inputStringFromKeyboard(convoInput, message, false, true);
+        } else {
+            convoInput.click();
+            // Wait for animation
+            Thread.sleep(1000);
+            convoInput.sendKeys(message);
+            this.clickKeyboardCommitButton();
+        }
     }
 
     public void typeMessage(String message) throws Exception {
         final WebElement convoInput = getElement(nameConversationCursorInput,
-            "Conversation input is not visible after the timeout");
-        convoInput.click();
-        try {
-            ((IOSElement) convoInput).setValue(message);
-        } catch (WebDriverException e) {
-            convoInput.clear();
+                "Conversation input is not visible after the timeout");
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            inputStringFromKeyboard(convoInput, message, false, false);
+        } else {
+            convoInput.click();
+            // Wait for animation
+            Thread.sleep(1000);
             convoInput.sendKeys(message);
-        }
-    }
-
-    public void typeMessageAndSendSpaceKey(String message) throws Exception {
-        final WebElement convoInput = getElement(nameConversationCursorInput,
-            "Conversation input is not visible after the timeout");
-        convoInput.click();
-        try {
-            ((IOSElement) convoInput).setValue(message);
-            convoInput.sendKeys(" ");
-        } catch (WebDriverException e) {
-            convoInput.clear();
-            convoInput.sendKeys(message + " ");
         }
     }
 
@@ -550,5 +554,9 @@ public class DialogPage extends IOSPage {
     public void clickThisDeviceLink() throws Exception {
         DriverUtils.tapByCoordinatesWithPercentOffcet(getDriver(), getElement(xpathYouStartedUsingThisDeviceSystemMesssage),
             90, 50);
+    }
+
+    public void resendLastMessageInDialogToUser() throws Exception {
+        getElement(xpathResendMessageButton).click();
     }
 }

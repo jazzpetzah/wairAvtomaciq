@@ -20,8 +20,7 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I type the default message
-    And I send the message
+    And I type the default message and send it
     Then I see 1 default message in the dialog
 
     Examples:
@@ -69,8 +68,7 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I type the default message
-    And I click send button on keyboard
+    And I type the default message and send it
     Then I see 1 default message in the dialog
 
     Examples:
@@ -166,14 +164,11 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given User <Contact> sends 40 encrypted messages to user Myself
     When I tap on contact name <Contact>
-    And I send long message
-    And I type the default message and send it
-    And I scroll to the beginning of the conversation
     And I see plus button is not shown
     And I tap on text input to scroll to the end
     Then I see conversation is scrolled to the end
-    And I see 1 default message in the dialog
 
     Examples:
       | Name      | Contact   |
@@ -186,7 +181,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I input more than 200 chars message and send it
     And I type the default message
     And I navigate back to conversations list
     And I tap on contact name <Contact>
@@ -197,48 +191,6 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
-
-  @C925 @regression @id407
-  Scenario Outline: Send more than 200 chars message
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    And I input more than 200 chars message and send it
-    Then I see 2 message in the dialog
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
-  @C926 @regression @id408
-  Scenario Outline: Send one line message with lower case and upper case
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    And I input message with lower case and upper case
-    Then I see 2 message in the dialog
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
-  @C927 @regression @id409
-  Scenario Outline: Send special chars (German)
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    And I send using script predefined message <Text>
-    Then I see last message in dialog is expected message <Text>
-
-    Examples:
-      | Name      | Contact   | Text                  |
-      | user1Name | user2Name | ÄäÖöÜüß & latin chars |
 
   @C878 @regression @id413
   Scenario Outline: Copy and paste to send the message
@@ -421,7 +373,7 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I type and send long message and media link <SoundCloudLink>
+    And I type the "1 link <SoundCloudLink>" message and send it
     And I navigate back to conversations list
     And I tap on contact name <Contact>
     And I see media link <SoundCloudLink> and media in dialog
@@ -668,8 +620,7 @@ Feature: Conversation View
     And I search for user name <Contact1> and tap on it on People picker page
     And I click open conversation button on People picker page
     Then I see dialog page
-    And I type the default message
-    And I send the message
+    And I type the default message and send it
     And I see 1 default message in the dialog
 
     Examples:

@@ -15,6 +15,8 @@ public class NewDeviceOverlay extends IOSPage {
 
     private static final By nameShowDeviceButton = By.name("SHOW DEVICE");
 
+    private static final By nameCloseOverlayButton = By.name("RightButton");
+
     public NewDeviceOverlay(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -30,5 +32,9 @@ public class NewDeviceOverlay extends IOSPage {
 
     public void tapSendAnywayButton() throws Exception {
         getElement(nameSendAnywayButton).click();
+    }
+
+    public void closeNewDeviceOverlay() throws Exception {
+        getElement(nameCloseOverlayButton).click();
     }
 }

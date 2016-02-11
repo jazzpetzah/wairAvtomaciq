@@ -6,14 +6,11 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given User <Contact> sends 50 encrypted messages to user Myself
     When I tap on contact name <Contact>
-    And I send long message
-    And I type the default message and send it
-    And I scroll to the beginning of the conversation
     And I see plus button is not shown
     And I tap on text input to scroll to the end
     Then I see conversation is scrolled to the end
-    And I see 1 default message in the dialog
 
     Examples:
       | Name      | Contact   |
@@ -26,14 +23,11 @@ Feature: Conversation View
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given User <Contact> sends 40 encrypted messages to user Myself
     When I tap on contact name <Contact>
-    And I send long message
-    And I type the default message and send it
-    And I scroll to the beginning of the conversation
     And I see plus button is not shown
     And I tap on text input to scroll to the end
     Then I see conversation is scrolled to the end
-    And I see 1 default message in the dialog
 
     Examples:
       | Name      | Contact   |
@@ -552,8 +546,7 @@ Feature: Conversation View
     And I search for user name <Contact1> and tap on it on People picker page
     And I click open conversation button on People picker page
     Then I see the only message in dialog is system message CONNECTED TO <Contact1>
-    And I type the default message
-    And I send the message
+    And I type the default message and send it
     And I see 1 default message in the dialog
 
     Examples:
@@ -577,8 +570,7 @@ Feature: Conversation View
     And I search for user name <Contact1> and tap on it on People picker page
     And I click open conversation button on People picker page
     Then I see the only message in dialog is system message CONNECTED TO <Contact1>
-    And I type the default message
-    And I send the message
+    And I type the default message and send it
     And I see 1 default message in the dialog
 
     Examples:

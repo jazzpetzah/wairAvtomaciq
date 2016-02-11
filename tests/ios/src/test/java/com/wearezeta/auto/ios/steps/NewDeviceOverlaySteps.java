@@ -4,6 +4,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.NewDeviceOverlay;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class NewDeviceOverlaySteps {
@@ -52,5 +53,15 @@ public class NewDeviceOverlaySteps {
     @And("^I tap SHOW DEVICE button on New Device overlay$")
     public void ITapShowDeviceButton() throws Exception {
         getNewDeviceOverlay().tapShowDeviceButton();
+    }
+
+    /**
+     * Tap the close button of the neew device overlay
+     * @step. ^I close New Device overlay$
+     * @throws Exception
+     */
+    @When("^I close New Device overlay$")
+    public void ICloseNewDeviceOverlay() throws Exception {
+        getNewDeviceOverlay().closeNewDeviceOverlay();
     }
 }

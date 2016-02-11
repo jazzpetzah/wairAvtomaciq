@@ -155,28 +155,6 @@ public class ConversationViewPageSteps {
 	}
 
 	/**
-	 * Verify the chat header system message contains expected text
-	 * 
-	 * @step. ^I see the chat header message contains \"(.*)\" text on
-	 *        conversation view page$
-	 * 
-	 * @param expectedMessage
-	 *            the message to verify
-	 * @throws Exception
-	 */
-	@Then("^I see the chat header message contains \"(.*)\" text on conversation view page$")
-	public void ISeeChatHeaderSystemMessage(String expectedMessage)
-			throws Exception {
-		expectedMessage = usrMgr.replaceAliasesOccurences(expectedMessage,
-				FindBy.NAME_ALIAS);
-		Assert.assertTrue(
-				String.format(
-						"The chat header message containing text '%s' is not visible in the conversation view",
-						expectedMessage), getConversationViewPage()
-						.waitForChatHeaderMessageContains(expectedMessage));
-	}
-
-	/**
 	 * Verify whether the particular outgoing invitation message is visible in
 	 * conversation view
 	 * 
