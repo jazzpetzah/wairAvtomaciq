@@ -409,7 +409,7 @@ Feature: E2EE
       | user1Name | user2Name | user3Name | Msg1     | GroupConvo    |
       
   @C3512 @staging
-  Scenario Outline: On first login by phone on not 1st device I have to be asked for email login
+  Scenario Outline: After login by phone on not 1st device I have to be asked for email login
     Given There is 1 user where <Name> is me
     Given User <Name> adds new device Device2
     Given I sign in using my phone number
