@@ -117,6 +117,17 @@ public class DialogPage extends AndroidPage {
     public static Function<String, String> xpathStrInputFieldByValue = value -> String.format("//*[@value='%s']", value);
 
     private static final By idSwitchCameraButton = By.id("gtv__camera__top_control__back_camera");
+    
+    private static final By idTakeoverScreen = By.id("ll__confirmation_dialog__message_container");
+    
+    private static final By xpathTakeoverScreenText
+            = By.xpath("//*[@id='text' and contains(@value,'Do you still want to send your message?')]");
+    
+    public static final By xpathTakeoverScreenHeader = By.xpath("//*[@id='header' and contains(@value, 'started using a new device.')]");
+    
+    private static final By idTakeoverSendAnywayBnt = By.id("positive");
+    
+    private static final By idTakeoverShowDeviceBnt = By.id("negative");
 
     private static final int DEFAULT_SWIPE_TIME = 500;
     private static final int MAX_SWIPE_RETRIES = 5;
@@ -580,5 +591,24 @@ public class DialogPage extends AndroidPage {
         final List<WebElement> allImages = selectVisibleElements(idDialogImages);
         final List<WebElement> allImageBadges = selectVisibleElements(xpathE2EEDialogImagesBadges);
         return times == (allImages.size() - allImageBadges.stream().filter(WebElement::isDisplayed).count());
+    }
+    
+    public boolean waitForTakeoverScreenVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idTakeoverScreen);
+    }
+    
+    public boolean isTakeoverScreenHeaderCorrect(List<String> names) throws Exception {
+        final String headerText = getElement(xpathTakeoverScreenHeader,
+            "No takeover header is found").getText();
+        for (String name : names) {
+            if (!headerText.toLowerCase().contains(name.toLowerCase())) {
+                return false;
+            }
+        }
+    return true;
+    }
+    
+    public boolean isTakeoverScreenTextCorrect() throws Exception {
+        return DriverUtils.isElementPresentAndDisplayed(getDriver(), getElement(xpathTakeoverScreenText));
     }
 }

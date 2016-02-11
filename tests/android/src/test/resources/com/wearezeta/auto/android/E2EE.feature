@@ -423,3 +423,30 @@ Feature: E2EE
     Examples:
       | Name      | Email      | Password      | Device  |
       | user1Name | user1Email | user1Password | device1 |
+      
+  @C12081 @staging @torun
+  Scenario Outline: When 1:1 conversation was degraded - I can ignore alert screen and send message with resend button 
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When User <Contact1> sends encrypted message "<Message1>" to user Myself
+    And I tap on contact name <Contact1>
+    And I tap conversation details button
+    And I select single participant tab "Devices"
+    Then I see 1 device is shown in single participant devices tab
+    And I verify 1st device
+    When I press back button
+    Then I see a message informing me conversation is verified
+    And User <Contact1> adds new device <Device>
+    And I tap on text input
+    And I type the message "<Message2>"
+    And I press Send button
+    Then I see takeover screen from user "<Contact1>"
+    #Then I see my message "<Messag2>" in the dialog
+    #Then I see a message informing me conversation is not verified caused by user <Contact1>
+
+    Examples:
+      | Name      | Contact1  | Device  | Message1 | Message2    |
+      | user1Name | user2Name | device2 | Msg1     | MsgToResend |

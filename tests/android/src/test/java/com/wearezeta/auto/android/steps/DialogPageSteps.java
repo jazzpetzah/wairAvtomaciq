@@ -870,4 +870,22 @@ public class DialogPageSteps {
                         score, MAX_VERIFIED_CONVERSATION_SHIELD_SIMILARITY_THRESHOLD),
                 score < MAX_VERIFIED_CONVERSATION_SHIELD_SIMILARITY_THRESHOLD);
     }
+    
+    /**
+     * Check if takeover screen appars for specified user and all message on it is correct
+     *
+     * @throws Exception
+     * @step. ^I see takeover screen from users? \"(.*)\"$
+     */
+    @Then("^I see takeover screen from users? \"(.*)\"$")
+    public void ISeeTakeoverScreen(String nameAliases) throws Exception {
+        Assert.assertTrue("Takeover screeen is not visible", getDialogPage().waitForTakeoverScreenVisible());
+        List<String> names = new ArrayList<String>();
+        for (String nameAlias : CommonSteps.splitAliases(nameAliases)) {
+            names.add(usrMgr.findUserByNameOrNameAlias(nameAlias).getName());
+        }
+        Assert.assertTrue(String.format("Takeover header from users %s is not visible", names),
+            getDialogPage().isTakeoverScreenHeaderCorrect(names));
+        Assert.assertTrue("Takeover screeen is not visible", getDialogPage().isTakeoverScreenTextCorrect());
+    }
 }
