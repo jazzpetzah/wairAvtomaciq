@@ -47,8 +47,12 @@ public class IOSKeyboard extends BasePage {
         return (ZetaIOSDriver) super.getDriver();
     }
 
+    public boolean isVisible(int timeoutSeconds) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), classNameKeyboard, timeoutSeconds);
+    }
+
     public boolean isVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), classNameKeyboard, 3);
+        return isVisible(3);
     }
 
     public void pressSpaceButton() throws Exception {

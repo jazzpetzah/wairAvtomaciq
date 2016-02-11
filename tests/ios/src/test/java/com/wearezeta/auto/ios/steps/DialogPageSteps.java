@@ -25,12 +25,11 @@ public class DialogPageSteps {
         return pagesCollection.getPage(DialogPage.class);
     }
 
-     private ContactListPage getContactListPage() throws Exception {
+    private ContactListPage getContactListPage() throws Exception {
         return pagesCollection.getPage(ContactListPage.class);
     }
 
     private String mediaState;
-    private static final String ONLY_SPACES_MESSAGE = "     ";
 
     @When("^I see dialog page$")
     public void WhenISeeDialogPage() throws Exception {
@@ -68,9 +67,13 @@ public class DialogPageSteps {
         Assert.assertFalse("Text input is allowed", getDialogPage().isCursorInputVisible());
     }
 
-    @When("^I type the default message$")
-    public void WhenITypeTheMessage() throws Exception {
-        getDialogPage().typeMessage(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+    @When("^I type the (default|\".*\") message$")
+    public void WhenITypeTheMessage(String msg) throws Exception {
+        if (msg.equals("default")) {
+            getDialogPage().typeMessage(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+        } else {
+            getDialogPage().typeMessage(msg.replaceAll("^\"|\"$", ""));
+        }
     }
 
     private static final String YOU_PINGED_MESSAGE = "YOU PINGED";
@@ -108,7 +111,7 @@ public class DialogPageSteps {
         String chatName = usrMgr.findUserByNameOrNameAlias(convName).getName();
         // Title bar is gone quite fast so it may fail because of this
         Assert.assertTrue("Title bar with name - " + chatName
-                        + " is not on the page", getDialogPage().isTitleBarDisplayed(chatName));
+                + " is not on the page", getDialogPage().isTitleBarDisplayed(chatName));
     }
 
     /**
@@ -400,35 +403,6 @@ public class DialogPageSteps {
         getDialogPage().returnToContactList();
     }
 
-    @When("I try to send message with only spaces")
-    public void ISendMessageWithOnlySpaces() throws Throwable {
-        getDialogPage().typeAndSendConversationMessage(ONLY_SPACES_MESSAGE);
-    }
-
-    /**
-     * Send message with leading empty spaces by script
-     *
-     * @throws Throwable
-     * @step. I input message with leading empty spaces
-     */
-    @When("I input message with leading empty spaces")
-    public void IInputMessageWithLeadingEmptySpace() throws Throwable {
-        getDialogPage().typeAndSendConversationMessage(
-                ONLY_SPACES_MESSAGE + CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
-    }
-
-    /**
-     * Send message with trailing empty spaces by script
-     *
-     * @throws Throwable
-     * @step. I input message with trailing empty spaces
-     */
-    @When("I input message with trailing emtpy spaces")
-    public void IInputMessageWithTrailingEmptySpace() throws Throwable {
-        getDialogPage().typeAndSendConversationMessage(
-                CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE + ONLY_SPACES_MESSAGE);
-    }
-
     @When("I tap and hold on message input")
     public void ITapHoldTextInput() throws Exception {
         getDialogPage().tapHoldTextInput();
@@ -695,14 +669,10 @@ public class DialogPageSteps {
     @When("I see only Details button. Call, Camera, Sketch, Ping are not shown")
     public void ISeeOnlyDetailsButtonRestNotShown() throws Exception {
         ISeeDetailsButtonShown();
-        Assert.assertFalse("Call button is visible", getDialogPage()
-                .isCallButtonVisible());
-        Assert.assertFalse("Camera button is visible", getDialogPage()
-                .isCameraButtonVisible());
-        Assert.assertFalse("Sketch button is visible", getDialogPage()
-                .isOpenScetchButtonVisible());
-        Assert.assertFalse("Ping button is visible", getDialogPage()
-                .isPingButtonVisible());
+        Assert.assertFalse("Call button is visible", getDialogPage().isCallButtonVisible());
+        Assert.assertFalse("Camera button is visible", getDialogPage().isCameraButtonVisible());
+        Assert.assertFalse("Sketch button is visible", getDialogPage().isOpenScetchButtonVisible());
+        Assert.assertFalse("Ping button is visible", getDialogPage().isPingButtonVisible());
     }
 
     /**
@@ -715,21 +685,6 @@ public class DialogPageSteps {
     public void ISeeCloseButtonInputOptionsNotVisible() throws Exception {
         Assert.assertTrue("Close input options button is visible", getDialogPage()
                 .verifyInputOptionsCloseButtonNotVisible());
-    }
-
-    /**
-     * Verify that ping controller button's x coordinate is less then
-     * conversation window's x coordinate
-     *
-     * @throws Exception
-     * @step. ^I see controller buttons can not be visible$
-     */
-    @When("^I see controller buttons can not be visible$")
-    public void ISeeControllerButtonsNotVisible() throws Exception {
-        Assert.assertFalse(
-                "Controller buttons can be visible. Please check screenshots",
-                getDialogPage()
-                        .isTherePossibilityControllerButtonsToBeDisplayed());
     }
 
     /**
@@ -836,12 +791,11 @@ public class DialogPageSteps {
      * @step. ^I see the only message in dialog is system message CONNECTED TO
      * (.*)$
      */
-    @When("^I see the only message in dialog is system message CONNECTED TO (.*)$")
+    @When("^I see the system message CONNECTED TO (.*) in the conversation view$")
     public void ISeeLastMessageIsSystem(String username) throws Exception {
         username = usrMgr.findUserByNameOrNameAlias(username).getName();
-        ISeeXConvoEntries(0);
-        Assert.assertTrue(getDialogPage()
-                .isConnectedToUserStartedConversationLabelVisible(username));
+        Assert.assertTrue(String.format("The 'CONNECTED' TO %s' system message is not visible in the conversation view",
+                username), getDialogPage().isConnectedToUserStartedConversationLabelVisible(username));
     }
 
     /**
@@ -900,8 +854,8 @@ public class DialogPageSteps {
      */
     @When("^I see conversation is scrolled to the end$")
     public void ISeeConversationIsScrolledToEnd() throws Throwable {
-        Assert.assertTrue(getDialogPage().isPlusButtonVisible());
-        Assert.assertTrue(getDialogPage().isCursorInputVisible());
+        Assert.assertTrue("The input field state looks incorrect",
+                getDialogPage().isPlusButtonVisible() && getDialogPage().isCursorInputVisible());
     }
 
     /**
@@ -932,12 +886,12 @@ public class DialogPageSteps {
                     getDialogPage().isShieldIconInvisibleNextToInputField());
         }
     }
-    
+
     /**
      * Click on THIS DEVICE link from YOU STARTED USING system message
      *
-     * @step. "^I tap on THIS DEVICE link$
      * @throws Exception
+     * @step. "^I tap on THIS DEVICE link$
      */
     @When("^I tap on THIS DEVICE link$")
     public void ITapThisDeviceLink() throws Exception {

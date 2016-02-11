@@ -108,7 +108,6 @@ Feature: Conversation View
     Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
-    And I tap on text input
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -185,7 +184,7 @@ Feature: Conversation View
     And I navigate back to conversations list
     And I tap on contact name <Contact>
     And I tap on text input
-    And I click send button on keyboard
+    And I press Enter key in Simulator window
     Then I see 1 default message in the dialog
 
     Examples:
@@ -210,7 +209,7 @@ Feature: Conversation View
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
-    And I click send button on keyboard
+    And I press Enter key in Simulator window
     Then I see last message in dialog is expected message <Text>
 
     Examples:
@@ -223,13 +222,12 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on contact name <Contact>
-    And I try to send message with only spaces
-    And I see the only message in dialog is system message CONNECTED TO <Contact>
-    And I input message with leading empty spaces
-    And I see 2 message in the dialog
-    And I input message with trailing emtpy spaces
-    Then I see 3 message in the dialog
+    And I tap on contact name <Contact>
+    When I type the "   " message and send it
+    Then I see 0 default messages in the dialog
+    When I type the default message
+    And I type the "   " message and send it
+    Then I see 1 default message in the dialog
 
     Examples:
       | Name      | Contact   |
@@ -291,6 +289,8 @@ Feature: Conversation View
     And I tap on contact name <Contact>
     Then I see youtube link <YouTubeLink> and media in dialog
     And I click video container for the first time
+    # Wait until web page is loaded
+    And I wait for 5 seconds
     And I see video player page is opened
 
     Examples:
@@ -308,9 +308,6 @@ Feature: Conversation View
     Given User Myself sends 40 encrypted messages to user <Contact2>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact2>
     When I tap on contact name <Contact1>
-    And I tap on text input
-    And I navigate back to conversations list
-    And I tap on contact name <Contact1>
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I navigate back to conversations list
@@ -585,7 +582,7 @@ Feature: Conversation View
       | user1Name | user2Name | https://www.wire.com/ is the best of the best |
 
   @C943 @regression @id3798
-  Scenario Outline: Verify input field and action buttons are not shown simultaniously
+  Scenario Outline: Verify input field and action buttons are not shown simultaneously
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
     Given I sign in using my email or phone number
@@ -597,7 +594,6 @@ Feature: Conversation View
     And I navigate back to conversations list
     And I tap on contact name <Contact1>
     Then I see Close input options button is not visible
-    And I see controller buttons can not be visible
     And I see the default message in input field
 
     Examples:
@@ -638,8 +634,8 @@ Feature: Conversation View
     And I see 1 photo in the dialog
     And I longpress on image in the conversation
     And I tap on copy badge
+    And I tap on text input
     And I tap and hold on message input
-    And I wait for 3 seconds
     And I click on popup Paste item
     And I press Confirm button
     Then I see 2 photo in the dialog

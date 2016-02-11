@@ -25,6 +25,8 @@ public class EmailSignInPage extends AndroidPage {
 
     public static final By idLoginInput = By.id("get__sign_in__email");
 
+    public static final By idForcedLoginInput = By.id("tet__profile__guided");
+
     private static final By idPasswordInput = By.id("get__sign_in__password");
 
     public static final By idLoginButton = By.id("pcb__signin__email");
@@ -91,5 +93,9 @@ public class EmailSignInPage extends AndroidPage {
 
     public void acceptErrorMessage() throws Exception {
         getElement(xpathAlertOKButton).click();
+    }
+
+    public boolean waitForForcedEmailLoginScreen() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idForcedLoginInput, 30);
     }
 }

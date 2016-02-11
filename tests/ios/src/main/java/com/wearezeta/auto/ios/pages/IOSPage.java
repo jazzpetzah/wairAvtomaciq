@@ -132,7 +132,8 @@ public abstract class IOSPage extends BasePage {
     private void clickAtSimulator(int x, int y) throws Exception {
         final Dimension windowSize = getDriver().manage().window().getSize();
         IOSSimulatorHelper.clickAt(String.format("%.2f", x * 1.0 / windowSize.width),
-                String.format("%.2f", y * 1.0 / windowSize.height));
+                String.format("%.2f", y * 1.0 / windowSize.height),
+                String.format("%.3f", DriverUtils.SINGLE_TAP_DURATION / 1000.0));
     }
 
     /**
@@ -232,13 +233,23 @@ public abstract class IOSPage extends BasePage {
             } else {
                 Thread.sleep(timeSeconds * 1000);
             }
-            IOSSimulatorHelper.clickAt("0.3", "0.5");
+            IOSSimulatorHelper.clickAt("0.3", "0.5",
+                    String.format("%.3f", DriverUtils.SINGLE_TAP_DURATION / 1000.0));
         } else {
             // https://discuss.appium.io/t/runappinbackground-does-not-work-for-ios9/6201
             this.getDriver().runAppInBackground(timeSeconds);
         }
     }
 
+    protected void longClickAt(WebElement el) throws Exception {
+        final Dimension elSize = el.getSize();
+        final Point elLocation = el.getLocation();
+        final Dimension windowSize = getDriver().manage().window().getSize();
+        IOSSimulatorHelper.clickAt(
+                String.format("%.2f", (elLocation.x + elSize.width / 2) * 1.0 / windowSize.width),
+                String.format("%.2f", (elLocation.y + elSize.height / 2) * 1.0 / windowSize.height),
+                String.format("%.3f", DriverUtils.LONG_TAP_DURATION / 1000.0));
+    }
 
     public void dismissAllAlerts() throws Exception {
         int count = 0;

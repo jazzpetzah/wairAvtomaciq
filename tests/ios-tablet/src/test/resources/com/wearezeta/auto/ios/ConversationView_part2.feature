@@ -462,7 +462,6 @@ Feature: Conversation View
     And I navigate back to conversations list
     And I tap on contact name <Contact1>
     Then I see Close input options button is not visible
-    And I see controller buttons can not be visible
     And I see the default message in input field
 
     Examples:
@@ -481,7 +480,6 @@ Feature: Conversation View
     When I tap on contact name <Contact2>
     And I tap on contact name <Contact1>
     Then I see Close input options button is not visible
-    And I see controller buttons can not be visible
     And I see the default message in input field
 
     Examples:
@@ -499,6 +497,7 @@ Feature: Conversation View
     And I see 1 photo in the dialog
     And I longpress on image in the conversation
     And I tap on copy badge
+    And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
     And I press Confirm button
@@ -545,9 +544,8 @@ Feature: Conversation View
     And I tap on Search input on People picker page
     And I search for user name <Contact1> and tap on it on People picker page
     And I click open conversation button on People picker page
-    Then I see the only message in dialog is system message CONNECTED TO <Contact1>
-    And I type the default message and send it
-    And I see 1 default message in the dialog
+    When I type the default message and send it
+    Then I see 1 default message in the dialog
 
     Examples:
       | Name      | Contact1  |
@@ -569,9 +567,8 @@ Feature: Conversation View
     And I tap on Search input on People picker page
     And I search for user name <Contact1> and tap on it on People picker page
     And I click open conversation button on People picker page
-    Then I see the only message in dialog is system message CONNECTED TO <Contact1>
-    And I type the default message and send it
-    And I see 1 default message in the dialog
+    When I type the default message and send it
+    Then I see 1 default message in the dialog
 
     Examples:
       | Name      | Contact1  |
@@ -673,9 +670,8 @@ Feature: Conversation View
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     When I tap on contact name <Contact>
     And I tap on text input to scroll to the end
-    And I scroll to the beginning of the conversation
-    And I click plus button next to text input
-    Then I see controller buttons can not be visible
+    When I scroll to the beginning of the conversation
+    Then I see plus button is not shown
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -692,9 +688,8 @@ Feature: Conversation View
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     When I tap on contact name <Contact>
     And I tap on text input to scroll to the end
-    And I scroll to the beginning of the conversation
-    And I click plus button next to text input
-    Then I see controller buttons can not be visible
+    When I scroll to the beginning of the conversation
+    Then I see plus button is not shown
 
     Examples:
       | Name      | Contact   | Picture     |

@@ -69,7 +69,7 @@ public class ContactListPageSteps {
         final BufferedImage actualConvoItemScreenshot = getContactListPage().getConversationEntryScreenshot(name);
         final double score = ImageUtil.getOverlapScore(this.savedConvoItemScreenshots.get(name),
                 actualConvoItemScreenshot, ImageUtil.RESIZE_NORESIZE);
-        final double minScore = 0.995;
+        final double minScore = 0.999;
         if (shouldNotBeChanged == null) {
             Assert.assertTrue(
                     String.format("The state of '%s' conversation item seems to be the same (%.3f >= %.3f)",
@@ -242,6 +242,8 @@ public class ContactListPageSteps {
 
     @Then("^I open archived conversations$")
     public void IOpenArchivedConversations() throws Exception {
+        // This is to make sure that we are not in some transition state from the previous step
+        Thread.sleep(3000);
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             IOSSimulatorHelper.swipe(0.2, 0.7, 0.2, 0.1);
         } else {

@@ -7,7 +7,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I tap on text input
     And I type the default message and send it
     Then I see 1 default message in the dialog
 
@@ -203,7 +202,7 @@ Feature: Conversation View
     When I tap my avatar
     And I close self profile
     And I tap on text input
-    And I send the message
+    And I press Enter key in Simulator window
     Then I see 1 default message in the dialog
 
     Examples:
@@ -223,7 +222,7 @@ Feature: Conversation View
     When I tap my avatar
     And I close self profile
     And I tap on text input
-    And I send the message
+    And I press Enter key in Simulator window
     Then I see 1 default message in the dialog
 
     Examples:
@@ -248,7 +247,7 @@ Feature: Conversation View
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
-    And I send the message
+    And I press Enter key in Simulator window
     Then I see last message in dialog is expected message <Text>
 
     Examples:
@@ -274,7 +273,7 @@ Feature: Conversation View
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
-    And I send the message
+    And I press Enter key in Simulator window
     Then I see last message in dialog is expected message <Text>
 
     Examples:
@@ -286,16 +285,13 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
-    And I see conversations list
+    Given I see conversations list
     When I tap on contact name <Contact>
-    And I try to send message with only spaces
-    And I see the only message in dialog is system message CONNECTED TO <Contact>
-    And I input message with leading empty spaces
-    And I send the message
-    And I see 1 message in the dialog
-    And I input message with trailing emtpy spaces
-    And I send the message
-    Then I see 2 messages in the dialog
+    And I type the "   " message and send it
+    Then I see 0 default messages in the dialog
+    When I type the default message
+    And I type the "   " message and send it
+    Then I see 1 default message in the dialog
 
     Examples:
       | Name      | Contact   |
@@ -307,16 +303,13 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see conversations list
+    Given I see conversations list
     When I tap on contact name <Contact>
-    And I try to send message with only spaces
-    And I see the only message in dialog is system message CONNECTED TO <Contact>
-    And I input message with leading empty spaces
-    And I send the message
-    And I see 1 message in the dialog
-    And I input message with trailing emtpy spaces
-    And I send the message
-    Then I see 2 messages in the dialog
+    And I type the "   " message and send it
+    Then I see 0 default messages in the dialog
+    When I type the default message
+    And I type the "   " message and send it
+    Then I see 1 default message in the dialog
 
     Examples:
       | Name      | Contact   |

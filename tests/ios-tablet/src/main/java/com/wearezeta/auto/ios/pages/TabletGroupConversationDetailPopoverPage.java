@@ -1,10 +1,9 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.util.List;
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
@@ -20,12 +19,10 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
     private static final By xpathNotifyButtonEllipsisMenu = By.xpath(xpathStrMainWindow +
             "/UIAPopover[1]/UIAButton[@name='NOTIFY']");
 
-    private static final By xpathGroupConvTotalNumber = By.xpath(
-            "/UIAPopover[1]/UIAStaticText[contains(@name,'PEOPLE')]");
+    private static final Function<Integer, String> xpathStrGroupCountByNumber = number ->
+            String.format("//UIAPopover//UIAStaticText[contains(@name,'%s PEOPLE')]", number);
 
     private static final By xpathPopover = By.xpath("//UIAPopover[@visible='true']");
-
-    private static final String NAME_PEOPLE_COUNT_WORD = " PEOPLE";
 
     public TabletGroupConversationDetailPopoverPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -60,17 +57,9 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
         DriverUtils.tapByCoordinates(getDriver(), getElement(nameConversationMenu), 50, 50);
     }
 
-    public int numberOfPeopleInGroupConversationOniPad() throws Exception {
-        // FIXME: Optimize locators
-        int result = -1;
-        List<WebElement> elements = getElements(xpathGroupConvTotalNumber);
-        for (WebElement element : elements) {
-            String value = element.getText();
-            if (value.contains(NAME_PEOPLE_COUNT_WORD)) {
-                result = Integer.parseInt(value.substring(0, value.indexOf((NAME_PEOPLE_COUNT_WORD))));
-            }
-        }
-        return result;
+    public boolean isNumberOfPeopleInGroupEqualToExpected(int expectedNumber) throws Exception {
+        final By locator = By.xpath(xpathStrGroupCountByNumber.apply(expectedNumber));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public void pressSilenceEllipsisButton() throws Exception {

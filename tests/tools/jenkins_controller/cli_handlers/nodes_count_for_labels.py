@@ -210,7 +210,6 @@ class RealAndroidDevice(BaseNodeVerifier):
 IOS_SIMULATOR_BOOT_TIMEOUT = 60 * 2 # seconds
 IOS_SIMULATOR_EXECUTABLE_NAME = 'Simulator'
 IOS_SIMULATOR_AGENT_NAME = 'launchd_sim'
-AUTORUN_APPIUM_APP = 'AutorunAppium'
 
 class IOSSimulator(BaseNodeVerifier):
     def _get_installed_simulators(self, ssh_client):
@@ -264,13 +263,12 @@ class IOSSimulator(BaseNodeVerifier):
                            password=self._verification_kwargs['node_password'])
             simulator_name = self._verification_kwargs['ios_simulator_name']
 
-            client.exec_command('/usr/bin/killall -9 {}'.format(IOS_SIMULATOR_EXECUTABLE_NAME))
-            client.exec_command('/usr/bin/killall -9 {}'.format(IOS_SIMULATOR_AGENT_NAME))
+            client.exec_command('/usr/bin/killall -9 {}'.format(' '.join([IOS_SIMULATOR_EXECUTABLE_NAME,
+                                                                          IOS_SIMULATOR_AGENT_NAME])))
             time.sleep(1)
 
             available_simulators = self._get_installed_simulators(client)
-            dst_name = filter(lambda x: x.lower().find(simulator_name.lower()) >= 0,
-                              available_simulators.iterkeys())
+            dst_name = filter(lambda x: x.lower().find(simulator_name.lower()) >= 0, available_simulators.iterkeys())
             result = True
             if dst_name:
                 simulator_name = dst_name[0]
@@ -278,12 +276,10 @@ class IOSSimulator(BaseNodeVerifier):
                 msg = 'There is no "{}" simulator available. The list of available simulators for the node "{}":\n{}\n'.\
                                  format(simulator_name, self._node.name, pformat(available_simulators))
                 sys.stderr.write(msg)
-                self._send_email_notification('Non-existing simulator name "{}" has been provided'.format(simulator_name),
-                                              msg)
+                self._send_email_notification('Non-existing simulator name "{}" has been provided'.
+                                              format(simulator_name), msg)
                 return False
             if result is True:
-                sys.stderr.write('Restarting Appium server...')
-                client.exec_command('/usr/bin/open -a {}'.format(AUTORUN_APPIUM_APP), timeout=10)
                 sys.stderr.write('Adjusting simulator scale...')
                 scale_factor = 4
                 if simulator_name.lower().find('iphone') >= 0 and simulator_name.lower().find('plus') < 0:
