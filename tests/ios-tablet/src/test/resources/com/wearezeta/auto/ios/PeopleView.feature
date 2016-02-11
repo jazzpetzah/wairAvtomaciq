@@ -350,46 +350,46 @@ Feature: People View
   @C2745 @regression @rc @id2455
   Scenario Outline: Verify unsilince the conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
-    Given User <Name> change accent color to <Color>
+    Given User Myself removes his avatar picture
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given <Name> silenced group conversation with <GroupChatName>
+    Given Nyself silenced group conversation with <GroupChatName>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    And I see conversation <GroupChatName> got silenced before
+    When I remember the state of <GroupChatName> conversation item
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button on iPad
     And I click NOTIFY button on iPad ellipsis menu
     And I exit the group info iPad popover
     And I navigate back to conversations list
-    Then I see conversation <GroupChatName> is unsilenced
+    Then I see the state of <GroupChatName> conversation item is changed
 
     Examples:
-      | Name      | Contact1  | Contact2  | Color  | GroupChatName |
-      | user1Name | user2Name | user3Name | Violet | SILENCE       |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | SILENCE       |
 
   @C2747 @regression @id3208
   Scenario Outline: Verify unsilince the conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
-    Given User <Name> change accent color to <Color>
+    Given User Myself removes his avatar picture
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given <Name> silenced group conversation with <GroupChatName>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    And I see conversation <GroupChatName> got silenced before
+    When I remember the state of <GroupChatName> conversation item
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button on iPad
     And I click NOTIFY button on iPad ellipsis menu
     And I exit the group info iPad popover
-    Then I see conversation <GroupChatName> is unsilenced
+    Then I see the state of <GroupChatName> conversation item is changed
 
     Examples:
-      | Name      | Contact1  | Contact2  | Color  | GroupChatName |
-      | user1Name | user2Name | user3Name | Violet | SILENCE       |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | SILENCE       |
 
   @C2746 @regression @rc @id2456
   Scenario Outline: Verify silence the conversation [PORTRAIT]
@@ -758,8 +758,8 @@ Feature: People View
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:
-      | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
-      | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
+      | Name      | Contact1  | Contact2  | GroupChatName | Image       |
+      | user1Name | user2Name | user3Name | ForDeletion   | testing.jpg |
 
   @C1835 @regression @id3979
   Scenario Outline: Verify removing the content from 1-to-1 via participant view [PORTRAIT]
@@ -838,8 +838,8 @@ Feature: People View
     Then I see 4 conversation entries
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | Message | Image       |
-      | user1Name | user2Name | user3Name | TESTCHAT      | hello   | testing.jpg |
+      | Name      | Contact1  | Contact2  | GroupChatName | Image       |
+      | user1Name | user2Name | user3Name | TESTCHAT      | testing.jpg |
 
   @C2557 @regression @id4004
   Scenario Outline: Verify that left conversation is shown in the Archive [LANDSCAPE]
