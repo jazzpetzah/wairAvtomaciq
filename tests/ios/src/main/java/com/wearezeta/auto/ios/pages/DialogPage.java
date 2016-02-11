@@ -508,12 +508,6 @@ public class DialogPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathGiphyImage);
     }
 
-    public boolean isTherePossibilityControllerButtonsToBeDisplayed() throws Exception {
-        int pingX = getElement(namePingButton).getLocation().x;
-        int conversationX = getElement(xpathConversationWindow).getLocation().x;
-        return pingX > conversationX;
-    }
-
     public void tapHoldImage() {
         try {
             this.getDriver().tap(1, getElement(xpathLastImageCell), 1000);

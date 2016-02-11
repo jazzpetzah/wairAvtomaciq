@@ -584,7 +584,7 @@ Feature: Conversation View
       | user1Name | user2Name | https://www.wire.com/ is the best of the best |
 
   @C943 @regression @id3798
-  Scenario Outline: Verify input field and action buttons are not shown simultaniously
+  Scenario Outline: Verify input field and action buttons are not shown simultaneously
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
     Given I sign in using my email or phone number
@@ -596,7 +596,6 @@ Feature: Conversation View
     And I navigate back to conversations list
     And I tap on contact name <Contact1>
     Then I see Close input options button is not visible
-    And I see controller buttons can not be visible
     And I see the default message in input field
 
     Examples:
