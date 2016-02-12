@@ -4,14 +4,21 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.AboutPage;
 import com.wearezeta.auto.android.pages.AlertPage;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import java.util.function.Function;
+import static org.junit.Assert.assertEquals;
 
 public class AlertPageSteps {
 
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
             .getInstance();
+
+    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
+    private static final Function<String, String> UNVERIFIED_CONVERSATION_PAGE_HEADER_TEXT = username -> String.format("%s started using a new device.", username);
 
     private AlertPage getAlertPage() throws Exception {
         return pagesCollection.getPage(AlertPage.class);
@@ -54,6 +61,38 @@ public class AlertPageSteps {
     @When("^I tap on negative button on [Aa]lert page$")
     public void WhenITapOnNegative() throws Exception {
         getAlertPage().tapNegative();
+    }
+
+    /**
+     * Confirms presence of alert page header and optionally checks for text content
+     *
+     * @step. ^I see [Aa]lert page header(?: is \"?(.*)\"?)$
+     *
+     * @throws Exception
+     *
+     */
+    @When("^I see [Aa]lert page header(?: is \"?(.*)\"?)$")
+    public void ISeeAlertPageHeader(String pageHeader) throws Exception {
+        if (pageHeader != null) {
+            getAlertPage().getHeaderText().equals(pageHeader);
+        } else {
+            getAlertPage().getHeaderText();
+        }
+    }
+
+    /**
+     * Confirms presence of unverified conversation alert page header caused by given user
+     *
+     * @step. ^I see unverified conversation [Aa]lert page header caused by user (.*)$
+     *
+     * @throws Exception
+     *
+     */
+    @When("^I see unverified conversation [Aa]lert page header caused by user (.*)$")
+    public void ISeeUnverifiedConversationAlertPageHeaderCausedByUser(String userCause) throws Exception {
+        userCause = usrMgr.findUserByNameOrNameAlias(userCause)
+                .getName();
+        assertEquals("Header does not match expected", UNVERIFIED_CONVERSATION_PAGE_HEADER_TEXT.apply(userCause), getAlertPage().getHeaderText());
     }
 
     /**

@@ -455,18 +455,19 @@ Feature: E2EE
     And I select contact <Contact1>
     And I select single participant tab "Devices"
     And I verify 1st device
-    When I close single participant page by UI button
+    And I close single participant page by UI button
     And I select contact <Contact2>
     And I select single participant tab "Devices"
     And I verify 1st device
-    When I close single participant page by UI button
+    And I close single participant page by UI button
     And I press back button
     Then I see a message informing me conversation is verified
     When User <Contact1> adds new device Device1
     And I tap on text input
     And I type the message "<Message2>" and send it
-    And I see alert page
-    And I tap on positive button on alert page
+    Then I see alert page
+    And I see unverified conversation alert page header caused by user <Contact1>
+    When I tap on positive button on alert page
     Then I see encrypted message <Message2> 1 times in the conversation view
 
     Examples:
