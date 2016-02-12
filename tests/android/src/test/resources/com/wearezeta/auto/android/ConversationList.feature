@@ -1,7 +1,7 @@
 Feature: Conversation List
 
   @C719 @id1513 @regression @rc
-  Scenario Outline: Verify messages are marked as read as you look at them so that you can know when there is unread content in a conversation
+  Scenario Outline: (AN-3447) Verify messages are marked as read as you look at them so that you can know when there is unread content in a conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -112,7 +112,7 @@ Feature: Conversation List
       | user1Name | user2Name | user3Name | DELETELeave   | tututu  |
 
   @C446 @id4056 @regression
-  Scenario Outline: Verify I see picture, ping and call after I delete a group conversation from conversation list
+  Scenario Outline: (AN-3448) Verify I see picture, ping and call after I delete a group conversation from conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
