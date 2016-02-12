@@ -457,7 +457,7 @@ Feature: E2EE
       | user1Name | user1Email | user1Password | device1 |
       
   @C12081 @staging
-  Scenario Outline: When 1:1 conversation was degraded - I can ignore alert screen and send message with resend button 
+  Scenario Outline: When 1:1 conversation was degraded - I can ignore alert screen and send message 
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -477,9 +477,8 @@ Feature: E2EE
     And I press Send button
     When I see takeover screen from user "<Contact1>"
     Then I tap send anyway
-    #Then I see my message "<Messag2>" in the dialog
-    #Then I see a message informing me conversation is not verified caused by user <Contact1>
-
+    And I see my message "<Message2>" in the dialog
+   
     Examples:
       | Name      | Contact1  | Device  | Message1 | Message2    |
       | user1Name | user2Name | device2 | Msg1     | MsgToResend |
