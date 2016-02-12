@@ -36,19 +36,3 @@ Feature: Registration
     Examples:
       | Name      |
       | user1Name |
-
-  @C1008 @regression @id295
-  Scenario Outline: Verify cutting spaces from the beginning and ending the name
-    Given I see sign in screen
-    When I enter phone number for user <Name>
-    And I enter activation code
-    And I accept terms of service
-    And I fill in name <Name> with leading and trailing spaces and hit Enter
-    And I press Keep This One button
-    Then I see conversations list
-    When I tap my avatar
-    Then I see user name doesnt contains spaces
-
-    Examples:
-      | Name      |
-      | user1Name |
