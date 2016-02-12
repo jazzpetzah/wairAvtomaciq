@@ -130,7 +130,7 @@ Feature: Connect
       | user1Name | user2Name | user3Name |
 
   @C34 @rc @regression @id1399
-  Scenario Outline: Verify you don't receive any messages from blocked person in 1:1 chat
+  Scenario Outline: (ZIOS-5811) Verify you don't receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
@@ -146,11 +146,11 @@ Feature: Connect
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I unblock user
-    Then I see 1 message in the dialog
-    And I navigate back to conversations list
-    Given User <Contact> sends 1 encrypted message to user Myself
-    When I tap on contact name <Contact>
-    Then I see 1 default messages in the dialog
+    Then I see 0 default messages in the dialog
+    And I see 0 photos in the dialog
+    When User <Contact> sends 1 encrypted message to user Myself
+    Then I see 2 default messages in the dialog
+    And I see 1 photo in the dialog
 
     Examples: 
       | Name      | Contact   | Picture     |
