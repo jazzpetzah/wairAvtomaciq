@@ -132,12 +132,12 @@ Feature: Connect
   @C34 @rc @regression @id1399
   Scenario Outline: (ZIOS-5811) Verify you don't receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
-    Given User <Name> blocks user <Contact>
+    Given <Contact> is connected to Myself
+    Given User Myself blocks user <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
-    Given User <Contact> securely pings conversation <Name>
+    Given User <Contact> securely pings conversation Myself
     Given User <Contact> sends 1 encrypted message to user Myself
     Then I dont see conversation <Contact> in contact list
     When I open search by taping on it
@@ -149,8 +149,8 @@ Feature: Connect
     Then I see 0 default messages in the dialog
     And I see 0 photos in the dialog
     When User <Contact> sends 1 encrypted message to user Myself
-    Then I see 2 default messages in the dialog
-    And I see 1 photo in the dialog
+    Then I see 1 default message in the dialog
+    And I see 0 photos in the dialog
 
     Examples: 
       | Name      | Contact   | Picture     |
