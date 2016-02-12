@@ -178,7 +178,7 @@ Feature: E2EE
     Examples:
       | Name      | DeviceName | DeviceLabel  |
       | user1Name | Device1    | Device1Label |
-  
+
   @C3510 @noAcceptAlert @staging
   Scenario Outline: Verify deleting one of the devices from device management by Edit
     Given There is 1 user where <Name> is me
@@ -226,7 +226,7 @@ Feature: E2EE
     Examples:
       | Name      | DeviceName | DeviceLabel  |
       | user1Name | Device1    | Device1Label |
-      
+
   @C3293 @staging
   Scenario Outline: Verify link is active for your own device and leads you to device's fingerprint
     Given There are 2 users where <Name> is me
@@ -359,5 +359,5 @@ Feature: E2EE
     Then I see 3 default messages in the dialog
 
     Examples:
-      | Name      | Contact1  | DeviceName2 | DeviceLabel2 |Contact2  | GroupChatName |
-      | user1Name | user2Name | Device2     | Label2       |user3Name | ThisGroup     |
+      | Name      | Contact1  | DeviceName2 | DeviceLabel2 | Contact2  | GroupChatName |
+      | user1Name | user2Name | Device2     | Label2       | user3Name | ThisGroup     |
