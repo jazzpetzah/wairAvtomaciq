@@ -877,7 +877,7 @@ public class DialogPageSteps {
      * @throws Exception
      * @step. ^I see takeover screen from users? \"(.*)\"$
      */
-    @Then("^I see takeover screen from users? \"(.*)\"$")
+    @When("^I see takeover screen from users? \"(.*)\"$")
     public void ISeeTakeoverScreen(String nameAliases) throws Exception {
         Assert.assertTrue("Takeover screeen is not visible", getDialogPage().waitForTakeoverScreenVisible());
         List<String> names = new ArrayList<String>();
@@ -887,5 +887,27 @@ public class DialogPageSteps {
         Assert.assertTrue(String.format("Takeover header from users %s is not visible", names),
             getDialogPage().isTakeoverScreenHeaderCorrect(names));
         Assert.assertTrue("Takeover screeen is not visible", getDialogPage().isTakeoverScreenTextCorrect());
+    }
+    
+    /**
+     * Tap on plus button in the text input area to reveal the different input options
+     *
+     * @throws Exception
+     * @step. ^I tap plus( button)? i?o?n text input$
+     */
+    @Then("^I tap send anyway(?: button)?$")
+    public void WhenITapTakeoverSendBnt() throws Exception {
+        getDialogPage().tapSendAnywayBnt();
+    }
+    
+    /**
+     * Tap on plus button in the text input area to reveal the different input options
+     *
+     * @throws Exception
+     * @step. ^I tap plus( button)? i?o?n text input$
+     */
+    @Then("^I tap show device(?: button)?$")
+    public void WhenITapTakeoverShowBnt() throws Exception {
+        getDialogPage().tapShowDeviceBnt();
     }
 }

@@ -475,7 +475,8 @@ Feature: E2EE
     And I tap on text input
     And I type the message "<Message2>"
     And I press Send button
-    Then I see takeover screen from user "<Contact1>"
+    When I see takeover screen from user "<Contact1>"
+    Then I tap send anyway
     #Then I see my message "<Messag2>" in the dialog
     #Then I see a message informing me conversation is not verified caused by user <Contact1>
 

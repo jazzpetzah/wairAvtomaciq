@@ -611,4 +611,12 @@ public class DialogPage extends AndroidPage {
     public boolean isTakeoverScreenTextCorrect() throws Exception {
         return DriverUtils.isElementPresentAndDisplayed(getDriver(), getElement(xpathTakeoverScreenText));
     }
+    
+    public void tapShowDeviceBnt() throws Exception {
+        getElement(idTakeoverShowDeviceBnt, "Show Device button is not visible").click();
+    }
+    
+    public void tapSendAnywayBnt() throws Exception {
+        getElement(idTakeoverSendAnywayBnt, "Send Anyway button is not visible").click();
+    }
 }
