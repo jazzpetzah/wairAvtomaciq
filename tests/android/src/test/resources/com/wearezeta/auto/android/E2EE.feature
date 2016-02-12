@@ -481,7 +481,6 @@ Feature: E2EE
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When User <Contact> sends message <SimpleMessage> to user Myself
     And I tap on contact name <Contact>
     When I tap conversation details button
     And I select single participant tab "Devices"

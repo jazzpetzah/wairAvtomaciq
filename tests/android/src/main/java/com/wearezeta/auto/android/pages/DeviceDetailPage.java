@@ -4,6 +4,7 @@ import java.util.concurrent.Future;
 
 
 import com.wearezeta.auto.common.driver.*;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import javax.ws.rs.NotSupportedException;
 import org.openqa.selenium.By;
@@ -16,12 +17,18 @@ public class DeviceDetailPage extends AndroidPage {
     
     private static final By idDeviceHeader = By.id("ttv__row__otr_header");
     
+    private static final Function<String,By> xpathDeviceHeaderMatch = (expected) -> By.xpath(String.format("//*[@id='ttv__row__otr_header' and @value='%s']", expected));
+    
     public DeviceDetailPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
     public boolean waitUntilVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathSettingsTitle);
+    }
+    
+    public boolean isHeaderTextVisible(String match) throws Exception{
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathDeviceHeaderMatch.apply(match));
     }
     
     public String getHeaderText() throws Exception {

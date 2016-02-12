@@ -10,6 +10,7 @@ import cucumber.api.java.en.And;
 import java.util.function.Function;
 import org.apache.log4j.Logger;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class DeviceDetailPageSteps {
 
@@ -62,7 +63,8 @@ public class DeviceDetailPageSteps {
     @And("^I see no encrypted device text for user (.*) in header of device detail page$")
     public void ISeeNoEncryptedDeviceTextInHeaderForUser(String username) throws Exception {
         username = usrMgr.findUserByNameOrNameAlias(username).getName();
-        assertEquals("Wrong text for no encrypted device text in header of device detail page", 
-                NON_ENCRYPTED_DEVICE_HEADER_TEXT.apply(username), getPage().getHeaderText());
+        String expected = NON_ENCRYPTED_DEVICE_HEADER_TEXT.apply(username);
+        assertTrue(String.format("No encrypted device text in header of device detail page with value '%s' is not visible", expected), 
+                getPage().isHeaderTextVisible(expected));
     }
 }
