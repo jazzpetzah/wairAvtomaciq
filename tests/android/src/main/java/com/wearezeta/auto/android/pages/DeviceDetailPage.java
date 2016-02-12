@@ -4,6 +4,7 @@ import java.util.concurrent.Future;
 
 
 import com.wearezeta.auto.common.driver.*;
+import java.util.function.Supplier;
 import javax.ws.rs.NotSupportedException;
 import org.openqa.selenium.By;
 
@@ -24,10 +25,9 @@ public class DeviceDetailPage extends AndroidPage {
     }
     
     public String getHeaderText() throws Exception {
-        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idDeviceHeader)) {
-            throw new Exception("Header text is not present on the device detail page");
-        }
-        return getElement(idDeviceHeader).getText();
+        return getElementIfDisplayed(idDeviceHeader).orElseThrow(
+                ()->new Exception("Header text is not present on the device detail page")
+        ).getText();
     }
 
     public String getName() throws Exception {
