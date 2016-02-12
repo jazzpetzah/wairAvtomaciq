@@ -320,7 +320,7 @@ public class CommonAndroidSteps {
      * @param user          that adds someone to a chat
      * @param userToBeAdded user that gets added by someone
      * @param group         group chat you get added to
-     * @throws Throwable
+     * @throws Exception
      * @step. ^User (.*) adds [Uu]ser (.*) to group chat (.*)$
      */
     @When("^User (.*) adds [Uu]ser (.*) to group chat (.*)$")
