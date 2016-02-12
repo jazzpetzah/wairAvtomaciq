@@ -20,12 +20,19 @@ public class VideoCallPage extends WebPage {
     public WebElement endVideoCallButton;
 
     public void clickEndVideoCallButton() throws Exception {
-        Actions builder = new Actions(this.getDriver());
-        builder.moveToElement(endVideoCallButton, -10, -10).click().build().perform();
+        this.getDriver()
+                .executeScript(
+                        String.format("$(document).find(\"%s\").click();",
+                                WebAppLocators.VideoCallPage.cssEndVideoCallButton));
     }
 
     public boolean isEndVideoCallButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.cssSelector(WebAppLocators.VideoCallPage.cssEndVideoCallButton));
+    }
+
+    public boolean isEndVideoCallButtonNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
                 By.cssSelector(WebAppLocators.VideoCallPage.cssEndVideoCallButton));
     }
 }
