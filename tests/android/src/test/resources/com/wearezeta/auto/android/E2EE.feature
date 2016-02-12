@@ -483,7 +483,6 @@ Feature: E2EE
     Given I see Contact list with contacts
     When User <Contact> sends message <SimpleMessage> to user Myself
     And I tap on contact name <Contact>
-    Then I see non-encrypted message <SimpleMessage> 1 time in the conversation view
     When I tap conversation details button
     And I select single participant tab "Devices"
     Then I see no encrypted device text for user <Contact> in header of device detail page
