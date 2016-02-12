@@ -216,11 +216,11 @@ Feature: E2EE
     And I select settings item Manage devices
     When I open details page of device number 2
     And I tap Verify switcher on Device Details page
-    And I navigate back from Device Details page
+    And I switch to the previous settings page
     Then I see the label Verified is shown for the device <DeviceName>
     When I open details page of device number 2
     And I tap Verify switcher on Device Details page
-    And I navigate back from Device Details page
+    And I switch to the previous settings page
     Then I see the label Not Verified is shown for the device <DeviceName>
 
     Examples:

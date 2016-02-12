@@ -54,10 +54,10 @@ public class SettingsPageSteps {
      * Tap back button on settings page
      *
      * @throws Exception
-     * @step. ^I switch to the previous settings tab$
+     * @step. ^I switch to the previous settings page$
      */
-    @And("^I switch to the previous settings tab$")
-    public void ISwitchToThePreviousSettingsTab() throws Exception {
+    @And("^I switch to the previous settings page$")
+    public void ISwitchToThePreviousSettingsPage() throws Exception {
         getSettingsPage().goBack();
     }
 
