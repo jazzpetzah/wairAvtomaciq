@@ -213,8 +213,7 @@ Feature: E2EE
     When I select "Account" settings menu item
     And I select "Log out" settings menu item
     Then I confirm sign out
-    And I see welcome screen
-    When I sign in using my email or phone number
+    When I sign in using my email
     Then I see Contact list with contacts
     When I tap on contact name <Contact1>
     Then I see encrypted message <EncMessage> 1 times in the conversation view
