@@ -29,19 +29,18 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     private static final By xpathDeleteConversationButton = By.xpath("//UIAButton[@name='DELETE' and @visible='true']");
 
     private static final By xpathConfirmDeleteButton = By
-            .xpath("//UIAButton[@name='CANCEL']/following-sibling::UIAButton[@name='DELETE']");
+        .xpath("//UIAButton[@name='CANCEL']/following-sibling::UIAButton[@name='DELETE']");
 
     private static final By nameAlsoLeaveCheckerButton = By.name("ALSO LEAVE THE CONVERSATION");
 
-    private static final Function<String, String> xpathStrOtherPersonalInfoPageNameFieldByName = name ->
-            String.format("%s/UIAStaticText[@name='%s']", xpathStrMainWindow, name);
+    private static final Function<String, String> xpathStrOtherPersonalInfoPageNameFieldByName = name -> String.format(
+        "%s/UIAStaticText[@name='%s']", xpathStrMainWindow, name);
 
     private static final Function<String, String> xpathStrOtherPersonalInfoPageEmailFieldByEmail = name -> String.format(
-            "//UIAButton[@name='OtherUserProfileCloseButton']/following-sibling:: UIATextView[@name='%s']",
-            name.toUpperCase());
+        "//UIAButton[@name='OtherUserProfileCloseButton']/following-sibling:: UIATextView[@name='%s']", name.toUpperCase());
 
     protected static final By xpathOtherPersonalInfoPageEmailField = By
-            .xpath("//UIAButton[@name='OtherUserProfileCloseButton']/following-sibling:: UIATextView");
+        .xpath("//UIAButton[@name='OtherUserProfileCloseButton']/following-sibling:: UIATextView");
 
     private static final By nameAddContactToChatButton = By.name("metaControllerLeftButton");
 
@@ -58,19 +57,21 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     private static final By nameCancelButton = By.name("CANCEL");
 
     private static final By xpathActionMenu = By
-            .xpath("//UIAStaticText[following-sibling::UIAButton[@name='CANCEL'] and @visible='true']");
+        .xpath("//UIAStaticText[following-sibling::UIAButton[@name='CANCEL'] and @visible='true']");
 
     private static final String xpathStrDevicesList = xpathStrMainWindow + "/UIATableView[1]/UIATableCell";
     private static final By xpathDevicesList = By.xpath(xpathStrDevicesList);
-    private static final Function<Integer, String> xpathStrDeviceByIndex = idx ->
-            String.format("%s[%s]", xpathStrDevicesList, idx);
+    private static final Function<Integer, String> xpathStrDeviceByIndex = idx -> String.format("%s[%s]", xpathStrDevicesList,
+        idx);
 
-    private static final Function<String, String> xpathStrUserProfileNameByValue = value ->
-            String.format("//*[@name='%s' and @visible='true']", value);
+    private static final Function<String, String> xpathStrUserProfileNameByValue = value -> String.format(
+        "//*[@name='%s' and @visible='true']", value);
 
     // FIXME: replace this with By.name("VerifiedShield") when available
-    private static final By xpathVerifiedShield =
-            By.xpath(xpathStrMainWindow + "/UIAImage[@width='16' and @height='16']");
+    private static final By xpathVerifiedShield = By.xpath(xpathStrMainWindow + "/UIAImage[@width='16' and @height='16']");
+
+    private static final Function<String, String> xpathStrDeviceId = id -> String.format(
+        "//UIAStaticText[contains(@name, '%s')]", id);
 
     public OtherUserPersonalInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -201,5 +202,19 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     public void switchToTab(String tabName) throws Exception {
         getElement(By.name(tabName.toUpperCase())).click();
+    }
+
+    private String convertStringIDtoLocatorTypeID(String id) {
+        String resultString = new String();
+        for (int i = 0; i < id.length(); i += 2) {
+            resultString = resultString.concat(id.substring(i, i + 2));
+            resultString = resultString.concat(" ");
+        }
+        return resultString.toUpperCase().trim();
+    }
+
+    public boolean isUserDeviceIdVisible(String deviceId) throws Exception {
+        String locator = xpathStrDeviceId.apply(convertStringIDtoLocatorTypeID(deviceId));
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(locator));
     }
 }

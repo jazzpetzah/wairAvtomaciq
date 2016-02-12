@@ -1,8 +1,12 @@
 package com.wearezeta.auto.ios.steps;
 
+import java.util.List;
+
 import cucumber.api.java.en.Then;
+
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 
@@ -277,5 +281,22 @@ public class OtherUserPersonalInfoPageSteps {
             Assert.assertTrue("The shield icon is still visible on convo details page",
                     getOtherUserPersonalInfoPage().isShieldIconNotVisible());
         }
+    }
+    
+    /**
+     * Verify all device with correct IDs are presented on participant devices tab
+     * 
+     * @step. ^I see user (.*) devices? IDs? (?:is|are) presented on participant devices tab$
+     * @param name username
+     * @throws Exception
+     */
+    @Then("^I see user (.*) devices? IDs? (?:is|are) presented on participant devices tab$")
+    public void ISeeUserDeveceIDPresentedOnDetailsPage(String name) throws Exception {
+        List<String> deviceIDs = CommonSteps.getInstance().GetDevicesIDsForUser(name);
+        for (String id : deviceIDs) {
+            Assert.assertTrue(String.format("Device ID '%s' is not visible", id), getOtherUserPersonalInfoPage()
+                .isUserDeviceIdVisible(id));
+        }
+
     }
 }
