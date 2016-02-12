@@ -325,3 +325,39 @@ Feature: E2EE
     Examples:
       | Name      | DeviceName1 | DeviceName2 | DeviceName3 | DeviceName4 | DeviceName5 | DeviceName6 | DeviceName7 |
       | user1Name | Device1     | Device2     | Device3     | Device4     | Device5     | Device6     | Device7     |
+
+  @C14318 @staging
+  Scenario Outline: First time when group conversation is degraded - I can ignore alert screen and send messages with resend button
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email
+    Given I see conversations list
+    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
+    Given User <Contact2> sends 1 encrypted message to group conversation <GroupChatName>
+    And I tap on group chat with name <GroupChatName>
+    And I open conversation details
+    And I select participant <Contact1>
+    And I switch to Devices tab
+    And I open details page of device number 1
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    And I click close user profile page button
+    And I select participant <Contact2>
+    And I switch to Devices tab
+    And I open details page of device number 1
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    And I click close user profile page button
+    And I close group info page
+    And I click Close input options button
+    When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
+    And I type the default message
+    And I send the message
+    And I close New Device overlay
+    And I resend the last message in the conversation with Resend button
+    Then I see 3 default messages in the dialog
+
+    Examples:
+      | Name      | Contact1  | DeviceName2 | DeviceLabel2 |Contact2  | GroupChatName |
+      | user1Name | user2Name | Device2     | Label2       |user3Name | ThisGroup     |
