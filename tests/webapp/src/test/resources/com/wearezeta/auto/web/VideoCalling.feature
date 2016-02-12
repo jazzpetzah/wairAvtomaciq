@@ -14,6 +14,8 @@ Feature: VideoCalling
     And I open conversation with <Contact>
     When I start a video call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact> verify to have 1 flows
+    And <Contact> verify that all flows have greater than 0 bytes
     And I end the video call
 
     Examples:
@@ -33,6 +35,8 @@ Feature: VideoCalling
     And I see the calling bar
     And I accept the incoming video call
     Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    And <Contact> verify to have 1 flows
+    And <Contact> verify that all flows have greater than 0 bytes
     And I end the video call
 
     Examples:
