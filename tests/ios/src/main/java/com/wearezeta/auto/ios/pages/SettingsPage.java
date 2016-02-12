@@ -104,17 +104,13 @@ public class SettingsPage extends IOSPage {
     }
 
     public boolean isCurrentDeviceVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), currentLabel, 2);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), currentLabel, 2) &&
+                (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathCurrentDevices));
+
     }
 
     public void tapCurrentDevice() throws Exception {
         if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathCurrentDevices))
              getElement(xpathCurrentDevices).click();
-    }
-
-    public boolean isManageDeviceOptionsVisible() throws Exception {
-        return (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), verifyLabel, 2) ||
-                DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), removeLabel, 2) ||
-                DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), resetLabel, 2));
     }
 }

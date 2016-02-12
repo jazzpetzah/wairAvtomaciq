@@ -338,7 +338,9 @@ Feature: E2EE
     And I select settings item Manage devices
     When I see my current device
     Then I tap on current device
-    And I don't see remove/verify/reset options
+    And I dont see settings item Verified
+    And I dont see settings item Reset session
+    And I dont see settings item Remove device
 
     Examples:
       | Name      |

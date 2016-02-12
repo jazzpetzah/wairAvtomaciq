@@ -77,15 +77,20 @@ public class SettingsPageSteps {
     /**
      * Verify whether the corresponding settings menu item is visible
      *
-     * @step. ^I see settings item (.*)$
+     * @step. ^I (dont )?see settings item (.*)$
      *
      * @param itemName the expected item name
      * @throws Exception
      */
-    @Then("^I see settings item (.*)$")
-    public void ISeeSettingsItem(String itemName) throws Exception {
-        Assert.assertTrue(String.format("Settings menu item '%s' is not visible", itemName),
-            getSettingsPage().isItemVisible(itemName));
+    @Then("^I (dont )?see settings item (.*)$")
+    public void ISeeSettingsItem(String shouldNot, String itemName) throws Exception {
+        if (shouldNot == null) {
+            Assert.assertTrue(String.format("Settings menu item '%s' is not visible", itemName),
+                    getSettingsPage().isItemVisible(itemName));
+        } else {
+            Assert.assertFalse(String.format("Settings menu item %s is visible",itemName),
+                    getSettingsPage().isItemVisible(itemName));
+        }
     }
 
     /**
@@ -181,17 +186,5 @@ public class SettingsPageSteps {
     @Then("^I tap on current device$")
     public void ITapOnCurrentDevice() throws Throwable {
         getSettingsPage().tapCurrentDevice();
-    }
-
-    /**
-     * Verifies you don't see remove/verify/reset options
-     *
-     * @throws Exception
-     * @step. ^I don't see remove/verify/reset options$
-     */
-    @Then("^I don't see remove/verify/reset options$")
-    public void IDontSeeRemoveVerifyResetOptions() throws Throwable {
-        Assert.assertFalse(String.format("remove/verify/reset label is visible"),
-                getSettingsPage().isManageDeviceOptionsVisible());
     }
 }
