@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.common.email.MessagingUtils;
 import org.junit.Assert;
 
 import java.io.IOException;
@@ -27,18 +28,17 @@ import cucumber.api.java.en.*;
 public class LoginPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-    private final IOSPagesCollection pagesCollecton = IOSPagesCollection
-            .getInstance();
+    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
     private LoginPage getLoginPage() throws Exception {
-        return pagesCollecton.getPage(LoginPage.class);
+        return pagesCollection.getPage(LoginPage.class);
     }
 
     private RegistrationPage getRegistrationPage() throws Exception {
-        return pagesCollecton.getPage(RegistrationPage.class);
+        return pagesCollection.getPage(RegistrationPage.class);
     }
 
-    private Future<String> activationMessage;
+    private Future<String> passwordMessage;
     private static final String stagingURLForgot = "https://staging-website.zinfra.io/forgot/";
 
     /**
@@ -484,11 +484,10 @@ public class LoginPageSteps {
         email = usrMgr.replaceAliasesOccurences(email, FindBy.EMAIL_ALIAS);
 
         // activate the user, to get access to the mails
-        Map<String, String> expectedHeaders = new HashMap<String, String>();
-        expectedHeaders.put("Delivered-To", email);
-        expectedHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME,
-                PasswordResetMessage.MESSAGE_PURPOSE);
-        this.activationMessage = IMAPSMailbox.getInstance().getMessage(
+        Map<String, String> expectedHeaders = new HashMap<>();
+        expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, email);
+        expectedHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME, PasswordResetMessage.MESSAGE_PURPOSE);
+        this.passwordMessage = IMAPSMailbox.getInstance().getMessage(
                 expectedHeaders, BackendAPIWrappers.ACTIVATION_TIMEOUT);
 
         getLoginPage().commitEmail(email);
@@ -502,7 +501,7 @@ public class LoginPageSteps {
      */
     @When("^I copy link from email and paste it into Safari$")
     public void ICopyLinkFromEmailAndPastItIntoSafari() throws Exception {
-        String link = BackendAPIWrappers.getPasswordResetLink(this.activationMessage);
+        String link = BackendAPIWrappers.getPasswordResetLink(this.passwordMessage);
         getLoginPage().changeURLInBrowser(link);
     }
 

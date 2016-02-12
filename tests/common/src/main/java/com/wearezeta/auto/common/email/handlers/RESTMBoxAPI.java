@@ -21,8 +21,7 @@ import org.glassfish.jersey.client.ClientProperties;
 
 final class RESTMBoxAPI {
 
-    private static final Logger log = ZetaLogger.getLog(RESTMBoxAPI.class
-            .getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(RESTMBoxAPI.class.getSimpleName());
 
     private static final String URL_PROTOCOL = "http://";
 
@@ -31,10 +30,8 @@ final class RESTMBoxAPI {
             return String
                     .format("%s%s:%s",
                             URL_PROTOCOL,
-                            CommonUtils
-                            .getDefaultEmailListenerServiceHostFromConfig(RESTMBoxAPI.class),
-                            CommonUtils
-                            .getDefaultEmailListenerServicePortFromConfig(RESTMBoxAPI.class));
+                            CommonUtils.getDefaultEmailListenerServiceHostFromConfig(RESTMBoxAPI.class),
+                            CommonUtils.getDefaultEmailListenerServicePortFromConfig(RESTMBoxAPI.class));
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e.getMessage());
@@ -45,7 +42,7 @@ final class RESTMBoxAPI {
             RESTMBoxAPI::verifyRequestResult);
 
     private static void verifyRequestResult(int currentResponseCode,
-            int[] acceptableResponseCodes, String message)
+                                            int[] acceptableResponseCodes, String message)
             throws RESTMBoxException {
         if (!ArrayUtils.contains(acceptableResponseCodes, currentResponseCode)) {
             throw new RESTMBoxException(
@@ -57,24 +54,21 @@ final class RESTMBoxAPI {
         }
     }
 
-    private static Builder buildDefaultRequest(String restAction,
-            int timeoutMilliseconds) {
+    private static Builder buildDefaultRequest(String restAction, int timeoutMilliseconds) {
         final String dstUrl = String.format("%s/%s", getApiRoot(), restAction);
         log.debug(String.format("Request to %s...", dstUrl));
         final Client client = ClientBuilder.newClient();
         client.property(ClientProperties.READ_TIMEOUT, timeoutMilliseconds);
-        return client.target(dstUrl).request()
-                .accept(MediaType.APPLICATION_JSON);
+        return client.target(dstUrl).request().accept(MediaType.APPLICATION_JSON);
     }
 
     public static JSONArray getRecentEmailsForUser(String email, int minCount,
-            int maxCount, int timeoutMilliseconds) {
+                                                   int maxCount, int timeoutMilliseconds) {
         Builder webResource = buildDefaultRequest(String.format(
                 "recent_emails/%s/%s/%s", email, maxCount, minCount),
                 timeoutMilliseconds);
         try {
-            final String output = restHandlers.httpGet(webResource,
-                    new int[]{HttpStatus.SC_OK});
+            final String output = restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK});
             return new JSONArray(output);
         } catch (Exception e) {
             e.printStackTrace();
