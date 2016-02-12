@@ -22,7 +22,6 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.awt.image.BufferedImage;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -48,14 +47,6 @@ public final class BackendAPIWrappers {
 
     public static void setDefaultBackendURL(String url) {
         BackendREST.setDefaultBackendURL(url);
-    }
-
-    public static ClientUser updateUserAccentColor(ClientUser user) throws Exception {
-        final JSONObject additionalUserInfo = BackendREST
-                .getUserInfo(receiveAuthToken(user));
-        user.setAccentColor(AccentColor.getById(additionalUserInfo
-                .getInt("accent_id")));
-        return user;
     }
 
     public static Future<String> initMessageListener(ClientUser forUser) throws Exception {
@@ -253,12 +244,9 @@ public final class BackendAPIWrappers {
     }
 
     public static void attachUserPhoneNumber(ClientUser user) throws Exception {
-        BackendREST.updateSelfPhoneNumber(receiveAuthToken(user),
-                user.getPhoneNumber());
-        final String activationCode = getActivationCodeForBookedPhoneNumber(user
-                .getPhoneNumber());
-        activateRegisteredUserByPhoneNumber(user.getPhoneNumber(),
-                activationCode, false);
+        BackendREST.updateSelfPhoneNumber(receiveAuthToken(user), user.getPhoneNumber());
+        final String activationCode = getActivationCodeForBookedPhoneNumber(user.getPhoneNumber());
+        activateRegisteredUserByPhoneNumber(user.getPhoneNumber(), activationCode, false);
     }
 
     /**
@@ -271,76 +259,53 @@ public final class BackendAPIWrappers {
      */
     private static void changeUserPassword(ClientUser user, String oldPassword,
                                            String newPassword) throws Exception {
-        BackendREST.updateSelfPassword(receiveAuthToken(user), oldPassword,
-                newPassword);
+        BackendREST.updateSelfPassword(receiveAuthToken(user), oldPassword, newPassword);
         user.setPassword(newPassword);
     }
 
-    private static void attachUserEmailUsingBackdoor(ClientUser user)
-            throws Exception {
+    private static void attachUserEmailUsingBackdoor(ClientUser user) throws Exception {
         BackendREST.updateSelfEmail(receiveAuthToken(user), user.getEmail());
-        final String activationCode = getActivationCodeForRegisteredEmail(user
-                .getEmail());
-        activateRegisteredEmailByBackdoorCade(user.getEmail(), activationCode,
-                false);
+        final String activationCode = getActivationCodeForRegisteredEmail(user.getEmail());
+        activateRegisteredEmailByBackdoorCade(user.getEmail(), activationCode, false);
     }
 
-    public static String getUserActivationLink(Future<String> activationMessage)
-            throws Exception {
-        ActivationMessage registrationInfo = new ActivationMessage(
-                activationMessage.get());
+    public static String getUserActivationLink(Future<String> activationMessage) throws Exception {
+        ActivationMessage registrationInfo = new ActivationMessage(activationMessage.get());
         return registrationInfo.extractActivationLink();
     }
 
-    public static String getPasswordResetLink(
-            Future<String> passwordResetMessage) throws Exception {
-        PasswordResetMessage resetPassword = new PasswordResetMessage(
-                passwordResetMessage.get());
+    public static String getPasswordResetLink(Future<String> passwordResetMessage) throws Exception {
+        PasswordResetMessage resetPassword = new PasswordResetMessage(passwordResetMessage.get());
         return resetPassword.extractPasswordResetLink();
     }
 
-    public static void createContactLinks(ClientUser userFrom,
-                                          List<ClientUser> usersTo) throws Exception {
-        for (ClientUser userTo : usersTo) {
-            autoTestSendRequest(userFrom, userTo);
-            autoTestAcceptAllRequest(userTo);
-        }
-    }
-
-    public static void autoTestSendRequest(ClientUser userFrom,
-                                           ClientUser userTo) throws Exception {
-        sendConnectRequest(userFrom, userTo, userTo.getName(),
-                CommonSteps.CONNECTION_MESSAGE);
+    public static void autoTestSendRequest(ClientUser userFrom, ClientUser userTo) throws Exception {
+        sendConnectRequest(userFrom, userTo, userTo.getName(), CommonSteps.CONNECTION_MESSAGE);
         userFrom.setUserState(UserState.RequestSend);
     }
 
-    public static ClientUser autoTestAcceptAllRequest(ClientUser userTo)
-            throws Exception {
+    public static ClientUser autoTestAcceptAllRequest(ClientUser userTo) throws Exception {
         acceptAllConnections(userTo);
         userTo.setUserState(UserState.AllContactsConnected);
         return userTo;
     }
 
-    public static void sendDialogMessage(ClientUser fromUser,
-                                         ClientUser toUser, String message) throws Exception {
+    public static void sendDialogMessage(ClientUser fromUser, ClientUser toUser, String message) throws Exception {
         final String convId = getConversationWithSingleUser(fromUser, toUser);
         sendConversationMessage(fromUser, convId, message);
     }
 
-    public static void sendDialogMessageByChatName(ClientUser fromUser,
-                                                   String toChat, String message) throws Exception {
+    public static void sendDialogMessageByChatName(ClientUser fromUser, String toChat, String message) throws Exception {
         String id = getConversationIdByName(fromUser, toChat);
         sendConversationMessage(fromUser, id, message);
     }
 
-    public static String sendPingToConversation(ClientUser fromUser,
-                                                String toChat) throws Exception {
+    public static String sendPingToConversation(ClientUser fromUser, String toChat) throws Exception {
         String id = getConversationIdByName(fromUser, toChat);
         return sendConversationPing(fromUser, id);
     }
 
-    public static void sendHotPingToConversation(ClientUser fromUser,
-                                                 String toChat, String id) throws Exception {
+    public static void sendHotPingToConversation(ClientUser fromUser, String toChat, String id) throws Exception {
         String conv_id = getConversationIdByName(fromUser, toChat);
         sendConvertsationHotPing(fromUser, conv_id, id);
     }
@@ -360,12 +325,10 @@ public final class BackendAPIWrappers {
                                                            ClientUser userTo, String path) throws Exception {
         final String convId = getConversationWithSingleUser(userFrom, userTo);
         final byte[] srcImageAsByteArray = Files.readAllBytes(Paths.get(path));
-        BackendREST.sendPicture(receiveAuthToken(userFrom), convId,
-                srcImageAsByteArray, getImageMimeType(path));
+        BackendREST.sendPicture(receiveAuthToken(userFrom), convId, srcImageAsByteArray, getImageMimeType(path));
     }
 
-    public static void sendPictureToSingleUserConversationOtr(
-            ClientUser userFrom, ClientUser userTo, String path)
+    public static void sendPictureToSingleUserConversationOtr(ClientUser userFrom, ClientUser userTo, String path)
             throws Exception {
         final String convId = getConversationWithSingleUser(userFrom, userTo);
         SEBridge.getInstance().sendImage(userFrom, convId, path);
@@ -383,13 +346,6 @@ public final class BackendAPIWrappers {
             throw new RuntimeException(String.format(
                     "Cannot detect MIME type for the image by path %s", path));
         }
-    }
-
-    public static void sendPictureToChatById(ClientUser userFrom,
-                                             String chatId, String path) throws Exception {
-        final byte[] srcImageAsByteArray = Files.readAllBytes(Paths.get(path));
-        BackendREST.sendPicture(receiveAuthToken(userFrom), chatId,
-                srcImageAsByteArray, getImageMimeType(path));
     }
 
     public static void sendPictureToChatByName(ClientUser userFrom,
@@ -438,43 +394,10 @@ public final class BackendAPIWrappers {
                 conversationName, ownerUser.getName()));
     }
 
-    private static BufferedImage getPictureAssetFromConversation(
-            ClientUser fromUser, ClientUser toUser, int index) throws Exception {
-        BufferedImage result = null;
-        int currentIndex = 0;
-        String convID = getConversationWithSingleUser(fromUser, toUser);
-
-        JSONArray eventsOfConv = getEventsfromConversation(convID, fromUser);
-        for (int i = 0; i < eventsOfConv.length(); i++) {
-            JSONObject event = (JSONObject) eventsOfConv.get(i);
-            String type = event.getString("type");
-            if (type.equals("conversation.asset-add")) {
-                JSONObject data = (JSONObject) event.get("data");
-                JSONObject info = (JSONObject) data.get("info");
-                String tag = info.getString("tag");
-                if (tag.equals("medium")) {
-                    result = BackendREST.getAssetsDownload(
-                            receiveAuthToken(fromUser), convID,
-                            (String) data.get("id"));
-                    if (currentIndex == index)
-                        return result;
-                    currentIndex++;
-                }
-            }
-        }
-
-        if (Integer.MAX_VALUE == index) {
-            return result;
-        } else {
-            // TODO: Raise exception
-            return null;
-        }
-    }
-
     private static String getConversationWithSingleUser(ClientUser fromUser,
                                                         ClientUser toUser) throws Exception {
         toUser = tryLoginByUser(toUser);
-        String conversationId = null;
+        String conversationId;
         JSONArray jsonArray = getConversations(fromUser);
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject conversation = (JSONObject) jsonArray.get(i);
@@ -584,7 +507,7 @@ public final class BackendAPIWrappers {
     private static JSONArray getAllConnections(ClientUser user)
             throws Exception {
         String startId = null;
-        JSONObject connectionsInfo = null;
+        JSONObject connectionsInfo;
         final JSONArray result = new JSONArray();
         do {
             connectionsInfo = BackendREST.getConnectionsInfo(
@@ -642,9 +565,8 @@ public final class BackendAPIWrappers {
     }
 
     public static void createGroupConversation(ClientUser user,
-                                               List<ClientUser> contacts, String conversationName)
-            throws Exception {
-        List<String> ids = new ArrayList<String>();
+                                               List<ClientUser> contacts, String conversationName) throws Exception {
+        List<String> ids = new ArrayList<>();
         for (ClientUser contact : contacts) {
             tryLoginByUser(contact);
             ids.add(contact.getId());
@@ -656,7 +578,7 @@ public final class BackendAPIWrappers {
     public static void addContactsToGroupConversation(ClientUser asUser,
                                                       List<ClientUser> contacts, String conversationName)
             throws Exception {
-        List<String> ids = new ArrayList<String>();
+        List<String> ids = new ArrayList<>();
         for (ClientUser contact : contacts) {
             tryLoginByUser(contact);
             ids.add(contact.getId());
@@ -675,15 +597,13 @@ public final class BackendAPIWrappers {
 
     public static void sendConversationMessage(ClientUser userFrom,
                                                String convId, String message) throws Exception {
-        BackendREST.sendConversationMessage(receiveAuthToken(userFrom), convId,
-                message);
+        BackendREST.sendConversationMessage(receiveAuthToken(userFrom), convId, message);
     }
 
-    public static void sendConversationMessages(ClientUser userFrom,
+    public static void sendConversationMessagesOtr(ClientUser userFrom,
                                                 String convId, List<String> messages) throws Exception {
         for (String message : messages) {
-            BackendREST.sendConversationMessage(receiveAuthToken(userFrom),
-                    convId, message);
+            SEBridge.getInstance().sendConversationMessage(userFrom, convId, message);
         }
     }
 
@@ -756,8 +676,7 @@ public final class BackendAPIWrappers {
                     }
                 }
             }
-            final JSONArray response = conversationsInfo
-                    .getJSONArray("conversations");
+            final JSONArray response = conversationsInfo.getJSONArray("conversations");
             for (int i = 0; i < response.length(); i++) {
                 result.put(response.getJSONObject(i));
             }
@@ -767,18 +686,6 @@ public final class BackendAPIWrappers {
             }
         } while (conversationsInfo.getBoolean("has_more"));
         return result;
-    }
-
-    private static JSONArray getEventsfromConversation(String convId,
-                                                       ClientUser user) throws Exception {
-        return BackendREST.getEventsFromConversation(receiveAuthToken(user),
-                convId).getJSONArray("events");
-    }
-
-    public static BufferedImage getAssetsDownload(String convId,
-                                                  String assetId, ClientUser user) throws Exception {
-        return BackendREST.getAssetsDownload(receiveAuthToken(user), convId,
-                assetId);
     }
 
     public static void updateUserPicture(ClientUser user, String picturePath) throws Exception {
@@ -801,7 +708,7 @@ public final class BackendAPIWrappers {
                     imgProcessor);
             Map<JSONObject, AssetData> sentPictures = BackendREST.sendPicture(
                     generateAuthToken(user), convId, reqBuilder);
-            Map<String, AssetData> processedAssets = new LinkedHashMap<String, AssetData>();
+            Map<String, AssetData> processedAssets = new LinkedHashMap<>();
             for (Map.Entry<JSONObject, AssetData> entry : sentPictures.entrySet()) {
                 final String postedImageId = entry.getKey().getJSONObject("data")
                         .getString("id");
@@ -824,14 +731,6 @@ public final class BackendAPIWrappers {
         BackendREST.updateSelfInfo(receiveAuthToken(user), color.getId(), null,
                 null);
         user.setAccentColor(color);
-    }
-
-    public static void updateConvLastReadState(ClientUser user, String convId,
-                                               String lastReadEvent) throws Exception {
-        // can be used to override last_read event or use
-        // getLastEventFromConversation to set the last read to the last event
-        BackendREST.updateConvSelfInfo(receiveAuthToken(user), convId,
-                lastReadEvent, null, null);
     }
 
     public static void updateConvMutedState(ClientUser user,
@@ -890,7 +789,7 @@ public final class BackendAPIWrappers {
                                               String query, int expectedCount, boolean orMore, int timeoutSeconds)
             throws Exception {
         final long startTimestamp = System.currentTimeMillis();
-        int currentCount = -1;
+        int currentCount;
         while (System.currentTimeMillis() - startTimestamp <= timeoutSeconds * 1000) {
             final JSONObject searchResult = BackendREST.searchForContacts(
                     receiveAuthToken(searchByUser), query);
@@ -916,7 +815,7 @@ public final class BackendAPIWrappers {
                                                        int size, int expectedCount, boolean orMore, int timeoutSeconds)
             throws Exception {
         final long startTimestamp = System.currentTimeMillis();
-        int currentCount = -1;
+        int currentCount;
         while (System.currentTimeMillis() - startTimestamp <= timeoutSeconds * 1000) {
             final JSONObject searchResult = BackendREST
                     .searchForTopPeopleContacts(receiveAuthToken(searchByUser),
