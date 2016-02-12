@@ -12,13 +12,22 @@ public class DeviceDetailPage extends AndroidPage {
     private static final By xpathSettingsTitle = By.xpath("//*[@id='action_bar_container' and .//*[@value='Settings']]");
 
     private static final By xpathDeviceId = By.xpath("//*[@id='summary']");
-
+    
+    private static final By idDeviceHeader = By.id("ttv__row__otr_header");
+    
     public DeviceDetailPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
     public boolean waitUntilVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathSettingsTitle);
+    }
+    
+    public String getHeaderText() throws Exception {
+        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idDeviceHeader)) {
+            throw new Exception("Header text is not present on the device detail page");
+        }
+        return getElement(idDeviceHeader).getText();
     }
 
     public String getName() throws Exception {
