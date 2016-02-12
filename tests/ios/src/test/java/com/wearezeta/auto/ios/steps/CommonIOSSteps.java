@@ -175,16 +175,6 @@ public class CommonIOSSteps {
         }
     }
 
-    @When("^I see keyboard$")
-    public void ISeeKeyboard() throws Exception {
-        Assert.assertTrue(pagesCollection.getCommonPage().isKeyboardVisible());
-    }
-
-    @When("^I dont see keyboard$")
-    public void IDontSeeKeyboard() throws Exception {
-        Assert.assertFalse(pagesCollection.getCommonPage().isKeyboardVisible());
-    }
-
     @When("^I press keyboard Delete button$")
     public void IPressKeyboardDeleteBtn() throws Exception {
         pagesCollection.getCommonPage().clickKeyboardDeleteButton();

@@ -380,25 +380,21 @@ Feature: Conversation List
   Scenario Outline: Verify play/pause controls can change playing media state - SoundCloud [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User Myself removes his avatar picture
-    Given I rotate UI to landscape
+    And I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
-    Given I remember the state of <Contact> conversation item
     When I tap on contact name <Contact>
-    And I tap media link
-    And I rotate UI to portrait
+    And I remember media container state
+    And I tap media container
     And I navigate back to conversations list
-    Then I see the state of <Contact> conversation item is changed
-    When I remember the state of <Contact> conversation item
     And I tap on play/pause button in contact list
-    And I see the state of <Contact> conversation item is changed
-    And I see playing media is paused
+    And I tap on contact name <Contact>
+    Then I see media container state is not changed
+    When I navigate back to conversations list
     And I tap on play/pause button in contact list
-    And I see play/pause button next to username <Contact> in contact list
-    And I see media is playing
-    And I see the state of <Contact> conversation item is not changed
+    And I tap on contact name <Contact>
+    Then I see media container state is changed
 
     Examples:
       | Name      | Contact   | SoundCloudLink                                                                       |

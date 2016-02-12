@@ -75,7 +75,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3Name | MessageToGroup |
 
-  @C3210 @rc @regression @IPv6 @id1468
+  @C3210 @regression @IPv6 @id1468
   Scenario Outline: (MediaBar disappears on Simulator) Play/pause SoundCloud media link from the media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -85,15 +85,14 @@ Feature: Conversation View
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
     And I tap on text input
-    Then I see media link <SoundCloudLink> and media in dialog
-    And I tap media link
+    And I tap media container
     And I scroll media out of sight until media bar appears
     And I pause playing the media in media bar
-    Then I see playing media is paused
+    Then I see media is paused on Media Bar
     And I press play in media bar
-    Then I see media is playing
+    Then I see media is playing on Media Bar
     And I stop media in media bar
-    Then The media stops playing
+    Then I see media is stopped on Media Bar
 
     Examples:
       | Name      | Contact   | SoundCloudLink                                                   |
@@ -108,8 +107,7 @@ Feature: Conversation View
     Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
-    And I see media link <SoundCloudLink> and media in dialog
-    And I tap media link
+    And I tap media container
     And I scroll media out of sight until media bar appears
     And I tap on the media bar
     Then I see conversation view is scrolled back to the playing media link <SoundCloudLink>
@@ -128,8 +126,7 @@ Feature: Conversation View
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     And I tap on contact name <Contact>
     And I tap on text input to scroll to the end
-    And I see media link <SoundCloudLink> and media in dialog
-    When I tap media link
+    When I tap media container
     And I scroll media out of sight until media bar appears
     Then I wait up to 35 seconds for media bar to disappear
 
@@ -147,8 +144,7 @@ Feature: Conversation View
     Given User <Name> sends encrypted message "<SoundCloudLink>" to user <Contact1>
     When I tap on contact name <Contact1>
     And I tap on text input to scroll to the end
-    And I see media link <SoundCloudLink> and media in dialog
-    And I tap media link
+    And I tap media container
     When I scroll media out of sight until media bar appears
     And I tap on text input to scroll to the end
     Then I dont see media bar on dialog page
@@ -233,22 +229,6 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C933 @regression @id416
-  Scenario Outline: Keyboard up and navigate to main convo list
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    And I tap on text input
-    And I see keyboard
-    And I scroll away the keyboard
-    And I dont see keyboard
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
   @C920 @regression @id1474
   Scenario Outline: Verify you can see conversation images in fullscreen
     Given There are 2 users where <Name> is me
@@ -287,11 +267,10 @@ Feature: Conversation View
     And I post media link <YouTubeLink>
     And I navigate back to conversations list
     And I tap on contact name <Contact>
-    Then I see youtube link <YouTubeLink> and media in dialog
     And I click video container for the first time
     # Wait until web page is loaded
     And I wait for 5 seconds
-    And I see video player page is opened
+    Then I see video player page is opened
 
     Examples:
       | Name      | Contact   | YouTubeLink                                |
@@ -308,20 +287,18 @@ Feature: Conversation View
     Given User Myself sends 40 encrypted messages to user <Contact2>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact2>
     When I tap on contact name <Contact1>
-    And I see media link <SoundCloudLink> and media in dialog
-    And I tap media link
+    And I tap media container
     And I navigate back to conversations list
     And I see play/pause button next to username <Contact1> in contact list
     And I tap play/pause button in contact list next to username <Contact1>
     And I tap on contact name <Contact2>
-    And I see media link <SoundCloudLink> and media in dialog
-    And I tap media link
+    And I tap media container
     And I navigate back to conversations list
     And I see play/pause button next to username <Contact2> in contact list
     And I tap play/pause button in contact list next to username <Contact2>
     And I tap on contact name <Contact2>
     And I scroll media out of sight until media bar appears
-    Then I see playing media is paused
+    Then I see media is paused on Media Bar
 
     Examples:
       | Name      | Contact1  | Contact2  | SoundCloudLink                                                                       |
@@ -369,22 +346,18 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
     When I tap on contact name <Contact>
-    And I type the "1 link <SoundCloudLink>" message and send it
-    And I navigate back to conversations list
-    And I tap on contact name <Contact>
-    And I see media link <SoundCloudLink> and media in dialog
-    And I tap media link
-    And I navigate back to conversations list
-    And I see play/pause button next to username <Contact> in contact list
-    And I tap play/pause button in contact list next to username <Contact>
-    And I tap on contact name <Contact>
-    And I scroll media out of sight until media bar appears
-    Then I see playing media is paused
+    And I remember media container state
+    And I tap media container
     And I navigate back to conversations list
     And I tap play/pause button in contact list next to username <Contact>
     And I tap on contact name <Contact>
-    Then I see media is playing
+    Then I see media container state is not changed
+    When I navigate back to conversations list
+    And I tap play/pause button in contact list next to username <Contact>
+    And I tap on contact name <Contact>
+    Then I see media container state is changed
 
     Examples:
       | Name      | Contact   | SoundCloudLink                                                            |

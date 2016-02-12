@@ -252,8 +252,7 @@ public class ContactListPageSteps {
     }
 
     @When("I see play/pause button next to username (.*) in contact list")
-    public void ISeePlayPauseButtonNextToUserName(String contact)
-            throws Exception {
+    public void ISeePlayPauseButtonNextToUserName(String contact) throws Exception {
         String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
         Assert.assertTrue("Play pause button is not shown",
                 getContactListPage().isPlayPauseButtonVisible(name));
@@ -265,20 +264,18 @@ public class ContactListPageSteps {
     }
 
     @When("I tap play/pause button in contact list next to username (.*)")
-    public void ITapPlayPauseButtonInContactListNextTo(String contact)
-            throws Exception {
+    public void ITapPlayPauseButtonInContactListNextTo(String contact) throws Exception {
         String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
         getContactListPage().tapPlayPauseButtonNextTo(name);
     }
 
     @When("I see in contact list group chat named (.*)")
-    public void ISeeInContactListGroupChatWithName(String name)
-            throws Exception {
+    public void ISeeInContactListGroupChatWithName(String name) throws Exception {
         Assert.assertTrue(getContactListPage().isChatInContactList(name));
     }
 
     @When("I click on Pending request link in contact list")
-    public void ICcickPendingRequestLinkContactList() throws Throwable {
+    public void ICcickPendingRequestLinkContactList() throws Exception {
         getContactListPage().clickPendingRequest();
     }
 
