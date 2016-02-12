@@ -178,7 +178,7 @@ Feature: E2EE
     Examples:
       | Name      | DeviceName | DeviceLabel  |
       | user1Name | Device1    | Device1Label |
-  
+
   @C3510 @noAcceptAlert @staging
   Scenario Outline: Verify deleting one of the devices from device management by Edit
     Given There is 1 user where <Name> is me
@@ -226,7 +226,7 @@ Feature: E2EE
     Examples:
       | Name      | DeviceName | DeviceLabel  |
       | user1Name | Device1    | Device1Label |
-      
+
   @C3293 @staging
   Scenario Outline: Verify link is active for your own device and leads you to device's fingerprint
     Given There are 2 users where <Name> is me
@@ -325,3 +325,28 @@ Feature: E2EE
     Examples:
       | Name      | DeviceName1 | DeviceName2 | DeviceName3 | DeviceName4 | DeviceName5 | DeviceName6 | DeviceName7 |
       | user1Name | Device1     | Device2     | Device3     | Device4     | Device5     | Device6     | Device7     |
+
+  @C14314 @staging
+  Scenario Outline: Verify you can see device ids of the other conversation participant in participant details view inside a group conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given User <Contact1> adds a new device <DeviceName1> with label <DeviceLabel1>
+    Given User <Contact2> adds a new device <DeviceName2> with label <DeviceLabel2>
+    Given User <Contact1> adds a new device <DeviceName3> with label <DeviceLabel3>
+    Given User <Contact2> adds a new device <DeviceName4> with label <DeviceLabel4>
+    Given I sign in using my email
+    Given I see conversations list
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    When I tap on contact name <GroupChatName>
+    And I open conversation details
+    When I select participant <Contact1>
+    And I switch to Devices tab
+    Then I see user <Contact1> device IDs are presented on participant devices tab
+    And I click close user profile page button
+    When I select participant <Contact2>
+    And I switch to Devices tab
+    Then I see user <Contact2> device IDs are presented on participant devices tab
+
+    Examples:
+      | Name      | Contact1  | Contact2  | DeviceName1 | DeviceLabel1 | DeviceName2 | DeviceLabel2 | GroupChatName | DeviceName3 | DeviceLabel3 | DeviceName4 | DeviceLabel4 |
+      | user1Name | user2Name | user3Name | Device1     | Label1       | Device2     | Label2       | VerifiedGroup | Device3     | Label3       | Device4     | Label4       |
