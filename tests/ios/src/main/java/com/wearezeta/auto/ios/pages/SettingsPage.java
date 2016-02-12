@@ -40,9 +40,6 @@ public class SettingsPage extends IOSPage {
     };
 
     private static final By currentLabel = By.name("Current");
-    private static final By verifyLabel = By.name("Verified");
-    private static final By resetLabel = By.name("Reset session");
-    private static final By removeLabel = By.name("Remove Device");
 
     private static final String xpathStrCurrentDevice = xpathStrMainWindow + "/UIATableView[1]/UIATableCell[1]";
     private static final By xpathCurrentDevices = By.xpath(xpathStrCurrentDevice);
