@@ -331,7 +331,7 @@ Feature: E2EE
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given User <Contact1> adds new devices <DeviceName1>,<DeviceName2>
-    Given User <Contact1> adds new devices <DeviceName1>,<DeviceName2>
+    Given User <Contact2> adds new devices <DeviceName1>,<DeviceName2>
     Given I sign in using my email
     Given I see conversations list
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
