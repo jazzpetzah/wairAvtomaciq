@@ -33,22 +33,22 @@ public class DeleteAccountPage extends WebPage {
     }
 
     public boolean isSuccess() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), By.cssSelector(ExternalLocators.DeleteAccountPage.cssSuccess));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(ExternalLocators.DeleteAccountPage.cssSuccess));
     }
     
     public boolean isWrongKey() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), By.cssSelector(ExternalLocators.DeleteAccountPage.cssWrongKey));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(ExternalLocators.DeleteAccountPage.idWrongKey));
     }
     
     public boolean isWrongCode() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), By.cssSelector(ExternalLocators.DeleteAccountPage.cssWrongCode));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(ExternalLocators.DeleteAccountPage.idWrongCode));
     }
     
     public boolean isButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), By.cssSelector(ExternalLocators.DeleteAccountPage.cssSubmitButton));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(ExternalLocators.DeleteAccountPage.cssSubmitButton));
     }
     
     public boolean isErrorMessage() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(ExternalLocators.DeleteAccountPage.xpathLabelByText.apply(ERROR_TEXT)));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(ExternalLocators.DeleteAccountPage.xpathLabelByText.apply(ERROR_TEXT)));
     }
 }

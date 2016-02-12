@@ -29,6 +29,7 @@ public class DeleteAccountPageSteps {
 	private static final int DELETION_RECEIVING_TIMEOUT = 120;
 	
 	private String deleteLink = null;
+	
 	/**
 	 * Verify that invitation email exists in user's mailbox
 	 *
@@ -54,8 +55,17 @@ public class DeleteAccountPageSteps {
 		deleteAccountPage.clickDeleteAccountButton();
 		assertTrue("Delete account page does not show success message", deleteAccountPage.isSuccess());
 	}
-
-	@Then("^I delete account of user (.*) on (.*) with changed (.*) checksum$")
+	
+	/**
+	 * Navigates to the deletion utility page with changed checksums
+	 *
+	 * @param alias  user name/alias
+	 *        agent  platform on which the link is opened (iphone/android/osx/windows)
+	 *        part   checksum to change
+	 * @throws Throwable
+	 * @step. ^I navigate to delete account page of user (.*) on (.*) with changed (.*) checksum$
+	 */
+	@Then("^I navigate to delete account page of user (.*) on (.*) with changed (.*) checksum$")
 	public void IDeleteAccountWithWrongChecksum(String alias, String agent, String part) throws Throwable {
 		String key = "key=";
 		String code = "code=";
@@ -81,24 +91,36 @@ public class DeleteAccountPageSteps {
 				log.info("URL: " + newUrl);
 				deleteAccountPage.setUrl(newUrl);
 				deleteAccountPage.navigateTo();
-				deleteAccountPage.clickDeleteAccountButton();
-				assertTrue("Delete account page shows success message", deleteAccountPage.isWrongKey());
 				break;
-				
 			case "code":
 				position = url.indexOf(code) + 5;
 				newUrl = url.substring(0, position) + "_WRONG-CODE-CHECKSUM_" + url.substring(position, url.length());
 				log.info("URL: " + newUrl);
 				deleteAccountPage.setUrl(newUrl);
 				deleteAccountPage.navigateTo();
-				deleteAccountPage.clickDeleteAccountButton();
-				assertTrue("Delete account page shows success message", deleteAccountPage.isWrongCode());
 				break;
-				
 			default: break;
 		}
 	}
 	
+	@Then("^I click delete account button$")
+	public void IClickDeleteAccountButton() throws Exception{
+		DeleteAccountPage deleteAccountPage = WebappPagesCollection.getInstance()
+				.getPage(DeleteAccountPage.class);
+		deleteAccountPage.clickDeleteAccountButton();
+	}
+	
+	@Then("^I see error message for wrong (.*) checksum$")
+	public void ISeeErrorMessageForWrongChecksum(String checksum) throws Exception{
+		DeleteAccountPage deleteAccountPage = WebappPagesCollection.getInstance()
+				.getPage(DeleteAccountPage.class);
+		if (checksum == "key") {
+			assertTrue("Delete account page shows success message", deleteAccountPage.isWrongKey());
+		} else if (checksum == "code") {
+			assertTrue("Delete account page shows success message", deleteAccountPage.isWrongCode());
+		}
+	}
+		
 	@Then("^I remember delete link of user (.*)$")
 	public void IRememberDeleteLinkOfUser(String alias) throws Throwable {
 		final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
@@ -111,6 +133,14 @@ public class DeleteAccountPageSteps {
 		deleteLink = message.extractAccountDeletionLink();
 	}
 	
+	/**
+	 * Navigates to the deletion utility page witch removed checksums
+	 *
+	 * @param agent  platform on which the link is opened (iphone/android/osx/windows)
+	 *        part   checksum to remove
+	 * @throws Throwable
+	 * @step. ^I use remembered link on (.*) without (.*) checksum$
+	 */
 	@Then("^I use remembered link on (.*) without (.*) checksum$")
 	public void IUseRememberedLinkWithoutKeyChecksum(String agent, String deletion) throws Throwable{
 		if (deleteLink == null) {
@@ -144,6 +174,12 @@ public class DeleteAccountPageSteps {
 				.getPage(DeleteAccountPage.class);
 		deleteAccountPage.setUrl(newUrl);
 		deleteAccountPage.navigateTo();
+	}
+	
+	@Then("^I see error message for missing checksum$")
+	public void ISeeErrorMessageForMissingChecksum() throws Exception{
+		DeleteAccountPage deleteAccountPage = WebappPagesCollection.getInstance()
+				.getPage(DeleteAccountPage.class);
 		assertFalse("Delete button is visible", deleteAccountPage.isButtonVisible());
 		assertTrue("Delete account page shows success message", deleteAccountPage.isErrorMessage());
 	}

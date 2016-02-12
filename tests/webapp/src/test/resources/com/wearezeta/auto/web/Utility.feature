@@ -39,7 +39,7 @@ Feature: Utility
   Scenario Outline: Verify that there are no dead links on start page for <Agent>
     When I navigate to start page for <Agent>
     When I navigate to start page for <Agent>
-    And I can see no dead links
+    Then I can see no dead links
 
     Examples: 
       | Agent   |
@@ -52,7 +52,7 @@ Feature: Utility
   Scenario Outline: Verify that there are no dead links on german start page for <Agent>
     When I navigate to german start page for <Agent>
     When I navigate to german start page for <Agent>
-    And I can see no dead links
+    Then I can see no dead links
 
     Examples: 
       | Agent   |
@@ -208,7 +208,9 @@ Feature: Utility
     And I click delete account button on settings page
     And I see email <Email> in delete info text on settings page
     And I click send button to delete account
-    And I delete account of user <Name> on <Agent> with changed key checksum
+    And I navigate to delete account page of user <Name> on <Agent> with changed key checksum
+    And I click delete account button
+    Then I see error message for wrong key checksum
     
     Examples:
       | Email      | Password      | Name      | Agent   |
@@ -228,8 +230,10 @@ Feature: Utility
     And I click delete account button on settings page
     And I see email <Email> in delete info text on settings page
     And I click send button to delete account
-    And I delete account of user <Name> on <Agent> with changed code checksum
-    
+    Then I navigate to delete account page of user <Name> on <Agent> with changed code checksum
+    And I click delete account button
+    Then I see error message for wrong code checksum
+        
     Examples:
       | Email      | Password      | Name      | Agent   |
       | user1Email | user1Password | user1Name | iphone  |
@@ -250,8 +254,11 @@ Feature: Utility
     And I click send button to delete account
     And I remember delete link of user <Name>
     And I use remembered link on <Agent> without key checksum
+    Then I see error message for missing checksum
     And I use remembered link on <Agent> without code checksum
+    Then I see error message for missing checksum
     And I use remembered link on <Agent> without both checksum
+    Then I see error message for missing checksum
 
     Examples:
       | Email      | Password      | Name      | Agent   |
