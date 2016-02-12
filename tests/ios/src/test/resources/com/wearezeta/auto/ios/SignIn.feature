@@ -50,7 +50,7 @@ Feature: Sign In
 
     Examples:
       | Login      | Name      | NewPassword | WebPageLoadTimeout |
-      | user1Email | user1Name | 12345679    | 7                  |
+      | user1Email | user1Name | 12345679    | 10                 |
 
   @C1138 @regression @id2719
   Scenario Outline: Verify phone sign in when email is assigned
