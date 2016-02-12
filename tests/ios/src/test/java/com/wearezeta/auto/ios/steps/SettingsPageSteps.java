@@ -193,6 +193,5 @@ public class SettingsPageSteps {
     public void IDontSeeRemoveVerifyResetOptions() throws Throwable {
         Assert.assertFalse(String.format("remove/verify/reset label is visible"),
                 getSettingsPage().isManageDeviceOptionsVisible());
-
     }
 }
