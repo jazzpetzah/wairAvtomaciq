@@ -205,12 +205,11 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     }
 
     private String convertStringIDtoLocatorTypeID(String id) {
-        String resultString = new String();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < id.length(); i += 2) {
-            resultString = resultString.concat(id.substring(i, i + 2));
-            resultString = resultString.concat(" ");
+            sb.append(id.substring(i, i + 2)).append(" ");
         }
-        return resultString.toUpperCase().trim();
+        return sb.toString().toUpperCase().trim();
     }
 
     public boolean isUserDeviceIdVisible(String deviceId) throws Exception {

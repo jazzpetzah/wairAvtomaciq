@@ -330,10 +330,8 @@ Feature: E2EE
   Scenario Outline: Verify you can see device ids of the other conversation participant in participant details view inside a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given User <Contact1> adds a new device <DeviceName1> with label <DeviceLabel1>
-    Given User <Contact2> adds a new device <DeviceName2> with label <DeviceLabel2>
-    Given User <Contact1> adds a new device <DeviceName3> with label <DeviceLabel3>
-    Given User <Contact2> adds a new device <DeviceName4> with label <DeviceLabel4>
+    Given User <Contact1> adds new devices <DeviceName1>,<DeviceName2>
+    Given User <Contact1> adds new devices <DeviceName1>,<DeviceName2>
     Given I sign in using my email
     Given I see conversations list
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -348,8 +346,8 @@ Feature: E2EE
     Then I see user <Contact2> device IDs are presented on participant devices tab
 
     Examples:
-      | Name      | Contact1  | Contact2  | DeviceName1 | DeviceLabel1 | DeviceName2 | DeviceLabel2 | GroupChatName | DeviceName3 | DeviceLabel3 | DeviceName4 | DeviceLabel4 |
-      | user1Name | user2Name | user3Name | Device1     | Label1       | Device2     | Label2       | VerifiedGroup | Device3     | Label3       | Device4     | Label4       |
+      | Name      | Contact1  | Contact2  | DeviceName1 | DeviceName2 | GroupChatName | DeviceName3 | DeviceName4 |
+      | user1Name | user2Name | user3Name | Device1     | Device2     | VerifiedGroup | Device3     | Device4     |
 
   @C14318 @staging
   Scenario Outline: First time when group conversation is degraded - I can ignore alert screen and send messages with resend button
