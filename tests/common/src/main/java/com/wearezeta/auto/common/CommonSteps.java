@@ -606,4 +606,9 @@ public final class CommonSteps {
             BackendAPIWrappers.removeOtrClient(usr, c);
         }
     }
+
+    public List<String> GetDevicesIDsForUser(String name) throws Exception {
+        final ClientUser usr = usrMgr.findUserByNameOrNameAlias(name);
+        return seBridge.getDeviceIds(usr);
+    }
 }
