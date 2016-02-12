@@ -122,14 +122,16 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     public void removeFromConversation() throws Exception {
         DriverUtils.tapByCoordinates(this.getDriver(), getElement(nameRemoveFromConversation));
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
     public void confirmRemove() throws Exception {
-        getElement(nameConfirmRemoveButton).click();
+        final WebElement confirmBtn = getElement(nameConfirmRemoveButton);
+        confirmBtn.click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConfirmRemoveButton)) {
-            throw new IllegalStateException("Confirm remove dialog should be autoclosed");
+            confirmBtn.click();
         }
-
     }
 
     public boolean isUserNameVisible(String name) throws Exception {
