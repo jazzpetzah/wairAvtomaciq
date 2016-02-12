@@ -325,3 +325,21 @@ Feature: E2EE
     Examples:
       | Name      | DeviceName1 | DeviceName2 | DeviceName3 | DeviceName4 | DeviceName5 | DeviceName6 | DeviceName7 |
       | user1Name | Device1     | Device2     | Device3     | Device4     | Device5     | Device6     | Device7     |
+
+  @C3507 @staging
+  Scenario Outline: Verify remove, verify and reset session are absent for current device
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email
+    Given I see conversations list
+    And I tap my avatar
+    And I click on Settings button on personal page
+    And I click on Settings button from the options menu
+    And I select settings item Privacy & Security
+    And I select settings item Manage devices
+    When I see my current device
+    Then I tap on current device
+    And I don't see remove/verify/reset options
+
+    Examples:
+      | Name      |
+      | user1Name |

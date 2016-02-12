@@ -159,4 +159,40 @@ public class SettingsPageSteps {
                     getSettingsPage().isDeviceVisibleInList(device));
         }
     }
+
+    /**
+     * Verifies you see current device
+     *
+     * @throws Exception
+     * @step. ^I see my current device$
+     */
+    @Then("^I see my current device$")
+    public void ISeeMyCurrentDevice() throws Exception {
+        Assert.assertTrue(String.format("Current label is not visible"),
+                getSettingsPage().isCurrentDeviceVisible());
+    }
+
+    /**
+     * Tap on current device
+     *
+     * @throws Exception
+     * @step. ^I tap on current device$
+     */
+    @Then("^I tap on current device$")
+    public void ITapOnCurrentDevice() throws Throwable {
+        getSettingsPage().tapCurrentDevice();
+    }
+
+    /**
+     * Verifies you don't see remove/verify/reset options
+     *
+     * @throws Exception
+     * @step. ^I don't see remove/verify/reset options$
+     */
+    @Then("^I don't see remove/verify/reset options$")
+    public void IDontSeeRemoveVerifyResetOptions() throws Throwable {
+        Assert.assertFalse(String.format("remove/verify/reset label is visible"),
+                getSettingsPage().isManageDeviceOptionsVisible());
+
+    }
 }

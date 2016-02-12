@@ -39,6 +39,14 @@ public class SettingsPage extends IOSPage {
         return String.format("//UIATableCell[@name='%s']/UIAStaticText[@name='%s']", deviceName, verificationLabel);
     };
 
+    private static final By currentLabel = By.name("Current");
+    private static final By verifyLabel = By.name("Verified");
+    private static final By resetLabel = By.name("Reset session");
+    private static final By removeLabel = By.name("Remove Device");
+
+    private static final String xpathStrCurrentDevice = xpathStrMainWindow + "/UIATableView[1]/UIATableCell[1]";
+    private static final By xpathCurrentDevices = By.xpath(xpathStrCurrentDevice);
+
     public SettingsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -93,5 +101,20 @@ public class SettingsPage extends IOSPage {
     public boolean verificationLabelVisibility(String deviceName, String verificaitonLabel) throws Exception {
         final By locator = By.xpath(xpathStrDeviceVerificationLabel.apply(deviceName, verificaitonLabel));
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+    }
+
+    public boolean isCurrentDeviceVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), currentLabel, 2);
+    }
+
+    public void tapCurrentDevice() throws Exception {
+        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathCurrentDevices))
+             getElement(xpathCurrentDevices).click();
+    }
+
+    public boolean isManageDeviceOptionsVisible() throws Exception {
+        return (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), verifyLabel, 2) ||
+                DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), removeLabel, 2) ||
+                DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), resetLabel, 2));
     }
 }
