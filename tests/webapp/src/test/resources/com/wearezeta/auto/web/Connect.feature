@@ -240,6 +240,8 @@ Feature: Connect
   @C1696 @regression
   Scenario Outline: Verify you still receive messages from blocked person in a group chat
     Given There are 3 users where <Name> is me
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given user <Contact2> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
