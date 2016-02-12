@@ -270,7 +270,7 @@ Feature: E2EE
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     When User <Name> sends encrypted message <EncMessage> to user <Contact1>
-    Then I sign in using my email or phone number
+    Then I sign in using my email
     And I see First Time overlay
     When I tap Got It button on First Time overlay
     Then I see Contact list with contacts
