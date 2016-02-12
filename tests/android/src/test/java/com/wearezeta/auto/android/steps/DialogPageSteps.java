@@ -890,10 +890,10 @@ public class DialogPageSteps {
     }
     
     /**
-     * Tap on plus button in the text input area to reveal the different input options
+     * Tap on show device button in takeover screen
      *
      * @throws Exception
-     * @step. ^I tap plus( button)? i?o?n text input$
+     * @step. ^I tap send anyway(?: button)?$
      */
     @Then("^I tap send anyway(?: button)?$")
     public void WhenITapTakeoverSendBnt() throws Exception {
@@ -901,10 +901,10 @@ public class DialogPageSteps {
     }
     
     /**
-     * Tap on plus button in the text input area to reveal the different input options
+     * Tap on show device button in takeover screen
      *
      * @throws Exception
-     * @step. ^I tap plus( button)? i?o?n text input$
+     * @step. ^I tap show device(?: button)?$
      */
     @Then("^I tap show device(?: button)?$")
     public void WhenITapTakeoverShowBnt() throws Exception {
