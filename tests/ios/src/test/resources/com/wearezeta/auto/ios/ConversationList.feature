@@ -78,7 +78,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C19 @regression @id2040
+  @C19 @regression @id2040 @torun
   Scenario Outline: Verify archive a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
