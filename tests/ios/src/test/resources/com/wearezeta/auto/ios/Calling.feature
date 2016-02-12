@@ -68,15 +68,15 @@ Feature: Calling
       | user1Name | user2Name | autocall    |
 
   @C2111 @rc @calling_basic @IPv6 @id2093
-  Scenario Outline: (ZIOS-5534)Verify accepting incoming call
+  Scenario Outline: (ZIOS-5534) Verify accepting incoming call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
+    And I tap on contact name <Contact>
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
-    And I tap on contact name <Contact>
     Then I see mute call, end call and speakers buttons
     And I see started call message for contact <Contact>
 
