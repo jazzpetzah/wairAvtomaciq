@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.ios.pages.SettingsPage;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -158,5 +159,28 @@ public class SettingsPageSteps {
             Assert.assertFalse(String.format("The device %s is still visible in the device list",device),
                     getSettingsPage().isDeviceVisibleInList(device));
         }
+    }
+
+    /**
+     * Taps the big delete button opened from swipe left on the device cell
+     *
+     * @throws Exception
+     * @step. ^I tap Delete button opened from swipe left on device$
+     */
+    @When("^I tap Delete button opened from swipe left on device$")
+    public void ITapDeleteButtonOpenedFromSwipeLeftOnDevice() throws Exception {
+        getSettingsPage().pressDeleteButton();
+    }
+
+    /**
+     * Swipes left on the device cell
+     *
+     * @param deviceIndex index of device cell
+     * @throws Exception
+     * @step. ^I swipe left on device number (\d+)$
+     */
+    @When("^I swipe left on device number (\\d+)$")
+    public void ISwipeLeftOnDeviceNumber(int deviceIndex) throws Exception {
+        getSettingsPage().swipeLeftOnDevice(deviceIndex);
     }
 }
