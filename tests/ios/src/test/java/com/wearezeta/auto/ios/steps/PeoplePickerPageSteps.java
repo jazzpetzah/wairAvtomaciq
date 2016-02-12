@@ -403,11 +403,13 @@ public class PeoplePickerPageSteps {
      * Presses the instant connect plus button
      *
      * @throws Exception
+     * @param nameAlias user name/aias
      * @step. ^I press the instant connect button$
      */
-    @When("^I press the instant connect button$")
-    public void IPressTheInstantConnectButton() throws Exception {
-        getPeoplePickerPage().pressInstantConnectButton();
+    @When("^I press the instant connect button next to (.*)$")
+    public void IPressTheInstantConnectButton(String nameAlias) throws Exception {
+        nameAlias = usrMgr.replaceAliasesOccurences(nameAlias, ClientUsersManager.FindBy.NAME_ALIAS);
+        getPeoplePickerPage().pressInstantConnectButton(nameAlias);
     }
 
     /**
@@ -462,7 +464,8 @@ public class PeoplePickerPageSteps {
      */
     @When("^I see open conversation action button on People picker page$")
     public void ISeeOpenConversationActionButton() throws Exception {
-        Assert.assertTrue("Open conversation button is not visible", getPeoplePickerPage().isOpenConversationButtonVisible());
+        Assert.assertTrue("Open conversation button is not visible",
+                getPeoplePickerPage().isOpenConversationButtonVisible());
     }
 
     /**
@@ -485,9 +488,9 @@ public class PeoplePickerPageSteps {
      * @step. ^I see action buttons disappeared on People picker page
      */
     @When("^I see action buttons disappeared on People picker page$")
-    public void ISeeActionButttonsDisappearedOnPeoplePickerPage() throws Exception {
-        Assert
-            .assertFalse("Open conversation button is still visible", getPeoplePickerPage().isOpenConversationButtonVisible());
+    public void ISeeActionButtonsDisappearedOnPeoplePickerPage() throws Exception {
+        Assert.assertFalse("Open conversation button is still visible",
+                getPeoplePickerPage().isOpenConversationButtonVisible());
         Assert.assertFalse("Call action button is still visible", getPeoplePickerPage().isCallButtonVisible());
         Assert.assertFalse("Send image action button is still visible", getPeoplePickerPage().isSendImageButtonVisible());
     }
@@ -495,11 +498,11 @@ public class PeoplePickerPageSteps {
     /**
      * Opens conversation from the action button in people picker
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I click open conversation action button on People picker page$
      */
     @When("^I click open conversation action button on People picker page$")
-    public void IClickOpenConversationActionButtonOnPeoplePickerPage() throws Throwable {
+    public void IClickOpenConversationActionButtonOnPeoplePickerPage() throws Exception {
         getPeoplePickerPage().clickOpenConversationButton();
     }
 }

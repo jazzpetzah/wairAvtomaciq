@@ -212,7 +212,7 @@ Feature: Connect
     And I tap on Search input on People picker page
     Given I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user email <ContactEmail>
-    And I press the instant connect button
+    And I press the instant connect button next to <UnconnectedUser>
     And I click close button to dismiss people view
     And I see first item in contact list named <UnconnectedUser>
     And I tap on contact name <UnconnectedUser>
