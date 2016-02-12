@@ -439,6 +439,39 @@ Feature: E2EE
     Examples:
       | Name      | Contact1  | Contact2  | Message1 | GroupChatName |
       | user1Name | user2Name | user3Name | Msg1     | GroupConvo    |
+
+  @C12082 @staging
+  Scenario Outline: First time when group conversation is degraded - I can ignore alert screen and send messages with resend button
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When User <Contact1> sends encrypted message <Message1> to group conversation <GroupChatName>
+    And User <Contact2> sends encrypted message <Message1> to group conversation <GroupChatName>
+    And I tap on contact name <GroupChatName>
+    And I tap conversation details button
+    And I select contact <Contact1>
+    And I select single participant tab "Devices"
+    And I verify 1st device
+    When I close single participant page by UI button
+    And I select contact <Contact2>
+    And I select single participant tab "Devices"
+    And I verify 1st device
+    When I close single participant page by UI button
+    And I press back button
+    Then I see a message informing me conversation is verified
+    When User <Contact1> adds new device Device1
+    And I tap on text input
+    And I type the message "<Message2>" and send it
+    And I see alert page
+    And I tap on positive button on alert page
+    Then I see encrypted message <Message2> 1 times in the conversation view
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Message1 | Message2 | GroupChatName |
+      | user1Name | user2Name | user3Name | Msg1     | Msg2     | GroupConvo    |
       
   @C3512 @staging
   Scenario Outline: After login by phone on not 1st device I have to be asked for email login
