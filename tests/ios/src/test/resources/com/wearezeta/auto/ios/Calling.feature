@@ -109,6 +109,7 @@ Feature: Calling
     Given I see conversations list
     When I remember the state of <Contact> conversation item
     And <Contact> calls me using <CallBackend>
+    And I wait for 5 seconds
     And <Contact> stops all calls to me
     Then I see the state of <Contact> conversation item is changed
     When I remember the state of <Contact> conversation item
