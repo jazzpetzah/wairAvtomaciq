@@ -190,7 +190,7 @@ Feature: E2EE
       | user1Name | user2Name | Msg1     |
 
   @C3232 @regression
-  Scenario Outline: Verify the device id is not changed after relogin
+  Scenario Outline: (AN-3450) Verify the device id is not changed after relogin
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -213,8 +213,9 @@ Feature: E2EE
     When I select "Account" settings menu item
     And I select "Log out" settings menu item
     Then I confirm sign out
-    When I sign in using my email
-    Then I see Contact list with contacts
+    Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
+    And I see Contact list with contacts
     When I tap on contact name <Contact1>
     Then I see encrypted message <EncMessage> 1 times in the conversation view
     When I press back button
