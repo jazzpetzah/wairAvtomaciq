@@ -33,6 +33,9 @@ public class ContactListPage extends IOSPage {
     private static final Function<Integer, String> xpathStrConvoListEntryNameByIdx = idx ->
             String.format("(%s)[%s]/UIAStaticText", xpathStrContactListItems, idx);
 
+    private static final Function<String, String> xpathStrFirstConversationEntryByName = name ->
+            String.format("(%s)[1]/UIAStaticText[@value='%s']", xpathStrContactListItems, name);
+
     private static final By nameOpenStartUI = By.name("START A CONVERSATION");
 
     private static final By nameMediaCellPlayButton = By.name("mediaCellButton");
@@ -108,10 +111,10 @@ public class ContactListPage extends IOSPage {
     }
 
     public String getFirstDialogName() throws Exception {
-        return getDialogNameByIndex(1);
+        return getConversationNameByIndex(1);
     }
 
-    public String getDialogNameByIndex(int index) throws Exception {
+    public String getConversationNameByIndex(int index) throws Exception {
         final By locator = By.xpath(xpathStrConvoListEntryNameByIdx.apply(index));
         return getElement(locator, String.format("Conversation # %s is not visible", index)).getText();
     }
@@ -145,10 +148,6 @@ public class ContactListPage extends IOSPage {
             swipeRightOnContact(conversation);
             count++;
         } while ((count < 5) && !isCancelActionButtonVisible());
-    }
-
-    public String getFirstConversationName() throws Exception {
-        return getDialogNameByIndex(1);
     }
 
     public boolean waitForContactListToLoad() throws Exception {
@@ -297,5 +296,10 @@ public class ContactListPage extends IOSPage {
                 return Optional.empty();
             }
         }
+    }
+
+    public boolean isFirstConversationName(String convoName) throws Exception {
+        final By locator = By.xpath(xpathStrFirstConversationEntryByName.apply(convoName));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 }

@@ -15,7 +15,6 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.*;
 
 public class ContactListPageSteps {
@@ -188,15 +187,30 @@ public class ContactListPageSteps {
         getContactListPage().openSearch();
     }
 
-    @Then("^I see first item in contact list named (.*)$")
-    public void ISeeUserNameFirstInContactList(String value) throws Throwable {
-        try {
-            value = usrMgr.findUserByNameOrNameAlias(value).getName();
-        } catch (NoSuchUserException e) {
-            // Ignore silently
-        }
-        Assert.assertEquals("User name doesn't appeared in contact list.",
-                value, getContactListPage().getFirstConversationName());
+    private final static long CONVO_LIST_UPDATE_TIMEOUT = 10000; // milliseconds
+
+    /**
+     * Verify whether the first items in conversations list is the given item
+     *
+     * @step. ^I see first item in contact list named (.*)
+     *
+     * @param convoName conversation name
+     * @throws Exception
+     */
+    @Then("^I see first item in contact list named (.*)")
+    public void ISeeUserNameFirstInContactList(String convoName) throws Exception {
+        convoName = usrMgr.replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
+        final long millisecondsStarted = System.currentTimeMillis();
+        do {
+            Thread.sleep(500);
+            if (getContactListPage().isFirstConversationName(convoName)) {
+                return;
+            }
+        } while (System.currentTimeMillis() - millisecondsStarted <= CONVO_LIST_UPDATE_TIMEOUT);
+        throw new AssertionError(
+                String.format("The conversation '%s' is not the first conversation in the list after " +
+                        "%s seconds timeout", convoName, CONVO_LIST_UPDATE_TIMEOUT / 1000));
+
     }
 
     /**
@@ -519,12 +533,13 @@ public class ContactListPageSteps {
 
     /**
      * Taps on the name you are in a call with in conversation list
+     *
+     * @param name user name/alias
+     * @throws Exception
      * @step. ^I tap on chat I am in a call with name (.*)$
-     * @param name
-     * @throws Throwable
      */
     @When("^I tap on chat I am in a call with name (.*)$")
-    public void ITapOnChatIAmInACallWithName(String name) throws Throwable {
+    public void ITapOnChatIAmInACallWithName(String name) throws Exception {
         name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         getContactListPage().tapOnNameYourInCallWith(name);
     }

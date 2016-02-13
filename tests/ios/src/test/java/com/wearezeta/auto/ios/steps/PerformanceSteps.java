@@ -182,7 +182,7 @@ public class PerformanceSteps {
             public void run() throws Exception {
                 visitConversationWhenAvailable(destConvoName);
                 String secondConvoName = getContactListPage()
-                        .getDialogNameByIndex(2);
+                        .getConversationNameByIndex(2);
                 visitConversationWhenAvailable(secondConvoName);
             }
         }, timeout);
