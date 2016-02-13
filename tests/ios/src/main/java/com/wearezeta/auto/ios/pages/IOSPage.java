@@ -128,7 +128,7 @@ public abstract class IOSPage extends BasePage {
     public void clickPopupPasteButton() throws Exception {
         getElement(nameEditingItemPaste, "Paste popup is not visible").click();
         // Wait for a while until the content is pasted
-        Thread.sleep(2000);
+        Thread.sleep(5000);
     }
 
     private void clickAtSimulator(int x, int y) throws Exception {
