@@ -125,21 +125,7 @@ Feature: Conversation View
       | Name      | Contact   | YouTubeLink                                |
       | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
 
-  @C2579 @staging @id3204
-  Scenario Outline: Verify appearance of title bar for conversation, restored from background [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I Sign in on tablet using my email
-    And I see conversations list
-    When I tap on contact name <Contact>
-    And I close the app for <CloseAppTime> seconds
-    Then I see title bar in conversation name <Contact>
-
-    Examples:
-      | Name      | Contact   | CloseAppTime |
-      | user1Name | user2Name | 2            |
-
-  @C2580 @staging @id3205
+  @C2580 @regression @id3205
   Scenario Outline: Verify appearance of title bar for conversation, restored from background [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -442,7 +428,7 @@ Feature: Conversation View
     Given I see conversations list
     Given User Myself sends encrypted message "<Link>" to user <Contact1>
     When I tap on contact name <Contact1>
-    And I tap on link <Link>
+    And I tap on message "<Link>"
     Then I see WireWebsitePage
 
     Examples:
@@ -660,7 +646,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
       | user1Name | user2Name | user3Name | Caramba!      | testing.jpg |
 
-  @C2589 @staging @id2381
+  @C2589 @regression @id2381
   Scenario Outline: Verify cursor swiping is disabled when you scroll back into a conversation [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -677,7 +663,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C2602 @staging @id4086
+  @C2602 @regression @id4086
   Scenario Outline: Verify cursor swiping is disabled when you scroll back into a conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
