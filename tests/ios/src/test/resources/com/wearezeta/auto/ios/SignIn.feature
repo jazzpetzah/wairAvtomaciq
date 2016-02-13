@@ -31,20 +31,20 @@ Feature: Sign In
   Scenario Outline: Verify possibility of password reset (welcome page)
     Given There is 1 user where <Name> is me
     Given I see sign in screen
-    And I tap I HAVE AN ACCOUNT button
-    And I click on Change Password button on SignIn
-    And I wait for <WebPageLoadTimeout> seconds
-    When I change URL to staging
-    And I wait for <WebPageLoadTimeout> seconds
-    And I commit email <Login> to change password
-    And I copy link from email and paste it into Safari
-    And I wait for <WebPageLoadTimeout> seconds
-    And I commit new password <NewPassword>
+    Given I tap I HAVE AN ACCOUNT button
+    Given I click on Change Password button on SignIn
+    Given I wait for <WebPageLoadTimeout> seconds
+    Given I change URL to staging
+    Given I wait for <WebPageLoadTimeout> seconds
+    Given I commit email <Login> to change password
+    Given I copy link from email and paste it into Safari
+    Given I wait for <WebPageLoadTimeout> seconds
+    When I commit new password <NewPassword>
     And I wait for <WebPageLoadTimeout> seconds
     # click Open button
     And I press Enter key in Simulator window
     And I wait for <WebPageLoadTimeout> seconds
-    When I have entered login <Login>
+    And I have entered login <Login>
     And I have entered password <NewPassword>
     Then I press Login button
 
