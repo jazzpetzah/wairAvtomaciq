@@ -122,13 +122,17 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void clickPopupCopyButton() throws Exception {
-        getElement(nameEditingItemCopy, "Copy popup is not viisble").click();
+        getElement(nameEditingItemCopy, "Copy popup is not visible").click();
     }
 
     public void clickPopupPasteButton() throws Exception {
         getElement(nameEditingItemPaste, "Paste popup is not visible").click();
-        // Wait for a while until the content is pasted
-        Thread.sleep(5000);
+        final int popupVisibilityTimeoutSeconds = 10;
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEditingItemPaste, popupVisibilityTimeoutSeconds)) {
+            throw new IllegalStateException(String.format(
+                    "Paste popup is still visible after %s seconds timeout", popupVisibilityTimeoutSeconds));
+        }
+        Thread.sleep(2000);
     }
 
     private void clickAtSimulator(int x, int y) throws Exception {
@@ -244,6 +248,7 @@ public abstract class IOSPage extends BasePage {
         }
     }
 
+    @SuppressWarnings("unused")
     protected void longClickAt(WebElement el) throws Exception {
         final Dimension elSize = el.getSize();
         final Point elLocation = el.getLocation();
