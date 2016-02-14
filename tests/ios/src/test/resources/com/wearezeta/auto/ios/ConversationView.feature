@@ -352,10 +352,12 @@ Feature: Conversation View
     And I remember media container state
     And I tap media container
     And I navigate back to conversations list
+    And I wait for 1 second
     And I tap play/pause button in contact list next to username <Contact>
     And I tap on contact name <Contact>
     Then I see media container state is not changed
     When I navigate back to conversations list
+    And I wait for 1 second
     And I tap play/pause button in contact list next to username <Contact>
     And I tap on contact name <Contact>
     Then I see media container state is changed
