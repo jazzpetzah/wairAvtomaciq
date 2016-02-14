@@ -544,7 +544,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2546 @staging @id3961
+  @C2546 @regression @id3961
   Scenario Outline: Verify deleting 1-to-1 conversation from archive [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -565,7 +565,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2547 @staging @id3962
+  @C2547 @regression @id3962
   Scenario Outline: Verify deleting 1-to-1 conversation from archive [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -587,7 +587,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2552 @staging @id3969
+  @C2552 @regression @id3969
   Scenario Outline: Verify posting in a group conversation without content [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -609,7 +609,6 @@ Feature: Conversation List
     Then I see empty group chat page with users <Contact1>,<Contact2> with only system message
     When I type the default message and send it
     Then I see 1 default message in the dialog
-    And I see 2 conversation entries
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Image       |
@@ -818,7 +817,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | KICKCHAT      |
 
-  @C2540 @staging @id4015
+  @C2540 @regression @id4015
   Scenario Outline: Verify blocking person from action menu [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -839,7 +838,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2541 @staging @id4016
+  @C2541 @regression @id4016
   Scenario Outline: Verify blocking person from action menu [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
