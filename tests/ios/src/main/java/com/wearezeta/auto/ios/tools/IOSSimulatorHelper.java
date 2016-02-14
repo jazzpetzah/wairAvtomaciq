@@ -7,7 +7,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import static com.wearezeta.auto.common.CommonUtils.getIOSToolsRoot;
 
 public class IOSSimulatorHelper {
-    public static final int SIMULATOR_INTERACTION_TIMEOUT = 40; //seconds
+    public static final int SIMULATOR_INTERACTION_TIMEOUT = 3 * 60; //seconds
 
     public IOSSimulatorHelper() {
     }
