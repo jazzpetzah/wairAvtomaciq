@@ -6,6 +6,7 @@ Feature: Performance Tests
     Given User <Name> is Me
     Given Myself is connected to all other users
     Given User Myself removes all his registered OTR clients
+    Given User <Sender> removes all his registered OTR clients
     Given I sign in using my email with <LoginTimeout> seconds timeout
     Given I accept First Time overlay as soon as it is visible
     Given I receive <MsgsCount> messages from contact <Sender>
