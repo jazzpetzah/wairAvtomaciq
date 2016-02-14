@@ -242,6 +242,8 @@ public abstract class IOSPage extends BasePage {
             }
             IOSSimulatorHelper.clickAt("0.3", "0.5",
                     String.format("%.3f", DriverUtils.SINGLE_TAP_DURATION / 1000.0));
+            // Wait for transition animation
+            Thread.sleep(2000);
         } else {
             // https://discuss.appium.io/t/runappinbackground-does-not-work-for-ios9/6201
             this.getDriver().runAppInBackground(timeSeconds);
