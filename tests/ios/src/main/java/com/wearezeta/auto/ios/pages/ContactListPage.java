@@ -27,7 +27,7 @@ public class ContactListPage extends IOSPage {
             String.format("%s/UIAStaticText[@name='%s']", xpathStrMainWindow, name);
 
     private static final Function<String, String> xpathStrConvoListEntryByName = name ->
-            String.format("%s[ .//*[@value='%s'] ]", xpathStrContactListItems, name);
+            String.format("%s[@name='%s']", xpathStrContactListItems, name);
     private static final Function<Integer, String> xpathStrConvoListEntryByIdx = idx ->
             String.format("(%s)[%s]", xpathStrContactListItems, idx);
     private static final Function<Integer, String> xpathStrConvoListEntryNameByIdx = idx ->
