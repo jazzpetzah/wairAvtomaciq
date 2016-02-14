@@ -2,30 +2,23 @@ package com.wearezeta.auto.common;
 
 import com.wearezeta.auto.common.backend.*;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
-import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.*;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static javax.xml.bind.DatatypeConverter.parseDateTime;
 
 public final class CommonSteps {
     public static final String CONNECTION_NAME = "CONNECT TO ";
     public static final String CONNECTION_MESSAGE = "Hello!";
     private static final int BACKEND_USER_SYNC_TIMEOUT = 45; // seconds
     private static final int BACKEND_SUGGESTIONS_SYNC_TIMEOUT = 90; // seconds
-
-    @SuppressWarnings("unused")
-    private static final Logger log = ZetaLogger.getLog(CommonSteps.class
-            .getSimpleName());
 
     private String pingId = null;
 
@@ -77,7 +70,7 @@ public final class CommonSteps {
             throws Exception {
         ClientUser chatOwner = usrMgr
                 .findUserByNameOrNameAlias(chatOwnerNameAlias);
-        List<ClientUser> participants = new ArrayList<ClientUser>();
+        List<ClientUser> participants = new ArrayList<>();
         for (String participantNameAlias : splitAliases(otherParticipantsNameAlises)) {
             participants.add(usrMgr
                     .findUserByNameOrNameAlias(participantNameAlias));
@@ -191,10 +184,6 @@ public final class CommonSteps {
         } finally {
             pingThread.interrupt();
         }
-    }
-
-    public void WaitForTime(double seconds) throws Exception {
-        WaitForTime((int) seconds);
     }
 
     public void BlockContact(String blockAsUserNameAlias,
@@ -332,14 +321,14 @@ public final class CommonSteps {
     }
 
     public void UserSentOtrMessageToUser(String msgFromUserNameAlias,
-            String dstUserNameAlias, String message, String deviceName) throws Exception {
+                                         String dstUserNameAlias, String message, String deviceName) throws Exception {
         ClientUser msgFromUser = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
         ClientUser msgToUser = usrMgr.findUserByNameOrNameAlias(dstUserNameAlias);
         SEBridge.getInstance().sendConversationMessage(msgFromUser, msgToUser.getId(), message, deviceName);
     }
 
     public void UserSentOtrMessageToUser(String msgFromUserNameAlias,
-            String dstUserNameAlias, String message) throws Exception {
+                                         String dstUserNameAlias, String message) throws Exception {
         UserSentOtrMessageToUser(msgFromUserNameAlias, dstUserNameAlias, message, null);
     }
 
@@ -359,7 +348,7 @@ public final class CommonSteps {
     }
 
     public void UserSentOtrMessageToConversation(String userFromNameAlias,
-            String dstConversationName, String message, String deviceName) throws Exception {
+                                                 String dstConversationName, String message, String deviceName) throws Exception {
         ClientUser userFrom = usrMgr.findUserByNameOrNameAlias(userFromNameAlias);
         dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
         String dstConvId = BackendAPIWrappers.getConversationIdByName(userFrom, dstConversationName);
@@ -367,7 +356,7 @@ public final class CommonSteps {
     }
 
     public void UserSentOtrMessageToConversation(String userFromNameAlias,
-            String dstConversationName, String message) throws Exception {
+                                                 String dstConversationName, String message) throws Exception {
         UserSentOtrMessageToConversation(userFromNameAlias, dstConversationName, message, null);
     }
 
@@ -492,7 +481,7 @@ public final class CommonSteps {
                                               String contactsToAddNameAliases, String chatName) throws Exception {
         final ClientUser userAs = usrMgr
                 .findUserByNameOrNameAlias(userAsNameAlias);
-        List<ClientUser> contactsToAdd = new ArrayList<ClientUser>();
+        List<ClientUser> contactsToAdd = new ArrayList<>();
         for (String contactNameAlias : splitAliases(contactsToAddNameAliases)) {
             contactsToAdd.add(usrMgr
                     .findUserByNameOrNameAlias(contactNameAlias));
@@ -522,7 +511,7 @@ public final class CommonSteps {
 
     }
 
-    private Map<String, String> profilePictureSnapshotsMap = new HashMap<String, String>();
+    private Map<String, String> profilePictureSnapshotsMap = new HashMap<>();
 
     public void UserXTakesSnapshotOfProfilePicture(String userNameAlias)
             throws Exception {
@@ -536,7 +525,7 @@ public final class CommonSteps {
             String userNameAlias, int secondsTimeout) throws Exception {
         final ClientUser userAs = usrMgr
                 .findUserByNameOrNameAlias(userNameAlias);
-        String previousHash = null;
+        String previousHash;
         if (profilePictureSnapshotsMap.containsKey(userAs.getEmail())) {
             previousHash = profilePictureSnapshotsMap.get(userAs.getEmail());
         } else {
@@ -545,7 +534,7 @@ public final class CommonSteps {
                     userAs.getEmail()));
         }
         long millisecondsStarted = System.currentTimeMillis();
-        String actualHash = null;
+        String actualHash;
         do {
             actualHash = BackendAPIWrappers.getUserPictureHash(userAs);
             if (!actualHash.equals(previousHash)) {
@@ -610,5 +599,22 @@ public final class CommonSteps {
     public List<String> GetDevicesIDsForUser(String name) throws Exception {
         final ClientUser usr = usrMgr.findUserByNameOrNameAlias(name);
         return seBridge.getDeviceIds(usr);
+    }
+
+    public void UserKeepsXOtrClients(String userAs, int clientsCountToKeep) throws Exception {
+        final ClientUser usr = usrMgr.findUserByNameOrNameAlias(userAs);
+        final List<OtrClient> allOtrClients = BackendAPIWrappers.getOtrClients(usr);
+        final String defaultDateStr = "2016-01-01T12:00:00Z";
+        // Newly registered clients coming first
+        Collections.sort(allOtrClients, (c1, c2) ->
+                parseDateTime(c2.getTime().orElse(defaultDateStr)).getTime().compareTo(
+                        parseDateTime(c1.getTime().orElse(defaultDateStr)).getTime()
+                )
+        );
+        if (allOtrClients.size() > clientsCountToKeep) {
+            for (OtrClient c : allOtrClients.subList(clientsCountToKeep + 1, allOtrClients.size())) {
+                BackendAPIWrappers.removeOtrClient(usr, c);
+            }
+        }
     }
 }
