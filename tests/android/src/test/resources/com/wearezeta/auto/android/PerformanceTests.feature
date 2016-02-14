@@ -6,9 +6,9 @@ Feature: Performance Tests
     Given User <Name> is Me
     Given Myself is connected to all other users
     Given User Myself only keeps his 2 most recent OTR clients
-    Given User <Sender> removes all his registered OTR clients
     Given I sign in using my email with <LoginTimeout> seconds timeout
     Given I accept First Time overlay as soon as it is visible
+    Given User <Sender> removes all his registered OTR clients
     Given I receive <MsgsCount> messages from contact <Sender>
     When I start test cycle for <Time> minutes with messages received from <Sender>
     Then I generate performance report for <UsersNumber> users
