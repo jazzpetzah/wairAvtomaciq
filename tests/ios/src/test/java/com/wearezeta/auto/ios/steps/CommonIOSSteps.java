@@ -761,9 +761,8 @@ public class CommonIOSSteps {
      * Press Enter button on the keyboard if this is simulator or Commit button on the
      * on-screen keyboard if real device
      *
-     * @step. ^I press Enter key in Simulator window$
-     *
      * @throws Exception
+     * @step. ^I press Enter key in Simulator window$
      */
     @When("^I press Enter key in Simulator window$")
     public void IPressEnterKey() throws Exception {
@@ -772,5 +771,28 @@ public class CommonIOSSteps {
         } else {
             pagesCollection.getCommonPage().clickKeyboardCommitButton();
         }
+    }
+
+    /**
+     * Check whether web browser is visible with particular url
+     *
+     * @param expectedUrl full web page URL
+     * @throws Exception
+     * @step. ^I see "(.*)" web page opened$
+     */
+    @Then("^I see \"(.*)\" web page opened$")
+    public void ISeeWebPage(String expectedUrl) throws Exception {
+        pagesCollection.getCommonPage().isWebPageVisible(expectedUrl);
+    }
+
+    /**
+     * Tap the corresponding button to switch back to Wire app from browser view
+     *
+     * @step. ^I tap Back To Wire button$
+     * @throws Exception
+     */
+    @When("^I tap Back To Wire button$")
+    public void ITapBackToWire() throws Exception {
+        pagesCollection.getCommonPage().tapBackToWire();
     }
 }

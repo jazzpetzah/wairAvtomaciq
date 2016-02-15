@@ -452,3 +452,24 @@ Feature: E2EE
     Examples:
       | Name      | DeviceName | Password      |
       | user1Name | Device1    | user1Password |
+
+  @C3498 @staing @torun
+  Scenario Outline: Verify "learn more" leads to the proper page
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email
+    Given I see conversations list
+    Given User <Contact1> sends 1 encrypted message to user Myself
+    And I tap on contact name <Contact1>
+    And I open conversation details
+    And I switch to Devices tab
+    When I tap "Why verify conversation?" link
+    Then I see "https://wire.com/privacy/why" web page opened
+    When I tap Back To Wire button
+    And I open details page of device number 1
+    And I tap "How do I do that?" link
+    Then I see "https://wire.com/privacy/how" web page opened
+
+    Examples:
+      | Name      | Contact1  |
+      | user1Name | user2Name |

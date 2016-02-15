@@ -218,4 +218,8 @@ public class OtherUserPersonalInfoPage extends IOSPage {
         String locator = xpathStrDeviceId.apply(convertStringIDtoLocatorTypeID(deviceId));
         return DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(locator));
     }
+
+    public void tapLink(String expectedLink) throws Exception {
+        return;
+    }
 }

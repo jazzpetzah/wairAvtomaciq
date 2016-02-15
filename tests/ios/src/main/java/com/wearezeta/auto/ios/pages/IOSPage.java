@@ -379,7 +379,6 @@ public abstract class IOSPage extends BasePage {
         }
     }
 
-
     @Override
     protected WebElement getElement(By locator, String message, int timeoutSeconds) throws Exception {
         try {
@@ -388,5 +387,13 @@ public abstract class IOSPage extends BasePage {
             log.debug(getDriver().getPageSource());
             throw e;
         }
+    }
+
+    public void isWebPageVisible(String expectedUrl) throws Exception {
+        return;
+    }
+
+    public void tapBackToWire() throws Exception {
+        return;
     }
 }

@@ -297,6 +297,19 @@ public class OtherUserPersonalInfoPageSteps {
             Assert.assertTrue(String.format("Device ID '%s' is not visible", id), getOtherUserPersonalInfoPage()
                 .isUserDeviceIdVisible(id));
         }
-
     }
+
+    /**
+     * Tap the corresponding link on user details page
+     *
+     * @step. ^I tap "(.*)" link$
+     * @param expectedLink the full text of the link to be clicked
+     * @throws Exception
+     */
+    @When("^I tap \"(.*)\" link$")
+    public void ITapLink(String expectedLink) throws Exception {
+        getOtherUserPersonalInfoPage().tapLink(expectedLink);
+    }
+
+
 }
