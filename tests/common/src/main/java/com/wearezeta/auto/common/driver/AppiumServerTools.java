@@ -90,6 +90,7 @@ public class AppiumServerTools {
             throw new IllegalStateException(String.format(
                     "Appium server has failed to restart after %s seconds timeout", RESTART_TIMEOUT / 1000));
         }
+        Thread.sleep(1000);
         log.info(String.format("Appium server has been successfully restarted and now is listening on port %s", PORT));
     }
 }
