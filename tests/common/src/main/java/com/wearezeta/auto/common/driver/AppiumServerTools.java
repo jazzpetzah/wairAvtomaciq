@@ -12,20 +12,19 @@ public class AppiumServerTools {
     private static final int PORT = 4723;
     private static final int RESTART_TIMEOUT = 20000; // milliseconds
     private static final int IS_RUNNING_RETCODE = 22;
+    private static final String[] PING_CMD = new String[]{
+            "/usr/bin/curl",
+            "--output", "/dev/null",
+            "--fail",
+            "--silent",
+            "--head",
+            String.format("http://127.0.0.1:%s/wd/hub", PORT)
+    };
 
     private static boolean waitUnlessIsStopped(long millisecondsTimeout) throws Exception {
         final long millisecondsStarted = System.currentTimeMillis();
         while (System.currentTimeMillis() - millisecondsStarted <= millisecondsTimeout) {
-            final int exitCode = Runtime.getRuntime().exec(
-                    new String[]{
-                            "/usr/bin/curl",
-                            "--output", "/dev/null",
-                            "--fail",
-                            "--silent",
-                            "--head",
-                            String.format("http://127.0.0.1:%s/wd/hub", PORT)
-                    }
-            ).waitFor();
+            final int exitCode = Runtime.getRuntime().exec(PING_CMD).waitFor();
             if (exitCode != IS_RUNNING_RETCODE) {
                 return true;
             }
@@ -37,16 +36,7 @@ public class AppiumServerTools {
     private static boolean waitUnlessIsRunning(long millisecondsTimeout) throws Exception {
         final long millisecondsStarted = System.currentTimeMillis();
         while (System.currentTimeMillis() - millisecondsStarted <= millisecondsTimeout) {
-            final int exitCode = Runtime.getRuntime().exec(
-                    new String[]{
-                            "/usr/bin/curl",
-                            "--output", "/dev/null",
-                            "--fail",
-                            "--silent",
-                            "--head",
-                            String.format("http://127.0.0.1:%s/wd/hub", PORT)
-                    }
-            ).waitFor();
+            final int exitCode = Runtime.getRuntime().exec(PING_CMD).waitFor();
             if (exitCode == IS_RUNNING_RETCODE) {
                 return true;
             }
