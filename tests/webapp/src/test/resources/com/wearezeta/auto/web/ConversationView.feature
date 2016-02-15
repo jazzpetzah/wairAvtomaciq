@@ -123,35 +123,34 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendPictureGroupChat | userpicture_landscape.jpg |
 
-  @C1764 @regression
-  Scenario Outline: I can see missed messages when rejoining a conversation after leaving it
+  @C1764 @regression @e2ee
+  Scenario Outline: I cannot see missed messages when rejoining a conversation after leaving it
     Given There are 3 users where <Name> is me
-    Given user <Contact1> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given User Myself sends message <Msg1FromUserA> to conversation <ChatName>
-    Given User <Contact1> is me
     Given I switch to Sign In page
-    Given I Sign in using login <Contact1Email> and password <Contact1Password>
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
     And I see Contact list with name <ChatName>
     When I open conversation with <ChatName>
+    And Contact <Contact1> sends encrypted message <Msg1FromUserA> to group conversation <ChatName>
     Then I see text message <Msg1FromUserA>
     And I click People button in group conversation
     And I see Group Participants popover
     When I click Leave button on Group Participants popover
     And I click confirm leave group conversation on Group Participants popover
     Then I do not see Contact list with name <ChatName>
-    And User <Name> sends message <Msg2FromUserA> to conversation <ChatName>
+    And Contact <Contact1> sends encrypted message <Msg2FromUserA> to group conversation <ChatName>
     When I open archive
     And I unarchive conversation <ChatName>
     When I open conversation with <ChatName>
     Then I do not see text message <Msg2FromUserA>
-    When User <Name> added contact <Contact1> to group chat <ChatName>
-    Then I see text message <Msg2FromUserA>
+    When User <Contact1> added contact <Name> to group chat <ChatName>
+    Then I do not see text message <Msg2FromUserA>
 
-    Examples: 
-      | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  | ChatName  | Msg1FromUserA | Msg2FromUserA |
-      | user1Name | user2Name | user2Email    | user2Password    | user3Name | GroupChat | Message1      | Message2      |
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | Msg1FromUserA | Msg2FromUserA |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | SendPictureGroupChat | Message1      | Message2      |
 
   @C1710 @regression
   Scenario Outline: Verify you can add maximum+1 number of participants into group conversation
