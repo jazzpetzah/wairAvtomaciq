@@ -193,8 +193,8 @@ class Device extends RemoteEntity implements IDevice {
 
     @Override
     public void destroy() throws Exception {
-        if (this.coordinatorActorRef != null) {
-            this.coordinatorActorRef.tell(PoisonPill.getInstance(), this.ref());
+        if (this.coordinatorActorRef != null && this.hostProcess != null) {
+            this.ref().tell(PoisonPill.getInstance(), null);
             this.coordinatorActorRef = null;
             this.hostProcess = null;
         }

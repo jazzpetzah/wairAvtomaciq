@@ -117,7 +117,6 @@ public class SEBridge {
 
     public void addRemoteDeviceToAccount(ClientUser user, String deviceName, String label) throws Exception {
         IDevice dstDevice = this.getDevicePool().addDevice(user, deviceName);
-        this.login(user, dstDevice);
         LOG.info("Set label for device " + deviceName + " to " + label);
         dstDevice.setLabel(label);
     }
