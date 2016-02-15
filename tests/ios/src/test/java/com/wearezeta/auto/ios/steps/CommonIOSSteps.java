@@ -782,14 +782,15 @@ public class CommonIOSSteps {
      */
     @Then("^I see \"(.*)\" web page opened$")
     public void ISeeWebPage(String expectedUrl) throws Exception {
-        pagesCollection.getCommonPage().isWebPageVisible(expectedUrl);
+        Assert.assertTrue(String.format("The expected URL '%s' has not been opened in web browser", expectedUrl),
+                pagesCollection.getCommonPage().isWebPageVisible(expectedUrl));
     }
 
     /**
      * Tap the corresponding button to switch back to Wire app from browser view
      *
-     * @step. ^I tap Back To Wire button$
      * @throws Exception
+     * @step. ^I tap Back To Wire button$
      */
     @When("^I tap Back To Wire button$")
     public void ITapBackToWire() throws Exception {

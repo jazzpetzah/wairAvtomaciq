@@ -73,6 +73,9 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     private static final Function<String, String> xpathStrDeviceId = id -> String.format(
         "//UIAStaticText[contains(@name, '%s')]", id);
 
+    private static final Function<String, String> xpathStrLinkBlockByText = text -> String.format(
+            "//*[contains(@name, '%s')]", text);
+
     public OtherUserPersonalInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -220,6 +223,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     }
 
     public void tapLink(String expectedLink) throws Exception {
-        return;
+        final By locator = By.xpath(xpathStrLinkBlockByText.apply(expectedLink));
+        DriverUtils.tapOnPercentOfElement(getDriver(), getElement(locator), 15, 95);
     }
 }

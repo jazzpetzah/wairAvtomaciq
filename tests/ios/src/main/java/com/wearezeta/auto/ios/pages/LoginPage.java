@@ -28,8 +28,6 @@ public class LoginPage extends IOSPage {
     private static final By xpathSafariChangePasswordEmailField =
             By.xpath("//UIAApplication[@name='Safari']//UIATextField[@value='Email']");
 
-    private static final By xpathSafariURLButton = By.xpath("//UIAButton[@name='URL']");
-
     private static final By xpathSafariEnterNewPasswordField =
             By.xpath("//UIASecureTextField[@value='Enter new password']");
 
@@ -144,7 +142,7 @@ public class LoginPage extends IOSPage {
     }
 
     public void changeURLInBrowser(String URL) throws Exception {
-        this.inputStringFromKeyboard(getElement(xpathSafariURLButton), URL, false, true);
+        this.inputStringFromKeyboard(getElement(xpathBrowserURLButton), URL, false, true);
     }
 
     public void commitNewPassword(String newPassword) throws Exception {

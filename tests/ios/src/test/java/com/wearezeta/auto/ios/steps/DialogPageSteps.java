@@ -6,7 +6,6 @@ import java.text.Normalizer.Form;
 
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
-import cucumber.api.java.en.And;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;

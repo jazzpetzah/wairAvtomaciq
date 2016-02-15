@@ -40,6 +40,10 @@ public abstract class IOSPage extends BasePage {
     private static final Function<String, String> xpathStrAlertByText = text ->
             String.format("//UIAAlert[ .//*[contains(@name, '%s')] or contains(@name, '%s')]", text, text);
 
+    protected static final By xpathBrowserURLButton = By.xpath("//UIAButton[@name='URL']");
+
+    protected static final By nameBackToWireBrowserButton = By.name("Back to Wire");
+
     private IOSKeyboard onScreenKeyboard;
 
     protected long getDriverInitializationTimeout() {
@@ -389,11 +393,28 @@ public abstract class IOSPage extends BasePage {
         }
     }
 
-    public void isWebPageVisible(String expectedUrl) throws Exception {
-        return;
+    public boolean isWebPageVisible(String expectedUrl) throws Exception {
+        final WebElement urlBar = getElement(xpathBrowserURLButton, "The address bar of web browser is not visible");
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            final Dimension elSize = urlBar.getSize();
+            final Point elLocation = urlBar.getLocation();
+            clickAtSimulator(elLocation.x + (elSize.width / 6) / 100, elLocation.y + (elSize.height / 2) / 100);
+            Thread.sleep(1000);
+        } else {
+            urlBar.click();
+        }
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(expectedUrl));
     }
 
     public void tapBackToWire() throws Exception {
-        return;
+        final WebElement backToWireButton = getElement(nameBackToWireBrowserButton);
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            final Dimension elSize = backToWireButton.getSize();
+            final Point elLocation = backToWireButton.getLocation();
+            clickAtSimulator(elLocation.x + (elSize.width / 2) / 100, elLocation.y + (elSize.height / 2) / 100);
+            Thread.sleep(1000);
+        } else {
+            backToWireButton.click();
+        }
     }
 }

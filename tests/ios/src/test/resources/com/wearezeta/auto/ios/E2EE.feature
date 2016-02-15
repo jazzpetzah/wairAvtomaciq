@@ -453,7 +453,7 @@ Feature: E2EE
       | Name      | DeviceName | Password      |
       | user1Name | Device1    | user1Password |
 
-  @C3498 @staing @torun
+  @C3498 @staging
   Scenario Outline: Verify "learn more" leads to the proper page
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -463,11 +463,14 @@ Feature: E2EE
     And I tap on contact name <Contact1>
     And I open conversation details
     And I switch to Devices tab
-    When I tap "Why verify conversation?" link
+    When I tap "Why verify conversations?" link in user details
+    And I wait for 3 seconds
     Then I see "https://wire.com/privacy/why" web page opened
     When I tap Back To Wire button
+    And I wait for 3 seconds
     And I open details page of device number 1
-    And I tap "How do I do that?" link
+    And I tap "How do I do that?" link in user details
+    And I wait for 3 seconds
     Then I see "https://wire.com/privacy/how" web page opened
 
     Examples:

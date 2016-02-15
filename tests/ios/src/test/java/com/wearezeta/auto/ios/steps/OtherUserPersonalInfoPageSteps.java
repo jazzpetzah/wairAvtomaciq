@@ -300,13 +300,14 @@ public class OtherUserPersonalInfoPageSteps {
     }
 
     /**
-     * Tap the corresponding link on user details page
+     * Tap the corresponding link on user details page. Since we cannot detect the exact link position
+     * we just assume this link is located at the bottom left corner of the container text block.
      *
-     * @step. ^I tap "(.*)" link$
+     * @step. ^I tap "(.*)" link in user details$
      * @param expectedLink the full text of the link to be clicked
      * @throws Exception
      */
-    @When("^I tap \"(.*)\" link$")
+    @When("^I tap \"(.*)\" link in user details$")
     public void ITapLink(String expectedLink) throws Exception {
         getOtherUserPersonalInfoPage().tapLink(expectedLink);
     }
