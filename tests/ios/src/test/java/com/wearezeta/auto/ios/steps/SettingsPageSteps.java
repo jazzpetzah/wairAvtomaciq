@@ -82,14 +82,14 @@ public class SettingsPageSteps {
      * @param itemName the expected item name
      * @throws Exception
      */
-    @Then("^I (dont )?see settings item (.*)$")
+    @Then("^I (do not )?see settings item (.*)$")
     public void ISeeSettingsItem(String shouldNot, String itemName) throws Exception {
         if (shouldNot == null) {
             Assert.assertTrue(String.format("Settings menu item '%s' is not visible", itemName),
                     getSettingsPage().isItemVisible(itemName));
         } else {
-            Assert.assertFalse(String.format("Settings menu item %s is visible",itemName),
-                    getSettingsPage().isItemVisible(itemName));
+            Assert.assertTrue(String.format("Settings menu item %s is visible",itemName),
+                    getSettingsPage().isItemInvisible(itemName));
         }
     }
 
@@ -152,9 +152,9 @@ public class SettingsPageSteps {
      * @param shouldNot equals to null if the device is in list
      * @param device    name of device in list
      * @throws Exception
-     * @step. ^I (dont )?see device (.*) in devices list$
+     * @step. ^I (do not )?see device (.*) in devices list$
      */
-    @Then("^I (dont )?see device (.*) in devices list$")
+    @Then("^I (do not )?see device (.*) in devices list$")
     public void ISeeDeviceInDevicesList(String shouldNot, String device) throws Exception {
         if (shouldNot == null) {
             Assert.assertTrue(String.format("The device %s is not visible in the device list",device),

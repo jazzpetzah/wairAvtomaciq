@@ -103,11 +103,13 @@ public class SettingsPage extends IOSPage {
     public boolean isCurrentDeviceVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), currentLabel, 2) &&
                 (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathCurrentDevices));
-
     }
 
     public void tapCurrentDevice() throws Exception {
-        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathCurrentDevices))
-             getElement(xpathCurrentDevices).click();
+        getElement(xpathCurrentDevices).click();
+    }
+
+    public boolean isItemInvisible(String itemName) throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.name(itemName));
     }
 }

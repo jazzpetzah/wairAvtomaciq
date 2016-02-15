@@ -336,11 +336,11 @@ Feature: E2EE
     And I click on Settings button from the options menu
     And I select settings item Privacy & Security
     And I select settings item Manage devices
-    When I see my current device
-    Then I tap on current device
-    And I dont see settings item Verified
-    And I dont see settings item Reset session
-    And I dont see settings item Remove device
+    When I tap on current device
+    Then I see settings item Key Fingerprint
+    And I do not see settings item Verified
+    And I do not see settings item Reset session
+    And I do not see settings item Remove device
 
     Examples:
       | Name      |
