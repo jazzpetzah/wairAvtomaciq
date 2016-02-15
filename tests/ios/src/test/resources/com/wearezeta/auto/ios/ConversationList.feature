@@ -16,7 +16,7 @@ Feature: Conversation List
       | Name      | ArchivedUser |
       | user1Name | user2Name    |
 
-  @C352 @rc @regression @id1332 @id2171 @id2172
+  @C352 @rc @clumsy @regression @id1332 @id2171 @id2172
   Scenario Outline: Verify archive a conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -202,7 +202,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C848 @rc @regression @id3314
+  @C848 @rc @clumsy @regression @id3314
   Scenario Outline: Verify leaving group conversation from the action menu
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -225,7 +225,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName   |
       | user1Name | user2Name | user3Name | LeaveActionMenu |
 
-  @C840 @rc @regression @id3315
+  @C840 @rc @clumsy @regression @id3315
   Scenario Outline: Verify removing the content from the group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -251,7 +251,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
       | user1Name | user2Name | user3Name | TESTCHAT      | testing.jpg |
 
-  @C842 @rc @regression @id3318
+  @C842 @rc @clumsy @regression @id3318
   Scenario Outline: Verify removing the history from 1-to1 conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

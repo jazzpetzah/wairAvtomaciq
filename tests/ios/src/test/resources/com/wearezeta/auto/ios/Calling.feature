@@ -18,7 +18,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @C3180 @rc @calling_basic @id908
+  @C3180 @rc @calling_basic @clumsy @id908
   Scenario Outline: Verify starting outgoing call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -52,7 +52,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2108 @rc @calling_basic @id896
+  @C2108 @rc @calling_basic @clumsy @id896
   Scenario Outline: Verify ignoring of incoming call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -67,7 +67,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @C2111 @rc @calling_basic @IPv6 @id2093
+  @C2111 @rc @calling_basic @clumsy @IPv6 @id2093
   Scenario Outline: (ZIOS-5534) Verify accepting incoming call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -406,7 +406,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend | NumberOfAvatars | NumberOf1on1CallAvatars |
       | user1Name | user2Name | user3Name | GROUPCALL     | autocall    | 3               | 2                       |
 
-  @C2065 @rc @calling_basic @IPv6 @id3270
+  @C2065 @rc @calling_basic @clumsy @IPv6 @id3270
   Scenario Outline: Verify possibility of starting group call
     Given There are 10 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>
