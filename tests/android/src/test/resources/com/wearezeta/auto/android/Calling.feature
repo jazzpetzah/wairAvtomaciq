@@ -236,12 +236,8 @@ Feature: Calling
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    Given <Contact2> starts waiting instance using <CallBackend>
-    Given <Contact2> accepts next incoming call automatically
-    Given <Contact3> starts waiting instance using <CallBackend>
-    Given <Contact3> accepts next incoming call automatically
-    Given <Contact4> starts waiting instance using <CallBackend>
-    Given <Contact4> accepts next incoming call automatically
+    Given <Contact2>,<Contact3>,<Contact4> start waiting instance using <CallBackend>
+    Given <Contact2>,<Contact3>,<Contact4> accept next incoming call automatically
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts

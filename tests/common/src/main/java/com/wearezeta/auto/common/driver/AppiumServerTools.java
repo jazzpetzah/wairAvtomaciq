@@ -4,7 +4,6 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import org.apache.log4j.Logger;
 
 import java.io.File;
-import java.net.Socket;
 import java.util.concurrent.TimeUnit;
 
 public class AppiumServerTools {
@@ -12,25 +11,46 @@ public class AppiumServerTools {
 
     private static final int PORT = 4723;
     private static final int RESTART_TIMEOUT = 20000; // milliseconds
+    private static final int IS_RUNNING_RETCODE = 22;
 
-    private static boolean waitUntilPortOpened() throws InterruptedException {
-        Socket s = null;
+    private static boolean waitUnlessIsStopped(long millisecondsTimeout) throws Exception {
         final long millisecondsStarted = System.currentTimeMillis();
-        while (System.currentTimeMillis() - millisecondsStarted <= RESTART_TIMEOUT) {
-            try {
-                s = new Socket("127.0.0.1", PORT);
-                return true;
-            } catch (Exception e) {
-                Thread.sleep(500);
-            } finally {
-                if (s != null) {
-                    try {
-                        s.close();
-                    } catch (Exception e) {
-                        // Ignore silently
+        while (System.currentTimeMillis() - millisecondsStarted <= millisecondsTimeout) {
+            final int exitCode = Runtime.getRuntime().exec(
+                    new String[]{
+                            "/usr/bin/curl",
+                            "--output", "/dev/null",
+                            "--fail",
+                            "--silent",
+                            "--head",
+                            String.format("http://127.0.0.1:%s/wd/hub", PORT)
                     }
-                }
+            ).waitFor();
+            if (exitCode != IS_RUNNING_RETCODE) {
+                return true;
             }
+            Thread.sleep(500);
+        }
+        return false;
+    }
+
+    private static boolean waitUnlessIsRunning(long millisecondsTimeout) throws Exception {
+        final long millisecondsStarted = System.currentTimeMillis();
+        while (System.currentTimeMillis() - millisecondsStarted <= millisecondsTimeout) {
+            final int exitCode = Runtime.getRuntime().exec(
+                    new String[]{
+                            "/usr/bin/curl",
+                            "--output", "/dev/null",
+                            "--fail",
+                            "--silent",
+                            "--head",
+                            String.format("http://127.0.0.1:%s/wd/hub", PORT)
+                    }
+            ).waitFor();
+            if (exitCode == IS_RUNNING_RETCODE) {
+                return true;
+            }
+            Thread.sleep(500);
         }
         return false;
     }
@@ -68,29 +88,35 @@ public class AppiumServerTools {
 
     public static synchronized void resetIOSSimulator() throws Exception {
         Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9",
-                "Simulator", "configd_sim", "ids_simd", "launchd_sim", "instruments", "node"}).
+                "Simulator", "configd_sim", "ids_simd", "launchd_sim", "instruments"}).
                 waitFor(2, TimeUnit.SECONDS);
         restartAppium(CMDLINE_IOS);
     }
 
     public static synchronized void resetIOSRealDevice() throws Exception {
-        Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9", "instruments", "node"}).
+        Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9", "instruments"}).
                 waitFor(2, TimeUnit.SECONDS);
         restartAppium(CMDLINE_IOS);
     }
 
     private static void restartAppium(String[] cmdLine) throws Exception {
         log.warn("Trying to restart Appium server on localhost...");
+
+        Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9", "node"}).
+                waitFor(2, TimeUnit.SECONDS);
+        waitUnlessIsStopped(RESTART_TIMEOUT / 2);
+
         ensureAppiumExecutableExistence();
         ensureParentDirExistence(LOG_PATH);
+
         Runtime.getRuntime().exec(cmdLine);
-        log.info(String.format("Waiting %s seconds for Appium port %s to be opened...", RESTART_TIMEOUT / 1000, PORT));
-        Thread.sleep(1000);
-        if (!waitUntilPortOpened()) {
+        log.info(String.format(
+                "Waiting %s seconds for Appium to be restarted on port %s...", RESTART_TIMEOUT / 1000, PORT));
+        if (!waitUnlessIsRunning(RESTART_TIMEOUT)) {
             throw new IllegalStateException(String.format(
-                    "Appium server has failed to restart after %s seconds timeout", RESTART_TIMEOUT / 1000));
+                    "Appium server has failed to start after %s seconds timeout", RESTART_TIMEOUT / 1000));
         }
-        Thread.sleep(1000);
+
         log.info(String.format("Appium server has been successfully restarted and now is listening on port %s", PORT));
     }
 }
