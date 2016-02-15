@@ -423,7 +423,7 @@ Feature: E2EE
     And I swipe left on device number 1
     And I tap Delete button opened from swipe left on device
     And I confirm with my <Password> the deletion of the device
-    Then I dont see device <DeviceName> in devices list
+    Then I do not see device <DeviceName> in devices list
 
     Examples:
       | Name      | DeviceName | DeviceLabel | Password      |
