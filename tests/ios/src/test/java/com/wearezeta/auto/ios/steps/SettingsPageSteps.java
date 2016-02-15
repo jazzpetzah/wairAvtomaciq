@@ -166,18 +166,6 @@ public class SettingsPageSteps {
     }
 
     /**
-     * Verifies you see current device
-     *
-     * @throws Exception
-     * @step. ^I see my current device$
-     */
-    @Then("^I see my current device$")
-    public void ISeeMyCurrentDevice() throws Exception {
-        Assert.assertTrue(String.format("Current label is not visible"),
-                getSettingsPage().isCurrentDeviceVisible());
-    }
-
-    /**
      * Tap on current device
      *
      * @throws Exception

@@ -100,11 +100,6 @@ public class SettingsPage extends IOSPage {
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
 
-    public boolean isCurrentDeviceVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), currentLabel, 2) &&
-                (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathCurrentDevices));
-    }
-
     public void tapCurrentDevice() throws Exception {
         getElement(xpathCurrentDevices).click();
     }
