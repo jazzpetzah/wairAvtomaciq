@@ -1,6 +1,6 @@
 Feature: Sign In
 
-  @C1134 @regression @rc @id340
+  @C1134 @regression @rc @clumsy @id340
   Scenario Outline: Sign in to ZClient
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -14,7 +14,7 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C1133 @regression @rc @id1398 @noAcceptAlert
+  @C1133 @regression @rc @clumsy @id1398 @noAcceptAlert
   Scenario Outline: Notification if SignIn credentials are wrong
     Given I see sign in screen
     When I tap I HAVE AN ACCOUNT button
@@ -27,7 +27,7 @@ Feature: Sign In
       | WrongMail  | WrongPassword |
       | wrongwrong | wrong         |
 
-  @C1135 @id1479 @id1403 @regression @rc
+  @C1135 @id1479 @id1403 @regression @rc @clumsy
   Scenario Outline: Verify possibility of password reset (welcome page)
     Given There is 1 user where <Name> is me
     Given I see sign in screen

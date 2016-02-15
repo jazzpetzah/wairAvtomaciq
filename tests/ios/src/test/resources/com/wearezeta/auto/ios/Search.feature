@@ -1,6 +1,6 @@
 Feature: Search
 
-  @C1035 @rc @regression @id2147
+  @C1035 @rc @clumsy @regression @id2147
   Scenario Outline: Verify search by email
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -14,7 +14,7 @@ Feature: Search
       | Name      | ContactEmail | ContactName |
       | user1Name | user2Email   | user2Name   |
 
-  @C1036 @rc @regression @id2148 @id2543
+  @C1036 @rc @clumsy @regression @id2148 @id2543
   Scenario Outline: Verify search by name
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -139,7 +139,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C1049 @rc @regression @id3282
+  @C1049 @rc @clumsy @regression @id3282
   Scenario Outline: Verify starting a call with action button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
