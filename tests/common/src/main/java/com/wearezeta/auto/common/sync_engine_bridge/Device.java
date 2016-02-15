@@ -31,6 +31,8 @@ class Device extends RemoteEntity implements IDevice {
     private void respawn() {
         if (this.ref() != null) {
             this.ref().tell(PoisonPill.getInstance(), null);
+            this.hostProcess.reconnect();
+            this.setRef(null);
         }
         final ActorRef processActorRef = this.hostProcess.ref();
         try {
@@ -46,8 +48,7 @@ class Device extends RemoteEntity implements IDevice {
         throw new IllegalStateException(String.format(
                 "There was an error establishing a connection with a new device: "
                         + "%s on process: %s. Please check the log file %s for more details.",
-                this.name(), this.hostProcess.name(),
-                this.hostProcess.getLogPath()));
+                this.name(), this.hostProcess.name(), this.hostProcess.getLogPath()));
     }
 
     @Override
