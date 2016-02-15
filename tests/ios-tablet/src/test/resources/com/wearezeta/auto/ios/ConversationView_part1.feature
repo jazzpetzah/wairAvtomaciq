@@ -246,8 +246,7 @@ Feature: Conversation View
     And I tap on contact name <Contact>
     And I tap on text input
     And I tap and hold on message input
-    And I click on popup Paste item
-    And I press Enter key in Simulator window
+    And I paste and commit the text
     Then I see last message in dialog is expected message <Text>
 
     Examples:
@@ -272,8 +271,7 @@ Feature: Conversation View
     And I tap on contact name <Contact>
     And I tap on text input
     And I tap and hold on message input
-    And I click on popup Paste item
-    And I press Enter key in Simulator window
+    And I paste and commit the text
     Then I see last message in dialog is expected message <Text>
 
     Examples:

@@ -259,8 +259,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
     public Response execute(String driverCommand, Map<String, ?> parameters) {
         if (this.isSessionLost() && !driverCommand.equals(DriverCommand.SCREENSHOT)) {
             throw new IllegalStateException(
-                    String.format(
-                            "Appium session is dead. Skipping execution of '%s' command...",
+                    String.format("Appium session is dead. Skipping execution of '%s' command...",
                             driverCommand));
         }
         final Callable<Response> task = () -> super.execute(driverCommand,
@@ -270,44 +269,38 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
             return future.get(MAX_COMMAND_DURATION, TimeUnit.SECONDS);
         } catch (Exception e) {
             if (e instanceof ExecutionException) {
+                if (driverCommand.equals(MobileCommand.HIDE_KEYBOARD)) {
+                    log.debug("The keyboard seems to be already hidden.");
+                    final Response response = new Response();
+                    response.setSessionId(this.getSessionId().toString());
+                    response.setStatus(HttpStatus.SC_OK);
+                    return response;
+                }
+                if (e.getCause().getMessage().contains(SERVER_SIDE_ERROR_SIGNATURE)) {
+                    final long millisecondsStarted = System.currentTimeMillis();
+                    while (System.currentTimeMillis() - millisecondsStarted <= DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS) {
+                        try {
+                            Thread.sleep(300);
+                        } catch (InterruptedException e1) {
+                            Throwables.propagate(e1);
+                        }
+                        try {
+                            return super.execute(driverCommand, parameters);
+                        } catch (WebDriverException e1) {
+                            if (isSessionLostBecause(e1)) {
+                                setSessionLost(true);
+                            }
+                            if (!e1.getMessage().contains(SERVER_SIDE_ERROR_SIGNATURE)) {
+                                throw e1;
+                            }
+                        }
+                    } // while have time
+                } // if getMessage contains
+                log.error(String.format("Android driver is still not available after %s seconds timeout. "
+                                + "The recent webdriver command was '%s'",
+                        DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS / 1000, driverCommand));
                 if (isSessionLostBecause(e.getCause())) {
                     setSessionLost(true);
-                } else {
-                    if (driverCommand.equals(MobileCommand.HIDE_KEYBOARD)) {
-                        log.debug("The keyboard seems to be already hidden.");
-                        final Response response = new Response();
-                        response.setSessionId(this.getSessionId().toString());
-                        response.setStatus(HttpStatus.SC_OK);
-                        return response;
-                    }
-                    if (e.getCause().getMessage()
-                            .contains(SERVER_SIDE_ERROR_SIGNATURE)) {
-                        final long millisecondsStarted = System
-                                .currentTimeMillis();
-                        while (System.currentTimeMillis() - millisecondsStarted <= DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS) {
-                            try {
-                                Thread.sleep(300);
-                            } catch (InterruptedException e1) {
-                                Throwables.propagate(e1);
-                            }
-                            try {
-                                return super.execute(driverCommand, parameters);
-                            } catch (WebDriverException e1) {
-                                if (isSessionLostBecause(e1)) {
-                                    setSessionLost(true);
-                                }
-                                if (!e1.getMessage().contains(
-                                        SERVER_SIDE_ERROR_SIGNATURE)) {
-                                    throw e1;
-                                }
-                            }
-                        } // while have time
-                    } // if getMessage contains
-                    log.error(String.format(
-                            "Android driver is still not available after %s seconds timeout. "
-                                    + "The recent webdriver command was '%s'",
-                            DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS / 1000,
-                            driverCommand));
                 }
                 Throwables.propagate(e.getCause());
             } else {

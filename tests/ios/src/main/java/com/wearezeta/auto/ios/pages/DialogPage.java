@@ -547,4 +547,18 @@ public class DialogPage extends IOSPage {
         final int stateGlyphY = (containerScreen.getHeight() - stateGlyphHeight) / 2;
         return containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
     }
+
+    public void pasteAndCommit() throws Exception {
+        this.clickPopupPasteButton();
+        final WebElement convoInput = getElement(nameConversationCursorInput,
+                "Conversation input is not visible after the timeout");
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            inputStringFromKeyboard(convoInput, "", false, true);
+        } else {
+            convoInput.click();
+            // Wait for animation
+            Thread.sleep(1000);
+            this.clickKeyboardCommitButton();
+        }
+    }
 }

@@ -6,6 +6,7 @@ import java.text.Normalizer.Form;
 
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import cucumber.api.java.en.And;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -97,6 +98,17 @@ public class DialogPageSteps {
         } else {
             getDialogPage().typeAndSendConversationMessage(msg.replaceAll("^\"|\"$", ""));
         }
+    }
+
+    /**
+     * Taps "Paste" item in popup menu of an input field and commit pasted text
+     *
+     * @throws Exception
+     * @step. ^I paste and commit the text$
+     */
+    @When("^I paste and commit the text$")
+    public void IClickPopupPaste() throws Exception {
+        getDialogPage().pasteAndCommit();
     }
 
     /**
