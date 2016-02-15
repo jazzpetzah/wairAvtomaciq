@@ -50,4 +50,14 @@ public class DeviceDetailsPageSteps {
     public void ISeeFingertprintIsNotEmpty() throws Exception {
         Assert.assertTrue("Fingerprint is emtpy", getDeviceDetailsPage().verifyFingerPrintNotEmpty());
     }
+
+    /**
+     * Taps Remove Device on the device detail page
+     * @step. ^I tap Remove Device on device detail page$
+     * @throws Throwable
+     */
+    @When("^I tap Remove Device on device detail page$")
+    public void ITapRemoveDeviceOnDeviceDetailPage() throws Exception {
+        getDeviceDetailsPage().tapRemoveDevice();
+    }
 }
