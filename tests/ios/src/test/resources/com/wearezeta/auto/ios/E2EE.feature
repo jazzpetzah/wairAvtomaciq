@@ -437,7 +437,7 @@ Feature: E2EE
     Given I accept First Time overlay if it is visible
     Given I accept alert
     Given I see conversations list
-    And User Myself adds new devices <DeviceName>
+    And User Myself adds new device <DeviceName>
     When I tap my avatar
     And I accept alert
     And I click on Settings button on personal page
