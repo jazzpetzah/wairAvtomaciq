@@ -13,6 +13,8 @@ public class DeviceDetailsPage extends IOSPage {
     
     private static final By xpathKeyFingerprintValue = By.xpath("//UIATableCell[@name='Key Fingerprint']/UIAStaticText[2]");
 
+    private static final By nameRemoveDevice = By.name("Remove Device");
+
     public DeviceDetailsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -32,5 +34,8 @@ public class DeviceDetailsPage extends IOSPage {
     public boolean verifyFingerPrintNotEmpty() throws Exception {
         return !getFingerprintValue().isEmpty();
     }
-    
+
+    public void tapRemoveDevice() throws Exception {
+        getElement(nameRemoveDevice).click();
+    }
 }
