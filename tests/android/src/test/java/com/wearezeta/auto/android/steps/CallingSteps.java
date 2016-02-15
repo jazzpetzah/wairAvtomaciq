@@ -26,7 +26,7 @@ public class CallingSteps {
      * @param callBackend call backend. Available values: 'autocall', 'chrome', 'firefox'
      * @throws Exception
      */
-    @When("^(.*) calls (.*) using (\\w+)$")
+    @When("^(.*) calls (.*) using (.*)$")
     public void UserXCallsToUserYUsingCallBackend(String caller,
             String conversationName, String callBackend) throws Exception {
         commonCallingSteps.callToConversation(caller, conversationName,
