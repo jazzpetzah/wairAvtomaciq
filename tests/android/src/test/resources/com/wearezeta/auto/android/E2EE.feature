@@ -473,6 +473,22 @@ Feature: E2EE
     Examples:
       | Name      | Contact1  | Contact2  | Message1 | Message2 | GroupChatName |
       | user1Name | user2Name | user3Name | Msg1     | Msg2     | GroupConvo    |
+
+  @C3513 @staging
+  Scenario Outline: If user uses only old Wire builds which don't support E2EE I should see system message inside his profile 
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to Myself
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    And I tap on contact name <Contact>
+    When I tap conversation details button
+    And I select single participant tab "Devices"
+    Then I see no encrypted device text for user <Contact> in header of device detail page
+
+    Examples:
+      | Name      | Contact   | SimpleMessage |
+      | user1Name | user2Name | SimpleYo      |
       
   @C3512 @staging
   Scenario Outline: After login by phone on not 1st device I have to be asked for email login
