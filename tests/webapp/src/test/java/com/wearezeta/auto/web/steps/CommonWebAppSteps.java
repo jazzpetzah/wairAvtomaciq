@@ -160,6 +160,13 @@ public class CommonWebAppSteps {
 
 	@Before("~@performance")
 	public void setUp(Scenario scenario) throws Exception {
+
+        try {
+            SEBridge.getInstance().reset();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 		String platform = WebAppExecutionContext.getPlatform();
 		String osName = WebAppExecutionContext.getOsName();
 		String osVersion = WebAppExecutionContext.getOsVersion();
@@ -952,11 +959,6 @@ public class CommonWebAppSteps {
 
 	@After
 	public void tearDown(Scenario scenario) throws Exception {
-        try {
-            SEBridge.getInstance().reset();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
 		try {
 			// async calls/waiting instances cleanup
