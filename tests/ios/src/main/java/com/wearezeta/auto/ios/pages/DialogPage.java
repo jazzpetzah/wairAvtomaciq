@@ -8,6 +8,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.driver.DummyElement;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -129,7 +130,7 @@ public class DialogPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
     }
 
-    public boolean waitUntilMessageIsNotVisible(String msg)throws Exception {
+    public boolean waitUntilMessageIsNotVisible(String msg) throws Exception {
         final By locator = By.xpath(xpathStrConvoMessageByText.apply(msg));
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
     }
@@ -324,13 +325,8 @@ public class DialogPage extends IOSPage {
     private static final int TOP_BORDER_WIDTH = 40;
 
     public void openConversationDetails() throws Exception {
-        final Optional<WebElement> openConversationDetails = getElementIfDisplayed(nameOpenConversationDetails);
-        if (openConversationDetails.isPresent()) {
-            openConversationDetails.get().click();
-        } else {
-            getElement(namePlusButton).click();
-            getElement(nameOpenConversationDetails).click();
-        }
+        getElementIfDisplayed(namePlusButton).orElseGet(DummyElement::new).click();
+        getElement(nameOpenConversationDetails).click();
     }
 
     @Override
