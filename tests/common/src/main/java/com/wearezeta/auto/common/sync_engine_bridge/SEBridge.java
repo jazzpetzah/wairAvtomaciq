@@ -14,10 +14,9 @@ import java.util.concurrent.*;
 import org.apache.log4j.Logger;
 
 public class SEBridge {
-    private static final long DEVICE_POOL_INIT_TIMEOUT_SECONDS = 60;
+    private static final long DEVICE_POOL_INIT_TIMEOUT_SECONDS = 600;
     private volatile Future<UserDevicePool> devicePool;
     private static SEBridge instance = null;
-    private final Semaphore poolGuard = new Semaphore(1);
 
     private static final Logger LOG = ZetaLogger.getLog(SEBridge.class.getSimpleName());
 
@@ -31,7 +30,10 @@ public class SEBridge {
     }
 
     private SEBridge() throws Exception {
-        resetDevicePool();
+        this.devicePool = Executors.newSingleThreadExecutor().submit(
+                () -> new UserDevicePool(CommonUtils.getBackendType(CommonUtils.class),
+                        CommonUtils.getOtrOnly(CommonUtils.class))
+        );
     }
 
     public static synchronized SEBridge getInstance() {
@@ -45,42 +47,14 @@ public class SEBridge {
         return instance;
     }
 
-    private void resetDevicePool() throws Exception {
-        poolGuard.acquire();
-        try {
-            final Callable<UserDevicePool> task = () -> new UserDevicePool(
-                    CommonUtils.getBackendType(CommonUtils.class), CommonUtils.getOtrOnly(CommonUtils.class));
-            this.devicePool = Executors.newSingleThreadExecutor().submit(task);
-        } finally {
-            poolGuard.release();
-        }
-    }
-
     private UserDevicePool getDevicePool() throws Exception {
-        poolGuard.acquire();
-        try {
-            return this.devicePool.get(DEVICE_POOL_INIT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
-        } finally {
-            poolGuard.release();
-        }
+        return this.devicePool.get(DEVICE_POOL_INIT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
     }
 
     private void login(ClientUser user, IDevice dstDevice) throws Exception {
-        if (dstDevice.hasLoggedInUser() && !dstDevice.isLoggedInUser(user)) {
-            LOG.info("Logout as user " + user.getName() + " with device "
-                    + dstDevice.name());
-            this.logout(dstDevice);
-        }
-        if (!dstDevice.isLoggedInUser(user)) {
-            LOG.info("Login as user " + user.getName() + " with device "
-                    + dstDevice.name());
+        if (!(dstDevice.hasLoggedInUser() && dstDevice.isLoggedInUser(user))) {
+            LOG.info("Login as user " + user.getName() + " with device " + dstDevice.name());
             dstDevice.logInWithUser(user);
-        }
-    }
-
-    private void logout(IDevice dstDevice) throws Exception {
-        if (dstDevice.hasLoggedInUser()) {
-            dstDevice.logout();
         }
     }
 
@@ -110,37 +84,17 @@ public class SEBridge {
     }
 
     public String getDeviceId(ClientUser user, String deviceName) throws Exception {
-        IDevice device = getDevicePool().getDevice(user, deviceName);
-
-        try {
-            return device.getId();
-        } catch (Exception e) {
-            throw new Exception(String.format("Could not get ID from device of user '%s'", user.getName()), e);
-        }
-    }
-
-    public List<String> getDeviceFingerprints(ClientUser user) throws Exception {
-        List<IDevice> devices = getDevicePool().getDevices(user);
-        List<String> fingerprints = new ArrayList<>();
-        for (IDevice device : devices) {
-            try {
-                fingerprints.add(device.getFingerprint());
-            } catch (Exception e) {
-                LOG.error(String.format("Could not get fingerprint from device of user '%s'", user.getName()), e);
-            }
-        }
-        return fingerprints;
+        return getDevicePool().getDevice(user, deviceName).orElseThrow(() ->
+                new IllegalStateException(String.format("There is no device '%s' owned by user '%s'", deviceName,
+                        user.getName()))
+        ).getId();
     }
 
     public String getDeviceFingerprint(ClientUser user, String deviceName) throws Exception {
-        IDevice device = getDevicePool().getDevice(user, deviceName);
-
-        try {
-            return device.getFingerprint();
-        } catch (Exception e) {
-            throw new Exception(String.format("Could not get fingerprint from device %s of user '%s'", deviceName,
-                    user.getName()), e);
-        }
+        return getDevicePool().getDevice(user, deviceName).orElseThrow(() ->
+                new IllegalStateException(String.format("There is no device '%s' owned by user '%s'", deviceName,
+                        user.getName()))
+        ).getFingerprint();
     }
 
     private static void verifyPathExists(String path) {
@@ -191,8 +145,7 @@ public class SEBridge {
 
     public void reset() throws Exception {
         if (this.devicePool.isDone()) {
-            this.devicePool.get().shutdown();
-            this.resetDevicePool();
+            this.getDevicePool().reset();
         }
     }
 }
