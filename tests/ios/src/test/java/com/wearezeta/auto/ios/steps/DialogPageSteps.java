@@ -188,7 +188,7 @@ public class DialogPageSteps {
      * Verify whether the expected message exists in the convo view
      *
      * @param expectedMsg the expected message. It can contain user name aliases
-     * @param shouldNot equals to null if the message is not visible in conversation view
+     * @param shouldNot equals to null if the message is visible in conversation view
      * @throws Exception
      * @step. ^I see the conversation view contains message (.*)
      */
