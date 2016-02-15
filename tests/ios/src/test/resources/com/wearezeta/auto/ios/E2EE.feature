@@ -197,7 +197,7 @@ Feature: E2EE
     And I tap Edit button
     And I tap Delete <DeviceName> button from devices
     And I confirm with my <Password> the deletion of the device
-    Then I dont see device <DeviceName> in devices list
+    Then I do not see device <DeviceName> in devices list
 
     Examples:
       | Name      | DeviceName | Password      |

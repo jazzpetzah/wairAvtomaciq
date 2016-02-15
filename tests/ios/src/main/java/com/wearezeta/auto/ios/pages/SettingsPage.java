@@ -79,6 +79,9 @@ public class SettingsPage extends IOSPage {
     public void pressDeleteDeviceButton(String deviceName) throws Exception {
         final By locator = By.xpath(xpathDeleteDeviceButtonByName.apply(deviceName));
         getElement(locator, String.format("Device '%s' is not visible in Manage Device List", deviceName)).click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator)) {
+            throw new IllegalStateException("Delete device button is still visible");
+        }
     }
 
     public void pressDeleteButton() throws Exception {
