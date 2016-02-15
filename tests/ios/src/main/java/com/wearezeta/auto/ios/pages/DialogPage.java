@@ -129,6 +129,11 @@ public class DialogPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
     }
 
+    public boolean waitUntilMessageIsNotVisible(String msg)throws Exception {
+        final By locator = By.xpath(xpathStrConvoMessageByText.apply(msg));
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
+    }
+
     public boolean isPingButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), namePingButton);
     }

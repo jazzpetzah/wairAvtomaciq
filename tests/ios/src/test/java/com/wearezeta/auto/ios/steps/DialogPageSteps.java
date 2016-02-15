@@ -200,8 +200,9 @@ public class DialogPageSteps {
                     String.format("The expected message '%s' is not visible in the conversation view", expectedMsg),
                     getDialogPage().isMessageVisible(expectedMsg));
         } else {
-            Assert.assertFalse(String.format("The expected message '%s' is visible in the conversation view", expectedMsg),
-                    getDialogPage().isMessageVisible(expectedMsg));
+            Assert.assertTrue(
+                    String.format("The expected message '%s' is not visible in the conversation view", expectedMsg),
+                    getDialogPage().waitUntilMessageIsNotVisible(expectedMsg));
         }
     }
 

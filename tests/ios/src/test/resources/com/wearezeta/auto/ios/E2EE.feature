@@ -469,7 +469,7 @@ Feature: E2EE
     And I navigate back from Device Details page
     And I click close user profile page button
     And I click Close input options button
-    Then I do not see shield icon next to conversation input field
+    And I do not see shield icon next to conversation input field
     Then I do not see the conversation view contains message <ExpectedMessage>
 
     Examples:
