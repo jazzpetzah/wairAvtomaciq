@@ -114,7 +114,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
                     response.setStatus(HttpStatus.SC_OK);
                     return response;
                 }
-                if (isSessionLostBecause(e.getCause()) && !driverCommand.equals(DriverCommand.NEW_SESSION)) {
+                if (isSessionLostBecause(e.getCause())) {
                     setSessionLost(true);
                 }
                 Throwables.propagate(e.getCause());
