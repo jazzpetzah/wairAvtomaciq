@@ -453,7 +453,7 @@ Feature: E2EE
       | Name      | DeviceName | Password      |
       | user1Name | Device1    | user1Password |
 
-  @C3298 @staging
+  @C3289 @staging
   Scenario Outline: Verify conversation is not verified after checking only one device out of many
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact1>
