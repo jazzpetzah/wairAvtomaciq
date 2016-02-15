@@ -321,11 +321,11 @@ public class DialogPage extends IOSPage {
         getElement(nameTitle).click();
     }
 
-    private static final int TEXT_INPUT_HEIGH = 150;
+    private static final int TEXT_INPUT_HEIGHT = 150;
     private static final int TOP_BORDER_WIDTH = 40;
 
     public void openConversationDetails() throws Exception {
-        getElementIfDisplayed(namePlusButton).orElseGet(DummyElement::new).click();
+        getElementIfDisplayed(namePlusButton, 3).orElseGet(DummyElement::new).click();
         getElement(nameOpenConversationDetails).click();
     }
 
@@ -333,7 +333,7 @@ public class DialogPage extends IOSPage {
     public void swipeUp(int time) throws Exception {
         Point coords = getElement(nameMainWindow).getLocation();
         Dimension elementSize = getElement(nameMainWindow).getSize();
-        this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y + elementSize.height - TEXT_INPUT_HEIGH,
+        this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y + elementSize.height - TEXT_INPUT_HEIGHT,
                 coords.x + elementSize.width / 2, coords.y + TOP_BORDER_WIDTH, time);
     }
 
