@@ -387,13 +387,17 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | Contact2  | GroupChatName |
       | user1Name | user2Name | Device2     | Label2       | user3Name | ThisGroup     |
 
-  @torun @C3292 @staging
+  @C3292 @noAcceptAlert @staging
   Scenario Outline: Verify deleting one of the devices from device management by swipe
     Given There is 1 user where <Name> is me
     Given I sign in using my email
+    Given I accept alert
+    Given I accept First Time overlay if it is visible
+    Given I accept alert
     Given I see conversations list
     And User Myself adds a new device <DeviceName> with label <DeviceLabel>
     When I tap my avatar
+    And I accept alert
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
     And I select settings item Privacy & Security
@@ -404,5 +408,5 @@ Feature: E2EE
     Then I dont see device <DeviceName> in devices list
 
     Examples:
-      | Name      | DeviceName | DeviceLabel |
-      | user1Name | Device1    | Label1      |
+      | Name      | DeviceName | DeviceLabel | Password      |
+      | user1Name | Device1    | Label1      | user1Password |
