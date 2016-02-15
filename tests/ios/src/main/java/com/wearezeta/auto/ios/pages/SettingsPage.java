@@ -6,6 +6,9 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.misc.Interfaces.FunctionFor2Parameters;
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebElement;
 
 import java.util.concurrent.Future;
 import java.util.function.Function;
@@ -38,6 +41,14 @@ public class SettingsPage extends IOSPage {
     private static final FunctionFor2Parameters<String, String, String> xpathStrDeviceVerificationLabel =
             (deviceName, verificationLabel) ->
                     String.format("//UIATableCell[@name='%s']/UIAStaticText[@name='%s']", deviceName, verificationLabel);
+
+    private static final By currentLabel = By.name("Current");
+
+    private static final String xpathStrCurrentDevice = xpathStrMainWindow + "/UIATableView[1]/UIATableCell[1]";
+    private static final By xpathCurrentDevices = By.xpath(xpathStrCurrentDevice);
+    private static final String xpathStrDevicesList = xpathStrMainWindow + "/UIATableView[1]/UIATableCell";
+    private static final Function<Integer, String> xpathStrDeviceByIndex = idx -> String.format("%s[%s]", xpathStrDevicesList,
+            idx);
 
     public SettingsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -74,10 +85,18 @@ public class SettingsPage extends IOSPage {
     public void pressDeleteDeviceButton(String deviceName) throws Exception {
         final By locator = By.xpath(xpathDeleteDeviceButtonByName.apply(deviceName));
         getElement(locator, String.format("Device '%s' is not visible in Manage Device List", deviceName)).click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator)) {
+            throw new IllegalStateException("Delete device button is still visible");
+        }
     }
 
     public void pressDeleteButton() throws Exception {
-        getElement(nameDeleteButton).click();
+        final WebElement deleteButton = getElement(nameDeleteButton);
+        deleteButton.click();
+
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameDeleteButton, 3)) {
+            deleteButton.click();
+        }
     }
 
     public void typePasswordToConfirmDeleteDevice(String password) throws Exception {
@@ -93,5 +112,22 @@ public class SettingsPage extends IOSPage {
     public boolean verificationLabelVisibility(String deviceName, String verificaitonLabel) throws Exception {
         final By locator = By.xpath(xpathStrDeviceVerificationLabel.apply(deviceName, verificaitonLabel));
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+    }
+
+    public void tapCurrentDevice() throws Exception {
+        getElement(xpathCurrentDevices).click();
+    }
+
+    public boolean isItemInvisible(String itemName) throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.name(itemName));
+    }
+
+    public void swipeLeftOnDevice(int deviceIndex) throws Exception {
+        final By locator = By.xpath(xpathStrDeviceByIndex.apply(deviceIndex));
+        final WebElement deviceCell = getElement(locator);
+        final Point cellLocation = deviceCell.getLocation();
+        final Dimension cellSize = deviceCell.getSize();
+        getDriver().swipe(cellLocation.x + cellSize.width - 5, cellLocation.y * 3, cellLocation.x + cellSize.width / 3,
+                cellLocation.y * 3, 1000);
     }
 }

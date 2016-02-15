@@ -64,7 +64,7 @@ Feature: E2EE
       | Name      | DeviceName | DeviceLabel  |
       | user1Name | Device1    | Device1Label |
 
-  @C3295 @staging
+  @C3295 @regression
   Scenario Outline: Verify shield appearance on the person's profile after verifying all the clients
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -88,7 +88,7 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName1 | DeviceName2 |
       | user1Name | user2Name | Device1     | Device2     |
 
-  @C3287 @staging
+  @C3287 @regression
   Scenario Outline: Verify the group conversation is marked as verified after verifying clients of each other
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -121,7 +121,7 @@ Feature: E2EE
       | Name      | Contact1  | Contact2  | DeviceName1 | DeviceLabel1 | DeviceName2 | DeviceLabel2 | GroupChatName | VerificationMsg               |
       | user1Name | user2Name | user3Name | Device1     | Label1       | Device2     | Label2       | VerifiedGroup | ALL FINGERPRINTS ARE VERIFIED |
 
-  @C3294 @staging
+  @C3294 @regression
   Scenario Outline: (ZIOS-5787) Verify system message appearance in case of using a new device by friend
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -144,7 +144,7 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                |
       | user1Name | user2Name | Device2     | Label2       | STARTED USING A NEW DEVICE |
 
-  @C3293 @staging
+  @C3293 @regression
   Scenario Outline: Verify system message appearance in case of using a new device by you
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -167,7 +167,7 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedSuffix             |
       | user1Name | user2Name | Device2     | Label2       | started using a new device |
 
-  @C14310 @noAcceptAlert @staging
+  @C14310 @noAcceptAlert @regression
   Scenario Outline: On first login on 2nd device there should be an explanation that user will not see previous messages
     Given There are 1 user where <Name> is me
     Given User Myself adds a new device <DeviceName> with label <DeviceLabel>
@@ -197,13 +197,13 @@ Feature: E2EE
     And I tap Edit button
     And I tap Delete <DeviceName> button from devices
     And I confirm with my <Password> the deletion of the device
-    Then I dont see device <DeviceName> in devices list
+    Then I do not see device <DeviceName> in devices list
 
     Examples:
       | Name      | DeviceName | Password      |
       | user1Name | Device1    | user1Password |
 
-  @C3509 @staging
+  @C3509 @regression
   Scenario Outline: (ZIOS-5741) Verify verifying/unverifying one of the devices
     Given There is 1 user where <Name> is me
     Given I sign in using my email
@@ -227,7 +227,7 @@ Feature: E2EE
       | Name      | DeviceName | DeviceLabel  |
       | user1Name | Device1    | Device1Label |
 
-  @C3293 @staging
+  @C3293 @regression
   Scenario Outline: Verify link is active for your own device and leads you to device's fingerprint
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -243,7 +243,7 @@ Feature: E2EE
       | Name      | Contact1  | ExpectedMsg               |
       | user1Name | user2Name | STARTED USING THIS DEVICE |
 
-  @C14317 @staging
+  @C14317 @regression
   Scenario Outline: First time when 1:1 conversation is degraded - I can ignore alert screen and send messages with resend button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -269,7 +269,7 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 |
       | user1Name | user2Name | Device2     | Label2       |
 
-  @C3288 @staging
+  @C3288 @regression
   Scenario Outline: Verify conversation is downgraded after adding a new device
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -290,7 +290,7 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                    |
       | user1Name | user2Name | Device2     | Label2       | YOU STARTED USING A NEW DEVICE |
 
-  @14319 @staging
+  @14319 @regression
   Scenario Outline: When I'm entering a verified conversation, a blue shield will appear at the bottom right
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -315,7 +315,7 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName1 | DeviceName2 |
       | user1Name | user2Name | Device1     | Device2     |
 
-  @3291 @staging
+  @3291 @regression
   Scenario Outline: Verify device management appearance after 7 sign ins
     Given There is 1 user where <Name> is me
     Given User Myself adds new devices <DeviceName1>,<DeviceName2>,<DeviceName3>,<DeviceName4>,<DeviceName5>,<DeviceName6>,<DeviceName7>
@@ -326,7 +326,7 @@ Feature: E2EE
       | Name      | DeviceName1 | DeviceName2 | DeviceName3 | DeviceName4 | DeviceName5 | DeviceName6 | DeviceName7 |
       | user1Name | Device1     | Device2     | Device3     | Device4     | Device5     | Device6     | Device7     |
 
-  @C14314 @staging
+  @C14314 @regression
   Scenario Outline: Verify you can see device ids of the other conversation participant in participant details view inside a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -349,7 +349,7 @@ Feature: E2EE
       | Name      | Contact1  | Contact2  | DeviceName1 | DeviceName2 | GroupChatName | DeviceName3 | DeviceName4 |
       | user1Name | user2Name | user3Name | Device1     | Device2     | VerifiedGroup | Device3     | Device4     |
 
-  @C14318 @staging
+  @C14318 @regression
   Scenario Outline: First time when group conversation is degraded - I can ignore alert screen and send messages with resend button
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -384,3 +384,47 @@ Feature: E2EE
     Examples:
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | Contact2  | GroupChatName |
       | user1Name | user2Name | Device2     | Label2       | user3Name | ThisGroup     |
+
+  @C3507 @staging
+  Scenario Outline: Verify remove, verify and reset session are absent for current device
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email
+    Given I see conversations list
+    And I tap my avatar
+    And I click on Settings button on personal page
+    And I click on Settings button from the options menu
+    And I select settings item Privacy & Security
+    And I select settings item Manage devices
+    When I tap on current device
+    Then I see settings item Key Fingerprint
+    And I do not see settings item Verified
+    And I do not see settings item Reset session
+    And I do not see settings item Remove device
+
+    Examples:
+      | Name      |
+      | user1Name |
+  
+  @C3292 @noAcceptAlert @staging
+  Scenario Outline: Verify deleting one of the devices from device management by swipe
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email
+    Given I accept alert
+    Given I accept First Time overlay if it is visible
+    Given I accept alert
+    Given I see conversations list
+    And User Myself adds a new device <DeviceName> with label <DeviceLabel>
+    When I tap my avatar
+    And I accept alert
+    And I click on Settings button on personal page
+    And I click on Settings button from the options menu
+    And I select settings item Privacy & Security
+    And I select settings item Manage devices
+    And I swipe left on device number 1
+    And I tap Delete button opened from swipe left on device
+    And I confirm with my <Password> the deletion of the device
+    Then I do not see device <DeviceName> in devices list
+
+    Examples:
+      | Name      | DeviceName | DeviceLabel | Password      |
+      | user1Name | Device1    | Label1      | user1Password |

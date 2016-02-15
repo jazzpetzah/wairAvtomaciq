@@ -341,9 +341,9 @@ public class LoginPageSteps {
      * Taps "Paste" item in popup menu of an input field
      *
      * @throws Exception
-     * @step. I click on popup Paste item
+     * @step. ^I click on popup Paste item$
      */
-    @When("I click on popup Paste item")
+    @When("^I click on popup Paste item$")
     public void IClickPopupPaste() throws Exception {
         getLoginPage().clickPopupPasteButton();
     }
