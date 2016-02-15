@@ -29,6 +29,9 @@ class Device extends RemoteEntity implements IDevice {
     }
 
     private void respawn() {
+        if (this.ref() != null) {
+            this.ref().tell(PoisonPill.getInstance(), null);
+        }
         final ActorRef processActorRef = this.hostProcess.ref();
         try {
             final Object resp = askActor(processActorRef, new ActorMessage.SpawnRemoteDevice(null, this.name()));
