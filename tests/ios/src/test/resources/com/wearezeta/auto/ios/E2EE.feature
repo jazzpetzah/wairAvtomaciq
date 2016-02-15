@@ -452,3 +452,26 @@ Feature: E2EE
     Examples:
       | Name      | DeviceName | Password      |
       | user1Name | Device1    | user1Password |
+
+  @C14315 @staging
+  Scenario Outline: Verify conversation is not verified after checking only one device out of many
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Contact1> adds new devices <DeviceName1>,<DeviceName2>
+    Given I sign in using my email
+    Given I see conversations list
+    When I tap on contact name <Contact1>
+    Then I do not see shield icon next to conversation input field
+    When I open conversation details
+    And I switch to Devices tab
+    And I open details page of device number 2
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    And I click close user profile page button
+    And I click Close input options button
+    Then I do not see shield icon next to conversation input field
+    Then I do not see the conversation view contains message <ExpectedMessage>
+
+    Examples:
+      | Name      | Contact1  | DeviceName2 | DeviceName1 | ExpectedMessage               |
+      | user1Name | user2Name | Device2     | Device1     | ALL FINGERPRINTS ARE VERIFIED |
