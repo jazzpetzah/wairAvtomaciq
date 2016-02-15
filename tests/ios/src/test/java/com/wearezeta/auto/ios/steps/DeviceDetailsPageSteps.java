@@ -19,9 +19,8 @@ public class DeviceDetailsPageSteps {
     /**
      * Tap the Verify switcher
      *
-     * @step. ^I tap Verify switcher on device details page$
-     *
      * @throws Exception
+     * @step. ^I tap Verify switcher on device details page$
      */
     @When("^I tap Verify switcher on Device Details page$")
     public void ITapVerifySwitcher() throws Exception {
@@ -31,9 +30,8 @@ public class DeviceDetailsPageSteps {
     /**
      * Navigate back to the previous page
      *
-     * @step. ^I navigate back from device details page$
-     *
      * @throws Exception
+     * @step. ^I navigate back from device details page$
      */
     @And("^I navigate back from Device Details page$")
     public void INavigateBack() throws Exception {
@@ -42,9 +40,9 @@ public class DeviceDetailsPageSteps {
 
     /**
      * Verify fingerprint is not empty
-     * 
-     * @step. ^I see fingerprint is not empty$
+     *
      * @throws Exception
+     * @step. ^I see fingerprint is not empty$
      */
     @Then("^I see fingerprint is not empty$")
     public void ISeeFingertprintIsNotEmpty() throws Exception {
@@ -53,8 +51,9 @@ public class DeviceDetailsPageSteps {
 
     /**
      * Taps Remove Device on the device detail page
+     *
+     * @throws Exception
      * @step. ^I tap Remove Device on device detail page$
-     * @throws Throwable
      */
     @When("^I tap Remove Device on device detail page$")
     public void ITapRemoveDeviceOnDeviceDetailPage() throws Exception {
