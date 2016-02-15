@@ -1,6 +1,7 @@
 package com.wearezeta.auto.common.sync_engine_bridge;
 
 import akka.actor.ActorRef;
+import akka.actor.PoisonPill;
 import akka.serialization.Serialization;
 
 import com.google.common.base.Throwables;
@@ -25,7 +26,8 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
 
     private final String backendType;
     private final boolean otrOnly;
-    private volatile ExecutorService pinger;
+    private volatile ExecutorService pinger = null;
+
     {
         Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
     }
@@ -68,13 +70,18 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
 
     @Override
     public void reconnect() {
+        if (this.pinger != null) {
+            this.pinger.shutdownNow();
+            this.pinger = null;
+        }
+        if (this.ref() != null) {
+            this.ref().tell(PoisonPill.getInstance(), null);
+            this.setRef(null);
+        }
         try {
             final Object resp = askActor(this.ref(), new WaitUntilRegistered(this.name()));
             if (resp instanceof ActorRef) {
                 this.setRef((ActorRef) resp);
-                if (this.pinger != null) {
-                    this.pinger.shutdownNow();
-                }
                 this.pinger = Executors.newSingleThreadExecutor();
                 LOG.debug(String.format(
                         "Starting ping thread with %s-seconds interval for the remote process '%s'...",
