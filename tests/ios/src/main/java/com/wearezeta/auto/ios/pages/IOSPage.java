@@ -122,11 +122,17 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void clickPopupCopyButton() throws Exception {
-        getElement(nameEditingItemCopy, "Copy popup is not viisble").click();
+        getElement(nameEditingItemCopy, "Copy popup is not visible").click();
     }
 
     public void clickPopupPasteButton() throws Exception {
         getElement(nameEditingItemPaste, "Paste popup is not visible").click();
+        final int popupVisibilityTimeoutSeconds = 10;
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEditingItemPaste, popupVisibilityTimeoutSeconds)) {
+            throw new IllegalStateException(String.format(
+                    "Paste popup is still visible after %s seconds timeout", popupVisibilityTimeoutSeconds));
+        }
+        Thread.sleep(2000);
     }
 
     private void clickAtSimulator(int x, int y) throws Exception {
@@ -226,21 +232,25 @@ public abstract class IOSPage extends BasePage {
     public void minimizeApplication(int timeSeconds) throws Exception {
         assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            final long millisecondsStarted = System.currentTimeMillis();
             IOSSimulatorHelper.switchToAppsList();
-            final int clickAtHelperDuration = 4; // seconds
-            if (timeSeconds >= clickAtHelperDuration) {
+            final long clickAtHelperDuration = (System.currentTimeMillis() - millisecondsStarted) / 1000; // seconds
+            if (timeSeconds > clickAtHelperDuration + 1) {
                 Thread.sleep((timeSeconds - clickAtHelperDuration) * 1000);
             } else {
-                Thread.sleep(timeSeconds * 1000);
+                Thread.sleep(2000);
             }
             IOSSimulatorHelper.clickAt("0.3", "0.5",
                     String.format("%.3f", DriverUtils.SINGLE_TAP_DURATION / 1000.0));
+            // Wait for transition animation
+            Thread.sleep(2000);
         } else {
             // https://discuss.appium.io/t/runappinbackground-does-not-work-for-ios9/6201
             this.getDriver().runAppInBackground(timeSeconds);
         }
     }
 
+    @SuppressWarnings("unused")
     protected void longClickAt(WebElement el) throws Exception {
         final Dimension elSize = el.getSize();
         final Point elLocation = el.getLocation();
@@ -298,8 +308,14 @@ public abstract class IOSPage extends BasePage {
     public void lockScreen(int timeSeconds) throws Exception {
         assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            final long millisecondsStarted = System.currentTimeMillis();
             IOSSimulatorHelper.lock();
-            Thread.sleep(timeSeconds * 1000);
+            final long lockDuration = (System.currentTimeMillis() - millisecondsStarted) / 1000;
+            if (timeSeconds > lockDuration + 1) {
+                Thread.sleep((timeSeconds - lockDuration) * 1000);
+            } else {
+                Thread.sleep(2000);
+            }
             // this is to show the unlock label if not visible yet
             IOSSimulatorHelper.goHome();
             IOSSimulatorHelper.swipeRight();

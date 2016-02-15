@@ -34,10 +34,10 @@ public class SettingsPage extends IOSPage {
     private static final By nameDeleteButton = By.name("Delete");
 
     private static final By xpathDeleteDevicePasswordField = By.xpath("//UIASecureTextField[contains(@value,'Password')]");
-    
-    private static final FunctionFor2Parameters<String, String, String> xpathStrDeviceVerificationLabel = (deviceName, verificationLabel) -> {
-        return String.format("//UIATableCell[@name='%s']/UIAStaticText[@name='%s']", deviceName, verificationLabel);
-    };
+
+    private static final FunctionFor2Parameters<String, String, String> xpathStrDeviceVerificationLabel =
+            (deviceName, verificationLabel) ->
+                    String.format("//UIATableCell[@name='%s']/UIAStaticText[@name='%s']", deviceName, verificationLabel);
 
     private static final By currentLabel = By.name("Current");
 
@@ -94,7 +94,7 @@ public class SettingsPage extends IOSPage {
         final By locator = By.xpath(xpathDeviceListEntry.apply(device));
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
-    
+
     public boolean verificationLabelVisibility(String deviceName, String verificaitonLabel) throws Exception {
         final By locator = By.xpath(xpathStrDeviceVerificationLabel.apply(deviceName, verificaitonLabel));
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);

@@ -38,7 +38,8 @@ public class PeoplePickerPage extends IOSPage {
 
     private static final By nameSendAnInviteButton = By.name("INVITE MORE PEOPLE");
 
-    private static final By nameInstantConnectButton = By.name("instantPlusConnectButton");
+    private static final Function<String, String> xpathStrInstantConnectButtonByUserName = name -> String.format(
+            "//UIACollectionCell[ ./UIAStaticText[@name='%s'] ]/UIAButton[@name='instantPlusConnectButton']", name);
 
     private static final By nameLaterButton = By.name("MAYBE LATER");
 
@@ -90,7 +91,7 @@ public class PeoplePickerPage extends IOSPage {
     public void fillTextInPeoplePickerSearch(String text) throws Exception {
         final WebElement searchInput = getElement(xpathPickerSearch);
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass()) && text.matches(".*\\W+.*")) {
-            inputStringFromKeyboard(searchInput, text, true, true);
+            inputStringFromKeyboard(searchInput, text + " ", true, true);
         } else {
             searchInput.sendKeys(text + " ");
         }
@@ -193,12 +194,9 @@ public class PeoplePickerPage extends IOSPage {
         getElement(xpathInviteCopyButton).click();
     }
 
-    public void pressInstantConnectButton() throws Exception {
-        final WebElement instantConnectButton = getElement(nameInstantConnectButton);
-        instantConnectButton.click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameInstantConnectButton)) {
-            instantConnectButton.click();
-        }
+    public void pressInstantConnectButton(String forName) throws Exception {
+        final By locator = By.xpath(xpathStrInstantConnectButtonByUserName.apply(forName));
+        getElement(locator).click();
     }
 
     public void tapNumberOfTopConnectionsButNotUser(int numberToTap, String contact) throws Exception {

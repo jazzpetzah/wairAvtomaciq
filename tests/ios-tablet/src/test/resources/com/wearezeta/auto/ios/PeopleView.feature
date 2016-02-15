@@ -578,7 +578,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user3Name | OnlyConnected |
 
-  @C2724 @staging @id3949
+  @C2724 @regression @id3949
   Scenario Outline: Verify displaying only connected users in the search in group chat [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -816,7 +816,7 @@ Feature: People View
       | Name      | Contact1  | Image       |
       | user1Name | user2Name | testing.jpg |
 
-  @C2556 @staging @id4003
+  @C2556 @regression @id4003
   Scenario Outline: Verify that left conversation is shown in the Archive [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

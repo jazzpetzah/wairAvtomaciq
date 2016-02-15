@@ -1,8 +1,10 @@
 package com.wearezeta.auto.ios.steps;
 
+import java.awt.image.BufferedImage;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import org.junit.Assert;
 
@@ -28,8 +30,6 @@ public class DialogPageSteps {
     private ContactListPage getContactListPage() throws Exception {
         return pagesCollection.getPage(ContactListPage.class);
     }
-
-    private String mediaState;
 
     @When("^I see dialog page$")
     public void WhenISeeDialogPage() throws Exception {
@@ -256,26 +256,6 @@ public class DialogPageSteps {
                 "does not equal to the expected count %s", actualCount, expectedCount), actualCount == expectedCount);
     }
 
-    @Then("I see youtube link (.*) and media in dialog")
-    public void ISeeYoutubeLinkAndMediaInDialog(String link) throws Exception {
-        Assert.assertTrue("Media is missing in dialog", getDialogPage()
-                .isYoutubeContainerVisible());
-        Assert.assertEquals(link.toLowerCase(), getDialogPage()
-                .getLastMessageFromDialog().orElseThrow(() ->
-                        new AssertionError("No messages are present in the conversation view")
-                ).toLowerCase());
-    }
-
-    @Then("I see media link (.*) and media in dialog")
-    public void ISeeMediaLinkAndMediaInDialog(String link) throws Exception {
-        Assert.assertTrue("Media is missing in dialog", getDialogPage()
-                .isMediaContainerVisible());
-        Assert.assertEquals(link.toLowerCase(), getDialogPage()
-                .getLastMessageFromDialog().orElseThrow(() ->
-                        new AssertionError("No messages are present in the conversation view")
-                ).toLowerCase());
-    }
-
     @When("I click video container for the first time")
     public void IPlayVideoFirstTime() throws Exception {
         getDialogPage().clickOnPlayVideoButton();
@@ -297,8 +277,8 @@ public class DialogPageSteps {
         getDialogPage().typeAndSendConversationMessage(link);
     }
 
-    @When("^I tap media link$")
-    public void ITapMediaLink() throws Throwable {
+    @When("^I tap media container$")
+    public void ITapMediaContainer() throws Throwable {
         getDialogPage().startMediaContent();
     }
 
@@ -342,33 +322,72 @@ public class DialogPageSteps {
         getDialogPage().stopMediaContent();
     }
 
-    @Then("I see playing media is paused")
-    public void ThePlayingMediaIsPaused() throws Exception {
-        String pausedState = DialogPage.MEDIA_STATE_PAUSED;
-        mediaState = getDialogPage().getMediaState();
-        Assert.assertEquals(pausedState, mediaState);
+    private BufferedImage previousMediaContainerState = null;
+
+    /**
+     * Store the current media container state into an internal varibale
+     *
+     * @throws Exception
+     * @step. ^I remember media container state$
+     */
+    @When("^I remember media container state$")
+    public void IRememberContainerState() throws Exception {
+        previousMediaContainerState = getDialogPage().getMediaContainerStateGlyphScreenshot();
     }
 
-    @Then("I see media is playing")
-    public void TheMediaIsPlaying() throws Exception {
-        String playingState = DialogPage.MEDIA_STATE_PLAYING;
-        mediaState = getDialogPage().getMediaState();
-        Assert.assertEquals(playingState, mediaState);
+    private static final long MEDIA_STATE_CHANGE_TIMEOUT = 10000; // milliseconds
+
+    /**
+     * Verify whether the state of a media container is changed
+     *
+     * @param shouldNotChange equals to null if the state should not be changed
+     * @throws Exception
+     * @step. ^I see media container state is (not )?changed$
+     */
+    @Then("^I see media container state is (not )?changed$")
+    public void IVerifyContainerState(String shouldNotChange) throws Exception {
+        if (this.previousMediaContainerState == null) {
+            throw new IllegalStateException("Please remember the previous container state first");
+        }
+        final long millisecondsStarted = System.currentTimeMillis();
+        final double minScore = 0.8;
+        double score;
+        do {
+            final BufferedImage currentMediaContainerState = getDialogPage().getMediaContainerStateGlyphScreenshot();
+            score = ImageUtil.getOverlapScore(previousMediaContainerState, currentMediaContainerState,
+                    ImageUtil.RESIZE_NORESIZE);
+            if (shouldNotChange == null && score <= minScore || shouldNotChange != null && score > minScore) {
+                return;
+            }
+            Thread.sleep(500);
+        } while (System.currentTimeMillis() - millisecondsStarted <= MEDIA_STATE_CHANGE_TIMEOUT);
+        throw new AssertionError(String.format("The current media state is different from the expected one after " +
+                "%s seconds timeout. Similarity score is %.2f", MEDIA_STATE_CHANGE_TIMEOUT / 1000, score));
     }
 
-    @Then("The media stops playing")
-    public void TheMediaStoppsPlaying() throws Exception {
-        String endedState = DialogPage.MEDIA_STATE_STOPPED;
-        mediaState = getDialogPage().getMediaState();
-        Assert.assertEquals(endedState, mediaState);
+   @Then("^I see media is (playing|stopped|paused) on [Mm]edia [Bb]ar$")
+    public void TheMediaIs(String expectedState) throws Exception {
+        final long millisecondsStarted = System.currentTimeMillis();
+        String currentState;
+        do {
+            currentState = getDialogPage().getMediaStateFromMediaBar();
+            if (expectedState.equals("playing") && currentState.equals(DialogPage.MEDIA_STATE_PLAYING) ||
+                    expectedState.equals("stopped") && currentState.equals(DialogPage.MEDIA_STATE_STOPPED) ||
+                    expectedState.equals("paused") && currentState.equals(DialogPage.MEDIA_STATE_PAUSED)) {
+                return;
+            }
+            Thread.sleep(500);
+        } while (System.currentTimeMillis() - millisecondsStarted <= MEDIA_STATE_CHANGE_TIMEOUT);
+        throw new AssertionError(String.format("The current media state '%s' is different from the expected one after " +
+                "%s seconds timeout", currentState, MEDIA_STATE_CHANGE_TIMEOUT / 1000));
     }
 
-    @Then("I see media bar on dialog page")
+    @Then("^I see media bar on dialog page$")
     public void ISeeMediaBarInDialog() throws Exception {
         Assert.assertTrue(getDialogPage().isMediaBarDisplayed());
     }
 
-    @Then("I dont see media bar on dialog page")
+    @Then("^I dont see media bar on dialog page$")
     public void ISeeMediaBarDisappear() throws Exception {
         Assert.assertTrue(getDialogPage().waitMediabarClose());
     }
@@ -378,7 +397,7 @@ public class DialogPageSteps {
         getDialogPage().tapOnMediaBar();
     }
 
-    @Then("I see conversation view is scrolled back to the playing media link (.*)")
+    @Then("^I see conversation view is scrolled back to the playing media link (.*)")
     public void ISeeConversationViewIsScrolledBackToThePlayingMedia(String link) throws Throwable {
         Assert.assertEquals(link.toLowerCase(), getDialogPage()
                 .getLastMessageFromDialog().orElseThrow(() ->
@@ -391,11 +410,6 @@ public class DialogPageSteps {
     @When("I tap and hold image to open full screen")
     public void ITapImageToOpenFullScreen() throws Throwable {
         getDialogPage().tapImageToOpen();
-    }
-
-    @Then("^I scroll away the keyboard$")
-    public void IScrollKeyboardAway() throws Throwable {
-        getDialogPage().swipeDialogPageDown();
     }
 
     @Then("^I navigate back to conversations list")

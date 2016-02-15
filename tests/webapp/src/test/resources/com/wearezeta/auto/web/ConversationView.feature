@@ -197,6 +197,7 @@ Feature: Conversation View
   @C1781 @regression
   Scenario Outline: Send a long message containing new lines in 1on1
     Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>

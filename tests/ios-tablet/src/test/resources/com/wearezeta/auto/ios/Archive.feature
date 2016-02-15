@@ -59,7 +59,7 @@ Feature: Archive
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | autocall    |
 
-  @C2385 @staging @id2326
+  @C2385 @regression @id2326
   Scenario Outline: Verify unarchiving silenced conversation only by call [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -83,7 +83,7 @@ Feature: Archive
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | autocall    |
 
-  @C2390 @staging @id3992
+  @C2390 @regression @id3992
   Scenario Outline: Verify unarchiving silenced conversation only by call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
