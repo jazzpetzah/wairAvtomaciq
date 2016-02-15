@@ -496,6 +496,10 @@ public class CommonUtils {
         return getValueFromConfig(cls, "appName");
     }
 
+    public static int getCachedOtrDevicesCount(Class<?> cls) throws Exception {
+        return Integer.parseInt(getValueFromCommonConfig(cls, "cachedOtrDevicesCount"));
+    }
+
     public static final int SCREENSHOT_TIMEOUT_SECONDS = 5;
 
     public static void takeIOSSimulatorScreenshot(String screenshotPath) throws Exception {
