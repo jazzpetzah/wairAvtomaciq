@@ -320,7 +320,7 @@ public class CommonAndroidSteps {
      * @param user          that adds someone to a chat
      * @param userToBeAdded user that gets added by someone
      * @param group         group chat you get added to
-     * @throws Throwable
+     * @throws Exception
      * @step. ^User (.*) adds [Uu]ser (.*) to group chat (.*)$
      */
     @When("^User (.*) adds [Uu]ser (.*) to group chat (.*)$")
@@ -971,7 +971,7 @@ public class CommonAndroidSteps {
             });
         }
         pool.shutdown();
-        final int secondsTimeout = (names.size() / poolSize + 1) * 40;
+        final int secondsTimeout = (names.size() / poolSize + 1) * 60;
         if (!pool.awaitTermination(secondsTimeout, TimeUnit.SECONDS)) {
             throw new IllegalStateException(String.format(
                     "Devices '%s' were not created within %s seconds timeout", names, secondsTimeout));
@@ -999,6 +999,19 @@ public class CommonAndroidSteps {
     @Given("^User (.*) removes all his registered OTR clients$")
     public void UserRemovesAllRegisteredOtrClients(String userAs) throws Exception {
         commonSteps.UserRemovesAllRegisteredOtrClients(userAs);
+    }
+
+    /**
+     * Remove all registered OTR clients for the particular user except of the X most recent ones
+     *
+     * @param userAs user name/alias
+     * @param clientsCount the count of recents OTR clients to keep
+     * @throws Exception
+     * @step. ^User (.*) only keeps his (\d+) most recent OTR clients$
+     */
+    @Given("^User (.*) only keeps his (\\d+) most recent OTR clients$")
+    public void UserKeepsXOtrClients(String userAs, int clientsCount) throws Exception {
+        commonSteps.UserKeepsXOtrClients(userAs, clientsCount);
     }
 
 }

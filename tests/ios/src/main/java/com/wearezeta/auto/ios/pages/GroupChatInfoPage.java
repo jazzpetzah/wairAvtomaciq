@@ -10,6 +10,7 @@ import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import org.openqa.selenium.WebElement;
 
 public class GroupChatInfoPage extends IOSPage {
     private static final By nameRightActionButton = By.name("metaControllerRightButton");
@@ -32,14 +33,14 @@ public class GroupChatInfoPage extends IOSPage {
 
     private static final By nameLeaveConversationAlert = By.name("Leave conversation?");
 
-    private static final Function<String,String> xpathStrUserNameLabelByText = text ->
+    private static final Function<String, String> xpathStrUserNameLabelByText = text ->
             String.format("//UIACollectionView[preceding-sibling::UIATextView[@name='ParticipantsView_GroupName']]" +
                     "/UIACollectionCell/UIAStaticText[last() and @name='%s']", text);
 
     private static final Function<Integer, String> nameStrNumberPeopleByCount =
             count -> String.format("%s PEOPLE", count);
 
-    private static final Function<String,String> xpathPeopleViewCollectionCellByName = name ->
+    private static final Function<String, String> xpathPeopleViewCollectionCellByName = name ->
             String.format("//UIAButton[@name='metaControllerCancelButton']/following-sibling::" +
                     "UIACollectionView/UIACollectionCell/UIAStaticText[@name='%s']", name.toUpperCase());
 
@@ -59,7 +60,7 @@ public class GroupChatInfoPage extends IOSPage {
     }
 
     public boolean isCorrectConversationName(List<String> expectedNames) throws Exception {
-        final String xpathExpr =  String.join(" and ", expectedNames.stream().
+        final String xpathExpr = String.join(" and ", expectedNames.stream().
                 map(x -> String.format("contains(@value, '%s')", x)).
                 collect(Collectors.toList()));
         final By locator = By.xpath(xpathStrConversationNameByExpr.apply(xpathExpr));
@@ -80,12 +81,17 @@ public class GroupChatInfoPage extends IOSPage {
     }
 
     public void exitGroupInfoPage() throws Exception {
-        getElement(nameExitGroupInfoPageButton).click();
+        final WebElement closeBtn = getElement(nameExitGroupInfoPageButton);
+        closeBtn.click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameExitGroupInfoPageButton, 3)) {
+            // Sometimes we don't click this button in time because of animated transitions
+            closeBtn.click();
+        }
     }
 
     public void leaveConversation() throws Exception {
         getElement(nameRightActionButton).click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameRightActionButton)){
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameRightActionButton)) {
             throw new IllegalStateException("Menu button is still shown");
         }
         getElement(nameLeaveConversationButton).click();

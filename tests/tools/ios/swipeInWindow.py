@@ -41,8 +41,8 @@ def mousedrag(posx, posy):
     mouseEvent(kCGEventLeftMouseDragged, posx, posy)
 
 
-SWIPE_STEP_DURATION_MILLISECONDS = 4
-DEFAULT_SWIPE_DURATION_MILLISECONDS = 2000
+SWIPE_STEP_DURATION_MILLISECONDS = 25
+DEFAULT_SWIPE_DURATION_MILLISECONDS = 3000
 
 
 def get_next_point(start, end, current, duration):

@@ -38,10 +38,15 @@ public class SettingsPage extends IOSPage {
 
     private static final By xpathDeleteDevicePasswordField = By.xpath("//UIASecureTextField[contains(@value,'Password')]");
 
-    private static final FunctionFor2Parameters<String, String, String> xpathStrDeviceVerificationLabel = (deviceName, verificationLabel) -> {
-        return String.format("//UIATableCell[@name='%s']/UIAStaticText[@name='%s']", deviceName, verificationLabel);
-    };
-    private static final String xpathStrDevicesList = xpathStrMainWindow + "/UIATableView[1]/UIATableCell";
+    private static final FunctionFor2Parameters<String, String, String> xpathStrDeviceVerificationLabel =
+            (deviceName, verificationLabel) ->
+                    String.format("//UIATableCell[@name='%s']/UIAStaticText[@name='%s']", deviceName, verificationLabel);
+
+    private static final By currentLabel = By.name("Current");
+
+    private static final String xpathStrCurrentDevice = xpathStrMainWindow + "/UIATableView[1]/UIATableCell[1]";
+    private static final By xpathCurrentDevices = By.xpath(xpathStrCurrentDevice);
+	private static final String xpathStrDevicesList = xpathStrMainWindow + "/UIATableView[1]/UIATableCell";
     private static final Function<Integer, String> xpathStrDeviceByIndex = idx -> String.format("%s[%s]", xpathStrDevicesList,
             idx);
 
@@ -80,6 +85,9 @@ public class SettingsPage extends IOSPage {
     public void pressDeleteDeviceButton(String deviceName) throws Exception {
         final By locator = By.xpath(xpathDeleteDeviceButtonByName.apply(deviceName));
         getElement(locator, String.format("Device '%s' is not visible in Manage Device List", deviceName)).click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator)) {
+            throw new IllegalStateException("Delete device button is still visible");
+        }
     }
 
     public void pressDeleteButton() throws Exception {
@@ -104,6 +112,14 @@ public class SettingsPage extends IOSPage {
     public boolean verificationLabelVisibility(String deviceName, String verificaitonLabel) throws Exception {
         final By locator = By.xpath(xpathStrDeviceVerificationLabel.apply(deviceName, verificaitonLabel));
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+    }
+
+    public void tapCurrentDevice() throws Exception {
+        getElement(xpathCurrentDevices).click();
+    }
+
+    public boolean isItemInvisible(String itemName) throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.name(itemName));
     }
 
     public void swipeLeftOnDevice(int deviceIndex) throws Exception {

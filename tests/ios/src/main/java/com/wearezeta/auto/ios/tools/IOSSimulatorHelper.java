@@ -7,7 +7,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import static com.wearezeta.auto.common.CommonUtils.getIOSToolsRoot;
 
 public class IOSSimulatorHelper {
-    public static final int SIMULATOR_INTERACTION_TIMEOUT = 40; //seconds
+    public static final int SIMULATOR_INTERACTION_TIMEOUT = 3 * 60; //seconds
 
     public IOSSimulatorHelper() {
     }
@@ -81,7 +81,8 @@ public class IOSSimulatorHelper {
                     "         -e \"tell application \\\"System Events\\\" to keystroke \\\"${current_char}\\\"\" \\",
                     "    sleep 0.3",
                     "    /usr/bin/osascript -e 'tell application \"System Events\" to key code 53'",
-                    "done"
+                    "done",
+                    "sleep 2",
             };
         } else {
             script = new String[]{
@@ -91,7 +92,8 @@ public class IOSSimulatorHelper {
                     "    /usr/bin/osascript \\",
                     "         -e \"tell application \\\"System Events\\\" to keystroke \\\"${current_char}\\\"\" \\",
                     "    sleep 0.3",
-                    "done"
+                    "done",
+                    "sleep 2",
             };
         }
         CommonUtils.executeUIShellScript(script).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
@@ -112,7 +114,7 @@ public class IOSSimulatorHelper {
                     "    /usr/bin/osascript -e 'tell application \"System Events\" to key code 53'",
                     "done",
                     "/usr/bin/osascript -e 'tell application \"System Events\" to keystroke return'",
-                    "sleep 0.3"
+                    "sleep 2",
             };
         } else {
             script = new String[]{
@@ -124,7 +126,7 @@ public class IOSSimulatorHelper {
                     "    sleep 0.3",
                     "done",
                     "/usr/bin/osascript -e 'tell application \"System Events\" to keystroke return'",
-                    "sleep 0.3"
+                    "sleep 2",
             };
         }
         CommonUtils.executeUIShellScript(script).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);

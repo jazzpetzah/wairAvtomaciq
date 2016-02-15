@@ -90,10 +90,6 @@ public class PersonalInfoPage extends IOSPage {
         return getElement(xpathProfileNameEditField).getText();
     }
 
-    public boolean isUserNameContainingSpaces() throws Exception {
-        return getElement(xpathProfileNameEditField).getAttribute("value").contains(" ");
-    }
-
     public boolean isEmailVisible(String expectedEmail) throws Exception {
         final By locator = By.xpath(xpathStrEmailFieldByValue.apply(expectedEmail));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);

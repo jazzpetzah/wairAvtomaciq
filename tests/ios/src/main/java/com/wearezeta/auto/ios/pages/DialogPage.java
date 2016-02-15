@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
@@ -18,8 +19,6 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class DialogPage extends IOSPage {
-    private static final By xpathConversationWindow = By.xpath("//UIATableView");
-
     private static final By nameConversationBackButton = By.name("ConversationBackButton");
 
     private static final By nameConversationCursorInput = By.name("ConversationTextInputField");
@@ -43,13 +42,8 @@ public class DialogPage extends IOSPage {
     private static final By xpathImageCell = By.xpath(xpathStrImageCells);
     private static final By xpathLastImageCell = By.xpath(String.format("(%s)[last()]", xpathStrImageCells));
 
-    private static final By xpathNameMediaContainer = By.xpath(xpathStrMainWindow + "/UIATableView[1]/UIATableCell[last()]");
-
-    private static final By xpathMediaConversationCell = By.xpath(xpathStrMainWindow
-            + "/UIATableView[last()]/UIATableCell[last()]/UIAButton[@name='soundcloud']/following-sibling::UIAButton");
-
-    private static final By xpathYoutubeVimeoConversationCell = By.xpath(xpathStrMainWindow
-            + "/UIATableView[1]/UIATableCell[last()]/UIAButton[1]");
+    private static final By xpathMediaContainerCell =
+            By.xpath("//UIATextView[contains(@value, '://')]/following-sibling::UIAButton");
 
     private static final By namePlayButton = By.name("mediaBarPlayButton");
 
@@ -247,7 +241,7 @@ public class DialogPage extends IOSPage {
     }
 
     public void startMediaContent() throws Exception {
-        final Optional<WebElement> mediaLinkCell = getElementIfDisplayed(xpathMediaConversationCell, 3);
+        final Optional<WebElement> mediaLinkCell = getElementIfDisplayed(xpathMediaContainerCell, 3);
         if (mediaLinkCell.isPresent()) {
             mediaLinkCell.get().click();
         } else {
@@ -308,7 +302,7 @@ public class DialogPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 10);
     }
 
-    public String getMediaState() throws Exception {
+    public String getMediaStateFromMediaBar() throws Exception {
         if (isMediaBarPlayButtonVisible()) {
             return MEDIA_STATE_PAUSED;
         } else if (isMediaBarPauseButtonVisible()) {
@@ -351,11 +345,11 @@ public class DialogPage extends IOSPage {
     }
 
     public boolean isYoutubeContainerVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathYoutubeVimeoConversationCell, 10);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathMediaContainerCell, 10);
     }
 
     public boolean isMediaContainerVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathMediaConversationCell);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathMediaContainerCell);
     }
 
     public boolean isMediaBarDisplayed() throws Exception {
@@ -371,7 +365,7 @@ public class DialogPage extends IOSPage {
     }
 
     public void tapImageToOpen() throws Exception {
-        getElement(xpathNameMediaContainer).click();
+        getElement(xpathLastImageCell).click();
     }
 
     public void tapHoldTextInput() throws Exception {
@@ -394,7 +388,7 @@ public class DialogPage extends IOSPage {
         final WebElement convoInput = getElement(nameConversationCursorInput,
                 "Conversation input is not visible after the timeout");
         if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            inputStringFromKeyboard(convoInput, message, false, true);
+            inputStringFromKeyboard(convoInput, message, true, true);
         } else {
             convoInput.click();
             // Wait for animation
@@ -408,7 +402,7 @@ public class DialogPage extends IOSPage {
         final WebElement convoInput = getElement(nameConversationCursorInput,
                 "Conversation input is not visible after the timeout");
         if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            inputStringFromKeyboard(convoInput, message, false, false);
+            inputStringFromKeyboard(convoInput, message, true, false);
         } else {
             convoInput.click();
             // Wait for animation
@@ -435,7 +429,7 @@ public class DialogPage extends IOSPage {
     }
 
     public void clickOnPlayVideoButton() throws Exception {
-        getElement(xpathYoutubeVimeoConversationCell).click();
+        getElement(xpathMediaContainerCell).click();
     }
 
     public void openGifPreviewPage() throws Exception {
@@ -535,11 +529,22 @@ public class DialogPage extends IOSPage {
     }
 
     public void clickThisDeviceLink() throws Exception {
-        DriverUtils.tapByCoordinatesWithPercentOffcet(getDriver(), getElement(xpathYouStartedUsingThisDeviceSystemMesssage),
-                90, 50);
+        DriverUtils.tapByCoordinatesWithPercentOffcet(getDriver(),
+                getElement(xpathYouStartedUsingThisDeviceSystemMesssage), 90, 50);
     }
 
     public void resendLastMessageInDialogToUser() throws Exception {
         getElement(xpathResendMessageButton).click();
+    }
+
+    public BufferedImage getMediaContainerStateGlyphScreenshot() throws Exception {
+        final BufferedImage containerScreen =
+                this.getElementScreenshot(getElement(xpathMediaContainerCell)).orElseThrow(() ->
+                        new IllegalStateException("Cannot take a screenshot of media container"));
+        final int stateGlyphWidth = containerScreen.getWidth() / 7;
+        final int stateGlyphHeight = containerScreen.getHeight() / 7;
+        final int stateGlyphX = (containerScreen.getWidth() - stateGlyphWidth) / 2;
+        final int stateGlyphY = (containerScreen.getHeight() - stateGlyphHeight) / 2;
+        return containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
     }
 }

@@ -380,25 +380,21 @@ Feature: Conversation List
   Scenario Outline: Verify play/pause controls can change playing media state - SoundCloud [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User Myself removes his avatar picture
-    Given I rotate UI to landscape
+    And I rotate UI to portrait
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
-    Given I remember the state of <Contact> conversation item
     When I tap on contact name <Contact>
-    And I tap media link
-    And I rotate UI to portrait
+    And I remember media container state
+    And I tap media container
     And I navigate back to conversations list
-    Then I see the state of <Contact> conversation item is changed
-    When I remember the state of <Contact> conversation item
     And I tap on play/pause button in contact list
-    And I see the state of <Contact> conversation item is changed
-    And I see playing media is paused
+    And I tap on contact name <Contact>
+    Then I see media container state is not changed
+    When I navigate back to conversations list
     And I tap on play/pause button in contact list
-    And I see play/pause button next to username <Contact> in contact list
-    And I see media is playing
-    And I see the state of <Contact> conversation item is not changed
+    And I tap on contact name <Contact>
+    Then I see media container state is changed
 
     Examples:
       | Name      | Contact   | SoundCloudLink                                                                       |
@@ -548,7 +544,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2546 @staging @id3961
+  @C2546 @regression @id3961
   Scenario Outline: Verify deleting 1-to-1 conversation from archive [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -569,7 +565,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2547 @staging @id3962
+  @C2547 @regression @id3962
   Scenario Outline: Verify deleting 1-to-1 conversation from archive [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -591,7 +587,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2552 @staging @id3969
+  @C2552 @regression @id3969
   Scenario Outline: Verify posting in a group conversation without content [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -613,7 +609,6 @@ Feature: Conversation List
     Then I see empty group chat page with users <Contact1>,<Contact2> with only system message
     When I type the default message and send it
     Then I see 1 default message in the dialog
-    And I see 2 conversation entries
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Image       |
@@ -822,7 +817,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | KICKCHAT      |
 
-  @C2540 @staging @id4015
+  @C2540 @regression @id4015
   Scenario Outline: Verify blocking person from action menu [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -843,7 +838,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2541 @staging @id4016
+  @C2541 @regression @id4016
   Scenario Outline: Verify blocking person from action menu [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
