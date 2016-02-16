@@ -315,7 +315,7 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName1 | DeviceName2 |
       | user1Name | user2Name | Device1     | Device2     |
 
-  @3291 @regression
+  @C3291 @regression
   Scenario Outline: Verify device management appearance after 7 sign ins
     Given There is 1 user where <Name> is me
     Given User Myself adds new devices <DeviceName1>,<DeviceName2>,<DeviceName3>,<DeviceName4>,<DeviceName5>,<DeviceName6>,<DeviceName7>
@@ -404,7 +404,7 @@ Feature: E2EE
     Examples:
       | Name      |
       | user1Name |
-  
+
   @C3292 @noAcceptAlert @staging
   Scenario Outline: Verify deleting one of the devices from device management by swipe
     Given There is 1 user where <Name> is me
@@ -452,6 +452,29 @@ Feature: E2EE
     Examples:
       | Name      | DeviceName | Password      |
       | user1Name | Device1    | user1Password |
+
+  @C3289 @staging
+  Scenario Outline: Verify conversation is not verified after checking only one device out of many
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Contact1> adds new devices <DeviceName1>,<DeviceName2>
+    Given I sign in using my email
+    Given I see conversations list
+    When I tap on contact name <Contact1>
+    Then I do not see shield icon next to conversation input field
+    When I open conversation details
+    And I switch to Devices tab
+    And I open details page of device number 2
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    And I click close user profile page button
+    And I click Close input options button
+    And I do not see shield icon next to conversation input field
+    Then I do not see the conversation view contains message <ExpectedMessage>
+
+    Examples:
+      | Name      | Contact1  | DeviceName2 | DeviceName1 | ExpectedMessage               |
+      | user1Name | user2Name | Device2     | Device1     | ALL FINGERPRINTS ARE VERIFIED |
 
   @C3498 @staging
   Scenario Outline: Verify "learn more" leads to the proper page
