@@ -290,7 +290,7 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                    |
       | user1Name | user2Name | Device2     | Label2       | YOU STARTED USING A NEW DEVICE |
 
-  @14319 @regression
+  @C14319 @regression @rc
   Scenario Outline: When I'm entering a verified conversation, a blue shield will appear at the bottom right
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -310,12 +310,13 @@ Feature: E2EE
     And I click close user profile page button
     And I click Close input options button
     Then I see shield icon next to conversation input field
+    And I see last message in dialog is expected message <VerificationMsg>
 
     Examples:
-      | Name      | Contact1  | DeviceName1 | DeviceName2 |
-      | user1Name | user2Name | Device1     | Device2     |
+      | Name      | Contact1  | DeviceName1 | DeviceName2 | VerificationMsg               |
+      | user1Name | user2Name | Device1     | Device2     | ALL FINGERPRINTS ARE VERIFIED |
 
-  @3291 @regression
+  @C3291 @regression
   Scenario Outline: Verify device management appearance after 7 sign ins
     Given There is 1 user where <Name> is me
     Given User Myself adds new devices <DeviceName1>,<DeviceName2>,<DeviceName3>,<DeviceName4>,<DeviceName5>,<DeviceName6>,<DeviceName7>
@@ -404,3 +405,74 @@ Feature: E2EE
     Examples:
       | Name      |
       | user1Name |
+  
+  @C3292 @noAcceptAlert @staging
+  Scenario Outline: Verify deleting one of the devices from device management by swipe
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email
+    Given I accept alert
+    Given I accept First Time overlay if it is visible
+    Given I accept alert
+    Given I see conversations list
+    And User Myself adds a new device <DeviceName> with label <DeviceLabel>
+    When I tap my avatar
+    And I accept alert
+    And I click on Settings button on personal page
+    And I click on Settings button from the options menu
+    And I select settings item Privacy & Security
+    And I select settings item Manage devices
+    And I swipe left on device number 1
+    And I tap Delete button opened from swipe left on device
+    And I confirm with my <Password> the deletion of the device
+    Then I do not see device <DeviceName> in devices list
+
+    Examples:
+      | Name      | DeviceName | DeviceLabel | Password      |
+      | user1Name | Device1    | Label1      | user1Password |
+
+  @C3511 @noAcceptAlert @staging
+  Scenario Outline: Verify deleting one of the devices from device information screen
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email
+    Given I accept alert
+    Given I accept First Time overlay if it is visible
+    Given I accept alert
+    Given I see conversations list
+    And User Myself adds new device <DeviceName>
+    When I tap my avatar
+    And I accept alert
+    And I click on Settings button on personal page
+    And I click on Settings button from the options menu
+    And I select settings item Privacy & Security
+    And I select settings item Manage devices
+    And I open details page of device number 2
+    And I tap Remove Device on device detail page
+    And I confirm with my <Password> the deletion of the device
+    Then I do not see device <DeviceName> in devices list
+
+    Examples:
+      | Name      | DeviceName | Password      |
+      | user1Name | Device1    | user1Password |
+
+  @C3289 @staging
+  Scenario Outline: Verify conversation is not verified after checking only one device out of many
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Contact1> adds new devices <DeviceName1>,<DeviceName2>
+    Given I sign in using my email
+    Given I see conversations list
+    When I tap on contact name <Contact1>
+    Then I do not see shield icon next to conversation input field
+    When I open conversation details
+    And I switch to Devices tab
+    And I open details page of device number 2
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    And I click close user profile page button
+    And I click Close input options button
+    And I do not see shield icon next to conversation input field
+    Then I do not see the conversation view contains message <ExpectedMessage>
+
+    Examples:
+      | Name      | Contact1  | DeviceName2 | DeviceName1 | ExpectedMessage               |
+      | user1Name | user2Name | Device2     | Device1     | ALL FINGERPRINTS ARE VERIFIED |

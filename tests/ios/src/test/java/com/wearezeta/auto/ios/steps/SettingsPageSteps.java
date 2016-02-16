@@ -175,4 +175,27 @@ public class SettingsPageSteps {
     public void ITapOnCurrentDevice() throws Throwable {
         getSettingsPage().tapCurrentDevice();
     }
+
+    /**
+     * Taps the big delete button opened from swipe left on the device cell
+     *
+     * @throws Exception
+     * @step. ^I tap Delete button opened from swipe left on device$
+     */
+    @When("^I tap Delete button opened from swipe left on device$")
+    public void ITapDeleteButtonOpenedFromSwipeLeftOnDevice() throws Exception {
+        getSettingsPage().pressDeleteButton();
+    }
+
+    /**
+     * Swipes left on the device cell
+     *
+     * @param deviceIndex index of device cell
+     * @throws Exception
+     * @step. ^I swipe left on device number (\d+)$
+     */
+    @When("^I swipe left on device number (\\d+)$")
+    public void ISwipeLeftOnDeviceNumber(int deviceIndex) throws Exception {
+        getSettingsPage().swipeLeftOnDevice(deviceIndex);
+    }
 }

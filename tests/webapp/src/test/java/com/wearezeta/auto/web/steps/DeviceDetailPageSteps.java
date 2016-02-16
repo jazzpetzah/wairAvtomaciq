@@ -3,6 +3,8 @@ package com.wearezeta.auto.web.steps;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.web.pages.DeviceDetailPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
@@ -11,6 +13,7 @@ import cucumber.api.java.en.When;
 
 public class DeviceDetailPageSteps {
 
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
 			.getInstance();
 
@@ -40,8 +43,12 @@ public class DeviceDetailPageSteps {
 
 	@When("I type password \"([^\"]*)\" into the device remove form")
 	public void ITypePassword(String password) throws Exception {
-		webappPagesCollection.getPage(DeviceDetailPage.class).setPassword(
-				"aqa123456!");
+		try {
+			password = usrMgr.findUserByPasswordAlias(password).getPassword();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		webappPagesCollection.getPage(DeviceDetailPage.class).setPassword(password);
 	}
 
 	@When("I click the remove button")
