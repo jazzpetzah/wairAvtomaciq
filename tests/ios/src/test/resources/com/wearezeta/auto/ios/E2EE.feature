@@ -550,3 +550,15 @@ Feature: E2EE
     Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
+
+  @C14311 @staging
+  Scenario Outline: Verify the appropriate device is signed out if you remove it from settings
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email
+    Given I see conversations list
+    When User Myself removes all his registered OTR clients
+    Then I see sign in screen
+
+    Examples:
+      | Name      |
+      | user1Name |
