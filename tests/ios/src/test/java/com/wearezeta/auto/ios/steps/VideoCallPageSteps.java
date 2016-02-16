@@ -35,7 +35,7 @@ public class VideoCallPageSteps {
      * @param buttonName Name of the button
      * @param visibility is button enabled or disabled
      * @throws Exception
-     * @step.
+     * @step. ^I see (CallMute|LeaveCall|Accept) button and it is (enabled|disabled) on Video Call page$
      */
     @Then("^I see (CallMute|LeaveCall|Accept) button and it is (enabled|disabled) on Video Call page$")
     public void ISeeButtonWithNameAndItsVisibility(String buttonName, String visibility) throws Exception {
