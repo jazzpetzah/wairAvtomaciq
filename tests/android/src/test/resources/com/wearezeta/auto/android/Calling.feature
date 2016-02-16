@@ -516,7 +516,7 @@ Feature: Calling
     And I cancel new call from end current call alert
     And I see incoming calling message for contact <Contact3>
     When I swipe to ignore the call
-    Then I see incoming call
+    Then I see ongoing call
     And I see 2 users take part in call
     When I navigate back from dialog page
     And I tap on contact name <Contact3>
@@ -542,7 +542,7 @@ Feature: Calling
     Then I see the call lock screen
     And I see a call from <GroupChatName> in the call lock screen
     And I swipe to accept the call
-    And I see incoming call
+    And I see ongoing call
     And I see 2 users take part in call
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
@@ -561,11 +561,11 @@ Feature: Calling
     And I tap on contact name <Contact>
     And I swipe on text input
     And I press Call button
-    And I see incoming call
+    And I see outgoing call
     When I lock the device
     And I wait for 2 seconds
     And I unlock the device
-    Then I see incoming call
+    Then I see outgoing call
 
     Examples:
       | Name      | Contact   |
@@ -579,12 +579,12 @@ Feature: Calling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And <Contact> calls me using <CallBackend>
-    And I see call overlay
+    And I see incoming call
     And I swipe to accept the call
     When I minimize the application
     And I wait for 10 seconds
     And I restore the application
-    Then I see call overlay
+    Then I see ongoing call
     And <Contact> stops all calls to me
 
     Examples:
@@ -624,7 +624,7 @@ Feature: Calling
     And <Contact2> calls <GroupChatName> using <CallBackend>
     And I swipe to accept the call
     And I do not see join group call overlay
-    And I see incoming call
+    And I see ongoing call
     And I tap conversation details button
     And I press options menu button
     And I press Leave conversation menu button
