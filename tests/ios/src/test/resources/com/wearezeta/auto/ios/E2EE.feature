@@ -500,3 +500,26 @@ Feature: E2EE
     Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
+
+  @C3500 @staging
+  Scenario Outline: Verify shield is not shown when any text presents into the input field
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given I sign in using my email
+    Given I see conversations list
+    When I tap on contact name <Contact1>
+    And I open conversation details
+    And I switch to Devices tab
+    And I open details page of device number 1
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    And I click close user profile page button
+    And I click Close input options button
+    Then I see shield icon next to conversation input field
+    When I type the default message
+    Then I do not see shield icon next to conversation input field
+
+    Examples:
+      | Name      | Contact1  |
+      | user1Name | user2Name |
