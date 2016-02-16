@@ -54,10 +54,10 @@ public class SettingsPageSteps {
      * Tap back button on settings page
      *
      * @throws Exception
-     * @step. ^I switch to the previous settings tab$
+     * @step. ^I switch to the previous settings page$
      */
-    @And("^I switch to the previous settings tab$")
-    public void ISwitchToThePreviousSettingsTab() throws Exception {
+    @And("^I switch to the previous settings page$")
+    public void ISwitchToThePreviousSettingsPage() throws Exception {
         getSettingsPage().goBack();
     }
 
@@ -77,15 +77,20 @@ public class SettingsPageSteps {
     /**
      * Verify whether the corresponding settings menu item is visible
      *
-     * @step. ^I see settings item (.*)$
+     * @step. ^I (dont )?see settings item (.*)$
      *
      * @param itemName the expected item name
      * @throws Exception
      */
-    @Then("^I see settings item (.*)$")
-    public void ISeeSettingsItem(String itemName) throws Exception {
-        Assert.assertTrue(String.format("Settings menu item '%s' is not visible", itemName),
-            getSettingsPage().isItemVisible(itemName));
+    @Then("^I (do not )?see settings item (.*)$")
+    public void ISeeSettingsItem(String shouldNot, String itemName) throws Exception {
+        if (shouldNot == null) {
+            Assert.assertTrue(String.format("Settings menu item '%s' is not visible", itemName),
+                    getSettingsPage().isItemVisible(itemName));
+        } else {
+            Assert.assertTrue(String.format("Settings menu item %s is visible",itemName),
+                    getSettingsPage().isItemInvisible(itemName));
+        }
     }
 
     /**
@@ -147,9 +152,9 @@ public class SettingsPageSteps {
      * @param shouldNot equals to null if the device is in list
      * @param device    name of device in list
      * @throws Exception
-     * @step. ^I (dont )?see device (.*) in devices list$
+     * @step. ^I (do not )?see device (.*) in devices list$
      */
-    @Then("^I (dont )?see device (.*) in devices list$")
+    @Then("^I (do not )?see device (.*) in devices list$")
     public void ISeeDeviceInDevicesList(String shouldNot, String device) throws Exception {
         if (shouldNot == null) {
             Assert.assertTrue(String.format("The device %s is not visible in the device list",device),
@@ -158,5 +163,39 @@ public class SettingsPageSteps {
             Assert.assertFalse(String.format("The device %s is still visible in the device list",device),
                     getSettingsPage().isDeviceVisibleInList(device));
         }
+    }
+
+    /**
+     * Tap on current device
+     *
+     * @throws Exception
+     * @step. ^I tap on current device$
+     */
+    @Then("^I tap on current device$")
+    public void ITapOnCurrentDevice() throws Throwable {
+        getSettingsPage().tapCurrentDevice();
+    }
+
+    /**
+     * Taps the big delete button opened from swipe left on the device cell
+     *
+     * @throws Exception
+     * @step. ^I tap Delete button opened from swipe left on device$
+     */
+    @When("^I tap Delete button opened from swipe left on device$")
+    public void ITapDeleteButtonOpenedFromSwipeLeftOnDevice() throws Exception {
+        getSettingsPage().pressDeleteButton();
+    }
+
+    /**
+     * Swipes left on the device cell
+     *
+     * @param deviceIndex index of device cell
+     * @throws Exception
+     * @step. ^I swipe left on device number (\d+)$
+     */
+    @When("^I swipe left on device number (\\d+)$")
+    public void ISwipeLeftOnDeviceNumber(int deviceIndex) throws Exception {
+        getSettingsPage().swipeLeftOnDevice(deviceIndex);
     }
 }

@@ -1,11 +1,11 @@
 package com.wearezeta.auto.common.sync_engine_bridge;
 
 import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.TimeoutException;
 
 import akka.actor.ActorRef;
 
+import akka.actor.PoisonPill;
 import com.waz.model.RConvId;
 import com.waz.provision.ActorMessage;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -19,21 +19,21 @@ class Device extends RemoteEntity implements IDevice {
     private Optional<String> fingerprint = Optional.empty();
     private IRemoteProcess hostProcess;
     private ActorRef coordinatorActorRef;
-    private String backendType;
-    private boolean otrOnly;
 
-    public Device(String deviceName, ActorRef coordinatorActorRef,
-                  String backendType, boolean otrOnly, FiniteDuration actorTimeout) {
+    public Device(IRemoteProcess hostProcess, String deviceName, ActorRef coordinatorActorRef,
+                  FiniteDuration actorTimeout) {
         super(null, deviceName, actorTimeout);
+        this.hostProcess = hostProcess;
         this.coordinatorActorRef = coordinatorActorRef;
-        this.backendType = backendType;
-        this.otrOnly = otrOnly;
         respawn();
     }
 
     private void respawn() {
-        this.hostProcess = new RemoteProcess(UUID.randomUUID().toString().substring(0, 8),
-                this.coordinatorActorRef, this.actorTimeout, this.backendType, this.otrOnly);
+        if (this.ref() != null) {
+            this.ref().tell(PoisonPill.getInstance(), null);
+            this.hostProcess.reconnect();
+            this.setRef(null);
+        }
         final ActorRef processActorRef = this.hostProcess.ref();
         try {
             final Object resp = askActor(processActorRef, new ActorMessage.SpawnRemoteDevice(null, this.name()));
@@ -48,8 +48,7 @@ class Device extends RemoteEntity implements IDevice {
         throw new IllegalStateException(String.format(
                 "There was an error establishing a connection with a new device: "
                         + "%s on process: %s. Please check the log file %s for more details.",
-                this.name(), this.hostProcess.name(),
-                this.hostProcess.getLogPath()));
+                this.name(), this.hostProcess.name(), this.hostProcess.getLogPath()));
     }
 
     @Override
@@ -60,6 +59,11 @@ class Device extends RemoteEntity implements IDevice {
     @Override
     public boolean isLoggedInUser(ClientUser user) {
         return this.loggedInUser.orElseGet(() -> null) == user;
+    }
+
+    @Override
+    public Optional<ClientUser> getLoggedInUser() {
+        return this.loggedInUser;
     }
 
     @Override
@@ -107,11 +111,6 @@ class Device extends RemoteEntity implements IDevice {
             }
             askActor(this.ref(), new ActorMessage.SendText(new RConvId(convId), message));
         }
-    }
-
-    @Override
-    public void logout() {
-        // TODO: Auto-generated method stub
     }
 
     @Override
@@ -193,6 +192,15 @@ class Device extends RemoteEntity implements IDevice {
             }
         } else {
             return this.fingerprint.get();
+        }
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        if (this.coordinatorActorRef != null && this.hostProcess != null) {
+            this.ref().tell(PoisonPill.getInstance(), null);
+            this.coordinatorActorRef = null;
+            this.hostProcess = null;
         }
     }
 }

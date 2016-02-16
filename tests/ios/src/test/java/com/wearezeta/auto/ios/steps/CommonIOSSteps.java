@@ -14,7 +14,6 @@ import com.wearezeta.auto.ios.reporter.IOSLogListener;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import cucumber.api.PendingException;
 import cucumber.api.Scenario;
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import org.junit.Assert;
 import org.openqa.selenium.ScreenOrientation;
@@ -173,16 +172,6 @@ public class CommonIOSSteps {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @When("^I see keyboard$")
-    public void ISeeKeyboard() throws Exception {
-        Assert.assertTrue(pagesCollection.getCommonPage().isKeyboardVisible());
-    }
-
-    @When("^I dont see keyboard$")
-    public void IDontSeeKeyboard() throws Exception {
-        Assert.assertFalse(pagesCollection.getCommonPage().isKeyboardVisible());
     }
 
     @When("^I press keyboard Delete button$")

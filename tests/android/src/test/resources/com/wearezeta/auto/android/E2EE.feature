@@ -190,7 +190,7 @@ Feature: E2EE
       | user1Name | user2Name | Msg1     |
 
   @C3232 @regression
-  Scenario Outline: Verify the device id is not changed after relogin
+  Scenario Outline: (AN-3450) Verify the device id is not changed after relogin
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -213,9 +213,9 @@ Feature: E2EE
     When I select "Account" settings menu item
     And I select "Log out" settings menu item
     Then I confirm sign out
-    And I see welcome screen
-    When I sign in using my email or phone number
-    Then I see Contact list with contacts
+    Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
+    And I see Contact list with contacts
     When I tap on contact name <Contact1>
     Then I see encrypted message <EncMessage> 1 times in the conversation view
     When I press back button
@@ -270,7 +270,7 @@ Feature: E2EE
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     When User <Name> sends encrypted message <EncMessage> to user <Contact1>
-    Then I sign in using my email or phone number
+    Then I sign in using my email
     And I see First Time overlay
     When I tap Got It button on First Time overlay
     Then I see Contact list with contacts
@@ -439,6 +439,56 @@ Feature: E2EE
     Examples:
       | Name      | Contact1  | Contact2  | Message1 | GroupChatName |
       | user1Name | user2Name | user3Name | Msg1     | GroupConvo    |
+
+  @C12082 @staging
+  Scenario Outline: First time when group conversation is degraded - I can ignore alert screen and send messages with resend button
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When User <Contact1> sends encrypted message <Message1> to group conversation <GroupChatName>
+    And User <Contact2> sends encrypted message <Message1> to group conversation <GroupChatName>
+    And I tap on contact name <GroupChatName>
+    And I tap conversation details button
+    And I select contact <Contact1>
+    And I select single participant tab "Devices"
+    And I verify 1st device
+    And I close single participant page by UI button
+    And I select contact <Contact2>
+    And I select single participant tab "Devices"
+    And I verify 1st device
+    And I close single participant page by UI button
+    And I press back button
+    Then I see a message informing me conversation is verified
+    When User <Contact1> adds new device Device1
+    And I tap on text input
+    And I type the message "<Message2>" and send it
+    Then I see alert page
+    And I see unverified conversation alert page header caused by user <Contact1>
+    When I tap on positive button on alert page
+    Then I see encrypted message <Message2> 1 times in the conversation view
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Message1 | Message2 | GroupChatName |
+      | user1Name | user2Name | user3Name | Msg1     | Msg2     | GroupConvo    |
+
+  @C3513 @staging
+  Scenario Outline: If user uses only old Wire builds which don't support E2EE I should see system message inside his profile 
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to Myself
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    And I tap on contact name <Contact>
+    When I tap conversation details button
+    And I select single participant tab "Devices"
+    Then I see no encrypted device text for user <Contact> in header of device detail page
+
+    Examples:
+      | Name      | Contact   | SimpleMessage |
+      | user1Name | user2Name | SimpleYo      |
       
   @C3512 @staging
   Scenario Outline: After login by phone on not 1st device I have to be asked for email login

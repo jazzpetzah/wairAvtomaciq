@@ -122,14 +122,16 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     public void removeFromConversation() throws Exception {
         DriverUtils.tapByCoordinates(this.getDriver(), getElement(nameRemoveFromConversation));
+        // Wait for animation
+        Thread.sleep(1000);
     }
 
     public void confirmRemove() throws Exception {
-        getElement(nameConfirmRemoveButton).click();
+        final WebElement confirmBtn = getElement(nameConfirmRemoveButton);
+        confirmBtn.click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConfirmRemoveButton)) {
-            throw new IllegalStateException("Confirm remove dialog should be autoclosed");
+            confirmBtn.click();
         }
-
     }
 
     public boolean isUserNameVisible(String name) throws Exception {
@@ -205,12 +207,11 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     }
 
     private String convertStringIDtoLocatorTypeID(String id) {
-        String resultString = new String();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < id.length(); i += 2) {
-            resultString = resultString.concat(id.substring(i, i + 2));
-            resultString = resultString.concat(" ");
+            sb.append(id.substring(i, i + 2)).append(" ");
         }
-        return resultString.toUpperCase().trim();
+        return sb.toString().toUpperCase().trim();
     }
 
     public boolean isUserDeviceIdVisible(String deviceId) throws Exception {

@@ -142,44 +142,6 @@ public class RegistrationPageSteps {
         IEnterName(name);
         getRegistrationPage().inputName();
     }
-
-    /**
-     * Fill in name field username with leading and trailing spaces
-     *
-     * @param name username
-     * @throws Exception
-     * @step. ^I fill in name (.*) with leading and trailing spaces and hit
-     * Enter$
-     */
-    @When("^I fill in name (.*) with leading and trailing spaces and hit Enter$")
-    public void IInputNameWithSpacesAndHitEnter(String name) throws Exception {
-        getRegistrationPage().setName(
-                "  " + usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS) + "  ");
-        getRegistrationPage().inputName();
-    }
-
-    /**
-     * Fill in name field username with leading and trailing spaces on iPad
-     *
-     * @param name username
-     * @throws Exception
-     * @step. ^I fill in name (.*) with leading and trailing spaces on iPad
-     */
-    @When("^I fill in name (.*) with leading and trailing spaces on iPad$")
-    public void IInputNameWithSpacesOnIpad(String name) throws Exception {
-        try {
-            this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
-        } catch (NoSuchUserException e) {
-            if (this.userToRegister == null) {
-                this.userToRegister = new ClientUser();
-            }
-            this.userToRegister.setName(name);
-            this.userToRegister.clearNameAliases();
-            this.userToRegister.addNameAlias(name);
-        }
-        getRegistrationPage().setName("  " + userToRegister.getName() + "  ");
-    }
-
     @When("^I enter email (.*)$")
     public void IEnterEmail(String email) throws Exception {
         boolean isRealEmail = false;

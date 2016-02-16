@@ -51,7 +51,7 @@ public class IncomingPendingRequestsPage extends IOSPage {
     }
 
     public boolean isConnectButtonDisplayed() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathPendingRequestConnectButton, 5);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathPendingRequestConnectButton);
     }
 
     public boolean isConnectToNameExist(String expectedName) throws Exception {
@@ -60,11 +60,10 @@ public class IncomingPendingRequestsPage extends IOSPage {
     }
 
     public boolean isYouBothKnowDisplayed() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameYouBothKnowHeader, 5);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameYouBothKnowHeader);
     }
 
     public void clickYouBothKnowPeopleIcon() throws Exception {
         getElement(xpathYouBothKnowPeopleIcon).click();
     }
-
 }

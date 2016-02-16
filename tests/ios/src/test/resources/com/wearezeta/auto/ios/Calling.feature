@@ -18,7 +18,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @C3180 @rc @calling_basic @id908
+  @C3180 @rc @calling_basic @clumsy @id908
   Scenario Outline: Verify starting outgoing call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -52,7 +52,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2108 @rc @calling_basic @id896
+  @C2108 @rc @calling_basic @clumsy @id896
   Scenario Outline: Verify ignoring of incoming call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -67,16 +67,16 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @C2111 @rc @calling_basic @IPv6 @id2093
-  Scenario Outline: (ZIOS-5534)Verify accepting incoming call
+  @C2111 @rc @calling_basic @clumsy @IPv6 @id2093
+  Scenario Outline: (ZIOS-5534) Verify accepting incoming call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
+    And I tap on contact name <Contact>
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
-    And I tap on contact name <Contact>
     Then I see mute call, end call and speakers buttons
     And I see started call message for contact <Contact>
 
@@ -109,6 +109,7 @@ Feature: Calling
     Given I see conversations list
     When I remember the state of <Contact> conversation item
     And <Contact> calls me using <CallBackend>
+    And I wait for 5 seconds
     And <Contact> stops all calls to me
     Then I see the state of <Contact> conversation item is changed
     When I remember the state of <Contact> conversation item
@@ -405,7 +406,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend | NumberOfAvatars | NumberOf1on1CallAvatars |
       | user1Name | user2Name | user3Name | GROUPCALL     | autocall    | 3               | 2                       |
 
-  @C2065 @rc @calling_basic @IPv6 @id3270
+  @C2065 @rc @calling_basic @clumsy @IPv6 @id3270
   Scenario Outline: Verify possibility of starting group call
     Given There are 10 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>

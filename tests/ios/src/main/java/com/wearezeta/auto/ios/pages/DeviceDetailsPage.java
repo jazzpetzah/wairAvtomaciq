@@ -9,11 +9,11 @@ import java.util.concurrent.Future;
 public class DeviceDetailsPage extends IOSPage {
     private final static By nameVerifySwitcher = By.xpath("//UIASwitch");
 
-    private static final By nameBackButton = By.name("Back");
-
     private static final By xpathBackButton = By.xpath(xpathStrMainWindow + "/UIAButton[4]");
     
-    private static final By xpathKeyFingerpringValue = By.xpath("//UIATableCell[@name='Key Fingerprint']/UIAStaticText[2]");
+    private static final By xpathKeyFingerprintValue = By.xpath("//UIATableCell[@name='Key Fingerprint']/UIAStaticText[2]");
+
+    private static final By nameRemoveDevice = By.name("Remove Device");
 
     public DeviceDetailsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -28,11 +28,14 @@ public class DeviceDetailsPage extends IOSPage {
     }
     
     public String getFingerprintValue() throws Exception {
-        return getElement(xpathKeyFingerpringValue).getAttribute("value");
+        return getElement(xpathKeyFingerprintValue).getAttribute("value");
     }
     
     public boolean verifyFingerPrintNotEmpty() throws Exception {
         return !getFingerprintValue().isEmpty();
     }
-    
+
+    public void tapRemoveDevice() throws Exception {
+        getElement(nameRemoveDevice).click();
+    }
 }

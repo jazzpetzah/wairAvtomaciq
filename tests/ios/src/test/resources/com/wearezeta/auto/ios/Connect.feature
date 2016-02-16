@@ -22,7 +22,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail | Contact2  |
       | user1Name | user2Name | user2Email   | user3Name |
 
-  @C102 @rc @regression @id1475
+  @C102 @rc @clumsy @regression @id1475
   Scenario Outline: (ZIOS-5508 Simulator issue)Get invitation message from user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -108,7 +108,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
-  @C45 @rc @regression @id1404
+  @C45 @rc @clumsy @regression @id1404
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (Search)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -129,15 +129,15 @@ Feature: Connect
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C34 @rc @regression @id1399
-  Scenario Outline: Verify you don't receive any messages from blocked person in 1:1 chat
+  @C34 @rc @clumsy @regression @id1399
+  Scenario Outline: (ZIOS-5811) Verify you don't receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
-    Given User <Name> blocks user <Contact>
+    Given <Contact> is connected to Myself
+    Given User Myself blocks user <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
-    Given User <Contact> securely pings conversation <Name>
+    Given User <Contact> securely pings conversation Myself
     Given User <Contact> sends 1 encrypted message to user Myself
     Then I dont see conversation <Contact> in contact list
     When I open search by taping on it
@@ -146,11 +146,11 @@ Feature: Connect
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I unblock user
-    Then I see 1 message in the dialog
-    And I navigate back to conversations list
-    Given User <Contact> sends 1 encrypted message to user Myself
-    When I tap on contact name <Contact>
-    Then I see 1 default messages in the dialog
+    Then I see 0 default messages in the dialog
+    And I see 0 photos in the dialog
+    When User <Contact> sends 1 encrypted message to user Myself
+    Then I see 1 default message in the dialog
+    And I see 0 photos in the dialog
 
     Examples: 
       | Name      | Contact   | Picture     |
@@ -195,8 +195,7 @@ Feature: Connect
     And I tap on contact name <Contact>
     And I tap on text input
     And I tap and hold on message input
-    And I click on popup Paste item
-    And I press Enter key in Simulator window
+    And I paste and commit the text
     Then I check copied content from <Name>
 
     Examples: 
@@ -212,7 +211,7 @@ Feature: Connect
     And I tap on Search input on People picker page
     Given I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user email <ContactEmail>
-    And I press the instant connect button
+    And I press the instant connect button next to <UnconnectedUser>
     And I click close button to dismiss people view
     And I see first item in contact list named <UnconnectedUser>
     And I tap on contact name <UnconnectedUser>
@@ -222,7 +221,7 @@ Feature: Connect
       | Name      | UnconnectedUser | ContactEmail |
       | user1Name | user2Name       | user2Email   |
 
-  @C38 @rc @regression @id3227
+  @C38 @rc @clumsy @regression @id3227
   Scenario Outline: Verify possibility of disconnecting from conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>

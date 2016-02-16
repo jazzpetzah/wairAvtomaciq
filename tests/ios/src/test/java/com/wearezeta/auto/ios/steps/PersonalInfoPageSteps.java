@@ -291,18 +291,6 @@ public class PersonalInfoPageSteps {
         }
     }
 
-    /**
-     * Verify that user name doesnt contains spaces
-     *
-     * @throws Exception
-     * @step. ^I see user name doesnt contains spaces$
-     */
-    @When("^I see user name doesnt contains spaces$")
-    public void ISeeUserNameNotContainSpaces() throws Exception {
-        Assert.assertFalse("User name contains space chars",
-                getPersonalInfoPage().isUserNameContainingSpaces());
-    }
-
     @When("I see email (.*) on Personal page")
     public void ISeeMyEmailOnPersonalPage(String email) throws Exception {
         email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();

@@ -1,10 +1,10 @@
 package com.wearezeta.auto.common.sync_engine_bridge;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
+import java.util.concurrent.*;
 
+import com.google.common.base.Throwables;
+import com.wearezeta.auto.common.CommonUtils;
 import org.apache.log4j.Logger;
 
 import scala.concurrent.duration.FiniteDuration;
@@ -19,18 +19,115 @@ import com.waz.provision.ActorMessage.ReleaseRemotes$;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 
-import java.util.List;
-
 public class UserDevicePool {
-
     private ActorRef coordinatorActorRef;
-    private static final int MAX_DEVICES = 50;
-    private volatile int deviceCount = 0;
-    private Map<ClientUser, CopyOnWriteArrayList<IDevice>> userDevices = new ConcurrentHashMap<>();
-    private static final FiniteDuration ACTOR_DURATION = new FiniteDuration(30000, TimeUnit.MILLISECONDS);
+    private static final FiniteDuration ACTOR_DURATION = new FiniteDuration(60, TimeUnit.SECONDS);
     private static final Logger LOG = ZetaLogger.getLog(UserDevicePool.class.getSimpleName());
     private String backendType;
     private boolean otrOnly;
+
+    private static int INITIAL_CACHE_SIZE = 3;
+
+    static {
+        try {
+            INITIAL_CACHE_SIZE = CommonUtils.getCachedOtrDevicesCount(UserDevicePool.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static final int MAX_POOL_SIZE = 10;
+
+    private Map<IRemoteProcess, Optional<IDevice>> cachedDevices = new ConcurrentHashMap<>();
+    private Semaphore cachedDevicesGuard = new Semaphore(1);
+
+    private void prefillCache() throws Exception {
+        int threadsCount = 2;
+        final int cpuCount = Runtime.getRuntime().availableProcessors();
+        if (cpuCount > 3) {
+            threadsCount = cpuCount - 1;
+        }
+        final ExecutorService pool = Executors.newFixedThreadPool(threadsCount);
+        for (int i = 0; i < INITIAL_CACHE_SIZE; i++) {
+            pool.submit(() -> {
+                try {
+                    final IRemoteProcess p = new RemoteProcess(CommonUtils.generateGUID().substring(0, 8),
+                            this.coordinatorActorRef, ACTOR_DURATION, this.backendType, this.otrOnly);
+                    cachedDevices.put(p, Optional.empty());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+        pool.shutdown();
+        final int secondsTimeout = (INITIAL_CACHE_SIZE / threadsCount + 1) * 60;
+        if (!pool.awaitTermination(secondsTimeout, TimeUnit.SECONDS)) {
+            throw new IllegalStateException(String.format(
+                    "Devices cache has not been prefilled within %s seconds timeout", secondsTimeout));
+        }
+    }
+
+    private void resetCache() throws Exception {
+        cachedDevicesGuard.acquire();
+        try {
+            for (IRemoteProcess p : cachedDevices.keySet()) {
+                if (cachedDevices.get(p).isPresent()) {
+                    cachedDevices.get(p).get().destroy();
+                    cachedDevices.put(p, Optional.empty());
+                }
+            }
+        } finally {
+            cachedDevicesGuard.release();
+        }
+    }
+
+    private IDevice putDeviceInCache(ClientUser owner, String deviceName) throws Exception {
+        IRemoteProcess targetProcess = null;
+        cachedDevicesGuard.acquire();
+        try {
+            // Look for free entry in cache
+            for (IRemoteProcess p : cachedDevices.keySet()) {
+                if (!cachedDevices.get(p).isPresent()) {
+                    targetProcess = p;
+                    break;
+                }
+            }
+        } finally {
+            cachedDevicesGuard.release();
+        }
+        // All entries are busy, let's create a new one
+        if (targetProcess == null) {
+            if (cachedDevices.size() < MAX_POOL_SIZE) {
+                targetProcess = new RemoteProcess(CommonUtils.generateGUID().substring(0, 8),
+                        this.coordinatorActorRef, ACTOR_DURATION, this.backendType, this.otrOnly);
+            } else {
+                throw new IllegalStateException(String.format(
+                        "Cannot create more than %s devices. Make sure you've reset SE Bridge after the previous test",
+                        MAX_POOL_SIZE));
+            }
+        }
+
+        IDevice result = new Device(targetProcess, deviceName, this.coordinatorActorRef, ACTOR_DURATION);
+        cachedDevicesGuard.acquire();
+        try {
+            cachedDevices.put(targetProcess, Optional.of(result));
+            result.logInWithUser(owner);
+        } finally {
+            cachedDevicesGuard.release();
+        }
+        return result;
+    }
+
+    private List<IDevice> selectUserDevices(ClientUser forUser) {
+        final List<IDevice> result = new ArrayList<>();
+        for (Map.Entry<IRemoteProcess, Optional<IDevice>> entry : cachedDevices.entrySet()) {
+            if (entry.getValue().isPresent() && entry.getValue().get().getLoggedInUser().isPresent() &&
+                    entry.getValue().get().getLoggedInUser().get().getName().equals(forUser.getName())) {
+                result.add(entry.getValue().get());
+            }
+        }
+        return result;
+    }
 
     public UserDevicePool(String backendType, boolean otrOnly) {
         final Config config = ConfigFactory.load("actor_coordinator");
@@ -38,94 +135,67 @@ public class UserDevicePool {
         this.coordinatorActorRef = system.actorOf(Props.create(CoordinatorActor.class), "coordinatorActor");
         this.backendType = backendType;
         this.otrOnly = otrOnly;
+        try {
+            prefillCache();
+        } catch (Exception e) {
+            Throwables.propagate(e);
+        }
     }
 
     public IDevice addDevice(ClientUser user) {
-        return addDevice(user, "Device_" + System.currentTimeMillis());
+        return addDevice(user, "Device_" + CommonUtils.generateGUID().substring(0, 8));
     }
 
     public IDevice addDevice(ClientUser user, String deviceName) {
         LOG.info("Add new device for user " + user.getName() + " with device name " + deviceName);
-        if (deviceCount >= MAX_DEVICES) {
-            throw new IllegalStateException(String.format(
-                    "Cannot create more than %s devices per one process instance", MAX_DEVICES));
+        try {
+            return putDeviceInCache(user, deviceName);
+        } catch (Exception e) {
+            Throwables.propagate(e);
+            return null;
         }
-        CopyOnWriteArrayList<IDevice> devices = userDevices.get(user);
-        if (devices == null) {
-            devices = new CopyOnWriteArrayList<>();
-        }
-        final Device result = new Device(deviceName, this.coordinatorActorRef,
-                this.backendType, this.otrOnly, ACTOR_DURATION);
-        devices.add(result);
-        deviceCount++;
-        userDevices.put(user, devices);
-        return result;
     }
 
     public List<IDevice> getDevices(ClientUser user) {
-        if (!userDevices.containsKey(user)) {
-            throw new IllegalArgumentException(String.format(
-                    "Could not find device list for user %s", user.getName()));
-        }
-        return userDevices.get(user);
+        return selectUserDevices(user);
     }
 
-    public IDevice getDevice(ClientUser user, String deviceName) {
-        if (userDevices.containsKey(user)) {
-            for (IDevice device : userDevices.get(user)) {
-                if (deviceName.equals(device.name())) {
-                    return device;
-                }
+    public Optional<IDevice> getDevice(ClientUser user, String deviceName) {
+        final List<IDevice> userDevices = getDevices(user);
+        for (IDevice device : userDevices) {
+            if (device.name().equals(deviceName)) {
+                return Optional.of(device);
             }
-            throw new IllegalArgumentException(String.format(
-                    "Could not find device %s for user %s", deviceName,
-                    user.getName()));
         }
-        throw new IllegalArgumentException(String.format(
-                "Could not find device list for user %s", user.getName()));
-    }
-
-    public IDevice getRandomDevice(ClientUser user) {
-        if (userDevices.containsKey(user)) {
-            // chosen by fair dice roll: https://xkcd.com/221/
-            return userDevices.get(user).get(0);
-        }
-        throw new IllegalArgumentException(String.format(
-                "Could not find device list for user %s", user.getName()));
+        return Optional.empty();
     }
 
     public IDevice getOrAddRandomDevice(ClientUser user) {
-        if (userDevices.containsKey(user)) {
+        final List<IDevice> allUserDevices = getDevices(user);
+        if (allUserDevices.isEmpty()) {
+            return addDevice(user);
+        } else {
             // chosen by fair dice roll: https://xkcd.com/221/
-            return userDevices.get(user).get(0);
+            return allUserDevices.get(0);
         }
-        return addDevice(user);
     }
 
     public IDevice getOrAddDevice(ClientUser user, String deviceName) {
-        if (userDevices.containsKey(user)) {
-            for (IDevice device : userDevices.get(user)) {
-                if (deviceName.equals(device.name())) {
-                    return device;
-                }
-            }
-        }
-        return addDevice(user, deviceName);
+        return getDevice(user, deviceName).orElse(addDevice(user, deviceName));
     }
 
     public synchronized void shutdown() {
         if (this.coordinatorActorRef != null) {
             LOG.info("Shutting down device pool...");
+            this.cachedDevices = null;
             coordinatorActorRef.tell(ReleaseRemotes$.MODULE$, null);
             this.coordinatorActorRef = null;
-            this.userDevices = null;
-            this.deviceCount = 0;
         } else {
             LOG.error("Trying to shut down the device pool for the second time! Skipping...");
         }
     }
 
-    public int size() {
-        return deviceCount;
+    public void reset() throws Exception {
+        resetCache();
     }
 }

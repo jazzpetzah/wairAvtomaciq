@@ -50,8 +50,7 @@ import cucumber.api.java.en.When;
 
 public class CommonAndroidTabletSteps {
     static {
-        System.setProperty("org.apache.commons.logging.Log",
-                "org.apache.commons.logging.impl.SimpleLog");
+        System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
         System.setProperty(
                 "org.apache.commons.logging.simplelog.log.org.apache.http",
                 "warn");
@@ -369,12 +368,11 @@ public class CommonAndroidTabletSteps {
      *
      * @param name      the user to check
      * @param colorName the assumed accent color
-     * @throws Throwable
+     * @throws Exception
      * @step. ^(.*) has an accent color (.*)$
      */
     @Given("^(.*) has an accent color (.*)$")
-    public void GivenUserHasAnAccentColor(String name, String colorName)
-            throws Exception {
+    public void GivenUserHasAnAccentColor(String name, String colorName) throws Exception {
         try {
             name = usrMgr.findUserByNameOrNameAlias(name).getName();
         } catch (NoSuchUserException e) {
@@ -388,7 +386,7 @@ public class CommonAndroidTabletSteps {
      *
      * @param name    the user to check
      * @param newName the name to check they have
-     * @throws Throwable
+     * @throws Exception
      * @step. ^(.*) has a name (.*)$
      */
     @Given("^(.*) has a name (.*)$")
@@ -524,7 +522,7 @@ public class CommonAndroidTabletSteps {
      *
      * @param pingFromUserNameAlias The user to do the pinging
      * @param dstConversationName   the target conversation to send the ping to
-     * @param isSecure equals null if ping should not be secure
+     * @param isSecure              equals null if ping should not be secure
      * @throws Exception
      * @step. ^User (\\w+) (securely )?pings? conversation (.*)$
      */
@@ -543,7 +541,7 @@ public class CommonAndroidTabletSteps {
      *
      * @param hotPingFromUserNameAlias The user to do the hotpinging
      * @param dstConversationName      the target converation to send the ping to
-     * @param isSecure equals null if ping should not be secure
+     * @param isSecure                 equals null if ping should not be secure
      * @throws Exception
      * @step. ^User (\\w+) (securely )?hotpings? conversation (.*)$
      */

@@ -51,7 +51,7 @@ Feature: Self Profile
       | Name      | username |
       | user1Name | c        |
 
-  @C1097 @regression @rc @id1463
+  @C1097 @regression @rc @clumsy @id1463
   Scenario Outline: Verify name change
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -70,7 +70,7 @@ Feature: Self Profile
       | Name      | NewUsername |
       | user1Name | New Name    |
 
-  @C1085 @regression @id3849
+  @C1085 @clumsy @rc @regression @id3849
   Scenario Outline: Verify adding phone number to the contact signed up with email
     Given There is 1 user where <Name> is me with email only
     Given I sign in using my email

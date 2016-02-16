@@ -5,8 +5,6 @@ Feature: Block
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given User Myself blocks user <Contact>
-    # This is to sync blocked state on the backend
-    Given I wait for 60 seconds
     Given I rotate UI to landscape
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
@@ -24,7 +22,7 @@ Feature: Block
     And I see the conversation <Contact> in my conversations list
     # Workaround for https://wearezeta.atlassian.net/browse/AN-2560
     And I tap the conversation <Contact>
-    And I see the message "<Message>" in the conversation view
+    And I do not see the message "<Message>" in the conversation view
     When I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
     And I see the Single user popover
@@ -40,8 +38,6 @@ Feature: Block
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given User Myself blocks user <Contact>
-    # This is to sync blocked state on the backend
-    Given I wait for 60 seconds
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
@@ -59,7 +55,7 @@ Feature: Block
     And I see the conversation <Contact> in my conversations list
     # Workaround for https://wearezeta.atlassian.net/browse/AN-2560
     And I tap the conversation <Contact>
-    And I see the message "<Message>" in the conversation view
+    And I do not see the message "<Message>" in the conversation view
     When I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
     And I see the Single user popover
@@ -75,8 +71,6 @@ Feature: Block
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given User Myself blocks user <Contact>
-    # This is to sync blocked state on the backend
-    Given I wait for 60 seconds
     Given I rotate UI to landscape
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
@@ -101,8 +95,6 @@ Feature: Block
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given User Myself blocks user <Contact>
-    # This is to sync blocked state on the backend
-    Given I wait for 60 seconds
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
@@ -127,8 +119,6 @@ Feature: Block
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given User Myself blocks user <Contact>
-    # This is to sync blocked state on the backend
-    Given I wait for 60 seconds
     Given I rotate UI to landscape
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
@@ -146,8 +136,10 @@ Feature: Block
     Then I see the conversation <Contact> in my conversations list
     # Workaround for https://wearezeta.atlassian.net/browse/AN-2560
     When I tap the conversation <Contact>
+    Then I do not see the message "<Message>" in the conversation view
+    And I do not see a new picture in the conversation view
+    When User <Contact> sends encrypted message "<Message>" to user Myself
     Then I see the message "<Message>" in the conversation view
-    And I see a new picture in the conversation view
 
     Examples:
       | Name      | Contact   | Message | Picture     |

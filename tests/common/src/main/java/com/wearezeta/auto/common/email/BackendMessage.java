@@ -97,10 +97,8 @@ public class BackendMessage {
 		return null;
 	}
 
-	private static final String DELIVERED_TO_HEADER_NAME = "Delivered-To";
-
 	public String getDeliveredToEmail() throws MessagingException {
-		return this.getHeaderValue(DELIVERED_TO_HEADER_NAME);
+		return this.getHeaderValue(MessagingUtils.DELIVERED_TO_HEADER);
 	}
 
 	private static final String SUBJECT_HEADER_NAME = "Subject";
