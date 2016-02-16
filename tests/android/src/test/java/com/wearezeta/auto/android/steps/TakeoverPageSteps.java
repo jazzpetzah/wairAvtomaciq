@@ -23,15 +23,15 @@ public class TakeoverPageSteps {
      * Taps on the close takeover screen button
      *
      * @throws Exception
-     * @step. ^I tap on (?:cancel|close) button [oi]n (?:[Tt]akeover|[Aa]lert) (:?page|screen)$
+     * @step. ^I tap on (?:cancel|close) button [oi]n (?:[Tt]akeover|[Aa]lert) (?:page|screen)$
      */
-    @When("^I tap on (?:cancel|close) button [oi]n (?:[Tt]akeover|[Aa]lert) (:?page|screen)$")
+    @When("^I tap on (?:cancel|close) button [oi]n (?:[Tt]akeover|[Aa]lert) (?:page|screen)$")
     public void WhenITapOnCancel() throws Exception {
         getTakeoverPage().tapCloseBtn();
     }
 
     /**
-     * Check if takeover screen appars for specified user and all message on it is correct
+     * Check if takeover screen appars for specified user and all content inside it is correct
      *
      * @throws Exception
      * @step. ^I see takeover screen from users? \"(.*)\"$
@@ -50,13 +50,13 @@ public class TakeoverPageSteps {
     }
 
     /**
-     * Confirms the alert page is visible or not
+     * Check if takeover screen is visible or not
      *
      * @param shouldNotBeVisible is set to null if "do not" part is not present
      * @throws Exception
-     * @step. ^I( do not)? see (?:[Tt]akeover|[Aa]lert) (:?page|screen)$
+     * @step. ^I( do not)? see takeover screen$
      */
-    @Then("^I( do not)? see (?:[Tt]akeover|[Aa]lert) (:?page|screen)$")
+    @Then("^I( do not)? see takeover screen$")
     public void IDoNotSeeTakeoverScreen(String shouldNotBeVisible) throws Exception {
         if (shouldNotBeVisible == null) {
             Assert.assertTrue("Takeover page is not visible after timeout", getTakeoverPage().waitForTakeoverScreenVisible());
