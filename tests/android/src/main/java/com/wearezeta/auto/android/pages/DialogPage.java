@@ -597,15 +597,10 @@ public class DialogPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idTakeoverScreen);
     }
     
-    public boolean isTakeoverScreenHeaderCorrect(List<String> names) throws Exception {
+    public boolean isTakeoverScreenHeaderCorrect(String name) throws Exception {
         final String headerText = getElement(xpathTakeoverScreenHeader,
             "No takeover header is found").getText();
-        for (String name : names) {
-            if (!headerText.toLowerCase().contains(name.toLowerCase())) {
-                return false;
-            }
-        }
-    return true;
+        return headerText.toLowerCase().contains(name.toLowerCase());
     }
     
     public boolean isTakeoverScreenTextCorrect() throws Exception {

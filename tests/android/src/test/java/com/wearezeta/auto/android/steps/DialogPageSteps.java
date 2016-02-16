@@ -880,13 +880,13 @@ public class DialogPageSteps {
     @When("^I see takeover screen from users? \"(.*)\"$")
     public void ISeeTakeoverScreen(String nameAliases) throws Exception {
         Assert.assertTrue("Takeover screeen is not visible", getDialogPage().waitForTakeoverScreenVisible());
-        List<String> names = new ArrayList<String>();
+        String name;
         for (String nameAlias : CommonSteps.splitAliases(nameAliases)) {
-            names.add(usrMgr.findUserByNameOrNameAlias(nameAlias).getName());
+            name = usrMgr.findUserByNameOrNameAlias(nameAlias).getName();
+            Assert.assertTrue(String.format("Takeover header from user %s is not visible", name),
+                getDialogPage().isTakeoverScreenHeaderCorrect(name));
         }
-        Assert.assertTrue(String.format("Takeover header from users %s is not visible", names),
-            getDialogPage().isTakeoverScreenHeaderCorrect(names));
-        Assert.assertTrue("Takeover screeen is not visible", getDialogPage().isTakeoverScreenTextCorrect());
+        Assert.assertTrue("Takeover screeen text is not visible or not as expected", getDialogPage().isTakeoverScreenTextCorrect());
     }
     
     /**
