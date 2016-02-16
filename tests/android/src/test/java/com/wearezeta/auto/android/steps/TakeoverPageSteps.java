@@ -38,15 +38,14 @@ public class TakeoverPageSteps {
      */
     @When("^I see takeover screen from users? \"(.*)\"$")
     public void ISeeTakeoverScreen(String nameAliases) throws Exception {
-        Assert.assertTrue("Takeover screeen is not visible", getTakeoverPage().waitForTakeoverScreenVisible());
+        Assert.assertTrue("Takeover screeen text is not visible or not as expected",
+            getTakeoverPage().isTakeoverScreenTextCorrect());
         String name;
         final String headerText = getTakeoverPage().getHeaderText();
         for (String nameAlias : CommonSteps.splitAliases(nameAliases)) {
             name = usrMgr.findUserByNameOrNameAlias(nameAlias).getName();
             Assert.assertTrue(String.format("Takeover header from user %s is not visible", name), headerText.contains(name));
         }
-        Assert.assertTrue("Takeover screeen text is not visible or not as expected",
-            getTakeoverPage().isTakeoverScreenTextCorrect());
     }
 
     /**

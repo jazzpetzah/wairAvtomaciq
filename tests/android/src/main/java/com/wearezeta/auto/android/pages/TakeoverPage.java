@@ -33,15 +33,13 @@ public class TakeoverPage extends AndroidPage {
         getElement(idTakeoverCloseBtn, "Close button is not present").click();
     }
 
+//    TODO: replace it with function call
     public String getHeaderText() throws Exception {
-        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idTakeoverHeader)) {
-            throw new Exception("Header is not present");
-        }
-        return getElement(idTakeoverHeader).getText();
+        return getElement(idTakeoverHeader, "Header is not present").getText();
     }
 
     public boolean isTakeoverScreenTextCorrect() throws Exception {
-        return DriverUtils.isElementPresentAndDisplayed(getDriver(), getElement(xpathTakeoverScreenText));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathTakeoverScreenText);
     }
 
     public void tapShowBtn() throws Exception {
