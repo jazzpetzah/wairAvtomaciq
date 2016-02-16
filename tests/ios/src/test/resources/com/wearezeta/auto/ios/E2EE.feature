@@ -500,3 +500,30 @@ Feature: E2EE
     Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
+
+  @C3494 @staging @torun
+  Scenario Outline: Verify unverifying of the device in verified conversation
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given I sign in using my email
+    Given I see conversations list
+    When I tap on contact name <Contact1>
+    And I open conversation details
+    And I switch to Devices tab
+    And I open details page of device number 1
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    And I click close user profile page button
+    Then I see last message in dialog is expected message <VerificationMsg>
+    When I open conversation details
+    And I switch to Devices tab
+    And I open details page of device number 1
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    And I click close user profile page button
+    Then I see last message in dialog contains expected message <UnverificationMsg>
+
+    Examples:
+      | Name      | Contact1  | VerificationMsg               | UnverificationMsg     |
+      | user1Name | user2Name | ALL FINGERPRINTS ARE VERIFIED | YOU UNVERIFIED ONE OF |
