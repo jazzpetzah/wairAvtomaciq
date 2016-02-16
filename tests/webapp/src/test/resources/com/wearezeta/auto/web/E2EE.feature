@@ -192,8 +192,8 @@ Feature: E2EE
     And I see sent picture <ImageName> in the conversation view
 
     Examples:
-      | Email      | Password      | Name      | Contact   | OnlineMessage | OfflineMessage  | ImageName                |
-      | user1Email | user1Password | user1Name | user2Name | Hello!        | Are you online? | userpicture_portrait.jpg |
+      | Email      | Password      | Name      | Contact   | OnlineMessage | OfflineMessage | ImageName                |
+      | user1Email | user1Password | user1Name | user2Name | Hello         | Are you online | userpicture_portrait.jpg |
 
   @C12051 @e2ee
   Scenario Outline: Verify you receive encrypted content in group conversation after switching online
@@ -223,8 +223,8 @@ Feature: E2EE
     And I see sent picture <ImageName> in the conversation view
 
     Examples:
-      | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | OnlineMessage | OfflineMessage  | ImageName                |
-      | user1Email | user1Password | user1Name | user2Name | user3name | GroupChat     | Hello!        | Are you online? | userpicture_portrait.jpg |
+      | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | OnlineMessage | OfflineMessage | ImageName                |
+      | user1Email | user1Password | user1Name | user2Name | user3name | GroupChat     | Hello         | Are you online | userpicture_portrait.jpg |
 
   @C12045 @e2ee
   Scenario Outline: Verify you can see device ids of the other conversation participant in 1:1 conversation details
@@ -458,8 +458,8 @@ Feature: E2EE
     Then I see text message <Message1>
 
     Examples:
-      | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message1   | Message2     |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | User1Chat     | Hello 1:1! | Hello Group! |
+      | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message1  | Message2    |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | User1Chat     | Hello 1:1 | Hello Group |
 
   @C12054 @e2ee
   Scenario Outline: Verify you see an alert in verified 1:1 conversation when the other participant sends message from non-verified device
@@ -470,7 +470,7 @@ Feature: E2EE
     When I Sign in using login <Email> and password <Password>
     And I am signed in properly
     When I open conversation with <Contact>
-    And I write message Hello!
+    And I write message Hello
     And I send message
     And I click People button in one to one conversation
     Then I see Single User Profile popover
@@ -487,5 +487,5 @@ Feature: E2EE
     # Not sure if we want to check for the message. Should it be shown or not? Assuming it should
 
     Examples:
-      | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  | NEW_DEVICE                 | Message           |
-      | user1Email | user1Password | user1Name | user2Name | All fingerprints are verified | started using a new device | Unverified hello! |
+      | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  | NEW_DEVICE                 | Message          |
+      | user1Email | user1Password | user1Name | user2Name | All fingerprints are verified | started using a new device | Unverified hello |
