@@ -357,6 +357,39 @@ Feature: E2EE
     | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | ALL_VERIFIED                  |
     | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat     | All fingerprints are verified |
 
+  @C12056 @e2ee
+  Scenario Outline: Verify you get an alert if group conversation participant sends a message from non-verified device
+    Given There are 3 users where <Name> is me
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given user <Contact2> adds a new device Device1 with label Label1
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    And I open conversation with <GroupChatName>
+    And I click People button in group conversation
+    And I see Group Participants popover
+    And I click on participant <Contact1> on Group Participants popover
+    And I switch to Devices tab on Single User Profile popover
+    And I click on device Device1 of user <Contact1> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click People button in group conversation
+    And I click People button in group conversation
+    And I click on participant <Contact2> on Group Participants popover
+    And I switch to Devices tab on Single User Profile popover
+    And I click on device Device1 of user <Contact2> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click People button in group conversation
+    And I see <ALL_VERIFIED> action in conversation
+    When user <Contact1> adds a new device Device2 with label Label2
+    And Contact <Contact1> sends encrypted message <Message> via device Device2 to group conversation <GroupChatName>
+    Then I see <NEW_DEVICE> action for <Contact1> in conversation
+    And I see text message <Message>
+
+    Examples:
+      | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | ALL_VERIFIED                  | NEW_DEVICE                 | Message    |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat     | All fingerprints are verified | started using a new device | Unverified |
 
   @C12057 @e2ee
   Scenario Outline: My other clients should be notified when I'm login on a new device (pending connections inbox)
@@ -450,9 +483,9 @@ Feature: E2EE
     Then I see <ALL_VERIFIED> action in conversation
     When user <Contact> adds a new device Device2 with label Label2
     And Contact <Contact> sends encrypted message <Message> via device Device2 to user Myself
-    Then I see <NON_VERIFIED> action in conversation
+    Then I see <NEW_DEVICE> action in conversation
     # Not sure if we want to check for the message. Should it be shown or not? Assuming it should
 
     Examples:
-      | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  | NON_VERIFIED               | Message           |
+      | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  | NEW_DEVICE                 | Message           |
       | user1Email | user1Password | user1Name | user2Name | All fingerprints are verified | started using a new device | Unverified hello! |
