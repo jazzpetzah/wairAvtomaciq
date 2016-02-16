@@ -40,7 +40,7 @@ Feature: Calling
 
   @C698 @id727 @calling_basic @rc
   Scenario Outline: I can start 1:1 call
-    Given There are 3 users where <Name> is me
+    Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -48,8 +48,10 @@ Feature: Calling
     When I tap on contact name <Contact>
     And I swipe on text input
     And I press Call button
-    Then I see call overlay
-    Then I see calling overlay Big bar
+    Then I see outgoing call
+#TODO someone just stopped here..
+#TODO waiting instance
+#TODO activity check
 
     Examples:
       | Name      | Contact   |
@@ -63,9 +65,9 @@ Feature: Calling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When <Contact1> calls me using <CallBackend>
-    And I answer the call from the overlay bar
-    And I see dialog page
-    Then I see calling overlay Big bar
+    And I swipe to accept the call
+#TODO activity check
+    And I see outgoing call
 
     Examples:
       | Name      | Contact1  | Contact2  | CallBackend |

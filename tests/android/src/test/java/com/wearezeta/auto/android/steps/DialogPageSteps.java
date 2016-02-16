@@ -28,9 +28,9 @@ public class DialogPageSteps {
         return pagesCollection.getPage(DialogPage.class);
     }
 
-    private CallingOverlayPageOLD getCallingOverlayPage() throws Exception {
-        return pagesCollection.getPage(CallingOverlayPageOLD.class);
-    }
+//    private CallingOverlayPageOLD getCallingOverlayPage() throws Exception {
+//        return pagesCollection.getPage(CallingOverlayPageOLD.class);
+//    }
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
@@ -255,23 +255,6 @@ public class DialogPageSteps {
         throw new AssertionError(String.format(
                 "Button state has not been changed within %s seconds timeout. Current overlap score: %.2f, expected overlap score: <= %.2f",
                 BUTTON_STATE_CHANGE_TIMEOUT_MILLISECONDS / 1000, overlapScore, BUTTON_STATE_OVERLAP_MAX_SCORE));
-    }
-
-    /**
-     * Checks to see if call overlay is present or not
-     *
-     * @param shouldNotSee is set to null if " do not" part does not exist
-     * @throws Exception
-     * @step. ^I( do not)? see call overlay$
-     */
-    @Then("^I( do not)? see call overlay$")
-    public void WhenISeeCallOverlay(String shouldNotSee) throws Exception {
-        if (shouldNotSee == null) {
-            Assert.assertTrue("Call overlay not visible", getCallingOverlayPage().waitUntilVisible());
-        } else {
-            Assert.assertTrue("Call overlay is visible, it should have been dismissed",
-                    getCallingOverlayPage().waitUntilNotVisible());
-        }
     }
 
     /**
@@ -639,41 +622,6 @@ public class DialogPageSteps {
         final String expectedMessage = contact + " CALLED";
         Assert.assertTrue(String.format("Missed call message '%s' is not visible in the conversation view", expectedMessage),
                 getDialogPage().waitUntilMissedCallMessageIsVisible(expectedMessage));
-    }
-
-    /**
-     * Checks to see if join group call overlay is present or not
-     *
-     * @param shouldNotSee is set to null if " do not" part does not exist
-     * @throws Exception
-     * @step. ^I( do not)? see join group call overlay$
-     */
-    @Then("^I( do not)? see join group call overlay$")
-    public void WhenISeeGroupCallJoinOverlay(String shouldNotSee) throws Exception {
-        if (shouldNotSee == null) {
-            Assert.assertTrue("Join group call overlay not visible", getCallingOverlayPage().waitUntilGroupCallJoinVisible());
-        } else {
-            Assert.assertTrue("Join group call overlay is visible, it should have been dismissed",
-                    getCallingOverlayPage().waitUntilGroupCallJoinNotVisible());
-        }
-    }
-
-    /**
-     * Checks to see if join group call overlay is present or not
-     *
-     * @param name text on the button
-     * @throws Exception
-     * @step. ^I see \"(.*)\" button$
-     */
-    @Then("^I( do not)? see \"(.*)\" button$")
-    public void WhenISeeGroupCallJoinButton(String shouldNotSee, String name) throws Exception {
-        if (shouldNotSee == null) {
-            Assert.assertTrue(name + " button with not visible in group call overlay",
-                    getCallingOverlayPage().waitUntilJoinGroupCallButtonVisible(name));
-        } else {
-            Assert.assertTrue(name + " button with not visible in group call overlay",
-                    getCallingOverlayPage().waitUntilJoinGroupCallButtonNotVisible(name));
-        }
     }
 
     private static final double MAX_SIMILARITY_THRESHOLD = 0.97;

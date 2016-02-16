@@ -58,4 +58,39 @@ public class CallOngoingPageSteps {
     public void ISeeOngoingCall(String not) throws Exception {
         ISeeOutgoingCall(not);
     }
+    
+//    /**
+//     * Checks to see if join group call overlay is present or not
+//     *
+//     * @param shouldNotSee is set to null if " do not" part does not exist
+//     * @throws Exception
+//     * @step. ^I( do not)? see join group call overlay$
+//     */
+//    @Then("^I( do not)? see join group call overlay$")
+//    public void WhenISeeGroupCallJoinOverlay(String shouldNotSee) throws Exception {
+//        if (shouldNotSee == null) {
+//            Assert.assertTrue("Join group call overlay not visible", getCallingOverlayPage().waitUntilGroupCallJoinVisible());
+//        } else {
+//            Assert.assertTrue("Join group call overlay is visible, it should have been dismissed",
+//                    getCallingOverlayPage().waitUntilGroupCallJoinNotVisible());
+//        }
+//    }
+//
+//    /**
+//     * Checks to see if join group call overlay is present or not
+//     *
+//     * @param name text on the button
+//     * @throws Exception
+//     * @step. ^I see \"(.*)\" button$
+//     */
+//    @Then("^I( do not)? see \"(.*)\" button$")
+//    public void WhenISeeGroupCallJoinButton(String shouldNotSee, String name) throws Exception {
+//        if (shouldNotSee == null) {
+//            Assert.assertTrue(name + " button with not visible in group call overlay",
+//                    getCallingOverlayPage().waitUntilJoinGroupCallButtonVisible(name));
+//        } else {
+//            Assert.assertTrue(name + " button with not visible in group call overlay",
+//                    getCallingOverlayPage().waitUntilJoinGroupCallButtonNotVisible(name));
+//        }
+//    }
 }
