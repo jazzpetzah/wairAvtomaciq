@@ -9,17 +9,13 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class TakeoverPage extends AndroidPage {
 
-    private static final By idTakeoverScreen = By.id("ll__confirmation_dialog__message_container");
-
+    private static final By idTakeoverScreen = By.id("cm__confirm_action_light");
     private static final By xpathTakeoverScreenText = By
-        .xpath("//*[@id='text' and contains(@value,'Do you still want to send your message?')]");
-
-    public static final By xpathTakeoverScreenHeader = By
-        .xpath("//*[@id='header' and contains(@value, 'started using a new device.')]");
-
-    private static final By idTakeoverSendAnywayBnt = By.id("positive");
-
-    private static final By idTakeoverShowDeviceBnt = By.id("negative");
+        .xpath("//*[@id='text' and @value='Do you still want to send your message?']");
+    private static final By idTakeoverCloseBtn = By.id("cancel");
+    private static final By idTakeoverHeader = By.id("header");
+    private static final By idTakeoverSendAnywayBtn = By.id("positive");
+    private static final By idTakeoverShowBtn = By.id("negative");
 
     public TakeoverPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -29,20 +25,30 @@ public class TakeoverPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idTakeoverScreen);
     }
 
-    public boolean isTakeoverScreenHeaderCorrect(String name) throws Exception {
-        final String headerText = getElement(xpathTakeoverScreenHeader, "No takeover header is found").getText();
-        return headerText.toLowerCase().contains(name.toLowerCase());
+    public boolean waitForTakeoverScreenInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idTakeoverScreen);
+    }
+
+    public void tapCloseBtn() throws Exception {
+        getElement(idTakeoverCloseBtn, "Close button is not present").click();
+    }
+
+    public String getHeaderText() throws Exception {
+        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idTakeoverHeader)) {
+            throw new Exception("Header is not present");
+        }
+        return getElement(idTakeoverHeader).getText();
     }
 
     public boolean isTakeoverScreenTextCorrect() throws Exception {
         return DriverUtils.isElementPresentAndDisplayed(getDriver(), getElement(xpathTakeoverScreenText));
     }
 
-    public void tapShowDeviceBnt() throws Exception {
-        getElement(idTakeoverShowDeviceBnt, "Show Device button is not visible").click();
+    public void tapShowBtn() throws Exception {
+        getElement(idTakeoverShowBtn, "Show Device/People button is not visible").click();
     }
 
-    public void tapSendAnywayBnt() throws Exception {
-        getElement(idTakeoverSendAnywayBnt, "Send Anyway button is not visible").click();
+    public void tapSendAnywayBtn() throws Exception {
+        getElement(idTakeoverSendAnywayBtn, "Send Anyway button is not visible").click();
     }
 }
