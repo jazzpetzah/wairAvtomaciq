@@ -441,7 +441,7 @@ Feature: E2EE
       | user1Name | user2Name | user3Name | Msg1     | GroupConvo    |
 
   @C12082 @staging
-  Scenario Outline: First time when group conversation is degraded - I can ignore alert screen and send messages with resend button
+  Scenario Outline: First time when group conversation is degraded - I can ignore takeover screen and send message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -465,10 +465,11 @@ Feature: E2EE
     When User <Contact1> adds new device Device1
     And I tap on text input
     And I type the message "<Message2>" and send it
-    Then I see alert page
-    And I see unverified conversation alert page header caused by user <Contact1>
-    When I tap on positive button on alert page
+    When I see takeover screen from user "<Contact1>"
+    Then I tap send anyway button
+    And I do not see takeover screen
     Then I see encrypted message <Message2> 1 times in the conversation view
+    And I do not see unsent indicator next to the message "<Message2>" in the dialog§
 
     Examples:
       | Name      | Contact1  | Contact2  | Message1 | Message2 | GroupChatName |
@@ -505,3 +506,67 @@ Feature: E2EE
     Examples:
       | Name      | Email      | Password      | Device  |
       | user1Name | user1Email | user1Password | device1 |
+      
+  @C12081 @staging
+  Scenario Outline: When 1:1 conversation was degraded - I can ignore takeover screen and send message 
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When User <Contact1> sends encrypted message "<Message1>" to user Myself
+    And I tap on contact name <Contact1>
+    And I tap conversation details button
+    And I select single participant tab "Devices"
+    Then I see 1 device is shown in single participant devices tab
+    And I verify 1st device
+    When I press back button
+    Then I see a message informing me conversation is verified
+    And User <Contact1> adds new device <Device>
+    And I tap on text input
+    And I type the message "<Message2>"
+    And I press Send button
+    When I see takeover screen from user "<Contact1>"
+    Then I tap send anyway button
+    And I do not see takeover screen
+    And I see my message "<Message2>" in the dialog
+    Then I do not see unsent indicator next to the message "<Message2>" in the dialog 
+   
+    Examples:
+      | Name      | Contact1  | Device  | Message1 | Message2        |
+      | user1Name | user2Name | device2 | Msg1     | MsgToSendAnyway |
+      
+  @C12065 @staging
+  Scenario Outline: When 1:1 conversation was degraded - I can manage new device to verified and resend message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When User <Contact1> sends encrypted message "<Message1>" to user Myself
+    And I tap on contact name <Contact1>
+    And I tap conversation details button
+    And I select single participant tab "Devices"
+    Then I see 1 device is shown in single participant devices tab
+    And I verify 1st device
+    When I press back button
+    Then I see a message informing me conversation is verified
+    And User <Contact1> adds new device <Device>
+    And I tap on text input
+    And I type the message "<Message2>"
+    And I press Send button
+    When I see takeover screen from user "<Contact1>"
+    Then I tap show device button
+    And I do not see takeover screen
+    #TODO: detect new device and verify it instead of trying to verify each device
+    And I verify 1st device
+    And I verify 2nd device
+    When I press back button
+    Then I see a message informing me conversation is verified
+    Then I see unsent indicator next to the message "<Message2>" in the dialog
+    When I tap resend button for message <Message2>
+    Then I do not see unsent indicator next to the message "<Message2>" in the dialog 
+   
+    Examples:
+      | Name      | Contact1  | Device  | Message1 | Message2    |
+      | user1Name | user2Name | device2 | Msg1     | MsgToResend |

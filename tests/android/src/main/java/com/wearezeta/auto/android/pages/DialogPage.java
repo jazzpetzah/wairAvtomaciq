@@ -6,16 +6,16 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
-import com.wearezeta.auto.common.driver.DummyElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.DummyElement;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public class DialogPage extends AndroidPage {
 
@@ -66,7 +66,7 @@ public class DialogPage extends AndroidPage {
     private static final By idFullScreenImage = By.id("tiv__single_image_message__image");
 
     public static final By idParticipantsBtn = By.id("cursor_menu_item_participant");
-    
+
     public static final By idVerifiedConversationShield = By.id("cursor_button_giphy");
 
     private static final String idStrStartChatLabel = "ttv__row_conversation__connect_request__chathead_footer__label";
@@ -148,8 +148,9 @@ public class DialogPage extends AndroidPage {
         int ntry = 1;
         do {
             cursorBtn.click();
-            if(cursorBtn.getLocation().getX() < 0 && cursorBtn.getLocation().getX() != locationX)
+            if(cursorBtn.getLocation().getX() < 0 && cursorBtn.getLocation().getX() != locationX) {
                 return;
+            }
             log.debug(String.format(
                     "Failed to open control buttons by tap on plus button. Retrying (%s of %s)...",
                     ntry, MAX_SWIPE_RETRIES));
@@ -327,8 +328,8 @@ public class DialogPage extends AndroidPage {
         final By locator = By.xpath(xpathStrConversationMessageByText.apply(text));
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
-    
-    public boolean waitForUnsentIndicator(String text) throws Exception {
+
+    public boolean waitForUnsentIndicatorVisible(String text) throws Exception {
         final By locator = By.xpath(xpathStrUnsentIndicatorByText.apply(text));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
@@ -546,7 +547,7 @@ public class DialogPage extends AndroidPage {
         getElement(idSwitchCameraButton).click();
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathDialogTakePhotoButton);
     }
-    
+
     public Optional<BufferedImage> getVerifiedConversationShieldScreenshot()
             throws Exception {
         return this.getElementScreenshot(DriverUtils.getElementIfPresentInDOM(this.getDriver(), idVerifiedConversationShield).get());
@@ -580,5 +581,15 @@ public class DialogPage extends AndroidPage {
         final List<WebElement> allImages = selectVisibleElements(idDialogImages);
         final List<WebElement> allImageBadges = selectVisibleElements(xpathE2EEDialogImagesBadges);
         return times == (allImages.size() - allImageBadges.stream().filter(WebElement::isDisplayed).count());
+    }
+
+    public void tapResendMsgIndicator(String message) throws Exception {
+        By locator = By.xpath(xpathStrUnsentIndicatorByText.apply(message));
+        getElement(locator).click();
+    }
+
+    public boolean waitForUnsentIndicatorInvisible(String message) throws Exception {
+        By locator = By.xpath(xpathStrUnsentIndicatorByText.apply(message));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 }

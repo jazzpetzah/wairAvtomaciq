@@ -1,5 +1,13 @@
 package com.wearezeta.auto.android.steps;
 
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.Assert;
+
 import com.wearezeta.auto.android.pages.CallingOverlayPage;
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.common.CommonSteps;
@@ -7,17 +15,11 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.junit.Assert;
-
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class DialogPageSteps {
 
@@ -391,19 +393,6 @@ public class DialogPageSteps {
     public void ThenISeeMyMessageInTheDialog(String msg) throws Exception {
         Assert.assertTrue(String.format("The message '%s' is not visible in the conversation view", msg),
                 getDialogPage().waitForMessage(expandMessage(msg)));
-    }
-
-    /**
-     * Checks to see that an unsent indicator is present next to the particular message in the chat history
-     *
-     * @throws Exception
-     * @step. ^I see unsent indicator next to the message \"(.*)\" in the dialog$
-     */
-    @Then("^I see unsent indicator next to the message \"(.*)\" in the dialog$")
-    public void ThenISeeUnsentIndicatorNextToTheMessage(String msg) throws Exception {
-        Assert.assertTrue(
-                String.format("Unsent indicator has not been shown next to the '%s' message in the conversation view", msg),
-                getDialogPage().waitForUnsentIndicator(msg));
     }
 
     /**
@@ -869,5 +858,37 @@ public class DialogPageSteps {
                         "The current and previous states of verified conversation shield seems to be very similar (%.2f >= %.2f)",
                         score, MAX_VERIFIED_CONVERSATION_SHIELD_SIMILARITY_THRESHOLD),
                 score < MAX_VERIFIED_CONVERSATION_SHIELD_SIMILARITY_THRESHOLD);
+    }
+
+    /**
+     * Tap on resend indicator next to the particular message in the chat history
+     *
+     * @param message the message to resend
+     * @throws Exception
+     * @step. ^I tap resend(?: button)?
+     */
+    @When("^I tap resend(?: indicator)?(?: for|on) message (.*)$")
+    public void ITapResendMessageIndicator(String message) throws Exception {
+        getDialogPage().tapResendMsgIndicator(message);
+    }
+
+    /**
+     * Checks to see that an unsent indicator is (not) present next to the particular message in the chat history
+     *
+     * @param shouldNotSee equals to null if 'do not' part does not exist
+     * @param message the message to check
+     * @throws Exception
+     * @step. ^My message is sent$
+     */
+    @Then("^I( do not)? see unsent indicator next to \"(.*)\" message$")
+    public void ThenISeeUnsentIndicatorNextToTheMessage(String shouldNotSee, String message) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue(
+                String.format("Unsent indicator has not been shown next to the '%s' message", message),
+                getDialogPage().waitForUnsentIndicatorVisible(message));
+        } else {
+            Assert.assertTrue(String.format("Unsent indicator is still visible next to the '%s' message", message),
+                getDialogPage().waitForUnsentIndicatorInvisible(message));
+        }
     }
 }
