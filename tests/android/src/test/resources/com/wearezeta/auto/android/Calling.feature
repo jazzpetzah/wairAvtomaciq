@@ -145,6 +145,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Message                   | Msg        |
       | user1Name | user2Name | autocall    | simple message in english | YOU PINGED |
 
+#TODO Postponed button state check
   @C721 @id2210 @calling_basic @rc @rc42
   Scenario Outline: Calling bar buttons are clickable and change their states
     Given There are 2 users where <Name> is me
@@ -154,21 +155,22 @@ Feature: Calling
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And <Contact> calls me using <CallBackend>
-    And I answer the call from the overlay bar
+    And I swipe to accept the call
     When I remember the current state of <MuteBtnName> button
     And I press <MuteBtnName> button
     Then I see <MuteBtnName> button state is changed
     When I remember the current state of <SpeakerBtnName> button
     And I press <SpeakerBtnName> button
     Then I see <SpeakerBtnName> button state is changed
-    When I press Cancel call button
-    Then I do not see call overlay
+    When I hang up
+    And I do not see ongoing call
     And <Contact> stops all calls to me
 
     Examples:
       | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName |
       | user1Name | user2Name | autocall    | Speaker        | Mute        |
 
+# DEPRECATED
   @C422 @id2212 @calling_basic @rc
   Scenario Outline: Correct calling bar in different places
     Given There are 3 users where <Name> is me
@@ -195,6 +197,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend |
       | user1Name | user2Name | user3Name | autocall    |
 
+#TODO Postponed button state check
   @C431 @id3239 @calling_basic
   Scenario Outline: Calling bar buttons are clickable and change their states in a group call
     Given There are 3 users where <Name> is me
