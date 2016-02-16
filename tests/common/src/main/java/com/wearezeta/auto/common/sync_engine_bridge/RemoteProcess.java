@@ -40,11 +40,6 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
         super(coordinatorActorRef, processName, actorTimeout);
         this.backendType = backendType;
         this.otrOnly = otrOnly;
-        if (!isConnected()) {
-            throw new IllegalStateException(
-                    "There is no connection to the CoordinatorActor at path: "
-                            + coordinatorActorRef);
-        }
         try {
             startProcess();
         } catch (Exception e) {
@@ -73,10 +68,6 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
         if (this.pinger != null) {
             this.pinger.shutdownNow();
             this.pinger = null;
-        }
-        if (this.ref() != null) {
-            this.ref().tell(PoisonPill.getInstance(), null);
-            this.setRef(null);
         }
         try {
             final Object resp = askActor(this.ref(), new WaitUntilRegistered(this.name()));
