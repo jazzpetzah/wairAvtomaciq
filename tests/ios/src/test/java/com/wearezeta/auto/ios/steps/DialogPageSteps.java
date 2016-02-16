@@ -248,6 +248,17 @@ public class DialogPageSteps {
         getDialogPage().pressPingButton();
     }
 
+    /**
+     * Click on Video call button
+     *
+     * @step. ^I click Video Call button$
+     * @throws Exception
+     */
+    @When("^I click Video Call button$")
+    public void IPressVideoCallButton() throws Exception {
+        getDialogPage().pressVideoCallButton();
+    }
+
     @Then("^I see Pending Connect to (.*) message on Dialog page$")
     public void ISeePendingConnectMessage(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();

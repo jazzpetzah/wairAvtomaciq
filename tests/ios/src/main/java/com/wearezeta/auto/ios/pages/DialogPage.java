@@ -60,6 +60,8 @@ public class DialogPage extends IOSPage {
 
     private static final By namePingButton = By.name("ComposeControllerPingButton");
 
+    private static final By nameVideoCallButton = By.name("ComposeControllerVideoButton");
+
     private static final Function<String, String> xpathStrDialogTitleBar = title -> String.format(
             "//UIAStaticText[@name='%s']", title);
 
@@ -141,6 +143,10 @@ public class DialogPage extends IOSPage {
 
     public void pressPingButton() throws Exception {
         getElement(namePingButton).click();
+    }
+
+    public void pressVideoCallButton() throws Exception {
+        getElement(nameVideoCallButton).click();
     }
 
     public void returnToContactList() throws Exception {
