@@ -58,6 +58,15 @@ Feature: E2EE
     And I see a device named Device5 with label Label5 under managed devices
     And I see a device named Device6 with label Label6 under managed devices
     And I see a device named Device7 with label Label7 under managed devices
+    When I click remove device button for device named Device2 on the device limit page
+    And I click cancel button for device named Device2 on the device limit page
+    Then I see a device named Device2 with label Label2 under managed devices
+    When I click remove device button for device named Device1 on the device limit page
+    And I enter password "<Password>" to remove device named Device1 on the device limit page
+    And I click remove button for device named Device1 on the device limit page
+    Then I see the history info page
+    And I click confirm on history info page
+    And I am signed in properly
 
     Examples:
       | Email      | Password      | Name      |
@@ -320,8 +329,8 @@ Feature: E2EE
     And I verify fingerprint of device Device1 of user <Contact> on device detail page of Single User Profile popover
 
     Examples:
-      | Email      | Password      | Name      | Contact   | Message1                           | Message2                              |
-      | user1Email | user1Password | user1Name | user2Name | is not using the encrypted version | Every device has a unique fingerprint |
+      | Email      | Password      | Name      | Contact   | Message1                           | Message2                                     |
+      | user1Email | user1Password | user1Name | user2Name | is not using the encrypted version | Wire gives every device a unique fingerprint |
 
   @C12046 @e2ee
   Scenario Outline: Verify you can see device ids of the other conversation participant in group conversation details
