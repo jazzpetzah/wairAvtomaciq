@@ -558,6 +558,7 @@ Feature: E2EE
     When I see takeover screen from user "<Contact1>"
     Then I tap show device button
     And I do not see takeover screen
+    #TODO detect new device and verify it instead of trying to verify each device
     And I verify 1st device
     And I verify 2nd device
     When I press back button
