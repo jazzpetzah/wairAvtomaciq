@@ -30,7 +30,7 @@ Feature: Calling
     When <Contact> calls me using <CallBackend>
     Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And I see incoming call
-    And I see incoming calling message for contact <Contact>
+    And I see incoming call from <Contact>
     And I swipe to ignore the call
     And I do not see incoming call
 
