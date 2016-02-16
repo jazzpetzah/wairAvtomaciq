@@ -476,8 +476,42 @@ Feature: E2EE
     And I type the message "<Message2>"
     And I press Send button
     When I see takeover screen from user "<Contact1>"
-    Then I tap send anyway
+    Then I tap send anyway button
     And I see my message "<Message2>" in the dialog
+   
+    Examples:
+      | Name      | Contact1  | Device  | Message1 | Message2        |
+      | user1Name | user2Name | device2 | Msg1     | MsgToSendAnyway |
+      
+  @C12065 @staging @torun
+  Scenario Outline: When 1:1 conversation was degraded - I can manage new device to verified and resend message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When User <Contact1> sends encrypted message "<Message1>" to user Myself
+    And I tap on contact name <Contact1>
+    And I tap conversation details button
+    And I select single participant tab "Devices"
+    Then I see 1 device is shown in single participant devices tab
+    And I verify 1st device
+    When I press back button
+    Then I see a message informing me conversation is verified
+    And User <Contact1> adds new device <Device>
+    And I tap on text input
+    And I type the message "<Message2>"
+    And I press Send button
+    When I see takeover screen from user "<Contact1>"
+    Then I tap show device button
+    And I verify 1st device
+    And I verify 2nd device
+    When I press back button
+    Then I see a message informing me conversation is verified
+    Then I see unsent indicator next to the message "<Message2>" in the dialog
+    When I tap resend button for message <Message2>
+    And I wait for 30 seconds
+    Then My message <Message2> is sent 
    
     Examples:
       | Name      | Contact1  | Device  | Message1 | Message2    |

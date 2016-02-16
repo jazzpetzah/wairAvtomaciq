@@ -614,4 +614,14 @@ public class DialogPage extends AndroidPage {
     public void tapSendAnywayBnt() throws Exception {
         getElement(idTakeoverSendAnywayBnt, "Send Anyway button is not visible").click();
     }
+    
+    public void tapResendMsgBnt(String message) throws Exception {
+        By locator = By.xpath(xpathStrUnsentIndicatorByText.apply(message));
+        getElement(locator).click();
+    }
+    
+    public boolean isResendMsgBntUnvisible(String message) throws Exception {
+        By locator = By.xpath(xpathStrUnsentIndicatorByText.apply(message));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
 }
