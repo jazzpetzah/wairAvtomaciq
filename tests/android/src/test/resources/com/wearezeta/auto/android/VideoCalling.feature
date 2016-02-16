@@ -8,10 +8,11 @@ Feature: VideoCalling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When <Contact> calls me using <CallBackend>
-And I swipe to accept the call
-And I wait for 1 seconds
-#    And I answer the call from the overlay bar
-#     Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    And I see incoming call
+    And I swipe to accept the call
+    Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    And I hang up
+    Then <Contact> verifies that call status to <Name> is changed to destroyed in <Timeout> seconds
 
     Examples:
       | Name      | Contact   | CallBackend         | Timeout |

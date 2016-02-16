@@ -20,6 +20,18 @@ public class CallOngoingPageSteps {
     private static final long CALLER_NAME_VISIBILITY_TIMEOUT_MILLISECONDS = 5000;
 
 
+    /**
+     * Hangs up the current call
+     *
+     * @throws Exception
+     * @step. ^I hang up$
+     */
+    @When("^I hang up$")
+    public void IHangUp()
+            throws Exception {
+        getPage().hangup();
+    }
+    
 //    /**
 //     * Verify that incoming calling UI is visible and that the correct caller
 //     * name is shown
