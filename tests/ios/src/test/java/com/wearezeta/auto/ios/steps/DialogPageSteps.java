@@ -187,12 +187,12 @@ public class DialogPageSteps {
      * Verify whether the expected message exists in the convo view
      *
      * @param expectedMsg the expected message. It can contain user name aliases
-     * @param shouldNot equals to null if the message is visible in conversation view
+     * @param shouldNot   equals to null if the message is visible in conversation view
      * @throws Exception
      * @step. ^I see the conversation view contains message (.*)
      */
     @Then("^I (do not )?see the conversation view contains message (.*)")
-    public void ISeeConversationMessage(String shouldNot,String expectedMsg) throws Exception {
+    public void ISeeConversationMessage(String shouldNot, String expectedMsg) throws Exception {
         expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
         if (shouldNot == null) {
             Assert.assertTrue(
@@ -251,8 +251,8 @@ public class DialogPageSteps {
     /**
      * Click on Video call button
      *
-     * @step. ^I click Video Call button$
      * @throws Exception
+     * @step. ^I click Video Call button$
      */
     @When("^I click Video Call button$")
     public void IPressVideoCallButton() throws Exception {
@@ -394,7 +394,7 @@ public class DialogPageSteps {
                 "%s seconds timeout. Similarity score is %.2f", MEDIA_STATE_CHANGE_TIMEOUT / 1000, score));
     }
 
-   @Then("^I see media is (playing|stopped|paused) on [Mm]edia [Bb]ar$")
+    @Then("^I see media is (playing|stopped|paused) on [Mm]edia [Bb]ar$")
     public void TheMediaIs(String expectedState) throws Exception {
         final long millisecondsStarted = System.currentTimeMillis();
         String currentState;
@@ -494,7 +494,12 @@ public class DialogPageSteps {
      */
     @When("^I see missed call from contact (.*)$")
     public void ISeeMissedCall(String contact) throws Exception {
-        String username = usrMgr.findUserByNameOrNameAlias(contact).getName();
+        String username = null;
+        if (contact.equals("YOU")) {
+            username = contact;
+        } else {
+            username = usrMgr.findUserByNameOrNameAlias(contact).getName();
+        }
         String expectedCallMessage = username.toUpperCase() + " CALLED";
         Assert.assertTrue(username + " called message is missing in dialog",
                 getDialogPage().isMessageVisible(expectedCallMessage));

@@ -38,4 +38,11 @@ public class VideoCallPage extends IOSPage {
         By locator = By.xpath(xpathStrButtonByNameAndVisibility.apply(buttonName, visibility));
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
+
+    public void clickHangUpButton() throws Exception {
+        getElement(nameLeaveCallButton).click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameLeaveCallButton)) {
+            throw new IllegalStateException("Hang Up button is still visible");
+        }
+    }
 }

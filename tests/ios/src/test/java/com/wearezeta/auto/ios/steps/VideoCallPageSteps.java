@@ -3,7 +3,7 @@ package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.VideoCallPage;
-import cucumber.api.java.en.Then;
+import cucumber.api.java.en.*;
 import org.junit.Assert;
 
 public class VideoCallPageSteps {
@@ -42,10 +42,20 @@ public class VideoCallPageSteps {
         String isEnabled = "";
         if (visibility.equals("enabled")) {
             isEnabled = "true";
-        }
-        else {
+        } else {
             isEnabled = "false";
         }
         Assert.assertTrue(String.format("%s button is not presented or not %s", buttonName, visibility), getVideoCallingPage().isButtonWithPointedVisibilityShown(buttonName, isEnabled));
+    }
+
+    /**
+     * Click on Hang Up button on Video Call page
+     *
+     * @throws Exception
+     * @step. ^I click Hang Up button on Video Call page$
+     */
+    @When("^I click Hang Up button on Video Call page$")
+    public void IClickHangUpButton() throws Exception {
+        getVideoCallingPage().clickHangUpButton();
     }
 }
