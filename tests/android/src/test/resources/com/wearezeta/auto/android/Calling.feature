@@ -8,11 +8,11 @@ Feature: Calling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When <Contact> calls me using <CallBackend>
-Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
-And I see incoming call
+    Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    And I see incoming call
     And <Contact> stops all calls to me
-Then <Contact> verifies that call status to <Name> is changed to destroyed in <Timeout> seconds
-And I do not see incoming call
+    Then <Contact> verifies that call status to <Name> is changed to destroyed in <Timeout> seconds
+    And I do not see incoming call
     When I tap on contact name <Contact>
     Then I see dialog with missed call from <Contact>
 
@@ -28,11 +28,11 @@ And I do not see incoming call
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When <Contact> calls me using <CallBackend>
-Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
-And I see incoming call
+    Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    And I see incoming call
     And I see incoming calling message for contact <Contact>
-And I swipe to ignore the call
-And I do not see incoming call
+    And I swipe to ignore the call
+    And I do not see incoming call
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
@@ -509,12 +509,12 @@ And I do not see incoming call
     And I see calling overlay Big bar
     And <Contact3> calls <Name> using <CallBackend>
     And I see incoming calling message for contact <Contact3>
-    And I answer the call from the overlay bar
+    And I swipe to accept the call
     Then I see end current call alert
     And I cancel new call from end current call alert
     And I see incoming calling message for contact <Contact3>
-    When I click the ignore call button
-    Then I see calling overlay Big bar
+    When I swipe to ignore the call
+    Then I see incoming call
     And I see 2 users take part in call
     When I navigate back from dialog page
     And I tap on contact name <Contact3>
@@ -539,8 +539,8 @@ And I do not see incoming call
     And <Contact2> calls <GroupChatName> using <CallBackend>
     Then I see the call lock screen
     And I see a call from <GroupChatName> in the call lock screen
-    And I answer the call from the lock screen
-    And I see calling overlay Big bar
+    And I swipe to accept the call
+    And I see incoming call
     And I see 2 users take part in call
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
@@ -559,11 +559,11 @@ And I do not see incoming call
     And I tap on contact name <Contact>
     And I swipe on text input
     And I press Call button
-    And I see calling overlay Big bar
+    And I see incoming call
     When I lock the device
     And I wait for 2 seconds
     And I unlock the device
-    Then I see calling overlay Big bar
+    Then I see incoming call
 
     Examples:
       | Name      | Contact   |
@@ -578,7 +578,7 @@ And I do not see incoming call
     Given I see Contact list with contacts
     And <Contact> calls me using <CallBackend>
     And I see call overlay
-    And I answer the call from the overlay bar
+    And I swipe to accept the call
     When I minimize the application
     And I wait for 10 seconds
     And I restore the application
@@ -598,11 +598,11 @@ And I do not see incoming call
     Given I see Contact list with contacts
     And I tap on contact name <Contact1>
     And <Contact1> calls me using <CallBackend>
-    And I see incoming calling message for contact <Contact1>
-    And I answer the call from the overlay bar
+    And I see incoming call
+    And I swipe to accept the call
     And I see started call message for contact <Contact1>
     When <Contact2> calls me using <CallBackend>
-    Then I see incoming calling message for contact <Contact2>
+    Then <Contact2> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And <Contact1>,<Contact2> stop all calls to me
 
     Examples:
@@ -620,9 +620,9 @@ And I do not see incoming call
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    And I answer the call from the overlay bar
+    And I swipe to accept the call
     And I do not see join group call overlay
-    And I see calling overlay Big bar
+    And I see incoming call
     And I tap conversation details button
     And I press options menu button
     And I press Leave conversation menu button
