@@ -2,22 +2,22 @@ package com.wearezeta.auto.android.steps;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.android.pages.CallingLockscreenPage;
-import com.wearezeta.auto.android.pages.CallingOverlayPage;
+import com.wearezeta.auto.android.pages.CallingLockscreenPageOLD;
+import com.wearezeta.auto.android.pages.CallingOverlayPageOLD;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import cucumber.api.java.en.When;
 
-public class CallingPageSteps {
+public class CallingPageStepsOLD {
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
             .getInstance();
 
-    private CallingOverlayPage getCallingOverlayPage() throws Exception {
-        return pagesCollection.getPage(CallingOverlayPage.class);
+    private CallingOverlayPageOLD getCallingOverlayPage() throws Exception {
+        return pagesCollection.getPage(CallingOverlayPageOLD.class);
     }
 
-    private CallingLockscreenPage getCallingLockscreenPage() throws Exception {
-        return pagesCollection.getPage(CallingLockscreenPage.class);
+    private CallingLockscreenPageOLD getCallingLockscreenPage() throws Exception {
+        return pagesCollection.getPage(CallingLockscreenPageOLD.class);
     }
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();

@@ -1,6 +1,6 @@
 package com.wearezeta.auto.android.steps;
 
-import com.wearezeta.auto.android.pages.CallingOverlayPage;
+import com.wearezeta.auto.android.pages.CallingOverlayPageOLD;
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
@@ -28,8 +28,8 @@ public class DialogPageSteps {
         return pagesCollection.getPage(DialogPage.class);
     }
 
-    private CallingOverlayPage getCallingOverlayPage() throws Exception {
-        return pagesCollection.getPage(CallingOverlayPage.class);
+    private CallingOverlayPageOLD getCallingOverlayPage() throws Exception {
+        return pagesCollection.getPage(CallingOverlayPageOLD.class);
     }
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();

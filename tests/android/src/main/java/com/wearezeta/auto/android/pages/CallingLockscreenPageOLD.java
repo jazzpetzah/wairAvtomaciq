@@ -8,7 +8,7 @@ import org.openqa.selenium.By;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
-public class CallingLockscreenPage extends AndroidPage {
+public class CallingLockscreenPageOLD extends AndroidPage {
 
     private static final By idLockScreenLogo = By.id("gtv__notifications__incoming_call__lockscreen__logo");
 
@@ -17,7 +17,7 @@ public class CallingLockscreenPage extends AndroidPage {
 
     public static final By idMainContent = By.id("fl_main_content");
 
-    public CallingLockscreenPage(Future<ZetaAndroidDriver> lazyDriver)
+    public CallingLockscreenPageOLD(Future<ZetaAndroidDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
     }

@@ -10,7 +10,7 @@ import org.openqa.selenium.WebElement;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
-public class CallingOverlayPage extends AndroidPage {
+public class CallingOverlayPageOLD extends AndroidPage {
     private static final String idStrCallingContainer = "rv__calling__container";
     private static final By idCallingContainer = By.id(idStrCallingContainer);
 
@@ -62,7 +62,7 @@ public class CallingOverlayPage extends AndroidPage {
 
     private static final By idEndCurrentCallContinueButton = By.id("button1");
 
-    public CallingOverlayPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
+    public CallingOverlayPageOLD(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
