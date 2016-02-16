@@ -6,16 +6,16 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
-import com.wearezeta.auto.common.driver.DummyElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.DummyElement;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public class DialogPage extends AndroidPage {
 
@@ -66,7 +66,7 @@ public class DialogPage extends AndroidPage {
     private static final By idFullScreenImage = By.id("tiv__single_image_message__image");
 
     public static final By idParticipantsBtn = By.id("cursor_menu_item_participant");
-    
+
     public static final By idVerifiedConversationShield = By.id("cursor_button_giphy");
 
     private static final String idStrStartChatLabel = "ttv__row_conversation__connect_request__chathead_footer__label";
@@ -117,17 +117,6 @@ public class DialogPage extends AndroidPage {
     public static Function<String, String> xpathStrInputFieldByValue = value -> String.format("//*[@value='%s']", value);
 
     private static final By idSwitchCameraButton = By.id("gtv__camera__top_control__back_camera");
-    
-    private static final By idTakeoverScreen = By.id("ll__confirmation_dialog__message_container");
-    
-    private static final By xpathTakeoverScreenText
-            = By.xpath("//*[@id='text' and contains(@value,'Do you still want to send your message?')]");
-    
-    public static final By xpathTakeoverScreenHeader = By.xpath("//*[@id='header' and contains(@value, 'started using a new device.')]");
-    
-    private static final By idTakeoverSendAnywayBnt = By.id("positive");
-    
-    private static final By idTakeoverShowDeviceBnt = By.id("negative");
 
     private static final int DEFAULT_SWIPE_TIME = 500;
     private static final int MAX_SWIPE_RETRIES = 5;
@@ -159,8 +148,9 @@ public class DialogPage extends AndroidPage {
         int ntry = 1;
         do {
             cursorBtn.click();
-            if(cursorBtn.getLocation().getX() < 0 && cursorBtn.getLocation().getX() != locationX)
+            if(cursorBtn.getLocation().getX() < 0 && cursorBtn.getLocation().getX() != locationX) {
                 return;
+            }
             log.debug(String.format(
                     "Failed to open control buttons by tap on plus button. Retrying (%s of %s)...",
                     ntry, MAX_SWIPE_RETRIES));
@@ -338,7 +328,7 @@ public class DialogPage extends AndroidPage {
         final By locator = By.xpath(xpathStrConversationMessageByText.apply(text));
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
-    
+
     public boolean waitForUnsentIndicator(String text) throws Exception {
         final By locator = By.xpath(xpathStrUnsentIndicatorByText.apply(text));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
@@ -557,7 +547,7 @@ public class DialogPage extends AndroidPage {
         getElement(idSwitchCameraButton).click();
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathDialogTakePhotoButton);
     }
-    
+
     public Optional<BufferedImage> getVerifiedConversationShieldScreenshot()
             throws Exception {
         return this.getElementScreenshot(DriverUtils.getElementIfPresentInDOM(this.getDriver(), idVerifiedConversationShield).get());
@@ -592,34 +582,12 @@ public class DialogPage extends AndroidPage {
         final List<WebElement> allImageBadges = selectVisibleElements(xpathE2EEDialogImagesBadges);
         return times == (allImages.size() - allImageBadges.stream().filter(WebElement::isDisplayed).count());
     }
-    
-    public boolean waitForTakeoverScreenVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idTakeoverScreen);
-    }
-    
-    public boolean isTakeoverScreenHeaderCorrect(String name) throws Exception {
-        final String headerText = getElement(xpathTakeoverScreenHeader,
-            "No takeover header is found").getText();
-        return headerText.toLowerCase().contains(name.toLowerCase());
-    }
-    
-    public boolean isTakeoverScreenTextCorrect() throws Exception {
-        return DriverUtils.isElementPresentAndDisplayed(getDriver(), getElement(xpathTakeoverScreenText));
-    }
-    
-    public void tapShowDeviceBnt() throws Exception {
-        getElement(idTakeoverShowDeviceBnt, "Show Device button is not visible").click();
-    }
-    
-    public void tapSendAnywayBnt() throws Exception {
-        getElement(idTakeoverSendAnywayBnt, "Send Anyway button is not visible").click();
-    }
-    
+
     public void tapResendMsgBnt(String message) throws Exception {
         By locator = By.xpath(xpathStrUnsentIndicatorByText.apply(message));
         getElement(locator).click();
     }
-    
+
     public boolean isResendMsgBntUnvisible(String message) throws Exception {
         By locator = By.xpath(xpathStrUnsentIndicatorByText.apply(message));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);

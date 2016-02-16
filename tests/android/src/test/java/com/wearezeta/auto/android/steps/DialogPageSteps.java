@@ -1,5 +1,13 @@
 package com.wearezeta.auto.android.steps;
 
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.Assert;
+
 import com.wearezeta.auto.android.pages.CallingOverlayPage;
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.common.CommonSteps;
@@ -7,17 +15,11 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.junit.Assert;
-
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class DialogPageSteps {
 
@@ -870,47 +872,7 @@ public class DialogPageSteps {
                         score, MAX_VERIFIED_CONVERSATION_SHIELD_SIMILARITY_THRESHOLD),
                 score < MAX_VERIFIED_CONVERSATION_SHIELD_SIMILARITY_THRESHOLD);
     }
-    
-    /**
-     * Check if takeover screen appars for specified user and all message on it is correct
-     *
-     * @throws Exception
-     * @step. ^I see takeover screen from users? \"(.*)\"$
-     */
-    @When("^I see takeover screen from users? \"(.*)\"$")
-    public void ISeeTakeoverScreen(String nameAliases) throws Exception {
-        Assert.assertTrue("Takeover screeen is not visible", getDialogPage().waitForTakeoverScreenVisible());
-        String name;
-        for (String nameAlias : CommonSteps.splitAliases(nameAliases)) {
-            name = usrMgr.findUserByNameOrNameAlias(nameAlias).getName();
-            Assert.assertTrue(String.format("Takeover header from user %s is not visible", name),
-                getDialogPage().isTakeoverScreenHeaderCorrect(name));
-        }
-        Assert.assertTrue("Takeover screeen text is not visible or not as expected", getDialogPage().isTakeoverScreenTextCorrect());
-    }
-    
-    /**
-     * Tap on show device button in takeover screen
-     *
-     * @throws Exception
-     * @step. ^I tap send anyway(?: button)?$
-     */
-    @Then("^I tap send anyway(?: button)?$")
-    public void ITapTakeoverSendBnt() throws Exception {
-        getDialogPage().tapSendAnywayBnt();
-    }
-    
-    /**
-     * Tap on show device button in takeover screen
-     *
-     * @throws Exception
-     * @step. ^I tap show device(?: button)?$
-     */
-    @Then("^I tap show device(?: button)?$")
-    public void ITapTakeoverShowBnt() throws Exception {
-        getDialogPage().tapShowDeviceBnt();
-    }
-    
+
     /**
      * Tap on resend message/image button
      *
@@ -921,10 +883,10 @@ public class DialogPageSteps {
     public void ITapResendBnt(String message) throws Exception {
         getDialogPage().tapResendMsgBnt(message);
     }
-    
+
     /**
      * Check is message/image sent
-     * 
+     *
      * @throws Exception
      * @step. ^My message is sent$
      */
