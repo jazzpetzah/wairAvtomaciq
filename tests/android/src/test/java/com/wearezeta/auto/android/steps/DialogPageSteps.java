@@ -396,19 +396,6 @@ public class DialogPageSteps {
     }
 
     /**
-     * Checks to see that an unsent indicator is present next to the particular message in the chat history
-     *
-     * @throws Exception
-     * @step. ^I see unsent indicator next to the message \"(.*)\" in the dialog$
-     */
-    @Then("^I see unsent indicator next to the message \"(.*)\" in the dialog$")
-    public void ThenISeeUnsentIndicatorNextToTheMessage(String msg) throws Exception {
-        Assert.assertTrue(
-                String.format("Unsent indicator has not been shown next to the '%s' message in the conversation view", msg),
-                getDialogPage().waitForUnsentIndicator(msg));
-    }
-
-    /**
      * Checks to see that a photo exists in the chat history. Does not check which photo though
      *
      * @param shouldNotSee equals to null if 'do not' part does not exist
@@ -874,24 +861,34 @@ public class DialogPageSteps {
     }
 
     /**
-     * Tap on resend message/image button
+     * Tap on resend indicator next to the particular message in the chat history
      *
+     * @param message the message to resend
      * @throws Exception
      * @step. ^I tap resend(?: button)?
      */
-    @When("^I tap resend(?: button)?(?: for|on) message (.*)$")
-    public void ITapResendBnt(String message) throws Exception {
-        getDialogPage().tapResendMsgBnt(message);
+    @When("^I tap resend(?: indicator)?(?: for|on) message (.*)$")
+    public void ITapResendMessageIndicator(String message) throws Exception {
+        getDialogPage().tapResendMsgIndicator(message);
     }
 
     /**
-     * Check is message/image sent
+     * Checks to see that an unsent indicator is (not) present next to the particular message in the chat history
      *
+     * @param shouldNotSee equals to null if 'do not' part does not exist
+     * @param message the message to check
      * @throws Exception
      * @step. ^My message is sent$
      */
-    @Then("^My message (.*) is sent$")
-    public void IsResendButtonUnvisible(String message) throws Exception {
-        Assert.assertTrue("Unsent indicator is still visible", getDialogPage().isResendMsgBntUnvisible(message));
+    @Then("^I( do not)? see unsent indicator next to \"(.*)\" message$")
+    public void ThenISeeUnsentIndicatorNextToTheMessage(String shouldNotSee, String message) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue(
+                String.format("Unsent indicator has not been shown next to the '%s' message", message),
+                getDialogPage().waitForUnsentIndicatorVisible(message));
+        } else {
+            Assert.assertTrue(String.format("Unsent indicator is still visible next to the '%s' message", message),
+                getDialogPage().waitForUnsentIndicatorInvisible(message));
+        }
     }
 }

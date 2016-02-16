@@ -469,7 +469,7 @@ Feature: E2EE
     Then I tap send anyway button
     And I do not see takeover screen
     Then I see encrypted message <Message2> 1 times in the conversation view
-    And My message <Message2> is sent
+    And I do not see unsent indicator next to the message "<Message2>" in the dialog§
 
     Examples:
       | Name      | Contact1  | Contact2  | Message1 | Message2 | GroupChatName |
@@ -530,7 +530,7 @@ Feature: E2EE
     Then I tap send anyway button
     And I do not see takeover screen
     And I see my message "<Message2>" in the dialog
-    And My message <Message2> is sent 
+    Then I do not see unsent indicator next to the message "<Message2>" in the dialog 
    
     Examples:
       | Name      | Contact1  | Device  | Message1 | Message2        |
@@ -558,14 +558,14 @@ Feature: E2EE
     When I see takeover screen from user "<Contact1>"
     Then I tap show device button
     And I do not see takeover screen
-    #TODO detect new device and verify it instead of trying to verify each device
+    #TODO: detect new device and verify it instead of trying to verify each device
     And I verify 1st device
     And I verify 2nd device
     When I press back button
     Then I see a message informing me conversation is verified
     Then I see unsent indicator next to the message "<Message2>" in the dialog
     When I tap resend button for message <Message2>
-    Then My message <Message2> is sent 
+    Then I do not see unsent indicator next to the message "<Message2>" in the dialog 
    
     Examples:
       | Name      | Contact1  | Device  | Message1 | Message2    |

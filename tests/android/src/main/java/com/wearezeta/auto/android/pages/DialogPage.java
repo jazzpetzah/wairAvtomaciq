@@ -329,7 +329,7 @@ public class DialogPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
 
-    public boolean waitForUnsentIndicator(String text) throws Exception {
+    public boolean waitForUnsentIndicatorVisible(String text) throws Exception {
         final By locator = By.xpath(xpathStrUnsentIndicatorByText.apply(text));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
@@ -583,12 +583,12 @@ public class DialogPage extends AndroidPage {
         return times == (allImages.size() - allImageBadges.stream().filter(WebElement::isDisplayed).count());
     }
 
-    public void tapResendMsgBnt(String message) throws Exception {
+    public void tapResendMsgIndicator(String message) throws Exception {
         By locator = By.xpath(xpathStrUnsentIndicatorByText.apply(message));
         getElement(locator).click();
     }
 
-    public boolean isResendMsgBntUnvisible(String message) throws Exception {
+    public boolean waitForUnsentIndicatorInvisible(String message) throws Exception {
         By locator = By.xpath(xpathStrUnsentIndicatorByText.apply(message));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
