@@ -42,7 +42,7 @@ public class AppiumServerTools {
             if (exitCode == IS_RUNNING_RETCODE) {
                 return true;
             }
-            Thread.sleep(500);
+            Thread.sleep(1500);
         }
         return false;
     }

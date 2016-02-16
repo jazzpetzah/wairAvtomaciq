@@ -290,7 +290,7 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                    |
       | user1Name | user2Name | Device2     | Label2       | YOU STARTED USING A NEW DEVICE |
 
-  @14319 @regression
+  @C14319 @regression @rc
   Scenario Outline: When I'm entering a verified conversation, a blue shield will appear at the bottom right
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -310,10 +310,11 @@ Feature: E2EE
     And I click close user profile page button
     And I click Close input options button
     Then I see shield icon next to conversation input field
+    And I see last message in dialog is expected message <VerificationMsg>
 
     Examples:
-      | Name      | Contact1  | DeviceName1 | DeviceName2 |
-      | user1Name | user2Name | Device1     | Device2     |
+      | Name      | Contact1  | DeviceName1 | DeviceName2 | VerificationMsg               |
+      | user1Name | user2Name | Device1     | Device2     | ALL FINGERPRINTS ARE VERIFIED |
 
   @C3291 @regression
   Scenario Outline: Verify device management appearance after 7 sign ins
