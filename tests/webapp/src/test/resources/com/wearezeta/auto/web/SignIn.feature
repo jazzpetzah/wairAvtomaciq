@@ -57,7 +57,9 @@ Feature: Sign In
     When I enter email "<Email>"
     And I enter password "<Password>"
     And I press Sign In button
-    And I am signed in properly
+    Then I see the history info page
+    When I click confirm on history info page
+    Then I am signed in properly
     When I click gear button on self profile page
     And I select Settings menu item on self profile page
     And I remember the device id of the current device
