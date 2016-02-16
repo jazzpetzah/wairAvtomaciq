@@ -30,7 +30,7 @@ public class CallingPageStepsOLD {
      * @throws Exception
      * @step. ^I click the ignore call button$
      */
-    @When("I click the ignore call button")
+//    @When("I click the ignore call button")
     public void IClickIgnoreCallButton() throws Exception {
         getCallingOverlayPage().ignoreCall();
     }
@@ -43,7 +43,7 @@ public class CallingPageStepsOLD {
      * @throws Exception
      * @step. ^I see incoming calling message for contact (.*)$
      */
-    @When("^I see incoming calling message for contact (.*)$")
+//    @When("^I see incoming calling message for contact (.*)$")
     public void ISeeIncomingCallingMesage(String expectedCallerName)
             throws Exception {
         expectedCallerName = usrMgr.findUserByNameOrNameAlias(
@@ -61,7 +61,7 @@ public class CallingPageStepsOLD {
      * @throws Exception
      * @step. ^I see started call message for contact (.*)$
      */
-    @When("^I see started call message for contact (.*)$")
+//    @When("^I see started call message for contact (.*)$")
     public void ISeeStartedCallMesage(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         Assert.assertTrue(
@@ -78,7 +78,7 @@ public class CallingPageStepsOLD {
      * @throws Exception
      * @step. ^I see the call lock screen$
      */
-    @When("I see the call lock screen$")
+//    @When("I see the call lock screen$")
     public void ISeeTheCallLockScreen() throws Exception {
         Assert.assertTrue(
                 "Calling lockscreen is not visible, but it should be",
@@ -93,7 +93,7 @@ public class CallingPageStepsOLD {
      * @throws Exception
      * @step. ^I see a call from (.*) in the call lock screen$
      */
-    @When("I see a call from (.*) in the call lock screen$")
+//    @When("I see a call from (.*) in the call lock screen$")
     public void ISeeACallFromUserInLockScreen(String expectedCallerName)
             throws Exception {
         expectedCallerName = usrMgr.findUserByNameOrNameAlias(
@@ -112,7 +112,7 @@ public class CallingPageStepsOLD {
      * @throws Exception
      * @step. ^I answer the call from the overlay bar$
      */
-    @When("I answer the call from the overlay bar$")
+//    @When("I answer the call from the overlay bar$")
     public void IAnswerCallFromTheOverlayBar() throws Exception {
         getCallingOverlayPage().acceptCall();
     }
@@ -124,7 +124,7 @@ public class CallingPageStepsOLD {
      * @throws Exception
      * @step. ^I answer the call from the lock screen$
      */
-    @When("I answer the call from the lock screen$")
+//    @When("I answer the call from the lock screen$")
     public void IAnswerCallFromTheLockScreen() throws Exception {
         getCallingLockscreenPage().acceptCall();
     }
@@ -139,7 +139,7 @@ public class CallingPageStepsOLD {
      * @throws Exception
      * @step. ^I (do not )?see calling overlay Big bar$
      */
-    @When("^I (do not )?see calling overlay Big bar$")
+//    @When("^I (do not )?see calling overlay Big bar$")
     public void WhenISeeCallingOverlayBigBar(String shouldNotSee)
             throws Exception {
         if (shouldNotSee == null) {
@@ -164,7 +164,7 @@ public class CallingPageStepsOLD {
      * @throws Exception
      * @step. ^I see calling overlay Micro bar$
      */
-    @When("^I see calling overlay Micro bar$")
+//    @When("^I see calling overlay Micro bar$")
     public void WhenISeeCallingOverlayMicroBar() throws Exception {
         Assert.assertTrue("Calling Microbar is not visible",
                 getCallingOverlayPage().ongoingCallMicrobarIsVisible());
@@ -176,7 +176,7 @@ public class CallingPageStepsOLD {
      * @throws Exception
      * @step. ^I see calling overlay Mini bar$
      */
-    @When("^I see calling overlay Mini bar$")
+//    @When("^I see calling overlay Mini bar$")
     public void WhenISeeCallingOverlayMiniBar() throws Exception {
         Assert.assertTrue("Calling Minibar is not visible",
                 getCallingOverlayPage().ongoingCallMinibarIsVisible());
@@ -188,7 +188,7 @@ public class CallingPageStepsOLD {
      * @throws Exception
      * @step. ^I press join group call button$
      */
-    @When("^I press join group call button$")
+//    @When("^I press join group call button$")
     public void WhenIPressJoinGroupCallButton() throws Exception {
         getCallingOverlayPage().joinGroupCall();
     }
@@ -199,7 +199,7 @@ public class CallingPageStepsOLD {
      * @throws Exception
      * @step. ^I see (\\d+) users? take part in call$
      */
-    @When("^I see (\\d+) users? take part in call$")
+//    @When("^I see (\\d+) users? take part in call$")
     public void ISeeXUsersTakePartInGroupCall(final int expectedUsersCount)
             throws Exception {
         int actualUsersCount;
@@ -224,7 +224,7 @@ public class CallingPageStepsOLD {
      * @throws Exception
      * @step. ^I see group call is full alert$
      */
-    @When("^I see group call is full alert$")
+//    @When("^I see group call is full alert$")
     public void ISeeGroupCallIsFullAlert() throws Exception {
         Assert.assertTrue(getCallingOverlayPage().isGroupCallFullAlertVisible());
     }
@@ -235,7 +235,7 @@ public class CallingPageStepsOLD {
      * @throws Exception
      * @step. ^I close group call is full alert$
      */
-    @When("^I close group call is full alert$")
+//    @When("^I close group call is full alert$")
     public void ICloseGroupCallIsFullAlert() throws Exception {
         getCallingOverlayPage().closeGroupCallFullAlert();
     }
@@ -247,7 +247,7 @@ public class CallingPageStepsOLD {
      * @throws Exception
      * @step. ^I see answer call alert$
      */
-    @When("^I see answer call alert$")
+//    @When("^I see answer call alert$")
     public void ISeeAnswerCallAlert() throws Exception {
         Assert.assertTrue(getCallingOverlayPage().isAnswerCallAlertVisible());
     }
@@ -258,7 +258,7 @@ public class CallingPageStepsOLD {
      * @throws Exception
      * @step. ^I cancel new call from answer call alert$
      */
-    @When("^I cancel new call from answer call alert$")
+//    @When("^I cancel new call from answer call alert$")
     public void ICancelNewCallFromAlert() throws Exception {
         getCallingOverlayPage().answerCallCancel();
     }
@@ -269,7 +269,7 @@ public class CallingPageStepsOLD {
      * @throws Exception
      * @step. ^I start new call from answer call alert$
      */
-    @When("^I start new call from answer call alert$")
+//    @When("^I start new call from answer call alert$")
     public void IStartNewCallFromAnswerCallAlert() throws Exception {
         getCallingOverlayPage().answerCallContinue();
     }
@@ -281,7 +281,7 @@ public class CallingPageStepsOLD {
      * @throws Exception
      * @step. ^I see end current call alert$
      */
-    @When("^I see end current call alert$")
+//    @When("^I see end current call alert$")
     public void ISeeEndCurrentCallAlert() throws Exception {
         Assert.assertTrue(getCallingOverlayPage()
                 .isEndCurrentCallAlertVisible());
@@ -293,7 +293,7 @@ public class CallingPageStepsOLD {
      * @throws Exception
      * @step. ^I cancel new call from end current call alert$
      */
-    @When("^I cancel new call from end current call alert$")
+//    @When("^I cancel new call from end current call alert$")
     public void ICancelNewCallFromEndCurrentCallAlert() throws Exception {
         getCallingOverlayPage().endCurrentCallCancel();
     }
@@ -304,7 +304,7 @@ public class CallingPageStepsOLD {
      * @throws Exception
      * @step. ^I start new call from end current call alert$
      */
-    @When("^I start new call from end current call alert$")
+//    @When("^I start new call from end current call alert$")
     public void IStartNewCallFromEndCurrentCallAlert() throws Exception {
         getCallingOverlayPage().endCurrentCallContinue();
     }

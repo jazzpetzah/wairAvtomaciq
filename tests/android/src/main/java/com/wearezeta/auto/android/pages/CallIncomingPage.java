@@ -8,7 +8,7 @@ import org.openqa.selenium.By;
 
 public class CallIncomingPage extends AndroidPage {
 
-    private static final String idStrCallingContainer = "fl__calling__container";
+    private static final String idStrCallingContainer = "tcfl__calling__container";
     private static final By idCallingContainer = By.id(idStrCallingContainer);
     private static final By idMainContent = By.id("cpv__calling__participants");
 

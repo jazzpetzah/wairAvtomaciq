@@ -1,6 +1,6 @@
 Feature: Calling
 
-  @C693 @id373 @calling_basic @rc @torun
+  @C693 @id373 @calling_basic @rc
   Scenario Outline: Verify missed call indicator in conversations list and system message inside conversation
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
