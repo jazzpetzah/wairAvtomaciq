@@ -405,7 +405,7 @@ Feature: E2EE
     Examples:
       | Name      |
       | user1Name |
-  
+
   @C3292 @noAcceptAlert @staging
   Scenario Outline: Verify deleting one of the devices from device management by swipe
     Given There is 1 user where <Name> is me
@@ -476,3 +476,27 @@ Feature: E2EE
     Examples:
       | Name      | Contact1  | DeviceName2 | DeviceName1 | ExpectedMessage               |
       | user1Name | user2Name | Device2     | Device1     | ALL FINGERPRINTS ARE VERIFIED |
+
+  @C3498 @staging
+  Scenario Outline: Verify "learn more" leads to the proper page
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email
+    Given I see conversations list
+    Given User <Contact1> sends 1 encrypted message to user Myself
+    And I tap on contact name <Contact1>
+    And I open conversation details
+    And I switch to Devices tab
+    When I tap "Why verify conversations?" link in user details
+    And I wait for 3 seconds
+    Then I see "https://wire.com/privacy/why" web page opened
+    When I tap Back To Wire button
+    And I wait for 3 seconds
+    And I open details page of device number 1
+    And I tap "How do I do that?" link in user details
+    And I wait for 3 seconds
+    Then I see "https://wire.com/privacy/how" web page opened
+
+    Examples:
+      | Name      | Contact1  |
+      | user1Name | user2Name |
