@@ -82,10 +82,12 @@ Feature: Calling
     Given I see Contact list with contacts
     When I minimize the application
     And <Contact> calls me using <CallBackend>
-    Then I see the call lock screen
-    And I see a call from <Contact> in the call lock screen
-    And I answer the call from the lock screen
-    Then I see started call message for contact <Contact>
+    Then I see incoming call
+    And I see incoming call from <Contact>
+    And I swipe to accept the call
+#TODO activity check
+#We can't implement this test because the call overlay hides the dialogPage
+#    Then I see started call message for contact <Contact>
 
     Examples:
       | Name      | Contact   | CallBackend |
