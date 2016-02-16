@@ -501,7 +501,7 @@ Feature: E2EE
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C3494 @staging @torun
+  @C3494 @staging
   Scenario Outline: Verify unverifying of the device in verified conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
