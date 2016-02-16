@@ -86,13 +86,14 @@ Feature: Calling
     And I see incoming call from <Contact>
     And I swipe to accept the call
 #TODO activity check
-#We can't implement this test because the call overlay hides the dialogPage
+#We can't implement this step because the call overlay hides the dialogPage
 #    Then I see started call message for contact <Contact>
 
     Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
+#TODO DEFECT: Phone does not display the incoming call
   @C711 @id1499 @calling_basic @rc
   Scenario Outline: Receive call while mobile in sleeping mode(screen locked)
     Given There are 2 users where <Name> is me
@@ -102,15 +103,17 @@ Feature: Calling
     Given I see Contact list with contacts
     When I lock the device
     And <Contact> calls me using <CallBackend>
-    Then I see the call lock screen
-    And I see a call from <Contact> in the call lock screen
-    And I answer the call from the lock screen
-    Then I see started call message for contact <Contact>
+    Then I see incoming call
+    And I see incoming call from <Contact>
+    And I swipe to accept the call
+#We can't implement this step because the call overlay hides the dialogPage
+#    Then I see started call message for contact <Contact>
 
     Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
+# DEFECT: can not implement until I can leave the call overlay while calling
   @C404 @id347 @calling_basic
   Scenario Outline: Send text, image and knock while in the call with same user
     Given There are 2 users where <Name> is me
@@ -120,21 +123,22 @@ Feature: Calling
     Given I see Contact list with contacts
     And I tap on contact name <Contact>
     And <Contact> calls me using <CallBackend>
-    And I see incoming calling message for contact <Contact>
-    And I answer the call from the overlay bar
-    And I see started call message for contact <Contact>
-    When I swipe on text input
-    And I press Ping button
-    Then I see Ping message <Msg> in the dialog
-    When I tap on text input
-    And I type the message "<Message>" and send it
-    Then I see my message "<Message>" in the dialog
-    When I swipe on text input
-    And I press Add Picture button
-    And I press "Take Photo" button
-    And I press "Confirm" button
-    And I scroll to the bottom of conversation view
-    Then I see new photo in the dialog
+    And I see incoming call
+    And I see incoming call from <Contact>
+    And I swipe to accept the call
+#TODO check activity
+#    When I swipe on text input
+#    And I press Ping button
+#    Then I see Ping message <Msg> in the dialog
+#    When I tap on text input
+#    And I type the message "<Message>" and send it
+#    Then I see my message "<Message>" in the dialog
+#    When I swipe on text input
+#    And I press Add Picture button
+#    And I press "Take Photo" button
+#    And I press "Confirm" button
+#    And I scroll to the bottom of conversation view
+#    Then I see new photo in the dialog
 
 
     Examples:
