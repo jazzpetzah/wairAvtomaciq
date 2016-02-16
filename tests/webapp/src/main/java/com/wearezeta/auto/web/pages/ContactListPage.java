@@ -712,4 +712,8 @@ public class ContactListPage extends WebPage {
 		WebElement entry = getDriver().findElement(By.cssSelector(locator));
 		new Actions(getDriver()).contextClick(entry).perform();
 	}
+
+	public boolean waitForBadgeVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(WebAppLocators.ContactListPage.cssBadge));
+	}
 }

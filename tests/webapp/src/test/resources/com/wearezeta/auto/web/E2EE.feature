@@ -438,6 +438,28 @@ Feature: E2EE
     | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | ALL_VERIFIED                  |
     | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat     | All fingerprints are verified |
 
+
+  @C12057 @e2ee
+  Scenario Outline: My other clients should be notified when I'm login on a new device (pending connections inbox)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    When I open conversation with <Contact>
+    And user <Name> adds a new device Device2 with label Label2
+    Then I see <NEW_DEVICE> action in conversation
+    And I verify a badge is shown on my avatar
+    And I open self profile
+    And I see connected devices dialog
+    And I see Device2 on connected devices dialog
+    And I click OK on connected devices dialog
+    And I do not see connected devices dialog
+
+    Examples:
+      | Email      | Password      | Name      | Contact   | NEW_DEVICE                     |
+      | user1Email | user1Password | user1Name | user2Name | You started using a new device |
+
   @C28834 @e2ee @regression
   Scenario Outline: Make sure data is restored after switching between temporary login and back to permanent
     Given There are 3 users where <Name> is me
