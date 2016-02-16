@@ -76,25 +76,20 @@ public final class BackendAPIWrappers {
      * @return Created ClientUser instance (with id property filled)
      * @throws Exception
      */
-    public static ClientUser createUserViaBackdoor(ClientUser user,
-                                                   int retryNumber, RegistrationStrategy strategy) throws Exception {
+    public static ClientUser createUserViaBackdoor(ClientUser user, RegistrationStrategy strategy) throws Exception {
         String activationCode;
         switch (strategy) {
             case ByEmail:
-                BackendREST.registerNewUser(user.getEmail(), user.getName(),
-                        user.getPassword());
-                activationCode = getActivationCodeForRegisteredEmail(user
-                        .getEmail());
-                activateRegisteredEmailByBackdoorCade(user.getEmail(),
-                        activationCode, false);
+                BackendREST.registerNewUser(user.getEmail(), user.getName(), user.getPassword());
+                activationCode = getActivationCodeForRegisteredEmail(user.getEmail());
+                activateRegisteredEmailByBackdoorCade(user.getEmail(), activationCode, false);
                 while (true) {
                     try {
                         attachUserPhoneNumber(user);
                         break;
                     } catch (BackendRequestException e) {
                         if (e.getReturnCode() == PHONE_NUMBER_ALREADY_REGISTERED_ERROR) {
-                            user.setPhoneNumber(new PhoneNumber(
-                                    PhoneNumber.WIRE_COUNTRY_PREFIX));
+                            user.setPhoneNumber(new PhoneNumber(PhoneNumber.WIRE_COUNTRY_PREFIX));
                         } else {
                             throw e;
                         }
@@ -102,12 +97,9 @@ public final class BackendAPIWrappers {
                 }
                 break;
             case ByEmailOnly:
-                BackendREST.registerNewUser(user.getEmail(), user.getName(),
-                        user.getPassword());
-                activationCode = getActivationCodeForRegisteredEmail(user
-                        .getEmail());
-                activateRegisteredEmailByBackdoorCade(user.getEmail(),
-                        activationCode, false);
+                BackendREST.registerNewUser(user.getEmail(), user.getName(), user.getPassword());
+                activationCode = getActivationCodeForRegisteredEmail(user.getEmail());
+                activateRegisteredEmailByBackdoorCade(user.getEmail(), activationCode, false);
                 break;
             case ByPhoneNumber:
             case ByPhoneNumberOnly:
@@ -116,21 +108,17 @@ public final class BackendAPIWrappers {
                 while (true) {
                     try {
                         BackendREST.bookPhoneNumber(user.getPhoneNumber());
-                        activationCode = getActivationCodeForBookedPhoneNumber(user
-                                .getPhoneNumber());
-                        activateRegisteredUserByPhoneNumber(user.getPhoneNumber(),
-                                activationCode, true);
-                        BackendREST.registerNewUser(user.getPhoneNumber(), user.getName(),
-                                activationCode);
-                        changeUserPassword(user, null, user.getPassword());
+                        activationCode = getActivationCodeForBookedPhoneNumber(user.getPhoneNumber());
+                        activateRegisteredUserByPhoneNumber(user.getPhoneNumber(), activationCode, true);
+                        BackendREST.registerNewUser(user.getPhoneNumber(), user.getName(), activationCode);
+//                        changeUserPassword(user, null, user.getPassword());
                         break;
                     } catch (BackendRequestException e) {
                         if ((e.getReturnCode() == PHONE_NUMBER_ALREADY_REGISTERED_ERROR ||
                                 e.getReturnCode() == 403) && nTry < maxRetries) {
                             // Assign different phone number to this user
                             // The current has been most likely already already created
-                            user.setPhoneNumber(new PhoneNumber(
-                                    PhoneNumber.WIRE_COUNTRY_PREFIX));
+                            user.setPhoneNumber(new PhoneNumber(PhoneNumber.WIRE_COUNTRY_PREFIX));
                             nTry++;
                         } else {
                             throw new IllegalStateException(String.format(
@@ -197,7 +185,7 @@ public final class BackendAPIWrappers {
     public static String getActivationCodeByPhoneNumber(PhoneNumber phoneNumber)
             throws Exception {
         int ntry = 1;
-        BackendRequestException savedException = null;
+        BackendRequestException savedException;
         do {
             try {
                 return getActivationCodeForBookedPhoneNumber(phoneNumber);
@@ -225,7 +213,7 @@ public final class BackendAPIWrappers {
     public static String getLoginCodeByPhoneNumber(PhoneNumber phoneNumber)
             throws Exception {
         int ntry = 1;
-        Exception savedException = null;
+        Exception savedException;
         do {
             try {
                 return BackendREST.getLoginCodeViaBackdoor(phoneNumber)
@@ -249,14 +237,6 @@ public final class BackendAPIWrappers {
         activateRegisteredUserByPhoneNumber(user.getPhoneNumber(), activationCode, false);
     }
 
-    /**
-     * Change/set user password
-     *
-     * @param user
-     * @param oldPassword set this to null if the user has no password set
-     * @param newPassword
-     * @throws Exception
-     */
     private static void changeUserPassword(ClientUser user, String oldPassword,
                                            String newPassword) throws Exception {
         BackendREST.updateSelfPassword(receiveAuthToken(user), oldPassword, newPassword);
@@ -601,7 +581,7 @@ public final class BackendAPIWrappers {
     }
 
     public static void sendConversationMessagesOtr(ClientUser userFrom,
-                                                String convId, List<String> messages) throws Exception {
+                                                   String convId, List<String> messages) throws Exception {
         for (String message : messages) {
             SEBridge.getInstance().sendConversationMessage(userFrom, convId, message);
         }
