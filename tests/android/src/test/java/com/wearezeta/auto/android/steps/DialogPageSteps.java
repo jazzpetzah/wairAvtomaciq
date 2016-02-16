@@ -896,7 +896,7 @@ public class DialogPageSteps {
      * @step. ^I tap send anyway(?: button)?$
      */
     @Then("^I tap send anyway(?: button)?$")
-    public void WhenITapTakeoverSendBnt() throws Exception {
+    public void ITapTakeoverSendBnt() throws Exception {
         getDialogPage().tapSendAnywayBnt();
     }
     
@@ -907,7 +907,29 @@ public class DialogPageSteps {
      * @step. ^I tap show device(?: button)?$
      */
     @Then("^I tap show device(?: button)?$")
-    public void WhenITapTakeoverShowBnt() throws Exception {
+    public void ITapTakeoverShowBnt() throws Exception {
         getDialogPage().tapShowDeviceBnt();
+    }
+    
+    /**
+     * Tap on resend message/image button
+     *
+     * @throws Exception
+     * @step. ^I tap resend(?: button)?
+     */
+    @When("^I tap resend(?: button)?(?: for|on) message (.*)$")
+    public void ITapResendBnt(String message) throws Exception {
+        getDialogPage().tapResendMsgBnt(message);
+    }
+    
+    /**
+     * Check is message/image sent
+     * 
+     * @throws Exception
+     * @step. ^My message is sent$
+     */
+    @Then("^My message (.*) is sent$")
+    public void IsResendButtonUnvisible(String message) throws Exception {
+        Assert.assertTrue("Unsent indicator is still visible", getDialogPage().isResendMsgBntUnvisible(message));
     }
 }
