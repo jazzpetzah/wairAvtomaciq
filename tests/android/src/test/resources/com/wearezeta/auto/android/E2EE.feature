@@ -536,7 +536,7 @@ Feature: E2EE
       | Name      | Contact1  | Device  | Message1 | Message2        |
       | user1Name | user2Name | device2 | Msg1     | MsgToSendAnyway |
       
-  @C12065 @staging @torun
+  @C12065 @staging
   Scenario Outline: When 1:1 conversation was degraded - I can manage new device to verified and resend message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
