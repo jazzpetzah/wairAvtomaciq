@@ -1,6 +1,6 @@
 Feature: Calling
 
-  @C693 @id373 @calling_basic @rc
+  @C693 @id373 @calling_basic @rc @torun
   Scenario Outline: Verify missed call indicator in conversations list and system message inside conversation
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -8,15 +8,17 @@ Feature: Calling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When <Contact> calls me using <CallBackend>
-    And I wait for 5 seconds
+Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+And I see incoming call
     And <Contact> stops all calls to me
-    Then I do not see calling overlay Big bar
+Then <Contact> verifies that call status to <Name> is changed to destroyed in <Timeout> seconds
+And I do not see incoming call
     When I tap on contact name <Contact>
     Then I see dialog with missed call from <Contact>
 
     Examples:
-      | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | autocall    | 60      |
 
   @C713 @id1503 @calling_basic @rc
   Scenario Outline: Silence an incoming call
@@ -26,13 +28,15 @@ Feature: Calling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When <Contact> calls me using <CallBackend>
+Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+And I see incoming call
     And I see incoming calling message for contact <Contact>
-    And I click the ignore call button
-    Then I do not see calling overlay Big bar
+And I swipe to ignore the call
+And I do not see incoming call
 
     Examples:
-      | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | autocall    | 60      |
 
   @C698 @id727 @calling_basic @rc
   Scenario Outline: I can start 1:1 call
