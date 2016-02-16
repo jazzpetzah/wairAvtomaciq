@@ -71,8 +71,6 @@ public final class BackendAPIWrappers {
      *
      * @param user        ClientUser instance with initial user parameters
      *                    (name/email/password)
-     * @param retryNumber set this to 1 if it is the first time you try to create this
-     *                    particular user
      * @return Created ClientUser instance (with id property filled)
      * @throws Exception
      */
@@ -111,7 +109,6 @@ public final class BackendAPIWrappers {
                         activationCode = getActivationCodeForBookedPhoneNumber(user.getPhoneNumber());
                         activateRegisteredUserByPhoneNumber(user.getPhoneNumber(), activationCode, true);
                         BackendREST.registerNewUser(user.getPhoneNumber(), user.getName(), activationCode);
-//                        changeUserPassword(user, null, user.getPassword());
                         break;
                     } catch (BackendRequestException e) {
                         if ((e.getReturnCode() == PHONE_NUMBER_ALREADY_REGISTERED_ERROR ||
@@ -247,6 +244,7 @@ public final class BackendAPIWrappers {
         BackendREST.updateSelfEmail(receiveAuthToken(user), user.getEmail());
         final String activationCode = getActivationCodeForRegisteredEmail(user.getEmail());
         activateRegisteredEmailByBackdoorCade(user.getEmail(), activationCode, false);
+        changeUserPassword(user, null, user.getPassword());
     }
 
     public static String getUserActivationLink(Future<String> activationMessage) throws Exception {
