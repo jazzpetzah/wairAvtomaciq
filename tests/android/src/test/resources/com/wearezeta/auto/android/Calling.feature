@@ -447,8 +447,8 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
-# DEFECT: can not implement until I can leave the call overlay while calling
-  @C427 @id3180 @calling_advanced @mute
+#TODO
+  @C427 @id3180 @calling_advanced
   Scenario Outline: Verify receiving 1to1 call during group call and accepting it
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -479,8 +479,8 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
-# DEFECT: can not implement until I can leave the call overlay while calling
-  @C806 @id3176 @calling_advanced @rc @mute
+#TODO
+  @C806 @id3176 @calling_advanced @rc
   Scenario Outline: (AN-3140) Verify receiving group call during 1to1 call and accepting it
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -511,8 +511,8 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
-# DEFECT: can not implement until I can leave the call overlay while calling
-  @C428 @id3181 @calling_advanced @mute
+#TODO
+  @C428 @id3181 @calling_advanced
   Scenario Outline: Verify receiving 1to1 call during group call and ignoring it
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -629,7 +629,8 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend |
       | user1Name | user2Name | user3Name | autocall    |
 
-  @C429 @id3184 @regression
+# DEFECT: can not implement until I can leave the call overlay while calling
+  @C429 @id3184 @regression @mute
   Scenario Outline: Verify leaving group conversation during the call
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
