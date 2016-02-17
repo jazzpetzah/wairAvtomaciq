@@ -1,6 +1,6 @@
 Feature: Video Calling
 
-  @C12102 @staging
+  @C12102 @regression
   Scenario Outline: Verify initiating Video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>

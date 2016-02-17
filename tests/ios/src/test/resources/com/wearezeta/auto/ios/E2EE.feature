@@ -179,7 +179,7 @@ Feature: E2EE
       | Name      | DeviceName | DeviceLabel  |
       | user1Name | Device1    | Device1Label |
 
-  @C3510 @noAcceptAlert @staging
+  @C3510 @noAcceptAlert @regression
   Scenario Outline: Verify deleting one of the devices from device management by Edit
     Given There is 1 user where <Name> is me
     Given I sign in using my email
@@ -386,7 +386,7 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | Contact2  | GroupChatName |
       | user1Name | user2Name | Device2     | Label2       | user3Name | ThisGroup     |
 
-  @C3507 @staging
+  @C3507 @regression
   Scenario Outline: Verify remove, verify and reset session are absent for current device
     Given There is 1 user where <Name> is me
     Given I sign in using my email
@@ -406,7 +406,7 @@ Feature: E2EE
       | Name      |
       | user1Name |
 
-  @C3292 @noAcceptAlert @staging
+  @C3292 @noAcceptAlert @regression
   Scenario Outline: Verify deleting one of the devices from device management by swipe
     Given There is 1 user where <Name> is me
     Given I sign in using my email
@@ -430,7 +430,7 @@ Feature: E2EE
       | Name      | DeviceName | DeviceLabel | Password      |
       | user1Name | Device1    | Label1      | user1Password |
 
-  @C3511 @noAcceptAlert @staging
+  @C3511 @noAcceptAlert @regression
   Scenario Outline: Verify deleting one of the devices from device information screen
     Given There is 1 user where <Name> is me
     Given I sign in using my email
@@ -454,7 +454,7 @@ Feature: E2EE
       | Name      | DeviceName | Password      |
       | user1Name | Device1    | user1Password |
 
-  @C3289 @staging
+  @C3289 @regression
   Scenario Outline: Verify conversation is not verified after checking only one device out of many
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact1>
@@ -477,7 +477,7 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName2 | DeviceName1 | ExpectedMessage               |
       | user1Name | user2Name | Device2     | Device1     | ALL FINGERPRINTS ARE VERIFIED |
 
-  @C3498 @staging
+  @C3498 @regression
   Scenario Outline: Verify "learn more" leads to the proper page
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -501,7 +501,7 @@ Feature: E2EE
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C3494 @staging
+  @C3494 @regression
   Scenario Outline: Verify unverifying of the device in verified conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -528,7 +528,7 @@ Feature: E2EE
       | Name      | Contact1  | VerificationMsg               | UnverificationMsg     |
       | user1Name | user2Name | ALL FINGERPRINTS ARE VERIFIED | YOU UNVERIFIED ONE OF |
 
-  @C3500 @staging
+  @C3500 @regression
   Scenario Outline: Verify shield is not shown when any text presents into the input field
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -551,7 +551,7 @@ Feature: E2EE
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C14311 @staging
+  @C14311 @regression
   Scenario Outline: Verify the appropriate device is signed out if you remove it from settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email
