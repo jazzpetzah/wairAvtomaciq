@@ -494,12 +494,7 @@ public class DialogPageSteps {
      */
     @When("^I see missed call from contact (.*)$")
     public void ISeeMissedCall(String contact) throws Exception {
-        String username = null;
-        if (contact.equals("YOU")) {
-            username = contact;
-        } else {
-            username = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        }
+        String username = (contact.equals("YOU")) ? contact : usrMgr.findUserByNameOrNameAlias(contact).getName();
         String expectedCallMessage = username.toUpperCase() + " CALLED";
         Assert.assertTrue(username + " called message is missing in dialog",
                 getDialogPage().isMessageVisible(expectedCallMessage));
