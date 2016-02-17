@@ -229,7 +229,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | CallBackend2 |
       | user1Name | user2Name | firefox     | autocall     |
 
-  @C2046 @rc @calling_basic @IPv6 @id2682 @torun
+  @C2046 @rc @calling_basic @IPv6 @id2682
   Scenario Outline: Verify accepting group call in foreground
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
