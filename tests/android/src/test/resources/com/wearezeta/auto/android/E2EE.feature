@@ -13,7 +13,7 @@ Feature: E2EE
     Then I see non-encrypted message <SimpleMessage> 1 time in the conversation view
     And I see encrypted message <EncryptedMessage> 1 time in the conversation view
 
-    Examples:
+    Examples: 
       | Name      | Contact   | EncryptedMessage | SimpleMessage |
       | user1Name | user2Name | EncryptedYo      | SimpleYo      |
 
@@ -37,7 +37,7 @@ Feature: E2EE
     When I do not see Manage Devices overlay
     Then I see Contact list with no contacts
 
-    Examples:
+    Examples: 
       | Password      | Name      | DeviceToRemove |
       | user1Password | user1Name | Device1        |
 
@@ -55,7 +55,7 @@ Feature: E2EE
     Then I see non-encrypted image 1 time in the conversation view
     And I see encrypted image 1 time in the conversation view
 
-    Examples:
+    Examples: 
       | Name      | Contact   | ImageName   |
       | user1Name | user2Name | testing.jpg |
 
@@ -79,7 +79,7 @@ Feature: E2EE
     Then Last message is <Message2>
     And I see new picture in the dialog
 
-    Examples:
+    Examples: 
       | Name      | Contact1  | Message1 | Message2 | Picture     |
       | user1Name | user2Name | Msg1     | Msg2     | testing.jpg |
 
@@ -104,7 +104,7 @@ Feature: E2EE
     Then Last message is <Message2>
     And I see new picture in the dialog
 
-    Examples:
+    Examples: 
       | Name      | Contact1  | Contact2  | Message1 | Message2 | Picture     | GroupChatName |
       | user1Name | user2Name | user3Name | Msg1     | Msg2     | testing.jpg | GroupConvo    |
 
@@ -122,7 +122,7 @@ Feature: E2EE
     Then I see non-encrypted message <SimpleMessage> 1 time in the conversation view
     And I see encrypted message <EncryptedMessage> 1 time in the conversation view
 
-    Examples:
+    Examples: 
       | Name      | Contact1  | Contact2  | EncryptedMessage | SimpleMessage | GroupChatName |
       | user1Name | user2Name | user3Name | EncryptedYo      | SimpleYo      | HybridGroup   |
 
@@ -141,7 +141,7 @@ Feature: E2EE
     Then I see non-encrypted image 1 time in the conversation view
     And I see encrypted image 1 time in the conversation view
 
-    Examples:
+    Examples: 
       | Name      | Contact1  | Contact2  | ImageName   | GroupChatName |
       | user1Name | user2Name | user3Name | testing.jpg | GroupConvo    |
 
@@ -167,7 +167,7 @@ Feature: E2EE
     Then I see 1 device is shown in single participant devices tab
     And I verify all device ids of user <Contact2> are shown in single participant devices tab
 
-    Examples:
+    Examples: 
       | Name      | Contact1  | Contact2  | Message1 | GroupChatName |
       | user1Name | user2Name | user3Name | Msg1     | GroupConvo    |
 
@@ -185,7 +185,7 @@ Feature: E2EE
     Then I see 1 device is shown in single participant devices tab
     And I verify all device ids of user <Contact1> are shown in single participant devices tab
 
-    Examples:
+    Examples: 
       | Name      | Contact1  | Message1 |
       | user1Name | user2Name | Msg1     |
 
@@ -227,7 +227,7 @@ Feature: E2EE
     And I tap current device in devices settings menu
     Then I verify the remembered device id is shown in the device detail view
 
-    Examples:
+    Examples: 
       | Name      | Contact1  | EncMessage |
       | user1Name | user2Name | Bla        |
 
@@ -247,7 +247,7 @@ Feature: E2EE
     And I tap on contact name <GroupChatName>
     Then I see encrypted message <EncMessage> 0 times in the conversation view
 
-    Examples:
+    Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | EncMessage |
       | user1Name | user2Name | user3Name | user4Name | EncryptedGrp  | Bla        |
 
@@ -261,7 +261,7 @@ Feature: E2EE
     And I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
 
-    Examples:
+    Examples: 
       | Name      |
       | user1Name |
 
@@ -277,7 +277,7 @@ Feature: E2EE
     When I tap on contact name <Contact1>
     Then I see encrypted message <EncMessage> 0 times in the conversation view
 
-    Examples:
+    Examples: 
       | Name      | Contact1  | EncMessage |
       | user1Name | user2Name | Bla        |
 
@@ -298,7 +298,7 @@ Feature: E2EE
     And I see state of 1st device is changed
     Then I see shield in participant profile
 
-    Examples:
+    Examples: 
       | Name      | Contact1  | Message1 |
       | user1Name | user2Name | Msg1     |
 
@@ -321,7 +321,7 @@ Feature: E2EE
     When User <Contact1> sends encrypted message "<Message1>" via device Device2 to user Myself
     Then I see a message informing me conversation is not verified caused by user <Contact1>
 
-    Examples:
+    Examples: 
       | Name      | Contact1  | Message1 |
       | user1Name | user2Name | Msg1     |
 
@@ -353,10 +353,10 @@ Feature: E2EE
     When User <Contact1> sends encrypted message "<Message1>" via device Device2 to group conversation <GroupChatName>
     Then I see a message informing me conversation is not verified caused by user <Contact1>
 
-    Examples:
+    Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName | Message1 |
       | user1Name | user2Name | user3Name | EncryptedGrp  | Msg1     |
-        
+
   @C12083 @regression
   Scenario Outline: When I'm entering a verified conversation, a green shield will appear at the bottom right
     Given There are 2 users where <Name> is me
@@ -375,11 +375,11 @@ Feature: E2EE
     Then I see a message informing me conversation is verified
     And I see verified conversation shield state has changed
 
-    Examples:
+    Examples: 
       | Name      | Contact1  | Message1 |
       | user1Name | user2Name | Msg1     |
 
-  @C3516 @staging
+  @C3516 @regression
   Scenario Outline: User should appear in verified list in group conversations details when all of his fingerprints are verified
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -407,10 +407,10 @@ Feature: E2EE
     When I press back button
     Then I see a message informing me conversation is verified
 
-    Examples:
+    Examples: 
       | Name      | Contact1  | Contact2  | Message1 | GroupChatName |
       | user1Name | user2Name | user3Name | Msg1     | GroupConvo    |
-      
+
   @C12066 @C3239 @regression
   Scenario Outline: Verify I see system message when verify all other user's device in group conversation
     Given There are 3 users where <Name> is me
@@ -436,7 +436,7 @@ Feature: E2EE
     And I press back button
     And I see a message informing me conversation is verified
 
-    Examples:
+    Examples: 
       | Name      | Contact1  | Contact2  | Message1 | GroupChatName |
       | user1Name | user2Name | user3Name | Msg1     | GroupConvo    |
 
@@ -469,14 +469,14 @@ Feature: E2EE
     Then I tap send anyway button
     And I do not see takeover screen
     Then I see encrypted message <Message2> 1 times in the conversation view
-    And I do not see unsent indicator next to the message "<Message2>" in the dialog§
+    And I do not see unsent indicator next to "<Message2>" messsage
 
-    Examples:
+    Examples: 
       | Name      | Contact1  | Contact2  | Message1 | Message2 | GroupChatName |
       | user1Name | user2Name | user3Name | Msg1     | Msg2     | GroupConvo    |
 
-  @C3513 @staging
-  Scenario Outline: If user uses only old Wire builds which don't support E2EE I should see system message inside his profile 
+  @C3513 @regression
+  Scenario Outline: If user uses only old Wire builds which don't support E2EE I should see system message inside his profile
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
     Given I sign in using my email or phone number
@@ -487,11 +487,11 @@ Feature: E2EE
     And I select single participant tab "Devices"
     Then I see no encrypted device text for user <Contact> in header of device detail page
 
-    Examples:
+    Examples: 
       | Name      | Contact   | SimpleMessage |
       | user1Name | user2Name | SimpleYo      |
-      
-  @C3512 @staging
+
+  @C3512 @regression
   Scenario Outline: After login by phone on not 1st device I have to be asked for email login
     Given There is 1 user where <Name> is me
     Given User Myself adds new device <Device>
@@ -503,12 +503,12 @@ Feature: E2EE
     And I accept First Time overlay as soon as it is visible
     Then I see Contact list with no contacts
 
-    Examples:
+    Examples: 
       | Name      | Email      | Password      | Device  |
       | user1Name | user1Email | user1Password | device1 |
-      
-  @C12081 @staging
-  Scenario Outline: When 1:1 conversation was degraded - I can ignore takeover screen and send message 
+
+  @C12081 @regression
+  Scenario Outline: When 1:1 conversation was degraded - I can ignore takeover screen and send message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -530,13 +530,13 @@ Feature: E2EE
     Then I tap send anyway button
     And I do not see takeover screen
     And I see my message "<Message2>" in the dialog
-    Then I do not see unsent indicator next to the message "<Message2>" in the dialog 
-   
-    Examples:
+    Then I do not see unsent indicator next to "<Message2>" message
+
+    Examples: 
       | Name      | Contact1  | Device  | Message1 | Message2        |
       | user1Name | user2Name | device2 | Msg1     | MsgToSendAnyway |
-      
-  @C12065 @staging
+
+  @C12065 @regression
   Scenario Outline: When 1:1 conversation was degraded - I can manage new device to verified and resend message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -563,10 +563,10 @@ Feature: E2EE
     And I verify 2nd device
     When I press back button
     Then I see a message informing me conversation is verified
-    Then I see unsent indicator next to the message "<Message2>" in the dialog
+    Then I see unsent indicator next to "<Message2>" message
     When I tap resend button for message <Message2>
-    Then I do not see unsent indicator next to the message "<Message2>" in the dialog 
-   
-    Examples:
+    Then I do not see unsent indicator next to "<Message2>" message
+
+    Examples: 
       | Name      | Contact1  | Device  | Message1 | Message2    |
       | user1Name | user2Name | device2 | Msg1     | MsgToResend |
