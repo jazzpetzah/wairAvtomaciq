@@ -594,9 +594,10 @@ Feature: Calling
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    And <Contact> calls me using <CallBackend>
+    When <Contact> calls me using <CallBackend>
     And I see incoming call
     And I swipe to accept the call
+    Then I see ongoing call
     When I minimize the application
     And I wait for 10 seconds
     And I restore the application
