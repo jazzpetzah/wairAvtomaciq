@@ -11,11 +11,11 @@ public class CallIncomingPage extends AndroidPage {
 
     private static final String idStrCallingContainer = "tcfl__calling__container";
     private static final By idCallingContainer = By.id(idStrCallingContainer);
+    private static final By xpathIncomingCallContainer = By.xpath("//*[@id='ttv__calling__header__duration' and contains(@value, 'Calling')]");
     private static final By idMainContent = By.id("cpv__calling__participants");
     
-    private static final String idStrCallingHeader = "ttv__calling__header__name";
     private static final Function<String, String> xpathCallingHeaderByName = name -> String
-            .format("//*[@id='%s' and contains(@value, '%s')]", idStrCallingHeader,
+            .format("//*[@id='ttv__calling__header__name' and contains(@value, '%s')]",
                     name);
 
     public CallIncomingPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
@@ -25,11 +25,11 @@ public class CallIncomingPage extends AndroidPage {
     private static final int VISIBILITY_TIMEOUT_SECONDS = 20;
 
     public boolean waitUntilVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCallingContainer, VISIBILITY_TIMEOUT_SECONDS);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathIncomingCallContainer, VISIBILITY_TIMEOUT_SECONDS);
     }
 
     public boolean waitUntilNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idCallingContainer);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathIncomingCallContainer);
     }
     
     public boolean waitUntilNameAppearsOnCallingBarCaption(String name) throws Exception {

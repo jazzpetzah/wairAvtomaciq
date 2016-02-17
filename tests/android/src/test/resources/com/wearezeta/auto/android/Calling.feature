@@ -86,14 +86,11 @@ Feature: Calling
     And I see incoming call from <Contact>
     And I swipe to accept the call
 #TODO activity check
-#We can't implement this step because the call overlay hides the dialogPage
-#    Then I see started call message for contact <Contact>
 
     Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-#TODO DEFECT: Phone does not display the incoming call
   @C711 @id1499 @calling_basic @rc
   Scenario Outline: Receive call while mobile in sleeping mode(screen locked)
     Given There are 2 users where <Name> is me
@@ -106,15 +103,14 @@ Feature: Calling
     Then I see incoming call
     And I see incoming call from <Contact>
     And I swipe to accept the call
-#We can't implement this step because the call overlay hides the dialogPage
-#    Then I see started call message for contact <Contact>
+    Then I see ongoing call
 
     Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
 # DEFECT: can not implement until I can leave the call overlay while calling
-  @C404 @id347 @calling_basic
+  @C404 @id347 @calling_basic @mute
   Scenario Outline: Send text, image and knock while in the call with same user
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -171,7 +167,7 @@ Feature: Calling
       | user1Name | user2Name | autocall    | Speaker        | Mute        |
 
 # DEPRECATED
-  @C422 @id2212 @calling_basic @rc
+  @C422 @id2212 @calling_basic @rc @mute
   Scenario Outline: Correct calling bar in different places
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -340,9 +336,9 @@ Feature: Calling
     And <Contact2> calls <GroupChatName> using <CallBackend>
     And <Contact3> calls <GroupChatName> using <CallBackend>
     And <Contact4> calls <GroupChatName> using <CallBackend>
-    When I answer the call from the overlay bar
-    Then I do not see join group call overlay
-    And I see calling overlay Big bar
+    Then I see incoming call
+    When I swipe to accept the call
+    Then I see ongoing call
     And I see 4 users take part in call
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
@@ -367,7 +363,8 @@ Feature: Calling
     And <Contact3> calls <GroupChatName> using <CallBackend>
     And <Contact4> calls <GroupChatName> using <CallBackend>
     And <Contact5> calls <GroupChatName> using <CallBackend>
-    When I answer the call from the overlay bar
+    When I swipe to accept the call
+#TODO alerts
     Then I see group call is full alert
     And I close group call is full alert
     And I swipe on text input
@@ -384,7 +381,8 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName       | CallBackend |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | MaxGroupCallNegChat | autocall    |
 
-  @C434 @id3253 @calling_basic
+# DEFECT: can not implement until I can leave the call overlay while calling
+  @C434 @id3253 @calling_basic @mute
   Scenario Outline: Verify starting outgoing 1to1 call during group call
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -395,7 +393,7 @@ Feature: Calling
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    And I answer the call from the overlay bar
+    And I see incoming call
     And I do not see join group call overlay
     And I see calling overlay Big bar
     And I navigate back from dialog page
@@ -417,7 +415,8 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
-  @C435 @id3255 @calling_basic
+# DEFECT: can not implement until I can leave the call overlay while calling
+  @C435 @id3255 @calling_basic @mute
   Scenario Outline: Verify cancel outgoing 1to1 call during group call
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -448,7 +447,8 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
-  @C427 @id3180 @calling_advanced
+# DEFECT: can not implement until I can leave the call overlay while calling
+  @C427 @id3180 @calling_advanced @mute
   Scenario Outline: Verify receiving 1to1 call during group call and accepting it
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -479,7 +479,8 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
-  @C806 @id3176 @calling_advanced @rc
+# DEFECT: can not implement until I can leave the call overlay while calling
+  @C806 @id3176 @calling_advanced @rc @mute
   Scenario Outline: (AN-3140) Verify receiving group call during 1to1 call and accepting it
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -510,7 +511,8 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
-  @C428 @id3181 @calling_advanced
+# DEFECT: can not implement until I can leave the call overlay while calling
+  @C428 @id3181 @calling_advanced @mute
   Scenario Outline: Verify receiving 1to1 call during group call and ignoring it
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -553,8 +555,8 @@ Feature: Calling
     When I minimize the application
     And <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    Then I see the call lock screen
-    And I see a call from <GroupChatName> in the call lock screen
+    Then I see incoming call
+    Then I see incoming call from <GroupChatName>
     And I swipe to accept the call
     And I see ongoing call
     And I see 2 users take part in call

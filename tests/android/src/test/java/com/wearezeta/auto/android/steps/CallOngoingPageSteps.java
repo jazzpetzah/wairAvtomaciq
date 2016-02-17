@@ -9,6 +9,7 @@ import cucumber.api.java.en.When;
 import static org.junit.Assert.assertTrue;
 
 public class CallOngoingPageSteps {
+
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
             .getInstance();
 
@@ -19,7 +20,6 @@ public class CallOngoingPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private static final long CALLER_NAME_VISIBILITY_TIMEOUT_MILLISECONDS = 5000;
-
 
     /**
      * Hangs up the current call
@@ -32,7 +32,7 @@ public class CallOngoingPageSteps {
             throws Exception {
         getPage().hangup();
     }
-    
+
     /**
      * Verifies presence of outgoing call
      *
@@ -43,11 +43,11 @@ public class CallOngoingPageSteps {
     public void ISeeOutgoingCall(String not) throws Exception {
         if (not == null) {
             assertTrue("Outgoing/Ongoing call not visible", getPage().waitUntilVisible());
-        }else{
+        } else {
             assertTrue("Outgoing/Ongoing call should not be visible", getPage().waitUntilNotVisible());
         }
     }
-    
+
     /**
      * Verifies presence of ongoing call
      *
@@ -58,24 +58,24 @@ public class CallOngoingPageSteps {
     public void ISeeOngoingCall(String not) throws Exception {
         ISeeOutgoingCall(not);
     }
-    
-//    /**
-//     * Checks to see if join group call overlay is present or not
-//     *
-//     * @param shouldNotSee is set to null if " do not" part does not exist
-//     * @throws Exception
-//     * @step. ^I( do not)? see join group call overlay$
-//     */
-//    @Then("^I( do not)? see join group call overlay$")
-//    public void WhenISeeGroupCallJoinOverlay(String shouldNotSee) throws Exception {
-//        if (shouldNotSee == null) {
-//            Assert.assertTrue("Join group call overlay not visible", getCallingOverlayPage().waitUntilGroupCallJoinVisible());
-//        } else {
-//            Assert.assertTrue("Join group call overlay is visible, it should have been dismissed",
-//                    getCallingOverlayPage().waitUntilGroupCallJoinNotVisible());
-//        }
-//    }
-//
+
+    /**
+     * Check whether expected number of users present in call
+     *
+     * @throws Exception
+     * @step. ^I see (\\d+) users? take part in call$
+     */
+    @When("^I see (\\d+) users? take part in call$")
+    public void ISeeXUsersTakePartInGroupCall(final int expectedUsersCount)
+            throws Exception {
+        int actualUsersCount = getPage().getNumberOfParticipants();
+        if (actualUsersCount != expectedUsersCount) {
+            throw new AssertionError(String.format(
+                "The actual count of users in call %s does not equal to the expected count %s",
+                actualUsersCount, expectedUsersCount));
+        }
+    }
+
 //    /**
 //     * Checks to see if join group call overlay is present or not
 //     *

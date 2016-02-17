@@ -9,8 +9,8 @@ import org.openqa.selenium.By;
 
 public class CallOngoingPage extends AndroidPage {
 
-    private static final String idStrCallingContainer = "tcfl__calling__container";
-    private static final By idCallingContainer = By.id(idStrCallingContainer);
+    private static final By xpathOngoingCallContainer = By.xpath("//*[@id='ttv__calling__header__duration' and contains(@value, ':')]");
+    
     private static final String idStrMute = "ccbv__calling_controls__mute";
     private static final By idMute = By.id(idStrMute);
     private static final String idStrHangup = "ccbv__calling_controls__hangup";
@@ -19,10 +19,10 @@ public class CallOngoingPage extends AndroidPage {
     private static final String idStrRight = "ccbv__calling_controls__right_button";
     private static final By idRight = By.id(idStrRight);
     
-    private static final String idStrCallingHeader = "ttv__calling__header__name";
+    private static final By idParticipants = By.id("chv__calling__participants_grid__chathead");
+    
     private static final Function<String, String> xpathCallingHeaderByName = name -> String
-            .format("//*[@id='%s' and contains(@value, '%s')]", idStrCallingHeader,
-                    name);
+            .format("//*[@id='ttv__calling__header__name' and contains(@value, '%s')]", name);
 
     public CallOngoingPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -31,11 +31,11 @@ public class CallOngoingPage extends AndroidPage {
     private static final int VISIBILITY_TIMEOUT_SECONDS = 20;
 
     public boolean waitUntilVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCallingContainer, VISIBILITY_TIMEOUT_SECONDS);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOngoingCallContainer, VISIBILITY_TIMEOUT_SECONDS);
     }
 
     public boolean waitUntilNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idCallingContainer);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathOngoingCallContainer);
     }
     
     public boolean waitUntilNameAppearsOnCallingBarCaption(String name) throws Exception {
@@ -81,6 +81,10 @@ public class CallOngoingPage extends AndroidPage {
     
     public void toggleVideo() throws Exception {
         specialAction();
+    }
+
+    public int getNumberOfParticipants() throws Exception {
+        return getElements(idParticipants).size();
     }
     
 }
