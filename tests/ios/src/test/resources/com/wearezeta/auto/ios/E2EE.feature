@@ -290,8 +290,8 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                    |
       | user1Name | user2Name | Device2     | Label2       | YOU STARTED USING A NEW DEVICE |
 
-  @C14319 @regression @rc
-  Scenario Outline: When I'm entering a verified conversation, a blue shield will appear at the bottom right
+  @C3286 @regression @rc
+  Scenario Outline: Verify conversation is marked as verified after approving all friend's clients in 1-to-1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given User <Contact1> adds new devices <DeviceName1>,<DeviceName2>
