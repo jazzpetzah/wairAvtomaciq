@@ -3,6 +3,7 @@ package com.wearezeta.auto.web.steps;
 import com.wearezeta.auto.web.pages.VideoCallPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import cucumber.api.java.en.When;
+import cucumber.api.java.en.And;
 import org.junit.Assert;
 
 public class VideoCallPageSteps {
@@ -27,4 +28,16 @@ public class VideoCallPageSteps {
                 webappPagesCollection.getPage(VideoCallPage.class).isEndVideoCallButtonNotVisible());
     }
 
+    /**
+     * Verifies if the current video call page is visible
+     *
+     * @throws Exception
+     * @step. ^I see video call page$
+     */
+    @And("^I see video call page$")
+    public void ISeeVideoCallPage() throws Exception {
+
+        Assert.assertTrue("Video call page is not visible",
+                webappPagesCollection.getPage(VideoCallPage.class).isVisible());
+    }
 }

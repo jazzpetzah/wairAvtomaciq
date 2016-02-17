@@ -35,4 +35,9 @@ public class VideoCallPage extends WebPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(),
                 By.cssSelector(WebAppLocators.VideoCallPage.cssEndVideoCallButton));
     }
+
+    public boolean isVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.cssSelector(WebAppLocators.VideoCallPage.cssEndVideoCallButton));
+    }
 }
