@@ -28,22 +28,37 @@ class Device extends RemoteEntity implements IDevice {
         respawn();
     }
 
-    private void respawn() {
-        if (this.ref() != null) {
-            this.ref().tell(PoisonPill.getInstance(), null);
-            this.hostProcess.reconnect();
-            this.setRef(null);
-        }
+    private boolean spawnOnHostProcess() {
         try {
             final Object resp = askActor(this.hostProcess.ref(), new ActorMessage.SpawnRemoteDevice(null, this.name()));
             if (resp instanceof ActorRef) {
                 ActorRef deviceRef = (ActorRef) resp;
                 this.setRef(deviceRef);
-                return;
+                return true;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
+    }
+
+    private void respawn() {
+        if (this.ref() != null) {
+            this.ref().tell(PoisonPill.getInstance(), null);
+            this.setRef(null);
+        }
+
+        if (!spawnOnHostProcess()) {
+            try {
+                this.hostProcess.restart();
+                if (spawnOnHostProcess()) {
+                    return;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         throw new IllegalStateException(String.format(
                 "There was an error establishing a connection with a new device: "
                         + "%s on process: %s. Please check the log file %s for more details.",
