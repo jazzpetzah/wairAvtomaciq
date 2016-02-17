@@ -264,7 +264,9 @@ Feature: Connect
     And I see Sign In page
     And User <Name2> is me
     And I Sign in using login <Login2> and password <Password2>
-    And I see my avatar on top of Contact list
+    Then I see the history info page
+    When I click confirm on history info page
+    And I am signed in properly
     And I open conversation with <ChatName>
     Then I see random message in conversation
     And I write random message
