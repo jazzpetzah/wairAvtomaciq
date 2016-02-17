@@ -7,7 +7,6 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap on Search input on People picker page
@@ -28,7 +27,6 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap on Search input on People picker page
@@ -561,7 +559,6 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
     And I see user <Contact3> found on People picker page
     And I click close button to dismiss people view
@@ -587,7 +584,6 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
     And I see user <Contact3> found on People picker page
     And I click close button to dismiss people view

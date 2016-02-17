@@ -6,7 +6,6 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
     Then I see user <ContactName> found on People picker page
 
@@ -20,7 +19,6 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
 
@@ -73,7 +71,6 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I search for user name <UnconnectedUser> and tap on it on People picker page
     Then I see connect to <UnconnectedUser> dialog
     And I click Connect button on connect to dialog
@@ -112,7 +109,6 @@ Feature: Search
     Given I see conversations list
     When I dont see conversation <Contact> in contact list
     And I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I unblock user
@@ -131,7 +127,6 @@ Feature: Search
     Given I see conversations list
     When I open search by taping on it
     And I wait until <Contact> exists in backend search results
-    And I tap on Search input on People picker page
     And I input in People picker search field first 5 letters of user name <Contact>
     Then I see user <Contact> found on People picker page
 
@@ -146,7 +141,6 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result

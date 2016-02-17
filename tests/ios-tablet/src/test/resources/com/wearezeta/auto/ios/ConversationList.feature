@@ -829,7 +829,6 @@ Feature: Conversation List
     And I open archived conversations on iPad
     And I dont see conversation <Contact> in contact list
     And I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
 
@@ -851,7 +850,6 @@ Feature: Conversation List
     And I open archived conversations on iPad
     And I dont see conversation <Contact> in contact list
     And I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
 

@@ -6,7 +6,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
     Then I see user <ContactName> found on People picker page
 
@@ -21,7 +20,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
     Then I see user <ContactName> found on People picker page
 
@@ -35,7 +33,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
 
@@ -50,7 +47,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
 
@@ -152,7 +148,6 @@ Feature: Search
     When I dont see conversation <Contact> in contact list
     And I wait until <Contact> exists in backend search results
     And I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I unblock user on iPad
@@ -174,7 +169,6 @@ Feature: Search
     When I dont see conversation <Contact> in contact list
     And I wait until <Contact> exists in backend search results
     And I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I click hide keyboard button
     And I tap on conversation <Contact> in search result
@@ -195,7 +189,6 @@ Feature: Search
     Given I see conversations list
     When I open search by taping on it
     And I wait until <LastName> exists in backend search results
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <LastName>
     Then I see user <NewName> found on People picker page
 
@@ -213,7 +206,6 @@ Feature: Search
     Given I see conversations list
     When I open search by taping on it
     And I wait until <LastName> exists in backend search results
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <LastName>
     Then I see user <NewName> found on People picker page
 
@@ -229,7 +221,6 @@ Feature: Search
     Given I see conversations list
     When I open search by taping on it
     And I wait until <Contact> exists in backend search results
-    And I tap on Search input on People picker page
     And I input in People picker search field first 5 letters of user name <Contact>
     Then I see user <Contact> found on People picker page
 
@@ -246,7 +237,6 @@ Feature: Search
     Given I see conversations list
     When I open search by taping on it
     And I wait until <Contact> exists in backend search results
-    And I tap on Search input on People picker page
     And I input in People picker search field first 5 letters of user name <Contact>
     Then I see user <Contact> found on People picker page
 

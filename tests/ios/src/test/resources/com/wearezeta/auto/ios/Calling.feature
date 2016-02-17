@@ -302,9 +302,7 @@ Feature: Calling
     When I tap on group chat with name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    And I see call status message contains ""
-    And I tap Accept button on Calling overlay
-    And I see <NumberOfAvatars> avatars on the Calling overlay
+    And I see call status message contains "<GroupChatName> RINGING"
     And I tap Ignore button on Calling overlay
     Then I do not see Calling overlay
     And I wait for 20 seconds
@@ -317,7 +315,7 @@ Feature: Calling
       | user1Name | user2Name | user3Name | RejoinGROUPCALL | autocall    | 2               |
 
   @C2054 @rc @calling_advanced @id2690
-  Scenario Outline: (ZIOS-5587)Verify receiving 1-to-1 call during group call (and accepting it)
+  Scenario Outline: Verify receiving 1-to-1 call during group call (and accepting it)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>

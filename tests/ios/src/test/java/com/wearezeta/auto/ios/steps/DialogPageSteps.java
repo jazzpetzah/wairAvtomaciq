@@ -671,7 +671,7 @@ public class DialogPageSteps {
     @When("^I see Sketch button is visible$")
     public void ISeeSketchButtonShown() throws Exception {
         Assert.assertTrue("Sketch button is not visible", getDialogPage()
-                .isOpenScetchButtonVisible());
+                .isOpenSketchButtonVisible());
     }
 
     /**
@@ -714,7 +714,7 @@ public class DialogPageSteps {
         ISeeDetailsButtonShown();
         Assert.assertFalse("Call button is visible", getDialogPage().isCallButtonVisible());
         Assert.assertFalse("Camera button is visible", getDialogPage().isCameraButtonVisible());
-        Assert.assertFalse("Sketch button is visible", getDialogPage().isOpenScetchButtonVisible());
+        Assert.assertFalse("Sketch button is visible", getDialogPage().isOpenSketchButtonVisible());
         Assert.assertFalse("Ping button is visible", getDialogPage().isPingButtonVisible());
     }
 

@@ -58,8 +58,6 @@ public class DialogPage extends IOSPage {
 
     private static final By nameTitle = By.name("playingMediaTitle");
 
-    private static final By namePingButton = By.name("ComposeControllerPingButton");
-
     private static final By nameVideoCallButton = By.name("ComposeControllerVideoButton");
 
     private static final Function<String, String> xpathStrDialogTitleBar = title -> String.format(
@@ -138,11 +136,11 @@ public class DialogPage extends IOSPage {
     }
 
     public boolean isPingButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), namePingButton);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameCallButton);
     }
 
     public void pressPingButton() throws Exception {
-        getElement(namePingButton).click();
+        getDriver().tap(1, getElement(nameCallButton), DriverUtils.LONG_TAP_DURATION);
     }
 
     public void pressVideoCallButton() throws Exception {
@@ -493,7 +491,7 @@ public class DialogPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAddPictureButton);
     }
 
-    public boolean isOpenScetchButtonVisible() throws Exception {
+    public boolean isOpenSketchButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameCursorSketchButton);
     }
 

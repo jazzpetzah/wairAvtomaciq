@@ -7,7 +7,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
@@ -27,7 +26,6 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
