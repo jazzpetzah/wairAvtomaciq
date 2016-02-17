@@ -353,7 +353,7 @@ Feature: People View
     Given User Myself removes his avatar picture
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given Nyself silenced group conversation with <GroupChatName>
+    Given Myself silenced group conversation with <GroupChatName>
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I remember the state of <GroupChatName> conversation item
