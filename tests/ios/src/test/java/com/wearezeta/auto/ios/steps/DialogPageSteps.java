@@ -676,6 +676,7 @@ public class DialogPageSteps {
      */
     @When("^I see conversation tools buttons$")
     public void ISeeButtonsDetailsCallCameraSketchPing() throws Exception {
+        ISeeDetailsButtonShown();
         Assert.assertTrue("Some of expected input tools buttons are not visible",
                 getDialogPage().areInputToolsVisible());
     }
@@ -692,7 +693,7 @@ public class DialogPageSteps {
     public void ISeeOnlyDetailsButtonRestNotShown() throws Exception {
         ISeeDetailsButtonShown();
         Assert.assertTrue("Some of input tools buttons are still visible",
-                getDialogPage().areInputToolsInvisibleExceptDetails());
+                getDialogPage().areInputToolsInvisible());
     }
 
     /**

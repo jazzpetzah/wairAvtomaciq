@@ -33,10 +33,6 @@ public class DialogPage extends IOSPage {
     private static final By xpathLastChatMessage = By.xpath(xpathStrMainWindow
             + "/UIATableView[1]/UIATableCell[last()]/*[last()]");
 
-    protected static final By nameAddPictureButton = By.name("ComposeControllerPictureButton");
-
-    private static final By nameCallButton = By.name("ComposeControllerVoiceButton");
-
     private static final By xpathMessageEntries = By.xpath(xpathStrMainWindow + "/UIATableView/UIATableCell");
 
     private static final String xpathStrImageCells = "//UIATableCell[@name='ImageCell']";
@@ -58,14 +54,10 @@ public class DialogPage extends IOSPage {
 
     private static final By nameTitle = By.name("playingMediaTitle");
 
-    private static final By nameVideoCallButton = By.name("ComposeControllerVideoButton");
-
     private static final Function<String, String> xpathStrDialogTitleBar = title -> String.format(
             "//UIAStaticText[@name='%s']", title);
 
     private static final By nameGifButton = By.name("rightMenuButton");
-
-    private static final By nameCursorSketchButton = By.name("ComposeControllerSketchButton");
 
     private static final By xpathGiphyImage = By
             .xpath("//UIATextView[@name='via giphy.com']/following::UIATableCell[@name='ImageCell']");
@@ -121,20 +113,12 @@ public class DialogPage extends IOSPage {
 
     public static final String MEDIA_STATE_STOPPED = "ended";
 
-    private static final By xpathAllInputTools =
-            By.xpath("//*[ " +
-                    ".//*[@name='ComposeControllerConversationDetailButton' and @visible='true'] and " +
-                    ".//*[@name='ComposeControllerVoiceButton' and @visible='true'] and " +
-                    ".//*[@name='ComposeControllerPictureButton' and @visible='true'] and " +
-                    ".//*[@name='ComposeControllerSketchButton' and @visible='true'] " +
-                    "]");
+    private static final By nameCursorSketchButton = By.name("ComposeControllerSketchButton");
+    protected static final By nameAddPictureButton = By.name("ComposeControllerPictureButton");
+    private static final By nameVideoCallButton = By.name("ComposeControllerVideoButton");
+    private static final By nameCallButton = By.name("ComposeControllerVoiceButton");
 
-    private static final By xpathAnyInputToolExceptDetails =
-            By.xpath("//*[ " +
-                    ".//*[@name='ComposeControllerVoiceButton' and @visible='true'] or " +
-                    ".//*[@name='ComposeControllerPictureButton' and @visible='true'] or " +
-                    ".//*[@name='ComposeControllerSketchButton' and @visible='true'] " +
-                    "]");
+    private final By[] inputTools = new By[]{nameCallButton, nameCursorSketchButton, nameAddPictureButton};
 
     public DialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -579,10 +563,20 @@ public class DialogPage extends IOSPage {
     }
 
     public boolean areInputToolsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathAllInputTools);
+        for (By inputTool : inputTools) {
+            if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), inputTool, 2)) {
+                return false;
+            }
+        }
+        return true;
     }
 
-    public boolean areInputToolsInvisibleExceptDetails() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathAnyInputToolExceptDetails);
+    public boolean areInputToolsInvisible() throws Exception {
+        for (By inputTool : inputTools) {
+            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), inputTool, 2)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
