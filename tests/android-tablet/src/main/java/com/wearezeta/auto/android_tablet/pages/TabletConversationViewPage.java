@@ -197,7 +197,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
     public boolean waitUntilUnsentIndicatorIsVisible(String msg)
             throws Exception {
-        return getDialogPage().waitForUnsentIndicator(msg);
+        return getDialogPage().waitForUnsentIndicatorVisible(msg);
     }
 
     public boolean waitUntilUnsentIndicatorIsVisibleForAPicture()
