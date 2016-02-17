@@ -5,10 +5,7 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.misc.Interfaces.FunctionFor2Parameters;
 import io.appium.java_client.ios.IOSElement;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 
 import java.util.concurrent.Future;
 import java.util.function.Function;
@@ -36,19 +33,18 @@ public class SettingsPage extends IOSPage {
 
     private static final By nameDeleteButton = By.name("Delete");
 
-    private static final By xpathDeleteDevicePasswordField = By.xpath("//UIASecureTextField[contains(@value,'Password')]");
+    private static final By xpathDeleteDevicePasswordField =
+            By.xpath("//UIASecureTextField[contains(@value,'Password')]");
 
     private static final FunctionFor2Parameters<String, String, String> xpathStrDeviceVerificationLabel =
-            (deviceName, verificationLabel) ->
-                    String.format("//UIATableCell[@name='%s']/UIAStaticText[@name='%s']", deviceName, verificationLabel);
-
-    private static final By currentLabel = By.name("Current");
+            (deviceName, verificationLabel) -> String.format(
+                    "//UIATableCell[@name='%s']/UIAStaticText[@name='%s']", deviceName, verificationLabel);
 
     private static final String xpathStrCurrentDevice = xpathStrMainWindow + "/UIATableView[1]/UIATableCell[1]";
     private static final By xpathCurrentDevices = By.xpath(xpathStrCurrentDevice);
     private static final String xpathStrDevicesList = xpathStrMainWindow + "/UIATableView[1]/UIATableCell";
-    private static final Function<Integer, String> xpathStrDeviceByIndex = idx -> String.format("%s[%s]", xpathStrDevicesList,
-            idx);
+    private static final Function<Integer, String> xpathStrDeviceByIndex = idx ->
+            String.format("%s[%s]", xpathStrDevicesList, idx);
 
     public SettingsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
