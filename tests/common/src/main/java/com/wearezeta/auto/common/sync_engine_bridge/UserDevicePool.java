@@ -40,7 +40,6 @@ public class UserDevicePool {
 
     private Map<Future<IRemoteProcess>, Optional<Future<IDevice>>> cachedDevices = new ConcurrentHashMap<>();
     private Semaphore cachedDevicesGuard = new Semaphore(1);
-    private Semaphore loginGuard = new Semaphore(1);
 
     private void prefillCache() throws Exception {
         int threadsCount = 2;
@@ -117,12 +116,7 @@ public class UserDevicePool {
         }
 
         final IDevice result = targetDevice.get();
-        loginGuard.acquire();
-        try {
-            result.logInWithUser(owner);
-        } finally {
-            loginGuard.release();
-        }
+        result.logInWithUser(owner);
         return result;
     }
 
