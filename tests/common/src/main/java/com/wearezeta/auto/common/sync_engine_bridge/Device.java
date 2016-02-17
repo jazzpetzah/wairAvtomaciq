@@ -57,12 +57,11 @@ class Device extends RemoteEntity implements IDevice {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            throw new IllegalStateException(String.format(
+                    "There was an error establishing a connection with a new device: "
+                            + "%s on process: %s. Please check the log file %s for more details.",
+                    this.name(), this.hostProcess.name(), this.hostProcess.getLogPath()));
         }
-
-        throw new IllegalStateException(String.format(
-                "There was an error establishing a connection with a new device: "
-                        + "%s on process: %s. Please check the log file %s for more details.",
-                this.name(), this.hostProcess.name(), this.hostProcess.getLogPath()));
     }
 
     @Override

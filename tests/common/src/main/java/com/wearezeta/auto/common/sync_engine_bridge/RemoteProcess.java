@@ -31,7 +31,7 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
     private final ActorRef coordinatorActorRef;
     private final String backendType;
     private final boolean otrOnly;
-    private volatile ExecutorService pinger = null;
+    private volatile Optional<ExecutorService> pinger = Optional.empty();
     private Optional<Process> currentProcess = Optional.empty();
 
     {
@@ -72,9 +72,9 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
 
     @Override
     public void restart() throws Exception {
-        if (this.pinger != null) {
-            this.pinger.shutdownNow();
-            this.pinger = null;
+        if (this.pinger.isPresent()) {
+            this.pinger.get().shutdownNow();
+            this.pinger = Optional.empty();
         }
 
         if (this.ref() != null) {
@@ -88,11 +88,11 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
             final Object resp = askActor(this.coordinatorActorRef, new WaitUntilRegistered(this.name()));
             if (resp instanceof ActorRef) {
                 this.setRef((ActorRef) resp);
-                this.pinger = Executors.newSingleThreadExecutor();
+                this.pinger = Optional.of(Executors.newSingleThreadExecutor());
                 LOG.debug(String.format(
                         "Starting ping thread with %s-seconds interval for the remote process '%s'...",
                         PING_INTERVAL_SECONDS, name()));
-                this.pinger.submit(() -> {
+                this.pinger.get().submit(() -> {
                     while (!Thread.currentThread().isInterrupted()) {
                         try {
                             Thread.sleep(PING_INTERVAL_SECONDS * 1000);
@@ -145,13 +145,16 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
     }
 
     public void shutdown() {
-        // The process will kill itself if no messages within 30 seconds
-        if (this.pinger != null) {
+        if (this.pinger.isPresent()) {
             try {
-                this.pinger.shutdownNow();
+                this.pinger.get().shutdownNow();
             } catch (Throwable e) {
                 e.printStackTrace();
             }
+        }
+
+        if (currentProcess.isPresent()) {
+            currentProcess.get().destroy();
         }
     }
 }
