@@ -189,7 +189,7 @@ public class DialogPageSteps {
      * @param expectedMsg the expected message. It can contain user name aliases
      * @param shouldNot   equals to null if the message is visible in conversation view
      * @throws Exception
-     * @step. ^I see the conversation view contains message (.*)
+     * @step. ^I (do not )?see the conversation view contains message (.*)
      */
     @Then("^I (do not )?see the conversation view contains message (.*)")
     public void ISeeConversationMessage(String shouldNot, String expectedMsg) throws Exception {
