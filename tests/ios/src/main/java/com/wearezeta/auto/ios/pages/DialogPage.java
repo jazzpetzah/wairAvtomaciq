@@ -121,6 +121,21 @@ public class DialogPage extends IOSPage {
 
     public static final String MEDIA_STATE_STOPPED = "ended";
 
+    private static final By xpathAllInputTools =
+            By.xpath("//*[ " +
+                    ".//*[@name='ComposeControllerConversationDetailButton' and @visible='true'] and " +
+                    ".//*[@name='ComposeControllerVoiceButton' and @visible='true'] and " +
+                    ".//*[@name='ComposeControllerPictureButton' and @visible='true'] and " +
+                    ".//*[@name='ComposeControllerSketchButton' and @visible='true'] " +
+                    "]");
+
+    private static final By xpathAnyInputToolExceptDetails =
+            By.xpath("//*[ " +
+                    ".//*[@name='ComposeControllerVoiceButton' and @visible='true'] or " +
+                    ".//*[@name='ComposeControllerPictureButton' and @visible='true'] or " +
+                    ".//*[@name='ComposeControllerSketchButton' and @visible='true'] " +
+                    "]");
+
     public DialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -133,10 +148,6 @@ public class DialogPage extends IOSPage {
     public boolean waitUntilMessageIsNotVisible(String msg) throws Exception {
         final By locator = By.xpath(xpathStrConvoMessageByText.apply(msg));
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
-    }
-
-    public boolean isPingButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameCallButton);
     }
 
     public void pressPingButton() throws Exception {
@@ -261,7 +272,7 @@ public class DialogPage extends IOSPage {
     }
 
     public boolean scrollDownTillMediaBarAppears() throws Exception {
-        final int maxScrolls = 3;
+        final int maxScrolls = 2;
         int nTry = 0;
         while (nTry < maxScrolls) {
             if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameTitle, 2)) {
@@ -565,5 +576,13 @@ public class DialogPage extends IOSPage {
             Thread.sleep(1000);
             this.clickKeyboardCommitButton();
         }
+    }
+
+    public boolean areInputToolsVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathAllInputTools);
+    }
+
+    public boolean areInputToolsInvisibleExceptDetails() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathAnyInputToolExceptDetails);
     }
 }

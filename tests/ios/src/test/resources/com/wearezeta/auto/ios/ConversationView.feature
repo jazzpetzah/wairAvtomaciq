@@ -418,13 +418,13 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I swipe right text input to reveal option buttons
-    Then I see Buttons: Details, Call, Camera, Sketch, Ping
+    Then I see conversation tools buttons
     And I see plus button is not shown
     And I swipe left on options buttons
     And I see Close input options button is not visible
     And I see plus button next to text input
     And I click plus button next to text input
-    Then I see Buttons: Details, Call, Camera, Sketch, Ping
+    Then I see conversation tools buttons
     And I click Close input options button
     And I see Close input options button is not visible
     And I see plus button next to text input
@@ -445,13 +445,13 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I see plus button next to text input
     And I click plus button next to text input
-    Then I see only Details button. Call, Camera, Sketch, Ping are not shown
+    Then I see no other conversation tools buttons except of Details
     And I click Close input options button
     And I navigate back to conversations list
     When I tap on group chat with name <GroupChatName>
     And I see plus button next to text input
     And I click plus button next to text input
-    Then I see only Details button. Call, Camera, Sketch, Ping are not shown
+    Then I see no other conversation tools buttons except of Details
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
