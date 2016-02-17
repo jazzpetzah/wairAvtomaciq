@@ -107,7 +107,7 @@ Feature: Settings
       | Name      | Color  |
       | user1Name | Violet |
 
-  @C3247 @staging @torun
+  @C3247 @staging
   Scenario Outline: Verify deleting the account registered by email
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
