@@ -125,52 +125,52 @@ Feature: VideoCalling
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
     And I wait for 60 seconds
-    And I see video call page
+    And I see end video call button
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see video call page
+    And I see end video call button
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see video call page
+    And I see end video call button
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see video call page
+    And I see end video call button
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see video call page
+    And I see end video call button
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see video call page
+    And I see end video call button
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see video call page
+    And I see end video call button
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see video call page
+    And I see end video call button
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see video call page
+    And I see end video call button
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see video call page
+    And I see end video call button
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see video call page
+    And I see end video call button
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see video call page
+    And I see end video call button
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see video call page
+    And II see end video call button
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see video call page
+    And I see end video call button
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see video call page
+    And I see end video call button
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see video call page
+    And I see end video call button
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
