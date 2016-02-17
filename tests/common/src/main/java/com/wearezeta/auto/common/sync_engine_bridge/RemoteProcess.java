@@ -24,6 +24,7 @@ import java.util.concurrent.Executors;
 class RemoteProcess extends RemoteEntity implements IRemoteProcess {
     private static final Logger LOG = ZetaLogger.getLog(RemoteProcess.class.getSimpleName());
 
+    private final ActorRef coordinatorActorRef;
     private final String backendType;
     private final boolean otrOnly;
     private volatile ExecutorService pinger = null;
@@ -37,9 +38,10 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
 
     public RemoteProcess(String processName, ActorRef coordinatorActorRef,
                          FiniteDuration actorTimeout, String backendType, boolean otrOnly) {
-        super(coordinatorActorRef, processName, actorTimeout);
+        super(processName, actorTimeout);
         this.backendType = backendType;
         this.otrOnly = otrOnly;
+        this.coordinatorActorRef = coordinatorActorRef;
         try {
             startProcess();
         } catch (Exception e) {
@@ -50,15 +52,14 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
     }
 
     private void startProcess() throws Exception {
-        final String serialized = Serialization.serializedActorPath(ref());
+        final String serialized = Serialization.serializedActorPath(this.coordinatorActorRef);
         final String[] cmd = {"java", "-jar", getActorsJarLocation(),
                 this.name(), serialized, backendType, String.valueOf(otrOnly)};
         LOG.info(String.format("Executing actors using the command line: %s", Arrays.toString(cmd)));
         final ProcessBuilder pb = new ProcessBuilder(cmd);
         // ! Having a log file is mandatory
         pb.redirectErrorStream(true);
-        pb.redirectOutput(ProcessBuilder.Redirect.appendTo(new File(
-                getLogPath())));
+        pb.redirectOutput(ProcessBuilder.Redirect.appendTo(new File(getLogPath())));
         LOG.info(String.format("Actor logs will be redirected to %s", getLogPath()));
         pb.start();
     }
@@ -69,8 +70,12 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
             this.pinger.shutdownNow();
             this.pinger = null;
         }
+        if (this.ref() != null) {
+            this.ref().tell(PoisonPill.getInstance(), null);
+            this.setRef(null);
+        }
         try {
-            final Object resp = askActor(this.ref(), new WaitUntilRegistered(this.name()));
+            final Object resp = askActor(this.coordinatorActorRef, new WaitUntilRegistered(this.name()));
             if (resp instanceof ActorRef) {
                 this.setRef((ActorRef) resp);
                 this.pinger = Executors.newSingleThreadExecutor();

@@ -19,9 +19,8 @@ abstract class RemoteEntity implements IRemoteEntity {
 
 	private ActorRef ref = null;
 
-	public RemoteEntity(ActorRef ref, String name, FiniteDuration actorTimeout) {
+	public RemoteEntity(String name, FiniteDuration actorTimeout) {
 		this.actorTimeout = actorTimeout;
-        this.ref = ref;
         this.name = name;
 	}
 
