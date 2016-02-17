@@ -9,7 +9,7 @@ import org.openqa.selenium.By;
 
 public class CallOngoingPage extends AndroidPage {
 
-    private static final By xpathOngoingCallContainer = By.xpath("//*[@id='ttv__calling__header__duration' and contains(@value, ':')]");
+    private static final By xpathOngoingCallContainer = By.xpath("//*[@id='ttv__calling__header__duration' and //*[@id='ccbv__calling_controls__hangup']]");
     
     private static final String idStrMute = "ccbv__calling_controls__mute";
     private static final By idMute = By.id(idStrMute);
