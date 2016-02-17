@@ -298,6 +298,7 @@ Feature: Calling
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
 
+#TODO DEFECT need to investigate
   @C802 @id3168 @calling_basic @rc
   Scenario Outline: I can join group call after I leave it
     Given There are 3 users where <Name> is me
@@ -309,18 +310,18 @@ Feature: Calling
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    When I answer the call from the overlay bar
-    Then I do not see join group call overlay
-    And I see calling overlay Big bar
-    When I press Cancel call button
-    Then I see "JOIN CALL" button
+    Then I see incoming call
+    When I swipe to accept the call
+    Then I see ongoing call
+    When I hang up
+    Then I do not see incoming call
     And I wait for 20 seconds
-    When I press join group call button
-    Then I do not see "JOIN CALL" button
-    And I see calling overlay Big bar
+    When I swipe on text input
+    And I press Call button
+    Then I see ongoing call
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
-    Then I do not see join group call overlay
+    Then I do not see ongoing call
 
     Examples:
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
