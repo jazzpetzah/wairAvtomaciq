@@ -46,7 +46,6 @@ Feature: Bring Your Friends
     Given I switch to sign in page
     Given I see Sign In page
     Given I Sign in using login <Email> and password <Password>
-    Given I press Sign In button
     Given I am signed in properly
     When I click button to bring friends from Gmail
     And I see Google login popup
