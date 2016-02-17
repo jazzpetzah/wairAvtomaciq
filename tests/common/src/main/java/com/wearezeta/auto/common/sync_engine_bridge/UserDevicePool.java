@@ -52,7 +52,7 @@ public class UserDevicePool {
             pool.submit(() -> {
                 try {
                     final IRemoteProcess p = new RemoteProcess(CommonUtils.generateGUID().substring(0, 8),
-                            this.coordinatorActorRef, ACTOR_DURATION, this.backendType, this.otrOnly);
+                            this.coordinatorActorRef, this.backendType, this.otrOnly);
                     cachedDevices.put(p, Optional.empty());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -99,7 +99,7 @@ public class UserDevicePool {
         if (targetProcess == null) {
             if (cachedDevices.size() < MAX_POOL_SIZE) {
                 targetProcess = new RemoteProcess(CommonUtils.generateGUID().substring(0, 8),
-                        this.coordinatorActorRef, ACTOR_DURATION, this.backendType, this.otrOnly);
+                        this.coordinatorActorRef, this.backendType, this.otrOnly);
             } else {
                 throw new IllegalStateException(String.format(
                         "Cannot create more than %s devices. Make sure you've reset SE Bridge after the previous test",

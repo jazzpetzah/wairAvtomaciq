@@ -18,16 +18,21 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 class RemoteProcess extends RemoteEntity implements IRemoteProcess {
     private static final Logger LOG = ZetaLogger.getLog(RemoteProcess.class.getSimpleName());
+
+    private static final FiniteDuration ACTOR_DURATION = new FiniteDuration(90, TimeUnit.SECONDS);
 
     private final ActorRef coordinatorActorRef;
     private final String backendType;
     private final boolean otrOnly;
     private volatile ExecutorService pinger = null;
+    private Optional<Process> currentProcess = Optional.empty();
 
     {
         Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
@@ -36,22 +41,23 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
     // Default actor lib TTL equals to 30 seconds
     private static final int PING_INTERVAL_SECONDS = 20;
 
-    public RemoteProcess(String processName, ActorRef coordinatorActorRef,
-                         FiniteDuration actorTimeout, String backendType, boolean otrOnly) {
-        super(processName, actorTimeout);
+    public RemoteProcess(String processName, ActorRef coordinatorActorRef, String backendType, boolean otrOnly) {
+        super(processName, ACTOR_DURATION);
         this.backendType = backendType;
         this.otrOnly = otrOnly;
         this.coordinatorActorRef = coordinatorActorRef;
         try {
-            startProcess();
+            restart();
         } catch (Exception e) {
             e.printStackTrace();
             Throwables.propagate(e);
         }
-        reconnect();
     }
 
-    private void startProcess() throws Exception {
+    private void restartProcess() throws Exception {
+        if (currentProcess.isPresent()) {
+            currentProcess.get().destroyForcibly();
+        }
         final String serialized = Serialization.serializedActorPath(this.coordinatorActorRef);
         final String[] cmd = {"java", "-jar", getActorsJarLocation(),
                 this.name(), serialized, backendType, String.valueOf(otrOnly)};
@@ -61,19 +67,23 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
         pb.redirectErrorStream(true);
         pb.redirectOutput(ProcessBuilder.Redirect.appendTo(new File(getLogPath())));
         LOG.info(String.format("Actor logs will be redirected to %s", getLogPath()));
-        pb.start();
+        this.currentProcess = Optional.of(pb.start());
     }
 
     @Override
-    public void reconnect() {
+    public void restart() throws Exception {
         if (this.pinger != null) {
             this.pinger.shutdownNow();
             this.pinger = null;
         }
+
         if (this.ref() != null) {
             this.ref().tell(PoisonPill.getInstance(), null);
             this.setRef(null);
         }
+
+        restartProcess();
+
         try {
             final Object resp = askActor(this.coordinatorActorRef, new WaitUntilRegistered(this.name()));
             if (resp instanceof ActorRef) {
