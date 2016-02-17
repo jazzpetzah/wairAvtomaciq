@@ -613,11 +613,12 @@ Feature: Calling
     Given I see Contact list with contacts
     And I tap on contact name <Contact1>
     And <Contact1> calls me using <CallBackend>
-    And I see incoming call
+    And I see incoming call from <Contact1>
     And I swipe to accept the call
-    And I see started call message for contact <Contact1>
+    And I see started call message from <Contact1>
     When <Contact2> calls me using <CallBackend>
-    Then <Contact2> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    Then And I see incoming call
+    And I see incoming call from <Contact2>
     And <Contact1>,<Contact2> stop all calls to me
 
     Examples:
