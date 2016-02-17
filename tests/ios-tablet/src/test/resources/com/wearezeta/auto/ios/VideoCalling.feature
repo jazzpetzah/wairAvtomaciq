@@ -18,7 +18,6 @@ Feature: Video Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-
   @C28848 @staging
   Scenario Outline: Verify initiating Video call [LANDSCAPE]
     Given There are 2 user where <Name> is me
