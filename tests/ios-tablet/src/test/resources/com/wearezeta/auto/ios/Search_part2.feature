@@ -13,8 +13,7 @@ Feature: Search
     And I tap on conversation <Contact> in search result
     And I see call action button on People picker page
     And I click call action button on People picker page
-    Then I see mute call, end call buttons
-    And I see calling message
+    Then I see Calling overlay
 
     Examples: 
       | Name      | Contact   |
@@ -34,8 +33,7 @@ Feature: Search
     And I tap on conversation <Contact> in search result
     And I see call action button on People picker page
     And I click call action button on People picker page
-    Then I see mute call, end call buttons
-    And I see calling message
+    Then I see Calling overlay
 
     Examples: 
       | Name      | Contact   |

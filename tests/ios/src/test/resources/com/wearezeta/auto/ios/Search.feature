@@ -152,8 +152,7 @@ Feature: Search
     And I tap on conversation <Contact> in search result
     And I see call action button on People picker page
     And I click call action button on People picker page
-    Then I see mute call, end call and speakers buttons
-    And I see calling message
+    And I see Calling overlay
 
     Examples:
       | Name      | Contact   |

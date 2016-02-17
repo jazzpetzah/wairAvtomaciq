@@ -1,10 +1,9 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.ios.pages.CallingOverlayPage;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.ios.pages.IncomingCallPage;
-import com.wearezeta.auto.ios.pages.StartedCallPage;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -15,174 +14,55 @@ public class CallPageSteps {
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private StartedCallPage getStartedCallPage() throws Exception {
-        return pagesCollection.getPage(StartedCallPage.class);
-    }
-
-    private IncomingCallPage getIncomingCallPage() throws Exception {
-        return pagesCollection.getPage(IncomingCallPage.class);
+    private CallingOverlayPage getCallingOverlayPage() throws Exception {
+        return pagesCollection.getPage(CallingOverlayPage.class);
     }
 
     /**
-     * Verify that calling UI is visible
+     * Verify whether calling overlay is visible or not
      *
+     * @param shouldNotBeVisible equals to null if the overlay should be visible
      * @throws Exception
-     * @step. ^I see calling message$
+     * @step. ^I (do not )?see Calling overlay$
      */
-    @When("^I see calling message$")
-    public void ISeeCallingMessage() throws Exception {
-        Assert.assertTrue("Calling message is not visible", getStartedCallPage().isCallingMessageVisible());
+    @Then("^I (do not )?see Calling overlay$")
+    public void ISeeCallingOverlay(String shouldNotBeVisible) throws Exception {
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue("Calling overlay is not visible", getCallingOverlayPage().isCallStatusLabelVisible());
+        } else {
+            Assert.assertTrue("Calling overlay is visible, but should be hidden",
+                    getCallingOverlayPage().isCallStatusLabelInvisible());
+        }
     }
 
     /**
-     * Verify that calling UI buttons are visible
+     * Tap the corresponding button on calling overlay
      *
-     * @throws Throwable
-     * @step. ^I see mute call, end call and speakers buttons$
-     */
-    @When("^I see mute call, end call and speakers buttons$")
-    public void ISeeCallingPageButtons() throws Throwable {
-        Assert.assertTrue("End call button is not visible", getStartedCallPage().isEndCallVisible());
-        Assert.assertTrue("Mute call button is not visible", getStartedCallPage().isMuteCallVisible());
-        Assert.assertTrue("Speakers button is not visible", getStartedCallPage().isSpeakersVisible());
-    }
-
-    /**
-     * Verify that calling UI buttons are visible (using it for iPad
-     * verification step as far speakers button is not shown there)
+     * @step. ^I tap (Ignore|Mute|Leave|Accept|Accept Video|Call Video|Call Speaker|Switch Camera) button on (?:the |\s*)Calling overlay$
      *
-     * @throws Throwable
-     * @step. ^I see mute call, end call buttons$
-     */
-    @When("^I see mute call, end call buttons$")
-    public void ISeeCallingPageButtonsOnIpad() throws Throwable {
-        Assert.assertTrue("End call button is not visible",
-                getStartedCallPage().isEndCallVisible());
-        Assert.assertTrue("Mute call button is not visible", getStartedCallPage().isMuteCallVisible());
-    }
-
-    /**
-     * Click on end call button
-     *
+     * @param name one of possible button names
      * @throws Exception
-     * @step. ^I end started call$
      */
-    @When("^I end started call$")
-    public void IEndStartedCall() throws Exception {
-        getStartedCallPage().clickEndCallButton();
+    @When("^I tap (Ignore|Mute|Leave|Accept|Accept Video|Call Video|Call Speaker|Switch Camera) button on (?:the |\\s*)Calling overlay$")
+    public void ITapButton(String name) throws Exception {
+        getCallingOverlayPage().tapButtonByName(name);
     }
 
     /**
-     * Verify that calling page is not visible
+     * Verify that call status message contains the particular text
      *
+     * @param text the message to verify. This can contain user names
      * @throws Exception
-     * @step. ^I dont see calling page$
+     * @step. ^I see call status message contains "(.*)"$
      */
-    @When("^I dont see calling page$")
-    public void IDontSeeCallPage() throws Exception {
-        Assert.assertTrue("Calling bar is visible", getStartedCallPage()
-                .waitCallingMessageDisappear());
+    @When("^I see call status message contains \"(.*)\"$")
+    public void ISeeCallStatusMessage(String text) throws Exception {
+        text = usrMgr.replaceAliasesOccurences(text, ClientUsersManager.FindBy.NAME_ALIAS);
+        Assert.assertTrue(String.format("Call status message containing '%s' is not visible", text),
+                getCallingOverlayPage().isCallingMessageContainingVisible(text));
     }
 
-    /**
-     * Verify that incoming call page is not visible
-     *
-     * @throws Exception
-     * @step. ^I dont see incoming call page$
-     */
-    @When("^I dont see incoming call page$")
-    public void IDontSeeIncomingCallPage() throws Exception {
-        Assert.assertTrue("Calling bar is still visible",
-                getIncomingCallPage().isCallingMessageInvisible());
-    }
-
-    /**
-     * Verify that incoming calling UI is visible
-     *
-     * @param contact User name who calls
-     * @throws Exception
-     * @step. ^I see incoming calling message for contact (.*)$
-     */
-    @When("^I see incoming calling message for contact (.*)$")
-    public void ISeeIncomingCallingMessage(String contact) throws Throwable {
-        final String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        Assert.assertTrue(String.format("Calling message for '%s' is not visible", name),
-                getIncomingCallPage().isCallingMessageVisible(name));
-    }
-
-    /**
-     * Click on ignore call button
-     *
-     * @throws Exception
-     * @step. ^I ignore incoming call$
-     */
-    @When("^I ignore incoming call$")
-    public void IignoreIncomingCall() throws Exception {
-        getIncomingCallPage().ignoreIncomingCallClick();
-    }
-
-    /**
-     * Accept incoming call by clicking accept button
-     *
-     * @throws Exception
-     * @step. ^I accept incoming call$
-     */
-    @When("^I accept incoming call$")
-    public void IAcceptIncomingCall() throws Exception {
-        getIncomingCallPage().acceptIncomingCallClick();
-    }
-
-    /**
-     * Verify that started call message is visible
-     *
-     * @param contact contact name with whom you have a call
-     * @throws Exception
-     * @step. ^I see started call message for contact (.*)$
-     */
-    @When("^I see started call message for contact (.*)$")
-    public void ISeeStartedCallMesage(String contact) throws Exception {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        Assert.assertTrue(getStartedCallPage().isStartedCallMessageVisible(
-                contact.toUpperCase()));
-    }
-
-    /**
-     * Verify is mute call button icon selected or not
-     *
-     * @throws Exception
-     * @step. ^I see mute call button on calling bar is selected$
-     */
-    @When("^I see mute call button on calling bar is selected$")
-    public void ISeeMuteCallButtonOnCallingBarIsSelected() throws Exception {
-        Assert.assertTrue("Mute call button is not selected",
-                getStartedCallPage().isMuteCallButtonSelected());
-    }
-
-    /**
-     * Verify that incoming group calling UI is visible
-     *
-     * @throws Exception
-     * @step. ^I see incoming group calling message$
-     */
-    @When("^I see incoming group calling message$")
-    public void ISeeIncomingGroupCallingMessage() throws Exception {
-        Assert.assertTrue("The incoming group call message is not visible",
-                getIncomingCallPage().isGroupCallingMessageVisible());
-    }
-
-    /**
-     * Verifies the visibility of the Join Call bar
-     *
-     * @throws Exception
-     * @step. ^I see Join Call bar$
-     */
-    @Then("^I see Join Call bar$")
-    public void ISeeJoinCallBar() throws Exception {
-        boolean joinCallBarIsVisible = getIncomingCallPage().isJoinCallBarVisible();
-        Assert.assertTrue("Join Call bar is not visible", joinCallBarIsVisible);
-    }
-
-    /**
+     /**
      * Verifies that a second call is coming in alert is shown
      *
      * @throws Exception
@@ -190,7 +70,7 @@ public class CallPageSteps {
      */
     @When("^I see Accept second call alert$")
     public void ISeeAcceptSecondCallAlert() throws Exception {
-        Assert.assertTrue("Second call Alert is not shown", getIncomingCallPage().isSecondCallAlertVisible());
+        Assert.assertTrue("Second call Alert is not shown", getCallingOverlayPage().isSecondCallAlertVisible());
     }
 
     /**
@@ -201,24 +81,24 @@ public class CallPageSteps {
      */
     @When("^I press Accept button on alert$")
     public void IPressAnswerCallButtonOnAlert() throws Exception {
-        getIncomingCallPage().pressAnswerCallAlertButton();
+        getCallingOverlayPage().pressAnswerCallAlertButton();
     }
 
     private static final int CALL_AVATARS_VISIBILITY_TIMEOUT = 20; //seconds
 
     /**
-     * Verifies a number of avatars in the group call bar
+     * Verifies a number of avatars in the calling overlay
      *
-     * @param expectedNumberOfAvatars the expected number of avatars in group call bar
+     * @param expectedNumberOfAvatars the expected number of avatars
      * @throws Exception
-     * @step. ^I see (\\d+) avatars in the group call bar$
+     * @step. ^I see (\\d+) avatars? in on the Calling overlay$
      */
-    @Then("^I see (\\d+) avatars in the group call bar$")
-    public void ISeeAvatarsInTheGroupCallBar(int expectedNumberOfAvatars) throws Exception {
+    @Then("^I see (\\d+) avatars? on the Calling overlay$")
+    public void ISeeXAvatars(int expectedNumberOfAvatars) throws Exception {
         final long millisecondsStarted = System.currentTimeMillis();
         int actualNumberOfAvatars = 0;
         while (System.currentTimeMillis() - millisecondsStarted <= CALL_AVATARS_VISIBILITY_TIMEOUT * 1000) {
-            actualNumberOfAvatars = getIncomingCallPage().getNumberOfGroupCallAvatar();
+            actualNumberOfAvatars = getCallingOverlayPage().getNumberOfParticipantsAvatars();
             if (actualNumberOfAvatars == expectedNumberOfAvatars) {
                 return;
             } else if (actualNumberOfAvatars > expectedNumberOfAvatars) {
@@ -232,28 +112,6 @@ public class CallPageSteps {
     }
 
     /**
-     * Rejoin group call by clicking the join button
-     *
-     * @throws Exception
-     * @step. ^I rejoin call by clicking Join button$
-     */
-    @When("^I rejoin call by clicking Join button$")
-    public void IRejoinCallByClickingJoinButton() throws Exception {
-        getIncomingCallPage().clickJoinCallButton();
-    }
-
-    /**
-     * Verifies the calling to a group call message
-     *
-     * @throws Exception
-     * @step. ^I see calling to a group message$
-     */
-    @Then("^I see calling to a group message$")
-    public void ISeeCallingToMessage() throws Exception {
-        Assert.assertTrue("Calling message is not visible", getStartedCallPage().isCallingMessageVisible());
-    }
-
-    /**
      * Verifies that the group call is full message is shown
      *
      * @throws Exception
@@ -262,7 +120,7 @@ public class CallPageSteps {
     @Then("^I see group call is Full message$")
     public void ISeeGroupCallIsFullMessage() throws Exception {
         Assert.assertTrue("GROUP CALL IS FULL message is not visible",
-                getIncomingCallPage().isGroupCallFullMessageShown());
+                getCallingOverlayPage().isGroupCallFullMessageShown());
     }
 
 }

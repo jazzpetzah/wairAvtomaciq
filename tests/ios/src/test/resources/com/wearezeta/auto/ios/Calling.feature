@@ -12,7 +12,7 @@ Feature: Calling
     And I tap on contact name <Contact>
     Then I see missed call from contact <Contact>
     And I click missed call button to call contact <Contact>
-    And I see calling message
+    And I see Calling overlay
 
     Examples:
       | Name      | Contact   | CallBackend |
@@ -27,8 +27,7 @@ Feature: Calling
     When I tap on contact name <Contact>
     And I click plus button next to text input
     And I press call button
-    Then I see mute call, end call and speakers buttons
-    And I see calling message
+    Then I see Calling overlay
 
     Examples:
       | Name      | Contact   |
@@ -43,10 +42,9 @@ Feature: Calling
     When I tap on contact name <Contact>
     And I click plus button next to text input
     And I press call button
-    Then I see mute call, end call and speakers buttons
-    And I see calling message
-    When I end started call
-    Then I dont see calling page
+    And I see Calling overlay
+    When I tap Leave button on Calling overlay
+    Then I do not see Calling overlay
 
     Examples:
       | Name      | Contact   |
@@ -59,9 +57,9 @@ Feature: Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When <Contact> calls me using <CallBackend>
-    And I see incoming calling message for contact <Contact>
-    And I ignore incoming call
-    Then I dont see incoming call page
+    And I see call status message contains "<Contact> CALLING"
+    And I tap Ignore button on Calling overlay
+    Then I do not see Calling overlay
 
     Examples:
       | Name      | Contact   | CallBackend |
@@ -75,10 +73,9 @@ Feature: Calling
     Given I see conversations list
     And I tap on contact name <Contact>
     When <Contact> calls me using <CallBackend>
-    And I see incoming calling message for contact <Contact>
-    And I accept incoming call
-    Then I see mute call, end call and speakers buttons
-    And I see started call message for contact <Contact>
+    And I see call status message contains "<Contact> CALLING"
+    And I tap Accept button on Calling overlay
+    Then I see call status message contains "<Contact>"
 
     Examples:
       | Name      | Contact   | CallBackend |
@@ -135,10 +132,8 @@ Feature: Calling
     And I tap on contact name <Contact>
     And I click plus button next to text input
     And I press call button
-    And I see mute call, end call and speakers buttons
-    Then I lock screen for 5 seconds
-    And I see mute call, end call and speakers buttons
-    And I end started call
+    When I lock screen for 5 seconds
+    Then I see Calling overlay
 
     Examples:
       | Name      | Contact   | CallBackend |
@@ -160,13 +155,12 @@ Feature: Calling
     And I tap on contact name <Contact1>
     And I click plus button next to text input
     And I press call button
-    And I see mute call, end call and speakers buttons
+    And I see Calling overlay
     And <Contact2> calls me using <CallBackend2>
-    And I see incoming calling message for contact <Contact2>
-    And I ignore incoming call
-    And I see mute call, end call buttons
+    And I see call status message contains "<Contact2> CALLING"
+    And I tap Ignore button on Calling overlay
     And <Contact2> stops all calls to me
-    And I end started call
+    And I tap Leave button on Calling overlay
     And I navigate back to conversations list
     And I see the state of <Contact2> conversation item is changed
     And I tap on contact name <Contact2>
@@ -187,9 +181,8 @@ Feature: Calling
     When I tap on contact name <Contact>
     And I click plus button next to text input
     And I press call button
-    And I see mute call, end call and speakers buttons
     Then I close the app for 5 seconds
-    And I see mute call, end call and speakers buttons
+    And I see Calling overlay
 
     Examples:
       | Name      | Contact   | CallBackend |
@@ -204,10 +197,9 @@ Feature: Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And <Contact> calls me using <CallBackend2>
-    And I see incoming calling message for contact <Contact>
-    And I accept incoming call
-    Then I see mute call, end call and speakers buttons
-    And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
+    And I see call status message contains "<Contact> CALLING"
+    And I tap Accept button on Calling overlay
+    Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
 
     Examples:
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
@@ -224,21 +216,20 @@ Feature: Calling
     When I tap on contact name <Contact>
     And I click plus button next to text input
     And I press call button
-    And I see mute call, end call and speakers buttons
-    And I end started call
-    Then I dont see calling page
+    And I see Calling overlay
+    And I tap Leave button on Calling overlay
+    Then I do not see Calling overlay
     And <Contact> calls me using <CallBackend2>
-    And I see incoming calling message for contact <Contact>
-    And I accept incoming call
-    And I see mute call, end call and speakers buttons
+    And I see call status message contains "<Contact> CALLING"
+    And I tap Accept button on Calling overlay
     And <Contact> stops all calls to me
-    And I dont see calling page
+    And I do not see Calling overlay
 
     Examples:
       | Name      | Contact   | CallBackend | CallBackend2 |
       | user1Name | user2Name | firefox     | autocall     |
 
-  @C2046 @rc @calling_basic @IPv6 @id2682
+  @C2046 @rc @calling_basic @IPv6 @id2682 @torun
   Scenario Outline: Verify accepting group call in foreground
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -249,17 +240,16 @@ Feature: Calling
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend2>
-    And I see incoming group calling message
-    And I accept incoming call
-    And I see mute call, end call and speakers buttons
-    Then I see <NumberOfAvatars> avatars in the group call bar
+    And I see call status message contains "<GroupChatName> RINGING"
+    And I tap Accept button on Calling overlay
+    Then I see <NumberOfAvatars> avatars on the Calling overlay
     And I wait for 10 seconds
     Then <Contact2> verify to have 2 flows
     Then <Contact2> verify that all flows have greater than 0 bytes
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName      | CallBackend | CallBackend2 | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | AcceptingGROUPCALL | firefox     | autocall     | 3               |
+      | user1Name | user2Name | user3Name | AcceptingGROUPCALL | firefox     | autocall     | 2               |
 
   @C2047 @calling_basic @id2683
   Scenario Outline: Verify ignoring group call in foreground
@@ -271,10 +261,9 @@ Feature: Calling
     When I tap on group chat with name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    And I see incoming group calling message
-    And I ignore incoming call
-    Then I dont see incoming call page
-    Then I see Join Call bar
+    And I see call status message contains "<GroupChatName> RINGING"
+    And I tap Ignore button on Calling overlay
+    Then I do not see Calling overlay
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName     | CallBackend |
@@ -289,70 +278,19 @@ Feature: Calling
     Given I see conversations list
     And I tap on contact name <Contact1>
     When <Contact1> calls me using <CallBackend>
-    And I accept incoming call
-    Then I see mute call, end call and speakers buttons
+    And I tap Accept button on Calling overlay
     When <Contact2> calls <GroupChatName> using <CallBackend>
     When <Contact3> calls <GroupChatName> using <CallBackend>
-    And I see incoming group calling message
-    And I accept incoming call
+    And I see call status message contains "<GroupChatName> RINGING"
+    And I tap Accept button on Calling overlay
     And I see Accept second call alert
     And I press Accept button on alert
-    Then I see <NumberOfAvatars> avatars in the group call bar
-    And I see mute call, end call and speakers buttons
+    Then I see <NumberOfAvatars> avatars on the Calling overlay
+    And I see Calling overlay
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | GROUPCALL     | autocall    | 3               |
-
-  @C2062 @calling_advanced @id2700
-  Scenario Outline: Verify renaming group during group call
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on group chat with name <GroupChatName>
-    And <Contact1> calls <GroupChatName> using <CallBackend>
-    And <Contact2> calls <GroupChatName> using <CallBackend>
-    And I see incoming group calling message
-    And I accept incoming call
-    And I see mute call, end call and speakers buttons
-    And I open group conversation details
-    And I change group conversation name to <ChatName>
-    Then I see correct conversation name <ChatName>
-    And I close group info page
-    And I see you renamed conversation to <ChatName> message shown in Group Chat
-    Then I see mute call, end call and speakers buttons
-    Then I see <NumberOfAvatars> avatars in the group call bar
-
-    Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName   | CallBackend | ChatName | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | RenameGROUPCALL | autocall    | NewName  | 3               |
-
-  @C2058 @calling_advanced @id2696
-  Scenario Outline: Verify leaving group conversation during the group call
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on group chat with name <GroupChatName>
-    And <Contact1> calls <GroupChatName> using <CallBackend>
-    And <Contact2> calls <GroupChatName> using <CallBackend>
-    And I see incoming group calling message
-    And I accept incoming call
-    And I open group conversation details
-    And I press leave conversation button
-    And I see leave conversation alert
-    Then I press leave
-    And I open archived conversations
-    And I see user <GroupChatName> in contact list
-    And I tap on group chat with name <GroupChatName>
-    Then I dont see calling page
-
-    Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName    | CallBackend |
-      | user1Name | user2Name | user3Name | LEAVEINGROUPCALL | autocall    |
+      | user1Name | user2Name | user3Name | user4Name | GROUPCALL     | autocall    | 2               |
 
   @C2042 @rc @calling_advanced @id2678
   Scenario Outline: Verify leaving and coming back to the call in 20 sec
@@ -364,21 +302,19 @@ Feature: Calling
     When I tap on group chat with name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    And I see incoming group calling message
-    And I accept incoming call
-    And I see mute call, end call and speakers buttons
-    And I see <NumberOfAvatars> avatars in the group call bar
-    And I end started call
-    Then I see Join Call bar
+    And I see call status message contains ""
+    And I tap Accept button on Calling overlay
+    And I see <NumberOfAvatars> avatars on the Calling overlay
+    And I tap Ignore button on Calling overlay
+    Then I do not see Calling overlay
     And I wait for 20 seconds
-    And I see Join Call bar
-    And I rejoin call by clicking Join button
-    Then I see mute call, end call and speakers buttons
-    Then I see <NumberOfAvatars> avatars in the group call bar
+    And I click plus button next to text input
+    And I press call button
+    Then I see <NumberOfAvatars> avatars on the Calling overlay
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName   | CallBackend | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | RejoinGROUPCALL | autocall    | 3               |
+      | user1Name | user2Name | user3Name | RejoinGROUPCALL | autocall    | 2               |
 
   @C2054 @rc @calling_advanced @id2690
   Scenario Outline: (ZIOS-5587)Verify receiving 1-to-1 call during group call (and accepting it)
@@ -390,21 +326,20 @@ Feature: Calling
     And I tap on group chat with name <GroupChatName>
     When <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    And I see incoming group calling message
-    And I accept incoming call
-    Then I see mute call, end call and speakers buttons
-    Then I see <NumberOfAvatars> avatars in the group call bar
+    And I see call status message contains "<GroupChatName> RINGING"
+    And I tap Accept button on Calling overlay
+    Then I see <NumberOfAvatars> avatars on the Calling overlay
     When <Contact2> calls me using <CallBackend>
-    And I see incoming calling message for contact <Contact2>
-    And I accept incoming call
+    And I see call status message contains "<Contact2> CALLING"
+    And I tap Accept button on Calling overlay
     And I see Accept second call alert
     And I press Accept button on alert
-    Then I see mute call, end call and speakers buttons
-    Then I see <NumberOf1on1CallAvatars> avatars in the group call bar
+    Then I see Calling overlay
+    Then I see <NumberOf1on1CallAvatars> avatars on the Calling overlay
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend | NumberOfAvatars | NumberOf1on1CallAvatars |
-      | user1Name | user2Name | user3Name | GROUPCALL     | autocall    | 3               | 2                       |
+      | user1Name | user2Name | user3Name | GROUPCALL     | autocall    | 2               | 1                       |
 
   @C2065 @rc @calling_basic @clumsy @IPv6 @id3270
   Scenario Outline: Verify possibility of starting group call
@@ -416,8 +351,7 @@ Feature: Calling
     When I tap on group chat with name <GroupChatName>
     And I click plus button next to text input
     And I press call button
-    Then I see mute call, end call and speakers buttons
-    Then I see calling to a group message
+    Then I see Calling overlay
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Contact8  | Contact9   | GroupChatName  |
@@ -432,47 +366,17 @@ Feature: Calling
     Given I see conversations list
     And <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    And I see incoming group calling message
+    And I see call status message contains "<GroupChatName> RINGING"
     And I wait for 45 seconds
-    When I tap on group chat with name <GroupChatName>
-    And I see Join Call bar
-    And I rejoin call by clicking Join button
-    Then I see mute call, end call and speakers buttons
-    Then I see <NumberOfAvatars> avatars in the group call bar
-
-    Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | CallBackend | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | WaitGROUPCALL | autocall    | 3               |
-
-  @C2059 @calling_advanced @id2697
-  Scenario Outline: Verify removing people from the conversation who joined the group call
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given <Contact1>,<Contact2> start waiting instance using <CallBackend>
-    Given <Contact1>,<Contact2> accept next incoming call automatically
-    Given I sign in using my email or phone number
-    Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I click plus button next to text input
     And I press call button
-    And I wait for 5 seconds
-    And I see mute call, end call and speakers buttons
-    And I wait for 3 seconds
-    And I see <NumberOfAvatars> avatars in the group call bar
-    And I open group conversation details
-    And I select participant <Contact2>
-    And I click Remove
-    And I confirm remove
-    And I click close user profile page button
-    Then I see that <Contact2> is not present on group chat info page
-    And I close group info page
-    # The person is still in the call after removal. This is bug-feature in iOS
-    Then I see <NewNumberOfAvatars> avatars in the group call bar
+    Then I see Calling overlay
+    Then I see <NumberOfAvatars> avatars on the Calling overlay
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName   | CallBackend | NumberOfAvatars | NewNumberOfAvatars |
-      | user1Name | user2Name | user3Name | RemoveGROUPCALL | firefox     | 3               | 3                  |
+      | Name      | Contact1  | Contact2  | GroupChatName | CallBackend | NumberOfAvatars |
+      | user1Name | user2Name | user3Name | WaitGROUPCALL | autocall    | 2               |
 
   @C2039 @calling_advanced @id2673 @noAcceptAlert
   Scenario Outline: Verify impossibility to connect 6th person to the call
@@ -490,8 +394,8 @@ Feature: Calling
     And <Contact3> calls <GroupChatName> using <CallBackend>
     And <Contact4> calls <GroupChatName> using <CallBackend>
     And <Contact5> calls <GroupChatName> using <CallBackend>
-    And I see incoming group calling message
-    And I accept incoming call
+    And I see call status message contains "<GroupChatName> RINGING"
+    And I tap Accept button on Calling overlay
     Then I see group call is Full message
 
     Examples:
@@ -506,13 +410,11 @@ Feature: Calling
     Given I see conversations list
     And I tap on contact name <Contact>
     When <Contact> calls me using <CallBackend>
-    And I see incoming calling message for contact <Contact>
-    And I accept incoming call
-    Then I see mute call, end call and speakers buttons
-    And I see started call message for contact <Contact>
+    And I see call status message contains "<Contact> CALLING"
+    And I tap Accept button on Calling overlay
+    Then I see call status message contains "<Contact>"
     When I close the app for 5 seconds
-    Then I see mute call, end call and speakers buttons
-    And I see started call message for contact <Contact>
+    Then I see call status message contains "<Contact>"
     And <Contact> verifies that call status to me is changed to active in 2 seconds
 
     Examples:

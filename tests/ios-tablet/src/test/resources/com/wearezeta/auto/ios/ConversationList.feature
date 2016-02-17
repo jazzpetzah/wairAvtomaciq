@@ -365,9 +365,8 @@ Feature: Conversation List
     When I see conversations list
     And I tap on contact name <Contact>
     And <Contact> calls me using <CallBackend>
-    And I see incoming calling message for contact <Contact>
-    And I accept incoming call
-    And I see mute call, end call buttons
+    And I see call status message contains "<Contact> CALLING"
+    And I tap Accept button on Calling overlay
     And I swipe right on Dialog page
     Then I see mute call button in conversation list
     And I click mute call button in conversation list
