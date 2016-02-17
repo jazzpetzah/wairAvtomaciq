@@ -224,6 +224,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName    | SpeakerBtnName | MuteBtnName |
       | user1Name | user2Name | user3Name | ChatForGroupCall | Speaker        | Mute        |
 
+#TODO use waiting instances instead of autocall
   @C807 @id3240 @calling_basic @rc @rc42
   Scenario Outline: I can start group call
     Given There are 3 users where <Name> is me
@@ -235,12 +236,14 @@ Feature: Calling
     When I tap on contact name <GroupChatName>
     And I swipe on text input
     And I press Call button
-    Then I see call overlay
+    Then I see outgoing call
     When <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    Then I see calling overlay Big bar
+#TODO check activity
+    Then I see ongoing call
     When <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
+    Then I do not see ongoing call
 
     Examples:
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
@@ -258,9 +261,11 @@ Feature: Calling
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend2>
-    And I answer the call from the overlay bar
-    Then I do not see join group call overlay
-    And I see calling overlay Big bar
+#TODO activity check
+    Then I see incoming call
+    When I swipe to accept the call
+#TODO activity check
+    Then I see ongoing call
     # FIXME: Temporarily disable calling flows verification since this is unstable on webapp side
     # And <Contact2>,<Contact3>,<Contact4> verify that waiting instance status is changed to active in <Timeout> seconds
     # And I wait for 5 seconds
@@ -283,12 +288,11 @@ Feature: Calling
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
-    Then I see call overlay
-    When I click the ignore call button
-    Then I see "JOIN CALL" button
-    When I press join group call button
-    Then I do not see "JOIN CALL" button
-    And I see calling overlay Big bar
+    Then I see incoming call
+    When I swipe to ignore the call
+    And I swipe on text input
+    And I press Call button
+    Then I see ongoing call
 
     Examples:
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |

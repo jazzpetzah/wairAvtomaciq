@@ -9,7 +9,7 @@ import org.openqa.selenium.By;
 
 public class CallOngoingPage extends AndroidPage {
 
-    private static final String idStrCallingContainer = "fl__calling__container";
+    private static final String idStrCallingContainer = "tcfl__calling__container";
     private static final By idCallingContainer = By.id(idStrCallingContainer);
     private static final String idStrMute = "ccbv__calling_controls__mute";
     private static final By idMute = By.id(idStrMute);
