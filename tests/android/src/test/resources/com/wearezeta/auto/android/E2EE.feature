@@ -10,8 +10,8 @@ Feature: E2EE
     When User <Contact> sends encrypted message <EncryptedMessage> to user Myself
     And User <Contact> sends message <SimpleMessage> to user Myself
     And I tap on contact name <Contact>
-    Then I see non-encrypted message <SimpleMessage> 1 time in the conversation view
-    And I see encrypted message <EncryptedMessage> 1 time in the conversation view
+    Then I see message <SimpleMessage> 1 time in the conversation view
+    And I see message <EncryptedMessage> 1 time in the conversation view
 
     Examples: 
       | Name      | Contact   | EncryptedMessage | SimpleMessage |
@@ -41,7 +41,7 @@ Feature: E2EE
       | Password      | Name      | DeviceToRemove |
       | user1Password | user1Name | Device1        |
 
-  @C3227 @rc @regression
+  @C3227 @rc @regression @torun
   Scenario Outline: Verify you can receive encrypted and non-encrypted images in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
@@ -52,8 +52,7 @@ Feature: E2EE
     And User <Contact> sends image <ImageName> to single user conversation Myself
     And I tap on contact name <Contact>
     And I scroll to the bottom of conversation view
-    Then I see non-encrypted image 1 time in the conversation view
-    And I see encrypted image 1 time in the conversation view
+    Then I see 2 images in the conversation view
 
     Examples: 
       | Name      | Contact   | ImageName   |
@@ -119,8 +118,8 @@ Feature: E2EE
     When User <Contact1> sends encrypted message <EncryptedMessage> to group conversation <GroupChatName>
     And User <Contact2> sends message <SimpleMessage> to group conversation <GroupChatName>
     And I tap on contact name <GroupChatName>
-    Then I see non-encrypted message <SimpleMessage> 1 time in the conversation view
-    And I see encrypted message <EncryptedMessage> 1 time in the conversation view
+    Then I see message <SimpleMessage> 1 time in the conversation view
+    And I see message <EncryptedMessage> 1 time in the conversation view
 
     Examples: 
       | Name      | Contact1  | Contact2  | EncryptedMessage | SimpleMessage | GroupChatName |
@@ -198,7 +197,7 @@ Feature: E2EE
     Given I see Contact list with contacts
     When User <Contact1> sends encrypted message <EncMessage> to user Myself
     And I tap on contact name <Contact1>
-    Then I see encrypted message <EncMessage> 1 times in the conversation view
+    Then I see message <EncMessage> 1 times in the conversation view
     When I press back button
     And I tap on my avatar
     And I tap options button
@@ -217,7 +216,7 @@ Feature: E2EE
     Given I accept First Time overlay as soon as it is visible
     And I see Contact list with contacts
     When I tap on contact name <Contact1>
-    Then I see encrypted message <EncMessage> 1 times in the conversation view
+    Then I see message <EncMessage> 1 times in the conversation view
     When I press back button
     And I tap on my avatar
     And I tap options button
@@ -245,7 +244,7 @@ Feature: E2EE
     And I wait for 5 seconds
     And User <Contact1> adds user Myself to group chat <GroupChatName>
     And I tap on contact name <GroupChatName>
-    Then I see encrypted message <EncMessage> 0 times in the conversation view
+    Then I see message <EncMessage> 0 times in the conversation view
 
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | EncMessage |
@@ -275,7 +274,7 @@ Feature: E2EE
     When I tap Got It button on First Time overlay
     Then I see Contact list with contacts
     When I tap on contact name <Contact1>
-    Then I see encrypted message <EncMessage> 0 times in the conversation view
+    Then I see message <EncMessage> 0 times in the conversation view
 
     Examples: 
       | Name      | Contact1  | EncMessage |
@@ -468,7 +467,7 @@ Feature: E2EE
     When I see takeover screen from user "<Contact1>"
     Then I tap send anyway button
     And I do not see takeover screen
-    Then I see encrypted message <Message2> 1 times in the conversation view
+    Then I see message <Message2> 1 times in the conversation view
     And I do not see unsent indicator next to "<Message2>" messsage
 
     Examples: 
