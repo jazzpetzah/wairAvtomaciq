@@ -240,12 +240,23 @@ Feature: Connect
   @C1696 @regression
   Scenario Outline: Verify you still receive messages from blocked person in a group chat
     Given There are 3 users where <Name> is me
-    Given user <Contact1> adds a new device Device1 with label Label1
     Given user <Contact2> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
+    Given I Sign in using login <Login2> and password <Password2>
+    Given I am signed in properly
+    Given I see Welcome page
+    Given I confirm keeping picture on Welcome page
+    Given I see Contact list with name <ChatName>
+    Given I open self profile
+    Given I click gear button on self profile page
+    Given I select Log out menu item on self profile page
+    Given I see the clear data dialog
+    Given I click Logout button on clear data dialog
+    Given I see Sign In page
     Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
     And I see my avatar on top of Contact list
     When I open conversation with <Contact1>
     And I click People button in one to one conversation
@@ -264,8 +275,6 @@ Feature: Connect
     And I see Sign In page
     And User <Name2> is me
     And I Sign in using login <Login2> and password <Password2>
-    Then I see the history info page
-    When I click confirm on history info page
     And I am signed in properly
     And I open conversation with <ChatName>
     Then I see random message in conversation
