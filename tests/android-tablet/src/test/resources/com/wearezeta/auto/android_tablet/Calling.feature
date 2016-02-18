@@ -41,12 +41,12 @@ Feature: Calling
     And I tap <MuteBtnName> button on the calling overlay
     Then I see <MuteBtnName> button state is not changed on the calling overlay
     And I do not see <SpeakerBtnName> button on the calling overlay
-    When I tap <DismissBtnName> button on the calling overlay
+    When I hang up ongoing call
     Then I do not see ongoing call
 
     Examples:
-      | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName | AcceptBtnName | DismissBtnName |
-      | user1Name | user2Name | autocall    | Speaker        | Mute        | Accept        | Dismiss        |
+      | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName |
+      | user1Name | user2Name | autocall    | Speaker        | Mute        |
 
   @C821 @id4009 @regression @rc @rc44
   Scenario Outline: I can join group call in foreground (landscape)
@@ -72,8 +72,8 @@ Feature: Calling
     # Then <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
 
     Examples:
-      | CallBackend | CallBackend2 | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    | AcceptBtnName |
-      | chrome      | autocall     | user1Name | user2Name | user3Name | user4Name | user5Name | ChatForGroupCall | Accept        |
+      | CallBackend | CallBackend2 | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    |
+      | chrome      | autocall     | user1Name | user2Name | user3Name | user4Name | user5Name | ChatForGroupCall |
 
   @C794 @id3123 @calling_basic @rc @rc44
   Scenario Outline: Calling bar buttons are clickable and change its state (landscape)
@@ -95,12 +95,12 @@ Feature: Calling
     And I tap <MuteBtnName> button on the calling overlay
     Then I see <MuteBtnName> button state is not changed on the calling overlay
     And I do not see <SpeakerBtnName> button on the calling overlay
-    When I tap <DismissBtnName> button on the calling overlay
+    When I hang up ongoing call
     Then I do not see ongoing call
 
     Examples:
-      | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName | AcceptBtnName | DismissBtnName |
-      | user1Name | user2Name | autocall    | Speaker        | Mute        | Accept        | Dismiss        |
+      | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName |
+      | user1Name | user2Name | autocall    | Speaker        | Mute        |
 
   @C487 @id2842 @calling_basic
   Scenario Outline: (AN-3145) I see miss call notification on the list and inside conversation view (portrait)
@@ -183,8 +183,8 @@ Feature: Calling
     And <Contact> stops all calls to me
 
     Examples:
-      | Name      | Contact   | CallBackend | TextMessage  | PingMessage | AcceptBtnName |
-      | user1Name | user2Name | autocall    | text message | YOU PINGED  | Accept        |
+      | Name      | Contact   | CallBackend | TextMessage  | PingMessage |
+      | user1Name | user2Name | autocall    | text message | YOU PINGED  |
 
   @C516 @id3113 @calling_basic
   Scenario Outline: Send text, image and ping while in the call with same user (landscape)
@@ -217,8 +217,8 @@ Feature: Calling
     And <Contact> stops all calls to me
 
     Examples:
-      | Name      | Contact   | CallBackend | TextMessage  | PingMessage | AcceptBtnName |
-      | user1Name | user2Name | autocall    | text message | YOU PINGED  | Accept        |
+      | Name      | Contact   | CallBackend | TextMessage  | PingMessage |
+      | user1Name | user2Name | autocall    | text message | YOU PINGED  |
 
   @C811 @id3259 @calling_basic @rc
   Scenario Outline: Receive call while Wire is running in the background (portrait)
@@ -284,8 +284,8 @@ Feature: Calling
     And I see the conversation <Contact2> in my conversations list
 
     Examples:
-      | Name      | Contact1  | Contact2  | CallBackend | AcceptBtnName |
-      | user1Name | user2Name | user3Name | autocall    | Accept        |
+      | Name      | Contact1  | Contact2  | CallBackend |
+      | user1Name | user2Name | user3Name | autocall    |
 
   @C813 @id3801 @calling_basic @rc
   Scenario Outline: Silence an incoming call (portrait)
@@ -299,12 +299,12 @@ Feature: Calling
     And I tap the conversation <Contact>
     And <Contact> calls me using <CallBackend>
     And I see incoming call
-    When I tap <SilenceBtn> button on the calling overlay
+    When I swipe to ignore the call
     Then I do not see incoming call
 
     Examples:
-      | Name      | Contact   | CallBackend | SilenceBtn |
-      | user1Name | user2Name | autocall    | Ignore     |
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | autocall    |
 
   @C814 @id3802 @calling_basic @rc
   Scenario Outline: Silence an incoming call (landscape)
@@ -318,9 +318,9 @@ Feature: Calling
     And I tap the conversation <Contact>
     And <Contact> calls me using <CallBackend>
     And I see incoming call
-    When I tap <SilenceBtn> button on the calling overlay
+    When I swipe to ignore the call
     Then I do not see incoming call
 
     Examples:
-      | Name      | Contact   | CallBackend | SilenceBtn |
-      | user1Name | user2Name | autocall    | Ignore     |
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | autocall    |
