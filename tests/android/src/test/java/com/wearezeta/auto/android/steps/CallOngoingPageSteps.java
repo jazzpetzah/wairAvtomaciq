@@ -27,25 +27,10 @@ public class CallOngoingPageSteps {
      * @throws Exception
      * @step. ^I hang up$
      */
-    @When("^I hang up$")
+    @When("^I hang up ongoing call$")
     public void IHangUp()
             throws Exception {
         getPage().hangup();
-    }
-
-    /**
-     * Verifies presence of outgoing call
-     *
-     * @throws Exception
-     * @step. ^I (do not )?see outgoing call$
-     */
-    @When("^I (do not )?see outgoing call$")
-    public void ISeeOutgoingCall(String not) throws Exception {
-        if (not == null) {
-            assertTrue("Outgoing/Ongoing call not visible", getPage().waitUntilVisible());
-        } else {
-            assertTrue("Outgoing/Ongoing call should not be visible", getPage().waitUntilNotVisible());
-        }
     }
 
     /**
@@ -55,8 +40,12 @@ public class CallOngoingPageSteps {
      * @step. ^I (do not )?see ongoing call$
      */
     @When("^I (do not )?see ongoing call$")
-    public void ISeeOngoingCall(String not) throws Exception {
-        ISeeOutgoingCall(not);
+    public void ISeeOutgoingCall(String not) throws Exception {
+        if (not == null) {
+            assertTrue("Ongoing call not visible", getPage().waitUntilVisible());
+        } else {
+            assertTrue("Ongoing call should not be visible", getPage().waitUntilNotVisible());
+        }
     }
 
     /**
