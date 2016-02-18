@@ -124,20 +124,6 @@ public class ContactListPageSteps {
     }
 
     /**
-     * Verify label in Self button
-     *
-     * @param name username
-     * @throws Exception
-     * @step. ^I see my name (.*) first letter as label of Self Button$
-     */
-    @When("^I see my name (.*) first letter as label of Self Button$")
-    public void ISeeFirstLetterAsLabelSelfButton(String name) throws Exception {
-        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-        Assert.assertTrue(getContactListPage()
-                .isSelfButtonContainingFirstNameLetter(name));
-    }
-
-    /**
      * Click MAYBE LATER on settings warning screen
      *
      * @throws Exception

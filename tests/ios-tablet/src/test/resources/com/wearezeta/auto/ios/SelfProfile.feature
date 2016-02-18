@@ -10,9 +10,8 @@ Feature: Self Profile
     And I change my name to <NewUsername>
     Then I see my new name <NewUsername1>
     When I close self profile
-    Then I see conversations list
-    And I see my name <NewUsername1> first letter as label of Self Button
-    When I tap my avatar
+    When I see conversations list
+    And I tap my avatar
     And I tap to edit my name
     And I change my name to <NewUsername>
     Then I see my new name <NewUsername1>
@@ -32,9 +31,7 @@ Feature: Self Profile
     And I change my name to <NewUsername>
     Then I see my new name <NewUsername1>
     When I close self profile
-    Then I see conversations list
-    And I see my name <NewUsername1> first letter as label of Self Button
-    When I tap my avatar
+    And I tap my avatar
     And I tap to edit my name
     And I change my name to <NewUsername>
     Then I see my new name <NewUsername1>

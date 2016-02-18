@@ -89,15 +89,6 @@ public class ContactListPage extends IOSPage {
         getElement(nameSelfButton).click();
     }
 
-    public String getSelfButtonLabel() throws Exception {
-        return getElement(nameSelfButton).getAttribute("label").toUpperCase();
-    }
-
-    public boolean isSelfButtonContainingFirstNameLetter(String name) throws Exception {
-        String sub = name.substring(0, 1).toUpperCase();
-        return sub.equals(getSelfButtonLabel());
-    }
-
     public void tapOnName(String name) throws Exception {
         findNameInContactList(name).orElseThrow(
                 () -> new IllegalStateException(String.format("The conversation '%s' is not visible in the list", name))
