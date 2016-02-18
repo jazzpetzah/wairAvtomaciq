@@ -98,4 +98,12 @@ public class CallingOverlayPage extends IOSPage {
         final By locator = By.xpath(xpathStrCallingMessageByText.apply(text));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
+
+    public boolean isButtonVisible(String name) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getButtonLocatorByName(name));
+    }
+
+    public boolean isButtonInvisible(String name) throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), getButtonLocatorByName(name));
+    }
 }

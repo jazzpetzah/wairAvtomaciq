@@ -38,14 +38,33 @@ public class CallPageSteps {
     /**
      * Tap the corresponding button on calling overlay
      *
-     * @step. ^I tap (Ignore|Mute|Leave|Accept|Accept Video|Call Video|Call Speaker|Switch Camera) button on (?:the |\s*)Calling overlay$
-     *
      * @param name one of possible button names
      * @throws Exception
+     * @step. ^I tap (Ignore|Mute|Leave|Accept|Accept Video|Call Video|Call Speaker|Switch Camera) button on (?:the |\s*)Calling overlay$
      */
     @When("^I tap (Ignore|Mute|Leave|Accept|Accept Video|Call Video|Call Speaker|Switch Camera) button on (?:the |\\s*)Calling overlay$")
     public void ITapButton(String name) throws Exception {
         getCallingOverlayPage().tapButtonByName(name);
+    }
+
+    /**
+     * Check whether the corresponding button on calling overlay is visible
+     *
+     * @param shouldNotBeVisible equals to null is the button should not be visible
+     * @param name               one of possible button names
+     * @throws Exception
+     * @step. ^I (do not )?see (Ignore|Mute|Leave|Accept|Accept Video|Call Video|Call Speaker|Switch Camera) button on (?:the |\s*)Calling overlay$
+     */
+    @Then("^I (do not )?see (Ignore|Mute|Leave|Accept|Accept Video|Call Video|Call Speaker|Switch Camera) button on (?:the |\\s*)Calling overlay$")
+    public void ISeeButton(String shouldNotBeVisible, String name) throws Exception {
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue(String.format("The '%s' button is not visible on the calling overlay", name),
+                    getCallingOverlayPage().isButtonVisible(name));
+        } else {
+            Assert.assertTrue(String.format(
+                    "The '%s' button is visible on the calling overlay, but should be hidden", name),
+                    getCallingOverlayPage().isButtonInvisible(name));
+        }
     }
 
     /**
@@ -62,7 +81,7 @@ public class CallPageSteps {
                 getCallingOverlayPage().isCallingMessageContainingVisible(text));
     }
 
-     /**
+    /**
      * Verifies that a second call is coming in alert is shown
      *
      * @throws Exception
