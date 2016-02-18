@@ -215,6 +215,7 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Contact1> starts waiting instance using <CallBackend>
+    Given <Contact1> accepts next incoming call automatically
     Given I Sign in on tablet using my email
     Given I see conversations list
     And I tap on contact name <Contact1>
@@ -227,8 +228,6 @@ Feature: Calling
     And <Contact2> calls me using <CallBackend2>
     And I see call status message contains "<Contact2> CALLING"
     And I tap Ignore button on Calling overlay
-    And <Contact1> accepts next incoming call automatically
-    And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see Calling overlay
     And <Contact2> stops all calls to me
     And I tap Leave button on Calling overlay
@@ -238,14 +237,15 @@ Feature: Calling
     Then I see missed call from contact <Contact2>
 
     Examples:
-      | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | user3Name | firefox     | autocall     | 30      |
+      | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 |
+      | user1Name | user2Name | user3Name | firefox     | autocall     |
 
   @C2427 @calling_advanced @id2652
   Scenario Outline: 3rd person tries to call me after I initate a call to somebody [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Contact1> starts waiting instance using <CallBackend>
+    Given <Contact1> accepts next incoming call automatically
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -257,8 +257,6 @@ Feature: Calling
     And <Contact2> calls me using <CallBackend2>
     And I see call status message contains "<Contact2> CALLING"
     And I tap Ignore button on Calling overlay
-    And <Contact1> accepts next incoming call automatically
-    And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see Calling overlay
     And <Contact2> stops all calls to me
     And I tap Leave button on Calling overlay
@@ -267,8 +265,8 @@ Feature: Calling
     Then I see missed call from contact <Contact2>
 
     Examples:
-      | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | user3Name | firefox     | autocall     | 30      |
+      | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 |
+      | user1Name | user2Name | user3Name | firefox     | autocall     |
 
   @C2395 @calling_basic @id2618
   Scenario Outline: Put app into background after initiating call [PORTRAIT]
