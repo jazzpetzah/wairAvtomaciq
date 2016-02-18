@@ -420,6 +420,13 @@ public class DialogPage extends AndroidPage {
         }
         return previousMediaButtonState.hasChanged();
     }
+    
+    public boolean mediaControlButtonStateHasNotChanged() throws Exception {
+        if (previousMediaButtonState == null) {
+            throw new IllegalStateException("Please call the corresponding remember step first to get the previous state of the element");
+        }
+        return previousMediaButtonState.hasNotChanged();
+    }
 
     public void tapPlayPauseMediaBarBtn() throws Exception {
         getElement(idMediaBarControl, "Media barr PlayPause button is not visible").click();
