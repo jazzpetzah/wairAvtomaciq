@@ -187,6 +187,7 @@ Feature: E2EE
     And User <Contact> sends encrypted image <ImageName> to single user conversation Myself
     And I see Sign In page
     And I Sign in using login <Email> and password <Password>
+    And I am signed in properly
     Then I see text message <OnlineMessage>
     And I see text message <OfflineMessage>
     And I see sent picture <ImageName> in the conversation view
@@ -217,6 +218,8 @@ Feature: E2EE
     And User <Contact1> sends encrypted image <ImageName> to group conversation <GroupChatName>
     And I see Sign In page
     And I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    And I see Contact list with name <GroupChatName>
     And I open conversation with <GroupChatName>
     Then I see text message <OnlineMessage>
     And I see text message <OfflineMessage>
