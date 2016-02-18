@@ -167,22 +167,6 @@ public class PersonalInfoPage extends IOSPage {
         getElement(xpathProfileNameEditField, "Edit name field is not visible").click();
     }
 
-    public void changeNameUsingOnlySpaces() throws Exception {
-        final WebElement profileNameEditField = getElement(xpathProfileNameEditField);
-        DriverUtils.tapByCoordinates(this.getDriver(), profileNameEditField);
-        profileNameEditField.clear();
-        profileNameEditField.sendKeys("  \n");
-    }
-
-    public void attemptTooLongName() throws Exception {
-        String name = CommonUtils.generateRandomString(80).toLowerCase();
-        getElement(xpathProfileNameEditField).sendKeys(name + "\n");
-    }
-
-    public int getSelfNameLength() throws Exception {
-        return getUserNameValue().length();
-    }
-
     public void changeName(String newName) throws Exception {
         final WebElement profileNameEditField = getElement(xpathProfileNameEditField, "Edit name field is not visible");
         profileNameEditField.clear();

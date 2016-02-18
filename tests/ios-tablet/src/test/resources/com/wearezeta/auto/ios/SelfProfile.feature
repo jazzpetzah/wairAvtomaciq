@@ -40,37 +40,6 @@ Feature: Self Profile
       | Name      | NewUsername                                                          | NewUsername1                                                     |
       | user1Name | mynewusernamewithmorethan64characters3424245345345354353452345234535 | mynewusernamewithmorethan64characters342424534534535435345234523 |
 
-  @C2877 @regression @id2581
-  Scenario Outline: I verify I am unable to enter a name using only spaces or more than 80 chars [PORTRAIT]
-    Given There is 1 user where <Name> is me
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I tap my avatar
-    And I attempt to change name using only spaces
-    And I see error message asking for more characters
-    And I attempt to enter an 80 char name
-    Then I verify my new name is only first 64 chars
-
-    Examples:
-      | Name      |
-      | user1Name |
-
-  @C2884 @regression @id3158
-  Scenario Outline: I verify I am unable to enter a name using only spaces or more than 80 chars [LANDSCAPE]
-    Given There is 1 user where <Name> is me
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I tap my avatar
-    And I attempt to change name using only spaces
-    And I see error message asking for more characters
-    And I attempt to enter an 80 char name
-    Then I verify my new name is only first 64 chars
-
-    Examples:
-      | Name      |
-      | user1Name |
-
   @C2869 @regression @rc @id2574
   Scenario Outline: Change your profile picture [PORTRAIT]
     Given There is 1 user where <Name> is me
