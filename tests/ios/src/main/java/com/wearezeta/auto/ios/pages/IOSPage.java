@@ -134,8 +134,9 @@ public abstract class IOSPage extends BasePage {
         getElement(nameEditingItemPaste, "Paste popup is not visible").click();
         final int popupVisibilityTimeoutSeconds = 10;
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEditingItemPaste, popupVisibilityTimeoutSeconds)) {
-            throw new IllegalStateException(String.format(
-                    "Paste popup is still visible after %s seconds timeout", popupVisibilityTimeoutSeconds));
+            log.warn((String.format(
+                    "Paste popup is still appears to be visible after %s seconds timeout",
+                    popupVisibilityTimeoutSeconds)));
         }
         Thread.sleep(2000);
     }
