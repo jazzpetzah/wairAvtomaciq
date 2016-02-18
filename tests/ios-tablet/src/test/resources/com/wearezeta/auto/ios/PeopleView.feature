@@ -49,7 +49,6 @@ Feature: People View
     And I open conversation details
     And I see <Contact1> user profile page in iPad popover
     And I press Add button
-    And I see People picker page on iPad popover
     And I click on connected user <Contact2> on People picker on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
     And I click on Add to Conversation button on iPad popover
@@ -61,7 +60,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @C2715 @regression @rc @id2653
+  @C2715 @regression @rc @id2653 @torun
   Scenario Outline: Start group chat from 1:1 conversation [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -72,12 +71,11 @@ Feature: People View
     And I open conversation details
     And I see <Contact1> user profile page in iPad popover
     And I press Add button
-    And I see People picker page on iPad popover
     And I click on connected user <Contact2> on People picker on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
     And I click on Add to Conversation button on iPad popover
     And I see group chat page with users <Contact1>,<Contact2>,<Contact3>
-    Then I see in contact list group chat with <Contact1> <Contact2> <Contact3>
+    Then I see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  |
@@ -441,7 +439,6 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press Add button
-    And I see People picker page on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
     And I click on Add to Conversation button on iPad popover
     And I open conversation details
@@ -462,7 +459,6 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press Add button
-    And I see People picker page on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
     And I click on Add to Conversation button on iPad popover
     And I open conversation details
@@ -565,7 +561,6 @@ Feature: People View
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press Add button
-    And I see People picker page on iPad popover
     And I wait until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
@@ -590,7 +585,6 @@ Feature: People View
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press Add button
-    And I see People picker page on iPad popover
     And I wait until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
