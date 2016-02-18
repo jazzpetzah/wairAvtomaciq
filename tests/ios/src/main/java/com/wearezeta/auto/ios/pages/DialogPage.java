@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
@@ -17,6 +18,8 @@ import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+
+import javax.imageio.ImageIO;
 
 public class DialogPage extends IOSPage {
     private static final By nameConversationBackButton = By.name("ConversationBackButton");
@@ -534,6 +537,8 @@ public class DialogPage extends IOSPage {
         final int stateGlyphHeight = containerScreen.getHeight() / 7;
         final int stateGlyphX = (containerScreen.getWidth() - stateGlyphWidth) / 2;
         final int stateGlyphY = (containerScreen.getHeight() - stateGlyphHeight) / 2;
+        BufferedImage tmp = containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
+        ImageIO.write(tmp, "png", new File("/Users/elf/Desktop/" + System.currentTimeMillis() + ".png"));
         return containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
     }
 

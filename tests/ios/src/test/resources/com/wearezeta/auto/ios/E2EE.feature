@@ -44,6 +44,7 @@ Feature: E2EE
     Given I accept alert
     Given I accept First Time overlay if it is visible
     Given I accept alert
+    Given I dismiss settings warning
     Given I see conversations list
     When I remember the state of my avatar
     And User Myself adds a new device <DeviceName> with label <DeviceLabel>
@@ -186,6 +187,7 @@ Feature: E2EE
     Given I accept alert
     Given I accept First Time overlay if it is visible
     Given I accept alert
+    Given I dismiss settings warning
     Given I see conversations list
     And User Myself adds new devices <DeviceName>
     When I tap my avatar
@@ -413,6 +415,7 @@ Feature: E2EE
     Given I accept alert
     Given I accept First Time overlay if it is visible
     Given I accept alert
+    Given I dismiss settings warning
     Given I see conversations list
     And User Myself adds a new device <DeviceName> with label <DeviceLabel>
     When I tap my avatar
@@ -437,6 +440,7 @@ Feature: E2EE
     Given I accept alert
     Given I accept First Time overlay if it is visible
     Given I accept alert
+    Given I dismiss settings warning
     Given I see conversations list
     And User Myself adds new device <DeviceName>
     When I tap my avatar

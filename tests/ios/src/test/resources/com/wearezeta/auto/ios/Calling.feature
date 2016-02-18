@@ -385,6 +385,7 @@ Feature: Calling
     Given I dismiss alert
     Given I accept First Time overlay if it is visible
     Given I accept alert
+    Given I dismiss settings warning
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>

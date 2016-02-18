@@ -264,6 +264,7 @@ Feature: Self Profile
     Given I click Not Now to not add phone number
     Given I accept alert
     Given I accept First Time overlay if it is visible
+    Given I accept alert
     Given I dismiss settings warning
     Given I see conversations list
     When I tap my avatar
@@ -285,6 +286,7 @@ Feature: Self Profile
     Given I click Not Now to not add phone number
     Given I accept alert
     Given I accept First Time overlay if it is visible
+    Given I accept alert
     Given I dismiss settings warning
     Given I see conversations list
     When I tap my avatar
@@ -305,6 +307,7 @@ Feature: Self Profile
     Given I click Not Now to not add phone number
     Given I accept alert
     Given I accept First Time overlay if it is visible
+    Given I accept alert
     Given I dismiss settings warning
     Given I see conversations list
     When I tap my avatar
@@ -326,6 +329,7 @@ Feature: Self Profile
     Given I click Not Now to not add phone number
     Given I accept alert
     Given I accept First Time overlay if it is visible
+    Given I accept alert
     Given I dismiss settings warning
     Given I see conversations list
     When I tap my avatar
