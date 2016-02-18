@@ -326,8 +326,8 @@ public class DialogPage extends IOSPage {
 
     @Override
     public void swipeUp(int time) throws Exception {
-        Point coords = getElement(nameMainWindow).getLocation();
-        Dimension elementSize = getElement(nameMainWindow).getSize();
+        final Point coords = getElement(nameMainWindow).getLocation();
+        final Dimension elementSize = getElement(nameMainWindow).getSize();
         this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y + elementSize.height - TEXT_INPUT_HEIGHT,
                 coords.x + elementSize.width / 2, coords.y + TOP_BORDER_WIDTH, time);
     }
@@ -336,7 +336,8 @@ public class DialogPage extends IOSPage {
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             IOSSimulatorHelper.swipeDown();
         } else {
-            DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationPage), 1000, 50, 30, 50, 95);
+            DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationPage),
+                    1000, 50, 30, 50, 95);
         }
     }
 
