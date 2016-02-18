@@ -34,3 +34,22 @@ Feature: Video Calling
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @C12101 @staging
+  Scenario Outline: Verify accepting video call
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And <Contact> starts a video call to <Name> using <CallBackend>
+    And I see the calling bar
+    And I click Accept video call button
+    Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    And <Contact> verify to have 1 flows
+    And <Contact> verify that all flows have greater than 0 bytes
+    And I click Hang Up button on Video Call page
+
+    Examples:
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | firefox     | 60      |

@@ -25,6 +25,10 @@ public class VideoCallPage extends IOSPage {
     private static final Interfaces.FunctionFor2Parameters<String, String, String> xpathStrButtonByNameAndVisibility = (name, visibility) ->
             String.format("//UIAButton[@name='%sButton' and @visible='%s']", name, visibility);
 
+    private static final By nameAccepCallButton = By.name("");
+
+    private static final By nameDeclineCallButton = By.name("");
+
     public VideoCallPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -44,5 +48,13 @@ public class VideoCallPage extends IOSPage {
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameLeaveCallButton)) {
             throw new IllegalStateException("Hang Up button is still visible");
         }
+    }
+
+    public void clickAcceptCallButton() throws Exception {
+        getElement(nameAccepCallButton).click();
+    }
+
+    public void clickDeclineCallButton() throws Exception {
+        getElement(nameDeclineCallButton).click();
     }
 }

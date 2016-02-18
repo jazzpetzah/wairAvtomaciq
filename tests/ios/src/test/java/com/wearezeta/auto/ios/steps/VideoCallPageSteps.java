@@ -58,4 +58,26 @@ public class VideoCallPageSteps {
     public void IClickHangUpButton() throws Exception {
         getVideoCallingPage().clickHangUpButton();
     }
+
+    /**
+     * Click on Accept video call button
+     *
+     * @throws Exception
+     * @step. ^I click Accept video call button$
+     */
+    @When("^I click Accept video call button$")
+    public void IClickAcceptVideoCallButton() throws Exception {
+        getVideoCallingPage().clickAcceptCallButton();
+    }
+
+    /**
+     * Click on Decline video call button
+     *
+     * @throws Exception
+     * @step. ^I click Decline video call button
+     */
+    @When("^I click Decline video call button$")
+    public void IClickDeclineVideoCallButton() throws Exception {
+        getVideoCallingPage().clickDeclineCallButton();
+    }
 }
