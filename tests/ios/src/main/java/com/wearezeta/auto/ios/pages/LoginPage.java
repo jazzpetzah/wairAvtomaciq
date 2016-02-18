@@ -141,6 +141,10 @@ public class LoginPage extends IOSPage {
     public void commitEmail(String email) throws Exception {
         this.inputStringFromKeyboard(getElement(xpathSafariChangePasswordEmailField,
                 "Email input field in Safari is not visible"), email, false, true);
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathSafariChangePasswordEmailField)) {
+            this.inputStringFromKeyboard(getElement(xpathSafariChangePasswordEmailField,
+                    "Email input field in Safari is not visible"), email, false, true);
+        }
     }
 
     public void changeURLInBrowser(String URL) throws Exception {
