@@ -345,7 +345,8 @@ public class PersonalInfoPageSteps {
      */
     @Then("^I see Support web page$")
     public void ISeeSupportWebPage() throws Exception {
-        Assert.assertTrue(getPersonalInfoPage().isSupportWebPageVisible());
+        Assert.assertTrue("Customer support page has not been loaded",
+                getPersonalInfoPage().isSupportWebPageVisible());
     }
 
     /**
