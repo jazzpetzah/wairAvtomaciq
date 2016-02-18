@@ -334,6 +334,7 @@ public abstract class IOSPage extends BasePage {
             // this is to show the unlock label if not visible yet
             IOSSimulatorHelper.goHome();
             IOSSimulatorHelper.swipeRight();
+            Thread.sleep(2000);
         } else {
             this.getDriver().lockScreen(timeSeconds);
         }
