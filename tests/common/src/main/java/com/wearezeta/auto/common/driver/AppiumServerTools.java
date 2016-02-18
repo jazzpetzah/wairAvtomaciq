@@ -105,6 +105,7 @@ public class AppiumServerTools {
         if (!waitUnlessIsRunning(RESTART_TIMEOUT)) {
             throw new IllegalStateException(String.format(
                     "Appium server has failed to start after %s seconds timeout on server '%s'.\n" +
+                            "Please make sure that NodeJS and Appium packages are installed properly on this machine.\n" +
                             "Appium logs:\n\n%s\n\n%s\n\n\n",
                     RESTART_TIMEOUT / 1000, hostname, appiumProcess.getStderr(), appiumProcess.getStdout()));
         }
