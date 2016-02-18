@@ -1,6 +1,6 @@
 Feature: Video Calling
 
-  @C28847 @staging
+  @C28847 @calling_basic
   Scenario Outline: Verify initiating Video call [PORTRAIT]
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -18,7 +18,7 @@ Feature: Video Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C28848 @staging
+  @C28848 @calling_basic
   Scenario Outline: Verify initiating Video call [LANDSCAPE]
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -37,7 +37,7 @@ Feature: Video Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C28849 @staging
+  @C28849 @calling_basic
   Scenario Outline: Verify cancelling Video call [PORTRAIT]
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -54,7 +54,7 @@ Feature: Video Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C28850 @staging
+  @C28850 @calling_basic
   Scenario Outline: Verify cancelling Video call [LANDSCAPE]
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
