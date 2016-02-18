@@ -12,9 +12,9 @@ Feature: Calling
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     When <Contact1> calls <GroupChatName> using <CallBackend>
-    And I see calling overlay Big bar
+    And I see incoming call
     And <Contact1> stops all calls to <GroupChatName>
-    Then I do not see calling overlay Big bar
+    Then I do not see incoming call
     And I see missed group call notification in the conversation view
 
     Examples:
@@ -29,11 +29,12 @@ Feature: Calling
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
+    When I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And <Contact> calls me using <CallBackend>
-    And I see calling overlay Big bar
-    And I tap <AcceptBtnName> button on the calling overlay
+    Then I see incoming call
+    When I swipe to accept the call
+    Then I see ongoing call
     When I remember the current state of <MuteBtnName> button on the calling overlay
     And I tap <MuteBtnName> button on the calling overlay
     Then I see <MuteBtnName> button state is changed on the calling overlay
@@ -41,7 +42,7 @@ Feature: Calling
     Then I see <MuteBtnName> button state is not changed on the calling overlay
     And I do not see <SpeakerBtnName> button on the calling overlay
     When I tap <DismissBtnName> button on the calling overlay
-    Then I do not see calling overlay Big bar
+    Then I do not see ongoing call
 
     Examples:
       | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName | AcceptBtnName | DismissBtnName |
@@ -52,22 +53,19 @@ Feature: Calling
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    Given <Contact2> starts waiting instance using <CallBackend>
-    Given <Contact2> accepts next incoming call automatically
-    Given <Contact3> starts waiting instance using <CallBackend>
-    Given <Contact3> accepts next incoming call automatically
-    Given <Contact4> starts waiting instance using <CallBackend>
-    Given <Contact4> accepts next incoming call automatically
+    Given <Contact2>,<Contact3>,<Contact4> starts waiting instance using <CallBackend>
     Given I rotate UI to landscape
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
+    Given <Contact2>,<Contact3>,<Contact4> accepts next incoming call automatically
     When I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
     And <Contact1> calls <GroupChatName> using <CallBackend2>
-    And I tap <AcceptBtnName> button on the calling overlay
-    And I see calling overlay Big bar
+    Then I see incoming call
+    When I swipe to accept the call
+    Then I see ongoing call
     # FIXME: Wait until webapp calling issues are fixed on staging
     # And I wait for 10 seconds
     # Then <Contact2>,<Contact3>,<Contact4> verify to have 4 flows
@@ -85,11 +83,12 @@ Feature: Calling
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
+    When I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And <Contact> calls me using <CallBackend>
-    And I see calling overlay Big bar
-    And I tap <AcceptBtnName> button on the calling overlay
+    Then I see incoming call
+    When I swipe to accept the call
+    Then I see ongoing call
     When I remember the current state of <MuteBtnName> button on the calling overlay
     And I tap <MuteBtnName> button on the calling overlay
     Then I see <MuteBtnName> button state is changed on the calling overlay
@@ -97,7 +96,7 @@ Feature: Calling
     Then I see <MuteBtnName> button state is not changed on the calling overlay
     And I do not see <SpeakerBtnName> button on the calling overlay
     When I tap <DismissBtnName> button on the calling overlay
-    Then I do not see calling overlay Big bar
+    Then I do not see ongoing call
 
     Examples:
       | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName | AcceptBtnName | DismissBtnName |
@@ -115,9 +114,9 @@ Feature: Calling
     And I see the conversation <Contact2> in my conversations list
     And I tap the conversation <Contact1>
     When <Contact2> calls me using <CallBackend>
-    And I see calling overlay Big bar
+    And I see incoming call
     And <Contact2> stops all calls to me
-    Then I do not see calling overlay Big bar
+    Then I do not see incoming call
     When I swipe right to show the conversations list
     Then I see missed call notification near <Contact2> conversations list item
     When I tap the conversation <Contact2>
@@ -141,9 +140,9 @@ Feature: Calling
     And I see the conversation <Contact2> in my conversations list
     And I tap the conversation <Contact1>
     When <Contact2> calls me using <CallBackend>
-    And I see calling overlay Big bar
+    And I see incoming call
     And <Contact2> stops all calls to me
-    Then I do not see calling overlay Big bar
+    Then I do not see incoming call
     And I see missed call notification near <Contact2> conversations list item
     When I tap the conversation <Contact2>
     Then I see missed call notification in the conversation view
@@ -164,8 +163,9 @@ Feature: Calling
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And <Contact> calls me using <CallBackend>
-    And I see calling overlay Big bar
-    And I tap <AcceptBtnName> button on the calling overlay
+    And I see incoming call
+    And I swipe to accept the call
+    Then I see ongoing call
     And I tap the text input in the conversation view
     When I type the message "<TextMessage>" in the conversation view
     And I send the typed message in the conversation view
@@ -197,8 +197,9 @@ Feature: Calling
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And <Contact> calls me using <CallBackend>
-    And I see calling overlay Big bar
-    And I tap <AcceptBtnName> button on the calling overlay
+    Then I see incoming call
+    When I swipe to accept the call
+    Then I see ongoing call
     And I tap the text input in the conversation view
     When I type the message "<TextMessage>" in the conversation view
     And I send the typed message in the conversation view
@@ -232,7 +233,7 @@ Feature: Calling
     When <Contact> calls me using <CallBackend>
     Then I see full screen calling overlay
     When I accept call on full screen calling overlay
-    Then I see calling overlay Big bar
+    Then I see incoming call
     And I see call participant <Contact> on the calling overlay
     And <Contact> stops all calls to me
 
@@ -253,7 +254,7 @@ Feature: Calling
     When <Contact> calls me using <CallBackend>
     Then I see full screen calling overlay
     When I accept call on full screen calling overlay
-    Then I see calling overlay Big bar
+    Then I see incoming call
     And I see call participant <Contact> on the calling overlay
     And <Contact> stops all calls to me
 
@@ -272,11 +273,12 @@ Feature: Calling
     And I see the conversation <Contact1> in my conversations list
     And I see the conversation <Contact2> in my conversations list
     When <Contact1> calls me using <CallBackend>
-    Then I see calling overlay Big bar
-    When I tap <AcceptBtnName> button on the calling overlay
+    Then I see incoming call
+    When I swipe to accept the call
+    Then I see ongoing call
     And I see call participant <Contact1> on the calling overlay
     And <Contact2> calls me using <CallBackend>
-    Then I see calling overlay Big bar
+    Then I see incoming call
     And I see call participant <Contact2> on the calling overlay
     And I see the conversation <Contact1> in my conversations list
     And I see the conversation <Contact2> in my conversations list
@@ -296,9 +298,9 @@ Feature: Calling
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And <Contact> calls me using <CallBackend>
-    And I see calling overlay Big bar
+    And I see incoming call
     When I tap <SilenceBtn> button on the calling overlay
-    Then I do not see calling overlay Big bar
+    Then I do not see incoming call
 
     Examples:
       | Name      | Contact   | CallBackend | SilenceBtn |
@@ -315,9 +317,9 @@ Feature: Calling
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And <Contact> calls me using <CallBackend>
-    And I see calling overlay Big bar
+    And I see incoming call
     When I tap <SilenceBtn> button on the calling overlay
-    Then I do not see calling overlay Big bar
+    Then I do not see incoming call
 
     Examples:
       | Name      | Contact   | CallBackend | SilenceBtn |

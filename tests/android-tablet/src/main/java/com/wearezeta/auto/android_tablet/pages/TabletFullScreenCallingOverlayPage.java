@@ -4,7 +4,6 @@ import com.wearezeta.auto.android.pages.CallIncomingPage;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class TabletFullScreenCallingOverlayPage extends AndroidTabletPage {
