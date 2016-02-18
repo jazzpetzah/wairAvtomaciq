@@ -152,50 +152,14 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact2>
-    And I navigate back to conversations list
-    Given I remember the state of <Contact> conversation item
-    When User <Contact> securely pings conversation Myself
+    When I remember the state of <Contact> conversation item
+    And User <Contact> securely pings conversation Myself
     And I see first item in contact list named <Contact>
     Then I see the state of <Contact> conversation item is changed
 
     Examples:
       | Name      | Contact   |Contact2   	|
       | user1Name | user2Name |user3Name	|
-
-  @C2531 @regression @id2367
-  Scenario Outline: Verify messages are marked as read with disappearing unread dot [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
-    Given User Myself removes his avatar picture
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    Given User <Contact> sends <Number> encrypted messages to user Myself
-    Given I remember the state of <Contact> conversation item
-    When I tap on contact name <Contact>
-    And I navigate back to conversations list
-    Then I see the state of <Contact> conversation item is changed
-
-    Examples:
-      | Name      | Contact   | Number |
-      | user1Name | user2Name | 2      |
-
-  @C2536 @regression @id2711
-  Scenario Outline: Verify messages are marked as read with disappearing unread dot [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
-    Given User Myself removes his avatar picture
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    Given User <Contact> sends <Number> encrypted messages to user Myself
-    Given I remember the state of <Contact> conversation item
-    When I tap on contact name <Contact>
-    And I navigate back to conversations list
-    Then I see the state of <Contact> conversation item is changed
-
-    Examples:
-      | Name      | Contact   | Number |
-      | user1Name | user2Name | 2      |
 
   @C2507 @regression @id2756
   Scenario Outline: Verify conversations are sorted according to most recent activity [PORTRAIT]
@@ -275,9 +239,6 @@ Feature: Conversation List
     When I remember the state of <Contact> conversation item
     And User <Contact> sends <Number> encrypted messages to user Myself
     Then I see the state of <Contact> conversation item is not changed
-    When I remember the state of <Contact> conversation item
-    And User <Contact1> sends <Number> encrypted messages to user Myself
-    Then I see the state of <Contact> conversation item is not changed
 
     Examples:
       | Name      | Contact   | Contact1  | Number | CallBackend |
@@ -298,9 +259,6 @@ Feature: Conversation List
     Then I see the state of <Contact> conversation item is changed
     When I remember the state of <Contact> conversation item
     And User <Contact> sends <Number> encrypted messages to user Myself
-    Then I see the state of <Contact> conversation item is not changed
-    When I remember the state of <Contact> conversation item
-    And User <Contact1> sends <Number> encrypted messages to user Myself
     Then I see the state of <Contact> conversation item is not changed
 
     Examples:
@@ -339,7 +297,7 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see conversations list
-    And I tap on contact name <Contact>
+    And I tap on contact name <Contact2>
     And I remember the state of <Contact> conversation item
     When User <Contact> sends 1 encrypted message to user Myself
     And I see first item in contact list named <Contact>
@@ -354,26 +312,6 @@ Feature: Conversation List
     Examples:
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
-
-  @C2504 @regression @rc @id2566
-  Scenario Outline: Verify muting ongoing call [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given User <Name> change accent color to BrightOrange
-    Given <Contact> starts waiting instance using <CallBackend>
-    Given I Sign in on tablet using my email
-    When I see conversations list
-    And I tap on contact name <Contact>
-    And <Contact> calls me using <CallBackend>
-    And I see call status message contains "<Contact> CALLING"
-    And I tap Accept button on Calling overlay
-    And I swipe right on Dialog page
-    Then I see mute call button in conversation list
-    And I click mute call button in conversation list
-
-    Examples:
-      | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
 
   @C2522 @regression @rc @id2364
   Scenario Outline: Verify play/pause controls can change playing media state - SoundCloud [PORTRAIT]
