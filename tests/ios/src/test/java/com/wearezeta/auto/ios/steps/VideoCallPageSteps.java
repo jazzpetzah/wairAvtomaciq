@@ -17,16 +17,17 @@ public class VideoCallPageSteps {
     }
 
     /**
-     * Verify that ringing label with correct user name is shown
+     * Verify that call status label with correct user name is shown
      *
-     * @param contact user name
+     * @param contact   user name
+     * @param callState Calling status (ringing/calling)
      * @throws Exception
-     * @step. ^I see ringing user (.*) label on Video Call page$
+     * @step. ^I see user (.*) (ringing|calling) label on Video Call page$
      */
-    @Then("^I see ringing user (.*) label on Video Call page$")
-    public void ISeeRingingUserLabel(String contact) throws Exception {
+    @Then("^I see user (.*) (ringing|calling) label on Video Call page$")
+    public void ISeeRingingUserLabel(String contact, String callState) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        Assert.assertTrue("Ringing user label is not visible", getVideoCallingPage().isRingingToUserLabelShown(contact));
+        Assert.assertTrue("Ringing user label is not visible", getVideoCallingPage().isCallStatusLabelShown(contact, callState));
     }
 
     /**

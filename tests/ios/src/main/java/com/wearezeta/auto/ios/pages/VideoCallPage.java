@@ -14,7 +14,8 @@ public class VideoCallPage extends IOSPage {
 
     private static final By nameCallStatusLabel = By.name("CallStatusLabel");
 
-    private static final Function<String, String> xpathStrCallStatusLabel = name -> String.format("//UIAStaticText[@name='CallStatusLabel' and @value='%s RINGING']", name);
+    private static final Interfaces.FunctionFor2Parameters<String, String, String> xpathStrCallStatusLabel = (name, state) ->
+            String.format("//UIAStaticText[@name='CallStatusLabel' and @value='%s %s']", name, state);
 
     private static final By nameMuteButton = By.name("CallMuteButton");
 
@@ -25,16 +26,16 @@ public class VideoCallPage extends IOSPage {
     private static final Interfaces.FunctionFor2Parameters<String, String, String> xpathStrButtonByNameAndVisibility = (name, visibility) ->
             String.format("//UIAButton[@name='%sButton' and @visible='%s']", name, visibility);
 
-    private static final By nameAccepCallButton = By.name("");
+    private static final By nameAccepCallButton = By.name("AcceptVideoButton");
 
-    private static final By nameDeclineCallButton = By.name("");
+    private static final By nameIgnoreCallButton = By.name("IgnoreButton");
 
     public VideoCallPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
-    public boolean isRingingToUserLabelShown(String username) throws Exception {
-        By locator = By.xpath(xpathStrCallStatusLabel.apply(username));
+    public boolean isCallStatusLabelShown(String username, String callState) throws Exception {
+        By locator = By.xpath(xpathStrCallStatusLabel.apply(username, callState.toUpperCase()));
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
 
@@ -55,6 +56,6 @@ public class VideoCallPage extends IOSPage {
     }
 
     public void clickDeclineCallButton() throws Exception {
-        getElement(nameDeclineCallButton).click();
+        getElement(nameIgnoreCallButton).click();
     }
 }
