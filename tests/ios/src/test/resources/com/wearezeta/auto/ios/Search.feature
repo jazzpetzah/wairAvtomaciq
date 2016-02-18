@@ -61,7 +61,7 @@ Feature: Search
 
     Examples:
       | Name      | ParticipantsCount |
-      | user1Name | 3                 |
+      | user1Name | 2                 |
 
   @C40 @rc @regression @id1454
   Scenario Outline: Verify sending a connection request to user chosen from search
