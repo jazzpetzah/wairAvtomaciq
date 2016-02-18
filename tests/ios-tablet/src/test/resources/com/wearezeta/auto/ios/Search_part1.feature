@@ -250,7 +250,6 @@ Feature: Search
     Given Myself is connected to all other users
     Given I Sign in on tablet using my email
     Given I see conversations list
-    Given I wait until <Contact> exists in backend search results
     When I open search by taping on it
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page

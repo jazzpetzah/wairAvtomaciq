@@ -502,8 +502,8 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    Given User Myself sends 40 encrypted messages to user <Contact>
-    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
+    Given User Myself sends 40 encrypted messages to user <Contact1>
+    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact1>
     When I tap on contact name <Contact1>
     And I tap on text input to scroll to the end
     And I tap media container

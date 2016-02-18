@@ -476,9 +476,9 @@ Feature: Conversation View
   Scenario Outline: Verify possibility to copy image in the conversation view [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> sends encrypted image <Picture> to <ConversationType> conversation <Name>
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
     And I see 1 photo in the dialog
     And I longpress on image in the conversation
@@ -490,8 +490,8 @@ Feature: Conversation View
     Then I see 2 photos in the dialog
 
     Examples:
-      | Name      | Contact   | Picture     | ConversationType |
-      | user1Name | user2Name | testing.jpg | single user      |
+      | Name      | Contact   | Picture     |
+      | user1Name | user2Name | testing.jpg |
 
   @C2587 @regression @id4008
   Scenario Outline: Verify possibility to copy image in the conversation view [LANDSCAPE]
