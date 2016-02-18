@@ -457,17 +457,6 @@ public class DialogPageSteps {
     }
 
     /**
-     * Scrolls to the end of the conversation
-     *
-     * @throws Exception
-     * @step. ^I scroll to the end of the conversation$
-     */
-    @When("^I scroll to the end of the conversation$")
-    public void IScrollToTheEndOfTheConversation() throws Exception {
-        getDialogPage().scrollToEndOfConversation();
-    }
-
-    /**
      * Checks if the copied content from send an invite via mail is correct
      *
      * @param mail Email thats the invite sent from

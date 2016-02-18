@@ -13,7 +13,6 @@ import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -29,9 +28,6 @@ public class DialogPage extends IOSPage {
     private static final By nameOpenConversationDetails = By.name("ComposeControllerConversationDetailButton");
 
     protected static final By nameYouRenamedConversation = By.name("YOU RENAMED THE CONVERSATION");
-
-    private static final By xpathLastChatMessage = By.xpath(xpathStrMainWindow
-            + "/UIATableView[1]/UIATableCell[last()]/*[last()]");
 
     private static final By xpathMessageEntries = By.xpath(xpathStrMainWindow + "/UIATableView/UIATableCell");
 
@@ -408,14 +404,6 @@ public class DialogPage extends IOSPage {
             // Wait for animation
             Thread.sleep(1000);
             convoInput.sendKeys(message);
-        }
-    }
-
-    public void scrollToEndOfConversation() throws Exception {
-        try {
-            this.getDriver().scrollToExact(getElement(xpathLastChatMessage).getText());
-        } catch (WebDriverException e) {
-            // Simply ignore
         }
     }
 
