@@ -64,19 +64,25 @@ Feature: Calling
 
   @C699 @id814 @calling_basic @rc
   Scenario Outline: I can accept incoming 1:1 call
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When <Contact1> calls me using <CallBackend>
-    And I swipe to accept the call
-#TODO activity check
-    And I see outgoing call
+    Then I see incoming call
+    And I see incoming call from <Contact1>
+    When I swipe to accept the call
+    Then <Contact1> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    And I see ongoing call
+    When <Contact1> stops all calls to me
+    Then <Contact1> verifies that call status to <Name> is changed to destroyed in <Timeout> seconds
+    And I do not see ongoing call
+#TODO check for system messages
 
     Examples:
-      | Name      | Contact1  | Contact2  | CallBackend |
-      | user1Name | user2Name | user3Name | autocall    |
+      | Name      | Contact1  | CallBackend | Timeout |
+      | user1Name | user2Name | autocall    | 60      |
 
   @C710 @id1497 @calling_basic @rc
   Scenario Outline: Receive call while Wire is running in the background
@@ -89,12 +95,17 @@ Feature: Calling
     And <Contact> calls me using <CallBackend>
     Then I see incoming call
     And I see incoming call from <Contact>
-    And I swipe to accept the call
-#TODO activity check
+    When I swipe to accept the call
+    Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    And I see ongoing call
+    When <Contact> stops all calls to me
+    Then <Contact> verifies that call status to <Name> is changed to destroyed in <Timeout> seconds
+    And I do not see ongoing call
+#TODO check for system messages
 
     Examples:
-      | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | autocall    | 60      |
 
   @C711 @id1499 @calling_basic @rc
   Scenario Outline: Receive call while mobile in sleeping mode(screen locked)
@@ -107,12 +118,17 @@ Feature: Calling
     And <Contact> calls me using <CallBackend>
     Then I see incoming call
     And I see incoming call from <Contact>
-    And I swipe to accept the call
-    Then I see ongoing call
+    When I swipe to accept the call
+    Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    And I see ongoing call
+    When <Contact> stops all calls to me
+    Then <Contact> verifies that call status to <Name> is changed to destroyed in <Timeout> seconds
+    And I do not see ongoing call
+#TODO check for system messages
 
     Examples:
-      | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | autocall    | 60      |
 
 # DEFECT: can not implement until I can leave the call overlay while calling
   @C404 @id347 @calling_basic @mute
@@ -146,7 +162,6 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Message                   | Msg        |
       | user1Name | user2Name | autocall    | simple message in english | YOU PINGED |
 
-#TODO Postponed button state check
   @C721 @id2210 @calling_basic @rc @rc42
   Scenario Outline: Calling bar buttons are clickable and change their states
     Given There are 2 users where <Name> is me
@@ -156,20 +171,23 @@ Feature: Calling
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And <Contact> calls me using <CallBackend>
-    And I swipe to accept the call
-    When I remember the current state of <MuteBtnName> button
-    And I press <MuteBtnName> button
-    Then I see <MuteBtnName> button state is changed
-    When I remember the current state of <SpeakerBtnName> button
-    And I press <SpeakerBtnName> button
-    Then I see <SpeakerBtnName> button state is changed
+    Then I see incoming call
+    And I see incoming call from <Contact>
+    When I swipe to accept the call
+    Then I see ongoing call
+    When I remember state of mute button
+    And I press mute button
+    Then I see state of mute button has changed
+    When I remember state of speaker button
+    And I press speaker button
+    Then I see state of speaker button has changed
     When I hang up ongoing call
     And I do not see ongoing call
     And <Contact> stops all calls to me
 
     Examples:
-      | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName |
-      | user1Name | user2Name | autocall    | Speaker        | Mute        |
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | autocall    |
 
 # DEPRECATED
   @C422 @id2212 @calling_basic @rc @mute
@@ -198,7 +216,6 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend |
       | user1Name | user2Name | user3Name | autocall    |
 
-#TODO Postponed button state check
   @C431 @id3239 @calling_basic
   Scenario Outline: Calling bar buttons are clickable and change their states in a group call
     Given There are 3 users where <Name> is me
@@ -208,22 +225,25 @@ Feature: Calling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
-    And I see dialog page
-    And I swipe on text input
-    And I press Call button
-    Then I see call overlay
-    When I remember the current state of <MuteBtnName> button
-    And I press Mute button
-    Then I see <MuteBtnName> button state is changed
-    When I remember the current state of <SpeakerBtnName> button
-    And I press Speaker button
-    Then I see <SpeakerBtnName> button state is changed
-    When I press Cancel call button
-    Then I do not see call overlay
+    And <Contact1> calls <GroupChatName> using <CallBackend>
+    And <Contact2> calls <GroupChatName> using <CallBackend>
+    Then I see incoming call
+    When I swipe to accept the call
+    Then I see ongoing call
+    When I remember state of mute button
+    And I press mute button
+    Then I see state of mute button has changed
+    When I remember state of speaker button
+    And I press speaker button
+    Then I see state of speaker button has changed
+    When I hang up ongoing call
+    And I do not see ongoing call
+    And <Contact1> stops all calls to me
+    And <Contact2> stops all calls to me
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName    | SpeakerBtnName | MuteBtnName |
-      | user1Name | user2Name | user3Name | ChatForGroupCall | Speaker        | Mute        |
+      | Name      | Contact1  | Contact2  | GroupChatName    | CallBackend |
+      | user1Name | user2Name | user3Name | ChatForGroupCall | autocall    |
 
 #TODO use waiting instances instead of autocall
   @C807 @id3240 @calling_basic @rc @rc42

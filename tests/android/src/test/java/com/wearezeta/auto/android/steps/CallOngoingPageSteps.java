@@ -1,9 +1,9 @@
 package com.wearezeta.auto.android.steps;
 
 import com.wearezeta.auto.android.pages.CallOngoingPage;
-import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import cucumber.api.java.en.Then;
 
 import cucumber.api.java.en.When;
 import static org.junit.Assert.assertTrue;
@@ -62,6 +62,131 @@ public class CallOngoingPageSteps {
             throw new AssertionError(String.format(
                 "The actual count of users in call %s does not equal to the expected count %s",
                 actualUsersCount, expectedUsersCount));
+        }
+    }
+    
+    /**
+     * Press on the mute button in the calling controls
+     *
+     * @throws Exception
+     * @step. ^I press mute button$
+     */
+    @When("^I press mute button$")
+    public void WhenIPressMuteButton() throws Exception {
+        getPage().toggleMute();
+    }
+
+    /**
+     * Press on the Speaker button in the calling controls
+     *
+     * @throws Exception
+     * @step. ^I press speaker button$
+     */
+    @When("^I press speaker button$")
+    public void WhenIPressSpeakerButton() throws Exception {
+        getPage().toggleSpeaker();
+    }
+    
+    /**
+     * Press on the Video button in the calling controls
+     *
+     * @throws Exception
+     * @step. ^I press video button$
+     */
+    @When("^I press video button$")
+    public void WhenIPressVideoButton() throws Exception {
+        getPage().toggleVideo();
+    }
+    
+    /**
+     * Remembers the state of the video button in calling page
+     *
+     * @throws Exception
+     * @step. ^I remember state of video button$
+     */
+    @When("^I remember state of video button$")
+    public void IRememberStateOfVideoButton() throws Exception {
+        IRememberStateOfSpacialActionButton();
+    }
+    
+    /**
+     * Remembers the state of the speaker button in calling page
+     *
+     * @throws Exception
+     * @step. ^I remember state of speaker button$
+     */
+    @When("^I remember state of speaker button$")
+    public void IRememberStateOfSpeakerButton() throws Exception {
+        IRememberStateOfSpacialActionButton();
+    }
+    
+    /**
+     * Remembers the state of the special action button in calling page
+     *
+     * @throws Exception
+     * @step. ^I remember state of special action button$
+     */
+    @When("^I remember state of special action button$")
+    public void IRememberStateOfSpacialActionButton() throws Exception {
+        getPage().rememberSpecialActionButtonState();
+    }
+    
+    /**
+     * Remembers the state of the mute button in calling page
+     *
+     * @throws Exception
+     * @step. ^I remember state of mute button$
+     */
+    @When("^I remember state of mute button$")
+    public void IRememberStateOfMuteButton() throws Exception {
+        getPage().rememberMuteButtonState();
+    }
+    
+    /**
+     * Verifies change of video button state
+     *
+     * @throws Exception
+     * @step. ^I see state of video button has changed$
+     */
+    @Then("^I see state of video button has changed$")
+    public void VerifyStateOfSpacialVideoHasChanged() throws Exception {
+        VerifyStateOfSpecialActionButtonHasChanged();
+    }
+    
+    /**
+     * Verifies change of speaker button state
+     *
+     * @throws Exception
+     * @step. ^I see state of speaker button has changed$
+     */
+    @Then("^I see state of speaker button has changed$")
+    public void VerifyStateOfSpacialSpeakerHasChanged() throws Exception {
+        VerifyStateOfSpecialActionButtonHasChanged();
+    }
+    
+    /**
+     * Verifies change of special action button state
+     *
+     * @throws Exception
+     * @step. ^I see state of special action button has changed$
+     */
+    @Then("^I see state of special action button has changed$")
+    public void VerifyStateOfSpecialActionButtonHasChanged() throws Exception {
+        if (!getPage().specialActionButtonStateHasChanged()) {
+            throw new AssertionError("State of special action button has not changed");
+        }
+    }
+    
+    /**
+     * Verifies change of mute button state
+     *
+     * @throws Exception
+     * @step. ^I see state of mute button has changed$
+     */
+    @Then("^I see state of mute button has changed$")
+    public void VerifyStateOfMuteButtonHasChanged() throws Exception {
+        if (!getPage().muteButtonStateHasChanged()) {
+            throw new AssertionError("State of mute button has not changed");
         }
     }
 

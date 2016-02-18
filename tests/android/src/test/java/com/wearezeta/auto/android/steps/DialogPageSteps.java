@@ -176,39 +176,6 @@ public class DialogPageSteps {
         getDialogPage().tapSketchBtn();
     }
 
-    /**
-     * Press on the mute button in the calling controls
-     *
-     * @throws Exception
-     * @step. ^I press Mute button$
-     */
-    @When("^I press Mute button$")
-    public void WhenIPressMuteButton() throws Exception {
-        getDialogPage().tapMuteBtn();
-    }
-
-    /**
-     * Press on the Speaker button in the calling controls
-     *
-     * @throws Exception
-     * @step. ^I press Speaker button$
-     */
-    @When("^I press Speaker button$")
-    public void WhenIPressSpeakerButton() throws Exception {
-        getDialogPage().tapSpeakerBtn();
-    }
-
-    /**
-     * Press on the Cancel call button in the Calling controls
-     *
-     * @throws Exception
-     * @step. ^I press Cancel call button$
-     */
-    @When("^I press Cancel call button$")
-    public void WhenIPressCancelCallButton() throws Exception {
-        getDialogPage().tapCancelCallBtn();
-    }
-
     private final Map<String, BufferedImage> savedButtonStates = new HashMap<String, BufferedImage>();
 
     /**
