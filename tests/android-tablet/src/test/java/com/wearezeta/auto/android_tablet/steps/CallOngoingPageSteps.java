@@ -184,22 +184,4 @@ public class CallOngoingPageSteps {
             throw new AssertionError("State of mute button has not changed");
         }
     }
-
-//    /**
-//     * Checks to see if join group call overlay is present or not
-//     *
-//     * @param name text on the button
-//     * @throws Exception
-//     * @step. ^I see \"(.*)\" button$
-//     */
-//    @Then("^I( do not)? see \"(.*)\" button$")
-//    public void WhenISeeGroupCallJoinButton(String shouldNotSee, String name) throws Exception {
-//        if (shouldNotSee == null) {
-//            Assert.assertTrue(name + " button with not visible in group call overlay",
-//                    getCallingOverlayPage().waitUntilJoinGroupCallButtonVisible(name));
-//        } else {
-//            Assert.assertTrue(name + " button with not visible in group call overlay",
-//                    getCallingOverlayPage().waitUntilJoinGroupCallButtonNotVisible(name));
-//        }
-//    }
 }

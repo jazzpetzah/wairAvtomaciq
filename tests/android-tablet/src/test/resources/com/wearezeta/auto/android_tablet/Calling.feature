@@ -181,6 +181,7 @@ Feature: Calling
     And I tap Ping button in the conversation view
     Then I see the ping message "<PingMessage>" in the conversation view
     And <Contact> stops all calls to me
+    Then I do not see ongoing call
 
     Examples:
       | Name      | Contact   | CallBackend | TextMessage  | PingMessage |
@@ -215,6 +216,7 @@ Feature: Calling
     And I tap Ping button in the conversation view
     Then I see the ping message "<PingMessage>" in the conversation view
     And <Contact> stops all calls to me
+    Then I do not see ongoing call
 
     Examples:
       | Name      | Contact   | CallBackend | TextMessage  | PingMessage |
@@ -231,11 +233,12 @@ Feature: Calling
     And I see the conversation <Contact> in my conversations list
     And I minimize the application
     When <Contact> calls me using <CallBackend>
-    Then I see full screen calling overlay
-    When I accept call on full screen calling overlay
     Then I see incoming call
-    And I see call participant <Contact> on the calling overlay
+    Then I see incoming call from <Contact>
+    When I swipe to accept the call
+    Then I see ongoing call
     And <Contact> stops all calls to me
+    Then I do not see ongoing call
 
     Examples:
       | Name      | Contact   | CallBackend |
@@ -252,11 +255,12 @@ Feature: Calling
     And I see the conversation <Contact> in my conversations list
     And I lock the device
     When <Contact> calls me using <CallBackend>
-    Then I see full screen calling overlay
-    When I accept call on full screen calling overlay
     Then I see incoming call
-    And I see call participant <Contact> on the calling overlay
+    Then I see incoming call from <Contact>
+    When I swipe to accept the call
+    Then I see ongoing call
     And <Contact> stops all calls to me
+    Then I do not see ongoing call
 
     Examples:
       | Name      | Contact   | CallBackend |
@@ -274,9 +278,9 @@ Feature: Calling
     And I see the conversation <Contact2> in my conversations list
     When <Contact1> calls me using <CallBackend>
     Then I see incoming call
+    Then I see incoming call from <Contact1>
     When I swipe to accept the call
     Then I see ongoing call
-    And I see call participant <Contact1> on the calling overlay
     And <Contact2> calls me using <CallBackend>
     Then I see incoming call
     And I see call participant <Contact2> on the calling overlay
