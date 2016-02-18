@@ -619,11 +619,12 @@ Feature: Calling
     And <Contact1> calls me using <CallBackend>
     And I see incoming call from <Contact1>
     And I swipe to accept the call
-    And I see started call message from <Contact1>
+    And I see ongoing call
     When <Contact2> calls me using <CallBackend>
-    Then And I see incoming call
+    Then I do not see incoming call
+    And <Contact1> stop all calls to me
     And I see incoming call from <Contact2>
-    And <Contact1>,<Contact2> stop all calls to me
+    And <Contact2> stop all calls to me
 
     Examples:
       | Name      | Contact1  | Contact2  | CallBackend |
