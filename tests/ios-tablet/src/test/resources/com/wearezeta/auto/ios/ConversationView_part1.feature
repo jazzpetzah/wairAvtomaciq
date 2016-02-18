@@ -242,6 +242,7 @@ Feature: Conversation View
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Login button
+    And I accept First Time overlay if it is visible
     And I see conversations list
     And I tap on contact name <Contact>
     And I tap on text input
@@ -267,6 +268,7 @@ Feature: Conversation View
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Login button
+    And I accept First Time overlay if it is visible
     And I see conversations list
     And I tap on contact name <Contact>
     And I tap on text input
@@ -457,8 +459,6 @@ Feature: Conversation View
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
     And I tap on text input to scroll to the end
-    And I navigate back to conversations list
-    And I tap on contact name <Contact>
     And I tap media container
     And I scroll media out of sight until media bar appears
     And I pause playing the media in media bar
@@ -483,7 +483,6 @@ Feature: Conversation View
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
     And I tap on text input to scroll to the end
-    And I tap on contact name <Contact>
     And I tap media container
     And I scroll media out of sight until media bar appears
     And I pause playing the media in media bar

@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.email.MessagingUtils;
+import com.wearezeta.auto.ios.pages.FirstTimeOverlay;
 import org.junit.Assert;
 
 import java.io.IOException;
@@ -36,6 +37,10 @@ public class LoginPageSteps {
 
     private RegistrationPage getRegistrationPage() throws Exception {
         return pagesCollection.getPage(RegistrationPage.class);
+    }
+
+    private FirstTimeOverlay getFirstTimeOverlayPage() throws Exception {
+        return pagesCollection.getPage(FirstTimeOverlay.class);
     }
 
     private Future<String> passwordMessage;
@@ -84,6 +89,7 @@ public class LoginPageSteps {
         getLoginPage().setPassword(password);
         getLoginPage().clickLoginButton();
         getLoginPage().waitForLoginToFinish();
+        getFirstTimeOverlayPage().acceptIfVisible(2);
     }
 
     private void phoneLoginSequence(final PhoneNumber number) throws Exception {
@@ -96,6 +102,7 @@ public class LoginPageSteps {
                 number.toString().replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""));
         getRegistrationPage().inputActivationCode(number);
         getLoginPage().waitForLoginToFinish();
+        getFirstTimeOverlayPage().acceptIfVisible(2);
     }
 
     /**

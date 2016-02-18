@@ -8,6 +8,7 @@ Feature: Sign In
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Login button
+    And I accept First Time overlay if it is visible
     Then I see conversations list
 
     Examples:
@@ -23,6 +24,7 @@ Feature: Sign In
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Login button
+    And I accept First Time overlay if it is visible
     Then I see conversations list
 
     Examples:

@@ -13,18 +13,7 @@ import javax.imageio.ImageIO;
 
 import io.appium.java_client.android.AndroidDriver;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.InvalidElementStateException;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.SessionNotFoundException;
@@ -237,13 +226,11 @@ public class DriverUtils {
         }
     }
 
-    public static boolean waitUntilAlertAppears(
-            AppiumDriver<? extends WebElement> driver) throws Exception {
-        return waitUntilAlertAppears(driver, 20);
+    public static boolean waitUntilAlertAppears(AppiumDriver<? extends WebElement> driver) throws Exception {
+        return waitUntilAlertAppears(driver, getDefaultLookupTimeoutSeconds());
     }
 
-    public static boolean waitUntilAlertAppears(
-            AppiumDriver<? extends WebElement> driver, long timeout)
+    public static boolean waitUntilAlertAppears(AppiumDriver<? extends WebElement> driver, long timeout)
             throws Exception {
         DriverUtils.turnOffImplicitWait(driver);
         try {
@@ -254,6 +241,26 @@ public class DriverUtils {
             return (wait.until(ExpectedConditions.alertIsPresent()) != null);
         } catch (TimeoutException e) {
             return false;
+        } finally {
+            restoreImplicitWait(driver);
+        }
+    }
+
+    public static Optional<Alert> getAlertIfDisplayed(AppiumDriver<? extends WebElement> driver) throws Exception {
+       return getAlertIfDisplayed(driver, getDefaultLookupTimeoutSeconds());
+    }
+
+    public static Optional<Alert> getAlertIfDisplayed(AppiumDriver<? extends WebElement> driver,
+                                                      int timeoutSeconds) throws Exception {
+        DriverUtils.turnOffImplicitWait(driver);
+        try {
+            Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+                    .withTimeout(timeoutSeconds, TimeUnit.SECONDS)
+                    .pollingEvery(1, TimeUnit.SECONDS)
+                    .ignoring(NoSuchElementException.class);
+            return Optional.ofNullable(wait.until(ExpectedConditions.alertIsPresent()));
+        } catch (TimeoutException e) {
+            return Optional.empty();
         } finally {
             restoreImplicitWait(driver);
         }

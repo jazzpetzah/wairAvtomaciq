@@ -1,37 +1,41 @@
 package com.wearezeta.auto.ios.steps;
 
-import org.junit.Assert;
-
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.ios.pages.FirstTimeOverlay;
 import com.wearezeta.auto.ios.pages.TabletLoginPage;
 
 import cucumber.api.java.en.Given;
 
 public class TabletLoginPageSteps {
 
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-	private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
+    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-	private TabletLoginPage getTabletLoginPage() throws Exception {
-		return pagesCollection.getPage(TabletLoginPage.class);
-	}
+    private TabletLoginPage getTabletLoginPage() throws Exception {
+        return pagesCollection.getPage(TabletLoginPage.class);
+    }
 
-	/**
-	 * Signing in on tablet with login and password
-	 * 
-	 * @step. ^I Sign in on tablet using my email$
-	 * 
-	 * @throws Exception
-	 */
-	@Given("^I Sign in on tablet using my email$")
-	public void GivenISignInUsingEmail() throws Exception {
-		final ClientUser self = usrMgr.getSelfUserOrThrowError();
-		getTabletLoginPage().switchToEmailLogin();
-		getTabletLoginPage().setLogin(self.getEmail());
-		getTabletLoginPage().setPassword(self.getPassword());
-		getTabletLoginPage().clickLoginButton();
-		getTabletLoginPage().waitForLoginToFinish();
-	}
+    private FirstTimeOverlay getFirstTimeOverlayPage() throws Exception {
+        return pagesCollection.getPage(FirstTimeOverlay.class);
+    }
+
+    /**
+     * Signing in on tablet with login and password
+     *
+     * @throws Exception
+     * @step. ^I Sign in on tablet using my email$
+     */
+    @Given("^I Sign in on tablet using my email$")
+    public void GivenISignInUsingEmail() throws Exception {
+        final ClientUser self = usrMgr.getSelfUserOrThrowError();
+        getTabletLoginPage().switchToEmailLogin();
+        getTabletLoginPage().setLogin(self.getEmail());
+        getTabletLoginPage().setPassword(self.getPassword());
+        getTabletLoginPage().clickLoginButton();
+        getTabletLoginPage().waitForLoginToFinish();
+        getTabletLoginPage().acceptAlertIfVisible(5);
+        getFirstTimeOverlayPage().acceptIfVisible(2);
+    }
 }

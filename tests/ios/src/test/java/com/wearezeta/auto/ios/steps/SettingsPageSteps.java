@@ -150,7 +150,7 @@ public class SettingsPageSteps {
     @When("^I confirm with my (.*) the deletion of the device$")
     public void IConfirmWithMyPasswordTheDeletionOfTheDevice(String password) throws Exception {
         getSettingsPage().typePasswordToConfirmDeleteDevice(password);
-        pagesCollection.getCommonPage().acceptAlert();
+        pagesCollection.getCommonPage().acceptAlertIfVisible();
     }
 
     /**

@@ -201,6 +201,7 @@ Feature: Conversation View
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Login button
+    And I accept First Time overlay if it is visible
     And I see conversations list
     And I tap on contact name <Contact>
     And I tap on text input

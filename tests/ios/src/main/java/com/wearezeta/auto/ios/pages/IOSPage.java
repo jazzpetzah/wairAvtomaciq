@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -66,22 +67,22 @@ public abstract class IOSPage extends BasePage {
      * @throws Exception
      */
     private static ZetaIOSDriver fixUITreeIfBroken(final ZetaIOSDriver drv) throws Exception {
-        if (drv.findElements(By.className("UIAWindow")).size() > 0) {
-            return drv;
-        }
-        log.warn("Detected Appium UI tree corruption. Trying to fix...");
-        try {
-            if (drv.getOrientation() == ScreenOrientation.PORTRAIT) {
-                drv.rotate(ScreenOrientation.LANDSCAPE);
-                drv.rotate(ScreenOrientation.PORTRAIT);
-            } else {
-                drv.rotate(ScreenOrientation.PORTRAIT);
-                drv.rotate(ScreenOrientation.LANDSCAPE);
-            }
-            Thread.sleep(500);
-        } catch (WebDriverException e) {
-            // pass silently
-        }
+//        if (drv.findElements(By.className("UIAWindow")).size() > 0) {
+//            return drv;
+//        }
+//        log.warn("Detected Appium UI tree corruption. Trying to fix...");
+//        try {
+//            if (drv.getOrientation() == ScreenOrientation.PORTRAIT) {
+//                drv.rotate(ScreenOrientation.LANDSCAPE);
+//                drv.rotate(ScreenOrientation.PORTRAIT);
+//            } else {
+//                drv.rotate(ScreenOrientation.PORTRAIT);
+//                drv.rotate(ScreenOrientation.LANDSCAPE);
+//            }
+//            Thread.sleep(500);
+//        } catch (WebDriverException e) {
+//            // pass silently
+//        }
         return drv;
     }
 
@@ -216,15 +217,24 @@ public abstract class IOSPage extends BasePage {
         this.getDriver().hideKeyboard();
     }
 
-    public void acceptAlert() throws Exception {
-        if (DriverUtils.waitUntilAlertAppears(this.getDriver())) {
-            this.getDriver().switchTo().alert().accept();
+    public void acceptAlertIfVisible() throws Exception {
+        final Optional<Alert> alert = DriverUtils.getAlertIfDisplayed(getDriver());
+        if (alert.isPresent()) {
+            alert.get().accept();
         }
     }
 
-    public void dismissAlert() throws Exception {
-        if (DriverUtils.waitUntilAlertAppears(this.getDriver())) {
-            this.getDriver().switchTo().alert().dismiss();
+    public void acceptAlertIfVisible(int timeoutSeconds) throws Exception {
+        final Optional<Alert> alert = DriverUtils.getAlertIfDisplayed(getDriver(), timeoutSeconds);
+        if (alert.isPresent()) {
+            alert.get().accept();
+        }
+    }
+
+    public void dismissAlertIfVisible() throws Exception {
+        final Optional<Alert> alert = DriverUtils.getAlertIfDisplayed(getDriver());
+        if (alert.isPresent()) {
+            alert.get().dismiss();
         }
     }
 

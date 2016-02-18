@@ -187,12 +187,12 @@ public class CommonIOSSteps {
 
     @When("^I accept alert$")
     public void IAcceptAlert() throws Exception {
-        pagesCollection.getCommonPage().acceptAlert();
+        pagesCollection.getCommonPage().acceptAlertIfVisible();
     }
 
     @When("^I dismiss alert$")
     public void IDismissAlert() throws Exception {
-        pagesCollection.getCommonPage().dismissAlert();
+        pagesCollection.getCommonPage().dismissAlertIfVisible();
     }
 
     /**
