@@ -232,7 +232,7 @@ Feature: People View
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | ParticipantsNumber |
-      | user1Name | user2Name | user3Name | GroupInfo     | 3                  |
+      | user1Name | user2Name | user3Name | GroupInfo     | 2                  |
 
   @C2702 @regression @rc @id2432
   Scenario Outline: Check any users personal info in group conversation [PORTRAIT]
