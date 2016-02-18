@@ -446,7 +446,7 @@ Feature: People View
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | ParticipantsNumber |
-      | user1Name | user2Name | user3Name | user4Name | AddContact    | 4                  |
+      | user1Name | user2Name | user3Name | user4Name | AddContact    | 3                  |
 
   @C2723 @regression @id3221
   Scenario Outline: Add someone to a group conversation [LANDSCAPE]
@@ -466,7 +466,7 @@ Feature: People View
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | ParticipantsNumber |
-      | user1Name | user2Name | user3Name | user4Name | AddContact    | 4                  |
+      | user1Name | user2Name | user3Name | user4Name | AddContact    | 3                  |
 
   @C2447 @regression @id2333
   Scenario Outline: Verify you can block a person from profile view [PORTRAIT]
