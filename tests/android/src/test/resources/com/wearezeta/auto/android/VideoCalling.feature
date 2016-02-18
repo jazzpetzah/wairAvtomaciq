@@ -7,7 +7,7 @@ Feature: VideoCalling
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When <Contact> calls me using <CallBackend>
+    When <Contact> starts a video call to me using <CallBackend>
     And I see incoming call
     And I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
@@ -17,8 +17,8 @@ Feature: VideoCalling
     And I do not see ongoing call
 
     Examples:
-      | Name      | Contact   | CallBackend         | Timeout |
-      | user1Name | user2Name | chrome:48.0.2564.97 | 60      |
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 60      |
 
 
   @C36390 @calling_basic @staging
@@ -28,15 +28,15 @@ Feature: VideoCalling
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When <Contact> calls me using <CallBackend>
+    When <Contact> starts a video call to me using <CallBackend>
     And I see incoming call
     And I swipe to ignore the call
-    Then <Contact> verifies that call status to me is changed to pending in <Timeout> seconds
+    Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
     And I do not see incoming call
 
     Examples:
-      | Name      | Contact   | CallBackend         | Timeout |
-      | user1Name | user2Name | chrome:48.0.2564.97 | 60      |
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 60      |
 
 
   @C36362 @calling_basic @staging
@@ -47,7 +47,7 @@ Feature: VideoCalling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I minimize the application
-    And <Contact> calls me using <CallBackend>
+    And <Contact> starts a video call to me using <CallBackend>
     Then I see incoming call
     And I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
@@ -57,8 +57,8 @@ Feature: VideoCalling
     And I do not see ongoing call
 
     Examples:
-      | Name      | Contact   | CallBackend         | Timeout |
-      | user1Name | user2Name | chrome:48.0.2564.97 | 60      |
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 60      |
 
   @C36364 @calling_basic @staging
   Scenario Outline: Verify I can decline Video call from the locked device
@@ -68,12 +68,12 @@ Feature: VideoCalling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I minimize the application
-    And <Contact> calls me using <CallBackend>
+    And <Contact> starts a video call to me using <CallBackend>
     And I see incoming call
     And I swipe to ignore the call
-    Then <Contact> verifies that call status to me is changed to pending in <Timeout> seconds
+    Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
     And I do not see incoming call
 
     Examples:
-      | Name      | Contact   | CallBackend         | Timeout |
-      | user1Name | user2Name | chrome:48.0.2564.97 | 60      |
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 60      |
