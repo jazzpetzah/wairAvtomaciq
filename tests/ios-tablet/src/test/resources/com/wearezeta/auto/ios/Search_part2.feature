@@ -55,7 +55,7 @@ Feature: Search
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I see 1 photo in the dialog
     When I navigate back to conversations list
-    Then I see in contact list group chat with <Contact1> <Contact2> <Contact3>
+    Then I see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
 
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  |
@@ -79,7 +79,7 @@ Feature: Search
     And I press Confirm button
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I see 1 photo in the dialog
-    And I see in contact list group chat with <Contact1> <Contact2> <Contact3>
+    And I see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
 
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  |
