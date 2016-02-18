@@ -45,7 +45,7 @@ public final class CommonSteps {
     public static final String ALIASES_SEPARATOR = ",";
 
     public static List<String> splitAliases(String aliases) {
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         String[] splittedAliases = aliases.split(ALIASES_SEPARATOR);
         for (String splittedAlias : splittedAliases) {
             result.add(splittedAlias.trim());
@@ -433,14 +433,6 @@ public final class CommonSteps {
 
     public void UserXIsMe(String nameAlias) throws Exception {
         usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(nameAlias));
-    }
-
-    public void BlockTcpConnectionForApp(String appName) throws Exception {
-        CommonUtils.blockTcpForAppName(appName);
-    }
-
-    public void EnableTcpConnectionForApp(String appName) throws Exception {
-        CommonUtils.enableTcpForAppName(appName);
     }
 
     public void WaitUntilSuggestionFound(String userAsNameAlias)

@@ -5,7 +5,6 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.GroupChatInfoPage;
 
 import cucumber.api.java.en.Then;
@@ -22,10 +21,6 @@ public class GroupChatInfoPageSteps {
 
     private GroupChatInfoPage getGroupChatInfoPage() throws Exception {
         return pagesCollection.getPage(GroupChatInfoPage.class);
-    }
-
-    private ContactListPage getContactListPage() throws Exception {
-        return pagesCollection.getPage(ContactListPage.class);
     }
 
     @When("^I press leave conversation button$")

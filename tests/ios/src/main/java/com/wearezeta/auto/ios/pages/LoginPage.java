@@ -28,8 +28,6 @@ public class LoginPage extends IOSPage {
     private static final By xpathSafariChangePasswordEmailField =
             By.xpath("//UIAApplication[@name='Safari']//UIATextField[@value='Email']");
 
-    private static final By xpathSafariURLButton = By.xpath("//UIAButton[@name='URL']");
-
     private static final By xpathSafariEnterNewPasswordField =
             By.xpath("//UIASecureTextField[@value='Enter new password']");
 
@@ -92,7 +90,6 @@ public class LoginPage extends IOSPage {
         if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(), nameLoginButton, 40)) {
             throw new IllegalStateException("Login button is still visible after the timeout");
         }
-        instantiatePage(FirstTimeOverlay.class).acceptIfVisible(2);
     }
 
     public void clickLoginButton() throws Exception {
@@ -111,13 +108,16 @@ public class LoginPage extends IOSPage {
         ((IOSElement) getElement(namePasswordField)).setValue(password);
     }
 
+    private static final int LOGIN_TIMEOUT_SECONDS = 30;
+
     public void dismissSettingsWarning() throws Exception {
-        getElementIfDisplayed(nameMaybeLater, 20).orElseGet(DummyElement::new).click();
+        getElement(nameMaybeLater,
+                String.format("MAYBE LATER label is not visible after %s seconds timeout", LOGIN_TIMEOUT_SECONDS),
+                LOGIN_TIMEOUT_SECONDS).click();
     }
 
-    public Boolean isLoginFinished() throws Exception {
-        dismissSettingsWarning();
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameSelfButton), 60);
+    public Boolean isSelfAvatarVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameSelfButton), LOGIN_TIMEOUT_SECONDS);
     }
 
     public void tapHoldEmailInput() throws Exception {
@@ -144,7 +144,7 @@ public class LoginPage extends IOSPage {
     }
 
     public void changeURLInBrowser(String URL) throws Exception {
-        this.inputStringFromKeyboard(getElement(xpathSafariURLButton), URL, false, true);
+        this.inputStringFromKeyboard(getElement(xpathBrowserURLButton), URL, false, true);
     }
 
     public void commitNewPassword(String newPassword) throws Exception {
@@ -161,38 +161,28 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean isResendIn10minAlertVisible() throws Exception {
-        if (DriverUtils.waitUntilAlertAppears(getDriver())){
-            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameResentIn10min, 1);
-        }
-        return false;
+        return DriverUtils.waitUntilAlertAppears(getDriver()) &&
+                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameResentIn10min, 1);
     }
 
     public boolean isInvalidPhoneNumberAlertShown() throws Exception {
-        if (DriverUtils.waitUntilAlertAppears(getDriver())){
-            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInvalidPhoneNumber, 1);
-        }
-        return false;
+        return DriverUtils.waitUntilAlertAppears(getDriver()) &&
+                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInvalidPhoneNumber, 1);
     }
 
     public boolean isInvalidEmailAlertShown() throws Exception {
-        if (DriverUtils.waitUntilAlertAppears(getDriver())){
-            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInvalidEmail, 1);
-        }
-        return false;
+        return DriverUtils.waitUntilAlertAppears(getDriver()) &&
+                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInvalidEmail, 1);
     }
 
     public boolean isRegisteredNumberAlertShown() throws Exception {
-        if (DriverUtils.waitUntilAlertAppears(getDriver())){
-            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAlreadyRegisteredNumber, 1);
-        }
-        return false;
+        return DriverUtils.waitUntilAlertAppears(getDriver()) &&
+                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAlreadyRegisteredNumber, 1);
     }
 
     public boolean isAlreadyRegisteredEmailAlertShown() throws Exception {
-        if (DriverUtils.waitUntilAlertAppears(getDriver())){
-            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAlreadyRegisteredEmail, 1);
-        }
-        return false;
+        return DriverUtils.waitUntilAlertAppears(getDriver()) &&
+                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAlreadyRegisteredEmail, 1);
     }
 
     public void clickPhoneNotNow() throws Exception {
@@ -200,9 +190,11 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean isSomethingWentWrongAlertShown() throws Exception {
-        if (DriverUtils.waitUntilAlertAppears(getDriver())){
-            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameSomethingWentWrong, 1);
-        }
-        return false;
+        return DriverUtils.waitUntilAlertAppears(getDriver()) &&
+                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameSomethingWentWrong, 1);
+    }
+
+    public void dismissSettingsWarningIfVisible(int timeoutSeconds) throws Exception {
+        getElementIfDisplayed(nameMaybeLater, timeoutSeconds).orElseGet(DummyElement::new).click();
     }
 }

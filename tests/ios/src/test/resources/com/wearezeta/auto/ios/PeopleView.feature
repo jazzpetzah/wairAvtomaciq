@@ -344,7 +344,6 @@ Feature: People View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
     And I see user <Contact3> found on People picker page
     And I click close button to dismiss people view

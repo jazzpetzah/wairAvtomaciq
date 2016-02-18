@@ -35,7 +35,7 @@ Feature: Offline
     And I enable Airplane mode on the device
     When I tap on text input
     And I type the message "<Message>" and send it
-    Then I see unsent indicator next to the message "<Message>" in the dialog
+    Then I see unsent indicator next to "<Message>" message
     When I hide keyboard
     And I swipe on text input
     And I press Add Picture button

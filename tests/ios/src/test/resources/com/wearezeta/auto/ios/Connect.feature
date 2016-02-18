@@ -7,7 +7,6 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     Given I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
@@ -78,7 +77,6 @@ Feature: Connect
     And I dont see Pending request link in contact list
     And I wait until <Contact1> exists in backend search results
     And I open search by taping on it
-    And I tap on Search input on People picker page
     And I search for user name <Contact1> and tap on it on People picker page
     Then I see Pending request page
 
@@ -116,7 +114,6 @@ Feature: Connect
     Given I see conversations list
     When I open search by taping on it
     And I wait until <Contact> exists in backend search results
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I click Connect button on connect to dialog
@@ -130,7 +127,7 @@ Feature: Connect
       | user1Name | user2Name | user3Name |
 
   @C34 @rc @clumsy @regression @id1399
-  Scenario Outline: (ZIOS-5811) Verify you don't receive any messages from blocked person in 1:1 chat
+  Scenario Outline: Verify you don't receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
     Given User Myself blocks user <Contact>
@@ -142,7 +139,6 @@ Feature: Connect
     Then I dont see conversation <Contact> in contact list
     When I open search by taping on it
     And I wait until <Contact> exists in backend search results
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I unblock user
@@ -162,7 +158,6 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
@@ -171,7 +166,6 @@ Feature: Connect
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     Then I see cancel request button on pending profile page
@@ -208,7 +202,6 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     Given I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user email <ContactEmail>
     And I press the instant connect button next to <UnconnectedUser>
@@ -273,7 +266,6 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I click Cancel request button
@@ -357,7 +349,6 @@ Feature: Connect
     Given I see conversations list
     Then I dont see conversation <Contact> in contact list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I unblock user

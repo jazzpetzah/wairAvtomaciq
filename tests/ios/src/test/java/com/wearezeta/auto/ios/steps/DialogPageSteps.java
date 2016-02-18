@@ -6,7 +6,6 @@ import java.text.Normalizer.Form;
 
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
-import cucumber.api.java.en.And;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -188,12 +187,12 @@ public class DialogPageSteps {
      * Verify whether the expected message exists in the convo view
      *
      * @param expectedMsg the expected message. It can contain user name aliases
-     * @param shouldNot equals to null if the message is visible in conversation view
+     * @param shouldNot   equals to null if the message is visible in conversation view
      * @throws Exception
-     * @step. ^I see the conversation view contains message (.*)
+     * @step. ^I (do not )?see the conversation view contains message (.*)
      */
     @Then("^I (do not )?see the conversation view contains message (.*)")
-    public void ISeeConversationMessage(String shouldNot,String expectedMsg) throws Exception {
+    public void ISeeConversationMessage(String shouldNot, String expectedMsg) throws Exception {
         expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
         if (shouldNot == null) {
             Assert.assertTrue(
@@ -247,6 +246,17 @@ public class DialogPageSteps {
     @When("^I click Ping button$")
     public void IPressPingButton() throws Exception {
         getDialogPage().pressPingButton();
+    }
+
+    /**
+     * Click on Video call button
+     *
+     * @throws Exception
+     * @step. ^I click Video Call button$
+     */
+    @When("^I click Video Call button$")
+    public void IPressVideoCallButton() throws Exception {
+        getDialogPage().pressVideoCallButton();
     }
 
     @Then("^I see Pending Connect to (.*) message on Dialog page$")
@@ -384,7 +394,7 @@ public class DialogPageSteps {
                 "%s seconds timeout. Similarity score is %.2f", MEDIA_STATE_CHANGE_TIMEOUT / 1000, score));
     }
 
-   @Then("^I see media is (playing|stopped|paused) on [Mm]edia [Bb]ar$")
+    @Then("^I see media is (playing|stopped|paused) on [Mm]edia [Bb]ar$")
     public void TheMediaIs(String expectedState) throws Exception {
         final long millisecondsStarted = System.currentTimeMillis();
         String currentState;
@@ -447,17 +457,6 @@ public class DialogPageSteps {
     }
 
     /**
-     * Scrolls to the end of the conversation
-     *
-     * @throws Exception
-     * @step. ^I scroll to the end of the conversation$
-     */
-    @When("^I scroll to the end of the conversation$")
-    public void IScrollToTheEndOfTheConversation() throws Exception {
-        getDialogPage().scrollToEndOfConversation();
-    }
-
-    /**
      * Checks if the copied content from send an invite via mail is correct
      *
      * @param mail Email thats the invite sent from
@@ -484,7 +483,7 @@ public class DialogPageSteps {
      */
     @When("^I see missed call from contact (.*)$")
     public void ISeeMissedCall(String contact) throws Exception {
-        String username = usrMgr.findUserByNameOrNameAlias(contact).getName();
+        String username = (contact.equals("YOU")) ? contact : usrMgr.findUserByNameOrNameAlias(contact).getName();
         String expectedCallMessage = username.toUpperCase() + " CALLED";
         Assert.assertTrue(username + " called message is missing in dialog",
                 getDialogPage().isMessageVisible(expectedCallMessage));
@@ -599,9 +598,8 @@ public class DialogPageSteps {
      * @step. ^I see plus button next to text input$
      */
     @When("^I see plus button next to text input$")
-    public void ISeePluseButtonNextInput() throws Exception {
-        Assert.assertTrue("Plus button is not visible", getDialogPage()
-                .isPlusButtonVisible());
+    public void ISeePlusButtonNextInput() throws Exception {
+        Assert.assertTrue("Plus button is not visible", getDialogPage().isPlusButtonVisible());
     }
 
     /**
@@ -612,8 +610,7 @@ public class DialogPageSteps {
      */
     @When("^I see plus button is not shown$")
     public void ISeePlusButtonNotShown() throws Exception {
-        Assert.assertTrue("Plus button is still shown", getDialogPage()
-                .waitPlusButtonNotVisible());
+        Assert.assertTrue("Plus button is still shown", getDialogPage().waitPlusButtonNotVisible());
     }
 
     /**
@@ -624,8 +621,7 @@ public class DialogPageSteps {
      */
     @When("^I see Details button is visible$")
     public void ISeeDetailsButtonShown() throws Exception {
-        Assert.assertTrue("Details button is not visible", getDialogPage()
-                .isOpenConversationDetailsButtonVisible());
+        Assert.assertTrue("Details button is not visible", getDialogPage().isOpenConversationDetailsButtonVisible());
     }
 
     /**
@@ -636,8 +632,7 @@ public class DialogPageSteps {
      */
     @When("^I see Call button is visible$")
     public void ISeeCalButtonShown() throws Exception {
-        Assert.assertTrue("Call button is not visible", getDialogPage()
-                .isCallButtonVisible());
+        Assert.assertTrue("Call button is not visible", getDialogPage().isCallButtonVisible());
     }
 
     /**
@@ -648,8 +643,7 @@ public class DialogPageSteps {
      */
     @When("^I see Camera button is visible$")
     public void ISeeCameraButtonShown() throws Exception {
-        Assert.assertTrue("Camera button is not visible", getDialogPage()
-                .isCameraButtonVisible());
+        Assert.assertTrue("Camera button is not visible", getDialogPage().isCameraButtonVisible());
     }
 
     /**
@@ -660,35 +654,20 @@ public class DialogPageSteps {
      */
     @When("^I see Sketch button is visible$")
     public void ISeeSketchButtonShown() throws Exception {
-        Assert.assertTrue("Sketch button is not visible", getDialogPage()
-                .isOpenScetchButtonVisible());
+        Assert.assertTrue("Sketch button is not visible", getDialogPage().isOpenSketchButtonVisible());
     }
 
     /**
-     * Verify Ping button is visible
+     * Verify Buttons: Details, Call, Camera, Sketch are visible
      *
      * @throws Exception
-     * @step. ^I see Ping button is visible$
+     * @step. ^I see conversation tools buttons$
      */
-    @When("^I see Ping button is visible$")
-    public void ISeePingButtonShown() throws Exception {
-        Assert.assertTrue("Ping button is not visible", getDialogPage()
-                .isPingButtonVisible());
-    }
-
-    /**
-     * Verify Buttons: Details, Call, Camera, Sketch, Ping are visible
-     *
-     * @throws Exception
-     * @step. ^I see Buttons: Details, Call, Camera, Sketch, Ping$
-     */
-    @When("^I see Buttons: Details, Call, Camera, Sketch, Ping$")
+    @When("^I see conversation tools buttons$")
     public void ISeeButtonsDetailsCallCameraSketchPing() throws Exception {
         ISeeDetailsButtonShown();
-        ISeeCalButtonShown();
-        ISeeCameraButtonShown();
-        ISeeSketchButtonShown();
-        ISeePingButtonShown();
+        Assert.assertTrue("Some of expected input tools buttons are not visible",
+                getDialogPage().areInputToolsVisible());
     }
 
     /**
@@ -696,16 +675,14 @@ public class DialogPageSteps {
      * visible
      *
      * @throws Exception
-     * @step. I see only Details button. Call, Camera, Sketch, Ping are not
-     * shown
+     * @step. ^I see no other conversation tools buttons except of Details$
+     *
      */
-    @When("I see only Details button. Call, Camera, Sketch, Ping are not shown")
+    @When("^I see no other conversation tools buttons except of Details$")
     public void ISeeOnlyDetailsButtonRestNotShown() throws Exception {
         ISeeDetailsButtonShown();
-        Assert.assertFalse("Call button is visible", getDialogPage().isCallButtonVisible());
-        Assert.assertFalse("Camera button is visible", getDialogPage().isCameraButtonVisible());
-        Assert.assertFalse("Sketch button is visible", getDialogPage().isOpenScetchButtonVisible());
-        Assert.assertFalse("Ping button is visible", getDialogPage().isPingButtonVisible());
+        Assert.assertTrue("Some of input tools buttons are still visible",
+                getDialogPage().areInputToolsInvisible());
     }
 
     /**

@@ -7,7 +7,6 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap on Search input on People picker page
@@ -28,7 +27,6 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap on Search input on People picker page
@@ -51,7 +49,6 @@ Feature: People View
     And I open conversation details
     And I see <Contact1> user profile page in iPad popover
     And I press Add button
-    And I see People picker page on iPad popover
     And I click on connected user <Contact2> on People picker on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
     And I click on Add to Conversation button on iPad popover
@@ -74,12 +71,11 @@ Feature: People View
     And I open conversation details
     And I see <Contact1> user profile page in iPad popover
     And I press Add button
-    And I see People picker page on iPad popover
     And I click on connected user <Contact2> on People picker on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
     And I click on Add to Conversation button on iPad popover
     And I see group chat page with users <Contact1>,<Contact2>,<Contact3>
-    Then I see in contact list group chat with <Contact1> <Contact2> <Contact3>
+    Then I see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  |
@@ -236,7 +232,7 @@ Feature: People View
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | ParticipantsNumber |
-      | user1Name | user2Name | user3Name | GroupInfo     | 3                  |
+      | user1Name | user2Name | user3Name | GroupInfo     | 2                  |
 
   @C2702 @regression @rc @id2432
   Scenario Outline: Check any users personal info in group conversation [PORTRAIT]
@@ -353,7 +349,7 @@ Feature: People View
     Given User Myself removes his avatar picture
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given Nyself silenced group conversation with <GroupChatName>
+    Given Myself silenced group conversation with <GroupChatName>
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I remember the state of <GroupChatName> conversation item
@@ -443,7 +439,6 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press Add button
-    And I see People picker page on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
     And I click on Add to Conversation button on iPad popover
     And I open conversation details
@@ -451,7 +446,7 @@ Feature: People View
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | ParticipantsNumber |
-      | user1Name | user2Name | user3Name | user4Name | AddContact    | 4                  |
+      | user1Name | user2Name | user3Name | user4Name | AddContact    | 3                  |
 
   @C2723 @regression @id3221
   Scenario Outline: Add someone to a group conversation [LANDSCAPE]
@@ -464,7 +459,6 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press Add button
-    And I see People picker page on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
     And I click on Add to Conversation button on iPad popover
     And I open conversation details
@@ -472,7 +466,7 @@ Feature: People View
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | ParticipantsNumber |
-      | user1Name | user2Name | user3Name | user4Name | AddContact    | 4                  |
+      | user1Name | user2Name | user3Name | user4Name | AddContact    | 3                  |
 
   @C2447 @regression @id2333
   Scenario Outline: Verify you can block a person from profile view [PORTRAIT]
@@ -561,14 +555,12 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
     And I see user <Contact3> found on People picker page
     And I click close button to dismiss people view
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press Add button
-    And I see People picker page on iPad popover
     And I wait until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
@@ -587,14 +579,12 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
     And I see user <Contact3> found on People picker page
     And I click close button to dismiss people view
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press Add button
-    And I see People picker page on iPad popover
     And I wait until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>

@@ -100,7 +100,6 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I click Cancel request button
@@ -120,7 +119,6 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I click Cancel request button

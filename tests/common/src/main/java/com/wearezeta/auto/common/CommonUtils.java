@@ -32,8 +32,6 @@ public class CommonUtils {
 
     private static final Logger log = ZetaLogger.getLog(CommonUtils.class.getSimpleName());
 
-    private static final String TCPBLOCK_PREFIX_PATH = "/usr/local/bin/";
-
     public static boolean executeOsCommandWithTimeout(String[] cmd,
                                                       long timeoutSeconds) throws Exception {
         Process process = Runtime.getRuntime().exec(cmd);
@@ -358,36 +356,6 @@ public class CommonUtils {
     public static String getDefaultCallingServiceUrlFromConfig(Class<?> c)
             throws Exception {
         return getValueFromCommonConfig(c, "defaultCallingServiceUrl");
-    }
-
-    public static void blockTcpForAppName(String appName) throws Exception {
-        final String blockTcpForAppCmd = "echo "
-                + getJenkinsSuperUserPassword(CommonUtils.class) + "| sudo -S "
-                + TCPBLOCK_PREFIX_PATH + "tcpblock -a " + appName;
-        try {
-            executeOsXCommand(new String[]{"/bin/bash", "-c",
-                    blockTcpForAppCmd});
-            log.debug(executeOsXCommandWithOutput(new String[]{"/bin/bash",
-                    "-c", TCPBLOCK_PREFIX_PATH + "tcpblock -g"}));
-        } catch (Exception e) {
-            log.error("TCP connections for " + appName
-                    + " were not blocked. Make sure tcpblock is installed.");
-        }
-    }
-
-    public static void enableTcpForAppName(String appName) throws Exception {
-        final String enableTcpForAppCmd = "echo "
-                + getJenkinsSuperUserPassword(CommonUtils.class) + "| sudo -S "
-                + TCPBLOCK_PREFIX_PATH + "tcpblock -r " + appName;
-        try {
-            executeOsXCommand(new String[]{"/bin/bash", "-c",
-                    enableTcpForAppCmd});
-            log.debug(executeOsXCommandWithOutput(new String[]{"/bin/bash",
-                    "-c", TCPBLOCK_PREFIX_PATH + "tcpblock -g"}));
-        } catch (Exception e) {
-            log.error("TCP connections for " + appName
-                    + " were not enabled. Make sure tcpblock is installed.");
-        }
     }
 
     public static void defineNoHeadlessEnvironment() {

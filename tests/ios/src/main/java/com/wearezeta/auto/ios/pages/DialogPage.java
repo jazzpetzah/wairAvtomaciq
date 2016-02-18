@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
@@ -13,11 +14,12 @@ import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+
+import javax.imageio.ImageIO;
 
 public class DialogPage extends IOSPage {
     private static final By nameConversationBackButton = By.name("ConversationBackButton");
@@ -29,13 +31,6 @@ public class DialogPage extends IOSPage {
     private static final By nameOpenConversationDetails = By.name("ComposeControllerConversationDetailButton");
 
     protected static final By nameYouRenamedConversation = By.name("YOU RENAMED THE CONVERSATION");
-
-    private static final By xpathLastChatMessage = By.xpath(xpathStrMainWindow
-            + "/UIATableView[1]/UIATableCell[last()]/*[last()]");
-
-    protected static final By nameAddPictureButton = By.name("ComposeControllerPictureButton");
-
-    private static final By nameCallButton = By.name("ComposeControllerVoiceButton");
 
     private static final By xpathMessageEntries = By.xpath(xpathStrMainWindow + "/UIATableView/UIATableCell");
 
@@ -58,14 +53,10 @@ public class DialogPage extends IOSPage {
 
     private static final By nameTitle = By.name("playingMediaTitle");
 
-    private static final By namePingButton = By.name("ComposeControllerPingButton");
-
     private static final Function<String, String> xpathStrDialogTitleBar = title -> String.format(
             "//UIAStaticText[@name='%s']", title);
 
     private static final By nameGifButton = By.name("rightMenuButton");
-
-    private static final By nameCursorSketchButton = By.name("ComposeControllerSketchButton");
 
     private static final By xpathGiphyImage = By
             .xpath("//UIATextView[@name='via giphy.com']/following::UIATableCell[@name='ImageCell']");
@@ -121,6 +112,13 @@ public class DialogPage extends IOSPage {
 
     public static final String MEDIA_STATE_STOPPED = "ended";
 
+    private static final By nameCursorSketchButton = By.name("ComposeControllerSketchButton");
+    protected static final By nameAddPictureButton = By.name("ComposeControllerPictureButton");
+    private static final By nameVideoCallButton = By.name("ComposeControllerVideoButton");
+    private static final By nameCallButton = By.name("ComposeControllerVoiceButton");
+
+    private final By[] inputTools = new By[]{nameCallButton, nameCursorSketchButton, nameAddPictureButton};
+
     public DialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -135,12 +133,12 @@ public class DialogPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
     }
 
-    public boolean isPingButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), namePingButton);
+    public void pressPingButton() throws Exception {
+        getDriver().tap(1, getElement(nameCallButton), DriverUtils.LONG_TAP_DURATION);
     }
 
-    public void pressPingButton() throws Exception {
-        getElement(namePingButton).click();
+    public void pressVideoCallButton() throws Exception {
+        getElement(nameVideoCallButton).click();
     }
 
     public void returnToContactList() throws Exception {
@@ -257,7 +255,7 @@ public class DialogPage extends IOSPage {
     }
 
     public boolean scrollDownTillMediaBarAppears() throws Exception {
-        final int maxScrolls = 3;
+        final int maxScrolls = 2;
         int nTry = 0;
         while (nTry < maxScrolls) {
             if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameTitle, 2)) {
@@ -331,8 +329,8 @@ public class DialogPage extends IOSPage {
 
     @Override
     public void swipeUp(int time) throws Exception {
-        Point coords = getElement(nameMainWindow).getLocation();
-        Dimension elementSize = getElement(nameMainWindow).getSize();
+        final Point coords = getElement(nameMainWindow).getLocation();
+        final Dimension elementSize = getElement(nameMainWindow).getSize();
         this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y + elementSize.height - TEXT_INPUT_HEIGHT,
                 coords.x + elementSize.width / 2, coords.y + TOP_BORDER_WIDTH, time);
     }
@@ -341,7 +339,8 @@ public class DialogPage extends IOSPage {
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             IOSSimulatorHelper.swipeDown();
         } else {
-            DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationPage), 1000, 50, 30, 50, 95);
+            DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationPage),
+                    1000, 50, 30, 50, 95);
         }
     }
 
@@ -412,14 +411,6 @@ public class DialogPage extends IOSPage {
         }
     }
 
-    public void scrollToEndOfConversation() throws Exception {
-        try {
-            this.getDriver().scrollToExact(getElement(xpathLastChatMessage).getText());
-        } catch (WebDriverException e) {
-            // Simply ignore
-        }
-    }
-
     public boolean isTitleBarDisplayed(String name) throws Exception {
         final By locator = By.xpath(xpathStrDialogTitleBar.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
@@ -487,7 +478,7 @@ public class DialogPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAddPictureButton);
     }
 
-    public boolean isOpenScetchButtonVisible() throws Exception {
+    public boolean isOpenSketchButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameCursorSketchButton);
     }
 
@@ -546,6 +537,8 @@ public class DialogPage extends IOSPage {
         final int stateGlyphHeight = containerScreen.getHeight() / 7;
         final int stateGlyphX = (containerScreen.getWidth() - stateGlyphWidth) / 2;
         final int stateGlyphY = (containerScreen.getHeight() - stateGlyphHeight) / 2;
+        BufferedImage tmp = containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
+        ImageIO.write(tmp, "png", new File("/Users/elf/Desktop/" + System.currentTimeMillis() + ".png"));
         return containerScreen.getSubimage(stateGlyphX, stateGlyphY, stateGlyphWidth, stateGlyphHeight);
     }
 
@@ -561,5 +554,23 @@ public class DialogPage extends IOSPage {
             Thread.sleep(1000);
             this.clickKeyboardCommitButton();
         }
+    }
+
+    public boolean areInputToolsVisible() throws Exception {
+        for (By inputTool : inputTools) {
+            if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), inputTool, 2)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean areInputToolsInvisible() throws Exception {
+        for (By inputTool : inputTools) {
+            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), inputTool, 2)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

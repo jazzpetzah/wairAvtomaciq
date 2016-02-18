@@ -6,7 +6,6 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
     Then I see user <ContactName> found on People picker page
 
@@ -20,7 +19,6 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
 
@@ -48,7 +46,7 @@ Feature: Search
 
   @C1069 @rc @regression @id1150
   Scenario Outline: Start group chat with users from Top Connections
-    Given There are <UserCount> users where <Name> is me
+    Given There are 4 users where <Name> is me
     Given Myself is connected to all other users
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -56,16 +54,14 @@ Feature: Search
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on first 2 top connections
-    And I click Create Conversation button on People picker page
+    When I click Create Conversation button on People picker page
+    And I see dialog page
     And I open group conversation details
-    And I change group conversation name to <ConvoName>
-    And I close group info page
-    And I navigate back to conversations list
-    And I see first item in contact list named <ConvoName>
+    Then I see <ParticipantsCount> participant avatars
 
     Examples:
-      | Name      | ConvoName    | UserCount |
-      | user1Name | TopGroupTest | 4         |
+      | Name      | ParticipantsCount |
+      | user1Name | 3                 |
 
   @C40 @rc @regression @id1454
   Scenario Outline: Verify sending a connection request to user chosen from search
@@ -73,7 +69,6 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I search for user name <UnconnectedUser> and tap on it on People picker page
     Then I see connect to <UnconnectedUser> dialog
     And I click Connect button on connect to dialog
@@ -112,7 +107,6 @@ Feature: Search
     Given I see conversations list
     When I dont see conversation <Contact> in contact list
     And I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I unblock user
@@ -131,7 +125,6 @@ Feature: Search
     Given I see conversations list
     When I open search by taping on it
     And I wait until <Contact> exists in backend search results
-    And I tap on Search input on People picker page
     And I input in People picker search field first 5 letters of user name <Contact>
     Then I see user <Contact> found on People picker page
 
@@ -146,14 +139,12 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I see call action button on People picker page
     And I click call action button on People picker page
-    Then I see mute call, end call and speakers buttons
-    And I see calling message
+    And I see Calling overlay
 
     Examples:
       | Name      | Contact   |

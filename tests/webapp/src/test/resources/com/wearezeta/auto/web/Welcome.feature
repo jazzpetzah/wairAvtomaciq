@@ -23,6 +23,7 @@ Feature: Welcome
     Then I see login error "<LoginErr>"
     When I enter email "<Email>"
     And I enter password "<NewPassword>"
+    And I check option to remember me
     And I press Sign In button
     Then I am signed in properly
     And I see user name on self profile page <Name>

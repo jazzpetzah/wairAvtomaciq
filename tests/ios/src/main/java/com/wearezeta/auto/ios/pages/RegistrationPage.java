@@ -185,8 +185,8 @@ public class RegistrationPage extends IOSPage {
     }
 
     public boolean isInvalidCodeAlertShown() throws Exception {
-        DriverUtils.waitUntilAlertAppears(getDriver());
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInvalidCode);
+        return DriverUtils.waitUntilAlertAppears(getDriver()) &&
+                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInvalidCode);
     }
 
     public void clickChooseOwnPicButton() throws Exception {

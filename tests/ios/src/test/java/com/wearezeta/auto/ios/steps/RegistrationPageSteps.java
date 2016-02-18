@@ -195,14 +195,12 @@ public class RegistrationPageSteps {
      */
     @When("^I start activation email monitoring$")
     public void IStartActivationEmailMonitoring() throws Exception {
-        activationMessage = BackendAPIWrappers
-            .initMessageListener(userToRegister);
+        activationMessage = BackendAPIWrappers.initMessageListener(userToRegister);
     }
 
     @Then("^I verify registration address$")
     public void IVerifyRegistrationAddress() throws Exception {
-        BackendAPIWrappers
-                .activateRegisteredUserByEmail(this.activationMessage);
+        BackendAPIWrappers.activateRegisteredUserByEmail(this.activationMessage);
         userToRegister.setUserState(UserState.Created);
         getRegistrationPage().waitRegistrationToFinish();
     }

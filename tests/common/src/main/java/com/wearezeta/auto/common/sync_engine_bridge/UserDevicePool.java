@@ -38,7 +38,7 @@ public class UserDevicePool {
 
     private static final int MAX_POOL_SIZE = 10;
 
-    private Map<IRemoteProcess, Optional<IDevice>> cachedDevices = new ConcurrentHashMap<>();
+    private Map<Future<IRemoteProcess>, Optional<Future<IDevice>>> cachedDevices = new ConcurrentHashMap<>();
     private Semaphore cachedDevicesGuard = new Semaphore(1);
 
     private void prefillCache() throws Exception {
@@ -51,9 +51,11 @@ public class UserDevicePool {
         for (int i = 0; i < INITIAL_CACHE_SIZE; i++) {
             pool.submit(() -> {
                 try {
-                    final IRemoteProcess p = new RemoteProcess(CommonUtils.generateGUID().substring(0, 8),
-                            this.coordinatorActorRef, ACTOR_DURATION, this.backendType, this.otrOnly);
+                    final Future<IRemoteProcess> p = Executors.newSingleThreadExecutor().submit(() ->
+                            new RemoteProcess(CommonUtils.generateGUID().substring(0, 8),
+                                    this.coordinatorActorRef, this.backendType, this.otrOnly));
                     cachedDevices.put(p, Optional.empty());
+                    p.get();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -70,9 +72,9 @@ public class UserDevicePool {
     private void resetCache() throws Exception {
         cachedDevicesGuard.acquire();
         try {
-            for (IRemoteProcess p : cachedDevices.keySet()) {
+            for (Future<IRemoteProcess> p : cachedDevices.keySet()) {
                 if (cachedDevices.get(p).isPresent()) {
-                    cachedDevices.get(p).get().destroy();
+                    cachedDevices.get(p).get().get().destroy();
                     cachedDevices.put(p, Optional.empty());
                 }
             }
@@ -82,48 +84,50 @@ public class UserDevicePool {
     }
 
     private IDevice putDeviceInCache(ClientUser owner, String deviceName) throws Exception {
-        IRemoteProcess targetProcess = null;
+        Future<IRemoteProcess> targetProcess = null;
+        Future<IDevice> targetDevice = null;
         cachedDevicesGuard.acquire();
         try {
             // Look for free entry in cache
-            for (IRemoteProcess p : cachedDevices.keySet()) {
+            for (Future<IRemoteProcess> p : cachedDevices.keySet()) {
                 if (!cachedDevices.get(p).isPresent()) {
                     targetProcess = p;
                     break;
                 }
             }
+            // All entries are busy, let's create a new one
+            if (targetProcess == null) {
+                if (cachedDevices.size() < MAX_POOL_SIZE) {
+                    targetProcess = Executors.newSingleThreadExecutor().submit(() ->
+                            new RemoteProcess(CommonUtils.generateGUID().substring(0, 8),
+                                    this.coordinatorActorRef, this.backendType, this.otrOnly));
+                } else {
+                    throw new IllegalStateException(String.format(
+                            "Cannot create more than %s devices. Make sure you've reset SE Bridge after the previous test",
+                            MAX_POOL_SIZE));
+                }
+            }
+            final Future<IRemoteProcess> keyProcess = targetProcess;
+            targetDevice = Executors.newSingleThreadExecutor().submit(() ->
+                    new Device(keyProcess.get(), deviceName, this.coordinatorActorRef, ACTOR_DURATION));
+            cachedDevices.put(targetProcess, Optional.of(targetDevice));
         } finally {
             cachedDevicesGuard.release();
-        }
-        // All entries are busy, let's create a new one
-        if (targetProcess == null) {
-            if (cachedDevices.size() < MAX_POOL_SIZE) {
-                targetProcess = new RemoteProcess(CommonUtils.generateGUID().substring(0, 8),
-                        this.coordinatorActorRef, ACTOR_DURATION, this.backendType, this.otrOnly);
-            } else {
-                throw new IllegalStateException(String.format(
-                        "Cannot create more than %s devices. Make sure you've reset SE Bridge after the previous test",
-                        MAX_POOL_SIZE));
-            }
         }
 
-        IDevice result = new Device(targetProcess, deviceName, this.coordinatorActorRef, ACTOR_DURATION);
-        cachedDevicesGuard.acquire();
-        try {
-            cachedDevices.put(targetProcess, Optional.of(result));
-            result.logInWithUser(owner);
-        } finally {
-            cachedDevicesGuard.release();
-        }
+        final IDevice result = targetDevice.get();
+        result.logInWithUser(owner);
         return result;
     }
 
-    private List<IDevice> selectUserDevices(ClientUser forUser) {
+    private List<IDevice> selectUserDevices(ClientUser forUser) throws Exception {
         final List<IDevice> result = new ArrayList<>();
-        for (Map.Entry<IRemoteProcess, Optional<IDevice>> entry : cachedDevices.entrySet()) {
-            if (entry.getValue().isPresent() && entry.getValue().get().getLoggedInUser().isPresent() &&
-                    entry.getValue().get().getLoggedInUser().get().getName().equals(forUser.getName())) {
-                result.add(entry.getValue().get());
+        for (Map.Entry<Future<IRemoteProcess>, Optional<Future<IDevice>>> entry : cachedDevices.entrySet()) {
+            if (entry.getValue().isPresent()) {
+                final IDevice device = entry.getValue().get().get();
+                if (device.isLoggedInUser(forUser)) {
+                    result.add(device);
+                }
             }
         }
         return result;
@@ -156,11 +160,11 @@ public class UserDevicePool {
         }
     }
 
-    public List<IDevice> getDevices(ClientUser user) {
+    public List<IDevice> getDevices(ClientUser user) throws Exception {
         return selectUserDevices(user);
     }
 
-    public Optional<IDevice> getDevice(ClientUser user, String deviceName) {
+    public Optional<IDevice> getDevice(ClientUser user, String deviceName) throws Exception {
         final List<IDevice> userDevices = getDevices(user);
         for (IDevice device : userDevices) {
             if (device.name().equals(deviceName)) {
@@ -170,7 +174,7 @@ public class UserDevicePool {
         return Optional.empty();
     }
 
-    public IDevice getOrAddRandomDevice(ClientUser user) {
+    public IDevice getOrAddRandomDevice(ClientUser user) throws Exception {
         final List<IDevice> allUserDevices = getDevices(user);
         if (allUserDevices.isEmpty()) {
             return addDevice(user);
@@ -180,7 +184,7 @@ public class UserDevicePool {
         }
     }
 
-    public IDevice getOrAddDevice(ClientUser user, String deviceName) {
+    public IDevice getOrAddDevice(ClientUser user, String deviceName) throws Exception {
         return getDevice(user, deviceName).orElse(addDevice(user, deviceName));
     }
 

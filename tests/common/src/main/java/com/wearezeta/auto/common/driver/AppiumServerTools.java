@@ -100,16 +100,17 @@ public class AppiumServerTools {
         ensureParentDirExistence(LOG_PATH);
 
         final AsyncProcess appiumProcess = new AsyncProcess(cmdLine, false, false).start();
-        log.info(String.format(
-                "Waiting %s seconds for Appium to be restarted on %s:%s...", hostname, RESTART_TIMEOUT / 1000, PORT));
+        log.info(String.format("Waiting for Appium to be restarted on %s:%s...", hostname, PORT));
+        final long msStarted = System.currentTimeMillis();
         if (!waitUnlessIsRunning(RESTART_TIMEOUT)) {
             throw new IllegalStateException(String.format(
                     "Appium server has failed to start after %s seconds timeout on server '%s'.\n" +
+                            "Please make sure that NodeJS and Appium packages are installed properly on this machine.\n" +
                             "Appium logs:\n\n%s\n\n%s\n\n\n",
                     RESTART_TIMEOUT / 1000, hostname, appiumProcess.getStderr(), appiumProcess.getStdout()));
         }
 
-        log.info(String.format("Appium server has been successfully restarted and now is listening on %s:%s",
-                hostname, PORT));
+        log.info(String.format("Appium server has been successfully restarted after %.1f seconds " +
+                "and now is listening on %s:%s", (System.currentTimeMillis() - msStarted) / 1000.0, hostname, PORT));
     }
 }

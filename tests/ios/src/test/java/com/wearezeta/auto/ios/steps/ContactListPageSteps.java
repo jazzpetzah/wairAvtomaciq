@@ -32,7 +32,7 @@ public class ContactListPageSteps {
 
     @Given("^I see conversations list$")
     public void GivenISeeConversationsList() throws Exception {
-        Assert.assertTrue("Conversations list is not visible after the timeout", getLoginPage().isLoginFinished());
+        Assert.assertTrue("Conversations list is not visible after the timeout", getLoginPage().isSelfAvatarVisible());
     }
 
     private Map<String, BufferedImage> savedConvoItemScreenshots = new HashMap<>();
@@ -121,20 +121,6 @@ public class ContactListPageSteps {
                     String.format("The state of conversation item number %s seems to be changed (%.2f < %.2f)",
                             convoIdx, score, minScore), score >= minScore);
         }
-    }
-
-    /**
-     * Verify label in Self button
-     *
-     * @param name username
-     * @throws Exception
-     * @step. ^I see my name (.*) first letter as label of Self Button$
-     */
-    @When("^I see my name (.*) first letter as label of Self Button$")
-    public void ISeeFirstLetterAsLabelSelfButton(String name) throws Exception {
-        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-        Assert.assertTrue(getContactListPage()
-                .isSelfButtonContainingFirstNameLetter(name));
     }
 
     /**

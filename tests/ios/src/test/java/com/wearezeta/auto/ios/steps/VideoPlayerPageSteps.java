@@ -8,10 +8,10 @@ import cucumber.api.java.en.When;
 
 public class VideoPlayerPageSteps {
 
-	private final IOSPagesCollection pagesCollecton = IOSPagesCollection.getInstance();
+	private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
 	private VideoPlayerPage getVideoPlayerPage() throws Exception {
-		return pagesCollecton.getPage(VideoPlayerPage.class);
+		return pagesCollection.getPage(VideoPlayerPage.class);
 	}
 
 	@When("I see video player page is opened")

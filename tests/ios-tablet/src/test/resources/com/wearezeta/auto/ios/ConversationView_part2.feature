@@ -55,7 +55,7 @@ Feature: Conversation View
     And I verify image caption and download button are not shown
     And I tap on fullscreen page
     And I tap close fullscreen page button
-    Then I see 2 photos in the dialog
+    Then I see 1 photo in the dialog
 
     Examples:
       | Name      | Contact   |
@@ -84,7 +84,7 @@ Feature: Conversation View
     And I verify image caption and download button are not shown
     And I tap on fullscreen page
     And I tap close fullscreen page button
-    Then I see 2 photos in the dialog
+    Then I see 1 photo in the dialog
 
     Examples:
       | Name      | Contact   |
@@ -230,13 +230,13 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I click plus button next to text input
-    Then I see Buttons: Details, Call, Camera, Sketch, Ping
+    Then I see conversation tools buttons
     And I see plus button is not shown
     And I swipe left on options buttons
     And I see Close input options button is not visible
     And I see plus button next to text input
     And I click plus button next to text input
-    Then I see Buttons: Details, Call, Camera, Sketch, Ping
+    Then I see conversation tools buttons
     And I click Close input options button
     And I see Close input options button is not visible
     And I see plus button next to text input
@@ -254,13 +254,13 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I click plus button next to text input
-    Then I see Buttons: Details, Call, Camera, Sketch, Ping
+    Then I see conversation tools buttons
     And I see plus button is not shown
     And I swipe left on options buttons
     And I see Close input options button is not visible
     And I see plus button next to text input
     And I click plus button next to text input
-    Then I see Buttons: Details, Call, Camera, Sketch, Ping
+    Then I see conversation tools buttons
     And I click Close input options button
     And I see Close input options button is not visible
     And I see plus button next to text input
@@ -281,12 +281,12 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I see plus button next to text input
     And I click plus button next to text input
-    Then I see only Details button. Call, Camera, Sketch, Ping are not shown
+    Then I see no other conversation tools buttons except of Details
     And I click Close input options button
     And I navigate back to conversations list
     When I tap on group chat with name <GroupChatName>
     And I click plus button next to text input
-    Then I see only Details button. Call, Camera, Sketch, Ping are not shown
+    Then I see no other conversation tools buttons except of Details
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
@@ -305,11 +305,11 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I see plus button next to text input
     And I click plus button next to text input
-    Then I see only Details button. Call, Camera, Sketch, Ping are not shown
+    Then I see no other conversation tools buttons except of Details
     And I click Close input options button
     When I tap on group chat with name <GroupChatName>
     And I click plus button next to text input
-    Then I see only Details button. Call, Camera, Sketch, Ping are not shown
+    Then I see no other conversation tools buttons except of Details
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
@@ -476,9 +476,9 @@ Feature: Conversation View
   Scenario Outline: Verify possibility to copy image in the conversation view [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Contact> sends encrypted image <Picture> to <ConversationType> conversation <Name>
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
     And I see 1 photo in the dialog
     And I longpress on image in the conversation
@@ -490,8 +490,8 @@ Feature: Conversation View
     Then I see 2 photos in the dialog
 
     Examples:
-      | Name      | Contact   | Picture     | ConversationType |
-      | user1Name | user2Name | testing.jpg | single user      |
+      | Name      | Contact   | Picture     |
+      | user1Name | user2Name | testing.jpg |
 
   @C2587 @regression @id4008
   Scenario Outline: Verify possibility to copy image in the conversation view [LANDSCAPE]
@@ -527,7 +527,6 @@ Feature: Conversation View
     And I confirm delete conversation content
     Then I dont see conversation <GroupChatName> in contact list
     And I open search by taping on it
-    And I tap on Search input on People picker page
     And I search for user name <Contact1> and tap on it on People picker page
     And I click open conversation button on People picker page
     When I type the default message and send it
@@ -550,7 +549,6 @@ Feature: Conversation View
     And I confirm delete conversation content
     Then I dont see conversation <GroupChatName> in contact list
     And I open search by taping on it
-    And I tap on Search input on People picker page
     And I search for user name <Contact1> and tap on it on People picker page
     And I click open conversation button on People picker page
     When I type the default message and send it

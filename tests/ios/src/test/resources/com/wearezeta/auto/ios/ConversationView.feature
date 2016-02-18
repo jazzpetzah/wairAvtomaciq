@@ -201,6 +201,7 @@ Feature: Conversation View
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Login button
+    And I accept First Time overlay if it is visible
     And I see conversations list
     And I tap on contact name <Contact>
     And I tap on text input
@@ -418,13 +419,13 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I swipe right text input to reveal option buttons
-    Then I see Buttons: Details, Call, Camera, Sketch, Ping
+    Then I see conversation tools buttons
     And I see plus button is not shown
     And I swipe left on options buttons
     And I see Close input options button is not visible
     And I see plus button next to text input
     And I click plus button next to text input
-    Then I see Buttons: Details, Call, Camera, Sketch, Ping
+    Then I see conversation tools buttons
     And I click Close input options button
     And I see Close input options button is not visible
     And I see plus button next to text input
@@ -445,13 +446,13 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I see plus button next to text input
     And I click plus button next to text input
-    Then I see only Details button. Call, Camera, Sketch, Ping are not shown
+    Then I see no other conversation tools buttons except of Details
     And I click Close input options button
     And I navigate back to conversations list
     When I tap on group chat with name <GroupChatName>
     And I see plus button next to text input
     And I click plus button next to text input
-    Then I see only Details button. Call, Camera, Sketch, Ping are not shown
+    Then I see no other conversation tools buttons except of Details
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
@@ -587,7 +588,6 @@ Feature: Conversation View
     And I confirm delete conversation content
     Then I dont see conversation <GroupChatName> in contact list
     And I open search by taping on it
-    And I tap on Search input on People picker page
     And I search for user name <Contact1> and tap on it on People picker page
     And I click open conversation button on People picker page
     Then I see dialog page

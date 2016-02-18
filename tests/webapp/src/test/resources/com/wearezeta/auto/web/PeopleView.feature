@@ -291,7 +291,6 @@ Feature: People View
     And I see Group Participants popover
     And I change group conversation title to <ChatNameEdit> on Group Participants popover
     Then I see <Message> action in conversation
-    When I click People button in group conversation
     And I see Group Participants popover
     Then I see conversation title <ChatNameEdit> on Group Participants popover
 

@@ -7,14 +7,12 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I see call action button on People picker page
     And I click call action button on People picker page
-    Then I see mute call, end call buttons
-    And I see calling message
+    Then I see Calling overlay
 
     Examples: 
       | Name      | Contact   |
@@ -28,14 +26,12 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I see call action button on People picker page
     And I click call action button on People picker page
-    Then I see mute call, end call buttons
-    And I see calling message
+    Then I see Calling overlay
 
     Examples: 
       | Name      | Contact   |
@@ -59,7 +55,7 @@ Feature: Search
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I see 1 photo in the dialog
     When I navigate back to conversations list
-    Then I see in contact list group chat with <Contact1> <Contact2> <Contact3>
+    Then I see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
 
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  |
@@ -83,7 +79,7 @@ Feature: Search
     And I press Confirm button
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I see 1 photo in the dialog
-    And I see in contact list group chat with <Contact1> <Contact2> <Contact3>
+    And I see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
 
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  |

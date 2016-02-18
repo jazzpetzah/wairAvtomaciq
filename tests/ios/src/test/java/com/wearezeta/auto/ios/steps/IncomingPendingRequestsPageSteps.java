@@ -68,7 +68,10 @@ public class IncomingPendingRequestsPageSteps {
 	 */
 	@When("^I see YOU BOTH KNOW people section$")
 	public void ISeeYOUBOTHKNOWPeopleSection() throws Exception {
-		Assert.assertTrue(getPendingRequestsPage().isYouBothKnowDisplayed());
+		if (!getPendingRequestsPage().isYouBothKnowDisplayed()) {
+			getPendingRequestsPage().printPageSource();
+			throw new AssertionError("You Both Know section is not visible on the current page");
+		}
 	}
 
 	/**

@@ -1,29 +1,25 @@
 package com.wearezeta.auto.android.steps;
 
-import com.wearezeta.auto.android.common.Memory;
-import com.wearezeta.auto.android.pages.CallingOverlayPageOLD;
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.junit.Assert;
-
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.junit.Assert;
 
 public class DialogPageSteps {
 
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-    private BufferedImage previousVerifiedConversationShieldState;
 
     private DialogPage getDialogPage() throws Exception {
         return pagesCollection.getPage(DialogPage.class);
@@ -293,19 +289,6 @@ public class DialogPageSteps {
     }
 
     /**
-     * Checks to see that an unsent indicator is present next to the particular message in the chat history
-     *
-     * @throws Exception
-     * @step. ^I see unsent indicator next to the message \"(.*)\" in the dialog$
-     */
-    @Then("^I see unsent indicator next to the message \"(.*)\" in the dialog$")
-    public void ThenISeeUnsentIndicatorNextToTheMessage(String msg) throws Exception {
-        Assert.assertTrue(
-                String.format("Unsent indicator has not been shown next to the '%s' message in the conversation view", msg),
-                getDialogPage().waitForUnsentIndicator(msg));
-    }
-
-    /**
      * Checks to see that a photo exists in the chat history. Does not check which photo though
      *
      * @param shouldNotSee equals to null if 'do not' part does not exist
@@ -450,21 +433,18 @@ public class DialogPageSteps {
      * @step. ^I see a message informing me conversation is (not )?verified(?: caused by user (.*))?$
      */
     @Then("^I see a message informing me conversation is (not )?verified(?: caused by user (.*))?$")
-    public void ThenISeeVerifiedConversationMessage(String nonVerified, String userName)
-            throws Exception {
+    public void ThenISeeVerifiedConversationMessage(String nonVerified, String userName) throws Exception {
         if (nonVerified == null) {
-            Assert.assertTrue(
-                    "The otr verified conversation message has not been shown in the conversation view",
+            Assert.assertTrue("The otr verified conversation message has not been shown in the conversation view",
                     getDialogPage().waitForOtrVerifiedMessage());
         } else if (userName == null) {
-            Assert.assertTrue(
-                    "The otr non verified conversation message has been shown in the conversation view",
+            Assert.assertTrue("The otr non verified conversation message has been shown in the conversation view",
                     getDialogPage().waitForOtrNonVerifiedMessage());
         } else {
             userName = usrMgr.findUserByNameOrNameAlias(userName).getName();
-            Assert.assertTrue(
-                    String.format("The otr non verified conversation message caused by user '%s' has been shown in the conversation view", userName),
-                    getDialogPage().waitForOtrNonVerifiedMessageCausedByUser(userName));
+            Assert.assertTrue(String.format(
+                    "The otr non verified conversation message caused by user '%s' has been shown in the conversation view",
+                    userName), getDialogPage().waitForOtrNonVerifiedMessageCausedByUser(userName));
         }
 
     }
@@ -614,32 +594,24 @@ public class DialogPageSteps {
     /**
      * Verify whether the corresponding message is present in conversation view X times
      *
-     * @param isEncrypted whether the message should be encrypted or not
      * @param msg the message to check
      * @param times the expected count of message repetitions in the convo view
      * @throws Exception
-     * @step. ^I see (encrypted|non-encrypted) message (.*) (\d+) times? in the conversation view$
+     * @step. ^I see message (.*) (\\d+) times? in the conversation view$
      */
-    @Then("^I see (encrypted|non-encrypted) message (.*) (\\d+) times? in the conversation view$")
-    public void ISeeMessageXTimes(String isEncrypted, String msg, int times) throws Exception {
-        if (isEncrypted.equals("encrypted")) {
-            Assert.assertTrue(
-                    String.format("Encrypted message '%s' is not present in the conversation view %s time(s)", msg, times),
-                    getDialogPage().waitForXEncryptedMessages(msg, times));
-        } else {
-            Assert.assertTrue(
-                    String.format("Non-encrypted message '%s' is not present in the conversation view %s time(s)", msg, times),
-                    getDialogPage().waitForXNonEncryptedMessages(msg, times));
-        }
+    @Then("^I see message (.*) (\\d+) times? in the conversation view$")
+    public void ISeeMessageXTimes(String msg, int times) throws Exception {
+        Assert.assertTrue(
+                String.format("Message '%s' is not present in the conversation view %s time(s)", msg, times),
+                getDialogPage().waitForXMessages(msg, times));
     }
 
     /**
      * Verify whether an image is present in conversation view X times
      *
-     * @param isEncrypted whether the message should be encrypted or not
-     * @param times the expected count of message repetitions in the convo view
+     * @param num the expected count of image repetitions in the convo view
      * @throws Exception
-     * @step. ^I see (encrypted|non-encrypted) image (\d+) times? in the conversation view$
+     * @step. ^I see (\\d+) images? in the conversation view$
      */
     @Then("^I see (encrypted|non-encrypted) image (\\d+) times? in the conversation view$")
     public void ISeeImageXTimes(String isEncrypted, int times) throws Exception {

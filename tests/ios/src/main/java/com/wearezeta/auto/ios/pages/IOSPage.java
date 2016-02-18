@@ -1,5 +1,7 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.awt.image.BufferedImage;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -40,6 +42,10 @@ public abstract class IOSPage extends BasePage {
     private static final Function<String, String> xpathStrAlertByText = text ->
             String.format("//UIAAlert[ .//*[contains(@name, '%s')] or contains(@name, '%s')]", text, text);
 
+    protected static final By xpathBrowserURLButton = By.xpath("//UIAButton[@name='URL']");
+
+    protected static final By nameBackToWireBrowserButton = By.name("Back to Wire");
+
     private IOSKeyboard onScreenKeyboard;
 
     protected long getDriverInitializationTimeout() {
@@ -62,22 +68,22 @@ public abstract class IOSPage extends BasePage {
      * @throws Exception
      */
     private static ZetaIOSDriver fixUITreeIfBroken(final ZetaIOSDriver drv) throws Exception {
-        if (drv.findElements(By.className("UIAWindow")).size() > 0) {
-            return drv;
-        }
-        log.warn("Detected Appium UI tree corruption. Trying to fix...");
-        try {
-            if (drv.getOrientation() == ScreenOrientation.PORTRAIT) {
-                drv.rotate(ScreenOrientation.LANDSCAPE);
-                drv.rotate(ScreenOrientation.PORTRAIT);
-            } else {
-                drv.rotate(ScreenOrientation.PORTRAIT);
-                drv.rotate(ScreenOrientation.LANDSCAPE);
-            }
-            Thread.sleep(500);
-        } catch (WebDriverException e) {
-            // pass silently
-        }
+//        if (drv.findElements(By.className("UIAWindow")).size() > 0) {
+//            return drv;
+//        }
+//        log.warn("Detected Appium UI tree corruption. Trying to fix...");
+//        try {
+//            if (drv.getOrientation() == ScreenOrientation.PORTRAIT) {
+//                drv.rotate(ScreenOrientation.LANDSCAPE);
+//                drv.rotate(ScreenOrientation.PORTRAIT);
+//            } else {
+//                drv.rotate(ScreenOrientation.PORTRAIT);
+//                drv.rotate(ScreenOrientation.LANDSCAPE);
+//            }
+//            Thread.sleep(500);
+//        } catch (WebDriverException e) {
+//            // pass silently
+//        }
         return drv;
     }
 
@@ -129,8 +135,9 @@ public abstract class IOSPage extends BasePage {
         getElement(nameEditingItemPaste, "Paste popup is not visible").click();
         final int popupVisibilityTimeoutSeconds = 10;
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEditingItemPaste, popupVisibilityTimeoutSeconds)) {
-            throw new IllegalStateException(String.format(
-                    "Paste popup is still visible after %s seconds timeout", popupVisibilityTimeoutSeconds));
+            log.warn((String.format(
+                    "Paste popup is still appears to be visible after %s seconds timeout",
+                    popupVisibilityTimeoutSeconds)));
         }
         Thread.sleep(2000);
     }
@@ -212,15 +219,24 @@ public abstract class IOSPage extends BasePage {
         this.getDriver().hideKeyboard();
     }
 
-    public void acceptAlert() throws Exception {
-        if (DriverUtils.waitUntilAlertAppears(this.getDriver())) {
-            this.getDriver().switchTo().alert().accept();
+    public void acceptAlertIfVisible() throws Exception {
+        final Optional<Alert> alert = DriverUtils.getAlertIfDisplayed(getDriver());
+        if (alert.isPresent()) {
+            alert.get().accept();
         }
     }
 
-    public void dismissAlert() throws Exception {
-        if (DriverUtils.waitUntilAlertAppears(this.getDriver())) {
-            this.getDriver().switchTo().alert().dismiss();
+    public void acceptAlertIfVisible(int timeoutSeconds) throws Exception {
+        final Optional<Alert> alert = DriverUtils.getAlertIfDisplayed(getDriver(), timeoutSeconds);
+        if (alert.isPresent()) {
+            alert.get().accept();
+        }
+    }
+
+    public void dismissAlertIfVisible() throws Exception {
+        final Optional<Alert> alert = DriverUtils.getAlertIfDisplayed(getDriver());
+        if (alert.isPresent()) {
+            alert.get().dismiss();
         }
     }
 
@@ -319,6 +335,7 @@ public abstract class IOSPage extends BasePage {
             // this is to show the unlock label if not visible yet
             IOSSimulatorHelper.goHome();
             IOSSimulatorHelper.swipeRight();
+            Thread.sleep(2000);
         } else {
             this.getDriver().lockScreen(timeSeconds);
         }
@@ -379,7 +396,6 @@ public abstract class IOSPage extends BasePage {
         }
     }
 
-
     @Override
     protected WebElement getElement(By locator, String message, int timeoutSeconds) throws Exception {
         try {
@@ -387,6 +403,31 @@ public abstract class IOSPage extends BasePage {
         } catch (Exception e) {
             log.debug(getDriver().getPageSource());
             throw e;
+        }
+    }
+
+    public boolean isWebPageVisible(String expectedUrl) throws Exception {
+        final WebElement urlBar = getElement(xpathBrowserURLButton, "The address bar of web browser is not visible");
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            final Dimension elSize = urlBar.getSize();
+            final Point elLocation = urlBar.getLocation();
+            clickAtSimulator(elLocation.x + (elSize.width / 6) / 100, elLocation.y + (elSize.height / 2) / 100);
+            Thread.sleep(1000);
+        } else {
+            urlBar.click();
+        }
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(expectedUrl));
+    }
+
+    public void tapBackToWire() throws Exception {
+        final WebElement backToWireButton = getElement(nameBackToWireBrowserButton);
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            final Dimension elSize = backToWireButton.getSize();
+            final Point elLocation = backToWireButton.getLocation();
+            clickAtSimulator(elLocation.x + (elSize.width / 2) / 100, elLocation.y + (elSize.height / 2) / 100);
+            Thread.sleep(1000);
+        } else {
+            backToWireButton.click();
         }
     }
 }

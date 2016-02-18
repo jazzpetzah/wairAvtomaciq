@@ -51,6 +51,12 @@ public class ContactListPageSteps {
 				.waitForSelfProfileAvatar();
 	}
 
+	@Given("^I verify a badge is shown on my avatar$")
+	public void ISeeBadgeOnAvatar() throws Exception {
+		Assert.assertTrue("No contact list loaded.", webappPagesCollection
+				.getPage(ContactListPage.class).waitForBadgeVisible());
+	}
+
 	/**
 	 * Checks that we can see conversation with specified name in Contact List
 	 * 

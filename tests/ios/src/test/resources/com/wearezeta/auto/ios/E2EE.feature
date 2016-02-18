@@ -44,6 +44,7 @@ Feature: E2EE
     Given I accept alert
     Given I accept First Time overlay if it is visible
     Given I accept alert
+    Given I dismiss settings warning
     Given I see conversations list
     When I remember the state of my avatar
     And User Myself adds a new device <DeviceName> with label <DeviceLabel>
@@ -179,13 +180,14 @@ Feature: E2EE
       | Name      | DeviceName | DeviceLabel  |
       | user1Name | Device1    | Device1Label |
 
-  @C3510 @noAcceptAlert @staging
+  @C3510 @noAcceptAlert @regression
   Scenario Outline: Verify deleting one of the devices from device management by Edit
     Given There is 1 user where <Name> is me
     Given I sign in using my email
     Given I accept alert
     Given I accept First Time overlay if it is visible
     Given I accept alert
+    Given I dismiss settings warning
     Given I see conversations list
     And User Myself adds new devices <DeviceName>
     When I tap my avatar
@@ -290,8 +292,8 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                    |
       | user1Name | user2Name | Device2     | Label2       | YOU STARTED USING A NEW DEVICE |
 
-  @C14319 @regression @rc
-  Scenario Outline: When I'm entering a verified conversation, a blue shield will appear at the bottom right
+  @C3286 @regression @rc
+  Scenario Outline: Verify conversation is marked as verified after approving all friend's clients in 1-to-1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given User <Contact1> adds new devices <DeviceName1>,<DeviceName2>
@@ -386,7 +388,7 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | Contact2  | GroupChatName |
       | user1Name | user2Name | Device2     | Label2       | user3Name | ThisGroup     |
 
-  @C3507 @staging
+  @C3507 @regression
   Scenario Outline: Verify remove, verify and reset session are absent for current device
     Given There is 1 user where <Name> is me
     Given I sign in using my email
@@ -405,14 +407,15 @@ Feature: E2EE
     Examples:
       | Name      |
       | user1Name |
-  
-  @C3292 @noAcceptAlert @staging
+
+  @C3292 @noAcceptAlert @regression
   Scenario Outline: Verify deleting one of the devices from device management by swipe
     Given There is 1 user where <Name> is me
     Given I sign in using my email
     Given I accept alert
     Given I accept First Time overlay if it is visible
     Given I accept alert
+    Given I dismiss settings warning
     Given I see conversations list
     And User Myself adds a new device <DeviceName> with label <DeviceLabel>
     When I tap my avatar
@@ -430,13 +433,14 @@ Feature: E2EE
       | Name      | DeviceName | DeviceLabel | Password      |
       | user1Name | Device1    | Label1      | user1Password |
 
-  @C3511 @noAcceptAlert @staging
+  @C3511 @noAcceptAlert @regression
   Scenario Outline: Verify deleting one of the devices from device information screen
     Given There is 1 user where <Name> is me
     Given I sign in using my email
     Given I accept alert
     Given I accept First Time overlay if it is visible
     Given I accept alert
+    Given I dismiss settings warning
     Given I see conversations list
     And User Myself adds new device <DeviceName>
     When I tap my avatar
@@ -454,7 +458,7 @@ Feature: E2EE
       | Name      | DeviceName | Password      |
       | user1Name | Device1    | user1Password |
 
-  @C3289 @staging
+  @C3289 @regression
   Scenario Outline: Verify conversation is not verified after checking only one device out of many
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact1>
@@ -476,3 +480,89 @@ Feature: E2EE
     Examples:
       | Name      | Contact1  | DeviceName2 | DeviceName1 | ExpectedMessage               |
       | user1Name | user2Name | Device2     | Device1     | ALL FINGERPRINTS ARE VERIFIED |
+
+  @C3498 @regression
+  Scenario Outline: Verify "learn more" leads to the proper page
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email
+    Given I see conversations list
+    Given User <Contact1> sends 1 encrypted message to user Myself
+    And I tap on contact name <Contact1>
+    And I open conversation details
+    And I switch to Devices tab
+    When I tap "Why verify conversations?" link in user details
+    And I wait for 3 seconds
+    Then I see "https://wire.com/privacy/why" web page opened
+    When I tap Back To Wire button
+    And I wait for 3 seconds
+    And I open details page of device number 1
+    And I tap "How do I do that?" link in user details
+    And I wait for 3 seconds
+    Then I see "https://wire.com/privacy/how" web page opened
+
+    Examples:
+      | Name      | Contact1  |
+      | user1Name | user2Name |
+
+  @C3494 @regression
+  Scenario Outline: Verify unverifying of the device in verified conversation
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given I sign in using my email
+    Given I see conversations list
+    When I tap on contact name <Contact1>
+    And I open conversation details
+    And I switch to Devices tab
+    And I open details page of device number 1
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    And I click close user profile page button
+    Then I see last message in dialog is expected message <VerificationMsg>
+    When I open conversation details
+    And I switch to Devices tab
+    And I open details page of device number 1
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    And I click close user profile page button
+    Then I see last message in dialog contains expected message <UnverificationMsg>
+
+    Examples:
+      | Name      | Contact1  | VerificationMsg               | UnverificationMsg     |
+      | user1Name | user2Name | ALL FINGERPRINTS ARE VERIFIED | YOU UNVERIFIED ONE OF |
+
+  @C3500 @regression
+  Scenario Outline: Verify shield is not shown when any text presents into the input field
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given I sign in using my email
+    Given I see conversations list
+    When I tap on contact name <Contact1>
+    And I open conversation details
+    And I switch to Devices tab
+    And I open details page of device number 1
+    And I tap Verify switcher on Device Details page
+    And I navigate back from Device Details page
+    And I click close user profile page button
+    And I click Close input options button
+    Then I see shield icon next to conversation input field
+    When I type the default message
+    Then I do not see shield icon next to conversation input field
+
+    Examples:
+      | Name      | Contact1  |
+      | user1Name | user2Name |
+
+  @C14311 @regression
+  Scenario Outline: Verify the appropriate device is signed out if you remove it from settings
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email
+    Given I see conversations list
+    When User Myself removes all his registered OTR clients
+    Then I see sign in screen
+
+    Examples:
+      | Name      |
+      | user1Name |

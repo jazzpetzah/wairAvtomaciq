@@ -8,6 +8,8 @@ Feature: Sign In
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Login button
+    And I accept First Time overlay if it is visible
+    And I dismiss settings warning
     Then I see conversations list
 
     Examples:
@@ -23,6 +25,8 @@ Feature: Sign In
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Login button
+    And I accept First Time overlay if it is visible
+    And I dismiss settings warning
     Then I see conversations list
 
     Examples:
@@ -56,43 +60,6 @@ Feature: Sign In
       | WrongMail  | WrongPassword |
       | wrongwrong | wrong         |
 
-  @C3120 @regression @rc @id2608
-  Scenario Outline: Verify possibility of reseting password (welcome page) [PORTRAIT]
-    Given I see sign in screen
-    And I tap I HAVE AN ACCOUNT button
-    And I click on Change Password button on SignIn
-    Then I see reset password page
-    And I change URL to staging
-    And I commit email <Login> to change password
-    And I copy link from email and paste it into Safari
-    And I commit new password <NewPassword>
-    And I click at 0.75,0.57 of Simulator window
-    And I sign in using my email
-    Then I see conversations list
-
-    Examples:
-      | Login      | NewPassword  |
-      | user1Email | aqa123456789 |
-
-  @C3131 @regression @id2923
-  Scenario Outline: Verify possibility of reseting password (welcome page) [LANDSCAPE]
-    Given I see sign in screen
-    Given I rotate UI to landscape
-    And I tap I HAVE AN ACCOUNT button
-    And I click on Change Password button on SignIn
-    Then I see reset password page
-    And I change URL to staging
-    And I commit email <Login> to change password
-    And I copy link from email and paste it into Safari
-    And I commit new password <NewPassword>
-    And I click at 0.75,0.57 of Simulator window
-    And I sign in using my email
-    Then I see conversations list
-
-    Examples:
-      | Login      | NewPassword  |
-      | user1Email | aqa123456789 |
-
   @C3135 @regression @id3817
   Scenario Outline: Verify phone sign in when email is assigned [PORTRAIT]
     Given There is 1 user where <Name> is me
@@ -104,6 +71,7 @@ Feature: Sign In
     When I enter phone number for user <Name>
     Then I see verification code page
     When I enter verification code for user <Name>
+    And I dismiss settings warning
     Then I see conversations list
 
     Examples:
@@ -122,6 +90,7 @@ Feature: Sign In
     When I enter phone number for user <Name>
     Then I see verification code page
     When I enter verification code for user <Name>
+    And I dismiss settings warning
     Then I see conversations list
 
     Examples:
@@ -146,6 +115,7 @@ Feature: Sign In
     When I click DONE keyboard button
     Then I see email verification reminder
     When I verify registration address
+    And I dismiss settings warning
     Then I see conversations list
 
     Examples:
@@ -296,6 +266,7 @@ Feature: Sign In
     And I click DONE keyboard button
     And I see email verification reminder
     And I verify registration address
+    And I dismiss settings warning
     Then I see conversations list
     When I tap my avatar
     Then I see email <Email> on Personal page
@@ -323,6 +294,7 @@ Feature: Sign In
     And I click DONE keyboard button
     And I see email verification reminder
     And I verify registration address
+    And I dismiss settings warning
     Then I see conversations list
     When I tap my avatar
     Then I see email <Email> on Personal page

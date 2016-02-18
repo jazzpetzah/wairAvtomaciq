@@ -50,27 +50,25 @@ public final class BackendAPIWrappers {
     }
 
     public static Future<String> initMessageListener(ClientUser forUser) throws Exception {
+        return initMessageListener(forUser, null);
+    }
+
+    public static Future<String> initMessageListener(ClientUser forUser,
+                                                     Map<String, String> additionalExpectedHeaders) throws Exception {
         IMAPSMailbox mbox = IMAPSMailbox.getInstance();
         Map<String, String> expectedHeaders = new HashMap<>();
-        expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER,
-                forUser.getEmail());
-        // The MAX_MSG_DELIVERY_OFFSET is necessary because of small
-        // time difference between UTC and your local machine
-        long currentTime = new Date().getTime();
-        try {
-            currentTime = CommonUtils.getPreciseTime().get(10, TimeUnit.SECONDS);
-        } catch (Exception e) {
-            e.printStackTrace();
+        expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, forUser.getEmail());
+        if (additionalExpectedHeaders != null) {
+            expectedHeaders.putAll(additionalExpectedHeaders);
         }
-        return mbox.getMessage(expectedHeaders, ACTIVATION_TIMEOUT,
-                currentTime - MAX_MSG_DELIVERY_OFFSET);
+        return mbox.getMessage(expectedHeaders, ACTIVATION_TIMEOUT);
     }
 
     /**
      * Creates a new user by sending the corresponding request to the backend
      *
-     * @param user        ClientUser instance with initial user parameters
-     *                    (name/email/password)
+     * @param user ClientUser instance with initial user parameters
+     *             (name/email/password)
      * @return Created ClientUser instance (with id property filled)
      * @throws Exception
      */
@@ -156,21 +154,18 @@ public final class BackendAPIWrappers {
         log.debug(String.format("User '%s' is successfully activated", email));
     }
 
-    private static String getActivationCodeForRegisteredEmail(String email)
-            throws Exception {
+    private static String getActivationCodeForRegisteredEmail(String email) throws Exception {
         return BackendREST.getActivationDataViaBackdoor(email)
                 .getString("code");
     }
 
-    private static String getActivationCodeForBookedPhoneNumber(
-            PhoneNumber phoneNumber) throws Exception {
+    private static String getActivationCodeForBookedPhoneNumber(PhoneNumber phoneNumber) throws Exception {
         return BackendREST.getActivationDataViaBackdoor(phoneNumber).getString(
                 "code");
     }
 
     public static void activateRegisteredUserByPhoneNumber(
-            PhoneNumber phoneNumber, String activationCode, boolean isDryRun)
-            throws Exception {
+            PhoneNumber phoneNumber, String activationCode, boolean isDryRun) throws Exception {
         BackendREST.activateNewUser(phoneNumber, activationCode, isDryRun);
         log.debug(String.format("User '%s' is successfully activated",
                 phoneNumber.toString()));
@@ -179,8 +174,7 @@ public final class BackendAPIWrappers {
     private final static int MAX_ACTIVATION_CODE_GET_RETRIES = 6;
     private final static int BACKEND_ERROR_PHONE_NUMBER_NOT_BOOKED = 404;
 
-    public static String getActivationCodeByPhoneNumber(PhoneNumber phoneNumber)
-            throws Exception {
+    public static String getActivationCodeByPhoneNumber(PhoneNumber phoneNumber) throws Exception {
         int ntry = 1;
         BackendRequestException savedException;
         do {
@@ -207,8 +201,7 @@ public final class BackendAPIWrappers {
 
     private final static int MAX_LOGIN_CODE_QUERIES = 6;
 
-    public static String getLoginCodeByPhoneNumber(PhoneNumber phoneNumber)
-            throws Exception {
+    public static String getLoginCodeByPhoneNumber(PhoneNumber phoneNumber) throws Exception {
         int ntry = 1;
         Exception savedException;
         do {
@@ -234,8 +227,7 @@ public final class BackendAPIWrappers {
         activateRegisteredUserByPhoneNumber(user.getPhoneNumber(), activationCode, false);
     }
 
-    private static void changeUserPassword(ClientUser user, String oldPassword,
-                                           String newPassword) throws Exception {
+    private static void changeUserPassword(ClientUser user, String oldPassword, String newPassword) throws Exception {
         BackendREST.updateSelfPassword(receiveAuthToken(user), oldPassword, newPassword);
         user.setPassword(newPassword);
     }
@@ -461,16 +453,13 @@ public final class BackendAPIWrappers {
         return user;
     }
 
-    private static String getUserNameByID(String id, ClientUser user)
-            throws Exception {
-        final JSONObject userInfo = BackendREST.getUserInfoByID(id,
-                receiveAuthToken(user));
+    private static String getUserNameByID(String id, ClientUser user) throws Exception {
+        final JSONObject userInfo = BackendREST.getUserInfoByID(id, receiveAuthToken(user));
         return userInfo.getString("name");
     }
 
     public static String getUserPictureHash(ClientUser user) throws Exception {
-        final JSONObject userInfo = BackendREST
-                .getUserInfo(receiveAuthToken(user));
+        final JSONObject userInfo = BackendREST.getUserInfo(receiveAuthToken(user));
         final String picture = userInfo.getJSONArray("picture").toString();
         return DigestUtils.sha256Hex(picture);
     }
@@ -478,26 +467,21 @@ public final class BackendAPIWrappers {
     public static void sendConnectRequest(ClientUser user, ClientUser contact,
                                           String connectName, String message) throws Exception {
         tryLoginByUser(contact);
-        BackendREST.sendConnectRequest(receiveAuthToken(user), contact.getId(),
-                connectName, message);
+        BackendREST.sendConnectRequest(receiveAuthToken(user), contact.getId(), connectName, message);
     }
 
-    private static JSONArray getAllConnections(ClientUser user)
-            throws Exception {
+    private static JSONArray getAllConnections(ClientUser user) throws Exception {
         String startId = null;
         JSONObject connectionsInfo;
         final JSONArray result = new JSONArray();
         do {
-            connectionsInfo = BackendREST.getConnectionsInfo(
-                    receiveAuthToken(user), null, startId);
-            final JSONArray connections = connectionsInfo
-                    .getJSONArray("connections");
+            connectionsInfo = BackendREST.getConnectionsInfo(receiveAuthToken(user), null, startId);
+            final JSONArray connections = connectionsInfo.getJSONArray("connections");
             for (int i = 0; i < connections.length(); i++) {
                 result.put(connections.getJSONObject(i));
             }
             if (connections.length() > 0) {
-                startId = connections.getJSONObject(connections.length() - 1)
-                        .getString("to");
+                startId = connections.getJSONObject(connections.length() - 1).getString("to");
             }
         } while (connectionsInfo.getBoolean("has_more"));
         return result;
@@ -549,8 +533,7 @@ public final class BackendAPIWrappers {
             tryLoginByUser(contact);
             ids.add(contact.getId());
         }
-        BackendREST.createGroupConversation(receiveAuthToken(user), ids,
-                conversationName);
+        BackendREST.createGroupConversation(receiveAuthToken(user), ids, conversationName);
     }
 
     public static void addContactsToGroupConversation(ClientUser asUser,
@@ -600,8 +583,7 @@ public final class BackendAPIWrappers {
             throws Exception {
         long startTimestamp = (new Date()).getTime();
         while ((new Date()).getTime() <= startTimestamp + timeout * 1000) {
-            final JSONObject suggestions = BackendREST
-                    .getSuggestions(receiveAuthToken(userFrom));
+            final JSONObject suggestions = BackendREST.getSuggestions(receiveAuthToken(userFrom));
             log.debug("Suggestions: " + suggestions.toString());
             if (suggestions.getInt("returned") > 0) {
                 return;
@@ -615,15 +597,13 @@ public final class BackendAPIWrappers {
 
     public static String sendConversationPing(ClientUser userFrom, String convId)
             throws Exception {
-        JSONObject response = BackendREST.sendConversationPing(
-                receiveAuthToken(userFrom), convId);
+        JSONObject response = BackendREST.sendConversationPing(receiveAuthToken(userFrom), convId);
         return response.getString("id");
     }
 
     public static void sendConvertsationHotPing(ClientUser userFrom,
                                                 String convId, String refId) throws Exception {
-        BackendREST.sendConvertsationHotPing(receiveAuthToken(userFrom),
-                convId, refId);
+        BackendREST.sendConvertsationHotPing(receiveAuthToken(userFrom), convId, refId);
     }
 
     public static JSONArray getConversations(ClientUser user) throws Exception {
@@ -634,8 +614,7 @@ public final class BackendAPIWrappers {
             int tryNum = 0;
             while (tryNum < MAX_BACKEND_RETRIES) {
                 try {
-                    conversationsInfo = BackendREST.getConversationsInfo(
-                            receiveAuthToken(user), startId);
+                    conversationsInfo = BackendREST.getConversationsInfo(receiveAuthToken(user), startId);
                     break;
                 } catch (BackendRequestException e) {
                     if (e.getReturnCode() == SERVER_SIDE_ERROR) {
@@ -673,91 +652,71 @@ public final class BackendAPIWrappers {
             // This will delete self picture
             BackendREST.updateSelfInfo(generateAuthToken(user), null, new HashMap<>(), null);
         } else {
-            final byte[] srcImageAsByteArray = Files.readAllBytes(Paths
-                    .get(picturePath));
+            final byte[] srcImageAsByteArray = Files.readAllBytes(Paths.get(picturePath));
 
-            ImageAssetData srcImgData = new ImageAssetData(convId,
-                    srcImageAsByteArray, getImageMimeType(picturePath));
+            ImageAssetData srcImgData = new ImageAssetData(convId, srcImageAsByteArray, getImageMimeType(picturePath));
             srcImgData.setIsPublic(true);
             srcImgData.setCorrelationId(String.valueOf(UUID.randomUUID()));
             srcImgData.setNonce(srcImgData.getCorrelationId());
             ImageAssetProcessor imgProcessor = new SelfImageProcessor(srcImgData);
-            ImageAssetRequestBuilder reqBuilder = new ImageAssetRequestBuilder(
-                    imgProcessor);
+            ImageAssetRequestBuilder reqBuilder = new ImageAssetRequestBuilder(imgProcessor);
             Map<JSONObject, AssetData> sentPictures = BackendREST.sendPicture(
                     generateAuthToken(user), convId, reqBuilder);
             Map<String, AssetData> processedAssets = new LinkedHashMap<>();
             for (Map.Entry<JSONObject, AssetData> entry : sentPictures.entrySet()) {
-                final String postedImageId = entry.getKey().getJSONObject("data")
-                        .getString("id");
+                final String postedImageId = entry.getKey().getJSONObject("data").getString("id");
                 processedAssets.put(postedImageId, entry.getValue());
             }
-            BackendREST.updateSelfInfo(generateAuthToken(user), null,
-                    processedAssets, null);
+            BackendREST.updateSelfInfo(generateAuthToken(user), null, processedAssets, null);
         }
 
     }
 
-    public static void updateUserName(ClientUser user, String newName)
-            throws Exception {
+    public static void updateUserName(ClientUser user, String newName) throws Exception {
         BackendREST.updateSelfInfo(receiveAuthToken(user), null, null, newName);
         user.setName(newName);
     }
 
-    public static void updateUserAccentColor(ClientUser user, AccentColor color)
-            throws Exception {
-        BackendREST.updateSelfInfo(receiveAuthToken(user), color.getId(), null,
-                null);
+    public static void updateUserAccentColor(ClientUser user, AccentColor color) throws Exception {
+        BackendREST.updateSelfInfo(receiveAuthToken(user), color.getId(), null, null);
         user.setAccentColor(color);
     }
 
     public static void updateConvMutedState(ClientUser user,
                                             ClientUser mutedUser, boolean muted) throws Exception {
         final String convId = getConversationWithSingleUser(user, mutedUser);
-        BackendREST.updateConvSelfInfo(receiveAuthToken(user), convId, null,
-                muted, null);
+        BackendREST.updateConvSelfInfo(receiveAuthToken(user), convId, null, muted, null);
     }
 
     public static void updateGroupConvMutedState(ClientUser user,
                                                  String groupConvName, boolean muted) throws Exception {
-        BackendREST
-                .updateConvSelfInfo(receiveAuthToken(user),
-                        getConversationIdByName(user, groupConvName), null,
-                        muted, null);
+        BackendREST.updateConvSelfInfo(receiveAuthToken(user), getConversationIdByName(user, groupConvName), null,
+                muted, null);
     }
 
-    public static void archiveUserConv(ClientUser ownerUser,
-                                       ClientUser archivedUser) throws Exception {
-        final String convId = getConversationWithSingleUser(ownerUser,
-                archivedUser);
-        BackendREST.updateConvSelfInfo(receiveAuthToken(ownerUser), convId,
-                null, null, true);
+    public static void archiveUserConv(ClientUser ownerUser, ClientUser archivedUser) throws Exception {
+        final String convId = getConversationWithSingleUser(ownerUser, archivedUser);
+        BackendREST.updateConvSelfInfo(receiveAuthToken(ownerUser), convId, null, null, true);
     }
 
-    public static void archiveGroupConv(ClientUser selfUser,
-                                        String conversationToArchive) throws Exception {
-        BackendREST.updateConvSelfInfo(receiveAuthToken(selfUser),
-                conversationToArchive, null, null, true);
+    public static void archiveGroupConv(ClientUser selfUser, String conversationToArchive) throws Exception {
+        BackendREST.updateConvSelfInfo(receiveAuthToken(selfUser), conversationToArchive, null, null, true);
     }
 
     public static void unarchiveUserConv(ClientUser ownerUser,
                                          ClientUser archivedUser) throws Exception {
-        final String convId = getConversationWithSingleUser(ownerUser,
-                archivedUser);
-        BackendREST.updateConvSelfInfo(receiveAuthToken(ownerUser), convId,
-                null, null, false);
+        final String convId = getConversationWithSingleUser(ownerUser, archivedUser);
+        BackendREST.updateConvSelfInfo(receiveAuthToken(ownerUser), convId, null, null, false);
     }
 
     public static void unarchiveGroupConv(ClientUser ownerUser,
                                           String conversationToUnarchive) throws Exception {
         tryLoginByUser(ownerUser);
-        BackendREST.updateConvSelfInfo(generateAuthToken(ownerUser),
-                conversationToUnarchive, null, null, false);
+        BackendREST.updateConvSelfInfo(generateAuthToken(ownerUser), conversationToUnarchive, null, null, false);
     }
 
     public static class NoContactsFoundException extends Exception {
         private static final long serialVersionUID = -7682778364420522320L;
-
         public NoContactsFoundException(String msg) {
             super(msg);
         }
@@ -769,22 +728,18 @@ public final class BackendAPIWrappers {
         final long startTimestamp = System.currentTimeMillis();
         int currentCount;
         while (System.currentTimeMillis() - startTimestamp <= timeoutSeconds * 1000) {
-            final JSONObject searchResult = BackendREST.searchForContacts(
-                    receiveAuthToken(searchByUser), query);
-            if (searchResult.has("documents")
-                    && (searchResult.get("documents") instanceof JSONArray)) {
+            final JSONObject searchResult = BackendREST.searchForContacts(receiveAuthToken(searchByUser), query);
+            if (searchResult.has("documents") && (searchResult.get("documents") instanceof JSONArray)) {
                 currentCount = searchResult.getJSONArray("documents").length();
             } else {
                 currentCount = 0;
             }
-            if (currentCount == expectedCount
-                    || (orMore && currentCount >= expectedCount)) {
+            if (currentCount == expectedCount || (orMore && currentCount >= expectedCount)) {
                 return;
             }
             Thread.sleep(1000);
         }
-        throw new NoContactsFoundException(
-                String.format(
+        throw new NoContactsFoundException(String.format(
                         "%s contact(s) '%s' were not found within %s second(s) timeout",
                         expectedCount, query, timeoutSeconds));
     }
@@ -795,23 +750,19 @@ public final class BackendAPIWrappers {
         final long startTimestamp = System.currentTimeMillis();
         int currentCount;
         while (System.currentTimeMillis() - startTimestamp <= timeoutSeconds * 1000) {
-            final JSONObject searchResult = BackendREST
-                    .searchForTopPeopleContacts(receiveAuthToken(searchByUser),
+            final JSONObject searchResult = BackendREST.searchForTopPeopleContacts(receiveAuthToken(searchByUser),
                             size);
-            if (searchResult.has("documents")
-                    && (searchResult.get("documents") instanceof JSONArray)) {
+            if (searchResult.has("documents") && (searchResult.get("documents") instanceof JSONArray)) {
                 currentCount = searchResult.getJSONArray("documents").length();
             } else {
                 currentCount = 0;
             }
-            if (currentCount == expectedCount
-                    || (orMore && currentCount >= expectedCount)) {
+            if (currentCount == expectedCount || (orMore && currentCount >= expectedCount)) {
                 return;
             }
             Thread.sleep(1000);
         }
-        throw new NoContactsFoundException(
-                String.format(
+        throw new NoContactsFoundException(String.format(
                         "%s contact(s) '%s' were not found within %s second(s) timeout",
                         expectedCount, size, timeoutSeconds));
     }
@@ -821,10 +772,8 @@ public final class BackendAPIWrappers {
         final long startTimestamp = System.currentTimeMillis();
         int currentCount = 0;
         do {
-            final JSONObject searchResult = BackendREST.searchForContacts(
-                    receiveAuthToken(searchByUser), query);
-            if (searchResult.has("documents")
-                    && (searchResult.get("documents") instanceof JSONArray)) {
+            final JSONObject searchResult = BackendREST.searchForContacts(receiveAuthToken(searchByUser), query);
+            if (searchResult.has("documents") && (searchResult.get("documents") instanceof JSONArray)) {
                 currentCount = searchResult.getJSONArray("documents").length();
             }
             if (currentCount <= 0) {
@@ -832,8 +781,7 @@ public final class BackendAPIWrappers {
             }
             Thread.sleep(1000);
         } while (System.currentTimeMillis() - startTimestamp <= timeoutSeconds * 1000);
-        throw new AssertionError(
-                String.format(
+        throw new AssertionError(String.format(
                         "%s contact(s) '%s' are still found after %s second(s) timeout",
                         currentCount, query, timeoutSeconds));
     }
@@ -841,8 +789,7 @@ public final class BackendAPIWrappers {
     public static void sendPersonalInvitation(ClientUser ownerUser,
                                               String toEmail, String toName, String message) throws Exception {
         tryLoginByUser(ownerUser);
-        BackendREST.sendPersonalInvitation(generateAuthToken(ownerUser),
-                toEmail, toName, message);
+        BackendREST.sendPersonalInvitation(generateAuthToken(ownerUser), toEmail, toName, message);
     }
 
     public static Optional<InvitationMessage> getInvitationMessage(String email)

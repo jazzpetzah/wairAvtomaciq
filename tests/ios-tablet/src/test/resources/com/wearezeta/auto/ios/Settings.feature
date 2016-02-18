@@ -10,7 +10,7 @@ Feature: Settings
     And I click on Settings button from the options menu
     Then I see settings page
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -25,7 +25,7 @@ Feature: Settings
     And I click on Settings button from the options menu
     Then I see settings page
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -41,7 +41,7 @@ Feature: Settings
     And I close About page
     Then I see self profile page
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -58,7 +58,7 @@ Feature: Settings
     And I close About page
     Then I see self profile page
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -75,7 +75,7 @@ Feature: Settings
     And I wait for 4 seconds
     Then I see reset password page
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -93,7 +93,7 @@ Feature: Settings
     And I wait for 4 seconds
     Then I see reset password page
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -108,7 +108,7 @@ Feature: Settings
     And I select settings item Alerts
     Then I verify sound alerts settings are set to default values
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -124,7 +124,7 @@ Feature: Settings
     And I select settings item Alerts
     Then I verify sound alerts settings are set to default values
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -138,7 +138,7 @@ Feature: Settings
     When I click on Help button from the options menu
     Then I see Support web page
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -153,7 +153,7 @@ Feature: Settings
     And I click on Help button from the options menu
     Then I see Support web page
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -182,9 +182,9 @@ Feature: Settings
     And I open WireWebsite
     Then I see WireWebsitePage
 
-    Examples: 
-      | Name      | Contact   | Color  |
-      | user1Name | user2Name | Violet |
+    Examples:
+      | Name      | Color  |
+      | user1Name | Violet |
 
   @C2911 @regression @id3156
   Scenario Outline: Verify about screen contains all the required information [LANDSCAPE]
@@ -212,6 +212,6 @@ Feature: Settings
     And I open WireWebsite
     Then I see WireWebsitePage
 
-    Examples: 
-      | Name      | Contact   | Color  |
-      | user1Name | user2Name | Violet |
+    Examples:
+      | Name      | Color  |
+      | user1Name | Violet |

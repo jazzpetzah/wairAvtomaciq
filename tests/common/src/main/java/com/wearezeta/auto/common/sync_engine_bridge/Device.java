@@ -17,38 +17,51 @@ class Device extends RemoteEntity implements IDevice {
     private Optional<ClientUser> loggedInUser = Optional.empty();
     private Optional<String> id = Optional.empty();
     private Optional<String> fingerprint = Optional.empty();
-    private IRemoteProcess hostProcess;
-    private ActorRef coordinatorActorRef;
+    private IRemoteProcess hostProcess = null;
+    private final ActorRef coordinatorActorRef;
 
     public Device(IRemoteProcess hostProcess, String deviceName, ActorRef coordinatorActorRef,
                   FiniteDuration actorTimeout) {
-        super(null, deviceName, actorTimeout);
+        super(deviceName, actorTimeout);
         this.hostProcess = hostProcess;
         this.coordinatorActorRef = coordinatorActorRef;
         respawn();
     }
 
-    private void respawn() {
-        if (this.ref() != null) {
-            this.ref().tell(PoisonPill.getInstance(), null);
-            this.hostProcess.reconnect();
-            this.setRef(null);
-        }
-        final ActorRef processActorRef = this.hostProcess.ref();
+    private boolean spawnOnHostProcess() {
         try {
-            final Object resp = askActor(processActorRef, new ActorMessage.SpawnRemoteDevice(null, this.name()));
+            final Object resp = askActor(this.hostProcess.ref(), new ActorMessage.SpawnRemoteDevice(null, this.name()));
             if (resp instanceof ActorRef) {
                 ActorRef deviceRef = (ActorRef) resp;
                 this.setRef(deviceRef);
-                return;
+                return true;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        throw new IllegalStateException(String.format(
-                "There was an error establishing a connection with a new device: "
-                        + "%s on process: %s. Please check the log file %s for more details.",
-                this.name(), this.hostProcess.name(), this.hostProcess.getLogPath()));
+        return false;
+    }
+
+    private void respawn() {
+        if (this.ref() != null) {
+            this.ref().tell(PoisonPill.getInstance(), null);
+            this.setRef(null);
+        }
+
+        if (!spawnOnHostProcess()) {
+            try {
+                this.hostProcess.restart();
+                if (spawnOnHostProcess()) {
+                    return;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            throw new IllegalStateException(String.format(
+                    "There was an error establishing a connection with a new device: "
+                            + "%s on process: %s. Please check the log file %s for more details.",
+                    this.name(), this.hostProcess.name(), this.hostProcess.getLogPath()));
+        }
     }
 
     @Override
@@ -199,7 +212,6 @@ class Device extends RemoteEntity implements IDevice {
     public void destroy() throws Exception {
         if (this.coordinatorActorRef != null && this.hostProcess != null) {
             this.ref().tell(PoisonPill.getInstance(), null);
-            this.coordinatorActorRef = null;
             this.hostProcess = null;
         }
     }

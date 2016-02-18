@@ -1,16 +1,85 @@
 Feature: Sign In
 
-  @C1735 @regression
-  Scenario Outline: Sign in to Wire for Web
+  @C2098 @e2ee @smoke
+  Scenario Outline: Verify current browser is set as permanent device
+    Given There are 3 users where <Name> is me
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given user <Contact2> adds a new device Device1 with label Label1
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    When I open conversation with <Contact1>
+    And Contact <Contact1> sends message <Message1> to user Myself
+    And User <Contact1> sends image <ImageName1> to single user conversation Myself
+    Then I see text message <Message1>
+    And I see sent picture <ImageName1> in the conversation view
+    When I open conversation with <GroupChatName>
+    And Contact <Contact2> sends message <Message2> to group conversation <GroupChatName>
+    And User <Contact2> sends image <ImageName1> to group conversation <GroupChatName>
+    Then I see text message <Message2>
+    And I see sent picture <ImageName1> in the conversation view
+    When I open self profile
+    And I click gear button on self profile page
+    And I select Settings menu item on self profile page
+    And I remember the device id of the current device
+    And I click close settings page button
+    And I wait for 2 seconds
+    And I click gear button on self profile page
+    And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
+    And I see Sign In page
+    And I Sign in using login <Email> and password <Password>
+    Then I am signed in properly
+    And I open conversation with <Contact1>
+    And I see text message <Message1>
+    And I see sent picture <ImageName1> in the conversation view
+    And I open conversation with <GroupChatName>
+    And I see text message <Message2>
+    And I see sent picture <ImageName1> in the conversation view
+    When I open self profile
+    And I click gear button on self profile page
+    And I select Settings menu item on self profile page
+    Then I verify that the device id of the current device is the same
+    And I see 0 devices in the devices section
+
+    Examples:
+      | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message1   | Message2     | ImageName1               |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat     | Hello 1:1! | Hello Group! | userpicture_portrait.jpg |
+
+  @C2099 @e2ee @smoke
+  Scenario Outline: Verify current browser is set as temporary device
     Given There is 1 user where <Name> is me
-    Given I switch to sign in page
+    Given I switch to Sign In page
     Given I see Sign In page
     When I enter email "<Email>"
     And I enter password "<Password>"
     And I press Sign In button
-    Then I see user name on self profile page <Name>
+    Then I see the history info page
+    When I click confirm on history info page
+    Then I am signed in properly
+    When I click gear button on self profile page
+    And I select Settings menu item on self profile page
+    And I remember the device id of the current device
+    And I click close settings page button
+    And I wait for 2 seconds
+    And I click gear button on self profile page
+    And I select Log out menu item on self profile page
+    And I see Sign In page
+    And I enter email "<Email>"
+    And I enter password "<Password>"
+    And I press Sign In button
+    And I see the history info page
+    And I click confirm on history info page
+    Then I am signed in properly
+    When I click gear button on self profile page
+    And I select Settings menu item on self profile page
+    Then I verify that the device id of the current device is not the same
+    And I see 0 devices in the devices section
 
-    Examples: 
+    Examples:
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 

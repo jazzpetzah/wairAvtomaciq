@@ -242,7 +242,6 @@ Feature: Conversation List
     And I click delete menu button
     And I confirm delete conversation content
     And I open search by taping on it
-    And I tap on Search input on People picker page
     And I search for user name <GroupChatName> and tap on it on People picker page
     Then I see group chat page with users <Contact1>,<Contact2>
     And I see 0 conversation entries
@@ -267,7 +266,6 @@ Feature: Conversation List
     And I click delete menu button
     And I confirm delete conversation content
     And I open search by taping on it
-    And I tap on Search input on People picker page
     And I search for user name <Contact1> and tap on it on People picker page
     And I click open conversation button on People picker page
     Then I see dialog page
@@ -472,7 +470,6 @@ Feature: Conversation List
     And I open archived conversations
     And I dont see conversation <Contact> in contact list
     And I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     Then I see user <Contact> found on People picker page
 

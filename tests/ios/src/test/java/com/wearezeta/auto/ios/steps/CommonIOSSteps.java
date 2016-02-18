@@ -187,12 +187,12 @@ public class CommonIOSSteps {
 
     @When("^I accept alert$")
     public void IAcceptAlert() throws Exception {
-        pagesCollection.getCommonPage().acceptAlert();
+        pagesCollection.getCommonPage().acceptAlertIfVisible();
     }
 
     @When("^I dismiss alert$")
     public void IDismissAlert() throws Exception {
-        pagesCollection.getCommonPage().dismissAlert();
+        pagesCollection.getCommonPage().dismissAlertIfVisible();
     }
 
     /**
@@ -761,9 +761,8 @@ public class CommonIOSSteps {
      * Press Enter button on the keyboard if this is simulator or Commit button on the
      * on-screen keyboard if real device
      *
-     * @step. ^I press Enter key in Simulator window$
-     *
      * @throws Exception
+     * @step. ^I press Enter key in Simulator window$
      */
     @When("^I press Enter key in Simulator window$")
     public void IPressEnterKey() throws Exception {
@@ -772,5 +771,41 @@ public class CommonIOSSteps {
         } else {
             pagesCollection.getCommonPage().clickKeyboardCommitButton();
         }
+    }
+
+    /**
+     * Check whether web browser is visible with particular url
+     *
+     * @param expectedUrl full web page URL
+     * @throws Exception
+     * @step. ^I see "(.*)" web page opened$
+     */
+    @Then("^I see \"(.*)\" web page opened$")
+    public void ISeeWebPage(String expectedUrl) throws Exception {
+        Assert.assertTrue(String.format("The expected URL '%s' has not been opened in web browser", expectedUrl),
+                pagesCollection.getCommonPage().isWebPageVisible(expectedUrl));
+    }
+
+    /**
+     * Tap the corresponding button to switch back to Wire app from browser view
+     *
+     * @throws Exception
+     * @step. ^I tap Back To Wire button$
+     */
+    @When("^I tap Back To Wire button$")
+    public void ITapBackToWire() throws Exception {
+        pagesCollection.getCommonPage().tapBackToWire();
+    }
+
+    /**
+     * Remove all registered OTR clients for the particular user
+     *
+     * @param userAs user name/alias
+     * @throws Exception
+     * @step. ^User (.*) removes all his registered OTR clients$
+     */
+    @Given("^User (.*) removes all his registered OTR clients$")
+    public void UserRemovesAllRegisteredOtrClients(String userAs) throws Exception {
+        commonSteps.UserRemovesAllRegisteredOtrClients(userAs);
     }
 }

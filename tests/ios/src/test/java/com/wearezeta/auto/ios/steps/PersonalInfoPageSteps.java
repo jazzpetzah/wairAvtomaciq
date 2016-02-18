@@ -38,30 +38,6 @@ public class PersonalInfoPageSteps {
         getPersonalInfoPage().tapOnPersonalPage();
     }
 
-    /**
-     * Enters an 80 char username
-     *
-     * @throws Exception
-     * @step. ^I attempt to enter an 80 char name$
-     */
-    @When("^I attempt to enter an 80 char name$")
-    public void EnterTooLongName() throws Exception {
-        getPersonalInfoPage().clearNameField();
-        getPersonalInfoPage().attemptTooLongName();
-    }
-
-    /**
-     * Verifies username is no more than 64 chars
-     *
-     * @throws Exception
-     * @step. New name is only first 64 chars
-     */
-    @When("I verify my new name is only first 64 chars")
-    public void NewNameIsMaxChars() throws Exception {
-        Assert.assertTrue("Username is greater than 64 characters",
-                getPersonalInfoPage().getSelfNameLength() >= 64);
-    }
-
     @When("I see error message asking for more characters")
     public void ISeeErrorMessageForMoreCharacters() throws Exception {
         Assert.assertTrue("Error message is not shown", getPersonalInfoPage()
@@ -312,16 +288,6 @@ public class PersonalInfoPageSteps {
         getPersonalInfoPage().tapOnPersonalPage();
     }
 
-    /**
-     * Attempt to change name using only spaces
-     *
-     * @step. I attempt to change name using only spaces
-     */
-    @When("I attempt to change name using only spaces")
-    public void IEnterNameUsingOnlySpaces() throws Exception {
-        getPersonalInfoPage().changeNameUsingOnlySpaces();
-    }
-
     @When("I click on Settings button from the options menu")
     public void WhenIClickOnSettingsButtonFromOptionsMenu() throws Exception {
         getPersonalInfoPage().tapOnSettingsButton();
@@ -379,7 +345,8 @@ public class PersonalInfoPageSteps {
      */
     @Then("^I see Support web page$")
     public void ISeeSupportWebPage() throws Exception {
-        Assert.assertTrue(getPersonalInfoPage().isSupportWebPageVisible());
+        Assert.assertTrue("Customer support page has not been loaded",
+                getPersonalInfoPage().isSupportWebPageVisible());
     }
 
     /**

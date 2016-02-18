@@ -20,21 +20,15 @@ public class ContactListPage extends IOSPage {
     private static final String xpathStrContactListRoot = xpathStrMainWindow + "/UIACollectionView[1]";
     private static final By xpathContactListRoot = By.xpath(xpathStrContactListRoot);
 
-    private static final String xpathStrContactListItems = xpathStrContactListRoot + "//UIACollectionCell";
+    private static final String xpathStrContactListItems = xpathStrContactListRoot + "/UIACollectionCell";
     private static final Function<String, String> xpathStrContactListItemByExpr = xpathExpr ->
             String.format("%s/UIAStaticText[%s]", xpathStrContactListItems, xpathExpr);
-    private static final Function<String, String> xpathStrContactListItemYouAreInCallWithByName = name ->
-            String.format("%s/UIAStaticText[@name='%s']", xpathStrMainWindow, name);
-
     private static final Function<String, String> xpathStrConvoListEntryByName = name ->
-            String.format("%s[@name='%s']", xpathStrContactListItems, name);
+            String.format("%s/UIAStaticText[@value='%s']/parent::*", xpathStrContactListItems, name);
     private static final Function<Integer, String> xpathStrConvoListEntryByIdx = idx ->
-            String.format("(%s)[%s]", xpathStrContactListItems, idx);
-    private static final Function<Integer, String> xpathStrConvoListEntryNameByIdx = idx ->
-            String.format("(%s)[%s]/UIAStaticText", xpathStrContactListItems, idx);
-
+            String.format("%s[%s]", xpathStrContactListItems, idx);
     private static final Function<String, String> xpathStrFirstConversationEntryByName = name ->
-            String.format("(%s)[1]/UIAStaticText[@value='%s']", xpathStrContactListItems, name);
+            String.format("%s[1]/UIAStaticText[@value='%s']", xpathStrContactListItems, name);
 
     private static final By nameOpenStartUI = By.name("START A CONVERSATION");
 
@@ -95,28 +89,10 @@ public class ContactListPage extends IOSPage {
         getElement(nameSelfButton).click();
     }
 
-    public String getSelfButtonLabel() throws Exception {
-        return getElement(nameSelfButton).getAttribute("label").toUpperCase();
-    }
-
-    public boolean isSelfButtonContainingFirstNameLetter(String name) throws Exception {
-        String sub = name.substring(0, 1).toUpperCase();
-        return sub.equals(getSelfButtonLabel());
-    }
-
     public void tapOnName(String name) throws Exception {
         findNameInContactList(name).orElseThrow(
                 () -> new IllegalStateException(String.format("The conversation '%s' is not visible in the list", name))
         ).click();
-    }
-
-    public String getFirstDialogName() throws Exception {
-        return getConversationNameByIndex(1);
-    }
-
-    public String getConversationNameByIndex(int index) throws Exception {
-        final By locator = By.xpath(xpathStrConvoListEntryNameByIdx.apply(index));
-        return getElement(locator, String.format("Conversation # %s is not visible", index)).getText();
     }
 
     private Optional<WebElement> findNameInContactList(String name) throws Exception {
@@ -273,7 +249,7 @@ public class ContactListPage extends IOSPage {
     }
 
     public void tapConvoItemByIdx(int idx) throws Exception {
-        final By locator = By.xpath(xpathStrConvoListEntryNameByIdx.apply(idx));
+        final By locator = By.xpath(xpathStrConvoListEntryByIdx.apply(idx));
         getElement(locator, String.format("Conversation list entry number '%s' is not visible", idx)).click();
     }
 
@@ -285,17 +261,7 @@ public class ContactListPage extends IOSPage {
     }
 
     private Optional<WebElement> findNameIamCallingInContactList(String name) throws Exception {
-        final By locator = By.xpath(xpathStrContactListItemYouAreInCallWithByName.apply(name));
-        final Optional<WebElement> contactCellCalling = getElementIfDisplayed(locator);
-        if (contactCellCalling.isPresent()) {
-            return contactCellCalling;
-        } else {
-            try {
-                return Optional.of(((IOSElement) getElement(xpathContactListRoot)).scrollToExact(name));
-            } catch (WebDriverException e) {
-                return Optional.empty();
-            }
-        }
+        return getElementIfDisplayed(By.name(name));
     }
 
     public boolean isFirstConversationName(String convoName) throws Exception {

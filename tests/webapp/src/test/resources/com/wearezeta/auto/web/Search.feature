@@ -111,6 +111,8 @@ Feature: Search
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And User <Name2> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
@@ -123,6 +125,8 @@ Feature: Search
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And User <Name> is me
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
