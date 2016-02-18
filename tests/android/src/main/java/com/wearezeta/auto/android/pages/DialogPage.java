@@ -174,6 +174,10 @@ public class DialogPage extends AndroidPage {
     // NOTE: Click happens on the text input area if participants button is not
     // NOTE: visible
     public void scrollToTheBottom() throws Exception {
+        // Pull page
+        DriverUtils.swipeByCoordinates(getDriver(), DEFAULT_SWIPE_TIME, 50, 20, 50, 30);
+        DriverUtils.swipeByCoordinates(getDriver(), DEFAULT_SWIPE_TIME, 50, 40, 50, 10);
+        DriverUtils.swipeByCoordinates(getDriver(), DEFAULT_SWIPE_TIME, 50, 40, 50, 10);
         // Close cursor if it is currently opened
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), DialogPage.idCursorCloseButton, 1)) {
             getElement(DialogPage.idCursorCloseButton).click();
