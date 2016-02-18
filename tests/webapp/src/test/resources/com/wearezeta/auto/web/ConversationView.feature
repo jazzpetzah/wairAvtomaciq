@@ -23,6 +23,17 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
+    Given I Sign in using login <Login2> and password <Password2>
+    Given I see Welcome page
+    Given I confirm keeping picture on Welcome page
+    Given I am signed in properly
+    Given I see Contact list with name <ChatName>
+    Given I open self profile
+    Given I click gear button on self profile page
+    Given I select Log out menu item on self profile page
+    Given I see the clear data dialog
+    Given I click Logout button on clear data dialog
+    Given I see Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
