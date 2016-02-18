@@ -468,7 +468,7 @@ Feature: E2EE
     Then I tap send anyway button
     And I do not see takeover screen
     Then I see message <Message2> 1 times in the conversation view
-    And I do not see unsent indicator next to "<Message2>" messsage
+    And I do not see unsent indicator next to "<Message2>" message
 
     Examples: 
       | Name      | Contact1  | Contact2  | Message1 | Message2 | GroupChatName |
