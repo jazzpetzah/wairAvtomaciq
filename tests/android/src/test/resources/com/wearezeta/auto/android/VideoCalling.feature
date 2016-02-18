@@ -12,7 +12,7 @@ Feature: VideoCalling
     And I swipe to accept the call
     Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And I see ongoing call
-    And I hang up
+    And I hang up ongoing call
     Then <Contact> verifies that call status to <Name> is changed to destroyed in <Timeout> seconds
     And I do not see ongoing call
 
