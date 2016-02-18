@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.pages;
 
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.driver.DummyElement;
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -191,5 +192,9 @@ public class LoginPage extends IOSPage {
     public boolean isSomethingWentWrongAlertShown() throws Exception {
         return DriverUtils.waitUntilAlertAppears(getDriver()) &&
                 DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameSomethingWentWrong, 1);
+    }
+
+    public void dismissSettingsWarningIfVisible(int timeoutSeconds) throws Exception {
+        getElementIfDisplayed(nameMaybeLater, timeoutSeconds).orElseGet(DummyElement::new).click();
     }
 }

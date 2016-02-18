@@ -224,6 +224,8 @@ Feature: Self Profile
     Given There is 1 users where <Name> is me with email only
     Given I Sign in on tablet using my email
     Given I click Not Now to not add phone number
+    Given I accept First Time overlay if it is visible
+    Given I dismiss settings warning
     Given I see conversations list
     When I tap my avatar
     And I tap to add my phone number
@@ -241,6 +243,8 @@ Feature: Self Profile
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I click Not Now to not add phone number
+    Given I accept First Time overlay if it is visible
+    Given I dismiss settings warning
     Given I see conversations list
     When I tap my avatar
     And I tap to add my phone number
@@ -256,11 +260,13 @@ Feature: Self Profile
   Scenario Outline: Verify error message appears in case of entering a not valid phone number [PORTRAIT]
     Given There is 1 users where <Name> is me with email only
     Given I Sign in on tablet using my email
-    And I accept alert
-    When I click Not Now to not add phone number
-    And I accept alert
-    And I see conversations list
-    And I tap my avatar
+    Given I accept alert
+    Given I click Not Now to not add phone number
+    Given I accept alert
+    Given I accept First Time overlay if it is visible
+    Given I dismiss settings warning
+    Given I see conversations list
+    When I tap my avatar
     And I tap to add my phone number
     And I see country picker button on Sign in screen
     And I enter invalid phone number
@@ -275,11 +281,13 @@ Feature: Self Profile
     Given There is 1 users where <Name> is me with email only
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I accept alert
-    When I click Not Now to not add phone number
-    And I accept alert
-    And I see conversations list
-    And I tap my avatar
+    Given I accept alert
+    Given I click Not Now to not add phone number
+    Given I accept alert
+    Given I accept First Time overlay if it is visible
+    Given I dismiss settings warning
+    Given I see conversations list
+    When I tap my avatar
     And I tap to add my phone number
     And I see country picker button on Sign in screen
     And I enter invalid phone number
@@ -293,11 +301,13 @@ Feature: Self Profile
   Scenario Outline: Verify error message appears in case of registering already taken phone number [PORTRAIT]
     Given There is 1 users where <Name> is me with email only
     Given I Sign in on tablet using my email
-    And I accept alert
-    When I click Not Now to not add phone number
-    And I accept alert
-    And I see conversations list
-    And I tap my avatar
+    Given I accept alert
+    Given I click Not Now to not add phone number
+    Given I accept alert
+    Given I accept First Time overlay if it is visible
+    Given I dismiss settings warning
+    Given I see conversations list
+    When I tap my avatar
     And I tap to add my phone number
     And I see country picker button on Sign in screen
     And I input phone number <Number> with code <Code>
@@ -312,11 +322,13 @@ Feature: Self Profile
     Given There is 1 users where <Name> is me with email only
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I accept alert
-    When I click Not Now to not add phone number
-    And I accept alert
-    And I see conversations list
-    And I tap my avatar
+    Given I accept alert
+    Given I click Not Now to not add phone number
+    Given I accept alert
+    Given I accept First Time overlay if it is visible
+    Given I dismiss settings warning
+    Given I see conversations list
+    When I tap my avatar
     And I tap to add my phone number
     And I see country picker button on Sign in screen
     And I input phone number <Number> with code <Code>

@@ -90,7 +90,7 @@ public class LoginPageSteps {
         getLoginPage().clickLoginButton();
         getLoginPage().waitForLoginToFinish();
         getFirstTimeOverlayPage().acceptIfVisible(2);
-        getLoginPage().dismissSettingsWarning();
+        getLoginPage().dismissSettingsWarningIfVisible(5);
     }
 
     private void phoneLoginSequence(final PhoneNumber number) throws Exception {
@@ -104,7 +104,7 @@ public class LoginPageSteps {
         getRegistrationPage().inputActivationCode(number);
         getLoginPage().waitForLoginToFinish();
         getFirstTimeOverlayPage().acceptIfVisible(2);
-        getLoginPage().dismissSettingsWarning();
+        getLoginPage().dismissSettingsWarningIfVisible(5);
     }
 
     /**
