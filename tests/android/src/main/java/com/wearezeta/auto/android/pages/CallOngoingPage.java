@@ -1,11 +1,10 @@
 package com.wearezeta.auto.android.pages;
 
-import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.android.common.Memory;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import java.awt.image.BufferedImage;
 import java.util.function.Function;
 import org.openqa.selenium.By;
 
@@ -26,8 +25,8 @@ public class CallOngoingPage extends AndroidPage {
     private static final Function<String, String> xpathCallingHeaderByName = name -> String
             .format("//*[@id='ttv__calling__header__name' and contains(@value, '%s')]", name);
 
-    private BufferedImage spacialButtonState;
-    private BufferedImage muteButtonState;
+    private Memory spacialButtonState;
+    private Memory muteButtonState;
 
     public CallOngoingPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -48,57 +47,26 @@ public class CallOngoingPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    private static final long BUTTON_STATE_CHANGE_TIMEOUT_MILLISECONDS = 15000;
-    private static final double BUTTON_STATE_OVERLAP_MAX_SCORE = 0.4d;
-
     public void rememberSpecialActionButtonState() throws Exception {
-        spacialButtonState = getElementScreenshot(getElement(idRight)).orElseThrow(IllegalStateException::new);
+        spacialButtonState = new Memory(getDriver(), idRight, 15000, 0.4d);
     }
     
     public void rememberMuteButtonState() throws Exception {
-        muteButtonState = getElementScreenshot(getElement(idMute)).orElseThrow(IllegalStateException::new);
+        muteButtonState = new Memory(getDriver(), idMute, 15000, 0.4d);
     }
 
     public boolean specialActionButtonStateHasChanged() throws Exception {
         if (spacialButtonState == null) {
             throw new IllegalStateException("Please call the corresponding step to take the screenshot of special action button state first");
         }
-        final long millisecondsStarted = System.currentTimeMillis();
-        double overlapScore;
-        do {
-            final BufferedImage currentStateScreenshot = getElementScreenshot(getElement(idRight)).orElseThrow(IllegalStateException::new);
-            overlapScore = ImageUtil.getOverlapScore(currentStateScreenshot, spacialButtonState,
-                    ImageUtil.RESIZE_TO_MAX_SCORE);
-            if (overlapScore <= BUTTON_STATE_OVERLAP_MAX_SCORE) {
-                return true;
-            }
-            Thread.sleep(500);
-        } while (System.currentTimeMillis() - millisecondsStarted <= BUTTON_STATE_CHANGE_TIMEOUT_MILLISECONDS);
-        log.warn(String.format(
-                "Button state has not been changed within %s seconds timeout. Current overlap score: %.2f, expected overlap score: <= %.2f",
-                BUTTON_STATE_CHANGE_TIMEOUT_MILLISECONDS / 1000, overlapScore, BUTTON_STATE_OVERLAP_MAX_SCORE));
-        return false;
+        return spacialButtonState.hasChanged();
     }
     
     public boolean muteButtonStateHasChanged() throws Exception {
         if (muteButtonState == null) {
             throw new IllegalStateException("Please call the corresponding step to take the screenshot of mute button state first");
         }
-        final long millisecondsStarted = System.currentTimeMillis();
-        double overlapScore;
-        do {
-            final BufferedImage currentStateScreenshot = getElementScreenshot(getElement(idMute)).orElseThrow(IllegalStateException::new);
-            overlapScore = ImageUtil.getOverlapScore(currentStateScreenshot, muteButtonState,
-                    ImageUtil.RESIZE_TO_MAX_SCORE);
-            if (overlapScore <= BUTTON_STATE_OVERLAP_MAX_SCORE) {
-                return true;
-            }
-            Thread.sleep(500);
-        } while (System.currentTimeMillis() - millisecondsStarted <= BUTTON_STATE_CHANGE_TIMEOUT_MILLISECONDS);
-        log.warn(String.format(
-                "Button state has not been changed within %s seconds timeout. Current overlap score: %.2f, expected overlap score: <= %.2f",
-                BUTTON_STATE_CHANGE_TIMEOUT_MILLISECONDS / 1000, overlapScore, BUTTON_STATE_OVERLAP_MAX_SCORE));
-        return false;
+        return muteButtonState.hasChanged();
     }
 
     public boolean hangupIsVisible() throws Exception {

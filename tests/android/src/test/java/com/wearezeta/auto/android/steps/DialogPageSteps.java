@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.steps;
 
+import com.wearezeta.auto.android.common.Memory;
 import com.wearezeta.auto.android.pages.CallingOverlayPageOLD;
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.common.CommonSteps;
@@ -27,10 +28,6 @@ public class DialogPageSteps {
     private DialogPage getDialogPage() throws Exception {
         return pagesCollection.getPage(DialogPage.class);
     }
-
-//    private CallingOverlayPageOLD getCallingOverlayPage() throws Exception {
-//        return pagesCollection.getPage(CallingOverlayPageOLD.class);
-//    }
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
@@ -174,54 +171,6 @@ public class DialogPageSteps {
     @When("^I press Sketch button$")
     public void WhenIPressOnSketchButton() throws Exception {
         getDialogPage().tapSketchBtn();
-    }
-
-    private final Map<String, BufferedImage> savedButtonStates = new HashMap<String, BufferedImage>();
-
-    /**
-     * Takes screenshot of current button state for the further comparison
-     *
-     * @param buttonName the name of the button to take screenshot. Available values: MUTE, SPEAKER
-     * @throws Exception
-     * @step. ^I remember the current state of (\\w+) button$
-     */
-    @When("^I remember the current state of (\\w+) button$")
-    public void IRememberButtonState(String buttonName) throws Exception {
-        savedButtonStates.put(buttonName, getDialogPage().getCurrentButtonStateScreenshot(buttonName));
-    }
-
-    private static final long BUTTON_STATE_CHANGE_TIMEOUT_MILLISECONDS = 15000;
-    private static final double BUTTON_STATE_OVERLAP_MAX_SCORE = 0.4d;
-
-    /**
-     * Checks to see if a certain calling button state is changed. Make sure, that the screenshot of previous state is already
-     * taken for this particular button
-     *
-     * @param buttonName the name of the button to check. Available values: MUTE, SPEAKER
-     * @throws Exception
-     * @step. ^I see (\\w+) button state is changed$
-     */
-    @Then("^I see (\\w+) button state is changed$")
-    public void ICheckButtonStateIsChanged(String buttonName) throws Exception {
-        if (!savedButtonStates.containsKey(buttonName)) {
-            throw new IllegalStateException(String.format(
-                    "Please call the corresponding step to take the screenshot of previous '%s' button state first", buttonName));
-        }
-        final BufferedImage previousStateScreenshot = savedButtonStates.get(buttonName);
-        final long millisecondsStarted = System.currentTimeMillis();
-        double overlapScore;
-        do {
-            final BufferedImage currentStateScreenshot = getDialogPage().getCurrentButtonStateScreenshot(buttonName);
-            overlapScore = ImageUtil.getOverlapScore(currentStateScreenshot, previousStateScreenshot,
-                    ImageUtil.RESIZE_TO_MAX_SCORE);
-            if (overlapScore <= BUTTON_STATE_OVERLAP_MAX_SCORE) {
-                return;
-            }
-            Thread.sleep(500);
-        } while (System.currentTimeMillis() - millisecondsStarted <= BUTTON_STATE_CHANGE_TIMEOUT_MILLISECONDS);
-        throw new AssertionError(String.format(
-                "Button state has not been changed within %s seconds timeout. Current overlap score: %.2f, expected overlap score: <= %.2f",
-                BUTTON_STATE_CHANGE_TIMEOUT_MILLISECONDS / 1000, overlapScore, BUTTON_STATE_OVERLAP_MAX_SCORE));
     }
 
     /**
@@ -533,8 +482,6 @@ public class DialogPageSteps {
                 getDialogPage().isLastMessageEqualTo(message, 30));
     }
 
-    private BufferedImage previousMediaButtonState = null;
-
     /**
      * Store the screenshot of current media control button state
      *
@@ -543,10 +490,8 @@ public class DialogPageSteps {
      */
     @When("^I remember the state of PlayPause media item button$")
     public void IRememeberMediaItemButtonState() throws Exception {
-        previousMediaButtonState = getDialogPage().getMediaControlButtonScreenshot();
+        getDialogPage().rememberMediaControlButtonState();
     }
-
-    final static double MAX_OVERLAP_SCORE = 0.97;
 
     /**
      * Verify the current state of media control button has been changed since the last snapshot was made
@@ -556,24 +501,9 @@ public class DialogPageSteps {
      */
     @Then("^I verify the state of PlayPause media item button is changed$")
     public void IVerifyStateOfMediaControlButtonIsChanged() throws Exception {
-        if (previousMediaButtonState == null) {
-            throw new IllegalStateException("Please take a screenshot of previous button state first");
+        if (!getDialogPage().mediaControlButtonStateHasChanged()) {
+            throw new AssertionError("State of PlayPause media item button has not changed");
         }
-        int ntry = 1;
-        double overlapScore = 1.0;
-        do {
-            final BufferedImage currentMediaButtonState = getDialogPage().getMediaControlButtonScreenshot();
-            overlapScore = ImageUtil.getOverlapScore(previousMediaButtonState, currentMediaButtonState,
-                    ImageUtil.RESIZE_NORESIZE);
-            if (overlapScore < MAX_OVERLAP_SCORE) {
-                return;
-            }
-            Thread.sleep(1500);
-            ntry++;
-        } while (ntry <= 3);
-        throw new AssertionError(
-                String.format("It seems like the state of media control button has not been changed (%.2f >= %.2f)", overlapScore,
-                        MAX_OVERLAP_SCORE));
     }
 
     /**
@@ -652,8 +582,6 @@ public class DialogPageSteps {
         Assert.assertEquals("It looks like the conversation has some content", actualValue, 0);
     }
 
-    private BufferedImage previousConvoViewScreenshot = null;
-
     /**
      * Store the screenshot of current convo view into internal variable
      *
@@ -662,10 +590,8 @@ public class DialogPageSteps {
      */
     @And("^I remember the conversation view$")
     public void IRememberConvoViewState() throws Exception {
-        previousConvoViewScreenshot = getDialogPage().getConvoViewScreenshot();
+        getDialogPage().rememberConversationView();
     }
-
-    private final static double MAX_CONVO_VIEW_SIMILARIITY = 0.50;
 
     /**
      * Verify that conversation view is different from what was remembered before
@@ -676,21 +602,12 @@ public class DialogPageSteps {
      */
     @Then("^I see the conversation view is (not )?changed$")
     public void ISeeTheConvoViewISChanged(String shouldNotBeChanged) throws Exception {
-        if (previousConvoViewScreenshot == null) {
-            throw new IllegalStateException("Please remember the previous state of conversation view first");
-        }
-        final BufferedImage currentConvoViewScreenshot = getDialogPage().getConvoViewScreenshot();
-        final double similarity = ImageUtil.getOverlapScore(previousConvoViewScreenshot, currentConvoViewScreenshot,
-                ImageUtil.RESIZE_TO_MAX_SCORE);
         if (shouldNotBeChanged == null) {
-            Assert.assertTrue(
-                    String.format("Current state of conversation view is similar to what what was remembered before (%.2f >= %.2f)",
-                            similarity, MAX_CONVO_VIEW_SIMILARIITY),
-                    similarity < MAX_CONVO_VIEW_SIMILARIITY);
-        } else {
-            Assert.assertTrue(String.format(
-                    "Current state of conversation view is different to what what was remembered before (%.2f < %.2f)", similarity,
-                    MAX_CONVO_VIEW_SIMILARIITY), similarity >= MAX_CONVO_VIEW_SIMILARIITY);
+            if (!getDialogPage().conversationViewStateHasChanged()) {
+                throw new AssertionError("State of PlayPause media item button has not changed");
+            }
+        } else if (!getDialogPage().conversationViewStateHasNotChanged()) {
+            throw new AssertionError("State of PlayPause media item button has changed");
         }
     }
 
@@ -742,13 +659,10 @@ public class DialogPageSteps {
      * @throws Exception
      * @step. ^I remember verified conversation shield state$
      */
-    @When("^I remember verified conversation shield state$")
+    @And("^I remember verified conversation shield state$")
     public void IRememberVerifiedConversationShieldState() throws Exception {
-        this.previousVerifiedConversationShieldState = getDialogPage().getVerifiedConversationShieldScreenshot().
-                orElseThrow(IllegalStateException::new);
+        getDialogPage().rememberVerifiedConversationShield();
     }
-
-    private static final double MAX_VERIFIED_CONVERSATION_SHIELD_SIMILARITY_THRESHOLD = 0.97;
 
     /**
      * Verify whether verified conversation shield has changed in comparison to the previous state
@@ -757,32 +671,9 @@ public class DialogPageSteps {
      * @step. ^I see verified conversation shield state has changed$
      */
     @Then("^I see verified conversation shield state has changed$")
-    public void ISeeUnreadIndicatorStateIsChanged()
-            throws Exception {
-        if (this.previousVerifiedConversationShieldState == null) {
-            throw new IllegalStateException(
-                    "Please invoke the correspoding step to make a screenshot of previous state");
+    public void ISeeVerifiedConversationShieldStateHasChanged() throws Exception {
+        if (!getDialogPage().verifiedConversationShieldStateHasChanged()) {
+            throw new AssertionError("State of verified conversation shield has not changed");
         }
-        final int maxTries = 3;
-        int ntry = 1;
-        double score = 1;
-        do {
-            final BufferedImage currentVerifiedConverationShieldState = getDialogPage()
-                    .getVerifiedConversationShieldScreenshot().orElseThrow(
-                            IllegalStateException::new);
-            score = ImageUtil.getOverlapScore(
-                    this.previousVerifiedConversationShieldState,
-                    currentVerifiedConverationShieldState, ImageUtil.RESIZE_NORESIZE);
-            if (score < MAX_VERIFIED_CONVERSATION_SHIELD_SIMILARITY_THRESHOLD) {
-                break;
-            }
-            Thread.sleep(500);
-            ntry++;
-        } while (ntry <= maxTries);
-        Assert.assertTrue(
-                String.format(
-                        "The current and previous states of verified conversation shield seems to be very similar (%.2f >= %.2f)",
-                        score, MAX_VERIFIED_CONVERSATION_SHIELD_SIMILARITY_THRESHOLD),
-                score < MAX_VERIFIED_CONVERSATION_SHIELD_SIMILARITY_THRESHOLD);
     }
 }

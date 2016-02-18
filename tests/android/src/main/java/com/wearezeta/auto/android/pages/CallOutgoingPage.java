@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
+import com.wearezeta.auto.android.common.Memory;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -15,7 +16,7 @@ public class CallOutgoingPage extends AndroidPage {
     private static final By idMute = By.id(idStrMute);
     private static final String idStrHangup = "ccbv__calling_controls__hangup";
     private static final By idHangup = By.id(idStrHangup);
-    //Could be SpeakOnOff
+    //Could be VideoOnOff or SpeakOnOff
     private static final String idStrRight = "ccbv__calling_controls__right_button";
     private static final By idRight = By.id(idStrRight);
     
@@ -23,6 +24,9 @@ public class CallOutgoingPage extends AndroidPage {
     
     private static final Function<String, String> xpathCallingHeaderByName = name -> String
             .format("//*[@id='ttv__calling__header__name' and contains(@value, '%s')]", name);
+    
+    private Memory spacialButtonState;
+    private Memory muteButtonState;
 
     public CallOutgoingPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -41,6 +45,28 @@ public class CallOutgoingPage extends AndroidPage {
     public boolean waitUntilNameAppearsOnCallingBarCaption(String name) throws Exception {
         final By locator = By.xpath(xpathCallingHeaderByName.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+    
+    public void rememberSpecialActionButtonState() throws Exception {
+        spacialButtonState = new Memory(getDriver(), idRight, 15000, 0.4d);
+    }
+    
+    public void rememberMuteButtonState() throws Exception {
+        muteButtonState = new Memory(getDriver(), idMute, 15000, 0.4d);
+    }
+
+    public boolean specialActionButtonStateHasChanged() throws Exception {
+        if (spacialButtonState == null) {
+            throw new IllegalStateException("Please call the corresponding step to take the screenshot of special action button state first");
+        }
+        return spacialButtonState.hasChanged();
+    }
+    
+    public boolean muteButtonStateHasChanged() throws Exception {
+        if (muteButtonState == null) {
+            throw new IllegalStateException("Please call the corresponding step to take the screenshot of mute button state first");
+        }
+        return muteButtonState.hasChanged();
     }
     
     public boolean hangupIsVisible() throws Exception {
@@ -76,6 +102,10 @@ public class CallOutgoingPage extends AndroidPage {
     }
     
     public void toggleSpeaker() throws Exception {
+        specialAction();
+    }
+    
+    public void toggleVideo() throws Exception {
         specialAction();
     }
 

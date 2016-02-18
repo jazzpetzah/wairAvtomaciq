@@ -71,7 +71,7 @@ public class CallOngoingPageSteps {
      * @throws Exception
      * @step. ^I press mute button$
      */
-    @When("^I press mute button$")
+    @When("^I press mute button for ongoing call$")
     public void WhenIPressMuteButton() throws Exception {
         getPage().toggleMute();
     }
@@ -82,7 +82,7 @@ public class CallOngoingPageSteps {
      * @throws Exception
      * @step. ^I press speaker button$
      */
-    @When("^I press speaker button$")
+    @When("^I press speaker button for ongoing call$")
     public void WhenIPressSpeakerButton() throws Exception {
         getPage().toggleSpeaker();
     }
@@ -93,7 +93,7 @@ public class CallOngoingPageSteps {
      * @throws Exception
      * @step. ^I press video button$
      */
-    @When("^I press video button$")
+    @When("^I press video button for ongoing call$")
     public void WhenIPressVideoButton() throws Exception {
         getPage().toggleVideo();
     }
@@ -104,7 +104,7 @@ public class CallOngoingPageSteps {
      * @throws Exception
      * @step. ^I remember state of video button$
      */
-    @When("^I remember state of video button$")
+    @When("^I remember state of video button for ongoing call$")
     public void IRememberStateOfVideoButton() throws Exception {
         IRememberStateOfSpacialActionButton();
     }
@@ -115,7 +115,7 @@ public class CallOngoingPageSteps {
      * @throws Exception
      * @step. ^I remember state of speaker button$
      */
-    @When("^I remember state of speaker button$")
+    @When("^I remember state of speaker button for ongoing call$")
     public void IRememberStateOfSpeakerButton() throws Exception {
         IRememberStateOfSpacialActionButton();
     }
@@ -126,7 +126,7 @@ public class CallOngoingPageSteps {
      * @throws Exception
      * @step. ^I remember state of special action button$
      */
-    @When("^I remember state of special action button$")
+    @When("^I remember state of special action button for ongoing call$")
     public void IRememberStateOfSpacialActionButton() throws Exception {
         getPage().rememberSpecialActionButtonState();
     }
@@ -137,7 +137,7 @@ public class CallOngoingPageSteps {
      * @throws Exception
      * @step. ^I remember state of mute button$
      */
-    @When("^I remember state of mute button$")
+    @When("^I remember state of mute button for ongoing call$")
     public void IRememberStateOfMuteButton() throws Exception {
         getPage().rememberMuteButtonState();
     }
@@ -148,7 +148,7 @@ public class CallOngoingPageSteps {
      * @throws Exception
      * @step. ^I see state of video button has changed$
      */
-    @Then("^I see state of video button has changed$")
+    @Then("^I see state of video button has changed for ongoing call$")
     public void VerifyStateOfSpacialVideoHasChanged() throws Exception {
         VerifyStateOfSpecialActionButtonHasChanged();
     }
@@ -159,7 +159,7 @@ public class CallOngoingPageSteps {
      * @throws Exception
      * @step. ^I see state of speaker button has changed$
      */
-    @Then("^I see state of speaker button has changed$")
+    @Then("^I see state of speaker button has changed for ongoing call$")
     public void VerifyStateOfSpacialSpeakerHasChanged() throws Exception {
         VerifyStateOfSpecialActionButtonHasChanged();
     }
@@ -170,7 +170,7 @@ public class CallOngoingPageSteps {
      * @throws Exception
      * @step. ^I see state of special action button has changed$
      */
-    @Then("^I see state of special action button has changed$")
+    @Then("^I see state of special action button has changed for ongoing call$")
     public void VerifyStateOfSpecialActionButtonHasChanged() throws Exception {
         if (!getPage().specialActionButtonStateHasChanged()) {
             throw new AssertionError("State of special action button has not changed");
@@ -183,7 +183,7 @@ public class CallOngoingPageSteps {
      * @throws Exception
      * @step. ^I see state of mute button has changed$
      */
-    @Then("^I see state of mute button has changed$")
+    @Then("^I see state of mute button has changed for ongoing call$")
     public void VerifyStateOfMuteButtonHasChanged() throws Exception {
         if (!getPage().muteButtonStateHasChanged()) {
             throw new AssertionError("State of mute button has not changed");

@@ -1,8 +1,8 @@
 package com.wearezeta.auto.android.pages;
 
+import com.wearezeta.auto.android.common.Memory;
 import java.awt.image.BufferedImage;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
@@ -87,12 +87,6 @@ public class DialogPage extends AndroidPage {
 
     public static final By idCursorCloseButton = By.id("cursor_button_close");
 
-    private static final By idMute = By.id("cib__calling__mic_mute");
-
-    private static final By idSpeaker = By.id("cib__calling__speaker");
-
-    private static final By idCancelCall = By.id("cib__calling__dismiss");
-
     private static final String idStrNewConversationNameMessage = "ttv__row_conversation__new_conversation_name";
 
     private static Function<String, String> xpathStrNewConversationNameByValue = value -> String
@@ -121,6 +115,10 @@ public class DialogPage extends AndroidPage {
     private static final int DEFAULT_SWIPE_TIME = 500;
     private static final int MAX_SWIPE_RETRIES = 5;
     private static final int MAX_CLICK_RETRIES = 5;
+    
+    private Memory previousMediaButtonState;
+    private Memory previousConversationViewState;
+    private Memory previousVerifiedConversationShieldState;
 
     public DialogPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -229,40 +227,6 @@ public class DialogPage extends AndroidPage {
 
     public void closeInputOptions() throws Exception {
         getElement(idCursorCloseButton, "Close cursor button is not visible").click();
-    }
-
-    public void tapMuteBtn() throws Exception {
-        getElement(idMute, "Mute button is not visible").click();
-    }
-
-    public void tapSpeakerBtn() throws Exception {
-        getElement(idSpeaker, "Speaker button is not visible").click();
-    }
-
-    public void tapCancelCallBtn() throws Exception {
-        getElement(idCancelCall, "Cancel call button is not visible").click();
-    }
-
-    private WebElement getButtonElementByName(String name) throws Exception {
-        final String uppercaseName = name.toUpperCase();
-        switch (uppercaseName) {
-            case "MUTE":
-                return getElement(idMute);
-            case "SPEAKER":
-                return getElement(idSpeaker);
-            default:
-                throw new NoSuchElementException(String.format(
-                        "Button '%s' is unknown", name));
-        }
-    }
-
-    public BufferedImage getCurrentButtonStateScreenshot(String name)
-            throws Exception {
-        final WebElement dstButton = getButtonElementByName(name);
-        if (!DriverUtils.waitUntilElementClickable(getDriver(), dstButton)) {
-            throw new IllegalStateException("The button is not clickable");
-        }
-        return getElementScreenshot(dstButton).orElseThrow(IllegalStateException::new);
     }
 
     public void typeAndSendMessage(String message) throws Exception {
@@ -463,8 +427,15 @@ public class DialogPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idYoutubePlayButton);
     }
 
-    public BufferedImage getMediaControlButtonScreenshot() throws Exception {
-        return getElementScreenshot(getElement(idPlayPauseMedia)).orElseThrow(IllegalStateException::new);
+    public void rememberMediaControlButtonState() throws Exception {
+        previousMediaButtonState = new Memory(getDriver(), idPlayPauseMedia, 15000, 0.97d);
+    }
+    
+    public boolean mediaControlButtonStateHasChanged() throws Exception {
+        if (previousMediaButtonState == null) {
+            throw new IllegalStateException("Please call the corresponding remember step first to get the previous state of the element");
+        }
+        return previousMediaButtonState.hasChanged();
     }
 
     public void tapPlayPauseMediaBarBtn() throws Exception {
@@ -534,8 +505,33 @@ public class DialogPage extends AndroidPage {
         return selectVisibleElements(xpathDialogContent).size();
     }
 
-    public BufferedImage getConvoViewScreenshot() throws Exception {
-        return this.getElementScreenshot(getElement(idDialogRoot)).orElseThrow(IllegalStateException::new);
+    public void rememberConversationView() throws Exception {
+        previousConversationViewState = new Memory(getDriver(), idDialogRoot, 15000, 0.50);
+    }
+    
+    public void rememberVerifiedConversationShield() throws Exception {
+        previousVerifiedConversationShieldState = new Memory(getDriver(), idVerifiedConversationShield, 15000, 0.97d);
+    }
+    
+    public boolean verifiedConversationShieldStateHasChanged() throws Exception {
+        if (previousVerifiedConversationShieldState == null) {
+            throw new IllegalStateException("Please call the corresponding remember step first to get the previous state of the element");
+        }
+        return previousVerifiedConversationShieldState.hasChanged();
+    }
+    
+    public boolean conversationViewStateHasChanged() throws Exception {
+        if (previousConversationViewState == null) {
+            throw new IllegalStateException("Please call the corresponding remember step first to get the previous state of the element");
+        }
+        return previousConversationViewState.hasChanged();
+    }
+    
+    public boolean conversationViewStateHasNotChanged() throws Exception {
+        if (previousConversationViewState == null) {
+            throw new IllegalStateException("Please call the corresponding remember step first to get the previous state of the element");
+        }
+        return previousConversationViewState.hasNotChanged();
     }
 
     /**
@@ -547,11 +543,6 @@ public class DialogPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathDialogTakePhotoButton);
     }
     
-    public Optional<BufferedImage> getVerifiedConversationShieldScreenshot()
-            throws Exception {
-        return this.getElementScreenshot(DriverUtils.getElementIfPresentInDOM(this.getDriver(), idVerifiedConversationShield).get());
-    }
-
     private final Predicate<? super WebElement> isEncryptedMessageFilter = (WebElement wel) -> wel.getSize().getWidth() > 0;
     private final Predicate<? super WebElement> isNonEncryptedMessageFilter = (WebElement wel) -> wel.getSize().getWidth() <= 0;
 

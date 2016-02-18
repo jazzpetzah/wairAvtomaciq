@@ -175,12 +175,12 @@ Feature: Calling
     And I see incoming call from <Contact>
     When I swipe to accept the call
     Then I see ongoing call
-    When I remember state of mute button
-    And I press mute button
-    Then I see state of mute button has changed
-    When I remember state of speaker button
-    And I press speaker button
-    Then I see state of speaker button has changed
+    When I remember state of mute button for ongoing call
+    And I press mute button for ongoing call
+    Then I see state of mute button has changed for ongoing call
+    When I remember state of speaker button for ongoing call
+    And I press speaker button for ongoing call
+    Then I see state of speaker button has changed for ongoing call
     When I hang up ongoing call
     And I do not see ongoing call
     And <Contact> stops all calls to me
@@ -216,6 +216,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend |
       | user1Name | user2Name | user3Name | autocall    |
 
+#DEFECT due to https://wearezeta.atlassian.net/browse/AN-3480
   @C431 @id3239 @calling_basic
   Scenario Outline: Calling bar buttons are clickable and change their states in a group call
     Given There are 3 users where <Name> is me
@@ -230,12 +231,12 @@ Feature: Calling
     Then I see incoming call
     When I swipe to accept the call
     Then I see ongoing call
-    When I remember state of mute button
-    And I press mute button
-    Then I see state of mute button has changed
-    When I remember state of speaker button
-    And I press speaker button
-    Then I see state of speaker button has changed
+    When I remember state of mute button for ongoing call
+    And I press mute button for ongoing call
+    Then I see state of mute button has changed for ongoing call
+    When I remember state of speaker button for ongoing call
+    And I press speaker button for ongoing call
+    Then I see state of speaker button has changed for ongoing call
     When I hang up ongoing call
     And I do not see ongoing call
     And <Contact1> stops all calls to me
