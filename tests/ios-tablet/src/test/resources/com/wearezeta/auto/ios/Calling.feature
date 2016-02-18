@@ -262,7 +262,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 |
       | user1Name | user2Name | user3Name | firefox     | autocall     |
 
-  @C2395 @calling_basic @id2618
+  @C2395 @calling_basic @id2618 @torun
   Scenario Outline: Put app into background after initiating call [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

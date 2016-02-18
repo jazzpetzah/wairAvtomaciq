@@ -14,6 +14,7 @@ Feature: Registration
     And I press Choose Own Picture button
     And I press Choose Photo button
     And I choose a picture from camera roll
+    And I dismiss settings warning
     Then I see conversations list
 
     Examples: 
@@ -35,6 +36,7 @@ Feature: Registration
     And I press Choose Own Picture button
     And I press Choose Photo button
     And I choose a picture from camera roll
+    And I dismiss settings warning
     Then I see conversations list
 
     Examples: 

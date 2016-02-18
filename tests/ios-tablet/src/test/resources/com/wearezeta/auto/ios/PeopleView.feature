@@ -60,7 +60,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @C2715 @regression @rc @id2653 @torun
+  @C2715 @regression @rc @id2653
   Scenario Outline: Start group chat from 1:1 conversation [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>

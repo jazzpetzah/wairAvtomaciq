@@ -2,7 +2,6 @@ package com.wearezeta.auto.ios.pages;
 
 import java.util.concurrent.Future;
 
-import com.wearezeta.auto.common.driver.DummyElement;
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -108,13 +107,16 @@ public class LoginPage extends IOSPage {
         ((IOSElement) getElement(namePasswordField)).setValue(password);
     }
 
+    private static final int LOGIN_TIMEOUT_SECONDS = 30;
+
     public void dismissSettingsWarning() throws Exception {
-        getElementIfDisplayed(nameMaybeLater, 20).orElseGet(DummyElement::new).click();
+        getElement(nameMaybeLater,
+                String.format("MAYBE LATER label is not visible after %s seconds timeout", LOGIN_TIMEOUT_SECONDS),
+                LOGIN_TIMEOUT_SECONDS).click();
     }
 
-    public Boolean isLoginFinished() throws Exception {
-        dismissSettingsWarning();
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameSelfButton), 60);
+    public Boolean isSelfAvatarVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(nameSelfButton), LOGIN_TIMEOUT_SECONDS);
     }
 
     public void tapHoldEmailInput() throws Exception {

@@ -6,6 +6,7 @@ import com.wearezeta.auto.ios.pages.FirstTimeOverlay;
 import com.wearezeta.auto.ios.pages.TabletLoginPage;
 
 import cucumber.api.java.en.Given;
+import org.openqa.selenium.WebDriverException;
 
 public class TabletLoginPageSteps {
 
@@ -35,7 +36,17 @@ public class TabletLoginPageSteps {
         getTabletLoginPage().setPassword(self.getPassword());
         getTabletLoginPage().clickLoginButton();
         getTabletLoginPage().waitForLoginToFinish();
-        getTabletLoginPage().acceptAlertIfVisible(5);
+        try {
+            getTabletLoginPage().acceptAlertIfVisible(5);
+        } catch (WebDriverException e) {
+            // pass silently
+        }
         getFirstTimeOverlayPage().acceptIfVisible(2);
+        try {
+            getTabletLoginPage().acceptAlertIfVisible(5);
+        } catch (WebDriverException e) {
+            // pass silently
+        }
+        getTabletLoginPage().dismissSettingsWarning();
     }
 }

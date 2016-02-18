@@ -9,6 +9,7 @@ Feature: Sign In
     And I have entered password <Password>
     And I press Login button
     And I accept First Time overlay if it is visible
+    And I dismiss settings warning
     Then I see conversations list
 
     Examples:
@@ -25,6 +26,7 @@ Feature: Sign In
     And I have entered password <Password>
     And I press Login button
     And I accept First Time overlay if it is visible
+    And I dismiss settings warning
     Then I see conversations list
 
     Examples:
@@ -69,6 +71,7 @@ Feature: Sign In
     When I enter phone number for user <Name>
     Then I see verification code page
     When I enter verification code for user <Name>
+    And I dismiss settings warning
     Then I see conversations list
 
     Examples:
@@ -87,6 +90,7 @@ Feature: Sign In
     When I enter phone number for user <Name>
     Then I see verification code page
     When I enter verification code for user <Name>
+    And I dismiss settings warning
     Then I see conversations list
 
     Examples:
@@ -111,6 +115,7 @@ Feature: Sign In
     When I click DONE keyboard button
     Then I see email verification reminder
     When I verify registration address
+    And I dismiss settings warning
     Then I see conversations list
 
     Examples:
@@ -261,6 +266,7 @@ Feature: Sign In
     And I click DONE keyboard button
     And I see email verification reminder
     And I verify registration address
+    And I dismiss settings warning
     Then I see conversations list
     When I tap my avatar
     Then I see email <Email> on Personal page
@@ -288,6 +294,7 @@ Feature: Sign In
     And I click DONE keyboard button
     And I see email verification reminder
     And I verify registration address
+    And I dismiss settings warning
     Then I see conversations list
     When I tap my avatar
     Then I see email <Email> on Personal page

@@ -32,7 +32,7 @@ public class ContactListPageSteps {
 
     @Given("^I see conversations list$")
     public void GivenISeeConversationsList() throws Exception {
-        Assert.assertTrue("Conversations list is not visible after the timeout", getLoginPage().isLoginFinished());
+        Assert.assertTrue("Conversations list is not visible after the timeout", getLoginPage().isSelfAvatarVisible());
     }
 
     private Map<String, BufferedImage> savedConvoItemScreenshots = new HashMap<>();
