@@ -321,7 +321,7 @@ Feature: Calling
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
 
-#TODO DEFECT https://wearezeta.atlassian.net/browse/AN-3480
+#TODO Probably flaky because of  https://wearezeta.atlassian.net/browse/AN-3480
   @C802 @id3168 @calling_basic @rc
   Scenario Outline: I can join group call after I leave it
     Given There are 3 users where <Name> is me
@@ -350,7 +350,7 @@ Feature: Calling
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
 
-# https://wearezeta.atlassian.net/browse/AN-3480
+#TODO Probably flaky because of  https://wearezeta.atlassian.net/browse/AN-3480
   @C424 @id3164 @calling_basic
   Scenario Outline: Verify creating the call with a maximum amount of the people
     Given There are 5 users where <Name> is me
@@ -377,7 +377,7 @@ Feature: Calling
       | CallBackend | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | user4Name | user5Name | MaxGroupCallChat |
 
-#https://wearezeta.atlassian.net/browse/AN-3480
+#TODO Probably flaky because of https://wearezeta.atlassian.net/browse/AN-3480
   @C425 @id3165 @calling_basic
   Scenario Outline: Verify impossibility to connect 6th person to the call
     Given There are 6 users where <Name> is me
@@ -576,7 +576,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
-# https://wearezeta.atlassian.net/browse/AN-3480
+#TODO Probably flaky because of  https://wearezeta.atlassian.net/browse/AN-3480
   @C803 @id3170 @calling_basic @rc @rc42
   Scenario Outline: Verify accepting group call in background
     Given There are 3 users where <Name> is me
