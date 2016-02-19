@@ -31,8 +31,8 @@ public class PeoplePickerPage extends IOSPage {
 
     private static final By nameUnblockButton = By.name("UNBLOCK");
 
-    private static final By xpathPeoplePickerAllTopPeople = By.xpath(
-            xpathStrMainWindow + "/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell");
+    private static final By xpathSelectedTopPeople =
+            By.xpath("//UIACollectionCell/UIACollectionView/UIACollectionCell[@value='1']");
 
     public static final By xpathInviteCopyButton = By.xpath("//UIACollectionCell[@name='Copy']");
 
@@ -182,8 +182,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public int getNumberOfSelectedTopPeople() throws Exception {
-        return (int) getElements(xpathPeoplePickerAllTopPeople).stream().filter(
-                x -> x.getAttribute("value").equals("1")).count();
+        return getElements(xpathSelectedTopPeople).size();
     }
 
     public void tapSendInviteButton() throws Exception {
@@ -246,5 +245,17 @@ public class PeoplePickerPage extends IOSPage {
 
     public boolean isPeopleYouMayKnowLabelInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), namePeopleYouMayKnowLabel);
+    }
+
+    public boolean isOpenConversationButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameOpenConversationButton);
+    }
+
+    public boolean isCallButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameCallButton);
+    }
+
+    public boolean isSendImageButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameSendImageButton);
     }
 }

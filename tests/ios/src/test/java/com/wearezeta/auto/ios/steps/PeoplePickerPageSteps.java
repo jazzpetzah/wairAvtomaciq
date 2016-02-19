@@ -455,10 +455,12 @@ public class PeoplePickerPageSteps {
      */
     @When("^I see action buttons disappeared on People picker page$")
     public void ISeeActionButtonsDisappearedOnPeoplePickerPage() throws Exception {
-        Assert.assertFalse("Open conversation button is still visible",
-                getPeoplePickerPage().isOpenConversationButtonVisible());
-        Assert.assertFalse("Call action button is still visible", getPeoplePickerPage().isCallButtonVisible());
-        Assert.assertFalse("Send image action button is still visible", getPeoplePickerPage().isSendImageButtonVisible());
+        Assert.assertTrue("Open conversation button is still visible",
+                getPeoplePickerPage().isOpenConversationButtonInvisible());
+        Assert.assertTrue("Call action button is still visible",
+                getPeoplePickerPage().isCallButtonInvisible());
+        Assert.assertTrue("Send image action button is still visible",
+                getPeoplePickerPage().isSendImageButtonInvisible());
     }
 
     /**
