@@ -104,7 +104,7 @@ Feature: Search
     And I see top people list on People picker page
     Then I tap on first 2 top connections
     And I click Create Conversation button on People picker page
-    And I wait for 2 seconds
+    And I wait for 5 seconds
     And I open group conversation details
     And I change group conversation name to <ConvoName>
     And I dismiss popover on iPad
@@ -128,7 +128,7 @@ Feature: Search
     And I tap on first 2 top connections
     #And I click hide keyboard button
     And I click Create Conversation button on People picker page
-    And I wait for 2 seconds
+    And I wait for 5 seconds
     And I open group conversation details
     And I change group conversation name to <ConvoName>
     And I dismiss popover on iPad
