@@ -648,4 +648,15 @@ public class DialogPageSteps {
             throw new AssertionError("State of verified conversation shield has not changed");
         }
     }
+
+    /**
+     * Press on the video call button in the input controls
+     *
+     * @throws Exception
+     * @step. ^I press Video Call button$
+     */
+    @When("^I press Video Call button$")
+    public void IPressVideoCallButton() throws Exception {
+        getDialogPage().tapVideoCallBtn();
+    }
 }

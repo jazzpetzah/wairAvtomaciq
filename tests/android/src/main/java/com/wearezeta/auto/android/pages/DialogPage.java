@@ -84,6 +84,8 @@ public class DialogPage extends AndroidPage {
 
     private static final By idCall = By.id("cursor_menu_item_calling");
 
+    private static final By idVideoCall = By.id("cursor_menu_item_video");
+
     public static final By idCursorCloseButton = By.id("cursor_button_close");
 
     private static final String idStrNewConversationNameMessage = "ttv__row_conversation__new_conversation_name";
@@ -213,6 +215,10 @@ public class DialogPage extends AndroidPage {
 
     public void tapCallBtn() throws Exception {
         getElement(idCall, "Call button is not visible").click();
+    }
+
+    public void tapVideoCallBtn() throws Exception {
+        getElement(idVideoCall, "Video Call button is not visible").click();
     }
 
     public void closeInputOptions() throws Exception {
