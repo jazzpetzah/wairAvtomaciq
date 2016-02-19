@@ -140,8 +140,8 @@ Feature: Conversation List
     Then I see the state of <Contact> conversation item is changed
 
     Examples:
-      | Name      | Contact   |Contact2   	|
-      | user1Name | user2Name |user3Name	|
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @C2537 @regression @id2752
   Scenario Outline: Verify Ping animation in the conversations list [LANDSCAPE]
@@ -158,8 +158,8 @@ Feature: Conversation List
     Then I see the state of <Contact> conversation item is changed
 
     Examples:
-      | Name      | Contact   |Contact2   	|
-      | user1Name | user2Name |user3Name	|
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @C2507 @regression @id2756
   Scenario Outline: Verify conversations are sorted according to most recent activity [PORTRAIT]
@@ -277,12 +277,12 @@ Feature: Conversation List
     And I remember the state of <Contact> conversation item
     When User <Contact> sends 1 encrypted message to user Myself
     And I see first item in contact list named <Contact>
-    Then I see the state of <Contact> conversation item is changed
     # TODO: Tune screenshoting for tablet
-#    When I remember the state of <Contact> conversation item
+    # Then I see the state of <Contact> conversation item is changed
+    # When I remember the state of <Contact> conversation item
     And User <Contact> sends 4 encrypted message to user Myself
-    Then I see the state of <Contact> conversation item is changed
-#    When I remember the state of <Contact> conversation item
+    # Then I see the state of <Contact> conversation item is changed
+    # When I remember the state of <Contact> conversation item
     And User <Contact> sends 5 encrypted messages to user Myself
     Then I see the state of <Contact> conversation item is changed
 
@@ -302,12 +302,12 @@ Feature: Conversation List
     And I remember the state of <Contact> conversation item
     When User <Contact> sends 1 encrypted message to user Myself
     And I see first item in contact list named <Contact>
-    Then I see the state of <Contact> conversation item is changed
     # TODO: Tune screenshoting for tablet
-#    When I remember the state of <Contact> conversation item
+    # Then I see the state of <Contact> conversation item is changed
+    # When I remember the state of <Contact> conversation item
     And User <Contact> sends 4 encrypted message to user Myself
-    Then I see the state of <Contact> conversation item is changed
-#    When I remember the state of <Contact> conversation item
+    # Then I see the state of <Contact> conversation item is changed
+    # When I remember the state of <Contact> conversation item
     And User <Contact> sends 5 encrypted messages to user Myself
     Then I see the state of <Contact> conversation item is changed
 
