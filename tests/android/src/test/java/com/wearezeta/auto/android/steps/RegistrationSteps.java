@@ -82,7 +82,9 @@ public class RegistrationSteps {
      */
     @When("^I submit registration data$")
     public void ISubmitRegistrationData() throws Exception {
-        activationMessage = BackendAPIWrappers.initMessageListener(userToRegister);
+        final Map<String, String> additionalHeaders = new HashMap<>();
+        additionalHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME, ActivationMessage.MESSAGE_PURPOSE);
+        activationMessage = BackendAPIWrappers.initMessageListener(userToRegister, additionalHeaders);
         getRegistrationPage().createAccount();
     }
 
@@ -169,7 +171,7 @@ public class RegistrationSteps {
      */
     @When("^I start listening for confirmation email$")
     public void IStartListeningForConfirmEmail() throws Exception {
-        Map<String, String> additionalHeaders = new HashMap<>();
+        final Map<String, String> additionalHeaders = new HashMap<>();
         additionalHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME, ActivationMessage.MESSAGE_PURPOSE);
         emailConfirmMessage = BackendAPIWrappers.initMessageListener(usrMgr.getSelfUserOrThrowError(),
                 additionalHeaders);
