@@ -124,8 +124,8 @@ Feature: Sign In
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Log in button
-    And I input a new phone number for user <Name>
-    And I input the verification code
+    And I postpone Add Phone Number action
+    And I accept First Time overlay as soon as it is visible
     Then I see Contact list with no contacts
 
     Examples:

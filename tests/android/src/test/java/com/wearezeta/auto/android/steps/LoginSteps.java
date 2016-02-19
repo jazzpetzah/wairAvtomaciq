@@ -2,12 +2,10 @@ package com.wearezeta.auto.android.steps;
 
 import java.util.Random;
 
+import com.wearezeta.auto.android.pages.registration.*;
+import cucumber.api.java.en.And;
 import org.junit.Assert;
 
-import com.wearezeta.auto.android.pages.registration.AreaCodePage;
-import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
-import com.wearezeta.auto.android.pages.registration.PhoneNumberVerificationPage;
-import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -33,6 +31,10 @@ public class LoginSteps {
 
     private AreaCodePage getAreaCodePage() throws Exception {
         return pagesCollection.getPage(AreaCodePage.class);
+    }
+
+    private AddPhoneNumberPage getAddPhoneNumberPage() throws Exception {
+        return pagesCollection.getPage(AddPhoneNumberPage.class);
     }
 
     private PhoneNumberVerificationPage getVerificationPage() throws Exception {
@@ -104,7 +106,7 @@ public class LoginSteps {
     /**
      * Types an email address into the email login field
      *
-     * @param login
+     * @param login email/alias
      * @throws Exception
      * @step. ^I have entered login (.*)$
      */
@@ -121,7 +123,7 @@ public class LoginSteps {
     /**
      * Enters a password into the password login field
      *
-     * @param password
+     * @param password password/alias
      * @throws Exception
      * @step. ^I have entered password (.*)$
      */
@@ -180,5 +182,17 @@ public class LoginSteps {
     public void GivenISeeEmailScreen() throws Exception {
         Assert.assertTrue("Forced email login page is not shown", getEmailSignInPage()
                 .waitForForcedEmailLoginScreen());
+    }
+
+    /**
+     * Click NOT NOW button on the corresponding page
+     *
+     * @step. ^I postpone Add Phone Number action$
+     *
+     * @throws Exception
+     */
+    @And("^I postpone Add Phone Number action$")
+    public void IPostponeAddPhoneNumber() throws Exception {
+        getAddPhoneNumberPage().tapNotNowButton();
     }
 }
