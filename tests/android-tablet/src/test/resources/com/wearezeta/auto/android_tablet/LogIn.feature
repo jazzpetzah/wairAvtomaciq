@@ -87,6 +87,8 @@ Feature: Log In
     And I select Wire country on Phone Login page
     And I enter my phone number on Phone Login page
     And I tap Login button on Phone Login page
+    And I enter my code on Phone Number Verification page
+    And I tap Commit button on Phone Number Verification page
     And I enter login "<Email>"
     And I enter password "<Password>"
     And I start listening for registration email
