@@ -555,6 +555,7 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
     And I see the conversation "<Contact3>" exists in Search results
     And I click close button to dismiss people view
