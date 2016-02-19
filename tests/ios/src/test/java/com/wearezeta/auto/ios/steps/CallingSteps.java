@@ -179,4 +179,36 @@ public class CallingSteps {
 			throws Exception {
 		commonCallingSteps.acceptNextCall(splitAliases(callees));
 	}
+
+    /**
+     * Automatically accept the next incoming video call for the particular user
+     * as soon as it appears in UI. Waiting instance should be already created
+     * for this particular user
+     *
+     * @param callees comma separated list of callee names/aliases
+     * @throws Exception
+     * @step. (.*) accepts? next incoming video call automatically$
+     */
+    @When("(.*) accepts? next incoming video call automatically$")
+    public void UserXAcceptsNextIncomingVideoCallAutomatically(String callees)
+            throws Exception {
+        commonCallingSteps.acceptNextVideoCall(splitAliases(callees));
+    }
+
+    /**
+     * Make a video call to a specific user.
+     *
+     * @param caller           caller name/alias
+     * @param conversationName destination conversation name
+     * @param callBackend      call backend. Available values: 'autocall', 'chrome',
+     *                         'firefox'
+     * @throws Exception
+     * @step. (.*) starts a video call to (.*) using (.*)$
+     */
+    @When("(.*) starts a video call to (.*) using (.*)$")
+    public void UserXStartVideoCallsToUserYUsingCallBackend(String caller,
+                                                            String conversationName, String callBackend) throws Exception {
+        commonCallingSteps.startVideoCallToConversation(caller, conversationName,
+                callBackend);
+    }
 }
