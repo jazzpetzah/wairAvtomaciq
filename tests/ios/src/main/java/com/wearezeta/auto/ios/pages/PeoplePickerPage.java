@@ -104,7 +104,7 @@ public class PeoplePickerPage extends IOSPage {
 
     public boolean isElementNotFoundInSearch(String name) throws Exception {
         final By locator = By.xpath(xpathStrFoundContactByName.apply(name));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 2);
+        return !DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 2);
     }
 
     public void selectElementInSearchResults(String name) throws Exception {
