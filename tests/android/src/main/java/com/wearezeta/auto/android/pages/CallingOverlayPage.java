@@ -11,46 +11,43 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class CallingOverlayPage extends AndroidPage {
-    private static final String idStrCallingContainer = "rv__calling__container";
+    private static final String idStrCallingContainer = "fl__calling__container";
     private static final By idCallingContainer = By.id(idStrCallingContainer);
 
     private static final By idCallingOverlay = By.id("fl__calling__overlay");
 
     private static final By idGroupCallingJoinOverlayContainer = By.id("ll__group_call__not_joined_container");
 
-    private static final By idIgnoreButton = By.id("cib__calling_mute");
-
-    private static final By idAcceptButton = By.id("gtv__calling__accept");
+    private static final By idCallingControls = By.id("iccv__incoming_call_controls");
 
     private static final String idStrJoinButton = "ttv__group_call__not_joined_text";
     private static final Function<String, String> xpathJoinButton = name -> String
-            .format("//*[@id='%s' and contains(@value, '%s') and @shown='true']",
-                    idStrJoinButton, name.toUpperCase());
+        .format("//*[@id='%s' and contains(@value, '%s') and @shown='true']", idStrJoinButton, name.toUpperCase());
 
-    private static final String idStrCallMessage = "ttv__calling__message";
+    private static final String idStrCallMessage = "ttv__calling__header__name";
     private static final Function<String, String> xpathCallingBarCaptionByName = name -> String
-            .format("//*[@id='%s' and contains(@value, '%s')]", idStrCallMessage,
-                    name.toUpperCase());
+        .format("//*[@id='%s' and contains(@value, '%s')]", idStrCallMessage, name);
 
-    private static final Function<String, String> xpathCallingBarAvatarByName = name -> String
-            .format("//*[@id='%s']//*[@value='%s' or @value='%s']", idStrCallingContainer, name, name.toUpperCase());
+    private static final String idStrCallingDuration = "ttv__calling__header__duration";
+    private static final By idCallingDuration = By.id(idStrCallingDuration);
+    private static final Function<String, String> idCallingDurationByText = txt -> String
+        .format("//*[@id='%s' and contains(@value, '%s')]", idStrCallingDuration, txt);
 
-    private static final By idCallingDismiss = By.id("cib__calling__dismiss");
+    private static final By idCallingDismiss = By.id("ccbv__calling_controls__hangup");
 
-    public static final By idCallingSpeaker = By.id("cib__calling__speaker");
+    public static final By idCallingSpeaker = By.id("ccbv__calling_controls__right_button");
 
-    public static final By idCallingMicMute = By.id("cib__calling__mic_mute");
+    public static final By idCallingMicMute = By.id("ccbv__calling_controls__mute");
 
-    private static final By xpathGroupCallParticipantChathead =
-            By.xpath("//*[@id='rv__calling__container']//*[@id='ttv__calling_user_chathead_view']");
+    private static final By xpathGroupCallParticipantChathead = By
+        .xpath("//*[@id='rv__calling__container']//*[@id='ttv__calling_user_chathead_view']");
 
-    private static final By xpathGroupCallIsFullAlertTitle =
-            By.xpath("//DialogTitle[@id='alertTitle' and @value='The call is full']");
+    private static final By xpathGroupCallIsFullAlertTitle = By
+        .xpath("//DialogTitle[@id='alertTitle' and @value='The call is full']");
 
     private static final By idGroupCallIsFullOKButton = By.id("button3");
 
-    private static final By xpathAnswerCallAlertTitle =
-            By.xpath("//DialogTitle[@id='alertTitle' and @value='Answer call?']");
+    private static final By xpathAnswerCallAlertTitle = By.xpath("//DialogTitle[@id='alertTitle' and @value='Answer call?']");
 
     private static final By idAnswerCallCancelButton = By.id("button2");
 
@@ -77,7 +74,7 @@ public class CallingOverlayPage extends AndroidPage {
     }
 
     public void ignoreCall() throws Exception {
-        getElement(idIgnoreButton, "Ignore button is not visible").click();
+        DriverUtils.tapOnPercentOfElement(getDriver(), getElement(idCallingControls), 10, 50);
     }
 
     public boolean waitUntilNameAppearsOnCallingBarCaption(String name) throws Exception {
@@ -85,21 +82,19 @@ public class CallingOverlayPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean waitUntilNameAppearsOnCallingBarAvatar(String name) throws Exception {
-        final By locator = By.xpath(xpathCallingBarAvatarByName.apply(name));
-        // isDisplayed sometimes does not work properly here
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+    private static final String ESTABLISHED_CALL_TEXT = "00:07";
+    public boolean waitUntilCallEstablished() throws Exception {
+        final By locator = By.xpath(idCallingDurationByText.apply(ESTABLISHED_CALL_TEXT.toUpperCase()));
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator, 30);
     }
 
     public void acceptCall() throws Exception {
-        final Optional<WebElement> acceptButton = getElementIfDisplayed(idAcceptButton);
+        final Optional<WebElement> acceptButton = getElementIfDisplayed(idCallingControls);
         if (acceptButton.isPresent()) {
-            acceptButton.get().click();
+            DriverUtils.tapOnPercentOfElement(getDriver(), acceptButton.get(), 90, 50);
         } else {
-            final Optional<WebElement> joinGroupCallButton =
-                    getElementIfDisplayed(idGroupCallingJoinOverlayContainer, 1);
-            joinGroupCallButton.orElseThrow(() -> new IllegalStateException("No Accept or JOIN CALL button visible")).
-                    click();
+            final Optional<WebElement> joinGroupCallButton = getElementIfDisplayed(idGroupCallingJoinOverlayContainer, 1);
+            joinGroupCallButton.orElseThrow(() -> new IllegalStateException("No Accept or JOIN CALL button visible")).click();
         }
     }
 
@@ -117,24 +112,22 @@ public class CallingOverlayPage extends AndroidPage {
 
     public boolean waitUntilGroupCallJoinVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idGroupCallingJoinOverlayContainer,
-                VISIBILITY_TIMEOUT_SECONDS);
+            VISIBILITY_TIMEOUT_SECONDS);
     }
 
     public boolean waitUntilGroupCallJoinNotVisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), idGroupCallingJoinOverlayContainer,
-                VISIBILITY_TIMEOUT_SECONDS);
+            VISIBILITY_TIMEOUT_SECONDS);
     }
 
     public boolean waitUntilJoinGroupCallButtonVisible(String name) throws Exception {
         final By locator = By.xpath(xpathJoinButton.apply(name));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator,
-                VISIBILITY_TIMEOUT_SECONDS);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, VISIBILITY_TIMEOUT_SECONDS);
     }
 
     public boolean waitUntilJoinGroupCallButtonNotVisible(String name) throws Exception {
         final By locator = By.xpath(xpathJoinButton.apply(name));
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator,
-                VISIBILITY_TIMEOUT_SECONDS);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, VISIBILITY_TIMEOUT_SECONDS);
     }
 
     public void joinGroupCall() throws Exception {
@@ -148,7 +141,7 @@ public class CallingOverlayPage extends AndroidPage {
 
     public boolean ongoingCallMinibarIsVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCallingOverlay)
-                && DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathGroupCallParticipantChathead);
+            && DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathGroupCallParticipantChathead);
     }
 
     public int numberOfParticipantsInGroupCall() throws Exception {

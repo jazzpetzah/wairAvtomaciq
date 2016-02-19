@@ -55,20 +55,24 @@ public class CallingPageSteps {
     }
 
     /**
-     * Verify that started call message is visible
+     * Verify that started call overlay is visible
      *
      * @param contact contact name with whom you have a call
      * @throws Exception
-     * @step. ^I see started call message for contact (.*)$
+     * @step. ^I see call started overlay for contact (.*)$
      */
-    @When("^I see started call message for contact (.*)$")
-    public void ISeeStartedCallMesage(String contact) throws Exception {
+    @When("^I see call started overlay for contact (.*)$")
+    public void ISeeStartedCallOverlay(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+        Assert.assertTrue(String.format(
+            "The current user name differs from the expected value '%s'",
+            contact), getCallingOverlayPage()
+            .waitUntilNameAppearsOnCallingBarCaption(contact));
         Assert.assertTrue(
-                String.format("The name '%s' is not visible on calling bar",
+                String.format("Call is not established (state still connecting?)",
                         contact),
-                getCallingOverlayPage().waitUntilNameAppearsOnCallingBarAvatar(
-                        contact));
+                getCallingOverlayPage().waitUntilCallEstablished(
+                        ));
     }
 
     /**
