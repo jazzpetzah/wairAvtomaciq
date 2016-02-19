@@ -83,7 +83,7 @@ Feature: Video Calling
     Then I see Mute button on Calling overlay
     And I see Leave button on Calling overlay
     And I see Call Video button on Calling overlay
-    When I tap Leave button on Calling overlay
+    And I tap Leave button on Calling overlay
 
     Examples:
       | Name      | Contact   | CallBackend         | Timeout |
@@ -105,7 +105,7 @@ Feature: Video Calling
     Then I see Mute button on Calling overlay
     And I see Leave button on Calling overlay
     And I see Call Video button on Calling overlay
-    When I tap Leave button on Calling overlay
+    And I tap Leave button on Calling overlay
 
     Examples:
       | Name      | Contact   | CallBackend         | Timeout |
