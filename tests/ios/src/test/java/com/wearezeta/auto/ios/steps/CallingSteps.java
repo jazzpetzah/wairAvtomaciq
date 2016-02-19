@@ -156,7 +156,7 @@ public class CallingSteps {
 	 *            available values: 'blender', 'chrome', * 'firefox'
 	 * @throws Exception
 	 */
-	@When("(.*) starts? waiting instance using (\\w+)$")
+	@When("(.*) starts? waiting instance using (.*)$")
 	public void UserXStartsWaitingInstance(String callees,
 			String callingServiceBackend) throws Exception {
 		commonCallingSteps.startWaitingInstances(splitAliases(callees),
