@@ -17,16 +17,17 @@ public class VideoCallPageSteps {
     }
 
     /**
-     * Verify that ringing label with correct user name is shown
+     * Verify that call status label with correct user name is shown
      *
-     * @param contact user name
+     * @param contact   user name
+     * @param callState Calling status (ringing/calling)
      * @throws Exception
-     * @step. ^I see ringing user (.*) label on Video Call page$
+     * @step. ^I see user (.*) (ringing|calling) label on Video Call page$
      */
-    @Then("^I see ringing user (.*) label on Video Call page$")
-    public void ISeeRingingUserLabel(String contact) throws Exception {
+    @Then("^I see user (.*) (ringing|calling) label on Video Call page$")
+    public void ISeeRingingUserLabel(String contact, String callState) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        Assert.assertTrue("Ringing user label is not visible", getVideoCallingPage().isRingingToUserLabelShown(contact));
+        Assert.assertTrue(String.format("%s %s label is not visible", contact, callState), getVideoCallingPage().isCallStatusLabelShown(contact, callState));
     }
 
     /**
@@ -35,9 +36,9 @@ public class VideoCallPageSteps {
      * @param buttonName Name of the button
      * @param visibility is button enabled or disabled
      * @throws Exception
-     * @step. ^I see (CallMute|LeaveCall|Accept) button and it is (enabled|disabled) on Video Call page$
+     * @step. ^I see (CallMute|LeaveCall|Accept|CallVideo) button and it is (enabled|disabled) on Video Call page$
      */
-    @Then("^I see (CallMute|LeaveCall|Accept) button and it is (enabled|disabled) on Video Call page$")
+    @Then("^I see (CallMute|LeaveCall|Accept|CallVideo) button and it is (enabled|disabled) on Video Call page$")
     public void ISeeButtonWithNameAndItsVisibility(String buttonName, String visibility) throws Exception {
         String isEnabled = "";
         if (visibility.equals("enabled")) {
@@ -57,5 +58,27 @@ public class VideoCallPageSteps {
     @When("^I click Hang Up button on Video Call page$")
     public void IClickHangUpButton() throws Exception {
         getVideoCallingPage().clickHangUpButton();
+    }
+
+    /**
+     * Click on Accept video call button
+     *
+     * @throws Exception
+     * @step. ^I click Accept video call button$
+     */
+    @When("^I click Accept video call button$")
+    public void IClickAcceptVideoCallButton() throws Exception {
+        getVideoCallingPage().clickAcceptCallButton();
+    }
+
+    /**
+     * Click on Decline video call button
+     *
+     * @throws Exception
+     * @step. ^I click Decline video call button
+     */
+    @When("^I click Decline video call button$")
+    public void IClickDeclineVideoCallButton() throws Exception {
+        getVideoCallingPage().clickDeclineCallButton();
     }
 }
