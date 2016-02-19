@@ -546,7 +546,6 @@ Feature: Conversation List
     Then I dont see conversation <GroupChatName> in contact list
     When I open search by taping on it
     And I input in People picker search field conversation name <GroupChatName>
-    And I see the conversation "<GroupChatName>" exists in Search results
     And I tap on conversation <GroupChatName> in search result
     Then I see empty group chat page with users <Contact1>,<Contact2> with only system message
     When I type the default message and send it
