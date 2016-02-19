@@ -81,7 +81,6 @@ Feature: Calling
     When I answer the call from the lock screen
     Then I see calling overlay Big bar
     And I see call started overlay for contact <Contact>
-    And I wait for 40 seconds
 
     Examples:
       | Name      | Contact   | CallBackend |
