@@ -33,8 +33,7 @@ public class ContactListPageSteps {
      * @step. ^I see Contact list with (no )?contacts$
      */
     @Given("^I see Contact list with (no )?contacts$")
-    public void GivenISeeContactList(String shouldNotBeVisible)
-            throws Exception {
+    public void GivenISeeContactList(String shouldNotBeVisible) throws Exception {
         getContactListPage().verifyContactListIsFullyLoaded();
         if (shouldNotBeVisible == null) {
             Assert.assertTrue(

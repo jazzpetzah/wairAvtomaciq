@@ -83,8 +83,41 @@ Feature: Sign In
       | Name      | Email      | Password      | Contact   | ErrMessage                                           |
       | user1Name | user1Email | user1Password | user2Name | Please check your Internet connection and try again. |
 
-  @C43807 @staging @torun
+  @C43807 @staging
   Scenario Outline: Verify sign in with email address only
+    Given There is 1 user with email address only where <Name> is me
+    Given I see welcome screen
+    When I switch to email sign in screen
+    And I have entered login <Login>
+    And I have entered password <Password>
+    And I press Log in button
+    And I input a new phone number for user <Name>
+    And I input the verification code
+    Then I see Contact list with no contacts
+
+    Examples:
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
+
+  @C43808 @staging
+  Scenario Outline: Verify sign in with phone number only
+    Given There is 1 user with phone number only where <Name> is me
+    Given I see welcome screen
+    When I sign in using my phone number
+    And I have entered login <Login>
+    And I have entered password <Password>
+    And I start listening for confirmation email
+    And I press Log in button
+    And I verify my email
+    And I accept First Time overlay as soon as it is visible
+    Then I see Contact list with no contacts
+
+    Examples:
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
+
+  @C43810 @staging
+  Scenario Outline: Verify you can skip phone number input
     Given There is 1 user with email address only where <Name> is me
     Given I see welcome screen
     When I switch to email sign in screen
