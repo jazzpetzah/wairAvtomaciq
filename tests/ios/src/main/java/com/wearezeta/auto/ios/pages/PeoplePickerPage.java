@@ -80,8 +80,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void tapOnPeoplePickerSearch() throws Exception {
-        final Point location = getElement(xpathPickerSearch).getLocation();
-        this.getDriver().tap(1, location.x + 40, location.y + 30, DriverUtils.SINGLE_TAP_DURATION);
+        getElement(xpathPickerSearch).click();
     }
 
     public void tapOnPeoplePickerClearBtn() throws Exception {
