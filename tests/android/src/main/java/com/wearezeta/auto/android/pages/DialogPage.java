@@ -1,8 +1,8 @@
 package com.wearezeta.auto.android.pages;
 
+import com.wearezeta.auto.android.common.Memory;
 import java.awt.image.BufferedImage;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
@@ -14,6 +14,7 @@ import org.openqa.selenium.WebElement;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import java.util.function.Predicate;
 
 public class DialogPage extends AndroidPage {
 
@@ -23,11 +24,18 @@ public class DialogPage extends AndroidPage {
     public static final By idDialogImages = By.id(idStrDialogImages);
 
     private static final By xpathLastPicture = By.xpath(String.format("(//*[@id='%s'])[last()]", idStrDialogImages));
+    
+    private static final By xpathE2EEDialogImagesBadges = By.xpath("//*[@id='" + idStrDialogImages
+            + "']/parent::*/parent::*//*[@id='v__row_conversation__e2ee']");
 
     public static final By idAddPicture = By.id("cursor_menu_item_camera");
 
     private static final Function<String, String> xpathStrConversationMessageByText = text -> String
         .format("//*[@id='ltv__row_conversation__message' and @value='%s']", text);
+    
+    private static final Function<String, String> xpathStrConversationLockMessageByText = text -> String
+            .format("//*[@id='ltv__row_conversation__message' and @value='%s']/parent::*/following-sibling::*"
+                    + "/*[@id='v__row_conversation__e2ee']", text);
 
     private static final Function<String, String> xpathStrUnsentIndicatorByText = text -> String
         .format("%s/parent::*/parent::*//*[@id='v__row_conversation__error']", xpathStrConversationMessageByText.apply(text));
@@ -73,13 +81,9 @@ public class DialogPage extends AndroidPage {
 
     private static final By idCall = By.id("cursor_menu_item_calling");
 
+    private static final By idVideoCall = By.id("cursor_menu_item_video");
+
     public static final By idCursorCloseButton = By.id("cursor_button_close");
-
-    private static final By idMute = By.id("cib__calling__mic_mute");
-
-    private static final By idSpeaker = By.id("cib__calling__speaker");
-
-    private static final By idCancelCall = By.id("cib__calling__dismiss");
 
     private static final String idStrNewConversationNameMessage = "ttv__row_conversation__new_conversation_name";
 
@@ -108,6 +112,10 @@ public class DialogPage extends AndroidPage {
     private static final int DEFAULT_SWIPE_TIME = 500;
     private static final int MAX_SWIPE_RETRIES = 5;
     private static final int MAX_CLICK_RETRIES = 5;
+    
+    private Memory previousMediaButtonState;
+    private Memory previousConversationViewState;
+    private Memory previousVerifiedConversationShieldState;
 
     public DialogPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -209,40 +217,12 @@ public class DialogPage extends AndroidPage {
         getElement(idCall, "Call button is not visible").click();
     }
 
+    public void tapVideoCallBtn() throws Exception {
+        getElement(idVideoCall, "Video Call button is not visible").click();
+    }
+
     public void closeInputOptions() throws Exception {
         getElement(idCursorCloseButton, "Close cursor button is not visible").click();
-    }
-
-    public void tapMuteBtn() throws Exception {
-        getElement(idMute, "Mute button is not visible").click();
-    }
-
-    public void tapSpeakerBtn() throws Exception {
-        getElement(idSpeaker, "Speaker button is not visible").click();
-    }
-
-    public void tapCancelCallBtn() throws Exception {
-        getElement(idCancelCall, "Cancel call button is not visible").click();
-    }
-
-    private WebElement getButtonElementByName(String name) throws Exception {
-        final String uppercaseName = name.toUpperCase();
-        switch (uppercaseName) {
-            case "MUTE":
-                return getElement(idMute);
-            case "SPEAKER":
-                return getElement(idSpeaker);
-            default:
-                throw new NoSuchElementException(String.format("Button '%s' is unknown", name));
-        }
-    }
-
-    public BufferedImage getCurrentButtonStateScreenshot(String name) throws Exception {
-        final WebElement dstButton = getButtonElementByName(name);
-        if (!DriverUtils.waitUntilElementClickable(getDriver(), dstButton)) {
-            throw new IllegalStateException("The button is not clickable");
-        }
-        return getElementScreenshot(dstButton).orElseThrow(IllegalStateException::new);
     }
 
     public void typeAndSendMessage(String message) throws Exception {
@@ -436,8 +416,22 @@ public class DialogPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idYoutubePlayButton);
     }
 
-    public BufferedImage getMediaControlButtonScreenshot() throws Exception {
-        return getElementScreenshot(getElement(idPlayPauseMedia)).orElseThrow(IllegalStateException::new);
+    public void rememberMediaControlButtonState() throws Exception {
+        previousMediaButtonState = new Memory(getDriver(), idPlayPauseMedia, 15000, 0.97d);
+    }
+    
+    public boolean mediaControlButtonStateHasChanged() throws Exception {
+        if (previousMediaButtonState == null) {
+            throw new IllegalStateException("Please call the corresponding remember step first to get the previous state of the element");
+        }
+        return previousMediaButtonState.hasChanged();
+    }
+    
+    public boolean mediaControlButtonStateHasNotChanged() throws Exception {
+        if (previousMediaButtonState == null) {
+            throw new IllegalStateException("Please call the corresponding remember step first to get the previous state of the element");
+        }
+        return previousMediaButtonState.hasNotChanged();
     }
 
     public void tapPlayPauseMediaBarBtn() throws Exception {
@@ -503,8 +497,33 @@ public class DialogPage extends AndroidPage {
         return selectVisibleElements(xpathDialogContent).size();
     }
 
-    public BufferedImage getConvoViewScreenshot() throws Exception {
-        return this.getElementScreenshot(getElement(idDialogRoot)).orElseThrow(IllegalStateException::new);
+    public void rememberConversationView() throws Exception {
+        previousConversationViewState = new Memory(getDriver(), idDialogRoot, 15000, 0.50);
+    }
+    
+    public void rememberVerifiedConversationShield() throws Exception {
+        previousVerifiedConversationShieldState = new Memory(getDriver(), idVerifiedConversationShield, 15000, 0.97d);
+    }
+    
+    public boolean verifiedConversationShieldStateHasChanged() throws Exception {
+        if (previousVerifiedConversationShieldState == null) {
+            throw new IllegalStateException("Please call the corresponding remember step first to get the previous state of the element");
+        }
+        return previousVerifiedConversationShieldState.hasChanged();
+    }
+    
+    public boolean conversationViewStateHasChanged() throws Exception {
+        if (previousConversationViewState == null) {
+            throw new IllegalStateException("Please call the corresponding remember step first to get the previous state of the element");
+        }
+        return previousConversationViewState.hasChanged();
+    }
+    
+    public boolean conversationViewStateHasNotChanged() throws Exception {
+        if (previousConversationViewState == null) {
+            throw new IllegalStateException("Please call the corresponding remember step first to get the previous state of the element");
+        }
+        return previousConversationViewState.hasNotChanged();
     }
 
     /**
@@ -515,15 +534,35 @@ public class DialogPage extends AndroidPage {
         getElement(idSwitchCameraButton).click();
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathDialogTakePhotoButton);
     }
+    
+    private final Predicate<? super WebElement> isEncryptedMessageFilter = (WebElement wel) -> wel.getSize().getWidth() > 0;
+    private final Predicate<? super WebElement> isNonEncryptedMessageFilter = (WebElement wel) -> wel.getSize().getWidth() <= 0;
 
-    public Optional<BufferedImage> getVerifiedConversationShieldScreenshot() throws Exception {
-        return this
-            .getElementScreenshot(DriverUtils.getElementIfPresentInDOM(this.getDriver(), idVerifiedConversationShield).get());
+    public boolean waitForXEncryptedMessages(String msg, int times) throws Exception {
+        By locator = By.xpath(xpathStrConversationLockMessageByText.apply(msg));
+        if (times > 0) {
+            DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+        }
+        return getElements(locator).stream().filter(isEncryptedMessageFilter).collect(Collectors.toList()).size() == times;
     }
 
-    public boolean waitForXImages(int num) throws Exception {
+    public boolean waitForXNonEncryptedMessages(String msg, int times) throws Exception {
+        By locator = By.xpath(xpathStrConversationLockMessageByText.apply(msg));
+        if (times > 0) {
+            DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+        }
+        return getElements(locator).stream().filter(isNonEncryptedMessageFilter).collect(Collectors.toList()).size() == times;
+    }
+
+    public boolean waitForXEncryptedImages(int times) throws Exception {
+        final List<WebElement> allImageBadges = selectVisibleElements(xpathE2EEDialogImagesBadges);
+        return times == allImageBadges.stream().filter(WebElement::isDisplayed).count();
+    }
+
+    public boolean waitForXNonEncryptedImages(int times) throws Exception {
         final List<WebElement> allImages = selectVisibleElements(idDialogImages);
-        return num == allImages.size();
+        final List<WebElement> allImageBadges = selectVisibleElements(xpathE2EEDialogImagesBadges);
+        return times == (allImages.size() - allImageBadges.stream().filter(WebElement::isDisplayed).count());
     }
 
     public void tapResendMsgIndicator(String message) throws Exception {
