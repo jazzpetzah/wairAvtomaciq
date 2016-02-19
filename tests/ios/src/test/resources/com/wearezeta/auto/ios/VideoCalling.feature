@@ -42,18 +42,16 @@ Feature: Video Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When <Contact> starts a video call to <Name> using <CallBackend>
-    #And I tap on contact name <Contact>
-    #And <Contact> starts a video call to <Name> using <CallBackend>
     And I see user <Contact> calling label on Video Call page
     And I click Accept video call button
-    #Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
-    #And <Contact> verify to have 1 flows
-    #And <Contact> verify that all flows have greater than 0 bytes
-    And I see CallMute button and it is enabled on Video Call page
+    And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    And <Contact> verify to have 1 flows
+    And <Contact> verify that all flows have greater than 0 bytes
+    Then I see CallMute button and it is enabled on Video Call page
     And I see LeaveCall button and it is enabled on Video Call page
-    And I see Accept button and it is disabled on Video Call page
+    And I see CallVideo button and it is enabled on Video Call page
     And I click Hang Up button on Video Call page
 
     Examples:
-      | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | firefox     | 60      |
+      | Name      | Contact   | CallBackend         | Timeout |
+      | user1Name | user2Name | chrome:48.0.2564.97 | 60      |

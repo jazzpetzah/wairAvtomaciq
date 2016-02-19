@@ -27,7 +27,7 @@ public class VideoCallPageSteps {
     @Then("^I see user (.*) (ringing|calling) label on Video Call page$")
     public void ISeeRingingUserLabel(String contact, String callState) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        Assert.assertTrue("Ringing user label is not visible", getVideoCallingPage().isCallStatusLabelShown(contact, callState));
+        Assert.assertTrue(String.format("%s %s label is not visible", contact, callState), getVideoCallingPage().isCallStatusLabelShown(contact, callState));
     }
 
     /**
@@ -36,9 +36,9 @@ public class VideoCallPageSteps {
      * @param buttonName Name of the button
      * @param visibility is button enabled or disabled
      * @throws Exception
-     * @step. ^I see (CallMute|LeaveCall|Accept) button and it is (enabled|disabled) on Video Call page$
+     * @step. ^I see (CallMute|LeaveCall|Accept|CallVideo) button and it is (enabled|disabled) on Video Call page$
      */
-    @Then("^I see (CallMute|LeaveCall|Accept) button and it is (enabled|disabled) on Video Call page$")
+    @Then("^I see (CallMute|LeaveCall|Accept|CallVideo) button and it is (enabled|disabled) on Video Call page$")
     public void ISeeButtonWithNameAndItsVisibility(String buttonName, String visibility) throws Exception {
         String isEnabled = "";
         if (visibility.equals("enabled")) {
