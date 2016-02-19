@@ -82,3 +82,19 @@ Feature: Sign In
     Examples:
       | Name      | Email      | Password      | Contact   | ErrMessage                                           |
       | user1Name | user1Email | user1Password | user2Name | Please check your Internet connection and try again. |
+
+  @C43807 @staging @torun
+  Scenario Outline: Verify sign in with email address only
+    Given There is 1 user with email address only where <Name> is me
+    Given I see welcome screen
+    When I switch to email sign in screen
+    And I have entered login <Login>
+    And I have entered password <Password>
+    And I press Log in button
+    And I input a new phone number for user <Name>
+    And I input the verification code
+    Then I see Contact list with no contacts
+
+    Examples:
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |

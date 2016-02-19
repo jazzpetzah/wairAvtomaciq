@@ -16,8 +16,7 @@ public class DeviceDetailPageSteps {
 
     private static final Logger log = ZetaLogger.getLog(DeviceDetailPageSteps.class.getSimpleName());
 
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
-            .getInstance();
+    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     

@@ -18,8 +18,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ContactListPageSteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
-            .getInstance();
+    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
 
     private ContactListPage getContactListPage() throws Exception {
         return pagesCollection.getPage(ContactListPage.class);

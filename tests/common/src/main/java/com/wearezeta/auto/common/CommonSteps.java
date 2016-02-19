@@ -127,15 +127,12 @@ public final class CommonSteps {
         usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(myNameAlias));
     }
 
-    public void ThereAreNUsersWhereXIsMeRegOnlyByMail(Platform currentPlatform,
-                                                      int count, String myNameAlias) throws Exception {
+    public void ThereAreNUsersWhereXIsMeRegOnlyByMail(int count, String myNameAlias) throws Exception {
         usrMgr.createUsersOnBackend(count, RegistrationStrategy.ByEmailOnly);
         usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(myNameAlias));
     }
 
-    public void ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(
-            Platform currentPlatform, int count, String myNameAlias)
-            throws Exception {
+    public void ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(int count, String myNameAlias) throws Exception {
         usrMgr.createUsersOnBackend(count,
                 RegistrationStrategy.ByPhoneNumberOnly);
         usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(myNameAlias));

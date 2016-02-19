@@ -659,11 +659,31 @@ public class CommonAndroidSteps {
      * @param count       the number of users to make
      * @param myNameAlias the name of the user to set as the current user
      * @throws Exception
-     * @step. ^There \\w+ (\\d+) user[s]* where (.*) is me$
+     * @step. ^There (?:are|is) (\\d+) user[s]* where (.*) is me$
      */
-    @Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
+    @Given("^There (?:are|is) (\\d+) users? where (.*) is me$")
     public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias) throws Exception {
         commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count, myNameAlias);
+        GivenUserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
+    }
+
+    /**
+     * Verifies that there are N new users for a test, makes them if they don't
+     * exist, and sets one of those users to be the current user.
+     *
+     * @param count       the number of users to make
+     * @param what        either 'email' or 'phone number'
+     * @param myNameAlias the name of the user to set as the current user
+     * @throws Exception
+     * @step. ^There (?:are|is) (\d+) users? with (email address|phone number) only where (.*) is me$
+     */
+    @Given("^There (?:are|is) (\\d+) users? with (email address|phone number) only where (.*) is me$")
+    public void ThereAreNUsersWithZOnlyWhereXIsMe(int count, String what, String myNameAlias) throws Exception {
+        if (what.equals("email address")) {
+            commonSteps.ThereAreNUsersWhereXIsMeRegOnlyByMail(count, myNameAlias);
+        } else {
+            commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
+        }
         GivenUserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
     }
 
@@ -920,9 +940,9 @@ public class CommonAndroidSteps {
     /**
      * User X removes User Y from a group conversation via backend
      *
-     * @param user1
-     * @param user2
-     * @param group
+     * @param user1 removal action initiator
+     * @param user2 user name to be removed from the group chat
+     * @param group group chat name
      * @throws Exception
      * @step. ^(.*) removes (.*) from group (.*)$
      */
@@ -1004,7 +1024,7 @@ public class CommonAndroidSteps {
     /**
      * Remove all registered OTR clients for the particular user except of the X most recent ones
      *
-     * @param userAs user name/alias
+     * @param userAs       user name/alias
      * @param clientsCount the count of recents OTR clients to keep
      * @throws Exception
      * @step. ^User (.*) only keeps his (\d+) most recent OTR clients$

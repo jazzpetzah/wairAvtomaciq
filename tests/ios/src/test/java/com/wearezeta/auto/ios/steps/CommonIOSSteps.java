@@ -358,10 +358,8 @@ public class CommonIOSSteps {
      * only$
      */
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me with phone number only$")
-    public void ThereAreNUsersWhereXIsMeWithoutEmail(int count,
-                                                     String myNameAlias) throws Exception {
-        commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(
-                CURRENT_PLATFORM, count, myNameAlias);
+    public void ThereAreNUsersWhereXIsMeWithoutEmail(int count, String myNameAlias) throws Exception {
+        commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
     }
 
     /**
@@ -375,15 +373,12 @@ public class CommonIOSSteps {
      * @step. ^There (?:is|are) (\\d+) users? where (.*) is me with email only$
      */
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me with email only$")
-    public void ThereAreNUsersWhereXIsMeWithoutPhone(int count,
-                                                     String myNameAlias) throws Exception {
-        commonSteps.ThereAreNUsersWhereXIsMeRegOnlyByMail(CURRENT_PLATFORM,
-                count, myNameAlias);
+    public void ThereAreNUsersWhereXIsMeWithoutPhone(int count, String myNameAlias) throws Exception {
+        commonSteps.ThereAreNUsersWhereXIsMeRegOnlyByMail(count, myNameAlias);
     }
 
     @When("^(.*) ignore all requests$")
-    public void IgnoreAllIncomingConnectRequest(String userToNameAlias)
-            throws Exception {
+    public void IgnoreAllIncomingConnectRequest(String userToNameAlias) throws Exception {
         commonSteps.IgnoreAllIncomingConnectRequest(userToNameAlias);
     }
 
@@ -395,8 +390,7 @@ public class CommonIOSSteps {
      * @step. ^(.*) cancel all outgoing connection requests$
      */
     @When("^(.*) cancel all outgoing connection requests$")
-    public void CancelAllOutgoingConnectRequest(String userToNameAlias)
-            throws Exception {
+    public void CancelAllOutgoingConnectRequest(String userToNameAlias) throws Exception {
         commonSteps.CancelAllOutgoingConnectRequests(userToNameAlias);
     }
 

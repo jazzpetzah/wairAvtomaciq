@@ -368,8 +368,7 @@ public class CommonOSXSteps {
 	@Given("^There (?:is|are) (\\d+) users? where (.*) is me with phone number only$")
 	public void ThereAreNUsersWhereXIsMeWithoutEmail(int count,
 			String myNameAlias) throws Exception {
-		commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(
-				OSXExecutionContext.CURRENT_PLATFORM, count, myNameAlias);
+		commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
 	}
 
 	/**
@@ -387,7 +386,7 @@ public class CommonOSXSteps {
 	@When("^User (\\w+) changes? avatar picture to (.*)")
 	public void IChangeUserAvatarPicture(String userNameAlias, String path)
 			throws Exception {
-		String avatar = null;
+		String avatar;
 		final String rootPath = "/images/";
 		if (path.equals("default")) {
 			avatar = DEFAULT_USER_PICTURE;
