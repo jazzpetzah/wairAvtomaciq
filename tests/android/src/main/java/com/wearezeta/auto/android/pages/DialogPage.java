@@ -218,7 +218,7 @@ public class DialogPage extends AndroidPage {
     }
 
     public void tapVideoCallBtn() throws Exception {
-        getElement(idVideoCall, "Call button is not visible").click();
+        getElement(idVideoCall, "Video Call button is not visible").click();
     }
 
     public void closeInputOptions() throws Exception {
