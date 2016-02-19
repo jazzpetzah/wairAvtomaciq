@@ -10,10 +10,10 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class CallingLockscreenPage extends AndroidPage {
 
-    private static final By idLockScreenLogo = By.id("gtv__notifications__incoming_call__lockscreen__logo");
+    private static final By idLockScreenLogo = By.id("tcfl__calling__container");
 
     private static final Function<String, String> xpathStrCallingUserByName = name ->
-            String.format("//*[@id='ttv__notifications__incoming_call__lockscreen__header' and @value='%s']", name);
+            String.format("//*[@id='ttv__calling__header__name' and @value='%s']", name);
 
     public static final By idMainContent = By.id("fl_main_content");
 
