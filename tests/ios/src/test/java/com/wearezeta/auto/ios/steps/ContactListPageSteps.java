@@ -224,7 +224,6 @@ public class ContactListPageSteps {
         PeoplePickerPageSteps pickerSteps = new PeoplePickerPageSteps();
         pickerSteps.WhenITapOnSearchInputOnPeoplePickerPage();
         pickerSteps.WhenIInputInPeoplePickerSearchFieldUserName(contact2);
-        pickerSteps.WhenISeeUserFoundOnPeoplePickerPage(contact2);
         pickerSteps.ITapOnConversationFromSearch(contact2);
         pickerSteps.WhenIClickOnAddToConversationButton();
 

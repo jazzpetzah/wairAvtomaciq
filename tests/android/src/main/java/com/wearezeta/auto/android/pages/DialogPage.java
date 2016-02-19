@@ -13,7 +13,6 @@ import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.DummyElement;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import java.util.function.Predicate;
 
@@ -77,8 +76,6 @@ public class DialogPage extends AndroidPage {
     private static final By idYoutubePlayButton = By.id("gtv__youtube_message__play");
 
     private static final By idMediaBarControl = By.id("gtv__conversation_header__mediabar__control");
-
-    private static final By idPing = By.id("cursor_menu_item_ping");
 
     private static final By idSketch = By.id("cursor_menu_item_draw");
 
@@ -202,11 +199,14 @@ public class DialogPage extends AndroidPage {
     }
 
     public void tapPingBtn() throws Exception {
-        getElement(idPing, "Ping button is not visible").click();
+        getDriver().tap(1, getElement(idCall), DriverUtils.LONG_TAP_DURATION);
     }
 
     public void tapPingButtonIfVisible() throws Exception {
-        getElementIfDisplayed(idPing, 2).orElseGet(DummyElement::new).click();
+        final Optional<WebElement> callBtn = getElementIfDisplayed(idCall, 2);
+        if (callBtn.isPresent()) {
+            getDriver().tap(1, callBtn.get(), DriverUtils.LONG_TAP_DURATION);
+        }
     }
 
     public void tapSketchBtn() throws Exception {

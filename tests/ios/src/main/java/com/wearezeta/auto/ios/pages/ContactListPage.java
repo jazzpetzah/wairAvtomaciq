@@ -20,10 +20,10 @@ public class ContactListPage extends IOSPage {
     private static final String xpathStrContactListRoot = xpathStrMainWindow + "/UIACollectionView[1]";
     private static final By xpathContactListRoot = By.xpath(xpathStrContactListRoot);
 
-    private static final String xpathStrContactListItems = xpathStrContactListRoot + "/UIACollectionCell";
+    protected static final String xpathStrContactListItems = xpathStrContactListRoot + "/UIACollectionCell";
     private static final Function<String, String> xpathStrContactListItemByExpr = xpathExpr ->
             String.format("%s/UIAStaticText[%s]", xpathStrContactListItems, xpathExpr);
-    private static final Function<String, String> xpathStrConvoListEntryByName = name ->
+    protected static final Function<String, String> xpathStrConvoListEntryByName = name ->
             String.format("%s/UIAStaticText[@value='%s']/parent::*", xpathStrContactListItems, name);
     private static final Function<Integer, String> xpathStrConvoListEntryByIdx = idx ->
             String.format("%s[%s]", xpathStrContactListItems, idx);

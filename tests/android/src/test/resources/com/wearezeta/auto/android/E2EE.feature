@@ -439,7 +439,7 @@ Feature: E2EE
       | Name      | Contact1  | Contact2  | Message1 | GroupChatName |
       | user1Name | user2Name | user3Name | Msg1     | GroupConvo    |
 
-  @C12082 @staging
+  @C12082 @regression
   Scenario Outline: First time when group conversation is degraded - I can ignore takeover screen and send message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

@@ -352,14 +352,14 @@ Feature: People View
     Given Myself silenced group conversation with <GroupChatName>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I remember the state of <GroupChatName> conversation item
+    When I remember the state of <GroupChatName> conversation item on iPad
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button on iPad
     And I click NOTIFY button on iPad ellipsis menu
     And I exit the group info iPad popover
     And I navigate back to conversations list
-    Then I see the state of <GroupChatName> conversation item is changed
+    Then I see the state of <GroupChatName> conversation item is changed on iPad
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -375,13 +375,13 @@ Feature: People View
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I remember the state of <GroupChatName> conversation item
+    When I remember the state of <GroupChatName> conversation item on iPad
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button on iPad
     And I click NOTIFY button on iPad ellipsis menu
     And I exit the group info iPad popover
-    Then I see the state of <GroupChatName> conversation item is changed
+    Then I see the state of <GroupChatName> conversation item is changed on iPad
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -395,14 +395,14 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I remember the state of <GroupChatName> conversation item
+    When I remember the state of <GroupChatName> conversation item on iPad
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button on iPad
     And I click SILENCE button on iPad ellipsis menu
     And I exit the group info iPad popover
     And I navigate back to conversations list
-    Then I see the state of <GroupChatName> conversation item is changed
+    Then I see the state of <GroupChatName> conversation item is changed on iPad
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -417,13 +417,13 @@ Feature: People View
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I remember the state of <GroupChatName> conversation item
+    When I remember the state of <GroupChatName> conversation item on iPad
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button on iPad
     And I click SILENCE button on iPad ellipsis menu
     And I exit the group info iPad popover
-    Then I see the state of <GroupChatName> conversation item is changed
+    Then I see the state of <GroupChatName> conversation item is changed on iPad
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -551,12 +551,13 @@ Feature: People View
   Scenario Outline: Verify displaying only connected users in the search in group chat [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
-    And I see user <Contact3> found on People picker page
+    And I see the conversation "<Contact3>" exists in Search results
     And I click close button to dismiss people view
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
@@ -564,7 +565,7 @@ Feature: People View
     And I wait until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
-    Then I see that user <Contact3> is NOT found on People picker page
+    Then I see the conversation "<Contact3>" does not exist in Search results
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
@@ -574,13 +575,13 @@ Feature: People View
   Scenario Outline: Verify displaying only connected users in the search in group chat [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
     And I input in People picker search field user name <Contact3>
-    And I see user <Contact3> found on People picker page
+    And I see the conversation "<Contact3>" exists in Search results
     And I click close button to dismiss people view
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
@@ -588,7 +589,7 @@ Feature: People View
     And I wait until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
-    Then I see that user <Contact3> is NOT found on People picker page
+    Then I see the conversation "<Contact3>" does not exist in Search results
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
@@ -658,7 +659,7 @@ Feature: People View
     And I wait until popover is closed
     And I open search by taping on it
     And I input in People picker search field conversation name <GroupChatName>
-    Then I see conversation <GroupChatName> is NOT presented in Search results
+    Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
     And I dont see conversation <GroupChatName> in contact list
     And I open archived conversations on iPad
@@ -686,7 +687,7 @@ Feature: People View
     And I wait until popover is closed
     And I open search by taping on it
     And I input in People picker search field conversation name <GroupChatName>
-    Then I see conversation <GroupChatName> is NOT presented in Search results
+    Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
     And I dont see conversation <GroupChatName> in contact list
     And I open archived conversations on iPad
@@ -715,7 +716,6 @@ Feature: People View
     And I wait until popover is closed
     And I open search by taping on it
     And I input in People picker search field conversation name <GroupChatName>
-    Then I see conversation <GroupChatName> is presented in Search results
     When I tap on conversation <GroupChatName> in search result
     Then I see group chat page with users <Contact1>,<Contact2>
 
@@ -743,7 +743,6 @@ Feature: People View
     And I wait until popover is closed
     And I open search by taping on it
     And I input in People picker search field conversation name <GroupChatName>
-    Then I see conversation <GroupChatName> is presented in Search results
     When I tap on conversation <GroupChatName> in search result
     Then I see group chat page with users <Contact1>,<Contact2>
 

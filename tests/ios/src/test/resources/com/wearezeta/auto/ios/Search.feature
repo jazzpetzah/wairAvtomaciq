@@ -7,7 +7,7 @@ Feature: Search
     Given I see conversations list
     When I open search by taping on it
     And I input in People picker search field user email <ContactEmail>
-    Then I see user <ContactName> found on People picker page
+    Then I see the conversation "<ContactName>" exists in Search results
 
     Examples:
       | Name      | ContactEmail | ContactName |
@@ -20,7 +20,7 @@ Feature: Search
     Given I see conversations list
     When I open search by taping on it
     And I input in People picker search field user name <Contact>
-    Then I see user <Contact> found on People picker page
+    Then I see the conversation "<Contact>" exists in Search results
 
     Examples:
       | Name      | Contact   |
@@ -61,7 +61,7 @@ Feature: Search
 
     Examples:
       | Name      | ParticipantsCount |
-      | user1Name | 3                 |
+      | user1Name | 2                 |
 
   @C40 @rc @regression @id1454
   Scenario Outline: Verify sending a connection request to user chosen from search
@@ -126,7 +126,7 @@ Feature: Search
     When I open search by taping on it
     And I wait until <Contact> exists in backend search results
     And I input in People picker search field first 5 letters of user name <Contact>
-    Then I see user <Contact> found on People picker page
+    Then I see the conversation "<Contact>" exists in Search results
 
     Examples:
       | Name      | Contact   |
@@ -140,11 +140,10 @@ Feature: Search
     Given I see conversations list
     When I open search by taping on it
     And I input in People picker search field user name <Contact>
-    Then I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I see call action button on People picker page
     And I click call action button on People picker page
-    And I see Calling overlay
+    Then I see Calling overlay
 
     Examples:
       | Name      | Contact   |

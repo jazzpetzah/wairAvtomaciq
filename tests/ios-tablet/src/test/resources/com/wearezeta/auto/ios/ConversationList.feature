@@ -134,14 +134,14 @@ Feature: Conversation List
     Given I see conversations list
     When I tap on contact name <Contact2>
     And I navigate back to conversations list
-    Given I remember the state of <Contact> conversation item
+    Given I remember the state of <Contact> conversation item on iPad
     When User <Contact> securely pings conversation Myself
     And I see first item in contact list named <Contact>
-    Then I see the state of <Contact> conversation item is changed
+    Then I see the state of <Contact> conversation item is changed on iPad
 
     Examples:
-      | Name      | Contact   |Contact2   	|
-      | user1Name | user2Name |user3Name	|
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @C2537 @regression @id2752
   Scenario Outline: Verify Ping animation in the conversations list [LANDSCAPE]
@@ -152,14 +152,14 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact2>
-    When I remember the state of <Contact> conversation item
+    When I remember the state of <Contact> conversation item on iPad
     And User <Contact> securely pings conversation Myself
     And I see first item in contact list named <Contact>
-    Then I see the state of <Contact> conversation item is changed
+    Then I see the state of <Contact> conversation item is changed on iPad
 
     Examples:
-      | Name      | Contact   |Contact2   	|
-      | user1Name | user2Name |user3Name	|
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @C2507 @regression @id2756
   Scenario Outline: Verify conversations are sorted according to most recent activity [PORTRAIT]
@@ -232,13 +232,13 @@ Feature: Conversation List
     Given User Myself removes his avatar picture
     Given I Sign in on tablet using my email
     And I see conversations list
-    When I remember the state of <Contact> conversation item
+    When I remember the state of <Contact> conversation item on iPad
     When <Contact> calls me using <CallBackend>
     And <Contact> stops all calls to me
-    Then I see the state of <Contact> conversation item is changed
-    When I remember the state of <Contact> conversation item
+    Then I see the state of <Contact> conversation item is changed on iPad
+    When I remember the state of <Contact> conversation item on iPad
     And User <Contact> sends <Number> encrypted messages to user Myself
-    Then I see the state of <Contact> conversation item is not changed
+    Then I see the state of <Contact> conversation item is not changed on iPad
 
     Examples:
       | Name      | Contact   | Contact1  | Number | CallBackend |
@@ -252,14 +252,14 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see conversations list
-    When I remember the state of <Contact> conversation item
+    When I remember the state of <Contact> conversation item on iPad
     And <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
     And <Contact> stops all calls to me
-    Then I see the state of <Contact> conversation item is changed
-    When I remember the state of <Contact> conversation item
+    Then I see the state of <Contact> conversation item is changed on iPad
+    When I remember the state of <Contact> conversation item on iPad
     And User <Contact> sends <Number> encrypted messages to user Myself
-    Then I see the state of <Contact> conversation item is not changed
+    Then I see the state of <Contact> conversation item is not changed on iPad
 
     Examples:
       | Name      | Contact   | Contact1  | Number | CallBackend |
@@ -274,17 +274,16 @@ Feature: Conversation List
     And I see conversations list
     When I tap on contact name <Contact2>
     And I navigate back to conversations list
-    And I remember the state of <Contact> conversation item
+    And I remember the state of <Contact> conversation item on iPad
     When User <Contact> sends 1 encrypted message to user Myself
     And I see first item in contact list named <Contact>
-    Then I see the state of <Contact> conversation item is changed
-    # TODO: Tune screenshoting for tablet
-#    When I remember the state of <Contact> conversation item
+    Then I see the state of <Contact> conversation item is changed on iPad
+    When I remember the state of <Contact> conversation item on iPad
     And User <Contact> sends 4 encrypted message to user Myself
-    Then I see the state of <Contact> conversation item is changed
-#    When I remember the state of <Contact> conversation item
+    Then I see the state of <Contact> conversation item is changed on iPad
+    When I remember the state of <Contact> conversation item on iPad
     And User <Contact> sends 5 encrypted messages to user Myself
-    Then I see the state of <Contact> conversation item is changed
+    Then I see the state of <Contact> conversation item is changed on iPad
 
     Examples:
       | Name      | Contact   | Contact2  |
@@ -299,15 +298,14 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     And I see conversations list
     And I tap on contact name <Contact2>
-    And I remember the state of <Contact> conversation item
+    And I remember the state of <Contact> conversation item on iPad
     When User <Contact> sends 1 encrypted message to user Myself
     And I see first item in contact list named <Contact>
-    Then I see the state of <Contact> conversation item is changed
-    # TODO: Tune screenshoting for tablet
-#    When I remember the state of <Contact> conversation item
+    Then I see the state of <Contact> conversation item is changed on iPad
+    When I remember the state of <Contact> conversation item on iPad
     And User <Contact> sends 4 encrypted message to user Myself
-    Then I see the state of <Contact> conversation item is changed
-#    When I remember the state of <Contact> conversation item
+    Then I see the state of <Contact> conversation item is changed on iPad
+    When I remember the state of <Contact> conversation item on iPad
     And User <Contact> sends 5 encrypted messages to user Myself
     Then I see the state of <Contact> conversation item is changed
 
@@ -519,7 +517,6 @@ Feature: Conversation List
     Then I dont see conversation <GroupChatName> in contact list
     When I open search by taping on it
     And I input in People picker search field conversation name <GroupChatName>
-    And I see conversation <GroupChatName> is presented in Search results
     And I tap on conversation <GroupChatName> in search result
     Then I see empty group chat page with users <Contact1>,<Contact2> with only system message
     When I type the default message and send it
@@ -547,7 +544,6 @@ Feature: Conversation List
     Then I dont see conversation <GroupChatName> in contact list
     When I open search by taping on it
     And I input in People picker search field conversation name <GroupChatName>
-    And I see conversation <GroupChatName> is presented in Search results
     And I tap on conversation <GroupChatName> in search result
     Then I see empty group chat page with users <Contact1>,<Contact2> with only system message
     When I type the default message and send it
@@ -651,7 +647,7 @@ Feature: Conversation List
     And I confirm delete conversation content
     And I open search by taping on it
     And I input in People picker search field conversation name <GroupChatName>
-    Then I see conversation <GroupChatName> is NOT presented in Search results
+    Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
     And I dont see conversation <GroupChatName> in contact list
     And I open archived conversations on iPad
@@ -676,7 +672,7 @@ Feature: Conversation List
     And I confirm delete conversation content
     And I open search by taping on it
     And I input in People picker search field conversation name <GroupChatName>
-    Then I see conversation <GroupChatName> is NOT presented in Search results
+    Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
     And I dont see conversation <GroupChatName> in contact list
     And I open archived conversations on iPad
@@ -745,7 +741,7 @@ Feature: Conversation List
     And I dont see conversation <Contact> in contact list
     And I open search by taping on it
     And I input in People picker search field user name <Contact>
-    Then I see user <Contact> found on People picker page
+    Then I see the conversation "<Contact>" exists in Search results
 
     Examples:
       | Name      | Contact   |
@@ -766,7 +762,7 @@ Feature: Conversation List
     And I dont see conversation <Contact> in contact list
     And I open search by taping on it
     And I input in People picker search field user name <Contact>
-    Then I see user <Contact> found on People picker page
+    Then I see the conversation "<Contact>" exists in Search results
 
     Examples:
       | Name      | Contact   |

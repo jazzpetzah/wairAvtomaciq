@@ -117,7 +117,6 @@ Feature: Connect
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I click Connect button on connect to dialog
-    And I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
     And I see <Contact> user pending profile page
     And I see cancel request button on pending profile page
@@ -270,7 +269,7 @@ Feature: Connect
     And I tap on conversation <Contact1> in search result
     And I click Cancel request button
     And I confirm Cancel request by click on Yes button
-    Then I see user <Contact1> found on People picker page
+    Then I see the conversation "<Contact1>" exists in Search results
 
     Examples: 
       | Name      | Contact1  |

@@ -11,13 +11,11 @@ import cucumber.api.java.en.When;
 public class TabletGroupConversationDetailPopoverPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-    private final IOSPagesCollection pagesCollecton = IOSPagesCollection
-            .getInstance();
+    private final IOSPagesCollection pagesCollecton = IOSPagesCollection.getInstance();
 
     private TabletGroupConversationDetailPopoverPage getTabletGroupConversationDetailPopoverPage()
             throws Exception {
-        return (TabletGroupConversationDetailPopoverPage) pagesCollecton
-                .getPage(TabletGroupConversationDetailPopoverPage.class);
+        return pagesCollecton.getPage(TabletGroupConversationDetailPopoverPage.class);
     }
 
     /**

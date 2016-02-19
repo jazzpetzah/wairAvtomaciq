@@ -31,8 +31,8 @@ public class PeoplePickerPage extends IOSPage {
 
     private static final By nameUnblockButton = By.name("UNBLOCK");
 
-    private static final By xpathPeoplePickerAllTopPeople = By.xpath(
-            xpathStrMainWindow + "/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell");
+    private static final By xpathSelectedTopPeople =
+            By.xpath("//UIACollectionCell/UIACollectionView/UIACollectionCell[@value='1']");
 
     public static final By xpathInviteCopyButton = By.xpath("//UIACollectionCell[@name='Copy']");
 
@@ -80,8 +80,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void tapOnPeoplePickerSearch() throws Exception {
-        final Point location = getElement(xpathPickerSearch).getLocation();
-        this.getDriver().tap(1, location.x + 40, location.y + 30, DriverUtils.SINGLE_TAP_DURATION);
+        getElement(xpathPickerSearch).click();
     }
 
     public void tapOnPeoplePickerClearBtn() throws Exception {
@@ -104,7 +103,7 @@ public class PeoplePickerPage extends IOSPage {
 
     public boolean isElementNotFoundInSearch(String name) throws Exception {
         final By locator = By.xpath(xpathStrFoundContactByName.apply(name));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 2);
+        return !DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 2);
     }
 
     public void selectElementInSearchResults(String name) throws Exception {
@@ -182,8 +181,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public int getNumberOfSelectedTopPeople() throws Exception {
-        return (int) getElements(xpathPeoplePickerAllTopPeople).stream().filter(
-                x -> x.getAttribute("value").equals("1")).count();
+        return getElements(xpathSelectedTopPeople).size();
     }
 
     public void tapSendInviteButton() throws Exception {
@@ -246,5 +244,17 @@ public class PeoplePickerPage extends IOSPage {
 
     public boolean isPeopleYouMayKnowLabelInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), namePeopleYouMayKnowLabel);
+    }
+
+    public boolean isOpenConversationButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameOpenConversationButton);
+    }
+
+    public boolean isCallButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameCallButton);
+    }
+
+    public boolean isSendImageButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameSendImageButton);
     }
 }

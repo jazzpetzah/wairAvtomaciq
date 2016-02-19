@@ -214,7 +214,7 @@ Feature: Calling
     Given I see conversations list
     And I tap on contact name <Contact1>
     And I navigate back to conversations list
-    And I remember the state of <Contact2> conversation item
+    And I remember the state of <Contact2> conversation item on iPad
     When I tap on contact name <Contact1>
     And I click plus button next to text input
     And I press call button
@@ -226,7 +226,7 @@ Feature: Calling
     And <Contact2> stops all calls to me
     And I tap Leave button on Calling overlay
     And I navigate back to conversations list
-    And I see the state of <Contact2> conversation item is changed
+    And I see the state of <Contact2> conversation item is changed on iPad
     And I tap on contact name <Contact2>
     Then I see missed call from contact <Contact2>
 
@@ -244,7 +244,7 @@ Feature: Calling
     Given I Sign in on tablet using my email
     Given I see conversations list
     And I tap on contact name <Contact1>
-    And I remember the state of <Contact2> conversation item
+    And I remember the state of <Contact2> conversation item on iPad
     When I click plus button next to text input
     And I press call button
     And I see Calling overlay
@@ -254,7 +254,7 @@ Feature: Calling
     And I see Calling overlay
     And <Contact2> stops all calls to me
     And I tap Leave button on Calling overlay
-    And I see the state of <Contact2> conversation item is changed
+    And I see the state of <Contact2> conversation item is changed on iPad
     And I tap on contact name <Contact2>
     Then I see missed call from contact <Contact2>
 

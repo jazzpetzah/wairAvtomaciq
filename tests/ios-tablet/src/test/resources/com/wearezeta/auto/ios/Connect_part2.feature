@@ -105,7 +105,7 @@ Feature: Connect
     And I click Cancel request button
     And I see Cancel request confirmation page
     And I confirm Cancel request by click on Yes button
-    Then I see user <Contact1> found on People picker page
+    Then I see the conversation "<Contact1>" exists in Search results
 
     Examples: 
       | Name      | Contact1  |
@@ -124,7 +124,7 @@ Feature: Connect
     And I click Cancel request button
     And I see Cancel request confirmation page
     And I confirm Cancel request by click on Yes button
-    Then I see user <Contact1> found on People picker page
+    Then I see the conversation "<Contact1>" exists in Search results
 
     Examples: 
       | Name      | Contact1  |
