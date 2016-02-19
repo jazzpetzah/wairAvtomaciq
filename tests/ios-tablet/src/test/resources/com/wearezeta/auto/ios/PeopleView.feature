@@ -352,14 +352,14 @@ Feature: People View
     Given Myself silenced group conversation with <GroupChatName>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I remember the state of <GroupChatName> conversation item
+    When I remember the state of <GroupChatName> conversation item on iPad
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button on iPad
     And I click NOTIFY button on iPad ellipsis menu
     And I exit the group info iPad popover
     And I navigate back to conversations list
-    Then I see the state of <GroupChatName> conversation item is changed
+    Then I see the state of <GroupChatName> conversation item is changed on iPad
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -375,13 +375,13 @@ Feature: People View
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I remember the state of <GroupChatName> conversation item
+    When I remember the state of <GroupChatName> conversation item on iPad
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button on iPad
     And I click NOTIFY button on iPad ellipsis menu
     And I exit the group info iPad popover
-    Then I see the state of <GroupChatName> conversation item is changed
+    Then I see the state of <GroupChatName> conversation item is changed on iPad
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -395,14 +395,14 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I remember the state of <GroupChatName> conversation item
+    When I remember the state of <GroupChatName> conversation item on iPad
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button on iPad
     And I click SILENCE button on iPad ellipsis menu
     And I exit the group info iPad popover
     And I navigate back to conversations list
-    Then I see the state of <GroupChatName> conversation item is changed
+    Then I see the state of <GroupChatName> conversation item is changed on iPad
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -417,13 +417,13 @@ Feature: People View
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I remember the state of <GroupChatName> conversation item
+    When I remember the state of <GroupChatName> conversation item on iPad
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button on iPad
     And I click SILENCE button on iPad ellipsis menu
     And I exit the group info iPad popover
-    Then I see the state of <GroupChatName> conversation item is changed
+    Then I see the state of <GroupChatName> conversation item is changed on iPad
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |

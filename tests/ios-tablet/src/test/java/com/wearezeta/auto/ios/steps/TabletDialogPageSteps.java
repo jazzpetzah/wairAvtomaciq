@@ -5,12 +5,10 @@ import com.wearezeta.auto.ios.pages.TabletDialogPage;
 import cucumber.api.java.en.When;
 
 public class TabletDialogPageSteps {
-	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
-			.getInstance();
+	private final IOSPagesCollection pagesCollecton = IOSPagesCollection.getInstance();
 
 	private TabletDialogPage getTabletDialogPage() throws Exception {
-		return (TabletDialogPage) pagesCollecton
-				.getPage(TabletDialogPage.class);
+		return pagesCollecton.getPage(TabletDialogPage.class);
 	}
 	
 	/**
