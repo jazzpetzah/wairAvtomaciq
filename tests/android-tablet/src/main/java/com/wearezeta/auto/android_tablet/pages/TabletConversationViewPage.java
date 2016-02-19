@@ -13,6 +13,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class TabletConversationViewPage extends AndroidTabletPage {
+
     public static final String idStrRootLocator = "pfac__conversation__list_view_container";
 
     public static final Function<String, String> xpathStrSystemMessageByContent = content -> String
@@ -231,7 +232,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public void tapGiphyButton() throws Exception {
-         getElement(idGiphyPreviewButton).click();
+        getElement(idGiphyPreviewButton).click();
     }
 
     public void tapSketchButton() throws Exception {
@@ -242,8 +243,36 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         getDialogPage().tapSketchOnImageButton();
     }
 
-    public BufferedImage getMediaButtonScreenshot() throws Exception {
-        return getDialogPage().getMediaControlButtonScreenshot();
+    public void rememberMediaControlButtonState() throws Exception {
+        getDialogPage().rememberMediaControlButtonState();
+    }
+
+    public void rememberConversationView() throws Exception {
+        getDialogPage().rememberConversationView();
+    }
+
+    public void rememberVerifiedConversationShield() throws Exception {
+        getDialogPage().rememberVerifiedConversationShield();
+    }
+
+    public boolean mediaControlButtonStateHasChanged() throws Exception {
+        return getDialogPage().mediaControlButtonStateHasChanged();
+    }
+    
+    public boolean mediaControlButtonStateHasNotChanged() throws Exception {
+        return getDialogPage().mediaControlButtonStateHasNotChanged();
+    }
+
+    public boolean verifiedConversationShieldStateHasChanged() throws Exception {
+        return getDialogPage().verifiedConversationShieldStateHasChanged();
+    }
+
+    public boolean conversationViewStateHasChanged() throws Exception {
+        return getDialogPage().conversationViewStateHasChanged();
+    }
+
+    public boolean conversationViewStateHasNotChanged() throws Exception {
+        return getDialogPage().conversationViewStateHasNotChanged();
     }
 
     public boolean scrollUpUntilMediaBarVisible(final int maxScrollRetries)

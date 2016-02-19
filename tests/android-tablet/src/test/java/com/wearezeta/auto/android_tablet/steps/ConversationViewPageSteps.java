@@ -646,8 +646,7 @@ public class ConversationViewPageSteps {
 	 */
 	@And("^I remember the state of media button in (?:the |\\s*)[Cc]onversation view$")
 	public void IRememberMediaButtonState() throws Exception {
-		this.previousMediaButtonState = getConversationViewPage()
-				.getMediaButtonScreenshot();
+		getConversationViewPage().rememberMediaControlButtonState();
 	}
 
 	private static final double MAX_SIMILARITY_VALUE = 0.97;
@@ -667,43 +666,12 @@ public class ConversationViewPageSteps {
 	@Then("^I see the state of media button in (?:the |\\s*)[Cc]onversation view is (not )?changed$")
 	public void ISeeMediaButtonStateIsChanged(String shouldNotBeChanged)
 			throws Exception {
-		if (this.previousMediaButtonState == null) {
-			throw new IllegalStateException(
-					"Please take a screenshot of media button first");
-		}
-		final int maxRetries = 3;
-		int ntry = 1;
-		double score = 1;
-		do {
-			final BufferedImage currentMediaButtonState = getConversationViewPage()
-					.getMediaButtonScreenshot();
-			score = ImageUtil.getOverlapScore(this.previousMediaButtonState,
-					currentMediaButtonState,
-					ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
-			if (shouldNotBeChanged == null) {
-				if (score < MAX_SIMILARITY_VALUE) {
-					return;
-				}
-			} else {
-				if (score >= MAX_SIMILARITY_VALUE) {
-					return;
-				}
-			}
-			Thread.sleep(1000);
-			ntry++;
-		} while (ntry <= maxRetries);
 		if (shouldNotBeChanged == null) {
-			Assert.assertTrue(
-					String.format(
-							"The current and the previous button states seems to be identical (%.2f >= %.2f)",
-							score, MAX_SIMILARITY_VALUE),
-					score < MAX_SIMILARITY_VALUE);
+			Assert.assertTrue("Media control button state has not changed",
+					getConversationViewPage().mediaControlButtonStateHasChanged());
 		} else {
-			Assert.assertTrue(
-					String.format(
-							"The current and the previous button states seems to be different (%.2f < %.2f)",
-							score, MAX_SIMILARITY_VALUE),
-					score >= MAX_SIMILARITY_VALUE);
+			Assert.assertTrue("Media control button state has changed",
+					getConversationViewPage().mediaControlButtonStateHasNotChanged());
 		}
 	}
 
