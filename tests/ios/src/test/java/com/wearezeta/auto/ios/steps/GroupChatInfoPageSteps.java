@@ -133,7 +133,6 @@ public class GroupChatInfoPageSteps {
 
         PeoplePickerPageSteps pickerSteps = new PeoplePickerPageSteps();
         pickerSteps.WhenIInputInPeoplePickerSearchFieldUserName(contact);
-        pickerSteps.WhenISeeUserFoundOnPeoplePickerPage(contact);
         pickerSteps.ITapOnConversationFromSearch(contact);
         pickerSteps.WhenIClickOnAddToConversationButton();
     }

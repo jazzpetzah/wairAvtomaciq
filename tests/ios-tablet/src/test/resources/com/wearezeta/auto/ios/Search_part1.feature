@@ -7,7 +7,7 @@ Feature: Search
     Given I see conversations list
     When I open search by taping on it
     And I input in People picker search field user email <ContactEmail>
-    Then I see user <ContactName> found on People picker page
+    Then I see the conversation "<ContactName>" exists in Search results
 
     Examples: 
       | Name      | ContactEmail | ContactName |
@@ -21,7 +21,7 @@ Feature: Search
     Given I see conversations list
     When I open search by taping on it
     And I input in People picker search field user email <ContactEmail>
-    Then I see user <ContactName> found on People picker page
+    Then I see the conversation "<ContactName>" exists in Search results
 
     Examples: 
       | Name      | ContactEmail | ContactName |
@@ -34,7 +34,7 @@ Feature: Search
     Given I see conversations list
     When I open search by taping on it
     And I input in People picker search field user name <Contact>
-    Then I see user <Contact> found on People picker page
+    Then I see the conversation "<Contact>" exists in Search results
 
     Examples: 
       | Name      | Contact   |
@@ -48,7 +48,7 @@ Feature: Search
     Given I see conversations list
     When I open search by taping on it
     And I input in People picker search field user name <Contact>
-    Then I see user <Contact> found on People picker page
+    Then I see the conversation "<Contact>" exists in Search results
 
     Examples: 
       | Name      | Contact   |
@@ -190,7 +190,7 @@ Feature: Search
     When I open search by taping on it
     And I wait until <LastName> exists in backend search results
     And I input in People picker search field user name <LastName>
-    Then I see user <NewName> found on People picker page
+    Then I see the conversation "<NewName>" exists in Search results
 
     Examples: 
       | Name      | Contact   | NewName  | LastName |
@@ -207,7 +207,7 @@ Feature: Search
     When I open search by taping on it
     And I wait until <LastName> exists in backend search results
     And I input in People picker search field user name <LastName>
-    Then I see user <NewName> found on People picker page
+    Then I see the conversation "<NewName>" exists in Search results
 
     Examples: 
       | Name      | Contact   | NewName  | LastName |
@@ -222,7 +222,7 @@ Feature: Search
     When I open search by taping on it
     And I wait until <Contact> exists in backend search results
     And I input in People picker search field first 5 letters of user name <Contact>
-    Then I see user <Contact> found on People picker page
+    Then I see the conversation "<Contact>" exists in Search results
 
     Examples: 
       | Name      | Contact   |
@@ -238,7 +238,7 @@ Feature: Search
     When I open search by taping on it
     And I wait until <Contact> exists in backend search results
     And I input in People picker search field first 5 letters of user name <Contact>
-    Then I see user <Contact> found on People picker page
+    Then I see the conversation "<Contact>" exists in Search results
 
     Examples: 
       | Name      | Contact   | 

@@ -141,56 +141,25 @@ public class PeoplePickerPageSteps {
         getPeoplePickerPage().fillTextInPeoplePickerSearch(email);
     }
 
-    @When("^I see user (.*) found on People picker page$")
-    public void WhenISeeUserFoundOnPeoplePickerPage(String contact) throws Exception {
-        try {
-            contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        } catch (NoSuchUserException e) {
-            // Ignore silently
-        }
-        Assert.assertTrue(String.format("User '%s' is not presented on People picker page", contact), getPeoplePickerPage()
-                .getSearchResultsElement(contact).isPresent());
-    }
-
-    /**
-     * Verify the conversation is not found on people picker
-     *
-     * @param convoName conversation name/alias
-     * @throws Exception
-     * @step. ^I see that user (.*) is NOT found on People picker page$
-     */
-    @When("^I see that user (.*) is NOT found on People picker page$")
-    public void WhenISeeUserNotFoundOnPeoplePickerPage(String convoName) throws Exception {
-        convoName = usrMgr.replaceAliasesOccurences(convoName, ClientUsersManager.FindBy.NAME_ALIAS);
-        Assert.assertTrue(
-                String.format("The conversation '%s' is visible on People picker page, but should be hidden", convoName),
-                getPeoplePickerPage().isElementNotFoundInSearch(convoName));
-    }
-
-    /**
-     * Verify that conversation is not presented in search results
-     *
-     * @param name conversation name to search
-     * @throws Exception
-     * @step. ^I see conversation (.*) is NOT presented in Search results$
-     */
-    @When("^I see conversation (.*) is NOT presented in Search results$")
-    public void ISeeConversationIsNotFoundInSearchResult(String name) throws Exception {
-        Assert.assertFalse("Conversation: " + name + " is presented in Search results", getPeoplePickerPage()
-                .isElementNotFoundInSearch(name));
-    }
-
     /**
      * Verify that conversation is presented in search results
      *
      * @param name conversation name to search
+     * @param shouldNotExist equals to null if the converssation should be visible
      * @throws Exception
-     * @step. ^I see conversation (.*) is presented in Search results$
+     * @step. ^I see conversation (.*) is (NOT )?presented in Search results$
      */
-    @When("^I see conversation (.*) is presented in Search results$")
-    public void ISeeConversationIsFoundInSearchResult(String name) throws Exception {
-        Assert.assertTrue("Conversation: " + name + " is not presented in Search results", getPeoplePickerPage()
-                .getSearchResultsElement(name).isPresent());
+    @When("^I see the conversation \"(.*)\" (does not )?exists? in Search results$")
+    public void ISeeConversationIsFoundInSearchResult(String name, String shouldNotExist) throws Exception {
+        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        if (shouldNotExist == null) {
+            Assert.assertTrue(String.format("The conversation '%s' does not exist in Search results", name),
+                    getPeoplePickerPage().getSearchResultsElement(name).isPresent());
+        } else {
+            Assert.assertTrue(
+                    String.format("The conversation '%s' exists in Search results, but it should not", name),
+                    getPeoplePickerPage().isElementNotFoundInSearch(name));
+        }
     }
 
     @When("^I search for user name (.*) and tap on it on People picker page$")

@@ -383,7 +383,7 @@ Feature: Conversation List
     And I confirm delete conversation content
     And I open search by taping on it
     And I input in People picker search field conversation name <GroupChatName>
-    Then I see conversation <GroupChatName> is NOT presented in Search results
+    Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
     And I dont see conversation <GroupChatName> in contact list
     And I open archived conversations
@@ -410,7 +410,6 @@ Feature: Conversation List
     Then I dont see conversation <GroupChatName> in contact list
     When I open search by taping on it
     And I input in People picker search field conversation name <GroupChatName>
-    And I see conversation <GroupChatName> is presented in Search results
     And I tap on conversation <GroupChatName> in search result
     Then I see empty group chat page with users <Contact1>,<Contact2> with only system message
     When I type the default message and send it
@@ -471,7 +470,7 @@ Feature: Conversation List
     And I dont see conversation <Contact> in contact list
     And I open search by taping on it
     And I input in People picker search field user name <Contact>
-    Then I see user <Contact> found on People picker page
+    Then I see the conversation "<Contact>" exists in Search results
 
     Examples:
       | Name      | Contact   |

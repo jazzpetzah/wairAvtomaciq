@@ -345,7 +345,7 @@ Feature: People View
     Given I see conversations list
     When I open search by taping on it
     And I input in People picker search field user name <Contact3>
-    And I see user <Contact3> found on People picker page
+    And I see the conversation "<Contact3>" exists in Search results
     And I click close button to dismiss people view
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
@@ -353,7 +353,7 @@ Feature: People View
     And I wait until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
-    Then I see that user <Contact3> is NOT found on People picker page
+    Then I see the conversation "<Contact3>" does not exist in Search results
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
@@ -397,7 +397,7 @@ Feature: People View
     And I confirm delete conversation content
     And I open search by taping on it
     And I input in People picker search field conversation name <GroupChatName>
-    Then I see conversation <GroupChatName> is NOT presented in Search results
+    Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
     And I dont see conversation <GroupChatName> in contact list
     And I open archived conversations
@@ -425,7 +425,6 @@ Feature: People View
     And I confirm delete conversation content
     And I open search by taping on it
     And I input in People picker search field conversation name <GroupChatName>
-    Then I see conversation <GroupChatName> is presented in Search results
     When I tap on conversation <GroupChatName> in search result
     Then I see group chat page with users <Contact1>,<Contact2>
     And I see 0 conversation entries
