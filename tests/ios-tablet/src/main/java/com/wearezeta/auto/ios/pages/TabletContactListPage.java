@@ -51,7 +51,7 @@ public class TabletContactListPage extends ContactListPage {
         final Dimension titleDimension = titleElement.getSize();
         return entryScreenshot.getSubimage(
                 0, titleLocation.y - entryLocation.y,
-                entryDimension.width / 2, titleDimension.height);
+                entryDimension.width / 3, titleDimension.height);
         //ImageIO.write(resultImage, "png", new File("/Users/elf/Desktop/screen_" + System.currentTimeMillis() + ".png"));
         // return resultImage;
     }
