@@ -154,6 +154,10 @@ public class LoginPage extends IOSPage {
     public void commitNewPassword(String newPassword) throws Exception {
         this.inputStringFromKeyboard(getElement(xpathSafariEnterNewPasswordField,
                 "Password input field in Safari is not visible"), newPassword, false, true);
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathSafariEnterNewPasswordField)) {
+            this.inputStringFromKeyboard(getElement(xpathSafariChangePasswordEmailField,
+                    "Password input field in Safari is not visible"), newPassword, false, true);
+        }
     }
 
     public boolean isCountryPickerButtonVisible() throws Exception {

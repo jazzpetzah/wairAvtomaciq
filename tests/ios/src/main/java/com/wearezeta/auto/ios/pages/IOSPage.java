@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.pages;
 
-import java.awt.image.BufferedImage;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;

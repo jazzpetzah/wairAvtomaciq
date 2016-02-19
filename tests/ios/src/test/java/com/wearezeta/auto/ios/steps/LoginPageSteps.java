@@ -496,8 +496,7 @@ public class LoginPageSteps {
         Map<String, String> expectedHeaders = new HashMap<>();
         expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, email);
         expectedHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME, PasswordResetMessage.MESSAGE_PURPOSE);
-        this.passwordMessage = IMAPSMailbox.getInstance().getMessage(
-                expectedHeaders, BackendAPIWrappers.ACTIVATION_TIMEOUT);
+        this.passwordMessage = IMAPSMailbox.getInstance().getMessage(expectedHeaders, 60 * 3);
 
         getLoginPage().commitEmail(email);
     }
