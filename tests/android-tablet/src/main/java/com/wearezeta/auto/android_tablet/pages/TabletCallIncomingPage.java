@@ -32,7 +32,7 @@ public class TabletCallIncomingPage extends AndroidTabletPage {
     }
 
     public void acceptCall() throws Exception {
-        getPage().ignoreCall();
+        getPage().acceptCall();
     }
 
 }
