@@ -10,66 +10,63 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class TabletCallingOverlayPage extends AndroidTabletPage {
 
-	public TabletCallingOverlayPage(Future<ZetaAndroidDriver> lazyDriver)
-			throws Exception {
-		super(lazyDriver);
-	}
+    public TabletCallingOverlayPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
+        super(lazyDriver);
+    }
 
-	private CallingOverlayPage getCallingOverlayPage() throws Exception {
-		return this.getAndroidPageInstance(CallingOverlayPage.class);
-	}
+    private CallingOverlayPage getCallingOverlayPage() throws Exception {
+        return this.getAndroidPageInstance(CallingOverlayPage.class);
+    }
 
-	public boolean callingOverlayIsVisible() throws Exception {
-		return getCallingOverlayPage().waitUntilVisible();
-	}
+    public boolean callingOverlayIsVisible() throws Exception {
+        return getCallingOverlayPage().waitUntilVisible();
+    }
 
-	public boolean callingOverlayNotVisible() throws Exception {
-		return getCallingOverlayPage().waitUntilNotVisible();
-	}
+    public boolean callingOverlayNotVisible() throws Exception {
+        return getCallingOverlayPage().waitUntilNotVisible();
+    }
 
-	public void tapAcceptButton() throws Exception {
-		getCallingOverlayPage().acceptCall();
-	}
+    public void tapAcceptButton() throws Exception {
+        getCallingOverlayPage().acceptCall();
+    }
 
-	public void tapMuteMicButton() throws Exception {
-		getCallingOverlayPage().tapMuteMicButton();
-	}
-	
-	public void tapIgnoreButton() throws Exception {
-		getCallingOverlayPage().ignoreCall();
-	}
+    public void tapMuteMicButton() throws Exception {
+        getCallingOverlayPage().tapMuteMicButton();
+    }
 
-	public void tapSpeakerButton() throws Exception {
-		getCallingOverlayPage().tapSpeakerButton();
-	}
+    public void tapIgnoreButton() throws Exception {
+        getCallingOverlayPage().ignoreCall();
+    }
 
-	public Optional<BufferedImage> getMuteButtonScreenshot() throws Exception {
-		return this.getElementScreenshot(getElement(CallingOverlayPage.idCallingMicMute));
-	}
+    public void tapSpeakerButton() throws Exception {
+        getCallingOverlayPage().tapSpeakerButton();
+    }
 
-	public boolean waitUntilSpeakerButtonVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), CallingOverlayPage.idCallingSpeaker);
-	}
+    public Optional<BufferedImage> getMuteButtonScreenshot() throws Exception {
+        return this.getElementScreenshot(getElement(CallingOverlayPage.idCallingMicMute));
+    }
 
-	public boolean waitUntilSpeakerButtonInvisible() throws Exception {
-		return DriverUtils.waitUntilLocatorDissapears(getDriver(), CallingOverlayPage.idCallingSpeaker);
-	}
+    public boolean waitUntilSpeakerButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), CallingOverlayPage.idCallingSpeaker);
+    }
 
-	public void tapDismissButton() throws Exception {
-		getCallingOverlayPage().tapDismissButton();
-	}
+    public boolean waitUntilSpeakerButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), CallingOverlayPage.idCallingSpeaker);
+    }
 
-	public boolean ongoingCallMinibarIsVisible() throws Exception {
-		return getCallingOverlayPage().ongoingCallMinibarIsVisible();
-	}
+    public void tapDismissButton() throws Exception {
+        getCallingOverlayPage().tapDismissButton();
+    }
 
-	public boolean ongoingCallMinibarIsInvisible() throws Exception {
-		return getCallingOverlayPage().ongoingCallMinibarIsInvisible();
-	}
+    public boolean ongoingCallMinibarIsVisible() throws Exception {
+        return getCallingOverlayPage().ongoingCallMinibarIsVisible();
+    }
 
-	public boolean waitForCallParticipantVisible(String participant)
-			throws Exception {
-		return getCallingOverlayPage().waitUntilNameAppearsOnCallingBarAvatar(
-				participant);
-	}
+    public boolean ongoingCallMinibarIsInvisible() throws Exception {
+        return getCallingOverlayPage().ongoingCallMinibarIsInvisible();
+    }
+
+    public boolean waitForCallParticipantVisible(String participant) throws Exception {
+        return getCallingOverlayPage().waitUntilCallEstablished();
+    }
 }
