@@ -68,7 +68,7 @@ public class IOSKeyboard extends BasePage {
     }
 
     public void pressCommitButton() throws Exception {
-        getElement(xpathCommitKey).click();
+        getElement(xpathCommitKey, "Keyboard commit key is not visible", 15).click();
     }
 
     private KeyboardState getInitialState(List<KeyboardState> statesList) throws Exception {
