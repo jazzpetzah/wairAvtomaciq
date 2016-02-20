@@ -47,6 +47,6 @@ public class TabletLoginPageSteps {
         } catch (WebDriverException e) {
             // pass silently
         }
-        getTabletLoginPage().dismissSettingsWarningIfVisible(5);
+        getTabletLoginPage().dismissSettingsWarningIfVisible(10);
     }
 }
