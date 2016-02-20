@@ -77,7 +77,11 @@ public class RegistrationPage extends IOSPage {
     private static final String WIRE_COUNTRY_NAME = "Wirestan";
 
     public void selectWirestan() throws Exception {
-        getElement(nameCountryPickerButton).click();
+        final WebElement countryPickerBtn = getElement(nameCountryPickerButton);
+        countryPickerBtn.click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameCountryPickerButton, 5)) {
+            countryPickerBtn.click();
+        }
         ((IOSElement) getElement(xpathCountryList)).scrollTo(WIRE_COUNTRY_NAME).click();
     }
 

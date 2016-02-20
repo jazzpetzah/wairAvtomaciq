@@ -37,13 +37,6 @@ public class RegistrationPageSteps {
      */
     @When("^I enter phone number for user (.*)$")
     public void IEnterPhoneNumber(String name) throws Exception {
-        if (this.userToRegister == null) {
-            this.userToRegister = new ClientUser();
-        }
-        this.userToRegister.setName(name);
-        this.userToRegister.clearNameAliases();
-        this.userToRegister.addNameAlias(name);
-
         this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
         getRegistrationPage().selectWirestan();
         getRegistrationPage().inputPhoneNumber(
@@ -58,8 +51,7 @@ public class RegistrationPageSteps {
      */
     @When("^I enter random phone number$")
     public void IEnterRandomPhoneNumber() throws Exception {
-        getRegistrationPage().inputPhoneNumber(
-                CommonUtils.generateRandomXdigits(7));
+        getRegistrationPage().inputPhoneNumber(CommonUtils.generateRandomXdigits(7));
     }
 
     /**
@@ -97,9 +89,8 @@ public class RegistrationPageSteps {
      * @step. ^I enter (.*) digits phone number
      */
     @When("^I enter (.*) digits phone number$")
-    public void IEnterXDigitesPhoneNumber(int x) throws Exception {
-        getRegistrationPage().inputPhoneNumber(
-                CommonUtils.generateRandomXdigits(x));
+    public void IEnterXDigitsPhoneNumber(int x) throws Exception {
+        getRegistrationPage().inputPhoneNumber(CommonUtils.generateRandomXdigits(x));
     }
 
     /**
@@ -124,16 +115,7 @@ public class RegistrationPageSteps {
 
     @When("^I enter name (.*)$")
     public void IEnterName(String name) throws Exception {
-        try {
-            this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
-        } catch (NoSuchUserException e) {
-            if (this.userToRegister == null) {
-                this.userToRegister = new ClientUser();
-            }
-            this.userToRegister.setName(name);
-            this.userToRegister.clearNameAliases();
-            this.userToRegister.addNameAlias(name);
-        }
+        this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
         getRegistrationPage().setName(this.userToRegister.getName());
     }
 
