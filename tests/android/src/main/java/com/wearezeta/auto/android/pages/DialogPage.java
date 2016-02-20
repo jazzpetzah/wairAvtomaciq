@@ -24,18 +24,11 @@ public class DialogPage extends AndroidPage {
     public static final By idDialogImages = By.id(idStrDialogImages);
 
     private static final By xpathLastPicture = By.xpath(String.format("(//*[@id='%s'])[last()]", idStrDialogImages));
-    
-    private static final By xpathE2EEDialogImagesBadges = By.xpath("//*[@id='" + idStrDialogImages
-            + "']/parent::*/parent::*//*[@id='v__row_conversation__e2ee']");
 
     public static final By idAddPicture = By.id("cursor_menu_item_camera");
 
     private static final Function<String, String> xpathStrConversationMessageByText = text -> String
         .format("//*[@id='ltv__row_conversation__message' and @value='%s']", text);
-    
-    private static final Function<String, String> xpathStrConversationLockMessageByText = text -> String
-            .format("//*[@id='ltv__row_conversation__message' and @value='%s']/parent::*/following-sibling::*"
-                    + "/*[@id='v__row_conversation__e2ee']", text);
 
     private static final Function<String, String> xpathStrUnsentIndicatorByText = text -> String
         .format("%s/parent::*/parent::*//*[@id='v__row_conversation__error']", xpathStrConversationMessageByText.apply(text));
@@ -534,44 +527,23 @@ public class DialogPage extends AndroidPage {
         getElement(idSwitchCameraButton).click();
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathDialogTakePhotoButton);
     }
-    
-    private final Predicate<? super WebElement> isEncryptedMessageFilter = (WebElement wel) -> wel.getSize().getWidth() > 0;
-    private final Predicate<? super WebElement> isNonEncryptedMessageFilter = (WebElement wel) -> wel.getSize().getWidth() <= 0;
 
-    public boolean waitForXEncryptedMessages(String msg, int times) throws Exception {
-        By locator = By.xpath(xpathStrConversationLockMessageByText.apply(msg));
-        if (times > 0) {
-            DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+    private final long IMAGES_VISIBILITY_TIMEOUT = 10000; // seconds;
+
+    public boolean waitForXImages(int expectedCount) throws Exception {
+        assert expectedCount >= 0;
+        final Optional<WebElement> imgElement = getElementIfDisplayed(idDialogImages);
+        if (expectedCount <= 1) {
+            return (expectedCount == 0 && !imgElement.isPresent()) || (expectedCount == 1 && imgElement.isPresent());
         }
-        return getElements(locator).stream().filter(isEncryptedMessageFilter).collect(Collectors.toList()).size() == times;
-    }
-
-    public boolean waitForXNonEncryptedMessages(String msg, int times) throws Exception {
-        By locator = By.xpath(xpathStrConversationLockMessageByText.apply(msg));
-        if (times > 0) {
-            DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
-        }
-        return getElements(locator).stream().filter(isNonEncryptedMessageFilter).collect(Collectors.toList()).size() == times;
-    }
-
-    public boolean waitForXEncryptedImages(int times) throws Exception {
-        final List<WebElement> allImageBadges = selectVisibleElements(xpathE2EEDialogImagesBadges);
-        return times == allImageBadges.stream().filter(WebElement::isDisplayed).count();
-    }
-
-    public boolean waitForXNonEncryptedImages(int times) throws Exception {
-        final List<WebElement> allImages = selectVisibleElements(idDialogImages);
-        final List<WebElement> allImageBadges = selectVisibleElements(xpathE2EEDialogImagesBadges);
-        return times == (allImages.size() - allImageBadges.stream().filter(WebElement::isDisplayed).count());
-    }
-
-    public void tapResendMsgIndicator(String message) throws Exception {
-        By locator = By.xpath(xpathStrUnsentIndicatorByText.apply(message));
-        getElement(locator).click();
-    }
-
-    public boolean waitForUnsentIndicatorInvisible(String message) throws Exception {
-        By locator = By.xpath(xpathStrUnsentIndicatorByText.apply(message));
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+        final long msStarted = System.currentTimeMillis();
+        do {
+            int actualCnt = getElements(idDialogImages).size();
+            if (actualCnt >= expectedCount) {
+                return true;
+            }
+            Thread.sleep(500);
+        } while (System.currentTimeMillis() - msStarted <= IMAGES_VISIBILITY_TIMEOUT);
+        return false;
     }
 }
