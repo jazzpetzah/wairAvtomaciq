@@ -11,7 +11,7 @@ public class CallIncomingPage extends AndroidPage {
 
     private static final String idStrCallingContainer = "tcfl__calling__container";
     private static final By idCallingContainer = By.id(idStrCallingContainer);
-    private static final By xpathIncomingCallContainer = By.xpath("//*[@id='ttv__calling__header__duration' and contains(@value, 'Calling')]");
+    private static final By xpathIncomingCallContainer = By.xpath("//*[@id='ttv__calling__header__duration' and contains(@value, 'CALLING')]");
     private static final By idMainContent = By.id("cpv__calling__participants");
     
     private static final Function<String, String> xpathCallingHeaderByName = name -> String
