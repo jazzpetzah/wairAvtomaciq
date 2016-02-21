@@ -1,12 +1,9 @@
 package com.wearezeta.auto.android_tablet.pages;
 
-import com.wearezeta.auto.android.common.Memory;
 import com.wearezeta.auto.android.pages.CallOutgoingPage;
 import java.util.concurrent.Future;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import org.openqa.selenium.By;
 
 public class TabletCallOutgoingPage extends AndroidTabletPage {
 
@@ -27,10 +24,6 @@ public class TabletCallOutgoingPage extends AndroidTabletPage {
         return getPage().waitUntilNotVisible();
     }
     
-    public boolean waitUntilNameAppearsOnCallingBarCaption(String name) throws Exception {
-        return getPage().waitUntilNameAppearsOnCallingBarCaption(name);
-    }
-    
     public void rememberSpecialActionButtonState() throws Exception {
         getPage().rememberSpecialActionButtonState();
     }
@@ -45,22 +38,6 @@ public class TabletCallOutgoingPage extends AndroidTabletPage {
     
     public boolean muteButtonStateHasChanged() throws Exception {
         return getPage().muteButtonStateHasChanged();
-    }
-    
-    public boolean hangupIsVisible() throws Exception {
-        return getPage().hangupIsVisible();
-    }
-    
-    public boolean toggleMuteIsVisible() throws Exception {
-        return getPage().toggleMuteIsVisible();
-    }
-
-    public boolean toggleSpeakerIsVisible() throws Exception {
-        return getPage().toggleSpeakerIsVisible();
-    }
-    
-    public boolean toggleVideoIsVisible() throws Exception {
-        return getPage().toggleVideoIsVisible();
     }
 
     public void toggleMute() throws Exception {
@@ -77,10 +54,6 @@ public class TabletCallOutgoingPage extends AndroidTabletPage {
     
     public void toggleVideo() throws Exception {
         getPage().toggleVideo();
-    }
-
-    public int getNumberOfParticipants() throws Exception {
-        return getPage().getNumberOfParticipants();
     }
     
 }

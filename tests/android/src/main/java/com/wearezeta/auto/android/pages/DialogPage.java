@@ -1,6 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
-import com.wearezeta.auto.android.common.Memory;
+import com.wearezeta.auto.android.common.ElementState;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +14,6 @@ import org.openqa.selenium.WebElement;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import java.util.function.Predicate;
 
 public class DialogPage extends AndroidPage {
 
@@ -106,9 +105,21 @@ public class DialogPage extends AndroidPage {
     private static final int MAX_SWIPE_RETRIES = 5;
     private static final int MAX_CLICK_RETRIES = 5;
     
-    private Memory previousMediaButtonState;
-    private Memory previousConversationViewState;
-    private Memory previousVerifiedConversationShieldState;
+    private ElementState mediaButtonState = new ElementState(
+            () -> this.getElementScreenshot(getElement(idPlayPauseMedia)).orElseThrow(
+                    () -> new IllegalStateException("Cannot get a screenshot of Play/Pause button")
+            )
+    );
+    private ElementState conversationViewState = new ElementState(
+            () -> this.getElementScreenshot(getElement(idDialogRoot)).orElseThrow(
+                    () -> new IllegalStateException("Cannot get a screenshot of conversation view")
+            )
+    );
+    private ElementState verifiedConversationShieldState =new ElementState(
+            () -> this.getElementScreenshot(getElement(idVerifiedConversationShield)).orElseThrow(
+                    () -> new IllegalStateException("Cannot get a screenshot of verification shield")
+            )
+    );
 
     public DialogPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -409,22 +420,19 @@ public class DialogPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idYoutubePlayButton);
     }
 
+    private static final int MEDIA_BUTTON_STATE_CHANGE_TIMEOUT = 15;
+    private static final double MEDIA_BUTTON_MIN_SIMILARITY_SCORE = 0.97;
+
     public void rememberMediaControlButtonState() throws Exception {
-        previousMediaButtonState = new Memory(getDriver(), idPlayPauseMedia, 15000, 0.97d);
+        mediaButtonState.remember();
     }
     
     public boolean mediaControlButtonStateHasChanged() throws Exception {
-        if (previousMediaButtonState == null) {
-            throw new IllegalStateException("Please call the corresponding remember step first to get the previous state of the element");
-        }
-        return previousMediaButtonState.hasChanged();
+        return mediaButtonState.isChanged(MEDIA_BUTTON_STATE_CHANGE_TIMEOUT, MEDIA_BUTTON_MIN_SIMILARITY_SCORE);
     }
     
     public boolean mediaControlButtonStateHasNotChanged() throws Exception {
-        if (previousMediaButtonState == null) {
-            throw new IllegalStateException("Please call the corresponding remember step first to get the previous state of the element");
-        }
-        return previousMediaButtonState.hasNotChanged();
+        return mediaButtonState.isNotChanged(MEDIA_BUTTON_STATE_CHANGE_TIMEOUT, MEDIA_BUTTON_MIN_SIMILARITY_SCORE);
     }
 
     public void tapPlayPauseMediaBarBtn() throws Exception {
@@ -490,33 +498,30 @@ public class DialogPage extends AndroidPage {
         return selectVisibleElements(xpathDialogContent).size();
     }
 
+    private static final int CONVO_VIEW_STATE_CHANGE_TIMEOUT = 15;
+    private static final double CONVO_VIEW_MIN_SIMILARITY_SCORE = 0.5;
+
     public void rememberConversationView() throws Exception {
-        previousConversationViewState = new Memory(getDriver(), idDialogRoot, 15000, 0.50);
+        conversationViewState.remember();
     }
-    
+
+    private static final int SHIELD_STATE_CHANGE_TIMEOUT = 15;
+    private static final double SHIELD_MIN_SIMILARITY_SCORE = 0.97;
+
     public void rememberVerifiedConversationShield() throws Exception {
-        previousVerifiedConversationShieldState = new Memory(getDriver(), idVerifiedConversationShield, 15000, 0.97d);
+        verifiedConversationShieldState.remember();
     }
     
     public boolean verifiedConversationShieldStateHasChanged() throws Exception {
-        if (previousVerifiedConversationShieldState == null) {
-            throw new IllegalStateException("Please call the corresponding remember step first to get the previous state of the element");
-        }
-        return previousVerifiedConversationShieldState.hasChanged();
+        return verifiedConversationShieldState.isChanged(SHIELD_STATE_CHANGE_TIMEOUT, SHIELD_MIN_SIMILARITY_SCORE);
     }
     
     public boolean conversationViewStateHasChanged() throws Exception {
-        if (previousConversationViewState == null) {
-            throw new IllegalStateException("Please call the corresponding remember step first to get the previous state of the element");
-        }
-        return previousConversationViewState.hasChanged();
+        return conversationViewState.isChanged(CONVO_VIEW_STATE_CHANGE_TIMEOUT, CONVO_VIEW_MIN_SIMILARITY_SCORE);
     }
     
     public boolean conversationViewStateHasNotChanged() throws Exception {
-        if (previousConversationViewState == null) {
-            throw new IllegalStateException("Please call the corresponding remember step first to get the previous state of the element");
-        }
-        return previousConversationViewState.hasNotChanged();
+        return conversationViewState.isNotChanged(CONVO_VIEW_STATE_CHANGE_TIMEOUT, CONVO_VIEW_MIN_SIMILARITY_SCORE);
     }
 
     /**
@@ -528,7 +533,7 @@ public class DialogPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathDialogTakePhotoButton);
     }
 
-    private final long IMAGES_VISIBILITY_TIMEOUT = 10000; // seconds;
+    private static final long IMAGES_VISIBILITY_TIMEOUT = 10000; // seconds;
 
     public boolean waitForXImages(int expectedCount) throws Exception {
         assert expectedCount >= 0;
