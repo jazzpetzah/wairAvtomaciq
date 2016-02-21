@@ -186,11 +186,11 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName    | CallBackend |
       | user1Name | user2Name | user3Name | ChatForGroupCall | autocall    |
 
-#TODO use waiting instances instead of autocall
   @C807 @id3240 @calling_basic @rc @rc42
   Scenario Outline: I can start group call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> start waiting instance using <CallBackend>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -199,17 +199,15 @@ Feature: Calling
     And I swipe on text input
     And I press Call button
     Then I see outgoing call
-    When <Contact1> calls <GroupChatName> using <CallBackend>
-    And <Contact2> calls <GroupChatName> using <CallBackend>
-#TODO check activity
-    Then I see ongoing call
-    When <Contact1> stops all calls to <GroupChatName>
-    And <Contact2> stops all calls to <GroupChatName>
+    When <Contact1>,<Contact2> accept next incoming call automatically
+    Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
+    And I see ongoing call
+    When I hang up ongoing call
     Then I do not see ongoing call
 
     Examples:
-      | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
-      | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
+      | Name      | Contact1  | Contact2  | GroupChatName    | CallBackend | Timeout |
+      | user1Name | user2Name | user3Name | ChatForGroupCall | chrome      | 60      |
 
   @C804 @id3172 @regression @rc @rc42
   Scenario Outline: I can join group call in foreground
