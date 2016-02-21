@@ -157,7 +157,6 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-#DEFECT due to https://wearezeta.atlassian.net/browse/AN-3480
   @C431 @id3239 @calling_basic
   Scenario Outline: Calling bar buttons are clickable and change their states in a group call
     Given There are 3 users where <Name> is me
@@ -239,7 +238,6 @@ Feature: Calling
       | CallBackend | CallBackend2 | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    | Timeout |
       | chrome      | autocall     | user1Name | user2Name | user3Name | user4Name | user5Name | ChatForGroupCall | 60      |
 
-#TODO Probably flaky because of https://wearezeta.atlassian.net/browse/AN-3480
   @C805 @id3174 @calling_basic @rc
   Scenario Outline: (AN-3396) I can join group call after I ignored it
     Given There are 3 users where <Name> is me
@@ -262,7 +260,6 @@ Feature: Calling
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
 
-#TODO Probably flaky because of  https://wearezeta.atlassian.net/browse/AN-3480
   @C802 @id3168 @calling_basic @rc
   Scenario Outline: I can join group call after I leave it
     Given There are 3 users where <Name> is me
@@ -291,7 +288,6 @@ Feature: Calling
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
 
-#TODO Probably flaky because of  https://wearezeta.atlassian.net/browse/AN-3480
   @C424 @id3164 @calling_basic
   Scenario Outline: Verify creating the call with a maximum amount of the people
     Given There are 5 users where <Name> is me
@@ -318,7 +314,6 @@ Feature: Calling
       | CallBackend | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | user4Name | user5Name | MaxGroupCallChat |
 
-#TODO Probably flaky because of https://wearezeta.atlassian.net/browse/AN-3480
   @C425 @id3165 @calling_basic
   Scenario Outline: Verify impossibility to connect 6th person to the call
     Given There are 6 users where <Name> is me
@@ -334,13 +329,14 @@ Feature: Calling
     And <Contact4> calls <GroupChatName> using <CallBackend>
     And <Contact5> calls <GroupChatName> using <CallBackend>
     When I swipe to accept the call
+    Then I do not see ongoing call
 #TODO alerts
-    Then I see group call is full alert
-    And I close group call is full alert
-    And I swipe on text input
-    And I press Call button
-    Then I see group call is full alert
-    And I close group call is full alert
+#    Then I see group call is full alert
+#    And I close group call is full alert
+#    And I swipe on text input
+#    And I press Call button
+#    Then I see group call is full alert
+#    And I close group call is full alert
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
     And <Contact3> stops all calls to <GroupChatName>
@@ -351,9 +347,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName       | CallBackend |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | MaxGroupCallNegChat | autocall    |
 
-# DEFECT: can not implement until I can leave the call overlay while calling
-# also there's no alert
-  @C427 @id3180 @calling_advanced @mute
+  @C427 @id3180 @calling_advanced
   Scenario Outline: Verify receiving 1to1 call during group call and accepting it
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -368,15 +362,12 @@ Feature: Calling
     When I swipe to accept the call
     And I see ongoing call
     And <Contact3> calls <Name> using <CallBackend>
-    And I see incoming calling message for contact <Contact3>
-    And I answer the call from the overlay bar
-    And I see end current call alert
-    And I start new call from end current call alert
-    And I see calling overlay Big bar
-    And I see 1 user take part in call
-    And I navigate back from dialog page
-    And I tap on contact name <GroupChatName>
-    And I see incoming calling message for contact <Contact3>
+# I hear second call sound
+    When I hang up ongoing call
+    Then I see incoming call
+    And I see incoming call from <Contact3>
+    When I swipe to accept the call
+    Then I see ongoing call
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
 
@@ -384,9 +375,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
-# DEFECT: can not implement until I can leave the call overlay while calling
-# also there's no alert
-  @C806 @id3176 @calling_advanced @rc @mute
+  @C806 @id3176 @calling_advanced @rc
   Scenario Outline: (AN-3140) Verify receiving group call during 1to1 call and accepting it
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -396,20 +385,17 @@ Feature: Calling
     Given I see Contact list with contacts
     When I tap on contact name <Contact3>
     And <Contact3> calls <Name> using <CallBackend>
-    And I see incoming calling message for contact <Contact3>
-    Then I see call overlay
-    When I answer the call from the overlay bar
-    And <Contact1> calls <GroupChatName> using <CallBackend>
+    Then I see incoming call
+    When I swipe to accept the call
+    Then I see ongoing call
+    When <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    And I see incoming calling message for contact <GroupChatName>
-    And I answer the call from the overlay bar
-    And I see end current call alert
-    And I start new call from end current call alert
-    And I see calling overlay Big bar
+# I hear second call sound
+    When I hang up ongoing call
+    Then I see incoming call
+    When I swipe to accept the call
+    Then I see ongoing call
     And I see 2 users take part in call
-    And I navigate back from dialog page
-    And I tap on contact name <Contact3>
-    And I see incoming calling message for contact <GroupChatName>
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
 
@@ -451,7 +437,6 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
-#TODO Probably flaky because of  https://wearezeta.atlassian.net/browse/AN-3480
   @C803 @id3170 @calling_basic @rc @rc42
   Scenario Outline: Verify accepting group call in background
     Given There are 3 users where <Name> is me
