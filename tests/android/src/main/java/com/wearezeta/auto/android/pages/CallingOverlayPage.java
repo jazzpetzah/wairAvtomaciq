@@ -8,13 +8,10 @@ import org.openqa.selenium.By;
 import java.util.concurrent.Future;
 
 public abstract class CallingOverlayPage extends AndroidPage {
-    private static final String idStrMute = "ccbv__calling_controls__mute";
-    private static final By idMute = By.id(idStrMute);
-    private static final String idStrHangup = "ccbv__calling_controls__hangup";
-    private static final By idHangup = By.id(idStrHangup);
+    private static final By idMute = By.id("ccbv__calling_controls__mute");
+    private static final By idHangup = By.id("ccbv__calling_controls__hangup");
     //Could be VideoOnOff or SpeakOnOff
-    private static final String idStrRight = "ccbv__calling_controls__right_button";
-    private static final By idRight = By.id(idStrRight);
+    private static final By idRight = By.id("ccbv__calling_controls__right_button");
 
     private ElementState specialButtonState = new ElementState(
             () -> this.getElementScreenshot(getElement(idRight)).orElseThrow(
@@ -39,7 +36,7 @@ public abstract class CallingOverlayPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idMute);
     }
 
-    protected boolean specialActionIsVisible() throws Exception {
+    private boolean specialActionIsVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idRight);
     }
 
@@ -70,7 +67,23 @@ public abstract class CallingOverlayPage extends AndroidPage {
         getElement(idHangup).click();
     }
 
-    protected void specialAction() throws Exception{
+    private void specialAction() throws Exception{
         getElement(idRight).click();
+    }
+
+    public boolean toggleSpeakerIsVisible() throws Exception {
+        return specialActionIsVisible();
+    }
+
+    public boolean toggleVideoIsVisible() throws Exception {
+        return specialActionIsVisible();
+    }
+
+    public void toggleSpeaker() throws Exception {
+        specialAction();
+    }
+
+    public void toggleVideo() throws Exception {
+        specialAction();
     }
 }

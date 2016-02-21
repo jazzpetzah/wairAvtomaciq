@@ -7,20 +7,15 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertTrue;
 
 public class CallIncomingPageSteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
-            .getInstance();
+    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
 
     private CallIncomingPage getPage() throws Exception {
         return pagesCollection.getPage(CallIncomingPage.class);
     }
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
-    private static final long CALLER_NAME_VISIBILITY_TIMEOUT_MILLISECONDS = 5000;
-
     
      /**
      * Verifies presence of incoming call
@@ -67,13 +62,11 @@ public class CallIncomingPageSteps {
      * @step. ^I see incoming call from (.*)$
      */
     @When("^I see incoming call from (.*)$")
-    public void ISeeIncomingCallingMesage(String expectedCallerName)
+    public void ISeeIncomingCallingMessage(String expectedCallerName)
             throws Exception {
-        expectedCallerName = usrMgr.findUserByNameOrNameAlias(
-                expectedCallerName).getName();
+        expectedCallerName = usrMgr.findUserByNameOrNameAlias(expectedCallerName).getName();
         Assert.assertTrue(String.format(
-                "The current caller name differs from the expected value '%s'",
-                expectedCallerName), getPage()
-                .waitUntilNameAppearsOnCallingBarCaption(expectedCallerName));
+                "The current caller name differs from the expected value '%s'", expectedCallerName),
+                getPage().waitUntilNameAppearsOnCallingBarCaption(expectedCallerName));
     }
 }

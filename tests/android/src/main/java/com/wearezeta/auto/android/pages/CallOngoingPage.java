@@ -9,7 +9,8 @@ import org.openqa.selenium.By;
 
 public class CallOngoingPage extends CallingOverlayPage {
 
-    private static final By xpathOngoingCallContainer = By.xpath("//*[@id='ttv__calling__header__duration' and contains(@value, ':') and //*[@id='ccbv__calling_controls__hangup']]");
+    private static final By xpathOngoingCallContainer =
+            By.xpath("//*[@id='ttv__calling__header__duration' and contains(@value, ':') and //*[@id='ccbv__calling_controls__hangup']]");
 
     private static final By idParticipants = By.id("chv__calling__participants_grid__chathead");
 
@@ -23,7 +24,8 @@ public class CallOngoingPage extends CallingOverlayPage {
     private static final int VISIBILITY_TIMEOUT_SECONDS = 20;
 
     public boolean waitUntilVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOngoingCallContainer, VISIBILITY_TIMEOUT_SECONDS);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOngoingCallContainer,
+                VISIBILITY_TIMEOUT_SECONDS);
     }
 
     public boolean waitUntilNotVisible() throws Exception {
@@ -33,22 +35,6 @@ public class CallOngoingPage extends CallingOverlayPage {
     public boolean waitUntilNameAppearsOnCallingBarCaption(String name) throws Exception {
         final By locator = By.xpath(xpathCallingHeaderByName.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-    }
-
-    public boolean toggleSpeakerIsVisible() throws Exception {
-        return specialActionIsVisible();
-    }
-
-    public boolean toggleVideoIsVisible() throws Exception {
-        return specialActionIsVisible();
-    }
-
-    public void toggleSpeaker() throws Exception {
-        specialAction();
-    }
-
-    public void toggleVideo() throws Exception {
-        specialAction();
     }
 
     public int getNumberOfParticipants() throws Exception {
