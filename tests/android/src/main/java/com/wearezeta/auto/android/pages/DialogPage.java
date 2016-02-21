@@ -1,6 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
-import com.wearezeta.auto.android.common.ElementState;
+import com.wearezeta.auto.common.misc.ElementState;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Optional;
