@@ -1,8 +1,10 @@
 package com.wearezeta.auto.android.common;
 
 import com.wearezeta.auto.common.ImageUtil;
+
 import java.awt.image.BufferedImage;
 import java.util.Optional;
+import java.util.function.Function;
 
 
 public class ElementState {
@@ -19,7 +21,7 @@ public class ElementState {
         this.previousScreenshot = Optional.of(stateGetter.getState());
     }
 
-    public boolean isChanged(int timeoutSeconds, double minScore) throws Exception {
+    private boolean checkState(Function<Double, Boolean> checkerFunc, int timeoutSeconds) throws Exception {
         final long msStarted = System.currentTimeMillis();
         do {
             final BufferedImage currentState = stateGetter.getState();
@@ -27,7 +29,7 @@ public class ElementState {
                     this.previousScreenshot.orElseThrow(
                             () -> new IllegalStateException("Please remember the previous element state first")),
                     currentState, ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-            if (score < minScore) {
+            if (checkerFunc.apply(score)) {
                 return true;
             }
             Thread.sleep(MS_INTERVAL);
@@ -35,19 +37,11 @@ public class ElementState {
         return false;
     }
 
+    public boolean isChanged(int timeoutSeconds, double minScore) throws Exception {
+        return checkState((x) -> x < minScore, timeoutSeconds);
+    }
+
     public boolean isNotChanged(int timeoutSeconds, double minScore) throws Exception {
-        final long msStarted = System.currentTimeMillis();
-        do {
-            final BufferedImage currentState = stateGetter.getState();
-            final double score = ImageUtil.getOverlapScore(
-                    this.previousScreenshot.orElseThrow(
-                            () -> new IllegalStateException("Please remember the previous element state first")),
-                    currentState, ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-            if (score > minScore) {
-                return true;
-            }
-            Thread.sleep(MS_INTERVAL);
-        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds);
-        return false;
+        return checkState((x) -> x >= minScore, timeoutSeconds);
     }
 }
