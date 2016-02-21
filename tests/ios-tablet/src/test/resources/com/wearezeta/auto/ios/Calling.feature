@@ -254,6 +254,7 @@ Feature: Calling
     And I see Calling overlay
     And <Contact2> stops all calls to me
     And I tap Leave button on Calling overlay
+    And I do not see Calling overlay
     And I see the state of <Contact2> conversation item is changed on iPad
     And I tap on contact name <Contact2>
     Then I see missed call from contact <Contact2>
