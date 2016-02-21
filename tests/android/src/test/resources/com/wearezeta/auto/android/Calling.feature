@@ -130,38 +130,6 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | autocall    | 60      |
 
-# DEFECT: can not implement until I can leave the call overlay while calling
-  @C404 @id347 @calling_basic @mute
-  Scenario Outline: Send text, image and knock while in the call with same user
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    And I tap on contact name <Contact>
-    And <Contact> calls me using <CallBackend>
-    And I see incoming call
-    And I see incoming call from <Contact>
-    And I swipe to accept the call
-#TODO check activity
-#    When I swipe on text input
-#    And I press Ping button
-#    Then I see Ping message <Msg> in the dialog
-#    When I tap on text input
-#    And I type the message "<Message>" and send it
-#    Then I see my message "<Message>" in the dialog
-#    When I swipe on text input
-#    And I press Add Picture button
-#    And I press "Take Photo" button
-#    And I press "Confirm" button
-#    And I scroll to the bottom of conversation view
-#    Then I see new photo in the dialog
-
-
-    Examples:
-      | Name      | Contact   | CallBackend | Message                   | Msg        |
-      | user1Name | user2Name | autocall    | simple message in english | YOU PINGED |
-
   @C721 @id2210 @calling_basic @rc @rc42
   Scenario Outline: Calling bar buttons are clickable and change their states
     Given There are 2 users where <Name> is me
@@ -188,33 +156,6 @@ Feature: Calling
     Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
-
-# DEPRECATED
-  @C422 @id2212 @calling_basic @rc @mute
-  Scenario Outline: Correct calling bar in different places
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When <Contact1> calls me using <CallBackend>
-    And I answer the call from the overlay bar
-    Then I see calling overlay Big bar
-    And I navigate back from dialog page
-    And I open Search by tap
-    And I see calling overlay Micro bar
-    And I press Clear button
-    And I tap on my avatar
-    And I see personal info page
-    And I see calling overlay Micro bar
-    And I close Personal Info Page
-    And I see calling overlay Micro bar
-    And I tap on contact name <Contact2>
-    And I see calling overlay Mini bar
-
-    Examples:
-      | Name      | Contact1  | Contact2  | CallBackend |
-      | user1Name | user2Name | user3Name | autocall    |
 
 #DEFECT due to https://wearezeta.atlassian.net/browse/AN-3480
   @C431 @id3239 @calling_basic
@@ -411,72 +352,6 @@ Feature: Calling
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | MaxGroupCallNegChat | autocall    |
 
 # DEFECT: can not implement until I can leave the call overlay while calling
-  @C434 @id3253 @calling_basic @mute
-  Scenario Outline: Verify starting outgoing 1to1 call during group call
-    Given There are 4 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
-    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
-    And <Contact1> calls <GroupChatName> using <CallBackend>
-    And <Contact2> calls <GroupChatName> using <CallBackend>
-    And I see incoming call
-    And I do not see join group call overlay
-    And I see calling overlay Big bar
-    And I navigate back from dialog page
-    And I tap on contact name <Contact3>
-    And I swipe on text input
-    And I press Call button
-    And I see answer call alert
-    And I start new call from answer call alert
-    Then I see calling overlay Big bar
-    And <Contact3> calls <Name> using <CallBackend>
-    And I see 1 user take part in call
-    And I navigate back from dialog page
-    And I tap on contact name <GroupChatName>
-    And I see incoming calling message for contact <Contact3>
-    And <Contact1> stops all calls to <GroupChatName>
-    And <Contact2> stops all calls to <GroupChatName>
-
-    Examples:
-      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
-      | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
-
-# DEFECT: can not implement until I can leave the call overlay while calling
-  @C435 @id3255 @calling_basic @mute
-  Scenario Outline: Verify cancel outgoing 1to1 call during group call
-    Given There are 4 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
-    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
-    And <Contact1> calls <GroupChatName> using <CallBackend>
-    And <Contact2> calls <GroupChatName> using <CallBackend>
-    When I answer the call from the overlay bar
-    And I see calling overlay Big bar
-    And I navigate back from dialog page
-    And I tap on contact name <Contact3>
-    And I swipe on text input
-    And I press Call button
-    And I see answer call alert
-    And I cancel new call from answer call alert
-    And I see incoming calling message for contact <GroupChatName>
-    And I navigate back from dialog page
-    And I tap on contact name <GroupChatName>
-    And I see calling overlay Big bar
-    And I see 2 users take part in call
-    And <Contact1> stops all calls to <GroupChatName>
-    And <Contact2> stops all calls to <GroupChatName>
-
-    Examples:
-      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
-      | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
-
-# DEFECT: can not implement until I can leave the call overlay while calling
 # also there's no alert
   @C427 @id3180 @calling_advanced @mute
   Scenario Outline: Verify receiving 1to1 call during group call and accepting it
@@ -662,31 +537,3 @@ Feature: Calling
     Examples:
       | Name      | Contact1  | Contact2  | CallBackend |
       | user1Name | user2Name | user3Name | autocall    |
-
-# DEFECT: can not implement until I can leave the call overlay while calling
-  @C429 @id3184 @regression @mute
-  Scenario Outline: Verify leaving group conversation during the call
-    Given There are 4 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I sign in using my email
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
-    And <Contact1> calls <GroupChatName> using <CallBackend>
-    And <Contact2> calls <GroupChatName> using <CallBackend>
-    And I swipe to accept the call
-    And I do not see join group call overlay
-    And I see ongoing call
-    And I tap conversation details button
-    And I press options menu button
-    And I press Leave conversation menu button
-    When I confirm leaving
-    Then I see Contact list
-    And I do not see contact list with name <GroupChatName>
-    And <Contact1> stops all calls to <GroupChatName>
-    And <Contact2> stops all calls to <GroupChatName>
-
-    Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | CallBackend |
-      | user1Name | user2Name | user3Name | GroupCallChat | autocall    |
