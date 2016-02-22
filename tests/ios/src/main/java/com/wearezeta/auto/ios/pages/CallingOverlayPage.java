@@ -6,6 +6,7 @@ import java.util.function.Function;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import org.openqa.selenium.By;
 
 public class CallingOverlayPage extends IOSPage {
@@ -36,6 +37,9 @@ public class CallingOverlayPage extends IOSPage {
 
     private static final By xpathGroupCallAvatars = By.xpath(
             "//UIAWindow[@name='ZClientNotificationWindow']//UIACollectionCell");
+
+    private static final FunctionalInterfaces.FunctionFor2Parameters<String, String, String> xpathStrIsButtonSelected = (name, value) ->
+            String.format("//UIAButton[@name='%s' and @value='%s']", name, value);
 
     private static final By xpathGroupCallFullMessage = By.xpath("//UIAAlert[@name='The call is full']");
 
@@ -111,8 +115,9 @@ public class CallingOverlayPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), getButtonLocatorByName(name));
     }
 
-    public String isButtonSelected(String name) throws Exception {
-        return getElement(getButtonLocatorByName(name)).getAttribute("value");
+    public boolean isButtonSelected(String name, String value) throws Exception {
+        By locator = By.xpath(xpathStrIsButtonSelected.apply(name, value));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     private ElementState muteButtonState = new ElementState(
