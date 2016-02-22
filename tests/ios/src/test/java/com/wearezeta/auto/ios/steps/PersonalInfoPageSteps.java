@@ -1,10 +1,8 @@
 package com.wearezeta.auto.ios.steps;
 
-import java.awt.image.BufferedImage;
-
+import com.wearezeta.auto.common.misc.ElementState;
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.PersonalInfoPage;
@@ -226,7 +224,10 @@ public class PersonalInfoPageSteps {
         getPersonalInfoPage().pressCameraButton();
     }
 
-    private BufferedImage previousProfilePictureScreenshot = null;
+    private ElementState previousProfilePictureScreenshot = new ElementState(
+            () -> getPersonalInfoPage().takeScreenshot().
+                    orElseThrow(() -> new IllegalStateException("Cannot take a screenshot of self profile page"))
+    );
 
     /**
      * Take a screenshot of self profile page and save it into internal var
@@ -237,8 +238,7 @@ public class PersonalInfoPageSteps {
     @When("^I remember my current profile picture$")
     public void IRememberMyProfilePicture() throws Exception {
         Assert.assertTrue("Profile page is not currently visible", getPersonalInfoPage().waitUntilVisible());
-        previousProfilePictureScreenshot = getPersonalInfoPage().takeScreenshot().
-                orElseThrow(() -> new IllegalStateException("Cannot take a screenshot of self profile page"));
+        previousProfilePictureScreenshot.remember();
     }
 
 
@@ -248,23 +248,9 @@ public class PersonalInfoPageSteps {
         if (previousProfilePictureScreenshot == null) {
             throw new IllegalStateException("Please take a screenshot of previous profile picture first");
         }
-        final long millisecondsStarted = System.currentTimeMillis();
-        final double maxScore = 0.87;
-        double score;
-        do {
-            final BufferedImage currentProfilePictureScreenshot = getPersonalInfoPage().takeScreenshot().
-                    orElseThrow(() -> new IllegalStateException("Cannot take a screenshot of self profile page"));
-            score = ImageUtil.getOverlapScore(previousProfilePictureScreenshot, currentProfilePictureScreenshot,
-                    ImageUtil.RESIZE_NORESIZE);
-            if (score < maxScore) {
-                return;
-            }
-            Thread.sleep(1000);
-        } while (System.currentTimeMillis() - millisecondsStarted <= secondsTimeout * 1000);
-        if (score >= maxScore) {
-            throw new AssertionError(String.format("The overlap score between the previous and the current profile" +
-                    "pictures is too high (%.2f >= %.2f)", score, maxScore));
-        }
+        final double minScore = 0.87;
+        Assert.assertTrue("The previous and the current profile pictures seem to be the same",
+                this.previousProfilePictureScreenshot.isChanged(secondsTimeout, minScore));
     }
 
     @When("I see email (.*) on Personal page")

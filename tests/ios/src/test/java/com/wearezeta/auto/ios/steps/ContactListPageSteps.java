@@ -1,10 +1,10 @@
 package com.wearezeta.auto.ios.steps;
 
-import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import org.junit.Assert;
 
@@ -12,7 +12,6 @@ import cucumber.api.java.en.*;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.ios.pages.*;
@@ -35,7 +34,7 @@ public class ContactListPageSteps {
         Assert.assertTrue("Conversations list is not visible after the timeout", getLoginPage().isSelfAvatarVisible());
     }
 
-    private Map<String, BufferedImage> savedConvoItemScreenshots = new HashMap<>();
+    private Map<String, ElementState> savedConvoItemStates = new HashMap<>();
 
     /**
      * Store the screenshot of a particular conversation list entry
@@ -47,7 +46,9 @@ public class ContactListPageSteps {
     @When("^I remember the state of (.*) conversation item$")
     public void IRememberConvoItemState(String nameAlias) throws Exception {
         final String name = usrMgr.replaceAliasesOccurences(nameAlias, FindBy.NAME_ALIAS);
-        this.savedConvoItemScreenshots.put(name, getContactListPage().getConversationEntryScreenshot(name));
+        this.savedConvoItemStates.put(name,
+                new ElementState(() -> getContactListPage().getConversationEntryScreenshot(name)).remember()
+        );
     }
 
     /**
@@ -61,26 +62,22 @@ public class ContactListPageSteps {
     @Then("^I see the state of (.*) conversation item is (not )?changed$")
     public void IVerifyConvoState(String nameAlias, String shouldNotBeChanged) throws Exception {
         final String name = usrMgr.replaceAliasesOccurences(nameAlias, FindBy.NAME_ALIAS);
-        if (!this.savedConvoItemScreenshots.containsKey(name)) {
+        if (!this.savedConvoItemStates.containsKey(name)) {
             throw new IllegalStateException(String.format(
                     "Please take a screenshot of '%s' conversation entry first", name));
         }
-        final BufferedImage actualConvoItemScreenshot = getContactListPage().getConversationEntryScreenshot(name);
-        final double score = ImageUtil.getOverlapScore(this.savedConvoItemScreenshots.get(name),
-                actualConvoItemScreenshot, ImageUtil.RESIZE_NORESIZE);
         final double minScore = 0.999;
+        final int timeoutSeconds = 10;
         if (shouldNotBeChanged == null) {
-            Assert.assertTrue(
-                    String.format("The state of '%s' conversation item seems to be the same (%.3f >= %.3f)",
-                            name, score, minScore), score < minScore);
+            Assert.assertTrue(String.format("The state of '%s' conversation item seems to be the same", name),
+                    this.savedConvoItemStates.get(name).isChanged(timeoutSeconds, minScore));
         } else {
-            Assert.assertTrue(
-                    String.format("The state of '%s' conversation item seems to be changed (%.3f < %.3f)",
-                            name, score, minScore), score >= minScore);
+            Assert.assertTrue(String.format("The state of '%s' conversation item seems to be changed", name),
+                    this.savedConvoItemStates.get(name).isNotChanged(timeoutSeconds, minScore));
         }
     }
 
-    private Map<Integer, BufferedImage> savedConvoItemScreenshotsByIdx = new HashMap<>();
+    private Map<Integer, ElementState> savedConvoItemStatesByIdx = new HashMap<>();
 
     /**
      * Store the screenshot of a particular conversation list entry
@@ -91,7 +88,9 @@ public class ContactListPageSteps {
      */
     @When("^I remember the state of conversation item number (\\d+)$")
     public void IRememberConvoItemStateByIdx(int convoIdx) throws Exception {
-        this.savedConvoItemScreenshotsByIdx.put(convoIdx, getContactListPage().getConversationEntryScreenshot(convoIdx));
+        this.savedConvoItemStatesByIdx.put(convoIdx,
+                new ElementState(() -> getContactListPage().getConversationEntryScreenshot(convoIdx))
+        );
     }
 
     /**
@@ -104,22 +103,18 @@ public class ContactListPageSteps {
      */
     @Then("^I see the state of conversation item number (\\d+) is (not )?changed$")
     public void IVerifyConvoStateByIdx(int convoIdx, String shouldNotBeChanged) throws Exception {
-        if (!this.savedConvoItemScreenshotsByIdx.containsKey(convoIdx)) {
+        if (!this.savedConvoItemStatesByIdx.containsKey(convoIdx)) {
             throw new IllegalStateException(String.format(
                     "Please take a screenshot of conversation entry number %s first", convoIdx));
         }
-        final BufferedImage actualConvoItemScreenshot = getContactListPage().getConversationEntryScreenshot(convoIdx);
-        final double score = ImageUtil.getOverlapScore(this.savedConvoItemScreenshotsByIdx.get(convoIdx),
-                actualConvoItemScreenshot, ImageUtil.RESIZE_NORESIZE);
         final double minScore = 0.97;
+        final int timeoutSeconds = 10;
         if (shouldNotBeChanged == null) {
-            Assert.assertTrue(
-                    String.format("The state of conversation item number %s seems to be the same (%.2f >= %.2f)",
-                            convoIdx, score, minScore), score < minScore);
+            Assert.assertTrue(String.format("The state of conversation item number %s item seems to be the same", convoIdx),
+                    this.savedConvoItemStatesByIdx.get(convoIdx).isChanged(timeoutSeconds, minScore));
         } else {
-            Assert.assertTrue(
-                    String.format("The state of conversation item number %s seems to be changed (%.2f < %.2f)",
-                            convoIdx, score, minScore), score >= minScore);
+            Assert.assertTrue(String.format("The state of conversation item number %s item seems to be changed", convoIdx),
+                    this.savedConvoItemStatesByIdx.get(convoIdx).isNotChanged(timeoutSeconds, minScore));
         }
     }
 
@@ -178,10 +173,9 @@ public class ContactListPageSteps {
     /**
      * Verify whether the first items in conversations list is the given item
      *
-     * @step. ^I see first item in contact list named (.*)
-     *
      * @param convoName conversation name
      * @throws Exception
+     * @step. ^I see first item in contact list named (.*)
      */
     @Then("^I see first item in contact list named (.*)")
     public void ISeeUserNameFirstInContactList(String convoName) throws Exception {
@@ -460,7 +454,9 @@ public class ContactListPageSteps {
                 getContactListPage().isInviteMorePeopleButtonNotVisible());
     }
 
-    private BufferedImage previousSelfAvatarState = null;
+    private ElementState previousSelfAvatarState = new ElementState(
+            () -> getContactListPage().getAvatarStateScreenshot()
+    );
 
     /**
      * Remember the current state of self avatar
@@ -470,10 +466,8 @@ public class ContactListPageSteps {
      */
     @When("^I remember the state of my avatar$")
     public void IRememberAvatarState() throws Exception {
-        previousSelfAvatarState = getContactListPage().getAvatarStateScreenshot();
+        previousSelfAvatarState.remember();
     }
-
-    private static final long AVATAR_CHANGE_TIMEOUT_MILLISECONDS = 10000;
 
     /**
      * Verify whether avatar state is changed within the timeout
@@ -487,32 +481,16 @@ public class ContactListPageSteps {
         if (previousSelfAvatarState == null) {
             throw new IllegalStateException("Please take the initial screenshot of the avatar first");
         }
-        double score;
+        final int timeoutSeconds = 10;
         final double minScore = 0.97;
-        final long millisecondsStarted = System.currentTimeMillis();
-        do {
-            final BufferedImage currentAvatarState = getContactListPage().getAvatarStateScreenshot();
-            score = ImageUtil.getOverlapScore(currentAvatarState,
-                    previousSelfAvatarState, ImageUtil.RESIZE_NORESIZE);
-            if (shouldNotChange == null) {
-                if (score < minScore) {
-                    return;
-                }
-            } else {
-                if (score >= minScore) {
-                    return;
-                }
-            }
-            Thread.sleep(500);
-        } while (System.currentTimeMillis() - millisecondsStarted <= AVATAR_CHANGE_TIMEOUT_MILLISECONDS);
         if (shouldNotChange == null) {
-            throw new AssertionError(String.format("The previous and the current state of self avatar " +
-                            "icon seems to be equal after %s seconds (%.2f >= %.2f)",
-                    AVATAR_CHANGE_TIMEOUT_MILLISECONDS / 1000, score, minScore));
+            Assert.assertTrue(String.format("The previous and the current state of self avatar " +
+                            "icon seems to be equal after %s seconds", timeoutSeconds),
+                    previousSelfAvatarState.isChanged(timeoutSeconds, minScore));
         } else {
-            throw new AssertionError(String.format("The previous and the current state of self avatar " +
-                            "icon seems to be different after %s seconds (%.2f < %.2f)",
-                    AVATAR_CHANGE_TIMEOUT_MILLISECONDS / 1000, score, minScore));
+            Assert.assertTrue(String.format("The previous and the current state of self avatar " +
+                            "icon seems to be different after %s seconds", timeoutSeconds),
+                    previousSelfAvatarState.isNotChanged(timeoutSeconds, minScore));
         }
     }
 

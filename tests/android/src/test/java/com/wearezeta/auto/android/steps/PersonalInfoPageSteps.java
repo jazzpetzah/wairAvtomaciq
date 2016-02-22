@@ -1,11 +1,9 @@
 package com.wearezeta.auto.android.steps;
 
-import java.awt.image.BufferedImage;
-
+import com.wearezeta.auto.common.misc.ElementState;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.PersonalInfoPage;
-import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
@@ -16,12 +14,10 @@ import cucumber.api.java.en.When;
 public class PersonalInfoPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
-            .getInstance();
+    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
 
     private PersonalInfoPage getPersonalInfoPage() throws Exception {
-        return (PersonalInfoPage) pagesCollection
-                .getPage(PersonalInfoPage.class);
+        return pagesCollection.getPage(PersonalInfoPage.class);
     }
 
     /**
@@ -228,7 +224,9 @@ public class PersonalInfoPageSteps {
         getPersonalInfoPage().clearSelfName();
     }
 
-    private BufferedImage previousProfilePicture = null;
+    private ElementState previousProfilePicture = new ElementState(
+            () -> getPersonalInfoPage().takeScreenshot().orElseThrow(AssertionError::new)
+    );
 
     /**
      * Takes the screenshot of current screen and saves it to the internal
@@ -239,8 +237,7 @@ public class PersonalInfoPageSteps {
      */
     @When("^I remember my current profile picture$")
     public void IRememberCurrentPicture() throws Exception {
-        previousProfilePicture = getPersonalInfoPage().takeScreenshot()
-                .orElseThrow(AssertionError::new);
+        previousProfilePicture.remember();
     }
 
     private static final int PROFILE_IMAGE_CHANGE_TIMEOUT_SECONDS = 60;
@@ -255,29 +252,15 @@ public class PersonalInfoPageSteps {
      * previous one$
      */
     @Then("^I verify that my current profile picture is different from the previous one$")
-    public void IVerifyMyCurrentPuictureIsDifferent() throws Exception {
+    public void IVerifyMyCurrentPictureIsDifferent() throws Exception {
         if (previousProfilePicture == null) {
             throw new IllegalStateException(
                     "This step requires to remember the previous profile picture first!");
         }
-        final long millisecondsStarted = System.currentTimeMillis();
-        double score = -1;
-        do {
-            final BufferedImage currentProfilePicture = getPersonalInfoPage()
-                    .takeScreenshot().orElseThrow(AssertionError::new);
-            score = ImageUtil.getOverlapScore(currentProfilePicture,
-                    previousProfilePicture, ImageUtil.RESIZE_NORESIZE);
-            if (score <= MAX_OVERLAP_SCORE) {
-                break;
-            }
-            Thread.sleep(3000);
-        } while (score > MAX_OVERLAP_SCORE
-                && System.currentTimeMillis() - millisecondsStarted <= PROFILE_IMAGE_CHANGE_TIMEOUT_SECONDS * 1000);
         Assert.assertTrue(
-                String.format(
-                        "Profile picture has not been updated properly after %s seconds timeout (current overlap score value is %2.2f)",
-                        PROFILE_IMAGE_CHANGE_TIMEOUT_SECONDS, score),
-                score <= MAX_OVERLAP_SCORE);
+                String.format("Profile picture has not been updated properly after %s seconds timeout",
+                        PROFILE_IMAGE_CHANGE_TIMEOUT_SECONDS),
+                previousProfilePicture.isChanged(PROFILE_IMAGE_CHANGE_TIMEOUT_SECONDS, MAX_OVERLAP_SCORE));
     }
 
     /**

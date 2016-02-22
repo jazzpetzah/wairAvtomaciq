@@ -1,10 +1,9 @@
 package com.wearezeta.auto.ios.steps;
 
-import java.awt.image.BufferedImage;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 
-import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import org.junit.Assert;
 
@@ -351,7 +350,9 @@ public class DialogPageSteps {
         getDialogPage().stopMediaContent();
     }
 
-    private BufferedImage previousMediaContainerState = null;
+    private ElementState previousMediaContainerState = new ElementState(
+            () -> getDialogPage().getMediaContainerStateGlyphScreenshot()
+    );
 
     /**
      * Store the current media container state into an internal varibale
@@ -361,10 +362,10 @@ public class DialogPageSteps {
      */
     @When("^I remember media container state$")
     public void IRememberContainerState() throws Exception {
-        previousMediaContainerState = getDialogPage().getMediaContainerStateGlyphScreenshot();
+        previousMediaContainerState.remember();
     }
 
-    private static final long MEDIA_STATE_CHANGE_TIMEOUT = 10000; // milliseconds
+    private static final int MEDIA_STATE_CHANGE_TIMEOUT = 10;
 
     /**
      * Verify whether the state of a media container is changed
@@ -378,20 +379,16 @@ public class DialogPageSteps {
         if (this.previousMediaContainerState == null) {
             throw new IllegalStateException("Please remember the previous container state first");
         }
-        final long millisecondsStarted = System.currentTimeMillis();
         final double minScore = 0.8;
-        double score;
-        do {
-            final BufferedImage currentMediaContainerState = getDialogPage().getMediaContainerStateGlyphScreenshot();
-            score = ImageUtil.getOverlapScore(previousMediaContainerState, currentMediaContainerState,
-                    ImageUtil.RESIZE_NORESIZE);
-            if (shouldNotChange == null && score <= minScore || shouldNotChange != null && score > minScore) {
-                return;
-            }
-            Thread.sleep(500);
-        } while (System.currentTimeMillis() - millisecondsStarted <= MEDIA_STATE_CHANGE_TIMEOUT);
-        throw new AssertionError(String.format("The current media state is different from the expected one after " +
-                "%s seconds timeout. Similarity score is %.2f", MEDIA_STATE_CHANGE_TIMEOUT / 1000, score));
+        if (shouldNotChange == null) {
+            Assert.assertTrue(String.format("The current media state is not different from the expected one after " +
+                    "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
+                    previousMediaContainerState.isChanged(MEDIA_STATE_CHANGE_TIMEOUT, minScore));
+        } else {
+            Assert.assertTrue(String.format("The current media state is different from the expected one after " +
+                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
+                    previousMediaContainerState.isNotChanged(MEDIA_STATE_CHANGE_TIMEOUT, minScore));
+        }
     }
 
     @Then("^I see media is (playing|stopped|paused) on [Mm]edia [Bb]ar$")

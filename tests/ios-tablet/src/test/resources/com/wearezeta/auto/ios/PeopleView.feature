@@ -352,7 +352,7 @@ Feature: People View
     Given Myself silenced group conversation with <GroupChatName>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I remember the state of <GroupChatName> conversation item on iPad
+    When I remember the right side state of <GroupChatName> conversation item on iPad
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button on iPad
@@ -375,7 +375,7 @@ Feature: People View
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I remember the state of <GroupChatName> conversation item on iPad
+    When I remember the right side state of <GroupChatName> conversation item on iPad
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button on iPad
@@ -395,7 +395,7 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I remember the state of <GroupChatName> conversation item on iPad
+    When I remember the right side state of <GroupChatName> conversation item on iPad
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button on iPad
@@ -417,7 +417,7 @@ Feature: People View
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I remember the state of <GroupChatName> conversation item on iPad
+    When I remember the right side state of <GroupChatName> conversation item on iPad
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button on iPad
@@ -771,7 +771,7 @@ Feature: People View
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I click open conversation button on People picker page
-    Then I see the system message CONNECTED TO <Contact1> in the conversation view
+    Then I see 0 conversation entries
 
     Examples:
       | Name      | Contact1  | Image       |
@@ -799,7 +799,7 @@ Feature: People View
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I click open conversation button on People picker page
-    Then I see the system message CONNECTED TO <Contact1> in the conversation view
+    Then I see 0 conversation entries
 
     Examples:
       | Name      | Contact1  | Image       |
