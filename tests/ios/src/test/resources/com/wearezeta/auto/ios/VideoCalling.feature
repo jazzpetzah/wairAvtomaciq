@@ -76,7 +76,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-@C12104 @staging
+  @C12104 @staging
   Scenario Outline: Verify ignoring Video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
