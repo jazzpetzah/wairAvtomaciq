@@ -141,3 +141,45 @@ Feature: Video Calling
     Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
+
+  @C28865 @staging
+  Scenario Outline: Verify getting missed call indication when someone called [PORTRAIT]
+    Given There are 3 user where <Name> is me
+    Given Myself is connected to <Contact>,<Contact2>
+    Given I Sign in on tablet using my email
+    Given I see conversations list
+    And I remember the state of <Contact> conversation item
+    And I tap on contact name <Contact2>
+    When <Contact> starts a video call to me using <CallBackend>
+    Then I see call status message contains "<Contact> CALLING"
+    And <Contact> stops all calls to me
+    And I do not see Calling overlay
+    And I navigate back to conversations list
+    Then I see the state of <Contact> conversation item is changed
+    When I tap on contact name <Contact>
+    And I see missed call from contact <Contact>
+
+    Examples:
+      | Name      | Contact   | Contact2  | CallBackend |
+      | user1Name | user2Name | user3Name | chrome      |
+
+  @48231 @staging
+  Scenario Outline: Verify getting missed call indication when someone called [LANDSCAPE]
+    Given There are 3 user where <Name> is me
+    Given Myself is connected to <Contact>,<Contact2>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    Given I see conversations list
+    And I tap on contact name <Contact2>
+    And I remember the state of <Contact> conversation item
+    When <Contact> starts a video call to me using <CallBackend>
+    Then I see call status message contains "<Contact> CALLING"
+    And <Contact> stops all calls to me
+    And I do not see Calling overlay
+    Then I see the state of <Contact> conversation item is changed
+    And I tap on contact name <Contact>
+    And I see missed call from contact <Contact>
+
+    Examples:
+      | Name      | Contact   | Contact2  | CallBackend |
+      | user1Name | user2Name | user3Name | chrome      |

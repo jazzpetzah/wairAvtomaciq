@@ -54,7 +54,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend         | Timeout |
       | user1Name | user2Name | chrome:48.0.2564.97 | 60      |
 
-  @C12104 @staging @torun
+  @C12104 @staging
   Scenario Outline: Verify ignoring Video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -64,6 +64,25 @@ Feature: Video Calling
     And I see call status message contains "<Contact> CALLING"
     And I tap Ignore button on the Calling overlay
     Then I do not see Calling overlay
+
+    Examples:
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | chrome      |
+
+  @C12107 @staging
+  Scenario Outline: Verify getting missed call indication when someone called
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    And I remember the state of <Contact> conversation item
+    When <Contact> starts a video call to me using <CallBackend>
+    Then I see call status message contains "<Contact> CALLING"
+    And <Contact> stops all calls to me
+    And I do not see Calling overlay
+    Then I see the state of <Contact> conversation item is changed
+    And I tap on contact name <Contact>
+    And I see missed call from contact <Contact>
 
     Examples:
       | Name      | Contact   | CallBackend |
