@@ -148,7 +148,7 @@ public class DialogPage extends IOSPage {
     }
 
     public int getNumberOfMessageEntries() throws Exception {
-        return getElements(xpathMessageEntries).size();
+        return selectVisibleElements(xpathMessageEntries).size();
     }
 
     public boolean waitForCursorInputVisible() throws Exception {
