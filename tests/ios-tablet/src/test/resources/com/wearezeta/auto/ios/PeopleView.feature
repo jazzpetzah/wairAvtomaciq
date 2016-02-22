@@ -928,7 +928,7 @@ Feature: People View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2709 @staging @id2440
+  @C2709 @regression @id2440
   Scenario Outline: Verify length limit for group conversation name [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

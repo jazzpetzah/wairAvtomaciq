@@ -311,7 +311,7 @@ Feature: Calling
       | autocall    | user1Name | user2Name | user3Name | user4Name | user5Name | MaxGroupCallChat |
 
   @C425 @id3165 @calling_basic
-  Scenario Outline: Verify impossibility to connect 6th person to the call
+  Scenario Outline: (AN-3507) Verify impossibility to connect 6th person to the call
     Given There are 6 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
@@ -344,7 +344,7 @@ Feature: Calling
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | MaxGroupCallNegChat | autocall    |
 
   @C427 @id3180 @calling_advanced
-  Scenario Outline: Verify receiving 1to1 call during group call and accepting it
+  Scenario Outline: (AN-3510) Verify receiving 1to1 call during group call and accepting it
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
@@ -358,8 +358,6 @@ Feature: Calling
     When I swipe to accept the call
     And I see ongoing call
     And <Contact3> calls <Name> using <CallBackend>
-# I hear second call sound
-    When I hang up ongoing call
     Then I see incoming call
     And I see incoming call from <Contact3>
     When I swipe to accept the call
@@ -372,7 +370,7 @@ Feature: Calling
       | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
   @C806 @id3176 @calling_advanced @rc
-  Scenario Outline: (AN-3140) Verify receiving group call during 1to1 call and accepting it
+  Scenario Outline: (AN-3140, AN-3510) Verify receiving group call during 1to1 call and accepting it
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
@@ -386,9 +384,8 @@ Feature: Calling
     Then I see ongoing call
     When <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-# I hear second call sound
-    When I hang up ongoing call
     Then I see incoming call
+    And I see incoming call from <GroupChatName>
     When I swipe to accept the call
     Then I see ongoing call
     And I see 2 users take part in call
@@ -399,10 +396,8 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
-# DEFECT: can not implement until I can leave the call overlay while calling
-# also there's no alert
-  @C428 @id3181 @calling_advanced @mute
-  Scenario Outline: Verify receiving 1to1 call during group call and ignoring it
+  @C428 @id3181 @calling_advanced
+  Scenario Outline: (AN-3510) Verify receiving 1to1 call during group call and ignoring it
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
@@ -412,20 +407,18 @@ Feature: Calling
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    And I answer the call from the overlay bar
-    And I see calling overlay Big bar
-    And <Contact3> calls <Name> using <CallBackend>
-    And I see incoming calling message for contact <Contact3>
-    And I swipe to accept the call
-    Then I see end current call alert
-    And I cancel new call from end current call alert
-    And I see incoming calling message for contact <Contact3>
+    And I see incoming call
+    When I swipe to accept the call
+    Then I see ongoing call
+    When <Contact3> calls <Name> using <CallBackend>
+    And I see incoming call
+#TODO alerts
+#    And I swipe to accept the call
+#    Then I see end current call alert
+#    And I cancel new call from end current call alert
     When I swipe to ignore the call
     Then I see ongoing call
     And I see 2 users take part in call
-    When I navigate back from dialog page
-    And I tap on contact name <Contact3>
-    Then I see incoming calling message for contact <GroupChatName>
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
 
@@ -498,7 +491,7 @@ Feature: Calling
       | user1Name | user2Name | autocall    |
 
   @C405 @id369 @calling_advanced
-  Scenario Outline: Other user trying to call me while I'm already in zeta call
+  Scenario Outline: (AN-3510) Other user trying to call me while I'm already in zeta call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
@@ -510,9 +503,8 @@ Feature: Calling
     And I swipe to accept the call
     And I see ongoing call
     When <Contact2> calls me using <CallBackend>
-    Then I do not see incoming call
-    And <Contact1> stop all calls to me
-    And I see incoming call from <Contact2>
+    Then I see incoming call
+#TODO alerts
     And <Contact2> stop all calls to me
 
     Examples:
