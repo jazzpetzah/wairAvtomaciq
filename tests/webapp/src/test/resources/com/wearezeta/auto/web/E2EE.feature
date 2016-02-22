@@ -360,7 +360,7 @@ Feature: E2EE
     | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | ALL_VERIFIED                  |
     | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat     | All fingerprints are verified |
 
-  @C12056 @e2ee
+  @C12056 @mute
   Scenario Outline: Verify you get an alert if group conversation participant sends a message from non-verified device
     Given There are 3 users where <Name> is me
     Given user <Contact1> adds a new device Device1 with label Label1
@@ -464,7 +464,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | GroupMessage | UserMessage   |
       | user1Email | user1Password | user1Name | user2Name | user3Name | User1Chat     | Hello Group  | Hello User    |
 
-  @C12054 @e2ee
+  @C12054 @mute
   Scenario Outline: Verify you see an alert in verified 1:1 conversation when the other participant sends message from non-verified device
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
